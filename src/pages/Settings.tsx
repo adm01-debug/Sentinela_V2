@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, AppWindow, Plus, Search, Loader2 } from 'lucide-react';
+import { ArrowLeft, Shield, AppWindow, Search, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PolicyToggle } from '@/components/PolicyToggle';
 import { ApplicationRuleRow } from '@/components/ApplicationRuleRow';
+import { AddApplicationDialog } from '@/components/AddApplicationDialog';
 import { useSettings } from '@/hooks/useSettings';
 import { categoryLabels } from '@/data/settingsData';
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { policies, appRules, loading, updatePolicy, updateAppRule } = useSettings();
+  const { policies, appRules, loading, updatePolicy, updateAppRule, addAppRule } = useSettings();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
 
@@ -161,10 +162,7 @@ export default function Settings() {
             <div className="rounded-xl border border-border bg-card p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">Lista de Aplicativos</h3>
-                <Button size="sm" className="gap-2">
-                  <Plus className="h-4 w-4" />
-                  Adicionar
-                </Button>
+                <AddApplicationDialog onAdd={addAppRule} />
               </div>
               <div className="space-y-3">
                 {filteredApps.map(rule => (

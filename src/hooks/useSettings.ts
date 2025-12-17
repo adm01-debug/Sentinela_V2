@@ -93,12 +93,37 @@ export function useSettings() {
     }
   };
 
+  const addAppRule = async (name: string, category: ApplicationRule['category'], status: ApplicationRule['status']) => {
+    try {
+      const { data, error } = await supabase
+        .from('application_rules')
+        .insert({ name, category, status })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setAppRules(prev => [...prev, {
+        id: data.id,
+        name: data.name,
+        category: data.category as ApplicationRule['category'],
+        status: data.status as ApplicationRule['status']
+      }]);
+      toast.success(`${name} adicionado com sucesso`);
+      return true;
+    } catch (error: any) {
+      toast.error('Erro ao adicionar aplicativo: ' + error.message);
+      return false;
+    }
+  };
+
   return {
     policies,
     appRules,
     loading,
     updatePolicy,
     updateAppRule,
+    addAppRule,
     refetch: fetchData
   };
 }
