@@ -12,6 +12,7 @@ import Reports from "./pages/Reports";
 import Violations from "./pages/Violations";
 import Monitoring from "./pages/Monitoring";
 import AgentKeys from "./pages/AgentKeys";
+import ViolationRules from "./pages/ViolationRules";
 import Auth from "./pages/Auth";
 import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
@@ -61,6 +62,11 @@ const App = () => (
             <Route path="/agent-keys" element={
               <ProtectedRoute requireAdmin>
                 <AgentKeys />
+              </ProtectedRoute>
+            } />
+            <Route path="/violation-rules" element={
+              <ProtectedRoute requireAdmin>
+                <ViolationRules />
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -374,6 +374,48 @@ export type Database = {
         }
         Relationships: []
       }
+      violation_rules: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          notify_admin: boolean
+          notify_employee: boolean
+          rule_type: Database["public"]["Enums"]["violation_rule_type"]
+          rule_value: string
+          severity: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          notify_admin?: boolean
+          notify_employee?: boolean
+          rule_type: Database["public"]["Enums"]["violation_rule_type"]
+          rule_value: string
+          severity?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          notify_admin?: boolean
+          notify_employee?: boolean
+          rule_type?: Database["public"]["Enums"]["violation_rule_type"]
+          rule_value?: string
+          severity?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -389,6 +431,12 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      violation_rule_type:
+        | "blocked_site"
+        | "blocked_keyword"
+        | "blocked_app"
+        | "blocked_file_extension"
+        | "work_hours"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -517,6 +565,13 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      violation_rule_type: [
+        "blocked_site",
+        "blocked_keyword",
+        "blocked_app",
+        "blocked_file_extension",
+        "work_hours",
+      ],
     },
   },
 } as const
