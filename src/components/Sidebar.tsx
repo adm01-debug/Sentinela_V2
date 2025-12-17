@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Users, 
@@ -12,16 +13,18 @@ import {
 import { cn } from '@/lib/utils';
 
 const menuItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', active: true },
-  { icon: Users, label: 'Colaboradores', active: false },
-  { icon: Monitor, label: 'Dispositivos', active: false },
-  { icon: Shield, label: 'Segurança', active: false },
-  { icon: Bell, label: 'Alertas', active: false },
-  { icon: Settings, label: 'Configurações', active: false },
+  { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
+  { icon: Users, label: 'Colaboradores', path: '/employees' },
+  { icon: Monitor, label: 'Dispositivos', path: '/devices' },
+  { icon: Shield, label: 'Segurança', path: '/security' },
+  { icon: Bell, label: 'Alertas', path: '/alerts' },
+  { icon: Settings, label: 'Configurações', path: '/settings' },
 ];
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <aside className={cn(
@@ -30,7 +33,7 @@ export function Sidebar() {
     )}>
       <div className="flex h-16 items-center justify-between border-b border-border px-4">
         {!collapsed && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <Shield className="h-5 w-5 text-primary-foreground" />
             </div>
@@ -46,20 +49,24 @@ export function Sidebar() {
       </div>
       
       <nav className="p-4 space-y-2">
-        {menuItems.map((item) => (
-          <button
-            key={item.label}
-            className={cn(
-              'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200',
-              item.active 
-                ? 'bg-primary text-primary-foreground shadow-lg' 
-                : 'text-muted-foreground hover:bg-accent hover:text-foreground'
-            )}
-          >
-            <item.icon className="h-5 w-5 shrink-0" />
-            {!collapsed && <span className="font-medium">{item.label}</span>}
-          </button>
-        ))}
+        {menuItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <button
+              key={item.label}
+              onClick={() => navigate(item.path)}
+              className={cn(
+                'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200',
+                isActive 
+                  ? 'bg-primary text-primary-foreground shadow-lg' 
+                  : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+              )}
+            >
+              <item.icon className="h-5 w-5 shrink-0" />
+              {!collapsed && <span className="font-medium">{item.label}</span>}
+            </button>
+          );
+        })}
       </nav>
     </aside>
   );

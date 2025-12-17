@@ -1,0 +1,214 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, Shield, AppWindow, Plus, Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toast } from 'sonner';
+import { PolicyToggle } from '@/components/PolicyToggle';
+import { ApplicationRuleRow } from '@/components/ApplicationRuleRow';
+import { 
+  defaultPolicies, 
+  defaultApplicationRules, 
+  categoryLabels,
+  type SecurityPolicy,
+  type ApplicationRule 
+} from '@/data/settingsData';
+
+export default function Settings() {
+  const navigate = useNavigate();
+  const [policies, setPolicies] = useState<SecurityPolicy[]>(defaultPolicies);
+  const [appRules, setAppRules] = useState<ApplicationRule[]>(defaultApplicationRules);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+
+  const handlePolicyToggle = (id: string, enabled: boolean) => {
+    setPolicies(prev => prev.map(p => p.id === id ? { ...p, enabled } : p));
+    const policy = policies.find(p => p.id === id);
+    toast.success(`${policy?.name} ${enabled ? 'ativado' : 'desativado'}`);
+  };
+
+  const handleStatusChange = (id: string, status: 'allowed' | 'blocked' | 'monitored') => {
+    setAppRules(prev => prev.map(r => r.id === id ? { ...r, status } : r));
+    const rule = appRules.find(r => r.id === id);
+    toast.success(`${rule?.name} alterado para ${status === 'allowed' ? 'Permitido' : status === 'blocked' ? 'Bloqueado' : 'Monitorado'}`);
+  };
+
+  const devicePolicies = policies.filter(p => p.category === 'device');
+  const screenPolicies = policies.filter(p => p.category === 'screen');
+  const networkPolicies = policies.filter(p => p.category === 'network');
+
+  const filteredApps = appRules.filter(app => {
+    const matchesSearch = app.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === 'all' || app.category === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
+
+  const appCategories = ['all', 'productivity', 'communication', 'entertainment', 'development', 'other'];
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center gap-4 px-4">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => navigate('/')}
+            className="shrink-0"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-lg font-semibold">Configurações de Segurança</h1>
+            <p className="text-sm text-muted-foreground">Gerencie políticas e regras de aplicativos</p>
+          </div>
+        </div>
+      </header>
+
+      <main className="container px-4 py-6">
+        <Tabs defaultValue="policies" className="space-y-6">
+          <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsTrigger value="policies" className="gap-2">
+              <Shield className="h-4 w-4" />
+              Políticas de Bloqueio
+            </TabsTrigger>
+            <TabsTrigger value="apps" className="gap-2">
+              <AppWindow className="h-4 w-4" />
+              Aplicativos
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Policies Tab */}
+          <TabsContent value="policies" className="space-y-6">
+            {/* Device Policies */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <h3 className="text-lg font-semibold mb-4">{categoryLabels.device}</h3>
+              <div className="space-y-3">
+                {devicePolicies.map(policy => (
+                  <PolicyToggle 
+                    key={policy.id} 
+                    policy={policy} 
+                    onToggle={handlePolicyToggle} 
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Screen Policies */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <h3 className="text-lg font-semibold mb-4">{categoryLabels.screen}</h3>
+              <div className="space-y-3">
+                {screenPolicies.map(policy => (
+                  <PolicyToggle 
+                    key={policy.id} 
+                    policy={policy} 
+                    onToggle={handlePolicyToggle} 
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Network Policies */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <h3 className="text-lg font-semibold mb-4">{categoryLabels.network}</h3>
+              <div className="space-y-3">
+                {networkPolicies.map(policy => (
+                  <PolicyToggle 
+                    key={policy.id} 
+                    policy={policy} 
+                    onToggle={handlePolicyToggle} 
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="rounded-xl border border-primary/30 bg-primary/5 p-6">
+              <h3 className="text-lg font-semibold mb-2">Resumo de Políticas</h3>
+              <p className="text-sm text-muted-foreground">
+                <span className="text-success font-medium">{policies.filter(p => p.enabled).length}</span> políticas ativas de{' '}
+                <span className="font-medium">{policies.length}</span> disponíveis
+              </p>
+            </div>
+          </TabsContent>
+
+          {/* Apps Tab */}
+          <TabsContent value="apps" className="space-y-6">
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar aplicativo..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                {appCategories.map(cat => (
+                  <Button
+                    key={cat}
+                    variant={categoryFilter === cat ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setCategoryFilter(cat)}
+                  >
+                    {cat === 'all' ? 'Todos' : categoryLabels[cat]}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Apps List */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Lista de Aplicativos</h3>
+                <Button size="sm" className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  Adicionar
+                </Button>
+              </div>
+              <div className="space-y-3">
+                {filteredApps.map(rule => (
+                  <ApplicationRuleRow 
+                    key={rule.id} 
+                    rule={rule} 
+                    onStatusChange={handleStatusChange} 
+                  />
+                ))}
+                {filteredApps.length === 0 && (
+                  <p className="text-center text-muted-foreground py-8">
+                    Nenhum aplicativo encontrado
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="rounded-xl border border-success/30 bg-success/5 p-4 text-center">
+                <p className="text-2xl font-bold text-success">
+                  {appRules.filter(r => r.status === 'allowed').length}
+                </p>
+                <p className="text-sm text-muted-foreground">Permitidos</p>
+              </div>
+              <div className="rounded-xl border border-warning/30 bg-warning/5 p-4 text-center">
+                <p className="text-2xl font-bold text-warning">
+                  {appRules.filter(r => r.status === 'monitored').length}
+                </p>
+                <p className="text-sm text-muted-foreground">Monitorados</p>
+              </div>
+              <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-center">
+                <p className="text-2xl font-bold text-destructive">
+                  {appRules.filter(r => r.status === 'blocked').length}
+                </p>
+                <p className="text-sm text-muted-foreground">Bloqueados</p>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </main>
+    </div>
+  );
+}
