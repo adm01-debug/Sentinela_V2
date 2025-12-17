@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_keys: {
+        Row: {
+          agent_key: string
+          created_at: string
+          created_by: string | null
+          device_name: string | null
+          employee_name: string | null
+          id: string
+          is_active: boolean
+          key_name: string
+          last_seen_at: string | null
+        }
+        Insert: {
+          agent_key?: string
+          created_at?: string
+          created_by?: string | null
+          device_name?: string | null
+          employee_name?: string | null
+          id?: string
+          is_active?: boolean
+          key_name: string
+          last_seen_at?: string | null
+        }
+        Update: {
+          agent_key?: string
+          created_at?: string
+          created_by?: string | null
+          device_name?: string | null
+          employee_name?: string | null
+          id?: string
+          is_active?: boolean
+          key_name?: string
+          last_seen_at?: string | null
+        }
+        Relationships: []
+      }
       application_rules: {
         Row: {
           category: string
