@@ -1,37 +1,26 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, AppWindow, Plus, Search } from 'lucide-react';
+import { ArrowLeft, Shield, AppWindow, Plus, Search, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toast } from 'sonner';
 import { PolicyToggle } from '@/components/PolicyToggle';
 import { ApplicationRuleRow } from '@/components/ApplicationRuleRow';
-import { 
-  defaultPolicies, 
-  defaultApplicationRules, 
-  categoryLabels,
-  type SecurityPolicy,
-  type ApplicationRule 
-} from '@/data/settingsData';
+import { useSettings } from '@/hooks/useSettings';
+import { categoryLabels } from '@/data/settingsData';
 
 export default function Settings() {
   const navigate = useNavigate();
-  const [policies, setPolicies] = useState<SecurityPolicy[]>(defaultPolicies);
-  const [appRules, setAppRules] = useState<ApplicationRule[]>(defaultApplicationRules);
+  const { policies, appRules, loading, updatePolicy, updateAppRule } = useSettings();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
 
   const handlePolicyToggle = (id: string, enabled: boolean) => {
-    setPolicies(prev => prev.map(p => p.id === id ? { ...p, enabled } : p));
-    const policy = policies.find(p => p.id === id);
-    toast.success(`${policy?.name} ${enabled ? 'ativado' : 'desativado'}`);
+    updatePolicy(id, enabled);
   };
 
   const handleStatusChange = (id: string, status: 'allowed' | 'blocked' | 'monitored') => {
-    setAppRules(prev => prev.map(r => r.id === id ? { ...r, status } : r));
-    const rule = appRules.find(r => r.id === id);
-    toast.success(`${rule?.name} alterado para ${status === 'allowed' ? 'Permitido' : status === 'blocked' ? 'Bloqueado' : 'Monitorado'}`);
+    updateAppRule(id, status);
   };
 
   const devicePolicies = policies.filter(p => p.category === 'device');
@@ -45,6 +34,14 @@ export default function Settings() {
   });
 
   const appCategories = ['all', 'productivity', 'communication', 'entertainment', 'development', 'other'];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
