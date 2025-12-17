@@ -8,6 +8,7 @@ import { PolicyToggle } from '@/components/PolicyToggle';
 import { ApplicationRuleRow } from '@/components/ApplicationRuleRow';
 import { AddApplicationDialog } from '@/components/AddApplicationDialog';
 import { EditApplicationDialog } from '@/components/EditApplicationDialog';
+import { SettingsAuditLog } from '@/components/SettingsAuditLog';
 import { useSettings, type ApplicationRule } from '@/hooks/useSettings';
 import { categoryLabels } from '@/data/settingsData';
 
@@ -212,6 +213,11 @@ export default function Settings() {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Audit Log */}
+        <div className="mt-6">
+          <SettingsAuditLog />
+        </div>
       </main>
     </div>
   );
