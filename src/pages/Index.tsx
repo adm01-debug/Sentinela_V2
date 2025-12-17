@@ -1,4 +1,4 @@
-import { Users, Monitor, ShieldAlert, Activity } from 'lucide-react';
+import { Users, Monitor, ShieldAlert, Activity, Loader2 } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { StatCard } from '@/components/StatCard';
@@ -7,9 +7,25 @@ import { EmployeeRow } from '@/components/EmployeeRow';
 import { ActivityChart } from '@/components/ActivityChart';
 import { SecurityMetrics } from '@/components/SecurityMetrics';
 import { SimulateViolationButton } from '@/components/SimulateViolationButton';
-import { employees, alerts, deviceStats } from '@/data/mockData';
+import { useSecurityViolations } from '@/hooks/useSecurityViolations';
+import { useSecurityMetrics } from '@/hooks/useSecurityMetrics';
+import { employees, deviceStats } from '@/data/mockData';
 
 const Index = () => {
+  const { violations, loading: violationsLoading } = useSecurityViolations();
+  const { metrics, loading: metricsLoading } = useSecurityMetrics();
+
+  const recentAlerts = violations.slice(0, 6).map(v => ({
+    id: v.id,
+    type: v.violation_type as any,
+    severity: v.severity,
+    employeeId: v.id,
+    employeeName: v.employee_name,
+    message: v.description || v.policy_name,
+    timestamp: new Date(v.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+    device: v.device || 'Desconhecido'
+  }));
+
   return (
     <div className="min-h-screen bg-background">
       <Sidebar />
@@ -23,7 +39,7 @@ const Index = () => {
             <SimulateViolationButton />
           </div>
           
-          {/* Stats Grid */}
+          {/* Stats Grid - Real-time */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               title="Colaboradores Online"
@@ -40,16 +56,16 @@ const Index = () => {
             />
             <StatCard
               title="Alertas Hoje"
-              value={deviceStats.alertsToday}
+              value={metricsLoading ? '...' : metrics.todayViolations}
               icon={ShieldAlert}
-              trend={{ value: 23, isPositive: false }}
+              trend={{ value: metrics.unreadViolations, isPositive: false }}
               variant="danger"
             />
             <StatCard
-              title="Bloqueios Hoje"
-              value={deviceStats.blockedAttempts}
+              title="Bloqueios Total"
+              value={metricsLoading ? '...' : metrics.totalViolations}
               icon={Activity}
-              trend={{ value: 8, isPositive: false }}
+              trend={{ value: metrics.criticalViolations, isPositive: false }}
               variant="warning"
             />
           </div>
@@ -69,17 +85,34 @@ const Index = () => {
 
           {/* Alerts and Employees */}
           <div className="grid gap-6 lg:grid-cols-2">
-            {/* Recent Alerts */}
+            {/* Recent Alerts - Real-time */}
             <div className="rounded-xl border border-border/50 bg-card p-6">
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Alertas Recentes</h3>
-                <button className="text-sm text-primary hover:underline">Ver todos</button>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-semibold">Alertas Recentes</h3>
+                  {metrics.unreadViolations > 0 && (
+                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1.5 text-xs font-medium text-destructive-foreground">
+                      {metrics.unreadViolations}
+                    </span>
+                  )}
+                </div>
+                <a href="/violations" className="text-sm text-primary hover:underline">Ver todos</a>
               </div>
-              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-                {alerts.map((alert) => (
-                  <AlertItem key={alert.id} alert={alert} />
-                ))}
-              </div>
+              {violationsLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : recentAlerts.length > 0 ? (
+                <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                  {recentAlerts.map((alert) => (
+                    <AlertItem key={alert.id} alert={alert} />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center py-8 text-muted-foreground">
+                  Nenhum alerta registrado
+                </div>
+              )}
             </div>
 
             {/* Active Employees */}
