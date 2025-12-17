@@ -17,6 +17,35 @@ export interface ApplicationRule {
   status: 'allowed' | 'blocked' | 'monitored';
 }
 
+const logAuditChange = async (params: {
+  action: string;
+  entityType: string;
+  entityId: string;
+  entityName: string;
+  oldValue?: Record<string, any>;
+  newValue?: Record<string, any>;
+}) => {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    await supabase
+      .from('settings_audit_log')
+      .insert({
+        user_id: user.id,
+        user_email: user.email || 'unknown',
+        action: params.action,
+        entity_type: params.entityType,
+        entity_id: params.entityId,
+        entity_name: params.entityName,
+        old_value: params.oldValue || null,
+        new_value: params.newValue || null,
+      });
+  } catch (error) {
+    console.error('Error logging audit:', error);
+  }
+};
+
 export function useSettings() {
   const [policies, setPolicies] = useState<SecurityPolicy[]>([]);
   const [appRules, setAppRules] = useState<ApplicationRule[]>([]);
@@ -59,6 +88,7 @@ export function useSettings() {
   };
 
   const updatePolicy = async (id: string, enabled: boolean) => {
+    const policy = policies.find(p => p.id === id);
     try {
       const { error } = await supabase
         .from('security_policies')
@@ -68,7 +98,17 @@ export function useSettings() {
       if (error) throw error;
 
       setPolicies(prev => prev.map(p => p.id === id ? { ...p, enabled } : p));
-      const policy = policies.find(p => p.id === id);
+      
+      // Log the change
+      await logAuditChange({
+        action: enabled ? 'ATIVAR' : 'DESATIVAR',
+        entityType: 'policy',
+        entityId: id,
+        entityName: policy?.name || 'Política',
+        oldValue: { enabled: !enabled },
+        newValue: { enabled }
+      });
+
       toast.success(`${policy?.name} ${enabled ? 'ativado' : 'desativado'}`);
     } catch (error: any) {
       toast.error('Erro ao atualizar política: ' + error.message);
@@ -76,6 +116,8 @@ export function useSettings() {
   };
 
   const updateAppRule = async (id: string, status: ApplicationRule['status']) => {
+    const rule = appRules.find(r => r.id === id);
+    const oldStatus = rule?.status;
     try {
       const { error } = await supabase
         .from('application_rules')
@@ -85,7 +127,17 @@ export function useSettings() {
       if (error) throw error;
 
       setAppRules(prev => prev.map(r => r.id === id ? { ...r, status } : r));
-      const rule = appRules.find(r => r.id === id);
+      
+      // Log the change
+      await logAuditChange({
+        action: 'ALTERAR_STATUS',
+        entityType: 'app_rule',
+        entityId: id,
+        entityName: rule?.name || 'Aplicativo',
+        oldValue: { status: oldStatus },
+        newValue: { status }
+      });
+
       const statusLabel = status === 'allowed' ? 'Permitido' : status === 'blocked' ? 'Bloqueado' : 'Monitorado';
       toast.success(`${rule?.name} alterado para ${statusLabel}`);
     } catch (error: any) {
@@ -109,6 +161,16 @@ export function useSettings() {
         category: data.category as ApplicationRule['category'],
         status: data.status as ApplicationRule['status']
       }]);
+      
+      // Log the change
+      await logAuditChange({
+        action: 'CRIAR',
+        entityType: 'app_rule',
+        entityId: data.id,
+        entityName: name,
+        newValue: { name, category, status }
+      });
+
       toast.success(`${name} adicionado com sucesso`);
       return true;
     } catch (error: any) {
@@ -128,6 +190,16 @@ export function useSettings() {
       if (error) throw error;
 
       setAppRules(prev => prev.filter(r => r.id !== id));
+      
+      // Log the change
+      await logAuditChange({
+        action: 'EXCLUIR',
+        entityType: 'app_rule',
+        entityId: id,
+        entityName: rule?.name || 'Aplicativo',
+        oldValue: { name: rule?.name, category: rule?.category, status: rule?.status }
+      });
+
       toast.success(`${rule?.name} removido com sucesso`);
       return true;
     } catch (error: any) {
@@ -137,6 +209,7 @@ export function useSettings() {
   };
 
   const editAppRule = async (id: string, name: string, category: ApplicationRule['category']) => {
+    const rule = appRules.find(r => r.id === id);
     try {
       const { error } = await supabase
         .from('application_rules')
@@ -146,6 +219,17 @@ export function useSettings() {
       if (error) throw error;
 
       setAppRules(prev => prev.map(r => r.id === id ? { ...r, name, category } : r));
+      
+      // Log the change
+      await logAuditChange({
+        action: 'EDITAR',
+        entityType: 'app_rule',
+        entityId: id,
+        entityName: name,
+        oldValue: { name: rule?.name, category: rule?.category },
+        newValue: { name, category }
+      });
+
       toast.success(`${name} atualizado com sucesso`);
       return true;
     } catch (error: any) {

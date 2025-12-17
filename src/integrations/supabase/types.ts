@@ -134,6 +134,45 @@ export type Database = {
         }
         Relationships: []
       }
+      settings_audit_log: {
+        Row: {
+          action: string
+          created_at: string
+          entity_id: string
+          entity_name: string
+          entity_type: string
+          id: string
+          new_value: Json | null
+          old_value: Json | null
+          user_email: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          entity_id: string
+          entity_name: string
+          entity_type: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+          user_email: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          entity_id?: string
+          entity_name?: string
+          entity_type?: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+          user_email?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
