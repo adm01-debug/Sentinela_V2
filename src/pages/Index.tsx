@@ -7,6 +7,7 @@ import { EmployeeRow } from '@/components/EmployeeRow';
 import { ActivityChart } from '@/components/ActivityChart';
 import { SecurityMetrics } from '@/components/SecurityMetrics';
 import { SimulateViolationButton } from '@/components/SimulateViolationButton';
+import { EmployeeViolationsRanking } from '@/components/EmployeeViolationsRanking';
 import { useSecurityViolations } from '@/hooks/useSecurityViolations';
 import { useSecurityMetrics } from '@/hooks/useSecurityMetrics';
 import { employees, deviceStats } from '@/data/mockData';
@@ -83,8 +84,8 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Alerts and Employees */}
-          <div className="grid gap-6 lg:grid-cols-2">
+          {/* Alerts, Employees and Ranking */}
+          <div className="grid gap-6 lg:grid-cols-3">
             {/* Recent Alerts - Real-time */}
             <div className="rounded-xl border border-border/50 bg-card p-6">
               <div className="mb-4 flex items-center justify-between">
@@ -127,6 +128,9 @@ const Index = () => {
                 ))}
               </div>
             </div>
+
+            {/* Violations Ranking */}
+            <EmployeeViolationsRanking />
           </div>
         </main>
       </div>
