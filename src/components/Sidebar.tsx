@@ -12,7 +12,8 @@ import {
   FileBarChart,
   LogOut,
   Eye,
-  Key
+  Key,
+  ShieldAlert
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -25,6 +26,7 @@ const menuItems = [
   { icon: Key, label: 'Chaves de Agentes', path: '/agent-keys' },
   { icon: Shield, label: 'Segurança', path: '/security' },
   { icon: Bell, label: 'Violações', path: '/violations' },
+  { icon: ShieldAlert, label: 'Regras de Violação', path: '/violation-rules' },
   { icon: FileBarChart, label: 'Relatórios', path: '/reports' },
   { icon: Settings, label: 'Configurações', path: '/settings' },
 ];
