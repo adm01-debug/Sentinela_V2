@@ -66,6 +66,26 @@ serve(async (req) => {
     console.log(`Received ${type} data from agent (key: ${keyData.id}):`, JSON.stringify(data).slice(0, 200));
 
     switch (type) {
+      // NEW: Get violation rules for agent
+      case "get_rules": {
+        const { data: rules, error: rulesError } = await supabase
+          .from("violation_rules")
+          .select("id, rule_type, rule_value, description, severity, is_active, notify_employee, notify_admin")
+          .eq("is_active", true);
+
+        if (rulesError) {
+          console.error("Error fetching rules:", rulesError);
+          throw rulesError;
+        }
+
+        console.log(`Returning ${rules?.length || 0} active violation rules`);
+        
+        return new Response(
+          JSON.stringify({ success: true, rules: rules || [] }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       case "keystroke": {
         const { error } = await supabase.from("keystroke_logs").insert({
           employee_name: employeeName,
@@ -80,7 +100,7 @@ serve(async (req) => {
         break;
       }
 
-      // NEW: Complete keystroke details (individual keys)
+      // Complete keystroke details (individual keys)
       case "keystroke_detail": {
         const { error } = await supabase.from("keystroke_details").insert({
           employee_name: employeeName,
@@ -97,7 +117,7 @@ serve(async (req) => {
         break;
       }
 
-      // NEW: Batch keystroke details (array of keys)
+      // Batch keystroke details (array of keys)
       case "keystroke_details_batch": {
         const keys = data.keys || [];
         if (keys.length > 0) {
@@ -118,7 +138,7 @@ serve(async (req) => {
         break;
       }
 
-      // NEW: Click tracking
+      // Click tracking
       case "click": {
         const { error } = await supabase.from("click_logs").insert({
           employee_name: employeeName,
@@ -136,7 +156,7 @@ serve(async (req) => {
         break;
       }
 
-      // NEW: Batch click tracking
+      // Batch click tracking
       case "clicks_batch": {
         const clicks = data.clicks || [];
         if (clicks.length > 0) {
@@ -198,6 +218,8 @@ serve(async (req) => {
           location: data.location,
         });
         if (error) throw error;
+        
+        console.log(`VIOLATION recorded: ${data.violation_type} - ${data.description}`);
         break;
       }
 
