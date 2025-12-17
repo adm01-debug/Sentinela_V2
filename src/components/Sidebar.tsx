@@ -20,7 +20,7 @@ const menuItems = [
   { icon: Users, label: 'Colaboradores', path: '/employees' },
   { icon: Monitor, label: 'Dispositivos', path: '/devices' },
   { icon: Shield, label: 'Segurança', path: '/security' },
-  { icon: Bell, label: 'Alertas', path: '/alerts' },
+  { icon: Bell, label: 'Violações', path: '/violations' },
   { icon: FileBarChart, label: 'Relatórios', path: '/reports' },
   { icon: Settings, label: 'Configurações', path: '/settings' },
 ];
