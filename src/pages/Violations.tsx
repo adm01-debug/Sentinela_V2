@@ -41,6 +41,7 @@ import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { SimulateViolationButton } from '@/components/SimulateViolationButton';
+import { ViolationsTrendChart } from '@/components/ViolationsTrendChart';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -227,6 +228,9 @@ export default function Violations() {
               <p className="text-3xl font-bold text-primary">{stats.unread}</p>
             </div>
           </div>
+
+          {/* Trend Chart */}
+          <ViolationsTrendChart violations={violations} />
 
           {/* Filters */}
           <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
