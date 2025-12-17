@@ -271,8 +271,12 @@ export type Database = {
           employee_name: string
           id: string
           ip_address: string | null
+          location: string | null
+          notified_admin: boolean | null
+          notified_employee: boolean | null
           policy_name: string
           read: boolean
+          screenshot_url: string | null
           severity: string
           violation_type: string
         }
@@ -283,8 +287,12 @@ export type Database = {
           employee_name: string
           id?: string
           ip_address?: string | null
+          location?: string | null
+          notified_admin?: boolean | null
+          notified_employee?: boolean | null
           policy_name: string
           read?: boolean
+          screenshot_url?: string | null
           severity?: string
           violation_type: string
         }
@@ -295,8 +303,12 @@ export type Database = {
           employee_name?: string
           id?: string
           ip_address?: string | null
+          location?: string | null
+          notified_admin?: boolean | null
+          notified_employee?: boolean | null
           policy_name?: string
           read?: boolean
+          screenshot_url?: string | null
           severity?: string
           violation_type?: string
         }
