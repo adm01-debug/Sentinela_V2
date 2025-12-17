@@ -7,14 +7,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PolicyToggle } from '@/components/PolicyToggle';
 import { ApplicationRuleRow } from '@/components/ApplicationRuleRow';
 import { AddApplicationDialog } from '@/components/AddApplicationDialog';
-import { useSettings } from '@/hooks/useSettings';
+import { EditApplicationDialog } from '@/components/EditApplicationDialog';
+import { useSettings, type ApplicationRule } from '@/hooks/useSettings';
 import { categoryLabels } from '@/data/settingsData';
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { policies, appRules, loading, updatePolicy, updateAppRule, addAppRule, deleteAppRule } = useSettings();
+  const { policies, appRules, loading, updatePolicy, updateAppRule, addAppRule, deleteAppRule, editAppRule } = useSettings();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [editingRule, setEditingRule] = useState<ApplicationRule | null>(null);
 
   const handlePolicyToggle = (id: string, enabled: boolean) => {
     updatePolicy(id, enabled);
@@ -171,6 +173,7 @@ export default function Settings() {
                     rule={rule} 
                     onStatusChange={handleStatusChange}
                     onDelete={deleteAppRule}
+                    onEdit={setEditingRule}
                   />
                 ))}
                 {filteredApps.length === 0 && (
@@ -181,7 +184,12 @@ export default function Settings() {
               </div>
             </div>
 
-            {/* Stats */}
+            <EditApplicationDialog
+              rule={editingRule}
+              open={!!editingRule}
+              onOpenChange={(open) => !open && setEditingRule(null)}
+              onSave={editAppRule}
+            />
             <div className="grid grid-cols-3 gap-4">
               <div className="rounded-xl border border-success/30 bg-success/5 p-4 text-center">
                 <p className="text-2xl font-bold text-success">
