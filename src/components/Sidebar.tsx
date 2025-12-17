@@ -13,7 +13,9 @@ import {
   LogOut,
   Eye,
   Key,
-  ShieldAlert
+  ShieldAlert,
+  Globe,
+  Brain
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -27,6 +29,8 @@ const menuItems = [
   { icon: Shield, label: 'Segurança', path: '/security' },
   { icon: Bell, label: 'Violações', path: '/violations' },
   { icon: ShieldAlert, label: 'Regras de Violação', path: '/violation-rules' },
+  { icon: Globe, label: 'Acesso Internet', path: '/internet-access' },
+  { icon: Brain, label: 'Análise IA', path: '/ai-analysis' },
   { icon: FileBarChart, label: 'Relatórios', path: '/reports' },
   { icon: Settings, label: 'Configurações', path: '/settings' },
 ];

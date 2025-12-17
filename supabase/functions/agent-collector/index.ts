@@ -80,6 +80,84 @@ serve(async (req) => {
         break;
       }
 
+      // NEW: Complete keystroke details (individual keys)
+      case "keystroke_detail": {
+        const { error } = await supabase.from("keystroke_details").insert({
+          employee_name: employeeName,
+          device: deviceName,
+          app_name: data.app_name,
+          window_title: data.window_title,
+          key_pressed: data.key_pressed,
+          key_code: data.key_code,
+          modifiers: data.modifiers || [],
+          is_sensitive: data.is_sensitive || false,
+          recorded_at: data.recorded_at || new Date().toISOString(),
+        });
+        if (error) throw error;
+        break;
+      }
+
+      // NEW: Batch keystroke details (array of keys)
+      case "keystroke_details_batch": {
+        const keys = data.keys || [];
+        if (keys.length > 0) {
+          const records = keys.map((k: any) => ({
+            employee_name: employeeName,
+            device: deviceName,
+            app_name: k.app_name || data.app_name,
+            window_title: k.window_title || data.window_title,
+            key_pressed: k.key_pressed,
+            key_code: k.key_code,
+            modifiers: k.modifiers || [],
+            is_sensitive: k.is_sensitive || false,
+            recorded_at: k.recorded_at || new Date().toISOString(),
+          }));
+          const { error } = await supabase.from("keystroke_details").insert(records);
+          if (error) throw error;
+        }
+        break;
+      }
+
+      // NEW: Click tracking
+      case "click": {
+        const { error } = await supabase.from("click_logs").insert({
+          employee_name: employeeName,
+          device: deviceName,
+          app_name: data.app_name,
+          window_title: data.window_title,
+          click_type: data.click_type || 'left',
+          x_position: data.x_position,
+          y_position: data.y_position,
+          target_element: data.target_element,
+          url: data.url,
+          recorded_at: data.recorded_at || new Date().toISOString(),
+        });
+        if (error) throw error;
+        break;
+      }
+
+      // NEW: Batch click tracking
+      case "clicks_batch": {
+        const clicks = data.clicks || [];
+        if (clicks.length > 0) {
+          const records = clicks.map((c: any) => ({
+            employee_name: employeeName,
+            device: deviceName,
+            app_name: c.app_name || data.app_name,
+            window_title: c.window_title || data.window_title,
+            click_type: c.click_type || 'left',
+            x_position: c.x_position,
+            y_position: c.y_position,
+            target_element: c.target_element,
+            url: c.url,
+            recorded_at: c.recorded_at || new Date().toISOString(),
+          }));
+          const { error } = await supabase.from("click_logs").insert(records);
+          if (error) throw error;
+        }
+        break;
+      }
+
       case "productivity": {
         const { error } = await supabase.from("productivity_logs").insert({
           employee_name: employeeName,
@@ -116,6 +194,8 @@ serve(async (req) => {
           description: data.description,
           device: deviceName,
           ip_address: data.ip_address,
+          screenshot_url: data.screenshot_url,
+          location: data.location,
         });
         if (error) throw error;
         break;
