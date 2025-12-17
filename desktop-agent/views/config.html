@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SecureWatch Agent - Configuração</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 450px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo {
+      width: 64px;
+      height: 64px;
+      background: #3b82f6;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 32px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #cbd5e1;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      background: #1e293b;
+      color: #e2e8f0;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: #1e293b;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #3b82f6;
+    }
+    .checkbox-group label {
+      margin: 0;
+      flex: 1;
+    }
+    .checkbox-group small {
+      color: #64748b;
+      font-size: 12px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    .warning {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #fbbf24;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🛡️</div>
+      <h1>SecureWatch Agent</h1>
+      <p class="subtitle">Configure o agente de monitoramento</p>
+    </div>
+
+    <form id="configForm">
+      <div class="form-group">
+        <label for="employeeName">Nome do Colaborador</label>
+        <input type="text" id="employeeName" required placeholder="Ex: João Silva">
+      </div>
+
+      <div class="form-group">
+        <label for="deviceName">Nome do Dispositivo</label>
+        <input type="text" id="deviceName" required placeholder="Ex: PC-ESCRITORIO-01">
+      </div>
+
+      <div class="form-group">
+        <label for="agentKey">Chave do Agente</label>
+        <input type="password" id="agentKey" required placeholder="Fornecida pelo administrador">
+      </div>
+
+      <div class="form-group">
+        <label>Recursos de Monitoramento</label>
+        
+        <div class="checkbox-group">
+          <input type="checkbox" id="keystrokeEnabled" checked>
+          <div>
+            <label for="keystrokeEnabled">Monitoramento de Teclas</label>
+            <small>Registra atividade de digitação</small>
+          </div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="screenshotEnabled" checked>
+          <div>
+            <label for="screenshotEnabled">Captura de Tela</label>
+            <small>Screenshots periódicos</small>
+          </div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="productivityEnabled" checked>
+          <div>
+            <label for="productivityEnabled">Produtividade</label>
+            <small>Análise de apps utilizados</small>
+          </div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="usbBlockEnabled" checked>
+          <div>
+            <label for="usbBlockEnabled">Monitorar USB</label>
+            <small>Detecta dispositivos USB</small>
+          </div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="printScreenBlockEnabled" checked>
+          <div>
+            <label for="printScreenBlockEnabled">Bloquear Print Screen</label>
+            <small>Impede capturas de tela</small>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit">Salvar e Iniciar Monitoramento</button>
+    </form>
+
+    <div class="warning">
+      ⚠️ Este dispositivo será monitorado conforme as políticas de segurança da empresa.
+    </div>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    
+    // Load existing config
+    const existingConfig = ipcRenderer.sendSync('get-config');
+    if (existingConfig.employeeName) {
+      document.getElementById('employeeName').value = existingConfig.employeeName || '';
+      document.getElementById('deviceName').value = existingConfig.deviceName || '';
+      document.getElementById('agentKey').value = existingConfig.agentKey || '';
+      document.getElementById('keystrokeEnabled').checked = existingConfig.keystrokeEnabled !== false;
+      document.getElementById('screenshotEnabled').checked = existingConfig.screenshotEnabled !== false;
+      document.getElementById('productivityEnabled').checked = existingConfig.productivityEnabled !== false;
+      document.getElementById('usbBlockEnabled').checked = existingConfig.usbBlockEnabled !== false;
+      document.getElementById('printScreenBlockEnabled').checked = existingConfig.printScreenBlockEnabled !== false;
+    }
+
+    document.getElementById('configForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const config = {
+        employeeName: document.getElementById('employeeName').value,
+        deviceName: document.getElementById('deviceName').value,
+        agentKey: document.getElementById('agentKey').value,
+        serverUrl: 'https://rmiznlzpbwqpbzaiyydw.supabase.co/functions/v1/agent-collector',
+        keystrokeEnabled: document.getElementById('keystrokeEnabled').checked,
+        keystrokeInterval: 60,
+        screenshotEnabled: document.getElementById('screenshotEnabled').checked,
+        screenshotInterval: 5,
+        productivityEnabled: document.getElementById('productivityEnabled').checked,
+        usbBlockEnabled: document.getElementById('usbBlockEnabled').checked,
+        printScreenBlockEnabled: document.getElementById('printScreenBlockEnabled').checked,
+      };
+      
+      ipcRenderer.send('save-config', config);
+    });
+  </script>
+</body>
+</html>

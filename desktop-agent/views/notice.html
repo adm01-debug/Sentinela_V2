@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: transparent;
+    }
+    .notice {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+    .icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(245, 158, 11, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .content {
+      flex: 1;
+    }
+    .title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #fbbf24;
+      margin-bottom: 2px;
+    }
+    .message {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="notice">
+    <div class="icon">👁️</div>
+    <div class="content">
+      <div class="title">Monitoramento Ativo</div>
+      <div class="message">Este dispositivo está sendo monitorado</div>
+    </div>
+  </div>
+</body>
+</html>
