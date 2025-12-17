@@ -7,16 +7,23 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Keyboard, TrendingUp, Monitor, Eye, Settings, Loader2 } from 'lucide-react';
+import { Keyboard, TrendingUp, Monitor, Eye, Settings, Loader2, Activity, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useMonitoringSettings } from '@/hooks/useMonitoringSettings';
 import { KeystrokeActivityCard } from '@/components/KeystrokeActivityCard';
 import { ProductivityCard } from '@/components/ProductivityCard';
 import { ScreenCapturesCard } from '@/components/ScreenCapturesCard';
 import { MonitoringNotice, EmployeeMonitoringWidget } from '@/components/MonitoringNotice';
+import { useRealtimeActivity } from '@/hooks/useRealtimeActivity';
+import { ActivityStatsCards } from '@/components/ActivityStatsCards';
+import { RealtimeKeystrokesCard } from '@/components/RealtimeKeystrokesCard';
+import { RealtimeClicksCard } from '@/components/RealtimeClicksCard';
+import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 
 const Monitoring = () => {
   const { settings, loading, updateSetting } = useMonitoringSettings();
   const [showEmployeePreview, setShowEmployeePreview] = useState(false);
+  const { keystrokes, clicks, stats, loading: realtimeLoading, refetch } = useRealtimeActivity();
 
   if (loading) {
     return (
@@ -49,8 +56,12 @@ const Monitoring = () => {
 
           <MonitoringNotice variant="admin" />
 
-          <Tabs defaultValue="dashboard" className="space-y-6">
+          <Tabs defaultValue="realtime" className="space-y-6">
             <TabsList>
+              <TabsTrigger value="realtime" className="flex items-center gap-2">
+                <Activity className="h-4 w-4" />
+                Tempo Real
+              </TabsTrigger>
               <TabsTrigger value="dashboard" className="flex items-center gap-2">
                 <Monitor className="h-4 w-4" />
                 Dashboard
@@ -60,6 +71,41 @@ const Monitoring = () => {
                 Configurações
               </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="realtime" className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold">Atividade em Tempo Real</h2>
+                  <p className="text-sm text-muted-foreground">
+                    Visualize cliques e teclas digitadas em tempo real
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={refetch}
+                  disabled={realtimeLoading}
+                >
+                  <RefreshCw className={`h-4 w-4 mr-2 ${realtimeLoading ? 'animate-spin' : ''}`} />
+                  Atualizar
+                </Button>
+              </div>
+
+              <ActivityStatsCards
+                totalKeystrokes={stats.totalKeystrokes}
+                totalClicks={stats.totalClicks}
+                activeEmployeesCount={stats.activeEmployees.size}
+                keystrokesPerMinute={stats.keystrokesPerMinute}
+                clicksPerMinute={stats.clicksPerMinute}
+              />
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <RealtimeKeystrokesCard keystrokes={keystrokes} />
+                <RealtimeClicksCard clicks={clicks} />
+              </div>
+
+              <ActivityHeatmap keystrokes={keystrokes} clicks={clicks} />
+            </TabsContent>
 
             <TabsContent value="dashboard" className="space-y-6">
               <div className="grid gap-6 lg:grid-cols-2">
