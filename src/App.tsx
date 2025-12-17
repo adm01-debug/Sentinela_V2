@@ -13,6 +13,8 @@ import Violations from "./pages/Violations";
 import Monitoring from "./pages/Monitoring";
 import AgentKeys from "./pages/AgentKeys";
 import ViolationRules from "./pages/ViolationRules";
+import InternetAccess from "./pages/InternetAccess";
+import AIAnalysis from "./pages/AIAnalysis";
 import Auth from "./pages/Auth";
 import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
@@ -67,6 +69,16 @@ const App = () => (
             <Route path="/violation-rules" element={
               <ProtectedRoute requireAdmin>
                 <ViolationRules />
+              </ProtectedRoute>
+            } />
+            <Route path="/internet-access" element={
+              <ProtectedRoute requireAdmin>
+                <InternetAccess />
+              </ProtectedRoute>
+            } />
+            <Route path="/ai-analysis" element={
+              <ProtectedRoute requireAdmin>
+                <AIAnalysis />
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -50,6 +50,51 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_analysis_reports: {
+        Row: {
+          analysis_period_end: string | null
+          analysis_period_start: string | null
+          created_at: string
+          employee_name: string | null
+          generated_by: string | null
+          id: string
+          insights: Json | null
+          raw_data: Json | null
+          recommendations: Json | null
+          report_type: string
+          risk_score: number | null
+          summary: string | null
+        }
+        Insert: {
+          analysis_period_end?: string | null
+          analysis_period_start?: string | null
+          created_at?: string
+          employee_name?: string | null
+          generated_by?: string | null
+          id?: string
+          insights?: Json | null
+          raw_data?: Json | null
+          recommendations?: Json | null
+          report_type: string
+          risk_score?: number | null
+          summary?: string | null
+        }
+        Update: {
+          analysis_period_end?: string | null
+          analysis_period_start?: string | null
+          created_at?: string
+          employee_name?: string | null
+          generated_by?: string | null
+          id?: string
+          insights?: Json | null
+          raw_data?: Json | null
+          recommendations?: Json | null
+          report_type?: string
+          risk_score?: number | null
+          summary?: string | null
+        }
+        Relationships: []
+      }
       application_rules: {
         Row: {
           category: string
@@ -74,6 +119,144 @@ export type Database = {
           name?: string
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      click_logs: {
+        Row: {
+          app_name: string | null
+          click_type: string
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          recorded_at: string
+          target_element: string | null
+          url: string | null
+          window_title: string | null
+          x_position: number | null
+          y_position: number | null
+        }
+        Insert: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Update: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Relationships: []
+      }
+      internet_access_settings: {
+        Row: {
+          access_level: string
+          active_hours_end: string | null
+          active_hours_start: string | null
+          allowed_categories: string[] | null
+          allowed_sites: string[] | null
+          bandwidth_limit_mbps: number | null
+          blocked_categories: string[] | null
+          blocked_sites: string[] | null
+          created_at: string
+          employee_name: string
+          id: string
+          notes: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          access_level?: string
+          active_hours_end?: string | null
+          active_hours_start?: string | null
+          allowed_categories?: string[] | null
+          allowed_sites?: string[] | null
+          bandwidth_limit_mbps?: number | null
+          blocked_categories?: string[] | null
+          blocked_sites?: string[] | null
+          created_at?: string
+          employee_name: string
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          access_level?: string
+          active_hours_end?: string | null
+          active_hours_start?: string | null
+          allowed_categories?: string[] | null
+          allowed_sites?: string[] | null
+          bandwidth_limit_mbps?: number | null
+          blocked_categories?: string[] | null
+          blocked_sites?: string[] | null
+          created_at?: string
+          employee_name?: string
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      keystroke_details: {
+        Row: {
+          app_name: string | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          is_sensitive: boolean | null
+          key_code: number | null
+          key_pressed: string
+          modifiers: string[] | null
+          recorded_at: string
+          window_title: string | null
+        }
+        Insert: {
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          is_sensitive?: boolean | null
+          key_code?: number | null
+          key_pressed: string
+          modifiers?: string[] | null
+          recorded_at?: string
+          window_title?: string | null
+        }
+        Update: {
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          is_sensitive?: boolean | null
+          key_code?: number | null
+          key_pressed?: string
+          modifiers?: string[] | null
+          recorded_at?: string
+          window_title?: string | null
         }
         Relationships: []
       }
