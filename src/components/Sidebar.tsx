@@ -9,9 +9,11 @@ import {
   Monitor,
   ChevronLeft,
   ChevronRight,
-  FileBarChart
+  FileBarChart,
+  LogOut
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
@@ -27,10 +29,16 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/auth');
+  };
 
   return (
     <aside className={cn(
-      'fixed left-0 top-0 z-40 h-screen border-r border-border bg-card transition-all duration-300',
+      'fixed left-0 top-0 z-40 h-screen border-r border-border bg-card transition-all duration-300 flex flex-col',
       collapsed ? 'w-16' : 'w-64'
     )}>
       <div className="flex h-16 items-center justify-between border-b border-border px-4">
@@ -50,7 +58,7 @@ export function Sidebar() {
         </button>
       </div>
       
-      <nav className="p-4 space-y-2">
+      <nav className="p-4 space-y-2 flex-1">
         {menuItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
@@ -70,6 +78,21 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      <div className="p-4 border-t border-border">
+        {!collapsed && user && (
+          <p className="text-xs text-muted-foreground truncate mb-2 px-3">
+            {user.email}
+          </p>
+        )}
+        <button
+          onClick={handleSignOut}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground hover:bg-destructive hover:text-destructive-foreground transition-all duration-200"
+        >
+          <LogOut className="h-5 w-5 shrink-0" />
+          {!collapsed && <span className="font-medium">Sair</span>}
+        </button>
+      </div>
     </aside>
   );
 }
