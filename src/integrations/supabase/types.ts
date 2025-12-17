@@ -95,6 +95,45 @@ export type Database = {
         }
         Relationships: []
       }
+      security_violations: {
+        Row: {
+          created_at: string
+          description: string | null
+          device: string | null
+          employee_name: string
+          id: string
+          ip_address: string | null
+          policy_name: string
+          read: boolean
+          severity: string
+          violation_type: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          device?: string | null
+          employee_name: string
+          id?: string
+          ip_address?: string | null
+          policy_name: string
+          read?: boolean
+          severity?: string
+          violation_type: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          device?: string | null
+          employee_name?: string
+          id?: string
+          ip_address?: string | null
+          policy_name?: string
+          read?: boolean
+          severity?: string
+          violation_type?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
