@@ -14,7 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import type { ApplicationRule } from '@/hooks/useSettings';
 import { categoryLabels, statusLabels } from '@/data/settingsData';
 
@@ -46,9 +46,10 @@ interface ApplicationRuleRowProps {
   rule: ApplicationRule;
   onStatusChange: (id: string, status: 'allowed' | 'blocked' | 'monitored') => void;
   onDelete?: (id: string) => Promise<boolean>;
+  onEdit?: (rule: ApplicationRule) => void;
 }
 
-export function ApplicationRuleRow({ rule, onStatusChange, onDelete }: ApplicationRuleRowProps) {
+export function ApplicationRuleRow({ rule, onStatusChange, onDelete, onEdit }: ApplicationRuleRowProps) {
   const [deleting, setDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -92,6 +93,17 @@ export function ApplicationRuleRow({ rule, onStatusChange, onDelete }: Applicati
             </SelectItem>
           </SelectContent>
         </Select>
+
+        {onEdit && (
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-muted-foreground hover:text-primary"
+            onClick={() => onEdit(rule)}
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+        )}
 
         {onDelete && (
           <AlertDialog>

@@ -136,6 +136,24 @@ export function useSettings() {
     }
   };
 
+  const editAppRule = async (id: string, name: string, category: ApplicationRule['category']) => {
+    try {
+      const { error } = await supabase
+        .from('application_rules')
+        .update({ name, category })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setAppRules(prev => prev.map(r => r.id === id ? { ...r, name, category } : r));
+      toast.success(`${name} atualizado com sucesso`);
+      return true;
+    } catch (error: any) {
+      toast.error('Erro ao atualizar aplicativo: ' + error.message);
+      return false;
+    }
+  };
+
   return {
     policies,
     appRules,
@@ -144,6 +162,7 @@ export function useSettings() {
     updateAppRule,
     addAppRule,
     deleteAppRule,
+    editAppRule,
     refetch: fetchData
   };
 }
