@@ -6,6 +6,7 @@ import { AlertItem } from '@/components/AlertItem';
 import { EmployeeRow } from '@/components/EmployeeRow';
 import { ActivityChart } from '@/components/ActivityChart';
 import { SecurityMetrics } from '@/components/SecurityMetrics';
+import { SimulateViolationButton } from '@/components/SimulateViolationButton';
 import { employees, alerts, deviceStats } from '@/data/mockData';
 
 const Index = () => {
@@ -17,6 +18,11 @@ const Index = () => {
         <Header />
         
         <main className="p-6 space-y-6">
+          {/* Dev Tools */}
+          <div className="flex justify-end">
+            <SimulateViolationButton />
+          </div>
+          
           {/* Stats Grid */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
