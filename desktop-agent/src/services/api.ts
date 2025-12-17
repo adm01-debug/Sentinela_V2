@@ -1,10 +1,24 @@
 import fetch from 'node-fetch';
 import { Config } from '../config';
 
+export interface ViolationRule {
+  id: string;
+  rule_type: 'blocked_site' | 'blocked_keyword' | 'blocked_app' | 'blocked_file_extension' | 'work_hours';
+  rule_value: string;
+  description: string | null;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  is_active: boolean;
+  notify_employee: boolean;
+  notify_admin: boolean;
+}
+
 export class ApiService {
   private config: Config;
   private queue: Array<{ type: string; data: any }> = [];
   private sending = false;
+  private cachedRules: ViolationRule[] = [];
+  private lastRulesFetch = 0;
+  private rulesCacheTime = 5 * 60 * 1000; // 5 minutes cache
 
   constructor(config: Config) {
     this.config = config;
@@ -54,5 +68,44 @@ export class ApiService {
 
   async heartbeat() {
     return this.send('heartbeat', { timestamp: new Date().toISOString() });
+  }
+
+  async fetchViolationRules(): Promise<ViolationRule[]> {
+    const now = Date.now();
+    
+    // Return cached rules if still valid
+    if (this.cachedRules.length > 0 && (now - this.lastRulesFetch) < this.rulesCacheTime) {
+      return this.cachedRules;
+    }
+
+    try {
+      const response = await fetch(this.config.serverUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-agent-key': this.config.agentKey,
+        },
+        body: JSON.stringify({ type: 'get_rules', data: {} }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to fetch rules:', await response.text());
+        return this.cachedRules;
+      }
+
+      const result = await response.json() as { rules?: ViolationRule[] };
+      this.cachedRules = result.rules || [];
+      this.lastRulesFetch = now;
+      
+      console.log(`Fetched ${this.cachedRules.length} violation rules`);
+      return this.cachedRules;
+    } catch (error) {
+      console.error('Error fetching violation rules:', error);
+      return this.cachedRules;
+    }
+  }
+
+  getRulesByType(type: ViolationRule['rule_type']): ViolationRule[] {
+    return this.cachedRules.filter(r => r.rule_type === type && r.is_active);
   }
 }
