@@ -12,7 +12,7 @@ import { categoryLabels } from '@/data/settingsData';
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { policies, appRules, loading, updatePolicy, updateAppRule, addAppRule } = useSettings();
+  const { policies, appRules, loading, updatePolicy, updateAppRule, addAppRule, deleteAppRule } = useSettings();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
 
@@ -169,7 +169,8 @@ export default function Settings() {
                   <ApplicationRuleRow 
                     key={rule.id} 
                     rule={rule} 
-                    onStatusChange={handleStatusChange} 
+                    onStatusChange={handleStatusChange}
+                    onDelete={deleteAppRule}
                   />
                 ))}
                 {filteredApps.length === 0 && (
