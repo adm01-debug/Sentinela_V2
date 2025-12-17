@@ -41,6 +41,105 @@ export type Database = {
         }
         Relationships: []
       }
+      keystroke_logs: {
+        Row: {
+          active_time_seconds: number
+          app_name: string | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          idle_time_seconds: number
+          keystrokes_count: number
+          recorded_at: string
+        }
+        Insert: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Update: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      monitoring_settings: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          setting_key: string
+          setting_value: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          setting_key: string
+          setting_value?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      productivity_logs: {
+        Row: {
+          apps_used: Json | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          neutral_time_seconds: number
+          productive_time_seconds: number
+          recorded_date: string
+          unproductive_time_seconds: number
+        }
+        Insert: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Update: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -62,6 +161,39 @@ export type Database = {
           full_name?: string | null
           id?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      screen_captures: {
+        Row: {
+          app_name: string | null
+          capture_url: string
+          captured_at: string
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          window_title: string | null
+        }
+        Insert: {
+          app_name?: string | null
+          capture_url: string
+          captured_at?: string
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          window_title?: string | null
+        }
+        Update: {
+          app_name?: string | null
+          capture_url?: string
+          captured_at?: string
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          window_title?: string | null
         }
         Relationships: []
       }

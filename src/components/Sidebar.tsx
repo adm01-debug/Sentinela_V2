@@ -10,7 +10,8 @@ import {
   ChevronLeft,
   ChevronRight,
   FileBarChart,
-  LogOut
+  LogOut,
+  Eye
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -19,6 +20,7 @@ const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
   { icon: Users, label: 'Colaboradores', path: '/employees' },
   { icon: Monitor, label: 'Dispositivos', path: '/devices' },
+  { icon: Eye, label: 'Monitoramento', path: '/monitoring' },
   { icon: Shield, label: 'Segurança', path: '/security' },
   { icon: Bell, label: 'Violações', path: '/violations' },
   { icon: FileBarChart, label: 'Relatórios', path: '/reports' },
