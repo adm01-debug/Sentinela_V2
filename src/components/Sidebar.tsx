@@ -8,7 +8,8 @@ import {
   Bell, 
   Monitor,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  FileBarChart
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -18,6 +19,7 @@ const menuItems = [
   { icon: Monitor, label: 'Dispositivos', path: '/devices' },
   { icon: Shield, label: 'Segurança', path: '/security' },
   { icon: Bell, label: 'Alertas', path: '/alerts' },
+  { icon: FileBarChart, label: 'Relatórios', path: '/reports' },
   { icon: Settings, label: 'Configurações', path: '/settings' },
 ];
 
