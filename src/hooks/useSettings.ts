@@ -117,6 +117,25 @@ export function useSettings() {
     }
   };
 
+  const deleteAppRule = async (id: string) => {
+    const rule = appRules.find(r => r.id === id);
+    try {
+      const { error } = await supabase
+        .from('application_rules')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setAppRules(prev => prev.filter(r => r.id !== id));
+      toast.success(`${rule?.name} removido com sucesso`);
+      return true;
+    } catch (error: any) {
+      toast.error('Erro ao remover aplicativo: ' + error.message);
+      return false;
+    }
+  };
+
   return {
     policies,
     appRules,
@@ -124,6 +143,7 @@ export function useSettings() {
     updatePolicy,
     updateAppRule,
     addAppRule,
+    deleteAppRule,
     refetch: fetchData
   };
 }
