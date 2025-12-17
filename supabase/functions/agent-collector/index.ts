@@ -18,25 +18,58 @@ serve(async (req) => {
 
     const agentKey = req.headers.get("x-agent-key");
     
-    // Simple agent authentication (in production, use proper auth)
-    if (!agentKey || agentKey.length < 10) {
-      console.log("Invalid agent key");
+    // Validate agent key from database
+    if (!agentKey) {
+      console.log("Missing agent key");
       return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
+        JSON.stringify({ error: "Unauthorized - Missing agent key" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
+    // Check if the key exists and is active
+    const { data: keyData, error: keyError } = await supabase
+      .from("agent_keys")
+      .select("id, is_active, employee_name, device_name")
+      .eq("agent_key", agentKey)
+      .maybeSingle();
+
+    if (keyError || !keyData) {
+      console.log("Invalid agent key:", agentKey.substring(0, 8) + "...");
+      return new Response(
+        JSON.stringify({ error: "Unauthorized - Invalid agent key" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!keyData.is_active) {
+      console.log("Inactive agent key:", keyData.id);
+      return new Response(
+        JSON.stringify({ error: "Unauthorized - Agent key is inactive" }),
+        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Update last_seen_at timestamp
+    await supabase
+      .from("agent_keys")
+      .update({ last_seen_at: new Date().toISOString() })
+      .eq("id", keyData.id);
+
     const body = await req.json();
     const { type, data } = body;
 
-    console.log(`Received ${type} data from agent:`, JSON.stringify(data).slice(0, 200));
+    // Use employee_name and device_name from key if not provided in data
+    const employeeName = data.employee_name || keyData.employee_name || "Unknown";
+    const deviceName = data.device || keyData.device_name || "Unknown";
+
+    console.log(`Received ${type} data from agent (key: ${keyData.id}):`, JSON.stringify(data).slice(0, 200));
 
     switch (type) {
       case "keystroke": {
         const { error } = await supabase.from("keystroke_logs").insert({
-          employee_name: data.employee_name,
-          device: data.device,
+          employee_name: employeeName,
+          device: deviceName,
           app_name: data.app_name,
           keystrokes_count: data.keystrokes_count,
           active_time_seconds: data.active_time_seconds,
@@ -49,8 +82,8 @@ serve(async (req) => {
 
       case "productivity": {
         const { error } = await supabase.from("productivity_logs").insert({
-          employee_name: data.employee_name,
-          device: data.device,
+          employee_name: employeeName,
+          device: deviceName,
           productive_time_seconds: data.productive_time_seconds,
           unproductive_time_seconds: data.unproductive_time_seconds,
           neutral_time_seconds: data.neutral_time_seconds,
@@ -63,8 +96,8 @@ serve(async (req) => {
 
       case "screenshot": {
         const { error } = await supabase.from("screen_captures").insert({
-          employee_name: data.employee_name,
-          device: data.device,
+          employee_name: employeeName,
+          device: deviceName,
           capture_url: data.capture_url,
           app_name: data.app_name,
           window_title: data.window_title,
@@ -76,12 +109,12 @@ serve(async (req) => {
 
       case "violation": {
         const { error } = await supabase.from("security_violations").insert({
-          employee_name: data.employee_name,
+          employee_name: employeeName,
           policy_name: data.policy_name,
           violation_type: data.violation_type,
           severity: data.severity || "medium",
           description: data.description,
-          device: data.device,
+          device: deviceName,
           ip_address: data.ip_address,
         });
         if (error) throw error;
@@ -89,7 +122,7 @@ serve(async (req) => {
       }
 
       case "heartbeat": {
-        console.log(`Heartbeat from ${data.employee_name} on ${data.device}`);
+        console.log(`Heartbeat from ${employeeName} on ${deviceName}`);
         break;
       }
 
