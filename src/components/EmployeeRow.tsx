@@ -1,4 +1,5 @@
 import { Monitor, Smartphone } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import type { Employee } from '@/data/mockData';
 
@@ -10,13 +11,14 @@ const statusStyles = {
 
 interface EmployeeRowProps {
   employee: Employee;
-  onClick?: () => void;
 }
 
-export function EmployeeRow({ employee, onClick }: EmployeeRowProps) {
+export function EmployeeRow({ employee }: EmployeeRowProps) {
+  const navigate = useNavigate();
+
   return (
     <div 
-      onClick={onClick}
+      onClick={() => navigate(`/employee/${employee.id}`)}
       className="flex items-center gap-4 rounded-lg border border-border/50 bg-card p-4 transition-all duration-200 hover:bg-accent/50 hover:border-primary/30 cursor-pointer"
     >
       <div className="relative">
