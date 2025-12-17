@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react';
 import { 
-  ArrowLeft, 
   Search, 
-  Filter, 
-  Download, 
   RefreshCw,
   AlertTriangle,
   AlertCircle,
   Info,
   CheckCircle,
-  Calendar
+  Calendar,
+  ShieldAlert,
+  Bell,
+  CheckCheck
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -42,6 +42,9 @@ import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { SimulateViolationButton } from '@/components/SimulateViolationButton';
 import { ViolationsTrendChart } from '@/components/ViolationsTrendChart';
+import { ViolationsByTypeChart } from '@/components/ViolationsByTypeChart';
+import { ViolationsBySeverityChart } from '@/components/ViolationsBySeverityChart';
+import { ViolationsByEmployeeChart } from '@/components/ViolationsByEmployeeChart';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -91,14 +94,19 @@ const severityConfig = {
 };
 
 export default function Violations() {
-  const navigate = useNavigate();
   const [violations, setViolations] = useState<Violation[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [severityFilter, setSeverityFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [employeeFilter, setEmployeeFilter] = useState<string>('all');
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
+
+  // Get unique values for filters
+  const violationTypes = useMemo(() => [...new Set(violations.map(v => v.violation_type))], [violations]);
+  const employees = useMemo(() => [...new Set(violations.map(v => v.employee_name))], [violations]);
 
   useEffect(() => {
     fetchViolations();
@@ -172,12 +180,33 @@ export default function Violations() {
       (statusFilter === 'read' && v.read) || 
       (statusFilter === 'unread' && !v.read);
     
+    const matchesType = typeFilter === 'all' || v.violation_type === typeFilter;
+    const matchesEmployee = employeeFilter === 'all' || v.employee_name === employeeFilter;
+    
     const violationDate = new Date(v.created_at);
     const matchesDateFrom = !dateFrom || violationDate >= dateFrom;
     const matchesDateTo = !dateTo || violationDate <= new Date(dateTo.getTime() + 86400000);
 
-    return matchesSearch && matchesSeverity && matchesStatus && matchesDateFrom && matchesDateTo;
+    return matchesSearch && matchesSeverity && matchesStatus && matchesType && matchesEmployee && matchesDateFrom && matchesDateTo;
   });
+
+  const markAllAsRead = async () => {
+    const unreadIds = violations.filter(v => !v.read).map(v => v.id);
+    if (unreadIds.length === 0) return;
+    
+    try {
+      const { error } = await supabase
+        .from('security_violations')
+        .update({ read: true })
+        .in('id', unreadIds);
+      
+      if (error) throw error;
+      setViolations(prev => prev.map(v => ({ ...v, read: true })));
+      toast.success('Todas as violações marcadas como lidas');
+    } catch (error: any) {
+      toast.error('Erro: ' + error.message);
+    }
+  };
 
   const stats = {
     total: violations.length,
@@ -206,6 +235,12 @@ export default function Violations() {
                 <RefreshCw className={cn("h-4 w-4 mr-2", loading && "animate-spin")} />
                 Atualizar
               </Button>
+              {stats.unread > 0 && (
+                <Button variant="outline" size="sm" onClick={markAllAsRead}>
+                  <CheckCheck className="h-4 w-4 mr-2" />
+                  Marcar todas lidas
+                </Button>
+              )}
             </div>
           </div>
 
@@ -227,6 +262,36 @@ export default function Violations() {
               <p className="text-sm text-muted-foreground">Não Lidas</p>
               <p className="text-3xl font-bold text-primary">{stats.unread}</p>
             </div>
+          </div>
+
+          {/* Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Por Tipo</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ViolationsByTypeChart violations={violations} />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Por Severidade</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ViolationsBySeverityChart violations={violations} />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Por Funcionário (Top 10)</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ViolationsByEmployeeChart violations={violations} />
+              </CardContent>
+            </Card>
           </div>
 
           {/* Trend Chart */}
@@ -254,6 +319,30 @@ export default function Violations() {
                 <SelectItem value="high">Alta</SelectItem>
                 <SelectItem value="medium">Média</SelectItem>
                 <SelectItem value="low">Baixa</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
+              <SelectTrigger className="w-[150px]">
+                <SelectValue placeholder="Tipo" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os tipos</SelectItem>
+                {violationTypes.map(type => (
+                  <SelectItem key={type} value={type}>{type}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={employeeFilter} onValueChange={setEmployeeFilter}>
+              <SelectTrigger className="w-[150px]">
+                <SelectValue placeholder="Funcionário" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos</SelectItem>
+                {employees.map(emp => (
+                  <SelectItem key={emp} value={emp}>{emp}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -304,7 +393,7 @@ export default function Violations() {
               </PopoverContent>
             </Popover>
 
-            {(dateFrom || dateTo || severityFilter !== 'all' || statusFilter !== 'all') && (
+            {(dateFrom || dateTo || severityFilter !== 'all' || statusFilter !== 'all' || typeFilter !== 'all' || employeeFilter !== 'all') && (
               <Button 
                 variant="ghost" 
                 size="sm"
@@ -313,6 +402,8 @@ export default function Violations() {
                   setDateTo(undefined);
                   setSeverityFilter('all');
                   setStatusFilter('all');
+                  setTypeFilter('all');
+                  setEmployeeFilter('all');
                 }}
               >
                 Limpar filtros
