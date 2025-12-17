@@ -1,6 +1,6 @@
-import { Bell, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { NotificationsPanel } from '@/components/NotificationsPanel';
 
 export function Header() {
   return (
@@ -16,12 +16,7 @@ export function Header() {
       </div>
       
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-bold text-destructive-foreground">
-            6
-          </span>
-        </Button>
+        <NotificationsPanel />
         
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
