@@ -31,6 +31,7 @@ interface ViolationRule {
   severity: string;
   description: string | null;
   is_active: boolean;
+  violation_count: number;
 }
 
 const monitoringFeatures = [
@@ -299,6 +300,14 @@ export default function MonitoringPolicies() {
                                 <p className="text-xs text-muted-foreground truncate">{rule.description}</p>
                               )}
                             </div>
+                            {rule.violation_count > 0 && (
+                              <Badge 
+                                variant="secondary" 
+                                className="text-xs shrink-0 bg-destructive/10 text-destructive border-destructive/30"
+                              >
+                                {rule.violation_count} {rule.violation_count === 1 ? 'violação' : 'violações'}
+                              </Badge>
+                            )}
                             <Badge 
                               variant="outline" 
                               className={`text-xs shrink-0 ${severityColors[rule.severity] || ''}`}
