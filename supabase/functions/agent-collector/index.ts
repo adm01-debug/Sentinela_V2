@@ -330,20 +330,58 @@ serve(async (req) => {
       }
 
       case "violation": {
-        const { error } = await supabase.from("security_violations").insert({
+        const severity = data.severity || "medium";
+        const { data: violationRecord, error } = await supabase.from("security_violations").insert({
           employee_name: employeeName,
           policy_name: data.policy_name,
           violation_type: data.violation_type,
-          severity: data.severity || "medium",
+          severity: severity,
           description: data.description,
           device: deviceName,
           ip_address: data.ip_address,
           screenshot_url: data.screenshot_url,
           location: data.location,
-        });
+          notified_admin: false,
+          notified_employee: false,
+        }).select('id').single();
         if (error) throw error;
         
         console.log(`VIOLATION recorded: ${data.violation_type} - ${data.description}`);
+        
+        // Trigger real-time notification for critical/high severity
+        if ((severity === 'critical' || severity === 'high') && violationRecord?.id) {
+          const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+          const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+          
+          const notifyTask = async () => {
+            try {
+              await fetch(`${supabaseUrl}/functions/v1/send-push-notification`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${supabaseKey}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  title: `Violação ${severity === 'critical' ? 'Crítica' : 'Alta'} Detectada`,
+                  body: `${employeeName}: ${data.description || data.policy_name}`,
+                  severity: severity,
+                  violation_id: violationRecord.id,
+                  data: {
+                    employee_name: employeeName,
+                    device: deviceName,
+                    violation_type: data.violation_type,
+                    timestamp: new Date().toISOString()
+                  }
+                }),
+              });
+              console.log(`Push notification sent for violation ${violationRecord.id}`);
+            } catch (notifyError) {
+              console.error('Error sending push notification:', notifyError);
+            }
+          };
+          
+          EdgeRuntime.waitUntil(notifyTask());
+        }
         break;
       }
 
