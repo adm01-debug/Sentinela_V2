@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import { v4 as uuidv4 } from 'uuid';
+import Tesseract from 'tesseract.js';
 
 interface SensitiveRegion {
   x: number;
@@ -10,59 +11,125 @@ interface SensitiveRegion {
   width: number;
   height: number;
   type: string;
+  confidence?: number;
+  matchedPattern?: string;
 }
 
 interface BlurResult {
   processedPath: string;
   regionsBlurred: number;
   sensitiveTypes: string[];
+  ocrProcessed: boolean;
+}
+
+interface OCRWord {
+  text: string;
+  bbox: {
+    x0: number;
+    y0: number;
+    x1: number;
+    y1: number;
+  };
+  confidence: number;
 }
 
 export class SmartBlurService {
+  private static ocrWorker: Tesseract.Worker | null = null;
+  private static ocrInitializing: boolean = false;
+
   // Patterns for sensitive data detection
-  private static readonly SENSITIVE_PATTERNS = {
+  private static readonly SENSITIVE_PATTERNS: Record<string, RegExp> = {
     // Credit card patterns (16 digits with optional separators)
-    creditCard: /\b(?:\d{4}[\s-]?){3}\d{4}\b/g,
+    creditCard: /\b(?:\d{4}[\s-]?){3}\d{4}\b/,
+    // CVV/CVC patterns
+    cvv: /\b(?:cvv|cvc|cv2)[\s:]*\d{3,4}\b/i,
     // CPF pattern (Brazilian ID)
-    cpf: /\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/g,
+    cpf: /\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/,
     // CNPJ pattern (Brazilian company ID)
-    cnpj: /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/g,
+    cnpj: /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/,
     // SSN pattern (US)
-    ssn: /\b\d{3}-?\d{2}-?\d{4}\b/g,
+    ssn: /\b\d{3}-?\d{2}-?\d{4}\b/,
     // Bank account patterns
-    bankAccount: /\b(?:conta|account|ag[eê]ncia|agency)[\s:]*\d{4,}/gi,
+    bankAccount: /\b(?:conta|account|ag[eê]ncia|agency|routing)[\s:]*[\d-]{4,}/i,
     // API keys and tokens (generic patterns)
-    apiKey: /\b(?:sk_live_|pk_live_|api_key|apikey|access_token|bearer)[\w-]{20,}/gi,
+    apiKey: /\b(?:sk_live_|pk_live_|api[_-]?key|apikey|access[_-]?token|bearer|secret[_-]?key)[\s:]*[\w-]{10,}/i,
     // Password fields indicators
-    passwordField: /(?:senha|password|secret|pin|cvv|cvc|pwd)[\s:]+/gi,
+    passwordField: /(?:senha|password|secret|pin|passcode|pwd)[\s:]+[\S]{4,}/i,
+    // Email with password context
+    emailPassword: /(?:email|e-mail|login)[\s:]+[\w@.-]+[\s\n]+(?:senha|password|pwd)[\s:]+/i,
+    // Private keys
+    privateKey: /-----BEGIN.*PRIVATE KEY-----/i,
+    // AWS credentials
+    awsCredential: /\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/,
+    // Generic token patterns
+    genericToken: /\b(?:token|bearer|auth)[\s:]+[a-zA-Z0-9_-]{20,}\b/i,
+    // Phone numbers (various formats)
+    phoneNumber: /\b(?:\+\d{1,3}[\s-]?)?\(?\d{2,3}\)?[\s.-]?\d{4,5}[\s.-]?\d{4}\b/,
+    // Date of birth context
+    dateOfBirth: /(?:nascimento|birth|dob|data[\s]de[\s]nasc)[\s:]+\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}/i,
   };
 
   // Window title patterns that indicate sensitive content
   private static readonly SENSITIVE_WINDOW_TITLES = [
-    /password/i,
-    /senha/i,
-    /bank/i,
-    /banco/i,
-    /credit/i,
-    /crédito/i,
-    /payment/i,
-    /pagamento/i,
-    /login/i,
-    /sign.?in/i,
-    /wallet/i,
-    /carteira/i,
-    /account/i,
-    /conta/i,
+    /password/i, /senha/i, /bank/i, /banco/i, /credit/i, /crédito/i,
+    /payment/i, /pagamento/i, /login/i, /sign.?in/i, /wallet/i,
+    /carteira/i, /account/i, /conta/i, /checkout/i, /billing/i,
   ];
 
   // App names that typically contain sensitive data
   private static readonly SENSITIVE_APPS = [
     'keepass', 'lastpass', '1password', 'bitwarden', 'dashlane',
-    'keychain', 'credential', 'vault', 'authenticator',
+    'keychain', 'credential', 'vault', 'authenticator', 'keyring',
+  ];
+
+  // Sensitive keywords to detect in OCR text
+  private static readonly SENSITIVE_KEYWORDS = [
+    'password', 'senha', 'secret', 'confidential', 'private',
+    'credit card', 'cartão', 'cvv', 'cvc', 'pin', 'ssn', 'cpf', 'cnpj',
+    'bank account', 'conta bancária', 'routing number', 'api key',
+    'access token', 'bearer', 'authorization', 'auth token',
   ];
 
   /**
-   * Process an image and blur sensitive regions
+   * Initialize OCR worker
+   */
+  private static async initOCR(): Promise<Tesseract.Worker> {
+    if (this.ocrWorker) {
+      return this.ocrWorker;
+    }
+
+    if (this.ocrInitializing) {
+      // Wait for initialization to complete
+      while (this.ocrInitializing) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      return this.ocrWorker!;
+    }
+
+    this.ocrInitializing = true;
+
+    try {
+      console.log('SmartBlur: Initializing OCR worker...');
+      this.ocrWorker = await Tesseract.createWorker('eng+por', 1, {
+        logger: (m) => {
+          if (m.status === 'recognizing text') {
+            // Only log progress at 25% intervals
+            if (m.progress && (m.progress * 100) % 25 < 1) {
+              console.log(`SmartBlur OCR: ${Math.round(m.progress * 100)}%`);
+            }
+          }
+        },
+      });
+
+      console.log('SmartBlur: OCR worker initialized');
+      return this.ocrWorker;
+    } finally {
+      this.ocrInitializing = false;
+    }
+  }
+
+  /**
+   * Process an image with OCR and blur sensitive regions
    */
   static async processImage(
     imagePath: string,
@@ -70,7 +137,8 @@ export class SmartBlurService {
     appName?: string
   ): Promise<BlurResult> {
     const sensitiveTypes: string[] = [];
-    let regionsBlurred = 0;
+    const regions: SensitiveRegion[] = [];
+    let ocrProcessed = false;
 
     try {
       // Read the image
@@ -82,27 +150,33 @@ export class SmartBlurService {
         throw new Error('Could not read image dimensions');
       }
 
-      const regions: SensitiveRegion[] = [];
-
       // Check if window title or app suggests sensitive content
       const isSensitiveContext = this.isSensitiveContext(windowTitle, appName);
 
       if (isSensitiveContext) {
         sensitiveTypes.push('sensitive_context');
-        
         // Add blur regions for common password field locations
-        // Typically password fields are in the center-ish area
         const passwordRegions = this.getCommonPasswordFieldRegions(metadata.width, metadata.height);
         regions.push(...passwordRegions);
-        regionsBlurred += passwordRegions.length;
       }
 
-      // Detect potential input fields (darker rectangles with text)
-      const inputFieldRegions = await this.detectInputFields(imageBuffer, metadata);
-      if (inputFieldRegions.length > 0) {
-        sensitiveTypes.push('input_fields');
-        regions.push(...inputFieldRegions);
-        regionsBlurred += inputFieldRegions.length;
+      // Perform OCR to detect text
+      try {
+        const ocrRegions = await this.performOCRAndDetect(imageBuffer, metadata);
+        if (ocrRegions.length > 0) {
+          regions.push(...ocrRegions);
+          ocrProcessed = true;
+          
+          // Collect unique types
+          ocrRegions.forEach(r => {
+            if (r.type && !sensitiveTypes.includes(r.type)) {
+              sensitiveTypes.push(r.type);
+            }
+          });
+        }
+      } catch (ocrError) {
+        console.error('SmartBlur OCR error:', ocrError);
+        // Continue without OCR if it fails
       }
 
       // If no regions to blur, return original
@@ -111,11 +185,15 @@ export class SmartBlurService {
           processedPath: imagePath,
           regionsBlurred: 0,
           sensitiveTypes: [],
+          ocrProcessed,
         };
       }
 
+      // Merge overlapping regions
+      const mergedRegions = this.mergeOverlappingRegions(regions);
+
       // Apply blur to detected regions
-      const processedImage = await this.applyBlurToRegions(imageBuffer, regions, metadata);
+      const processedImage = await this.applyBlurToRegions(imageBuffer, mergedRegions, metadata);
 
       // Save processed image
       const outputFilename = `blurred_${uuidv4()}.png`;
@@ -131,21 +209,116 @@ export class SmartBlurService {
         }
       }
 
-      console.log(`SmartBlur: Processed ${regionsBlurred} regions, types: ${sensitiveTypes.join(', ')}`);
+      console.log(`SmartBlur: Processed ${mergedRegions.length} regions, types: ${sensitiveTypes.join(', ')}, OCR: ${ocrProcessed}`);
 
       return {
         processedPath: outputPath,
-        regionsBlurred,
+        regionsBlurred: mergedRegions.length,
         sensitiveTypes,
+        ocrProcessed,
       };
     } catch (error) {
       console.error('SmartBlur processing error:', error);
-      // Return original on error
       return {
         processedPath: imagePath,
         regionsBlurred: 0,
         sensitiveTypes: [],
+        ocrProcessed: false,
       };
+    }
+  }
+
+  /**
+   * Perform OCR and detect sensitive text regions
+   */
+  private static async performOCRAndDetect(
+    imageBuffer: Buffer,
+    metadata: sharp.Metadata
+  ): Promise<SensitiveRegion[]> {
+    const regions: SensitiveRegion[] = [];
+
+    try {
+      const worker = await this.initOCR();
+      
+      // Perform OCR
+      const result = await worker.recognize(imageBuffer);
+      
+      if (!result.data.words || result.data.words.length === 0) {
+        return regions;
+      }
+
+      // Process each word
+      for (const word of result.data.words) {
+        const wordText = word.text.trim();
+        if (!wordText || wordText.length < 3) continue;
+
+        // Check against sensitive patterns
+        for (const [patternName, pattern] of Object.entries(this.SENSITIVE_PATTERNS)) {
+          if (pattern.test(wordText)) {
+            regions.push({
+              x: word.bbox.x0,
+              y: word.bbox.y0,
+              width: word.bbox.x1 - word.bbox.x0,
+              height: word.bbox.y1 - word.bbox.y0,
+              type: `ocr_${patternName}`,
+              confidence: word.confidence,
+              matchedPattern: patternName,
+            });
+            break; // Only match first pattern
+          }
+        }
+
+        // Check for sensitive keywords
+        const lowerWord = wordText.toLowerCase();
+        for (const keyword of this.SENSITIVE_KEYWORDS) {
+          if (lowerWord.includes(keyword.toLowerCase())) {
+            // Expand region to include surrounding context
+            regions.push({
+              x: Math.max(0, word.bbox.x0 - 50),
+              y: Math.max(0, word.bbox.y0 - 10),
+              width: Math.min((word.bbox.x1 - word.bbox.x0) + 200, metadata.width! - word.bbox.x0),
+              height: (word.bbox.y1 - word.bbox.y0) + 20,
+              type: 'ocr_keyword',
+              confidence: word.confidence,
+              matchedPattern: keyword,
+            });
+            break;
+          }
+        }
+      }
+
+      // Also check full text for multi-word patterns
+      const fullText = result.data.text;
+      for (const [patternName, pattern] of Object.entries(this.SENSITIVE_PATTERNS)) {
+        let match;
+        const globalPattern = new RegExp(pattern.source, 'gi');
+        while ((match = globalPattern.exec(fullText)) !== null) {
+          // Find approximate position in image based on text position
+          const matchStart = match.index;
+          const linesBefore = fullText.substring(0, matchStart).split('\n').length - 1;
+          
+          // Estimate vertical position
+          const estimatedY = Math.min(
+            linesBefore * 25 + 50, // Rough line height estimation
+            metadata.height! - 50
+          );
+          
+          // Create a region covering likely area
+          regions.push({
+            x: Math.floor(metadata.width! * 0.1),
+            y: estimatedY,
+            width: Math.floor(metadata.width! * 0.8),
+            height: 40,
+            type: `ocr_multiword_${patternName}`,
+            matchedPattern: patternName,
+          });
+        }
+      }
+
+      return regions;
+    } catch (error) {
+      console.error('OCR detection error:', error);
+      return regions;
     }
   }
 
@@ -178,20 +351,17 @@ export class SmartBlurService {
    */
   private static getCommonPasswordFieldRegions(width: number, height: number): SensitiveRegion[] {
     const regions: SensitiveRegion[] = [];
-
-    // Center area (common for login dialogs)
-    const centerX = Math.floor(width * 0.25);
-    const centerWidth = Math.floor(width * 0.5);
+    const centerX = Math.floor(width * 0.2);
+    const centerWidth = Math.floor(width * 0.6);
     
-    // Multiple vertical positions where password fields typically appear
-    const yPositions = [0.35, 0.45, 0.55, 0.65]; // 35%, 45%, 55%, 65% of height
+    const yPositions = [0.35, 0.45, 0.55, 0.65];
     
     for (const yPercent of yPositions) {
       regions.push({
         x: centerX,
         y: Math.floor(height * yPercent) - 20,
         width: centerWidth,
-        height: 50, // Typical input field height
+        height: 50,
         type: 'password_field_area',
       });
     }
@@ -200,114 +370,65 @@ export class SmartBlurService {
   }
 
   /**
-   * Detect potential input fields using image analysis
+   * Merge overlapping regions to avoid double-blurring
    */
-  private static async detectInputFields(
-    imageBuffer: Buffer,
-    metadata: sharp.Metadata
-  ): Promise<SensitiveRegion[]> {
-    const regions: SensitiveRegion[] = [];
+  private static mergeOverlappingRegions(regions: SensitiveRegion[]): SensitiveRegion[] {
+    if (regions.length <= 1) return regions;
 
-    try {
-      // Convert to grayscale for analysis
-      const grayscale = await sharp(imageBuffer)
-        .greyscale()
-        .raw()
-        .toBuffer({ resolveWithObject: true });
+    const merged: SensitiveRegion[] = [];
+    const used = new Set<number>();
 
-      const { data, info } = grayscale;
-      const { width, height } = info;
+    for (let i = 0; i < regions.length; i++) {
+      if (used.has(i)) continue;
 
-      // Scan for potential input fields (horizontal lines of similar intensity)
-      // This is a simplified detection - looks for rectangular regions
-      
-      const scanLineHeight = 40; // Typical input height
-      const minWidth = Math.floor(width * 0.15); // Minimum 15% of screen width
-      
-      for (let y = 0; y < height - scanLineHeight; y += 20) {
-        for (let x = 0; x < width - minWidth; x += 50) {
-          const region = this.analyzeRegion(data, width, height, x, y, Math.min(400, width - x), scanLineHeight);
-          
-          if (region.isInputField) {
-            regions.push({
-              x,
-              y,
-              width: region.width,
-              height: scanLineHeight,
-              type: 'detected_input',
-            });
-            x += region.width; // Skip past this region
+      let current = { ...regions[i] };
+      used.add(i);
+
+      // Find all overlapping regions
+      let foundOverlap = true;
+      while (foundOverlap) {
+        foundOverlap = false;
+        for (let j = 0; j < regions.length; j++) {
+          if (used.has(j)) continue;
+
+          if (this.regionsOverlap(current, regions[j])) {
+            // Merge regions
+            const minX = Math.min(current.x, regions[j].x);
+            const minY = Math.min(current.y, regions[j].y);
+            const maxX = Math.max(current.x + current.width, regions[j].x + regions[j].width);
+            const maxY = Math.max(current.y + current.height, regions[j].y + regions[j].height);
+
+            current = {
+              x: minX,
+              y: minY,
+              width: maxX - minX,
+              height: maxY - minY,
+              type: current.type,
+            };
+
+            used.add(j);
+            foundOverlap = true;
           }
         }
       }
-    } catch (e) {
-      console.error('Input field detection error:', e);
+
+      merged.push(current);
     }
 
-    // Limit to top 10 most likely regions
-    return regions.slice(0, 10);
+    return merged;
   }
 
   /**
-   * Analyze a region to determine if it looks like an input field
+   * Check if two regions overlap
    */
-  private static analyzeRegion(
-    data: Buffer,
-    imgWidth: number,
-    imgHeight: number,
-    x: number,
-    y: number,
-    regionWidth: number,
-    regionHeight: number
-  ): { isInputField: boolean; width: number } {
-    let pixelCount = 0;
-    let totalIntensity = 0;
-    let edgeCount = 0;
-
-    // Sample pixels in the region
-    for (let ry = 0; ry < regionHeight; ry += 2) {
-      for (let rx = 0; rx < regionWidth; rx += 2) {
-        const px = x + rx;
-        const py = y + ry;
-        
-        if (px < imgWidth && py < imgHeight) {
-          const idx = py * imgWidth + px;
-          if (idx < data.length) {
-            totalIntensity += data[idx];
-            pixelCount++;
-
-            // Check for edges (intensity changes)
-            if (rx > 0) {
-              const prevIdx = py * imgWidth + (px - 2);
-              if (prevIdx >= 0 && prevIdx < data.length) {
-                if (Math.abs(data[idx] - data[prevIdx]) > 30) {
-                  edgeCount++;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    if (pixelCount === 0) {
-      return { isInputField: false, width: regionWidth };
-    }
-
-    const avgIntensity = totalIntensity / pixelCount;
-    const edgeRatio = edgeCount / pixelCount;
-
-    // Input fields typically:
-    // 1. Have moderate to high intensity (white/light background)
-    // 2. Have clear edges (borders)
-    // 3. Are relatively uniform inside
-    
-    const isInputField = avgIntensity > 200 && // Light background
-                         avgIntensity < 255 && // Not pure white (has some content)
-                         edgeRatio > 0.02 &&   // Has some edges
-                         edgeRatio < 0.15;     // But not too many (not text-heavy)
-
-    return { isInputField, width: regionWidth };
+  private static regionsOverlap(a: SensitiveRegion, b: SensitiveRegion): boolean {
+    const padding = 20; // Allow some padding for near-overlaps
+    return !(
+      a.x + a.width + padding < b.x ||
+      b.x + b.width + padding < a.x ||
+      a.y + a.height + padding < b.y ||
+      b.y + b.height + padding < a.y
+    );
   }
 
   /**
@@ -320,12 +441,9 @@ export class SmartBlurService {
   ): Promise<sharp.Sharp> {
     const width = metadata.width!;
     const height = metadata.height!;
-
-    // Create composite operations for each blurred region
     const composites: sharp.OverlayOptions[] = [];
 
     for (const region of regions) {
-      // Ensure region is within bounds
       const safeX = Math.max(0, Math.min(region.x, width - 1));
       const safeY = Math.max(0, Math.min(region.y, height - 1));
       const safeWidth = Math.min(region.width, width - safeX);
@@ -334,7 +452,6 @@ export class SmartBlurService {
       if (safeWidth <= 0 || safeHeight <= 0) continue;
 
       try {
-        // Extract the region
         const regionBuffer = await sharp(imageBuffer)
           .extract({
             left: safeX,
@@ -342,7 +459,7 @@ export class SmartBlurService {
             width: safeWidth,
             height: safeHeight,
           })
-          .blur(25) // Strong blur
+          .blur(30) // Strong blur for better privacy
           .toBuffer();
 
         composites.push({
@@ -355,7 +472,6 @@ export class SmartBlurService {
       }
     }
 
-    // Apply all blurred regions as composites
     if (composites.length > 0) {
       return sharp(imageBuffer).composite(composites);
     }
@@ -364,49 +480,17 @@ export class SmartBlurService {
   }
 
   /**
-   * Process text extracted from OCR and detect sensitive patterns
+   * Cleanup OCR worker when shutting down
    */
-  static detectSensitiveText(text: string): { hasSensitive: boolean; types: string[] } {
-    const types: string[] = [];
-
-    for (const [type, pattern] of Object.entries(this.SENSITIVE_PATTERNS)) {
-      // Reset regex state
-      pattern.lastIndex = 0;
-      if (pattern.test(text)) {
-        types.push(type);
+  static async cleanup(): Promise<void> {
+    if (this.ocrWorker) {
+      try {
+        await this.ocrWorker.terminate();
+        this.ocrWorker = null;
+        console.log('SmartBlur: OCR worker terminated');
+      } catch (e) {
+        console.error('Error terminating OCR worker:', e);
       }
     }
-
-    return {
-      hasSensitive: types.length > 0,
-      types,
-    };
-  }
-
-  /**
-   * Quick check if an image likely contains sensitive UI elements
-   * Based on filename, path, or quick analysis
-   */
-  static async quickSensitivityCheck(
-    imagePath: string,
-    windowTitle?: string,
-    appName?: string
-  ): Promise<boolean> {
-    // First, check context
-    if (this.isSensitiveContext(windowTitle, appName)) {
-      return true;
-    }
-
-    // Check filename/path for sensitive indicators
-    const lowerPath = imagePath.toLowerCase();
-    const sensitivePathPatterns = ['password', 'login', 'bank', 'card', 'payment', 'auth'];
-    
-    for (const pattern of sensitivePathPatterns) {
-      if (lowerPath.includes(pattern)) {
-        return true;
-      }
-    }
-
-    return false;
   }
 }

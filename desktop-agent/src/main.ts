@@ -121,8 +121,8 @@ function updateTrayMenu(blockStatus?: { isBlocked: boolean; reason: string }) {
       { type: 'separator' },
       {
         label: 'Sair',
-        click: () => {
-          if (monitoringService) monitoringService.stop();
+        click: async () => {
+          if (monitoringService) await monitoringService.stop();
           app.quit();
         },
       }
@@ -275,7 +275,7 @@ app.on('window-all-closed', () => {
   // Keep running in tray (or background in stealth mode)
 });
 
-app.on('before-quit', () => {
+app.on('before-quit', async () => {
   globalShortcut.unregisterAll();
-  if (monitoringService) monitoringService.stop();
+  if (monitoringService) await monitoringService.stop();
 });

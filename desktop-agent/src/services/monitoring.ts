@@ -101,11 +101,14 @@ export class MonitoringService {
     console.log('MonitoringService started');
   }
 
-  stop() {
+  async stop() {
     console.log('MonitoringService stopping...');
     this.intervals.forEach(interval => clearInterval(interval));
     globalShortcut.unregisterAll();
     this.closeBlockWindow();
+    
+    // Cleanup SmartBlur OCR worker
+    await SmartBlurService.cleanup();
   }
 
   private async refreshRules() {
