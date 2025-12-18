@@ -18,6 +18,7 @@ import AIAnalysis from "./pages/AIAnalysis";
 import Auth from "./pages/Auth";
 import Install from "./pages/Install";
 import MonitoringPolicies from "./pages/MonitoringPolicies";
+import PolicyAcknowledgments from "./pages/PolicyAcknowledgments";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -81,6 +82,11 @@ const App = () => (
             <Route path="/ai-analysis" element={
               <ProtectedRoute requireAdmin>
                 <AIAnalysis />
+              </ProtectedRoute>
+            } />
+            <Route path="/policy-acknowledgments" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyAcknowledgments />
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
