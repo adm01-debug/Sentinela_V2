@@ -1,14 +1,15 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, ReactNode } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Monitor, Loader2, Maximize2, FileText, Copy, Check, Search, X, Clock } from 'lucide-react';
+import { Monitor, Loader2, Maximize2, FileText, Copy, Check, Search, X, Clock, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface ScreenCapture {
   id: string;
@@ -22,6 +23,11 @@ interface ScreenCapture {
   ocr_processed_at: string | null;
 }
 
+interface SensitiveKeyword {
+  rule_value: string;
+  severity: string;
+}
+
 export function ScreenCapturesCard() {
   const [captures, setCaptures] = useState<ScreenCapture[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,9 +35,11 @@ export function ScreenCapturesCard() {
   const [ocrLoading, setOcrLoading] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sensitiveKeywords, setSensitiveKeywords] = useState<SensitiveKeyword[]>([]);
 
   useEffect(() => {
     fetchCaptures();
+    fetchSensitiveKeywords();
   }, []);
 
   const fetchCaptures = async () => {
@@ -51,6 +59,21 @@ export function ScreenCapturesCard() {
     }
   };
 
+  const fetchSensitiveKeywords = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('violation_rules')
+        .select('rule_value, severity')
+        .eq('rule_type', 'blocked_keyword')
+        .eq('is_active', true);
+
+      if (error) throw error;
+      setSensitiveKeywords(data || []);
+    } catch (error) {
+      console.error('Error fetching sensitive keywords:', error);
+    }
+  };
+
   const filteredCaptures = useMemo(() => {
     if (!searchQuery.trim()) return captures.slice(0, 12);
     
@@ -65,13 +88,71 @@ export function ScreenCapturesCard() {
 
   const getOcrStatus = (capture: ScreenCapture) => {
     if (capture.extracted_text) return 'completed';
-    if (capture.ocr_processed_at) return 'no-text'; // Processed but no text found
-    // Check if captured within last 2 minutes (likely processing)
+    if (capture.ocr_processed_at) return 'no-text';
     const capturedAt = new Date(capture.captured_at).getTime();
     const now = Date.now();
     const twoMinutes = 2 * 60 * 1000;
     if (now - capturedAt < twoMinutes) return 'processing';
     return 'pending';
+  };
+
+  const findSensitiveKeywordsInText = (text: string): { keyword: string; severity: string }[] => {
+    if (!text) return [];
+    const textLower = text.toLowerCase();
+    return sensitiveKeywords.filter(kw => 
+      textLower.includes(kw.rule_value.toLowerCase())
+    ).map(kw => ({ keyword: kw.rule_value, severity: kw.severity }));
+  };
+
+  const highlightSensitiveText = (text: string): ReactNode => {
+    if (!text || sensitiveKeywords.length === 0) return text;
+    
+    // Build regex from all sensitive keywords
+    const keywordPatterns = sensitiveKeywords.map(kw => 
+      kw.rule_value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    ).filter(Boolean);
+    
+    if (keywordPatterns.length === 0) return text;
+    
+    const regex = new RegExp(`(${keywordPatterns.join('|')})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, i) => {
+      const matchedKeyword = sensitiveKeywords.find(
+        kw => kw.rule_value.toLowerCase() === part.toLowerCase()
+      );
+      
+      if (matchedKeyword) {
+        const severityColor = matchedKeyword.severity === 'critical' 
+          ? 'bg-red-500/30 border-red-500' 
+          : matchedKeyword.severity === 'high'
+          ? 'bg-orange-500/30 border-orange-500'
+          : 'bg-yellow-500/30 border-yellow-500';
+        
+        return (
+          <TooltipProvider key={i}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <mark className={`${severityColor} text-foreground rounded px-1 border cursor-help font-semibold`}>
+                  {part}
+                </mark>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex items-center gap-1.5">
+                  <AlertTriangle className="h-3.5 w-3.5 text-destructive" />
+                  <span>Palavra sensível: <strong>{matchedKeyword.rule_value}</strong></span>
+                  <Badge variant="outline" className="text-[10px] ml-1">
+                    {matchedKeyword.severity}
+                  </Badge>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
+      }
+      
+      return part;
+    });
   };
 
   const highlightMatch = (text: string, query: string) => {
@@ -338,11 +419,25 @@ export function ScreenCapturesCard() {
                   {selectedCapture.extracted_text && (
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <p className="text-xs text-muted-foreground">
-                          Processado em: {selectedCapture.ocr_processed_at 
-                            ? new Date(selectedCapture.ocr_processed_at).toLocaleString('pt-BR')
-                            : 'N/A'}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs text-muted-foreground">
+                            Processado em: {selectedCapture.ocr_processed_at 
+                              ? new Date(selectedCapture.ocr_processed_at).toLocaleString('pt-BR')
+                              : 'N/A'}
+                          </p>
+                          {(() => {
+                            const foundKeywords = findSensitiveKeywordsInText(selectedCapture.extracted_text!);
+                            if (foundKeywords.length > 0) {
+                              return (
+                                <Badge variant="destructive" className="text-xs flex items-center gap-1">
+                                  <AlertTriangle className="h-3 w-3" />
+                                  {foundKeywords.length} palavra(s) sensível(is)
+                                </Badge>
+                              );
+                            }
+                            return null;
+                          })()}
+                        </div>
                         <Button
                           size="sm"
                           variant="ghost"
@@ -358,7 +453,7 @@ export function ScreenCapturesCard() {
                       </div>
                       <ScrollArea className="h-[400px] rounded-lg border bg-muted/30 p-4">
                         <pre className="text-sm whitespace-pre-wrap font-mono">
-                          {selectedCapture.extracted_text}
+                          {highlightSensitiveText(selectedCapture.extracted_text)}
                         </pre>
                       </ScrollArea>
                     </div>
