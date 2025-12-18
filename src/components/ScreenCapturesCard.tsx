@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Monitor, Loader2, Maximize2, FileText, Copy, Check, Search, X } from 'lucide-react';
+import { Monitor, Loader2, Maximize2, FileText, Copy, Check, Search, X, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -62,6 +62,17 @@ export function ScreenCapturesCard() {
       capture.app_name?.toLowerCase().includes(query)
     );
   }, [captures, searchQuery]);
+
+  const getOcrStatus = (capture: ScreenCapture) => {
+    if (capture.extracted_text) return 'completed';
+    if (capture.ocr_processed_at) return 'no-text'; // Processed but no text found
+    // Check if captured within last 2 minutes (likely processing)
+    const capturedAt = new Date(capture.captured_at).getTime();
+    const now = Date.now();
+    const twoMinutes = 2 * 60 * 1000;
+    if (now - capturedAt < twoMinutes) return 'processing';
+    return 'pending';
+  };
 
   const highlightMatch = (text: string, query: string) => {
     if (!query.trim()) return text;
@@ -186,7 +197,7 @@ export function ScreenCapturesCard() {
                   className="relative group cursor-pointer rounded-lg overflow-hidden border border-border/50 bg-muted/30"
                   onClick={() => setSelectedCapture(capture)}
                 >
-                  <div className="aspect-video relative">
+                    <div className="aspect-video relative">
                     <img
                       src={capture.capture_url}
                       alt={`Captura de ${capture.employee_name}`}
@@ -201,13 +212,40 @@ export function ScreenCapturesCard() {
                         <FileText className="h-5 w-5 text-green-400" />
                       )}
                     </div>
-                    {capture.extracted_text && (
-                      <div className="absolute top-1 right-1">
-                        <Badge variant="secondary" className="bg-green-500/80 text-white text-[10px] px-1">
-                          OCR
-                        </Badge>
-                      </div>
-                    )}
+                    {/* OCR Status Badge */}
+                    <div className="absolute top-1 right-1">
+                      {(() => {
+                        const status = getOcrStatus(capture);
+                        if (status === 'completed') {
+                          return (
+                            <Badge variant="secondary" className="bg-green-500/80 text-white text-[10px] px-1">
+                              OCR
+                            </Badge>
+                          );
+                        }
+                        if (status === 'processing') {
+                          return (
+                            <Badge variant="secondary" className="bg-blue-500/80 text-white text-[10px] px-1 flex items-center gap-1">
+                              <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                              OCR
+                            </Badge>
+                          );
+                        }
+                        if (status === 'no-text') {
+                          return (
+                            <Badge variant="secondary" className="bg-gray-500/80 text-white text-[10px] px-1">
+                              Sem texto
+                            </Badge>
+                          );
+                        }
+                        return (
+                          <Badge variant="secondary" className="bg-amber-500/80 text-white text-[10px] px-1 flex items-center gap-1">
+                            <Clock className="h-2.5 w-2.5" />
+                            Pendente
+                          </Badge>
+                        );
+                      })()}
+                    </div>
                   </div>
                   <div className="p-2">
                     <p className="text-sm font-medium truncate">
