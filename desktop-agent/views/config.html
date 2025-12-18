@@ -183,6 +183,22 @@
             <small>Impede capturas de tela</small>
           </div>
         </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="vpnDetectionEnabled" checked>
+          <div>
+            <label for="vpnDetectionEnabled">Detectar VPN</label>
+            <small>Identifica conexões VPN ativas</small>
+          </div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="mouseJigglerDetectionEnabled" checked>
+          <div>
+            <label for="mouseJigglerDetectionEnabled">Detectar Mouse Jiggler</label>
+            <small>Identifica simuladores de atividade</small>
+          </div>
+        </div>
       </div>
 
       <button type="submit">Salvar e Iniciar Monitoramento</button>
@@ -207,6 +223,8 @@
       document.getElementById('productivityEnabled').checked = existingConfig.productivityEnabled !== false;
       document.getElementById('usbBlockEnabled').checked = existingConfig.usbBlockEnabled !== false;
       document.getElementById('printScreenBlockEnabled').checked = existingConfig.printScreenBlockEnabled !== false;
+      document.getElementById('vpnDetectionEnabled').checked = existingConfig.vpnDetectionEnabled !== false;
+      document.getElementById('mouseJigglerDetectionEnabled').checked = existingConfig.mouseJigglerDetectionEnabled !== false;
     }
 
     document.getElementById('configForm').addEventListener('submit', (e) => {
@@ -224,6 +242,8 @@
         productivityEnabled: document.getElementById('productivityEnabled').checked,
         usbBlockEnabled: document.getElementById('usbBlockEnabled').checked,
         printScreenBlockEnabled: document.getElementById('printScreenBlockEnabled').checked,
+        vpnDetectionEnabled: document.getElementById('vpnDetectionEnabled').checked,
+        mouseJigglerDetectionEnabled: document.getElementById('mouseJigglerDetectionEnabled').checked,
       };
       
       ipcRenderer.send('save-config', config);
