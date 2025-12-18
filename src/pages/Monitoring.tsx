@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Keyboard, TrendingUp, Monitor, Eye, Settings, Loader2, Activity, RefreshCw } from 'lucide-react';
+import { Keyboard, TrendingUp, Monitor, Eye, Settings, Loader2, Activity, RefreshCw, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMonitoringSettings } from '@/hooks/useMonitoringSettings';
 import { KeystrokeActivityCard } from '@/components/KeystrokeActivityCard';
@@ -20,6 +20,8 @@ import { RealtimeKeystrokesCard } from '@/components/RealtimeKeystrokesCard';
 import { RealtimeClicksCard } from '@/components/RealtimeClicksCard';
 import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 import { RealtimeActivityFilters, RealtimeFilters } from '@/components/RealtimeActivityFilters';
+import { LiveViewCard } from '@/components/LiveViewCard';
+import { SessionPlayback } from '@/components/SessionPlayback';
 
 const Monitoring = () => {
   const { settings, loading, updateSetting } = useMonitoringSettings();
@@ -130,8 +132,16 @@ const Monitoring = () => {
 
           <MonitoringNotice variant="admin" />
 
-          <Tabs defaultValue="realtime" className="space-y-6">
+          <Tabs defaultValue="liveview" className="space-y-6">
             <TabsList>
+              <TabsTrigger value="liveview" className="flex items-center gap-2">
+                <Eye className="h-4 w-4" />
+                Live View
+              </TabsTrigger>
+              <TabsTrigger value="playback" className="flex items-center gap-2">
+                <Video className="h-4 w-4" />
+                Session Playback
+              </TabsTrigger>
               <TabsTrigger value="realtime" className="flex items-center gap-2">
                 <Activity className="h-4 w-4" />
                 Tempo Real
@@ -145,6 +155,26 @@ const Monitoring = () => {
                 Configurações
               </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="liveview" className="space-y-6">
+              <div>
+                <h2 className="text-lg font-semibold">Visualização em Tempo Real</h2>
+                <p className="text-sm text-muted-foreground">
+                  Veja a tela do funcionário em tempo real com atualizações a cada poucos segundos
+                </p>
+              </div>
+              <LiveViewCard />
+            </TabsContent>
+
+            <TabsContent value="playback" className="space-y-6">
+              <div>
+                <h2 className="text-lg font-semibold">Replay de Sessões</h2>
+                <p className="text-sm text-muted-foreground">
+                  Reproduza sessões gravadas com indicadores de cliques e teclas digitadas
+                </p>
+              </div>
+              <SessionPlayback />
+            </TabsContent>
 
             <TabsContent value="realtime" className="space-y-6">
               <div className="flex items-center justify-between">
