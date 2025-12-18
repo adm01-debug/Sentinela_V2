@@ -212,6 +212,51 @@ export type Database = {
           },
         ]
       }
+      employee_schedules: {
+        Row: {
+          assigned_by: string | null
+          created_at: string
+          effective_from: string
+          effective_until: string | null
+          employee_id: string
+          id: string
+          schedule_id: string
+        }
+        Insert: {
+          assigned_by?: string | null
+          created_at?: string
+          effective_from?: string
+          effective_until?: string | null
+          employee_id: string
+          id?: string
+          schedule_id: string
+        }
+        Update: {
+          assigned_by?: string | null
+          created_at?: string
+          effective_from?: string
+          effective_until?: string | null
+          employee_id?: string
+          id?: string
+          schedule_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_schedules_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_schedules_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "work_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           avatar_url: string | null
@@ -426,6 +471,53 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      overtime_requests: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          employee_id: string
+          end_time: string
+          id: string
+          reason: string | null
+          requested_date: string
+          start_time: string
+          status: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          employee_id: string
+          end_time: string
+          id?: string
+          reason?: string | null
+          requested_date: string
+          start_time: string
+          status?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          employee_id?: string
+          end_time?: string
+          id?: string
+          reason?: string | null
+          requested_date?: string
+          start_time?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "overtime_requests_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       policy_acknowledgments: {
         Row: {
@@ -751,6 +843,36 @@ export type Database = {
         }
         Relationships: []
       }
+      station_block_logs: {
+        Row: {
+          block_type: string
+          blocked_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          reason: string | null
+          unblocked_at: string | null
+        }
+        Insert: {
+          block_type: string
+          blocked_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          reason?: string | null
+          unblocked_at?: string | null
+        }
+        Update: {
+          block_type?: string
+          blocked_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          reason?: string | null
+          unblocked_at?: string | null
+        }
+        Relationships: []
+      }
       team_members: {
         Row: {
           employee_name: string
@@ -887,6 +1009,57 @@ export type Database = {
           rule_value?: string
           severity?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      work_schedules: {
+        Row: {
+          allow_overtime: boolean
+          auto_block_enabled: boolean
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_time: string
+          grace_period_minutes: number
+          id: string
+          lunch_end: string | null
+          lunch_start: string | null
+          name: string
+          start_time: string
+          updated_at: string
+          work_days: number[]
+        }
+        Insert: {
+          allow_overtime?: boolean
+          auto_block_enabled?: boolean
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_time?: string
+          grace_period_minutes?: number
+          id?: string
+          lunch_end?: string | null
+          lunch_start?: string | null
+          name: string
+          start_time?: string
+          updated_at?: string
+          work_days?: number[]
+        }
+        Update: {
+          allow_overtime?: boolean
+          auto_block_enabled?: boolean
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_time?: string
+          grace_period_minutes?: number
+          id?: string
+          lunch_end?: string | null
+          lunch_start?: string | null
+          name?: string
+          start_time?: string
+          updated_at?: string
+          work_days?: number[]
         }
         Relationships: []
       }

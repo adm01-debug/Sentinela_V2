@@ -23,6 +23,7 @@ import MonitoringPolicies from "./pages/MonitoringPolicies";
 import PolicyAcknowledgments from "./pages/PolicyAcknowledgments";
 import Teams from "./pages/Teams";
 import Employees from "./pages/Employees";
+import WorkSchedules from "./pages/WorkSchedules";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -139,6 +140,13 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <PolicyAcknowledgments />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/work-schedules" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <WorkSchedules />
                 </PolicyGate>
               </ProtectedRoute>
             } />
