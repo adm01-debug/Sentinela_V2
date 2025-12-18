@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-device-token",
 };
 
 interface DeviceRegistration {
@@ -28,6 +28,18 @@ interface ActivityData {
   recorded_at?: string;
 }
 
+// Simple hash function for device token validation
+function generateDeviceToken(deviceId: string, employeeName: string): string {
+  const data = `${deviceId}:${employeeName}:securewatch-mobile`;
+  let hash = 0;
+  for (let i = 0; i < data.length; i++) {
+    const char = data.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash).toString(36);
+}
+
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -41,12 +53,26 @@ serve(async (req: Request) => {
     const url = new URL(req.url);
     const action = url.searchParams.get("action");
 
+    // Authentication check for non-register actions
+    const deviceToken = req.headers.get("x-device-token");
+    
     if (req.method === "POST") {
       const body = await req.json();
 
       switch (action) {
         case "register": {
           const registration = body as DeviceRegistration;
+          
+          // Validate required fields
+          if (!registration.employee_name || !registration.device_id || !registration.os_type) {
+            return new Response(
+              JSON.stringify({ error: "Missing required fields: employee_name, device_id, os_type" }),
+              { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // Generate device token for future authentication
+          const token = generateDeviceToken(registration.device_id, registration.employee_name);
           
           // Check if device already exists
           const { data: existingDevice } = await supabase
@@ -77,7 +103,7 @@ serve(async (req: Request) => {
             
             console.log("Device updated:", registration.device_id);
             return new Response(
-              JSON.stringify({ success: true, device: data, action: "updated" }),
+              JSON.stringify({ success: true, device: data, action: "updated", device_token: token }),
               { headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
@@ -102,13 +128,47 @@ serve(async (req: Request) => {
 
           console.log("Device registered:", registration.device_id);
           return new Response(
-            JSON.stringify({ success: true, device: data, action: "created" }),
+            JSON.stringify({ success: true, device: data, action: "created", device_token: token }),
             { headers: { ...corsHeaders, "Content-Type": "application/json" } }
           );
         }
 
         case "activity": {
           const activities = Array.isArray(body) ? body : [body];
+          
+          // Validate device token for activity logging
+          if (!deviceToken) {
+            return new Response(
+              JSON.stringify({ error: "Missing x-device-token header" }),
+              { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // Verify at least one activity has valid token
+          const firstActivity = activities[0] as ActivityData;
+          const expectedToken = generateDeviceToken(firstActivity.device_id, firstActivity.employee_name);
+          
+          if (deviceToken !== expectedToken) {
+            console.log("Invalid device token for activity logging");
+            return new Response(
+              JSON.stringify({ error: "Invalid device token" }),
+              { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // Verify device exists and is active
+          const { data: device } = await supabase
+            .from("mobile_devices")
+            .select("id, is_active")
+            .eq("device_id", firstActivity.device_id)
+            .maybeSingle();
+
+          if (!device || !device.is_active) {
+            return new Response(
+              JSON.stringify({ error: "Device not registered or inactive" }),
+              { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
           
           // Get device UUID from device_id
           const deviceIds = [...new Set(activities.map((a: ActivityData) => a.device_id))];
@@ -158,7 +218,23 @@ serve(async (req: Request) => {
         }
 
         case "heartbeat": {
-          const { device_id, latitude, longitude } = body;
+          const { device_id, employee_name, latitude, longitude } = body;
+          
+          // Validate device token
+          if (!deviceToken) {
+            return new Response(
+              JSON.stringify({ error: "Missing x-device-token header" }),
+              { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          const expectedToken = generateDeviceToken(device_id, employee_name);
+          if (deviceToken !== expectedToken) {
+            return new Response(
+              JSON.stringify({ error: "Invalid device token" }),
+              { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
           
           const { error } = await supabase
             .from("mobile_devices")
@@ -188,18 +264,49 @@ serve(async (req: Request) => {
 
     if (req.method === "GET") {
       const device_id = url.searchParams.get("device_id");
+      const employee_name = url.searchParams.get("employee_name");
       
-      if (action === "config" && device_id) {
+      if (action === "config" && device_id && employee_name) {
+        // Validate device token for config access
+        if (!deviceToken) {
+          return new Response(
+            JSON.stringify({ error: "Missing x-device-token header" }),
+            { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+
+        const expectedToken = generateDeviceToken(device_id, employee_name);
+        if (deviceToken !== expectedToken) {
+          return new Response(
+            JSON.stringify({ error: "Invalid device token" }),
+            { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+
+        // Verify device is registered
+        const { data: device } = await supabase
+          .from("mobile_devices")
+          .select("id, is_active")
+          .eq("device_id", device_id)
+          .maybeSingle();
+
+        if (!device || !device.is_active) {
+          return new Response(
+            JSON.stringify({ error: "Device not registered or inactive" }),
+            { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+
         // Get monitoring policies for the device
         const { data: policies } = await supabase
           .from("security_policies")
           .select("*")
           .eq("enabled", true);
 
-        // Get violation rules
+        // Get violation rules (only return basic info, not full rules)
         const { data: rules } = await supabase
           .from("violation_rules")
-          .select("*")
+          .select("id, rule_type, severity, is_active")
           .eq("is_active", true);
 
         return new Response(
