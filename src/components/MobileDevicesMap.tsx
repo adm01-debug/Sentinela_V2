@@ -98,22 +98,74 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
 
       const el = document.createElement("div");
       el.className = "device-marker";
-      el.innerHTML = `
+      
+      // Create pulsing animation for active devices
+      const pulseRing = device.is_active ? `
         <div style="
+          position: absolute;
           width: 40px;
           height: 40px;
-          background: ${device.is_active ? "#22c55e" : "#6b7280"};
           border-radius: 50%;
-          border: 3px solid white;
+          background: #22c55e;
+          opacity: 0.4;
+          animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        "></div>
+        <div style="
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #22c55e;
+          opacity: 0.2;
+          animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          animation-delay: 0.5s;
+        "></div>
+      ` : '';
+
+      el.innerHTML = `
+        <div style="
+          position: relative;
+          width: 40px;
+          height: 40px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 20px;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-          cursor: pointer;
         ">
-          ${device.os_type === "ios" ? "🍎" : "🤖"}
+          ${pulseRing}
+          <div style="
+            position: relative;
+            width: 40px;
+            height: 40px;
+            background: ${device.is_active ? "#22c55e" : "#6b7280"};
+            border-radius: 50%;
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 1;
+          ">
+            ${device.os_type === "ios" ? "🍎" : "🤖"}
+          </div>
         </div>
+        <style>
+          @keyframes pulse-ring {
+            0% {
+              transform: scale(1);
+              opacity: 0.4;
+            }
+            50% {
+              transform: scale(1.8);
+              opacity: 0;
+            }
+            100% {
+              transform: scale(1);
+              opacity: 0;
+            }
+          }
+        </style>
       `;
 
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
@@ -123,8 +175,8 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
             ${device.device_model || "Dispositivo"} • ${device.os_type.toUpperCase()}
           </p>
           <p style="font-size: 12px; color: #666; margin: 2px 0;">
-            Status: <span style="color: ${device.is_active ? "#22c55e" : "#6b7280"};">
-              ${device.is_active ? "Ativo" : "Inativo"}
+            Status: <span style="color: ${device.is_active ? "#22c55e" : "#6b7280"}; font-weight: 600;">
+              ${device.is_active ? "🟢 Online" : "⚫ Offline"}
             </span>
           </p>
           ${device.last_seen_at ? `
