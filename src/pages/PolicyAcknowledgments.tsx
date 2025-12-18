@@ -13,13 +13,20 @@ import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
-  Image as ImageIcon
+  Image as ImageIcon,
+  UserX,
+  Plus,
+  Trash2,
+  ShieldOff
 } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Select,
   SelectContent,
@@ -30,11 +37,26 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 interface Acknowledgment {
   id: string;
@@ -48,17 +70,40 @@ interface Acknowledgment {
   policy_version: string | null;
 }
 
+interface Exemption {
+  id: string;
+  employee_name: string;
+  reason: string | null;
+  exempted_by: string | null;
+  created_at: string;
+  expires_at: string | null;
+}
+
 export default function PolicyAcknowledgments() {
   const [acknowledgments, setAcknowledgments] = useState<Acknowledgment[]>([]);
+  const [exemptions, setExemptions] = useState<Exemption[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingExemptions, setLoadingExemptions] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [dateFilter, setDateFilter] = useState<string>('all');
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [activeTab, setActiveTab] = useState('acknowledgments');
+  
+  // New exemption form state
+  const [newExemptionOpen, setNewExemptionOpen] = useState(false);
+  const [newEmployeeName, setNewEmployeeName] = useState('');
+  const [newReason, setNewReason] = useState('');
+  const [newExpiresAt, setNewExpiresAt] = useState('');
+  const [submittingExemption, setSubmittingExemption] = useState(false);
+  
+  const { toast } = useToast();
+  const { user } = useAuth();
   const itemsPerPage = 10;
 
   useEffect(() => {
     fetchAcknowledgments();
+    fetchExemptions();
   }, [page, dateFilter]);
 
   const fetchAcknowledgments = async () => {
@@ -102,6 +147,100 @@ export default function PolicyAcknowledgments() {
     }
   };
 
+  const fetchExemptions = async () => {
+    setLoadingExemptions(true);
+    try {
+      const { data, error } = await supabase
+        .from('policy_exemptions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setExemptions(data || []);
+    } catch (err) {
+      console.error('Error fetching exemptions:', err);
+    } finally {
+      setLoadingExemptions(false);
+    }
+  };
+
+  const addExemption = async () => {
+    if (!newEmployeeName.trim()) {
+      toast({
+        title: "Erro",
+        description: "Nome do funcionário é obrigatório.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setSubmittingExemption(true);
+    try {
+      const { error } = await supabase
+        .from('policy_exemptions')
+        .insert({
+          employee_name: newEmployeeName.trim(),
+          reason: newReason.trim() || null,
+          exempted_by: user?.id,
+          expires_at: newExpiresAt ? new Date(newExpiresAt).toISOString() : null
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Isenção adicionada",
+        description: `${newEmployeeName} foi isento da confirmação diária.`
+      });
+
+      setNewExemptionOpen(false);
+      setNewEmployeeName('');
+      setNewReason('');
+      setNewExpiresAt('');
+      fetchExemptions();
+    } catch (err: any) {
+      console.error('Error adding exemption:', err);
+      toast({
+        title: "Erro",
+        description: err.message?.includes('duplicate') 
+          ? "Este funcionário já está isento." 
+          : "Não foi possível adicionar a isenção.",
+        variant: "destructive"
+      });
+    } finally {
+      setSubmittingExemption(false);
+    }
+  };
+
+  const removeExemption = async (id: string, employeeName: string) => {
+    try {
+      const { error } = await supabase
+        .from('policy_exemptions')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Isenção removida",
+        description: `${employeeName} agora precisa confirmar políticas diariamente.`
+      });
+
+      fetchExemptions();
+    } catch (err) {
+      console.error('Error removing exemption:', err);
+      toast({
+        title: "Erro",
+        description: "Não foi possível remover a isenção.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const isExemptionExpired = (expiresAt: string | null) => {
+    if (!expiresAt) return false;
+    return new Date(expiresAt) < new Date();
+  };
+
   const filteredAcknowledgments = acknowledgments.filter(ack =>
     ack.employee_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -136,7 +275,7 @@ export default function PolicyAcknowledgments() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
@@ -187,9 +326,36 @@ export default function PolicyAcknowledgments() {
               </div>
             </CardContent>
           </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Usuários Isentos</p>
+                  <p className="text-2xl font-bold">{exemptions.length}</p>
+                </div>
+                <ShieldOff className="h-8 w-8 text-amber-500 opacity-20" />
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Filters */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="acknowledgments" className="gap-2">
+              <ClipboardCheck className="h-4 w-4" />
+              Confirmações
+            </TabsTrigger>
+            <TabsTrigger value="exemptions" className="gap-2">
+              <UserX className="h-4 w-4" />
+              Isenções
+              {exemptions.length > 0 && (
+                <Badge variant="secondary" className="ml-1">{exemptions.length}</Badge>
+              )}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="acknowledgments" className="space-y-6">
+            {/* Filters */}
         <Card className="mb-6">
           <CardContent className="pt-6">
             <div className="flex flex-col md:flex-row gap-4">
@@ -362,6 +528,163 @@ export default function PolicyAcknowledgments() {
             )}
           </CardContent>
         </Card>
+          </TabsContent>
+
+          <TabsContent value="exemptions" className="space-y-6">
+            {/* Exemptions Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-semibold">Usuários Isentos</h2>
+                <p className="text-sm text-muted-foreground">
+                  Funcionários que não precisam confirmar políticas diariamente
+                </p>
+              </div>
+              <Dialog open={newExemptionOpen} onOpenChange={setNewExemptionOpen}>
+                <DialogTrigger asChild>
+                  <Button className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Nova Isenção
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Adicionar Isenção</DialogTitle>
+                    <DialogDescription>
+                      Adicione um funcionário que não precisa confirmar as políticas diariamente.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="employee-name">Nome ou Email do Funcionário *</Label>
+                      <Input
+                        id="employee-name"
+                        placeholder="ex: joao.silva@empresa.com"
+                        value={newEmployeeName}
+                        onChange={(e) => setNewEmployeeName(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="reason">Motivo da Isenção</Label>
+                      <Textarea
+                        id="reason"
+                        placeholder="ex: Funcionário trabalha remotamente em área sem acesso à câmera"
+                        value={newReason}
+                        onChange={(e) => setNewReason(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="expires-at">Data de Expiração (opcional)</Label>
+                      <Input
+                        id="expires-at"
+                        type="date"
+                        value={newExpiresAt}
+                        onChange={(e) => setNewExpiresAt(e.target.value)}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Deixe em branco para isenção permanente
+                      </p>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setNewExemptionOpen(false)}>
+                      Cancelar
+                    </Button>
+                    <Button onClick={addExemption} disabled={submittingExemption}>
+                      {submittingExemption ? 'Adicionando...' : 'Adicionar Isenção'}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {/* Exemptions List */}
+            <Card>
+              <CardContent className="pt-6">
+                {loadingExemptions ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+                  </div>
+                ) : exemptions.length === 0 ? (
+                  <div className="text-center py-12">
+                    <UserX className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                    <p className="text-muted-foreground">Nenhum usuário isento.</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Todos os funcionários precisam confirmar as políticas diariamente.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {exemptions.map((exemption) => (
+                      <div
+                        key={exemption.id}
+                        className={`flex items-center justify-between p-4 rounded-lg border ${
+                          isExemptionExpired(exemption.expires_at)
+                            ? 'border-destructive/30 bg-destructive/5'
+                            : 'border-border bg-card/50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="p-2 rounded-full bg-amber-500/10">
+                            <ShieldOff className="h-5 w-5 text-amber-500" />
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <p className="font-medium">{exemption.employee_name}</p>
+                              {isExemptionExpired(exemption.expires_at) && (
+                                <Badge variant="destructive" className="text-xs">Expirado</Badge>
+                              )}
+                              {!exemption.expires_at && (
+                                <Badge variant="secondary" className="text-xs">Permanente</Badge>
+                              )}
+                            </div>
+                            {exemption.reason && (
+                              <p className="text-sm text-muted-foreground">{exemption.reason}</p>
+                            )}
+                            <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
+                              <span>
+                                Criado em {format(new Date(exemption.created_at), "dd/MM/yyyy", { locale: ptBR })}
+                              </span>
+                              {exemption.expires_at && (
+                                <span>
+                                  Expira em {format(new Date(exemption.expires_at), "dd/MM/yyyy", { locale: ptBR })}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Remover Isenção</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Tem certeza que deseja remover a isenção de <strong>{exemption.employee_name}</strong>?
+                                Este funcionário passará a precisar confirmar as políticas diariamente.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => removeExemption(exemption.id, exemption.employee_name)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Remover Isenção
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );
