@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,11 +19,85 @@ import { ActivityStatsCards } from '@/components/ActivityStatsCards';
 import { RealtimeKeystrokesCard } from '@/components/RealtimeKeystrokesCard';
 import { RealtimeClicksCard } from '@/components/RealtimeClicksCard';
 import { ActivityHeatmap } from '@/components/ActivityHeatmap';
+import { RealtimeActivityFilters, RealtimeFilters } from '@/components/RealtimeActivityFilters';
 
 const Monitoring = () => {
   const { settings, loading, updateSetting } = useMonitoringSettings();
   const [showEmployeePreview, setShowEmployeePreview] = useState(false);
   const { keystrokes, clicks, stats, loading: realtimeLoading, refetch } = useRealtimeActivity();
+  const [filters, setFilters] = useState<RealtimeFilters>({
+    employeeName: '',
+    appName: '',
+    dateFrom: undefined,
+    dateTo: undefined,
+  });
+
+  // Extract unique employees and apps for filter options
+  const employees = useMemo(() => {
+    const employeeSet = new Set<string>();
+    keystrokes.forEach((k) => employeeSet.add(k.employee_name));
+    clicks.forEach((c) => employeeSet.add(c.employee_name));
+    return Array.from(employeeSet).sort();
+  }, [keystrokes, clicks]);
+
+  const apps = useMemo(() => {
+    const appSet = new Set<string>();
+    keystrokes.forEach((k) => k.app_name && appSet.add(k.app_name));
+    clicks.forEach((c) => c.app_name && appSet.add(c.app_name));
+    return Array.from(appSet).sort();
+  }, [keystrokes, clicks]);
+
+  // Filter data
+  const filteredKeystrokes = useMemo(() => {
+    return keystrokes.filter((k) => {
+      if (filters.employeeName && k.employee_name !== filters.employeeName) return false;
+      if (filters.appName && k.app_name !== filters.appName) return false;
+      if (filters.dateFrom) {
+        const recordedDate = new Date(k.recorded_at);
+        if (recordedDate < filters.dateFrom) return false;
+      }
+      if (filters.dateTo) {
+        const recordedDate = new Date(k.recorded_at);
+        const endOfDay = new Date(filters.dateTo);
+        endOfDay.setHours(23, 59, 59, 999);
+        if (recordedDate > endOfDay) return false;
+      }
+      return true;
+    });
+  }, [keystrokes, filters]);
+
+  const filteredClicks = useMemo(() => {
+    return clicks.filter((c) => {
+      if (filters.employeeName && c.employee_name !== filters.employeeName) return false;
+      if (filters.appName && c.app_name !== filters.appName) return false;
+      if (filters.dateFrom) {
+        const recordedDate = new Date(c.recorded_at);
+        if (recordedDate < filters.dateFrom) return false;
+      }
+      if (filters.dateTo) {
+        const recordedDate = new Date(c.recorded_at);
+        const endOfDay = new Date(filters.dateTo);
+        endOfDay.setHours(23, 59, 59, 999);
+        if (recordedDate > endOfDay) return false;
+      }
+      return true;
+    });
+  }, [clicks, filters]);
+
+  // Calculate filtered stats
+  const filteredStats = useMemo(() => {
+    const activeEmployees = new Set<string>();
+    filteredKeystrokes.forEach((k) => activeEmployees.add(k.employee_name));
+    filteredClicks.forEach((c) => activeEmployees.add(c.employee_name));
+    
+    return {
+      totalKeystrokes: filteredKeystrokes.length,
+      totalClicks: filteredClicks.length,
+      activeEmployees,
+      keystrokesPerMinute: filteredKeystrokes.length > 0 ? Math.round(filteredKeystrokes.length / 60) : 0,
+      clicksPerMinute: filteredClicks.length > 0 ? Math.round(filteredClicks.length / 60) : 0,
+    };
+  }, [filteredKeystrokes, filteredClicks]);
 
   if (loading) {
     return (
@@ -91,20 +165,27 @@ const Monitoring = () => {
                 </Button>
               </div>
 
+              <RealtimeActivityFilters
+                filters={filters}
+                onFiltersChange={setFilters}
+                employees={employees}
+                apps={apps}
+              />
+
               <ActivityStatsCards
-                totalKeystrokes={stats.totalKeystrokes}
-                totalClicks={stats.totalClicks}
-                activeEmployeesCount={stats.activeEmployees.size}
-                keystrokesPerMinute={stats.keystrokesPerMinute}
-                clicksPerMinute={stats.clicksPerMinute}
+                totalKeystrokes={filteredStats.totalKeystrokes}
+                totalClicks={filteredStats.totalClicks}
+                activeEmployeesCount={filteredStats.activeEmployees.size}
+                keystrokesPerMinute={filteredStats.keystrokesPerMinute}
+                clicksPerMinute={filteredStats.clicksPerMinute}
               />
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <RealtimeKeystrokesCard keystrokes={keystrokes} />
-                <RealtimeClicksCard clicks={clicks} />
+                <RealtimeKeystrokesCard keystrokes={filteredKeystrokes} />
+                <RealtimeClicksCard clicks={filteredClicks} />
               </div>
 
-              <ActivityHeatmap keystrokes={keystrokes} clicks={clicks} />
+              <ActivityHeatmap keystrokes={filteredKeystrokes} clicks={filteredClicks} />
             </TabsContent>
 
             <TabsContent value="dashboard" className="space-y-6">
