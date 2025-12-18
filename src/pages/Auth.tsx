@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useMFA } from '@/hooks/useMFA';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { Shield, Loader2, Eye, EyeOff } from 'lucide-react';
 import { z } from 'zod';
+import { MFAVerify } from '@/components/MFAVerify';
 
 const loginSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -22,12 +24,14 @@ const signupSchema = z.object({
 });
 
 export default function Auth() {
-  const { user, signIn, signUp } = useAuth();
+  const { user, signIn, signUp, signOut } = useAuth();
+  const { needsMFAVerification, isVerified } = useMFA();
   const navigate = useNavigate();
   const { toast } = useToast();
   
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showMFAVerify, setShowMFAVerify] = useState(false);
   
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -37,10 +41,17 @@ export default function Auth() {
   const [signupPassword, setSignupPassword] = useState('');
 
   useEffect(() => {
-    if (user) {
-      navigate('/');
+    if (user && !showMFAVerify) {
+      // Check if MFA verification is needed
+      needsMFAVerification().then(needsVerification => {
+        if (needsVerification) {
+          setShowMFAVerify(true);
+        } else {
+          navigate('/');
+        }
+      });
     }
-  }, [user, navigate]);
+  }, [user, navigate, needsMFAVerification, showMFAVerify]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,6 +123,25 @@ export default function Auth() {
       });
     }
   };
+
+  const handleMFAVerified = () => {
+    setShowMFAVerify(false);
+    navigate('/');
+  };
+
+  const handleMFABack = async () => {
+    await signOut();
+    setShowMFAVerify(false);
+  };
+
+  // Show MFA verification screen if needed
+  if (showMFAVerify && user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <MFAVerify onVerified={handleMFAVerified} onBack={handleMFABack} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">

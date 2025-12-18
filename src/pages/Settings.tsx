@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, AppWindow, Search, Loader2 } from 'lucide-react';
+import { ArrowLeft, Shield, AppWindow, Search, Loader2, UserCog } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,6 +9,7 @@ import { ApplicationRuleRow } from '@/components/ApplicationRuleRow';
 import { AddApplicationDialog } from '@/components/AddApplicationDialog';
 import { EditApplicationDialog } from '@/components/EditApplicationDialog';
 import { SettingsAuditLog } from '@/components/SettingsAuditLog';
+import { MFASettings } from '@/components/MFASettings';
 import { useSettings, type ApplicationRule } from '@/hooks/useSettings';
 import { categoryLabels } from '@/data/settingsData';
 
@@ -69,14 +70,18 @@ export default function Settings() {
 
       <main className="container px-4 py-6">
         <Tabs defaultValue="policies" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsList className="grid w-full max-w-lg grid-cols-3">
             <TabsTrigger value="policies" className="gap-2">
               <Shield className="h-4 w-4" />
-              Políticas de Bloqueio
+              Políticas
             </TabsTrigger>
             <TabsTrigger value="apps" className="gap-2">
               <AppWindow className="h-4 w-4" />
               Aplicativos
+            </TabsTrigger>
+            <TabsTrigger value="account" className="gap-2">
+              <UserCog className="h-4 w-4" />
+              Conta
             </TabsTrigger>
           </TabsList>
 
@@ -209,6 +214,31 @@ export default function Settings() {
                   {appRules.filter(r => r.status === 'blocked').length}
                 </p>
                 <p className="text-sm text-muted-foreground">Bloqueados</p>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Account Tab */}
+          <TabsContent value="account" className="space-y-6">
+            {/* 2FA Settings */}
+            <MFASettings />
+
+            {/* Account Info */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <h3 className="text-lg font-semibold mb-4">Segurança da Conta</h3>
+              <div className="space-y-4 text-sm text-muted-foreground">
+                <p>
+                  • Use senhas fortes com pelo menos 12 caracteres, incluindo letras, números e símbolos
+                </p>
+                <p>
+                  • Ative a autenticação de dois fatores para proteger sua conta contra acessos não autorizados
+                </p>
+                <p>
+                  • Nunca compartilhe suas credenciais de acesso com outras pessoas
+                </p>
+                <p>
+                  • Faça logout ao usar computadores compartilhados ou públicos
+                </p>
               </div>
             </div>
           </TabsContent>
