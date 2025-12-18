@@ -1,15 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { supabase } from "@/integrations/supabase/client";
 import { MobileDevice } from "@/hooks/useMobileDevices";
-import { Loader2 } from "lucide-react";
+import { Loader2, Filter } from "lucide-react";
 import { useGeofences, Geofence } from "@/hooks/useGeofences";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface MobileDevicesMapProps {
   devices: MobileDevice[];
 }
+
+type StatusFilter = "all" | "online" | "offline";
+type OsFilter = "all" | "ios" | "android";
 
 export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -20,6 +25,25 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
   const [error, setError] = useState<string | null>(null);
   const { geofences } = useGeofences();
   const prevDevicePositions = useRef<Map<string, { lat: number; lng: number; insideGeofences: Set<string> }>>(new Map());
+  
+  // Filter states
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [osFilter, setOsFilter] = useState<OsFilter>("all");
+
+  // Filtered devices
+  const filteredDevices = useMemo(() => {
+    return devices.filter((device) => {
+      // Status filter
+      if (statusFilter === "online" && !device.is_active) return false;
+      if (statusFilter === "offline" && device.is_active) return false;
+      
+      // OS filter
+      if (osFilter === "ios" && device.os_type !== "ios") return false;
+      if (osFilter === "android" && device.os_type !== "android") return false;
+      
+      return true;
+    });
+  }, [devices, statusFilter, osFilter]);
 
   useEffect(() => {
     const initMap = async () => {
@@ -93,7 +117,7 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
     markers.current = [];
 
     // Add markers for devices with location
-    devices.forEach((device) => {
+    filteredDevices.forEach((device) => {
       if (!device.last_location_lat || !device.last_location_lng) return;
 
       const el = document.createElement("div");
@@ -378,13 +402,13 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
     });
   };
 
-  // Update markers when devices change
+  // Update markers when devices or filters change
   useEffect(() => {
     if (map.current && !loading) {
       updateMarkers();
       checkGeofenceAlerts();
     }
-  }, [devices, loading]);
+  }, [filteredDevices, loading]);
 
   // Update geofences when they change
   useEffect(() => {
@@ -409,6 +433,79 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
         </div>
       )}
       <div ref={mapContainer} className="w-full h-full" />
+      
+      {/* Filters Panel */}
+      <div className="absolute top-4 left-4 bg-background/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg z-10">
+        <div className="flex items-center gap-2 mb-2">
+          <Filter className="h-4 w-4 text-muted-foreground" />
+          <h4 className="text-xs font-semibold text-foreground">Filtros</h4>
+          <Badge variant="secondary" className="text-xs">
+            {filteredDevices.filter(d => d.last_location_lat && d.last_location_lng).length}
+          </Badge>
+        </div>
+        
+        {/* Status Filter */}
+        <div className="space-y-1 mb-3">
+          <span className="text-xs text-muted-foreground">Status</span>
+          <div className="flex gap-1">
+            <Button
+              size="sm"
+              variant={statusFilter === "all" ? "default" : "outline"}
+              className="h-7 text-xs px-2"
+              onClick={() => setStatusFilter("all")}
+            >
+              Todos
+            </Button>
+            <Button
+              size="sm"
+              variant={statusFilter === "online" ? "default" : "outline"}
+              className="h-7 text-xs px-2"
+              onClick={() => setStatusFilter("online")}
+            >
+              🟢 Online
+            </Button>
+            <Button
+              size="sm"
+              variant={statusFilter === "offline" ? "default" : "outline"}
+              className="h-7 text-xs px-2"
+              onClick={() => setStatusFilter("offline")}
+            >
+              ⚫ Offline
+            </Button>
+          </div>
+        </div>
+        
+        {/* OS Filter */}
+        <div className="space-y-1">
+          <span className="text-xs text-muted-foreground">Sistema</span>
+          <div className="flex gap-1">
+            <Button
+              size="sm"
+              variant={osFilter === "all" ? "default" : "outline"}
+              className="h-7 text-xs px-2"
+              onClick={() => setOsFilter("all")}
+            >
+              Todos
+            </Button>
+            <Button
+              size="sm"
+              variant={osFilter === "ios" ? "default" : "outline"}
+              className="h-7 text-xs px-2"
+              onClick={() => setOsFilter("ios")}
+            >
+              🍎 iOS
+            </Button>
+            <Button
+              size="sm"
+              variant={osFilter === "android" ? "default" : "outline"}
+              className="h-7 text-xs px-2"
+              onClick={() => setOsFilter("android")}
+            >
+              🤖 Android
+            </Button>
+          </div>
+        </div>
+      </div>
       
       {/* Map Legend */}
       <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg z-10">
