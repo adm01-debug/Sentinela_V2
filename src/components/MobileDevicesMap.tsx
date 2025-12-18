@@ -4,6 +4,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { supabase } from "@/integrations/supabase/client";
 import { MobileDevice } from "@/hooks/useMobileDevices";
 import { Loader2 } from "lucide-react";
+import { useGeofences, Geofence } from "@/hooks/useGeofences";
+import { toast } from "sonner";
 
 interface MobileDevicesMapProps {
   devices: MobileDevice[];
@@ -13,8 +15,11 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
+  const geofenceSourcesRef = useRef<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { geofences } = useGeofences();
+  const prevDevicePositions = useRef<Map<string, { lat: number; lng: number; insideGeofences: Set<string> }>>(new Map());
 
   useEffect(() => {
     const initMap = async () => {
@@ -63,6 +68,7 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
         map.current.on("load", () => {
           setLoading(false);
           updateMarkers();
+          drawGeofences();
         });
       } catch (err) {
         console.error("Error initializing map:", err);
@@ -138,12 +144,202 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
     });
   };
 
+  const drawGeofences = () => {
+    if (!map.current) return;
+
+    // Remove existing geofence layers and sources
+    geofenceSourcesRef.current.forEach((sourceId) => {
+      if (map.current?.getLayer(`${sourceId}-fill`)) {
+        map.current.removeLayer(`${sourceId}-fill`);
+      }
+      if (map.current?.getLayer(`${sourceId}-border`)) {
+        map.current.removeLayer(`${sourceId}-border`);
+      }
+      if (map.current?.getSource(sourceId)) {
+        map.current.removeSource(sourceId);
+      }
+    });
+    geofenceSourcesRef.current = [];
+
+    // Add geofence circles
+    geofences.filter(g => g.is_active).forEach((geofence) => {
+      const sourceId = `geofence-${geofence.id}`;
+      geofenceSourcesRef.current.push(sourceId);
+
+      // Create circle GeoJSON
+      const circleGeoJSON = createCircleGeoJSON(
+        geofence.longitude,
+        geofence.latitude,
+        geofence.radius_meters
+      );
+
+      map.current!.addSource(sourceId, {
+        type: "geojson",
+        data: circleGeoJSON,
+      });
+
+      // Add fill layer
+      map.current!.addLayer({
+        id: `${sourceId}-fill`,
+        type: "fill",
+        source: sourceId,
+        paint: {
+          "fill-color": "#22c55e",
+          "fill-opacity": 0.15,
+        },
+      });
+
+      // Add border layer
+      map.current!.addLayer({
+        id: `${sourceId}-border`,
+        type: "line",
+        source: sourceId,
+        paint: {
+          "line-color": "#22c55e",
+          "line-width": 2,
+          "line-dasharray": [2, 2],
+        },
+      });
+
+      // Add geofence center marker with label
+      const el = document.createElement("div");
+      el.innerHTML = `
+        <div style="
+          background: rgba(34, 197, 94, 0.9);
+          color: white;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 500;
+          white-space: nowrap;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        ">
+          📍 ${geofence.name}
+        </div>
+      `;
+
+      new mapboxgl.Marker(el)
+        .setLngLat([geofence.longitude, geofence.latitude])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }).setHTML(`
+            <div style="color: #1a1a1a; padding: 8px;">
+              <h3 style="font-weight: bold; margin-bottom: 4px;">${geofence.name}</h3>
+              ${geofence.description ? `<p style="font-size: 12px; color: #666; margin: 2px 0;">${geofence.description}</p>` : ""}
+              <p style="font-size: 12px; color: #666; margin: 2px 0;">
+                Raio: ${geofence.radius_meters}m
+              </p>
+              ${geofence.address ? `<p style="font-size: 11px; color: #999; margin-top: 4px;">${geofence.address}</p>` : ""}
+            </div>
+          `)
+        )
+        .addTo(map.current!);
+    });
+  };
+
+  // Helper function to create a circle GeoJSON polygon
+  const createCircleGeoJSON = (lng: number, lat: number, radiusMeters: number) => {
+    const points = 64;
+    const coords: number[][] = [];
+    const earthRadius = 6371000; // Earth radius in meters
+
+    for (let i = 0; i <= points; i++) {
+      const angle = (i / points) * 2 * Math.PI;
+      const dx = radiusMeters * Math.cos(angle);
+      const dy = radiusMeters * Math.sin(angle);
+
+      const newLat = lat + (dy / earthRadius) * (180 / Math.PI);
+      const newLng = lng + (dx / (earthRadius * Math.cos((lat * Math.PI) / 180))) * (180 / Math.PI);
+
+      coords.push([newLng, newLat]);
+    }
+
+    return {
+      type: "Feature" as const,
+      geometry: {
+        type: "Polygon" as const,
+        coordinates: [coords],
+      },
+      properties: {},
+    };
+  };
+
+  // Check if a point is inside a geofence
+  const isInsideGeofence = (deviceLat: number, deviceLng: number, geofence: Geofence): boolean => {
+    const earthRadius = 6371000;
+    const dLat = ((geofence.latitude - deviceLat) * Math.PI) / 180;
+    const dLng = ((geofence.longitude - deviceLng) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((deviceLat * Math.PI) / 180) *
+        Math.cos((geofence.latitude * Math.PI) / 180) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = earthRadius * c;
+    return distance <= geofence.radius_meters;
+  };
+
+  // Check for entry/exit alerts
+  const checkGeofenceAlerts = () => {
+    devices.forEach((device) => {
+      if (!device.last_location_lat || !device.last_location_lng) return;
+
+      const deviceKey = device.id;
+      const prevData = prevDevicePositions.current.get(deviceKey);
+      const currentInsideGeofences = new Set<string>();
+
+      geofences.filter(g => g.is_active).forEach((geofence) => {
+        const isInside = isInsideGeofence(
+          device.last_location_lat!,
+          device.last_location_lng!,
+          geofence
+        );
+
+        if (isInside) {
+          currentInsideGeofences.add(geofence.id);
+        }
+
+        if (prevData) {
+          const wasInside = prevData.insideGeofences.has(geofence.id);
+
+          // Entry alert
+          if (isInside && !wasInside) {
+            toast.success(`📍 ${device.employee_name} entrou na área "${geofence.name}"`, {
+              duration: 5000,
+            });
+          }
+
+          // Exit alert
+          if (!isInside && wasInside) {
+            toast.warning(`⚠️ ${device.employee_name} saiu da área "${geofence.name}"`, {
+              duration: 5000,
+            });
+          }
+        }
+      });
+
+      prevDevicePositions.current.set(deviceKey, {
+        lat: device.last_location_lat!,
+        lng: device.last_location_lng!,
+        insideGeofences: currentInsideGeofences,
+      });
+    });
+  };
+
   // Update markers when devices change
   useEffect(() => {
     if (map.current && !loading) {
       updateMarkers();
+      checkGeofenceAlerts();
     }
   }, [devices, loading]);
+
+  // Update geofences when they change
+  useEffect(() => {
+    if (map.current && !loading) {
+      drawGeofences();
+    }
+  }, [geofences, loading]);
 
   if (error) {
     return (
