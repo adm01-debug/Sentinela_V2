@@ -24,6 +24,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { usePendingNotifications } from '@/hooks/usePendingNotifications';
+import { NotificationsDropdown } from '@/components/NotificationsDropdown';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
@@ -68,26 +69,14 @@ export function Sidebar() {
     )}>
       <div className="flex h-16 items-center justify-between border-b border-border px-4">
         {!collapsed && (
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <Shield className="h-5 w-5 text-primary-foreground" />
-              {counts.total > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground animate-pulse">
-                  {counts.total > 9 ? '9+' : counts.total}
-                </span>
-              )}
-            </div>
-            <span className="font-bold text-lg">SecureWatch</span>
+          <div className="flex items-center gap-2">
+            <NotificationsDropdown collapsed={collapsed} />
+            <span className="font-bold text-lg cursor-pointer" onClick={() => navigate('/')}>SecureWatch</span>
           </div>
         )}
         {collapsed && (
-          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-primary mx-auto">
-            <Shield className="h-5 w-5 text-primary-foreground" />
-            {counts.total > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground animate-pulse">
-                {counts.total > 9 ? '9+' : counts.total}
-              </span>
-            )}
+          <div className="mx-auto">
+            <NotificationsDropdown collapsed={collapsed} />
           </div>
         )}
         <button 
