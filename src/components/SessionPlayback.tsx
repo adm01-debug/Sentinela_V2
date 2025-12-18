@@ -8,8 +8,9 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { 
   Play, Pause, SkipBack, SkipForward, Video, User, 
-  CalendarIcon, Mouse, Keyboard, Clock, Maximize2 
+  CalendarIcon, Mouse, Keyboard, Clock, Maximize2, BarChart3 
 } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -55,12 +56,17 @@ export const SessionPlayback = () => {
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const playIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Get available hours from recordings
-  const availableHours = recordings.reduce<Set<number>>((hours, rec) => {
+  // Get recording counts per hour for density visualization
+  const hourlyDensity = recordings.reduce<Record<number, number>>((acc, rec) => {
     const hour = new Date(rec.recorded_at).getHours();
-    hours.add(hour);
-    return hours;
-  }, new Set());
+    acc[hour] = (acc[hour] || 0) + 1;
+    return acc;
+  }, {});
+
+  const maxDensity = Math.max(...Object.values(hourlyDensity), 1);
+
+  // Get available hours from recordings
+  const availableHours = new Set(Object.keys(hourlyDensity).map(Number));
 
   // Jump to specific hour
   const jumpToHour = (hour: number) => {
@@ -278,33 +284,62 @@ export const SessionPlayback = () => {
                 )}
               </div>
 
-              {/* Timeline hour filter */}
-              <div className="space-y-2">
+              {/* Density mini-map */}
+              <div className="space-y-3">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4" />
-                  <span>Navegar por hora:</span>
+                  <BarChart3 className="h-4 w-4" />
+                  <span>Densidade de gravações por hora:</span>
+                  <span className="text-xs">({recordings.length} total)</span>
                 </div>
-                <div className="flex gap-1 flex-wrap">
-                  {Array.from({ length: 24 }, (_, i) => i).map((hour) => {
-                    const hasRecordings = availableHours.has(hour);
-                    const isSelected = selectedHour === hour;
-                    const currentHour = currentRecording ? new Date(currentRecording.recorded_at).getHours() : null;
-                    const isCurrent = currentHour === hour;
-                    
-                    return (
-                      <Button
-                        key={hour}
-                        variant={isSelected ? "default" : isCurrent ? "secondary" : "outline"}
-                        size="sm"
-                        className={`w-10 h-8 text-xs ${!hasRecordings ? 'opacity-30 cursor-not-allowed' : ''}`}
-                        disabled={!hasRecordings}
-                        onClick={() => jumpToHour(hour)}
-                      >
-                        {hour.toString().padStart(2, '0')}
-                      </Button>
-                    );
-                  })}
-                </div>
+                
+                <TooltipProvider>
+                  <div className="flex gap-0.5 h-16 items-end bg-muted/30 rounded-lg p-2">
+                    {Array.from({ length: 24 }, (_, hour) => {
+                      const count = hourlyDensity[hour] || 0;
+                      const heightPercent = count > 0 ? Math.max((count / maxDensity) * 100, 10) : 0;
+                      const hasRecordings = count > 0;
+                      const isSelected = selectedHour === hour;
+                      const currentHour = currentRecording ? new Date(currentRecording.recorded_at).getHours() : null;
+                      const isCurrent = currentHour === hour;
+                      
+                      return (
+                        <Tooltip key={hour}>
+                          <TooltipTrigger asChild>
+                            <button
+                              className={`flex-1 flex flex-col items-center justify-end gap-1 transition-all ${
+                                hasRecordings ? 'cursor-pointer hover:opacity-80' : 'cursor-default'
+                              }`}
+                              onClick={() => hasRecordings && jumpToHour(hour)}
+                              disabled={!hasRecordings}
+                            >
+                              <div
+                                className={`w-full rounded-t transition-all ${
+                                  isSelected 
+                                    ? 'bg-primary' 
+                                    : isCurrent 
+                                      ? 'bg-primary/70' 
+                                      : hasRecordings 
+                                        ? 'bg-primary/40 hover:bg-primary/60' 
+                                        : 'bg-muted/50'
+                                }`}
+                                style={{ height: `${heightPercent}%`, minHeight: hasRecordings ? '4px' : '2px' }}
+                              />
+                              <span className={`text-[9px] ${
+                                isCurrent ? 'text-primary font-bold' : 'text-muted-foreground'
+                              }`}>
+                                {hour.toString().padStart(2, '0')}
+                              </span>
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="text-xs">
+                            <p className="font-medium">{hour.toString().padStart(2, '0')}:00</p>
+                            <p>{count} gravações</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    })}
+                  </div>
+                </TooltipProvider>
               </div>
 
               {/* Playback controls */}
