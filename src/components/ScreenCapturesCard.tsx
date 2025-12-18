@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Monitor, Loader2, Maximize2, FileText, Copy, Check } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Monitor, Loader2, Maximize2, FileText, Copy, Check, Search, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -27,6 +28,7 @@ export function ScreenCapturesCard() {
   const [selectedCapture, setSelectedCapture] = useState<ScreenCapture | null>(null);
   const [ocrLoading, setOcrLoading] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchCaptures();
@@ -38,7 +40,7 @@ export function ScreenCapturesCard() {
         .from('screen_captures')
         .select('*')
         .order('captured_at', { ascending: false })
-        .limit(12);
+        .limit(50);
 
       if (error) throw error;
       setCaptures(data || []);
@@ -47,6 +49,27 @@ export function ScreenCapturesCard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const filteredCaptures = useMemo(() => {
+    if (!searchQuery.trim()) return captures.slice(0, 12);
+    
+    const query = searchQuery.toLowerCase();
+    return captures.filter(capture => 
+      capture.extracted_text?.toLowerCase().includes(query) ||
+      capture.employee_name.toLowerCase().includes(query) ||
+      capture.window_title?.toLowerCase().includes(query) ||
+      capture.app_name?.toLowerCase().includes(query)
+    );
+  }, [captures, searchQuery]);
+
+  const highlightMatch = (text: string, query: string) => {
+    if (!query.trim()) return text;
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+    return parts.map((part, i) => 
+      regex.test(part) ? <mark key={i} className="bg-yellow-500/30 text-foreground rounded px-0.5">{part}</mark> : part
+    );
   };
 
   const runOcr = async (capture: ScreenCapture) => {
@@ -116,20 +139,48 @@ export function ScreenCapturesCard() {
   return (
     <>
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Monitor className="h-5 w-5 text-primary" />
-            Capturas de Tela
-          </CardTitle>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between gap-4">
+            <CardTitle className="flex items-center gap-2">
+              <Monitor className="h-5 w-5 text-primary" />
+              Capturas de Tela
+            </CardTitle>
+            <div className="relative flex-1 max-w-xs">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por texto OCR..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-8 pr-8 h-8 text-sm"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          </div>
+          {searchQuery && (
+            <p className="text-xs text-muted-foreground mt-2">
+              {filteredCaptures.length} resultado(s) para "{searchQuery}"
+            </p>
+          )}
         </CardHeader>
         <CardContent>
           {captures.length === 0 ? (
             <p className="text-center text-muted-foreground py-8">
               Nenhuma captura de tela
             </p>
+          ) : filteredCaptures.length === 0 ? (
+            <p className="text-center text-muted-foreground py-8">
+              Nenhum resultado encontrado para "{searchQuery}"
+            </p>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {captures.map((capture) => (
+              {filteredCaptures.map((capture) => (
                 <div
                   key={capture.id}
                   className="relative group cursor-pointer rounded-lg overflow-hidden border border-border/50 bg-muted/30"
@@ -159,13 +210,21 @@ export function ScreenCapturesCard() {
                     )}
                   </div>
                   <div className="p-2">
-                    <p className="text-sm font-medium truncate">{capture.employee_name}</p>
+                    <p className="text-sm font-medium truncate">
+                      {highlightMatch(capture.employee_name, searchQuery)}
+                    </p>
                     <p className="text-xs text-muted-foreground truncate">
-                      {capture.window_title || capture.app_name || 'Desktop'}
+                      {highlightMatch(capture.window_title || capture.app_name || 'Desktop', searchQuery)}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(capture.captured_at).toLocaleString('pt-BR')}
                     </p>
+                    {searchQuery && capture.extracted_text?.toLowerCase().includes(searchQuery.toLowerCase()) && (
+                      <p className="text-xs text-green-600 dark:text-green-400 mt-1 truncate">
+                        <FileText className="h-3 w-3 inline mr-1" />
+                        Texto OCR contém "{searchQuery}"
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
