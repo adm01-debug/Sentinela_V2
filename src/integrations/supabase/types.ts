@@ -212,6 +212,45 @@ export type Database = {
           },
         ]
       }
+      employee_geofences: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          employee_id: string
+          geofence_id: string
+          id: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          employee_id: string
+          geofence_id: string
+          id?: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          employee_id?: string
+          geofence_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_geofences_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_geofences_geofence_id_fkey"
+            columns: ["geofence_id"]
+            isOneToOne: false
+            referencedRelation: "geofences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employee_schedules: {
         Row: {
           assigned_by: string | null
@@ -315,6 +354,95 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      geofence_violations: {
+        Row: {
+          action_taken: string | null
+          created_at: string
+          detected_address: string | null
+          device: string | null
+          distance_meters: number | null
+          employee_name: string
+          id: string
+          latitude: number
+          longitude: number
+          nearest_geofence_id: string | null
+        }
+        Insert: {
+          action_taken?: string | null
+          created_at?: string
+          detected_address?: string | null
+          device?: string | null
+          distance_meters?: number | null
+          employee_name: string
+          id?: string
+          latitude: number
+          longitude: number
+          nearest_geofence_id?: string | null
+        }
+        Update: {
+          action_taken?: string | null
+          created_at?: string
+          detected_address?: string | null
+          device?: string | null
+          distance_meters?: number | null
+          employee_name?: string
+          id?: string
+          latitude?: number
+          longitude?: number
+          nearest_geofence_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "geofence_violations_nearest_geofence_id_fkey"
+            columns: ["nearest_geofence_id"]
+            isOneToOne: false
+            referencedRelation: "geofences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      geofences: {
+        Row: {
+          address: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          latitude: number
+          longitude: number
+          name: string
+          radius_meters: number
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          latitude: number
+          longitude: number
+          name: string
+          radius_meters?: number
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          latitude?: number
+          longitude?: number
+          name?: string
+          radius_meters?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       internet_access_settings: {
         Row: {

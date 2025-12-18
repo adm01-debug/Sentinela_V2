@@ -30,6 +30,14 @@ export interface Config {
   smartBlurEnabled: boolean;
   smartBlurWhitelist: string[]; // Words/patterns to ignore
   smartBlurWhitelistApps: string[]; // Apps to skip OCR processing
+  
+  // Geofencing
+  geofencingEnabled: boolean;
+  geofencingNotifyUser: boolean;
+  
+  // Supabase credentials (for geofencing)
+  supabaseUrl: string;
+  supabaseAnonKey: string;
 }
 
 export const defaultConfig: Config = {
@@ -63,4 +71,12 @@ export const defaultConfig: Config = {
   smartBlurEnabled: true,
   smartBlurWhitelist: [],
   smartBlurWhitelistApps: [],
+  
+  // Geofencing defaults
+  geofencingEnabled: false,
+  geofencingNotifyUser: true,
+  
+  // Supabase credentials
+  supabaseUrl: 'https://rmiznlzpbwqpbzaiyydw.supabase.co',
+  supabaseAnonKey: '',
 };

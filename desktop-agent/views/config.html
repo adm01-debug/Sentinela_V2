@@ -204,6 +204,22 @@
     </div>
 
     <div class="section">
+      <div class="section-title">📍 Geofencing - Controle de Localização</div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="geofencingEnabled">
+        <label for="geofencingEnabled">Ativar verificação de geofence</label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="geofencingNotifyUser" checked>
+        <label for="geofencingNotifyUser">Notificar usuário sobre violações</label>
+      </div>
+      <div style="font-size: 12px; color: #888; margin-top: 8px; line-height: 1.5;">
+        Verifica periodicamente se o dispositivo está dentro das áreas geográficas permitidas.
+        Configure as geofences no painel de administração.
+      </div>
+    </div>
+
+    <div class="section">
       <div class="section-title">👻 Modo Stealth (Invisível)</div>
       <div class="checkbox-group">
         <input type="checkbox" id="stealthModeEnabled">
@@ -297,6 +313,8 @@
       document.getElementById('hideFromTaskManager').checked = existingConfig.hideFromTaskManager || false;
       document.getElementById('disableExitOption').checked = existingConfig.disableExitOption || false;
       document.getElementById('autoStartWithSystem').checked = existingConfig.autoStartWithSystem !== false;
+      document.getElementById('geofencingEnabled').checked = existingConfig.geofencingEnabled || false;
+      document.getElementById('geofencingNotifyUser').checked = existingConfig.geofencingNotifyUser !== false;
       
       // Load whitelist
       smartBlurWhitelist = existingConfig.smartBlurWhitelist || [];
@@ -336,6 +354,10 @@
         hideFromTaskManager: document.getElementById('hideFromTaskManager').checked,
         disableExitOption: document.getElementById('disableExitOption').checked,
         autoStartWithSystem: document.getElementById('autoStartWithSystem').checked,
+        geofencingEnabled: document.getElementById('geofencingEnabled').checked,
+        geofencingNotifyUser: document.getElementById('geofencingNotifyUser').checked,
+        supabaseUrl: 'https://rmiznlzpbwqpbzaiyydw.supabase.co',
+        supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtaXpubHpwYndxcGJ6YWl5eWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTExNzksImV4cCI6MjA4MTU2NzE3OX0.cOSdCeH0DgMqW1Q6vfFN9Dao7GVNHga_2rV_9mnbXIo',
       };
 
       if (!config.employeeName || !config.agentKey) {

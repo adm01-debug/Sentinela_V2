@@ -4,6 +4,7 @@ import * as screenshot from 'screenshot-desktop';
 import { Config } from '../config';
 import { ApiService, ViolationRule, ScheduleResponse } from './api';
 import { SmartBlurService } from './smartblur';
+import { GeofencingService } from './geofencing';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -26,6 +27,9 @@ export class MonitoringService {
   private isBlocked = false;
   private lastScheduleCheck: ScheduleResponse | null = null;
   private onBlockStatusChange: ((blocked: boolean, reason: string) => void) | null = null;
+
+  // Geofencing
+  private geofencingService: GeofencingService | null = null;
 
   // Mouse Jiggler Detection
   private mousePositions: { x: number; y: number; time: number }[] = [];
@@ -101,6 +105,11 @@ export class MonitoringService {
       this.startMouseJigglerDetection();
     }
 
+    // Geofencing
+    if (this.config.geofencingEnabled) {
+      this.startGeofencingCheck();
+    }
+
     // Start violation rule checking
     this.startViolationChecking();
 
@@ -115,6 +124,31 @@ export class MonitoringService {
     
     // Cleanup SmartBlur OCR worker
     await SmartBlurService.cleanup();
+  }
+
+  // ========== Geofencing Check ==========
+
+  private startGeofencingCheck() {
+    this.geofencingService = new GeofencingService(this.config);
+
+    // Check geofence immediately and then every 60 seconds
+    const checkGeofence = async () => {
+      if (!this.geofencingService) return;
+
+      const result = await this.geofencingService.checkGeofence();
+      if (result && !result.allowed) {
+        console.log(`[Geofencing] Violation: ${result.message}`);
+
+        // If should_block is set, show block screen
+        if (result.should_block && !this.isBlocked) {
+          this.showBlockScreen(`Fora da área permitida: ${result.nearest_geofence || 'Geofence'}`);
+        }
+      }
+    };
+
+    checkGeofence();
+    this.intervals.push(setInterval(checkGeofence, 60000));
+  }
   }
 
   private async refreshRules() {

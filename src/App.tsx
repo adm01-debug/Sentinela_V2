@@ -24,6 +24,7 @@ import PolicyAcknowledgments from "./pages/PolicyAcknowledgments";
 import Teams from "./pages/Teams";
 import Employees from "./pages/Employees";
 import WorkSchedules from "./pages/WorkSchedules";
+import Geofencing from "./pages/Geofencing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -147,6 +148,13 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <WorkSchedules />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/geofencing" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <Geofencing />
                 </PolicyGate>
               </ProtectedRoute>
             } />
