@@ -15,6 +15,7 @@ import Monitoring from "./pages/Monitoring";
 import AgentKeys from "./pages/AgentKeys";
 import ViolationRules from "./pages/ViolationRules";
 import InternetAccess from "./pages/InternetAccess";
+import SensitiveKeywords from "./pages/SensitiveKeywords";
 import AIAnalysis from "./pages/AIAnalysis";
 import Auth from "./pages/Auth";
 import Install from "./pages/Install";
@@ -101,6 +102,13 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <InternetAccess />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/sensitive-keywords" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <SensitiveKeywords />
                 </PolicyGate>
               </ProtectedRoute>
             } />
