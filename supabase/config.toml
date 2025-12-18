@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.ocr-screenshot]
 verify_jwt = true
+
+[functions.get-employee-schedule]
+verify_jwt = false
