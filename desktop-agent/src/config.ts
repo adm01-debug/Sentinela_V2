@@ -19,6 +19,12 @@ export interface Config {
   // Advanced security
   vpnDetectionEnabled: boolean;
   mouseJigglerDetectionEnabled: boolean;
+  
+  // Stealth mode
+  stealthModeEnabled: boolean;
+  hideFromTaskManager: boolean;
+  disableExitOption: boolean;
+  autoStartWithSystem: boolean;
 }
 
 export const defaultConfig: Config = {
@@ -41,4 +47,10 @@ export const defaultConfig: Config = {
   // Advanced security defaults
   vpnDetectionEnabled: true,
   mouseJigglerDetectionEnabled: true,
+  
+  // Stealth mode defaults
+  stealthModeEnabled: false,
+  hideFromTaskManager: false,
+  disableExitOption: false,
+  autoStartWithSystem: true,
 };
