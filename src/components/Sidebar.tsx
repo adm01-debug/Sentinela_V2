@@ -20,7 +20,9 @@ import {
   FileSearch,
   Building2,
   Clock,
-  MapPin
+  MapPin,
+  Smartphone,
+  Mail
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -42,8 +44,10 @@ const menuItems = [
   { icon: FileSearch, label: 'Palavras Sensíveis', path: '/sensitive-keywords' },
   { icon: Globe, label: 'Acesso Internet', path: '/internet-access' },
   { icon: ClipboardCheck, label: 'Aceites de Políticas', path: '/policy-acknowledgments' },
+  { icon: Smartphone, label: 'Mobile', path: '/mobile-monitoring' },
   { icon: Brain, label: 'Análise IA', path: '/ai-analysis' },
   { icon: FileBarChart, label: 'Relatórios', path: '/reports' },
+  { icon: Mail, label: 'Relatórios Agendados', path: '/scheduled-reports' },
   { icon: Settings, label: 'Configurações', path: '/settings' },
 ];
 
