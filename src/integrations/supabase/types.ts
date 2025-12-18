@@ -563,6 +563,45 @@ export type Database = {
         }
         Relationships: []
       }
+      session_recordings: {
+        Row: {
+          app_name: string | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          events: Json | null
+          id: string
+          recorded_at: string
+          screenshot_url: string
+          session_date: string
+          window_title: string | null
+        }
+        Insert: {
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          events?: Json | null
+          id?: string
+          recorded_at?: string
+          screenshot_url: string
+          session_date?: string
+          window_title?: string | null
+        }
+        Update: {
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          events?: Json | null
+          id?: string
+          recorded_at?: string
+          screenshot_url?: string
+          session_date?: string
+          window_title?: string | null
+        }
+        Relationships: []
+      }
       settings_audit_log: {
         Row: {
           action: string

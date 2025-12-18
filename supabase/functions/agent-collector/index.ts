@@ -228,6 +228,23 @@ serve(async (req) => {
         break;
       }
 
+      // Session recording for Live View and Session Playback
+      case "session_recording": {
+        const { error } = await supabase.from("session_recordings").insert({
+          employee_name: employeeName,
+          device: deviceName,
+          screenshot_url: data.screenshot_url,
+          app_name: data.app_name,
+          window_title: data.window_title,
+          events: data.events || [],
+          session_date: new Date().toISOString().split('T')[0],
+          recorded_at: data.recorded_at || new Date().toISOString(),
+        });
+        if (error) throw error;
+        console.log(`Session recording saved for ${employeeName}`);
+        break;
+      }
+
       default:
         return new Response(
           JSON.stringify({ error: "Unknown data type" }),
