@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { PolicyGate } from "@/components/PolicyGate";
 import Index from "./pages/Index";
 import EmployeeDetail from "./pages/EmployeeDetail";
 import Settings from "./pages/Settings";
@@ -33,60 +34,88 @@ const App = () => (
           <Routes>
             <Route path="/auth" element={<Auth />} />
             <Route path="/install" element={<Install />} />
-            <Route path="/monitoring-policies" element={<MonitoringPolicies />} />
+            <Route path="/monitoring-policies" element={
+              <ProtectedRoute>
+                <PolicyGate>
+                  <MonitoringPolicies />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
             <Route path="/" element={
               <ProtectedRoute requireAdmin>
-                <Index />
+                <PolicyGate>
+                  <Index />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/employee/:id" element={
               <ProtectedRoute requireAdmin>
-                <EmployeeDetail />
+                <PolicyGate>
+                  <EmployeeDetail />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/settings" element={
               <ProtectedRoute requireAdmin>
-                <Settings />
+                <PolicyGate>
+                  <Settings />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/reports" element={
               <ProtectedRoute requireAdmin>
-                <Reports />
+                <PolicyGate>
+                  <Reports />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/violations" element={
               <ProtectedRoute requireAdmin>
-                <Violations />
+                <PolicyGate>
+                  <Violations />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/monitoring" element={
               <ProtectedRoute requireAdmin>
-                <Monitoring />
+                <PolicyGate>
+                  <Monitoring />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/agent-keys" element={
               <ProtectedRoute requireAdmin>
-                <AgentKeys />
+                <PolicyGate>
+                  <AgentKeys />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/violation-rules" element={
               <ProtectedRoute requireAdmin>
-                <ViolationRules />
+                <PolicyGate>
+                  <ViolationRules />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/internet-access" element={
               <ProtectedRoute requireAdmin>
-                <InternetAccess />
+                <PolicyGate>
+                  <InternetAccess />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/ai-analysis" element={
               <ProtectedRoute requireAdmin>
-                <AIAnalysis />
+                <PolicyGate>
+                  <AIAnalysis />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             <Route path="/policy-acknowledgments" element={
               <ProtectedRoute requireAdmin>
-                <PolicyAcknowledgments />
+                <PolicyGate>
+                  <PolicyAcknowledgments />
+                </PolicyGate>
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
