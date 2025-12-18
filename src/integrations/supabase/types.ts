@@ -167,6 +167,110 @@ export type Database = {
         }
         Relationships: []
       }
+      employee_devices: {
+        Row: {
+          agent_key_id: string | null
+          assigned_at: string
+          device_name: string
+          device_type: string | null
+          employee_id: string
+          id: string
+          is_primary: boolean | null
+        }
+        Insert: {
+          agent_key_id?: string | null
+          assigned_at?: string
+          device_name: string
+          device_type?: string | null
+          employee_id: string
+          id?: string
+          is_primary?: boolean | null
+        }
+        Update: {
+          agent_key_id?: string | null
+          assigned_at?: string
+          device_name?: string
+          device_type?: string | null
+          employee_id?: string
+          id?: string
+          is_primary?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_devices_agent_key_id_fkey"
+            columns: ["agent_key_id"]
+            isOneToOne: false
+            referencedRelation: "agent_keys"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_devices_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employees: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          created_by: string | null
+          department: string | null
+          email: string | null
+          hire_date: string | null
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          position: string | null
+          status: string
+          team_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          email?: string | null
+          hire_date?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          position?: string | null
+          status?: string
+          team_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          email?: string | null
+          hire_date?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          position?: string | null
+          status?: string
+          team_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       internet_access_settings: {
         Row: {
           access_level: string
