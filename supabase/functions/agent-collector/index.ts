@@ -265,6 +265,50 @@ serve(async (req) => {
                   })
                   .eq("id", insertedCapture.id);
                 console.log(`OCR completed for screenshot ${insertedCapture.id}`);
+
+                // Check for sensitive keywords in extracted text
+                const { data: keywordRules } = await supabase
+                  .from("violation_rules")
+                  .select("id, rule_value, description, severity, notify_admin, notify_employee")
+                  .eq("rule_type", "blocked_keyword")
+                  .eq("is_active", true);
+
+                if (keywordRules && keywordRules.length > 0) {
+                  const textLower = extractedText.toLowerCase();
+                  const matchedKeywords: typeof keywordRules = [];
+
+                  for (const rule of keywordRules) {
+                    const keyword = rule.rule_value.toLowerCase();
+                    if (textLower.includes(keyword)) {
+                      matchedKeywords.push(rule);
+                    }
+                  }
+
+                  // Create violations for matched keywords
+                  if (matchedKeywords.length > 0) {
+                    console.log(`Found ${matchedKeywords.length} sensitive keyword(s) in screenshot ${insertedCapture.id}`);
+                    
+                    for (const rule of matchedKeywords) {
+                      const { error: violationError } = await supabase.from("security_violations").insert({
+                        employee_name: employeeName,
+                        device: deviceName,
+                        policy_name: `Palavra Sensível: ${rule.rule_value}`,
+                        violation_type: "blocked_keyword",
+                        severity: rule.severity || "medium",
+                        description: `Palavra sensível "${rule.rule_value}" detectada via OCR na captura de tela. ${rule.description || ''}`.trim(),
+                        screenshot_url: insertedCapture.capture_url,
+                        notified_admin: rule.notify_admin,
+                        notified_employee: rule.notify_employee,
+                      });
+
+                      if (violationError) {
+                        console.error("Error creating keyword violation:", violationError);
+                      } else {
+                        console.log(`VIOLATION created: blocked_keyword - ${rule.rule_value}`);
+                      }
+                    }
+                  }
+                }
               } else {
                 await supabase
                   .from("screen_captures")
