@@ -15,6 +15,10 @@ export interface Config {
   
   usbBlockEnabled: boolean;
   printScreenBlockEnabled: boolean;
+  
+  // Advanced security
+  vpnDetectionEnabled: boolean;
+  mouseJigglerDetectionEnabled: boolean;
 }
 
 export const defaultConfig: Config = {
@@ -33,4 +37,8 @@ export const defaultConfig: Config = {
   
   usbBlockEnabled: true,
   printScreenBlockEnabled: true,
+  
+  // Advanced security defaults
+  vpnDetectionEnabled: true,
+  mouseJigglerDetectionEnabled: true,
 };

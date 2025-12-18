@@ -26,6 +26,11 @@ export class MonitoringService {
   private lastScheduleCheck: ScheduleResponse | null = null;
   private onBlockStatusChange: ((blocked: boolean, reason: string) => void) | null = null;
 
+  // Mouse Jiggler Detection
+  private mousePositions: { x: number; y: number; time: number }[] = [];
+  private lastVpnCheck: boolean = false;
+  private jigglerDetected: boolean = false;
+
   // Apps categorized
   private productiveApps = ['code', 'visual studio', 'excel', 'word', 'powerpoint', 'outlook', 'teams', 'slack', 'notion', 'figma'];
   private unproductiveApps = ['youtube', 'netflix', 'spotify', 'instagram', 'facebook', 'twitter', 'tiktok', 'games'];
@@ -77,6 +82,16 @@ export class MonitoringService {
     // USB monitoring (requires native module)
     if (this.config.usbBlockEnabled) {
       this.startUsbMonitoring();
+    }
+
+    // VPN Detection
+    if (this.config.vpnDetectionEnabled) {
+      this.startVpnDetection();
+    }
+
+    // Mouse Jiggler Detection
+    if (this.config.mouseJigglerDetectionEnabled) {
+      this.startMouseJigglerDetection();
     }
 
     // Start violation rule checking
@@ -978,6 +993,297 @@ export class MonitoringService {
       });
     } catch (e) {
       console.log('USB monitoring not available:', e);
+    }
+  }
+
+  // ========== VPN Detection ==========
+
+  private startVpnDetection() {
+    console.log('Starting VPN detection...');
+    
+    // Check immediately on start
+    this.checkVpnConnection();
+    
+    // Check every 30 seconds
+    const vpnInterval = setInterval(() => {
+      this.checkVpnConnection();
+    }, 30 * 1000);
+    
+    this.intervals.push(vpnInterval);
+  }
+
+  private async checkVpnConnection() {
+    try {
+      const networkInterfaces = os.networkInterfaces();
+      const vpnIndicators = [
+        'tun', 'tap', 'ppp', 'vpn', 'wg', 'wireguard', 
+        'nordvpn', 'expressvpn', 'protonvpn', 'mullvad',
+        'openvpn', 'ipsec', 'pptp', 'l2tp', 'zerotier',
+        'tailscale', 'cloudflare', 'warp', 'utun'
+      ];
+      
+      let vpnDetected = false;
+      let vpnInterfaceName = '';
+      
+      for (const [name, interfaces] of Object.entries(networkInterfaces)) {
+        const nameLower = name.toLowerCase();
+        
+        // Check if interface name matches VPN indicators
+        for (const indicator of vpnIndicators) {
+          if (nameLower.includes(indicator)) {
+            vpnDetected = true;
+            vpnInterfaceName = name;
+            break;
+          }
+        }
+        
+        // Additional checks for active VPN connections
+        if (interfaces) {
+          for (const iface of interfaces) {
+            // VPNs often use specific IP ranges
+            if (iface.address?.startsWith('10.') && nameLower !== 'eth0' && nameLower !== 'en0') {
+              // Could be a VPN tunnel
+              if (!nameLower.includes('docker') && !nameLower.includes('vbox') && !nameLower.includes('vmware')) {
+                vpnDetected = true;
+                vpnInterfaceName = name;
+              }
+            }
+          }
+        }
+        
+        if (vpnDetected) break;
+      }
+      
+      // Also check running processes for VPN applications
+      if (!vpnDetected) {
+        vpnDetected = await this.checkVpnProcesses();
+      }
+      
+      // Only report if status changed
+      if (vpnDetected && !this.lastVpnCheck) {
+        console.log('VPN connection detected:', vpnInterfaceName);
+        
+        // Capture screenshot as evidence
+        let screenshotUrl = '';
+        try {
+          const img = await screenshot.default({ format: 'png' });
+          const filename = `vpn_detected_${uuidv4()}.png`;
+          const tempPath = path.join(os.tmpdir(), filename);
+          fs.writeFileSync(tempPath, img);
+          screenshotUrl = `file://${tempPath}`;
+        } catch (e) {
+          console.error('Failed to capture evidence screenshot:', e);
+        }
+        
+        await this.api.send('violation', {
+          policy_name: 'Detecção de VPN',
+          violation_type: 'vpn_detected',
+          severity: 'high',
+          description: `Conexão VPN detectada: ${vpnInterfaceName || 'Interface de rede suspeita'}`,
+          screenshot_url: screenshotUrl,
+          location: `Device: ${this.config.deviceName}`,
+        });
+
+        // Notify user
+        new Notification({
+          title: '⚠️ VPN Detectada',
+          body: 'O uso de VPN não é permitido durante o expediente.',
+          urgency: 'critical',
+        }).show();
+      }
+      
+      this.lastVpnCheck = vpnDetected;
+    } catch (error) {
+      console.error('Error checking VPN connection:', error);
+    }
+  }
+
+  private async checkVpnProcesses(): Promise<boolean> {
+    const vpnProcessNames = [
+      'openvpn', 'wireguard', 'nordvpn', 'expressvpn', 
+      'protonvpn', 'mullvad', 'surfshark', 'cyberghost',
+      'privateinternetaccess', 'pia', 'tunnelbear', 'hotspotshield',
+      'windscribe', 'ipvanish', 'purevpn', 'torguard',
+      'cloudflare-warp', 'warp-cli', 'tailscale'
+    ];
+    
+    try {
+      // This would require a native module or exec to check running processes
+      // For now, we'll just check common process names
+      const { exec } = require('child_process');
+      const platform = os.platform();
+      
+      return new Promise((resolve) => {
+        let command = '';
+        
+        if (platform === 'win32') {
+          command = 'tasklist /FO CSV';
+        } else if (platform === 'darwin' || platform === 'linux') {
+          command = 'ps aux';
+        }
+        
+        if (!command) {
+          resolve(false);
+          return;
+        }
+        
+        exec(command, (error: Error | null, stdout: string) => {
+          if (error) {
+            resolve(false);
+            return;
+          }
+          
+          const outputLower = stdout.toLowerCase();
+          for (const processName of vpnProcessNames) {
+            if (outputLower.includes(processName)) {
+              resolve(true);
+              return;
+            }
+          }
+          
+          resolve(false);
+        });
+      });
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ========== Mouse Jiggler Detection ==========
+
+  private startMouseJigglerDetection() {
+    console.log('Starting Mouse Jiggler detection...');
+    
+    // Track mouse positions
+    const trackInterval = setInterval(async () => {
+      try {
+        // Get current mouse position using Electron's screen API
+        const point = screen.getCursorScreenPoint();
+        const now = Date.now();
+        
+        this.mousePositions.push({ x: point.x, y: point.y, time: now });
+        
+        // Keep only the last 60 positions (1 minute at 1 sample/second)
+        if (this.mousePositions.length > 60) {
+          this.mousePositions.shift();
+        }
+        
+        // Analyze for jiggler patterns
+        if (this.mousePositions.length >= 30) {
+          this.analyzeMousePatterns();
+        }
+      } catch (e) {
+        // Ignore errors
+      }
+    }, 1000);
+    
+    this.intervals.push(trackInterval);
+  }
+
+  private async analyzeMousePatterns() {
+    if (this.mousePositions.length < 30) return;
+    
+    const positions = this.mousePositions.slice(-30);
+    
+    // Calculate movement deltas
+    const deltas: { dx: number; dy: number }[] = [];
+    for (let i = 1; i < positions.length; i++) {
+      deltas.push({
+        dx: positions[i].x - positions[i-1].x,
+        dy: positions[i].y - positions[i-1].y
+      });
+    }
+    
+    // Pattern 1: Check for perfectly regular small movements (physical jiggler)
+    const smallMovements = deltas.filter(d => 
+      Math.abs(d.dx) <= 5 && Math.abs(d.dy) <= 5 && 
+      (Math.abs(d.dx) > 0 || Math.abs(d.dy) > 0)
+    );
+    
+    // Pattern 2: Check for repetitive identical movements
+    const movementCounts = new Map<string, number>();
+    deltas.forEach(d => {
+      const key = `${d.dx},${d.dy}`;
+      movementCounts.set(key, (movementCounts.get(key) || 0) + 1);
+    });
+    
+    // Find most common movement
+    let maxCount = 0;
+    movementCounts.forEach((count) => {
+      if (count > maxCount) maxCount = count;
+    });
+    
+    // Pattern 3: Check for alternating movements (back and forth)
+    let alternatingCount = 0;
+    for (let i = 2; i < deltas.length; i++) {
+      if (
+        Math.sign(deltas[i].dx) === -Math.sign(deltas[i-1].dx) &&
+        Math.sign(deltas[i].dy) === -Math.sign(deltas[i-1].dy) &&
+        Math.abs(deltas[i].dx) === Math.abs(deltas[i-1].dx) &&
+        Math.abs(deltas[i].dy) === Math.abs(deltas[i-1].dy)
+      ) {
+        alternatingCount++;
+      }
+    }
+    
+    // Pattern 4: Check for circular patterns (software jigglers)
+    let circularScore = 0;
+    for (let i = 4; i < deltas.length; i++) {
+      // Check if movements form a cycle
+      if (
+        Math.abs(deltas[i].dx - deltas[i-4].dx) < 2 &&
+        Math.abs(deltas[i].dy - deltas[i-4].dy) < 2
+      ) {
+        circularScore++;
+      }
+    }
+    
+    // Detect jiggler based on patterns
+    const isJiggler = 
+      (smallMovements.length >= 25 && maxCount >= 10) || // Too many identical small movements
+      (alternatingCount >= 10) || // Too many alternating movements
+      (circularScore >= 15) || // Circular pattern detected
+      (maxCount >= 20); // Same movement repeated too many times
+    
+    if (isJiggler && !this.jigglerDetected) {
+      console.log('Mouse Jiggler detected!');
+      console.log(`Patterns: small=${smallMovements.length}, maxRepeat=${maxCount}, alternating=${alternatingCount}, circular=${circularScore}`);
+      
+      this.jigglerDetected = true;
+      
+      // Capture screenshot as evidence
+      let screenshotUrl = '';
+      try {
+        const img = await screenshot.default({ format: 'png' });
+        const filename = `jiggler_detected_${uuidv4()}.png`;
+        const tempPath = path.join(os.tmpdir(), filename);
+        fs.writeFileSync(tempPath, img);
+        screenshotUrl = `file://${tempPath}`;
+      } catch (e) {
+        console.error('Failed to capture evidence screenshot:', e);
+      }
+      
+      await this.api.send('violation', {
+        policy_name: 'Detecção de Mouse Jiggler',
+        violation_type: 'mouse_jiggler',
+        severity: 'critical',
+        description: 'Dispositivo ou software simulador de atividade de mouse detectado. Padrões anormais de movimento identificados.',
+        screenshot_url: screenshotUrl,
+        location: `Device: ${this.config.deviceName}`,
+      });
+
+      // Notify user
+      new Notification({
+        title: '🚨 Mouse Jiggler Detectado',
+        body: 'O uso de simuladores de atividade não é permitido.',
+        urgency: 'critical',
+      }).show();
+      
+      // Reset after 5 minutes to allow re-detection
+      setTimeout(() => {
+        this.jigglerDetected = false;
+        this.mousePositions = [];
+      }, 5 * 60 * 1000);
     }
   }
 }
