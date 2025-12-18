@@ -16,7 +16,8 @@ import {
   ShieldAlert,
   Globe,
   Brain,
-  ClipboardCheck
+  ClipboardCheck,
+  FileSearch
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -30,6 +31,7 @@ const menuItems = [
   { icon: Shield, label: 'Segurança', path: '/security' },
   { icon: Bell, label: 'Violações', path: '/violations' },
   { icon: ShieldAlert, label: 'Regras de Violação', path: '/violation-rules' },
+  { icon: FileSearch, label: 'Palavras Sensíveis', path: '/sensitive-keywords' },
   { icon: Globe, label: 'Acesso Internet', path: '/internet-access' },
   { icon: ClipboardCheck, label: 'Aceites de Políticas', path: '/policy-acknowledgments' },
   { icon: Brain, label: 'Análise IA', path: '/ai-analysis' },
