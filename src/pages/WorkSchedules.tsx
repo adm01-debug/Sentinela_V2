@@ -16,7 +16,8 @@ import {
   AlertTriangle,
   Search,
   Timer,
-  Coffee
+  Coffee,
+  Bell
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,6 +43,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useWorkSchedules, getDayName, getDayShort, WorkSchedule } from '@/hooks/useWorkSchedules';
 import { useEmployees } from '@/hooks/useEmployees';
+import { useOvertimeNotifications } from '@/hooks/useOvertimeNotifications';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -71,6 +73,9 @@ export default function WorkSchedules() {
     updateOvertimeRequest
   } = useWorkSchedules();
   const { employees } = useEmployees();
+  
+  // Enable realtime notifications for overtime requests
+  useOvertimeNotifications();
   
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('schedules');
