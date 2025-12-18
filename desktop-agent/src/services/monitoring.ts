@@ -3,6 +3,7 @@ import * as activeWin from 'active-win';
 import * as screenshot from 'screenshot-desktop';
 import { Config } from '../config';
 import { ApiService, ViolationRule, ScheduleResponse } from './api';
+import { SmartBlurService } from './smartblur';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -832,19 +833,45 @@ export class MonitoringService {
         
         // Get active window info
         const win = await activeWin.default();
+        const windowTitle = win?.title || '';
+        const appName = win?.owner.name || 'Desktop';
+        
+        // Apply SmartBlur to hide sensitive data (if enabled)
+        let finalPath = tempPath;
+        let blurApplied = false;
+        
+        if (this.config.smartBlurEnabled !== false) {
+          try {
+            const blurResult = await SmartBlurService.processImage(
+              tempPath,
+              windowTitle,
+              appName
+            );
+            
+            finalPath = blurResult.processedPath;
+            blurApplied = blurResult.regionsBlurred > 0;
+            
+            if (blurApplied) {
+              console.log(`SmartBlur applied: ${blurResult.regionsBlurred} regions (${blurResult.sensitiveTypes.join(', ')})`);
+            }
+          } catch (blurError) {
+            console.error('SmartBlur error:', blurError);
+            // Continue with original image if blur fails
+          }
+        }
         
         // In production, upload to storage and get URL
-        // For now, we'll use a placeholder
-        const captureUrl = `file://${tempPath}`;
+        const captureUrl = `file://${finalPath}`;
         
         await this.api.send('screenshot', {
           capture_url: captureUrl,
-          app_name: win?.owner.name || 'Desktop',
-          window_title: win?.title || '',
+          app_name: appName,
+          window_title: windowTitle,
           captured_at: new Date().toISOString(),
+          smartblur_applied: blurApplied,
         });
 
-        console.log('Screenshot captured:', filename);
+        console.log('Screenshot captured:', filename, blurApplied ? '(SmartBlur applied)' : '');
       } catch (error) {
         console.error('Screenshot error:', error);
       }
