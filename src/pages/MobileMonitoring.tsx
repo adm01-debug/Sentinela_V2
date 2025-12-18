@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMobileDevices } from "@/hooks/useMobileDevices";
+import { MobileDevicesMap } from "@/components/MobileDevicesMap";
 import { 
   Smartphone, 
   Loader2, 
@@ -17,7 +18,8 @@ import {
   PowerOff,
   Activity,
   Download,
-  QrCode
+  QrCode,
+  Map
 } from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -143,12 +145,43 @@ export default function MobileMonitoring() {
             </Card>
           </div>
 
-          <Tabs defaultValue="devices" className="space-y-4">
+          <Tabs defaultValue="map" className="space-y-4">
             <TabsList>
+              <TabsTrigger value="map">
+                <Map className="h-4 w-4 mr-2" />
+                Mapa
+              </TabsTrigger>
               <TabsTrigger value="devices">Dispositivos</TabsTrigger>
               <TabsTrigger value="activity">Atividade Recente</TabsTrigger>
               <TabsTrigger value="install">Instalação</TabsTrigger>
             </TabsList>
+
+            <TabsContent value="map">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5" />
+                    Localização dos Dispositivos
+                  </CardTitle>
+                  <CardDescription>
+                    Visualize a localização em tempo real de todos os dispositivos móveis
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <MobileDevicesMap devices={devices} />
+                  <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                      <span>Ativo</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-gray-500" />
+                      <span>Inativo</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
             <TabsContent value="devices">
               <Card>
