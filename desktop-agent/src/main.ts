@@ -60,6 +60,16 @@ function createTray() {
   const icon = nativeImage.createFromPath(iconPath);
   tray = new Tray(icon.resize({ width: 16, height: 16 }));
 
+  updateTrayMenu();
+}
+
+function updateTrayMenu(blockStatus?: { isBlocked: boolean; reason: string }) {
+  if (!tray) return;
+
+  const statusLabel = blockStatus?.isBlocked 
+    ? `Status: 🔒 Bloqueado - ${blockStatus.reason}`
+    : 'Status: ✅ Monitorando';
+
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'SecureWatch Agent',
@@ -67,7 +77,7 @@ function createTray() {
     },
     { type: 'separator' },
     {
-      label: 'Status: Monitorando',
+      label: statusLabel,
       enabled: false,
     },
     { type: 'separator' },
@@ -88,7 +98,11 @@ function createTray() {
     },
   ]);
 
-  tray.setToolTip('SecureWatch Agent - Monitorando');
+  const tooltip = blockStatus?.isBlocked 
+    ? `SecureWatch Agent - Bloqueado: ${blockStatus.reason}`
+    : 'SecureWatch Agent - Monitorando';
+
+  tray.setToolTip(tooltip);
   tray.setContextMenu(contextMenu);
 }
 
@@ -97,6 +111,11 @@ async function startMonitoring(config: Config) {
   
   const apiService = new ApiService(config);
   monitoringService = new MonitoringService(config, apiService);
+  
+  // Set callback to update tray when block status changes
+  monitoringService.setBlockStatusCallback((blocked, reason) => {
+    updateTrayMenu({ isBlocked: blocked, reason });
+  });
   
   await monitoringService.start();
   
