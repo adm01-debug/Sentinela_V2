@@ -12,6 +12,27 @@ export interface ViolationRule {
   notify_admin: boolean;
 }
 
+export interface ScheduleInfo {
+  name: string;
+  work_days: number[];
+  start_time: string;
+  end_time: string;
+  lunch_start: string | null;
+  lunch_end: string | null;
+  grace_period_minutes: number;
+  auto_block_enabled: boolean;
+  allow_overtime: boolean;
+}
+
+export interface ScheduleResponse {
+  schedule: ScheduleInfo | null;
+  block_station: boolean;
+  reason: string;
+  is_lunch_break: boolean;
+  current_time: string;
+  is_work_day: boolean;
+}
+
 export class ApiService {
   private config: Config;
   private queue: Array<{ type: string; data: any }> = [];
@@ -19,9 +40,13 @@ export class ApiService {
   private cachedRules: ViolationRule[] = [];
   private lastRulesFetch = 0;
   private rulesCacheTime = 5 * 60 * 1000; // 5 minutes cache
+  private scheduleUrl: string;
 
   constructor(config: Config) {
     this.config = config;
+    // Extract base URL for schedule endpoint
+    const baseUrl = config.serverUrl.replace('/agent-collector', '');
+    this.scheduleUrl = `${baseUrl}/get-employee-schedule`;
     
     // Process queue every 5 seconds
     setInterval(() => this.processQueue(), 5000);
@@ -107,5 +132,48 @@ export class ApiService {
 
   getRulesByType(type: ViolationRule['rule_type']): ViolationRule[] {
     return this.cachedRules.filter(r => r.rule_type === type && r.is_active);
+  }
+
+  async fetchEmployeeSchedule(): Promise<ScheduleResponse> {
+    try {
+      console.log('Fetching employee schedule from:', this.scheduleUrl);
+      
+      const response = await fetch(this.scheduleUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          employee_name: this.config.employeeName,
+          agent_key: this.config.agentKey,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to fetch schedule:', await response.text());
+        return {
+          schedule: null,
+          block_station: false,
+          reason: 'Failed to fetch schedule',
+          is_lunch_break: false,
+          current_time: new Date().toISOString(),
+          is_work_day: true,
+        };
+      }
+
+      const result = await response.json() as ScheduleResponse;
+      console.log('Schedule response:', result);
+      return result;
+    } catch (error) {
+      console.error('Error fetching employee schedule:', error);
+      return {
+        schedule: null,
+        block_station: false,
+        reason: 'Network error',
+        is_lunch_break: false,
+        current_time: new Date().toISOString(),
+        is_work_day: true,
+      };
+    }
   }
 }
