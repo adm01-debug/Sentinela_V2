@@ -52,7 +52,28 @@ export const SessionPlayback = () => {
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [loading, setLoading] = useState(false);
   const [fullscreenOpen, setFullscreenOpen] = useState(false);
+  const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const playIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Get available hours from recordings
+  const availableHours = recordings.reduce<Set<number>>((hours, rec) => {
+    const hour = new Date(rec.recorded_at).getHours();
+    hours.add(hour);
+    return hours;
+  }, new Set());
+
+  // Jump to specific hour
+  const jumpToHour = (hour: number) => {
+    setSelectedHour(hour);
+    const targetIndex = recordings.findIndex(rec => {
+      const recHour = new Date(rec.recorded_at).getHours();
+      return recHour >= hour;
+    });
+    if (targetIndex !== -1) {
+      setCurrentIndex(targetIndex);
+      setIsPlaying(false);
+    }
+  };
 
   // Fetch unique employees
   useEffect(() => {
@@ -255,6 +276,35 @@ export const SessionPlayback = () => {
                     )}
                   </div>
                 )}
+              </div>
+
+              {/* Timeline hour filter */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Clock className="h-4 w-4" />
+                  <span>Navegar por hora:</span>
+                </div>
+                <div className="flex gap-1 flex-wrap">
+                  {Array.from({ length: 24 }, (_, i) => i).map((hour) => {
+                    const hasRecordings = availableHours.has(hour);
+                    const isSelected = selectedHour === hour;
+                    const currentHour = currentRecording ? new Date(currentRecording.recorded_at).getHours() : null;
+                    const isCurrent = currentHour === hour;
+                    
+                    return (
+                      <Button
+                        key={hour}
+                        variant={isSelected ? "default" : isCurrent ? "secondary" : "outline"}
+                        size="sm"
+                        className={`w-10 h-8 text-xs ${!hasRecordings ? 'opacity-30 cursor-not-allowed' : ''}`}
+                        disabled={!hasRecordings}
+                        onClick={() => jumpToHour(hour)}
+                      >
+                        {hour.toString().padStart(2, '0')}
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Playback controls */}
