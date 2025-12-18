@@ -28,6 +28,8 @@ export interface Config {
   
   // SmartBlur
   smartBlurEnabled: boolean;
+  smartBlurWhitelist: string[]; // Words/patterns to ignore
+  smartBlurWhitelistApps: string[]; // Apps to skip OCR processing
 }
 
 export const defaultConfig: Config = {
@@ -59,4 +61,6 @@ export const defaultConfig: Config = {
   
   // SmartBlur defaults
   smartBlurEnabled: true,
+  smartBlurWhitelist: [],
+  smartBlurWhitelistApps: [],
 };

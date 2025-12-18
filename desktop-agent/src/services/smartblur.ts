@@ -20,6 +20,7 @@ interface BlurResult {
   regionsBlurred: number;
   sensitiveTypes: string[];
   ocrProcessed: boolean;
+  skippedByWhitelist: number;
 }
 
 interface OCRWord {
@@ -33,62 +34,86 @@ interface OCRWord {
   confidence: number;
 }
 
+interface SmartBlurConfig {
+  whitelist: string[];
+  whitelistApps: string[];
+}
+
 export class SmartBlurService {
   private static ocrWorker: Tesseract.Worker | null = null;
   private static ocrInitializing: boolean = false;
+  private static config: SmartBlurConfig = { whitelist: [], whitelistApps: [] };
 
   // Patterns for sensitive data detection
   private static readonly SENSITIVE_PATTERNS: Record<string, RegExp> = {
-    // Credit card patterns (16 digits with optional separators)
     creditCard: /\b(?:\d{4}[\s-]?){3}\d{4}\b/,
-    // CVV/CVC patterns
     cvv: /\b(?:cvv|cvc|cv2)[\s:]*\d{3,4}\b/i,
-    // CPF pattern (Brazilian ID)
     cpf: /\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/,
-    // CNPJ pattern (Brazilian company ID)
     cnpj: /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/,
-    // SSN pattern (US)
     ssn: /\b\d{3}-?\d{2}-?\d{4}\b/,
-    // Bank account patterns
     bankAccount: /\b(?:conta|account|ag[eê]ncia|agency|routing)[\s:]*[\d-]{4,}/i,
-    // API keys and tokens (generic patterns)
     apiKey: /\b(?:sk_live_|pk_live_|api[_-]?key|apikey|access[_-]?token|bearer|secret[_-]?key)[\s:]*[\w-]{10,}/i,
-    // Password fields indicators
     passwordField: /(?:senha|password|secret|pin|passcode|pwd)[\s:]+[\S]{4,}/i,
-    // Email with password context
     emailPassword: /(?:email|e-mail|login)[\s:]+[\w@.-]+[\s\n]+(?:senha|password|pwd)[\s:]+/i,
-    // Private keys
     privateKey: /-----BEGIN.*PRIVATE KEY-----/i,
-    // AWS credentials
     awsCredential: /\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/,
-    // Generic token patterns
     genericToken: /\b(?:token|bearer|auth)[\s:]+[a-zA-Z0-9_-]{20,}\b/i,
-    // Phone numbers (various formats)
     phoneNumber: /\b(?:\+\d{1,3}[\s-]?)?\(?\d{2,3}\)?[\s.-]?\d{4,5}[\s.-]?\d{4}\b/,
-    // Date of birth context
     dateOfBirth: /(?:nascimento|birth|dob|data[\s]de[\s]nasc)[\s:]+\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}/i,
   };
 
-  // Window title patterns that indicate sensitive content
   private static readonly SENSITIVE_WINDOW_TITLES = [
     /password/i, /senha/i, /bank/i, /banco/i, /credit/i, /crédito/i,
     /payment/i, /pagamento/i, /login/i, /sign.?in/i, /wallet/i,
     /carteira/i, /account/i, /conta/i, /checkout/i, /billing/i,
   ];
 
-  // App names that typically contain sensitive data
   private static readonly SENSITIVE_APPS = [
     'keepass', 'lastpass', '1password', 'bitwarden', 'dashlane',
     'keychain', 'credential', 'vault', 'authenticator', 'keyring',
   ];
 
-  // Sensitive keywords to detect in OCR text
   private static readonly SENSITIVE_KEYWORDS = [
     'password', 'senha', 'secret', 'confidential', 'private',
     'credit card', 'cartão', 'cvv', 'cvc', 'pin', 'ssn', 'cpf', 'cnpj',
     'bank account', 'conta bancária', 'routing number', 'api key',
     'access token', 'bearer', 'authorization', 'auth token',
   ];
+
+  /**
+   * Configure whitelist settings
+   */
+  static setConfig(config: SmartBlurConfig): void {
+    this.config = config;
+    console.log(`SmartBlur: Configured with ${config.whitelist.length} whitelisted words, ${config.whitelistApps.length} whitelisted apps`);
+  }
+
+  /**
+   * Check if text matches any whitelist entry
+   */
+  private static isWhitelisted(text: string): boolean {
+    const lowerText = text.toLowerCase();
+    return this.config.whitelist.some(item => {
+      const lowerItem = item.toLowerCase();
+      // Support wildcard matching with *
+      if (lowerItem.includes('*')) {
+        const regex = new RegExp('^' + lowerItem.replace(/\*/g, '.*') + '$', 'i');
+        return regex.test(lowerText);
+      }
+      return lowerText.includes(lowerItem);
+    });
+  }
+
+  /**
+   * Check if app is whitelisted (skip processing entirely)
+   */
+  private static isAppWhitelisted(appName?: string): boolean {
+    if (!appName) return false;
+    const lowerApp = appName.toLowerCase();
+    return this.config.whitelistApps.some(item => 
+      lowerApp.includes(item.toLowerCase())
+    );
+  }
 
   /**
    * Initialize OCR worker
@@ -139,9 +164,21 @@ export class SmartBlurService {
     const sensitiveTypes: string[] = [];
     const regions: SensitiveRegion[] = [];
     let ocrProcessed = false;
+    let skippedByWhitelist = 0;
+
+    // Check if app is whitelisted - skip processing entirely
+    if (this.isAppWhitelisted(appName)) {
+      console.log(`SmartBlur: Skipping ${appName} (whitelisted app)`);
+      return {
+        processedPath: imagePath,
+        regionsBlurred: 0,
+        sensitiveTypes: [],
+        ocrProcessed: false,
+        skippedByWhitelist: 0,
+      };
+    }
 
     try {
-      // Read the image
       const imageBuffer = fs.readFileSync(imagePath);
       const image = sharp(imageBuffer);
       const metadata = await image.metadata();
@@ -150,25 +187,36 @@ export class SmartBlurService {
         throw new Error('Could not read image dimensions');
       }
 
+      // Check if window title is whitelisted
+      if (windowTitle && this.isWhitelisted(windowTitle)) {
+        console.log(`SmartBlur: Skipping window "${windowTitle}" (whitelisted)`);
+        return {
+          processedPath: imagePath,
+          regionsBlurred: 0,
+          sensitiveTypes: [],
+          ocrProcessed: false,
+          skippedByWhitelist: 1,
+        };
+      }
+
       // Check if window title or app suggests sensitive content
       const isSensitiveContext = this.isSensitiveContext(windowTitle, appName);
 
       if (isSensitiveContext) {
         sensitiveTypes.push('sensitive_context');
-        // Add blur regions for common password field locations
         const passwordRegions = this.getCommonPasswordFieldRegions(metadata.width, metadata.height);
         regions.push(...passwordRegions);
       }
 
       // Perform OCR to detect text
       try {
-        const ocrRegions = await this.performOCRAndDetect(imageBuffer, metadata);
-        if (ocrRegions.length > 0) {
-          regions.push(...ocrRegions);
+        const ocrResult = await this.performOCRAndDetect(imageBuffer, metadata);
+        if (ocrResult.regions.length > 0) {
+          regions.push(...ocrResult.regions);
           ocrProcessed = true;
+          skippedByWhitelist += ocrResult.skippedByWhitelist;
           
-          // Collect unique types
-          ocrRegions.forEach(r => {
+          ocrResult.regions.forEach(r => {
             if (r.type && !sensitiveTypes.includes(r.type)) {
               sensitiveTypes.push(r.type);
             }
@@ -176,7 +224,6 @@ export class SmartBlurService {
         }
       } catch (ocrError) {
         console.error('SmartBlur OCR error:', ocrError);
-        // Continue without OCR if it fails
       }
 
       // If no regions to blur, return original
@@ -186,6 +233,7 @@ export class SmartBlurService {
           regionsBlurred: 0,
           sensitiveTypes: [],
           ocrProcessed,
+          skippedByWhitelist,
         };
       }
 
@@ -200,22 +248,21 @@ export class SmartBlurService {
       const outputPath = path.join(os.tmpdir(), outputFilename);
       await processedImage.toFile(outputPath);
 
-      // Clean up original if different path
+      // Clean up original
       if (outputPath !== imagePath) {
         try {
           fs.unlinkSync(imagePath);
-        } catch (e) {
-          // Ignore cleanup errors
-        }
+        } catch (e) {}
       }
 
-      console.log(`SmartBlur: Processed ${mergedRegions.length} regions, types: ${sensitiveTypes.join(', ')}, OCR: ${ocrProcessed}`);
+      console.log(`SmartBlur: Processed ${mergedRegions.length} regions, skipped ${skippedByWhitelist} whitelisted, OCR: ${ocrProcessed}`);
 
       return {
         processedPath: outputPath,
         regionsBlurred: mergedRegions.length,
         sensitiveTypes,
         ocrProcessed,
+        skippedByWhitelist,
       };
     } catch (error) {
       console.error('SmartBlur processing error:', error);
@@ -224,6 +271,7 @@ export class SmartBlurService {
         regionsBlurred: 0,
         sensitiveTypes: [],
         ocrProcessed: false,
+        skippedByWhitelist: 0,
       };
     }
   }
@@ -234,17 +282,16 @@ export class SmartBlurService {
   private static async performOCRAndDetect(
     imageBuffer: Buffer,
     metadata: sharp.Metadata
-  ): Promise<SensitiveRegion[]> {
+  ): Promise<{ regions: SensitiveRegion[]; skippedByWhitelist: number }> {
     const regions: SensitiveRegion[] = [];
+    let skippedByWhitelist = 0;
 
     try {
       const worker = await this.initOCR();
-      
-      // Perform OCR
       const result = await worker.recognize(imageBuffer);
       
       if (!result.data.words || result.data.words.length === 0) {
-        return regions;
+        return { regions, skippedByWhitelist };
       }
 
       // Process each word
@@ -252,7 +299,14 @@ export class SmartBlurService {
         const wordText = word.text.trim();
         if (!wordText || wordText.length < 3) continue;
 
+        // Check whitelist first
+        if (this.isWhitelisted(wordText)) {
+          skippedByWhitelist++;
+          continue;
+        }
+
         // Check against sensitive patterns
+        let matched = false;
         for (const [patternName, pattern] of Object.entries(this.SENSITIVE_PATTERNS)) {
           if (pattern.test(wordText)) {
             regions.push({
@@ -264,15 +318,23 @@ export class SmartBlurService {
               confidence: word.confidence,
               matchedPattern: patternName,
             });
-            break; // Only match first pattern
+            matched = true;
+            break;
           }
         }
+
+        if (matched) continue;
 
         // Check for sensitive keywords
         const lowerWord = wordText.toLowerCase();
         for (const keyword of this.SENSITIVE_KEYWORDS) {
+          // Skip if keyword is whitelisted
+          if (this.isWhitelisted(keyword)) {
+            skippedByWhitelist++;
+            continue;
+          }
+          
           if (lowerWord.includes(keyword.toLowerCase())) {
-            // Expand region to include surrounding context
             regions.push({
               x: Math.max(0, word.bbox.x0 - 50),
               y: Math.max(0, word.bbox.y0 - 10),
@@ -287,23 +349,24 @@ export class SmartBlurService {
         }
       }
 
-      // Also check full text for multi-word patterns
+      // Check full text for multi-word patterns
       const fullText = result.data.text;
       for (const [patternName, pattern] of Object.entries(this.SENSITIVE_PATTERNS)) {
         let match;
         const globalPattern = new RegExp(pattern.source, 'gi');
         while ((match = globalPattern.exec(fullText)) !== null) {
-          // Find approximate position in image based on text position
+          const matchedText = match[0];
+          
+          // Skip if whitelisted
+          if (this.isWhitelisted(matchedText)) {
+            skippedByWhitelist++;
+            continue;
+          }
+          
           const matchStart = match.index;
           const linesBefore = fullText.substring(0, matchStart).split('\n').length - 1;
+          const estimatedY = Math.min(linesBefore * 25 + 50, metadata.height! - 50);
           
-          // Estimate vertical position
-          const estimatedY = Math.min(
-            linesBefore * 25 + 50, // Rough line height estimation
-            metadata.height! - 50
-          );
-          
-          // Create a region covering likely area
           regions.push({
             x: Math.floor(metadata.width! * 0.1),
             y: estimatedY,
@@ -315,10 +378,10 @@ export class SmartBlurService {
         }
       }
 
-      return regions;
+      return { regions, skippedByWhitelist };
     } catch (error) {
       console.error('OCR detection error:', error);
-      return regions;
+      return { regions, skippedByWhitelist };
     }
   }
 
