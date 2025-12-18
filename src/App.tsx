@@ -17,6 +17,7 @@ import InternetAccess from "./pages/InternetAccess";
 import AIAnalysis from "./pages/AIAnalysis";
 import Auth from "./pages/Auth";
 import Install from "./pages/Install";
+import MonitoringPolicies from "./pages/MonitoringPolicies";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Routes>
             <Route path="/auth" element={<Auth />} />
             <Route path="/install" element={<Install />} />
+            <Route path="/monitoring-policies" element={<MonitoringPolicies />} />
             <Route path="/" element={
               <ProtectedRoute requireAdmin>
                 <Index />
