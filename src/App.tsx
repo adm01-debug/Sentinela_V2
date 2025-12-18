@@ -22,6 +22,7 @@ import Install from "./pages/Install";
 import MonitoringPolicies from "./pages/MonitoringPolicies";
 import PolicyAcknowledgments from "./pages/PolicyAcknowledgments";
 import Teams from "./pages/Teams";
+import Employees from "./pages/Employees";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -54,6 +55,13 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <Teams />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/employees" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <Employees />
                 </PolicyGate>
               </ProtectedRoute>
             } />
