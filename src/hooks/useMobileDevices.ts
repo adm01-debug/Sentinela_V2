@@ -81,8 +81,36 @@ export function useMobileDevices() {
     };
     loadData();
 
-    // Subscribe to realtime updates
-    const channel = supabase
+    // Subscribe to realtime updates for devices
+    const devicesChannel = supabase
+      .channel("mobile-devices-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "mobile_devices",
+        },
+        (payload) => {
+          if (payload.eventType === "INSERT") {
+            setDevices((prev) => [payload.new as MobileDevice, ...prev]);
+          } else if (payload.eventType === "UPDATE") {
+            setDevices((prev) =>
+              prev.map((device) =>
+                device.id === payload.new.id ? (payload.new as MobileDevice) : device
+              )
+            );
+          } else if (payload.eventType === "DELETE") {
+            setDevices((prev) =>
+              prev.filter((device) => device.id !== payload.old.id)
+            );
+          }
+        }
+      )
+      .subscribe();
+
+    // Subscribe to realtime updates for activity logs
+    const activityChannel = supabase
       .channel("mobile-activity-changes")
       .on(
         "postgres_changes",
@@ -98,7 +126,8 @@ export function useMobileDevices() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(devicesChannel);
+      supabase.removeChannel(activityChannel);
     };
   }, []);
 
