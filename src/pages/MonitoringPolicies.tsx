@@ -17,12 +17,15 @@ import {
   FileText,
   Type,
   AppWindow,
-  Loader2
+  Loader2,
+  CheckCircle2
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
+import { PolicyAcknowledgmentDialog } from '@/components/PolicyAcknowledgmentDialog';
+import { useAuth } from '@/hooks/useAuth';
 
 interface ViolationRule {
   id: string;
@@ -116,10 +119,16 @@ const severityLabels: Record<string, string> = {
 export default function MonitoringPolicies() {
   const [dynamicRules, setDynamicRules] = useState<ViolationRule[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasAcknowledged, setHasAcknowledged] = useState(false);
+  const [checkingAcknowledgment, setCheckingAcknowledgment] = useState(true);
+  const { user } = useAuth();
+  
+  const employeeName = user?.user_metadata?.full_name || user?.email || 'Funcionário';
 
   useEffect(() => {
     fetchPolicies();
-  }, []);
+    checkAcknowledgment();
+  }, [employeeName]);
 
   const fetchPolicies = async () => {
     try {
@@ -140,6 +149,29 @@ export default function MonitoringPolicies() {
     }
   };
 
+  const checkAcknowledgment = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('policy_acknowledgments')
+        .select('id')
+        .eq('employee_name', employeeName)
+        .order('acknowledged_at', { ascending: false })
+        .limit(1);
+      
+      if (!error && data && data.length > 0) {
+        setHasAcknowledged(true);
+      }
+    } catch (err) {
+      console.error('Failed to check acknowledgment:', err);
+    } finally {
+      setCheckingAcknowledgment(false);
+    }
+  };
+
+  const handleAcknowledged = () => {
+    setHasAcknowledged(true);
+  };
+
   // Group rules by type
   const groupedRules = dynamicRules.reduce((acc, rule) => {
     const type = rule.rule_type;
@@ -153,14 +185,32 @@ export default function MonitoringPolicies() {
       {/* Header */}
       <div className="bg-gradient-to-r from-primary/20 via-primary/10 to-background border-b border-border">
         <div className="container mx-auto px-4 py-12">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="p-3 rounded-xl bg-primary/20">
-              <Shield className="h-8 w-8 text-primary" />
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-xl bg-primary/20">
+                <Shield className="h-8 w-8 text-primary" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Políticas de Monitoramento</h1>
+                <p className="text-muted-foreground">Informações sobre o monitoramento ativo neste dispositivo</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Políticas de Monitoramento</h1>
-              <p className="text-muted-foreground">Informações sobre o monitoramento ativo neste dispositivo</p>
-            </div>
+            
+            {!checkingAcknowledgment && (
+              <div className="shrink-0">
+                {hasAcknowledged ? (
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/30">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    <span className="text-sm text-green-500 font-medium">Políticas Aceitas</span>
+                  </div>
+                ) : (
+                  <PolicyAcknowledgmentDialog 
+                    employeeName={employeeName} 
+                    onAcknowledged={handleAcknowledged}
+                  />
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
