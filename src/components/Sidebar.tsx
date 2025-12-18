@@ -19,7 +19,8 @@ import {
   ClipboardCheck,
   FileSearch,
   Building2,
-  Clock
+  Clock,
+  MapPin
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -31,6 +32,7 @@ const menuItems = [
   { icon: Building2, label: 'Equipes', path: '/teams' },
   { icon: Users, label: 'Colaboradores', path: '/employees' },
   { icon: Clock, label: 'Jornadas', path: '/work-schedules', badgeKey: 'overtimeRequests' as const },
+  { icon: MapPin, label: 'Geofencing', path: '/geofencing' },
   { icon: Monitor, label: 'Dispositivos', path: '/devices' },
   { icon: Eye, label: 'Monitoramento', path: '/monitoring' },
   { icon: Key, label: 'Chaves de Agentes', path: '/agent-keys' },
