@@ -22,7 +22,8 @@ import {
   Clock,
   MapPin,
   Smartphone,
-  Mail
+  Mail,
+  GitCompare
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -47,6 +48,7 @@ const menuItems = [
   { icon: Smartphone, label: 'Mobile', path: '/mobile-monitoring' },
   { icon: Brain, label: 'Análise IA', path: '/ai-analysis' },
   { icon: FileBarChart, label: 'Relatórios', path: '/reports' },
+  { icon: GitCompare, label: 'Comparativo', path: '/productivity-comparison' },
   { icon: Mail, label: 'Relatórios Agendados', path: '/scheduled-reports' },
   { icon: Settings, label: 'Configurações', path: '/settings' },
 ];

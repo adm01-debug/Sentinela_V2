@@ -27,6 +27,7 @@ import WorkSchedules from "./pages/WorkSchedules";
 import Geofencing from "./pages/Geofencing";
 import ScheduledReports from "./pages/ScheduledReports";
 import MobileMonitoring from "./pages/MobileMonitoring";
+import ProductivityComparison from "./pages/ProductivityComparison";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -171,6 +172,13 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <MobileMonitoring />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/productivity-comparison" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <ProductivityComparison />
                 </PolicyGate>
               </ProtectedRoute>
             } />
