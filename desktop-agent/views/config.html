@@ -184,12 +184,22 @@
         <label for="smartBlurEnabled">Ativar SmartBlur automático</label>
       </div>
       <div class="smartblur-info" style="font-size: 12px; color: #888; margin-top: 8px; line-height: 1.5;">
-        O SmartBlur detecta e oculta automaticamente:<br>
-        • Campos de senha e login<br>
-        • Números de cartão de crédito<br>
-        • CPF, CNPJ e documentos<br>
-        • API keys e tokens<br>
-        • Dados bancários
+        O SmartBlur detecta e oculta automaticamente dados sensíveis.
+      </div>
+      
+      <div class="form-group" style="margin-top: 12px;">
+        <label>Whitelist de Palavras (ignorar detecção)</label>
+        <input type="text" id="smartBlurWhitelistInput" placeholder="Digite e pressione Enter">
+        <div id="smartBlurWhitelistTags" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;"></div>
+        <div style="font-size: 11px; color: #666; margin-top: 4px;">
+          Use * para wildcard (ex: *teste*, projeto_*)
+        </div>
+      </div>
+      
+      <div class="form-group" style="margin-top: 12px;">
+        <label>Apps para Ignorar OCR</label>
+        <input type="text" id="smartBlurWhitelistAppsInput" placeholder="Nome do app (ex: notepad)">
+        <div id="smartBlurWhitelistAppsTags" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;"></div>
       </div>
     </div>
 
@@ -227,6 +237,48 @@
   <script>
     const { ipcRenderer } = require('electron');
     
+    // Whitelist arrays
+    let smartBlurWhitelist = [];
+    let smartBlurWhitelistApps = [];
+    
+    // Render whitelist tags
+    function renderTags(containerId, items, removeCallback) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = items.map((item, index) => `
+        <span style="background: #6366f1; padding: 4px 8px; border-radius: 4px; font-size: 12px; display: flex; align-items: center; gap: 4px;">
+          ${item}
+          <span onclick="${removeCallback}(${index})" style="cursor: pointer; opacity: 0.7;">✕</span>
+        </span>
+      `).join('');
+    }
+    
+    function removeWhitelistItem(index) {
+      smartBlurWhitelist.splice(index, 1);
+      renderTags('smartBlurWhitelistTags', smartBlurWhitelist, 'removeWhitelistItem');
+    }
+    
+    function removeWhitelistAppItem(index) {
+      smartBlurWhitelistApps.splice(index, 1);
+      renderTags('smartBlurWhitelistAppsTags', smartBlurWhitelistApps, 'removeWhitelistAppItem');
+    }
+    
+    // Handle Enter key for whitelist inputs
+    document.getElementById('smartBlurWhitelistInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && this.value.trim()) {
+        smartBlurWhitelist.push(this.value.trim());
+        renderTags('smartBlurWhitelistTags', smartBlurWhitelist, 'removeWhitelistItem');
+        this.value = '';
+      }
+    });
+    
+    document.getElementById('smartBlurWhitelistAppsInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && this.value.trim()) {
+        smartBlurWhitelistApps.push(this.value.trim());
+        renderTags('smartBlurWhitelistAppsTags', smartBlurWhitelistApps, 'removeWhitelistAppItem');
+        this.value = '';
+      }
+    });
+    
     // Load existing config
     const existingConfig = ipcRenderer.sendSync('get-config');
     if (existingConfig.employeeName) {
@@ -245,6 +297,12 @@
       document.getElementById('hideFromTaskManager').checked = existingConfig.hideFromTaskManager || false;
       document.getElementById('disableExitOption').checked = existingConfig.disableExitOption || false;
       document.getElementById('autoStartWithSystem').checked = existingConfig.autoStartWithSystem !== false;
+      
+      // Load whitelist
+      smartBlurWhitelist = existingConfig.smartBlurWhitelist || [];
+      smartBlurWhitelistApps = existingConfig.smartBlurWhitelistApps || [];
+      renderTags('smartBlurWhitelistTags', smartBlurWhitelist, 'removeWhitelistItem');
+      renderTags('smartBlurWhitelistAppsTags', smartBlurWhitelistApps, 'removeWhitelistAppItem');
     }
 
     // Toggle stealth warning visibility
@@ -252,7 +310,6 @@
       document.getElementById('stealthWarning').style.display = this.checked ? 'block' : 'none';
     });
     
-    // Initial check
     if (document.getElementById('stealthModeEnabled').checked) {
       document.getElementById('stealthWarning').style.display = 'block';
     }
@@ -273,6 +330,8 @@
         vpnDetectionEnabled: document.getElementById('vpnDetectionEnabled').checked,
         mouseJigglerDetectionEnabled: document.getElementById('mouseJigglerDetectionEnabled').checked,
         smartBlurEnabled: document.getElementById('smartBlurEnabled').checked,
+        smartBlurWhitelist: smartBlurWhitelist,
+        smartBlurWhitelistApps: smartBlurWhitelistApps,
         stealthModeEnabled: document.getElementById('stealthModeEnabled').checked,
         hideFromTaskManager: document.getElementById('hideFromTaskManager').checked,
         disableExitOption: document.getElementById('disableExitOption').checked,

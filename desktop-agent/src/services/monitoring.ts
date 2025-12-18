@@ -48,6 +48,12 @@ export class MonitoringService {
   async start() {
     console.log('MonitoringService starting...');
 
+    // Configure SmartBlur whitelist
+    SmartBlurService.setConfig({
+      whitelist: this.config.smartBlurWhitelist || [],
+      whitelistApps: this.config.smartBlurWhitelistApps || [],
+    });
+
     // Fetch violation rules on start
     await this.refreshRules();
 
