@@ -17,7 +17,12 @@ import {
   UserX,
   Plus,
   Trash2,
-  ShieldOff
+  ShieldOff,
+  PieChart,
+  CheckCircle2,
+  AlertCircle,
+  TrendingUp,
+  Users
 } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -79,11 +84,23 @@ interface Exemption {
   expires_at: string | null;
 }
 
+interface ComplianceData {
+  totalEmployees: number;
+  confirmedToday: number;
+  exemptCount: number;
+  pendingCount: number;
+  complianceRate: number;
+  pendingEmployees: string[];
+  confirmedEmployees: string[];
+}
+
 export default function PolicyAcknowledgments() {
   const [acknowledgments, setAcknowledgments] = useState<Acknowledgment[]>([]);
   const [exemptions, setExemptions] = useState<Exemption[]>([]);
+  const [compliance, setCompliance] = useState<ComplianceData | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadingExemptions, setLoadingExemptions] = useState(true);
+  const [loadingCompliance, setLoadingCompliance] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [dateFilter, setDateFilter] = useState<string>('all');
   const [page, setPage] = useState(1);
@@ -104,6 +121,7 @@ export default function PolicyAcknowledgments() {
   useEffect(() => {
     fetchAcknowledgments();
     fetchExemptions();
+    fetchComplianceData();
   }, [page, dateFilter]);
 
   const fetchAcknowledgments = async () => {
@@ -161,6 +179,68 @@ export default function PolicyAcknowledgments() {
       console.error('Error fetching exemptions:', err);
     } finally {
       setLoadingExemptions(false);
+    }
+  };
+
+  const fetchComplianceData = async () => {
+    setLoadingCompliance(true);
+    try {
+      // Get all unique employees from various sources
+      const [keystrokeRes, productivityRes, exemptionsRes, todayAckRes] = await Promise.all([
+        supabase.from('keystroke_logs').select('employee_name'),
+        supabase.from('productivity_logs').select('employee_name'),
+        supabase.from('policy_exemptions').select('employee_name, expires_at'),
+        supabase.from('policy_acknowledgments')
+          .select('employee_name')
+          .gte('acknowledged_at', new Date(new Date().setHours(0, 0, 0, 0)).toISOString())
+      ]);
+
+      // Combine all unique employee names
+      const allEmployees = new Set<string>();
+      keystrokeRes.data?.forEach(e => allEmployees.add(e.employee_name));
+      productivityRes.data?.forEach(e => allEmployees.add(e.employee_name));
+
+      // Get valid exemptions (not expired)
+      const validExemptions = new Set<string>();
+      exemptionsRes.data?.forEach(e => {
+        if (!e.expires_at || new Date(e.expires_at) >= new Date()) {
+          validExemptions.add(e.employee_name);
+        }
+      });
+
+      // Get employees who confirmed today
+      const confirmedToday = new Set<string>();
+      todayAckRes.data?.forEach(e => confirmedToday.add(e.employee_name));
+
+      // Calculate compliance
+      const totalEmployees = allEmployees.size;
+      const exemptCount = validExemptions.size;
+      const confirmedCount = confirmedToday.size;
+      
+      // Employees who need to confirm (not exempt)
+      const needsConfirmation = [...allEmployees].filter(e => !validExemptions.has(e));
+      const pendingEmployees = needsConfirmation.filter(e => !confirmedToday.has(e));
+      const confirmedEmployees = needsConfirmation.filter(e => confirmedToday.has(e));
+      
+      const pendingCount = pendingEmployees.length;
+      const requiredCount = needsConfirmation.length;
+      const complianceRate = requiredCount > 0 
+        ? Math.round((confirmedEmployees.length / requiredCount) * 100) 
+        : 100;
+
+      setCompliance({
+        totalEmployees,
+        confirmedToday: confirmedEmployees.length,
+        exemptCount,
+        pendingCount,
+        complianceRate,
+        pendingEmployees,
+        confirmedEmployees
+      });
+    } catch (err) {
+      console.error('Error fetching compliance data:', err);
+    } finally {
+      setLoadingCompliance(false);
     }
   };
 
@@ -344,6 +424,13 @@ export default function PolicyAcknowledgments() {
             <TabsTrigger value="acknowledgments" className="gap-2">
               <ClipboardCheck className="h-4 w-4" />
               Confirmações
+            </TabsTrigger>
+            <TabsTrigger value="compliance" className="gap-2">
+              <PieChart className="h-4 w-4" />
+              Conformidade
+              {compliance && compliance.complianceRate < 100 && (
+                <Badge variant="destructive" className="ml-1">{compliance.complianceRate}%</Badge>
+              )}
             </TabsTrigger>
             <TabsTrigger value="exemptions" className="gap-2">
               <UserX className="h-4 w-4" />
@@ -683,6 +770,211 @@ export default function PolicyAcknowledgments() {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="compliance" className="space-y-6">
+            {/* Compliance Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-semibold">Relatório de Conformidade</h2>
+                <p className="text-sm text-muted-foreground">
+                  Visão geral da conformidade diária com as políticas de monitoramento
+                </p>
+              </div>
+              <Button variant="outline" onClick={fetchComplianceData} className="gap-2">
+                <TrendingUp className="h-4 w-4" />
+                Atualizar
+              </Button>
+            </div>
+
+            {loadingCompliance ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+              </div>
+            ) : compliance ? (
+              <>
+                {/* Compliance Overview */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Taxa de Conformidade</p>
+                          <p className={`text-3xl font-bold ${
+                            compliance.complianceRate === 100 
+                              ? 'text-green-500' 
+                              : compliance.complianceRate >= 80 
+                                ? 'text-amber-500' 
+                                : 'text-destructive'
+                          }`}>
+                            {compliance.complianceRate}%
+                          </p>
+                        </div>
+                        <div className={`p-3 rounded-full ${
+                          compliance.complianceRate === 100 
+                            ? 'bg-green-500/10' 
+                            : compliance.complianceRate >= 80 
+                              ? 'bg-amber-500/10' 
+                              : 'bg-destructive/10'
+                        }`}>
+                          <PieChart className={`h-6 w-6 ${
+                            compliance.complianceRate === 100 
+                              ? 'text-green-500' 
+                              : compliance.complianceRate >= 80 
+                                ? 'text-amber-500' 
+                                : 'text-destructive'
+                          }`} />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Confirmaram Hoje</p>
+                          <p className="text-3xl font-bold text-green-500">{compliance.confirmedToday}</p>
+                        </div>
+                        <div className="p-3 rounded-full bg-green-500/10">
+                          <CheckCircle2 className="h-6 w-6 text-green-500" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Pendentes</p>
+                          <p className={`text-3xl font-bold ${compliance.pendingCount > 0 ? 'text-destructive' : 'text-muted-foreground'}`}>
+                            {compliance.pendingCount}
+                          </p>
+                        </div>
+                        <div className={`p-3 rounded-full ${compliance.pendingCount > 0 ? 'bg-destructive/10' : 'bg-muted'}`}>
+                          <AlertCircle className={`h-6 w-6 ${compliance.pendingCount > 0 ? 'text-destructive' : 'text-muted-foreground'}`} />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Total de Funcionários</p>
+                          <p className="text-3xl font-bold">{compliance.totalEmployees}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            ({compliance.exemptCount} isento{compliance.exemptCount !== 1 ? 's' : ''})
+                          </p>
+                        </div>
+                        <div className="p-3 rounded-full bg-primary/10">
+                          <Users className="h-6 w-6 text-primary" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Progress Bar */}
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Progresso do Dia</span>
+                        <span className="text-sm text-muted-foreground">
+                          {compliance.confirmedToday} de {compliance.confirmedToday + compliance.pendingCount} funcionários
+                        </span>
+                      </div>
+                      <div className="h-4 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className={`h-full transition-all duration-500 ${
+                            compliance.complianceRate === 100 
+                              ? 'bg-green-500' 
+                              : compliance.complianceRate >= 80 
+                                ? 'bg-amber-500' 
+                                : 'bg-destructive'
+                          }`}
+                          style={{ width: `${compliance.complianceRate}%` }}
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Lists */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Pending */}
+                  <Card className={compliance.pendingCount > 0 ? 'border-destructive/30' : ''}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-base">
+                        <AlertCircle className={`h-5 w-5 ${compliance.pendingCount > 0 ? 'text-destructive' : 'text-muted-foreground'}`} />
+                        Pendentes ({compliance.pendingCount})
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {compliance.pendingEmployees.length === 0 ? (
+                        <div className="text-center py-6">
+                          <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-2 opacity-50" />
+                          <p className="text-sm text-muted-foreground">
+                            Todos os funcionários confirmaram!
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-2 max-h-64 overflow-y-auto">
+                          {compliance.pendingEmployees.map((name, idx) => (
+                            <div key={idx} className="flex items-center gap-3 p-2 rounded-lg bg-destructive/5 border border-destructive/20">
+                              <div className="p-1.5 rounded-full bg-destructive/10">
+                                <User className="h-4 w-4 text-destructive" />
+                              </div>
+                              <span className="text-sm font-medium">{name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* Confirmed */}
+                  <Card className="border-green-500/30">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-base">
+                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                        Confirmados Hoje ({compliance.confirmedToday})
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {compliance.confirmedEmployees.length === 0 ? (
+                        <div className="text-center py-6">
+                          <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-2 opacity-50" />
+                          <p className="text-sm text-muted-foreground">
+                            Nenhuma confirmação ainda hoje.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-2 max-h-64 overflow-y-auto">
+                          {compliance.confirmedEmployees.map((name, idx) => (
+                            <div key={idx} className="flex items-center gap-3 p-2 rounded-lg bg-green-500/5 border border-green-500/20">
+                              <div className="p-1.5 rounded-full bg-green-500/10">
+                                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                              </div>
+                              <span className="text-sm font-medium">{name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+              </>
+            ) : (
+              <Card>
+                <CardContent className="py-12 text-center text-muted-foreground">
+                  Não foi possível carregar os dados de conformidade.
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
       </main>
