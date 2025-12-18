@@ -206,6 +206,10 @@ export class MonitoringService {
     const scheduleDetails = scheduleInfo 
       ? `Horário: ${scheduleInfo.start_time} - ${scheduleInfo.end_time}` 
       : '';
+    const allowOvertime = scheduleInfo?.allow_overtime ?? true;
+    const overtimeUrl = this.config.serverUrl.replace('/agent-collector', '/request-overtime');
+    const employeeName = this.config.employeeName;
+    const agentKey = this.config.agentKey;
 
     return `
     <!DOCTYPE html>
@@ -232,16 +236,17 @@ export class MonitoringService {
         }
         .container {
           text-align: center;
-          padding: 60px;
+          padding: 40px 60px;
           background: rgba(255,255,255,0.05);
           border-radius: 20px;
           backdrop-filter: blur(10px);
           border: 1px solid rgba(255,255,255,0.1);
-          max-width: 600px;
+          max-width: 650px;
+          width: 90%;
         }
         .lock-icon {
-          font-size: 80px;
-          margin-bottom: 30px;
+          font-size: 60px;
+          margin-bottom: 20px;
           animation: pulse 2s infinite;
         }
         @keyframes pulse {
@@ -249,39 +254,145 @@ export class MonitoringService {
           50% { transform: scale(1.1); opacity: 0.8; }
         }
         h1 {
-          font-size: 36px;
-          margin-bottom: 20px;
+          font-size: 32px;
+          margin-bottom: 15px;
           font-weight: 600;
         }
         .reason {
-          font-size: 20px;
+          font-size: 18px;
           color: #ff6b6b;
-          margin-bottom: 30px;
-          padding: 15px 25px;
+          margin-bottom: 20px;
+          padding: 12px 20px;
           background: rgba(255,107,107,0.1);
           border-radius: 10px;
           border: 1px solid rgba(255,107,107,0.3);
         }
         .schedule-info {
-          font-size: 16px;
+          font-size: 14px;
           color: #94a3b8;
-          margin-bottom: 30px;
+          margin-bottom: 20px;
         }
         .message {
-          font-size: 14px;
+          font-size: 13px;
           color: #64748b;
-          line-height: 1.6;
+          line-height: 1.5;
+          margin-bottom: 25px;
         }
         .company {
-          margin-top: 40px;
-          font-size: 12px;
+          margin-top: 30px;
+          font-size: 11px;
           color: #475569;
         }
         .time {
-          font-size: 48px;
+          font-size: 42px;
           font-weight: 300;
-          margin-bottom: 10px;
+          margin-bottom: 8px;
           color: #a78bfa;
+        }
+        
+        /* Overtime Request Form */
+        .overtime-section {
+          margin-top: 25px;
+          padding-top: 25px;
+          border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .overtime-title {
+          font-size: 16px;
+          color: #a78bfa;
+          margin-bottom: 15px;
+          font-weight: 500;
+        }
+        .form-group {
+          margin-bottom: 15px;
+          text-align: left;
+        }
+        .form-group label {
+          display: block;
+          font-size: 12px;
+          color: #94a3b8;
+          margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+          width: 100%;
+          padding: 10px 12px;
+          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.15);
+          border-radius: 8px;
+          color: white;
+          font-size: 14px;
+          font-family: inherit;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+          outline: none;
+          border-color: #a78bfa;
+          background: rgba(255,255,255,0.1);
+        }
+        .form-group textarea {
+          min-height: 60px;
+          resize: none;
+        }
+        .form-group select option {
+          background: #1e1e2e;
+          color: white;
+        }
+        .form-row {
+          display: flex;
+          gap: 15px;
+        }
+        .form-row .form-group {
+          flex: 1;
+        }
+        .btn-request {
+          width: 100%;
+          padding: 12px 20px;
+          background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+          border: none;
+          border-radius: 10px;
+          color: white;
+          font-size: 15px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin-top: 10px;
+        }
+        .btn-request:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 20px rgba(139,92,246,0.4);
+        }
+        .btn-request:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+        .status-message {
+          margin-top: 15px;
+          padding: 10px 15px;
+          border-radius: 8px;
+          font-size: 13px;
+          display: none;
+        }
+        .status-message.success {
+          display: block;
+          background: rgba(34,197,94,0.15);
+          border: 1px solid rgba(34,197,94,0.3);
+          color: #22c55e;
+        }
+        .status-message.error {
+          display: block;
+          background: rgba(239,68,68,0.15);
+          border: 1px solid rgba(239,68,68,0.3);
+          color: #ef4444;
+        }
+        .status-message.pending {
+          display: block;
+          background: rgba(234,179,8,0.15);
+          border: 1px solid rgba(234,179,8,0.3);
+          color: #eab308;
+        }
+        .no-overtime {
+          font-size: 13px;
+          color: #94a3b8;
+          font-style: italic;
         }
       </style>
     </head>
@@ -293,11 +404,127 @@ export class MonitoringService {
         <div class="reason">${reason}</div>
         <div class="schedule-info">${scheduleDetails}</div>
         <p class="message">
-          Esta estação de trabalho está bloqueada fora do horário permitido.<br>
-          Se você precisa trabalhar neste momento, solicite autorização de hora extra ao seu gestor.
+          Esta estação de trabalho está bloqueada fora do horário permitido.
         </p>
+        
+        ${allowOvertime ? `
+        <div class="overtime-section">
+          <div class="overtime-title">📝 Solicitar Hora Extra</div>
+          <form id="overtimeForm" onsubmit="submitOvertimeRequest(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Horas solicitadas</label>
+                <select id="hoursRequested">
+                  <option value="1">1 hora</option>
+                  <option value="2" selected>2 horas</option>
+                  <option value="3">3 horas</option>
+                  <option value="4">4 horas</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Motivo da solicitação</label>
+              <textarea id="overtimeReason" placeholder="Descreva o motivo pelo qual precisa trabalhar fora do horário..." maxlength="500"></textarea>
+            </div>
+            <button type="submit" class="btn-request" id="submitBtn">
+              Enviar Solicitação
+            </button>
+          </form>
+          <div id="statusMessage" class="status-message"></div>
+        </div>
+        ` : `
+        <div class="overtime-section">
+          <p class="no-overtime">Solicitações de hora extra não estão habilitadas para sua jornada.<br>Entre em contato com seu gestor para liberação.</p>
+        </div>
+        `}
+        
         <p class="company">SecureWatch • Monitoramento de Segurança</p>
       </div>
+      <script>
+        const overtimeUrl = '${overtimeUrl}';
+        const employeeName = '${employeeName}';
+        const agentKey = '${agentKey}';
+        
+        function updateTime() {
+          const now = new Date();
+          const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+          document.getElementById('currentTime').textContent = timeStr;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+        
+        // Disable most keyboard shortcuts but allow typing in form
+        document.addEventListener('keydown', (e) => {
+          // Allow typing in form fields
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+            // Only block dangerous shortcuts
+            if (e.altKey && e.key === 'F4') {
+              e.preventDefault();
+              return false;
+            }
+            return true;
+          }
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        });
+        
+        async function submitOvertimeRequest(event) {
+          event.preventDefault();
+          
+          const submitBtn = document.getElementById('submitBtn');
+          const statusMessage = document.getElementById('statusMessage');
+          const reason = document.getElementById('overtimeReason').value.trim();
+          const hours = parseInt(document.getElementById('hoursRequested').value);
+          
+          if (!reason) {
+            statusMessage.className = 'status-message error';
+            statusMessage.textContent = 'Por favor, informe o motivo da solicitação.';
+            return;
+          }
+          
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Enviando...';
+          statusMessage.className = 'status-message pending';
+          statusMessage.textContent = 'Processando solicitação...';
+          
+          try {
+            const response = await fetch(overtimeUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                employee_name: employeeName,
+                agent_key: agentKey,
+                reason: reason,
+                hours_requested: hours
+              })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+              statusMessage.className = 'status-message success';
+              statusMessage.textContent = '✓ Solicitação enviada com sucesso! Aguarde aprovação do seu gestor.';
+              document.getElementById('overtimeForm').style.display = 'none';
+            } else {
+              statusMessage.className = 'status-message error';
+              statusMessage.textContent = result.error || 'Falha ao enviar solicitação. Tente novamente.';
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Enviar Solicitação';
+            }
+          } catch (error) {
+            statusMessage.className = 'status-message error';
+            statusMessage.textContent = 'Erro de conexão. Verifique sua internet e tente novamente.';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Enviar Solicitação';
+          }
+        }
+      </script>
+    </body>
+    </html>
+    `;
       <script>
         function updateTime() {
           const now = new Date();

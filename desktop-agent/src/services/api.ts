@@ -176,4 +176,48 @@ export class ApiService {
       };
     }
   }
+
+  async requestOvertime(reason: string, hoursRequested: number = 2): Promise<{ success: boolean; message: string; request?: any }> {
+    const overtimeUrl = this.config.serverUrl.replace('/agent-collector', '/request-overtime');
+    
+    try {
+      console.log('Requesting overtime from:', overtimeUrl);
+      
+      const response = await fetch(overtimeUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          employee_name: this.config.employeeName,
+          agent_key: this.config.agentKey,
+          reason: reason,
+          hours_requested: hoursRequested,
+        }),
+      });
+
+      const result = await response.json() as { success: boolean; message?: string; error?: string; request?: any };
+      
+      if (!response.ok || !result.success) {
+        console.error('Failed to request overtime:', result.error || result.message);
+        return {
+          success: false,
+          message: result.error || result.message || 'Failed to request overtime',
+        };
+      }
+
+      console.log('Overtime request submitted:', result);
+      return {
+        success: true,
+        message: result.message || 'Overtime request submitted successfully',
+        request: result.request,
+      };
+    } catch (error) {
+      console.error('Error requesting overtime:', error);
+      return {
+        success: false,
+        message: 'Network error while requesting overtime',
+      };
+    }
+  }
 }
