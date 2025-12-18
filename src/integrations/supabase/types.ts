@@ -323,6 +323,45 @@ export type Database = {
         }
         Relationships: []
       }
+      policy_acknowledgments: {
+        Row: {
+          acknowledged_at: string
+          device_name: string | null
+          employee_name: string
+          id: string
+          ip_address: string | null
+          latitude: number | null
+          location_address: string | null
+          longitude: number | null
+          photo_url: string | null
+          policy_version: string | null
+        }
+        Insert: {
+          acknowledged_at?: string
+          device_name?: string | null
+          employee_name: string
+          id?: string
+          ip_address?: string | null
+          latitude?: number | null
+          location_address?: string | null
+          longitude?: number | null
+          photo_url?: string | null
+          policy_version?: string | null
+        }
+        Update: {
+          acknowledged_at?: string
+          device_name?: string | null
+          employee_name?: string
+          id?: string
+          ip_address?: string | null
+          latitude?: number | null
+          location_address?: string | null
+          longitude?: number | null
+          photo_url?: string | null
+          policy_version?: string | null
+        }
+        Relationships: []
+      }
       productivity_logs: {
         Row: {
           apps_used: Json | null
