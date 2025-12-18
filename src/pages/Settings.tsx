@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, AppWindow, Search, Loader2, UserCog } from 'lucide-react';
+import { ArrowLeft, Shield, AppWindow, Search, Loader2, UserCog, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,6 +10,7 @@ import { AddApplicationDialog } from '@/components/AddApplicationDialog';
 import { EditApplicationDialog } from '@/components/EditApplicationDialog';
 import { SettingsAuditLog } from '@/components/SettingsAuditLog';
 import { MFASettings } from '@/components/MFASettings';
+import { AlertSettingsPanel } from '@/components/AlertSettingsPanel';
 import { useSettings, type ApplicationRule } from '@/hooks/useSettings';
 import { categoryLabels } from '@/data/settingsData';
 
@@ -70,7 +71,7 @@ export default function Settings() {
 
       <main className="container px-4 py-6">
         <Tabs defaultValue="policies" className="space-y-6">
-          <TabsList className="grid w-full max-w-lg grid-cols-3">
+          <TabsList className="grid w-full max-w-2xl grid-cols-4">
             <TabsTrigger value="policies" className="gap-2">
               <Shield className="h-4 w-4" />
               Políticas
@@ -78,6 +79,10 @@ export default function Settings() {
             <TabsTrigger value="apps" className="gap-2">
               <AppWindow className="h-4 w-4" />
               Aplicativos
+            </TabsTrigger>
+            <TabsTrigger value="alerts" className="gap-2">
+              <Bell className="h-4 w-4" />
+              Alertas
             </TabsTrigger>
             <TabsTrigger value="account" className="gap-2">
               <UserCog className="h-4 w-4" />
@@ -215,6 +220,14 @@ export default function Settings() {
                 </p>
                 <p className="text-sm text-muted-foreground">Bloqueados</p>
               </div>
+            </div>
+          </TabsContent>
+
+          {/* Alerts Tab */}
+          <TabsContent value="alerts" className="space-y-6">
+            <div className="rounded-xl border border-border bg-card p-6">
+              <h3 className="text-lg font-semibold mb-4">Configurações de Alertas por Email</h3>
+              <AlertSettingsPanel />
             </div>
           </TabsContent>
 

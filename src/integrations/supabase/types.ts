@@ -95,6 +95,48 @@ export type Database = {
         }
         Relationships: []
       }
+      alert_notification_settings: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          enabled: boolean
+          id: string
+          notify_critical: boolean
+          notify_high: boolean
+          notify_low: boolean
+          notify_medium: boolean
+          recipient_emails: string[]
+          setting_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          id?: string
+          notify_critical?: boolean
+          notify_high?: boolean
+          notify_low?: boolean
+          notify_medium?: boolean
+          recipient_emails?: string[]
+          setting_type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          id?: string
+          notify_critical?: boolean
+          notify_high?: boolean
+          notify_low?: boolean
+          notify_medium?: boolean
+          recipient_emails?: string[]
+          setting_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       application_rules: {
         Row: {
           category: string
