@@ -23,17 +23,18 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import { usePendingNotifications } from '@/hooks/usePendingNotifications';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
   { icon: Building2, label: 'Equipes', path: '/teams' },
   { icon: Users, label: 'Colaboradores', path: '/employees' },
-  { icon: Clock, label: 'Jornadas', path: '/work-schedules' },
+  { icon: Clock, label: 'Jornadas', path: '/work-schedules', badgeKey: 'overtimeRequests' as const },
   { icon: Monitor, label: 'Dispositivos', path: '/devices' },
   { icon: Eye, label: 'Monitoramento', path: '/monitoring' },
   { icon: Key, label: 'Chaves de Agentes', path: '/agent-keys' },
   { icon: Shield, label: 'Segurança', path: '/security' },
-  { icon: Bell, label: 'Violações', path: '/violations' },
+  { icon: Bell, label: 'Violações', path: '/violations', badgeKey: 'unreadViolations' as const },
   { icon: ShieldAlert, label: 'Regras de Violação', path: '/violation-rules' },
   { icon: FileSearch, label: 'Palavras Sensíveis', path: '/sensitive-keywords' },
   { icon: Globe, label: 'Acesso Internet', path: '/internet-access' },
@@ -48,10 +49,16 @@ export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, signOut } = useAuth();
+  const { counts } = usePendingNotifications();
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/auth');
+  };
+
+  const getBadgeCount = (badgeKey?: 'overtimeRequests' | 'unreadViolations') => {
+    if (!badgeKey) return 0;
+    return counts[badgeKey] || 0;
   };
 
   return (
@@ -62,36 +69,77 @@ export function Sidebar() {
       <div className="flex h-16 items-center justify-between border-b border-border px-4">
         {!collapsed && (
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <Shield className="h-5 w-5 text-primary-foreground" />
+              {counts.total > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground animate-pulse">
+                  {counts.total > 9 ? '9+' : counts.total}
+                </span>
+              )}
             </div>
             <span className="font-bold text-lg">SecureWatch</span>
           </div>
         )}
+        {collapsed && (
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-primary mx-auto">
+            <Shield className="h-5 w-5 text-primary-foreground" />
+            {counts.total > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground animate-pulse">
+                {counts.total > 9 ? '9+' : counts.total}
+              </span>
+            )}
+          </div>
+        )}
         <button 
           onClick={() => setCollapsed(!collapsed)}
-          className="rounded-lg p-2 hover:bg-accent transition-colors"
+          className={cn(
+            "rounded-lg p-2 hover:bg-accent transition-colors",
+            collapsed && "mx-auto mt-2"
+          )}
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </button>
       </div>
       
-      <nav className="p-4 space-y-2 flex-1">
+      <nav className="p-4 space-y-2 flex-1 overflow-y-auto">
         {menuItems.map((item) => {
           const isActive = location.pathname === item.path;
+          const badgeCount = getBadgeCount(item.badgeKey);
+          
           return (
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
               className={cn(
-                'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200',
+                'relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200',
                 isActive 
                   ? 'bg-primary text-primary-foreground shadow-lg' 
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
               )}
             >
-              <item.icon className="h-5 w-5 shrink-0" />
-              {!collapsed && <span className="font-medium">{item.label}</span>}
+              <div className="relative">
+                <item.icon className="h-5 w-5 shrink-0" />
+                {badgeCount > 0 && collapsed && (
+                  <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground animate-pulse">
+                    {badgeCount > 9 ? '9+' : badgeCount}
+                  </span>
+                )}
+              </div>
+              {!collapsed && (
+                <>
+                  <span className="font-medium flex-1 text-left">{item.label}</span>
+                  {badgeCount > 0 && (
+                    <span className={cn(
+                      "flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-bold animate-pulse",
+                      isActive 
+                        ? "bg-primary-foreground/20 text-primary-foreground" 
+                        : "bg-destructive text-destructive-foreground"
+                    )}>
+                      {badgeCount > 99 ? '99+' : badgeCount}
+                    </span>
+                  )}
+                </>
+              )}
             </button>
           );
         })}
