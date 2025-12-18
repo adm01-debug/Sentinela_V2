@@ -25,6 +25,9 @@ export interface Config {
   hideFromTaskManager: boolean;
   disableExitOption: boolean;
   autoStartWithSystem: boolean;
+  
+  // SmartBlur
+  smartBlurEnabled: boolean;
 }
 
 export const defaultConfig: Config = {
@@ -53,4 +56,7 @@ export const defaultConfig: Config = {
   hideFromTaskManager: false,
   disableExitOption: false,
   autoStartWithSystem: true,
+  
+  // SmartBlur defaults
+  smartBlurEnabled: true,
 };
