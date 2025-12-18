@@ -457,7 +457,9 @@ export type Database = {
           created_at: string
           device: string | null
           employee_name: string
+          extracted_text: string | null
           id: string
+          ocr_processed_at: string | null
           window_title: string | null
         }
         Insert: {
@@ -467,7 +469,9 @@ export type Database = {
           created_at?: string
           device?: string | null
           employee_name: string
+          extracted_text?: string | null
           id?: string
+          ocr_processed_at?: string | null
           window_title?: string | null
         }
         Update: {
@@ -477,7 +481,9 @@ export type Database = {
           created_at?: string
           device?: string | null
           employee_name?: string
+          extracted_text?: string | null
           id?: string
+          ocr_processed_at?: string | null
           window_title?: string | null
         }
         Relationships: []
