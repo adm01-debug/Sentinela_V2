@@ -1,6 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+declare global {
+  interface EdgeRuntime {
+    waitUntil(promise: Promise<unknown>): void;
+  }
+  const EdgeRuntime: EdgeRuntime;
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-agent-key",
@@ -193,15 +200,88 @@ serve(async (req) => {
       }
 
       case "screenshot": {
-        const { error } = await supabase.from("screen_captures").insert({
+        const { data: insertedCapture, error } = await supabase.from("screen_captures").insert({
           employee_name: employeeName,
           device: deviceName,
           capture_url: data.capture_url,
           app_name: data.app_name,
           window_title: data.window_title,
           captured_at: data.captured_at || new Date().toISOString(),
-        });
+        }).select('id, capture_url').single();
         if (error) throw error;
+        
+        // Trigger automatic OCR processing in background
+        if (insertedCapture?.id && insertedCapture?.capture_url) {
+          const ocrTask = async () => {
+            try {
+              const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+              if (!LOVABLE_API_KEY) {
+                console.log("OCR skipped: LOVABLE_API_KEY not configured");
+                return;
+              }
+
+              console.log(`Starting automatic OCR for screenshot ${insertedCapture.id}`);
+              
+              const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${LOVABLE_API_KEY}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  model: "google/gemini-2.5-flash",
+                  messages: [
+                    {
+                      role: "user",
+                      content: [
+                        {
+                          type: "text",
+                          text: "Extract ALL text visible in this screenshot. Return ONLY the extracted text, nothing else. If no text is visible, return 'NO_TEXT_FOUND'.",
+                        },
+                        {
+                          type: "image_url",
+                          image_url: { url: insertedCapture.capture_url },
+                        },
+                      ],
+                    },
+                  ],
+                }),
+              });
+
+              if (!aiResponse.ok) {
+                console.error(`OCR AI request failed: ${aiResponse.status}`);
+                return;
+              }
+
+              const aiData = await aiResponse.json();
+              const extractedText = aiData.choices?.[0]?.message?.content?.trim();
+
+              if (extractedText && extractedText !== "NO_TEXT_FOUND") {
+                await supabase
+                  .from("screen_captures")
+                  .update({
+                    extracted_text: extractedText,
+                    ocr_processed_at: new Date().toISOString(),
+                  })
+                  .eq("id", insertedCapture.id);
+                console.log(`OCR completed for screenshot ${insertedCapture.id}`);
+              } else {
+                await supabase
+                  .from("screen_captures")
+                  .update({
+                    ocr_processed_at: new Date().toISOString(),
+                  })
+                  .eq("id", insertedCapture.id);
+                console.log(`OCR completed (no text found) for screenshot ${insertedCapture.id}`);
+              }
+            } catch (ocrError) {
+              console.error("OCR background task error:", ocrError);
+            }
+          };
+          
+          // Run OCR in background without blocking response
+          EdgeRuntime.waitUntil(ocrTask());
+        }
         break;
       }
 
