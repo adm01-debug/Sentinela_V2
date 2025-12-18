@@ -647,6 +647,82 @@ export type Database = {
         }
         Relationships: []
       }
+      team_members: {
+        Row: {
+          employee_name: string
+          id: string
+          joined_at: string
+          role: string | null
+          team_id: string
+        }
+        Insert: {
+          employee_name: string
+          id?: string
+          joined_at?: string
+          role?: string | null
+          team_id: string
+        }
+        Update: {
+          employee_name?: string
+          id?: string
+          joined_at?: string
+          role?: string | null
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teams: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          leader_id: string | null
+          leader_name: string | null
+          name: string
+          parent_team_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          leader_id?: string | null
+          leader_name?: string | null
+          name: string
+          parent_team_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          leader_id?: string | null
+          leader_name?: string | null
+          name?: string
+          parent_team_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teams_parent_team_id_fkey"
+            columns: ["parent_team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string

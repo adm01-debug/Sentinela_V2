@@ -17,13 +17,15 @@ import {
   Globe,
   Brain,
   ClipboardCheck,
-  FileSearch
+  FileSearch,
+  Building2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
+  { icon: Building2, label: 'Equipes', path: '/teams' },
   { icon: Users, label: 'Colaboradores', path: '/employees' },
   { icon: Monitor, label: 'Dispositivos', path: '/devices' },
   { icon: Eye, label: 'Monitoramento', path: '/monitoring' },
