@@ -119,11 +119,19 @@ const severityLabels: Record<string, string> = {
 export default function MonitoringPolicies() {
   const [dynamicRules, setDynamicRules] = useState<ViolationRule[]>([]);
   const [loading, setLoading] = useState(true);
-  const [hasAcknowledged, setHasAcknowledged] = useState(false);
+  const [hasAcknowledgedToday, setHasAcknowledgedToday] = useState(false);
+  const [lastAcknowledgment, setLastAcknowledgment] = useState<Date | null>(null);
   const [checkingAcknowledgment, setCheckingAcknowledgment] = useState(true);
   const { user } = useAuth();
   
   const employeeName = user?.user_metadata?.full_name || user?.email || 'Funcionário';
+
+  const isToday = (date: Date) => {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+  };
 
   useEffect(() => {
     fetchPolicies();
@@ -153,13 +161,15 @@ export default function MonitoringPolicies() {
     try {
       const { data, error } = await supabase
         .from('policy_acknowledgments')
-        .select('id')
+        .select('id, acknowledged_at')
         .eq('employee_name', employeeName)
         .order('acknowledged_at', { ascending: false })
         .limit(1);
       
       if (!error && data && data.length > 0) {
-        setHasAcknowledged(true);
+        const lastDate = new Date(data[0].acknowledged_at);
+        setLastAcknowledgment(lastDate);
+        setHasAcknowledgedToday(isToday(lastDate));
       }
     } catch (err) {
       console.error('Failed to check acknowledgment:', err);
@@ -169,7 +179,8 @@ export default function MonitoringPolicies() {
   };
 
   const handleAcknowledged = () => {
-    setHasAcknowledged(true);
+    setHasAcknowledgedToday(true);
+    setLastAcknowledgment(new Date());
   };
 
   // Group rules by type
@@ -198,16 +209,30 @@ export default function MonitoringPolicies() {
             
             {!checkingAcknowledgment && (
               <div className="shrink-0">
-                {hasAcknowledged ? (
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/30">
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                    <span className="text-sm text-green-500 font-medium">Políticas Aceitas</span>
+                {hasAcknowledgedToday ? (
+                  <div className="flex flex-col items-end gap-1">
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/30">
+                      <CheckCircle2 className="h-5 w-5 text-green-500" />
+                      <span className="text-sm text-green-500 font-medium">Aceito Hoje</span>
+                    </div>
+                    {lastAcknowledgment && (
+                      <span className="text-xs text-muted-foreground">
+                        às {lastAcknowledgment.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    )}
                   </div>
                 ) : (
-                  <PolicyAcknowledgmentDialog 
-                    employeeName={employeeName} 
-                    onAcknowledged={handleAcknowledged}
-                  />
+                  <div className="flex flex-col items-end gap-1">
+                    <PolicyAcknowledgmentDialog 
+                      employeeName={employeeName} 
+                      onAcknowledged={handleAcknowledged}
+                    />
+                    {lastAcknowledgment && (
+                      <span className="text-xs text-muted-foreground">
+                        Último aceite: {lastAcknowledgment.toLocaleDateString('pt-BR')}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
             )}
