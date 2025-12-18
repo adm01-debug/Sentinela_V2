@@ -362,6 +362,33 @@ export type Database = {
         }
         Relationships: []
       }
+      policy_exemptions: {
+        Row: {
+          created_at: string
+          employee_name: string
+          exempted_by: string | null
+          expires_at: string | null
+          id: string
+          reason: string | null
+        }
+        Insert: {
+          created_at?: string
+          employee_name: string
+          exempted_by?: string | null
+          expires_at?: string | null
+          id?: string
+          reason?: string | null
+        }
+        Update: {
+          created_at?: string
+          employee_name?: string
+          exempted_by?: string | null
+          expires_at?: string | null
+          id?: string
+          reason?: string | null
+        }
+        Relationships: []
+      }
       productivity_logs: {
         Row: {
           apps_used: Json | null

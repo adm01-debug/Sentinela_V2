@@ -11,6 +11,7 @@ interface PolicyGateProps {
 
 export function PolicyGate({ children }: PolicyGateProps) {
   const [hasAcknowledgedToday, setHasAcknowledgedToday] = useState<boolean | null>(null);
+  const [isExempt, setIsExempt] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
@@ -23,6 +24,34 @@ export function PolicyGate({ children }: PolicyGateProps) {
       date.getFullYear() === today.getFullYear();
   };
 
+  const checkExemption = async () => {
+    if (!employeeName || !user?.email) return false;
+
+    try {
+      const { data, error } = await supabase
+        .from('policy_exemptions')
+        .select('id, expires_at')
+        .or(`employee_name.eq.${employeeName},employee_name.eq.${user.email}`)
+        .limit(1);
+
+      if (!error && data && data.length > 0) {
+        const exemption = data[0];
+        // Check if exemption has expired
+        if (exemption.expires_at) {
+          const expiresAt = new Date(exemption.expires_at);
+          if (expiresAt < new Date()) {
+            return false; // Expired
+          }
+        }
+        return true; // Valid exemption
+      }
+      return false;
+    } catch (err) {
+      console.error('Failed to check exemption:', err);
+      return false;
+    }
+  };
+
   const checkAcknowledgment = async () => {
     if (!employeeName) {
       setLoading(false);
@@ -30,6 +59,16 @@ export function PolicyGate({ children }: PolicyGateProps) {
     }
 
     try {
+      // First check if user is exempt
+      const exempt = await checkExemption();
+      setIsExempt(exempt);
+
+      if (exempt) {
+        setLoading(false);
+        return;
+      }
+
+      // If not exempt, check for daily acknowledgment
       const { data, error } = await supabase
         .from('policy_acknowledgments')
         .select('id, acknowledged_at')
@@ -69,6 +108,11 @@ export function PolicyGate({ children }: PolicyGateProps) {
         </div>
       </div>
     );
+  }
+
+  // User is exempt - grant access
+  if (isExempt) {
+    return <>{children}</>;
   }
 
   // Block access if not acknowledged today
