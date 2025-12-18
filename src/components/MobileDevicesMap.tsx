@@ -409,6 +409,39 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
         </div>
       )}
       <div ref={mapContainer} className="w-full h-full" />
+      
+      {/* Map Legend */}
+      <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg z-10">
+        <h4 className="text-xs font-semibold text-foreground mb-2">Legenda</h4>
+        <div className="space-y-2">
+          {/* Device Status */}
+          <div className="flex items-center gap-2">
+            <div className="relative flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+              <div className="absolute w-3 h-3 rounded-full bg-green-500 opacity-50 animate-ping" />
+            </div>
+            <span className="text-xs text-muted-foreground">Dispositivo Online</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-gray-500" />
+            <span className="text-xs text-muted-foreground">Dispositivo Offline</span>
+          </div>
+          
+          {/* Device Types */}
+          <div className="flex items-center gap-2 pt-1 border-t border-border">
+            <span className="text-sm">🍎</span>
+            <span className="text-xs text-muted-foreground">iOS</span>
+            <span className="text-sm ml-2">🤖</span>
+            <span className="text-xs text-muted-foreground">Android</span>
+          </div>
+          
+          {/* Geofence */}
+          <div className="flex items-center gap-2 pt-1 border-t border-border">
+            <div className="w-4 h-4 rounded-full border-2 border-dashed border-green-500 bg-green-500/20" />
+            <span className="text-xs text-muted-foreground">Área de Geofence</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
