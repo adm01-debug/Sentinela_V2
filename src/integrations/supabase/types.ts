@@ -573,6 +573,107 @@ export type Database = {
         }
         Relationships: []
       }
+      mobile_activity_logs: {
+        Row: {
+          activity_type: string
+          app_name: string | null
+          created_at: string
+          device_id: string | null
+          duration_seconds: number | null
+          employee_name: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          recorded_at: string
+        }
+        Insert: {
+          activity_type: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Update: {
+          activity_type?: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mobile_activity_logs_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "mobile_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mobile_devices: {
+        Row: {
+          app_version: string | null
+          created_at: string
+          device_id: string
+          device_model: string | null
+          employee_name: string
+          id: string
+          is_active: boolean
+          last_location_lat: number | null
+          last_location_lng: number | null
+          last_seen_at: string | null
+          os_type: string
+          os_version: string | null
+          push_token: string | null
+          updated_at: string
+        }
+        Insert: {
+          app_version?: string | null
+          created_at?: string
+          device_id: string
+          device_model?: string | null
+          employee_name: string
+          id?: string
+          is_active?: boolean
+          last_location_lat?: number | null
+          last_location_lng?: number | null
+          last_seen_at?: string | null
+          os_type: string
+          os_version?: string | null
+          push_token?: string | null
+          updated_at?: string
+        }
+        Update: {
+          app_version?: string | null
+          created_at?: string
+          device_id?: string
+          device_model?: string | null
+          employee_name?: string
+          id?: string
+          is_active?: boolean
+          last_location_lat?: number | null
+          last_location_lng?: number | null
+          last_seen_at?: string | null
+          os_type?: string
+          os_version?: string | null
+          push_token?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       monitoring_settings: {
         Row: {
           created_at: string
@@ -769,6 +870,54 @@ export type Database = {
           email?: string
           full_name?: string | null
           id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      scheduled_report_settings: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          enabled: boolean
+          id: string
+          include_activity_summary: boolean
+          include_productivity: boolean
+          include_violations: boolean
+          last_sent_at: string | null
+          recipient_emails: string[]
+          report_type: string
+          send_day_of_week: number | null
+          send_time: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          id?: string
+          include_activity_summary?: boolean
+          include_productivity?: boolean
+          include_violations?: boolean
+          last_sent_at?: string | null
+          recipient_emails?: string[]
+          report_type?: string
+          send_day_of_week?: number | null
+          send_time?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          id?: string
+          include_activity_summary?: boolean
+          include_productivity?: boolean
+          include_violations?: boolean
+          last_sent_at?: string | null
+          recipient_emails?: string[]
+          report_type?: string
+          send_day_of_week?: number | null
+          send_time?: string
           updated_at?: string
         }
         Relationships: []

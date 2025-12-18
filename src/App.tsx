@@ -25,6 +25,8 @@ import Teams from "./pages/Teams";
 import Employees from "./pages/Employees";
 import WorkSchedules from "./pages/WorkSchedules";
 import Geofencing from "./pages/Geofencing";
+import ScheduledReports from "./pages/ScheduledReports";
+import MobileMonitoring from "./pages/MobileMonitoring";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -155,6 +157,20 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <Geofencing />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/scheduled-reports" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <ScheduledReports />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/mobile-monitoring" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <MobileMonitoring />
                 </PolicyGate>
               </ProtectedRoute>
             } />

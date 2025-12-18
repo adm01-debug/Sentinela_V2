@@ -17,3 +17,12 @@ verify_jwt = false
 
 [functions.request-overtime]
 verify_jwt = false
+
+[functions.check-geofence]
+verify_jwt = false
+
+[functions.send-scheduled-report]
+verify_jwt = true
+
+[functions.mobile-collector]
+verify_jwt = false
