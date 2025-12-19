@@ -1,6 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { SoundType } from "@/utils/notificationSound";
+
+export interface SoundSettings {
+  enabled: boolean;
+  soundType: SoundType;
+  volume: number;
+  playCritical: boolean;
+  playHigh: boolean;
+  playMedium: boolean;
+}
 
 export interface RateLimitThresholds {
   agentCollector: {
@@ -30,6 +40,7 @@ export interface RateLimitThresholds {
     frequencyHours: number;
     logRetentionHours: number;
   };
+  sound: SoundSettings;
 }
 
 const DEFAULT_THRESHOLDS: RateLimitThresholds = {
@@ -60,7 +71,16 @@ const DEFAULT_THRESHOLDS: RateLimitThresholds = {
     frequencyHours: 1,
     logRetentionHours: 24,
   },
+  sound: {
+    enabled: true,
+    soundType: 'chime',
+    volume: 70,
+    playCritical: true,
+    playHigh: true,
+    playMedium: false,
+  },
 };
+
 
 export const useRateLimitSettings = () => {
   const queryClient = useQueryClient();

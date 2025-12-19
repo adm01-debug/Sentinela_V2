@@ -5,9 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Settings, RefreshCw, Save, Shield, Smartphone, Brain, MapPin, Trash2, Clock } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { Settings, RefreshCw, Save, Shield, Smartphone, Brain, MapPin, Trash2, Clock, Volume2, Play } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRateLimitSettings, RateLimitThresholds } from "@/hooks/useRateLimitSettings";
+import { SoundType, testSound } from "@/utils/notificationSound";
 
 interface EndpointConfigProps {
   title: string;
@@ -280,6 +282,154 @@ export const RateLimitSettingsPanel = () => {
               <p className="text-xs text-muted-foreground">
                 Logs mais antigos que este período serão removidos
               </p>
+            </div>
+          </div>
+        </div>
+
+        <Separator />
+
+        {/* Sound Settings */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <Volume2 className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-medium">Sons de Alerta</h3>
+          </div>
+
+          <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
+            <div className="space-y-1">
+              <Label htmlFor="soundEnabled" className="text-base font-medium">
+                Sons de Notificação Habilitados
+              </Label>
+              <p className="text-sm text-muted-foreground">
+                Tocar sons quando alertas forem recebidos
+              </p>
+            </div>
+            <Switch
+              id="soundEnabled"
+              checked={localSettings.sound?.enabled ?? true}
+              onCheckedChange={(checked) => 
+                setLocalSettings(prev => ({ 
+                  ...prev, 
+                  sound: { ...prev.sound, enabled: checked } 
+                }))
+              }
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-3 p-4 border rounded-lg">
+              <Label htmlFor="soundType" className="font-medium">Tipo de Som</Label>
+              <div className="flex gap-2">
+                <Select
+                  value={localSettings.sound?.soundType ?? 'chime'}
+                  onValueChange={(value) => 
+                    setLocalSettings(prev => ({ 
+                      ...prev, 
+                      sound: { ...prev.sound, soundType: value as SoundType } 
+                    }))
+                  }
+                  disabled={!localSettings.sound?.enabled}
+                >
+                  <SelectTrigger id="soundType" className="flex-1">
+                    <SelectValue placeholder="Selecione o som" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="chime">Chime (Suave)</SelectItem>
+                    <SelectItem value="bell">Bell (Sino)</SelectItem>
+                    <SelectItem value="alert">Alert (Alerta)</SelectItem>
+                    <SelectItem value="alarm">Alarm (Urgente)</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => testSound(
+                    localSettings.sound?.soundType ?? 'chime',
+                    localSettings.sound?.volume ?? 70
+                  )}
+                  disabled={!localSettings.sound?.enabled}
+                >
+                  <Play className="h-4 w-4" />
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Alertas críticos sempre usam som de alarme
+              </p>
+            </div>
+
+            <div className="space-y-3 p-4 border rounded-lg">
+              <Label className="font-medium">Volume: {localSettings.sound?.volume ?? 70}%</Label>
+              <Slider
+                value={[localSettings.sound?.volume ?? 70]}
+                onValueChange={(value) => 
+                  setLocalSettings(prev => ({ 
+                    ...prev, 
+                    sound: { ...prev.sound, volume: value[0] } 
+                  }))
+                }
+                min={10}
+                max={100}
+                step={10}
+                disabled={!localSettings.sound?.enabled}
+                className="py-2"
+              />
+              <p className="text-xs text-muted-foreground">
+                Ajuste o volume dos alertas sonoros
+              </p>
+            </div>
+          </div>
+
+          <div className="p-4 border rounded-lg space-y-3">
+            <Label className="font-medium">Tocar Som Para:</Label>
+            <div className="flex flex-wrap gap-4">
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="playCritical"
+                  checked={localSettings.sound?.playCritical ?? true}
+                  onCheckedChange={(checked) => 
+                    setLocalSettings(prev => ({ 
+                      ...prev, 
+                      sound: { ...prev.sound, playCritical: checked } 
+                    }))
+                  }
+                  disabled={!localSettings.sound?.enabled}
+                />
+                <Label htmlFor="playCritical" className="text-sm text-destructive font-medium">
+                  Crítico
+                </Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="playHigh"
+                  checked={localSettings.sound?.playHigh ?? true}
+                  onCheckedChange={(checked) => 
+                    setLocalSettings(prev => ({ 
+                      ...prev, 
+                      sound: { ...prev.sound, playHigh: checked } 
+                    }))
+                  }
+                  disabled={!localSettings.sound?.enabled}
+                />
+                <Label htmlFor="playHigh" className="text-sm text-orange-500 font-medium">
+                  Alto
+                </Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="playMedium"
+                  checked={localSettings.sound?.playMedium ?? false}
+                  onCheckedChange={(checked) => 
+                    setLocalSettings(prev => ({ 
+                      ...prev, 
+                      sound: { ...prev.sound, playMedium: checked } 
+                    }))
+                  }
+                  disabled={!localSettings.sound?.enabled}
+                />
+                <Label htmlFor="playMedium" className="text-sm text-yellow-500 font-medium">
+                  Médio
+                </Label>
+              </div>
             </div>
           </div>
         </div>

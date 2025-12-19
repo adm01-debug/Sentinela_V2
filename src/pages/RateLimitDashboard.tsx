@@ -367,7 +367,10 @@ const RateLimitDashboard = () => {
         </Tabs>
 
         {/* Realtime Alerts */}
-        <RateLimitRealtimeAlerts alertThreshold={alertThreshold} />
+        <RateLimitRealtimeAlerts 
+          alertThreshold={alertThreshold} 
+          soundSettings={settings.sound}
+        />
     </div>
   );
 };
