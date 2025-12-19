@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets, CACHE_TIMES } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
 // ============================================================
 // TYPES
@@ -11,141 +11,102 @@ export interface Geofence {
   id: string;
   name: string;
   description?: string;
-  latitude: number;
-  longitude: number;
-  radius: number;
-  type: 'office' | 'restricted' | 'allowed' | 'custom';
+  type: 'circle' | 'polygon';
+  coordinates: number[][];
+  radius?: number;
   is_active: boolean;
-  company_id?: string;
-  address?: string;
-  color?: string;
+  alert_on_enter: boolean;
+  alert_on_exit: boolean;
+  applies_to: 'all' | 'teams' | 'employees';
+  target_ids?: string[];
   created_at: string;
   updated_at: string;
-}
-
-export interface GeofenceEvent {
-  id: string;
-  geofence_id: string;
-  employee_id: string;
-  event_type: 'enter' | 'exit';
-  timestamp: string;
-  latitude: number;
-  longitude: number;
-  geofence?: Geofence;
-  employee?: {
-    id: string;
-    name: string;
-  };
 }
 
 export interface CreateGeofenceInput {
   name: string;
   description?: string;
-  latitude: number;
-  longitude: number;
-  radius: number;
-  type?: 'office' | 'restricted' | 'allowed' | 'custom';
-  address?: string;
-  color?: string;
+  type: 'circle' | 'polygon';
+  coordinates: number[][];
+  radius?: number;
+  is_active?: boolean;
+  alert_on_enter?: boolean;
+  alert_on_exit?: boolean;
+  applies_to?: 'all' | 'teams' | 'employees';
+  target_ids?: string[];
+}
+
+export interface UpdateGeofenceInput {
+  id: string;
+  name?: string;
+  description?: string;
+  coordinates?: number[][];
+  radius?: number;
+  is_active?: boolean;
+  alert_on_enter?: boolean;
+  alert_on_exit?: boolean;
+  applies_to?: 'all' | 'teams' | 'employees';
+  target_ids?: string[];
 }
 
 // ============================================================
-// FETCH FUNCTIONS
-// ============================================================
-
-async function fetchGeofences(): Promise<Geofence[]> {
-  const { data, error } = await supabase
-    .from('geofences')
-    .select('*')
-    .order('name');
-
-  if (error) throw error;
-  return data || [];
-}
-
-async function fetchGeofence(id: string): Promise<Geofence | null> {
-  const { data, error } = await supabase
-    .from('geofences')
-    .select('*')
-    .eq('id', id)
-    .single();
-
-  if (error) throw error;
-  return data;
-}
-
-async function fetchGeofenceEvents(
-  geofenceId?: string,
-  limit = 50
-): Promise<GeofenceEvent[]> {
-  let query = supabase
-    .from('geofence_events')
-    .select(`
-      *,
-      geofence:geofences(id, name, type),
-      employee:employees(id, name)
-    `)
-    .order('timestamp', { ascending: false })
-    .limit(limit);
-
-  if (geofenceId) {
-    query = query.eq('geofence_id', geofenceId);
-  }
-
-  const { data, error } = await query;
-
-  if (error) throw error;
-  return data || [];
-}
-
-// ============================================================
-// HOOKS - QUERIES
+// QUERIES
 // ============================================================
 
 export function useGeofences() {
   return useQuery({
     queryKey: queryKeys.geofences.lists(),
-    queryFn: fetchGeofences,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('geofences')
+        .select('*')
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+      return data as Geofence[];
+    },
     ...queryPresets.list,
-  });
-}
-
-export function useGeofence(id: string | undefined) {
-  return useQuery({
-    queryKey: queryKeys.geofences.detail(id!),
-    queryFn: () => fetchGeofence(id!),
-    enabled: !!id,
-    staleTime: CACHE_TIMES.STABLE,
-  });
-}
-
-export function useGeofenceEvents(geofenceId?: string) {
-  return useQuery({
-    queryKey: ['geofences', geofenceId || 'all', 'events'],
-    queryFn: () => fetchGeofenceEvents(geofenceId),
-    staleTime: CACHE_TIMES.FREQUENT,
   });
 }
 
 export function useActiveGeofences() {
   return useQuery({
-    queryKey: ['geofences', 'active'],
+    queryKey: queryKeys.geofences.active(),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('geofences')
         .select('*')
-        .eq('is_active', true)
-        .order('name');
+        .eq('is_active', true);
 
       if (error) throw error;
-      return data || [];
+      return data as Geofence[];
     },
-    staleTime: CACHE_TIMES.STABLE,
+    ...queryPresets.config,
+  });
+}
+
+export function useGeofence(id: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.geofences.detail(id || ''),
+    queryFn: async () => {
+      if (!id) return null;
+      
+      const { data, error } = await supabase
+        .from('geofences')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data as Geofence;
+    },
+    enabled: !!id,
+    ...queryPresets.detail,
   });
 }
 
 // ============================================================
-// HOOKS - MUTATIONS
+// MUTATIONS WITH OPTIMISTIC UPDATES
 // ============================================================
 
 export function useCreateGeofence() {
@@ -156,28 +117,56 @@ export function useCreateGeofence() {
     mutationFn: async (input: CreateGeofenceInput) => {
       const { data, error } = await supabase
         .from('geofences')
-        .insert({
-          ...input,
-          is_active: true,
-        })
+        .insert(input)
         .select()
         .single();
 
       if (error) throw error;
-      return data;
+      return data as Geofence;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.geofences.all });
-      toast({
-        title: 'Geofence criado',
-        description: 'A cerca geográfica foi criada com sucesso.',
-      });
+    onMutate: async (input) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
+
+      const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
+
+      const optimisticGeofence: Geofence = {
+        id: `temp-${Date.now()}`,
+        name: input.name,
+        description: input.description,
+        type: input.type,
+        coordinates: input.coordinates,
+        radius: input.radius,
+        is_active: input.is_active ?? true,
+        alert_on_enter: input.alert_on_enter ?? true,
+        alert_on_exit: input.alert_on_exit ?? true,
+        applies_to: input.applies_to ?? 'all',
+        target_ids: input.target_ids,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+
+      queryClient.setQueryData<Geofence[]>(
+        queryKeys.geofences.lists(),
+        (old) => [...(old || []), optimisticGeofence]
+      );
+
+      return { previousGeofences };
     },
-    onError: (error) => {
+    onError: (err, _, context) => {
+      if (context?.previousGeofences) {
+        queryClient.setQueryData(queryKeys.geofences.lists(), context.previousGeofences);
+      }
       toast({
         title: 'Erro ao criar geofence',
-        description: error.message,
+        description: err.message,
         variant: 'destructive',
+      });
+    },
+    onSuccess: () => {
+      invalidateRelated.geofences(queryClient);
+      toast({
+        title: 'Geofence criada',
+        description: 'A geofence foi criada com sucesso.',
       });
     },
   });
@@ -188,7 +177,7 @@ export function useUpdateGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ id, ...input }: Partial<Geofence> & { id: string }) => {
+    mutationFn: async ({ id, ...input }: UpdateGeofenceInput) => {
       const { data, error } = await supabase
         .from('geofences')
         .update(input)
@@ -197,21 +186,46 @@ export function useUpdateGeofence() {
         .single();
 
       if (error) throw error;
-      return data;
+      return data as Geofence;
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.geofences.all });
-      queryClient.invalidateQueries({ queryKey: queryKeys.geofences.detail(data.id) });
+    onMutate: async ({ id, ...input }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.detail(id) });
+
+      const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
+      const previousGeofence = queryClient.getQueryData<Geofence>(queryKeys.geofences.detail(id));
+
+      queryClient.setQueryData<Geofence[]>(
+        queryKeys.geofences.lists(),
+        (old) => old?.map(g => g.id === id ? { ...g, ...input, updated_at: new Date().toISOString() } : g) || []
+      );
+
+      if (previousGeofence) {
+        queryClient.setQueryData<Geofence>(
+          queryKeys.geofences.detail(id),
+          { ...previousGeofence, ...input, updated_at: new Date().toISOString() }
+        );
+      }
+
+      return { previousGeofences, previousGeofence, id };
+    },
+    onError: (err, _, context) => {
+      if (context?.previousGeofences) {
+        queryClient.setQueryData(queryKeys.geofences.lists(), context.previousGeofences);
+      }
+      if (context?.previousGeofence && context?.id) {
+        queryClient.setQueryData(queryKeys.geofences.detail(context.id), context.previousGeofence);
+      }
       toast({
-        title: 'Geofence atualizado',
-        description: 'As informações foram atualizadas.',
+        title: 'Erro ao atualizar geofence',
+        description: err.message,
+        variant: 'destructive',
       });
     },
-    onError: (error) => {
+    onSuccess: () => {
+      invalidateRelated.geofences(queryClient);
       toast({
-        title: 'Erro ao atualizar',
-        description: error.message,
-        variant: 'destructive',
+        title: 'Geofence atualizada',
       });
     },
   });
@@ -231,18 +245,33 @@ export function useDeleteGeofence() {
       if (error) throw error;
       return id;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.geofences.all });
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
+
+      const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
+
+      queryClient.setQueryData<Geofence[]>(
+        queryKeys.geofences.lists(),
+        (old) => old?.filter(g => g.id !== id) || []
+      );
+
+      return { previousGeofences, id };
+    },
+    onError: (err, _, context) => {
+      if (context?.previousGeofences) {
+        queryClient.setQueryData(queryKeys.geofences.lists(), context.previousGeofences);
+      }
       toast({
-        title: 'Geofence excluído',
-        description: 'A cerca geográfica foi excluída.',
+        title: 'Erro ao excluir geofence',
+        description: err.message,
+        variant: 'destructive',
       });
     },
-    onError: (error) => {
+    onSuccess: (_, id) => {
+      queryClient.removeQueries({ queryKey: queryKeys.geofences.detail(id) });
+      invalidateRelated.geofences(queryClient);
       toast({
-        title: 'Erro ao excluir',
-        description: error.message,
-        variant: 'destructive',
+        title: 'Geofence excluída',
       });
     },
   });
@@ -253,29 +282,43 @@ export function useToggleGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ id, isActive }: { id: string; isActive: boolean }) => {
+    mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
       const { data, error } = await supabase
         .from('geofences')
-        .update({ is_active: isActive })
+        .update({ is_active })
         .eq('id', id)
         .select()
         .single();
 
       if (error) throw error;
-      return data;
+      return data as Geofence;
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.geofences.all });
+    onMutate: async ({ id, is_active }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
+
+      const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
+
+      queryClient.setQueryData<Geofence[]>(
+        queryKeys.geofences.lists(),
+        (old) => old?.map(g => g.id === id ? { ...g, is_active } : g) || []
+      );
+
+      return { previousGeofences };
+    },
+    onError: (err, _, context) => {
+      if (context?.previousGeofences) {
+        queryClient.setQueryData(queryKeys.geofences.lists(), context.previousGeofences);
+      }
       toast({
-        title: data.is_active ? 'Geofence ativado' : 'Geofence desativado',
-        description: `A cerca "${data.name}" foi ${data.is_active ? 'ativada' : 'desativada'}.`,
+        title: 'Erro ao alterar status',
+        description: err.message,
+        variant: 'destructive',
       });
     },
-    onError: (error) => {
+    onSuccess: (data) => {
+      invalidateRelated.geofences(queryClient);
       toast({
-        title: 'Erro',
-        description: error.message,
-        variant: 'destructive',
+        title: data.is_active ? 'Geofence ativada' : 'Geofence desativada',
       });
     },
   });
