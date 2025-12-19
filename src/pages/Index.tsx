@@ -10,11 +10,14 @@ import { SimulateViolationButton } from '@/components/SimulateViolationButton';
 import { EmployeeViolationsRanking } from '@/components/EmployeeViolationsRanking';
 import { useSecurityViolations } from '@/hooks/useSecurityViolations';
 import { useSecurityMetrics } from '@/hooks/useSecurityMetrics';
-import { employees, deviceStats } from '@/data/mockData';
+import { useDeviceStats } from '@/hooks/useDeviceStats';
+import { useActiveEmployees } from '@/hooks/useActiveEmployees';
 
 const Index = () => {
   const { violations, loading: violationsLoading } = useSecurityViolations();
   const { metrics, loading: metricsLoading } = useSecurityMetrics();
+  const { data: deviceStats, isLoading: deviceStatsLoading } = useDeviceStats();
+  const { data: activeEmployees, isLoading: employeesLoading } = useActiveEmployees();
 
   const recentAlerts = violations.slice(0, 6).map(v => ({
     id: v.id,
@@ -26,6 +29,9 @@ const Index = () => {
     timestamp: new Date(v.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
     device: v.device || 'Desconhecido'
   }));
+
+  // Filtrar apenas funcionários online ou idle
+  const onlineEmployees = activeEmployees?.filter(e => e.status !== 'offline') || [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -44,14 +50,14 @@ const Index = () => {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               title="Colaboradores Online"
-              value={`${deviceStats.online}/${deviceStats.totalDevices}`}
+              value={deviceStatsLoading ? '...' : `${deviceStats?.online || 0}/${deviceStats?.totalDevices || 0}`}
               icon={Users}
               trend={{ value: 12, isPositive: true }}
               variant="success"
             />
             <StatCard
               title="Dispositivos Monitorados"
-              value={deviceStats.totalDevices}
+              value={deviceStatsLoading ? '...' : deviceStats?.totalDevices || 0}
               icon={Monitor}
               trend={{ value: 5, isPositive: true }}
             />
@@ -116,17 +122,27 @@ const Index = () => {
               )}
             </div>
 
-            {/* Active Employees */}
+            {/* Active Employees - Real-time data */}
             <div className="rounded-xl border border-border/50 bg-card p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Colaboradores Ativos</h3>
-                <button className="text-sm text-primary hover:underline">Ver todos</button>
+                <a href="/employees" className="text-sm text-primary hover:underline">Ver todos</a>
               </div>
-              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-                {employees.filter(e => e.status !== 'offline').map((employee) => (
-                  <EmployeeRow key={employee.id} employee={employee} />
-                ))}
-              </div>
+              {employeesLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : onlineEmployees.length > 0 ? (
+                <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                  {onlineEmployees.map((employee) => (
+                    <EmployeeRow key={employee.id} employee={employee} />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center py-8 text-muted-foreground">
+                  Nenhum colaborador online
+                </div>
+              )}
             </div>
 
             {/* Violations Ranking */}
