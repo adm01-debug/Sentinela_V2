@@ -1,105 +1,117 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './useAuth';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { queryKeys, queryPresets } from '@/lib/queryClient';
+
+// ============================================================
+// TYPES
+// ============================================================
 
 export interface SavedFilter {
   id: string;
   user_id: string;
-  name: string;
-  description: string | null;
   module: string;
-  filters: Record<string, any>;
-  sort_field: string | null;
-  sort_direction: 'asc' | 'desc' | null;
-  visible_columns: string[] | null;
+  name: string;
+  filters: Record<string, unknown>;
   is_default: boolean;
-  is_shared: boolean;
-  color: string | null;
-  icon: string | null;
-  usage_count: number;
-  last_used_at: string | null;
   created_at: string;
+  updated_at: string;
 }
 
-interface CreateFilterInput {
-  name: string;
-  description?: string;
+export interface CreateSavedFilterInput {
   module: string;
-  filters: Record<string, any>;
-  sortField?: string;
-  sortDirection?: 'asc' | 'desc';
-  visibleColumns?: string[];
-  isDefault?: boolean;
-  isShared?: boolean;
-  color?: string;
-  icon?: string;
+  name: string;
+  filters: Record<string, unknown>;
+  is_default?: boolean;
 }
+
+export interface UpdateSavedFilterInput {
+  id: string;
+  name?: string;
+  filters?: Record<string, unknown>;
+  is_default?: boolean;
+}
+
+// ============================================================
+// QUERIES
+// ============================================================
 
 export function useSavedFilters(module: string) {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
-
-  // Buscar filtros do módulo
-  const { data: filters, isLoading } = useQuery({
-    queryKey: ['saved-filters', module, user?.id],
+  
+  return useQuery({
+    queryKey: queryKeys.savedFilters.module(module, user?.id),
     queryFn: async () => {
+      if (!user?.id) return [];
+      
       const { data, error } = await supabase
         .from('saved_filters')
         .select('*')
+        .eq('user_id', user.id)
         .eq('module', module)
-        .or(`user_id.eq.${user?.id},is_shared.eq.true`)
-        .order('usage_count', { ascending: false });
+        .order('is_default', { ascending: false })
+        .order('name', { ascending: true });
 
       if (error) throw error;
       return data as SavedFilter[];
     },
-    enabled: !!user?.id,
+    enabled: !!user?.id && !!module,
+    ...queryPresets.list,
   });
+}
 
-  // Filtro padrão do usuário
-  const defaultFilter = filters?.find(f => f.is_default && f.user_id === user?.id);
+// ============================================================
+// MUTATIONS
+// ============================================================
 
-  // Criar filtro
-  const createFilter = useMutation({
-    mutationFn: async (input: CreateFilterInput) => {
+export function useCreateSavedFilter() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { user } = useAuth();
+
+  return useMutation({
+    mutationFn: async (input: CreateSavedFilterInput) => {
+      if (!user?.id) throw new Error('User not authenticated');
+      
       const { data, error } = await supabase
         .from('saved_filters')
-        .insert({
-          user_id: user?.id,
-          name: input.name,
-          description: input.description,
-          module: input.module,
-          filters: input.filters,
-          sort_field: input.sortField,
-          sort_direction: input.sortDirection,
-          visible_columns: input.visibleColumns,
-          is_default: input.isDefault || false,
-          is_shared: input.isShared || false,
-          color: input.color,
-          icon: input.icon,
-        })
+        .insert({ ...input, user_id: user.id })
         .select()
         .single();
 
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['saved-filters', module] });
-      toast.success('Filtro salvo com sucesso!');
+    onSuccess: (_, input) => {
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeys.savedFilters.module(input.module, user?.id) 
+      });
+      toast({
+        title: 'Filtro salvo',
+        description: 'O filtro foi salvo com sucesso.',
+      });
     },
-    onError: (error: any) => {
-      toast.error('Erro ao salvar filtro: ' + error.message);
+    onError: (error) => {
+      toast({
+        title: 'Erro ao salvar filtro',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
+}
 
-  // Atualizar filtro
-  const updateFilter = useMutation({
-    mutationFn: async ({ id, ...updates }: Partial<SavedFilter> & { id: string }) => {
+export function useUpdateSavedFilter() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { user } = useAuth();
+
+  return useMutation({
+    mutationFn: async ({ id, ...input }: UpdateSavedFilterInput) => {
       const { data, error } = await supabase
         .from('saved_filters')
-        .update(updates)
+        .update(input)
         .eq('id', id)
         .select()
         .single();
@@ -107,67 +119,98 @@ export function useSavedFilters(module: string) {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['saved-filters', module] });
-      toast.success('Filtro atualizado!');
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeys.savedFilters.module(data.module, user?.id) 
+      });
+      toast({
+        title: 'Filtro atualizado',
+        description: 'O filtro foi atualizado com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao atualizar filtro',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
+}
 
-  // Deletar filtro
-  const deleteFilter = useMutation({
-    mutationFn: async (id: string) => {
+export function useDeleteSavedFilter() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { user } = useAuth();
+
+  return useMutation({
+    mutationFn: async ({ id, module }: { id: string; module: string }) => {
       const { error } = await supabase
         .from('saved_filters')
         .delete()
         .eq('id', id);
 
       if (error) throw error;
+      return { module };
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['saved-filters', module] });
-      toast.success('Filtro removido!');
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeys.savedFilters.module(data.module, user?.id) 
+      });
+      toast({
+        title: 'Filtro excluído',
+        description: 'O filtro foi excluído com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao excluir filtro',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
+}
 
-  // Registrar uso do filtro
-  const useFilter = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase
+export function useSetDefaultFilter() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { user } = useAuth();
+
+  return useMutation({
+    mutationFn: async ({ id, module }: { id: string; module: string }) => {
+      // First, unset all defaults for this module
+      await supabase
         .from('saved_filters')
-        .update({
-          usage_count: supabase.rpc('increment', { row_id: id }),
-          last_used_at: new Date().toISOString(),
-        })
-        .eq('id', id);
+        .update({ is_default: false })
+        .eq('user_id', user?.id)
+        .eq('module', module);
 
-      if (error) throw error;
-    },
-  });
-
-  // Definir como padrão
-  const setAsDefault = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase
+      // Then set the new default
+      const { data, error } = await supabase
         .from('saved_filters')
         .update({ is_default: true })
-        .eq('id', id);
+        .eq('id', id)
+        .select()
+        .single();
 
       if (error) throw error;
+      return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['saved-filters', module] });
-      toast.success('Filtro definido como padrão!');
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeys.savedFilters.module(data.module, user?.id) 
+      });
+      toast({
+        title: 'Filtro padrão definido',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao definir filtro padrão',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
-
-  return {
-    filters: filters || [],
-    defaultFilter,
-    isLoading,
-    createFilter,
-    updateFilter,
-    deleteFilter,
-    useFilter,
-    setAsDefault,
-  };
 }
