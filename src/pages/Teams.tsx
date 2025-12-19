@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { useTeams, type TeamWithMembers } from '@/hooks/useTeams';
 import { cn } from '@/lib/utils';
+import { TeamsSkeleton } from '@/components/PageSkeletons';
 
 export default function Teams() {
   const { teams, loading, createTeam, updateTeam, deleteTeam, addMember, removeMember, updateMemberRole } = useTeams();
@@ -108,6 +109,11 @@ export default function Teams() {
   const renderTeamCard = (team: TeamWithMembers, level: number = 0) => {
     const childTeams = teams.filter(t => t.parent_team_id === team.id);
     
+  if (isLoading) {
+    return <TeamsSkeleton />;
+  }
+
+
     return (
       <div key={team.id} className={cn("space-y-3", level > 0 && "ml-6 border-l-2 border-border pl-4")}>
         <Card className="hover:border-primary/50 transition-colors">
