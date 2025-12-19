@@ -1,125 +1,210 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
-export interface ScheduledReportSettings {
+// ============================================================
+// TYPES
+// ============================================================
+
+export interface ScheduledReport {
   id: string;
-  report_type: "daily" | "weekly";
-  enabled: boolean;
-  recipient_emails: string[];
-  send_time: string;
-  send_day_of_week: number | null;
-  include_violations: boolean;
-  include_productivity: boolean;
-  include_activity_summary: boolean;
-  last_sent_at: string | null;
+  name: string;
+  report_type: string;
+  schedule: string; // cron expression
+  recipients: string[];
+  filters?: Record<string, unknown>;
+  format: 'pdf' | 'csv' | 'xlsx';
+  is_active: boolean;
+  last_run_at?: string;
+  next_run_at?: string;
   created_at: string;
   updated_at: string;
 }
 
+export interface CreateScheduledReportInput {
+  name: string;
+  report_type: string;
+  schedule: string;
+  recipients: string[];
+  filters?: Record<string, unknown>;
+  format?: 'pdf' | 'csv' | 'xlsx';
+  is_active?: boolean;
+}
+
+export interface UpdateScheduledReportInput {
+  id: string;
+  name?: string;
+  schedule?: string;
+  recipients?: string[];
+  filters?: Record<string, unknown>;
+  format?: 'pdf' | 'csv' | 'xlsx';
+  is_active?: boolean;
+}
+
+// ============================================================
+// QUERIES
+// ============================================================
+
 export function useScheduledReports() {
-  const [settings, setSettings] = useState<ScheduledReportSettings[]>([]);
-  const [loading, setLoading] = useState(true);
+  return useQuery({
+    queryKey: queryKeys.reports.scheduled(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('scheduled_reports')
+        .select('*')
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+      return data as ScheduledReport[];
+    },
+    ...queryPresets.list,
+  });
+}
+
+export function useScheduledReport(id: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.reports.detail(id || ''),
+    queryFn: async () => {
+      if (!id) return null;
+      
+      const { data, error } = await supabase
+        .from('scheduled_reports')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data as ScheduledReport;
+    },
+    enabled: !!id,
+    ...queryPresets.detail,
+  });
+}
+
+// ============================================================
+// MUTATIONS
+// ============================================================
+
+export function useCreateScheduledReport() {
+  const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const fetchSettings = async () => {
-    try {
+  return useMutation({
+    mutationFn: async (input: CreateScheduledReportInput) => {
       const { data, error } = await supabase
-        .from("scheduled_report_settings")
-        .select("*")
-        .order("report_type");
+        .from('scheduled_reports')
+        .insert(input)
+        .select()
+        .single();
 
       if (error) throw error;
-      setSettings((data as ScheduledReportSettings[]) || []);
-    } catch (error: any) {
-      console.error("Error fetching scheduled report settings:", error);
+      return data;
+    },
+    onSuccess: () => {
+      invalidateRelated.reports(queryClient);
       toast({
-        title: "Erro",
-        description: "Não foi possível carregar as configurações de relatórios",
-        variant: "destructive",
+        title: 'Relatório agendado',
+        description: 'O relatório foi agendado com sucesso.',
       });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchSettings();
-  }, []);
-
-  const createOrUpdateSettings = async (
-    reportType: "daily" | "weekly",
-    data: Partial<ScheduledReportSettings>
-  ) => {
-    try {
-      const existing = settings.find((s) => s.report_type === reportType);
-
-      if (existing) {
-        const { error } = await supabase
-          .from("scheduled_report_settings")
-          .update(data)
-          .eq("id", existing.id);
-
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from("scheduled_report_settings")
-          .insert({ ...data, report_type: reportType });
-
-        if (error) throw error;
-      }
-
+    },
+    onError: (error) => {
       toast({
-        title: "Sucesso",
-        description: "Configurações salvas com sucesso",
+        title: 'Erro ao agendar relatório',
+        description: error.message,
+        variant: 'destructive',
       });
+    },
+  });
+}
 
-      await fetchSettings();
-    } catch (error: any) {
-      console.error("Error saving scheduled report settings:", error);
+export function useUpdateScheduledReport() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ id, ...input }: UpdateScheduledReportInput) => {
+      const { data, error } = await supabase
+        .from('scheduled_reports')
+        .update(input)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      invalidateRelated.reports(queryClient);
       toast({
-        title: "Erro",
-        description: "Não foi possível salvar as configurações",
-        variant: "destructive",
+        title: 'Relatório atualizado',
+        description: 'O relatório agendado foi atualizado.',
       });
-    }
-  };
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao atualizar relatório',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
 
-  const sendTestReport = async (reportType: "daily" | "weekly") => {
-    try {
-      const { data, error } = await supabase.functions.invoke("send-scheduled-report", {
-        body: { report_type: reportType },
+export function useDeleteScheduledReport() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('scheduled_reports')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidateRelated.reports(queryClient);
+      toast({
+        title: 'Relatório excluído',
+        description: 'O relatório agendado foi excluído.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao excluir relatório',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
+
+export function useRunScheduledReport() {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { data, error } = await supabase.functions.invoke('send-scheduled-report', {
+        body: { report_id: id, manual: true },
       });
 
       if (error) throw error;
-
-      if (data.success) {
-        toast({
-          title: "Relatório enviado",
-          description: `Relatório ${reportType === "weekly" ? "semanal" : "diário"} enviado com sucesso`,
-        });
-      } else {
-        toast({
-          title: "Aviso",
-          description: data.message || "Não foi possível enviar o relatório",
-          variant: "destructive",
-        });
-      }
-    } catch (error: any) {
-      console.error("Error sending test report:", error);
+      return data;
+    },
+    onSuccess: () => {
       toast({
-        title: "Erro",
-        description: "Falha ao enviar relatório de teste",
-        variant: "destructive",
+        title: 'Relatório executado',
+        description: 'O relatório foi gerado e enviado.',
       });
-    }
-  };
-
-  return {
-    settings,
-    loading,
-    createOrUpdateSettings,
-    sendTestReport,
-    refetch: fetchSettings,
-  };
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao executar relatório',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
 }
