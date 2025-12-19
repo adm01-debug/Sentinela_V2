@@ -1,110 +1,66 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { checkRateLimit, RateLimitConfig } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+};
 
-interface CleanupSettings {
-  enabled: boolean;
-  frequencyHours: number;
-  logRetentionHours: number;
-}
+const RATE_LIMIT_CONFIG: RateLimitConfig = {
+  maxRequests: 5,
+  windowMs: 60 * 60 * 1000, // 1 hour
+  identifier: 'cleanup-rate-limit-logs',
+};
 
-const DEFAULT_CLEANUP_SETTINGS: CleanupSettings = {
-  enabled: true,
-  frequencyHours: 1,
-  logRetentionHours: 24,
-}
-
-Deno.serve(async (req) => {
+serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    // Rate limiting (this is an admin function, so very restrictive)
+    const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await checkRateLimit(clientIP, RATE_LIMIT_CONFIG);
     
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
-
-    // Get cleanup settings from monitoring_settings
-    const { data: settingsData } = await supabase
-      .from('monitoring_settings')
-      .select('setting_value')
-      .eq('setting_key', 'rate_limit_thresholds')
-      .single()
-
-    const cleanupSettings: CleanupSettings = settingsData?.setting_value?.cleanup || DEFAULT_CLEANUP_SETTINGS
-
-    // Check if cleanup is enabled
-    if (!cleanupSettings.enabled) {
-      console.log('Cleanup is disabled in settings. Skipping.')
+    if (!rateLimitResult.allowed) {
       return new Response(
-        JSON.stringify({ success: true, message: 'Cleanup disabled', skipped: true }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
-      )
+        JSON.stringify({ error: 'Rate limit exceeded' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    console.log(`Starting rate limit logs cleanup... Retention: ${cleanupSettings.logRetentionHours} hours`)
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
 
-    // Calculate the cutoff time based on retention settings
-    const cutoffTime = new Date()
-    cutoffTime.setHours(cutoffTime.getHours() - cleanupSettings.logRetentionHours)
+    // Delete logs older than 30 days
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-    // Delete old rate limit logs
-    const { data: deletedLogs, error: deleteError } = await supabase
+    const { error, count } = await supabase
       .from('rate_limit_logs')
       .delete()
-      .lt('window_start', cutoffTime.toISOString())
-      .select('id')
+      .lt('created_at', thirtyDaysAgo)
+      .select('id', { count: 'exact', head: true });
 
-    if (deleteError) {
-      console.error('Error cleaning up rate limit logs:', deleteError)
-      throw deleteError
-    }
+    if (error) throw error;
 
-    const deletedCount = deletedLogs?.length || 0
-    console.log(`Cleanup completed. Deleted ${deletedCount} old rate limit log entries.`)
-
-    // Also cleanup expired blocked IPs
-    const { data: unblockedData, error: unblockError } = await supabase
-      .from('blocked_ips')
-      .update({ is_active: false })
-      .lt('expires_at', new Date().toISOString())
-      .eq('is_active', true)
-      .select('id')
-
-    if (unblockError) {
-      console.error('Error deactivating expired blocked IPs:', unblockError)
-    } else {
-      const expiredCount = unblockedData?.length || 0
-      if (expiredCount > 0) {
-        console.log(`Deactivated ${expiredCount} expired IP blocks.`)
-      }
-    }
+    console.log(`Cleaned up ${count || 0} old rate limit logs`);
 
     return new Response(
       JSON.stringify({ 
-        success: true, 
-        deleted_rate_limit_logs: deletedCount,
-        expired_blocks_deactivated: unblockedData?.length || 0,
-        retention_hours: cleanupSettings.logRetentionHours
+        success: true,
+        deleted_count: count || 0,
+        message: `Cleaned up ${count || 0} logs older than 30 days`,
       }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 
-      }
-    )
-  } catch (error: unknown) {
-    console.error('Cleanup job failed:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    console.error('Error:', error);
     return new Response(
-      JSON.stringify({ success: false, error: errorMessage }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500 
-      }
-    )
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   }
-})
+});
