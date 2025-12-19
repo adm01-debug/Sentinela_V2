@@ -12,6 +12,7 @@ import {
 import { ApplicationCard } from '@/components/ApplicationCard';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { EmployeeAlertItem } from '@/components/EmployeeAlertItem';
+import { EmployeeDetailSkeleton } from '@/components/PageSkeletons';
 
 const statusStyles = {
   online: 'bg-success',
@@ -32,6 +33,11 @@ export default function EmployeeDetail() {
   const employee = employees.find(e => e.id === id);
   
   if (!employee) {
+  if (isLoading) {
+    return <EmployeeDetailSkeleton />;
+  }
+
+
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
