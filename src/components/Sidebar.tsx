@@ -26,7 +26,8 @@ import {
   GitCompare,
   Archive,
   ShieldCheck,
-  Webhook
+  Webhook,
+  MessageCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -56,6 +57,7 @@ const menuItems = [
   { icon: Archive, label: 'Exportar Dados', path: '/data-export' },
   { icon: ShieldCheck, label: 'Rate Limiting', path: '/rate-limiting' },
   { icon: Webhook, label: 'Webhooks', path: '/webhooks' },
+  { icon: MessageCircle, label: 'WhatsApp', path: '/whatsapp' },
   { icon: Settings, label: 'Configurações', path: '/settings' },
 ];
 

@@ -41,3 +41,9 @@ verify_jwt = true
 
 [functions.cleanup-rate-limit-logs]
 verify_jwt = false
+
+[functions.send-webhook]
+verify_jwt = true
+
+[functions.send-whatsapp]
+verify_jwt = true

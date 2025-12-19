@@ -32,6 +32,7 @@ import ProductivityComparison from "./pages/ProductivityComparison";
 import DataExport from "./pages/DataExport";
 import RateLimitDashboard from "./pages/RateLimitDashboard";
 import Webhooks from "./pages/Webhooks";
+import WhatsAppIntegration from "./pages/WhatsAppIntegration";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -205,6 +206,13 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <Webhooks />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/whatsapp" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <WhatsAppIntegration />
                 </PolicyGate>
               </ProtectedRoute>
             } />
