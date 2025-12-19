@@ -1,64 +1,73 @@
-import * as React from "react";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { DateRange } from "react-day-picker";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { memo, useCallback, useState } from 'react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { DateRange } from 'react-day-picker';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from '@/components/ui/popover';
 
 interface DateRangePickerProps {
-  date: DateRange | undefined;
-  onDateChange: (date: DateRange | undefined) => void;
+  value?: { from: Date; to: Date };
+  onChange: (range: { from: Date; to: Date } | undefined) => void;
   className?: string;
+  placeholder?: string;
 }
 
-export function DateRangePicker({ date, onDateChange, className }: DateRangePickerProps) {
+function DateRangePickerComponent({
+  value,
+  onChange,
+  className,
+  placeholder = 'Selecione o período',
+}: DateRangePickerProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleSelect = useCallback((range: DateRange | undefined) => {
+    if (range?.from && range?.to) {
+      onChange({ from: range.from, to: range.to });
+      setOpen(false);
+    } else if (!range) {
+      onChange(undefined);
+    }
+  }, [onChange]);
+
+  const displayText = value?.from && value?.to
+    ? `${format(value.from, 'dd/MM/yyyy', { locale: ptBR })} - ${format(value.to, 'dd/MM/yyyy', { locale: ptBR })}`
+    : placeholder;
+
   return (
-    <div className={cn("grid gap-2", className)}>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            id="date"
-            variant="outline"
-            className={cn(
-              "w-[280px] justify-start text-left font-normal",
-              !date && "text-muted-foreground"
-            )}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date?.from ? (
-              date.to ? (
-                <>
-                  {format(date.from, "dd/MM/yyyy", { locale: ptBR })} -{" "}
-                  {format(date.to, "dd/MM/yyyy", { locale: ptBR })}
-                </>
-              ) : (
-                format(date.from, "dd/MM/yyyy", { locale: ptBR })
-              )
-            ) : (
-              <span>Selecione um período</span>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0 bg-popover border-border" align="start">
-          <Calendar
-            initialFocus
-            mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={onDateChange}
-            numberOfMonths={2}
-            locale={ptBR}
-            className="p-3 pointer-events-auto"
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className={cn(
+            'justify-start text-left font-normal',
+            !value && 'text-muted-foreground',
+            className
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {displayText}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          initialFocus
+          mode="range"
+          defaultMonth={value?.from}
+          selected={value ? { from: value.from, to: value.to } : undefined}
+          onSelect={handleSelect}
+          numberOfMonths={2}
+          locale={ptBR}
+        />
+      </PopoverContent>
+    </Popover>
   );
 }
+
+export const DateRangePicker = memo(DateRangePickerComponent);
