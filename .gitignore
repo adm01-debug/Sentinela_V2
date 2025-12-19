@@ -1,5 +1,54 @@
+# ============================================================
+# SENTINELA - .GITIGNORE
+# ============================================================
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+
+# Testing
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
 # Logs
-logs
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,32 +56,74 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
 
-# Environment variables - NUNCA VERSIONAR!
-.env
-.env.local
-.env.production
-.env.*.local
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
 
-# Desktop Agent builds
-desktop-agent/dist
-desktop-agent/out
-desktop-agent/node_modules
+# Sentry
+.sentryclirc
+
+# Electron
+desktop-agent/dist/
+desktop-agent/out/
+desktop-agent/release/
+*.asar
+
+# Mobile
+mobile-app/.expo/
+mobile-app/android/
+mobile-app/ios/
+*.apk
+*.ipa
 
 # Supabase
-supabase/.temp
+supabase/.branches/
+supabase/.temp/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets (never commit these!)
+*.pem
+*.key
+*.cert
+*.p12
+*.pfx
+service-account.json
+google-service-account.json
+
+# Package manager locks (keep one)
+# Uncomment the ones you don't use:
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+bun.lockb
+
+# Generated files
+*.generated.*
+*.auto.*
+
+# Documentation (if auto-generated)
+docs/api/
+typedoc/
+
+# Misc
+*.local
+.turbo/
