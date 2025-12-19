@@ -1,234 +1,383 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { queryKeys, queryPresets, CACHE_TIMES } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
+
+// ============================================================
+// TYPES
+// ============================================================
 
 export interface Badge {
   id: string;
-  code: string;
   name: string;
   description: string;
   icon: string;
-  color: string;
-  category: 'productivity' | 'attendance' | 'security' | 'milestone';
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
-  points: number;
-  is_secret: boolean;
+  category: 'productivity' | 'attendance' | 'teamwork' | 'achievement' | 'special';
+  points_required: number;
+  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+  is_active: boolean;
+  created_at: string;
 }
 
 export interface EmployeeBadge {
   id: string;
+  employee_id: string;
   badge_id: string;
   earned_at: string;
-  badge: Badge;
+  badge?: Badge;
 }
 
 export interface EmployeePoints {
   id: string;
   employee_id: string;
   total_points: number;
-  current_month_points: number;
-  current_week_points: number;
   level: number;
   experience: number;
   current_streak: number;
-  best_streak: number;
-  badges_count: number;
-  ranking_position: number | null;
+  longest_streak: number;
+  last_activity_date: string;
+  updated_at: string;
 }
 
 export interface LeaderboardEntry {
   employee_id: string;
   employee_name: string;
-  department: string | null;
   total_points: number;
   level: number;
   badges_count: number;
-  current_streak: number;
-  position: number;
+  rank: number;
 }
 
-// Buscar badges de um funcionário
-export function useEmployeeBadges(employeeId: string) {
-  return useQuery({
-    queryKey: ['employee-badges', employeeId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('employee_badges')
-        .select(\`
-          id,
-          badge_id,
-          earned_at,
-          badge:badges (*)
-        \`)
-        .eq('employee_id', employeeId)
-        .order('earned_at', { ascending: false });
+export interface PointTransaction {
+  id: string;
+  employee_id: string;
+  points: number;
+  reason: string;
+  category: string;
+  created_at: string;
+}
 
-      if (error) throw error;
-      return data as unknown as EmployeeBadge[];
-    },
-    enabled: !!employeeId,
+// ============================================================
+// FETCH FUNCTIONS
+// ============================================================
+
+async function fetchBadges(): Promise<Badge[]> {
+  const { data, error } = await supabase
+    .from('badges')
+    .select('*')
+    .eq('is_active', true)
+    .order('points_required');
+
+  if (error) throw error;
+  return data || [];
+}
+
+async function fetchEmployeeBadges(employeeId: string): Promise<EmployeeBadge[]> {
+  const { data, error } = await supabase
+    .from('employee_badges')
+    .select(`
+      *,
+      badge:badges(*)
+    `)
+    .eq('employee_id', employeeId)
+    .order('earned_at', { ascending: false });
+
+  if (error) throw error;
+  return data || [];
+}
+
+async function fetchEmployeePoints(employeeId: string): Promise<EmployeePoints | null> {
+  const { data, error } = await supabase
+    .from('employee_points')
+    .select('*')
+    .eq('employee_id', employeeId)
+    .single();
+
+  if (error && error.code !== 'PGRST116') throw error;
+  return data;
+}
+
+async function fetchLeaderboard(
+  period: 'week' | 'month' | 'all' = 'month',
+  limit = 10
+): Promise<LeaderboardEntry[]> {
+  const { data, error } = await supabase
+    .from('employee_points')
+    .select(`
+      employee_id,
+      total_points,
+      level,
+      employee:employees(name)
+    `)
+    .order('total_points', { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+
+  // Add rank and badges count
+  const withRanks = await Promise.all(
+    (data || []).map(async (entry, index) => {
+      const { count } = await supabase
+        .from('employee_badges')
+        .select('*', { count: 'exact', head: true })
+        .eq('employee_id', entry.employee_id);
+
+      return {
+        employee_id: entry.employee_id,
+        employee_name: entry.employee?.name || 'Unknown',
+        total_points: entry.total_points,
+        level: entry.level,
+        badges_count: count || 0,
+        rank: index + 1,
+      };
+    })
+  );
+
+  return withRanks;
+}
+
+async function fetchPointTransactions(
+  employeeId: string,
+  limit = 20
+): Promise<PointTransaction[]> {
+  const { data, error } = await supabase
+    .from('point_transactions')
+    .select('*')
+    .eq('employee_id', employeeId)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return data || [];
+}
+
+// ============================================================
+// HOOKS - QUERIES
+// ============================================================
+
+export function useBadges() {
+  return useQuery({
+    queryKey: queryKeys.gamification.badges,
+    queryFn: fetchBadges,
+    staleTime: CACHE_TIMES.IMMUTABLE,
   });
 }
 
-// Buscar pontos de um funcionário
-export function useEmployeePoints(employeeId: string) {
+export function useEmployeeBadges(employeeId: string | undefined) {
   return useQuery({
-    queryKey: ['employee-points', employeeId],
-    queryFn: async () => {
-      const { data, error } = await supabase
+    queryKey: ['gamification', 'badges', employeeId],
+    queryFn: () => fetchEmployeeBadges(employeeId!),
+    enabled: !!employeeId,
+    staleTime: CACHE_TIMES.FREQUENT,
+  });
+}
+
+export function useEmployeePoints(employeeId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.gamification.points(employeeId!),
+    queryFn: () => fetchEmployeePoints(employeeId!),
+    enabled: !!employeeId,
+    ...queryPresets.realtime,
+  });
+}
+
+export function useLeaderboard(period: 'week' | 'month' | 'all' = 'month') {
+  return useQuery({
+    queryKey: queryKeys.gamification.leaderboard(period),
+    queryFn: () => fetchLeaderboard(period),
+    staleTime: CACHE_TIMES.FREQUENT,
+  });
+}
+
+export function usePointTransactions(employeeId: string | undefined) {
+  return useQuery({
+    queryKey: ['gamification', 'transactions', employeeId],
+    queryFn: () => fetchPointTransactions(employeeId!),
+    enabled: !!employeeId,
+    staleTime: CACHE_TIMES.FREQUENT,
+  });
+}
+
+// ============================================================
+// HOOKS - MUTATIONS
+// ============================================================
+
+export function useAwardPoints() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({
+      employeeId,
+      points,
+      reason,
+      category = 'manual',
+    }: {
+      employeeId: string;
+      points: number;
+      reason: string;
+      category?: string;
+    }) => {
+      // Create transaction
+      const { error: transactionError } = await supabase
+        .from('point_transactions')
+        .insert({
+          employee_id: employeeId,
+          points,
+          reason,
+          category,
+        });
+
+      if (transactionError) throw transactionError;
+
+      // Update total points
+      const { data: current } = await supabase
         .from('employee_points')
         .select('*')
         .eq('employee_id', employeeId)
         .single();
 
-      if (error && error.code !== 'PGRST116') throw error;
-      return data as EmployeePoints | null;
+      if (current) {
+        const newTotal = current.total_points + points;
+        const newLevel = calculateLevel(newTotal);
+
+        const { data, error } = await supabase
+          .from('employee_points')
+          .update({
+            total_points: newTotal,
+            level: newLevel,
+            experience: newTotal % 1000,
+          })
+          .eq('employee_id', employeeId)
+          .select()
+          .single();
+
+        if (error) throw error;
+        return data;
+      } else {
+        const { data, error } = await supabase
+          .from('employee_points')
+          .insert({
+            employee_id: employeeId,
+            total_points: points,
+            level: 1,
+            experience: points % 1000,
+            current_streak: 0,
+            longest_streak: 0,
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+        return data;
+      }
     },
-    enabled: !!employeeId,
-  });
-}
-
-// Buscar todos os badges disponíveis
-export function useAllBadges() {
-  return useQuery({
-    queryKey: ['all-badges'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('badges')
-        .select('*')
-        .eq('is_active', true)
-        .order('category')
-        .order('rarity');
-
-      if (error) throw error;
-      return data as Badge[];
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeys.gamification.points(variables.employeeId) 
+      });
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeys.gamification.leaderboard() 
+      });
+      toast({
+        title: 'Pontos concedidos',
+        description: `${variables.points} pontos foram adicionados.`,
+      });
     },
-  });
-}
-
-// Leaderboard
-export function useLeaderboard(period: 'week' | 'month' | 'all' = 'month', limit = 10) {
-  return useQuery({
-    queryKey: ['leaderboard', period, limit],
-    queryFn: async () => {
-      const pointsField = period === 'week' 
-        ? 'current_week_points' 
-        : period === 'month' 
-          ? 'current_month_points' 
-          : 'total_points';
-
-      const { data, error } = await supabase
-        .from('employee_points')
-        .select(\`
-          employee_id,
-          total_points,
-          current_month_points,
-          current_week_points,
-          level,
-          badges_count,
-          current_streak,
-          employee:employees (name, department)
-        \`)
-        .order(pointsField, { ascending: false })
-        .limit(limit);
-
-      if (error) throw error;
-
-      return (data || []).map((entry, index) => ({
-        employee_id: entry.employee_id,
-        employee_name: entry.employee?.name || 'Desconhecido',
-        department: entry.employee?.department,
-        total_points: period === 'week' 
-          ? entry.current_week_points 
-          : period === 'month' 
-            ? entry.current_month_points 
-            : entry.total_points,
-        level: entry.level,
-        badges_count: entry.badges_count,
-        current_streak: entry.current_streak,
-        position: index + 1,
-      })) as LeaderboardEntry[];
+    onError: (error) => {
+      toast({
+        title: 'Erro ao conceder pontos',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
 }
 
-// Conceder badge manualmente (admin)
 export function useAwardBadge() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ employeeId, badgeCode }: { employeeId: string; badgeCode: string }) => {
-      const { data, error } = await supabase.rpc('award_badge', {
-        p_employee_id: employeeId,
-        p_badge_code: badgeCode,
-      });
-
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['employee-badges', variables.employeeId] });
-      queryClient.invalidateQueries({ queryKey: ['employee-points', variables.employeeId] });
-      queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
-    },
-  });
-}
-
-// Adicionar pontos manualmente (admin)
-export function useAddPoints() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({ 
-      employeeId, 
-      points, 
-      reason, 
-      description 
-    }: { 
-      employeeId: string; 
-      points: number; 
-      reason: string; 
-      description?: string;
+    mutationFn: async ({
+      employeeId,
+      badgeId,
+    }: {
+      employeeId: string;
+      badgeId: string;
     }) => {
-      const { data, error } = await supabase.rpc('add_employee_points', {
-        p_employee_id: employeeId,
-        p_points: points,
-        p_reason: reason,
-        p_description: description,
-      });
+      // Check if already has badge
+      const { data: existing } = await supabase
+        .from('employee_badges')
+        .select('id')
+        .eq('employee_id', employeeId)
+        .eq('badge_id', badgeId)
+        .single();
+
+      if (existing) {
+        throw new Error('Funcionário já possui este badge');
+      }
+
+      const { data, error } = await supabase
+        .from('employee_badges')
+        .insert({
+          employee_id: employeeId,
+          badge_id: badgeId,
+        })
+        .select(`
+          *,
+          badge:badges(*)
+        `)
+        .single();
 
       if (error) throw error;
       return data;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['employee-points', variables.employeeId] });
-      queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ 
+        queryKey: ['gamification', 'badges', variables.employeeId] 
+      });
+      toast({
+        title: '🏆 Badge concedido!',
+        description: `Badge "${data.badge?.name}" foi desbloqueado.`,
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao conceder badge',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
 }
 
-// Helpers
-export const rarityConfig = {
-  common: { label: 'Comum', color: 'bg-gray-500', textColor: 'text-gray-500' },
-  rare: { label: 'Raro', color: 'bg-blue-500', textColor: 'text-blue-500' },
-  epic: { label: 'Épico', color: 'bg-purple-500', textColor: 'text-purple-500' },
-  legendary: { label: 'Lendário', color: 'bg-amber-500', textColor: 'text-amber-500' },
-};
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
 
-export const categoryConfig = {
-  productivity: { label: 'Produtividade', icon: '📊' },
-  attendance: { label: 'Assiduidade', icon: '📅' },
-  security: { label: 'Segurança', icon: '🛡️' },
-  milestone: { label: 'Marco', icon: '🏆' },
-};
-
-export function getLevelProgress(experience: number, level: number): number {
-  const currentLevelXP = (level - 1) * (level - 1) * 50;
-  const nextLevelXP = level * level * 50;
-  const xpForThisLevel = nextLevelXP - currentLevelXP;
-  const xpProgress = experience;
-  return Math.min(100, Math.round((xpProgress / xpForThisLevel) * 100));
+function calculateLevel(totalPoints: number): number {
+  // Every 1000 points = 1 level
+  return Math.floor(totalPoints / 1000) + 1;
 }
 
-export function getXPForNextLevel(level: number): number {
-  return level * level * 50 - (level - 1) * (level - 1) * 50;
+export function getNextLevelPoints(currentPoints: number): number {
+  const currentLevel = calculateLevel(currentPoints);
+  return currentLevel * 1000;
+}
+
+export function getLevelProgress(currentPoints: number): number {
+  const pointsInLevel = currentPoints % 1000;
+  return (pointsInLevel / 1000) * 100;
+}
+
+export function getRarityColor(rarity: Badge['rarity']): string {
+  switch (rarity) {
+    case 'common': return 'text-gray-500';
+    case 'uncommon': return 'text-green-500';
+    case 'rare': return 'text-blue-500';
+    case 'epic': return 'text-purple-500';
+    case 'legendary': return 'text-yellow-500';
+    default: return 'text-gray-500';
+  }
 }
