@@ -22,6 +22,7 @@ import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 import { RealtimeActivityFilters, RealtimeFilters } from '@/components/RealtimeActivityFilters';
 import { LiveViewCard } from '@/components/LiveViewCard';
 import { SessionPlayback } from '@/components/SessionPlayback';
+import { MonitoringSkeleton } from '@/components/PageSkeletons';
 
 const Monitoring = () => {
   const { settings, loading, updateSetting } = useMonitoringSettings();
@@ -102,6 +103,11 @@ const Monitoring = () => {
   }, [filteredKeystrokes, filteredClicks]);
 
   if (loading) {
+  if (isLoading) {
+    return <MonitoringSkeleton />;
+  }
+
+
     return (
       <div className="min-h-screen bg-background">
         <Sidebar />
