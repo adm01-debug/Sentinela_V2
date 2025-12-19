@@ -38,3 +38,6 @@ verify_jwt = true
 
 [functions.send-rate-limit-alert]
 verify_jwt = true
+
+[functions.cleanup-rate-limit-logs]
+verify_jwt = false
