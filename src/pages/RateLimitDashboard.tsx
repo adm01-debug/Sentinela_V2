@@ -12,13 +12,24 @@ import { ptBR } from "date-fns/locale";
 import { RateLimitSettingsPanel } from "@/components/RateLimitSettingsPanel";
 import { BlockedIPsPanel } from "@/components/BlockedIPsPanel";
 import { RateLimitTrendsCharts } from "@/components/RateLimitTrendsCharts";
+import { RateLimitRealtimeAlerts } from "@/components/RateLimitRealtimeAlerts";
+import { useRateLimitSettings } from "@/hooks/useRateLimitSettings";
 
 const RateLimitDashboard = () => {
   const [timeRange, setTimeRange] = useState<'1h' | '24h' | '7d'>('24h');
   const { data: logs, isLoading: logsLoading } = useRateLimitLogs(timeRange);
   const { stats, isLoading: statsLoading } = useRateLimitStats(timeRange);
+  const { settings } = useRateLimitSettings();
 
   const isLoading = logsLoading || statsLoading;
+
+  // Get average alert threshold from endpoint settings
+  const alertThreshold = Math.min(
+    settings.agentCollector.alertThreshold,
+    settings.mobileCollector.alertThreshold,
+    settings.analyzeActivity.alertThreshold,
+    settings.checkGeofence.alertThreshold
+  ) * 5; // Multiply by 5 to get request count threshold
 
   useEffect(() => {
     document.title = "Rate Limiting Dashboard | Sistema de Monitoramento";
@@ -354,6 +365,9 @@ const RateLimitDashboard = () => {
             <RateLimitSettingsPanel />
           </TabsContent>
         </Tabs>
+
+        {/* Realtime Alerts */}
+        <RateLimitRealtimeAlerts alertThreshold={alertThreshold} />
     </div>
   );
 };
