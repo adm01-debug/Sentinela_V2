@@ -1,254 +1,193 @@
-import { useState, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { memo, useCallback, useMemo } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   LayoutDashboard,
   Users,
-  Monitor,
-  AlertTriangle,
-  Settings,
   Shield,
+  Settings,
+  Monitor,
   FileText,
-  MapPin,
-  Clock,
-  Key,
-  Webhook,
+  Bell,
+  Map,
   MessageSquare,
+  Webhook,
   Calendar,
-  Download,
-  Brain,
+  Award,
+  Clock,
+  AlertTriangle,
   Globe,
-  Search,
-  FileCheck,
-  UserCheck,
-  Activity,
+  Key,
   BarChart3,
   Smartphone,
+  FileSearch,
+  Brain,
+  UserCog,
+  ClipboardCheck,
   ChevronLeft,
   ChevronRight,
-  Trophy,
-  UsersRound,
+  LogOut,
 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useSidebarStore } from '@/lib/stores';
 
-// ============================================================
-// NAVIGATION ITEMS
-// ============================================================
+interface NavItem {
+  title: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  badge?: number;
+}
 
-const navigationItems = [
-  {
-    title: 'Principal',
-    items: [
-      { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-      { name: 'Funcionários', href: '/employees', icon: Users },
-      { name: 'Equipes', href: '/teams', icon: UsersRound },
-      { name: 'Dispositivos', href: '/devices', icon: Monitor },
-      { name: 'Gamificação', href: '/gamification', icon: Trophy },
-    ],
-  },
-  {
-    title: 'Monitoramento',
-    items: [
-      { name: 'Atividade', href: '/monitoring', icon: Activity },
-      { name: 'Mobile', href: '/mobile-monitoring', icon: Smartphone },
-      { name: 'Violações', href: '/violations', icon: AlertTriangle },
-      { name: 'Regras', href: '/violation-rules', icon: Shield },
-      { name: 'Segurança', href: '/security', icon: Shield },
-    ],
-  },
-  {
-    title: 'Configurações',
-    items: [
-      { name: 'Geofencing', href: '/geofencing', icon: MapPin },
-      { name: 'Horários', href: '/work-schedules', icon: Clock },
-      { name: 'Chaves API', href: '/agent-keys', icon: Key },
-      { name: 'Webhooks', href: '/webhooks', icon: Webhook },
-      { name: 'WhatsApp', href: '/whatsapp', icon: MessageSquare },
-      { name: 'Templates', href: '/message-templates', icon: FileText },
-    ],
-  },
-  {
-    title: 'Relatórios',
-    items: [
-      { name: 'Relatórios', href: '/reports', icon: FileText },
-      { name: 'Agendados', href: '/scheduled-reports', icon: Calendar },
-      { name: 'Exportar', href: '/data-export', icon: Download },
-      { name: 'IA', href: '/ai-analysis', icon: Brain },
-      { name: 'Comparativo', href: '/productivity-comparison', icon: BarChart3 },
-    ],
-  },
-  {
-    title: 'Políticas',
-    items: [
-      { name: 'Internet', href: '/internet-access', icon: Globe },
-      { name: 'Palavras', href: '/sensitive-keywords', icon: Search },
-      { name: 'Políticas', href: '/monitoring-policies', icon: FileCheck },
-      { name: 'Aceites', href: '/policy-acknowledgments', icon: UserCheck },
-    ],
-  },
-  {
-    title: 'Sistema',
-    items: [
-      { name: 'Usuários', href: '/user-management', icon: Users },
-      { name: 'Rate Limit', href: '/rate-limit-dashboard', icon: Activity },
-      { name: 'Configurações', href: '/settings', icon: Settings },
-    ],
-  },
+const navigationItems: NavItem[] = [
+  { title: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { title: 'Funcionários', href: '/employees', icon: Users },
+  { title: 'Equipes', href: '/teams', icon: Users },
+  { title: 'Monitoramento', href: '/monitoring', icon: Monitor },
+  { title: 'Violações', href: '/violations', icon: AlertTriangle },
+  { title: 'Regras', href: '/violation-rules', icon: Shield },
+  { title: 'Relatórios', href: '/reports', icon: FileText },
+  { title: 'Dispositivos', href: '/devices', icon: Smartphone },
+  { title: 'Mobile', href: '/mobile-monitoring', icon: Smartphone },
+  { title: 'Geofencing', href: '/geofencing', icon: Map },
+  { title: 'Horários', href: '/work-schedules', icon: Calendar },
+  { title: 'Políticas', href: '/monitoring-policies', icon: ClipboardCheck },
+  { title: 'Aceites', href: '/policy-acknowledgments', icon: ClipboardCheck },
+  { title: 'Produtividade', href: '/productivity-comparison', icon: BarChart3 },
+  { title: 'AI Analysis', href: '/ai-analysis', icon: Brain },
+  { title: 'Gamificação', href: '/gamification', icon: Award },
+  { title: 'Internet', href: '/internet-access', icon: Globe },
+  { title: 'Rate Limit', href: '/rate-limit-dashboard', icon: Shield },
+  { title: 'Keywords', href: '/sensitive-keywords', icon: FileSearch },
+  { title: 'Templates', href: '/message-templates', icon: MessageSquare },
+  { title: 'Webhooks', href: '/webhooks', icon: Webhook },
+  { title: 'WhatsApp', href: '/whatsapp-integration', icon: MessageSquare },
+  { title: 'Agendados', href: '/scheduled-reports', icon: Clock },
+  { title: 'Exportar', href: '/data-export', icon: FileText },
+  { title: 'Agent Keys', href: '/agent-keys', icon: Key },
+  { title: 'Usuários', href: '/user-management', icon: UserCog },
+  { title: 'Segurança', href: '/security', icon: Shield },
+  { title: 'Config', href: '/settings', icon: Settings },
 ];
 
-// ============================================================
-// SIDEBAR COMPONENT
-// ============================================================
+interface NavItemComponentProps {
+  item: NavItem;
+  isCollapsed: boolean;
+  isActive: boolean;
+}
 
-export function Sidebar() {
+const NavItemComponent = memo(function NavItemComponent({
+  item,
+  isCollapsed,
+  isActive,
+}: NavItemComponentProps) {
+  const Icon = item.icon;
+
+  const content = (
+    <NavLink
+      to={item.href}
+      className={cn(
+        'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent',
+        isActive ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'
+      )}
+    >
+      <Icon className="h-4 w-4 shrink-0" />
+      {!isCollapsed && <span className="truncate">{item.title}</span>}
+      {!isCollapsed && item.badge !== undefined && item.badge > 0 && (
+        <span className="ml-auto flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
+          {item.badge > 99 ? '99+' : item.badge}
+        </span>
+      )}
+    </NavLink>
+  );
+
+  if (isCollapsed) {
+    return (
+      <Tooltip delayDuration={0}>
+        <TooltipTrigger asChild>{content}</TooltipTrigger>
+        <TooltipContent side="right" className="flex items-center gap-4">
+          {item.title}
+          {item.badge !== undefined && item.badge > 0 && (
+            <span className="ml-auto text-muted-foreground">{item.badge}</span>
+          )}
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return content;
+});
+
+function SidebarComponent() {
   const location = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const { signOut } = useAuth();
+  const { isCollapsed, toggle } = useSidebarStore();
 
-  // Flatten items for keyboard navigation
-  const allItems = navigationItems.flatMap(group => group.items);
+  const handleSignOut = useCallback(async () => {
+    await signOut();
+  }, [signOut]);
 
-  // Keyboard navigation handler
-  const handleKeyDown = useCallback((e: React.KeyboardEvent, index: number) => {
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        setFocusedIndex(Math.min(index + 1, allItems.length - 1));
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setFocusedIndex(Math.max(index - 1, 0));
-        break;
-      case 'Home':
-        e.preventDefault();
-        setFocusedIndex(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        setFocusedIndex(allItems.length - 1);
-        break;
-    }
-  }, [allItems.length]);
+  const handleToggle = useCallback(() => {
+    toggle();
+  }, [toggle]);
 
-  const toggleCollapsed = () => setCollapsed(!collapsed);
-
-  let itemIndex = 0;
+  const navItems = useMemo(() => {
+    return navigationItems.map((item) => ({
+      ...item,
+      isActive: location.pathname === item.href,
+    }));
+  }, [location.pathname]);
 
   return (
-    <aside
+    <div
       className={cn(
-        'fixed left-0 top-0 z-40 h-screen bg-card border-r transition-all duration-300',
-        collapsed ? 'w-16' : 'w-64'
+        'flex h-screen flex-col border-r bg-background transition-all duration-300',
+        isCollapsed ? 'w-16' : 'w-64'
       )}
-      role="navigation"
-      aria-label="Menu principal"
     >
       {/* Header */}
-      <div className="flex h-16 items-center justify-between px-4 border-b">
-        {!collapsed && (
-          <Link 
-            to="/" 
-            className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary rounded"
-            aria-label="Ir para o Dashboard"
-          >
-            <Shield className="h-6 w-6 text-primary" aria-hidden="true" />
-            <span className="font-bold text-lg">Sentinela</span>
-          </Link>
+      <div className="flex h-14 items-center justify-between border-b px-3">
+        {!isCollapsed && (
+          <span className="text-lg font-semibold">Sentinela</span>
         )}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleCollapsed}
-          className="ml-auto"
-          aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}
-          aria-expanded={!collapsed}
-        >
-          {collapsed ? (
-            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+        <Button variant="ghost" size="icon" onClick={handleToggle}>
+          {isCollapsed ? (
+            <ChevronRight className="h-4 w-4" />
           ) : (
-            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+            <ChevronLeft className="h-4 w-4" />
           )}
         </Button>
       </div>
 
       {/* Navigation */}
-      <ScrollArea className="h-[calc(100vh-4rem)]">
-        <nav 
-          className="p-2 space-y-4"
-          role="menubar"
-          aria-label="Navegação do sistema"
-        >
-          {navigationItems.map((group, groupIndex) => (
-            <div key={group.title} role="group" aria-labelledby={`nav-group-${groupIndex}`}>
-              {!collapsed && (
-                <h3 
-                  id={`nav-group-${groupIndex}`}
-                  className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2"
-                >
-                  {group.title}
-                </h3>
-              )}
-              <ul role="menu" className="space-y-1">
-                {group.items.map((item) => {
-                  const currentIndex = itemIndex++;
-                  const isActive = location.pathname === item.href;
-                  const Icon = item.icon;
-
-                  const linkContent = (
-                    <Link
-                      to={item.href}
-                      role="menuitem"
-                      tabIndex={focusedIndex === currentIndex ? 0 : -1}
-                      aria-current={isActive ? 'page' : undefined}
-                      onKeyDown={(e) => handleKeyDown(e, currentIndex)}
-                      onFocus={() => setFocusedIndex(currentIndex)}
-                      className={cn(
-                        'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all',
-                        'hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset',
-                        isActive
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-muted-foreground hover:text-foreground',
-                        collapsed && 'justify-center'
-                      )}
-                    >
-                      <Icon 
-                        className="h-4 w-4 flex-shrink-0" 
-                        aria-hidden="true"
-                      />
-                      {!collapsed && (
-                        <span>{item.name}</span>
-                      )}
-                      {/* Screen reader only text when collapsed */}
-                      {collapsed && (
-                        <span className="sr-only">{item.name}</span>
-                      )}
-                    </Link>
-                  );
-
-                  return (
-                    <li key={item.href} role="none">
-                      {collapsed ? (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            {linkContent}
-                          </TooltipTrigger>
-                          <TooltipContent side="right">
-                            {item.name}
-                          </TooltipContent>
-                        </Tooltip>
-                      ) : (
-                        linkContent
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+      <ScrollArea className="flex-1 py-2">
+        <nav className="grid gap-1 px-2">
+          {navItems.map((item) => (
+            <NavItemComponent
+              key={item.href}
+              item={item}
+              isCollapsed={isCollapsed}
+              isActive={item.isActive}
+            />
           ))}
         </nav>
       </ScrollArea>
-    </aside>
+
+      {/* Footer */}
+      <div className="border-t p-2">
+        <Button
+          variant="ghost"
+          className={cn('w-full justify-start', isCollapsed && 'justify-center')}
+          onClick={handleSignOut}
+        >
+          <LogOut className="h-4 w-4" />
+          {!isCollapsed && <span className="ml-2">Sair</span>}
+        </Button>
+      </div>
+    </div>
   );
 }
+
+export const Sidebar = memo(SidebarComponent);
