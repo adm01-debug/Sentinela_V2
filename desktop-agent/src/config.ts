@@ -1,3 +1,12 @@
+// Environment variables should be set during build or via .env file
+const getEnvVar = (key: string, defaultValue: string = ''): string => {
+  // For Electron, we can use process.env
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[key] || defaultValue;
+  }
+  return defaultValue;
+};
+
 export interface Config {
   employeeName: string;
   agentKey: string;
@@ -40,10 +49,17 @@ export interface Config {
   supabaseAnonKey: string;
 }
 
+// Default configuration using environment variables
 export const defaultConfig: Config = {
   employeeName: '',
   agentKey: '',
-  serverUrl: 'https://rmiznlzpbwqpbzaiyydw.supabase.co/functions/v1/agent-collector',
+  // Use environment variable for server URL, with fallback
+  serverUrl: getEnvVar(
+    'AGENT_SERVER_URL', 
+    getEnvVar('SUPABASE_URL', '') 
+      ? `${getEnvVar('SUPABASE_URL')}/functions/v1/agent-collector`
+      : ''
+  ),
   deviceName: '',
   
   keystrokeEnabled: true,
@@ -76,7 +92,25 @@ export const defaultConfig: Config = {
   geofencingEnabled: false,
   geofencingNotifyUser: true,
   
-  // Supabase credentials
-  supabaseUrl: 'https://rmiznlzpbwqpbzaiyydw.supabase.co',
-  supabaseAnonKey: '',
+  // Supabase credentials from environment
+  supabaseUrl: getEnvVar('SUPABASE_URL', ''),
+  supabaseAnonKey: getEnvVar('SUPABASE_ANON_KEY', ''),
 };
+
+// Validate configuration
+export function validateConfig(config: Config): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+  
+  if (!config.serverUrl) {
+    errors.push('serverUrl é obrigatório. Configure AGENT_SERVER_URL ou SUPABASE_URL.');
+  }
+  
+  if (config.geofencingEnabled && (!config.supabaseUrl || !config.supabaseAnonKey)) {
+    errors.push('Geofencing requer SUPABASE_URL e SUPABASE_ANON_KEY configurados.');
+  }
+  
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+}
