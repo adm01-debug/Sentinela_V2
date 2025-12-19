@@ -1,27 +1,26 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-import { checkRateLimit, RateLimitConfig } from '../_shared/rateLimiting.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const RATE_LIMIT_CONFIG: RateLimitConfig = {
-  maxRequests: 120,
-  windowMs: 60 * 1000,
-  identifier: 'get-employee-schedule',
-};
+const GetScheduleSchema = z.object({
+  employee_id: z.string().uuid(),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+});
 
-serve(async (req: Request) => {
+serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Rate limiting
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await checkRateLimit(clientIP, RATE_LIMIT_CONFIG);
+    const rateLimitResult = await checkRateLimit(clientIP, 'get-schedule', 60, 60);
     
     if (!rateLimitResult.allowed) {
       return new Response(
@@ -30,43 +29,61 @@ serve(async (req: Request) => {
       );
     }
 
-    const { employee_id } = await req.json();
+    const url = new URL(req.url);
+    const params = {
+      employee_id: url.searchParams.get('employee_id'),
+      date: url.searchParams.get('date'),
+    };
 
-    if (!employee_id) {
+    const validationResult = GetScheduleSchema.safeParse(params);
+    
+    if (!validationResult.success) {
       return new Response(
-        JSON.stringify({ error: 'employee_id is required' }),
+        JSON.stringify({ error: 'Validation failed', details: validationResult.error.flatten() }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    );
+    const { employee_id, date } = validationResult.data;
+    const targetDate = date || new Date().toISOString().split('T')[0];
 
-    const { data: schedules, error } = await supabase
-      .from('work_schedules')
-      .select('*')
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Get employee's schedule assignment
+    const { data: assignment, error: assignError } = await supabase
+      .from('employee_schedules')
+      .select('*, work_schedules(*)')
       .eq('employee_id', employee_id)
-      .eq('is_active', true)
-      .order('day_of_week');
+      .lte('effective_date', targetDate)
+      .order('effective_date', { ascending: false })
+      .limit(1)
+      .single();
 
-    if (error) throw error;
+    if (assignError || !assignment) {
+      return new Response(
+        JSON.stringify({ error: 'No schedule found', schedule: null }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    // Get current day schedule
-    const today = new Date().getDay();
-    const todaySchedule = schedules?.find(s => s.day_of_week === today);
+    const schedule = assignment.work_schedules;
+    const dayOfWeek = new Date(targetDate).getDay();
+    const isWorkDay = schedule.work_days?.includes(dayOfWeek);
 
     return new Response(
-      JSON.stringify({ 
-        schedules,
-        today: todaySchedule,
-        currentDay: today,
+      JSON.stringify({
+        success: true,
+        schedule: {
+          ...schedule,
+          is_work_day: isWorkDay,
+          effective_date: assignment.effective_date,
+        },
       }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
