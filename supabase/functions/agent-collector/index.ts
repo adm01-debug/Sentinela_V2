@@ -51,6 +51,27 @@ async function sendRateLimitAlert(
   }
 }
 
+async function isIPBlocked(
+  supabase: any,
+  ipAddress: string
+): Promise<boolean> {
+  try {
+    const { data, error } = await supabase.rpc("is_ip_blocked", {
+      p_ip_address: ipAddress,
+    });
+
+    if (error) {
+      console.error("IP block check error:", error);
+      return false;
+    }
+
+    return data === true;
+  } catch (e) {
+    console.error("IP block check exception:", e);
+    return false;
+  }
+}
+
 async function checkRateLimit(
   supabase: any,
   identifier: string,
@@ -113,6 +134,18 @@ serve(async (req) => {
     const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
                      req.headers.get("x-real-ip") || 
                      "unknown";
+    
+    // Check if IP is manually blocked
+    if (clientIP !== "unknown") {
+      const blocked = await isIPBlocked(supabase, clientIP);
+      if (blocked) {
+        console.log(`Request from blocked IP: ${clientIP}`);
+        return new Response(
+          JSON.stringify({ error: "Access denied" }),
+          { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
     
     // Validate agent key from database
     if (!agentKey) {

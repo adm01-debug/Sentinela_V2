@@ -5,11 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRateLimitLogs, useRateLimitStats } from "@/hooks/useRateLimitLogs";
-import { Shield, AlertTriangle, Activity, Users, Clock, TrendingUp, Settings } from "lucide-react";
+import { Shield, AlertTriangle, Activity, Users, Clock, TrendingUp, Settings, Ban } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from "recharts";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { RateLimitSettingsPanel } from "@/components/RateLimitSettingsPanel";
+import { BlockedIPsPanel } from "@/components/BlockedIPsPanel";
 
 const RateLimitDashboard = () => {
   const [timeRange, setTimeRange] = useState<'1h' | '24h' | '7d'>('24h');
@@ -127,6 +128,10 @@ const RateLimitDashboard = () => {
             <TabsTrigger value="endpoints">Por Endpoint</TabsTrigger>
             <TabsTrigger value="identifiers">Por Origem</TabsTrigger>
             <TabsTrigger value="logs">Logs Detalhados</TabsTrigger>
+            <TabsTrigger value="blocked" className="gap-2">
+              <Ban className="h-4 w-4" />
+              IPs Bloqueados
+            </TabsTrigger>
             <TabsTrigger value="settings" className="gap-2">
               <Settings className="h-4 w-4" />
               Configurações
@@ -326,6 +331,10 @@ const RateLimitDashboard = () => {
                 </Table>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="blocked" className="space-y-4">
+            <BlockedIPsPanel />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-4">
