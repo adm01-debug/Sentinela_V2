@@ -1,6 +1,7 @@
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { NotificationsPanel } from '@/components/NotificationsPanel';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export function Header() {
   return (
@@ -15,7 +16,8 @@ export function Header() {
         </div>
       </div>
       
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
         <NotificationsPanel />
         
         <div className="flex items-center gap-3">
