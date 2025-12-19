@@ -1,133 +1,102 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
-export type AccessLevel = 'restricted' | 'partial' | 'full';
-
-export interface InternetAccessSetting {
+export interface InternetAccessRule {
   id: string;
-  employee_name: string;
-  access_level: AccessLevel;
-  allowed_sites: string[];
-  blocked_sites: string[];
-  allowed_categories: string[];
-  blocked_categories: string[];
-  bandwidth_limit_mbps: number | null;
-  active_hours_start: string | null;
-  active_hours_end: string | null;
-  notes: string | null;
-  updated_at: string;
+  name: string;
+  rule_type: 'allow' | 'block';
+  pattern: string;
+  pattern_type: 'domain' | 'url' | 'regex';
+  applies_to: 'all' | 'teams' | 'employees';
+  target_ids?: string[];
+  is_active: boolean;
+  created_at: string;
 }
 
-export function useInternetAccess() {
-  const [settings, setSettings] = useState<InternetAccessSetting[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchSettings();
-  }, []);
-
-  const fetchSettings = async () => {
-    setLoading(true);
-    try {
+export function useInternetAccessRules() {
+  return useQuery({
+    queryKey: queryKeys.internetAccess.rules(),
+    queryFn: async () => {
       const { data, error } = await supabase
-        .from('internet_access_settings')
+        .from('internet_access_rules')
         .select('*')
-        .order('employee_name');
+        .order('name', { ascending: true });
 
       if (error) throw error;
-      setSettings(data as InternetAccessSetting[]);
-    } catch (error: any) {
-      toast.error('Erro ao carregar configurações: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return data as InternetAccessRule[];
+    },
+    ...queryPresets.list,
+  });
+}
 
-  const getEmployeeSetting = (employeeName: string) => {
-    return settings.find(s => s.employee_name === employeeName);
-  };
+export function useCreateInternetAccessRule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  const updateSetting = async (employeeName: string, updates: Partial<InternetAccessSetting>) => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      const { error } = await supabase
-        .from('internet_access_settings')
-        .upsert({
-          employee_name: employeeName,
-          ...updates,
-          updated_by: user?.id
-        }, { onConflict: 'employee_name' });
+  return useMutation({
+    mutationFn: async (input: Omit<InternetAccessRule, 'id' | 'created_at'>) => {
+      const { data, error } = await supabase
+        .from('internet_access_rules')
+        .insert(input)
+        .select()
+        .single();
 
       if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      invalidateRelated.internetAccess(queryClient);
+      toast({ title: 'Regra criada' });
+    },
+    onError: (error) => {
+      toast({ title: 'Erro ao criar regra', description: error.message, variant: 'destructive' });
+    },
+  });
+}
 
-      await fetchSettings();
-      toast.success('Configurações atualizadas');
-      return true;
-    } catch (error: any) {
-      toast.error('Erro ao atualizar: ' + error.message);
-      return false;
-    }
-  };
+export function useUpdateInternetAccessRule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  const setAccessLevel = async (employeeName: string, level: AccessLevel) => {
-    return updateSetting(employeeName, { access_level: level });
-  };
-
-  const addAllowedSite = async (employeeName: string, site: string) => {
-    const current = getEmployeeSetting(employeeName);
-    const allowedSites = [...(current?.allowed_sites || []), site];
-    return updateSetting(employeeName, { allowed_sites: allowedSites });
-  };
-
-  const removeAllowedSite = async (employeeName: string, site: string) => {
-    const current = getEmployeeSetting(employeeName);
-    const allowedSites = (current?.allowed_sites || []).filter(s => s !== site);
-    return updateSetting(employeeName, { allowed_sites: allowedSites });
-  };
-
-  const addBlockedSite = async (employeeName: string, site: string) => {
-    const current = getEmployeeSetting(employeeName);
-    const blockedSites = [...(current?.blocked_sites || []), site];
-    return updateSetting(employeeName, { blocked_sites: blockedSites });
-  };
-
-  const removeBlockedSite = async (employeeName: string, site: string) => {
-    const current = getEmployeeSetting(employeeName);
-    const blockedSites = (current?.blocked_sites || []).filter(s => s !== site);
-    return updateSetting(employeeName, { blocked_sites: blockedSites });
-  };
-
-  const deleteSetting = async (employeeName: string) => {
-    try {
-      const { error } = await supabase
-        .from('internet_access_settings')
-        .delete()
-        .eq('employee_name', employeeName);
+  return useMutation({
+    mutationFn: async ({ id, ...input }: { id: string } & Partial<InternetAccessRule>) => {
+      const { data, error } = await supabase
+        .from('internet_access_rules')
+        .update(input)
+        .eq('id', id)
+        .select()
+        .single();
 
       if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      invalidateRelated.internetAccess(queryClient);
+      toast({ title: 'Regra atualizada' });
+    },
+    onError: (error) => {
+      toast({ title: 'Erro ao atualizar', description: error.message, variant: 'destructive' });
+    },
+  });
+}
 
-      setSettings(prev => prev.filter(s => s.employee_name !== employeeName));
-      toast.success('Configuração removida');
-      return true;
-    } catch (error: any) {
-      toast.error('Erro ao remover: ' + error.message);
-      return false;
-    }
-  };
+export function useDeleteInternetAccessRule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  return {
-    settings,
-    loading,
-    updateSetting,
-    setAccessLevel,
-    addAllowedSite,
-    removeAllowedSite,
-    addBlockedSite,
-    removeBlockedSite,
-    deleteSetting,
-    getEmployeeSetting,
-    refetch: fetchSettings
-  };
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('internet_access_rules').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidateRelated.internetAccess(queryClient);
+      toast({ title: 'Regra excluída' });
+    },
+    onError: (error) => {
+      toast({ title: 'Erro ao excluir', description: error.message, variant: 'destructive' });
+    },
+  });
 }
