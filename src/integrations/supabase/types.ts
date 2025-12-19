@@ -164,6 +164,45 @@ export type Database = {
         }
         Relationships: []
       }
+      blocked_ips: {
+        Row: {
+          blocked_at: string
+          blocked_by: string | null
+          created_at: string
+          endpoint: string | null
+          expires_at: string | null
+          id: string
+          ip_address: string
+          is_active: boolean
+          reason: string | null
+          request_count_at_block: number | null
+        }
+        Insert: {
+          blocked_at?: string
+          blocked_by?: string | null
+          created_at?: string
+          endpoint?: string | null
+          expires_at?: string | null
+          id?: string
+          ip_address: string
+          is_active?: boolean
+          reason?: string | null
+          request_count_at_block?: number | null
+        }
+        Update: {
+          blocked_at?: string
+          blocked_by?: string | null
+          created_at?: string
+          endpoint?: string | null
+          expires_at?: string | null
+          id?: string
+          ip_address?: string
+          is_active?: boolean
+          reason?: string | null
+          request_count_at_block?: number | null
+        }
+        Relationships: []
+      }
       click_logs: {
         Row: {
           app_name: string | null
@@ -1435,6 +1474,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_ip_blocked: { Args: { p_ip_address: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "user"
