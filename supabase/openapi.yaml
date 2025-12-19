@@ -1,0 +1,310 @@
+openapi: 3.0.3
+info:
+  title: Sentinela API
+  description: |
+    API do Sistema Sentinela para monitoramento de funcionários.
+    
+    ## Autenticação
+    Todas as requisições devem incluir o header `Authorization` com um token JWT válido
+    obtido através do Supabase Auth.
+    
+    ## Rate Limiting
+    - Edge Functions: 100 requisições por minuto por IP
+    - Após 10 bloqueios, o IP é banido temporariamente
+    
+  version: 1.0.0
+  contact:
+    name: Promo Brindes
+    email: ti@promobrindes.com.br
+  license:
+    name: Proprietário
+    
+servers:
+  - url: https://rmiznlzpbwqpbzaiyydw.supabase.co/functions/v1
+    description: Produção
+    
+tags:
+  - name: Agent
+    description: Endpoints para o Desktop Agent
+  - name: Mobile
+    description: Endpoints para apps mobile
+  - name: Violations
+    description: Gerenciamento de violações
+  - name: Reports
+    description: Relatórios e análises
+  - name: Notifications
+    description: Notificações e alertas
+
+paths:
+  /agent-collector:
+    post:
+      tags: [Agent]
+      summary: Envia dados de monitoramento do Desktop Agent
+      description: |
+        Endpoint principal para receber dados coletados pelo Desktop Agent.
+        Inclui keystrokes, screenshots, atividade de janelas, etc.
+      security:
+        - AgentKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentData'
+      responses:
+        '200':
+          description: Dados recebidos com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  message: { type: string }
+        '401':
+          description: Agent key inválida
+        '429':
+          description: Rate limit excedido
+          
+  /mobile-collector:
+    post:
+      tags: [Mobile]
+      summary: Envia dados de monitoramento do app mobile
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MobileData'
+      responses:
+        '200':
+          description: Dados recebidos com sucesso
+          
+  /check-geofence:
+    post:
+      tags: [Agent, Mobile]
+      summary: Verifica se localização está dentro de geofences permitidos
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [employee_id, latitude, longitude]
+              properties:
+                employee_id: { type: string, format: uuid }
+                latitude: { type: number, minimum: -90, maximum: 90 }
+                longitude: { type: number, minimum: -180, maximum: 180 }
+      responses:
+        '200':
+          description: Resultado da verificação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  allowed: { type: boolean }
+                  should_block: { type: boolean }
+                  geofence_name: { type: string }
+                  
+  /get-employee-schedule:
+    get:
+      tags: [Agent]
+      summary: Retorna jornada de trabalho do funcionário
+      security:
+        - AgentKey: []
+      parameters:
+        - name: employee_id
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Dados da jornada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeSchedule'
+                
+  /process-violation-alert:
+    post:
+      tags: [Violations]
+      summary: Processa e dispara alertas para uma violação
+      security:
+        - ServiceRole: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [violation_id]
+              properties:
+                violation_id: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Alertas processados
+          
+  /send-whatsapp:
+    post:
+      tags: [Notifications]
+      summary: Envia mensagem via WhatsApp
+      security:
+        - ServiceRole: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, message]
+              properties:
+                phone: { type: string, example: "+5562999999999" }
+                message: { type: string }
+                template_id: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Mensagem enviada
+          
+  /send-webhook:
+    post:
+      tags: [Notifications]
+      summary: Dispara webhook para URL configurada
+      security:
+        - ServiceRole: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [webhook_id, payload]
+              properties:
+                webhook_id: { type: string, format: uuid }
+                payload: { type: object }
+      responses:
+        '200':
+          description: Webhook disparado
+          
+  /analyze-activity:
+    post:
+      tags: [Reports]
+      summary: Analisa padrões de atividade com IA
+      security:
+        - ServiceRole: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [employee_id]
+              properties:
+                employee_id: { type: string, format: uuid }
+                period_days: { type: integer, default: 7 }
+      responses:
+        '200':
+          description: Análise gerada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIAnalysis'
+                
+  /send-scheduled-report:
+    post:
+      tags: [Reports]
+      summary: Gera e envia relatório agendado
+      security:
+        - ServiceRole: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [report_id]
+              properties:
+                report_id: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Relatório enviado
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    AgentKey:
+      type: apiKey
+      in: header
+      name: X-Agent-Key
+    ServiceRole:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Supabase service role key
+      
+  schemas:
+    AgentData:
+      type: object
+      required: [agent_key, employee_id, data_type]
+      properties:
+        agent_key: { type: string }
+        employee_id: { type: string, format: uuid }
+        device_name: { type: string }
+        data_type:
+          type: string
+          enum: [keystroke, screenshot, activity, idle, violation]
+        keystroke_count: { type: integer }
+        keystroke_details: { type: array, items: { type: object } }
+        screenshot_base64: { type: string }
+        active_window: { type: string }
+        idle_seconds: { type: integer }
+        timestamp: { type: string, format: date-time }
+        
+    MobileData:
+      type: object
+      required: [employee_id, data_type]
+      properties:
+        employee_id: { type: string, format: uuid }
+        device_id: { type: string }
+        data_type:
+          type: string
+          enum: [location, app_usage, battery, network]
+        latitude: { type: number }
+        longitude: { type: number }
+        app_name: { type: string }
+        usage_seconds: { type: integer }
+        battery_level: { type: integer }
+        network_type: { type: string }
+        timestamp: { type: string, format: date-time }
+        
+    EmployeeSchedule:
+      type: object
+      properties:
+        employee_id: { type: string, format: uuid }
+        schedule_name: { type: string }
+        start_time: { type: string, example: "08:00" }
+        end_time: { type: string, example: "18:00" }
+        lunch_start: { type: string, example: "12:00" }
+        lunch_end: { type: string, example: "13:00" }
+        work_days: { type: array, items: { type: integer } }
+        is_within_hours: { type: boolean }
+        should_block: { type: boolean }
+        
+    AIAnalysis:
+      type: object
+      properties:
+        employee_id: { type: string, format: uuid }
+        period_start: { type: string, format: date }
+        period_end: { type: string, format: date }
+        productivity_score: { type: number, minimum: 0, maximum: 100 }
+        risk_level: { type: string, enum: [low, medium, high] }
+        insights: { type: array, items: { type: string } }
+        recommendations: { type: array, items: { type: string } }
+        anomalies_detected: { type: integer }
