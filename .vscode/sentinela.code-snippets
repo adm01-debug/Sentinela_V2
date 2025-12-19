@@ -1,0 +1,85 @@
+{
+  "React Functional Component": {
+    "prefix": "rfc",
+    "body": [
+      "import { memo } from 'react';",
+      "",
+      "interface ${1:Component}Props {",
+      "  $2",
+      "}",
+      "",
+      "function ${1:Component}Component({ $3 }: ${1:Component}Props) {",
+      "  return (",
+      "    <div>",
+      "      $0",
+      "    </div>",
+      "  );",
+      "}",
+      "",
+      "export const ${1:Component} = memo(${1:Component}Component);"
+    ],
+    "description": "React functional component with memo"
+  },
+  "React Hook": {
+    "prefix": "hook",
+    "body": [
+      "import { useState, useCallback } from 'react';",
+      "",
+      "export function use${1:Hook}() {",
+      "  const [state, setState] = useState($2);",
+      "",
+      "  const action = useCallback(() => {",
+      "    $0",
+      "  }, []);",
+      "",
+      "  return { state, action };",
+      "}"
+    ],
+    "description": "Custom React hook"
+  },
+  "Zod Schema": {
+    "prefix": "zod",
+    "body": [
+      "import { z } from 'zod';",
+      "",
+      "export const ${1:Name}Schema = z.object({",
+      "  $0",
+      "});",
+      "",
+      "export type ${1:Name} = z.infer<typeof ${1:Name}Schema>;"
+    ],
+    "description": "Zod validation schema"
+  },
+  "Supabase Query": {
+    "prefix": "supaquery",
+    "body": [
+      "const { data, error } = await supabase",
+      "  .from('${1:table}')",
+      "  .select('${2:*}')",
+      "  ${0}",
+      "",
+      "if (error) throw error;",
+      "return data;"
+    ],
+    "description": "Supabase query"
+  },
+  "Vitest Test": {
+    "prefix": "test",
+    "body": [
+      "import { describe, it, expect } from 'vitest';",
+      "",
+      "describe('${1:Component}', () => {",
+      "  it('should ${2:do something}', () => {",
+      "    $0",
+      "    expect(true).toBe(true);",
+      "  });",
+      "});"
+    ],
+    "description": "Vitest test suite"
+  },
+  "Console Log": {
+    "prefix": "cl",
+    "body": ["console.log('$1:', $1);$0"],
+    "description": "Console log with label"
+  }
+}
