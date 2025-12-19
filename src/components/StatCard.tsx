@@ -1,7 +1,8 @@
-import { memo } from 'react';
+import { memo, ReactNode } from 'react';
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { LucideIcon, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 // ============================================================
 // TYPES
@@ -10,145 +11,225 @@ import { LucideIcon, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 interface StatCardProps {
   title: string;
   value: string | number;
-  icon: LucideIcon;
   description?: string;
-  trend?: number;
-  trendLabel?: string;
-  color?: 'default' | 'success' | 'warning' | 'destructive';
+  icon?: ReactNode;
+  trend?: {
+    value: number;
+    label?: string;
+  };
+  isLoading?: boolean;
   className?: string;
-  loading?: boolean;
+  valueClassName?: string;
 }
 
 // ============================================================
-// TREND INDICATOR
-// ============================================================
-
-function TrendIndicator({ 
-  value, 
-  label 
-}: { 
-  value: number; 
-  label?: string;
-}) {
-  const isPositive = value > 0;
-  const isNegative = value < 0;
-  const isNeutral = value === 0;
-
-  const Icon = isPositive ? TrendingUp : isNegative ? TrendingDown : Minus;
-  const color = isPositive ? 'text-green-500' : isNegative ? 'text-red-500' : 'text-muted-foreground';
-
-  return (
-    <div 
-      className={cn('flex items-center gap-1 text-xs', color)}
-      role="status"
-      aria-live="polite"
-    >
-      <Icon className="h-3 w-3" aria-hidden="true" />
-      <span aria-label={`Tendência: ${isPositive ? 'positiva' : isNegative ? 'negativa' : 'neutra'}, ${Math.abs(value)}%`}>
-        {isPositive && '+'}
-        {value}%
-      </span>
-      {label && (
-        <span className="text-muted-foreground ml-1">
-          {label}
-        </span>
-      )}
-    </div>
-  );
-}
-
-// ============================================================
-// STAT CARD COMPONENT
+// COMPONENT
 // ============================================================
 
 function StatCardComponent({
   title,
   value,
-  icon: Icon,
   description,
+  icon,
   trend,
-  trendLabel,
-  color = 'default',
+  isLoading = false,
   className,
-  loading = false,
+  valueClassName,
 }: StatCardProps) {
-  const colorClasses = {
-    default: 'text-primary',
-    success: 'text-green-500',
-    warning: 'text-yellow-500',
-    destructive: 'text-red-500',
-  };
-
-  const bgClasses = {
-    default: 'bg-primary/10',
-    success: 'bg-green-500/10',
-    warning: 'bg-yellow-500/10',
-    destructive: 'bg-red-500/10',
-  };
-
-  if (loading) {
+  if (isLoading) {
     return (
-      <Card className={cn('animate-pulse', className)}>
+      <Card className={className}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <div className="h-4 w-24 bg-muted rounded" />
-          <div className="h-8 w-8 bg-muted rounded" />
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-4 w-4 rounded" />
         </CardHeader>
         <CardContent>
-          <div className="h-8 w-20 bg-muted rounded mb-1" />
-          <div className="h-3 w-32 bg-muted rounded" />
+          <Skeleton className="h-8 w-20 mb-1" />
+          <Skeleton className="h-3 w-32" />
         </CardContent>
       </Card>
     );
   }
 
+  const TrendIcon =
+    trend?.value && trend.value > 0
+      ? TrendingUp
+      : trend?.value && trend.value < 0
+      ? TrendingDown
+      : Minus;
+
+  const trendColor =
+    trend?.value && trend.value > 0
+      ? 'text-green-600'
+      : trend?.value && trend.value < 0
+      ? 'text-red-600'
+      : 'text-muted-foreground';
+
   return (
-    <Card 
-      className={cn('transition-shadow hover:shadow-md', className)}
-      role="region"
-      aria-labelledby={`stat-${title.toLowerCase().replace(/\s+/g, '-')}`}
-    >
+    <Card className={className}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle 
-          id={`stat-${title.toLowerCase().replace(/\s+/g, '-')}`}
-          className="text-sm font-medium text-muted-foreground"
-        >
+        <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
         </CardTitle>
-        <div 
-          className={cn(
-            'h-8 w-8 rounded-lg flex items-center justify-center',
-            bgClasses[color]
-          )}
-          aria-hidden="true"
-        >
-          <Icon className={cn('h-4 w-4', colorClasses[color])} />
-        </div>
+        {icon && (
+          <div className="h-4 w-4 text-muted-foreground">{icon}</div>
+        )}
       </CardHeader>
       <CardContent>
-        <div 
-          className="text-2xl font-bold"
-          aria-label={`${title}: ${value}`}
-        >
-          {value}
-        </div>
-        <div className="flex items-center justify-between mt-1">
-          {description && (
-            <p className="text-xs text-muted-foreground">
-              {description}
-            </p>
-          )}
-          {trend !== undefined && (
-            <TrendIndicator value={trend} label={trendLabel} />
-          )}
-        </div>
+        <div className={cn('text-2xl font-bold', valueClassName)}>{value}</div>
+        {(description || trend) && (
+          <div className="flex items-center gap-1 mt-1">
+            {trend && (
+              <>
+                <TrendIcon className={cn('h-3 w-3', trendColor)} />
+                <span className={cn('text-xs font-medium', trendColor)}>
+                  {trend.value > 0 ? '+' : ''}
+                  {trend.value}%
+                </span>
+              </>
+            )}
+            {description && (
+              <span className="text-xs text-muted-foreground">
+                {trend ? ` ${description}` : description}
+              </span>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
 }
 
+export const StatCard = memo(StatCardComponent);
+
 // ============================================================
-// EXPORTS
+// STAT CARDS GRID
 // ============================================================
 
-export const StatCard = memo(StatCardComponent);
-StatCard.displayName = 'StatCard';
+interface StatCardsGridProps {
+  children: ReactNode;
+  columns?: 2 | 3 | 4;
+  className?: string;
+}
+
+function StatCardsGridComponent({
+  children,
+  columns = 4,
+  className,
+}: StatCardsGridProps) {
+  const gridCols = {
+    2: 'md:grid-cols-2',
+    3: 'md:grid-cols-3',
+    4: 'md:grid-cols-2 lg:grid-cols-4',
+  };
+
+  return (
+    <div className={cn('grid gap-4', gridCols[columns], className)}>
+      {children}
+    </div>
+  );
+}
+
+export const StatCardsGrid = memo(StatCardsGridComponent);
+
+// ============================================================
+// SPECIALIZED STAT CARDS
+// ============================================================
+
+export const CountStatCard = memo(function CountStatCard({
+  title,
+  count,
+  previousCount,
+  icon,
+  isLoading,
+}: {
+  title: string;
+  count: number;
+  previousCount?: number;
+  icon?: ReactNode;
+  isLoading?: boolean;
+}) {
+  const trend = previousCount
+    ? {
+        value: Math.round(((count - previousCount) / previousCount) * 100),
+        label: 'vs período anterior',
+      }
+    : undefined;
+
+  return (
+    <StatCard
+      title={title}
+      value={count.toLocaleString()}
+      trend={trend}
+      icon={icon}
+      isLoading={isLoading}
+    />
+  );
+});
+
+export const PercentStatCard = memo(function PercentStatCard({
+  title,
+  value,
+  description,
+  icon,
+  isLoading,
+}: {
+  title: string;
+  value: number;
+  description?: string;
+  icon?: ReactNode;
+  isLoading?: boolean;
+}) {
+  const valueColor =
+    value >= 80
+      ? 'text-green-600'
+      : value >= 60
+      ? 'text-yellow-600'
+      : 'text-red-600';
+
+  return (
+    <StatCard
+      title={title}
+      value={`${value.toFixed(1)}%`}
+      description={description}
+      icon={icon}
+      isLoading={isLoading}
+      valueClassName={valueColor}
+    />
+  );
+});
+
+export const CurrencyStatCard = memo(function CurrencyStatCard({
+  title,
+  value,
+  previousValue,
+  icon,
+  isLoading,
+}: {
+  title: string;
+  value: number;
+  previousValue?: number;
+  icon?: ReactNode;
+  isLoading?: boolean;
+}) {
+  const formattedValue = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(value);
+
+  const trend = previousValue
+    ? {
+        value: Math.round(((value - previousValue) / previousValue) * 100),
+      }
+    : undefined;
+
+  return (
+    <StatCard
+      title={title}
+      value={formattedValue}
+      trend={trend}
+      icon={icon}
+      isLoading={isLoading}
+    />
+  );
+});
