@@ -1,220 +1,252 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+
+// ============================================================
+// TYPES
+// ============================================================
 
 export interface Employee {
   id: string;
   name: string;
-  email: string | null;
-  department: string | null;
-  position: string | null;
-  team_id: string | null;
-  status: string;
-  hire_date: string | null;
-  phone: string | null;
-  avatar_url: string | null;
-  notes: string | null;
+  email: string;
+  phone?: string;
+  department?: string;
+  position?: string;
+  team_id?: string;
+  status: 'active' | 'inactive' | 'suspended';
+  hire_date?: string;
   created_at: string;
-  updated_at: string;
-  created_by: string | null;
+  updated_at?: string;
 }
 
-export interface EmployeeDevice {
+export interface CreateEmployeeInput {
+  name: string;
+  email: string;
+  phone?: string;
+  department?: string;
+  position?: string;
+  team_id?: string;
+  status?: Employee['status'];
+  hire_date?: string;
+}
+
+export interface UpdateEmployeeInput extends Partial<CreateEmployeeInput> {
   id: string;
-  employee_id: string;
-  device_name: string;
-  device_type: string | null;
-  agent_key_id: string | null;
-  is_primary: boolean | null;
-  assigned_at: string;
 }
 
-export interface EmployeeWithDetails extends Employee {
-  devices: EmployeeDevice[];
-  team?: {
-    id: string;
-    name: string;
-  } | null;
+export interface EmployeeFilters {
+  status?: Employee['status'];
+  department?: string;
+  team_id?: string;
+  search?: string;
 }
 
-export function useEmployees() {
-  const [employees, setEmployees] = useState<EmployeeWithDetails[]>([]);
-  const [loading, setLoading] = useState(true);
+// ============================================================
+// HOOKS
+// ============================================================
 
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-
-  const fetchEmployees = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch employees
-      const { data: employeesData, error: employeesError } = await supabase
+/**
+ * Lista todos os funcionários com filtros opcionais
+ */
+export function useEmployees(filters?: EmployeeFilters) {
+  return useQuery({
+    queryKey: queryKeys.employees.list(filters),
+    queryFn: async () => {
+      let query = supabase
         .from('employees')
         .select('*')
         .order('name');
 
-      if (employeesError) throw employeesError;
+      if (filters?.status) {
+        query = query.eq('status', filters.status);
+      }
+      if (filters?.department) {
+        query = query.eq('department', filters.department);
+      }
+      if (filters?.team_id) {
+        query = query.eq('team_id', filters.team_id);
+      }
+      if (filters?.search) {
+        query = query.or(`name.ilike.%${filters.search}%,email.ilike.%${filters.search}%`);
+      }
 
-      // Fetch teams for mapping
-      const { data: teamsData, error: teamsError } = await supabase
-        .from('teams')
-        .select('id, name');
+      const { data, error } = await query;
 
-      if (teamsError) throw teamsError;
+      if (error) throw error;
+      return data as Employee[];
+    },
+    ...queryPresets.list,
+  });
+}
 
-      // Fetch employee devices
-      const { data: devicesData, error: devicesError } = await supabase
-        .from('employee_devices')
-        .select('*');
-
-      if (devicesError) throw devicesError;
-
-      // Combine data
-      const employeesWithDetails: EmployeeWithDetails[] = (employeesData || []).map(emp => ({
-        ...emp,
-        devices: (devicesData || []).filter(d => d.employee_id === emp.id),
-        team: teamsData?.find(t => t.id === emp.team_id) || null
-      }));
-
-      setEmployees(employeesWithDetails);
-    } catch (error: any) {
-      console.error('Error fetching employees:', error);
-      toast.error('Erro ao carregar colaboradores');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const createEmployee = async (employee: Omit<Employee, 'id' | 'created_at' | 'updated_at' | 'created_by'>) => {
-    try {
-      const { data: userData } = await supabase.auth.getUser();
-      
+/**
+ * Busca um funcionário específico por ID
+ */
+export function useEmployee(id: string) {
+  return useQuery({
+    queryKey: queryKeys.employees.detail(id),
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('employees')
-        .insert({
-          ...employee,
-          created_by: userData.user?.id
-        })
+        .select('*, teams(name)')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data as Employee & { teams?: { name: string } };
+    },
+    enabled: !!id,
+    ...queryPresets.list,
+  });
+}
+
+/**
+ * Estatísticas do funcionário
+ */
+export function useEmployeeStats(employeeId: string) {
+  return useQuery({
+    queryKey: queryKeys.employees.stats(employeeId),
+    queryFn: async () => {
+      // Buscar violações do funcionário
+      const { data: violations, error: violationsError } = await supabase
+        .from('security_violations')
+        .select('id, severity')
+        .eq('employee_id', employeeId);
+
+      if (violationsError) throw violationsError;
+
+      // Buscar atividade recente
+      const { data: activity, error: activityError } = await supabase
+        .from('employee_activity')
+        .select('productivity_score')
+        .eq('employee_id', employeeId)
+        .order('created_at', { ascending: false })
+        .limit(30);
+
+      if (activityError) throw activityError;
+
+      const avgProductivity = activity?.length
+        ? activity.reduce((acc, a) => acc + (a.productivity_score || 0), 0) / activity.length
+        : 0;
+
+      return {
+        totalViolations: violations?.length || 0,
+        criticalViolations: violations?.filter(v => v.severity === 'critical').length || 0,
+        avgProductivity: Math.round(avgProductivity),
+        activityDays: activity?.length || 0,
+      };
+    },
+    enabled: !!employeeId,
+    ...queryPresets.list,
+  });
+}
+
+/**
+ * Criar novo funcionário
+ */
+export function useCreateEmployee() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: CreateEmployeeInput) => {
+      const { data, error } = await supabase
+        .from('employees')
+        .insert(input)
         .select()
         .single();
 
       if (error) throw error;
+      return data as Employee;
+    },
+    onSuccess: () => {
+      invalidateRelated.employee(queryClient);
+      toast.success('Funcionário criado com sucesso!');
+    },
+    onError: (error: Error) => {
+      toast.error(`Erro ao criar funcionário: ${error.message}`);
+    },
+  });
+}
 
-      toast.success('Colaborador criado com sucesso');
-      await fetchEmployees();
-      return data;
-    } catch (error: any) {
-      console.error('Error creating employee:', error);
-      toast.error('Erro ao criar colaborador');
-      throw error;
-    }
-  };
+/**
+ * Atualizar funcionário
+ */
+export function useUpdateEmployee() {
+  const queryClient = useQueryClient();
 
-  const updateEmployee = async (id: string, updates: Partial<Employee>) => {
-    try {
-      const { error } = await supabase
+  return useMutation({
+    mutationFn: async ({ id, ...input }: UpdateEmployeeInput) => {
+      const { data, error } = await supabase
         .from('employees')
-        .update(updates)
-        .eq('id', id);
+        .update(input)
+        .eq('id', id)
+        .select()
+        .single();
 
       if (error) throw error;
+      return data as Employee;
+    },
+    onSuccess: (data) => {
+      invalidateRelated.employee(queryClient, data.id);
+      toast.success('Funcionário atualizado!');
+    },
+    onError: (error: Error) => {
+      toast.error(`Erro ao atualizar: ${error.message}`);
+    },
+  });
+}
 
-      toast.success('Colaborador atualizado com sucesso');
-      await fetchEmployees();
-    } catch (error: any) {
-      console.error('Error updating employee:', error);
-      toast.error('Erro ao atualizar colaborador');
-      throw error;
-    }
-  };
+/**
+ * Deletar funcionário
+ */
+export function useDeleteEmployee() {
+  const queryClient = useQueryClient();
 
-  const deleteEmployee = async (id: string) => {
-    try {
+  return useMutation({
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('employees')
         .delete()
         .eq('id', id);
 
       if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidateRelated.employee(queryClient);
+      toast.success('Funcionário removido!');
+    },
+    onError: (error: Error) => {
+      toast.error(`Erro ao remover: ${error.message}`);
+    },
+  });
+}
 
-      toast.success('Colaborador excluído com sucesso');
-      await fetchEmployees();
-    } catch (error: any) {
-      console.error('Error deleting employee:', error);
-      toast.error('Erro ao excluir colaborador');
-      throw error;
-    }
-  };
+/**
+ * Alterar status do funcionário
+ */
+export function useUpdateEmployeeStatus() {
+  const queryClient = useQueryClient();
 
-  const assignDevice = async (employeeId: string, deviceName: string, deviceType: string = 'desktop', isPrimary: boolean = false) => {
-    try {
-      const { error } = await supabase
-        .from('employee_devices')
-        .insert({
-          employee_id: employeeId,
-          device_name: deviceName,
-          device_type: deviceType,
-          is_primary: isPrimary
-        });
-
-      if (error) throw error;
-
-      toast.success('Dispositivo vinculado com sucesso');
-      await fetchEmployees();
-    } catch (error: any) {
-      console.error('Error assigning device:', error);
-      toast.error('Erro ao vincular dispositivo');
-      throw error;
-    }
-  };
-
-  const removeDevice = async (deviceId: string) => {
-    try {
-      const { error } = await supabase
-        .from('employee_devices')
-        .delete()
-        .eq('id', deviceId);
-
-      if (error) throw error;
-
-      toast.success('Dispositivo removido com sucesso');
-      await fetchEmployees();
-    } catch (error: any) {
-      console.error('Error removing device:', error);
-      toast.error('Erro ao remover dispositivo');
-      throw error;
-    }
-  };
-
-  const assignToTeam = async (employeeId: string, teamId: string | null) => {
-    try {
-      const { error } = await supabase
+  return useMutation({
+    mutationFn: async ({ id, status }: { id: string; status: Employee['status'] }) => {
+      const { data, error } = await supabase
         .from('employees')
-        .update({ team_id: teamId })
-        .eq('id', employeeId);
+        .update({ status })
+        .eq('id', id)
+        .select()
+        .single();
 
       if (error) throw error;
-
-      toast.success(teamId ? 'Colaborador vinculado à equipe' : 'Colaborador removido da equipe');
-      await fetchEmployees();
-    } catch (error: any) {
-      console.error('Error assigning to team:', error);
-      toast.error('Erro ao vincular à equipe');
-      throw error;
-    }
-  };
-
-  return {
-    employees,
-    loading,
-    createEmployee,
-    updateEmployee,
-    deleteEmployee,
-    assignDevice,
-    removeDevice,
-    assignToTeam,
-    refetch: fetchEmployees
-  };
+      return data as Employee;
+    },
+    onSuccess: (data) => {
+      invalidateRelated.employee(queryClient, data.id);
+      toast.success(`Status alterado para ${data.status}!`);
+    },
+    onError: (error: Error) => {
+      toast.error(`Erro ao alterar status: ${error.message}`);
+    },
+  });
 }
