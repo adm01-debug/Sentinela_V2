@@ -48,6 +48,7 @@ import { ViolationsByEmployeeChart } from '@/components/ViolationsByEmployeeChar
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { ViolationsSkeleton } from '@/components/PageSkeletons';
 
 interface Violation {
   id: string;
@@ -126,6 +127,11 @@ export default function Violations() {
         }
       )
       .subscribe();
+
+  if (isLoading) {
+    return <ViolationsSkeleton />;
+  }
+
 
     return () => {
       supabase.removeChannel(channel);
