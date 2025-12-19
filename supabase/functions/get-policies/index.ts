@@ -1,75 +1,57 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { checkRateLimit, RateLimitConfig } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-serve(async (req) => {
-  // Handle CORS preflight
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+const RATE_LIMIT_CONFIG: RateLimitConfig = {
+  maxRequests: 60,
+  windowMs: 60 * 1000,
+  identifier: 'get-policies',
+};
+
+serve(async (req: Request) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    // Rate limiting
+    const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await checkRateLimit(clientIP, RATE_LIMIT_CONFIG);
     
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-    // Fetch active violation rules
-    const { data: rules, error: rulesError } = await supabase
-      .from("violation_rules")
-      .select("id, rule_type, rule_value, severity, description, is_active")
-      .eq("is_active", true)
-      .order("severity", { ascending: false });
-
-    if (rulesError) {
-      console.error("Error fetching rules:", rulesError);
-      throw rulesError;
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ error: 'Rate limit exceeded' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    // Fetch violation counts per rule type and value
-    const { data: violations, error: violationsError } = await supabase
-      .from("security_violations")
-      .select("violation_type, policy_name");
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
 
-    if (violationsError) {
-      console.error("Error fetching violations:", violationsError);
-      throw violationsError;
-    }
+    const { data: policies, error } = await supabase
+      .from('policies')
+      .select('*')
+      .eq('is_active', true)
+      .order('name');
 
-    // Create a map of violation counts by rule value
-    const violationCounts: Record<string, number> = {};
-    violations?.forEach((v) => {
-      const key = v.policy_name?.toLowerCase() || '';
-      violationCounts[key] = (violationCounts[key] || 0) + 1;
-    });
+    if (error) throw error;
 
-    // Attach violation count to each rule
-    const rulesWithCounts = rules?.map((rule) => {
-      const ruleKey = rule.rule_value?.toLowerCase() || '';
-      return {
-        ...rule,
-        violation_count: violationCounts[ruleKey] || 0,
-      };
-    });
-
-    console.log(`Fetched ${rules?.length || 0} active violation rules with counts`);
-
-    return new Response(JSON.stringify({ rules: rulesWithCounts }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    console.error("Error in get-policies:", errorMessage);
     return new Response(
-      JSON.stringify({ error: errorMessage }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, "Content-Type": "application/json" } 
-      }
+      JSON.stringify({ policies }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    console.error('Error:', error);
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
