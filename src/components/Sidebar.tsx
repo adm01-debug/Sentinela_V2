@@ -24,7 +24,8 @@ import {
   Smartphone,
   Mail,
   GitCompare,
-  Archive
+  Archive,
+  ShieldCheck
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -52,6 +53,7 @@ const menuItems = [
   { icon: GitCompare, label: 'Comparativo', path: '/productivity-comparison' },
   { icon: Mail, label: 'Relatórios Agendados', path: '/scheduled-reports' },
   { icon: Archive, label: 'Exportar Dados', path: '/data-export' },
+  { icon: ShieldCheck, label: 'Rate Limiting', path: '/rate-limiting' },
   { icon: Settings, label: 'Configurações', path: '/settings' },
 ];
 

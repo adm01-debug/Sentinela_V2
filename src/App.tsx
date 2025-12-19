@@ -29,6 +29,7 @@ import ScheduledReports from "./pages/ScheduledReports";
 import MobileMonitoring from "./pages/MobileMonitoring";
 import ProductivityComparison from "./pages/ProductivityComparison";
 import DataExport from "./pages/DataExport";
+import RateLimitDashboard from "./pages/RateLimitDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -187,6 +188,13 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <DataExport />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/rate-limiting" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <RateLimitDashboard />
                 </PolicyGate>
               </ProtectedRoute>
             } />
