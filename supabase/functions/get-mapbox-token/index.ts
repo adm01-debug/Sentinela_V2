@@ -1,44 +1,39 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { checkRateLimit, RateLimitConfig } from '../_shared/rateLimiting.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const RATE_LIMIT_CONFIG: RateLimitConfig = {
-  maxRequests: 100,
-  windowMs: 60 * 1000, // 1 minute
-  identifier: 'mapbox-token',
-};
-
-serve(async (req: Request) => {
+serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Rate limiting
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await checkRateLimit(clientIP, RATE_LIMIT_CONFIG);
+    const rateLimitResult = await checkRateLimit(clientIP, 'get-mapbox-token', 30, 60);
     
     if (!rateLimitResult.allowed) {
       return new Response(
-        JSON.stringify({ error: 'Rate limit exceeded', retryAfter: rateLimitResult.retryAfter }),
-        { 
-          status: 429, 
-          headers: { 
-            ...corsHeaders, 
-            'Content-Type': 'application/json',
-            'Retry-After': String(rateLimitResult.retryAfter),
-          } 
-        }
+        JSON.stringify({ error: 'Rate limit exceeded' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const token = Deno.env.get('MAPBOX_ACCESS_TOKEN');
+    // Validate authorization header
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const mapboxToken = Deno.env.get('MAPBOX_PUBLIC_TOKEN');
     
-    if (!token) {
+    if (!mapboxToken) {
       return new Response(
         JSON.stringify({ error: 'Mapbox token not configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -46,18 +41,10 @@ serve(async (req: Request) => {
     }
 
     return new Response(
-      JSON.stringify({ token }),
-      { 
-        status: 200, 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json',
-          'Cache-Control': 'private, max-age=3600',
-        } 
-      }
+      JSON.stringify({ token: mapboxToken }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
