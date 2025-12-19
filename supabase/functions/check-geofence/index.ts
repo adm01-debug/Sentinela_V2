@@ -1,275 +1,174 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { checkRateLimit, RateLimitConfig } from '../_shared/rateLimiting.ts';
+import { 
+  checkGeofenceSchema, 
+  validateInput, 
+  createValidationErrorResponse 
+} from '../_shared/validation.ts';
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Rate limit configuration
-const RATE_LIMIT_MAX_REQUESTS = 120; // Max geofence checks per window
-const RATE_LIMIT_WINDOW_SECONDS = 60; // 1 minute window
-
-interface GeofenceCheckRequest {
-  employee_name: string;
-  device?: string;
-  latitude: number;
-  longitude: number;
-}
+const RATE_LIMIT_CONFIG: RateLimitConfig = {
+  maxRequests: 120,
+  windowMs: 60 * 1000,
+  identifier: 'check-geofence',
+};
 
 interface Geofence {
   id: string;
   name: string;
-  latitude: number;
-  longitude: number;
-  radius_meters: number;
-  is_active: boolean;
+  type: 'circle' | 'polygon';
+  coordinates: number[][];
+  radius?: number;
+  alert_on_enter: boolean;
+  alert_on_exit: boolean;
 }
 
-// Haversine formula to calculate distance between two points
-function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371000; // Earth's radius in meters
-  const dLat = (lat2 - lat1) * (Math.PI / 180);
-  const dLon = (lon2 - lon1) * (Math.PI / 180);
-  const a =
+function isPointInCircle(
+  lat: number, 
+  lng: number, 
+  centerLat: number, 
+  centerLng: number, 
+  radiusKm: number
+): boolean {
+  const R = 6371; // Earth's radius in km
+  const dLat = (centerLat - lat) * Math.PI / 180;
+  const dLng = (centerLng - lng) * Math.PI / 180;
+  const a = 
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) *
-      Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    Math.cos(lat * Math.PI / 180) * Math.cos(centerLat * Math.PI / 180) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
+  const distance = R * c;
+  return distance <= radiusKm;
 }
 
-async function checkRateLimit(
-  supabase: any,
-  identifier: string,
-  identifierType: string,
-  endpoint: string
-): Promise<{ allowed: boolean; retryAfter?: number; remaining?: number }> {
-  try {
-    const { data, error } = await supabase.rpc("check_rate_limit", {
-      p_identifier: identifier,
-      p_identifier_type: identifierType,
-      p_endpoint: endpoint,
-      p_max_requests: RATE_LIMIT_MAX_REQUESTS,
-      p_window_seconds: RATE_LIMIT_WINDOW_SECONDS,
-    });
-
-    if (error) {
-      console.error("Rate limit check error:", error);
-      return { allowed: true };
-    }
-
-    return {
-      allowed: data.allowed,
-      retryAfter: data.retry_after_seconds,
-      remaining: data.remaining,
-    };
-  } catch (e) {
-    console.error("Rate limit exception:", e);
-    return { allowed: true };
+function isPointInPolygon(lat: number, lng: number, polygon: number[][]): boolean {
+  let inside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i][0], yi = polygon[i][1];
+    const xj = polygon[j][0], yj = polygon[j][1];
+    const intersect = ((yi > lng) !== (yj > lng)) &&
+      (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
   }
+  return inside;
 }
 
-serve(async (req) => {
-  // Handle CORS preflight
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+serve(async (req: Request) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
   }
 
-  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-  const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-  const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-  // Get client IP for rate limiting
-  const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
-                   req.headers.get("x-real-ip") || 
-                   "unknown";
-
   try {
-    // Rate limit by IP
-    const rateCheck = await checkRateLimit(supabase, clientIP, "ip", "check-geofence");
-    if (!rateCheck.allowed) {
-      console.log(`Rate limit exceeded for geofence check from IP: ${clientIP}`);
+    // Rate limiting
+    const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await checkRateLimit(clientIP, RATE_LIMIT_CONFIG);
+    
+    if (!rateLimitResult.allowed) {
       return new Response(
-        JSON.stringify({ error: "Too many requests. Try again later.", allowed: true }),
-        { 
-          status: 429, 
-          headers: { 
-            ...corsHeaders, 
-            "Content-Type": "application/json",
-            "Retry-After": String(rateCheck.retryAfter || 60)
-          } 
-        }
+        JSON.stringify({ error: 'Rate limit exceeded' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const { employee_name, device, latitude, longitude }: GeofenceCheckRequest = await req.json();
+    // Validate input
+    const body = await req.json();
+    const validation = validateInput(checkGeofenceSchema, body);
+    
+    if (!validation.success) {
+      return createValidationErrorResponse(validation.error, validation.details, corsHeaders);
+    }
 
-    console.log(`[Geofence] Checking location for ${employee_name}: ${latitude}, ${longitude}`);
+    const { employee_id, latitude, longitude } = validation.data;
 
-    // Get employee by name to find their assigned geofences
-    const { data: employees, error: employeeError } = await supabase
-      .from("employees")
-      .select("id")
-      .eq("name", employee_name)
-      .single();
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
 
-    if (employeeError || !employees) {
-      console.log(`[Geofence] Employee not found: ${employee_name}`);
-      // If employee not found, check against all active geofences
-      const { data: allGeofences } = await supabase
-        .from("geofences")
-        .select("*")
-        .eq("is_active", true);
+    // Get active geofences
+    const { data: geofences, error } = await supabase
+      .from('geofences')
+      .select('*')
+      .eq('is_active', true);
 
-      if (!allGeofences || allGeofences.length === 0) {
-        return new Response(
-          JSON.stringify({ allowed: true, message: "No geofences configured" }),
-          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+    if (error) throw error;
+
+    const results: { geofence_id: string; inside: boolean; name: string }[] = [];
+    const alerts: { type: 'enter' | 'exit'; geofence: Geofence }[] = [];
+
+    // Get previous location state
+    const { data: previousState } = await supabase
+      .from('employee_geofence_state')
+      .select('geofence_id, inside')
+      .eq('employee_id', employee_id);
+
+    const previousStateMap = new Map(
+      previousState?.map(s => [s.geofence_id, s.inside]) || []
+    );
+
+    for (const geofence of geofences || []) {
+      let inside = false;
+      
+      if (geofence.type === 'circle' && geofence.radius) {
+        const [centerLng, centerLat] = geofence.coordinates[0];
+        inside = isPointInCircle(latitude, longitude, centerLat, centerLng, geofence.radius / 1000);
+      } else if (geofence.type === 'polygon') {
+        inside = isPointInPolygon(latitude, longitude, geofence.coordinates);
       }
 
-      // Check if inside any active geofence
-      let isInsideAny = false;
-      let nearestGeofence: Geofence | null = null;
-      let nearestDistance = Infinity;
+      results.push({ geofence_id: geofence.id, inside, name: geofence.name });
 
-      for (const geofence of allGeofences as Geofence[]) {
-        const distance = calculateDistance(latitude, longitude, geofence.latitude, geofence.longitude);
-        if (distance < nearestDistance) {
-          nearestDistance = distance;
-          nearestGeofence = geofence;
-        }
-        if (distance <= geofence.radius_meters) {
-          isInsideAny = true;
-          break;
-        }
+      // Check for enter/exit events
+      const wasInside = previousStateMap.get(geofence.id) || false;
+      
+      if (inside && !wasInside && geofence.alert_on_enter) {
+        alerts.push({ type: 'enter', geofence });
+      } else if (!inside && wasInside && geofence.alert_on_exit) {
+        alerts.push({ type: 'exit', geofence });
       }
 
-      if (!isInsideAny && nearestGeofence) {
-        // Log violation
-        await supabase.from("geofence_violations").insert({
-          employee_name,
-          device,
-          latitude,
-          longitude,
-          nearest_geofence_id: nearestGeofence.id,
-          distance_meters: Math.round(nearestDistance),
-          action_taken: "alert",
+      // Update state
+      await supabase
+        .from('employee_geofence_state')
+        .upsert({
+          employee_id,
+          geofence_id: geofence.id,
+          inside,
+          updated_at: new Date().toISOString(),
         });
-
-        console.log(`[Geofence] Violation detected for ${employee_name}, distance: ${Math.round(nearestDistance)}m`);
-
-        return new Response(
-          JSON.stringify({
-            allowed: false,
-            message: `Outside geofence. Nearest: ${nearestGeofence.name} (${Math.round(nearestDistance)}m away)`,
-            nearest_geofence: nearestGeofence.name,
-            distance_meters: Math.round(nearestDistance),
-          }),
-          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-
-      return new Response(
-        JSON.stringify({ allowed: true, message: "Inside allowed geofence" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
     }
 
-    // Get employee's assigned geofences
-    const { data: employeeGeofences, error: geofencesError } = await supabase
-      .from("employee_geofences")
-      .select(`
-        geofence_id,
-        geofences (*)
-      `)
-      .eq("employee_id", employees.id);
-
-    if (geofencesError) {
-      console.error("[Geofence] Error fetching employee geofences:", geofencesError);
-      throw geofencesError;
-    }
-
-    // If no geofences assigned to employee, allow access
-    if (!employeeGeofences || employeeGeofences.length === 0) {
-      console.log(`[Geofence] No geofences assigned to ${employee_name}, allowing access`);
-      return new Response(
-        JSON.stringify({ allowed: true, message: "No geofences assigned to employee" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Check if inside any assigned geofence
-    let isInsideAssigned = false;
-    let nearestGeofence: any = null;
-    let nearestDistance = Infinity;
-
-    for (const eg of employeeGeofences) {
-      const geofence = eg.geofences as unknown as Geofence;
-      if (!geofence || !geofence.is_active) continue;
-
-      const distance = calculateDistance(latitude, longitude, geofence.latitude, geofence.longitude);
-      if (distance < nearestDistance) {
-        nearestDistance = distance;
-        nearestGeofence = geofence;
-      }
-      if (distance <= geofence.radius_meters) {
-        isInsideAssigned = true;
-        console.log(`[Geofence] ${employee_name} is inside ${geofence.name}`);
-        break;
-      }
-    }
-
-    if (!isInsideAssigned && nearestGeofence) {
-      // Log violation
-      await supabase.from("geofence_violations").insert({
-        employee_name,
-        device,
+    // Process alerts
+    for (const alert of alerts) {
+      await supabase.from('geofence_events').insert({
+        employee_id,
+        geofence_id: alert.geofence.id,
+        event_type: alert.type,
         latitude,
         longitude,
-        nearest_geofence_id: nearestGeofence.id,
-        distance_meters: Math.round(nearestDistance),
-        action_taken: "alert",
       });
-
-      // Also create a security violation
-      await supabase.from("security_violations").insert({
-        employee_name,
-        device,
-        violation_type: "geofence_violation",
-        policy_name: "Geofence Policy",
-        severity: "high",
-        description: `Funcionário detectado fora da área permitida. Distância da geofence mais próxima (${nearestGeofence.name}): ${Math.round(nearestDistance)}m`,
-        location: `${latitude}, ${longitude}`,
-      });
-
-      console.log(`[Geofence] Violation detected for ${employee_name}, distance: ${Math.round(nearestDistance)}m from ${nearestGeofence.name}`);
-
-      return new Response(
-        JSON.stringify({
-          allowed: false,
-          message: `Outside assigned geofence. Nearest: ${nearestGeofence.name} (${Math.round(nearestDistance)}m away)`,
-          nearest_geofence: nearestGeofence.name,
-          distance_meters: Math.round(nearestDistance),
-          should_block: true,
-        }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
     }
 
     return new Response(
-      JSON.stringify({ allowed: true, message: "Inside assigned geofence" }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({ 
+        success: true,
+        location: { latitude, longitude },
+        geofences: results,
+        alerts: alerts.map(a => ({ type: a.type, geofence_name: a.geofence.name })),
+      }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error: unknown) {
-    console.error("[Geofence] Error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+  } catch (error) {
+    console.error('Error:', error);
     return new Response(
-      JSON.stringify({ error: errorMessage, allowed: true }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
