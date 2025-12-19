@@ -1,90 +1,87 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { playNotificationSound } from '@/utils/notificationSound';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated, REFETCH_INTERVALS } from '@/lib/queryClient';
 
-export interface PendingCounts {
-  overtimeRequests: number;
-  unreadViolations: number;
-  total: number;
+export interface PendingNotification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  data?: Record<string, unknown>;
+  read: boolean;
+  created_at: string;
 }
 
 export function usePendingNotifications() {
-  const queryClient = useQueryClient();
-  const previousTotalRef = useRef<number | null>(null);
+  return useQuery({
+    queryKey: queryKeys.notifications.pending(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('read', false)
+        .order('created_at', { ascending: false })
+        .limit(50);
 
-  const { data: counts = { overtimeRequests: 0, unreadViolations: 0, total: 0 }, isLoading } = useQuery({
-    queryKey: ['pending-notifications'],
-    queryFn: async (): Promise<PendingCounts> => {
-      // Fetch pending overtime requests
-      const { count: overtimeCount } = await supabase
-        .from('overtime_requests')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'pending');
+      if (error) throw error;
+      return data as PendingNotification[];
+    },
+    ...queryPresets.realtime,
+    refetchInterval: REFETCH_INTERVALS.FREQUENT,
+  });
+}
 
-      // Fetch unread violations
-      const { count: violationsCount } = await supabase
-        .from('security_violations')
-        .select('*', { count: 'exact', head: true })
+export function useUnreadNotificationsCount() {
+  return useQuery({
+    queryKey: queryKeys.notifications.unread(),
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from('notifications')
+        .select('id', { count: 'exact', head: true })
         .eq('read', false);
 
-      const overtime = overtimeCount || 0;
-      const violations = violationsCount || 0;
-
-      return {
-        overtimeRequests: overtime,
-        unreadViolations: violations,
-        total: overtime + violations
-      };
+      if (error) throw error;
+      return count || 0;
     },
-    refetchInterval: 30000, // Refresh every 30 seconds
+    ...queryPresets.realtime,
   });
+}
 
-  // Play sound when new notifications arrive
-  useEffect(() => {
-    if (previousTotalRef.current !== null && counts.total > previousTotalRef.current) {
-      playNotificationSound();
-    }
-    previousTotalRef.current = counts.total;
-  }, [counts.total]);
+export function useMarkNotificationAsRead() {
+  const queryClient = useQueryClient();
 
-  // Listen for realtime changes
-  useEffect(() => {
-    const overtimeChannel = supabase
-      .channel('sidebar-overtime-notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'overtime_requests'
-        },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['pending-notifications'] });
-        }
-      )
-      .subscribe();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('id', id);
 
-    const violationsChannel = supabase
-      .channel('sidebar-violations-notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'security_violations'
-        },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['pending-notifications'] });
-        }
-      )
-      .subscribe();
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidateRelated.notifications(queryClient);
+    },
+  });
+}
 
-    return () => {
-      supabase.removeChannel(overtimeChannel);
-      supabase.removeChannel(violationsChannel);
-    };
-  }, [queryClient]);
+export function useMarkAllNotificationsAsRead() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  return { counts, isLoading };
+  return useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('read', false);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidateRelated.notifications(queryClient);
+      toast({ title: 'Notificações marcadas como lidas' });
+    },
+  });
 }
