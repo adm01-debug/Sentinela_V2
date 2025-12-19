@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Environment variables - NUNCA VERSIONAR!
+.env
+.env.local
+.env.production
+.env.*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +28,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Desktop Agent builds
+desktop-agent/dist
+desktop-agent/out
+desktop-agent/node_modules
+
+# Supabase
+supabase/.temp
