@@ -13,24 +13,99 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-agent-key",
 };
 
+// Rate limit configuration
+const RATE_LIMIT_MAX_REQUESTS = 100; // Max requests per window
+const RATE_LIMIT_WINDOW_SECONDS = 60; // Window size in seconds
+
+async function checkRateLimit(
+  supabase: any,
+  identifier: string,
+  identifierType: string,
+  endpoint: string
+): Promise<{ allowed: boolean; retryAfter?: number; remaining?: number }> {
+  try {
+    const { data, error } = await supabase.rpc("check_rate_limit", {
+      p_identifier: identifier,
+      p_identifier_type: identifierType,
+      p_endpoint: endpoint,
+      p_max_requests: RATE_LIMIT_MAX_REQUESTS,
+      p_window_seconds: RATE_LIMIT_WINDOW_SECONDS,
+    });
+
+    if (error) {
+      console.error("Rate limit check error:", error);
+      // On error, allow the request (fail open)
+      return { allowed: true };
+    }
+
+    return {
+      allowed: data.allowed,
+      retryAfter: data.retry_after_seconds,
+      remaining: data.remaining,
+    };
+  } catch (e) {
+    console.error("Rate limit exception:", e);
+    return { allowed: true };
+  }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
-  try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
+  try {
     const agentKey = req.headers.get("x-agent-key");
+    
+    // Get client IP for rate limiting unauthenticated requests
+    const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+                     req.headers.get("x-real-ip") || 
+                     "unknown";
     
     // Validate agent key from database
     if (!agentKey) {
+      // Rate limit by IP for unauthenticated requests (stricter limit)
+      const rateCheck = await checkRateLimit(supabase, clientIP, "ip", "agent-collector-unauth");
+      if (!rateCheck.allowed) {
+        console.log(`Rate limit exceeded for IP: ${clientIP}`);
+        return new Response(
+          JSON.stringify({ error: "Too many requests. Try again later." }),
+          { 
+            status: 429, 
+            headers: { 
+              ...corsHeaders, 
+              "Content-Type": "application/json",
+              "Retry-After": String(rateCheck.retryAfter || 60)
+            } 
+          }
+        );
+      }
+
       console.log("Missing agent key");
       return new Response(
         JSON.stringify({ error: "Unauthorized - Missing agent key" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Rate limit by agent key
+    const rateCheck = await checkRateLimit(supabase, agentKey, "agent_key", "agent-collector");
+    if (!rateCheck.allowed) {
+      console.log(`Rate limit exceeded for agent key: ${agentKey.substring(0, 8)}...`);
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Try again later." }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            "Content-Type": "application/json",
+            "Retry-After": String(rateCheck.retryAfter || 60)
+          } 
+        }
       );
     }
 

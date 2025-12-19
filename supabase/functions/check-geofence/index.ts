@@ -6,6 +6,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Rate limit configuration
+const RATE_LIMIT_MAX_REQUESTS = 120; // Max geofence checks per window
+const RATE_LIMIT_WINDOW_SECONDS = 60; // 1 minute window
+
 interface GeofenceCheckRequest {
   employee_name: string;
   device?: string;
@@ -37,16 +41,69 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 }
 
+async function checkRateLimit(
+  supabase: any,
+  identifier: string,
+  identifierType: string,
+  endpoint: string
+): Promise<{ allowed: boolean; retryAfter?: number; remaining?: number }> {
+  try {
+    const { data, error } = await supabase.rpc("check_rate_limit", {
+      p_identifier: identifier,
+      p_identifier_type: identifierType,
+      p_endpoint: endpoint,
+      p_max_requests: RATE_LIMIT_MAX_REQUESTS,
+      p_window_seconds: RATE_LIMIT_WINDOW_SECONDS,
+    });
+
+    if (error) {
+      console.error("Rate limit check error:", error);
+      return { allowed: true };
+    }
+
+    return {
+      allowed: data.allowed,
+      retryAfter: data.retry_after_seconds,
+      remaining: data.remaining,
+    };
+  } catch (e) {
+    console.error("Rate limit exception:", e);
+    return { allowed: true };
+  }
+}
+
 serve(async (req) => {
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+  // Get client IP for rate limiting
+  const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+                   req.headers.get("x-real-ip") || 
+                   "unknown";
+
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    // Rate limit by IP
+    const rateCheck = await checkRateLimit(supabase, clientIP, "ip", "check-geofence");
+    if (!rateCheck.allowed) {
+      console.log(`Rate limit exceeded for geofence check from IP: ${clientIP}`);
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Try again later.", allowed: true }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            "Content-Type": "application/json",
+            "Retry-After": String(rateCheck.retryAfter || 60)
+          } 
+        }
+      );
+    }
 
     const { employee_name, device, latitude, longitude }: GeofenceCheckRequest = await req.json();
 

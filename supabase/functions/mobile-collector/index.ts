@@ -6,6 +6,12 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-device-token",
 };
 
+// Rate limit configuration
+const RATE_LIMIT_MAX_REQUESTS = 60; // Max requests per window
+const RATE_LIMIT_WINDOW_SECONDS = 60; // Window size in seconds
+const RATE_LIMIT_REGISTER_MAX = 10; // Stricter limit for registration (prevent enumeration)
+const RATE_LIMIT_REGISTER_WINDOW = 300; // 5 minutes for registration
+
 interface DeviceRegistration {
   employee_name: string;
   device_id: string;
@@ -40,16 +46,54 @@ function generateDeviceToken(deviceId: string, employeeName: string): string {
   return Math.abs(hash).toString(36);
 }
 
+async function checkRateLimit(
+  supabase: any,
+  identifier: string,
+  identifierType: string,
+  endpoint: string,
+  maxRequests: number = RATE_LIMIT_MAX_REQUESTS,
+  windowSeconds: number = RATE_LIMIT_WINDOW_SECONDS
+): Promise<{ allowed: boolean; retryAfter?: number; remaining?: number }> {
+  try {
+    const { data, error } = await supabase.rpc("check_rate_limit", {
+      p_identifier: identifier,
+      p_identifier_type: identifierType,
+      p_endpoint: endpoint,
+      p_max_requests: maxRequests,
+      p_window_seconds: windowSeconds,
+    });
+
+    if (error) {
+      console.error("Rate limit check error:", error);
+      return { allowed: true };
+    }
+
+    return {
+      allowed: data.allowed,
+      retryAfter: data.retry_after_seconds,
+      remaining: data.remaining,
+    };
+  } catch (e) {
+    console.error("Rate limit exception:", e);
+    return { allowed: true };
+  }
+}
+
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
-  try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
+  // Get client IP for rate limiting
+  const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+                   req.headers.get("x-real-ip") || 
+                   "unknown";
+
+  try {
     const url = new URL(req.url);
     const action = url.searchParams.get("action");
 
@@ -61,6 +105,31 @@ serve(async (req: Request) => {
 
       switch (action) {
         case "register": {
+          // Stricter rate limiting for registration to prevent enumeration attacks
+          const rateCheck = await checkRateLimit(
+            supabase, 
+            clientIP, 
+            "ip", 
+            "mobile-register",
+            RATE_LIMIT_REGISTER_MAX,
+            RATE_LIMIT_REGISTER_WINDOW
+          );
+          
+          if (!rateCheck.allowed) {
+            console.log(`Rate limit exceeded for registration from IP: ${clientIP}`);
+            return new Response(
+              JSON.stringify({ error: "Too many registration attempts. Try again later." }),
+              { 
+                status: 429, 
+                headers: { 
+                  ...corsHeaders, 
+                  "Content-Type": "application/json",
+                  "Retry-After": String(rateCheck.retryAfter || 300)
+                } 
+              }
+            );
+          }
+
           const registration = body as DeviceRegistration;
           
           // Validate required fields
@@ -141,6 +210,23 @@ serve(async (req: Request) => {
             return new Response(
               JSON.stringify({ error: "Missing x-device-token header" }),
               { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // Rate limit by device token
+          const rateCheck = await checkRateLimit(supabase, deviceToken, "device_token", "mobile-activity");
+          if (!rateCheck.allowed) {
+            console.log(`Rate limit exceeded for device token`);
+            return new Response(
+              JSON.stringify({ error: "Too many requests. Try again later." }),
+              { 
+                status: 429, 
+                headers: { 
+                  ...corsHeaders, 
+                  "Content-Type": "application/json",
+                  "Retry-After": String(rateCheck.retryAfter || 60)
+                } 
+              }
             );
           }
 
@@ -228,6 +314,22 @@ serve(async (req: Request) => {
             );
           }
 
+          // Rate limit heartbeats
+          const rateCheck = await checkRateLimit(supabase, deviceToken, "device_token", "mobile-heartbeat");
+          if (!rateCheck.allowed) {
+            return new Response(
+              JSON.stringify({ error: "Too many requests. Try again later." }),
+              { 
+                status: 429, 
+                headers: { 
+                  ...corsHeaders, 
+                  "Content-Type": "application/json",
+                  "Retry-After": String(rateCheck.retryAfter || 60)
+                } 
+              }
+            );
+          }
+
           const expectedToken = generateDeviceToken(device_id, employee_name);
           if (deviceToken !== expectedToken) {
             return new Response(
@@ -272,6 +374,22 @@ serve(async (req: Request) => {
           return new Response(
             JSON.stringify({ error: "Missing x-device-token header" }),
             { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+
+        // Rate limit config requests
+        const rateCheck = await checkRateLimit(supabase, deviceToken, "device_token", "mobile-config");
+        if (!rateCheck.allowed) {
+          return new Response(
+            JSON.stringify({ error: "Too many requests. Try again later." }),
+            { 
+              status: 429, 
+              headers: { 
+                ...corsHeaders, 
+                "Content-Type": "application/json",
+                "Retry-After": String(rateCheck.retryAfter || 60)
+              } 
+            }
           );
         }
 
