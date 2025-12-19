@@ -1,112 +1,109 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { AuthMFAEnrollResponse, Factor } from '@supabase/supabase-js';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets } from '@/lib/queryClient';
 
-export interface MFAState {
-  isEnrolled: boolean;
-  isVerified: boolean;
-  factors: Factor[];
-  loading: boolean;
+export interface MFAFactor {
+  id: string;
+  friendly_name?: string;
+  factor_type: 'totp';
+  status: 'unverified' | 'verified';
+  created_at: string;
+  updated_at: string;
 }
 
-export function useMFA() {
-  const [state, setState] = useState<MFAState>({
-    isEnrolled: false,
-    isVerified: false,
-    factors: [],
-    loading: true,
+export function useMFAFactors() {
+  return useQuery({
+    queryKey: queryKeys.mfa.factors(),
+    queryFn: async () => {
+      const { data, error } = await supabase.auth.mfa.listFactors();
+      if (error) throw error;
+      return data.totp as MFAFactor[];
+    },
+    ...queryPresets.config,
   });
+}
 
-  const checkMFAStatus = useCallback(async () => {
-    try {
-      const { data: factorsData, error: factorsError } = await supabase.auth.mfa.listFactors();
-      
-      if (factorsError) {
-        console.error('Error listing MFA factors:', factorsError);
-        setState(prev => ({ ...prev, loading: false }));
-        return;
-      }
+export function useMFAStatus() {
+  return useQuery({
+    queryKey: queryKeys.mfa.status(),
+    queryFn: async () => {
+      const { data, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      if (error) throw error;
+      return {
+        currentLevel: data.currentLevel,
+        nextLevel: data.nextLevel,
+        currentAuthenticationMethods: data.currentAuthenticationMethods,
+      };
+    },
+    ...queryPresets.config,
+  });
+}
 
-      const totpFactors = factorsData?.totp || [];
-      const verifiedFactors = totpFactors.filter(f => f.status === 'verified');
-      
-      // Check AAL level to see if MFA is verified in current session
-      const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-      const isVerified = aalData?.currentLevel === 'aal2';
+export function useEnrollMFA() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-      setState({
-        isEnrolled: verifiedFactors.length > 0,
-        isVerified,
-        factors: totpFactors,
-        loading: false,
+  return useMutation({
+    mutationFn: async (friendlyName?: string) => {
+      const { data, error } = await supabase.auth.mfa.enroll({
+        factorType: 'totp',
+        friendlyName,
       });
-    } catch (error) {
-      console.error('Error checking MFA status:', error);
-      setState(prev => ({ ...prev, loading: false }));
-    }
-  }, []);
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.mfa.factors() });
+    },
+    onError: (error) => {
+      toast({ title: 'Erro ao configurar MFA', description: error.message, variant: 'destructive' });
+    },
+  });
+}
 
-  useEffect(() => {
-    checkMFAStatus();
-  }, [checkMFAStatus]);
+export function useVerifyMFA() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  const enroll = async (friendlyName?: string): Promise<AuthMFAEnrollResponse> => {
-    const response = await supabase.auth.mfa.enroll({
-      factorType: 'totp',
-      friendlyName: friendlyName || 'Authenticator App',
-    });
-    return response;
-  };
+  return useMutation({
+    mutationFn: async ({ factorId, code }: { factorId: string; code: string }) => {
+      const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({ factorId });
+      if (challengeError) throw challengeError;
 
-  const verify = async (factorId: string, code: string): Promise<{ error: Error | null }> => {
-    try {
-      // Create challenge
-      const { data: challengeData, error: challengeError } = await supabase.auth.mfa.challenge({ factorId });
-      
-      if (challengeError) {
-        return { error: challengeError };
-      }
-
-      // Verify with challenge
-      const { error: verifyError } = await supabase.auth.mfa.verify({
+      const { data, error } = await supabase.auth.mfa.verify({
         factorId,
-        challengeId: challengeData.id,
+        challengeId: challenge.id,
         code,
       });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.mfa.all });
+      toast({ title: 'MFA verificado com sucesso' });
+    },
+    onError: (error) => {
+      toast({ title: 'Código inválido', description: error.message, variant: 'destructive' });
+    },
+  });
+}
 
-      if (!verifyError) {
-        await checkMFAStatus();
-      }
+export function useUnenrollMFA() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-      return { error: verifyError };
-    } catch (error) {
-      return { error: error as Error };
-    }
-  };
-
-  const unenroll = async (factorId: string): Promise<{ error: Error | null }> => {
-    const { error } = await supabase.auth.mfa.unenroll({ factorId });
-    
-    if (!error) {
-      await checkMFAStatus();
-    }
-    
-    return { error };
-  };
-
-  const needsMFAVerification = async (): Promise<boolean> => {
-    const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-    
-    // If next level is aal2 but current is aal1, user has MFA enabled but needs to verify
-    return aalData?.nextLevel === 'aal2' && aalData?.currentLevel === 'aal1';
-  };
-
-  return {
-    ...state,
-    enroll,
-    verify,
-    unenroll,
-    checkMFAStatus,
-    needsMFAVerification,
-  };
+  return useMutation({
+    mutationFn: async (factorId: string) => {
+      const { error } = await supabase.auth.mfa.unenroll({ factorId });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.mfa.all });
+      toast({ title: 'MFA desativado' });
+    },
+    onError: (error) => {
+      toast({ title: 'Erro ao desativar MFA', description: error.message, variant: 'destructive' });
+    },
+  });
 }
