@@ -31,6 +31,7 @@ import MobileMonitoring from "./pages/MobileMonitoring";
 import ProductivityComparison from "./pages/ProductivityComparison";
 import DataExport from "./pages/DataExport";
 import RateLimitDashboard from "./pages/RateLimitDashboard";
+import Webhooks from "./pages/Webhooks";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -197,6 +198,13 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <RateLimitDashboard />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/webhooks" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <Webhooks />
                 </PolicyGate>
               </ProtectedRoute>
             } />
