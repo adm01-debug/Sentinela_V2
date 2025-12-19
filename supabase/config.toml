@@ -35,3 +35,6 @@ verify_jwt = true
 
 [functions.process-violation-alert]
 verify_jwt = true
+
+[functions.send-rate-limit-alert]
+verify_jwt = true
