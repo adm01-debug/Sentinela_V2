@@ -1,281 +1,213 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+
+// ============================================================
+// TYPES
+// ============================================================
 
 export interface WorkSchedule {
   id: string;
-  name: string;
-  description: string | null;
-  work_days: number[];
+  employee_id: string;
+  day_of_week: number;
   start_time: string;
   end_time: string;
-  lunch_start: string | null;
-  lunch_end: string | null;
-  allow_overtime: boolean;
-  auto_block_enabled: boolean;
-  grace_period_minutes: number;
+  is_active: boolean;
   created_at: string;
   updated_at: string;
-}
-
-export interface EmployeeSchedule {
-  id: string;
-  employee_id: string;
-  schedule_id: string;
-  effective_from: string;
-  effective_until: string | null;
-  created_at: string;
   employee?: {
     id: string;
-    name: string;
-    department: string | null;
-    position: string | null;
+    full_name: string;
   };
-  schedule?: WorkSchedule;
 }
 
-export interface OvertimeRequest {
-  id: string;
+export interface CreateWorkScheduleInput {
   employee_id: string;
-  requested_date: string;
+  day_of_week: number;
   start_time: string;
   end_time: string;
-  reason: string | null;
-  status: 'pending' | 'approved' | 'rejected';
-  approved_by: string | null;
-  approved_at: string | null;
-  created_at: string;
-  employee?: {
-    id: string;
-    name: string;
-  };
+  is_active?: boolean;
 }
 
-export interface StationBlockLog {
+export interface UpdateWorkScheduleInput {
   id: string;
-  employee_name: string;
-  device: string | null;
-  block_type: string;
-  reason: string | null;
-  blocked_at: string;
-  unblocked_at: string | null;
+  start_time?: string;
+  end_time?: string;
+  is_active?: boolean;
 }
 
-const DAY_NAMES = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-
-export const getDayName = (day: number) => DAY_NAMES[day] || '';
-export const getDayShort = (day: number) => DAY_NAMES[day]?.substring(0, 3) || '';
+// ============================================================
+// QUERIES
+// ============================================================
 
 export function useWorkSchedules() {
-  const queryClient = useQueryClient();
-
-  // Fetch all work schedules
-  const { data: schedules = [], isLoading: loadingSchedules } = useQuery({
-    queryKey: ['work-schedules'],
+  return useQuery({
+    queryKey: queryKeys.workSchedules.lists(),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('work_schedules')
-        .select('*')
-        .order('name');
-      
+        .select(`
+          *,
+          employee:employees(id, full_name)
+        `)
+        .order('day_of_week', { ascending: true })
+        .order('start_time', { ascending: true });
+
       if (error) throw error;
       return data as WorkSchedule[];
-    }
+    },
+    ...queryPresets.list,
   });
+}
 
-  // Fetch employee schedules with employee and schedule info
-  const { data: employeeSchedules = [], isLoading: loadingEmployeeSchedules } = useQuery({
-    queryKey: ['employee-schedules'],
+export function useEmployeeSchedule(employeeId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.workSchedules.employee(employeeId || ''),
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('employee_schedules')
-        .select(`
-          *,
-          employee:employees(id, name, department, position),
-          schedule:work_schedules(*)
-        `)
-        .order('created_at', { ascending: false });
+      if (!employeeId) return [];
       
-      if (error) throw error;
-      return data as EmployeeSchedule[];
-    }
-  });
-
-  // Fetch overtime requests
-  const { data: overtimeRequests = [], isLoading: loadingOvertime } = useQuery({
-    queryKey: ['overtime-requests'],
-    queryFn: async () => {
       const { data, error } = await supabase
-        .from('overtime_requests')
-        .select(`
-          *,
-          employee:employees(id, name)
-        `)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return data as OvertimeRequest[];
-    }
-  });
-
-  // Fetch station block logs
-  const { data: blockLogs = [], isLoading: loadingBlockLogs } = useQuery({
-    queryKey: ['station-block-logs'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('station_block_logs')
+        .from('work_schedules')
         .select('*')
-        .order('blocked_at', { ascending: false })
-        .limit(100);
-      
-      if (error) throw error;
-      return data as StationBlockLog[];
-    }
-  });
+        .eq('employee_id', employeeId)
+        .eq('is_active', true)
+        .order('day_of_week', { ascending: true });
 
-  // Add work schedule
-  const addScheduleMutation = useMutation({
-    mutationFn: async (schedule: Omit<WorkSchedule, 'id' | 'created_at' | 'updated_at'>) => {
+      if (error) throw error;
+      return data as WorkSchedule[];
+    },
+    enabled: !!employeeId,
+    ...queryPresets.detail,
+  });
+}
+
+// ============================================================
+// MUTATIONS
+// ============================================================
+
+export function useCreateWorkSchedule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (input: CreateWorkScheduleInput) => {
       const { data, error } = await supabase
         .from('work_schedules')
-        .insert(schedule)
+        .insert(input)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['work-schedules'] });
-      toast.success('Jornada criada com sucesso');
+      invalidateRelated.workSchedules(queryClient);
+      toast({
+        title: 'Horário criado',
+        description: 'O horário de trabalho foi criado com sucesso.',
+      });
     },
     onError: (error) => {
-      toast.error('Erro ao criar jornada: ' + error.message);
-    }
+      toast({
+        title: 'Erro ao criar horário',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
+}
 
-  // Update work schedule
-  const updateScheduleMutation = useMutation({
-    mutationFn: async ({ id, ...schedule }: Partial<WorkSchedule> & { id: string }) => {
+export function useUpdateWorkSchedule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ id, ...input }: UpdateWorkScheduleInput) => {
       const { data, error } = await supabase
         .from('work_schedules')
-        .update(schedule)
+        .update(input)
         .eq('id', id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['work-schedules'] });
-      toast.success('Jornada atualizada com sucesso');
+      invalidateRelated.workSchedules(queryClient);
+      toast({
+        title: 'Horário atualizado',
+        description: 'O horário de trabalho foi atualizado com sucesso.',
+      });
     },
     onError: (error) => {
-      toast.error('Erro ao atualizar jornada: ' + error.message);
-    }
+      toast({
+        title: 'Erro ao atualizar horário',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
+}
 
-  // Delete work schedule
-  const deleteScheduleMutation = useMutation({
+export function useDeleteWorkSchedule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('work_schedules')
         .delete()
         .eq('id', id);
-      
+
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['work-schedules'] });
-      toast.success('Jornada excluída com sucesso');
+      invalidateRelated.workSchedules(queryClient);
+      toast({
+        title: 'Horário excluído',
+        description: 'O horário de trabalho foi excluído com sucesso.',
+      });
     },
     onError: (error) => {
-      toast.error('Erro ao excluir jornada: ' + error.message);
-    }
+      toast({
+        title: 'Erro ao excluir horário',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
+}
 
-  // Assign schedule to employee
-  const assignScheduleMutation = useMutation({
-    mutationFn: async (data: { employee_id: string; schedule_id: string; effective_from: string; effective_until?: string }) => {
-      const { data: result, error } = await supabase
-        .from('employee_schedules')
-        .insert(data)
-        .select()
-        .single();
-      
-      if (error) throw error;
-      return result;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['employee-schedules'] });
-      toast.success('Jornada atribuída ao colaborador');
-    },
-    onError: (error) => {
-      toast.error('Erro ao atribuir jornada: ' + error.message);
-    }
-  });
+export function useBulkCreateWorkSchedules() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  // Remove schedule from employee
-  const removeEmployeeScheduleMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('employee_schedules')
-        .delete()
-        .eq('id', id);
-      
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['employee-schedules'] });
-      toast.success('Jornada removida do colaborador');
-    },
-    onError: (error) => {
-      toast.error('Erro ao remover jornada: ' + error.message);
-    }
-  });
-
-  // Approve/Reject overtime request
-  const updateOvertimeRequestMutation = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: 'approved' | 'rejected' }) => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
+  return useMutation({
+    mutationFn: async (schedules: CreateWorkScheduleInput[]) => {
       const { data, error } = await supabase
-        .from('overtime_requests')
-        .update({
-          status,
-          approved_by: user?.id,
-          approved_at: new Date().toISOString()
-        })
-        .eq('id', id)
-        .select()
-        .single();
-      
+        .from('work_schedules')
+        .insert(schedules)
+        .select();
+
       if (error) throw error;
       return data;
     },
-    onSuccess: (_, { status }) => {
-      queryClient.invalidateQueries({ queryKey: ['overtime-requests'] });
-      toast.success(status === 'approved' ? 'Hora extra aprovada' : 'Hora extra rejeitada');
+    onSuccess: (data) => {
+      invalidateRelated.workSchedules(queryClient);
+      toast({
+        title: 'Horários criados',
+        description: `${data.length} horários foram criados com sucesso.`,
+      });
     },
     onError: (error) => {
-      toast.error('Erro ao atualizar solicitação: ' + error.message);
-    }
+      toast({
+        title: 'Erro ao criar horários',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
-
-  return {
-    schedules,
-    employeeSchedules,
-    overtimeRequests,
-    blockLogs,
-    loading: loadingSchedules || loadingEmployeeSchedules || loadingOvertime || loadingBlockLogs,
-    addSchedule: addScheduleMutation.mutate,
-    updateSchedule: updateScheduleMutation.mutate,
-    deleteSchedule: deleteScheduleMutation.mutate,
-    assignSchedule: assignScheduleMutation.mutate,
-    removeEmployeeSchedule: removeEmployeeScheduleMutation.mutate,
-    updateOvertimeRequest: updateOvertimeRequestMutation.mutate,
-    getDayName,
-    getDayShort
-  };
 }
