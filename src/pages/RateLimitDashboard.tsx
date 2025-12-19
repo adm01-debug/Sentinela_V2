@@ -5,10 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRateLimitLogs, useRateLimitStats } from "@/hooks/useRateLimitLogs";
-import { Shield, AlertTriangle, Activity, Users, Clock, TrendingUp } from "lucide-react";
+import { Shield, AlertTriangle, Activity, Users, Clock, TrendingUp, Settings } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from "recharts";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { RateLimitSettingsPanel } from "@/components/RateLimitSettingsPanel";
 
 const RateLimitDashboard = () => {
   const [timeRange, setTimeRange] = useState<'1h' | '24h' | '7d'>('24h');
@@ -126,6 +127,10 @@ const RateLimitDashboard = () => {
             <TabsTrigger value="endpoints">Por Endpoint</TabsTrigger>
             <TabsTrigger value="identifiers">Por Origem</TabsTrigger>
             <TabsTrigger value="logs">Logs Detalhados</TabsTrigger>
+            <TabsTrigger value="settings" className="gap-2">
+              <Settings className="h-4 w-4" />
+              Configurações
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -321,6 +326,10 @@ const RateLimitDashboard = () => {
                 </Table>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-4">
+            <RateLimitSettingsPanel />
           </TabsContent>
         </Tabs>
     </div>
