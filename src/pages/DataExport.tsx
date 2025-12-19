@@ -7,9 +7,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
-import { Download, Database, FileJson, FileSpreadsheet, Archive, CheckCircle2, Loader2 } from 'lucide-react';
+import { Download, Database, FileJson, FileSpreadsheet, Archive, CheckCircle2, Loader2, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import * as XLSX from 'xlsx';
 
 interface ExportTable {
   id: string;
@@ -51,7 +52,8 @@ const categoryLabels: Record<string, string> = {
 
 export default function DataExport() {
   const [selectedTables, setSelectedTables] = useState<string[]>([]);
-  const [exportFormat, setExportFormat] = useState<'json' | 'csv'>('json');
+  const [exportFormat, setExportFormat] = useState<'json' | 'csv' | 'xlsx'>('json');
+  
   const [isExporting, setIsExporting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [exportedTables, setExportedTables] = useState<string[]>([]);
@@ -97,8 +99,10 @@ export default function DataExport() {
     return [headers.join(','), ...rows].join('\n');
   };
 
-  const downloadFile = (content: string, filename: string, mimeType: string) => {
-    const blob = new Blob([content], { type: mimeType });
+  const downloadFile = (content: string | ArrayBuffer, filename: string, mimeType: string) => {
+    const blob = content instanceof ArrayBuffer 
+      ? new Blob([content], { type: mimeType })
+      : new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -107,6 +111,31 @@ export default function DataExport() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  };
+
+  const exportToExcel = (data: Record<string, any[]>, timestamp: string) => {
+    const workbook = XLSX.utils.book_new();
+    
+    for (const [tableName, tableData] of Object.entries(data)) {
+      if (tableData.length > 0) {
+        const worksheet = XLSX.utils.json_to_sheet(tableData);
+        // Ajustar largura das colunas
+        const colWidths = Object.keys(tableData[0]).map(key => ({
+          wch: Math.max(
+            key.length,
+            ...tableData.map(row => String(row[key] || '').length).slice(0, 100)
+          )
+        }));
+        worksheet['!cols'] = colWidths;
+        
+        // Nome da aba limitado a 31 caracteres (limite do Excel)
+        const sheetName = tableName.substring(0, 31);
+        XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+      }
+    }
+    
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    downloadFile(excelBuffer, `backup-${timestamp}.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   };
 
   const handleExport = async () => {
@@ -151,9 +180,10 @@ export default function DataExport() {
           tables: exportData
         }, null, 2);
         downloadFile(jsonContent, `backup-${timestamp}.json`, 'application/json');
+      } else if (exportFormat === 'xlsx') {
+        exportToExcel(exportData, timestamp);
       } else {
-        // Para CSV, criar um arquivo zip com múltiplos CSVs
-        // Como não temos biblioteca de zip, vamos baixar cada tabela separadamente
+        // Para CSV, criar um arquivo por tabela
         for (const [tableName, data] of Object.entries(exportData)) {
           if (data.length > 0) {
             const csvContent = convertToCSV(data);
@@ -267,7 +297,7 @@ export default function DataExport() {
                 <CardTitle>Formato de Exportação</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Select value={exportFormat} onValueChange={(v: 'json' | 'csv') => setExportFormat(v)}>
+                <Select value={exportFormat} onValueChange={(v: 'json' | 'csv' | 'xlsx') => setExportFormat(v)}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
@@ -278,9 +308,15 @@ export default function DataExport() {
                         JSON - Arquivo único com todos os dados
                       </div>
                     </SelectItem>
+                    <SelectItem value="xlsx">
+                      <div className="flex items-center gap-2">
+                        <FileSpreadsheet className="h-4 w-4 text-green-600" />
+                        Excel (.xlsx) - Arquivo único com múltiplas abas
+                      </div>
+                    </SelectItem>
                     <SelectItem value="csv">
                       <div className="flex items-center gap-2">
-                        <FileSpreadsheet className="h-4 w-4" />
+                        <FileText className="h-4 w-4" />
                         CSV - Um arquivo por tabela
                       </div>
                     </SelectItem>
