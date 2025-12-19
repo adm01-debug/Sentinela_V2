@@ -1400,6 +1400,110 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_logs: {
+        Row: {
+          attempt_number: number
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          event_type: string
+          id: string
+          payload: Json
+          response_body: string | null
+          response_code: number | null
+          status: string
+          webhook_id: string
+        }
+        Insert: {
+          attempt_number?: number
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          event_type: string
+          id?: string
+          payload: Json
+          response_body?: string | null
+          response_code?: number | null
+          status?: string
+          webhook_id: string
+        }
+        Update: {
+          attempt_number?: number
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json
+          response_body?: string | null
+          response_code?: number | null
+          status?: string
+          webhook_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_logs_webhook_id_fkey"
+            columns: ["webhook_id"]
+            isOneToOne: false
+            referencedRelation: "webhooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhooks: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          events: string[]
+          headers: Json | null
+          id: string
+          is_active: boolean
+          last_response_code: number | null
+          last_status: string | null
+          last_triggered_at: string | null
+          name: string
+          retry_count: number
+          secret: string | null
+          timeout_seconds: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          events?: string[]
+          headers?: Json | null
+          id?: string
+          is_active?: boolean
+          last_response_code?: number | null
+          last_status?: string | null
+          last_triggered_at?: string | null
+          name: string
+          retry_count?: number
+          secret?: string | null
+          timeout_seconds?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          events?: string[]
+          headers?: Json | null
+          id?: string
+          is_active?: boolean
+          last_response_code?: number | null
+          last_status?: string | null
+          last_triggered_at?: string | null
+          name?: string
+          retry_count?: number
+          secret?: string | null
+          timeout_seconds?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       work_schedules: {
         Row: {
           allow_overtime: boolean
