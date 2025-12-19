@@ -1,87 +1,79 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
 export interface MonitoringSettings {
-  keystroke_monitoring: {
-    enabled: boolean;
-    interval_seconds: number;
-  };
-  productivity_tracking: {
-    enabled: boolean;
-    work_hours_start: string;
-    work_hours_end: string;
-  };
-  screen_capture: {
-    enabled: boolean;
-    interval_minutes: number;
-    blur_sensitive: boolean;
-  };
-  monitoring_notice: {
-    show_notice: boolean;
-    notice_text: string;
-  };
+  id: string;
+  screenshot_interval_seconds: number;
+  screenshot_quality: number;
+  blur_screenshots: boolean;
+  track_keystrokes: boolean;
+  track_applications: boolean;
+  track_websites: boolean;
+  track_files: boolean;
+  working_hours_start: string;
+  working_hours_end: string;
+  timezone: string;
+  created_at: string;
+  updated_at: string;
 }
 
-const defaultSettings: MonitoringSettings = {
-  keystroke_monitoring: { enabled: true, interval_seconds: 60 },
-  productivity_tracking: { enabled: true, work_hours_start: '09:00', work_hours_end: '18:00' },
-  screen_capture: { enabled: true, interval_minutes: 5, blur_sensitive: true },
-  monitoring_notice: { show_notice: true, notice_text: 'Este dispositivo está sendo monitorado para fins de segurança corporativa.' }
-};
-
 export function useMonitoringSettings() {
-  const [settings, setSettings] = useState<MonitoringSettings>(defaultSettings);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchSettings();
-  }, []);
-
-  const fetchSettings = async () => {
-    try {
+  return useQuery({
+    queryKey: queryKeys.settings.monitoring(),
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('monitoring_settings')
-        .select('setting_key, setting_value');
+        .select('*')
+        .single();
 
-      if (error) throw error;
+      if (error && error.code !== 'PGRST116') throw error;
+      return data as MonitoringSettings | null;
+    },
+    ...queryPresets.config,
+  });
+}
 
-      if (data) {
-        const newSettings = { ...defaultSettings };
-        data.forEach((row) => {
-          const key = row.setting_key as keyof MonitoringSettings;
-          if (key in newSettings) {
-            (newSettings as any)[key] = row.setting_value;
-          }
-        });
-        setSettings(newSettings);
-      }
-    } catch (error: any) {
-      console.error('Error fetching monitoring settings:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+export function useUpdateMonitoringSettings() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  const updateSetting = async <K extends keyof MonitoringSettings>(
-    key: K,
-    value: MonitoringSettings[K]
-  ) => {
-    try {
-      const { error } = await supabase
+  return useMutation({
+    mutationFn: async (input: Partial<MonitoringSettings>) => {
+      const { data: existing } = await supabase
         .from('monitoring_settings')
-        .update({ setting_value: value as any })
-        .eq('setting_key', key);
+        .select('id')
+        .single();
 
-      if (error) throw error;
+      let result;
+      if (existing) {
+        const { data, error } = await supabase
+          .from('monitoring_settings')
+          .update(input)
+          .eq('id', existing.id)
+          .select()
+          .single();
+        if (error) throw error;
+        result = data;
+      } else {
+        const { data, error } = await supabase
+          .from('monitoring_settings')
+          .insert(input)
+          .select()
+          .single();
+        if (error) throw error;
+        result = data;
+      }
 
-      setSettings(prev => ({ ...prev, [key]: value }));
-      toast.success('Configuração atualizada');
-    } catch (error: any) {
-      console.error('Error updating setting:', error);
-      toast.error('Erro ao atualizar configuração');
-    }
-  };
-
-  return { settings, loading, updateSetting, refetch: fetchSettings };
+      return result;
+    },
+    onSuccess: () => {
+      invalidateRelated.settings(queryClient);
+      toast({ title: 'Configurações salvas' });
+    },
+    onError: (error) => {
+      toast({ title: 'Erro ao salvar', description: error.message, variant: 'destructive' });
+    },
+  });
 }
