@@ -27,6 +27,12 @@ interface WhatsAppSettings {
   notify_low: boolean;
 }
 
+interface MessageTemplate {
+  id: string;
+  body: string;
+  variables: string[];
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -78,6 +84,22 @@ serve(async (req) => {
     const whatsappEnabled = whatsapp?.enabled && whatsapp?.phone_number_id && whatsapp?.recipient_numbers?.length > 0;
     
     console.log(`WhatsApp notifications ${whatsappEnabled ? 'enabled' : 'disabled'}`);
+
+    // Get WhatsApp message template
+    let whatsappTemplate: MessageTemplate | null = null;
+    if (whatsappEnabled) {
+      const { data: templateData } = await supabase
+        .from('message_templates')
+        .select('id, body, variables')
+        .eq('template_type', 'violation_alert')
+        .eq('channel', 'whatsapp')
+        .eq('is_active', true)
+        .eq('is_default', true)
+        .maybeSingle();
+      
+      whatsappTemplate = templateData as MessageTemplate | null;
+      console.log(`Using template: ${whatsappTemplate ? 'custom' : 'default'}`);
+    }
 
     // Process each violation
     const notificationResults = [];
@@ -144,7 +166,8 @@ serve(async (req) => {
             supabaseUrl,
             supabaseServiceKey,
             violation,
-            whatsapp!
+            whatsapp!,
+            whatsappTemplate
           );
           whatsappResults.push({ id: violation.id, ...whatsappResult });
         } catch (whatsappError) {
@@ -203,7 +226,8 @@ async function sendWhatsAppAlert(
   supabaseUrl: string,
   supabaseServiceKey: string,
   violation: Violation,
-  settings: WhatsAppSettings
+  settings: WhatsAppSettings,
+  template: MessageTemplate | null
 ): Promise<{ status: string; results?: unknown[] }> {
   const severityEmoji: Record<string, string> = {
     critical: '🔴',
@@ -223,7 +247,27 @@ async function sendWhatsAppAlert(
     minute: '2-digit',
   });
 
-  const message = `${emoji} *ALERTA DE VIOLAÇÃO*
+  // Build variables for template rendering
+  const variables: Record<string, string> = {
+    severity_emoji: emoji,
+    severity: severityLabel,
+    employee_name: violation.employee_name,
+    violation_type: violation.violation_type,
+    policy_name: violation.policy_name,
+    description: violation.description || 'N/A',
+    device: violation.device || 'N/A',
+    location: 'N/A',
+    ip_address: 'N/A',
+    timestamp,
+    company_name: 'SecureWatch',
+  };
+
+  // Use template if available, otherwise use default message
+  let message: string;
+  if (template?.body) {
+    message = renderTemplate(template.body, variables);
+  } else {
+    message = `${emoji} *ALERTA DE VIOLAÇÃO*
 
 👤 Funcionário: ${violation.employee_name}
 📋 Tipo: ${violation.violation_type}
@@ -235,6 +279,7 @@ async function sendWhatsAppAlert(
 
 ---
 Sistema de Monitoramento SecureWatch`;
+  }
 
   console.log(`Sending WhatsApp alert to ${settings.recipient_numbers.length} recipients`);
 
@@ -261,4 +306,19 @@ Sistema de Monitoramento SecureWatch`;
 
   const data = await response.json();
   return { status: 'sent', results: data.results };
+}
+
+// Utility function to render template with variables
+function renderTemplate(template: string, variables: Record<string, string>): string {
+  let rendered = template;
+  
+  for (const [key, value] of Object.entries(variables)) {
+    const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
+    rendered = rendered.replace(regex, value || 'N/A');
+  }
+  
+  // Replace any remaining unmatched variables with N/A
+  rendered = rendered.replace(/\{\{[^}]+\}\}/g, 'N/A');
+  
+  return rendered;
 }

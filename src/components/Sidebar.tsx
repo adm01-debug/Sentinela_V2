@@ -27,7 +27,8 @@ import {
   Archive,
   ShieldCheck,
   Webhook,
-  MessageCircle
+  MessageCircle,
+  FileText
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -58,6 +59,7 @@ const menuItems = [
   { icon: ShieldCheck, label: 'Rate Limiting', path: '/rate-limiting' },
   { icon: Webhook, label: 'Webhooks', path: '/webhooks' },
   { icon: MessageCircle, label: 'WhatsApp', path: '/whatsapp' },
+  { icon: FileText, label: 'Templates', path: '/message-templates' },
   { icon: Settings, label: 'Configurações', path: '/settings' },
 ];
 
