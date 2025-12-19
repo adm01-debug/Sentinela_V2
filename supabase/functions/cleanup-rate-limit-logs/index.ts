@@ -5,6 +5,18 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+interface CleanupSettings {
+  enabled: boolean;
+  frequencyHours: number;
+  logRetentionHours: number;
+}
+
+const DEFAULT_CLEANUP_SETTINGS: CleanupSettings = {
+  enabled: true,
+  frequencyHours: 1,
+  logRetentionHours: 24,
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -16,17 +28,43 @@ Deno.serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-    console.log('Starting rate limit logs cleanup...')
+    // Get cleanup settings from monitoring_settings
+    const { data: settingsData } = await supabase
+      .from('monitoring_settings')
+      .select('setting_value')
+      .eq('setting_key', 'rate_limit_thresholds')
+      .single()
 
-    // Call the existing database function to cleanup old logs
-    const { data, error } = await supabase.rpc('cleanup_rate_limit_logs')
+    const cleanupSettings: CleanupSettings = settingsData?.setting_value?.cleanup || DEFAULT_CLEANUP_SETTINGS
 
-    if (error) {
-      console.error('Error cleaning up rate limit logs:', error)
-      throw error
+    // Check if cleanup is enabled
+    if (!cleanupSettings.enabled) {
+      console.log('Cleanup is disabled in settings. Skipping.')
+      return new Response(
+        JSON.stringify({ success: true, message: 'Cleanup disabled', skipped: true }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
+      )
     }
 
-    const deletedCount = data || 0
+    console.log(`Starting rate limit logs cleanup... Retention: ${cleanupSettings.logRetentionHours} hours`)
+
+    // Calculate the cutoff time based on retention settings
+    const cutoffTime = new Date()
+    cutoffTime.setHours(cutoffTime.getHours() - cleanupSettings.logRetentionHours)
+
+    // Delete old rate limit logs
+    const { data: deletedLogs, error: deleteError } = await supabase
+      .from('rate_limit_logs')
+      .delete()
+      .lt('window_start', cutoffTime.toISOString())
+      .select('id')
+
+    if (deleteError) {
+      console.error('Error cleaning up rate limit logs:', deleteError)
+      throw deleteError
+    }
+
+    const deletedCount = deletedLogs?.length || 0
     console.log(`Cleanup completed. Deleted ${deletedCount} old rate limit log entries.`)
 
     // Also cleanup expired blocked IPs
@@ -50,7 +88,8 @@ Deno.serve(async (req) => {
       JSON.stringify({ 
         success: true, 
         deleted_rate_limit_logs: deletedCount,
-        expired_blocks_deactivated: unblockedData?.length || 0
+        expired_blocks_deactivated: unblockedData?.length || 0,
+        retention_hours: cleanupSettings.logRetentionHours
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

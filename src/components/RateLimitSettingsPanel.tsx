@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Settings, RefreshCw, Save, Shield, Smartphone, Brain, MapPin } from "lucide-react";
+import { Settings, RefreshCw, Save, Shield, Smartphone, Brain, MapPin, Trash2, Clock } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRateLimitSettings, RateLimitThresholds } from "@/hooks/useRateLimitSettings";
 
 interface EndpointConfigProps {
@@ -179,6 +180,108 @@ export const RateLimitSettingsPanel = () => {
               }))
             }
           />
+        </div>
+
+        <Separator />
+
+        {/* Cleanup Settings */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <Trash2 className="h-5 w-5 text-destructive" />
+            <h3 className="text-lg font-medium">Limpeza Automática de Logs</h3>
+          </div>
+
+          <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
+            <div className="space-y-1">
+              <Label htmlFor="cleanupEnabled" className="text-base font-medium">
+                Limpeza Automática Habilitada
+              </Label>
+              <p className="text-sm text-muted-foreground">
+                Remove logs antigos automaticamente em intervalos regulares
+              </p>
+            </div>
+            <Switch
+              id="cleanupEnabled"
+              checked={localSettings.cleanup?.enabled ?? true}
+              onCheckedChange={(checked) => 
+                setLocalSettings(prev => ({ 
+                  ...prev, 
+                  cleanup: { ...prev.cleanup, enabled: checked } 
+                }))
+              }
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2 p-4 border rounded-lg">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="cleanupFrequency" className="font-medium">
+                  Frequência de Limpeza
+                </Label>
+              </div>
+              <Select
+                value={String(localSettings.cleanup?.frequencyHours ?? 1)}
+                onValueChange={(value) => 
+                  setLocalSettings(prev => ({ 
+                    ...prev, 
+                    cleanup: { ...prev.cleanup, frequencyHours: parseInt(value) } 
+                  }))
+                }
+                disabled={!localSettings.cleanup?.enabled}
+              >
+                <SelectTrigger id="cleanupFrequency">
+                  <SelectValue placeholder="Selecione a frequência" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">A cada 1 hora</SelectItem>
+                  <SelectItem value="2">A cada 2 horas</SelectItem>
+                  <SelectItem value="4">A cada 4 horas</SelectItem>
+                  <SelectItem value="6">A cada 6 horas</SelectItem>
+                  <SelectItem value="12">A cada 12 horas</SelectItem>
+                  <SelectItem value="24">A cada 24 horas</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Com que frequência o job de limpeza será executado
+              </p>
+            </div>
+
+            <div className="space-y-2 p-4 border rounded-lg">
+              <div className="flex items-center gap-2">
+                <Trash2 className="h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="logRetention" className="font-medium">
+                  Retenção de Logs
+                </Label>
+              </div>
+              <Select
+                value={String(localSettings.cleanup?.logRetentionHours ?? 24)}
+                onValueChange={(value) => 
+                  setLocalSettings(prev => ({ 
+                    ...prev, 
+                    cleanup: { ...prev.cleanup, logRetentionHours: parseInt(value) } 
+                  }))
+                }
+                disabled={!localSettings.cleanup?.enabled}
+              >
+                <SelectTrigger id="logRetention">
+                  <SelectValue placeholder="Selecione o período" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1 hora</SelectItem>
+                  <SelectItem value="6">6 horas</SelectItem>
+                  <SelectItem value="12">12 horas</SelectItem>
+                  <SelectItem value="24">24 horas</SelectItem>
+                  <SelectItem value="48">48 horas</SelectItem>
+                  <SelectItem value="72">72 horas (3 dias)</SelectItem>
+                  <SelectItem value="168">168 horas (7 dias)</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Logs mais antigos que este período serão removidos
+              </p>
+            </div>
+          </div>
         </div>
 
         <Separator />

@@ -25,6 +25,11 @@ export interface RateLimitThresholds {
   };
   globalAlertEnabled: boolean;
   alertCooldownMinutes: number;
+  cleanup: {
+    enabled: boolean;
+    frequencyHours: number;
+    logRetentionHours: number;
+  };
 }
 
 const DEFAULT_THRESHOLDS: RateLimitThresholds = {
@@ -50,6 +55,11 @@ const DEFAULT_THRESHOLDS: RateLimitThresholds = {
   },
   globalAlertEnabled: true,
   alertCooldownMinutes: 15,
+  cleanup: {
+    enabled: true,
+    frequencyHours: 1,
+    logRetentionHours: 24,
+  },
 };
 
 export const useRateLimitSettings = () => {
