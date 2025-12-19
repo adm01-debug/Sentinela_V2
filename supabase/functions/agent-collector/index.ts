@@ -1,12 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-declare global {
-  interface EdgeRuntime {
-    waitUntil(promise: Promise<unknown>): void;
+// deno-lint-ignore no-explicit-any
+const waitUntil = (promise: Promise<unknown>) => {
+  if (typeof (globalThis as any).EdgeRuntime !== 'undefined') {
+    (globalThis as any).EdgeRuntime.waitUntil(promise);
   }
-  const EdgeRuntime: EdgeRuntime;
-}
+};
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -17,12 +17,46 @@ const corsHeaders = {
 const RATE_LIMIT_MAX_REQUESTS = 100; // Max requests per window
 const RATE_LIMIT_WINDOW_SECONDS = 60; // Window size in seconds
 
+// Alert threshold: send email after this many blocked attempts
+const ALERT_THRESHOLD = 10;
+
+async function sendRateLimitAlert(
+  identifier: string,
+  identifierType: string,
+  endpoint: string,
+  requestCount: number,
+  threshold: number
+): Promise<void> {
+  try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    
+    await fetch(`${supabaseUrl}/functions/v1/send-rate-limit-alert`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        identifier,
+        identifier_type: identifierType,
+        endpoint,
+        request_count: requestCount,
+        threshold,
+      }),
+    });
+    console.log(`Rate limit alert sent for ${identifierType}: ${identifier}`);
+  } catch (e) {
+    console.error("Failed to send rate limit alert:", e);
+  }
+}
+
 async function checkRateLimit(
   supabase: any,
   identifier: string,
   identifierType: string,
   endpoint: string
-): Promise<{ allowed: boolean; retryAfter?: number; remaining?: number }> {
+): Promise<{ allowed: boolean; retryAfter?: number; remaining?: number; currentCount?: number }> {
   try {
     const { data, error } = await supabase.rpc("check_rate_limit", {
       p_identifier: identifier,
@@ -34,14 +68,28 @@ async function checkRateLimit(
 
     if (error) {
       console.error("Rate limit check error:", error);
-      // On error, allow the request (fail open)
       return { allowed: true };
+    }
+
+    // Send alert if blocked and count exceeds alert threshold
+    if (!data.allowed && data.current_count >= ALERT_THRESHOLD) {
+      // Check if we should send alert (only every ALERT_THRESHOLD requests to avoid spam)
+      if (data.current_count % ALERT_THRESHOLD === 0) {
+        waitUntil(sendRateLimitAlert(
+          identifier,
+          identifierType,
+          endpoint,
+          data.current_count,
+          RATE_LIMIT_MAX_REQUESTS
+        ));
+      }
     }
 
     return {
       allowed: data.allowed,
       retryAfter: data.retry_after_seconds,
       remaining: data.remaining,
+      currentCount: data.current_count,
     };
   } catch (e) {
     console.error("Rate limit exception:", e);
@@ -399,7 +447,7 @@ serve(async (req) => {
           };
           
           // Run OCR in background without blocking response
-          EdgeRuntime.waitUntil(ocrTask());
+          waitUntil(ocrTask());
         }
         break;
       }
@@ -455,7 +503,7 @@ serve(async (req) => {
             }
           };
           
-          EdgeRuntime.waitUntil(notifyTask());
+          waitUntil(notifyTask());
         }
         break;
       }

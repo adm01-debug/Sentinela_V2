@@ -11,6 +11,7 @@ const RATE_LIMIT_MAX_REQUESTS = 60; // Max requests per window
 const RATE_LIMIT_WINDOW_SECONDS = 60; // Window size in seconds
 const RATE_LIMIT_REGISTER_MAX = 10; // Stricter limit for registration (prevent enumeration)
 const RATE_LIMIT_REGISTER_WINDOW = 300; // 5 minutes for registration
+const ALERT_THRESHOLD = 10; // Send email after this many blocked attempts
 
 interface DeviceRegistration {
   employee_name: string;
@@ -46,6 +47,37 @@ function generateDeviceToken(deviceId: string, employeeName: string): string {
   return Math.abs(hash).toString(36);
 }
 
+async function sendRateLimitAlert(
+  identifier: string,
+  identifierType: string,
+  endpoint: string,
+  requestCount: number,
+  threshold: number
+): Promise<void> {
+  try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    
+    await fetch(`${supabaseUrl}/functions/v1/send-rate-limit-alert`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        identifier,
+        identifier_type: identifierType,
+        endpoint,
+        request_count: requestCount,
+        threshold,
+      }),
+    });
+    console.log(`Rate limit alert sent for ${identifierType}: ${identifier}`);
+  } catch (e) {
+    console.error("Failed to send rate limit alert:", e);
+  }
+}
+
 async function checkRateLimit(
   supabase: any,
   identifier: string,
@@ -66,6 +98,20 @@ async function checkRateLimit(
     if (error) {
       console.error("Rate limit check error:", error);
       return { allowed: true };
+    }
+
+    // Send alert if blocked and count exceeds alert threshold
+    if (!data.allowed && data.current_count >= ALERT_THRESHOLD) {
+      if (data.current_count % ALERT_THRESHOLD === 0) {
+        // Fire and forget - don't await
+        sendRateLimitAlert(
+          identifier,
+          identifierType,
+          endpoint,
+          data.current_count,
+          maxRequests
+        );
+      }
     }
 
     return {
