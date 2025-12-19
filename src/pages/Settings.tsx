@@ -13,6 +13,7 @@ import { MFASettings } from '@/components/MFASettings';
 import { AlertSettingsPanel } from '@/components/AlertSettingsPanel';
 import { useSettings, type ApplicationRule } from '@/hooks/useSettings';
 import { categoryLabels } from '@/data/settingsData';
+import { SettingsSkeleton } from '@/components/PageSkeletons';
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -42,6 +43,11 @@ export default function Settings() {
   const appCategories = ['all', 'productivity', 'communication', 'entertainment', 'development', 'other'];
 
   if (loading) {
+  if (isLoading) {
+    return <SettingsSkeleton />;
+  }
+
+
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
