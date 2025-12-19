@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { RateLimitSettingsPanel } from "@/components/RateLimitSettingsPanel";
 import { BlockedIPsPanel } from "@/components/BlockedIPsPanel";
+import { RateLimitTrendsCharts } from "@/components/RateLimitTrendsCharts";
 
 const RateLimitDashboard = () => {
   const [timeRange, setTimeRange] = useState<'1h' | '24h' | '7d'>('24h');
@@ -125,6 +126,10 @@ const RateLimitDashboard = () => {
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+            <TabsTrigger value="trends" className="gap-2">
+              <TrendingUp className="h-4 w-4" />
+              Tendências
+            </TabsTrigger>
             <TabsTrigger value="endpoints">Por Endpoint</TabsTrigger>
             <TabsTrigger value="identifiers">Por Origem</TabsTrigger>
             <TabsTrigger value="logs">Logs Detalhados</TabsTrigger>
@@ -186,6 +191,14 @@ const RateLimitDashboard = () => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="trends" className="space-y-4">
+            <RateLimitTrendsCharts 
+              logs={logs || []} 
+              stats={stats} 
+              timeRange={timeRange} 
+            />
           </TabsContent>
 
           <TabsContent value="endpoints" className="space-y-4">
