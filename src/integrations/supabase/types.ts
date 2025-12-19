@@ -1504,6 +1504,92 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsapp_message_logs: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          message_content: string
+          message_type: string
+          recipient_number: string
+          status: string
+          violation_id: string | null
+          whatsapp_message_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          message_content: string
+          message_type?: string
+          recipient_number: string
+          status?: string
+          violation_id?: string | null
+          whatsapp_message_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          message_content?: string
+          message_type?: string
+          recipient_number?: string
+          status?: string
+          violation_id?: string | null
+          whatsapp_message_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_message_logs_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "security_violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_notification_settings: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          enabled: boolean
+          id: string
+          notify_critical: boolean
+          notify_high: boolean
+          notify_low: boolean
+          notify_medium: boolean
+          phone_number_id: string | null
+          recipient_numbers: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          id?: string
+          notify_critical?: boolean
+          notify_high?: boolean
+          notify_low?: boolean
+          notify_medium?: boolean
+          phone_number_id?: string | null
+          recipient_numbers?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          id?: string
+          notify_critical?: boolean
+          notify_high?: boolean
+          notify_low?: boolean
+          notify_medium?: boolean
+          phone_number_id?: string | null
+          recipient_numbers?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       work_schedules: {
         Row: {
           allow_overtime: boolean
