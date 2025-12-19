@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { queryKeys, queryPresets, CACHE_TIMES } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
 
 // ============================================================
 // TYPES
@@ -9,175 +9,171 @@ import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
 export interface SecurityViolation {
   id: string;
-  employee_id?: string;
-  employee_name?: string;
-  device_id?: string;
+  employee_id: string;
   violation_type: string;
   severity: 'low' | 'medium' | 'high' | 'critical';
-  description?: string;
-  details?: Record<string, unknown>;
-  is_read: boolean;
-  status?: 'open' | 'acknowledged' | 'investigating' | 'resolved' | 'dismissed';
+  status: 'pending' | 'reviewed' | 'resolved' | 'dismissed';
+  description: string;
+  metadata?: Record<string, unknown>;
+  screenshot_url?: string;
   created_at: string;
+  updated_at: string;
   resolved_at?: string;
   resolved_by?: string;
+  employee?: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
 export interface ViolationFilters {
   severity?: SecurityViolation['severity'];
   status?: SecurityViolation['status'];
-  employee_id?: string;
-  is_read?: boolean;
-  dateFrom?: string;
-  dateTo?: string;
+  employeeId?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 // ============================================================
-// HOOKS
+// FETCH FUNCTIONS
 // ============================================================
 
-/**
- * Lista violações com filtros opcionais
- */
+async function fetchViolations(filters?: ViolationFilters): Promise<SecurityViolation[]> {
+  let query = supabase
+    .from('security_violations')
+    .select(`
+      *,
+      employee:employees(id, name, email)
+    `)
+    .order('created_at', { ascending: false });
+
+  if (filters?.severity) {
+    query = query.eq('severity', filters.severity);
+  }
+  if (filters?.status) {
+    query = query.eq('status', filters.status);
+  }
+  if (filters?.employeeId) {
+    query = query.eq('employee_id', filters.employeeId);
+  }
+  if (filters?.startDate) {
+    query = query.gte('created_at', filters.startDate);
+  }
+  if (filters?.endDate) {
+    query = query.lte('created_at', filters.endDate);
+  }
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+  return data || [];
+}
+
+async function fetchUnreadCount(): Promise<number> {
+  const { count, error } = await supabase
+    .from('security_violations')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'pending');
+
+  if (error) throw error;
+  return count || 0;
+}
+
+// ============================================================
+// HOOKS - QUERIES
+// ============================================================
+
 export function useSecurityViolations(filters?: ViolationFilters) {
   return useQuery({
     queryKey: queryKeys.violations.list(filters),
-    queryFn: async () => {
-      let query = supabase
-        .from('security_violations')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (filters?.severity) {
-        query = query.eq('severity', filters.severity);
-      }
-      if (filters?.status) {
-        query = query.eq('status', filters.status);
-      }
-      if (filters?.employee_id) {
-        query = query.eq('employee_id', filters.employee_id);
-      }
-      if (filters?.is_read !== undefined) {
-        query = query.eq('is_read', filters.is_read);
-      }
-      if (filters?.dateFrom) {
-        query = query.gte('created_at', filters.dateFrom);
-      }
-      if (filters?.dateTo) {
-        query = query.lte('created_at', filters.dateTo);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-      return data as SecurityViolation[];
-    },
+    queryFn: () => fetchViolations(filters),
     ...queryPresets.list,
   });
 }
 
-/**
- * Busca uma violação específica
- */
-export function useViolation(id: string) {
+export function useViolation(id: string | undefined) {
   return useQuery({
-    queryKey: queryKeys.violations.detail(id),
+    queryKey: queryKeys.violations.detail(id!),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('security_violations')
-        .select('*, employees(name, email, department)')
+        .select(`
+          *,
+          employee:employees(id, name, email)
+        `)
         .eq('id', id)
         .single();
 
       if (error) throw error;
-      return data as SecurityViolation & { 
-        employees?: { name: string; email: string; department: string } 
-      };
+      return data;
     },
     enabled: !!id,
-    ...queryPresets.list,
+    staleTime: CACHE_TIMES.FREQUENT,
   });
 }
 
-/**
- * Contagem de violações não lidas
- */
 export function useUnreadViolationsCount() {
   return useQuery({
-    queryKey: queryKeys.violations.unread(),
-    queryFn: async () => {
-      const { count, error } = await supabase
-        .from('security_violations')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_read', false);
-
-      if (error) throw error;
-      return count || 0;
-    },
+    queryKey: queryKeys.violations.unread,
+    queryFn: fetchUnreadCount,
     ...queryPresets.realtime,
   });
 }
 
-/**
- * Marcar violação como lida
- */
-export function useMarkViolationAsRead() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase
+export function useViolationStats() {
+  return useQuery({
+    queryKey: ['violations', 'stats'],
+    queryFn: async () => {
+      const { data, error } = await supabase
         .from('security_violations')
-        .update({ is_read: true })
-        .eq('id', id);
+        .select('severity, status');
 
       if (error) throw error;
+
+      const stats = {
+        total: data?.length || 0,
+        bySeverity: {
+          critical: data?.filter((v) => v.severity === 'critical').length || 0,
+          high: data?.filter((v) => v.severity === 'high').length || 0,
+          medium: data?.filter((v) => v.severity === 'medium').length || 0,
+          low: data?.filter((v) => v.severity === 'low').length || 0,
+        },
+        byStatus: {
+          pending: data?.filter((v) => v.status === 'pending').length || 0,
+          reviewed: data?.filter((v) => v.status === 'reviewed').length || 0,
+          resolved: data?.filter((v) => v.status === 'resolved').length || 0,
+          dismissed: data?.filter((v) => v.status === 'dismissed').length || 0,
+        },
+      };
+
+      return stats;
     },
-    onSuccess: (_, id) => {
-      invalidateRelated.violation(queryClient, id);
-    },
+    staleTime: CACHE_TIMES.FREQUENT,
   });
 }
 
-/**
- * Marcar todas como lidas
- */
-export function useMarkAllViolationsAsRead() {
-  const queryClient = useQueryClient();
+// ============================================================
+// HOOKS - MUTATIONS WITH OPTIMISTIC UPDATES
+// ============================================================
 
-  return useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase
-        .from('security_violations')
-        .update({ is_read: true })
-        .eq('is_read', false);
-
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      invalidateRelated.violation(queryClient);
-      toast.success('Todas as violações marcadas como lidas');
-    },
-  });
-}
-
-/**
- * Atualizar status da violação
- */
 export function useUpdateViolationStatus() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ 
-      id, 
-      status 
-    }: { 
-      id: string; 
-      status: SecurityViolation['status'] 
+    mutationFn: async ({
+      id,
+      status,
+      notes,
+    }: {
+      id: string;
+      status: SecurityViolation['status'];
+      notes?: string;
     }) => {
-      const updates: Partial<SecurityViolation> = { status };
-      
-      if (status === 'resolved' || status === 'dismissed') {
+      const updates: Record<string, unknown> = { status };
+
+      if (status === 'resolved') {
         updates.resolved_at = new Date().toISOString();
       }
 
@@ -191,42 +187,197 @@ export function useUpdateViolationStatus() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (_, { id }) => {
-      invalidateRelated.violation(queryClient, id);
-      toast.success('Status atualizado!');
+
+    // Optimistic update
+    onMutate: async ({ id, status }) => {
+      // Cancel queries
+      await queryClient.cancelQueries({ queryKey: queryKeys.violations.all });
+
+      // Snapshot
+      const previousViolations = queryClient.getQueryData<SecurityViolation[]>(
+        queryKeys.violations.list()
+      );
+
+      // Optimistically update
+      if (previousViolations) {
+        queryClient.setQueryData<SecurityViolation[]>(
+          queryKeys.violations.list(),
+          previousViolations.map((v) =>
+            v.id === id
+              ? {
+                  ...v,
+                  status,
+                  resolved_at: status === 'resolved' ? new Date().toISOString() : v.resolved_at,
+                }
+              : v
+          )
+        );
+      }
+
+      // Update unread count optimistically
+      const previousUnread = queryClient.getQueryData<number>(queryKeys.violations.unread);
+      if (previousUnread !== undefined && status !== 'pending') {
+        queryClient.setQueryData(queryKeys.violations.unread, Math.max(0, previousUnread - 1));
+      }
+
+      return { previousViolations, previousUnread };
     },
-    onError: (error: Error) => {
-      toast.error(`Erro: ${error.message}`);
+
+    onError: (err, _, context) => {
+      // Rollback
+      if (context?.previousViolations) {
+        queryClient.setQueryData(queryKeys.violations.list(), context.previousViolations);
+      }
+      if (context?.previousUnread !== undefined) {
+        queryClient.setQueryData(queryKeys.violations.unread, context.previousUnread);
+      }
+      toast({
+        title: 'Erro ao atualizar',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+
+    onSuccess: (data) => {
+      const statusText = {
+        pending: 'pendente',
+        reviewed: 'revisada',
+        resolved: 'resolvida',
+        dismissed: 'descartada',
+      };
+      toast({
+        title: 'Status atualizado',
+        description: `Violação marcada como ${statusText[data.status]}.`,
+      });
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.violations.all });
     },
   });
 }
 
-/**
- * Estatísticas de violações
- */
-export function useViolationStats() {
-  return useQuery({
-    queryKey: [...queryKeys.violations.all, 'stats'],
-    queryFn: async () => {
+export function useBulkUpdateViolations() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({
+      ids,
+      status,
+    }: {
+      ids: string[];
+      status: SecurityViolation['status'];
+    }) => {
       const { data, error } = await supabase
         .from('security_violations')
-        .select('severity, status, is_read');
+        .update({ status })
+        .in('id', ids)
+        .select();
 
       if (error) throw error;
-
-      const violations = data || [];
-      
-      return {
-        total: violations.length,
-        unread: violations.filter(v => !v.is_read).length,
-        open: violations.filter(v => v.status === 'open' || !v.status).length,
-        critical: violations.filter(v => v.severity === 'critical').length,
-        high: violations.filter(v => v.severity === 'high').length,
-        medium: violations.filter(v => v.severity === 'medium').length,
-        low: violations.filter(v => v.severity === 'low').length,
-        resolved: violations.filter(v => v.status === 'resolved').length,
-      };
+      return data;
     },
-    ...queryPresets.list,
+
+    onMutate: async ({ ids, status }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.violations.all });
+
+      const previousViolations = queryClient.getQueryData<SecurityViolation[]>(
+        queryKeys.violations.list()
+      );
+
+      if (previousViolations) {
+        queryClient.setQueryData<SecurityViolation[]>(
+          queryKeys.violations.list(),
+          previousViolations.map((v) =>
+            ids.includes(v.id) ? { ...v, status } : v
+          )
+        );
+      }
+
+      return { previousViolations };
+    },
+
+    onError: (err, _, context) => {
+      if (context?.previousViolations) {
+        queryClient.setQueryData(queryKeys.violations.list(), context.previousViolations);
+      }
+      toast({
+        title: 'Erro na operação em lote',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+
+    onSuccess: (data) => {
+      toast({
+        title: 'Atualização em lote',
+        description: `${data.length} violações foram atualizadas.`,
+      });
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.violations.all });
+    },
+  });
+}
+
+// ============================================================
+// HOOKS - DELETE
+// ============================================================
+
+export function useDeleteViolation() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('security_violations')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      return id;
+    },
+
+    onMutate: async (deletedId) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.violations.all });
+
+      const previousViolations = queryClient.getQueryData<SecurityViolation[]>(
+        queryKeys.violations.list()
+      );
+
+      if (previousViolations) {
+        queryClient.setQueryData<SecurityViolation[]>(
+          queryKeys.violations.list(),
+          previousViolations.filter((v) => v.id !== deletedId)
+        );
+      }
+
+      return { previousViolations };
+    },
+
+    onError: (err, _, context) => {
+      if (context?.previousViolations) {
+        queryClient.setQueryData(queryKeys.violations.list(), context.previousViolations);
+      }
+      toast({
+        title: 'Erro ao excluir',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+
+    onSuccess: () => {
+      toast({
+        title: 'Violação excluída',
+        description: 'O registro foi removido.',
+      });
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.violations.all });
+    },
   });
 }
