@@ -33,6 +33,7 @@ import DataExport from "./pages/DataExport";
 import RateLimitDashboard from "./pages/RateLimitDashboard";
 import Webhooks from "./pages/Webhooks";
 import WhatsAppIntegration from "./pages/WhatsAppIntegration";
+import MessageTemplates from "./pages/MessageTemplates";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -213,6 +214,13 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <WhatsAppIntegration />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/message-templates" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <MessageTemplates />
                 </PolicyGate>
               </ProtectedRoute>
             } />
