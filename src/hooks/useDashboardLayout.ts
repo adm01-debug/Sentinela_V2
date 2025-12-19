@@ -1,117 +1,81 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useAuth } from './useAuth';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { queryKeys, queryPresets } from '@/lib/queryClient';
 
 export interface DashboardWidget {
   id: string;
-  type: 'stats' | 'chart' | 'alerts' | 'employees' | 'ranking' | 'security' | 'custom';
+  type: string;
   title: string;
-  size: 'small' | 'medium' | 'large' | 'full';
-  visible: boolean;
-  order: number;
-  config?: Record<string, any>;
+  position: { x: number; y: number; w: number; h: number };
+  config?: Record<string, unknown>;
 }
 
-const DEFAULT_WIDGETS: DashboardWidget[] = [
-  { id: 'stats-online', type: 'stats', title: 'Colaboradores Online', size: 'small', visible: true, order: 0 },
-  { id: 'stats-devices', type: 'stats', title: 'Dispositivos', size: 'small', visible: true, order: 1 },
-  { id: 'stats-alerts', type: 'stats', title: 'Alertas Hoje', size: 'small', visible: true, order: 2 },
-  { id: 'stats-blocks', type: 'stats', title: 'Bloqueios', size: 'small', visible: true, order: 3 },
-  { id: 'chart-activity', type: 'chart', title: 'Gráfico de Atividade', size: 'large', visible: true, order: 4 },
-  { id: 'security-metrics', type: 'security', title: 'Métricas de Segurança', size: 'medium', visible: true, order: 5 },
-  { id: 'recent-alerts', type: 'alerts', title: 'Alertas Recentes', size: 'medium', visible: true, order: 6 },
-  { id: 'active-employees', type: 'employees', title: 'Colaboradores Ativos', size: 'medium', visible: true, order: 7 },
-  { id: 'violations-ranking', type: 'ranking', title: 'Ranking de Violações', size: 'medium', visible: true, order: 8 },
-];
-
-const STORAGE_KEY = 'sentinela-dashboard-layout';
+export interface DashboardLayout {
+  id: string;
+  user_id: string;
+  widgets: DashboardWidget[];
+  created_at: string;
+  updated_at: string;
+}
 
 export function useDashboardLayout() {
   const { user } = useAuth();
-  const [widgets, setWidgets] = useState<DashboardWidget[]>(DEFAULT_WIDGETS);
-  const [isEditMode, setIsEditMode] = useState(false);
 
-  // Carregar layout salvo
-  useEffect(() => {
-    if (!user?.id) return;
-    
-    const storageKey = `${STORAGE_KEY}-${user.id}`;
-    const saved = localStorage.getItem(storageKey);
-    
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        // Merge com defaults para adicionar novos widgets
-        const merged = DEFAULT_WIDGETS.map(defaultWidget => {
-          const savedWidget = parsed.find((w: DashboardWidget) => w.id === defaultWidget.id);
-          return savedWidget ? { ...defaultWidget, ...savedWidget } : defaultWidget;
-        });
-        setWidgets(merged);
-      } catch (e) {
-        console.error('Erro ao carregar layout do dashboard:', e);
+  return useQuery({
+    queryKey: queryKeys.dashboard.layout(),
+    queryFn: async () => {
+      if (!user?.id) return null;
+      
+      const { data, error } = await supabase
+        .from('dashboard_layouts')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error && error.code !== 'PGRST116') throw error;
+      return data as DashboardLayout | null;
+    },
+    enabled: !!user?.id,
+    ...queryPresets.config,
+  });
+}
+
+export function useSaveDashboardLayout() {
+  const queryClient = useQueryClient();
+  const { user } = useAuth();
+
+  return useMutation({
+    mutationFn: async (widgets: DashboardWidget[]) => {
+      if (!user?.id) throw new Error('User not authenticated');
+
+      const { data: existing } = await supabase
+        .from('dashboard_layouts')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (existing) {
+        const { data, error } = await supabase
+          .from('dashboard_layouts')
+          .update({ widgets })
+          .eq('id', existing.id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      } else {
+        const { data, error } = await supabase
+          .from('dashboard_layouts')
+          .insert({ user_id: user.id, widgets })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
       }
-    }
-  }, [user?.id]);
-
-  // Salvar layout
-  const saveLayout = useCallback((newWidgets: DashboardWidget[]) => {
-    if (!user?.id) return;
-    
-    const storageKey = `${STORAGE_KEY}-${user.id}`;
-    localStorage.setItem(storageKey, JSON.stringify(newWidgets));
-    setWidgets(newWidgets);
-  }, [user?.id]);
-
-  // Toggle visibilidade
-  const toggleWidget = useCallback((widgetId: string) => {
-    const newWidgets = widgets.map(w =>
-      w.id === widgetId ? { ...w, visible: !w.visible } : w
-    );
-    saveLayout(newWidgets);
-  }, [widgets, saveLayout]);
-
-  // Reordenar widgets
-  const reorderWidgets = useCallback((fromIndex: number, toIndex: number) => {
-    const visibleWidgets = widgets.filter(w => w.visible);
-    const [moved] = visibleWidgets.splice(fromIndex, 1);
-    visibleWidgets.splice(toIndex, 0, moved);
-    
-    const newWidgets = widgets.map(w => {
-      const visibleIndex = visibleWidgets.findIndex(v => v.id === w.id);
-      if (visibleIndex !== -1) {
-        return { ...w, order: visibleIndex };
-      }
-      return w;
-    });
-    
-    saveLayout(newWidgets);
-  }, [widgets, saveLayout]);
-
-  // Alterar tamanho
-  const resizeWidget = useCallback((widgetId: string, size: DashboardWidget['size']) => {
-    const newWidgets = widgets.map(w =>
-      w.id === widgetId ? { ...w, size } : w
-    );
-    saveLayout(newWidgets);
-  }, [widgets, saveLayout]);
-
-  // Resetar para padrão
-  const resetLayout = useCallback(() => {
-    saveLayout(DEFAULT_WIDGETS);
-  }, [saveLayout]);
-
-  // Widgets visíveis ordenados
-  const visibleWidgets = widgets
-    .filter(w => w.visible)
-    .sort((a, b) => a.order - b.order);
-
-  return {
-    widgets,
-    visibleWidgets,
-    isEditMode,
-    setIsEditMode,
-    toggleWidget,
-    reorderWidgets,
-    resizeWidget,
-    resetLayout,
-  };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.layout() });
+    },
+  });
 }
