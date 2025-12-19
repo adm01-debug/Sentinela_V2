@@ -2,6 +2,7 @@ import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { captureError, addBreadcrumb } from '@/lib/sentry';
 
 // ============================================================
 // TYPES
@@ -13,12 +14,14 @@ interface ErrorBoundaryProps {
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
   level?: 'page' | 'section' | 'widget';
   showDetails?: boolean;
+  componentName?: string;
 }
 
 interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
   errorInfo: ErrorInfo | null;
+  eventId: string | null;
 }
 
 // ============================================================
@@ -28,7 +31,7 @@ interface ErrorBoundaryState {
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = { hasError: false, error: null, errorInfo: null };
+    this.state = { hasError: false, error: null, errorInfo: null, eventId: null };
   }
 
   static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
@@ -37,7 +40,25 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
-    
+
+    // Add breadcrumb for context
+    addBreadcrumb('error', 'Error boundary caught error', {
+      component: this.props.componentName,
+      level: this.props.level,
+    }, 'error');
+
+    // Capture error in Sentry
+    const eventId = captureError(error, {
+      component: this.props.componentName || 'ErrorBoundary',
+      action: 'componentDidCatch',
+      metadata: {
+        componentStack: errorInfo.componentStack,
+        level: this.props.level,
+      },
+    });
+
+    this.setState({ eventId });
+
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
@@ -45,21 +66,30 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     // Call custom error handler if provided
     this.props.onError?.(error, errorInfo);
-
-    // TODO: Send to error tracking service (Sentry, etc.)
-    // Sentry.captureException(error, { extra: errorInfo });
   }
 
   handleRetry = () => {
-    this.setState({ hasError: false, error: null, errorInfo: null });
+    addBreadcrumb('ui', 'User clicked retry in error boundary', {
+      component: this.props.componentName,
+    });
+    this.setState({ hasError: false, error: null, errorInfo: null, eventId: null });
   };
 
   handleGoHome = () => {
+    addBreadcrumb('navigation', 'User navigated home from error boundary');
     window.location.href = '/';
   };
 
+  handleReportFeedback = () => {
+    // Open Sentry feedback dialog if eventId exists
+    if (this.state.eventId && typeof window !== 'undefined') {
+      addBreadcrumb('ui', 'User opened feedback dialog');
+      // Sentry.showReportDialog({ eventId: this.state.eventId });
+    }
+  };
+
   render() {
-    const { hasError, error, errorInfo } = this.state;
+    const { hasError, error, eventId } = this.state;
     const { children, fallback, level = 'section', showDetails = false } = this.props;
 
     if (hasError) {
@@ -79,13 +109,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 </div>
                 <CardTitle className="text-2xl">Algo deu errado</CardTitle>
                 <CardDescription>
-                  Ocorreu um erro inesperado. Nossa equipe foi notificada.
+                  Ocorreu um erro inesperado. Nossa equipe foi notificada automaticamente.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {showDetails && error && (
                   <div className="rounded-lg bg-muted p-4 text-sm">
                     <p className="font-mono text-destructive">{error.message}</p>
+                    {eventId && (
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        ID do erro: {eventId}
+                      </p>
+                    )}
                   </div>
                 )}
                 <div className="flex flex-col sm:flex-row gap-2">
@@ -98,6 +133,17 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                     Ir para início
                   </Button>
                 </div>
+                {eventId && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={this.handleReportFeedback}
+                    className="w-full"
+                  >
+                    <Bug className="mr-2 h-4 w-4" />
+                    Reportar problema
+                  </Button>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -161,25 +207,47 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 // WRAPPER COMPONENTS FOR DIFFERENT LEVELS
 // ============================================================
 
-export function PageErrorBoundary({ children }: { children: ReactNode }) {
+export function PageErrorBoundary({ 
+  children, 
+  componentName = 'Page' 
+}: { 
+  children: ReactNode;
+  componentName?: string;
+}) {
   return (
-    <ErrorBoundary level="page" showDetails={process.env.NODE_ENV === 'development'}>
+    <ErrorBoundary 
+      level="page" 
+      showDetails={process.env.NODE_ENV === 'development'}
+      componentName={componentName}
+    >
       {children}
     </ErrorBoundary>
   );
 }
 
-export function SectionErrorBoundary({ children }: { children: ReactNode }) {
+export function SectionErrorBoundary({ 
+  children,
+  componentName = 'Section'
+}: { 
+  children: ReactNode;
+  componentName?: string;
+}) {
   return (
-    <ErrorBoundary level="section">
+    <ErrorBoundary level="section" componentName={componentName}>
       {children}
     </ErrorBoundary>
   );
 }
 
-export function WidgetErrorBoundary({ children }: { children: ReactNode }) {
+export function WidgetErrorBoundary({ 
+  children,
+  componentName = 'Widget'
+}: { 
+  children: ReactNode;
+  componentName?: string;
+}) {
   return (
-    <ErrorBoundary level="widget">
+    <ErrorBoundary level="widget" componentName={componentName}>
       {children}
     </ErrorBoundary>
   );
@@ -191,15 +259,22 @@ export function WidgetErrorBoundary({ children }: { children: ReactNode }) {
 
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
-  level: 'page' | 'section' | 'widget' = 'section'
+  level: 'page' | 'section' | 'widget' = 'section',
+  componentName?: string
 ) {
-  return function WithErrorBoundary(props: P) {
+  const displayName = componentName || Component.displayName || Component.name || 'Component';
+
+  function WithErrorBoundary(props: P) {
     return (
-      <ErrorBoundary level={level}>
+      <ErrorBoundary level={level} componentName={displayName}>
         <Component {...props} />
       </ErrorBoundary>
     );
-  };
+  }
+
+  WithErrorBoundary.displayName = `withErrorBoundary(${displayName})`;
+
+  return WithErrorBoundary;
 }
 
 // ============================================================
