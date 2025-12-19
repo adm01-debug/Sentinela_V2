@@ -1,110 +1,64 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { queryKeys, queryPresets } from '@/lib/queryClient';
 
-export interface SecurityMetricsData {
-  printBlocked: number;
-  usbBlocked: number;
-  hdBlocked: number;
-  suspiciousActivity: number;
-  totalViolations: number;
-  criticalViolations: number;
-  highViolations: number;
-  todayViolations: number;
-  unreadViolations: number;
-}
-
-interface ViolationRecord {
-  id: string;
-  violation_type: string;
-  severity: string;
-  created_at: string;
-  read: boolean;
+export interface SecurityMetrics {
+  total_violations: number;
+  critical_violations: number;
+  resolved_violations: number;
+  pending_violations: number;
+  violations_by_type: { type: string; count: number }[];
+  violations_trend: { date: string; count: number }[];
+  top_violators: { employee_id: string; name: string; count: number }[];
 }
 
 export function useSecurityMetrics() {
-  const [violations, setViolations] = useState<ViolationRecord[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchViolations();
-
-    // Subscribe to realtime updates
-    const channel = supabase
-      .channel('security-metrics')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'security_violations'
-        },
-        () => {
-          fetchViolations();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  const fetchViolations = async () => {
-    try {
-      const { data, error } = await supabase
+  return useQuery({
+    queryKey: queryKeys.securityMetrics.overview(),
+    queryFn: async () => {
+      const { data: violations, error } = await supabase
         .from('security_violations')
-        .select('id, violation_type, severity, created_at, read')
-        .order('created_at', { ascending: false });
+        .select('id, severity, status, violation_type, employee_id, created_at, employee:employees(full_name)');
 
       if (error) throw error;
-      setViolations(data || []);
-    } catch (error) {
-      console.error('Error fetching security metrics:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const metrics = useMemo<SecurityMetricsData>(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+      const metrics: SecurityMetrics = {
+        total_violations: violations.length,
+        critical_violations: violations.filter(v => v.severity === 'critical').length,
+        resolved_violations: violations.filter(v => v.status === 'resolved').length,
+        pending_violations: violations.filter(v => v.status === 'pending').length,
+        violations_by_type: [],
+        violations_trend: [],
+        top_violators: [],
+      };
 
-    const todayViolations = violations.filter(v => 
-      new Date(v.created_at) >= today
-    );
+      // Calculate by type
+      const byType: Record<string, number> = {};
+      violations.forEach(v => {
+        byType[v.violation_type] = (byType[v.violation_type] || 0) + 1;
+      });
+      metrics.violations_by_type = Object.entries(byType)
+        .map(([type, count]) => ({ type, count }))
+        .sort((a, b) => b.count - a.count);
 
-    return {
-      printBlocked: violations.filter(v => 
-        v.violation_type.toLowerCase().includes('print') || 
-        v.violation_type.toLowerCase().includes('screenshot') ||
-        v.violation_type.toLowerCase().includes('captura')
-      ).length,
-      usbBlocked: violations.filter(v => 
-        v.violation_type.toLowerCase().includes('usb') ||
-        v.violation_type.toLowerCase().includes('pendrive')
-      ).length,
-      hdBlocked: violations.filter(v => 
-        v.violation_type.toLowerCase().includes('hd') ||
-        v.violation_type.toLowerCase().includes('externo') ||
-        v.violation_type.toLowerCase().includes('storage')
-      ).length,
-      suspiciousActivity: violations.filter(v => 
-        v.violation_type.toLowerCase().includes('suspicious') ||
-        v.violation_type.toLowerCase().includes('suspeito') ||
-        v.violation_type.toLowerCase().includes('unauthorized') ||
-        v.violation_type.toLowerCase().includes('não autorizado')
-      ).length,
-      totalViolations: violations.length,
-      criticalViolations: violations.filter(v => v.severity === 'critical').length,
-      highViolations: violations.filter(v => v.severity === 'high').length,
-      todayViolations: todayViolations.length,
-      unreadViolations: violations.filter(v => !v.read).length,
-    };
-  }, [violations]);
+      // Calculate top violators
+      const byEmployee: Record<string, { name: string; count: number }> = {};
+      violations.forEach(v => {
+        if (!byEmployee[v.employee_id]) {
+          byEmployee[v.employee_id] = { 
+            name: (v.employee as any)?.full_name || 'Unknown', 
+            count: 0 
+          };
+        }
+        byEmployee[v.employee_id].count++;
+      });
+      metrics.top_violators = Object.entries(byEmployee)
+        .map(([employee_id, data]) => ({ employee_id, ...data }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
 
-  return {
-    metrics,
-    loading,
-    refetch: fetchViolations
-  };
+      return metrics;
+    },
+    ...queryPresets.dashboard,
+  });
 }
