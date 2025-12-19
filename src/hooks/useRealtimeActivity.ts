@@ -1,153 +1,55 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { queryKeys, queryPresets, REFETCH_INTERVALS } from '@/lib/queryClient';
 
-interface KeystrokeDetail {
+export interface RealtimeActivity {
   id: string;
-  employee_name: string;
-  key_pressed: string;
-  app_name: string | null;
-  window_title: string | null;
-  device: string | null;
-  recorded_at: string;
-  is_sensitive: boolean | null;
+  employee_id: string;
+  activity_type: string;
+  application_name?: string;
+  window_title?: string;
+  url?: string;
+  keystroke_count?: number;
+  mouse_clicks?: number;
+  created_at: string;
+  employee?: { full_name: string };
 }
 
-interface ClickLog {
-  id: string;
-  employee_name: string;
-  click_type: string;
-  x_position: number | null;
-  y_position: number | null;
-  app_name: string | null;
-  window_title: string | null;
-  url: string | null;
-  device: string | null;
-  recorded_at: string;
-}
+export function useRealtimeActivity(limit = 50) {
+  return useQuery({
+    queryKey: queryKeys.activity.realtime(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('activity_logs')
+        .select('*, employee:employees(full_name)')
+        .order('created_at', { ascending: false })
+        .limit(limit);
 
-interface ActivityStats {
-  totalKeystrokes: number;
-  totalClicks: number;
-  activeEmployees: Set<string>;
-  keystrokesPerMinute: number;
-  clicksPerMinute: number;
-}
-
-export const useRealtimeActivity = () => {
-  const [keystrokes, setKeystrokes] = useState<KeystrokeDetail[]>([]);
-  const [clicks, setClicks] = useState<ClickLog[]>([]);
-  const [stats, setStats] = useState<ActivityStats>({
-    totalKeystrokes: 0,
-    totalClicks: 0,
-    activeEmployees: new Set(),
-    keystrokesPerMinute: 0,
-    clicksPerMinute: 0,
+      if (error) throw error;
+      return data as RealtimeActivity[];
+    },
+    ...queryPresets.realtime,
+    refetchInterval: REFETCH_INTERVALS.REALTIME,
   });
-  const [loading, setLoading] = useState(true);
+}
 
-  const fetchInitialData = async () => {
-    const now = new Date();
-    const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-
-    const [keystrokesRes, clicksRes] = await Promise.all([
-      supabase
-        .from('keystroke_details')
+export function useEmployeeActivity(employeeId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.activity.employee(employeeId || ''),
+    queryFn: async () => {
+      if (!employeeId) return [];
+      
+      const { data, error } = await supabase
+        .from('activity_logs')
         .select('*')
-        .gte('recorded_at', oneHourAgo.toISOString())
-        .order('recorded_at', { ascending: false })
-        .limit(100),
-      supabase
-        .from('click_logs')
-        .select('*')
-        .gte('recorded_at', oneHourAgo.toISOString())
-        .order('recorded_at', { ascending: false })
-        .limit(100),
-    ]);
+        .eq('employee_id', employeeId)
+        .order('created_at', { ascending: false })
+        .limit(100);
 
-    if (keystrokesRes.data) {
-      setKeystrokes(keystrokesRes.data);
-    }
-    if (clicksRes.data) {
-      setClicks(clicksRes.data);
-    }
-
-    updateStats(keystrokesRes.data || [], clicksRes.data || []);
-    setLoading(false);
-  };
-
-  const updateStats = (keystrokeData: KeystrokeDetail[], clickData: ClickLog[]) => {
-    const employees = new Set<string>();
-    keystrokeData.forEach(k => employees.add(k.employee_name));
-    clickData.forEach(c => employees.add(c.employee_name));
-
-    const now = new Date().getTime();
-    const oneMinuteAgo = now - 60 * 1000;
-
-    const recentKeystrokes = keystrokeData.filter(
-      k => new Date(k.recorded_at).getTime() > oneMinuteAgo
-    ).length;
-    const recentClicks = clickData.filter(
-      c => new Date(c.recorded_at).getTime() > oneMinuteAgo
-    ).length;
-
-    setStats({
-      totalKeystrokes: keystrokeData.length,
-      totalClicks: clickData.length,
-      activeEmployees: employees,
-      keystrokesPerMinute: recentKeystrokes,
-      clicksPerMinute: recentClicks,
-    });
-  };
-
-  useEffect(() => {
-    fetchInitialData();
-
-    // Subscribe to real-time updates
-    const keystrokesChannel = supabase
-      .channel('keystroke-details-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'keystroke_details',
-        },
-        (payload) => {
-          const newKeystroke = payload.new as KeystrokeDetail;
-          setKeystrokes(prev => {
-            const updated = [newKeystroke, ...prev].slice(0, 100);
-            updateStats(updated, clicks);
-            return updated;
-          });
-        }
-      )
-      .subscribe();
-
-    const clicksChannel = supabase
-      .channel('click-logs-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'click_logs',
-        },
-        (payload) => {
-          const newClick = payload.new as ClickLog;
-          setClicks(prev => {
-            const updated = [newClick, ...prev].slice(0, 100);
-            updateStats(keystrokes, updated);
-            return updated;
-          });
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(keystrokesChannel);
-      supabase.removeChannel(clicksChannel);
-    };
-  }, []);
-
-  return { keystrokes, clicks, stats, loading, refetch: fetchInitialData };
-};
+      if (error) throw error;
+      return data as RealtimeActivity[];
+    },
+    enabled: !!employeeId,
+    ...queryPresets.list,
+  });
+}
