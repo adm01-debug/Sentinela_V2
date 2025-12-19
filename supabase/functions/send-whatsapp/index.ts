@@ -1,166 +1,202 @@
-import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// @ts-ignore
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+// ============================================================
+// VALIDAÇÃO DE INPUT
+// ============================================================
 
 interface WhatsAppRequest {
-  recipient_number: string;
-  message: string;
-  message_type?: string;
-  violation_id?: string;
-  phone_number_id: string;
+  to: string;
+  message?: string;
+  template_id?: string;
+  variables?: Record<string, string>;
 }
 
-interface WhatsAppBatchRequest {
-  recipient_numbers: string[];
-  message: string;
-  message_type?: string;
-  violation_id?: string;
-  phone_number_id: string;
+function validatePhone(value: unknown, fieldName: string): string {
+  if (!value || typeof value !== 'string') {
+    throw new Error(`${fieldName} é obrigatório e deve ser uma string`);
+  }
+  const cleaned = value.replace(/[\s-()]/g, '');
+  const phoneRegex = /^\+?[1-9]\d{10,14}$/;
+  if (!phoneRegex.test(cleaned)) {
+    throw new Error(`${fieldName} deve ser um número de telefone válido (ex: +5562999999999)`);
+  }
+  return value;
 }
+
+function validateRequest(data: unknown): WhatsAppRequest {
+  if (!data || typeof data !== 'object') {
+    throw new Error('Request body inválido');
+  }
+  
+  const obj = data as Record<string, unknown>;
+  
+  // Validar telefone (obrigatório)
+  const to = validatePhone(obj.to, 'to');
+  
+  // Validar message ou template_id (pelo menos um é obrigatório)
+  const message = obj.message as string | undefined;
+  const template_id = obj.template_id as string | undefined;
+  
+  if (!message && !template_id) {
+    throw new Error('É necessário fornecer "message" ou "template_id"');
+  }
+  
+  if (message && typeof message !== 'string') {
+    throw new Error('"message" deve ser uma string');
+  }
+  
+  if (message && message.length > 4096) {
+    throw new Error('"message" não pode ter mais de 4096 caracteres');
+  }
+  
+  if (template_id && typeof template_id !== 'string') {
+    throw new Error('"template_id" deve ser uma string');
+  }
+  
+  return {
+    to,
+    message,
+    template_id,
+    variables: obj.variables as Record<string, string> | undefined,
+  };
+}
+
+// ============================================================
+// CORS HEADERS
+// ============================================================
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+// ============================================================
+// MAIN HANDLER
+// ============================================================
 
 serve(async (req) => {
   // Handle CORS preflight
-  if (req.method === "OPTIONS") {
+  if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const accessToken = Deno.env.get("WHATSAPP_ACCESS_TOKEN");
-    if (!accessToken) {
-      throw new Error("WHATSAPP_ACCESS_TOKEN not configured");
+    // Parse and validate request
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'JSON inválido no body' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    // Validar input
+    let validatedData: WhatsAppRequest;
+    try {
+      validatedData = validateRequest(body);
+    } catch (validationError: any) {
+      return new Response(
+        JSON.stringify({ error: validationError.message }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    // Get WhatsApp settings from Supabase
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const body = await req.json();
-    console.log("Received WhatsApp request:", JSON.stringify(body));
+    const { data: settings, error: settingsError } = await supabase
+      .from('whatsapp_settings')
+      .select('*')
+      .eq('is_active', true)
+      .single();
 
-    // Check if it's a batch request
-    if (body.recipient_numbers && Array.isArray(body.recipient_numbers)) {
-      const batchRequest = body as WhatsAppBatchRequest;
-      const results = [];
+    if (settingsError || !settings) {
+      console.error('WhatsApp settings error:', settingsError);
+      return new Response(
+        JSON.stringify({ error: 'WhatsApp não configurado ou inativo' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-      for (const recipientNumber of batchRequest.recipient_numbers) {
-        const result = await sendWhatsAppMessage({
-          recipient_number: recipientNumber,
-          message: batchRequest.message,
-          message_type: batchRequest.message_type,
-          violation_id: batchRequest.violation_id,
-          phone_number_id: batchRequest.phone_number_id,
-        }, accessToken, supabase);
-        results.push(result);
+    // Get message content
+    let messageContent = validatedData.message;
+    
+    if (validatedData.template_id) {
+      const { data: template, error: templateError } = await supabase
+        .from('message_templates')
+        .select('content')
+        .eq('id', validatedData.template_id)
+        .single();
+
+      if (templateError || !template) {
+        return new Response(
+          JSON.stringify({ error: 'Template não encontrado' }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
 
-      return new Response(JSON.stringify({ results }), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      messageContent = template.content;
+      
+      // Replace variables
+      if (validatedData.variables) {
+        for (const [key, value] of Object.entries(validatedData.variables)) {
+          messageContent = messageContent.replace(new RegExp(`{{${key}}}`, 'g'), value);
+        }
+      }
     }
 
-    // Single message request
-    const request = body as WhatsAppRequest;
-    const result = await sendWhatsAppMessage(request, accessToken, supabase);
-
-    return new Response(JSON.stringify(result), {
-      status: result.success ? 200 : 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    // Send via WAHA API
+    const wahaUrl = `${settings.api_url}/api/sendText`;
+    
+    const wahaResponse = await fetch(wahaUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${settings.api_key}`,
+      },
+      body: JSON.stringify({
+        chatId: `${validatedData.to}@c.us`,
+        text: messageContent,
+        session: settings.session_name || 'default',
+      }),
     });
 
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error("Error in send-whatsapp function:", error);
+    if (!wahaResponse.ok) {
+      const errorText = await wahaResponse.text();
+      console.error('WAHA error:', errorText);
+      return new Response(
+        JSON.stringify({ error: 'Falha ao enviar mensagem', details: errorText }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const result = await wahaResponse.json();
+
+    // Log success
+    await supabase.from('message_logs').insert({
+      channel: 'whatsapp',
+      recipient: validatedData.to,
+      content: messageContent,
+      status: 'sent',
+      provider_response: result,
+    });
+
     return new Response(
-      JSON.stringify({ error: errorMessage, success: false }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      JSON.stringify({ success: true, message_id: result.id }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+
+  } catch (error: any) {
+    console.error('Unexpected error:', error);
+    return new Response(
+      JSON.stringify({ error: 'Erro interno do servidor' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
-
-async function sendWhatsAppMessage(
-  request: WhatsAppRequest,
-  accessToken: string,
-  supabase: any
-) {
-  const { recipient_number, message, message_type = "alert", violation_id, phone_number_id } = request;
-
-  // Format phone number (remove non-digits except +)
-  const formattedNumber = recipient_number.replace(/[^\d+]/g, "").replace(/^\+/, "");
-
-  console.log(`Sending WhatsApp message to ${formattedNumber}`);
-
-  try {
-    // Send message via WhatsApp Business API
-    const response = await fetch(
-      `https://graph.facebook.com/v18.0/${phone_number_id}/messages`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messaging_product: "whatsapp",
-          recipient_type: "individual",
-          to: formattedNumber,
-          type: "text",
-          text: {
-            preview_url: false,
-            body: message,
-          },
-        }),
-      }
-    );
-
-    const data = await response.json();
-    console.log("WhatsApp API response:", JSON.stringify(data));
-
-    if (!response.ok) {
-      throw new Error(data.error?.message || "Failed to send WhatsApp message");
-    }
-
-    // Log successful message
-    await supabase.from("whatsapp_message_logs").insert({
-      recipient_number: formattedNumber,
-      message_type,
-      message_content: message,
-      status: "sent",
-      whatsapp_message_id: data.messages?.[0]?.id,
-      violation_id: violation_id || null,
-    });
-
-    return {
-      success: true,
-      message_id: data.messages?.[0]?.id,
-      recipient: formattedNumber,
-    };
-
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error(`Error sending to ${formattedNumber}:`, error);
-
-    // Log failed message
-    await supabase.from("whatsapp_message_logs").insert({
-      recipient_number: formattedNumber,
-      message_type,
-      message_content: message,
-      status: "failed",
-      error_message: errorMessage,
-      violation_id: violation_id || null,
-    });
-
-    return {
-      success: false,
-      error: errorMessage,
-      recipient: formattedNumber,
-    };
-  }
-}
