@@ -34,6 +34,8 @@ import RateLimitDashboard from "./pages/RateLimitDashboard";
 import Webhooks from "./pages/Webhooks";
 import WhatsAppIntegration from "./pages/WhatsAppIntegration";
 import MessageTemplates from "./pages/MessageTemplates";
+import Devices from "./pages/Devices";
+import Security from "./pages/Security";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -81,6 +83,20 @@ const App = () => (
               <ProtectedRoute requireAdmin>
                 <PolicyGate>
                   <EmployeeDetail />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/devices" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <Devices />
+                </PolicyGate>
+              </ProtectedRoute>
+            } />
+            <Route path="/security" element={
+              <ProtectedRoute requireAdmin>
+                <PolicyGate>
+                  <Security />
                 </PolicyGate>
               </ProtectedRoute>
             } />
