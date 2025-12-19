@@ -1,51 +1,54 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './useAuth';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+
+// ============================================================
+// TYPES
+// ============================================================
 
 export interface ViolationComment {
   id: string;
   violation_id: string;
   user_id: string;
   content: string;
-  comment_type: 'note' | 'action' | 'resolution' | 'escalation';
   is_internal: boolean;
-  is_edited: boolean;
-  edited_at: string | null;
-  mentions: string[] | null;
-  attachments: any[];
   created_at: string;
+  updated_at: string;
   user?: {
+    id: string;
     email: string;
-    full_name: string | null;
+    full_name?: string;
   };
 }
 
-export interface ViolationAction {
-  id: string;
+export interface CreateViolationCommentInput {
   violation_id: string;
-  user_id: string;
-  action_type: string;
-  notes: string | null;
-  previous_status: string | null;
-  new_status: string | null;
-  created_at: string;
-  user?: {
-    email: string;
-    full_name: string | null;
-  };
+  content: string;
+  is_internal?: boolean;
 }
 
-type ActionType = 'acknowledge' | 'investigate' | 'warn' | 'escalate' | 'resolve' | 'dismiss' | 'reopen';
+export interface UpdateViolationCommentInput {
+  id: string;
+  content: string;
+}
 
-// Buscar comentários de uma violação
-export function useViolationComments(violationId: string) {
+// ============================================================
+// QUERIES
+// ============================================================
+
+export function useViolationComments(violationId: string | undefined) {
   return useQuery({
-    queryKey: ['violation-comments', violationId],
+    queryKey: queryKeys.violations.comments(violationId || ''),
     queryFn: async () => {
+      if (!violationId) return [];
+      
       const { data, error } = await supabase
         .from('violation_comments')
-        .select('*, user:profiles(email, full_name)')
+        .select(`
+          *,
+          user:users(id, email, full_name)
+        `)
         .eq('violation_id', violationId)
         .order('created_at', { ascending: true });
 
@@ -53,171 +56,180 @@ export function useViolationComments(violationId: string) {
       return data as ViolationComment[];
     },
     enabled: !!violationId,
+    ...queryPresets.list,
   });
 }
 
-// Buscar histórico de ações de uma violação
-export function useViolationActions(violationId: string) {
-  return useQuery({
-    queryKey: ['violation-actions', violationId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('violation_actions')
-        .select('*, user:profiles(email, full_name)')
-        .eq('violation_id', violationId)
-        .order('created_at', { ascending: false });
+// ============================================================
+// MUTATIONS
+// ============================================================
 
-      if (error) throw error;
-      return data as ViolationAction[];
-    },
-    enabled: !!violationId,
-  });
-}
-
-// Adicionar comentário
-export function useAddComment() {
-  const { user } = useAuth();
+export function useCreateViolationComment() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({
-      violationId,
-      content,
-      commentType = 'note',
-      isInternal = false,
-    }: {
-      violationId: string;
-      content: string;
-      commentType?: ViolationComment['comment_type'];
-      isInternal?: boolean;
-    }) => {
+    mutationFn: async (input: CreateViolationCommentInput) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Usuário não autenticado');
+
       const { data, error } = await supabase
         .from('violation_comments')
         .insert({
-          violation_id: violationId,
-          user_id: user?.id,
-          content,
-          comment_type: commentType,
-          is_internal: isInternal,
+          ...input,
+          user_id: user.id,
         })
-        .select()
+        .select(`
+          *,
+          user:users(id, email, full_name)
+        `)
         .single();
 
       if (error) throw error;
       return data;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['violation-comments', variables.violationId] });
-      toast.success('Comentário adicionado!');
+    onMutate: async (input) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ 
+        queryKey: queryKeys.violations.comments(input.violation_id) 
+      });
+
+      // Snapshot previous value
+      const previousComments = queryClient.getQueryData<ViolationComment[]>(
+        queryKeys.violations.comments(input.violation_id)
+      );
+
+      // Optimistically update
+      const optimisticComment: ViolationComment = {
+        id: `temp-${Date.now()}`,
+        violation_id: input.violation_id,
+        user_id: 'current-user',
+        content: input.content,
+        is_internal: input.is_internal || false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+
+      queryClient.setQueryData<ViolationComment[]>(
+        queryKeys.violations.comments(input.violation_id),
+        (old) => [...(old || []), optimisticComment]
+      );
+
+      return { previousComments, violationId: input.violation_id };
     },
-    onError: (error: any) => {
-      toast.error('Erro ao adicionar comentário: ' + error.message);
+    onError: (err, input, context) => {
+      // Rollback on error
+      if (context?.previousComments) {
+        queryClient.setQueryData(
+          queryKeys.violations.comments(context.violationId),
+          context.previousComments
+        );
+      }
+      toast({
+        title: 'Erro ao adicionar comentário',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+    onSuccess: (data, input) => {
+      // Replace optimistic with real data
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeys.violations.comments(input.violation_id) 
+      });
+      toast({
+        title: 'Comentário adicionado',
+        description: 'O comentário foi adicionado com sucesso.',
+      });
     },
   });
 }
 
-// Editar comentário
-export function useEditComment() {
+export function useUpdateViolationComment() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({
-      commentId,
-      violationId,
-      content,
-    }: {
-      commentId: string;
-      violationId: string;
-      content: string;
-    }) => {
+    mutationFn: async ({ id, content }: UpdateViolationCommentInput) => {
       const { data, error } = await supabase
         .from('violation_comments')
-        .update({ content })
-        .eq('id', commentId)
+        .update({ content, updated_at: new Date().toISOString() })
+        .eq('id', id)
         .select()
         .single();
 
       if (error) throw error;
       return data;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['violation-comments', variables.violationId] });
-      toast.success('Comentário editado!');
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeys.violations.comments(data.violation_id) 
+      });
+      toast({
+        title: 'Comentário atualizado',
+        description: 'O comentário foi atualizado com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao atualizar comentário',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
 }
 
-// Deletar comentário
-export function useDeleteComment() {
+export function useDeleteViolationComment() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ commentId, violationId }: { commentId: string; violationId: string }) => {
+    mutationFn: async ({ id, violationId }: { id: string; violationId: string }) => {
       const { error } = await supabase
         .from('violation_comments')
         .delete()
-        .eq('id', commentId);
+        .eq('id', id);
 
       if (error) throw error;
+      return { violationId };
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['violation-comments', variables.violationId] });
-      toast.success('Comentário removido!');
-    },
-  });
-}
-
-// Registrar ação na violação
-export function useRecordAction() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({
-      violationId,
-      actionType,
-      notes,
-    }: {
-      violationId: string;
-      actionType: ActionType;
-      notes?: string;
-    }) => {
-      const { data, error } = await supabase.rpc('record_violation_action', {
-        p_violation_id: violationId,
-        p_action_type: actionType,
-        p_notes: notes || null,
+    onMutate: async ({ id, violationId }) => {
+      await queryClient.cancelQueries({ 
+        queryKey: queryKeys.violations.comments(violationId) 
       });
 
-      if (error) throw error;
-      return data;
+      const previousComments = queryClient.getQueryData<ViolationComment[]>(
+        queryKeys.violations.comments(violationId)
+      );
+
+      queryClient.setQueryData<ViolationComment[]>(
+        queryKeys.violations.comments(violationId),
+        (old) => old?.filter(c => c.id !== id) || []
+      );
+
+      return { previousComments, violationId };
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['violation-actions', variables.violationId] });
-      queryClient.invalidateQueries({ queryKey: ['violations'] });
-      toast.success('Ação registrada!');
+    onError: (err, _, context) => {
+      if (context?.previousComments) {
+        queryClient.setQueryData(
+          queryKeys.violations.comments(context.violationId),
+          context.previousComments
+        );
+      }
+      toast({
+        title: 'Erro ao excluir comentário',
+        description: err.message,
+        variant: 'destructive',
+      });
     },
-    onError: (error: any) => {
-      toast.error('Erro ao registrar ação: ' + error.message);
+    onSuccess: (_, { violationId }) => {
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeys.violations.comments(violationId) 
+      });
+      toast({
+        title: 'Comentário excluído',
+        description: 'O comentário foi excluído com sucesso.',
+      });
     },
   });
 }
-
-// Configuração de tipos de ação
-export const actionConfig: Record<ActionType, { label: string; icon: string; color: string }> = {
-  acknowledge: { label: 'Reconhecer', icon: '👁️', color: 'text-blue-500' },
-  investigate: { label: 'Investigar', icon: '🔍', color: 'text-purple-500' },
-  warn: { label: 'Advertir', icon: '⚠️', color: 'text-amber-500' },
-  escalate: { label: 'Escalar', icon: '📢', color: 'text-orange-500' },
-  resolve: { label: 'Resolver', icon: '✅', color: 'text-green-500' },
-  dismiss: { label: 'Dispensar', icon: '❌', color: 'text-gray-500' },
-  reopen: { label: 'Reabrir', icon: '🔄', color: 'text-red-500' },
-};
-
-// Configuração de status
-export const statusConfig: Record<string, { label: string; color: string }> = {
-  open: { label: 'Aberto', color: 'bg-red-500' },
-  acknowledged: { label: 'Reconhecido', color: 'bg-blue-500' },
-  investigating: { label: 'Investigando', color: 'bg-purple-500' },
-  escalated: { label: 'Escalado', color: 'bg-orange-500' },
-  resolved: { label: 'Resolvido', color: 'bg-green-500' },
-  dismissed: { label: 'Dispensado', color: 'bg-gray-500' },
-};
