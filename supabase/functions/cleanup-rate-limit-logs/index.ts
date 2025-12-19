@@ -1,27 +1,27 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-import { checkRateLimit, RateLimitConfig } from '../_shared/rateLimiting.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const RATE_LIMIT_CONFIG: RateLimitConfig = {
-  maxRequests: 5,
-  windowMs: 60 * 60 * 1000, // 1 hour
-  identifier: 'cleanup-rate-limit-logs',
-};
+const CleanupSchema = z.object({
+  days_to_keep: z.number().int().min(1).max(365).default(30),
+  dry_run: z.boolean().default(false),
+  tables: z.array(z.enum(['rate_limit_logs', 'rate_limit_alerts', 'webhook_deliveries', 'activity_logs'])).optional(),
+});
 
-serve(async (req: Request) => {
+serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Rate limiting (this is an admin function, so very restrictive)
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await checkRateLimit(clientIP, RATE_LIMIT_CONFIG);
+    const rateLimitResult = await checkRateLimit(clientIP, 'cleanup', 5, 3600);
     
     if (!rateLimitResult.allowed) {
       return new Response(
@@ -30,34 +30,61 @@ serve(async (req: Request) => {
       );
     }
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    );
+    let body = {};
+    try {
+      body = await req.json();
+    } catch {
+      // Use defaults
+    }
 
-    // Delete logs older than 30 days
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const validationResult = CleanupSchema.safeParse(body);
+    
+    if (!validationResult.success) {
+      return new Response(
+        JSON.stringify({ error: 'Validation failed', details: validationResult.error.flatten() }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    const { error, count } = await supabase
-      .from('rate_limit_logs')
-      .delete()
-      .lt('created_at', thirtyDaysAgo)
-      .select('id', { count: 'exact', head: true });
+    const { days_to_keep, dry_run, tables } = validationResult.data;
+    const cutoffDate = new Date(Date.now() - days_to_keep * 24 * 60 * 60 * 1000).toISOString();
 
-    if (error) throw error;
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    console.log(`Cleaned up ${count || 0} old rate limit logs`);
+    const tablesToClean = tables || ['rate_limit_logs', 'rate_limit_alerts'];
+    const results: Record<string, number> = {};
+
+    for (const table of tablesToClean) {
+      const dateColumn = table === 'webhook_deliveries' ? 'delivered_at' : 'created_at';
+      
+      if (dry_run) {
+        const { count } = await supabase
+          .from(table)
+          .select('*', { count: 'exact', head: true })
+          .lt(dateColumn, cutoffDate);
+        results[table] = count || 0;
+      } else {
+        const { count } = await supabase
+          .from(table)
+          .delete()
+          .lt(dateColumn, cutoffDate)
+          .select('*', { count: 'exact', head: true });
+        results[table] = count || 0;
+      }
+    }
 
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         success: true,
-        deleted_count: count || 0,
-        message: `Cleaned up ${count || 0} logs older than 30 days`,
+        dry_run,
+        cutoff_date: cutoffDate,
+        deleted: results,
       }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
