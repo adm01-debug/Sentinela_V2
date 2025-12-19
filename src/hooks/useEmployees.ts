@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
 
 // ============================================================
 // TYPES
@@ -11,170 +11,161 @@ export interface Employee {
   id: string;
   name: string;
   email: string;
-  phone?: string;
   department?: string;
   position?: string;
-  team_id?: string;
   status: 'active' | 'inactive' | 'suspended';
-  hire_date?: string;
+  avatar_url?: string;
+  phone?: string;
+  team_id?: string;
+  company_id?: string;
+  last_activity_at?: string;
   created_at: string;
-  updated_at?: string;
+  updated_at: string;
 }
 
 export interface CreateEmployeeInput {
   name: string;
   email: string;
-  phone?: string;
   department?: string;
   position?: string;
+  phone?: string;
   team_id?: string;
-  status?: Employee['status'];
-  hire_date?: string;
 }
 
 export interface UpdateEmployeeInput extends Partial<CreateEmployeeInput> {
   id: string;
-}
-
-export interface EmployeeFilters {
   status?: Employee['status'];
-  department?: string;
-  team_id?: string;
-  search?: string;
 }
 
 // ============================================================
-// HOOKS
+// FETCH FUNCTIONS
 // ============================================================
 
-/**
- * Lista todos os funcionários com filtros opcionais
- */
-export function useEmployees(filters?: EmployeeFilters) {
+async function fetchEmployees(): Promise<Employee[]> {
+  const { data, error } = await supabase
+    .from('employees')
+    .select('*')
+    .order('name');
+
+  if (error) throw error;
+  return data || [];
+}
+
+async function fetchEmployee(id: string): Promise<Employee | null> {
+  const { data, error } = await supabase
+    .from('employees')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+// ============================================================
+// HOOKS - QUERIES
+// ============================================================
+
+export function useEmployees() {
   return useQuery({
-    queryKey: queryKeys.employees.list(filters),
-    queryFn: async () => {
-      let query = supabase
-        .from('employees')
-        .select('*')
-        .order('name');
-
-      if (filters?.status) {
-        query = query.eq('status', filters.status);
-      }
-      if (filters?.department) {
-        query = query.eq('department', filters.department);
-      }
-      if (filters?.team_id) {
-        query = query.eq('team_id', filters.team_id);
-      }
-      if (filters?.search) {
-        query = query.or(`name.ilike.%${filters.search}%,email.ilike.%${filters.search}%`);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-      return data as Employee[];
-    },
+    queryKey: queryKeys.employees.lists(),
+    queryFn: fetchEmployees,
     ...queryPresets.list,
   });
 }
 
-/**
- * Busca um funcionário específico por ID
- */
-export function useEmployee(id: string) {
+export function useEmployee(id: string | undefined) {
   return useQuery({
-    queryKey: queryKeys.employees.detail(id),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('employees')
-        .select('*, teams(name)')
-        .eq('id', id)
-        .single();
-
-      if (error) throw error;
-      return data as Employee & { teams?: { name: string } };
-    },
+    queryKey: queryKeys.employees.detail(id!),
+    queryFn: () => fetchEmployee(id!),
     enabled: !!id,
-    ...queryPresets.list,
+    staleTime: 5 * 60 * 1000,
   });
 }
 
-/**
- * Estatísticas do funcionário
- */
-export function useEmployeeStats(employeeId: string) {
-  return useQuery({
-    queryKey: queryKeys.employees.stats(employeeId),
-    queryFn: async () => {
-      // Buscar violações do funcionário
-      const { data: violations, error: violationsError } = await supabase
-        .from('security_violations')
-        .select('id, severity')
-        .eq('employee_id', employeeId);
+// ============================================================
+// HOOKS - MUTATIONS WITH OPTIMISTIC UPDATES
+// ============================================================
 
-      if (violationsError) throw violationsError;
-
-      // Buscar atividade recente
-      const { data: activity, error: activityError } = await supabase
-        .from('employee_activity')
-        .select('productivity_score')
-        .eq('employee_id', employeeId)
-        .order('created_at', { ascending: false })
-        .limit(30);
-
-      if (activityError) throw activityError;
-
-      const avgProductivity = activity?.length
-        ? activity.reduce((acc, a) => acc + (a.productivity_score || 0), 0) / activity.length
-        : 0;
-
-      return {
-        totalViolations: violations?.length || 0,
-        criticalViolations: violations?.filter(v => v.severity === 'critical').length || 0,
-        avgProductivity: Math.round(avgProductivity),
-        activityDays: activity?.length || 0,
-      };
-    },
-    enabled: !!employeeId,
-    ...queryPresets.list,
-  });
-}
-
-/**
- * Criar novo funcionário
- */
 export function useCreateEmployee() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
     mutationFn: async (input: CreateEmployeeInput) => {
       const { data, error } = await supabase
         .from('employees')
-        .insert(input)
+        .insert({ ...input, status: 'active' })
         .select()
         .single();
 
       if (error) throw error;
-      return data as Employee;
+      return data;
     },
-    onSuccess: () => {
-      invalidateRelated.employee(queryClient);
-      toast.success('Funcionário criado com sucesso!');
+
+    // Optimistic update
+    onMutate: async (newEmployee) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: queryKeys.employees.lists() });
+
+      // Snapshot previous value
+      const previousEmployees = queryClient.getQueryData<Employee[]>(
+        queryKeys.employees.lists()
+      );
+
+      // Optimistically update
+      if (previousEmployees) {
+        const optimisticEmployee: Employee = {
+          id: `temp-${Date.now()}`,
+          ...newEmployee,
+          status: 'active',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+
+        queryClient.setQueryData<Employee[]>(
+          queryKeys.employees.lists(),
+          [...previousEmployees, optimisticEmployee]
+        );
+      }
+
+      return { previousEmployees };
     },
-    onError: (error: Error) => {
-      toast.error(`Erro ao criar funcionário: ${error.message}`);
+
+    // On error, rollback
+    onError: (err, _, context) => {
+      if (context?.previousEmployees) {
+        queryClient.setQueryData(
+          queryKeys.employees.lists(),
+          context.previousEmployees
+        );
+      }
+      toast({
+        title: 'Erro ao criar funcionário',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+
+    // On success, replace optimistic data with real data
+    onSuccess: (data) => {
+      invalidateRelated.employee(queryClient, data.id);
+      toast({
+        title: 'Funcionário criado',
+        description: `${data.name} foi adicionado com sucesso.`,
+      });
+    },
+
+    // Always refetch after error or success
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.employees.lists() });
     },
   });
 }
 
-/**
- * Atualizar funcionário
- */
 export function useUpdateEmployee() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
     mutationFn: async ({ id, ...input }: UpdateEmployeeInput) => {
@@ -186,23 +177,85 @@ export function useUpdateEmployee() {
         .single();
 
       if (error) throw error;
-      return data as Employee;
+      return data;
     },
+
+    // Optimistic update
+    onMutate: async (updatedEmployee) => {
+      const { id, ...updates } = updatedEmployee;
+
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: queryKeys.employees.lists() });
+      await queryClient.cancelQueries({ queryKey: queryKeys.employees.detail(id) });
+
+      // Snapshot previous values
+      const previousEmployees = queryClient.getQueryData<Employee[]>(
+        queryKeys.employees.lists()
+      );
+      const previousEmployee = queryClient.getQueryData<Employee>(
+        queryKeys.employees.detail(id)
+      );
+
+      // Optimistically update list
+      if (previousEmployees) {
+        queryClient.setQueryData<Employee[]>(
+          queryKeys.employees.lists(),
+          previousEmployees.map((emp) =>
+            emp.id === id ? { ...emp, ...updates, updated_at: new Date().toISOString() } : emp
+          )
+        );
+      }
+
+      // Optimistically update detail
+      if (previousEmployee) {
+        queryClient.setQueryData<Employee>(
+          queryKeys.employees.detail(id),
+          { ...previousEmployee, ...updates, updated_at: new Date().toISOString() }
+        );
+      }
+
+      return { previousEmployees, previousEmployee };
+    },
+
+    // On error, rollback
+    onError: (err, variables, context) => {
+      if (context?.previousEmployees) {
+        queryClient.setQueryData(
+          queryKeys.employees.lists(),
+          context.previousEmployees
+        );
+      }
+      if (context?.previousEmployee) {
+        queryClient.setQueryData(
+          queryKeys.employees.detail(variables.id),
+          context.previousEmployee
+        );
+      }
+      toast({
+        title: 'Erro ao atualizar',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+
     onSuccess: (data) => {
       invalidateRelated.employee(queryClient, data.id);
-      toast.success('Funcionário atualizado!');
+      toast({
+        title: 'Funcionário atualizado',
+        description: 'As informações foram salvas.',
+      });
     },
-    onError: (error: Error) => {
-      toast.error(`Erro ao atualizar: ${error.message}`);
+
+    onSettled: (_, __, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.employees.lists() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.employees.detail(variables.id) });
     },
   });
 }
 
-/**
- * Deletar funcionário
- */
 export function useDeleteEmployee() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
     mutationFn: async (id: string) => {
@@ -212,22 +265,66 @@ export function useDeleteEmployee() {
         .eq('id', id);
 
       if (error) throw error;
+      return id;
     },
-    onSuccess: () => {
-      invalidateRelated.employee(queryClient);
-      toast.success('Funcionário removido!');
+
+    // Optimistic update
+    onMutate: async (deletedId) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.employees.lists() });
+
+      const previousEmployees = queryClient.getQueryData<Employee[]>(
+        queryKeys.employees.lists()
+      );
+
+      // Optimistically remove from list
+      if (previousEmployees) {
+        queryClient.setQueryData<Employee[]>(
+          queryKeys.employees.lists(),
+          previousEmployees.filter((emp) => emp.id !== deletedId)
+        );
+      }
+
+      return { previousEmployees };
     },
-    onError: (error: Error) => {
-      toast.error(`Erro ao remover: ${error.message}`);
+
+    // On error, rollback
+    onError: (err, _, context) => {
+      if (context?.previousEmployees) {
+        queryClient.setQueryData(
+          queryKeys.employees.lists(),
+          context.previousEmployees
+        );
+      }
+      toast({
+        title: 'Erro ao excluir',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+
+    onSuccess: (deletedId) => {
+      // Remove from cache
+      queryClient.removeQueries({ queryKey: queryKeys.employees.detail(deletedId) });
+      toast({
+        title: 'Funcionário excluído',
+        description: 'O funcionário foi removido do sistema.',
+      });
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.employees.lists() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats });
     },
   });
 }
 
-/**
- * Alterar status do funcionário
- */
+// ============================================================
+// HOOKS - STATUS UPDATE WITH OPTIMISTIC
+// ============================================================
+
 export function useUpdateEmployeeStatus() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
     mutationFn: async ({ id, status }: { id: string; status: Employee['status'] }) => {
@@ -239,14 +336,122 @@ export function useUpdateEmployeeStatus() {
         .single();
 
       if (error) throw error;
-      return data as Employee;
+      return data;
     },
+
+    onMutate: async ({ id, status }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.employees.lists() });
+
+      const previousEmployees = queryClient.getQueryData<Employee[]>(
+        queryKeys.employees.lists()
+      );
+
+      if (previousEmployees) {
+        queryClient.setQueryData<Employee[]>(
+          queryKeys.employees.lists(),
+          previousEmployees.map((emp) =>
+            emp.id === id ? { ...emp, status } : emp
+          )
+        );
+      }
+
+      return { previousEmployees };
+    },
+
+    onError: (err, _, context) => {
+      if (context?.previousEmployees) {
+        queryClient.setQueryData(
+          queryKeys.employees.lists(),
+          context.previousEmployees
+        );
+      }
+      toast({
+        title: 'Erro ao alterar status',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+
     onSuccess: (data) => {
-      invalidateRelated.employee(queryClient, data.id);
-      toast.success(`Status alterado para ${data.status}!`);
+      const statusText = {
+        active: 'ativado',
+        inactive: 'desativado',
+        suspended: 'suspenso',
+      };
+      toast({
+        title: 'Status atualizado',
+        description: `${data.name} foi ${statusText[data.status]}.`,
+      });
     },
-    onError: (error: Error) => {
-      toast.error(`Erro ao alterar status: ${error.message}`);
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.employees.all });
+    },
+  });
+}
+
+// ============================================================
+// HOOKS - BULK OPERATIONS
+// ============================================================
+
+export function useBulkUpdateEmployees() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ ids, updates }: { ids: string[]; updates: Partial<Employee> }) => {
+      const { data, error } = await supabase
+        .from('employees')
+        .update(updates)
+        .in('id', ids)
+        .select();
+
+      if (error) throw error;
+      return data;
+    },
+
+    onMutate: async ({ ids, updates }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.employees.lists() });
+
+      const previousEmployees = queryClient.getQueryData<Employee[]>(
+        queryKeys.employees.lists()
+      );
+
+      if (previousEmployees) {
+        queryClient.setQueryData<Employee[]>(
+          queryKeys.employees.lists(),
+          previousEmployees.map((emp) =>
+            ids.includes(emp.id) ? { ...emp, ...updates } : emp
+          )
+        );
+      }
+
+      return { previousEmployees };
+    },
+
+    onError: (err, _, context) => {
+      if (context?.previousEmployees) {
+        queryClient.setQueryData(
+          queryKeys.employees.lists(),
+          context.previousEmployees
+        );
+      }
+      toast({
+        title: 'Erro na operação em lote',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+
+    onSuccess: (data) => {
+      toast({
+        title: 'Atualização em lote',
+        description: `${data.length} funcionários foram atualizados.`,
+      });
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.employees.all });
     },
   });
 }
