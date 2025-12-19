@@ -1,160 +1,230 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
-export type ViolationRuleType = 'blocked_site' | 'blocked_keyword' | 'blocked_app' | 'blocked_file_extension' | 'work_hours';
+// ============================================================
+// TYPES
+// ============================================================
 
 export interface ViolationRule {
   id: string;
-  rule_type: ViolationRuleType;
-  rule_value: string;
-  description: string | null;
+  name: string;
+  description?: string;
+  type: string;
   severity: 'low' | 'medium' | 'high' | 'critical';
+  conditions: Record<string, unknown>;
+  actions: string[];
   is_active: boolean;
-  notify_employee: boolean;
-  notify_admin: boolean;
   created_at: string;
+  updated_at: string;
 }
 
-export const ruleTypeLabels: Record<ViolationRuleType, string> = {
-  blocked_site: 'Site Bloqueado',
-  blocked_keyword: 'Palavra-chave Bloqueada',
-  blocked_app: 'Aplicativo Bloqueado',
-  blocked_file_extension: 'Extensão de Arquivo Bloqueada',
-  work_hours: 'Horário de Trabalho'
-};
+export interface CreateViolationRuleInput {
+  name: string;
+  description?: string;
+  type: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  conditions: Record<string, unknown>;
+  actions: string[];
+  is_active?: boolean;
+}
 
-export const severityLabels: Record<string, string> = {
-  low: 'Baixa',
-  medium: 'Média',
-  high: 'Alta',
-  critical: 'Crítica'
-};
+export interface UpdateViolationRuleInput {
+  id: string;
+  name?: string;
+  description?: string;
+  severity?: 'low' | 'medium' | 'high' | 'critical';
+  conditions?: Record<string, unknown>;
+  actions?: string[];
+  is_active?: boolean;
+}
+
+// ============================================================
+// QUERIES
+// ============================================================
 
 export function useViolationRules() {
-  const [rules, setRules] = useState<ViolationRule[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchRules();
-  }, []);
-
-  const fetchRules = async () => {
-    setLoading(true);
-    try {
+  return useQuery({
+    queryKey: queryKeys.violationRules.lists(),
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('violation_rules')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('severity', { ascending: false })
+        .order('name', { ascending: true });
 
       if (error) throw error;
+      return data as ViolationRule[];
+    },
+    ...queryPresets.list,
+  });
+}
 
-      setRules(data.map(r => ({
-        id: r.id,
-        rule_type: r.rule_type as ViolationRuleType,
-        rule_value: r.rule_value,
-        description: r.description,
-        severity: r.severity as ViolationRule['severity'],
-        is_active: r.is_active,
-        notify_employee: r.notify_employee,
-        notify_admin: r.notify_admin,
-        created_at: r.created_at
-      })));
-    } catch (error: any) {
-      toast.error('Erro ao carregar regras: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+export function useActiveViolationRules() {
+  return useQuery({
+    queryKey: queryKeys.violationRules.active(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('violation_rules')
+        .select('*')
+        .eq('is_active', true)
+        .order('severity', { ascending: false });
 
-  const addRule = async (rule: Omit<ViolationRule, 'id' | 'created_at'>) => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
+      if (error) throw error;
+      return data as ViolationRule[];
+    },
+    ...queryPresets.config,
+  });
+}
+
+export function useViolationRule(id: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.violationRules.detail(id || ''),
+    queryFn: async () => {
+      if (!id) return null;
       
       const { data, error } = await supabase
         .from('violation_rules')
-        .insert({
-          rule_type: rule.rule_type,
-          rule_value: rule.rule_value,
-          description: rule.description,
-          severity: rule.severity,
-          is_active: rule.is_active,
-          notify_employee: rule.notify_employee,
-          notify_admin: rule.notify_admin,
-          created_by: user?.id
-        })
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data as ViolationRule;
+    },
+    enabled: !!id,
+    ...queryPresets.detail,
+  });
+}
+
+// ============================================================
+// MUTATIONS
+// ============================================================
+
+export function useCreateViolationRule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (input: CreateViolationRuleInput) => {
+      const { data, error } = await supabase
+        .from('violation_rules')
+        .insert(input)
         .select()
         .single();
 
       if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      invalidateRelated.violationRules(queryClient);
+      toast({
+        title: 'Regra criada',
+        description: 'A regra de violação foi criada com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao criar regra',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
 
-      setRules(prev => [{
-        id: data.id,
-        rule_type: data.rule_type as ViolationRuleType,
-        rule_value: data.rule_value,
-        description: data.description,
-        severity: data.severity as ViolationRule['severity'],
-        is_active: data.is_active,
-        notify_employee: data.notify_employee,
-        notify_admin: data.notify_admin,
-        created_at: data.created_at
-      }, ...prev]);
+export function useUpdateViolationRule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-      toast.success('Regra adicionada com sucesso');
-      return true;
-    } catch (error: any) {
-      toast.error('Erro ao adicionar regra: ' + error.message);
-      return false;
-    }
-  };
-
-  const updateRule = async (id: string, updates: Partial<ViolationRule>) => {
-    try {
-      const { error } = await supabase
+  return useMutation({
+    mutationFn: async ({ id, ...input }: UpdateViolationRuleInput) => {
+      const { data, error } = await supabase
         .from('violation_rules')
-        .update(updates)
-        .eq('id', id);
+        .update(input)
+        .eq('id', id)
+        .select()
+        .single();
 
       if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      invalidateRelated.violationRules(queryClient);
+      toast({
+        title: 'Regra atualizada',
+        description: 'A regra de violação foi atualizada com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao atualizar regra',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
 
-      setRules(prev => prev.map(r => r.id === id ? { ...r, ...updates } : r));
-      toast.success('Regra atualizada');
-      return true;
-    } catch (error: any) {
-      toast.error('Erro ao atualizar regra: ' + error.message);
-      return false;
-    }
-  };
+export function useDeleteViolationRule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  const deleteRule = async (id: string) => {
-    try {
+  return useMutation({
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('violation_rules')
         .delete()
         .eq('id', id);
 
       if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidateRelated.violationRules(queryClient);
+      toast({
+        title: 'Regra excluída',
+        description: 'A regra de violação foi excluída com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao excluir regra',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
 
-      setRules(prev => prev.filter(r => r.id !== id));
-      toast.success('Regra removida');
-      return true;
-    } catch (error: any) {
-      toast.error('Erro ao remover regra: ' + error.message);
-      return false;
-    }
-  };
+export function useToggleViolationRule() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  const toggleRule = async (id: string, is_active: boolean) => {
-    return updateRule(id, { is_active });
-  };
+  return useMutation({
+    mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
+      const { data, error } = await supabase
+        .from('violation_rules')
+        .update({ is_active })
+        .eq('id', id)
+        .select()
+        .single();
 
-  return {
-    rules,
-    loading,
-    addRule,
-    updateRule,
-    deleteRule,
-    toggleRule,
-    refetch: fetchRules
-  };
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      invalidateRelated.violationRules(queryClient);
+      toast({
+        title: data.is_active ? 'Regra ativada' : 'Regra desativada',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao alterar status',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
 }
