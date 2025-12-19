@@ -1,26 +1,27 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-import { checkRateLimit, RateLimitConfig } from '../_shared/rateLimiting.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const RATE_LIMIT_CONFIG: RateLimitConfig = {
-  maxRequests: 20,
-  windowMs: 60 * 1000,
-  identifier: 'send-scheduled-report',
-};
+const ScheduledReportSchema = z.object({
+  report_id: z.string().uuid(),
+  manual: z.boolean().default(false),
+  force: z.boolean().default(false),
+});
 
-serve(async (req: Request) => {
+serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await checkRateLimit(clientIP, RATE_LIMIT_CONFIG);
+    const rateLimitResult = await checkRateLimit(clientIP, 'send-report', 5, 60);
     
     if (!rateLimitResult.allowed) {
       return new Response(
@@ -29,14 +30,23 @@ serve(async (req: Request) => {
       );
     }
 
-    const { report_id, manual } = await req.json();
+    const body = await req.json();
+    const validationResult = ScheduledReportSchema.safeParse(body);
+    
+    if (!validationResult.success) {
+      return new Response(
+        JSON.stringify({ error: 'Validation failed', details: validationResult.error.flatten() }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    );
+    const { report_id, manual, force } = validationResult.data;
 
-    // Get report config
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Get report configuration
     const { data: report, error: reportError } = await supabase
       .from('scheduled_reports')
       .select('*')
@@ -44,56 +54,60 @@ serve(async (req: Request) => {
       .single();
 
     if (reportError || !report) {
-      throw new Error('Report not found');
+      return new Response(
+        JSON.stringify({ error: 'Report not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    if (!report.is_active && !manual) {
-      throw new Error('Report is not active');
+    if (!report.is_active && !force) {
+      return new Response(
+        JSON.stringify({ error: 'Report is inactive' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Generate report data based on type
-    let reportData: Record<string, unknown> = {};
-    
+    let reportData;
     switch (report.report_type) {
-      case 'productivity':
-        const { data: employees } = await supabase
-          .from('employees')
-          .select('id, full_name, department')
-          .eq('status', 'active');
-        reportData = { employees, generated_at: new Date().toISOString() };
-        break;
       case 'violations':
         const { data: violations } = await supabase
           .from('security_violations')
           .select('*')
-          .order('created_at', { ascending: false })
-          .limit(100);
-        reportData = { violations, generated_at: new Date().toISOString() };
+          .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+        reportData = violations;
+        break;
+      case 'productivity':
+        const { data: productivity } = await supabase
+          .from('productivity_metrics')
+          .select('*')
+          .gte('date', new Date().toISOString().split('T')[0]);
+        reportData = productivity;
         break;
       default:
-        reportData = { type: report.report_type, generated_at: new Date().toISOString() };
+        reportData = { message: 'Report generated' };
     }
 
-    // Update last_run_at
+    // Log the report execution
+    await supabase.from('report_logs').insert({
+      report_id,
+      executed_at: new Date().toISOString(),
+      manual,
+      status: 'success',
+      records_count: Array.isArray(reportData) ? reportData.length : 1,
+    });
+
+    // Update last_run
     await supabase
       .from('scheduled_reports')
-      .update({ last_run_at: new Date().toISOString() })
+      .update({ last_run: new Date().toISOString() })
       .eq('id', report_id);
 
-    // TODO: Send email to recipients with report
-
     return new Response(
-      JSON.stringify({ 
-        success: true,
-        report_id,
-        report_type: report.report_type,
-        recipients: report.recipients,
-        data: reportData,
-      }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ success: true, data: reportData }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
