@@ -33,6 +33,7 @@ import {
 import { useEmployees, type EmployeeWithDetails } from '@/hooks/useEmployees';
 import { useTeams } from '@/hooks/useTeams';
 import { cn } from '@/lib/utils';
+import { EmployeesSkeleton } from '@/components/PageSkeletons';
 
 const statusConfig = {
   active: { label: 'Ativo', color: 'bg-success/20 text-success' },
