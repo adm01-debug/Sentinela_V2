@@ -9,6 +9,8 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { playSoundBySeverity } from "@/utils/notificationSound";
+import { SoundSettings } from "@/hooks/useRateLimitSettings";
 
 interface RealtimeAlert {
   id: string;
@@ -22,9 +24,22 @@ interface RealtimeAlert {
 
 interface RateLimitRealtimeAlertsProps {
   alertThreshold?: number;
+  soundSettings?: SoundSettings;
 }
 
-export const RateLimitRealtimeAlerts = ({ alertThreshold = 50 }: RateLimitRealtimeAlertsProps) => {
+const defaultSoundSettings: SoundSettings = {
+  enabled: true,
+  soundType: 'chime',
+  volume: 70,
+  playCritical: true,
+  playHigh: true,
+  playMedium: false,
+};
+
+export const RateLimitRealtimeAlerts = ({ 
+  alertThreshold = 50,
+  soundSettings = defaultSoundSettings 
+}: RateLimitRealtimeAlertsProps) => {
   const [alerts, setAlerts] = useState<RealtimeAlert[]>([]);
   const [isEnabled, setIsEnabled] = useState(true);
   const [isExpanded, setIsExpanded] = useState(true);
@@ -67,6 +82,9 @@ export const RateLimitRealtimeAlerts = ({ alertThreshold = 50 }: RateLimitRealti
 
             setAlerts(prev => [newAlert, ...prev].slice(0, 20));
 
+            // Play sound based on severity and settings
+            playSoundBySeverity(severity, soundSettings);
+
             // Show toast notification
             toast.warning(`Alto volume de requisições detectado`, {
               description: `${log.identifier.slice(0, 20)}... - ${log.request_count} requisições em ${log.endpoint}`,
@@ -104,6 +122,9 @@ export const RateLimitRealtimeAlerts = ({ alertThreshold = 50 }: RateLimitRealti
 
           setAlerts(prev => [newAlert, ...prev].slice(0, 20));
 
+          // Always play alarm sound for blocked IPs (critical)
+          playSoundBySeverity('critical', soundSettings);
+
           toast.error(`IP Bloqueado`, {
             description: `${blocked.ip_address} foi bloqueado: ${blocked.reason || 'Atividade suspeita'}`,
           });
@@ -115,7 +136,7 @@ export const RateLimitRealtimeAlerts = ({ alertThreshold = 50 }: RateLimitRealti
       supabase.removeChannel(rateLimitChannel);
       supabase.removeChannel(blockedIPsChannel);
     };
-  }, [isEnabled, alertThreshold]);
+  }, [isEnabled, alertThreshold, soundSettings]);
 
   const dismissAlert = (id: string) => {
     setAlerts(prev => prev.filter(alert => alert.id !== id));
