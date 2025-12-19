@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import { Search, Filter, X } from 'lucide-react';
+import { memo, useCallback } from 'react';
+import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,93 +9,74 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
+import type { EmployeeFilters as FiltersType } from '@/hooks/useEmployeesPage';
 
-// ============================================================
-// TYPES
-// ============================================================
+interface Team {
+  id: string;
+  name: string;
+}
 
-export interface EmployeeFiltersProps {
-  searchQuery: string;
+interface EmployeeFiltersProps {
+  filters: FiltersType;
+  teams: Team[];
   onSearchChange: (value: string) => void;
-  statusFilter: string;
-  onStatusFilterChange: (value: string) => void;
-  departmentFilter: string;
-  onDepartmentFilterChange: (value: string) => void;
-  teamFilter: string;
-  onTeamFilterChange: (value: string) => void;
-  departments: string[];
-  teams: { id: string; name: string }[];
-  activeFiltersCount: number;
+  onStatusChange: (value: string) => void;
+  onTeamChange: (value: string) => void;
   onClearFilters: () => void;
 }
 
-// ============================================================
-// COMPONENT
-// ============================================================
-
-export const EmployeeFilters = memo(function EmployeeFilters({
-  searchQuery,
-  onSearchChange,
-  statusFilter,
-  onStatusFilterChange,
-  departmentFilter,
-  onDepartmentFilterChange,
-  teamFilter,
-  onTeamFilterChange,
-  departments,
+function EmployeeFiltersComponent({
+  filters,
   teams,
-  activeFiltersCount,
+  onSearchChange,
+  onStatusChange,
+  onTeamChange,
   onClearFilters,
 }: EmployeeFiltersProps) {
+  const hasActiveFilters = 
+    filters.searchTerm !== '' || 
+    filters.statusFilter !== 'all' || 
+    filters.teamFilter !== 'all';
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onSearchChange(e.target.value);
+    },
+    [onSearchChange]
+  );
+
   return (
     <div className="flex flex-col sm:flex-row gap-4">
-      {/* Search */}
-      <div className="relative flex-1 max-w-md">
+      <div className="relative flex-1">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Buscar funcionários..."
-          className="pl-9"
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder="Buscar por nome, email ou departamento..."
+          value={filters.searchTerm}
+          onChange={handleSearchChange}
+          className="pl-10"
         />
       </div>
 
-      {/* Status Filter */}
-      <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-        <SelectTrigger className="w-[160px]">
+      <Select value={filters.statusFilter} onValueChange={onStatusChange}>
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Todos os status</SelectItem>
           <SelectItem value="active">Ativos</SelectItem>
           <SelectItem value="inactive">Inativos</SelectItem>
-          <SelectItem value="suspended">Suspensos</SelectItem>
+          <SelectItem value="vacation">Férias</SelectItem>
+          <SelectItem value="leave">Afastados</SelectItem>
         </SelectContent>
       </Select>
 
-      {/* Department Filter */}
-      <Select value={departmentFilter} onValueChange={onDepartmentFilterChange}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Departamento" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Todos os departamentos</SelectItem>
-          {departments.map((dept) => (
-            <SelectItem key={dept} value={dept}>
-              {dept}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      {/* Team Filter */}
-      <Select value={teamFilter} onValueChange={onTeamFilterChange}>
-        <SelectTrigger className="w-[160px]">
+      <Select value={filters.teamFilter} onValueChange={onTeamChange}>
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Equipe" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Todas as equipes</SelectItem>
+          <SelectItem value="none">Sem equipe</SelectItem>
           {teams.map((team) => (
             <SelectItem key={team.id} value={team.id}>
               {team.name}
@@ -104,18 +85,13 @@ export const EmployeeFilters = memo(function EmployeeFilters({
         </SelectContent>
       </Select>
 
-      {/* Clear Filters */}
-      {activeFiltersCount > 0 && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onClearFilters}
-          className="gap-2"
-        >
+      {hasActiveFilters && (
+        <Button variant="ghost" size="icon" onClick={onClearFilters}>
           <X className="h-4 w-4" />
-          Limpar ({activeFiltersCount})
         </Button>
       )}
     </div>
   );
-});
+}
+
+export const EmployeeFilters = memo(EmployeeFiltersComponent);
