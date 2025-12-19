@@ -1,0 +1,163 @@
+import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react';
+
+// ============================================================
+// TYPES
+// ============================================================
+
+interface FeatureFlags {
+  // Core features
+  darkMode: boolean;
+  advancedAnalytics: boolean;
+  realtimeNotifications: boolean;
+  
+  // Beta features
+  aiAssistant: boolean;
+  predictiveAlerts: boolean;
+  customDashboards: boolean;
+  
+  // Experimental features
+  voiceCommands: boolean;
+  biometricAuth: boolean;
+  offlineMode: boolean;
+}
+
+interface FeatureFlagsContextType {
+  flags: FeatureFlags;
+  isEnabled: (feature: keyof FeatureFlags) => boolean;
+  setFlag: (feature: keyof FeatureFlags, enabled: boolean) => void;
+  enableFlag: (feature: keyof FeatureFlags) => void;
+  disableFlag: (feature: keyof FeatureFlags) => void;
+  toggleFlag: (feature: keyof FeatureFlags) => void;
+}
+
+// ============================================================
+// DEFAULT FLAGS
+// ============================================================
+
+const defaultFlags: FeatureFlags = {
+  // Core features - enabled by default
+  darkMode: true,
+  advancedAnalytics: true,
+  realtimeNotifications: true,
+  
+  // Beta features - disabled by default
+  aiAssistant: false,
+  predictiveAlerts: false,
+  customDashboards: false,
+  
+  // Experimental features - disabled by default
+  voiceCommands: false,
+  biometricAuth: false,
+  offlineMode: false,
+};
+
+// ============================================================
+// CONTEXT
+// ============================================================
+
+const FeatureFlagsContext = createContext<FeatureFlagsContextType | undefined>(undefined);
+
+// ============================================================
+// PROVIDER
+// ============================================================
+
+interface FeatureFlagsProviderProps {
+  children: ReactNode;
+  initialFlags?: Partial<FeatureFlags>;
+}
+
+export function FeatureFlagsProvider({ children, initialFlags }: FeatureFlagsProviderProps) {
+  const [flags, setFlags] = useState<FeatureFlags>({
+    ...defaultFlags,
+    ...initialFlags,
+  });
+
+  const isEnabled = useCallback(
+    (feature: keyof FeatureFlags) => flags[feature],
+    [flags]
+  );
+
+  const setFlag = useCallback(
+    (feature: keyof FeatureFlags, enabled: boolean) => {
+      setFlags((prev) => ({ ...prev, [feature]: enabled }));
+    },
+    []
+  );
+
+  const enableFlag = useCallback(
+    (feature: keyof FeatureFlags) => setFlag(feature, true),
+    [setFlag]
+  );
+
+  const disableFlag = useCallback(
+    (feature: keyof FeatureFlags) => setFlag(feature, false),
+    [setFlag]
+  );
+
+  const toggleFlag = useCallback(
+    (feature: keyof FeatureFlags) => {
+      setFlags((prev) => ({ ...prev, [feature]: !prev[feature] }));
+    },
+    []
+  );
+
+  const value = useMemo(
+    () => ({
+      flags,
+      isEnabled,
+      setFlag,
+      enableFlag,
+      disableFlag,
+      toggleFlag,
+    }),
+    [flags, isEnabled, setFlag, enableFlag, disableFlag, toggleFlag]
+  );
+
+  return (
+    <FeatureFlagsContext.Provider value={value}>
+      {children}
+    </FeatureFlagsContext.Provider>
+  );
+}
+
+// ============================================================
+// HOOK
+// ============================================================
+
+export function useFeatureFlags() {
+  const context = useContext(FeatureFlagsContext);
+  if (!context) {
+    throw new Error('useFeatureFlags must be used within FeatureFlagsProvider');
+  }
+  return context;
+}
+
+// ============================================================
+// SINGLE FLAG HOOK
+// ============================================================
+
+export function useFeatureFlag(feature: keyof FeatureFlags): boolean {
+  const { isEnabled } = useFeatureFlags();
+  return isEnabled(feature);
+}
+
+// ============================================================
+// CONDITIONAL COMPONENT
+// ============================================================
+
+interface FeatureProps {
+  feature: keyof FeatureFlags;
+  children: ReactNode;
+  fallback?: ReactNode;
+}
+
+export function Feature({ feature, children, fallback = null }: FeatureProps) {
+  const isEnabled = useFeatureFlag(feature);
+  return <>{isEnabled ? children : fallback}</>;
+}
+
+// ============================================================
+// EXPORTS
+// ============================================================
+
+export type { FeatureFlags, FeatureFlagsContextType };
