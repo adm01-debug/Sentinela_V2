@@ -7,6 +7,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { PolicyGate } from "@/components/PolicyGate";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import EmployeeDetail from "./pages/EmployeeDetail";
 import Settings from "./pages/Settings";
@@ -36,218 +37,246 @@ import WhatsAppIntegration from "./pages/WhatsAppIntegration";
 import MessageTemplates from "./pages/MessageTemplates";
 import Devices from "./pages/Devices";
 import Security from "./pages/Security";
+import UserManagement from "./pages/UserManagement";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+// Handler global de erros para logging/monitoramento
+const handleGlobalError = (error: Error, errorInfo: React.ErrorInfo) => {
+  // Aqui você pode integrar com Sentry, LogRocket, etc.
+  console.error('[Global Error]', {
+    error: error.message,
+    stack: error.stack,
+    componentStack: errorInfo.componentStack,
+    timestamp: new Date().toISOString(),
+  });
+};
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
-            <Routes>
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/install" element={<Install />} />
-            <Route path="/monitoring-policies" element={
-              <ProtectedRoute>
-                <PolicyGate>
-                  <MonitoringPolicies />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Index />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/teams" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Teams />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/employees" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Employees />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/employee/:id" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <EmployeeDetail />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/devices" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Devices />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/security" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Security />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/settings" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Settings />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/reports" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Reports />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/violations" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Violations />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/monitoring" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Monitoring />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/agent-keys" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <AgentKeys />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/violation-rules" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <ViolationRules />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/internet-access" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <InternetAccess />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/sensitive-keywords" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <SensitiveKeywords />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/ai-analysis" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <AIAnalysis />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/policy-acknowledgments" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <PolicyAcknowledgments />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/work-schedules" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <WorkSchedules />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/geofencing" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Geofencing />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/scheduled-reports" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <ScheduledReports />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/mobile-monitoring" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <MobileMonitoring />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/productivity-comparison" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <ProductivityComparison />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/data-export" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <DataExport />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/rate-limiting" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <RateLimitDashboard />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/webhooks" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <Webhooks />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/whatsapp" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <WhatsAppIntegration />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            <Route path="/message-templates" element={
-              <ProtectedRoute requireAdmin>
-                <PolicyGate>
-                  <MessageTemplates />
-                </PolicyGate>
-              </ProtectedRoute>
-            } />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
+  <ErrorBoundary onError={handleGlobalError}>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AuthProvider>
+              <Routes>
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/install" element={<Install />} />
+                <Route path="/monitoring-policies" element={
+                  <ProtectedRoute>
+                    <PolicyGate>
+                      <MonitoringPolicies />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Index />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/teams" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Teams />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/employees" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Employees />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/employee/:id" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <EmployeeDetail />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/devices" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Devices />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/security" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Security />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/user-management" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <UserManagement />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Settings />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/reports" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Reports />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/violations" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Violations />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/monitoring" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Monitoring />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/agent-keys" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <AgentKeys />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/violation-rules" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <ViolationRules />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/internet-access" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <InternetAccess />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/sensitive-keywords" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <SensitiveKeywords />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/ai-analysis" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <AIAnalysis />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/policy-acknowledgments" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <PolicyAcknowledgments />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/work-schedules" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <WorkSchedules />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/geofencing" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Geofencing />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/scheduled-reports" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <ScheduledReports />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/mobile-monitoring" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <MobileMonitoring />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/productivity-comparison" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <ProductivityComparison />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/data-export" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <DataExport />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/rate-limiting" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <RateLimitDashboard />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/webhooks" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <Webhooks />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/whatsapp" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <WhatsAppIntegration />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                <Route path="/message-templates" element={
+                  <ProtectedRoute requireAdmin>
+                    <PolicyGate>
+                      <MessageTemplates />
+                    </PolicyGate>
+                  </ProtectedRoute>
+                } />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AuthProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;
