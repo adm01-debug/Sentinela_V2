@@ -1,98 +1,90 @@
-import { useEffect, useRef } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
-interface OvertimeRequest {
+export interface OvertimeRequest {
   id: string;
   employee_id: string;
   requested_date: string;
   start_time: string;
   end_time: string;
-  reason: string | null;
-  status: string;
+  reason: string;
+  status: 'pending' | 'approved' | 'rejected';
+  approved_by?: string;
   created_at: string;
+  employee?: { full_name: string };
 }
 
 export function useOvertimeNotifications() {
+  return useQuery({
+    queryKey: queryKeys.notifications.overtime(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('overtime_requests')
+        .select('*, employee:employees(full_name)')
+        .eq('status', 'pending')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data as OvertimeRequest[];
+    },
+    ...queryPresets.list,
+  });
+}
+
+export function useApproveOvertime() {
   const queryClient = useQueryClient();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { toast } = useToast();
 
-  useEffect(() => {
-    // Create audio element for notification sound
-    audioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1sbWx6iJGSiHdwbnB4hoqLiHxzbm9zdH+FiId+dXJycHV7f4CBe3VycnJ0eHx9e3h1c3NzdXh6e3p4dnR0dHV3eXp5eHd2dXV1dnd4eXl4d3Z2dnZ3d3h4eHd3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3');
-    
-    const channel = supabase
-      .channel('overtime-requests-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'overtime_requests'
-        },
-        async (payload) => {
-          console.log('New overtime request received:', payload);
-          
-          const newRequest = payload.new as OvertimeRequest;
-          
-          // Fetch employee name
-          const { data: employee } = await supabase
-            .from('employees')
-            .select('name')
-            .eq('id', newRequest.employee_id)
-            .single();
-          
-          const employeeName = employee?.name || 'Colaborador';
-          const formattedDate = format(new Date(newRequest.requested_date), "dd/MM/yyyy", { locale: ptBR });
-          
-          // Play notification sound
-          if (audioRef.current) {
-            audioRef.current.play().catch(() => {});
-          }
-          
-          // Show toast notification
-          toast.info(
-            `Nova solicitação de hora extra`,
-            {
-              description: `${employeeName} solicitou hora extra para ${formattedDate} (${newRequest.start_time} - ${newRequest.end_time})`,
-              duration: 10000,
-              action: {
-                label: 'Ver',
-                onClick: () => {
-                  // Scroll to overtime tab or navigate
-                  const overtimeTab = document.querySelector('[value="overtime"]');
-                  if (overtimeTab) {
-                    (overtimeTab as HTMLElement).click();
-                  }
-                }
-              }
-            }
-          );
-          
-          // Invalidate queries to refresh data
-          queryClient.invalidateQueries({ queryKey: ['overtime-requests'] });
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'overtime_requests'
-        },
-        (payload) => {
-          console.log('Overtime request updated:', payload);
-          // Invalidate queries to refresh data
-          queryClient.invalidateQueries({ queryKey: ['overtime-requests'] });
-        }
-      )
-      .subscribe();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const { data, error } = await supabase
+        .from('overtime_requests')
+        .update({ status: 'approved', approved_by: user?.id })
+        .eq('id', id)
+        .select()
+        .single();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [queryClient]);
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      invalidateRelated.notifications(queryClient);
+      toast({ title: 'Hora extra aprovada' });
+    },
+    onError: (error) => {
+      toast({ title: 'Erro ao aprovar', description: error.message, variant: 'destructive' });
+    },
+  });
+}
+
+export function useRejectOvertime() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const { data, error } = await supabase
+        .from('overtime_requests')
+        .update({ status: 'rejected', approved_by: user?.id })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      invalidateRelated.notifications(queryClient);
+      toast({ title: 'Hora extra rejeitada' });
+    },
+    onError: (error) => {
+      toast({ title: 'Erro ao rejeitar', description: error.message, variant: 'destructive' });
+    },
+  });
 }
