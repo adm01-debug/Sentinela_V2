@@ -1,251 +1,275 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+
+// ============================================================
+// TYPES
+// ============================================================
 
 export interface Webhook {
   id: string;
   name: string;
   url: string;
-  secret: string | null;
+  secret?: string;
   events: string[];
-  headers: Record<string, string>;
   is_active: boolean;
-  retry_count: number;
-  timeout_seconds: number;
+  last_triggered_at?: string;
+  failure_count: number;
   created_at: string;
   updated_at: string;
-  created_by: string | null;
-  last_triggered_at: string | null;
-  last_status: string | null;
-  last_response_code: number | null;
 }
 
 export interface WebhookLog {
   id: string;
   webhook_id: string;
   event_type: string;
-  payload: Record<string, any>;
-  response_code: number | null;
-  response_body: string | null;
-  error_message: string | null;
-  duration_ms: number | null;
-  attempt_number: number;
-  status: string;
+  payload: Record<string, unknown>;
+  response_status?: number;
+  response_body?: string;
+  success: boolean;
   created_at: string;
 }
 
-export const WEBHOOK_EVENTS = [
-  { value: 'violation.created', label: 'Nova Violação', description: 'Quando uma nova violação de segurança é detectada' },
-  { value: 'violation.critical', label: 'Violação Crítica', description: 'Quando uma violação crítica é detectada' },
-  { value: 'employee.created', label: 'Novo Funcionário', description: 'Quando um novo funcionário é cadastrado' },
-  { value: 'employee.updated', label: 'Funcionário Atualizado', description: 'Quando dados de funcionário são atualizados' },
-  { value: 'geofence.violation', label: 'Violação de Geofence', description: 'Quando um funcionário sai da área permitida' },
-  { value: 'overtime.requested', label: 'Hora Extra Solicitada', description: 'Quando uma hora extra é solicitada' },
-  { value: 'overtime.approved', label: 'Hora Extra Aprovada', description: 'Quando uma hora extra é aprovada' },
-  { value: 'policy.acknowledged', label: 'Política Aceita', description: 'Quando um funcionário aceita uma política' },
-  { value: 'rate_limit.exceeded', label: 'Rate Limit Excedido', description: 'Quando um rate limit é excedido' },
-  { value: 'report.generated', label: 'Relatório Gerado', description: 'Quando um relatório é gerado' },
-];
+export interface CreateWebhookInput {
+  name: string;
+  url: string;
+  secret?: string;
+  events: string[];
+  is_active?: boolean;
+}
+
+export interface UpdateWebhookInput {
+  id: string;
+  name?: string;
+  url?: string;
+  secret?: string;
+  events?: string[];
+  is_active?: boolean;
+}
+
+// ============================================================
+// QUERIES
+// ============================================================
 
 export function useWebhooks() {
-  const [webhooks, setWebhooks] = useState<Webhook[]>([]);
-  const [logs, setLogs] = useState<WebhookLog[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [logsLoading, setLogsLoading] = useState(false);
-  const { toast } = useToast();
-
-  const fetchWebhooks = async () => {
-    try {
+  return useQuery({
+    queryKey: queryKeys.webhooks.lists(),
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('webhooks')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      
-      // Type assertion since we know the structure matches
-      setWebhooks((data || []) as unknown as Webhook[]);
-    } catch (error) {
-      console.error('Error fetching webhooks:', error);
-      toast({
-        title: 'Erro',
-        description: 'Não foi possível carregar os webhooks',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+      return data as Webhook[];
+    },
+    ...queryPresets.list,
+  });
+}
 
-  const fetchLogs = async (webhookId?: string) => {
-    setLogsLoading(true);
-    try {
-      let query = supabase
-        .from('webhook_logs')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(100);
-
-      if (webhookId) {
-        query = query.eq('webhook_id', webhookId);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-      setLogs((data || []) as unknown as WebhookLog[]);
-    } catch (error) {
-      console.error('Error fetching webhook logs:', error);
-    } finally {
-      setLogsLoading(false);
-    }
-  };
-
-  const createWebhook = async (webhook: Omit<Webhook, 'id' | 'created_at' | 'updated_at' | 'created_by' | 'last_triggered_at' | 'last_status' | 'last_response_code'>) => {
-    try {
-      const { data: userData } = await supabase.auth.getUser();
+export function useWebhook(id: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.webhooks.detail(id || ''),
+    queryFn: async () => {
+      if (!id) return null;
       
       const { data, error } = await supabase
         .from('webhooks')
-        .insert({
-          ...webhook,
-          created_by: userData.user?.id,
-        })
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data as Webhook;
+    },
+    enabled: !!id,
+    ...queryPresets.detail,
+  });
+}
+
+export function useWebhookLogs(webhookId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.webhooks.logs(webhookId || ''),
+    queryFn: async () => {
+      if (!webhookId) return [];
+      
+      const { data, error } = await supabase
+        .from('webhook_logs')
+        .select('*')
+        .eq('webhook_id', webhookId)
+        .order('created_at', { ascending: false })
+        .limit(100);
+
+      if (error) throw error;
+      return data as WebhookLog[];
+    },
+    enabled: !!webhookId,
+    ...queryPresets.list,
+  });
+}
+
+// ============================================================
+// MUTATIONS
+// ============================================================
+
+export function useCreateWebhook() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (input: CreateWebhookInput) => {
+      const { data, error } = await supabase
+        .from('webhooks')
+        .insert(input)
         .select()
         .single();
 
       if (error) throw error;
-
-      toast({
-        title: 'Sucesso',
-        description: 'Webhook criado com sucesso',
-      });
-
-      await fetchWebhooks();
       return data;
-    } catch (error) {
-      console.error('Error creating webhook:', error);
+    },
+    onSuccess: () => {
+      invalidateRelated.webhooks(queryClient);
       toast({
-        title: 'Erro',
-        description: 'Não foi possível criar o webhook',
+        title: 'Webhook criado',
+        description: 'O webhook foi criado com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao criar webhook',
+        description: error.message,
         variant: 'destructive',
       });
-      return null;
-    }
-  };
+    },
+  });
+}
 
-  const updateWebhook = async (id: string, updates: Partial<Webhook>) => {
-    try {
-      const { error } = await supabase
+export function useUpdateWebhook() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ id, ...input }: UpdateWebhookInput) => {
+      const { data, error } = await supabase
         .from('webhooks')
-        .update(updates)
-        .eq('id', id);
+        .update(input)
+        .eq('id', id)
+        .select()
+        .single();
 
       if (error) throw error;
-
+      return data;
+    },
+    onSuccess: () => {
+      invalidateRelated.webhooks(queryClient);
       toast({
-        title: 'Sucesso',
-        description: 'Webhook atualizado com sucesso',
+        title: 'Webhook atualizado',
+        description: 'O webhook foi atualizado com sucesso.',
       });
-
-      await fetchWebhooks();
-      return true;
-    } catch (error) {
-      console.error('Error updating webhook:', error);
+    },
+    onError: (error) => {
       toast({
-        title: 'Erro',
-        description: 'Não foi possível atualizar o webhook',
+        title: 'Erro ao atualizar webhook',
+        description: error.message,
         variant: 'destructive',
       });
-      return false;
-    }
-  };
+    },
+  });
+}
 
-  const deleteWebhook = async (id: string) => {
-    try {
+export function useDeleteWebhook() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('webhooks')
         .delete()
         .eq('id', id);
 
       if (error) throw error;
-
+    },
+    onSuccess: () => {
+      invalidateRelated.webhooks(queryClient);
       toast({
-        title: 'Sucesso',
-        description: 'Webhook excluído com sucesso',
+        title: 'Webhook excluído',
+        description: 'O webhook foi excluído com sucesso.',
       });
-
-      await fetchWebhooks();
-      return true;
-    } catch (error) {
-      console.error('Error deleting webhook:', error);
+    },
+    onError: (error) => {
       toast({
-        title: 'Erro',
-        description: 'Não foi possível excluir o webhook',
+        title: 'Erro ao excluir webhook',
+        description: error.message,
         variant: 'destructive',
       });
-      return false;
-    }
-  };
+    },
+  });
+}
 
-  const testWebhook = async (webhookId: string, eventType: string) => {
-    try {
+export function useTestWebhook() {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
       const { data, error } = await supabase.functions.invoke('send-webhook', {
-        body: {
-          event_type: eventType,
-          webhook_id: webhookId,
-          test_mode: true,
-          data: {
-            test: true,
-            message: 'Este é um teste de webhook',
-            timestamp: new Date().toISOString(),
-          },
+        body: { 
+          webhook_id: id, 
+          test: true,
+          event_type: 'test',
+          payload: { message: 'Test webhook' },
         },
       });
 
       if (error) throw error;
-
-      const result = data.results?.[0];
-      if (result?.success) {
-        toast({
-          title: 'Teste bem-sucedido',
-          description: `Webhook respondeu com status ${result.statusCode}`,
-        });
-      } else {
-        toast({
-          title: 'Teste falhou',
-          description: result?.error || 'O webhook não respondeu corretamente',
-          variant: 'destructive',
-        });
-      }
-
-      await fetchWebhooks();
       return data;
-    } catch (error) {
-      console.error('Error testing webhook:', error);
+    },
+    onSuccess: () => {
       toast({
-        title: 'Erro',
-        description: 'Não foi possível testar o webhook',
+        title: 'Teste enviado',
+        description: 'O webhook de teste foi enviado com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao testar webhook',
+        description: error.message,
         variant: 'destructive',
       });
-      return null;
-    }
-  };
+    },
+  });
+}
 
-  useEffect(() => {
-    fetchWebhooks();
-  }, []);
+export function useToggleWebhook() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-  return {
-    webhooks,
-    logs,
-    loading,
-    logsLoading,
-    fetchWebhooks,
-    fetchLogs,
-    createWebhook,
-    updateWebhook,
-    deleteWebhook,
-    testWebhook,
-  };
+  return useMutation({
+    mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
+      const { data, error } = await supabase
+        .from('webhooks')
+        .update({ is_active })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      invalidateRelated.webhooks(queryClient);
+      toast({
+        title: data.is_active ? 'Webhook ativado' : 'Webhook desativado',
+        description: `O webhook foi ${data.is_active ? 'ativado' : 'desativado'} com sucesso.`,
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao alterar status',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
 }
