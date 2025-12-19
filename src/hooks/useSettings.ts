@@ -1,252 +1,215 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
 
-export interface SecurityPolicy {
-  id: string;
-  name: string;
-  description: string;
-  enabled: boolean;
-  category: 'device' | 'screen' | 'network';
+// ============================================================
+// TYPES
+// ============================================================
+
+export interface MonitoringSettings {
+  id?: string;
+  company_id?: string;
+  screenshot_interval: number;
+  screenshot_quality: number;
+  blur_screenshots: boolean;
+  track_keystrokes: boolean;
+  track_mouse_clicks: boolean;
+  track_applications: boolean;
+  track_websites: boolean;
+  track_idle_time: boolean;
+  idle_threshold_minutes: number;
+  working_hours_start: string;
+  working_hours_end: string;
+  working_days: string[];
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface ApplicationRule {
-  id: string;
-  name: string;
-  category: 'productivity' | 'communication' | 'entertainment' | 'development' | 'other';
-  status: 'allowed' | 'blocked' | 'monitored';
+export interface AlertSettings {
+  id?: string;
+  company_id?: string;
+  email_alerts: boolean;
+  whatsapp_alerts: boolean;
+  alert_on_violation: boolean;
+  alert_on_idle: boolean;
+  alert_on_overtime: boolean;
+  alert_recipients: string[];
+  escalation_enabled: boolean;
+  escalation_delay_minutes: number;
+  created_at?: string;
+  updated_at?: string;
 }
 
-const logAuditChange = async (params: {
-  action: string;
-  entityType: string;
-  entityId: string;
-  entityName: string;
-  oldValue?: Record<string, any>;
-  newValue?: Record<string, any>;
-}) => {
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+// ============================================================
+// FETCH FUNCTIONS
+// ============================================================
 
-    await supabase
-      .from('settings_audit_log')
-      .insert({
-        user_id: user.id,
-        user_email: user.email || 'unknown',
-        action: params.action,
-        entity_type: params.entityType,
-        entity_id: params.entityId,
-        entity_name: params.entityName,
-        old_value: params.oldValue || null,
-        new_value: params.newValue || null,
-      });
-  } catch (error) {
-    console.error('Error logging audit:', error);
+async function fetchMonitoringSettings(): Promise<MonitoringSettings | null> {
+  const { data, error } = await supabase
+    .from('monitoring_settings')
+    .select('*')
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
+    throw error;
   }
-};
 
-export function useSettings() {
-  const [policies, setPolicies] = useState<SecurityPolicy[]>([]);
-  const [appRules, setAppRules] = useState<ApplicationRule[]>([]);
-  const [loading, setLoading] = useState(true);
+  return data;
+}
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+async function fetchAlertSettings(): Promise<AlertSettings | null> {
+  const { data, error } = await supabase
+    .from('alert_settings')
+    .select('*')
+    .single();
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const [policiesRes, rulesRes] = await Promise.all([
-        supabase.from('security_policies').select('*').order('created_at'),
-        supabase.from('application_rules').select('*').order('name')
-      ]);
+  if (error && error.code !== 'PGRST116') {
+    throw error;
+  }
 
-      if (policiesRes.error) throw policiesRes.error;
-      if (rulesRes.error) throw rulesRes.error;
+  return data;
+}
 
-      setPolicies(policiesRes.data.map(p => ({
-        id: p.id,
-        name: p.name,
-        description: p.description,
-        enabled: p.enabled,
-        category: p.category as SecurityPolicy['category']
-      })));
+// ============================================================
+// HOOKS - MONITORING SETTINGS
+// ============================================================
 
-      setAppRules(rulesRes.data.map(r => ({
-        id: r.id,
-        name: r.name,
-        category: r.category as ApplicationRule['category'],
-        status: r.status as ApplicationRule['status']
-      })));
-    } catch (error: any) {
-      toast.error('Erro ao carregar configurações: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+export function useMonitoringSettings() {
+  return useQuery({
+    queryKey: queryKeys.settings.monitoring,
+    queryFn: fetchMonitoringSettings,
+    ...queryPresets.config,
+  });
+}
 
-  const updatePolicy = async (id: string, enabled: boolean) => {
-    const policy = policies.find(p => p.id === id);
-    try {
-      const { error } = await supabase
-        .from('security_policies')
-        .update({ enabled })
-        .eq('id', id);
+export function useUpdateMonitoringSettings() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-      if (error) throw error;
-
-      setPolicies(prev => prev.map(p => p.id === id ? { ...p, enabled } : p));
-      
-      // Log the change
-      await logAuditChange({
-        action: enabled ? 'ATIVAR' : 'DESATIVAR',
-        entityType: 'policy',
-        entityId: id,
-        entityName: policy?.name || 'Política',
-        oldValue: { enabled: !enabled },
-        newValue: { enabled }
-      });
-
-      toast.success(`${policy?.name} ${enabled ? 'ativado' : 'desativado'}`);
-    } catch (error: any) {
-      toast.error('Erro ao atualizar política: ' + error.message);
-    }
-  };
-
-  const updateAppRule = async (id: string, status: ApplicationRule['status']) => {
-    const rule = appRules.find(r => r.id === id);
-    const oldStatus = rule?.status;
-    try {
-      const { error } = await supabase
-        .from('application_rules')
-        .update({ status })
-        .eq('id', id);
-
-      if (error) throw error;
-
-      setAppRules(prev => prev.map(r => r.id === id ? { ...r, status } : r));
-      
-      // Log the change
-      await logAuditChange({
-        action: 'ALTERAR_STATUS',
-        entityType: 'app_rule',
-        entityId: id,
-        entityName: rule?.name || 'Aplicativo',
-        oldValue: { status: oldStatus },
-        newValue: { status }
-      });
-
-      const statusLabel = status === 'allowed' ? 'Permitido' : status === 'blocked' ? 'Bloqueado' : 'Monitorado';
-      toast.success(`${rule?.name} alterado para ${statusLabel}`);
-    } catch (error: any) {
-      toast.error('Erro ao atualizar regra: ' + error.message);
-    }
-  };
-
-  const addAppRule = async (name: string, category: ApplicationRule['category'], status: ApplicationRule['status']) => {
-    try {
-      const { data, error } = await supabase
-        .from('application_rules')
-        .insert({ name, category, status })
-        .select()
+  return useMutation({
+    mutationFn: async (settings: Partial<MonitoringSettings>) => {
+      const { data: existing } = await supabase
+        .from('monitoring_settings')
+        .select('id')
         .single();
 
-      if (error) throw error;
+      if (existing?.id) {
+        const { data, error } = await supabase
+          .from('monitoring_settings')
+          .update(settings)
+          .eq('id', existing.id)
+          .select()
+          .single();
 
-      setAppRules(prev => [...prev, {
-        id: data.id,
-        name: data.name,
-        category: data.category as ApplicationRule['category'],
-        status: data.status as ApplicationRule['status']
-      }]);
-      
-      // Log the change
-      await logAuditChange({
-        action: 'CRIAR',
-        entityType: 'app_rule',
-        entityId: data.id,
-        entityName: name,
-        newValue: { name, category, status }
+        if (error) throw error;
+        return data;
+      } else {
+        const { data, error } = await supabase
+          .from('monitoring_settings')
+          .insert(settings)
+          .select()
+          .single();
+
+        if (error) throw error;
+        return data;
+      }
+    },
+    onSuccess: () => {
+      invalidateRelated.settings(queryClient);
+      toast({
+        title: 'Configurações salvas',
+        description: 'As configurações de monitoramento foram atualizadas.',
       });
-
-      toast.success(`${name} adicionado com sucesso`);
-      return true;
-    } catch (error: any) {
-      toast.error('Erro ao adicionar aplicativo: ' + error.message);
-      return false;
-    }
-  };
-
-  const deleteAppRule = async (id: string) => {
-    const rule = appRules.find(r => r.id === id);
-    try {
-      const { error } = await supabase
-        .from('application_rules')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      setAppRules(prev => prev.filter(r => r.id !== id));
-      
-      // Log the change
-      await logAuditChange({
-        action: 'EXCLUIR',
-        entityType: 'app_rule',
-        entityId: id,
-        entityName: rule?.name || 'Aplicativo',
-        oldValue: { name: rule?.name, category: rule?.category, status: rule?.status }
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao salvar',
+        description: error.message,
+        variant: 'destructive',
       });
+    },
+  });
+}
 
-      toast.success(`${rule?.name} removido com sucesso`);
-      return true;
-    } catch (error: any) {
-      toast.error('Erro ao remover aplicativo: ' + error.message);
-      return false;
-    }
-  };
+// ============================================================
+// HOOKS - ALERT SETTINGS
+// ============================================================
 
-  const editAppRule = async (id: string, name: string, category: ApplicationRule['category']) => {
-    const rule = appRules.find(r => r.id === id);
-    try {
-      const { error } = await supabase
-        .from('application_rules')
-        .update({ name, category })
-        .eq('id', id);
+export function useAlertSettings() {
+  return useQuery({
+    queryKey: queryKeys.settings.alerts,
+    queryFn: fetchAlertSettings,
+    ...queryPresets.config,
+  });
+}
 
-      if (error) throw error;
+export function useUpdateAlertSettings() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-      setAppRules(prev => prev.map(r => r.id === id ? { ...r, name, category } : r));
-      
-      // Log the change
-      await logAuditChange({
-        action: 'EDITAR',
-        entityType: 'app_rule',
-        entityId: id,
-        entityName: name,
-        oldValue: { name: rule?.name, category: rule?.category },
-        newValue: { name, category }
+  return useMutation({
+    mutationFn: async (settings: Partial<AlertSettings>) => {
+      const { data: existing } = await supabase
+        .from('alert_settings')
+        .select('id')
+        .single();
+
+      if (existing?.id) {
+        const { data, error } = await supabase
+          .from('alert_settings')
+          .update(settings)
+          .eq('id', existing.id)
+          .select()
+          .single();
+
+        if (error) throw error;
+        return data;
+      } else {
+        const { data, error } = await supabase
+          .from('alert_settings')
+          .insert(settings)
+          .select()
+          .single();
+
+        if (error) throw error;
+        return data;
+      }
+    },
+    onSuccess: () => {
+      invalidateRelated.settings(queryClient);
+      toast({
+        title: 'Configurações salvas',
+        description: 'As configurações de alertas foram atualizadas.',
       });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao salvar',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
 
-      toast.success(`${name} atualizado com sucesso`);
-      return true;
-    } catch (error: any) {
-      toast.error('Erro ao atualizar aplicativo: ' + error.message);
-      return false;
-    }
-  };
+// ============================================================
+// HOOKS - COMBINED SETTINGS
+// ============================================================
+
+export function useSettings() {
+  const monitoring = useMonitoringSettings();
+  const alerts = useAlertSettings();
 
   return {
-    policies,
-    appRules,
-    loading,
-    updatePolicy,
-    updateAppRule,
-    addAppRule,
-    deleteAppRule,
-    editAppRule,
-    refetch: fetchData
+    monitoring: monitoring.data,
+    alerts: alerts.data,
+    isLoading: monitoring.isLoading || alerts.isLoading,
+    isError: monitoring.isError || alerts.isError,
+    error: monitoring.error || alerts.error,
+    refetch: () => {
+      monitoring.refetch();
+      alerts.refetch();
+    },
   };
 }
