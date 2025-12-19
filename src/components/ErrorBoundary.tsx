@@ -1,284 +1,127 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { captureError, addBreadcrumb } from '@/lib/sentry';
 
-// ============================================================
-// TYPES
-// ============================================================
-
-interface ErrorBoundaryProps {
+interface Props {
   children: ReactNode;
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
-  level?: 'page' | 'section' | 'widget';
   showDetails?: boolean;
-  componentName?: string;
 }
 
-interface ErrorBoundaryState {
+interface State {
   hasError: boolean;
   error: Error | null;
   errorInfo: ErrorInfo | null;
-  eventId: string | null;
 }
 
-// ============================================================
-// ERROR BOUNDARY COMPONENT
-// ============================================================
-
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+export class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, error: null, errorInfo: null, eventId: null };
+    this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
+  static getDerivedStateFromError(error: Error): Partial<State> {
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
-
-    // Add breadcrumb for context
-    addBreadcrumb('error', 'Error boundary caught error', {
-      component: this.props.componentName,
-      level: this.props.level,
-    }, 'error');
-
-    // Capture error in Sentry
-    const eventId = captureError(error, {
-      component: this.props.componentName || 'ErrorBoundary',
-      action: 'componentDidCatch',
-      metadata: {
-        componentStack: errorInfo.componentStack,
-        level: this.props.level,
-      },
-    });
-
-    this.setState({ eventId });
-
+    
     // Log to console in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
 
-    // Call custom error handler if provided
+    // Call optional error handler
     this.props.onError?.(error, errorInfo);
+
+    // TODO: Send to error tracking service (Sentry, etc.)
   }
 
   handleRetry = () => {
-    addBreadcrumb('ui', 'User clicked retry in error boundary', {
-      component: this.props.componentName,
-    });
-    this.setState({ hasError: false, error: null, errorInfo: null, eventId: null });
+    this.setState({ hasError: false, error: null, errorInfo: null });
   };
 
   handleGoHome = () => {
-    addBreadcrumb('navigation', 'User navigated home from error boundary');
     window.location.href = '/';
   };
 
-  handleReportFeedback = () => {
-    // Open Sentry feedback dialog if eventId exists
-    if (this.state.eventId && typeof window !== 'undefined') {
-      addBreadcrumb('ui', 'User opened feedback dialog');
-      // Sentry.showReportDialog({ eventId: this.state.eventId });
-    }
-  };
-
   render() {
-    const { hasError, error, eventId } = this.state;
-    const { children, fallback, level = 'section', showDetails = false } = this.props;
-
-    if (hasError) {
-      // Use custom fallback if provided
-      if (fallback) {
-        return fallback;
+    if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback;
       }
 
-      // Page level error - full screen
-      if (level === 'page') {
-        return (
-          <div className="min-h-screen flex items-center justify-center bg-background p-4">
-            <Card className="w-full max-w-lg">
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-destructive/10 flex items-center justify-center">
-                  <AlertTriangle className="h-8 w-8 text-destructive" />
-                </div>
-                <CardTitle className="text-2xl">Algo deu errado</CardTitle>
-                <CardDescription>
-                  Ocorreu um erro inesperado. Nossa equipe foi notificada automaticamente.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {showDetails && error && (
-                  <div className="rounded-lg bg-muted p-4 text-sm">
-                    <p className="font-mono text-destructive">{error.message}</p>
-                    {eventId && (
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        ID do erro: {eventId}
-                      </p>
-                    )}
-                  </div>
-                )}
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Button onClick={this.handleRetry} className="flex-1">
-                    <RefreshCw className="mr-2 h-4 w-4" />
-                    Tentar novamente
-                  </Button>
-                  <Button variant="outline" onClick={this.handleGoHome} className="flex-1">
-                    <Home className="mr-2 h-4 w-4" />
-                    Ir para início
-                  </Button>
-                </div>
-                {eventId && (
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={this.handleReportFeedback}
-                    className="w-full"
-                  >
-                    <Bug className="mr-2 h-4 w-4" />
-                    Reportar problema
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        );
-      }
-
-      // Section level error - card
-      if (level === 'section') {
-        return (
-          <Card className="border-destructive/50">
-            <CardContent className="p-6">
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="h-12 w-12 rounded-full bg-destructive/10 flex items-center justify-center">
-                  <AlertTriangle className="h-6 w-6 text-destructive" />
-                </div>
-                <div>
-                  <h3 className="font-semibold">Erro ao carregar seção</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Não foi possível carregar este conteúdo.
+      return (
+        <div className="min-h-[400px] flex items-center justify-center p-4">
+          <Card className="w-full max-w-lg">
+            <CardHeader className="text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
+                <AlertTriangle className="h-6 w-6 text-destructive" />
+              </div>
+              <CardTitle>Algo deu errado</CardTitle>
+              <CardDescription>
+                Ocorreu um erro inesperado. Por favor, tente novamente.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {this.props.showDetails && this.state.error && (
+                <div className="rounded-lg bg-muted p-4">
+                  <p className="text-sm font-medium text-destructive">
+                    {this.state.error.message}
                   </p>
+                  {import.meta.env.DEV && this.state.errorInfo && (
+                    <pre className="mt-2 max-h-32 overflow-auto text-xs text-muted-foreground">
+                      {this.state.errorInfo.componentStack}
+                    </pre>
+                  )}
                 </div>
-                {showDetails && error && (
-                  <p className="text-xs text-destructive font-mono bg-muted p-2 rounded">
-                    {error.message}
-                  </p>
-                )}
-                <Button size="sm" variant="outline" onClick={this.handleRetry}>
-                  <RefreshCw className="mr-2 h-3 w-3" />
+              )}
+              <div className="flex gap-2 justify-center">
+                <Button onClick={this.handleRetry} variant="default">
+                  <RefreshCw className="mr-2 h-4 w-4" />
                   Tentar novamente
+                </Button>
+                <Button onClick={this.handleGoHome} variant="outline">
+                  <Home className="mr-2 h-4 w-4" />
+                  Ir para o início
                 </Button>
               </div>
             </CardContent>
           </Card>
-        );
-      }
-
-      // Widget level error - minimal
-      return (
-        <div className="flex items-center justify-center p-4 rounded-lg border border-destructive/30 bg-destructive/5">
-          <div className="flex items-center gap-2 text-sm text-destructive">
-            <Bug className="h-4 w-4" />
-            <span>Erro</span>
-            <Button 
-              size="sm" 
-              variant="ghost" 
-              className="h-6 px-2 text-xs"
-              onClick={this.handleRetry}
-            >
-              Retry
-            </Button>
-          </div>
         </div>
       );
     }
 
-    return children;
+    return this.props.children;
   }
 }
 
-// ============================================================
-// WRAPPER COMPONENTS FOR DIFFERENT LEVELS
-// ============================================================
-
-export function PageErrorBoundary({ 
-  children, 
-  componentName = 'Page' 
-}: { 
-  children: ReactNode;
-  componentName?: string;
-}) {
-  return (
-    <ErrorBoundary 
-      level="page" 
-      showDetails={process.env.NODE_ENV === 'development'}
-      componentName={componentName}
-    >
-      {children}
-    </ErrorBoundary>
-  );
-}
-
-export function SectionErrorBoundary({ 
-  children,
-  componentName = 'Section'
-}: { 
-  children: ReactNode;
-  componentName?: string;
-}) {
-  return (
-    <ErrorBoundary level="section" componentName={componentName}>
-      {children}
-    </ErrorBoundary>
-  );
-}
-
-export function WidgetErrorBoundary({ 
-  children,
-  componentName = 'Widget'
-}: { 
-  children: ReactNode;
-  componentName?: string;
-}) {
-  return (
-    <ErrorBoundary level="widget" componentName={componentName}>
-      {children}
-    </ErrorBoundary>
-  );
-}
-
-// ============================================================
-// HOC FOR WRAPPING COMPONENTS
-// ============================================================
-
+// HOC for functional components
 export function withErrorBoundary<P extends object>(
-  Component: React.ComponentType<P>,
-  level: 'page' | 'section' | 'widget' = 'section',
-  componentName?: string
+  WrappedComponent: React.ComponentType<P>,
+  errorBoundaryProps?: Omit<Props, 'children'>
 ) {
-  const displayName = componentName || Component.displayName || Component.name || 'Component';
-
-  function WithErrorBoundary(props: P) {
+  return function WithErrorBoundaryWrapper(props: P) {
     return (
-      <ErrorBoundary level={level} componentName={displayName}>
-        <Component {...props} />
+      <ErrorBoundary {...errorBoundaryProps}>
+        <WrappedComponent {...props} />
       </ErrorBoundary>
     );
-  }
-
-  WithErrorBoundary.displayName = `withErrorBoundary(${displayName})`;
-
-  return WithErrorBoundary;
+  };
 }
 
-// ============================================================
-// DEFAULT EXPORT
-// ============================================================
+// Hook for programmatic error throwing
+export function useErrorHandler() {
+  const [error, setError] = React.useState<Error | null>(null);
 
-export default ErrorBoundary;
+  if (error) {
+    throw error;
+  }
+
+  return React.useCallback((error: Error) => {
+    setError(error);
+  }, []);
+}
