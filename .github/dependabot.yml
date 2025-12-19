@@ -1,0 +1,106 @@
+# ============================================================
+# DEPENDABOT CONFIGURATION
+# Automated dependency updates
+# ============================================================
+
+version: 2
+updates:
+  # NPM dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      # Group minor and patch updates
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Keep major updates separate
+    ignore:
+      # Ignore major updates for specific packages
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+    reviewers:
+      - "adm01-debug"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci(deps)"
+    reviewers:
+      - "adm01-debug"
+
+  # Supabase Edge Functions (Deno)
+  - package-ecosystem: "npm"
+    directory: "/supabase/functions"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "edge-functions"
+    commit-message:
+      prefix: "chore(deps)"
+    reviewers:
+      - "adm01-debug"
+
+  # Desktop Agent
+  - package-ecosystem: "npm"
+    directory: "/desktop-agent"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "desktop-agent"
+    commit-message:
+      prefix: "chore(deps)"
+    reviewers:
+      - "adm01-debug"
+
+  # Mobile App
+  - package-ecosystem: "npm"
+    directory: "/mobile-app"
+    schedule:
+      interval: "weekly"
+      day: "thursday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "mobile-app"
+    commit-message:
+      prefix: "chore(deps)"
+    reviewers:
+      - "adm01-debug"
