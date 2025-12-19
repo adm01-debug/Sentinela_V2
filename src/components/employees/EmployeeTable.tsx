@@ -1,6 +1,8 @@
-import { memo } from 'react';
-import { Link } from 'react-router-dom';
-import { MoreHorizontal, Eye, Edit, Trash2, Mail, Phone } from 'lucide-react';
+import { memo, useCallback } from 'react';
+import { Edit, Trash2, Monitor, Smartphone, Link2, Unlink, Mail, Phone, Building2, Briefcase } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Table,
   TableBody,
@@ -9,108 +11,54 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+import type { EmployeeWithDetails } from '@/hooks/useEmployees';
+import { statusConfig, getInitials } from '@/hooks/useEmployeesPage';
 
-// ============================================================
-// TYPES
-// ============================================================
-
-export interface Employee {
+interface Team {
   id: string;
   name: string;
-  email: string;
-  department?: string;
-  position?: string;
-  status: 'active' | 'inactive' | 'suspended';
-  avatar_url?: string;
-  phone?: string;
-  team?: {
-    id: string;
-    name: string;
-  };
-  last_activity_at?: string;
-  created_at: string;
 }
 
-export interface EmployeeTableProps {
-  employees: Employee[];
-  selectedIds: string[];
-  onSelectAll: (checked: boolean) => void;
-  onSelectOne: (id: string, checked: boolean) => void;
-  onEdit: (employee: Employee) => void;
-  onDelete: (employee: Employee) => void;
-  isLoading?: boolean;
+interface EmployeeTableProps {
+  employees: EmployeeWithDetails[];
+  teams: Team[];
+  onEdit: (employee: EmployeeWithDetails) => void;
+  onDelete: (employee: EmployeeWithDetails) => void;
+  onAssignDevice: (employee: EmployeeWithDetails) => void;
+  onUnassignDevice: (employeeId: string, deviceId: string) => void;
 }
 
-// ============================================================
-// HELPER FUNCTIONS
-// ============================================================
+const deviceTypeIcons = {
+  desktop: Monitor,
+  laptop: Monitor,
+  mobile: Smartphone
+};
 
-function getStatusBadge(status: Employee['status']) {
-  switch (status) {
-    case 'active':
-      return <Badge variant="default" className="bg-green-500">Ativo</Badge>;
-    case 'inactive':
-      return <Badge variant="secondary">Inativo</Badge>;
-    case 'suspended':
-      return <Badge variant="destructive">Suspenso</Badge>;
-    default:
-      return <Badge variant="outline">{status}</Badge>;
-  }
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-}
-
-// ============================================================
-// COMPONENT
-// ============================================================
-
-export const EmployeeTable = memo(function EmployeeTable({
+function EmployeeTableComponent({
   employees,
-  selectedIds,
-  onSelectAll,
-  onSelectOne,
+  teams,
   onEdit,
   onDelete,
-  isLoading = false,
+  onAssignDevice,
+  onUnassignDevice,
 }: EmployeeTableProps) {
-  const allSelected = employees.length > 0 && selectedIds.length === employees.length;
-  const someSelected = selectedIds.length > 0 && selectedIds.length < employees.length;
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-      </div>
-    );
-  }
+  const getTeamName = useCallback((teamId: string | null) => {
+    if (!teamId) return null;
+    const team = teams.find(t => t.id === teamId);
+    return team?.name || null;
+  }, [teams]);
 
   if (employees.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 text-center">
-        <p className="text-muted-foreground">Nenhum funcionário encontrado</p>
-        <p className="text-sm text-muted-foreground mt-1">
-          Tente ajustar os filtros ou adicione novos funcionários
-        </p>
+      <div className="text-center py-12 text-muted-foreground">
+        <p>Nenhum funcionário encontrado</p>
       </div>
     );
   }
@@ -120,124 +68,167 @@ export const EmployeeTable = memo(function EmployeeTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-12">
-              <Checkbox
-                checked={allSelected}
-                indeterminate={someSelected}
-                onCheckedChange={onSelectAll}
-                aria-label="Selecionar todos"
-              />
-            </TableHead>
             <TableHead>Funcionário</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Contato</TableHead>
             <TableHead>Departamento</TableHead>
             <TableHead>Equipe</TableHead>
-            <TableHead>Última Atividade</TableHead>
-            <TableHead className="w-12"></TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Dispositivos</TableHead>
+            <TableHead className="text-right">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {employees.map((employee) => (
-            <TableRow key={employee.id}>
-              <TableCell>
-                <Checkbox
-                  checked={selectedIds.includes(employee.id)}
-                  onCheckedChange={(checked) => onSelectOne(employee.id, !!checked)}
-                  aria-label={`Selecionar ${employee.name}`}
-                />
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={employee.avatar_url} alt={employee.name} />
-                    <AvatarFallback>{getInitials(employee.name)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <Link
-                      to={`/employees/${employee.id}`}
-                      className="font-medium hover:underline"
-                    >
-                      {employee.name}
-                    </Link>
-                    <p className="text-sm text-muted-foreground">{employee.email}</p>
+          {employees.map((employee) => {
+            const status = statusConfig[employee.status as keyof typeof statusConfig];
+            const teamName = getTeamName(employee.team_id);
+
+            return (
+              <TableRow key={employee.id}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <Avatar>
+                      <AvatarImage src={employee.avatar_url || undefined} />
+                      <AvatarFallback>{getInitials(employee.name)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{employee.name}</p>
+                      {employee.position && (
+                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                          <Briefcase className="h-3 w-3" />
+                          {employee.position}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </TableCell>
-              <TableCell>{getStatusBadge(employee.status)}</TableCell>
-              <TableCell>
-                <span className="text-muted-foreground">
-                  {employee.department || '-'}
-                </span>
-              </TableCell>
-              <TableCell>
-                {employee.team ? (
-                  <Badge variant="outline">{employee.team.name}</Badge>
-                ) : (
-                  <span className="text-muted-foreground">-</span>
-                )}
-              </TableCell>
-              <TableCell>
-                {employee.last_activity_at ? (
-                  <span className="text-sm text-muted-foreground">
-                    {formatDistanceToNow(new Date(employee.last_activity_at), {
-                      addSuffix: true,
-                      locale: ptBR,
-                    })}
-                  </span>
-                ) : (
-                  <span className="text-muted-foreground">-</span>
-                )}
-              </TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <MoreHorizontal className="h-4 w-4" />
-                      <span className="sr-only">Abrir menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
-                      <Link to={`/employees/${employee.id}`}>
-                        <Eye className="mr-2 h-4 w-4" />
-                        Ver detalhes
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onEdit(employee)}>
-                      <Edit className="mr-2 h-4 w-4" />
-                      Editar
-                    </DropdownMenuItem>
+                </TableCell>
+
+                <TableCell>
+                  <div className="space-y-1">
                     {employee.email && (
-                      <DropdownMenuItem asChild>
-                        <a href={`mailto:${employee.email}`}>
-                          <Mail className="mr-2 h-4 w-4" />
-                          Enviar email
-                        </a>
-                      </DropdownMenuItem>
+                      <p className="text-sm flex items-center gap-1">
+                        <Mail className="h-3 w-3 text-muted-foreground" />
+                        {employee.email}
+                      </p>
                     )}
                     {employee.phone && (
-                      <DropdownMenuItem asChild>
-                        <a href={`tel:${employee.phone}`}>
-                          <Phone className="mr-2 h-4 w-4" />
-                          Ligar
-                        </a>
-                      </DropdownMenuItem>
+                      <p className="text-sm flex items-center gap-1">
+                        <Phone className="h-3 w-3 text-muted-foreground" />
+                        {employee.phone}
+                      </p>
                     )}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="text-destructive"
-                      onClick={() => onDelete(employee)}
-                    >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Excluir
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-          ))}
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  {employee.department && (
+                    <span className="flex items-center gap-1">
+                      <Building2 className="h-3 w-3 text-muted-foreground" />
+                      {employee.department}
+                    </span>
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  {teamName ? (
+                    <Badge variant="outline">{teamName}</Badge>
+                  ) : (
+                    <span className="text-muted-foreground text-sm">-</span>
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  <Badge className={cn('font-normal', status?.color)}>
+                    {status?.label || employee.status}
+                  </Badge>
+                </TableCell>
+
+                <TableCell>
+                  <div className="flex flex-wrap gap-1">
+                    {employee.devices && employee.devices.length > 0 ? (
+                      employee.devices.map((device) => {
+                        const DeviceIcon = deviceTypeIcons[device.device_type as keyof typeof deviceTypeIcons] || Monitor;
+                        return (
+                          <TooltipProvider key={device.id}>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Badge 
+                                  variant="secondary" 
+                                  className="cursor-pointer flex items-center gap-1"
+                                  onClick={() => onUnassignDevice(employee.id, device.id)}
+                                >
+                                  <DeviceIcon className="h-3 w-3" />
+                                  {device.device_name}
+                                  {device.is_primary && <span className="text-xs">★</span>}
+                                </Badge>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Clique para desvincular</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        );
+                      })
+                    ) : (
+                      <span className="text-muted-foreground text-sm">Nenhum</span>
+                    )}
+                  </div>
+                </TableCell>
+
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => onAssignDevice(employee)}
+                          >
+                            <Link2 className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Vincular dispositivo</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => onEdit(employee)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Editar</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => onDelete(employee)}
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Excluir</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
   );
-});
+}
+
+export const EmployeeTable = memo(EmployeeTableComponent);
