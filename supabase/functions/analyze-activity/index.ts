@@ -6,10 +6,45 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Rate limit configuration for AI analysis (expensive operation)
+const RATE_LIMIT_MAX_REQUESTS = 10; // Max analysis requests per window
+const RATE_LIMIT_WINDOW_SECONDS = 300; // 5 minute window
+
 interface AnalysisRequest {
   employee_name?: string;
   report_type: 'individual' | 'team' | 'general';
   period_days?: number;
+}
+
+async function checkRateLimit(
+  supabase: any,
+  identifier: string,
+  identifierType: string,
+  endpoint: string
+): Promise<{ allowed: boolean; retryAfter?: number; remaining?: number }> {
+  try {
+    const { data, error } = await supabase.rpc("check_rate_limit", {
+      p_identifier: identifier,
+      p_identifier_type: identifierType,
+      p_endpoint: endpoint,
+      p_max_requests: RATE_LIMIT_MAX_REQUESTS,
+      p_window_seconds: RATE_LIMIT_WINDOW_SECONDS,
+    });
+
+    if (error) {
+      console.error("Rate limit check error:", error);
+      return { allowed: true };
+    }
+
+    return {
+      allowed: data.allowed,
+      retryAfter: data.retry_after_seconds,
+      remaining: data.remaining,
+    };
+  } catch (e) {
+    console.error("Rate limit exception:", e);
+    return { allowed: true };
+  }
 }
 
 serve(async (req) => {
@@ -17,15 +52,37 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+  // Get client IP for rate limiting
+  const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+                   req.headers.get("x-real-ip") || 
+                   "unknown";
+
   try {
+    // Rate limit by IP (AI analysis is expensive)
+    const rateCheck = await checkRateLimit(supabase, clientIP, "ip", "analyze-activity");
+    if (!rateCheck.allowed) {
+      console.log(`Rate limit exceeded for analysis from IP: ${clientIP}`);
+      return new Response(
+        JSON.stringify({ error: "Too many analysis requests. Try again later." }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            "Content-Type": "application/json",
+            "Retry-After": String(rateCheck.retryAfter || 300)
+          } 
+        }
+      );
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
-
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const { employee_name, report_type, period_days = 7 }: AnalysisRequest = await req.json();
 
