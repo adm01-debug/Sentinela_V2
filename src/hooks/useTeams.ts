@@ -1,204 +1,317 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { queryKeys, queryPresets, CACHE_TIMES } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
+
+// ============================================================
+// TYPES
+// ============================================================
 
 export interface Team {
   id: string;
   name: string;
-  description: string | null;
-  leader_id: string | null;
-  leader_name: string | null;
-  parent_team_id: string | null;
+  description?: string;
+  manager_id?: string;
+  company_id?: string;
+  color?: string;
   created_at: string;
   updated_at: string;
-  created_by: string | null;
+  _count?: {
+    members: number;
+  };
+  manager?: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
 export interface TeamMember {
   id: string;
   team_id: string;
-  employee_name: string;
-  role: string | null;
+  employee_id: string;
+  role: 'member' | 'lead';
   joined_at: string;
+  employee?: {
+    id: string;
+    name: string;
+    email: string;
+    avatar_url?: string;
+  };
 }
 
-export interface TeamWithMembers extends Team {
-  members: TeamMember[];
-  parent_team?: Team | null;
-  child_teams?: Team[];
+export interface CreateTeamInput {
+  name: string;
+  description?: string;
+  manager_id?: string;
+  color?: string;
 }
+
+// ============================================================
+// FETCH FUNCTIONS
+// ============================================================
+
+async function fetchTeams(): Promise<Team[]> {
+  const { data, error } = await supabase
+    .from('teams')
+    .select(`
+      *,
+      manager:employees!teams_manager_id_fkey(id, name, email)
+    `)
+    .order('name');
+
+  if (error) throw error;
+
+  // Get member counts
+  const teamsWithCounts = await Promise.all(
+    (data || []).map(async (team) => {
+      const { count } = await supabase
+        .from('team_members')
+        .select('*', { count: 'exact', head: true })
+        .eq('team_id', team.id);
+
+      return {
+        ...team,
+        _count: { members: count || 0 },
+      };
+    })
+  );
+
+  return teamsWithCounts;
+}
+
+async function fetchTeam(id: string): Promise<Team | null> {
+  const { data, error } = await supabase
+    .from('teams')
+    .select(`
+      *,
+      manager:employees!teams_manager_id_fkey(id, name, email)
+    `)
+    .eq('id', id)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+async function fetchTeamMembers(teamId: string): Promise<TeamMember[]> {
+  const { data, error } = await supabase
+    .from('team_members')
+    .select(`
+      *,
+      employee:employees(id, name, email, avatar_url)
+    `)
+    .eq('team_id', teamId)
+    .order('joined_at');
+
+  if (error) throw error;
+  return data || [];
+}
+
+// ============================================================
+// HOOKS - QUERIES
+// ============================================================
 
 export function useTeams() {
-  const [teams, setTeams] = useState<TeamWithMembers[]>([]);
-  const [loading, setLoading] = useState(true);
+  return useQuery({
+    queryKey: queryKeys.teams.lists(),
+    queryFn: fetchTeams,
+    ...queryPresets.list,
+  });
+}
 
-  useEffect(() => {
-    fetchTeams();
-  }, []);
+export function useTeam(id: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.teams.detail(id!),
+    queryFn: () => fetchTeam(id!),
+    enabled: !!id,
+    staleTime: CACHE_TIMES.STABLE,
+  });
+}
 
-  const fetchTeams = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch teams
-      const { data: teamsData, error: teamsError } = await supabase
-        .from('teams')
-        .select('*')
-        .order('name');
+export function useTeamMembers(teamId: string | undefined) {
+  return useQuery({
+    queryKey: ['teams', teamId, 'members'],
+    queryFn: () => fetchTeamMembers(teamId!),
+    enabled: !!teamId,
+    staleTime: CACHE_TIMES.FREQUENT,
+  });
+}
 
-      if (teamsError) throw teamsError;
+// ============================================================
+// HOOKS - MUTATIONS
+// ============================================================
 
-      // Fetch all team members
-      const { data: membersData, error: membersError } = await supabase
-        .from('team_members')
-        .select('*');
+export function useCreateTeam() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-      if (membersError) throw membersError;
-
-      // Combine teams with their members
-      const teamsWithMembers: TeamWithMembers[] = (teamsData || []).map(team => ({
-        ...team,
-        members: (membersData || []).filter(m => m.team_id === team.id),
-        parent_team: teamsData?.find(t => t.id === team.parent_team_id) || null,
-        child_teams: teamsData?.filter(t => t.parent_team_id === team.id) || []
-      }));
-
-      setTeams(teamsWithMembers);
-    } catch (error: any) {
-      console.error('Error fetching teams:', error);
-      toast.error('Erro ao carregar equipes');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const createTeam = async (team: Omit<Team, 'id' | 'created_at' | 'updated_at' | 'created_by'>) => {
-    try {
-      const { data: userData } = await supabase.auth.getUser();
-      
+  return useMutation({
+    mutationFn: async (input: CreateTeamInput) => {
       const { data, error } = await supabase
         .from('teams')
+        .insert(input)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });
+      toast({
+        title: 'Equipe criada',
+        description: 'A equipe foi criada com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao criar equipe',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
+
+export function useUpdateTeam() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ id, ...input }: Partial<Team> & { id: string }) => {
+      const { data, error } = await supabase
+        .from('teams')
+        .update(input)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.teams.detail(data.id) });
+      toast({
+        title: 'Equipe atualizada',
+        description: 'As informações da equipe foram atualizadas.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao atualizar',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
+
+export function useDeleteTeam() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('teams')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      return id;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });
+      toast({
+        title: 'Equipe excluída',
+        description: 'A equipe foi excluída com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao excluir',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
+
+// ============================================================
+// HOOKS - TEAM MEMBERS
+// ============================================================
+
+export function useAddTeamMember() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ teamId, employeeId, role = 'member' }: { 
+      teamId: string; 
+      employeeId: string; 
+      role?: 'member' | 'lead';
+    }) => {
+      const { data, error } = await supabase
+        .from('team_members')
         .insert({
-          ...team,
-          created_by: userData.user?.id
+          team_id: teamId,
+          employee_id: employeeId,
+          role,
         })
         .select()
         .single();
 
       if (error) throw error;
-
-      toast.success('Equipe criada com sucesso');
-      await fetchTeams();
       return data;
-    } catch (error: any) {
-      console.error('Error creating team:', error);
-      toast.error('Erro ao criar equipe');
-      throw error;
-    }
-  };
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['teams', variables.teamId, 'members'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });
+      toast({
+        title: 'Membro adicionado',
+        description: 'O funcionário foi adicionado à equipe.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao adicionar membro',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+}
 
-  const updateTeam = async (id: string, updates: Partial<Team>) => {
-    try {
-      const { error } = await supabase
-        .from('teams')
-        .update(updates)
-        .eq('id', id);
+export function useRemoveTeamMember() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-      if (error) throw error;
-
-      toast.success('Equipe atualizada com sucesso');
-      await fetchTeams();
-    } catch (error: any) {
-      console.error('Error updating team:', error);
-      toast.error('Erro ao atualizar equipe');
-      throw error;
-    }
-  };
-
-  const deleteTeam = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('teams')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      toast.success('Equipe excluída com sucesso');
-      await fetchTeams();
-    } catch (error: any) {
-      console.error('Error deleting team:', error);
-      toast.error('Erro ao excluir equipe');
-      throw error;
-    }
-  };
-
-  const addMember = async (teamId: string, employeeName: string, role: string = 'member') => {
-    try {
-      const { error } = await supabase
-        .from('team_members')
-        .insert({
-          team_id: teamId,
-          employee_name: employeeName,
-          role
-        });
-
-      if (error) throw error;
-
-      toast.success('Membro adicionado com sucesso');
-      await fetchTeams();
-    } catch (error: any) {
-      console.error('Error adding member:', error);
-      toast.error('Erro ao adicionar membro');
-      throw error;
-    }
-  };
-
-  const removeMember = async (memberId: string) => {
-    try {
+  return useMutation({
+    mutationFn: async ({ teamId, memberId }: { teamId: string; memberId: string }) => {
       const { error } = await supabase
         .from('team_members')
         .delete()
         .eq('id', memberId);
 
       if (error) throw error;
-
-      toast.success('Membro removido com sucesso');
-      await fetchTeams();
-    } catch (error: any) {
-      console.error('Error removing member:', error);
-      toast.error('Erro ao remover membro');
-      throw error;
-    }
-  };
-
-  const updateMemberRole = async (memberId: string, role: string) => {
-    try {
-      const { error } = await supabase
-        .from('team_members')
-        .update({ role })
-        .eq('id', memberId);
-
-      if (error) throw error;
-
-      toast.success('Função atualizada com sucesso');
-      await fetchTeams();
-    } catch (error: any) {
-      console.error('Error updating member role:', error);
-      toast.error('Erro ao atualizar função');
-      throw error;
-    }
-  };
-
-  return {
-    teams,
-    loading,
-    createTeam,
-    updateTeam,
-    deleteTeam,
-    addMember,
-    removeMember,
-    updateMemberRole,
-    refetch: fetchTeams
-  };
+      return { teamId, memberId };
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['teams', variables.teamId, 'members'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });
+      toast({
+        title: 'Membro removido',
+        description: 'O funcionário foi removido da equipe.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao remover membro',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
 }
