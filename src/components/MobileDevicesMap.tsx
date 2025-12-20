@@ -16,7 +16,7 @@ interface MobileDevicesMapProps {
 type StatusFilter = "all" | "online" | "offline";
 type OsFilter = "all" | "ios" | "android";
 
-export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
+function MobileDevicesMapBase({ devices }: MobileDevicesMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
@@ -542,3 +542,6 @@ export function MobileDevicesMap({ devices }: MobileDevicesMapProps) {
     </div>
   );
 }
+
+// Memo wrappers
+export const MobileDevicesMap = memo(MobileDevicesMapBase);
