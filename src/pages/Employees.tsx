@@ -1,8 +1,13 @@
-import { Users, Plus } from 'lucide-react';
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { EmployeesSkeleton } from '@/components/PageSkeletons';
+import { useEmployeesPage } from '@/hooks/useEmployeesPage';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,7 +18,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { EmployeesSkeleton } from '@/components/PageSkeletons';
 import {
   EmployeeStatsCards,
   EmployeeFilters,
@@ -21,9 +25,8 @@ import {
   EmployeeFormDialog,
   DeviceAssignDialog,
 } from '@/components/employees';
-import { useEmployeesPage } from '@/hooks/useEmployeesPage';
 
-export default function Employees() {
+const EmployeesContent = memo(function EmployeesContent() {
   const {
     // Data
     filteredEmployees,
@@ -193,5 +196,25 @@ export default function Employees() {
         </main>
       </div>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function Employees() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <EmployeesContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
