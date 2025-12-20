@@ -3,6 +3,8 @@ import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useInstallPage } from '@/hooks/useInstallPage';
+
 
 
 interface BeforeInstallPromptEvent extends Event {
@@ -187,6 +189,8 @@ const InstallContent = memo(function InstallContent() {
     </ErrorBoundary>
   );
 });
+
+// Hook disponível: const { step, nextStep, prevStep, agentKey, generateKey, copyToClipboard } = useInstallPage();
 
 export default function Install() {
   return <InstallContent />;
