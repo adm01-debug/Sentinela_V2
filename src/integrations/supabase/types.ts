@@ -17,6 +17,7 @@ export type Database = {
       agent_keys: {
         Row: {
           agent_key: string
+          company_id: string | null
           created_at: string
           created_by: string | null
           device_name: string | null
@@ -28,6 +29,7 @@ export type Database = {
         }
         Insert: {
           agent_key?: string
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           device_name?: string | null
@@ -39,6 +41,7 @@ export type Database = {
         }
         Update: {
           agent_key?: string
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           device_name?: string | null
@@ -48,7 +51,15 @@ export type Database = {
           key_name?: string
           last_seen_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "agent_keys_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ai_analysis_reports: {
         Row: {
@@ -284,6 +295,45 @@ export type Database = {
         }
         Relationships: []
       }
+      companies: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          max_employees: number | null
+          name: string
+          plan: string | null
+          settings: Json | null
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          max_employees?: number | null
+          name: string
+          plan?: string | null
+          settings?: Json | null
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          max_employees?: number | null
+          name?: string
+          plan?: string | null
+          settings?: Json | null
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       employee_badges: {
         Row: {
           badge_id: string
@@ -499,6 +549,7 @@ export type Database = {
       employees: {
         Row: {
           avatar_url: string | null
+          company_id: string | null
           created_at: string
           created_by: string | null
           department: string | null
@@ -515,6 +566,7 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           department?: string | null
@@ -531,6 +583,7 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           department?: string | null
@@ -546,6 +599,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "employees_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "employees_team_id_fkey"
             columns: ["team_id"]
@@ -605,6 +665,7 @@ export type Database = {
       geofences: {
         Row: {
           address: string | null
+          company_id: string | null
           created_at: string
           created_by: string | null
           description: string | null
@@ -618,6 +679,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -631,6 +693,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -642,7 +705,15 @@ export type Database = {
           radius_meters?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "geofences_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       internet_access_settings: {
         Row: {
@@ -1277,6 +1348,7 @@ export type Database = {
       security_policies: {
         Row: {
           category: string
+          company_id: string | null
           created_at: string
           description: string
           enabled: boolean
@@ -1286,6 +1358,7 @@ export type Database = {
         }
         Insert: {
           category: string
+          company_id?: string | null
           created_at?: string
           description: string
           enabled?: boolean
@@ -1295,6 +1368,7 @@ export type Database = {
         }
         Update: {
           category?: string
+          company_id?: string | null
           created_at?: string
           description?: string
           enabled?: boolean
@@ -1302,10 +1376,19 @@ export type Database = {
           name?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "security_policies_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       security_violations: {
         Row: {
+          company_id: string | null
           created_at: string
           description: string | null
           device: string | null
@@ -1322,6 +1405,7 @@ export type Database = {
           violation_type: string
         }
         Insert: {
+          company_id?: string | null
           created_at?: string
           description?: string | null
           device?: string | null
@@ -1338,6 +1422,7 @@ export type Database = {
           violation_type: string
         }
         Update: {
+          company_id?: string | null
           created_at?: string
           description?: string | null
           device?: string | null
@@ -1353,7 +1438,15 @@ export type Database = {
           severity?: string
           violation_type?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "security_violations_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       session_recordings: {
         Row: {
@@ -1497,6 +1590,7 @@ export type Database = {
       }
       teams: {
         Row: {
+          company_id: string | null
           created_at: string
           created_by: string | null
           description: string | null
@@ -1508,6 +1602,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -1519,6 +1614,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -1531,10 +1627,49 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "teams_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "teams_parent_team_id_fkey"
             columns: ["parent_team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_companies: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          role: string | null
+          user_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          role?: string | null
+          user_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          role?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_companies_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
             referencedColumns: ["id"]
           },
         ]
@@ -1562,6 +1697,7 @@ export type Database = {
       }
       violation_rules: {
         Row: {
+          company_id: string | null
           created_at: string
           created_by: string | null
           description: string | null
@@ -1575,6 +1711,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -1588,6 +1725,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -1600,7 +1738,15 @@ export type Database = {
           severity?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "violation_rules_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       webhook_logs: {
         Row: {
@@ -1796,6 +1942,7 @@ export type Database = {
         Row: {
           allow_overtime: boolean
           auto_block_enabled: boolean
+          company_id: string | null
           created_at: string
           created_by: string | null
           description: string | null
@@ -1812,6 +1959,7 @@ export type Database = {
         Insert: {
           allow_overtime?: boolean
           auto_block_enabled?: boolean
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -1828,6 +1976,7 @@ export type Database = {
         Update: {
           allow_overtime?: boolean
           auto_block_enabled?: boolean
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -1841,7 +1990,15 @@ export type Database = {
           updated_at?: string
           work_days?: number[]
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "work_schedules_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -1859,6 +2016,7 @@ export type Database = {
         Returns: Json
       }
       cleanup_rate_limit_logs: { Args: never; Returns: number }
+      get_user_company_id: { Args: { _user_id: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1867,6 +2025,10 @@ export type Database = {
         Returns: boolean
       }
       is_ip_blocked: { Args: { p_ip_address: string }; Returns: boolean }
+      user_in_company: {
+        Args: { _company_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "user"
