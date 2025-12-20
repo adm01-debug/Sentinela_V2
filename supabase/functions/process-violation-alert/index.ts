@@ -1,303 +1,219 @@
-// ============================================================
-// PROCESS VIOLATION ALERT EDGE FUNCTION
-// Processes security violations and sends alerts with rate limiting
-// ============================================================
-
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-import { validateRequest, ValidationError } from '../_shared/validation.ts';
-import { createRateLimiter, rateLimitResponse, addRateLimitHeaders } from '../_shared/rateLimiting.ts';
-
-// ============================================================
-// CORS HEADERS
-// ============================================================
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// ============================================================
-// RATE LIMITER
-// ============================================================
+// Validation Schemas
+const ViolationAlertSchema = z.object({
+  violation_id: z.string().uuid(),
+  employee_id: z.string().uuid(),
+  violation_type: z.enum([
+    'unauthorized_access',
+    'data_leak',
+    'policy_breach',
+    'suspicious_activity',
+    'geofence_breach',
+    'time_violation',
+    'app_violation',
+    'url_violation',
+    'keyword_detected',
+    'excessive_idle',
+    'unauthorized_software',
+    'usb_violation',
+    'print_violation',
+    'other',
+  ]),
+  severity: z.enum(['low', 'medium', 'high', 'critical']),
+  description: z.string().max(2000).optional(),
+  evidence: z.object({
+    screenshot_id: z.string().uuid().optional(),
+    url: z.string().url().optional(),
+    app_name: z.string().optional(),
+    keyword: z.string().optional(),
+    location: z.object({
+      latitude: z.number(),
+      longitude: z.number(),
+    }).optional(),
+    metadata: z.record(z.unknown()).optional(),
+  }).optional(),
+  notify_managers: z.boolean().default(true),
+  auto_resolve: z.boolean().default(false),
+});
 
-const rateLimiter = createRateLimiter('VIOLATION_ALERT');
+const NotificationPrefsSchema = z.object({
+  email: z.boolean().default(true),
+  push: z.boolean().default(true),
+  sms: z.boolean().default(false),
+  webhook: z.boolean().default(false),
+});
 
-// ============================================================
-// TYPES
-// ============================================================
-
-interface ViolationAlertRequest {
-  violationId: string;
-  employeeId: string;
-  violationType: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  description: string;
-  metadata?: Record<string, unknown>;
-}
-
-interface AlertConfig {
-  channels: ('whatsapp' | 'email' | 'webhook' | 'push')[];
-  recipients: string[];
-  escalationEnabled: boolean;
-  escalationDelayMinutes: number;
-}
-
-// ============================================================
-// MAIN HANDLER
-// ============================================================
-
-serve(async (req: Request) => {
-  // Handle CORS preflight
+serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Validate request
-    const { data, userId, companyId } = await validateRequest<ViolationAlertRequest>(req, {
-      requiredFields: ['violationId', 'employeeId', 'violationType', 'severity', 'description'],
-      allowedFields: ['violationId', 'employeeId', 'violationType', 'severity', 'description', 'metadata'],
-    });
-
-    // Check rate limit per company
-    const rateLimitResult = rateLimiter.check(`violation:${companyId || userId}`);
+    const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await checkRateLimit(clientIP, 'process-violation', 50, 60);
+    
     if (!rateLimitResult.allowed) {
-      console.log(`Rate limit exceeded for company ${companyId}`);
-      return rateLimitResponse(rateLimitResult);
-    }
-
-    console.log(`Processing violation alert: ${data.violationId}`);
-
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    );
-
-    // Get alert configuration
-    const alertConfig = await getAlertConfig(supabase, companyId, data.severity);
-
-    // Get employee details
-    const employee = await getEmployeeDetails(supabase, data.employeeId);
-
-    // Process alerts for each channel
-    const alertResults = await Promise.allSettled(
-      alertConfig.channels.map(channel => 
-        sendAlert(channel, {
-          violation: data,
-          employee,
-          recipients: alertConfig.recipients,
-        })
-      )
-    );
-
-    // Log alert processing
-    await logAlertProcessing(supabase, data.violationId, alertResults);
-
-    // Schedule escalation if enabled and severity is high/critical
-    if (alertConfig.escalationEnabled && ['high', 'critical'].includes(data.severity)) {
-      await scheduleEscalation(supabase, data.violationId, alertConfig.escalationDelayMinutes);
-    }
-
-    const successCount = alertResults.filter(r => r.status === 'fulfilled').length;
-
-    // Return result with rate limit headers
-    const successResponse = new Response(
-      JSON.stringify({
-        success: true,
-        violationId: data.violationId,
-        alertsSent: successCount,
-        totalChannels: alertConfig.channels.length,
-        channels: alertConfig.channels,
-        escalationScheduled: alertConfig.escalationEnabled && ['high', 'critical'].includes(data.severity),
-      }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
-    );
-
-    return addRateLimitHeaders(successResponse, rateLimitResult);
-
-  } catch (error) {
-    console.error('Error processing violation alert:', error);
-
-    if (error instanceof ValidationError) {
       return new Response(
-        JSON.stringify({ error: error.message, details: error.details }),
+        JSON.stringify({ error: 'Rate limit exceeded' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const body = await req.json();
+    const validation = ViolationAlertSchema.safeParse(body);
+    
+    if (!validation.success) {
+      return new Response(
+        JSON.stringify({ error: 'Validation failed', details: validation.error.flatten() }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
+    const { 
+      violation_id, 
+      employee_id, 
+      violation_type, 
+      severity, 
+      description, 
+      evidence,
+      notify_managers,
+      auto_resolve 
+    } = validation.data;
+
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Get employee and their managers
+    const { data: employee } = await supabase
+      .from('employees')
+      .select('*, teams(*, manager_id)')
+      .eq('id', employee_id)
+      .single();
+
+    if (!employee) {
+      return new Response(
+        JSON.stringify({ error: 'Employee not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Create or update violation record
+    const { data: violation, error: violationError } = await supabase
+      .from('security_violations')
+      .upsert({
+        id: violation_id,
+        employee_id,
+        violation_type,
+        severity,
+        description,
+        evidence,
+        status: auto_resolve ? 'resolved' : 'open',
+        created_at: new Date().toISOString(),
+      }, { onConflict: 'id' })
+      .select()
+      .single();
+
+    if (violationError) {
+      throw violationError;
+    }
+
+    const notifications = [];
+
+    // Notify managers if requested
+    if (notify_managers && employee.teams?.manager_id) {
+      // Get manager notification preferences
+      const { data: managerPrefs } = await supabase
+        .from('notification_preferences')
+        .select('*')
+        .eq('user_id', employee.teams.manager_id)
+        .single();
+
+      const prefs = NotificationPrefsSchema.parse(managerPrefs || {});
+
+      // Create in-app notification
+      const { data: notification } = await supabase
+        .from('notifications')
+        .insert({
+          user_id: employee.teams.manager_id,
+          type: 'violation_alert',
+          title: `Violação ${severity.toUpperCase()}: ${violation_type}`,
+          message: description || `Nova violação detectada para ${employee.name}`,
+          data: { violation_id, employee_id, severity },
+          read: false,
+        })
+        .select()
+        .single();
+
+      notifications.push(notification);
+
+      // Send push notification if enabled
+      if (prefs.push) {
+        await supabase.functions.invoke('send-push-notification', {
+          body: {
+            user_id: employee.teams.manager_id,
+            title: `🚨 Violação ${severity.toUpperCase()}`,
+            body: `${employee.name}: ${violation_type}`,
+            data: { violation_id },
+          },
+        });
+      }
+
+      // Trigger webhook if enabled
+      if (prefs.webhook) {
+        const { data: webhooks } = await supabase
+          .from('webhooks')
+          .select('*')
+          .eq('is_active', true)
+          .contains('events', ['violation.created']);
+
+        for (const webhook of webhooks || []) {
+          await supabase.functions.invoke('send-webhook', {
+            body: {
+              webhook_id: webhook.id,
+              event_type: 'violation.created',
+              payload: {
+                violation,
+                employee: { id: employee.id, name: employee.name },
+                timestamp: new Date().toISOString(),
+              },
+            },
+          });
+        }
+      }
+    }
+
+    // Log audit entry
+    await supabase.from('audit_logs').insert({
+      action: 'violation_processed',
+      entity_type: 'security_violation',
+      entity_id: violation_id,
+      details: { severity, violation_type, notify_managers },
+    });
+
     return new Response(
-      JSON.stringify({ error: 'Failed to process violation alert', details: error.message }),
+      JSON.stringify({ 
+        success: true, 
+        violation_id,
+        notifications_sent: notifications.length,
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+
+  } catch (error) {
+    console.error('Process violation error:', error);
+    return new Response(
+      JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
-
-// ============================================================
-// HELPER FUNCTIONS
-// ============================================================
-
-async function getAlertConfig(
-  supabase: any,
-  companyId: string,
-  severity: string
-): Promise<AlertConfig> {
-  const { data, error } = await supabase
-    .from('alert_settings')
-    .select('*')
-    .eq('company_id', companyId)
-    .single();
-
-  if (error || !data) {
-    // Default configuration
-    return {
-      channels: severity === 'critical' ? ['whatsapp', 'email'] : ['email'],
-      recipients: [],
-      escalationEnabled: severity === 'critical',
-      escalationDelayMinutes: 15,
-    };
-  }
-
-  return {
-    channels: data.channels || ['email'],
-    recipients: data.recipients || [],
-    escalationEnabled: data.escalation_enabled || false,
-    escalationDelayMinutes: data.escalation_delay_minutes || 15,
-  };
-}
-
-async function getEmployeeDetails(supabase: any, employeeId: string) {
-  const { data, error } = await supabase
-    .from('employees')
-    .select('id, name, email, department, team_id')
-    .eq('id', employeeId)
-    .single();
-
-  if (error) {
-    console.error('Failed to get employee details:', error);
-    return { id: employeeId, name: 'Unknown', email: null };
-  }
-
-  return data;
-}
-
-async function sendAlert(
-  channel: string,
-  payload: { violation: ViolationAlertRequest; employee: any; recipients: string[] }
-): Promise<{ channel: string; success: boolean }> {
-  console.log(`Sending alert via ${channel}`);
-
-  try {
-    switch (channel) {
-      case 'whatsapp':
-        // Call send-whatsapp function
-        await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/send-whatsapp`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            phone: payload.recipients[0],
-            message: formatAlertMessage(payload.violation, payload.employee),
-          }),
-        });
-        break;
-
-      case 'email':
-        // Implement email sending
-        console.log('Email alert would be sent here');
-        break;
-
-      case 'webhook':
-        // Call send-webhook function
-        await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/send-webhook`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            event: 'violation_alert',
-            payload: payload.violation,
-          }),
-        });
-        break;
-
-      case 'push':
-        // Call send-push-notification function
-        console.log('Push notification would be sent here');
-        break;
-    }
-
-    return { channel, success: true };
-  } catch (err) {
-    console.error(`Failed to send ${channel} alert:`, err);
-    return { channel, success: false };
-  }
-}
-
-function formatAlertMessage(violation: ViolationAlertRequest, employee: any): string {
-  const severityEmoji = {
-    low: '🟡',
-    medium: '🟠',
-    high: '🔴',
-    critical: '🚨',
-  };
-
-  return `${severityEmoji[violation.severity]} *ALERTA DE VIOLAÇÃO*
-
-*Funcionário:* ${employee.name}
-*Tipo:* ${violation.violationType}
-*Severidade:* ${violation.severity.toUpperCase()}
-
-*Descrição:*
-${violation.description}
-
----
-Sentinela - Sistema de Monitoramento`;
-}
-
-async function logAlertProcessing(
-  supabase: any,
-  violationId: string,
-  results: PromiseSettledResult<{ channel: string; success: boolean }>[]
-): Promise<void> {
-  try {
-    const channelResults = results.map((r, i) => ({
-      channel: r.status === 'fulfilled' ? r.value.channel : 'unknown',
-      success: r.status === 'fulfilled' ? r.value.success : false,
-    }));
-
-    await supabase.from('alert_logs').insert({
-      violation_id: violationId,
-      channels: channelResults,
-      processed_at: new Date().toISOString(),
-    });
-  } catch (err) {
-    console.error('Failed to log alert processing:', err);
-  }
-}
-
-async function scheduleEscalation(
-  supabase: any,
-  violationId: string,
-  delayMinutes: number
-): Promise<void> {
-  try {
-    const escalationTime = new Date(Date.now() + delayMinutes * 60 * 1000);
-
-    await supabase.from('escalation_queue').insert({
-      violation_id: violationId,
-      scheduled_at: escalationTime.toISOString(),
-      status: 'pending',
-    });
-
-    console.log(`Escalation scheduled for ${escalationTime.toISOString()}`);
-  } catch (err) {
-    console.error('Failed to schedule escalation:', err);
-  }
-}
