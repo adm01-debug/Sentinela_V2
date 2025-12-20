@@ -1,226 +1,152 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Validation Schema for optional query params
+const HealthCheckQuerySchema = z.object({
+  detailed: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  include_db: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  include_storage: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+});
+
 interface HealthStatus {
   status: 'healthy' | 'degraded' | 'unhealthy';
   timestamp: string;
   version: string;
-  checks: {
-    database: CheckResult;
-    storage: CheckResult;
-    auth: CheckResult;
-    edge_functions: CheckResult;
-  };
-  response_time_ms: number;
-}
-
-interface CheckResult {
-  status: 'pass' | 'fail' | 'warn';
-  message: string;
-  latency_ms?: number;
-}
-
-async function checkDatabase(supabase: any): Promise<CheckResult> {
-  const start = Date.now();
-  try {
-    const { data, error } = await supabase
-      .from('employees')
-      .select('id')
-      .limit(1);
-    
-    const latency = Date.now() - start;
-    
-    if (error) {
-      return {
-        status: 'fail',
-        message: `Database error: ${error.message}`,
-        latency_ms: latency,
-      };
-    }
-    
-    if (latency > 1000) {
-      return {
-        status: 'warn',
-        message: 'Database responding slowly',
-        latency_ms: latency,
-      };
-    }
-    
-    return {
-      status: 'pass',
-      message: 'Database connection healthy',
-      latency_ms: latency,
-    };
-  } catch (error) {
-    return {
-      status: 'fail',
-      message: `Database check failed: ${error.message}`,
-      latency_ms: Date.now() - start,
-    };
-  }
-}
-
-async function checkStorage(supabase: any): Promise<CheckResult> {
-  const start = Date.now();
-  try {
-    const { data, error } = await supabase.storage.listBuckets();
-    
-    const latency = Date.now() - start;
-    
-    if (error) {
-      return {
-        status: 'fail',
-        message: `Storage error: ${error.message}`,
-        latency_ms: latency,
-      };
-    }
-    
-    return {
-      status: 'pass',
-      message: `Storage healthy (${data?.length || 0} buckets)`,
-      latency_ms: latency,
-    };
-  } catch (error) {
-    return {
-      status: 'fail',
-      message: `Storage check failed: ${error.message}`,
-      latency_ms: Date.now() - start,
-    };
-  }
-}
-
-async function checkAuth(supabase: any): Promise<CheckResult> {
-  const start = Date.now();
-  try {
-    // Just check if auth service responds
-    const { data, error } = await supabase.auth.getSession();
-    
-    const latency = Date.now() - start;
-    
-    // No session is expected, but no error means auth is working
-    if (error && !error.message.includes('session')) {
-      return {
-        status: 'fail',
-        message: `Auth error: ${error.message}`,
-        latency_ms: latency,
-      };
-    }
-    
-    return {
-      status: 'pass',
-      message: 'Auth service healthy',
-      latency_ms: latency,
-    };
-  } catch (error) {
-    return {
-      status: 'fail',
-      message: `Auth check failed: ${error.message}`,
-      latency_ms: Date.now() - start,
-    };
-  }
-}
-
-function checkEdgeFunctions(): CheckResult {
-  // If this function is running, Edge Functions are working
-  return {
-    status: 'pass',
-    message: 'Edge Functions operational',
-    latency_ms: 0,
+  uptime: number;
+  checks?: {
+    database?: { status: string; latency_ms?: number };
+    storage?: { status: string; latency_ms?: number };
+    functions?: { status: string };
   };
 }
 
-function determineOverallStatus(checks: HealthStatus['checks']): 'healthy' | 'degraded' | 'unhealthy' {
-  const results = Object.values(checks);
-  
-  if (results.some(r => r.status === 'fail')) {
-    return 'unhealthy';
-  }
-  
-  if (results.some(r => r.status === 'warn')) {
-    return 'degraded';
-  }
-  
-  return 'healthy';
-}
+const startTime = Date.now();
 
 serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const startTime = Date.now();
-
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    // Rate limiting
+    const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await checkRateLimit(clientIP, 'health-check', 60, 60);
     
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ 
+          status: 'rate_limited',
+          retry_after: rateLimitResult.retryAfter 
+        }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    // Run all health checks in parallel
-    const [database, storage, auth] = await Promise.all([
-      checkDatabase(supabase),
-      checkStorage(supabase),
-      checkAuth(supabase),
-    ]);
-
-    const checks = {
-      database,
-      storage,
-      auth,
-      edge_functions: checkEdgeFunctions(),
+    // Parse and validate query params
+    const url = new URL(req.url);
+    const params = {
+      detailed: url.searchParams.get('detailed') || undefined,
+      include_db: url.searchParams.get('include_db') || undefined,
+      include_storage: url.searchParams.get('include_storage') || undefined,
     };
+
+    const validation = HealthCheckQuerySchema.safeParse(params);
+    if (!validation.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid query parameters', details: validation.error.flatten() }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { detailed, include_db, include_storage } = validation.data;
 
     const healthStatus: HealthStatus = {
-      status: determineOverallStatus(checks),
+      status: 'healthy',
       timestamp: new Date().toISOString(),
-      version: '1.0.0',
-      checks,
-      response_time_ms: Date.now() - startTime,
+      version: Deno.env.get('FUNCTION_VERSION') || '1.0.0',
+      uptime: Math.floor((Date.now() - startTime) / 1000),
     };
+
+    // Detailed checks
+    if (detailed || include_db || include_storage) {
+      healthStatus.checks = {};
+
+      const supabaseUrl = Deno.env.get('SUPABASE_URL');
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+      if (supabaseUrl && supabaseKey) {
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        // Database check
+        if (detailed || include_db) {
+          const dbStart = Date.now();
+          try {
+            const { error } = await supabase.from('health_check').select('id').limit(1);
+            healthStatus.checks.database = {
+              status: error ? 'unhealthy' : 'healthy',
+              latency_ms: Date.now() - dbStart,
+            };
+            if (error) healthStatus.status = 'degraded';
+          } catch {
+            healthStatus.checks.database = { status: 'unhealthy' };
+            healthStatus.status = 'degraded';
+          }
+        }
+
+        // Storage check
+        if (detailed || include_storage) {
+          const storageStart = Date.now();
+          try {
+            const { error } = await supabase.storage.from('screenshots').list('', { limit: 1 });
+            healthStatus.checks.storage = {
+              status: error ? 'unhealthy' : 'healthy',
+              latency_ms: Date.now() - storageStart,
+            };
+            if (error) healthStatus.status = 'degraded';
+          } catch {
+            healthStatus.checks.storage = { status: 'unhealthy' };
+            healthStatus.status = 'degraded';
+          }
+        }
+
+        // Functions check
+        if (detailed) {
+          healthStatus.checks.functions = { status: 'healthy' };
+        }
+      }
+    }
 
     const statusCode = healthStatus.status === 'healthy' ? 200 : 
                        healthStatus.status === 'degraded' ? 200 : 503;
 
     return new Response(
-      JSON.stringify(healthStatus, null, 2),
-      {
-        status: statusCode,
-        headers: {
-          ...corsHeaders,
+      JSON.stringify(healthStatus),
+      { 
+        status: statusCode, 
+        headers: { 
+          ...corsHeaders, 
           'Content-Type': 'application/json',
           'Cache-Control': 'no-cache, no-store, must-revalidate',
-        },
+        } 
       }
     );
-  } catch (error) {
-    const errorResponse: HealthStatus = {
-      status: 'unhealthy',
-      timestamp: new Date().toISOString(),
-      version: '1.0.0',
-      checks: {
-        database: { status: 'fail', message: 'Check failed' },
-        storage: { status: 'fail', message: 'Check failed' },
-        auth: { status: 'fail', message: 'Check failed' },
-        edge_functions: { status: 'fail', message: error.message },
-      },
-      response_time_ms: Date.now() - startTime,
-    };
 
+  } catch (error) {
+    console.error('Health check error:', error);
     return new Response(
-      JSON.stringify(errorResponse, null, 2),
-      {
-        status: 503,
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        },
-      }
+      JSON.stringify({ 
+        status: 'unhealthy', 
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      }),
+      { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
