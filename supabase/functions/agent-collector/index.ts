@@ -1,586 +1,335 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-// deno-lint-ignore no-explicit-any
-const waitUntil = (promise: Promise<unknown>) => {
-  if (typeof (globalThis as any).EdgeRuntime !== 'undefined') {
-    (globalThis as any).EdgeRuntime.waitUntil(promise);
-  }
-};
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-agent-key",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Rate limit configuration
-const RATE_LIMIT_MAX_REQUESTS = 100; // Max requests per window
-const RATE_LIMIT_WINDOW_SECONDS = 60; // Window size in seconds
+// ============================================================
+// VALIDATION SCHEMAS
+// ============================================================
 
-// Alert threshold: send email after this many blocked attempts
-const ALERT_THRESHOLD = 10;
+const ScreenshotDataSchema = z.object({
+  image_base64: z.string().min(1),
+  window_title: z.string().optional(),
+  active_app: z.string().optional(),
+  url: z.string().url().optional(),
+});
 
-async function sendRateLimitAlert(
-  identifier: string,
-  identifierType: string,
-  endpoint: string,
-  requestCount: number,
-  threshold: number
-): Promise<void> {
-  try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    
-    await fetch(`${supabaseUrl}/functions/v1/send-rate-limit-alert`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${supabaseKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        identifier,
-        identifier_type: identifierType,
-        endpoint,
-        request_count: requestCount,
-        threshold,
-      }),
-    });
-    console.log(`Rate limit alert sent for ${identifierType}: ${identifier}`);
-  } catch (e) {
-    console.error("Failed to send rate limit alert:", e);
+const ActivityDataSchema = z.object({
+  mouse_clicks: z.number().int().min(0).optional(),
+  keystrokes: z.number().int().min(0).optional(),
+  scroll_events: z.number().int().min(0).optional(),
+  active_window: z.string().optional(),
+  idle_time: z.number().min(0).optional(),
+});
+
+const ApplicationDataSchema = z.object({
+  app_name: z.string().min(1),
+  window_title: z.string().optional(),
+  start_time: z.string().datetime().optional(),
+  end_time: z.string().datetime().optional(),
+  duration_seconds: z.number().int().min(0).optional(),
+  is_productive: z.boolean().optional(),
+  category: z.string().optional(),
+});
+
+const UrlDataSchema = z.object({
+  url: z.string().url(),
+  title: z.string().optional(),
+  visit_time: z.string().datetime().optional(),
+  duration_seconds: z.number().int().min(0).optional(),
+  is_productive: z.boolean().optional(),
+});
+
+const KeystrokeDataSchema = z.object({
+  total_keystrokes: z.number().int().min(0),
+  words_typed: z.number().int().min(0).optional(),
+  special_keys: z.number().int().min(0).optional(),
+  window_title: z.string().optional(),
+  app_name: z.string().optional(),
+});
+
+const SystemInfoDataSchema = z.object({
+  cpu_usage: z.number().min(0).max(100).optional(),
+  memory_usage: z.number().min(0).max(100).optional(),
+  disk_usage: z.number().min(0).max(100).optional(),
+  network_up: z.number().min(0).optional(),
+  network_down: z.number().min(0).optional(),
+  os_version: z.string().optional(),
+  hostname: z.string().optional(),
+});
+
+const AgentDataSchema = z.object({
+  employee_id: z.string().uuid(),
+  device_id: z.string().min(1).max(255),
+  data_type: z.enum([
+    'screenshot',
+    'activity',
+    'application',
+    'url',
+    'keystroke',
+    'system_info',
+    'idle',
+    'login',
+    'logout',
+  ]),
+  data: z.record(z.unknown()),
+  timestamp: z.string().datetime().optional(),
+  session_id: z.string().uuid().optional(),
+  agent_version: z.string().optional(),
+});
+
+// ============================================================
+// TYPE-SPECIFIC VALIDATORS
+// ============================================================
+
+function validateDataByType(dataType: string, data: Record<string, unknown>) {
+  switch (dataType) {
+    case 'screenshot':
+      return ScreenshotDataSchema.safeParse(data);
+    case 'activity':
+      return ActivityDataSchema.safeParse(data);
+    case 'application':
+      return ApplicationDataSchema.safeParse(data);
+    case 'url':
+      return UrlDataSchema.safeParse(data);
+    case 'keystroke':
+      return KeystrokeDataSchema.safeParse(data);
+    case 'system_info':
+      return SystemInfoDataSchema.safeParse(data);
+    default:
+      return { success: true, data };
   }
 }
 
-async function isIPBlocked(
-  supabase: any,
-  ipAddress: string
-): Promise<boolean> {
-  try {
-    const { data, error } = await supabase.rpc("is_ip_blocked", {
-      p_ip_address: ipAddress,
-    });
-
-    if (error) {
-      console.error("IP block check error:", error);
-      return false;
-    }
-
-    return data === true;
-  } catch (e) {
-    console.error("IP block check exception:", e);
-    return false;
-  }
-}
-
-async function checkRateLimit(
-  supabase: any,
-  identifier: string,
-  identifierType: string,
-  endpoint: string
-): Promise<{ allowed: boolean; retryAfter?: number; remaining?: number; currentCount?: number }> {
-  try {
-    const { data, error } = await supabase.rpc("check_rate_limit", {
-      p_identifier: identifier,
-      p_identifier_type: identifierType,
-      p_endpoint: endpoint,
-      p_max_requests: RATE_LIMIT_MAX_REQUESTS,
-      p_window_seconds: RATE_LIMIT_WINDOW_SECONDS,
-    });
-
-    if (error) {
-      console.error("Rate limit check error:", error);
-      return { allowed: true };
-    }
-
-    // Send alert if blocked and count exceeds alert threshold
-    if (!data.allowed && data.current_count >= ALERT_THRESHOLD) {
-      // Check if we should send alert (only every ALERT_THRESHOLD requests to avoid spam)
-      if (data.current_count % ALERT_THRESHOLD === 0) {
-        waitUntil(sendRateLimitAlert(
-          identifier,
-          identifierType,
-          endpoint,
-          data.current_count,
-          RATE_LIMIT_MAX_REQUESTS
-        ));
-      }
-    }
-
-    return {
-      allowed: data.allowed,
-      retryAfter: data.retry_after_seconds,
-      remaining: data.remaining,
-      currentCount: data.current_count,
-    };
-  } catch (e) {
-    console.error("Rate limit exception:", e);
-    return { allowed: true };
-  }
-}
+// ============================================================
+// MAIN HANDLER
+// ============================================================
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
+  if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
   try {
-    const agentKey = req.headers.get("x-agent-key");
+    // Rate limiting
+    const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await checkRateLimit(clientIP, 'agent-collector', 100, 60);
     
-    // Get client IP for rate limiting unauthenticated requests
-    const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
-                     req.headers.get("x-real-ip") || 
-                     "unknown";
-    
-    // Check if IP is manually blocked
-    if (clientIP !== "unknown") {
-      const blocked = await isIPBlocked(supabase, clientIP);
-      if (blocked) {
-        console.log(`Request from blocked IP: ${clientIP}`);
-        return new Response(
-          JSON.stringify({ error: "Access denied" }),
-          { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-    }
-    
-    // Validate agent key from database
-    if (!agentKey) {
-      // Rate limit by IP for unauthenticated requests (stricter limit)
-      const rateCheck = await checkRateLimit(supabase, clientIP, "ip", "agent-collector-unauth");
-      if (!rateCheck.allowed) {
-        console.log(`Rate limit exceeded for IP: ${clientIP}`);
-        return new Response(
-          JSON.stringify({ error: "Too many requests. Try again later." }),
-          { 
-            status: 429, 
-            headers: { 
-              ...corsHeaders, 
-              "Content-Type": "application/json",
-              "Retry-After": String(rateCheck.retryAfter || 60)
-            } 
-          }
-        );
-      }
-
-      console.log("Missing agent key");
+    if (!rateLimitResult.allowed) {
       return new Response(
-        JSON.stringify({ error: "Unauthorized - Missing agent key" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ 
+          error: 'Rate limit exceeded', 
+          retry_after: rateLimitResult.retryAfter 
+        }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Rate limit by agent key
-    const rateCheck = await checkRateLimit(supabase, agentKey, "agent_key", "agent-collector");
-    if (!rateCheck.allowed) {
-      console.log(`Rate limit exceeded for agent key: ${agentKey.substring(0, 8)}...`);
-      return new Response(
-        JSON.stringify({ error: "Too many requests. Try again later." }),
-        { 
-          status: 429, 
-          headers: { 
-            ...corsHeaders, 
-            "Content-Type": "application/json",
-            "Retry-After": String(rateCheck.retryAfter || 60)
-          } 
-        }
-      );
-    }
-
-    // Check if the key exists and is active
-    const { data: keyData, error: keyError } = await supabase
-      .from("agent_keys")
-      .select("id, is_active, employee_name, device_name")
-      .eq("agent_key", agentKey)
-      .maybeSingle();
-
-    if (keyError || !keyData) {
-      console.log("Invalid agent key:", agentKey.substring(0, 8) + "...");
-      return new Response(
-        JSON.stringify({ error: "Unauthorized - Invalid agent key" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    if (!keyData.is_active) {
-      console.log("Inactive agent key:", keyData.id);
-      return new Response(
-        JSON.stringify({ error: "Unauthorized - Agent key is inactive" }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Update last_seen_at timestamp
-    await supabase
-      .from("agent_keys")
-      .update({ last_seen_at: new Date().toISOString() })
-      .eq("id", keyData.id);
-
+    // Parse and validate main schema
     const body = await req.json();
-    const { type, data } = body;
+    const mainValidation = AgentDataSchema.safeParse(body);
+    
+    if (!mainValidation.success) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Validation failed', 
+          details: mainValidation.error.flatten() 
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    // Use employee_name and device_name from key if not provided in data
-    const employeeName = data.employee_name || keyData.employee_name || "Unknown";
-    const deviceName = data.device || keyData.device_name || "Unknown";
+    const { employee_id, device_id, data_type, data, timestamp, session_id, agent_version } = mainValidation.data;
 
-    console.log(`Received ${type} data from agent (key: ${keyData.id}):`, JSON.stringify(data).slice(0, 200));
+    // Validate type-specific data
+    const dataValidation = validateDataByType(data_type, data as Record<string, unknown>);
+    if (!dataValidation.success) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Data validation failed', 
+          data_type,
+          details: 'error' in dataValidation ? dataValidation.error : 'Invalid data format'
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    switch (type) {
-      // NEW: Get violation rules for agent
-      case "get_rules": {
-        const { data: rules, error: rulesError } = await supabase
-          .from("violation_rules")
-          .select("id, rule_type, rule_value, description, severity, is_active, notify_employee, notify_admin")
-          .eq("is_active", true);
+    // Initialize Supabase
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-        if (rulesError) {
-          console.error("Error fetching rules:", rulesError);
-          throw rulesError;
-        }
+    const now = timestamp || new Date().toISOString();
 
-        console.log(`Returning ${rules?.length || 0} active violation rules`);
+    // Update device last seen
+    await supabase.from('devices').upsert({
+      device_id,
+      employee_id,
+      last_seen: now,
+      agent_version,
+      is_online: true,
+    }, { onConflict: 'device_id' });
+
+    // Process by data type
+    let result;
+    
+    switch (data_type) {
+      case 'screenshot': {
+        const screenshotData = data as z.infer<typeof ScreenshotDataSchema>;
         
-        return new Response(
-          JSON.stringify({ success: true, rules: rules || [] }),
-          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-
-      case "keystroke": {
-        const { error } = await supabase.from("keystroke_logs").insert({
-          employee_name: employeeName,
-          device: deviceName,
-          app_name: data.app_name,
-          keystrokes_count: data.keystrokes_count,
-          active_time_seconds: data.active_time_seconds,
-          idle_time_seconds: data.idle_time_seconds,
-          recorded_at: data.recorded_at || new Date().toISOString(),
-        });
-        if (error) throw error;
-        break;
-      }
-
-      // Complete keystroke details (individual keys)
-      case "keystroke_detail": {
-        const { error } = await supabase.from("keystroke_details").insert({
-          employee_name: employeeName,
-          device: deviceName,
-          app_name: data.app_name,
-          window_title: data.window_title,
-          key_pressed: data.key_pressed,
-          key_code: data.key_code,
-          modifiers: data.modifiers || [],
-          is_sensitive: data.is_sensitive || false,
-          recorded_at: data.recorded_at || new Date().toISOString(),
-        });
-        if (error) throw error;
-        break;
-      }
-
-      // Batch keystroke details (array of keys)
-      case "keystroke_details_batch": {
-        const keys = data.keys || [];
-        if (keys.length > 0) {
-          const records = keys.map((k: any) => ({
-            employee_name: employeeName,
-            device: deviceName,
-            app_name: k.app_name || data.app_name,
-            window_title: k.window_title || data.window_title,
-            key_pressed: k.key_pressed,
-            key_code: k.key_code,
-            modifiers: k.modifiers || [],
-            is_sensitive: k.is_sensitive || false,
-            recorded_at: k.recorded_at || new Date().toISOString(),
-          }));
-          const { error } = await supabase.from("keystroke_details").insert(records);
-          if (error) throw error;
-        }
-        break;
-      }
-
-      // Click tracking
-      case "click": {
-        const { error } = await supabase.from("click_logs").insert({
-          employee_name: employeeName,
-          device: deviceName,
-          app_name: data.app_name,
-          window_title: data.window_title,
-          click_type: data.click_type || 'left',
-          x_position: data.x_position,
-          y_position: data.y_position,
-          target_element: data.target_element,
-          url: data.url,
-          recorded_at: data.recorded_at || new Date().toISOString(),
-        });
-        if (error) throw error;
-        break;
-      }
-
-      // Batch click tracking
-      case "clicks_batch": {
-        const clicks = data.clicks || [];
-        if (clicks.length > 0) {
-          const records = clicks.map((c: any) => ({
-            employee_name: employeeName,
-            device: deviceName,
-            app_name: c.app_name || data.app_name,
-            window_title: c.window_title || data.window_title,
-            click_type: c.click_type || 'left',
-            x_position: c.x_position,
-            y_position: c.y_position,
-            target_element: c.target_element,
-            url: c.url,
-            recorded_at: c.recorded_at || new Date().toISOString(),
-          }));
-          const { error } = await supabase.from("click_logs").insert(records);
-          if (error) throw error;
-        }
-        break;
-      }
-
-      case "productivity": {
-        const { error } = await supabase.from("productivity_logs").insert({
-          employee_name: employeeName,
-          device: deviceName,
-          productive_time_seconds: data.productive_time_seconds,
-          unproductive_time_seconds: data.unproductive_time_seconds,
-          neutral_time_seconds: data.neutral_time_seconds,
-          apps_used: data.apps_used || [],
-          recorded_date: data.recorded_date || new Date().toISOString().split('T')[0],
-        });
-        if (error) throw error;
-        break;
-      }
-
-      case "screenshot": {
-        const { data: insertedCapture, error } = await supabase.from("screen_captures").insert({
-          employee_name: employeeName,
-          device: deviceName,
-          capture_url: data.capture_url,
-          app_name: data.app_name,
-          window_title: data.window_title,
-          captured_at: data.captured_at || new Date().toISOString(),
-        }).select('id, capture_url').single();
-        if (error) throw error;
+        // Store screenshot in storage bucket
+        const fileName = `${employee_id}/${device_id}/${Date.now()}.jpg`;
+        const imageBuffer = Uint8Array.from(atob(screenshotData.image_base64), c => c.charCodeAt(0));
         
-        // Trigger automatic OCR processing in background
-        if (insertedCapture?.id && insertedCapture?.capture_url) {
-          const ocrTask = async () => {
-            try {
-              const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-              if (!LOVABLE_API_KEY) {
-                console.log("OCR skipped: LOVABLE_API_KEY not configured");
-                return;
-              }
+        const { error: uploadError } = await supabase.storage
+          .from('screenshots')
+          .upload(fileName, imageBuffer, { contentType: 'image/jpeg' });
 
-              console.log(`Starting automatic OCR for screenshot ${insertedCapture.id}`);
-              
-              const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${LOVABLE_API_KEY}`,
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  model: "google/gemini-2.5-flash",
-                  messages: [
-                    {
-                      role: "user",
-                      content: [
-                        {
-                          type: "text",
-                          text: "Extract ALL text visible in this screenshot. Return ONLY the extracted text, nothing else. If no text is visible, return 'NO_TEXT_FOUND'.",
-                        },
-                        {
-                          type: "image_url",
-                          image_url: { url: insertedCapture.capture_url },
-                        },
-                      ],
-                    },
-                  ],
-                }),
-              });
-
-              if (!aiResponse.ok) {
-                console.error(`OCR AI request failed: ${aiResponse.status}`);
-                return;
-              }
-
-              const aiData = await aiResponse.json();
-              const extractedText = aiData.choices?.[0]?.message?.content?.trim();
-
-              if (extractedText && extractedText !== "NO_TEXT_FOUND") {
-                await supabase
-                  .from("screen_captures")
-                  .update({
-                    extracted_text: extractedText,
-                    ocr_processed_at: new Date().toISOString(),
-                  })
-                  .eq("id", insertedCapture.id);
-                console.log(`OCR completed for screenshot ${insertedCapture.id}`);
-
-                // Check for sensitive keywords in extracted text
-                const { data: keywordRules } = await supabase
-                  .from("violation_rules")
-                  .select("id, rule_value, description, severity, notify_admin, notify_employee")
-                  .eq("rule_type", "blocked_keyword")
-                  .eq("is_active", true);
-
-                if (keywordRules && keywordRules.length > 0) {
-                  const textLower = extractedText.toLowerCase();
-                  const matchedKeywords: typeof keywordRules = [];
-
-                  for (const rule of keywordRules) {
-                    const keyword = rule.rule_value.toLowerCase();
-                    if (textLower.includes(keyword)) {
-                      matchedKeywords.push(rule);
-                    }
-                  }
-
-                  // Create violations for matched keywords
-                  if (matchedKeywords.length > 0) {
-                    console.log(`Found ${matchedKeywords.length} sensitive keyword(s) in screenshot ${insertedCapture.id}`);
-                    
-                    for (const rule of matchedKeywords) {
-                      const { error: violationError } = await supabase.from("security_violations").insert({
-                        employee_name: employeeName,
-                        device: deviceName,
-                        policy_name: `Palavra Sensível: ${rule.rule_value}`,
-                        violation_type: "blocked_keyword",
-                        severity: rule.severity || "medium",
-                        description: `Palavra sensível "${rule.rule_value}" detectada via OCR na captura de tela. ${rule.description || ''}`.trim(),
-                        screenshot_url: insertedCapture.capture_url,
-                        notified_admin: rule.notify_admin,
-                        notified_employee: rule.notify_employee,
-                      });
-
-                      if (violationError) {
-                        console.error("Error creating keyword violation:", violationError);
-                      } else {
-                        console.log(`VIOLATION created: blocked_keyword - ${rule.rule_value}`);
-                      }
-                    }
-                  }
-                }
-              } else {
-                await supabase
-                  .from("screen_captures")
-                  .update({
-                    ocr_processed_at: new Date().toISOString(),
-                  })
-                  .eq("id", insertedCapture.id);
-                console.log(`OCR completed (no text found) for screenshot ${insertedCapture.id}`);
-              }
-            } catch (ocrError) {
-              console.error("OCR background task error:", ocrError);
-            }
-          };
-          
-          // Run OCR in background without blocking response
-          waitUntil(ocrTask());
+        if (!uploadError) {
+          result = await supabase.from('screenshots').insert({
+            employee_id,
+            device_id,
+            file_path: fileName,
+            window_title: screenshotData.window_title,
+            active_app: screenshotData.active_app,
+            url: screenshotData.url,
+            captured_at: now,
+          });
         }
         break;
       }
 
-      case "violation": {
-        const severity = data.severity || "medium";
-        const { data: violationRecord, error } = await supabase.from("security_violations").insert({
-          employee_name: employeeName,
-          policy_name: data.policy_name,
-          violation_type: data.violation_type,
-          severity: severity,
-          description: data.description,
-          device: deviceName,
-          ip_address: data.ip_address,
-          screenshot_url: data.screenshot_url,
-          location: data.location,
-          notified_admin: false,
-          notified_employee: false,
-        }).select('id').single();
-        if (error) throw error;
-        
-        console.log(`VIOLATION recorded: ${data.violation_type} - ${data.description}`);
-        
-        // Trigger real-time notification for critical/high severity
-        if ((severity === 'critical' || severity === 'high') && violationRecord?.id) {
-          const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-          const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-          
-          const notifyTask = async () => {
-            try {
-              await fetch(`${supabaseUrl}/functions/v1/send-push-notification`, {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${supabaseKey}`,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  title: `Violação ${severity === 'critical' ? 'Crítica' : 'Alta'} Detectada`,
-                  body: `${employeeName}: ${data.description || data.policy_name}`,
-                  severity: severity,
-                  violation_id: violationRecord.id,
-                  data: {
-                    employee_name: employeeName,
-                    device: deviceName,
-                    violation_type: data.violation_type,
-                    timestamp: new Date().toISOString()
-                  }
-                }),
-              });
-              console.log(`Push notification sent for violation ${violationRecord.id}`);
-            } catch (notifyError) {
-              console.error('Error sending push notification:', notifyError);
-            }
-          };
-          
-          waitUntil(notifyTask());
-        }
-        break;
-      }
-
-      case "heartbeat": {
-        console.log(`Heartbeat from ${employeeName} on ${deviceName}`);
-        break;
-      }
-
-      // Session recording for Live View and Session Playback
-      case "session_recording": {
-        const { error } = await supabase.from("session_recordings").insert({
-          employee_name: employeeName,
-          device: deviceName,
-          screenshot_url: data.screenshot_url,
-          app_name: data.app_name,
-          window_title: data.window_title,
-          events: data.events || [],
-          session_date: new Date().toISOString().split('T')[0],
-          recorded_at: data.recorded_at || new Date().toISOString(),
+      case 'activity': {
+        const activityData = data as z.infer<typeof ActivityDataSchema>;
+        result = await supabase.from('activity_logs').insert({
+          employee_id,
+          device_id,
+          mouse_clicks: activityData.mouse_clicks || 0,
+          keystrokes: activityData.keystrokes || 0,
+          scroll_events: activityData.scroll_events || 0,
+          active_window: activityData.active_window,
+          idle_time: activityData.idle_time || 0,
+          recorded_at: now,
         });
-        if (error) throw error;
-        console.log(`Session recording saved for ${employeeName}`);
+        break;
+      }
+
+      case 'application': {
+        const appData = data as z.infer<typeof ApplicationDataSchema>;
+        result = await supabase.from('application_usage').insert({
+          employee_id,
+          device_id,
+          app_name: appData.app_name,
+          window_title: appData.window_title,
+          start_time: appData.start_time || now,
+          end_time: appData.end_time,
+          duration_seconds: appData.duration_seconds || 0,
+          is_productive: appData.is_productive,
+          category: appData.category,
+        });
+        break;
+      }
+
+      case 'url': {
+        const urlData = data as z.infer<typeof UrlDataSchema>;
+        result = await supabase.from('url_visits').insert({
+          employee_id,
+          device_id,
+          url: urlData.url,
+          title: urlData.title,
+          visit_time: urlData.visit_time || now,
+          duration_seconds: urlData.duration_seconds || 0,
+          is_productive: urlData.is_productive,
+        });
+        break;
+      }
+
+      case 'keystroke': {
+        const keystrokeData = data as z.infer<typeof KeystrokeDataSchema>;
+        result = await supabase.from('keystroke_logs').insert({
+          employee_id,
+          device_id,
+          total_keystrokes: keystrokeData.total_keystrokes,
+          words_typed: keystrokeData.words_typed || 0,
+          special_keys: keystrokeData.special_keys || 0,
+          window_title: keystrokeData.window_title,
+          app_name: keystrokeData.app_name,
+          recorded_at: now,
+        });
+        break;
+      }
+
+      case 'system_info': {
+        const sysData = data as z.infer<typeof SystemInfoDataSchema>;
+        result = await supabase.from('system_metrics').insert({
+          employee_id,
+          device_id,
+          cpu_usage: sysData.cpu_usage,
+          memory_usage: sysData.memory_usage,
+          disk_usage: sysData.disk_usage,
+          network_up: sysData.network_up,
+          network_down: sysData.network_down,
+          recorded_at: now,
+        });
+        break;
+      }
+
+      case 'login':
+      case 'logout': {
+        result = await supabase.from('session_logs').insert({
+          employee_id,
+          device_id,
+          event_type: data_type,
+          session_id,
+          occurred_at: now,
+        });
+        break;
+      }
+
+      case 'idle': {
+        result = await supabase.from('idle_logs').insert({
+          employee_id,
+          device_id,
+          started_at: now,
+          duration_seconds: (data as any).duration_seconds || 0,
+        });
         break;
       }
 
       default:
-        return new Response(
-          JSON.stringify({ error: "Unknown data type" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+        // Generic data storage
+        result = await supabase.from('agent_data').insert({
+          employee_id,
+          device_id,
+          data_type,
+          data,
+          recorded_at: now,
+        });
+    }
+
+    if (result?.error) {
+      console.error('Database error:', result.error);
+      return new Response(
+        JSON.stringify({ error: 'Failed to store data', details: result.error.message }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     return new Response(
-      JSON.stringify({ success: true }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({ success: true, data_type, timestamp: now }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
-    console.error("Error processing agent data:", error);
-    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error('Agent collector error:', error);
     return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
