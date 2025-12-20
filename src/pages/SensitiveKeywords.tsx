@@ -1,3 +1,6 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useSensitiveKeywordsPage } from '@/hooks/useSensitiveKeywordsPage';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
+
 import {
   Dialog,
   DialogContent,
@@ -29,10 +34,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { Search, Plus, Edit, Trash2, Loader2, Key, AlertTriangle, Eye } from 'lucide-react';
 
-export default function SensitiveKeywords() {
+const SensitiveKeywordsContent = memo(function SensitiveKeywordsContent() {
   const {
     searchTerm, setSearchTerm,
     categoryFilter, setCategoryFilter,
@@ -226,5 +229,25 @@ export default function SensitiveKeywords() {
 
       <ConfirmDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} title="Excluir" description={`Excluir "${deletingKeyword?.keyword}"?`} onConfirm={handleDelete} isLoading={isDeleting} variant="destructive" />
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function SensitiveKeywords() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <SensitiveKeywordsContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
