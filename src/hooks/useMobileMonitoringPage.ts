@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface MobileDevice {
   id: string;
@@ -39,30 +39,26 @@ export function useMobileMonitoringPage() {
     queryKey: ['mobile-devices'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('devices')
-        .select(\`
-          *,
-          employees(name)
-        \`)
-        .eq('device_type', 'mobile')
-        .order('last_seen', { ascending: false });
+        .from('mobile_devices')
+        .select('*')
+        .order('last_seen_at', { ascending: false });
       
       if (error) throw error;
 
       return data.map(d => ({
         id: d.id,
         device_id: d.device_id,
-        employee_id: d.employee_id,
-        employee_name: d.employees?.name || 'Desconhecido',
-        device_model: d.device_name || 'Mobile',
-        os: d.os || 'Unknown',
+        employee_id: d.employee_name,
+        employee_name: d.employee_name || 'Desconhecido',
+        device_model: d.device_model || 'Mobile',
+        os: d.os_type || 'Unknown',
         os_version: d.os_version || '',
-        app_version: d.agent_version || '1.0.0',
-        last_location: d.last_location,
-        last_seen: d.last_seen,
-        battery_level: d.battery_level || 0,
-        is_charging: d.is_charging || false,
-        is_online: d.is_online || false,
+        app_version: d.app_version || '1.0.0',
+        last_location: d.last_location_lat && d.last_location_lng ? { lat: d.last_location_lat, lng: d.last_location_lng } : undefined,
+        last_seen: d.last_seen_at || '',
+        battery_level: 0,
+        is_charging: false,
+        is_online: d.is_active || false,
       })) as MobileDevice[];
     },
     refetchInterval: autoRefresh ? 30000 : false,
@@ -74,7 +70,7 @@ export function useMobileMonitoringPage() {
       if (!selectedDevice) return [];
 
       let query = supabase
-        .from('employee_locations')
+        .from('mobile_activity_logs')
         .select('*')
         .eq('device_id', selectedDevice.device_id)
         .order('recorded_at', { ascending: false })
@@ -90,7 +86,14 @@ export function useMobileMonitoringPage() {
       const { data, error } = await query;
       if (error) throw error;
 
-      return data as LocationHistory[];
+      return (data || []).map(d => ({
+        id: d.id,
+        device_id: d.device_id || '',
+        latitude: d.latitude || 0,
+        longitude: d.longitude || 0,
+        accuracy: 0,
+        recorded_at: d.recorded_at,
+      })) as LocationHistory[];
     },
     enabled: !!selectedDevice,
   });

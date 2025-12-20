@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
 
 // ============================================================
 // TYPES
@@ -46,72 +45,59 @@ export interface ProductivityFilters {
 
 export function useProductivityData(filters?: ProductivityFilters) {
   return useQuery({
-    queryKey: queryKeys.productivity.comparison(filters),
+    queryKey: ['productivity-comparison', filters],
     queryFn: async () => {
-      // Get employees with their activity data
+      // Get employees
       const { data: employees, error } = await supabase
         .from('employees')
-        .select(\`
-          id,
-          full_name,
-          department,
-          team:teams(name)
-        \`)
+        .select('id, name, department')
         .eq('status', 'active');
 
       if (error) throw error;
 
-      // Get activity logs for the period
+      // Get productivity logs for the period
       const since = filters?.dateRange?.from || 
         new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const until = filters?.dateRange?.to || new Date().toISOString();
 
-      const { data: activities } = await supabase
-        .from('activity_logs')
-        .select('employee_id, activity_type, duration_seconds, keystroke_count, mouse_clicks')
-        .gte('created_at', since)
-        .lte('created_at', until);
+      const { data: prodLogs } = await supabase
+        .from('productivity_logs')
+        .select('*')
+        .gte('recorded_date', since.split('T')[0])
+        .lte('recorded_date', until.split('T')[0]);
 
       const { data: violations } = await supabase
         .from('security_violations')
-        .select('employee_id')
+        .select('employee_name')
         .gte('created_at', since)
         .lte('created_at', until);
 
       // Calculate productivity for each employee
       const productivityData: EmployeeProductivity[] = employees.map(emp => {
-        const empActivities = activities?.filter(a => a.employee_id === emp.id) || [];
-        const empViolations = violations?.filter(v => v.employee_id === emp.id) || [];
+        const empLogs = prodLogs?.filter(l => l.employee_name === emp.name) || [];
+        const empViolations = violations?.filter(v => v.employee_name === emp.name) || [];
 
-        const activeTime = empActivities
-          .filter(a => a.activity_type === 'active')
-          .reduce((sum, a) => sum + (a.duration_seconds || 0), 0) / 3600;
+        const productiveTime = empLogs.reduce((sum, l) => sum + (l.productive_time_seconds || 0), 0) / 3600;
+        const unproductiveTime = empLogs.reduce((sum, l) => sum + (l.unproductive_time_seconds || 0), 0) / 3600;
+        const neutralTime = empLogs.reduce((sum, l) => sum + (l.neutral_time_seconds || 0), 0) / 3600;
 
-        const idleTime = empActivities
-          .filter(a => a.activity_type === 'idle')
-          .reduce((sum, a) => sum + (a.duration_seconds || 0), 0) / 3600;
-
-        const keystrokes = empActivities.reduce((sum, a) => sum + (a.keystroke_count || 0), 0);
-        const clicks = empActivities.reduce((sum, a) => sum + (a.mouse_clicks || 0), 0);
-
-        // Calculate productivity score (0-100)
-        const totalTime = activeTime + idleTime;
-        const activityRatio = totalTime > 0 ? activeTime / totalTime : 0;
+        const totalTime = productiveTime + unproductiveTime + neutralTime;
+        const activityRatio = totalTime > 0 ? productiveTime / totalTime : 0;
         const violationPenalty = Math.min(empViolations.length * 5, 30);
         const score = Math.max(0, Math.min(100, activityRatio * 100 - violationPenalty));
 
         return {
           id: emp.id,
-          full_name: emp.full_name,
+          full_name: emp.name,
           department: emp.department,
-          team: (emp.team as any)?.name,
+          team: undefined,
           productivity_score: Math.round(score),
-          active_time_hours: Math.round(activeTime * 10) / 10,
-          idle_time_hours: Math.round(idleTime * 10) / 10,
-          applications_used: new Set(empActivities.map(a => a.activity_type)).size,
-          keystrokes,
-          mouse_clicks: clicks,
-          screenshots_count: empActivities.filter(a => a.activity_type === 'screenshot').length,
+          active_time_hours: Math.round(productiveTime * 10) / 10,
+          idle_time_hours: Math.round(unproductiveTime * 10) / 10,
+          applications_used: 0,
+          keystrokes: 0,
+          mouse_clicks: 0,
+          screenshots_count: 0,
           violations_count: empViolations.length,
           trend: score > 70 ? 'up' : score < 50 ? 'down' : 'stable',
           trend_percentage: Math.round((Math.random() - 0.5) * 20),
@@ -142,7 +128,6 @@ export function useProductivityData(filters?: ProductivityFilters) {
 
       return filtered;
     },
-    ...queryPresets.dashboard,
   });
 }
 
@@ -150,7 +135,7 @@ export function useProductivityStats(filters?: ProductivityFilters) {
   const { data: employees = [] } = useProductivityData(filters);
 
   return useQuery({
-    queryKey: [...queryKeys.productivity.all, 'stats', filters],
+    queryKey: ['productivity-stats', filters],
     queryFn: () => {
       if (!employees.length) {
         return {
@@ -183,7 +168,6 @@ export function useProductivityStats(filters?: ProductivityFilters) {
       } as ProductivityStats;
     },
     enabled: employees.length > 0,
-    ...queryPresets.dashboard,
   });
 }
 
@@ -199,6 +183,5 @@ export function useDepartments() {
       if (error) throw error;
       return [...new Set(data.map(e => e.department))].filter(Boolean) as string[];
     },
-    ...queryPresets.config,
   });
 }

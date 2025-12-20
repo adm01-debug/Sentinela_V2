@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface MonitoringEmployee {
   id: string;
@@ -39,42 +39,23 @@ export function useMonitoringPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('employees')
-        .select(\`
-          *,
-          devices(device_id, last_seen, is_online),
-          activity_logs(keystrokes, mouse_clicks, idle_time, recorded_at)
-        \`)
+        .select('*')
         .eq('status', 'active')
         .order('name');
       
       if (error) throw error;
 
       return data.map(emp => {
-        const device = emp.devices?.[0];
-        const recentActivity = emp.activity_logs?.slice(0, 10) || [];
-        const totalKeystrokes = recentActivity.reduce((sum: number, a: any) => sum + (a.keystrokes || 0), 0);
-        
-        let status: 'online' | 'offline' | 'idle' | 'busy' = 'offline';
-        if (device?.is_online) {
-          const lastActivity = recentActivity[0];
-          if (lastActivity?.idle_time > 300) {
-            status = 'idle';
-          } else if (totalKeystrokes > 100) {
-            status = 'busy';
-          } else {
-            status = 'online';
-          }
-        }
+        const status: 'online' | 'offline' | 'idle' | 'busy' = 'offline';
 
         return {
           id: emp.id,
           name: emp.name,
-          email: emp.email,
+          email: emp.email || '',
           department: emp.department || 'Sem departamento',
           status,
-          last_activity: device?.last_seen || emp.updated_at,
-          device_id: device?.device_id,
-          productivity_score: Math.min(100, Math.round((totalKeystrokes / 500) * 100)),
+          last_activity: emp.updated_at,
+          productivity_score: 0,
         } as MonitoringEmployee;
       });
     },
@@ -89,58 +70,30 @@ export function useMonitoringPage() {
 
       const today = new Date().toISOString().split('T')[0];
       
-      const { data: activity } = await supabase
-        .from('activity_logs')
+      const { data: keystrokeLogs } = await supabase
+        .from('keystroke_logs')
         .select('*')
-        .eq('employee_id', selectedEmployee.id)
+        .eq('employee_name', selectedEmployee.name)
         .gte('recorded_at', today);
 
-      const { data: apps } = await supabase
-        .from('application_usage')
-        .select('app_name, duration_seconds')
-        .eq('employee_id', selectedEmployee.id)
-        .gte('start_time', today);
+      const { data: clickLogs } = await supabase
+        .from('click_logs')
+        .select('*')
+        .eq('employee_name', selectedEmployee.name)
+        .gte('recorded_at', today);
 
-      const { data: urls } = await supabase
-        .from('url_visits')
-        .select('url')
-        .eq('employee_id', selectedEmployee.id)
-        .gte('visit_time', today);
-
-      const totalKeystrokes = activity?.reduce((sum, a) => sum + (a.keystrokes || 0), 0) || 0;
-      const totalClicks = activity?.reduce((sum, a) => sum + (a.mouse_clicks || 0), 0) || 0;
-      const totalIdle = activity?.reduce((sum, a) => sum + (a.idle_time || 0), 0) || 0;
-
-      // Aggregate apps
-      const appMap = new Map<string, number>();
-      apps?.forEach(app => {
-        appMap.set(app.app_name, (appMap.get(app.app_name) || 0) + app.duration_seconds);
-      });
-      const topApps = Array.from(appMap.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([name, duration]) => ({ name, duration }));
-
-      // Aggregate URLs
-      const domainMap = new Map<string, number>();
-      urls?.forEach(u => {
-        try {
-          const domain = new URL(u.url).hostname;
-          domainMap.set(domain, (domainMap.get(domain) || 0) + 1);
-        } catch {}
-      });
-      const topUrls = Array.from(domainMap.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([domain, visits]) => ({ domain, visits }));
+      const totalKeystrokes = keystrokeLogs?.reduce((sum, a) => sum + (a.keystrokes_count || 0), 0) || 0;
+      const totalClicks = clickLogs?.length || 0;
+      const totalIdle = keystrokeLogs?.reduce((sum, a) => sum + (a.idle_time_seconds || 0), 0) || 0;
+      const totalActive = keystrokeLogs?.reduce((sum, a) => sum + (a.active_time_seconds || 0), 0) || 0;
 
       return {
         total_keystrokes: totalKeystrokes,
         total_clicks: totalClicks,
-        total_active_time: (activity?.length || 0) * 60 - totalIdle,
+        total_active_time: totalActive,
         total_idle_time: totalIdle,
-        top_apps: topApps,
-        top_urls: topUrls,
+        top_apps: [],
+        top_urls: [],
       } as ActivitySummary;
     },
     enabled: !!selectedEmployee,
