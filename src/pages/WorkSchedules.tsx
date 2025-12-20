@@ -1,3 +1,4 @@
+import React, { Suspense, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Clock, Users, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -39,9 +40,11 @@ import {
   OvertimeRequestsList,
   EmployeeSchedulesTable,
 } from '@/components/schedules';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useWorkSchedulesPage } from '@/hooks/useWorkSchedulesPage';
 
-export default function WorkSchedules() {
+const WorkSchedulesContent = memo(function WorkSchedulesContent() {
   const navigate = useNavigate();
   const {
     // Data
@@ -301,5 +304,25 @@ export default function WorkSchedules() {
         </main>
       </div>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function WorkSchedules() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <WorkSchedulesContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
