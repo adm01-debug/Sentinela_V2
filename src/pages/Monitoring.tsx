@@ -1,3 +1,6 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useMonitoringPage } from '@/hooks/useMonitoringPage';
 import { MonitoringStatsCards, MonitoringFilters, EmployeeMonitoringCard } from '@/components/monitoring';
 import { PageHeader } from '@/components/PageHeader';
@@ -6,9 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Loader2, Monitor, Activity, Globe, AppWindow } from 'lucide-react';
 
-export default function Monitoring() {
+
+const MonitoringContent = memo(function MonitoringContent() {
   const {
     selectedEmployee,
     viewMode,
@@ -182,5 +185,25 @@ export default function Monitoring() {
         </div>
       </div>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function Monitoring() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <MonitoringContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
