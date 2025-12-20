@@ -1,3 +1,6 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useViolationRulesPage } from '@/hooks/useViolationRulesPage';
 import { RulesStatsCards, RulesList } from '@/components/rules';
 import { PageHeader } from '@/components/PageHeader';
@@ -7,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
+
 import {
   Dialog,
   DialogContent,
@@ -22,10 +27,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { Plus, Search, Loader2 } from 'lucide-react';
 
-export default function ViolationRules() {
+const ViolationRulesContent = memo(function ViolationRulesContent() {
   const {
     searchTerm, setSearchTerm,
     typeFilter, setTypeFilter,
@@ -216,5 +219,25 @@ export default function ViolationRules() {
         variant="destructive"
       />
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function ViolationRules() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <ViolationRulesContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
