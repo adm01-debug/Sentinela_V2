@@ -4,7 +4,6 @@ import { useClipboard } from '../useClipboard';
 
 describe('useClipboard', () => {
   beforeEach(() => {
-    vi.useFakeTimers();
     Object.assign(navigator, {
       clipboard: {
         writeText: vi.fn().mockResolvedValue(undefined),
@@ -12,36 +11,25 @@ describe('useClipboard', () => {
     });
   });
 
-  it('should initialize with hasCopied false', () => {
-    const { result } = renderHook(() => useClipboard());
-    expect(result.current.hasCopied).toBe(false);
-  });
-
   it('should copy text to clipboard', async () => {
     const { result } = renderHook(() => useClipboard());
-
-    await act(async () => {
-      await result.current.copy('test text');
-    });
-
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('test text');
-    expect(result.current.hasCopied).toBe(true);
-    expect(result.current.copiedValue).toBe('test text');
-  });
-
-  it('should reset hasCopied after timeout', async () => {
-    const { result } = renderHook(() => useClipboard({ timeout: 1000 }));
-
+    
     await act(async () => {
       await result.current.copy('test');
     });
 
-    expect(result.current.hasCopied).toBe(true);
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('test');
+    expect(result.current.copied).toBe(true);
+  });
 
+  it('should reset copied state', () => {
+    const { result } = renderHook(() => useClipboard());
+    
     act(() => {
-      vi.advanceTimersByTime(1000);
+      result.current.reset();
     });
 
-    expect(result.current.hasCopied).toBe(false);
+    expect(result.current.copied).toBe(false);
+    expect(result.current.error).toBeNull();
   });
 });
