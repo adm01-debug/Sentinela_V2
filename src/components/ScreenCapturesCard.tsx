@@ -28,7 +28,7 @@ interface SensitiveKeyword {
   severity: string;
 }
 
-export function ScreenCapturesCard() {
+function ScreenCapturesCardBase() {
   const [captures, setCaptures] = useState<ScreenCapture[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCapture, setSelectedCapture] = useState<ScreenCapture | null>(null);
@@ -467,3 +467,6 @@ export function ScreenCapturesCard() {
     </>
   );
 }
+
+// Memo wrappers
+export const ScreenCapturesCard = memo(ScreenCapturesCardBase);
