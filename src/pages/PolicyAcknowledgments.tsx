@@ -1,8 +1,11 @@
-import { useState, useMemo, useCallback } from 'react';
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Sidebar } from '@/components/Sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PolicyAcknowledgmentsSkeleton } from '@/components/PageSkeletons';
+
 import {
   PolicyStatsCards,
   PolicyAcknowledgmentsTable,
@@ -15,7 +18,7 @@ import {
   usePolicyStats,
 } from '@/hooks/usePolicyAcknowledgments';
 
-export default function PolicyAcknowledgments() {
+const PolicyAcknowledgmentsContent = memo(function PolicyAcknowledgmentsContent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPolicy, setSelectedPolicy] = useState('all');
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date } | undefined>();
@@ -155,5 +158,25 @@ export default function PolicyAcknowledgments() {
         </Card>
       </main>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function PolicyAcknowledgments() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <PolicyAcknowledgmentsContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
