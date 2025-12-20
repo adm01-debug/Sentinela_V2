@@ -1,118 +1,229 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useTeams, type Team } from '@/hooks/useTeams';
-import { useEmployees } from '@/hooks/useEmployees';
+import { useState, useCallback, useMemo } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/lib/supabase';
+import { useToast } from '@/hooks/use-toast';
+
+export interface Team {
+  id: string;
+  name: string;
+  description?: string;
+  manager_id?: string;
+  manager_name?: string;
+  parent_team_id?: string;
+  is_active: boolean;
+  created_at: string;
+  members_count: number;
+}
+
+export interface TeamMember {
+  id: string;
+  employee_id: string;
+  team_id: string;
+  role: 'member' | 'lead' | 'manager';
+  joined_at: string;
+  employee: {
+    id: string;
+    name: string;
+    email: string;
+    position?: string;
+  };
+}
 
 export interface TeamFormData {
   name: string;
   description: string;
-  leader_id: string;
-  color: string;
+  manager_id?: string;
+  parent_team_id?: string;
+  is_active: boolean;
 }
 
 const initialFormData: TeamFormData = {
   name: '',
   description: '',
-  leader_id: '',
-  color: '#3b82f6',
+  manager_id: undefined,
+  parent_team_id: undefined,
+  is_active: true,
 };
 
-export const TEAM_COLORS = [
-  '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
-  '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1',
-] as const;
-
 export function useTeamsPage() {
-  const { teams, loading, createTeam, updateTeam, deleteTeam } = useTeams();
-  const { employees } = useEmployees();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isMembersDialogOpen, setIsMembersDialogOpen] = useState(false);
+  const [editingTeam, setEditingTeam] = useState<Team | null>(null);
+  const [deletingTeam, setDeletingTeam] = useState<Team | null>(null);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [formData, setFormData] = useState<TeamFormData>(initialFormData);
 
+  const { data: teams = [], isLoading } = useQuery({
+    queryKey: ['teams'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('teams')
+        .select('*, employees!teams_manager_id_fkey(name)')
+        .order('name');
+      if (error) throw error;
+      return data.map(t => ({
+        ...t,
+        manager_name: t.employees?.name,
+        members_count: t.members_count || 0,
+      })) as Team[];
+    },
+  });
+
+  const { data: employees = [] } = useQuery({
+    queryKey: ['employees-managers'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('employees')
+        .select('id, name, email')
+        .eq('status', 'active')
+        .order('name');
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: teamMembers = [], isLoading: isLoadingMembers } = useQuery({
+    queryKey: ['team-members', selectedTeam?.id],
+    queryFn: async () => {
+      if (!selectedTeam) return [];
+      const { data, error } = await supabase
+        .from('team_members')
+        .select('*, employees(id, name, email, position)')
+        .eq('team_id', selectedTeam.id);
+      if (error) throw error;
+      return data as TeamMember[];
+    },
+    enabled: !!selectedTeam,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: async (data: TeamFormData) => {
+      const { error } = await supabase.from('teams').insert(data);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teams'] });
+      toast({ title: 'Equipe criada!' });
+      handleCloseDialog();
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: TeamFormData }) => {
+      const { error } = await supabase.from('teams').update(data).eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teams'] });
+      toast({ title: 'Equipe atualizada!' });
+      handleCloseDialog();
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('teams').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teams'] });
+      toast({ title: 'Equipe excluida!' });
+      setIsDeleteDialogOpen(false);
+      setDeletingTeam(null);
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    },
+  });
+
   const filteredTeams = useMemo(() => {
-    if (!searchTerm) return teams;
-    return teams.filter(t => 
-      t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      t.description?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [teams, searchTerm]);
+    return teams.filter(team => {
+      const matchesSearch = !searchTerm || 
+        team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        team.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus = statusFilter === 'all' ||
+        (statusFilter === 'active' && team.is_active) ||
+        (statusFilter === 'inactive' && !team.is_active);
+      return matchesSearch && matchesStatus;
+    });
+  }, [teams, searchTerm, statusFilter]);
 
   const stats = useMemo(() => ({
     total: teams.length,
-    totalMembers: employees.filter(e => e.team_id).length,
-    avgSize: teams.length > 0 
-      ? Math.round(employees.filter(e => e.team_id).length / teams.length) 
-      : 0,
-  }), [teams, employees]);
+    active: teams.filter(t => t.is_active).length,
+    totalMembers: teams.reduce((sum, t) => sum + t.members_count, 0),
+    withManager: teams.filter(t => t.manager_id).length,
+  }), [teams]);
 
-  const getTeamMembers = useCallback((teamId: string) => {
-    return employees.filter(e => e.team_id === teamId);
-  }, [employees]);
-
-  const resetForm = useCallback(() => {
+  const handleOpenCreate = useCallback(() => {
+    setEditingTeam(null);
     setFormData(initialFormData);
-    setSelectedTeam(null);
+    setIsDialogOpen(true);
   }, []);
 
-  const handleCreate = useCallback(async () => {
-    if (!formData.name.trim()) return;
-    await createTeam({
-      name: formData.name.trim(),
-      description: formData.description.trim() || null,
-      leader_id: formData.leader_id || null,
-      color: formData.color,
-    });
-    resetForm();
-    setIsFormDialogOpen(false);
-  }, [formData, createTeam, resetForm]);
-
-  const handleUpdate = useCallback(async () => {
-    if (!selectedTeam || !formData.name.trim()) return;
-    await updateTeam(selectedTeam.id, {
-      name: formData.name.trim(),
-      description: formData.description.trim() || null,
-      leader_id: formData.leader_id || null,
-      color: formData.color,
-    });
-    resetForm();
-    setIsFormDialogOpen(false);
-  }, [selectedTeam, formData, updateTeam, resetForm]);
-
-  const handleDelete = useCallback(async () => {
-    if (!selectedTeam) return;
-    await deleteTeam(selectedTeam.id);
-    setSelectedTeam(null);
-    setIsDeleteDialogOpen(false);
-  }, [selectedTeam, deleteTeam]);
-
-  const openCreateDialog = useCallback(() => {
-    resetForm();
-    setIsFormDialogOpen(true);
-  }, [resetForm]);
-
-  const openEditDialog = useCallback((team: Team) => {
-    setSelectedTeam(team);
+  const handleOpenEdit = useCallback((team: Team) => {
+    setEditingTeam(team);
     setFormData({
       name: team.name,
       description: team.description || '',
-      leader_id: team.leader_id || '',
-      color: team.color || '#3b82f6',
+      manager_id: team.manager_id,
+      parent_team_id: team.parent_team_id,
+      is_active: team.is_active,
     });
-    setIsFormDialogOpen(true);
+    setIsDialogOpen(true);
   }, []);
 
-  const openDeleteDialog = useCallback((team: Team) => {
+  const handleCloseDialog = useCallback(() => {
+    setIsDialogOpen(false);
+    setEditingTeam(null);
+    setFormData(initialFormData);
+  }, []);
+
+  const handleSubmit = useCallback(() => {
+    if (editingTeam) {
+      updateMutation.mutate({ id: editingTeam.id, data: formData });
+    } else {
+      createMutation.mutate(formData);
+    }
+  }, [editingTeam, formData, createMutation, updateMutation]);
+
+  const handleDelete = useCallback(() => {
+    if (deletingTeam) {
+      deleteMutation.mutate(deletingTeam.id);
+    }
+  }, [deletingTeam, deleteMutation]);
+
+  const handleViewMembers = useCallback((team: Team) => {
     setSelectedTeam(team);
-    setIsDeleteDialogOpen(true);
+    setIsMembersDialogOpen(true);
   }, []);
 
   return {
-    teams, filteredTeams, employees, stats, loading, selectedTeam,
-    searchTerm, setSearchTerm, formData, setFormData,
-    isFormDialogOpen, setIsFormDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
-    handleCreate, handleUpdate, handleDelete, getTeamMembers,
-    openCreateDialog, openEditDialog, openDeleteDialog,
+    searchTerm, setSearchTerm,
+    statusFilter, setStatusFilter,
+    isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
+    isMembersDialogOpen, setIsMembersDialogOpen,
+    editingTeam, deletingTeam, setDeletingTeam,
+    selectedTeam, teamMembers,
+    formData, setFormData,
+    teams: filteredTeams, employees, stats,
+    isLoading, isLoadingMembers,
+    isCreating: createMutation.isPending,
+    isUpdating: updateMutation.isPending,
+    isDeleting: deleteMutation.isPending,
+    handleOpenCreate, handleOpenEdit, handleCloseDialog,
+    handleSubmit, handleDelete, handleViewMembers,
   };
 }
