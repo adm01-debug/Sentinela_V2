@@ -24,7 +24,7 @@ interface SessionRecording {
   recorded_at: string;
 }
 
-export const LiveViewCard = () => {
+export const LiveViewCard = memo(() => {
   const [employees, setEmployees] = useState<string[]>([]);
   const [selectedEmployee, setSelectedEmployee] = useState<string>('');
   const [latestScreenshot, setLatestScreenshot] = useState<SessionRecording | null>(null);
@@ -208,4 +208,4 @@ export const LiveViewCard = () => {
       </Dialog>
     </>
   );
-};
+});
