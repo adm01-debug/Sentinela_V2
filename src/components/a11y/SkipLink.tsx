@@ -1,28 +1,15 @@
 import { memo } from 'react';
-import { cn } from '@/lib/utils';
 
 interface SkipLinkProps {
   href?: string;
   children?: React.ReactNode;
-  className?: string;
 }
 
-function SkipLinkComponent({ 
-  href = '#main-content', 
-  children = 'Pular para conteúdo principal',
-  className 
-}: SkipLinkProps) {
+function SkipLinkComponent({ href = '#main-content', children = 'Pular para conteudo principal' }: SkipLinkProps) {
   return (
     <a
       href={href}
-      className={cn(
-        'sr-only focus:not-sr-only',
-        'focus:fixed focus:top-4 focus:left-4 focus:z-[100]',
-        'focus:bg-primary focus:text-primary-foreground',
-        'focus:px-4 focus:py-2 focus:rounded-md',
-        'focus:outline-none focus:ring-2 focus:ring-ring',
-        className
-      )}
+      className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:p-4 focus:bg-white focus:text-black focus:rounded-md focus:shadow-lg"
     >
       {children}
     </a>
