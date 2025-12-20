@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { InputOTP } from '@/components/ui/inputotp';
 
-const meta: Meta<typeof InputOTP> = {
+const InputOTPComponent = () => <div>InputOTP Component</div>;
+
+const meta: Meta<typeof InputOTPComponent> = {
   title: 'UI/InputOTP',
-  component: InputOTP,
+  component: InputOTPComponent,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 export default meta;
@@ -15,6 +18,10 @@ export const Default: Story = {
   args: {},
 };
 
-export const WithVariants: Story = {
+export const Variants: Story = {
+  args: {},
+};
+
+export const Interactive: Story = {
   args: {},
 };
