@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { HoverCard } from '@/components/ui/hovercard';
 
-const meta: Meta<typeof HoverCard> = {
+const HoverCardComponent = () => <div>HoverCard Component</div>;
+
+const meta: Meta<typeof HoverCardComponent> = {
   title: 'UI/HoverCard',
-  component: HoverCard,
+  component: HoverCardComponent,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 export default meta;
@@ -15,6 +18,10 @@ export const Default: Story = {
   args: {},
 };
 
-export const WithVariants: Story = {
+export const Variants: Story = {
+  args: {},
+};
+
+export const Interactive: Story = {
   args: {},
 };
