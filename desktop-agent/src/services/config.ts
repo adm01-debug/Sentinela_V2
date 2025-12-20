@@ -1,5 +1,9 @@
 import Store from 'electron-store';
 
+// ============================================================
+// DESKTOP AGENT CONFIGURATION
+// ============================================================
+
 interface Config {
   apiUrl: string;
   apiKey: string;
@@ -8,6 +12,9 @@ interface Config {
   syncInterval: number;
   blurScreenshots: boolean;
   ignoredApps: string[];
+  updateServerUrl: string;
+  autoUpdateEnabled: boolean;
+  updateCheckInterval: number;
 }
 
 const defaults: Config = {
@@ -18,6 +25,10 @@ const defaults: Config = {
   syncInterval: 300000, // 5 minutes
   blurScreenshots: false,
   ignoredApps: [],
+  // Auto-update configuration
+  updateServerUrl: 'https://releases.sentinela.app/desktop-agent',
+  autoUpdateEnabled: true,
+  updateCheckInterval: 3600000, // 1 hour
 };
 
 export class ConfigService {
@@ -38,4 +49,29 @@ export class ConfigService {
   getAll(): Config {
     return this.store.store;
   }
+  
+  reset(): void {
+    this.store.clear();
+  }
 }
+
+// ============================================================
+// SINGLETON CONFIG EXPORT
+// ============================================================
+
+const configService = new ConfigService();
+
+export const config = {
+  get apiUrl() { return configService.get('apiUrl'); },
+  get apiKey() { return configService.get('apiKey'); },
+  get screenshotInterval() { return configService.get('screenshotInterval'); },
+  get activityInterval() { return configService.get('activityInterval'); },
+  get syncInterval() { return configService.get('syncInterval'); },
+  get blurScreenshots() { return configService.get('blurScreenshots'); },
+  get ignoredApps() { return configService.get('ignoredApps'); },
+  get updateServerUrl() { return configService.get('updateServerUrl'); },
+  get autoUpdateEnabled() { return configService.get('autoUpdateEnabled'); },
+  get updateCheckInterval() { return configService.get('updateCheckInterval'); },
+};
+
+export default configService;
