@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { memo, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   BarChart, Bar, Cell, PieChart, Pie, LineChart, Line, Legend 
@@ -28,7 +28,7 @@ const SEVERITY_COLORS = {
   critical: 'hsl(var(--destructive))',
 };
 
-export const RateLimitTrendsCharts = ({ logs, stats, timeRange }: RateLimitTrendsChartsProps) => {
+export const RateLimitTrendsCharts = memo(({ logs, stats, timeRange }: RateLimitTrendsChartsProps) => {
   // Calculate endpoint trends over time
   const getEndpointTrends = () => {
     const timeGroups: Record<string, Record<string, number>> = {};
@@ -352,4 +352,4 @@ export const RateLimitTrendsCharts = ({ logs, stats, timeRange }: RateLimitTrend
       )}
     </div>
   );
-};
+});
