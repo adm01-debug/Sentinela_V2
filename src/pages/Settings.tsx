@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, AppWindow, Search, Loader2, UserCog, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,7 +16,8 @@ import { useSettings, type ApplicationRule } from '@/hooks/useSettings';
 import { categoryLabels } from '@/data/settingsData';
 import { SettingsSkeleton } from '@/components/PageSkeletons';
 
-export default function Settings() {
+
+const SettingsContent = memo(function SettingsContent() {
   const navigate = useNavigate();
   const { policies, appRules, loading, updatePolicy, updateAppRule, addAppRule, deleteAppRule, editAppRule } = useSettings();
   const [searchTerm, setSearchTerm] = useState('');
@@ -269,5 +271,25 @@ export default function Settings() {
         </div>
       </main>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function Settings() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <SettingsContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
