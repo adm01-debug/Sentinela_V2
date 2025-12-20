@@ -7,19 +7,29 @@ import './index.css';
 import { initSentry } from './lib/sentry';
 initSentry();
 
-// Register Service Worker for PWA
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/sw.js')
-      .then((registration) => {
-        console.log('SW registered: ', registration.scope);
-      })
-      .catch((error) => {
-        console.log('SW registration failed: ', error);
-      });
-  });
-}
+// Register Service Worker for PWA with update notifications
+import { registerServiceWorker, skipWaiting } from './lib/serviceWorker';
+
+registerServiceWorker({
+  onUpdate: (registration) => {
+    // Show update notification - will be handled by PWAInstallPrompt component
+    const event = new CustomEvent('swUpdate', { detail: { registration } });
+    window.dispatchEvent(event);
+  },
+  onSuccess: () => {
+    console.log('[PWA] App is ready for offline use');
+  },
+  onOffline: () => {
+    // Show offline notification
+    const event = new CustomEvent('appOffline');
+    window.dispatchEvent(event);
+  },
+  onOnline: () => {
+    // Show back online notification
+    const event = new CustomEvent('appOnline');
+    window.dispatchEvent(event);
+  },
+});
 
 // Render application
 const rootElement = document.getElementById('root');

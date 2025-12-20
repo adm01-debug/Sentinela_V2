@@ -75,6 +75,19 @@ const defaultFlags: FeatureFlags = {
 };
 
 // ============================================================
+// CONTEXT TYPE
+// ============================================================
+
+interface FeatureFlagsContextType {
+  flags: FeatureFlags;
+  isEnabled: (feature: keyof FeatureFlags) => boolean;
+  setFlag: (feature: keyof FeatureFlags, enabled: boolean) => void;
+  enableFlag: (feature: keyof FeatureFlags) => void;
+  disableFlag: (feature: keyof FeatureFlags) => void;
+  toggleFlag: (feature: keyof FeatureFlags) => void;
+}
+
+// ============================================================
 // CONTEXT
 // ============================================================
 
