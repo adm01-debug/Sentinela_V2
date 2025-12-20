@@ -36,7 +36,7 @@ interface SavedFiltersBarProps {
   className?: string;
 }
 
-export function SavedFiltersBar({
+function SavedFiltersBarBase({
   module,
   currentFilters,
   onApplyFilter,
@@ -208,3 +208,6 @@ export function SavedFiltersBar({
     </div>
   );
 }
+
+// Memo wrappers
+export const SavedFiltersBar = memo(SavedFiltersBarBase);
