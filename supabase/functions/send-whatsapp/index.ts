@@ -165,10 +165,11 @@ serve(async (req) => {
           });
         }
       } catch (err) {
+        const errMessage = err instanceof Error ? err.message : 'Unknown error';
         results.push({
           to: msg.to,
           success: false,
-          error: err.message,
+          error: errMessage,
         });
       }
     }
@@ -189,8 +190,9 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('WhatsApp send error:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
