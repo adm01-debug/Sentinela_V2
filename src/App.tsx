@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback } from 'react';
+import { Suspense, lazy, useCallback, useEffect } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -11,7 +11,8 @@ import { PageErrorBoundary } from '@/components/ErrorBoundary';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { AuthProvider } from '@/hooks/useAuth';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
-
+import { SkipLink } from '@/components/a11y/SkipLink';
+import { toast } from 'sonner';
 // ============================================================
 // ROUTE PREFETCH MAP
 // ============================================================
@@ -89,10 +90,31 @@ function AdminLayout() {
 // ============================================================
 
 function App() {
+  // Listen for PWA events
+  useEffect(() => {
+    const handleOffline = () => toast.warning('Você está offline. Alguns recursos podem não funcionar.');
+    const handleOnline = () => toast.success('Conexão restaurada!');
+    const handleUpdate = () => toast.info('Nova versão disponível! Atualize a página para aplicar.', {
+      duration: 10000,
+      action: { label: 'Atualizar', onClick: () => window.location.reload() },
+    });
+
+    window.addEventListener('appOffline', handleOffline);
+    window.addEventListener('appOnline', handleOnline);
+    window.addEventListener('swUpdate', handleUpdate);
+
+    return () => {
+      window.removeEventListener('appOffline', handleOffline);
+      window.removeEventListener('appOnline', handleOnline);
+      window.removeEventListener('swUpdate', handleUpdate);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="system" storageKey="sentinela-theme">
         <TooltipProvider>
+          <SkipLink />
           <Toaster />
           <Sonner />
           <BrowserRouter>
