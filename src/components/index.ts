@@ -38,6 +38,7 @@ export { PageHeader, PageHeaderWithTabs, PageHeaderWithBreadcrumbs } from './Pag
 // DATA DISPLAY COMPONENTS
 // ============================================================
 export { DataTable, SortableHeader, getSelectionColumn } from './DataTable';
+export { SimpleDataTable } from './ui/SimpleDataTable';
 export { StatCard, StatCardsGrid, CountStatCard, PercentStatCard, CurrencyStatCard } from './StatCard';
 export { StatusBadge, ActiveBadge, InactiveBadge, PendingBadge, ErrorBadge, OnlineBadge, OfflineBadge } from './StatusBadge';
 export { UserAvatar, AvatarGroup, AvatarWithName } from './UserAvatar';

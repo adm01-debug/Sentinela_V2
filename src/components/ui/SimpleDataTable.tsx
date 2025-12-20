@@ -1,3 +1,4 @@
+// Simple DataTable for basic use cases
 import { memo } from 'react';
 import {
   Table,
@@ -75,4 +76,4 @@ function DataTableComponent<T>({
   );
 }
 
-export const DataTable = memo(DataTableComponent) as typeof DataTableComponent;
+export const SimpleDataTable = memo(DataTableComponent) as typeof DataTableComponent;
