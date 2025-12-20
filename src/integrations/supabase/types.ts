@@ -559,6 +559,75 @@ export type Database = {
         }
         Relationships: []
       }
+      devices: {
+        Row: {
+          agent_version: string | null
+          company_id: string | null
+          created_at: string
+          device_type: string
+          employee_id: string | null
+          first_seen: string | null
+          id: string
+          ip_address: string | null
+          is_active: boolean
+          last_seen: string | null
+          mac_address: string | null
+          name: string
+          os_name: string | null
+          os_version: string | null
+          updated_at: string
+        }
+        Insert: {
+          agent_version?: string | null
+          company_id?: string | null
+          created_at?: string
+          device_type?: string
+          employee_id?: string | null
+          first_seen?: string | null
+          id?: string
+          ip_address?: string | null
+          is_active?: boolean
+          last_seen?: string | null
+          mac_address?: string | null
+          name: string
+          os_name?: string | null
+          os_version?: string | null
+          updated_at?: string
+        }
+        Update: {
+          agent_version?: string | null
+          company_id?: string | null
+          created_at?: string
+          device_type?: string
+          employee_id?: string | null
+          first_seen?: string | null
+          id?: string
+          ip_address?: string | null
+          is_active?: boolean
+          last_seen?: string | null
+          mac_address?: string | null
+          name?: string
+          os_name?: string | null
+          os_version?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devices_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "devices_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employee_badges: {
         Row: {
           badge_id: string
