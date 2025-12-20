@@ -1,16 +1,39 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useCallback } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, Link, LinkProps } from 'react-router-dom';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { queryClient } from '@/lib/queryClient';
 import { PageErrorBoundary } from '@/components/ErrorBoundary';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { AuthProvider } from '@/hooks/useAuth';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+
+// ============================================================
+// ROUTE PREFETCH MAP
+// ============================================================
+
+const routeModules: Record<string, () => Promise<unknown>> = {
+  '/': () => import('@/pages/Index'),
+  '/employees': () => import('@/pages/Employees'),
+  '/teams': () => import('@/pages/Teams'),
+  '/devices': () => import('@/pages/Devices'),
+  '/monitoring': () => import('@/pages/Monitoring'),
+  '/violations': () => import('@/pages/Violations'),
+  '/reports': () => import('@/pages/Reports'),
+  '/settings': () => import('@/pages/Settings'),
+};
+
+// Prefetch function for route modules
+export const prefetchRoute = (path: string) => {
+  const loader = routeModules[path];
+  if (loader) {
+    loader();
+  }
+};
 
 // ============================================================
 // LAZY LOADED PAGES
