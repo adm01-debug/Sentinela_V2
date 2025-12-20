@@ -56,6 +56,24 @@ export function checkRateLimitInMemory(
 }
 
 // ============================================================
+// BACKWARD COMPATIBLE ALIAS
+// ============================================================
+
+/**
+ * Legacy function name for backward compatibility
+ * @deprecated Use checkRateLimitInMemory instead
+ */
+export async function checkRateLimit(
+  identifier: string,
+  endpoint: string,
+  maxRequests: number,
+  windowSeconds: number
+): Promise<RateLimitResult> {
+  const key = `${endpoint}:${identifier}`;
+  return checkRateLimitInMemory(key, maxRequests, windowSeconds * 1000);
+}
+
+// ============================================================
 // DATABASE-BACKED RATE LIMITER
 // ============================================================
 
@@ -93,6 +111,7 @@ export async function checkRateLimitDB(
     if (allowed) {
       await supabase.from('rate_limit_logs').insert({
         identifier,
+        identifier_type: 'ip',
         endpoint: config.identifier.split(':')[0],
         created_at: now.toISOString(),
       });
