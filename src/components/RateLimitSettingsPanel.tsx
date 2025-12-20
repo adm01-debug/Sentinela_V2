@@ -73,7 +73,7 @@ const EndpointConfig = ({ title, description, icon, config, onChange }: Endpoint
   </div>
 );
 
-export const RateLimitSettingsPanel = () => {
+export const RateLimitSettingsPanel = memo(() => {
   const { settings, isLoading, updateSettings, isUpdating, defaultSettings } = useRateLimitSettings();
   const [localSettings, setLocalSettings] = useState<RateLimitThresholds>(settings);
   const [hasChanges, setHasChanges] = useState(false);
@@ -483,4 +483,4 @@ export const RateLimitSettingsPanel = () => {
       </CardContent>
     </Card>
   );
-};
+});
