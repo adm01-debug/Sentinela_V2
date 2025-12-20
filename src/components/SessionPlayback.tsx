@@ -43,7 +43,7 @@ interface SessionRecording {
   recorded_at: string;
 }
 
-export const SessionPlayback = () => {
+export const SessionPlayback = memo(() => {
   const [employees, setEmployees] = useState<string[]>([]);
   const [selectedEmployee, setSelectedEmployee] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -443,4 +443,4 @@ export const SessionPlayback = () => {
       </Dialog>
     </>
   );
-};
+});
