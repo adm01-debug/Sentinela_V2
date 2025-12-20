@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { prefetchRoute } from '@/App';
 import {
   LayoutDashboard,
   Users,
@@ -85,9 +86,15 @@ const NavItemComponent = memo(function NavItemComponent({
 }: NavItemComponentProps) {
   const Icon = item.icon;
 
+  const handleMouseEnter = useCallback(() => {
+    prefetchRoute(item.href);
+  }, [item.href]);
+
   const content = (
     <NavLink
       to={item.href}
+      onMouseEnter={handleMouseEnter}
+      onFocus={handleMouseEnter}
       className={cn(
         'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent',
         isActive ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'

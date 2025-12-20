@@ -27,6 +27,11 @@ export interface AgentConfig {
 
   // Security
   encryptionEnabled: boolean;
+
+  // Auto-update
+  autoUpdateEnabled: boolean;
+  updateServerUrl: string;
+  updateCheckInterval: number;
 }
 
 // Load from environment or use defaults
@@ -55,6 +60,11 @@ export const config: AgentConfig = {
 
   // Security
   encryptionEnabled: process.env.SENTINELA_ENCRYPTION !== 'false', // Default true
+
+  // Auto-update
+  autoUpdateEnabled: process.env.SENTINELA_AUTO_UPDATE !== 'false', // Default true
+  updateServerUrl: process.env.SENTINELA_UPDATE_SERVER_URL || '',
+  updateCheckInterval: parseInt(process.env.SENTINELA_UPDATE_CHECK_INTERVAL || '3600000', 10), // 1 hour
 };
 
 // Validate required configuration
