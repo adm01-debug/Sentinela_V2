@@ -47,7 +47,7 @@ interface ViolationCommentsPanelProps {
   currentStatus?: string;
 }
 
-export function ViolationCommentsPanel({ violationId, currentStatus = 'open' }: ViolationCommentsPanelProps) {
+function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: ViolationCommentsPanelProps) {
   const { user } = useAuth();
   const [newComment, setNewComment] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -282,3 +282,6 @@ export function ViolationCommentsPanel({ violationId, currentStatus = 'open' }: 
     </div>
   );
 }
+
+// Memo wrappers
+export const ViolationCommentsPanel = memo(ViolationCommentsPanelBase);
