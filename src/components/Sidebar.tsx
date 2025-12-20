@@ -1,5 +1,6 @@
 import { memo, useCallback, useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { prefetchRoute } from '@/App';
 import {
@@ -36,41 +37,41 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { useSidebarStore } from '@/lib/stores';
 
 interface NavItem {
-  title: string;
+  titleKey: string;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   badge?: number;
 }
 
 const navigationItems: NavItem[] = [
-  { title: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { title: 'Funcionários', href: '/employees', icon: Users },
-  { title: 'Equipes', href: '/teams', icon: Users },
-  { title: 'Monitoramento', href: '/monitoring', icon: Monitor },
-  { title: 'Violações', href: '/violations', icon: AlertTriangle },
-  { title: 'Regras', href: '/violation-rules', icon: Shield },
-  { title: 'Relatórios', href: '/reports', icon: FileText },
-  { title: 'Dispositivos', href: '/devices', icon: Smartphone },
-  { title: 'Mobile', href: '/mobile-monitoring', icon: Smartphone },
-  { title: 'Geofencing', href: '/geofencing', icon: Map },
-  { title: 'Horários', href: '/work-schedules', icon: Calendar },
-  { title: 'Políticas', href: '/monitoring-policies', icon: ClipboardCheck },
-  { title: 'Aceites', href: '/policy-acknowledgments', icon: ClipboardCheck },
-  { title: 'Produtividade', href: '/productivity-comparison', icon: BarChart3 },
-  { title: 'AI Analysis', href: '/ai-analysis', icon: Brain },
-  { title: 'Gamificação', href: '/gamification', icon: Award },
-  { title: 'Internet', href: '/internet-access', icon: Globe },
-  { title: 'Rate Limit', href: '/rate-limit-dashboard', icon: Shield },
-  { title: 'Keywords', href: '/sensitive-keywords', icon: FileSearch },
-  { title: 'Templates', href: '/message-templates', icon: MessageSquare },
-  { title: 'Webhooks', href: '/webhooks', icon: Webhook },
-  { title: 'WhatsApp', href: '/whatsapp-integration', icon: MessageSquare },
-  { title: 'Agendados', href: '/scheduled-reports', icon: Clock },
-  { title: 'Exportar', href: '/data-export', icon: FileText },
-  { title: 'Agent Keys', href: '/agent-keys', icon: Key },
-  { title: 'Usuários', href: '/user-management', icon: UserCog },
-  { title: 'Segurança', href: '/security', icon: Shield },
-  { title: 'Config', href: '/settings', icon: Settings },
+  { titleKey: 'navigation.dashboard', href: '/', icon: LayoutDashboard },
+  { titleKey: 'navigation.employees', href: '/employees', icon: Users },
+  { titleKey: 'navigation.teams', href: '/teams', icon: Users },
+  { titleKey: 'navigation.monitoring', href: '/monitoring', icon: Monitor },
+  { titleKey: 'navigation.violations', href: '/violations', icon: AlertTriangle },
+  { titleKey: 'navigation.policies', href: '/violation-rules', icon: Shield },
+  { titleKey: 'navigation.reports', href: '/reports', icon: FileText },
+  { titleKey: 'navigation.devices', href: '/devices', icon: Smartphone },
+  { titleKey: 'navigation.mobileMonitoring', href: '/mobile-monitoring', icon: Smartphone },
+  { titleKey: 'navigation.geofencing', href: '/geofencing', icon: Map },
+  { titleKey: 'navigation.schedules', href: '/work-schedules', icon: Calendar },
+  { titleKey: 'navigation.policies', href: '/monitoring-policies', icon: ClipboardCheck },
+  { titleKey: 'common.actions', href: '/policy-acknowledgments', icon: ClipboardCheck },
+  { titleKey: 'dashboard.productivity', href: '/productivity-comparison', icon: BarChart3 },
+  { titleKey: 'navigation.aiAnalysis', href: '/ai-analysis', icon: Brain },
+  { titleKey: 'navigation.gamification', href: '/gamification', icon: Award },
+  { titleKey: 'navigation.internetAccess', href: '/internet-access', icon: Globe },
+  { titleKey: 'navigation.security', href: '/rate-limit-dashboard', icon: Shield },
+  { titleKey: 'navigation.keywords', href: '/sensitive-keywords', icon: FileSearch },
+  { titleKey: 'navigation.templates', href: '/message-templates', icon: MessageSquare },
+  { titleKey: 'navigation.webhooks', href: '/webhooks', icon: Webhook },
+  { titleKey: 'common.settings', href: '/whatsapp-integration', icon: MessageSquare },
+  { titleKey: 'reports.schedule', href: '/scheduled-reports', icon: Clock },
+  { titleKey: 'navigation.dataExport', href: '/data-export', icon: FileText },
+  { titleKey: 'navigation.agentKeys', href: '/agent-keys', icon: Key },
+  { titleKey: 'navigation.userManagement', href: '/user-management', icon: UserCog },
+  { titleKey: 'navigation.security', href: '/security', icon: Shield },
+  { titleKey: 'common.settings', href: '/settings', icon: Settings },
 ];
 
 interface NavItemComponentProps {
@@ -84,7 +85,9 @@ const NavItemComponent = memo(function NavItemComponent({
   isCollapsed,
   isActive,
 }: NavItemComponentProps) {
+  const { t } = useTranslation();
   const Icon = item.icon;
+  const title = t(item.titleKey);
 
   const handleMouseEnter = useCallback(() => {
     prefetchRoute(item.href);
@@ -101,7 +104,7 @@ const NavItemComponent = memo(function NavItemComponent({
       )}
     >
       <Icon className="h-4 w-4 shrink-0" />
-      {!isCollapsed && <span className="truncate">{item.title}</span>}
+      {!isCollapsed && <span className="truncate">{title}</span>}
       {!isCollapsed && item.badge !== undefined && item.badge > 0 && (
         <span className="ml-auto flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
           {item.badge > 99 ? '99+' : item.badge}
@@ -115,7 +118,7 @@ const NavItemComponent = memo(function NavItemComponent({
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>{content}</TooltipTrigger>
         <TooltipContent side="right" className="flex items-center gap-4">
-          {item.title}
+          {title}
           {item.badge !== undefined && item.badge > 0 && (
             <span className="ml-auto text-muted-foreground">{item.badge}</span>
           )}

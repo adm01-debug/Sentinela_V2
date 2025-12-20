@@ -7,19 +7,23 @@ import { queryKeys } from '@/lib/queryClient';
 interface Device {
   id: string;
   name: string;
-  type: 'desktop' | 'mobile' | 'tablet';
-  os: string;
-  os_version: string;
-  last_seen: string;
+  device_type: 'desktop' | 'mobile' | 'tablet';
+  os_name: string | null;
+  os_version: string | null;
+  last_seen: string | null;
+  first_seen: string | null;
   is_active: boolean;
-  employee_id: string;
+  employee_id: string | null;
+  company_id: string | null;
   employee?: {
     name: string;
     email: string;
-  };
-  agent_version: string;
-  ip_address: string;
-  location?: string;
+  } | null;
+  agent_version: string | null;
+  ip_address: string | null;
+  mac_address: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 interface FilterState {
@@ -54,7 +58,7 @@ export function useDevicesPage() {
         .order('last_seen', { ascending: false });
 
       if (filters.type !== 'all') {
-        query = query.eq('type', filters.type);
+        query = query.eq('device_type', filters.type);
       }
       if (filters.status !== 'all') {
         query = query.eq('is_active', filters.status === 'active');
@@ -74,8 +78,8 @@ export function useDevicesPage() {
     const devices = devicesQuery.data || [];
     const total = devices.length;
     const active = devices.filter(d => d.is_active).length;
-    const desktop = devices.filter(d => d.type === 'desktop').length;
-    const mobile = devices.filter(d => d.type === 'mobile').length;
+    const desktop = devices.filter(d => d.device_type === 'desktop').length;
+    const mobile = devices.filter(d => d.device_type === 'mobile').length;
     const needsUpdate = devices.filter(d => {
       // Simplified version check
       return d.agent_version < '2.0.0';
