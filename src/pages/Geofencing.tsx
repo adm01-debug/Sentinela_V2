@@ -1,3 +1,6 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useGeofencingPage } from '@/hooks/useGeofencingPage';
 import { GeofenceStatsCards, GeofenceList } from '@/components/geofencing';
 import { PageHeader } from '@/components/PageHeader';
@@ -7,6 +10,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
+import { LocationMap } from '@/components/LocationMap';
+
 import {
   Dialog,
   DialogContent,
@@ -22,11 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { LocationMap } from '@/components/LocationMap';
-import { Plus, Loader2 } from 'lucide-react';
 
-export default function Geofencing() {
+const GeofencingContent = memo(function GeofencingContent() {
   const {
     selectedGeofence,
     setSelectedGeofence,
@@ -240,5 +243,25 @@ export default function Geofencing() {
         variant="destructive"
       />
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function Geofencing() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <GeofencingContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
