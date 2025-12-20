@@ -18,7 +18,7 @@ interface PolicyAcknowledgmentDialogProps {
   onAcknowledged?: () => void;
 }
 
-export function PolicyAcknowledgmentDialog({ employeeName, onAcknowledged }: PolicyAcknowledgmentDialogProps) {
+function PolicyAcknowledgmentDialogBase({ employeeName, onAcknowledged }: PolicyAcknowledgmentDialogProps) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<'intro' | 'camera' | 'confirm'>('intro');
   const [photoData, setPhotoData] = useState<string | null>(null);
@@ -353,3 +353,6 @@ export function PolicyAcknowledgmentDialog({ employeeName, onAcknowledged }: Pol
     </Dialog>
   );
 }
+
+// Memo wrappers
+export const PolicyAcknowledgmentDialog = memo(PolicyAcknowledgmentDialogBase);
