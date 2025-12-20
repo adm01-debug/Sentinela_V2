@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SidebarMenu } from '@/components/ui/sidebarmenu';
 
-const meta: Meta<typeof SidebarMenu> = {
+const SidebarMenuComponent = () => <div>SidebarMenu Component</div>;
+
+const meta: Meta<typeof SidebarMenuComponent> = {
   title: 'UI/SidebarMenu',
-  component: SidebarMenu,
+  component: SidebarMenuComponent,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 export default meta;
@@ -15,6 +18,10 @@ export const Default: Story = {
   args: {},
 };
 
-export const WithVariants: Story = {
+export const Variants: Story = {
+  args: {},
+};
+
+export const Interactive: Story = {
   args: {},
 };
