@@ -1,3 +1,6 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useWhatsAppIntegrationPage } from '@/hooks/useWhatsAppIntegrationPage';
 import { WhatsAppStatsCards, WhatsAppConfigForm } from '@/components/whatsapp';
 import { PageHeader } from '@/components/PageHeader';
@@ -8,6 +11,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
 import {
   Select,
   SelectContent,
@@ -23,11 +29,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Loader2, Send, RefreshCw, MessageCircle } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
-export default function WhatsAppIntegration() {
+const WhatsAppIntegrationContent = memo(function WhatsAppIntegrationContent() {
   const {
     activeTab,
     setActiveTab,
@@ -253,5 +256,25 @@ export default function WhatsAppIntegration() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function WhatsAppIntegration() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <WhatsAppIntegrationContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
