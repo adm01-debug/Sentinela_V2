@@ -1,8 +1,14 @@
-import { useState, useMemo, useCallback } from 'react';
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Sidebar } from '@/components/Sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { DateRangePicker } from '@/components/DateRangePicker';
+import { ProductivityComparisonSkeleton } from '@/components/PageSkeletons';
+import { ProductivityStatsCards, ProductivityTable } from '@/components/productivity';
+
 import {
   Select,
   SelectContent,
@@ -10,10 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Search, Filter, Download, ArrowUpDown } from 'lucide-react';
-import { DateRangePicker } from '@/components/DateRangePicker';
-import { ProductivityComparisonSkeleton } from '@/components/PageSkeletons';
-import { ProductivityStatsCards, ProductivityTable } from '@/components/productivity';
 import {
   useProductivityData,
   useProductivityStats,
@@ -21,7 +23,7 @@ import {
   type ProductivityFilters,
 } from '@/hooks/useProductivityComparison';
 
-export default function ProductivityComparison() {
+const ProductivityComparisonContent = memo(function ProductivityComparisonContent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState<ProductivityFilters>({
     sortBy: 'score',
@@ -192,5 +194,25 @@ export default function ProductivityComparison() {
         </Card>
       </main>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function ProductivityComparison() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <ProductivityComparisonContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
