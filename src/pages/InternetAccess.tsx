@@ -1,3 +1,6 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useInternetAccessPage } from '@/hooks/useInternetAccessPage';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,16 +10,16 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
+
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from '@/components/ui/dialog';
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { Search, Plus, Edit, Trash2, Loader2, Globe, Shield, ShieldOff, Ban } from 'lucide-react';
 
-export default function InternetAccess() {
+const InternetAccessContent = memo(function InternetAccessContent() {
   const {
     searchTerm, setSearchTerm, typeFilter, setTypeFilter,
     isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
@@ -179,5 +182,25 @@ export default function InternetAccess() {
 
       <ConfirmDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} title="Excluir Regra" description={`Excluir "${deletingRule?.name}"?`} onConfirm={handleDelete} isLoading={isDeleting} variant="destructive" />
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function InternetAccess() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <InternetAccessContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
