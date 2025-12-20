@@ -47,10 +47,10 @@ export function useDevicesPage() {
     queryFn: async () => {
       let query = supabase
         .from('devices')
-        .select(\`
+        .select(`
           *,
           employee:employees(name, email)
-        \`)
+        `)
         .order('last_seen', { ascending: false });
 
       if (filters.type !== 'all') {
@@ -60,7 +60,7 @@ export function useDevicesPage() {
         query = query.eq('is_active', filters.status === 'active');
       }
       if (filters.search) {
-        query = query.or(\`name.ilike.%\${filters.search}%,ip_address.ilike.%\${filters.search}%\`);
+        query = query.or(`name.ilike.%${filters.search}%,ip_address.ilike.%${filters.search}%`);
       }
 
       const { data, error } = await query;

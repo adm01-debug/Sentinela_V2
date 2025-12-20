@@ -1,1 +1,2 @@
-export { GamificationStats } from './GamificationStats';\nexport { Leaderboard } from './Leaderboard';
+export { GamificationStats } from './GamificationStats';
+export { Leaderboard } from './Leaderboard';

@@ -1,1 +1,3 @@
-export { DashboardStats } from './DashboardStats';\nexport { RecentViolations } from './RecentViolations';\nexport { RecentActivity } from './RecentActivity';
+export { DashboardStats } from './DashboardStats';
+export { RecentViolations } from './RecentViolations';
+export { RecentActivity } from './RecentActivity';
