@@ -1,0 +1,45 @@
+appId: com.sentinela.agent
+productName: Sentinela Agent
+copyright: Copyright © 2024 Sentinela
+
+directories:
+  output: dist
+  buildResources: resources
+
+files:
+  - "**/*"
+  - "!**/*.ts"
+  - "!**/*.tsx"
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,readme.md}"
+
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: resources/icon.ico
+
+mac:
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+  icon: resources/icon.icns
+  category: public.app-category.productivity
+
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+  icon: resources/icon.png
+  category: Utility
+
+nsis:
+  oneClick: false
+  perMachine: true
+  allowToChangeInstallationDirectory: true
+  installerIcon: resources/icon.ico
+
+publish:
+  provider: github
+  releaseType: release
