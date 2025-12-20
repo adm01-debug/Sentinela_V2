@@ -1,3 +1,6 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useViolationsPage } from '@/hooks/useViolationsPage';
 import { ViolationStatsCards, ViolationCard } from '@/components/violations';
 import { PageHeader } from '@/components/PageHeader';
@@ -8,17 +11,17 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from '@/components/ui/dialog';
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { Search, Loader2, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
-export default function Violations() {
+const ViolationsContent = memo(function ViolationsContent() {
   const {
     searchTerm, setSearchTerm,
     severityFilter, setSeverityFilter,
@@ -127,5 +130,25 @@ export default function Violations() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function Violations() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <ViolationsContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
