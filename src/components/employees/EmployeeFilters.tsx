@@ -48,17 +48,18 @@ function EmployeeFiltersComponent({
   return (
     <div className="flex flex-col sm:flex-row gap-4">
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
         <Input
           placeholder="Buscar por nome, email ou departamento..."
           value={filters.searchTerm}
           onChange={handleSearchChange}
           className="pl-10"
+          aria-label="Buscar funcionários por nome, email ou departamento"
         />
       </div>
 
       <Select value={filters.statusFilter} onValueChange={onStatusChange}>
-        <SelectTrigger className="w-full sm:w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]" aria-label="Filtrar por status do funcionário">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent>
@@ -71,7 +72,7 @@ function EmployeeFiltersComponent({
       </Select>
 
       <Select value={filters.teamFilter} onValueChange={onTeamChange}>
-        <SelectTrigger className="w-full sm:w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]" aria-label="Filtrar por equipe">
           <SelectValue placeholder="Equipe" />
         </SelectTrigger>
         <SelectContent>
@@ -86,8 +87,8 @@ function EmployeeFiltersComponent({
       </Select>
 
       {hasActiveFilters && (
-        <Button variant="ghost" size="icon" onClick={onClearFilters}>
-          <X className="h-4 w-4" />
+        <Button variant="ghost" size="icon" onClick={onClearFilters} aria-label="Limpar todos os filtros">
+          <X className="h-4 w-4" aria-hidden="true" />
         </Button>
       )}
     </div>

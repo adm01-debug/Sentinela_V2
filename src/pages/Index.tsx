@@ -1,4 +1,4 @@
-import { memo, useMemo, useCallback } from 'react';
+import { memo, useMemo, useCallback, useEffect } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { SkipLink } from '@/components/a11y/SkipLink';
@@ -22,6 +22,7 @@ import { useSecurityViolations, useViolationStats } from '@/hooks/useSecurityVio
 import { useEmployees } from '@/hooks/useEmployees';
 import { useDashboardLayout } from '@/hooks/useDashboardLayout';
 import { cn } from '@/lib/utils';
+import { prefetchQueries } from '@/lib/queryClient';
 
 // ============================================================
 // MEMOIZED STAT CARDS
@@ -132,6 +133,12 @@ StatsSection.displayName = 'StatsSection';
 // ============================================================
 
 export default function Index() {
+  // Prefetch queries for common pages on dashboard load
+  useEffect(() => {
+    prefetchQueries.employees();
+    prefetchQueries.violations();
+  }, []);
+
   // Hooks com dados
   const { data: deviceStats, isLoading: loadingDevices } = useDeviceStats();
   const { data: employees, isLoading: loadingEmployees } = useEmployees({ status: 'active' });

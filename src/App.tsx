@@ -12,6 +12,7 @@ import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { AuthProvider } from '@/hooks/useAuth';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { SkipLink } from '@/components/a11y/SkipLink';
+import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp';
 import { toast } from 'sonner';
 // ============================================================
 // ROUTE PREFETCH MAP
@@ -115,6 +116,7 @@ function App() {
       <ThemeProvider defaultTheme="system" storageKey="sentinela-theme">
         <TooltipProvider>
           <SkipLink />
+          <KeyboardShortcutsHelp />
           <Toaster />
           <Sonner />
           <BrowserRouter>

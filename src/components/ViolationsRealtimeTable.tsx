@@ -54,18 +54,19 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
           <Input
             placeholder="Buscar por funcionário, política ou tipo..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-9"
+            aria-label="Buscar violações por funcionário, política ou tipo"
           />
         </div>
         
         <Select value={severityFilter} onValueChange={setSeverityFilter}>
-          <SelectTrigger className="w-[140px]">
-            <Filter className="h-4 w-4 mr-2" />
+          <SelectTrigger className="w-[140px]" aria-label="Filtrar por severidade">
+            <Filter className="h-4 w-4 mr-2" aria-hidden="true" />
             <SelectValue placeholder="Severidade" />
           </SelectTrigger>
           <SelectContent>
@@ -78,7 +79,7 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
         </Select>
 
         <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-[160px]" aria-label="Filtrar por tipo de violação">
             <SelectValue placeholder="Tipo" />
           </SelectTrigger>
           <SelectContent>
@@ -90,7 +91,7 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
         </Select>
 
         <Select value={employeeFilter} onValueChange={setEmployeeFilter}>
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-[160px]" aria-label="Filtrar por funcionário">
             <SelectValue placeholder="Funcionário" />
           </SelectTrigger>
           <SelectContent>
@@ -102,7 +103,7 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
         </Select>
 
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[130px]">
+          <SelectTrigger className="w-[130px]" aria-label="Filtrar por status de leitura">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
