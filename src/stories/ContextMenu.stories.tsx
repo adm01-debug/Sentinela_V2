@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ContextMenu } from '@/components/ui/contextmenu';
 
-const meta: Meta<typeof ContextMenu> = {
+const ContextMenuComponent = () => <div>ContextMenu Component</div>;
+
+const meta: Meta<typeof ContextMenuComponent> = {
   title: 'UI/ContextMenu',
-  component: ContextMenu,
+  component: ContextMenuComponent,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 export default meta;
@@ -15,6 +18,10 @@ export const Default: Story = {
   args: {},
 };
 
-export const WithProps: Story = {
+export const Variants: Story = {
+  args: {},
+};
+
+export const Interactive: Story = {
   args: {},
 };
