@@ -21,7 +21,7 @@ const severityConfig = {
   low: { icon: Info, color: 'bg-blue-500 text-white', label: 'Baixo' },
 };
 
-export function ViolationsRealtimeTable({ violations, onMarkAsRead }: ViolationsRealtimeTableProps) {
+function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRealtimeTableProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [severityFilter, setSeverityFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
@@ -191,3 +191,6 @@ export function ViolationsRealtimeTable({ violations, onMarkAsRead }: Violations
     </div>
   );
 }
+
+// Memo wrappers
+export const ViolationsRealtimeTable = memo(ViolationsRealtimeTableBase);
