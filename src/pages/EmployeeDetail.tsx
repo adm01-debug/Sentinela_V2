@@ -11,6 +11,8 @@ import { EmployeeAlertItem } from '@/components/EmployeeAlertItem';
 import { EmployeeDetailSkeleton } from '@/components/PageSkeletons';
 
 import { 
+import { useEmployeeDetailPage } from '@/hooks/useEmployeeDetailPage';
+
   employeeApplications, 
   employeeActivities, 
   defaultApplications, 
