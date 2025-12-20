@@ -36,7 +36,7 @@ const defaultSoundSettings: SoundSettings = {
   playMedium: false,
 };
 
-export const RateLimitRealtimeAlerts = ({ 
+export const RateLimitRealtimeAlerts = memo(({ 
   alertThreshold = 50,
   soundSettings = defaultSoundSettings 
 }: RateLimitRealtimeAlertsProps) => {
@@ -283,4 +283,4 @@ export const RateLimitRealtimeAlerts = ({
       )}
     </div>
   );
-};
+});
