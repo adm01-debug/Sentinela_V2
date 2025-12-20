@@ -1,73 +1,82 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-import { checkRateLimit, RateLimitConfig } from '../_shared/rateLimiting.ts';
-import { 
-  checkGeofenceSchema, 
-  validateInput, 
-  createValidationErrorResponse 
-} from '../_shared/validation.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const RATE_LIMIT_CONFIG: RateLimitConfig = {
-  maxRequests: 120,
-  windowMs: 60 * 1000,
-  identifier: 'check-geofence',
-};
+// Validation Schemas
+const LocationSchema = z.object({
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+  accuracy: z.number().min(0).optional(),
+  altitude: z.number().optional(),
+  speed: z.number().min(0).optional(),
+  heading: z.number().min(0).max(360).optional(),
+});
 
-interface Geofence {
-  id: string;
-  name: string;
-  type: 'circle' | 'polygon';
-  coordinates: number[][];
-  radius?: number;
-  alert_on_enter: boolean;
-  alert_on_exit: boolean;
-}
+const GeofenceCheckSchema = z.object({
+  employee_id: z.string().uuid(),
+  device_id: z.string().min(1).max(255),
+  location: LocationSchema,
+  timestamp: z.string().datetime().optional(),
+  check_all: z.boolean().default(false),
+  geofence_ids: z.array(z.string().uuid()).optional(),
+});
 
-function isPointInCircle(
-  lat: number, 
-  lng: number, 
-  centerLat: number, 
-  centerLng: number, 
-  radiusKm: number
+// Point in polygon check using ray casting algorithm
+function isPointInPolygon(
+  point: { latitude: number; longitude: number },
+  polygon: { latitude: number; longitude: number }[]
 ): boolean {
-  const R = 6371; // Earth's radius in km
-  const dLat = (centerLat - lat) * Math.PI / 180;
-  const dLng = (centerLng - lng) * Math.PI / 180;
-  const a = 
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat * Math.PI / 180) * Math.cos(centerLat * Math.PI / 180) *
-    Math.sin(dLng / 2) * Math.sin(dLng / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = R * c;
-  return distance <= radiusKm;
-}
-
-function isPointInPolygon(lat: number, lng: number, polygon: number[][]): boolean {
   let inside = false;
+  const x = point.longitude;
+  const y = point.latitude;
+
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    const xi = polygon[i][0], yi = polygon[i][1];
-    const xj = polygon[j][0], yj = polygon[j][1];
-    const intersect = ((yi > lng) !== (yj > lng)) &&
-      (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
-    if (intersect) inside = !inside;
+    const xi = polygon[i].longitude;
+    const yi = polygon[i].latitude;
+    const xj = polygon[j].longitude;
+    const yj = polygon[j].latitude;
+
+    if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+      inside = !inside;
+    }
   }
+
   return inside;
 }
 
-serve(async (req: Request) => {
+// Check if point is within radius of center (haversine formula)
+function isPointInRadius(
+  point: { latitude: number; longitude: number },
+  center: { latitude: number; longitude: number },
+  radiusMeters: number
+): boolean {
+  const R = 6371000; // Earth radius in meters
+  const dLat = (point.latitude - center.latitude) * Math.PI / 180;
+  const dLon = (point.longitude - center.longitude) * Math.PI / 180;
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(center.latitude * Math.PI / 180) * Math.cos(point.latitude * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+  
+  return distance <= radiusMeters;
+}
+
+serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Rate limiting
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await checkRateLimit(clientIP, RATE_LIMIT_CONFIG);
+    const rateLimitResult = await checkRateLimit(clientIP, 'check-geofence', 120, 60);
     
     if (!rateLimitResult.allowed) {
       return new Response(
@@ -76,96 +85,162 @@ serve(async (req: Request) => {
       );
     }
 
-    // Validate input
     const body = await req.json();
-    const validation = validateInput(checkGeofenceSchema, body);
+    const validation = GeofenceCheckSchema.safeParse(body);
     
     if (!validation.success) {
-      return createValidationErrorResponse(validation.error, validation.details, corsHeaders);
+      return new Response(
+        JSON.stringify({ error: 'Validation failed', details: validation.error.flatten() }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    const { employee_id, latitude, longitude } = validation.data;
+    const { employee_id, device_id, location, timestamp, check_all, geofence_ids } = validation.data;
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    );
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Get active geofences
-    const { data: geofences, error } = await supabase
-      .from('geofences')
-      .select('*')
-      .eq('is_active', true);
+    const now = timestamp || new Date().toISOString();
 
-    if (error) throw error;
+    // Get geofences to check
+    let query = supabase.from('geofences').select('*').eq('is_active', true);
+    
+    if (!check_all && geofence_ids?.length) {
+      query = query.in('id', geofence_ids);
+    }
 
-    const results: { geofence_id: string; inside: boolean; name: string }[] = [];
-    const alerts: { type: 'enter' | 'exit'; geofence: Geofence }[] = [];
+    const { data: geofences, error: geoError } = await query;
 
-    // Get previous location state
+    if (geoError) throw geoError;
+
+    const results: Array<{
+      geofence_id: string;
+      geofence_name: string;
+      is_inside: boolean;
+      event_type?: 'enter' | 'exit' | 'stay';
+    }> = [];
+
+    const violations: string[] = [];
+
+    // Get previous location state for this employee
     const { data: previousState } = await supabase
-      .from('employee_geofence_state')
-      .select('geofence_id, inside')
-      .eq('employee_id', employee_id);
+      .from('geofence_states')
+      .select('*')
+      .eq('employee_id', employee_id)
+      .eq('device_id', device_id);
 
-    const previousStateMap = new Map(
-      previousState?.map(s => [s.geofence_id, s.inside]) || []
+    const previousStates = new Map(
+      previousState?.map(s => [s.geofence_id, s.is_inside]) || []
     );
 
     for (const geofence of geofences || []) {
-      let inside = false;
-      
-      if (geofence.type === 'circle' && geofence.radius) {
-        const [centerLng, centerLat] = geofence.coordinates[0];
-        inside = isPointInCircle(latitude, longitude, centerLat, centerLng, geofence.radius / 1000);
-      } else if (geofence.type === 'polygon') {
-        inside = isPointInPolygon(latitude, longitude, geofence.coordinates);
+      let isInside = false;
+
+      // Check based on geofence type
+      if (geofence.geometry?.type === 'polygon' && geofence.geometry?.coordinates) {
+        const polygon = geofence.geometry.coordinates.map((c: number[]) => ({
+          latitude: c[1],
+          longitude: c[0],
+        }));
+        isInside = isPointInPolygon(location, polygon);
+      } else if (geofence.center_lat && geofence.center_lng && geofence.radius) {
+        isInside = isPointInRadius(
+          location,
+          { latitude: geofence.center_lat, longitude: geofence.center_lng },
+          geofence.radius
+        );
       }
 
-      results.push({ geofence_id: geofence.id, inside, name: geofence.name });
+      const wasInside = previousStates.get(geofence.id);
+      let eventType: 'enter' | 'exit' | 'stay' | undefined;
 
-      // Check for enter/exit events
-      const wasInside = previousStateMap.get(geofence.id) || false;
-      
-      if (inside && !wasInside && geofence.alert_on_enter) {
-        alerts.push({ type: 'enter', geofence });
-      } else if (!inside && wasInside && geofence.alert_on_exit) {
-        alerts.push({ type: 'exit', geofence });
+      if (wasInside === undefined) {
+        eventType = isInside ? 'enter' : undefined;
+      } else if (wasInside && !isInside) {
+        eventType = 'exit';
+      } else if (!wasInside && isInside) {
+        eventType = 'enter';
+      } else if (wasInside && isInside) {
+        eventType = 'stay';
+      }
+
+      results.push({
+        geofence_id: geofence.id,
+        geofence_name: geofence.name,
+        is_inside: isInside,
+        event_type: eventType,
+      });
+
+      // Check for violations
+      if (geofence.restricted && isInside) {
+        violations.push(geofence.id);
+      }
+      if (geofence.required && !isInside) {
+        violations.push(geofence.id);
       }
 
       // Update state
-      await supabase
-        .from('employee_geofence_state')
-        .upsert({
+      await supabase.from('geofence_states').upsert({
+        employee_id,
+        device_id,
+        geofence_id: geofence.id,
+        is_inside: isInside,
+        last_checked: now,
+      }, { onConflict: 'employee_id,device_id,geofence_id' });
+
+      // Log event if state changed
+      if (eventType === 'enter' || eventType === 'exit') {
+        await supabase.from('geofence_events').insert({
           employee_id,
+          device_id,
           geofence_id: geofence.id,
-          inside,
-          updated_at: new Date().toISOString(),
+          event_type: eventType,
+          location: { lat: location.latitude, lng: location.longitude },
+          occurred_at: now,
         });
+      }
     }
 
-    // Process alerts
-    for (const alert of alerts) {
-      await supabase.from('geofence_events').insert({
-        employee_id,
-        geofence_id: alert.geofence.id,
-        event_type: alert.type,
-        latitude,
-        longitude,
+    // Create violations if any
+    for (const geofenceId of violations) {
+      await supabase.functions.invoke('process-violation-alert', {
+        body: {
+          violation_id: crypto.randomUUID(),
+          employee_id,
+          violation_type: 'geofence_breach',
+          severity: 'high',
+          description: `Employee breached geofence ${geofenceId}`,
+          evidence: {
+            location,
+            metadata: { geofence_id: geofenceId },
+          },
+        },
       });
     }
 
+    // Update employee location
+    await supabase.from('employee_locations').upsert({
+      employee_id,
+      device_id,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      accuracy: location.accuracy,
+      recorded_at: now,
+    }, { onConflict: 'employee_id,device_id' });
+
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         success: true,
-        location: { latitude, longitude },
-        geofences: results,
-        alerts: alerts.map(a => ({ type: a.type, geofence_name: a.geofence.name })),
+        results,
+        violations_count: violations.length,
+        timestamp: now,
       }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
+
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Geofence check error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
