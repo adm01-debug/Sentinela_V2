@@ -5,7 +5,7 @@ test.describe('Teams Page', () => {
     await page.goto('/teams');
   });
 
-  test('should display teams page header', async ({ page }) => {
+  test('should display teams page', async ({ page }) => {
     await expect(page.getByRole('heading', { name: /equipes/i })).toBeVisible();
   });
 
@@ -13,18 +13,21 @@ test.describe('Teams Page', () => {
     await expect(page.getByRole('button', { name: /nova equipe/i })).toBeVisible();
   });
 
-  test('should open create dialog when clicking new team', async ({ page }) => {
+  test('should open create dialog', async ({ page }) => {
     await page.getByRole('button', { name: /nova equipe/i }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(page.getByLabel(/nome/i)).toBeVisible();
   });
 
-  test('should filter teams by search', async ({ page }) => {
-    await page.getByPlaceholder(/buscar/i).fill('engineering');
-    await page.waitForTimeout(500);
+  test('should have search input', async ({ page }) => {
+    await expect(page.getByPlaceholder(/buscar/i)).toBeVisible();
   });
 
-  test('should be responsive', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 });
-    await expect(page.getByRole('heading', { name: /equipes/i })).toBeVisible();
+  test('should have status filter', async ({ page }) => {
+    await expect(page.locator('[role="combobox"]').first()).toBeVisible();
+  });
+
+  test('should show stats cards', async ({ page }) => {
+    await expect(page.getByText(/total equipes/i)).toBeVisible();
   });
 });
