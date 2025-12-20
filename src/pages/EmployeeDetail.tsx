@@ -1,18 +1,21 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Monitor, Smartphone, Mail, Building2, Clock, Shield, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { employees, alerts } from '@/data/mockData';
+import { ApplicationCard } from '@/components/ApplicationCard';
+import { ActivityTimeline } from '@/components/ActivityTimeline';
+import { EmployeeAlertItem } from '@/components/EmployeeAlertItem';
+import { EmployeeDetailSkeleton } from '@/components/PageSkeletons';
+
 import { 
   employeeApplications, 
   employeeActivities, 
   defaultApplications, 
   defaultActivities 
 } from '@/data/employeeDetailData';
-import { ApplicationCard } from '@/components/ApplicationCard';
-import { ActivityTimeline } from '@/components/ActivityTimeline';
-import { EmployeeAlertItem } from '@/components/EmployeeAlertItem';
-import { EmployeeDetailSkeleton } from '@/components/PageSkeletons';
 
 const statusStyles = {
   online: 'bg-success',
@@ -26,7 +29,7 @@ const statusLabels = {
   idle: 'Ausente',
 };
 
-export default function EmployeeDetail() {
+const EmployeeDetailContent = memo(function EmployeeDetailContent() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -227,5 +230,25 @@ export default function EmployeeDetail() {
         )}
       </main>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function EmployeeDetail() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <EmployeeDetailContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
