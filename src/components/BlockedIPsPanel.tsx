@@ -143,7 +143,7 @@ const BlockIPDialog = ({
   );
 };
 
-export const BlockedIPsPanel = () => {
+export const BlockedIPsPanel = memo(() => {
   const { 
     activeBlocks, 
     inactiveBlocks, 
@@ -335,4 +335,4 @@ export const BlockedIPsPanel = () => {
       />
     </Card>
   );
-};
+});
