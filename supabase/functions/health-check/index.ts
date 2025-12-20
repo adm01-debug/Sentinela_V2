@@ -140,10 +140,11 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Health check error:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
       JSON.stringify({ 
         status: 'unhealthy', 
-        error: error.message,
+        error: message,
         timestamp: new Date().toISOString(),
       }),
       { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

@@ -62,16 +62,16 @@ serve(async (req) => {
       if (dry_run) {
         const { count } = await supabase
           .from(table)
-          .select('*', { count: 'exact', head: true })
+          .select('id', { count: 'exact', head: true })
           .lt(dateColumn, cutoffDate);
         results[table] = count || 0;
       } else {
-        const { count } = await supabase
+        const { data } = await supabase
           .from(table)
           .delete()
           .lt(dateColumn, cutoffDate)
-          .select('*', { count: 'exact', head: true });
-        results[table] = count || 0;
+          .select('id');
+        results[table] = data?.length || 0;
       }
     }
 
@@ -85,8 +85,9 @@ serve(async (req) => {
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
