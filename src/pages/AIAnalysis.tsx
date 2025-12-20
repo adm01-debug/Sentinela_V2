@@ -1,3 +1,6 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAIAnalysisPage } from '@/hooks/useAIAnalysisPage';
 import { AIStatsCards } from '@/components/ai';
 import { PageHeader } from '@/components/PageHeader';
@@ -6,6 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
 import {
   Select,
   SelectContent,
@@ -13,11 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Brain, Play, Loader2, Lightbulb, TrendingUp, AlertTriangle } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
-export default function AIAnalysis() {
+const AIAnalysisContent = memo(function AIAnalysisContent() {
   const {
     selectedEmployee,
     setSelectedEmployee,
@@ -170,5 +173,25 @@ export default function AIAnalysis() {
         </Card>
       </div>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function AIAnalysis() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <AIAnalysisContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
