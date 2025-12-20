@@ -1,446 +1,99 @@
-import { useState, useEffect } from 'react';
-import { 
-  Shield, 
-  Eye, 
-  Keyboard, 
-  MousePointer, 
-  Monitor, 
-  Usb, 
-  HardDrive, 
-  Globe, 
-  Clock, 
-  FileWarning,
-  Bell,
-  Lock,
-  AlertTriangle,
-  Ban,
-  FileText,
-  Type,
-  AppWindow,
-  Loader2,
-  CheckCircle2
-} from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { supabase } from '@/integrations/supabase/client';
-import { PolicyAcknowledgmentDialog } from '@/components/PolicyAcknowledgmentDialog';
-import { useAuth } from '@/hooks/useAuth';
-
-interface ViolationRule {
-  id: string;
-  rule_type: string;
-  rule_value: string;
-  severity: string;
-  description: string | null;
-  is_active: boolean;
-  violation_count: number;
-}
-
-const monitoringFeatures = [
-  {
-    icon: Keyboard,
-    title: 'Monitoramento de Teclado',
-    description: 'Todas as teclas digitadas são registradas para análise de produtividade e segurança.',
-    active: true,
-  },
-  {
-    icon: MousePointer,
-    title: 'Rastreamento de Cliques',
-    description: 'Cliques do mouse são registrados, incluindo posição e aplicativo ativo.',
-    active: true,
-  },
-  {
-    icon: Monitor,
-    title: 'Capturas de Tela',
-    description: 'Screenshots periódicos são capturados para monitoramento de atividades.',
-    active: true,
-  },
-  {
-    icon: Eye,
-    title: 'Aplicativos em Uso',
-    description: 'O tempo gasto em cada aplicativo é monitorado e categorizado.',
-    active: true,
-  },
-  {
-    icon: Clock,
-    title: 'Tempo Ativo/Ocioso',
-    description: 'Períodos de atividade e inatividade são registrados automaticamente.',
-    active: true,
-  },
-];
-
-const staticBlockingPolicies = [
-  {
-    icon: Monitor,
-    title: 'Bloqueio de Print Screen',
-    description: 'A captura de tela via tecla Print Screen está bloqueada para proteger informações confidenciais.',
-    severity: 'high',
-    type: 'system',
-  },
-  {
-    icon: Usb,
-    title: 'Bloqueio de Dispositivos USB',
-    description: 'Pendrives e dispositivos USB não autorizados são bloqueados automaticamente.',
-    severity: 'critical',
-    type: 'system',
-  },
-  {
-    icon: HardDrive,
-    title: 'Bloqueio de HD Externo',
-    description: 'Discos rígidos externos não podem ser conectados a este dispositivo.',
-    severity: 'critical',
-    type: 'system',
-  },
-];
-
-const ruleTypeConfig: Record<string, { icon: typeof Globe; label: string; color: string }> = {
-  blocked_site: { icon: Globe, label: 'Site Bloqueado', color: 'text-blue-500' },
-  blocked_app: { icon: AppWindow, label: 'Aplicativo Bloqueado', color: 'text-purple-500' },
-  blocked_keyword: { icon: Type, label: 'Palavra-chave Bloqueada', color: 'text-orange-500' },
-  blocked_file_extension: { icon: FileText, label: 'Extensão Bloqueada', color: 'text-red-500' },
-  work_hours: { icon: Clock, label: 'Horário de Trabalho', color: 'text-green-500' },
-};
-
-const severityColors: Record<string, string> = {
-  low: 'bg-blue-500/10 text-blue-500 border-blue-500/30',
-  medium: 'bg-warning/10 text-warning border-warning/30',
-  high: 'bg-orange-500/10 text-orange-500 border-orange-500/30',
-  critical: 'bg-destructive/10 text-destructive border-destructive/30',
-};
-
-const severityLabels: Record<string, string> = {
-  low: 'Baixa',
-  medium: 'Média',
-  high: 'Alta',
-  critical: 'Crítica',
-};
+import { useMonitoringPoliciesPage } from '@/hooks/useMonitoringPoliciesPage';
+import { PolicyCard } from '@/components/policies';
+import { PageHeader } from '@/components/PageHeader';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import { Slider } from '@/components/ui/slider';
+import {
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from '@/components/ui/select';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
+import { Search, Plus, Loader2, Shield, Camera, MapPin, Activity } from 'lucide-react';
 
 export default function MonitoringPolicies() {
-  const [dynamicRules, setDynamicRules] = useState<ViolationRule[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [hasAcknowledgedToday, setHasAcknowledgedToday] = useState(false);
-  const [lastAcknowledgment, setLastAcknowledgment] = useState<Date | null>(null);
-  const [checkingAcknowledgment, setCheckingAcknowledgment] = useState(true);
-  const { user } = useAuth();
-  
-  const employeeName = user?.user_metadata?.full_name || user?.email || 'Funcionário';
-
-  const isToday = (date: Date) => {
-    const today = new Date();
-    return date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
-  };
-
-  useEffect(() => {
-    fetchPolicies();
-    checkAcknowledgment();
-  }, [employeeName]);
-
-  const fetchPolicies = async () => {
-    try {
-      const { data, error } = await supabase.functions.invoke('get-policies');
-      
-      if (error) {
-        console.error('Error fetching policies:', error);
-        return;
-      }
-      
-      if (data?.rules) {
-        setDynamicRules(data.rules);
-      }
-    } catch (err) {
-      console.error('Failed to fetch policies:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const checkAcknowledgment = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('policy_acknowledgments')
-        .select('id, acknowledged_at')
-        .eq('employee_name', employeeName)
-        .order('acknowledged_at', { ascending: false })
-        .limit(1);
-      
-      if (!error && data && data.length > 0) {
-        const lastDate = new Date(data[0].acknowledged_at);
-        setLastAcknowledgment(lastDate);
-        setHasAcknowledgedToday(isToday(lastDate));
-      }
-    } catch (err) {
-      console.error('Failed to check acknowledgment:', err);
-    } finally {
-      setCheckingAcknowledgment(false);
-    }
-  };
-
-  const handleAcknowledged = () => {
-    setHasAcknowledgedToday(true);
-    setLastAcknowledgment(new Date());
-  };
-
-  // Group rules by type
-  const groupedRules = dynamicRules.reduce((acc, rule) => {
-    const type = rule.rule_type;
-    if (!acc[type]) acc[type] = [];
-    acc[type].push(rule);
-    return acc;
-  }, {} as Record<string, ViolationRule[]>);
+  const {
+    searchTerm, setSearchTerm,
+    isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
+    editingPolicy, deletingPolicy, setDeletingPolicy,
+    formData, setFormData,
+    policies, stats, isLoading,
+    isCreating, isUpdating, isDeleting,
+    handleOpenCreate, handleOpenEdit, handleCloseDialog,
+    handleSubmit, handleDelete,
+  } = useMonitoringPoliciesPage();
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-primary/20 via-primary/10 to-background border-b border-border">
-        <div className="container mx-auto px-4 py-12">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-primary/20">
-                <Shield className="h-8 w-8 text-primary" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">Políticas de Monitoramento</h1>
-                <p className="text-muted-foreground">Informações sobre o monitoramento ativo neste dispositivo</p>
-              </div>
-            </div>
-            
-            {!checkingAcknowledgment && (
-              <div className="shrink-0">
-                {hasAcknowledgedToday ? (
-                  <div className="flex flex-col items-end gap-1">
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/30">
-                      <CheckCircle2 className="h-5 w-5 text-green-500" />
-                      <span className="text-sm text-green-500 font-medium">Aceito Hoje</span>
-                    </div>
-                    {lastAcknowledgment && (
-                      <span className="text-xs text-muted-foreground">
-                        às {lastAcknowledgment.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    )}
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-end gap-1">
-                    <PolicyAcknowledgmentDialog 
-                      employeeName={employeeName} 
-                      onAcknowledged={handleAcknowledged}
-                    />
-                    {lastAcknowledgment && (
-                      <span className="text-xs text-muted-foreground">
-                        Último aceite: {lastAcknowledgment.toLocaleDateString('pt-BR')}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+    <div className="flex-1 space-y-6 p-6">
+      <PageHeader title="Politicas de Monitoramento" description="Configure como os funcionarios sao monitorados">
+        <Button onClick={handleOpenCreate}><Plus className="mr-2 h-4 w-4" />Nova Politica</Button>
+      </PageHeader>
+
+      <div className="grid gap-4 md:grid-cols-4">
+        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Total</CardTitle><Shield className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">{stats.total}</div></CardContent></Card>
+        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Ativas</CardTitle><Activity className="h-4 w-4 text-green-500" /></CardHeader><CardContent><div className="text-2xl font-bold text-green-600">{stats.active}</div></CardContent></Card>
+        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Com Screenshots</CardTitle><Camera className="h-4 w-4 text-blue-500" /></CardHeader><CardContent><div className="text-2xl font-bold">{stats.withScreenshots}</div></CardContent></Card>
+        <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Com GPS</CardTitle><MapPin className="h-4 w-4 text-orange-500" /></CardHeader><CardContent><div className="text-2xl font-bold">{stats.withLocation}</div></CardContent></Card>
+      </div>
+
+      <div className="relative max-w-sm">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input placeholder="Buscar politicas..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-9" />
+      </div>
+
+      {isLoading ? (
+        <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin" /></div>
+      ) : policies.length === 0 ? (
+        <Card><CardContent className="text-center py-12 text-muted-foreground"><Shield className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma politica encontrada</p></CardContent></Card>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {policies.map((p) => (<PolicyCard key={p.id} policy={p} onEdit={handleOpenEdit} onDelete={(policy) => { setDeletingPolicy(policy); setIsDeleteDialogOpen(true); }} />))}
         </div>
-      </div>
+      )}
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Notice */}
-        <Card className="mb-8 border-amber-500/30 bg-amber-500/5">
-          <CardContent className="flex items-start gap-4 pt-6">
-            <div className="p-2 rounded-lg bg-amber-500/20">
-              <AlertTriangle className="h-5 w-5 text-amber-500" />
+      <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{editingPolicy ? 'Editar' : 'Nova'} Politica</DialogTitle>
+            <DialogDescription>Configure os parametros de monitoramento</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2"><Label>Nome</Label><Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} /></div>
+            <div className="grid gap-2"><Label>Descricao</Label><Textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} /></div>
+            <div className="grid gap-2">
+              <Label>Intervalo de Screenshots ({formData.screenshot_interval / 60} min)</Label>
+              <Slider value={[formData.screenshot_interval]} onValueChange={([v]) => setFormData({ ...formData, screenshot_interval: v })} min={0} max={1800} step={60} />
+              <p className="text-xs text-muted-foreground">0 = desativado</p>
             </div>
-            <div>
-              <h3 className="font-semibold text-amber-400 mb-1">Aviso Importante</h3>
-              <p className="text-sm text-muted-foreground">
-                Este dispositivo está sendo monitorado para fins de segurança corporativa. 
-                Todas as atividades podem ser registradas e analisadas pela equipe de TI. 
-                Use este equipamento apenas para fins profissionais.
-              </p>
+            <div className="grid gap-2">
+              <Label>Tempo de Ociosidade ({formData.idle_threshold / 60} min)</Label>
+              <Slider value={[formData.idle_threshold]} onValueChange={([v]) => setFormData({ ...formData, idle_threshold: v })} min={60} max={1800} step={60} />
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Monitoring Features */}
-        <section className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Eye className="h-5 w-5 text-primary" />
-            <h2 className="text-xl font-semibold">O que é Monitorado</h2>
-          </div>
-          <div className="grid gap-4">
-            {monitoringFeatures.map((feature, index) => (
-              <Card key={index} className="bg-card/50">
-                <CardContent className="flex items-center gap-4 py-4">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <feature.icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-medium">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">{feature.description}</p>
-                  </div>
-                  {feature.active && (
-                    <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/30">
-                      Ativo
-                    </Badge>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* System Blocking Policies */}
-        <section className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Lock className="h-5 w-5 text-destructive" />
-            <h2 className="text-xl font-semibold">Políticas de Bloqueio do Sistema</h2>
-          </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Restrições de hardware aplicadas pelo agente de monitoramento:
-          </p>
-          <div className="grid gap-4">
-            {staticBlockingPolicies.map((policy, index) => (
-              <Card key={index} className="bg-card/50">
-                <CardContent className="flex items-center gap-4 py-4">
-                  <div className={`p-2 rounded-lg ${severityColors[policy.severity]?.split(' ')[0] || 'bg-muted'}`}>
-                    <policy.icon className={`h-5 w-5 ${severityColors[policy.severity]?.split(' ')[1] || 'text-muted-foreground'}`} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-medium">{policy.title}</h3>
-                    <p className="text-sm text-muted-foreground">{policy.description}</p>
-                  </div>
-                  <Badge 
-                    variant="outline" 
-                    className={severityColors[policy.severity] || ''}
-                  >
-                    {severityLabels[policy.severity] || policy.severity}
-                  </Badge>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Dynamic Rules from Database */}
-        <section className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Ban className="h-5 w-5 text-warning" />
-            <h2 className="text-xl font-semibold">Regras de Violação Ativas</h2>
-            {loading && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
-          </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Regras configuradas pelo administrador que geram alertas quando violadas:
-          </p>
-
-          {loading ? (
-            <Card className="bg-card/50">
-              <CardContent className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                <span className="ml-2 text-muted-foreground">Carregando regras...</span>
-              </CardContent>
-            </Card>
-          ) : dynamicRules.length === 0 ? (
-            <Card className="bg-card/50">
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Nenhuma regra de violação configurada.
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="space-y-6">
-              {Object.entries(groupedRules).map(([ruleType, rules]) => {
-                const config = ruleTypeConfig[ruleType] || { 
-                  icon: AlertTriangle, 
-                  label: ruleType, 
-                  color: 'text-muted-foreground' 
-                };
-                const IconComponent = config.icon;
-
-                return (
-                  <div key={ruleType}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <IconComponent className={`h-4 w-4 ${config.color}`} />
-                      <h3 className="font-medium text-sm">{config.label}</h3>
-                      <Badge variant="secondary" className="text-xs">
-                        {rules.length}
-                      </Badge>
-                    </div>
-                    <div className="grid gap-2">
-                      {rules.map((rule) => (
-                        <Card key={rule.id} className="bg-card/30 border-border/50">
-                          <CardContent className="flex items-center gap-3 py-3 px-4">
-                            <div className="flex-1 min-w-0">
-                              <p className="font-medium text-sm truncate">{rule.rule_value}</p>
-                              {rule.description && (
-                                <p className="text-xs text-muted-foreground truncate">{rule.description}</p>
-                              )}
-                            </div>
-                            {rule.violation_count > 0 && (
-                              <Badge 
-                                variant="secondary" 
-                                className="text-xs shrink-0 bg-destructive/10 text-destructive border-destructive/30"
-                              >
-                                {rule.violation_count} {rule.violation_count === 1 ? 'violação' : 'violações'}
-                              </Badge>
-                            )}
-                            <Badge 
-                              variant="outline" 
-                              className={`text-xs shrink-0 ${severityColors[rule.severity] || ''}`}
-                            >
-                              {severityLabels[rule.severity] || rule.severity}
-                            </Badge>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="space-y-3 border-t pt-4">
+              <div className="flex items-center justify-between"><Label>Rastrear Atividade</Label><Switch checked={formData.activity_tracking} onCheckedChange={(v) => setFormData({ ...formData, activity_tracking: v })} /></div>
+              <div className="flex items-center justify-between"><Label>Rastrear Aplicativos</Label><Switch checked={formData.app_tracking} onCheckedChange={(v) => setFormData({ ...formData, app_tracking: v })} /></div>
+              <div className="flex items-center justify-between"><Label>Rastrear URLs</Label><Switch checked={formData.url_tracking} onCheckedChange={(v) => setFormData({ ...formData, url_tracking: v })} /></div>
+              <div className="flex items-center justify-between"><Label>Rastrear Teclas</Label><Switch checked={formData.keystroke_tracking} onCheckedChange={(v) => setFormData({ ...formData, keystroke_tracking: v })} /></div>
+              <div className="flex items-center justify-between"><Label>Rastrear Localizacao</Label><Switch checked={formData.location_tracking} onCheckedChange={(v) => setFormData({ ...formData, location_tracking: v })} /></div>
+              <div className="flex items-center justify-between"><Label>Detectar Ociosidade</Label><Switch checked={formData.idle_detection} onCheckedChange={(v) => setFormData({ ...formData, idle_detection: v })} /></div>
+              <div className="flex items-center justify-between"><Label>Apenas Horario Comercial</Label><Switch checked={formData.work_hours_only} onCheckedChange={(v) => setFormData({ ...formData, work_hours_only: v })} /></div>
+              <div className="flex items-center justify-between"><Label>Politica Ativa</Label><Switch checked={formData.is_active} onCheckedChange={(v) => setFormData({ ...formData, is_active: v })} /></div>
             </div>
-          )}
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Violation Response */}
-        <section className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Bell className="h-5 w-5 text-warning" />
-            <h2 className="text-xl font-semibold">O que Acontece em Caso de Violação</h2>
           </div>
-          <Card className="bg-card/50">
-            <CardContent className="pt-6">
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Você receberá uma notificação imediata sobre a violação detectada.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Uma captura de tela pode ser realizada como evidência.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span>O administrador de TI será notificado sobre o incidente.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Violações repetidas podem resultar em ações administrativas.</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </section>
+          <DialogFooter>
+            <Button variant="outline" onClick={handleCloseDialog}>Cancelar</Button>
+            <Button onClick={handleSubmit} disabled={isCreating || isUpdating}>{(isCreating || isUpdating) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{editingPolicy ? 'Salvar' : 'Criar'}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-        {/* Contact */}
-        <Card className="bg-primary/5 border-primary/20">
-          <CardContent className="pt-6 text-center">
-            <p className="text-sm text-muted-foreground">
-              Em caso de dúvidas sobre as políticas de monitoramento, entre em contato com o departamento de TI.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <ConfirmDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} title="Excluir Politica" description={`Excluir "${deletingPolicy?.name}"?`} onConfirm={handleDelete} isLoading={isDeleting} variant="destructive" />
     </div>
   );
 }
