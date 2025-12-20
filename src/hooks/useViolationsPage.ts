@@ -1,102 +1,142 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useSecurityViolations, type SecurityViolation } from '@/hooks/useSecurityViolations';
-import { useEmployees } from '@/hooks/useEmployees';
+import { useState, useCallback, useMemo } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/lib/supabase';
+import { useToast } from '@/hooks/use-toast';
 
 export type ViolationSeverity = 'low' | 'medium' | 'high' | 'critical';
 export type ViolationStatus = 'open' | 'investigating' | 'resolved' | 'dismissed';
 
-export const SEVERITY_CONFIG = {
-  low: { label: 'Baixa', color: 'bg-blue-500/20 text-blue-500' },
-  medium: { label: 'Média', color: 'bg-yellow-500/20 text-yellow-500' },
-  high: { label: 'Alta', color: 'bg-orange-500/20 text-orange-500' },
-  critical: { label: 'Crítica', color: 'bg-red-500/20 text-red-500' },
-} as const;
+export interface Violation {
+  id: string;
+  employee_id: string;
+  employee_name: string;
+  violation_type: string;
+  severity: ViolationSeverity;
+  status: ViolationStatus;
+  description?: string;
+  evidence?: Record<string, unknown>;
+  created_at: string;
+  resolved_at?: string;
+  resolved_by?: string;
+  resolution_notes?: string;
+}
 
-export const STATUS_CONFIG = {
-  open: { label: 'Aberta', color: 'bg-red-500/20 text-red-500' },
-  investigating: { label: 'Investigando', color: 'bg-yellow-500/20 text-yellow-500' },
-  resolved: { label: 'Resolvida', color: 'bg-green-500/20 text-green-500' },
-  dismissed: { label: 'Descartada', color: 'bg-gray-500/20 text-gray-500' },
-} as const;
+export const VIOLATION_TYPES = [
+  { value: 'unauthorized_access', label: 'Acesso Nao Autorizado' },
+  { value: 'data_leak', label: 'Vazamento de Dados' },
+  { value: 'policy_breach', label: 'Violacao de Politica' },
+  { value: 'geofence_breach', label: 'Violacao de Geofence' },
+  { value: 'time_violation', label: 'Violacao de Horario' },
+  { value: 'app_violation', label: 'App Nao Autorizado' },
+  { value: 'url_violation', label: 'Site Nao Autorizado' },
+  { value: 'keyword_detected', label: 'Palavra-chave Detectada' },
+  { value: 'excessive_idle', label: 'Ociosidade Excessiva' },
+];
 
 export function useViolationsPage() {
-  const { violations, loading, updateViolation } = useSecurityViolations();
-  const { employees } = useEmployees();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [severityFilter, setSeverityFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [dateRange, setDateRange] = useState<{ from: Date | null; to: Date | null }>({ from: null, to: null });
-  const [selectedViolation, setSelectedViolation] = useState<SecurityViolation | null>(null);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isResolveOpen, setIsResolveOpen] = useState(false);
+  const [selectedViolation, setSelectedViolation] = useState<Violation | null>(null);
+  const [resolutionNotes, setResolutionNotes] = useState('');
+
+  const { data: violations = [], isLoading } = useQuery({
+    queryKey: ['violations'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('violations')
+        .select('*, employees(name)')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return data.map(v => ({ ...v, employee_name: v.employees?.name || 'Desconhecido' })) as Violation[];
+    },
+  });
+
+  const resolveMutation = useMutation({
+    mutationFn: async ({ id, status, notes }: { id: string; status: ViolationStatus; notes?: string }) => {
+      const { error } = await supabase
+        .from('violations')
+        .update({
+          status,
+          resolution_notes: notes,
+          resolved_at: new Date().toISOString(),
+        })
+        .eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['violations'] });
+      toast({ title: 'Violacao atualizada!' });
+      setIsResolveOpen(false);
+      setSelectedViolation(null);
+      setResolutionNotes('');
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    },
+  });
 
   const filteredViolations = useMemo(() => {
     return violations.filter(v => {
-      const employee = employees.find(e => e.id === v.employee_id);
-      const matchesSearch = 
-        v.violation_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee?.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = !searchTerm || 
+        v.employee_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        v.description?.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesSeverity = severityFilter === 'all' || v.severity === severityFilter;
       const matchesStatus = statusFilter === 'all' || v.status === statusFilter;
-      
-      let matchesDate = true;
-      if (dateRange.from) {
-        matchesDate = new Date(v.created_at) >= dateRange.from;
-      }
-      if (dateRange.to && matchesDate) {
-        matchesDate = new Date(v.created_at) <= dateRange.to;
-      }
-      
-      return matchesSearch && matchesSeverity && matchesStatus && matchesDate;
+      const matchesType = typeFilter === 'all' || v.violation_type === typeFilter;
+      return matchesSearch && matchesSeverity && matchesStatus && matchesType;
     });
-  }, [violations, employees, searchTerm, severityFilter, statusFilter, dateRange]);
+  }, [violations, searchTerm, severityFilter, statusFilter, typeFilter]);
 
   const stats = useMemo(() => ({
     total: violations.length,
     open: violations.filter(v => v.status === 'open').length,
-    critical: violations.filter(v => v.severity === 'critical').length,
-    resolvedToday: violations.filter(v => {
-      if (v.status !== 'resolved') return false;
-      const today = new Date().toDateString();
-      return new Date(v.resolved_at || '').toDateString() === today;
-    }).length,
+    investigating: violations.filter(v => v.status === 'investigating').length,
+    resolved: violations.filter(v => v.status === 'resolved').length,
+    bySeverity: {
+      critical: violations.filter(v => v.severity === 'critical').length,
+      high: violations.filter(v => v.severity === 'high').length,
+      medium: violations.filter(v => v.severity === 'medium').length,
+      low: violations.filter(v => v.severity === 'low').length,
+    },
   }), [violations]);
 
-  const getEmployeeName = useCallback((employeeId: string) => {
-    const employee = employees.find(e => e.id === employeeId);
-    return employee?.name || 'Desconhecido';
-  }, [employees]);
-
-  const handleUpdateStatus = useCallback(async (violationId: string, status: ViolationStatus) => {
-    await updateViolation(violationId, { 
-      status,
-      resolved_at: status === 'resolved' ? new Date().toISOString() : null,
-    });
-  }, [updateViolation]);
-
-  const openDetail = useCallback((violation: SecurityViolation) => {
+  const handleViewDetails = useCallback((violation: Violation) => {
     setSelectedViolation(violation);
-    setIsDetailOpen(true);
+    setIsDetailsOpen(true);
   }, []);
 
-  const closeDetail = useCallback(() => {
-    setSelectedViolation(null);
-    setIsDetailOpen(false);
+  const handleOpenResolve = useCallback((violation: Violation) => {
+    setSelectedViolation(violation);
+    setResolutionNotes('');
+    setIsResolveOpen(true);
   }, []);
 
-  const clearFilters = useCallback(() => {
-    setSearchTerm('');
-    setSeverityFilter('all');
-    setStatusFilter('all');
-    setDateRange({ from: null, to: null });
-  }, []);
+  const handleResolve = useCallback((status: ViolationStatus) => {
+    if (selectedViolation) {
+      resolveMutation.mutate({ id: selectedViolation.id, status, notes: resolutionNotes });
+    }
+  }, [selectedViolation, resolutionNotes, resolveMutation]);
 
   return {
-    violations, filteredViolations, employees, stats, loading, selectedViolation,
-    searchTerm, setSearchTerm, severityFilter, setSeverityFilter,
-    statusFilter, setStatusFilter, dateRange, setDateRange,
-    isDetailOpen, setIsDetailOpen,
-    handleUpdateStatus, getEmployeeName, openDetail, closeDetail, clearFilters,
+    searchTerm, setSearchTerm,
+    severityFilter, setSeverityFilter,
+    statusFilter, setStatusFilter,
+    typeFilter, setTypeFilter,
+    isDetailsOpen, setIsDetailsOpen,
+    isResolveOpen, setIsResolveOpen,
+    selectedViolation,
+    resolutionNotes, setResolutionNotes,
+    violations: filteredViolations,
+    stats, isLoading,
+    isResolving: resolveMutation.isPending,
+    handleViewDetails, handleOpenResolve, handleResolve,
+    VIOLATION_TYPES,
   };
 }
