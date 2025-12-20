@@ -8,7 +8,7 @@ import { Header } from '@/components/Header';
 // SKELETON PARA STAT CARD
 // ============================================================
 
-export function StatCardSkeleton() {
+function StatCardSkeletonBase() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -27,7 +27,7 @@ export function StatCardSkeleton() {
 // SKELETON PARA CHART
 // ============================================================
 
-export function ChartSkeleton({ height = 300 }: { height?: number }) {
+function ChartSkeletonBase({ height = 300 }: { height?: number }) {
   return (
     <Card>
       <CardHeader>
@@ -53,7 +53,7 @@ export function ChartSkeleton({ height = 300 }: { height?: number }) {
 // SKELETON PARA LISTA
 // ============================================================
 
-export function ListSkeleton({ rows = 5 }: { rows?: number }) {
+function ListSkeletonBase({ rows = 5 }: { rows?: number }) {
   return (
     <Card>
       <CardHeader>
@@ -79,7 +79,7 @@ export function ListSkeleton({ rows = 5 }: { rows?: number }) {
 // SKELETON PARA TABELA
 // ============================================================
 
-export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
+function TableSkeletonBase({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
   return (
     <Card>
       <CardHeader>
@@ -119,7 +119,7 @@ export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: nu
 // SKELETON PARA MÉTRICAS
 // ============================================================
 
-export function MetricsSkeleton() {
+function MetricsSkeletonBase() {
   return (
     <Card>
       <CardHeader>
@@ -144,7 +144,7 @@ export function MetricsSkeleton() {
 // SKELETON COMPLETO DO DASHBOARD
 // ============================================================
 
-export function DashboardSkeleton() {
+function DashboardSkeletonBase() {
   return (
     <div className="min-h-screen bg-background">
       <Sidebar />
@@ -190,7 +190,7 @@ export function DashboardSkeleton() {
 // SKELETON PARA PÁGINA DE LISTA (Employees, Violations, etc)
 // ============================================================
 
-export function ListPageSkeleton() {
+function ListPageSkeletonBase() {
   return (
     <div className="min-h-screen bg-background">
       <Sidebar />
@@ -225,7 +225,7 @@ export function ListPageSkeleton() {
 // SKELETON PARA PÁGINA DE DETALHES
 // ============================================================
 
-export function DetailPageSkeleton() {
+function DetailPageSkeletonBase() {
   return (
     <div className="min-h-screen bg-background">
       <Sidebar />
@@ -258,3 +258,13 @@ export function DetailPageSkeleton() {
     </div>
   );
 }
+
+// Memo wrappers
+export const StatCardSkeleton = memo(StatCardSkeletonBase);
+export const ChartSkeleton = memo(ChartSkeletonBase);
+export const ListSkeleton = memo(ListSkeletonBase);
+export const TableSkeleton = memo(TableSkeletonBase);
+export const MetricsSkeleton = memo(MetricsSkeletonBase);
+export const DashboardSkeleton = memo(DashboardSkeletonBase);
+export const ListPageSkeleton = memo(ListPageSkeletonBase);
+export const DetailPageSkeleton = memo(DetailPageSkeletonBase);
