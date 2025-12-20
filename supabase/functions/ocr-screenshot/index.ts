@@ -1,3 +1,4 @@
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
@@ -21,6 +22,9 @@ const OCRRequestSchema = z.object({
   data => data.screenshot_id || data.image_base64 || data.image_url,
   { message: 'Either screenshot_id, image_base64, or image_url is required' }
 );
+
+// Lovable AI API endpoint for vision models
+const LOVABLE_AI_URL = 'https://api.lovable.dev/v1/chat/completions';
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -60,28 +64,38 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     let imageData: string | null = null;
+    let imageMimeType = 'image/png';
 
     // Get image data
     if (image_base64) {
       imageData = image_base64;
     } else if (image_url) {
+      console.log('[OCR] Fetching image from URL:', image_url);
       const response = await fetch(image_url);
+      const contentType = response.headers.get('content-type') || 'image/png';
+      imageMimeType = contentType;
       const arrayBuffer = await response.arrayBuffer();
       imageData = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
     } else if (screenshot_id) {
+      console.log('[OCR] Loading screenshot from storage:', screenshot_id);
       const { data: screenshot } = await supabase
-        .from('screenshots')
-        .select('file_path')
+        .from('screen_captures')
+        .select('capture_url')
         .eq('id', screenshot_id)
         .single();
 
-      if (screenshot?.file_path) {
+      if (screenshot?.capture_url) {
+        // Download from storage
+        const urlParts = screenshot.capture_url.split('/');
+        const filePath = urlParts.slice(-2).join('/');
+        
         const { data } = await supabase.storage
-          .from('screenshots')
-          .download(screenshot.file_path);
+          .from('violation-screenshots')
+          .download(filePath);
         
         if (data) {
           const arrayBuffer = await data.arrayBuffer();
@@ -97,46 +111,79 @@ serve(async (req) => {
       );
     }
 
-    // Call OCR service (using Google Cloud Vision API as example)
-    const visionApiKey = Deno.env.get('GOOGLE_VISION_API_KEY');
-    
     let extractedText = '';
     let confidence = 0;
 
-    if (visionApiKey) {
-      const visionResponse = await fetch(
-        `https://vision.googleapis.com/v1/images:annotate?key=${visionApiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            requests: [{
-              image: { content: imageData },
-              features: [{ type: 'TEXT_DETECTION', maxResults: 1 }],
-              imageContext: language !== 'auto' ? {
-                languageHints: [language],
-              } : undefined,
-            }],
-          }),
-        }
-      );
-
-      const visionResult = await visionResponse.json();
+    // Use Lovable AI Vision model for OCR
+    if (lovableApiKey) {
+      console.log('[OCR] Using Lovable AI Vision for text extraction');
       
-      if (visionResult.responses?.[0]?.fullTextAnnotation) {
-        extractedText = visionResult.responses[0].fullTextAnnotation.text;
-        confidence = visionResult.responses[0].textAnnotations?.[0]?.confidence || 0.9;
+      const languageHint = language === 'auto' 
+        ? '' 
+        : language === 'por' 
+          ? 'The text is in Portuguese.' 
+          : language === 'spa' 
+            ? 'The text is in Spanish.' 
+            : 'The text is in English.';
+
+      const visionResponse = await fetch(LOVABLE_AI_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${lovableApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'google/gemini-2.5-flash',
+          messages: [
+            {
+              role: 'user',
+              content: [
+                {
+                  type: 'text',
+                  text: `Extract ALL visible text from this screenshot. ${languageHint}
+                  
+Return the extracted text exactly as it appears, preserving:
+- Line breaks and formatting
+- All words and numbers
+- Application names and titles
+- URLs if visible
+
+ONLY return the extracted text, nothing else. If no text is visible, return "[NO TEXT DETECTED]".`
+                },
+                {
+                  type: 'image_url',
+                  image_url: {
+                    url: `data:${imageMimeType};base64,${imageData}`
+                  }
+                }
+              ]
+            }
+          ],
+          max_tokens: 4000,
+        }),
+      });
+
+      if (visionResponse.ok) {
+        const visionResult = await visionResponse.json();
+        extractedText = visionResult.choices?.[0]?.message?.content || '';
+        confidence = extractedText && extractedText !== '[NO TEXT DETECTED]' ? 0.95 : 0;
+        console.log('[OCR] Text extracted successfully, length:', extractedText.length);
+      } else {
+        const errorText = await visionResponse.text();
+        console.error('[OCR] Vision API error:', errorText);
       }
     } else {
-      // Fallback: return placeholder if no OCR service configured
-      extractedText = '[OCR service not configured]';
+      console.warn('[OCR] LOVABLE_API_KEY not configured');
+      extractedText = '[OCR service not configured - LOVABLE_API_KEY missing]';
       confidence = 0;
     }
 
     // Keyword detection
     const detectedKeywords: Array<{ keyword: string; count: number; positions: number[] }> = [];
     
-    if (detect_keywords && extractedText) {
+    if (detect_keywords && extractedText && extractedText !== '[NO TEXT DETECTED]') {
+      console.log('[OCR] Scanning for sensitive keywords');
+      
       // Get sensitive keywords from database
       let keywordsToCheck = keywords || [];
       
@@ -170,8 +217,11 @@ serve(async (req) => {
         }
       }
 
+      console.log('[OCR] Keywords detected:', detectedKeywords.length);
+
       // Create violation if sensitive keywords found
       if (detectedKeywords.length > 0 && employee_id) {
+        console.log('[OCR] Creating violation alert for detected keywords');
         await supabase.functions.invoke('process-violation-alert', {
           body: {
             violation_id: crypto.randomUUID(),
@@ -188,15 +238,16 @@ serve(async (req) => {
       }
     }
 
-    // Store OCR result
-    if (screenshot_id) {
-      await supabase.from('screenshot_ocr').upsert({
-        screenshot_id,
-        extracted_text: extractedText,
-        confidence,
-        keywords_found: detectedKeywords,
-        processed_at: new Date().toISOString(),
-      }, { onConflict: 'screenshot_id' });
+    // Update screenshot with OCR result
+    if (screenshot_id && extractedText) {
+      console.log('[OCR] Updating screenshot record with extracted text');
+      await supabase
+        .from('screen_captures')
+        .update({
+          extracted_text: extractedText,
+          ocr_processed_at: new Date().toISOString(),
+        })
+        .eq('id', screenshot_id);
     }
 
     return new Response(
@@ -206,15 +257,16 @@ serve(async (req) => {
         confidence,
         keywords_detected: detectedKeywords,
         word_count: extractedText.split(/\s+/).filter(Boolean).length,
+        processed_at: new Date().toISOString(),
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error) {
-    console.error('OCR error:', error);
-    const message = error instanceof Error ? error.message : 'Unknown error';
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[OCR] Error:', errorMessage);
     return new Response(
-      JSON.stringify({ error: message }),
+      JSON.stringify({ error: errorMessage }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
