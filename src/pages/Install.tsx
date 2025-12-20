@@ -1,4 +1,4 @@
-import React, { Suspense, memo } from 'react';
+import React, { memo }, { Suspense, memo } from 'react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -178,7 +178,7 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-export default function Install() {
+const InstallContent = memo(function InstallContent() {
   return (
     <ErrorBoundary>
       <Suspense fallback={<LoadingSkeleton />}>
@@ -186,4 +186,8 @@ export default function Install() {
       </Suspense>
     </ErrorBoundary>
   );
+});
+
+export default function Install() {
+  return <InstallContent />;
 }
