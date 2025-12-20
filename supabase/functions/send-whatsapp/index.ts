@@ -1,32 +1,40 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-import { checkRateLimit, RateLimitConfig } from '../_shared/rateLimiting.ts';
-import { 
-  sendWhatsAppSchema, 
-  validateInput, 
-  createValidationErrorResponse 
-} from '../_shared/validation.ts';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const RATE_LIMIT_CONFIG: RateLimitConfig = {
-  maxRequests: 30,
-  windowMs: 60 * 1000,
-  identifier: 'send-whatsapp',
-};
+// Validation Schemas
+const WhatsAppMessageSchema = z.object({
+  to: z.string().regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format'),
+  template_name: z.string().min(1).max(100).optional(),
+  template_language: z.string().default('pt_BR'),
+  template_params: z.array(z.string()).optional(),
+  message: z.string().min(1).max(4096).optional(),
+  media_url: z.string().url().optional(),
+  media_type: z.enum(['image', 'document', 'video', 'audio']).optional(),
+  reply_to: z.string().optional(),
+}).refine(
+  data => data.template_name || data.message,
+  { message: 'Either template_name or message is required' }
+);
 
-serve(async (req: Request) => {
+const BulkWhatsAppSchema = z.object({
+  messages: z.array(WhatsAppMessageSchema).min(1).max(100),
+  batch_id: z.string().uuid().optional(),
+});
+
+serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Rate limiting
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await checkRateLimit(clientIP, RATE_LIMIT_CONFIG);
+    const rateLimitResult = await checkRateLimit(clientIP, 'send-whatsapp', 30, 60);
     
     if (!rateLimitResult.allowed) {
       return new Response(
@@ -35,96 +43,152 @@ serve(async (req: Request) => {
       );
     }
 
-    // Validate input
     const body = await req.json();
     
-    // Handle test request
-    if (body.test === true) {
+    // Check if it's a bulk request or single message
+    const isBulk = Array.isArray(body.messages);
+    
+    let messages: z.infer<typeof WhatsAppMessageSchema>[];
+    
+    if (isBulk) {
+      const validation = BulkWhatsAppSchema.safeParse(body);
+      if (!validation.success) {
+        return new Response(
+          JSON.stringify({ error: 'Validation failed', details: validation.error.flatten() }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      messages = validation.data.messages;
+    } else {
+      const validation = WhatsAppMessageSchema.safeParse(body);
+      if (!validation.success) {
+        return new Response(
+          JSON.stringify({ error: 'Validation failed', details: validation.error.flatten() }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      messages = [validation.data];
+    }
+
+    // Get WhatsApp API credentials
+    const accessToken = Deno.env.get('WHATSAPP_ACCESS_TOKEN');
+    const phoneNumberId = Deno.env.get('WHATSAPP_PHONE_NUMBER_ID');
+
+    if (!accessToken || !phoneNumberId) {
       return new Response(
-        JSON.stringify({ success: true, message: 'WhatsApp connection test successful' }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: 'WhatsApp API not configured' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const validation = validateInput(sendWhatsAppSchema, body);
-    
-    if (!validation.success) {
-      return createValidationErrorResponse(validation.error, validation.details, corsHeaders);
-    }
+    const results: Array<{
+      to: string;
+      success: boolean;
+      message_id?: string;
+      error?: string;
+    }> = [];
 
-    const { to, message, template_name, template_params } = validation.data;
+    for (const msg of messages) {
+      try {
+        let payload: Record<string, unknown>;
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    );
+        if (msg.template_name) {
+          // Template message
+          payload = {
+            messaging_product: 'whatsapp',
+            to: msg.to.replace(/\D/g, ''),
+            type: 'template',
+            template: {
+              name: msg.template_name,
+              language: { code: msg.template_language },
+              components: msg.template_params?.length ? [
+                {
+                  type: 'body',
+                  parameters: msg.template_params.map(p => ({ type: 'text', text: p })),
+                },
+              ] : undefined,
+            },
+          };
+        } else if (msg.media_url && msg.media_type) {
+          // Media message
+          payload = {
+            messaging_product: 'whatsapp',
+            to: msg.to.replace(/\D/g, ''),
+            type: msg.media_type,
+            [msg.media_type]: {
+              link: msg.media_url,
+              caption: msg.message,
+            },
+          };
+        } else {
+          // Text message
+          payload = {
+            messaging_product: 'whatsapp',
+            to: msg.to.replace(/\D/g, ''),
+            type: 'text',
+            text: {
+              body: msg.message,
+              preview_url: true,
+            },
+          };
+        }
 
-    // Get WhatsApp settings
-    const { data: settings, error: settingsError } = await supabase
-      .from('whatsapp_settings')
-      .select('*')
-      .eq('is_active', true)
-      .single();
+        if (msg.reply_to) {
+          payload.context = { message_id: msg.reply_to };
+        }
 
-    if (settingsError || !settings) {
-      throw new Error('WhatsApp not configured or inactive');
-    }
-
-    // Prepare message payload
-    const whatsappPayload: Record<string, unknown> = {
-      messaging_product: 'whatsapp',
-      to,
-    };
-
-    if (template_name) {
-      whatsappPayload.type = 'template';
-      whatsappPayload.template = {
-        name: template_name,
-        language: { code: 'pt_BR' },
-        components: template_params ? [
+        const response = await fetch(
+          `https://graph.facebook.com/v18.0/${phoneNumberId}/messages`,
           {
-            type: 'body',
-            parameters: Object.values(template_params).map(value => ({
-              type: 'text',
-              text: value,
-            })),
-          },
-        ] : [],
-      };
-    } else {
-      whatsappPayload.type = 'text';
-      whatsappPayload.text = { body: message };
-    }
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          }
+        );
 
-    // Send via WhatsApp Business API
-    const response = await fetch(
-      `https://graph.facebook.com/v18.0/${settings.phone_number_id}/messages`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${settings.access_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(whatsappPayload),
+        const result = await response.json();
+
+        if (response.ok && result.messages?.[0]?.id) {
+          results.push({
+            to: msg.to,
+            success: true,
+            message_id: result.messages[0].id,
+          });
+        } else {
+          results.push({
+            to: msg.to,
+            success: false,
+            error: result.error?.message || 'Unknown error',
+          });
+        }
+      } catch (err) {
+        results.push({
+          to: msg.to,
+          success: false,
+          error: err.message,
+        });
       }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error?.message || 'Failed to send WhatsApp message');
     }
+
+    const successCount = results.filter(r => r.success).length;
+    const failCount = results.filter(r => !r.success).length;
 
     return new Response(
-      JSON.stringify({ 
-        success: true,
-        message_id: result.messages?.[0]?.id,
-        to,
+      JSON.stringify({
+        success: failCount === 0,
+        total: results.length,
+        sent: successCount,
+        failed: failCount,
+        results: isBulk ? results : results[0],
       }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
+
   } catch (error) {
-    console.error('Error:', error);
+    console.error('WhatsApp send error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
