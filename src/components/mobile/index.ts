@@ -1,0 +1,1 @@
+export { MobileDeviceCard } from './MobileDeviceCard';
