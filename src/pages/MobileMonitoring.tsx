@@ -1,3 +1,6 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useMobileMonitoringPage } from '@/hooks/useMobileMonitoringPage';
 import { MobileDeviceCard } from '@/components/mobile';
 import { PageHeader } from '@/components/PageHeader';
@@ -6,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { MobileDevicesMap } from '@/components/MobileDevicesMap';
+
 import {
   Select,
   SelectContent,
@@ -13,10 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { MobileDevicesMap } from '@/components/MobileDevicesMap';
-import { Smartphone, Wifi, WifiOff, BatteryLow, Search, Map, List, RefreshCw, Loader2 } from 'lucide-react';
 
-export default function MobileMonitoring() {
+const MobileMonitoringContent = memo(function MobileMonitoringContent() {
   const {
     selectedDevice,
     viewMode,
@@ -172,5 +175,25 @@ export default function MobileMonitoring() {
         </div>
       )}
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function MobileMonitoring() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <MobileMonitoringContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
