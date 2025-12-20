@@ -1,4 +1,5 @@
 import React, { Suspense, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMonitoringPage } from '@/hooks/useMonitoringPage';
@@ -9,9 +10,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
+import { Monitor, Loader2, Activity, AppWindow, Globe } from 'lucide-react';
 
 const MonitoringContent = memo(function MonitoringContent() {
+  const { t } = useTranslation();
   const {
     selectedEmployee,
     viewMode,
@@ -42,8 +44,8 @@ const MonitoringContent = memo(function MonitoringContent() {
   return (
     <div className="flex-1 space-y-6 p-6">
       <PageHeader
-        title="Monitoramento em Tempo Real"
-        description="Acompanhe a atividade dos funcionários"
+        title={t('monitoring.title')}
+        description={t('monitoring.subtitle')}
       />
 
       <MonitoringStatsCards stats={stats} />
@@ -72,7 +74,7 @@ const MonitoringContent = memo(function MonitoringContent() {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <Monitor className="h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">Nenhum funcionário encontrado</p>
+                <p className="text-muted-foreground">{t('employees.noEmployees')}</p>
               </CardContent>
             </Card>
           ) : (
@@ -94,13 +96,13 @@ const MonitoringContent = memo(function MonitoringContent() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
-                {selectedEmployee ? selectedEmployee.name : 'Detalhes'}
+                {selectedEmployee ? selectedEmployee.name : t('common.details')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               {!selectedEmployee ? (
                 <p className="text-muted-foreground text-center py-8">
-                  Selecione um funcionário para ver os detalhes
+                  {t('common.select')}
                 </p>
               ) : isLoadingSummary ? (
                 <div className="flex justify-center py-8">
@@ -109,25 +111,25 @@ const MonitoringContent = memo(function MonitoringContent() {
               ) : activitySummary ? (
                 <Tabs defaultValue="activity">
                   <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="activity">Atividade</TabsTrigger>
-                    <TabsTrigger value="apps">Apps & Sites</TabsTrigger>
+                    <TabsTrigger value="activity">{t('monitoring.realtimeActivity')}</TabsTrigger>
+                    <TabsTrigger value="apps">{t('monitoring.applications')}</TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="activity" className="space-y-4 mt-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center p-3 rounded-lg bg-muted/50">
                         <p className="text-2xl font-bold">{activitySummary.total_keystrokes}</p>
-                        <p className="text-xs text-muted-foreground">Teclas</p>
+                        <p className="text-xs text-muted-foreground">{t('monitoring.keystrokes')}</p>
                       </div>
                       <div className="text-center p-3 rounded-lg bg-muted/50">
                         <p className="text-2xl font-bold">{activitySummary.total_clicks}</p>
-                        <p className="text-xs text-muted-foreground">Cliques</p>
+                        <p className="text-xs text-muted-foreground">{t('monitoring.clicks')}</p>
                       </div>
                     </div>
 
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span>Tempo Ativo</span>
+                        <span>{t('monitoring.activeTime')}</span>
                         <span className="font-medium">{formatDuration(activitySummary.total_active_time)}</span>
                       </div>
                       <Progress 
@@ -137,7 +139,7 @@ const MonitoringContent = memo(function MonitoringContent() {
 
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span>Tempo Ocioso</span>
+                        <span>{t('monitoring.idleTime')}</span>
                         <span className="font-medium">{formatDuration(activitySummary.total_idle_time)}</span>
                       </div>
                     </div>
@@ -149,7 +151,7 @@ const MonitoringContent = memo(function MonitoringContent() {
                         <div>
                           <h4 className="font-medium mb-2 flex items-center gap-2">
                             <AppWindow className="h-4 w-4" />
-                            Top Aplicativos
+                            {t('monitoring.topApplications')}
                           </h4>
                           <div className="space-y-2">
                             {activitySummary.top_apps.map((app, i) => (
@@ -164,7 +166,7 @@ const MonitoringContent = memo(function MonitoringContent() {
                         <div>
                           <h4 className="font-medium mb-2 flex items-center gap-2">
                             <Globe className="h-4 w-4" />
-                            Top Sites
+                            {t('monitoring.topWebsites')}
                           </h4>
                           <div className="space-y-2">
                             {activitySummary.top_urls.map((url, i) => (

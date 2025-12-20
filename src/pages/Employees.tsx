@@ -1,4 +1,5 @@
 import React, { Suspense, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Sidebar } from '@/components/Sidebar';
@@ -7,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { EmployeesSkeleton } from '@/components/PageSkeletons';
 import { useEmployeesPage } from '@/hooks/useEmployeesPage';
+import { Users, Plus } from 'lucide-react';
 
 import {
   AlertDialog,
@@ -27,41 +29,31 @@ import {
 } from '@/components/employees';
 
 const EmployeesContent = memo(function EmployeesContent() {
+  const { t } = useTranslation();
   const {
-    // Data
     filteredEmployees,
     teams,
     stats,
     loading,
     selectedEmployee,
-
-    // Filters
     filters,
     setSearchTerm,
     setStatusFilter,
     setTeamFilter,
     clearFilters,
-
-    // Form data
     formData,
     setFormData,
     deviceData,
     setDeviceData,
-
-    // Dialog states
     isCreateOpen,
     isEditOpen,
     isDeviceOpen,
     isDeleteOpen,
-
-    // Actions
     handleCreate,
     handleUpdate,
     handleDelete,
     handleAssignDevice,
     handleUnassignDevice,
-
-    // Dialog handlers
     openCreateDialog,
     openEditDialog,
     openDeviceDialog,
@@ -92,32 +84,29 @@ const EmployeesContent = memo(function EmployeesContent() {
       <div className="pl-64">
         <Header />
         <main className="p-6 space-y-6">
-          {/* Header */}
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
                 <Users className="h-8 w-8" />
-                Funcionários
+                {t('employees.title')}
               </h1>
               <p className="text-muted-foreground">
-                Gerencie os funcionários monitorados pelo sistema
+                {t('employees.subtitle')}
               </p>
             </div>
             <Button onClick={openCreateDialog}>
               <Plus className="mr-2 h-4 w-4" />
-              Novo Funcionário
+              {t('employees.addEmployee')}
             </Button>
           </div>
 
-          {/* Stats Cards */}
           <EmployeeStatsCards stats={stats} />
 
-          {/* Filters & Table */}
           <Card>
             <CardHeader>
-              <CardTitle>Lista de Funcionários</CardTitle>
+              <CardTitle>{t('employees.title')}</CardTitle>
               <CardDescription>
-                {filteredEmployees.length} funcionário(s) encontrado(s)
+                {filteredEmployees.length} {t('common.noResults').replace('Nenhum resultado encontrado', 'funcionário(s) encontrado(s)')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -141,7 +130,6 @@ const EmployeesContent = memo(function EmployeesContent() {
             </CardContent>
           </Card>
 
-          {/* Create Dialog */}
           <EmployeeFormDialog
             open={isCreateOpen}
             onOpenChange={closeCreateDialog}
@@ -151,7 +139,6 @@ const EmployeesContent = memo(function EmployeesContent() {
             teams={teams}
           />
 
-          {/* Edit Dialog */}
           <EmployeeFormDialog
             open={isEditOpen}
             onOpenChange={closeEditDialog}
@@ -162,7 +149,6 @@ const EmployeesContent = memo(function EmployeesContent() {
             isEditing
           />
 
-          {/* Device Assignment Dialog */}
           <DeviceAssignDialog
             open={isDeviceOpen}
             onOpenChange={closeDeviceDialog}
@@ -172,23 +158,21 @@ const EmployeesContent = memo(function EmployeesContent() {
             onSubmit={handleAssignDevice}
           />
 
-          {/* Delete Confirmation Dialog */}
           <AlertDialog open={isDeleteOpen} onOpenChange={closeDeleteDialog}>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
+                <AlertDialogTitle>{t('employees.confirmDelete')}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Tem certeza que deseja excluir o funcionário{' '}
-                  <strong>{selectedEmployee?.name}</strong>? Esta ação não pode ser desfeita.
+                  {t('employees.confirmDelete')} <strong>{selectedEmployee?.name}</strong>?
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDelete}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 >
-                  Excluir
+                  {t('common.delete')}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
