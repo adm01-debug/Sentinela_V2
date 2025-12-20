@@ -10,24 +10,31 @@ interface FeatureFlags {
   advancedAnalytics: boolean;
   realtimeNotifications: boolean;
   
+  // Monitoring features
+  screenshotCapture: boolean;
+  keystrokeLogging: boolean;
+  applicationTracking: boolean;
+  geofencing: boolean;
+  mobileMonitoring: boolean;
+  
   // Beta features
   aiAssistant: boolean;
   predictiveAlerts: boolean;
   customDashboards: boolean;
+  gamification: boolean;
+  productivityScoring: boolean;
+  
+  // Communication features
+  whatsappIntegration: boolean;
+  emailReports: boolean;
+  webhooks: boolean;
   
   // Experimental features
   voiceCommands: boolean;
   biometricAuth: boolean;
   offlineMode: boolean;
-}
-
-interface FeatureFlagsContextType {
-  flags: FeatureFlags;
-  isEnabled: (feature: keyof FeatureFlags) => boolean;
-  setFlag: (feature: keyof FeatureFlags, enabled: boolean) => void;
-  enableFlag: (feature: keyof FeatureFlags) => void;
-  disableFlag: (feature: keyof FeatureFlags) => void;
-  toggleFlag: (feature: keyof FeatureFlags) => void;
+  ocrProcessing: boolean;
+  sessionPlayback: boolean;
 }
 
 // ============================================================
@@ -40,15 +47,31 @@ const defaultFlags: FeatureFlags = {
   advancedAnalytics: true,
   realtimeNotifications: true,
   
-  // Beta features - disabled by default
-  aiAssistant: false,
+  // Monitoring features - enabled by default
+  screenshotCapture: true,
+  keystrokeLogging: true,
+  applicationTracking: true,
+  geofencing: true,
+  mobileMonitoring: true,
+  
+  // Beta features - some enabled
+  aiAssistant: true,
   predictiveAlerts: false,
-  customDashboards: false,
+  customDashboards: true,
+  gamification: true,
+  productivityScoring: true,
+  
+  // Communication features - enabled
+  whatsappIntegration: true,
+  emailReports: true,
+  webhooks: true,
   
   // Experimental features - disabled by default
   voiceCommands: false,
   biometricAuth: false,
   offlineMode: false,
+  ocrProcessing: false,
+  sessionPlayback: false,
 };
 
 // ============================================================

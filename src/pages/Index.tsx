@@ -1,6 +1,7 @@
 import { memo, useMemo, useCallback } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
+import { SkipLink } from '@/components/a11y/SkipLink';
 import { StatCard } from '@/components/StatCard';
 import { SecurityMetrics } from '@/components/SecurityMetrics';
 import { ActivityChart } from '@/components/ActivityChart';
@@ -167,10 +168,11 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SkipLink />
       <Sidebar />
       <div className="lg:pl-64">
         <Header />
-        <main className="p-4 lg:p-6 space-y-6">
+        <main id="main-content" className="p-4 lg:p-6 space-y-6">
           {/* Header com título e ações */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>

@@ -164,6 +164,42 @@ export type Database = {
         }
         Relationships: []
       }
+      badges: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          points_required: number | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          points_required?: number | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          points_required?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       blocked_ips: {
         Row: {
           blocked_at: string
@@ -248,6 +284,42 @@ export type Database = {
         }
         Relationships: []
       }
+      employee_badges: {
+        Row: {
+          badge_id: string
+          earned_at: string
+          employee_id: string
+          id: string
+        }
+        Insert: {
+          badge_id: string
+          earned_at?: string
+          employee_id: string
+          id?: string
+        }
+        Update: {
+          badge_id?: string
+          earned_at?: string
+          employee_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_badges_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employee_devices: {
         Row: {
           agent_key_id: string | null
@@ -328,6 +400,53 @@ export type Database = {
             columns: ["geofence_id"]
             isOneToOne: false
             referencedRelation: "geofences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employee_points: {
+        Row: {
+          created_at: string
+          current_streak: number
+          employee_id: string
+          experience: number
+          id: string
+          last_activity_date: string | null
+          level: number
+          longest_streak: number
+          total_points: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_streak?: number
+          employee_id: string
+          experience?: number
+          id?: string
+          last_activity_date?: string | null
+          level?: number
+          longest_streak?: number
+          total_points?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_streak?: number
+          employee_id?: string
+          experience?: number
+          id?: string
+          last_activity_date?: string | null
+          level?: number
+          longest_streak?: number
+          total_points?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_points_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employees"
             referencedColumns: ["id"]
           },
         ]
@@ -870,6 +989,41 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "overtime_requests_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      points_history: {
+        Row: {
+          action_type: string
+          created_at: string
+          description: string | null
+          employee_id: string
+          id: string
+          points: number
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          description?: string | null
+          employee_id: string
+          id?: string
+          points: number
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          description?: string | null
+          employee_id?: string
+          id?: string
+          points?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "points_history_employee_id_fkey"
             columns: ["employee_id"]
             isOneToOne: false
             referencedRelation: "employees"
