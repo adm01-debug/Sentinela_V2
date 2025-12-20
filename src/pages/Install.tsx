@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, Download, Smartphone, Monitor, Check, ChevronRight } from 'lucide-react';
+
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -165,3 +167,23 @@ const Install = () => {
 };
 
 export default Install;
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function Install() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <InstallContent />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
