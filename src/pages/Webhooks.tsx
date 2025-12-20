@@ -1,8 +1,16 @@
+import React, { Suspense, memo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Webhook, Search, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Sidebar } from '@/components/Sidebar';
+import { Header } from '@/components/Header';
+import { Spinner } from '@/components/LoadingState';
+import { WebhooksList, WebhookFormDialog } from '@/components/webhooks';
+import { useWebhooksPage } from '@/hooks/useWebhooksPage';
+
 import {
   Select,
   SelectContent,
@@ -28,13 +36,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Sidebar } from '@/components/Sidebar';
-import { Header } from '@/components/Header';
-import { Spinner } from '@/components/LoadingState';
-import { WebhooksList, WebhookFormDialog } from '@/components/webhooks';
-import { useWebhooksPage } from '@/hooks/useWebhooksPage';
 
-export default function Webhooks() {
+const WebhooksContent = memo(function WebhooksContent() {
   const navigate = useNavigate();
   const {
     filteredWebhooks,
@@ -233,5 +236,25 @@ export default function Webhooks() {
         </main>
       </div>
     </div>
+  );
+});
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4 p-6">
+    <Skeleton className="h-8 w-64" />
+    <div className="grid gap-4 md:grid-cols-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+    </div>
+    <Skeleton className="h-96" />
+  </div>
+);
+
+export default function Webhooks() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <WebhooksContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
