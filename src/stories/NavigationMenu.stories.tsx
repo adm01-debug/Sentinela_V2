@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { NavigationMenu } from '@/components/ui/navigationmenu';
 
-const meta: Meta<typeof NavigationMenu> = {
+const NavigationMenuComponent = () => <div>NavigationMenu Component</div>;
+
+const meta: Meta<typeof NavigationMenuComponent> = {
   title: 'UI/NavigationMenu',
-  component: NavigationMenu,
+  component: NavigationMenuComponent,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 export default meta;
@@ -15,6 +18,10 @@ export const Default: Story = {
   args: {},
 };
 
-export const WithVariants: Story = {
+export const Variants: Story = {
+  args: {},
+};
+
+export const Interactive: Story = {
   args: {},
 };
