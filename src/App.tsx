@@ -4,11 +4,13 @@ import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { queryClient } from '@/lib/queryClient';
 import { PageErrorBoundary } from '@/components/ErrorBoundary';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
+import { AuthProvider } from '@/hooks/useAuth';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 // ============================================================
 // LAZY LOADED PAGES
@@ -48,6 +50,18 @@ const Install = lazy(() => import('@/pages/Install'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 // ============================================================
+// PROTECTED LAYOUT WRAPPER
+// ============================================================
+
+function AdminLayout() {
+  return (
+    <ProtectedRoute requireAdmin>
+      <Outlet />
+    </ProtectedRoute>
+  );
+}
+
+// ============================================================
 // APP COMPONENT
 // ============================================================
 
@@ -59,63 +73,68 @@ function App() {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <PageErrorBoundary>
-              <Suspense fallback={<DashboardSkeleton />}>
-                <Routes>
-                  {/* Dashboard */}
-                  <Route path="/" element={<Index />} />
-                  
-                  {/* Employees */}
-                  <Route path="/employees" element={<Employees />} />
-                  <Route path="/employees/:id" element={<EmployeeDetail />} />
-                  <Route path="/teams" element={<Teams />} />
-                  
-                  {/* Devices & Gamification */}
-                  <Route path="/devices" element={<Devices />} />
-                  <Route path="/gamification" element={<Gamification />} />
-                  
-                  {/* Monitoring */}
-                  <Route path="/monitoring" element={<Monitoring />} />
-                  <Route path="/mobile-monitoring" element={<MobileMonitoring />} />
-                  <Route path="/violations" element={<Violations />} />
-                  <Route path="/violation-rules" element={<ViolationRules />} />
-                  <Route path="/security" element={<Security />} />
-                  
-                  {/* Configuration */}
-                  <Route path="/geofencing" element={<Geofencing />} />
-                  <Route path="/work-schedules" element={<WorkSchedules />} />
-                  <Route path="/agent-keys" element={<AgentKeys />} />
-                  <Route path="/webhooks" element={<Webhooks />} />
-                  <Route path="/whatsapp" element={<WhatsAppIntegration />} />
-                  <Route path="/message-templates" element={<MessageTemplates />} />
-                  
-                  {/* Reports */}
-                  <Route path="/reports" element={<Reports />} />
-                  <Route path="/scheduled-reports" element={<ScheduledReports />} />
-                  <Route path="/data-export" element={<DataExport />} />
-                  <Route path="/ai-analysis" element={<AIAnalysis />} />
-                  <Route path="/productivity-comparison" element={<ProductivityComparison />} />
-                  
-                  {/* Policies */}
-                  <Route path="/internet-access" element={<InternetAccess />} />
-                  <Route path="/sensitive-keywords" element={<SensitiveKeywords />} />
-                  <Route path="/monitoring-policies" element={<MonitoringPolicies />} />
-                  <Route path="/policy-acknowledgments" element={<PolicyAcknowledgments />} />
-                  
-                  {/* System */}
-                  <Route path="/user-management" element={<UserManagement />} />
-                  <Route path="/rate-limit-dashboard" element={<RateLimitDashboard />} />
-                  <Route path="/settings" element={<Settings />} />
-                  
-                  {/* Auth */}
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/install" element={<Install />} />
-                  
-                  {/* 404 */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </PageErrorBoundary>
+            <AuthProvider>
+              <PageErrorBoundary>
+                <Suspense fallback={<DashboardSkeleton />}>
+                  <Routes>
+                    {/* Public routes */}
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/install" element={<Install />} />
+                    
+                    {/* Protected admin routes */}
+                    <Route element={<AdminLayout />}>
+                      {/* Dashboard */}
+                      <Route path="/" element={<Index />} />
+                      
+                      {/* Employees */}
+                      <Route path="/employees" element={<Employees />} />
+                      <Route path="/employees/:id" element={<EmployeeDetail />} />
+                      <Route path="/teams" element={<Teams />} />
+                      
+                      {/* Devices & Gamification */}
+                      <Route path="/devices" element={<Devices />} />
+                      <Route path="/gamification" element={<Gamification />} />
+                      
+                      {/* Monitoring */}
+                      <Route path="/monitoring" element={<Monitoring />} />
+                      <Route path="/mobile-monitoring" element={<MobileMonitoring />} />
+                      <Route path="/violations" element={<Violations />} />
+                      <Route path="/violation-rules" element={<ViolationRules />} />
+                      <Route path="/security" element={<Security />} />
+                      
+                      {/* Configuration */}
+                      <Route path="/geofencing" element={<Geofencing />} />
+                      <Route path="/work-schedules" element={<WorkSchedules />} />
+                      <Route path="/agent-keys" element={<AgentKeys />} />
+                      <Route path="/webhooks" element={<Webhooks />} />
+                      <Route path="/whatsapp" element={<WhatsAppIntegration />} />
+                      <Route path="/message-templates" element={<MessageTemplates />} />
+                      
+                      {/* Reports */}
+                      <Route path="/reports" element={<Reports />} />
+                      <Route path="/scheduled-reports" element={<ScheduledReports />} />
+                      <Route path="/data-export" element={<DataExport />} />
+                      <Route path="/ai-analysis" element={<AIAnalysis />} />
+                      <Route path="/productivity-comparison" element={<ProductivityComparison />} />
+                      
+                      {/* Policies */}
+                      <Route path="/internet-access" element={<InternetAccess />} />
+                      <Route path="/sensitive-keywords" element={<SensitiveKeywords />} />
+                      <Route path="/monitoring-policies" element={<MonitoringPolicies />} />
+                      <Route path="/policy-acknowledgments" element={<PolicyAcknowledgments />} />
+                      
+                      {/* System */}
+                      <Route path="/user-management" element={<UserManagement />} />
+                      <Route path="/rate-limit-dashboard" element={<RateLimitDashboard />} />
+                      <Route path="/settings" element={<Settings />} />
+                    </Route>
+                    
+                    {/* 404 */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+              </PageErrorBoundary>
+            </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>
       </ThemeProvider>

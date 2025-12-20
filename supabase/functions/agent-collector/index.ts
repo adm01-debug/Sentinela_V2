@@ -1,11 +1,11 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-agent-key',
 };
 
 // ============================================================
@@ -64,8 +64,8 @@ const SystemInfoDataSchema = z.object({
 });
 
 const AgentDataSchema = z.object({
-  employee_id: z.string().uuid(),
-  device_id: z.string().min(1).max(255),
+  employee_id: z.string().uuid().optional(),
+  device_id: z.string().min(1).max(255).optional(),
   data_type: z.enum([
     'screenshot',
     'activity',
@@ -107,6 +107,49 @@ function validateDataByType(dataType: string, data: Record<string, unknown>) {
 }
 
 // ============================================================
+// AGENT KEY AUTHENTICATION
+// ============================================================
+
+interface AgentKeyData {
+  id: string;
+  agent_key: string;
+  key_name: string;
+  device_name: string | null;
+  employee_name: string | null;
+  is_active: boolean;
+}
+
+async function validateAgentKey(
+  supabase: SupabaseClient,
+  agentKey: string
+): Promise<{ valid: boolean; data?: AgentKeyData; error?: string }> {
+  try {
+    const { data, error } = await supabase
+      .from('agent_keys')
+      .select('id, agent_key, key_name, device_name, employee_name, is_active')
+      .eq('agent_key', agentKey)
+      .eq('is_active', true)
+      .single();
+
+    if (error || !data) {
+      console.log('Agent key validation failed:', error?.message || 'Key not found');
+      return { valid: false, error: 'Invalid or inactive agent key' };
+    }
+
+    // Update last_seen_at
+    await supabase
+      .from('agent_keys')
+      .update({ last_seen_at: new Date().toISOString() })
+      .eq('id', data.id);
+
+    return { valid: true, data: data as AgentKeyData };
+  } catch (err) {
+    console.error('Agent key validation error:', err);
+    return { valid: false, error: 'Authentication error' };
+  }
+}
+
+// ============================================================
 // MAIN HANDLER
 // ============================================================
 
@@ -116,9 +159,42 @@ serve(async (req) => {
   }
 
   try {
-    // Rate limiting
-    const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await checkRateLimit(clientIP, 'agent-collector', 100, 60);
+    // Initialize Supabase first for auth check
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // ============================================================
+    // AGENT KEY AUTHENTICATION (REQUIRED)
+    // ============================================================
+    const agentKey = req.headers.get('x-agent-key');
+    
+    if (!agentKey) {
+      console.log('Request rejected: No agent key provided');
+      return new Response(
+        JSON.stringify({ error: 'Agent key required', code: 'AUTH_REQUIRED' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const authResult = await validateAgentKey(supabase, agentKey);
+    
+    if (!authResult.valid || !authResult.data) {
+      console.log('Request rejected: Invalid agent key');
+      return new Response(
+        JSON.stringify({ error: authResult.error || 'Invalid agent key', code: 'AUTH_FAILED' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const authenticatedAgent = authResult.data;
+    console.log(`Authenticated agent: ${authenticatedAgent.key_name} (${authenticatedAgent.device_name || 'unknown device'})`);
+
+    // ============================================================
+    // RATE LIMITING (per agent key, not just IP)
+    // ============================================================
+    const rateLimitKey = `agent:${authenticatedAgent.id}`;
+    const rateLimitResult = await checkRateLimit(rateLimitKey, 'agent-collector', 100, 60);
     
     if (!rateLimitResult.allowed) {
       return new Response(
@@ -144,7 +220,24 @@ serve(async (req) => {
       );
     }
 
-    const { employee_id, device_id, data_type, data, timestamp, session_id, agent_version } = mainValidation.data;
+    const { data_type, data, timestamp, session_id, agent_version } = mainValidation.data;
+    
+    // Use authenticated values - IGNORE client-provided employee_id/device_id
+    const device_id = authenticatedAgent.device_name || authenticatedAgent.key_name;
+    
+    // Get employee_id from employees table using employee_name from agent_key
+    let employee_id: string | null = null;
+    if (authenticatedAgent.employee_name) {
+      const { data: employee } = await supabase
+        .from('employees')
+        .select('id')
+        .eq('name', authenticatedAgent.employee_name)
+        .single();
+      
+      if (employee) {
+        employee_id = employee.id;
+      }
+    }
 
     // Validate type-specific data
     const dataValidation = validateDataByType(data_type, data as Record<string, unknown>);
@@ -159,45 +252,44 @@ serve(async (req) => {
       );
     }
 
-    // Initialize Supabase
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
     const now = timestamp || new Date().toISOString();
 
-    // Update device last seen
-    await supabase.from('devices').upsert({
-      device_id,
-      employee_id,
-      last_seen: now,
-      agent_version,
-      is_online: true,
-    }, { onConflict: 'device_id' });
+    // Update device last seen (if we have employee_id)
+    if (employee_id) {
+      try {
+        await supabase.from('employee_devices').upsert({
+          device_name: device_id,
+          employee_id,
+          agent_key_id: authenticatedAgent.id,
+          assigned_at: now,
+        }, { onConflict: 'employee_id,device_name' });
+      } catch {
+        // Ignore upsert errors - device tracking is secondary
+      }
+    }
 
     // Process by data type
-    let result;
+    let result: { error: { message: string } | null } | undefined;
     
     switch (data_type) {
       case 'screenshot': {
         const screenshotData = data as z.infer<typeof ScreenshotDataSchema>;
         
         // Store screenshot in storage bucket
-        const fileName = `${employee_id}/${device_id}/${Date.now()}.jpg`;
+        const fileName = `${employee_id || 'unknown'}/${device_id}/${Date.now()}.jpg`;
         const imageBuffer = Uint8Array.from(atob(screenshotData.image_base64), c => c.charCodeAt(0));
         
         const { error: uploadError } = await supabase.storage
-          .from('screenshots')
+          .from('violation-screenshots')
           .upload(fileName, imageBuffer, { contentType: 'image/jpeg' });
 
         if (!uploadError) {
-          result = await supabase.from('screenshots').insert({
-            employee_id,
-            device_id,
-            file_path: fileName,
+          result = await supabase.from('screen_captures').insert({
+            employee_name: authenticatedAgent.employee_name || 'Unknown',
+            device: device_id,
+            capture_url: fileName,
             window_title: screenshotData.window_title,
-            active_app: screenshotData.active_app,
-            url: screenshotData.url,
+            app_name: screenshotData.active_app,
             captured_at: now,
           });
         }
@@ -206,14 +298,12 @@ serve(async (req) => {
 
       case 'activity': {
         const activityData = data as z.infer<typeof ActivityDataSchema>;
-        result = await supabase.from('activity_logs').insert({
-          employee_id,
-          device_id,
-          mouse_clicks: activityData.mouse_clicks || 0,
-          keystrokes: activityData.keystrokes || 0,
-          scroll_events: activityData.scroll_events || 0,
-          active_window: activityData.active_window,
-          idle_time: activityData.idle_time || 0,
+        result = await supabase.from('keystroke_logs').insert({
+          employee_name: authenticatedAgent.employee_name || 'Unknown',
+          device: device_id,
+          keystrokes_count: activityData.keystrokes || 0,
+          active_time_seconds: 60 - (activityData.idle_time || 0),
+          idle_time_seconds: activityData.idle_time || 0,
           recorded_at: now,
         });
         break;
@@ -221,30 +311,27 @@ serve(async (req) => {
 
       case 'application': {
         const appData = data as z.infer<typeof ApplicationDataSchema>;
-        result = await supabase.from('application_usage').insert({
-          employee_id,
-          device_id,
-          app_name: appData.app_name,
-          window_title: appData.window_title,
-          start_time: appData.start_time || now,
-          end_time: appData.end_time,
-          duration_seconds: appData.duration_seconds || 0,
-          is_productive: appData.is_productive,
-          category: appData.category,
+        result = await supabase.from('productivity_logs').insert({
+          employee_name: authenticatedAgent.employee_name || 'Unknown',
+          device: device_id,
+          productive_time_seconds: appData.is_productive ? (appData.duration_seconds || 0) : 0,
+          unproductive_time_seconds: appData.is_productive === false ? (appData.duration_seconds || 0) : 0,
+          neutral_time_seconds: appData.is_productive === undefined ? (appData.duration_seconds || 0) : 0,
+          apps_used: [{ app_name: appData.app_name, category: appData.category, duration: appData.duration_seconds }],
+          recorded_date: now.split('T')[0],
         });
         break;
       }
 
       case 'url': {
         const urlData = data as z.infer<typeof UrlDataSchema>;
-        result = await supabase.from('url_visits').insert({
-          employee_id,
-          device_id,
+        result = await supabase.from('click_logs').insert({
+          employee_name: authenticatedAgent.employee_name || 'Unknown',
+          device: device_id,
           url: urlData.url,
-          title: urlData.title,
-          visit_time: urlData.visit_time || now,
-          duration_seconds: urlData.duration_seconds || 0,
-          is_productive: urlData.is_productive,
+          window_title: urlData.title,
+          click_type: 'navigation',
+          recorded_at: now,
         });
         break;
       }
@@ -252,12 +339,9 @@ serve(async (req) => {
       case 'keystroke': {
         const keystrokeData = data as z.infer<typeof KeystrokeDataSchema>;
         result = await supabase.from('keystroke_logs').insert({
-          employee_id,
-          device_id,
-          total_keystrokes: keystrokeData.total_keystrokes,
-          words_typed: keystrokeData.words_typed || 0,
-          special_keys: keystrokeData.special_keys || 0,
-          window_title: keystrokeData.window_title,
+          employee_name: authenticatedAgent.employee_name || 'Unknown',
+          device: device_id,
+          keystrokes_count: keystrokeData.total_keystrokes,
           app_name: keystrokeData.app_name,
           recorded_at: now,
         });
@@ -265,51 +349,39 @@ serve(async (req) => {
       }
 
       case 'system_info': {
-        const sysData = data as z.infer<typeof SystemInfoDataSchema>;
-        result = await supabase.from('system_metrics').insert({
-          employee_id,
-          device_id,
-          cpu_usage: sysData.cpu_usage,
-          memory_usage: sysData.memory_usage,
-          disk_usage: sysData.disk_usage,
-          network_up: sysData.network_up,
-          network_down: sysData.network_down,
-          recorded_at: now,
-        });
+        // System info doesn't have a dedicated table, log for debugging
+        console.log('System info received:', JSON.stringify(data));
+        result = { error: null };
         break;
       }
 
       case 'login':
       case 'logout': {
-        result = await supabase.from('session_logs').insert({
-          employee_id,
-          device_id,
-          event_type: data_type,
-          session_id,
-          occurred_at: now,
+        result = await supabase.from('station_block_logs').insert({
+          employee_name: authenticatedAgent.employee_name || 'Unknown',
+          device: device_id,
+          block_type: data_type === 'login' ? 'session_start' : 'session_end',
+          blocked_at: now,
+          unblocked_at: data_type === 'logout' ? now : null,
         });
         break;
       }
 
       case 'idle': {
-        result = await supabase.from('idle_logs').insert({
-          employee_id,
-          device_id,
-          started_at: now,
-          duration_seconds: (data as any).duration_seconds || 0,
+        result = await supabase.from('keystroke_logs').insert({
+          employee_name: authenticatedAgent.employee_name || 'Unknown',
+          device: device_id,
+          keystrokes_count: 0,
+          active_time_seconds: 0,
+          idle_time_seconds: (data as { duration_seconds?: number }).duration_seconds || 0,
+          recorded_at: now,
         });
         break;
       }
 
       default:
-        // Generic data storage
-        result = await supabase.from('agent_data').insert({
-          employee_id,
-          device_id,
-          data_type,
-          data,
-          recorded_at: now,
-        });
+        console.log(`Unknown data type: ${data_type}`);
+        result = { error: null };
     }
 
     if (result?.error) {
@@ -325,10 +397,11 @@ serve(async (req) => {
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Agent collector error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

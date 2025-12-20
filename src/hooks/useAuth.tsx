@@ -12,6 +12,7 @@ interface AuthContextType {
   session: Session | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -40,7 +41,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const queryClient = useQueryClient();
+
+  // ============================================================
+  // CHECK ADMIN ROLE
+  // ============================================================
+
+  const checkAdminRole = useCallback(async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error checking admin role:', error);
+        setIsAdmin(false);
+        return;
+      }
+
+      setIsAdmin(!!data);
+    } catch (err) {
+      console.error('Failed to check admin role:', err);
+      setIsAdmin(false);
+    }
+  }, []);
 
   // ============================================================
   // REFRESH TOKEN LOGIC
@@ -104,6 +132,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setSession(currentSession);
           setUser(currentSession.user);
           
+          // Check admin role
+          await checkAdminRole(currentSession.user.id);
+          
           // Verificar se precisa renovar imediatamente
           const expiresAt = currentSession.expires_at;
           if (expiresAt) {
@@ -121,7 +152,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     initSession();
-  }, [refreshSession]);
+  }, [refreshSession, checkAdminRole]);
 
   // Listener para mudanças de autenticação
   useEffect(() => {
@@ -132,9 +163,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(newSession);
         setUser(newSession?.user ?? null);
 
+        // Check admin role when user changes
+        if (newSession?.user) {
+          // Use setTimeout to avoid deadlock
+          setTimeout(() => {
+            checkAdminRole(newSession.user.id);
+          }, 0);
+        } else {
+          setIsAdmin(false);
+        }
+
         // Limpar cache quando usuário muda
         if (event === 'SIGNED_OUT') {
           queryClient.clear();
+          setIsAdmin(false);
         }
 
         // Quando token é renovado automaticamente pelo Supabase
@@ -147,7 +189,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => {
       subscription.unsubscribe();
     };
-  }, [queryClient]);
+  }, [queryClient, checkAdminRole]);
 
   // Verificar sessão periodicamente
   useEffect(() => {
@@ -186,12 +228,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setSession(data.session);
     setUser(data.user);
+    
+    // Check admin role after sign in
+    if (data.user) {
+      await checkAdminRole(data.user.id);
+    }
   };
 
   const signUp = async (email: string, password: string): Promise<void> => {
+    const redirectUrl = `${window.location.origin}/`;
+    
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: redirectUrl,
+      },
     });
 
     if (error) {
@@ -214,6 +266,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setSession(null);
     setUser(null);
+    setIsAdmin(false);
     queryClient.clear();
   };
 
@@ -246,6 +299,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     session,
     isLoading,
     isAuthenticated: !!session && !!user,
+    isAdmin,
     signIn,
     signUp,
     signOut,
