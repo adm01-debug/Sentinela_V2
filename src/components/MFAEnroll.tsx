@@ -13,7 +13,7 @@ interface MFAEnrollProps {
   onCancel: () => void;
 }
 
-export function MFAEnroll({ onEnrolled, onCancel }: MFAEnrollProps) {
+function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
   const { enroll, verify } = useMFA();
   const [step, setStep] = useState<'intro' | 'qrcode' | 'verify'>('intro');
   const [qrCodeUri, setQrCodeUri] = useState('');
@@ -230,3 +230,6 @@ export function MFAEnroll({ onEnrolled, onCancel }: MFAEnrollProps) {
     </Card>
   );
 }
+
+// Memo wrappers
+export const MFAEnroll = memo(MFAEnrollBase);
