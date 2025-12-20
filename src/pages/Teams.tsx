@@ -1,4 +1,5 @@
 import React, { Suspense, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useTeamsPage } from '@/hooks/useTeamsPage';
@@ -13,6 +14,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
+import { Users, Plus, Search, Loader2 } from 'lucide-react';
 
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
@@ -22,6 +24,7 @@ import {
 } from '@/components/ui/select';
 
 const TeamsContent = memo(function TeamsContent() {
+  const { t } = useTranslation();
   const {
     searchTerm, setSearchTerm, statusFilter, setStatusFilter,
     isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
@@ -38,8 +41,11 @@ const TeamsContent = memo(function TeamsContent() {
 
   return (
     <div className="flex-1 space-y-6 p-6">
-      <PageHeader title="Equipes" description="Gerencie equipes e seus membros">
-        <Button onClick={handleOpenCreate}><Plus className="mr-2 h-4 w-4" />Nova Equipe</Button>
+      <PageHeader title={t('teams.title')} description={t('teams.subtitle')}>
+        <Button onClick={handleOpenCreate}>
+          <Plus className="mr-2 h-4 w-4" />
+          {t('teams.addTeam')}
+        </Button>
       </PageHeader>
 
       <TeamStatsCards stats={stats} />
@@ -47,26 +53,46 @@ const TeamsContent = memo(function TeamsContent() {
       <div className="flex gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Buscar equipes..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-9" />
+          <Input 
+            placeholder={t('teams.searchPlaceholder')} 
+            value={searchTerm} 
+            onChange={(e) => setSearchTerm(e.target.value)} 
+            className="pl-9" 
+          />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[150px]"><SelectValue placeholder="Status" /></SelectTrigger>
+          <SelectTrigger className="w-[150px]">
+            <SelectValue placeholder={t('employees.status')} />
+          </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Todas</SelectItem>
-            <SelectItem value="active">Ativas</SelectItem>
-            <SelectItem value="inactive">Inativas</SelectItem>
+            <SelectItem value="all">{t('common.all')}</SelectItem>
+            <SelectItem value="active">{t('common.active')}</SelectItem>
+            <SelectItem value="inactive">{t('common.inactive')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin" /></div>
+        <div className="flex justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
       ) : teams.length === 0 ? (
-        <Card><CardContent className="text-center py-12 text-muted-foreground"><Users className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma equipe encontrada</p></CardContent></Card>
+        <Card>
+          <CardContent className="text-center py-12 text-muted-foreground">
+            <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
+            <p>{t('teams.noTeams')}</p>
+          </CardContent>
+        </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {teams.map((team) => (
-            <TeamCard key={team.id} team={team} onEdit={handleOpenEdit} onDelete={(t) => { setDeletingTeam(t); setIsDeleteDialogOpen(true); }} onViewMembers={handleViewMembers} />
+            <TeamCard 
+              key={team.id} 
+              team={team} 
+              onEdit={handleOpenEdit} 
+              onDelete={(t) => { setDeletingTeam(t); setIsDeleteDialogOpen(true); }} 
+              onViewMembers={handleViewMembers} 
+            />
           ))}
         </div>
       )}
@@ -74,24 +100,58 @@ const TeamsContent = memo(function TeamsContent() {
       <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingTeam ? 'Editar' : 'Nova'} Equipe</DialogTitle>
-            <DialogDescription>Configure os dados da equipe</DialogDescription>
+            <DialogTitle>
+              {editingTeam ? t('teams.editTeam') : t('teams.addTeam')}
+            </DialogTitle>
+            <DialogDescription>{t('teams.description')}</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="grid gap-2"><Label>Nome</Label><Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} /></div>
-            <div className="grid gap-2"><Label>Descricao</Label><Textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} /></div>
             <div className="grid gap-2">
-              <Label>Gerente</Label>
-              <Select value={formData.manager_id || ''} onValueChange={(v) => setFormData({ ...formData, manager_id: v || undefined })}>
-                <SelectTrigger><SelectValue placeholder="Selecione..." /></SelectTrigger>
-                <SelectContent>{employees.map((e) => (<SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>))}</SelectContent>
+              <Label>{t('teams.name')}</Label>
+              <Input 
+                value={formData.name} 
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })} 
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>{t('teams.description')}</Label>
+              <Textarea 
+                value={formData.description} 
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })} 
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>{t('teams.leader')}</Label>
+              <Select 
+                value={formData.manager_id || ''} 
+                onValueChange={(v) => setFormData({ ...formData, manager_id: v || undefined })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t('common.select')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {employees.map((e) => (
+                    <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>
+                  ))}
+                </SelectContent>
               </Select>
             </div>
-            <div className="flex items-center justify-between"><Label>Ativa</Label><Switch checked={formData.is_active} onCheckedChange={(v) => setFormData({ ...formData, is_active: v })} /></div>
+            <div className="flex items-center justify-between">
+              <Label>{t('common.active')}</Label>
+              <Switch 
+                checked={formData.is_active} 
+                onCheckedChange={(v) => setFormData({ ...formData, is_active: v })} 
+              />
+            </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={handleCloseDialog}>Cancelar</Button>
-            <Button onClick={handleSubmit} disabled={isCreating || isUpdating}>{(isCreating || isUpdating) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{editingTeam ? 'Salvar' : 'Criar'}</Button>
+            <Button variant="outline" onClick={handleCloseDialog}>
+              {t('common.cancel')}
+            </Button>
+            <Button onClick={handleSubmit} disabled={isCreating || isUpdating}>
+              {(isCreating || isUpdating) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {editingTeam ? t('common.save') : t('common.create')}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -99,13 +159,17 @@ const TeamsContent = memo(function TeamsContent() {
       <Dialog open={isMembersDialogOpen} onOpenChange={setIsMembersDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Membros - {selectedTeam?.name}</DialogTitle>
-            <DialogDescription>{teamMembers.length} membros na equipe</DialogDescription>
+            <DialogTitle>{t('teams.members')} - {selectedTeam?.name}</DialogTitle>
+            <DialogDescription>
+              {teamMembers.length} {t('teams.members').toLowerCase()}
+            </DialogDescription>
           </DialogHeader>
           {isLoadingMembers ? (
-            <div className="flex justify-center py-8"><Loader2 className="h-6 w-6 animate-spin" /></div>
+            <div className="flex justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin" />
+            </div>
           ) : teamMembers.length === 0 ? (
-            <p className="text-center py-8 text-muted-foreground">Nenhum membro</p>
+            <p className="text-center py-8 text-muted-foreground">{t('common.noData')}</p>
           ) : (
             <ScrollArea className="h-[300px]">
               <div className="space-y-2">
@@ -124,7 +188,15 @@ const TeamsContent = memo(function TeamsContent() {
         </DialogContent>
       </Dialog>
 
-      <ConfirmDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} title="Excluir Equipe" description={`Excluir "${deletingTeam?.name}"?`} onConfirm={handleDelete} isLoading={isDeleting} variant="destructive" />
+      <ConfirmDialog 
+        open={isDeleteDialogOpen} 
+        onOpenChange={setIsDeleteDialogOpen} 
+        title={t('teams.deleteTeam')} 
+        description={`${t('teams.confirmDelete')} "${deletingTeam?.name}"?`} 
+        onConfirm={handleDelete} 
+        isLoading={isDeleting} 
+        variant="destructive" 
+      />
     </div>
   );
 });

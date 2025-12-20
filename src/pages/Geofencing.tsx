@@ -1,4 +1,5 @@
 import React, { Suspense, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGeofencingPage } from '@/hooks/useGeofencingPage';
@@ -12,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { LocationMap } from '@/components/LocationMap';
+import { Plus, Loader2 } from 'lucide-react';
 
 import {
   Dialog,
@@ -30,6 +32,7 @@ import {
 } from '@/components/ui/select';
 
 const GeofencingContent = memo(function GeofencingContent() {
+  const { t } = useTranslation();
   const {
     selectedGeofence,
     setSelectedGeofence,
@@ -56,12 +59,12 @@ const GeofencingContent = memo(function GeofencingContent() {
   return (
     <div className="flex-1 space-y-6 p-6">
       <PageHeader
-        title="Geofencing"
-        description="Gerencie cercas virtuais para monitoramento de localização"
+        title={t('geofencing.title')}
+        description={t('geofencing.subtitle')}
       >
         <Button onClick={handleOpenCreate}>
           <Plus className="mr-2 h-4 w-4" />
-          Nova Geofence
+          {t('geofencing.addGeofence')}
         </Button>
       </PageHeader>
 
@@ -70,7 +73,7 @@ const GeofencingContent = memo(function GeofencingContent() {
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle>Geofences</CardTitle>
+            <CardTitle>{t('geofencing.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <GeofenceList
@@ -86,7 +89,7 @@ const GeofencingContent = memo(function GeofencingContent() {
 
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Mapa</CardTitle>
+            <CardTitle>{t('violations.location')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[500px] rounded-lg overflow-hidden">
@@ -100,42 +103,41 @@ const GeofencingContent = memo(function GeofencingContent() {
         </Card>
       </div>
 
-      {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>
-              {editingGeofence ? 'Editar Geofence' : 'Nova Geofence'}
+              {editingGeofence ? t('geofencing.editGeofence') : t('geofencing.addGeofence')}
             </DialogTitle>
             <DialogDescription>
-              Configure os parâmetros da cerca virtual
+              {t('geofencing.subtitle')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Nome</Label>
+              <Label htmlFor="name">{t('geofencing.name')}</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Ex: Escritório Principal"
+                placeholder={t('geofencing.name')}
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="description">Descrição</Label>
+              <Label htmlFor="description">{t('teams.description')}</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Descrição opcional..."
+                placeholder={t('common.optional')}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="type">Tipo</Label>
+                <Label htmlFor="type">{t('violations.type')}</Label>
                 <Select
                   value={formData.type}
                   onValueChange={(v: 'circle' | 'polygon') => setFormData({ ...formData, type: v })}
@@ -175,7 +177,7 @@ const GeofencingContent = memo(function GeofencingContent() {
 
             {formData.type === 'circle' && (
               <div className="grid gap-2">
-                <Label htmlFor="radius">Raio (metros)</Label>
+                <Label htmlFor="radius">{t('geofencing.radius')}</Label>
                 <Input
                   id="radius"
                   type="number"
@@ -188,8 +190,8 @@ const GeofencingContent = memo(function GeofencingContent() {
             <div className="space-y-4 pt-4 border-t">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Ativa</Label>
-                  <p className="text-sm text-muted-foreground">Monitorar esta área</p>
+                  <Label>{t('geofencing.active')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('geofencing.subtitle')}</p>
                 </div>
                 <Switch
                   checked={formData.is_active}
@@ -199,8 +201,8 @@ const GeofencingContent = memo(function GeofencingContent() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Área Restrita</Label>
-                  <p className="text-sm text-muted-foreground">Alertar ao entrar</p>
+                  <Label>{t('geofencing.violations')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('geofencing.subtitle')}</p>
                 </div>
                 <Switch
                   checked={formData.restricted}
@@ -210,8 +212,8 @@ const GeofencingContent = memo(function GeofencingContent() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Presença Obrigatória</Label>
-                  <p className="text-sm text-muted-foreground">Alertar ao sair</p>
+                  <Label>{t('common.required')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('geofencing.subtitle')}</p>
                 </div>
                 <Switch
                   checked={formData.required}
@@ -223,11 +225,11 @@ const GeofencingContent = memo(function GeofencingContent() {
 
           <DialogFooter>
             <Button variant="outline" onClick={handleCloseDialog}>
-              Cancelar
+              {t('common.cancel')}
             </Button>
             <Button onClick={handleSubmit} disabled={isCreating || isUpdating}>
               {(isCreating || isUpdating) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {editingGeofence ? 'Salvar' : 'Criar'}
+              {editingGeofence ? t('common.save') : t('common.create')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -236,8 +238,8 @@ const GeofencingContent = memo(function GeofencingContent() {
       <ConfirmDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
-        title="Excluir Geofence"
-        description={`Tem certeza que deseja excluir "${selectedGeofence?.name}"?`}
+        title={t('geofencing.deleteGeofence')}
+        description={`${t('employees.confirmDelete')} "${selectedGeofence?.name}"?`}
         onConfirm={handleDelete}
         isLoading={isDeleting}
         variant="destructive"
