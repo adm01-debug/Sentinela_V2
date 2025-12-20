@@ -1,1 +1,2 @@
-export { SecurityStats } from './SecurityStats';\nexport { SecurityEventCard } from './SecurityEventCard';
+export { SecurityStats } from './SecurityStats';
+export { SecurityEventCard } from './SecurityEventCard';

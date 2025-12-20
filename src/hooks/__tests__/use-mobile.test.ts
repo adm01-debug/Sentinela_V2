@@ -1,16 +1,7 @@
 import { renderHook } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { use-mobile } from '../use-mobile';
+import { useIsMobile } from '../use-mobile';
 
-const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: false } }
-});
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-);
-
-describe('use-mobile', () => {
+describe('useIsMobile', () => {
   it('should initialize without errors', () => {
     expect(true).toBe(true);
   });

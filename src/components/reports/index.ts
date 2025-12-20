@@ -1,1 +1,2 @@
-export { ReportStats } from './ReportStats';\nexport { ReportCard } from './ReportCard';
+export { ReportStats } from './ReportStats';
+export { ReportCard } from './ReportCard';

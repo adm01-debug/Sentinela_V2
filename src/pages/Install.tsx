@@ -1,4 +1,4 @@
-import React, { memo }, { Suspense, memo } from 'react';
+import React, { Suspense, memo, useState, useEffect } from 'react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
