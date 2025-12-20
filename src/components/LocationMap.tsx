@@ -26,7 +26,7 @@ interface LocationMapProps {
   showHeatmap?: boolean;
 }
 
-export function LocationMap({
+function LocationMapBase({
   className,
   height = '500px',
   showControls = true,
@@ -238,3 +238,6 @@ export function LocationMap({
     </Card>
   );
 }
+
+// Memo wrappers
+export const LocationMap = memo(LocationMapBase);
