@@ -94,12 +94,8 @@ export default defineConfig(({ mode }) => ({
     
     // Compression (gzip + brotli)
     compression({
-      algorithm: 'gzip',
-      ext: '.gz',
-    }),
-    compression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
+      include: /\.(js|css|html|svg|json)$/,
+      threshold: 1024,
     }),
     
     // PWA
