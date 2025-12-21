@@ -1,0 +1,14 @@
+name: Build iOS
+on:
+  push:
+    branches: [main]
+    paths: ['mobile-app/**']
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: cd mobile-app/ios && pod install
+      - name: Build
+        run: xcodebuild -workspace mobile-app/ios/App.xcworkspace -scheme App -configuration Release
