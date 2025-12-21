@@ -1,0 +1,15 @@
+name: Code Coverage
+on:
+  push:
+    branches: [main]
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm run test:coverage
+      - uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
