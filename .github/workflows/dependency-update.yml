@@ -1,0 +1,14 @@
+name: Dependency Update
+on:
+  schedule:
+    - cron: '0 4 * * 1'
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm update
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          title: 'chore: Update dependencies'
+          branch: deps/weekly-update
