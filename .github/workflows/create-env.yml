@@ -1,0 +1,14 @@
+name: Create Environment
+on:
+  workflow_dispatch:
+    inputs:
+      env_name:
+        required: true
+        type: string
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create environment
+        run: echo "Creating ${{ inputs.env_name }}"
