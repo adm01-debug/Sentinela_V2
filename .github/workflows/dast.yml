@@ -1,0 +1,13 @@
+name: DAST Scan
+on:
+  schedule:
+    - cron: '0 2 * * 1'
+jobs:
+  dast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.10.0
+        with:
+          target: 'https://staging.sentinela.app'
