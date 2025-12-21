@@ -1,0 +1,20 @@
+name: Visual Regression
+on:
+  pull_request:
+    paths: ['src/components/**', 'src/stories/**']
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - name: Build Storybook
+        run: npm run build-storybook
+      - name: Run visual tests
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitZeroOnChanges: true
