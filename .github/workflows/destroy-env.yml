@@ -1,0 +1,12 @@
+name: Destroy Environment
+on:
+  workflow_dispatch:
+    inputs:
+      env_name:
+        required: true
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Destroy
+        run: echo "Destroying ${{ inputs.env_name }}"
