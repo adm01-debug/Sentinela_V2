@@ -1,0 +1,11 @@
+name: SAST Scan
+on:
+  push:
+    branches: [main]
+jobs:
+  sast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
