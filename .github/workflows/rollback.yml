@@ -1,0 +1,16 @@
+name: Rollback
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version }}
+      - run: npm ci && npm run build
+      - name: Deploy rollback
+        run: echo 'Rolling back to ${{ inputs.version }}'
