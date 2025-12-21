@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://docs.sentinela.app
+    about: Check our documentation for answers
+  - name: 💬 Discord Community
+    url: https://discord.gg/sentinela
+    about: Ask questions in our Discord community
+  - name: 📧 Support
+    url: mailto:support@sentinela.app
+    about: Email us for enterprise support
