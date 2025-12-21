@@ -1,0 +1,17 @@
+name: Version Bump
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        required: true
+        type: choice
+        options: [patch, minor, major]
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm version ${{ inputs.type }}
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          title: 'chore: Bump version (${{ inputs.type }})'
