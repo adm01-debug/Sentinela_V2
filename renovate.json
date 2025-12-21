@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":preserveSemverRanges"
+  ],
+  "labels": ["dependencies"],
+  "automerge": false,
+  "schedule": ["before 6am on Monday"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch", "minor"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
+    {
+      "groupName": "React",
+      "matchPackagePatterns": ["^react", "^@types/react"]
+    },
+    {
+      "groupName": "Testing",
+      "matchPackagePatterns": ["vitest", "playwright", "@testing-library"]
+    },
+    {
+      "groupName": "TypeScript",
+      "matchPackagePatterns": ["typescript", "^@types/"]
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"]
+  }
+}
