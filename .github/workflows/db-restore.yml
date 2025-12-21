@@ -1,0 +1,15 @@
+name: Database Restore
+on:
+  workflow_dispatch:
+    inputs:
+      backup_file:
+        required: true
+        type: string
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore
+        run: psql $DATABASE_URL < ${{ inputs.backup_file }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
