@@ -1,0 +1,12 @@
+name: Sign App
+on:
+  workflow_dispatch:
+jobs:
+  sign:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import certificate
+        run: security import certificate.p12
+      - name: Sign app
+        run: codesign --sign 'Developer ID' dist/*.app
