@@ -1,0 +1,19 @@
+name: Load Test
+on:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: Test duration (seconds)
+        default: '60'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run k6 load test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: scripts/load-test.js
+        env:
+          K6_DURATION: ${{ github.event.inputs.duration }}s
