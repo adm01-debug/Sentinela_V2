@@ -1,0 +1,15 @@
+name: Performance Test
+on:
+  schedule:
+    - cron: '0 5 * * *'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lighthouse
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            https://sentinela.app
+          budgetPath: ./lighthouse-budget.json
