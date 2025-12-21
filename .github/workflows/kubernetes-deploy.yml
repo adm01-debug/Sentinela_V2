@@ -1,0 +1,11 @@
+name: Kubernetes Deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/k8s-set-context@v4
+      - run: kubectl apply -f k8s/
