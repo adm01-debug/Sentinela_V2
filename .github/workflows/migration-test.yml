@@ -1,0 +1,19 @@
+name: Migration Test
+on:
+  pull_request:
+    paths: ['supabase/migrations/**']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+      - name: Start Supabase
+        run: supabase start
+      - name: Run migrations
+        run: supabase db push
+      - name: Test rollback
+        run: supabase migration down
+      - name: Re-apply
+        run: supabase db push
