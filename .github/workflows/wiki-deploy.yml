@@ -1,0 +1,16 @@
+name: Deploy Wiki
+on:
+  push:
+    paths: ['docs/**']
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to wiki
+        uses: Andrew-Chen-Wang/github-wiki-action@v4
+        with:
+          path: docs/
+          token: ${{ secrets.GITHUB_TOKEN }}
