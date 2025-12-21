@@ -1,0 +1,13 @@
+name: Scale Environment
+on:
+  workflow_dispatch:
+    inputs:
+      replicas:
+        required: true
+        type: number
+jobs:
+  scale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scale
+        run: kubectl scale deployment sentinela --replicas=${{ inputs.replicas }}
