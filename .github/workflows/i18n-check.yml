@@ -1,0 +1,23 @@
+name: i18n Check
+on:
+  pull_request:
+    paths: ['src/locales/**']
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - name: Check translations
+        run: |
+          node -e "
+            const en = require('./src/locales/en.json');
+            const pt = require('./src/locales/pt.json');
+            const enKeys = Object.keys(en).sort();
+            const ptKeys = Object.keys(pt).sort();
+            const missing = enKeys.filter(k => !ptKeys.includes(k));
+            if (missing.length) { console.error('Missing:', missing); process.exit(1); }
+          "
