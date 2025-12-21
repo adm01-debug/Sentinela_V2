@@ -1,0 +1,14 @@
+name: Publish Play Store
+on:
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SA }}
+          packageName: app.sentinela
+          releaseFiles: app-release.aab
+          track: production
