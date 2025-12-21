@@ -1,0 +1,13 @@
+name: Smoke Test
+on:
+  deployment_status:
+jobs:
+  smoke:
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run test:smoke
+        env:
+          TEST_URL: ${{ github.event.deployment_status.target_url }}
