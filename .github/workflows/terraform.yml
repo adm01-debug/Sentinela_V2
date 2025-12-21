@@ -1,0 +1,23 @@
+name: Terraform
+on:
+  push:
+    paths: ['infra/**']
+    branches: [main]
+  pull_request:
+    paths: ['infra/**']
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform init
+      - run: terraform validate
+      - run: terraform plan
+        if: github.event_name == 'pull_request'
+      - run: terraform apply -auto-approve
+        if: github.ref == 'refs/heads/main'
