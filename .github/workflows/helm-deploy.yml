@@ -1,0 +1,14 @@
+name: Helm Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+      - run: helm upgrade --install sentinela ./charts/sentinela -n ${{ inputs.environment }}
