@@ -1,0 +1,13 @@
+name: Health Check
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Production
+        run: curl -f https://sentinela.app/health || exit 1
+      - name: Notify on failure
+        if: failure()
+        run: echo 'Health check failed!'
