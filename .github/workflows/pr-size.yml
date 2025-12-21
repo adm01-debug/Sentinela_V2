@@ -1,0 +1,16 @@
+name: PR Size Check
+on: pull_request
+
+jobs:
+  size-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Check PR size
+        run: |
+          CHANGES=$(git diff --shortstat origin/${{ github.base_ref }}...HEAD | awk '{print $4+$6}')
+          echo "Total changes: $CHANGES"
+          if [ "$CHANGES" -gt 500 ]; then
+            echo "::warning::Large PR detected. Consider breaking it down."
+          fi
