@@ -7,11 +7,13 @@ export function useToast() {
 
   const show = useCallback((message: string, type: Toast['type'] = 'info') => {
     const id = Date.now().toString();
-    setToasts(t => [...t, { id, message, type }]);
-    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 5000);
+    setToasts(prev => [...prev, { id, message, type }]);
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 5000);
   }, []);
 
-  const dismiss = useCallback((id: string) => setToasts(t => t.filter(x => x.id !== id)), []);
+  const dismiss = useCallback((id: string) => {
+    setToasts(prev => prev.filter(t => t.id !== id));
+  }, []);
 
   return { toasts, show, dismiss, success: (m: string) => show(m, 'success'), error: (m: string) => show(m, 'error') };
 }
