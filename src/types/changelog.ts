@@ -1,0 +1,1 @@
+export interface ChangelogEntry { version: string; date: Date; changes: string[]; type: 'feature' | 'fix' | 'breaking'; }
