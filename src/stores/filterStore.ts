@@ -1,0 +1,2 @@
+import { create } from 'zustand';
+export const useFilterStore = create((set) => ({ filters: {}, setFilter: (key: string, value: any) => set((state: any) => ({ filters: { ...state.filters, [key]: value } })), clearFilters: () => set({ filters: {} }) }));
