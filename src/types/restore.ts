@@ -1,0 +1,1 @@
+export interface RestorePoint { id: string; timestamp: Date; size: number; type: 'full' | 'incremental'; }
