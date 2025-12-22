@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 export function PrintLayout() {
   return (
-    <div className='print:m-0 print:p-0'>
+    <div className="print:p-0 p-8 bg-white min-h-screen">
       <Outlet />
     </div>
   );
