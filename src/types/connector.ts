@@ -1,0 +1,1 @@
+export interface Connector { id: string; type: string; config: Record<string, unknown>; status: 'connected' | 'disconnected'; }
