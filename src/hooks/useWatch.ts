@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-export function useWatch<T>(value: T, callback: (value: T, prev: T) => void) {
-  const prev = useRef(value);
+export function useWatch<T>(
+  value: T,
+  callback: (value: T, prevValue: T | undefined) => void
+) {
+  const prevRef = useRef<T>();
 
   useEffect(() => {
-    if (prev.current !== value) {
-      callback(value, prev.current);
-      prev.current = value;
-    }
+    callback(value, prevRef.current);
+    prevRef.current = value;
   }, [value, callback]);
 }
