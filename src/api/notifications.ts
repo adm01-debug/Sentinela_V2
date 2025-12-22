@@ -1,9 +1,11 @@
 import { api } from './client';
 
 export const notificationsApi = {
-  list: (params?: Record<string, unknown>) => api.get('/notifications', { params }),
-  markRead: (id: string) => api.post(`/notifications/${id}/read`),
-  markAllRead: () => api.post('/notifications/read-all'),
+  list: (params?: any) => api.get('/notifications', { params }),
+  get: (id: string) => api.get(`/notifications/${id}`),
+  markAsRead: (id: string) => api.post(`/notifications/${id}/read`),
+  markAllAsRead: () => api.post('/notifications/read-all'),
+  delete: (id: string) => api.delete(`/notifications/${id}`),
   settings: () => api.get('/notifications/settings'),
-  updateSettings: (data: Record<string, unknown>) => api.put('/notifications/settings', data),
+  updateSettings: (data: any) => api.patch('/notifications/settings', data),
 };
