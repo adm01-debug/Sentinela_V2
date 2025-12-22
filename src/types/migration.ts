@@ -1,0 +1,1 @@
+export interface Migration { id: string; name: string; timestamp: Date; status: 'pending' | 'applied' | 'failed'; }
