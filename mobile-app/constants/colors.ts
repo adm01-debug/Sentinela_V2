@@ -1,0 +1,1 @@
+export const colors = { primary: '#3B82F6', secondary: '#10B981', background: '#FFFFFF', text: '#1F2937', error: '#EF4444' };
