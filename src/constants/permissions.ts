@@ -1,19 +1,10 @@
 export const PERMISSIONS = {
-  // Users
-  USER_READ: 'user:read',
-  USER_CREATE: 'user:create',
-  USER_UPDATE: 'user:update',
-  USER_DELETE: 'user:delete',
-  // Employees
-  EMPLOYEE_READ: 'employee:read',
-  EMPLOYEE_CREATE: 'employee:create',
-  EMPLOYEE_UPDATE: 'employee:update',
-  EMPLOYEE_DELETE: 'employee:delete',
-  // Reports
-  REPORT_VIEW: 'report:view',
-  REPORT_CREATE: 'report:create',
-  REPORT_EXPORT: 'report:export',
-  // Admin
-  ADMIN_ACCESS: 'admin:access',
-  SETTINGS_MANAGE: 'settings:manage',
+  VIEW_DASHBOARD: 'view:dashboard',
+  VIEW_EMPLOYEES: 'view:employees',
+  MANAGE_EMPLOYEES: 'manage:employees',
+  VIEW_REPORTS: 'view:reports',
+  MANAGE_REPORTS: 'manage:reports',
+  VIEW_SETTINGS: 'view:settings',
+  MANAGE_SETTINGS: 'manage:settings',
+  ADMIN: 'admin',
 };
