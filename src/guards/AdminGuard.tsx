@@ -1,8 +1,11 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
-export function AdminGuard({ children }: { children: React.ReactNode }) {
+interface Props { children: React.ReactNode; }
+
+export function AdminGuard({ children }: Props) {
   const { user } = useAuth();
-  if (!user || user.role !== 'admin') return <Navigate to='/unauthorized' replace />;
+
+  if (user?.role !== 'admin') return <Navigate to="/unauthorized" replace />;
   return <>{children}</>;
 }
