@@ -1,0 +1,2 @@
+import { create } from 'zustand';
+export const useTeamStore = create((set) => ({ teams: [], selected: null, setTeams: (teams: any[]) => set({ teams }), select: (id: string) => set({ selected: id }) }));
