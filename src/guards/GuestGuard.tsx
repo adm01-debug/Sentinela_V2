@@ -1,8 +1,13 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
-export function GuestGuard({ children }: { children: React.ReactNode }) {
+interface Props { children: React.ReactNode; }
+
+export function GuestGuard({ children }: Props) {
   const { isAuthenticated } = useAuth();
-  if (isAuthenticated) return <Navigate to='/dashboard' replace />;
+  const location = useLocation();
+  const from = (location.state as any)?.from?.pathname || '/dashboard';
+
+  if (isAuthenticated) return <Navigate to={from} replace />;
   return <>{children}</>;
 }
