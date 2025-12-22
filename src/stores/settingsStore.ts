@@ -1,0 +1,2 @@
+import { create } from 'zustand';
+export const useSettingsStore = create((set) => ({ settings: {}, update: (key: string, value: any) => set((s: any) => ({ settings: { ...s.settings, [key]: value } })) }));
