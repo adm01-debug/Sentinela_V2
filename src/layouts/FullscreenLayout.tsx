@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 export function FullscreenLayout() {
   return (
-    <div className='fixed inset-0 bg-black'>
+    <div className="h-screen w-screen overflow-hidden bg-black">
       <Outlet />
     </div>
   );
