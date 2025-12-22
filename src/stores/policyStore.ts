@@ -1,0 +1,2 @@
+import { create } from 'zustand';
+export const usePolicyStore = create((set) => ({ policies: [], active: null, setPolicies: (policies: any[]) => set({ policies }), setActive: (id: string) => set({ active: id }) }));
