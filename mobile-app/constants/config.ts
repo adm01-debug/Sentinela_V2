@@ -1,0 +1,1 @@
+export const config = { apiUrl: process.env.API_URL || '', timeout: 30000, version: '1.0.0' };
