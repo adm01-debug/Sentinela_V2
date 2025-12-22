@@ -1,0 +1,1 @@
+export const IPC_EVENTS = { STATUS: 'get-status', CONFIG: 'get-config', SCREENSHOT: 'take-screenshot' };
