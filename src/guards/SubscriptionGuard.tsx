@@ -1,10 +1,12 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
-interface Props { children: React.ReactNode; plans: string[]; }
+interface Props { children: React.ReactNode; plans?: string[]; }
 
 export function SubscriptionGuard({ children, plans }: Props) {
-  const { subscription } = useAuth();
-  if (!subscription || !plans.includes(subscription.plan)) return <Navigate to='/billing' replace />;
+  const { user } = useAuth();
+
+  const hasValidPlan = !plans || plans.includes(user?.subscription?.plan || '');
+  if (!hasValidPlan) return <Navigate to="/billing" replace />;
   return <>{children}</>;
 }
