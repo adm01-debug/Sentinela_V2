@@ -1,0 +1,2 @@
+import { create } from 'zustand';
+export const useGeofenceStore = create((set) => ({ geofences: [], selected: null, setGeofences: (geofences: any[]) => set({ geofences }), select: (id: string) => set({ selected: id }) }));
