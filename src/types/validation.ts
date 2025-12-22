@@ -1,0 +1,1 @@
+export interface ValidationRule { field: string; type: string; message: string; params?: Record<string, unknown>; }
