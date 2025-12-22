@@ -1,0 +1,1 @@
+export interface BillingInfo { plan: string; status: 'active' | 'canceled'; nextBillingDate: Date; amount: number; }
