@@ -6,5 +6,6 @@ export const billingApi = {
   subscribe: (planId: string) => api.post('/billing/subscribe', { planId }),
   cancel: () => api.post('/billing/cancel'),
   invoices: () => api.get('/billing/invoices'),
-  updatePayment: (data: Record<string, unknown>) => api.put('/billing/payment-method', data),
+  updatePaymentMethod: (data: any) => api.patch('/billing/payment-method', data),
+  usage: () => api.get('/billing/usage'),
 };
