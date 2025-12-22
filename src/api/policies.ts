@@ -1,9 +1,11 @@
 import { api } from './client';
 
 export const policiesApi = {
-  list: (params?: Record<string, unknown>) => api.get('/policies', { params }),
+  list: (params?: any) => api.get('/policies', { params }),
   get: (id: string) => api.get(`/policies/${id}`),
-  create: (data: Record<string, unknown>) => api.post('/policies', data),
-  update: (id: string, data: Record<string, unknown>) => api.put(`/policies/${id}`, data),
+  create: (data: any) => api.post('/policies', data),
+  update: (id: string, data: any) => api.patch(`/policies/${id}`, data),
   delete: (id: string) => api.delete(`/policies/${id}`),
+  activate: (id: string) => api.post(`/policies/${id}/activate`),
+  deactivate: (id: string) => api.post(`/policies/${id}/deactivate`),
 };
