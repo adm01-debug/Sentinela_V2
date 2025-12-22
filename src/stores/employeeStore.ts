@@ -1,0 +1,2 @@
+import { create } from 'zustand';
+export const useEmployeeStore = create((set) => ({ employees: [], loading: false, setEmployees: (employees: any[]) => set({ employees }), setLoading: (loading: boolean) => set({ loading }) }));
