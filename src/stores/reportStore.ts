@@ -1,0 +1,2 @@
+import { create } from 'zustand';
+export const useReportStore = create((set) => ({ reports: [], generating: false, setReports: (reports: any[]) => set({ reports }), setGenerating: (generating: boolean) => set({ generating }) }));
