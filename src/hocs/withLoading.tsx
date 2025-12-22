@@ -1,10 +1,14 @@
 import { ComponentType, Suspense } from 'react';
-import { Loading } from '@/components/ui/loading';
 
-export function withLoading<P extends object>(Component: ComponentType<P>, fallback?: React.ReactNode) {
-  return function WithLoading(props: P) {
+interface LoadingProps { fallback?: React.ReactNode; }
+
+export function withLoading<P extends object>(
+  Component: ComponentType<P>,
+  { fallback = <div>Loading...</div> }: LoadingProps = {}
+) {
+  return function LoadingComponent(props: P) {
     return (
-      <Suspense fallback={fallback || <Loading />}>
+      <Suspense fallback={fallback}>
         <Component {...props} />
       </Suspense>
     );
