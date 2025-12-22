@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 
-interface User { id: string; name: string; email: string; role: string; }
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+  role: string;
+}
 
 export function useUser() {
   const [user, setUser] = useState<User | null>(null);
@@ -12,7 +18,7 @@ export function useUser() {
     setLoading(false);
   }, []);
 
-  const update = (data: Partial<User>) => {
+  const updateUser = (data: Partial<User>) => {
     if (user) {
       const updated = { ...user, ...data };
       setUser(updated);
@@ -20,5 +26,5 @@ export function useUser() {
     }
   };
 
-  return { user, loading, update, logout: () => { setUser(null); localStorage.removeItem('user'); } };
+  return { user, loading, updateUser };
 }
