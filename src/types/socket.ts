@@ -1,0 +1,1 @@
+export interface SocketMessage { event: string; data: unknown; room?: string; timestamp: Date; }
