@@ -1,0 +1,1 @@
+export interface Position { id: string; title: string; departmentId: string; level: number; }
