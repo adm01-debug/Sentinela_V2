@@ -1,0 +1,1 @@
+export async function checkForUpdates() { return { available: false, version: '1.0.0' }; }
