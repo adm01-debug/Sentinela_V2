@@ -1,0 +1,2 @@
+import { create } from 'zustand';
+export const useViolationStore = create((set) => ({ violations: [], pending: 0, setViolations: (violations: any[]) => set({ violations }), setPending: (pending: number) => set({ pending }) }));
