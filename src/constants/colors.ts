@@ -1,9 +1,9 @@
 export const COLORS = {
-  primary: '#3B82F6',
-  secondary: '#10B981',
-  success: '#22C55E',
-  warning: '#F59E0B',
-  error: '#EF4444',
-  info: '#3B82F6',
-  gray: { 50: '#F9FAFB', 100: '#F3F4F6', 500: '#6B7280', 900: '#111827' },
+  primary: { 50: '#eff6ff', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' },
+  success: { 50: '#f0fdf4', 500: '#22c55e', 600: '#16a34a' },
+  warning: { 50: '#fffbeb', 500: '#f59e0b', 600: '#d97706' },
+  error: { 50: '#fef2f2', 500: '#ef4444', 600: '#dc2626' },
+  gray: { 50: '#f9fafb', 100: '#f3f4f6', 500: '#6b7280', 900: '#111827' },
 };
+
+export const CHART_COLORS = ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
