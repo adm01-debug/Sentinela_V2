@@ -5,6 +5,9 @@ export const registerSchema = z.object({
   email: z.string().email('Email inválido'),
   password: z.string().min(8, 'Mínimo 8 caracteres'),
   confirmPassword: z.string(),
-}).refine(d => d.password === d.confirmPassword, { message: 'Senhas não conferem', path: ['confirmPassword'] });
+  acceptTerms: z.boolean().refine(v => v, 'Aceite os termos'),
+}).refine(d => d.password === d.confirmPassword, {
+  message: 'Senhas não conferem', path: ['confirmPassword']
+});
 
 export type RegisterInput = z.infer<typeof registerSchema>;
