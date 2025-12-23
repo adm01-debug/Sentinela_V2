@@ -1,0 +1,8 @@
+import { OAuthProvider, OAuthConfig, OAuthTokens } from './oauthProvider';
+export class GoogleAuth extends OAuthProvider {
+  constructor(config: OAuthConfig) { super(config); }
+  getAuthUrl(): string { const params = new URLSearchParams({ client_id: this.config.clientId, redirect_uri: this.config.redirectUri, response_type: 'code', scope: this.config.scope.join(' '), access_type: 'offline' }); return 'https://accounts.google.com/o/oauth2/v2/auth?' + params; }
+  async exchangeCode(code: string): Promise<OAuthTokens> { const response = await fetch('https://oauth2.googleapis.com/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ code, client_id: this.config.clientId, client_secret: this.config.clientSecret, redirect_uri: this.config.redirectUri, grant_type: 'authorization_code' }) }); const data = await response.json(); return { accessToken: data.access_token, refreshToken: data.refresh_token, expiresIn: data.expires_in }; }
+  async refreshToken(token: string): Promise<OAuthTokens> { const response = await fetch('https://oauth2.googleapis.com/token', { method: 'POST', body: new URLSearchParams({ refresh_token: token, client_id: this.config.clientId, client_secret: this.config.clientSecret, grant_type: 'refresh_token' }) }); const data = await response.json(); return { accessToken: data.access_token, expiresIn: data.expires_in }; }
+  async getUserInfo(accessToken: string): Promise<any> { const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', { headers: { Authorization: 'Bearer ' + accessToken } }); return response.json(); }
+}
