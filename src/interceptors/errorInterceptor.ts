@@ -2,16 +2,22 @@ import { AxiosInstance, AxiosError } from 'axios';
 import { eventBus } from '@/events/eventBus';
 import { EventTypes } from '@/events/eventTypes';
 
-export const setupErrorInterceptor = (instance: AxiosInstance) => {
-  instance.interceptors.response.use(
-    (response) => response,
+export function setupErrorInterceptor(api: AxiosInstance) {
+  api.interceptors.response.use(
+    response => response,
     (error: AxiosError) => {
       if (error.response?.status === 401) {
-        eventBus.emit(EventTypes.AUTH_TOKEN_EXPIRED);
         localStorage.removeItem('auth_token');
-        window.location.href = '/auth/login';
+        eventBus.emit(EventTypes.AUTH_TOKEN_EXPIRED);
+        window.location.href = '/login';
+      }
+      if (error.response?.status === 403) {
+        window.location.href = '/unauthorized';
+      }
+      if (error.response?.status >= 500) {
+        eventBus.emit(EventTypes.ERROR_OCCURRED, { message: 'Erro no servidor' });
       }
       return Promise.reject(error);
     }
   );
-};
+}
