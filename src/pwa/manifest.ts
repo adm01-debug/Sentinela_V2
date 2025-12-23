@@ -1,0 +1,3 @@
+export interface PWAManifest { name: string; short_name: string; description: string; start_url: string; display: string; background_color: string; theme_color: string; icons: { src: string; sizes: string; type: string }[]; }
+export const defaultManifest: PWAManifest = { name: 'Sentinela', short_name: 'Sentinela', description: 'Sistema de Monitoramento de Produtividade', start_url: '/', display: 'standalone', background_color: '#ffffff', theme_color: '#3b82f6', icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png' }] };
+export function generateManifest(overrides?: Partial<PWAManifest>): PWAManifest { return { ...defaultManifest, ...overrides }; }
