@@ -1,0 +1,2 @@
+export function currency(value: number, locale = 'pt-BR', currency = 'BRL'): string { return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(value); }
+export function currencyCompact(value: number): string { if (value >= 1e9) return 'R$ ' + (value / 1e9).toFixed(1) + 'B'; if (value >= 1e6) return 'R$ ' + (value / 1e6).toFixed(1) + 'M'; if (value >= 1e3) return 'R$ ' + (value / 1e3).toFixed(1) + 'K'; return currency(value); }
