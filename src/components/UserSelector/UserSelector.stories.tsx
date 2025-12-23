@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { UserSelector } from './UserSelector';
-const meta: Meta<typeof UserSelector> = { title: 'Components/UserSelector', component: UserSelector };
+
+const meta: Meta<typeof UserSelector> = {
+  title: 'Components/UserSelector',
+  component: UserSelector,
+  tags: ['autodocs'],
+};
+
 export default meta;
 type Story = StoryObj<typeof UserSelector>;
+
 export const Default: Story = {};
