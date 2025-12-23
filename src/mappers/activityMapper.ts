@@ -1,4 +1,4 @@
-import { Activity, ActivityDTO } from '@/types';
+import type { Activity, ActivityDTO } from '@/types';
 
 export const activityMapper = {
   toEntity: (dto: ActivityDTO): Activity => ({
@@ -8,20 +8,20 @@ export const activityMapper = {
     application: dto.application,
     title: dto.title,
     duration: dto.duration,
-    startTime: new Date(dto.start_time),
-    endTime: dto.end_time ? new Date(dto.end_time) : null,
     isProductive: dto.is_productive,
+    startedAt: new Date(dto.started_at),
+    endedAt: dto.ended_at ? new Date(dto.ended_at) : undefined,
   }),
-  toDTO: (entity: Activity): ActivityDTO => ({
-    id: entity.id,
-    employee_id: entity.employeeId,
-    type: entity.type,
-    application: entity.application,
-    title: entity.title,
-    duration: entity.duration,
-    start_time: entity.startTime.toISOString(),
-    end_time: entity.endTime?.toISOString() || null,
-    is_productive: entity.isProductive,
+  toDTO: (activity: Activity): ActivityDTO => ({
+    id: activity.id,
+    employee_id: activity.employeeId,
+    type: activity.type,
+    application: activity.application,
+    title: activity.title,
+    duration: activity.duration,
+    is_productive: activity.isProductive,
+    started_at: activity.startedAt.toISOString(),
+    ended_at: activity.endedAt?.toISOString(),
   }),
   toEntityList: (dtos: ActivityDTO[]): Activity[] => dtos.map(activityMapper.toEntity),
 };
