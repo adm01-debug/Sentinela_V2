@@ -1,15 +1,19 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
-import { Screenshot } from '@/types';
+import type { Screenshot } from '@/types';
 
-export const createScreenshot = (overrides?: Partial<Screenshot>): Screenshot => ({
-  id: faker.string.uuid(),
-  employeeId: faker.string.uuid(),
-  url: faker.image.url(),
-  thumbnail: faker.image.url(),
-  capturedAt: faker.date.recent(),
-  application: faker.helpers.arrayElement(['Chrome', 'VS Code', 'Slack']),
-  ...overrides,
-});
+export function createScreenshot(overrides?: Partial<Screenshot>): Screenshot {
+  return {
+    id: faker.string.uuid(),
+    employeeId: faker.string.uuid(),
+    url: faker.image.url(),
+    thumbnailUrl: faker.image.url(),
+    application: faker.helpers.arrayElement(['VS Code', 'Chrome', 'Slack', 'Zoom']),
+    title: faker.lorem.words(4),
+    capturedAt: faker.date.recent(),
+    ...overrides,
+  };
+}
 
-export const createScreenshots = (count: number, overrides?: Partial<Screenshot>): Screenshot[] =>
-  Array.from({ length: count }, () => createScreenshot(overrides));
+export function createScreenshots(count: number, overrides?: Partial<Screenshot>): Screenshot[] {
+  return Array.from({ length: count }, () => createScreenshot(overrides));
+}
