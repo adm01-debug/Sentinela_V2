@@ -1,20 +1,20 @@
 import { AxiosInstance, AxiosError } from 'axios';
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000;
+interface RetryConfig { retries: number; delay: number; }
 
-export const setupRetryInterceptor = (instance: AxiosInstance) => {
-  instance.interceptors.response.use(undefined, async (error: AxiosError) => {
-    const config = error.config as any;
-    if (!config || !error.response) return Promise.reject(error);
-    
-    config.__retryCount = config.__retryCount || 0;
-    
-    if (config.__retryCount >= MAX_RETRIES) return Promise.reject(error);
-    if (error.response.status < 500) return Promise.reject(error);
-    
-    config.__retryCount++;
-    await new Promise(r => setTimeout(r, RETRY_DELAY * config.__retryCount));
-    return instance(config);
-  });
-};
+export function setupRetryInterceptor(api: AxiosInstance, config: RetryConfig = { retries: 3, delay: 1000 }) {
+  api.interceptors.response.use(
+    response => response,
+    async (error: AxiosError) => {
+      const cfg = error.config as any;
+      if (!cfg || !cfg._retryCount) cfg._retryCount = 0;
+      
+      if (cfg._retryCount < config.retries && error.response?.status >= 500) {
+        cfg._retryCount++;
+        await new Promise(r => setTimeout(r, config.delay * cfg._retryCount));
+        return api(cfg);
+      }
+      return Promise.reject(error);
+    }
+  );
+}
