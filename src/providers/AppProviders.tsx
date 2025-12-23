@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import { QueryProvider } from './QueryProvider';
 import { AuthProvider } from './AuthProvider';
 import { ThemeProvider } from './ThemeProvider';
@@ -10,22 +9,20 @@ import { AnalyticsProvider } from './AnalyticsProvider';
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
-    <BrowserRouter>
-      <QueryProvider>
-        <ThemeProvider>
-          <I18nProvider>
-            <AuthProvider>
-              <ToastProvider>
-                <ModalProvider>
-                  <AnalyticsProvider>
-                    {children}
-                  </AnalyticsProvider>
-                </ModalProvider>
-              </ToastProvider>
-            </AuthProvider>
-          </I18nProvider>
-        </ThemeProvider>
-      </QueryProvider>
-    </BrowserRouter>
+    <QueryProvider>
+      <ThemeProvider>
+        <I18nProvider>
+          <AuthProvider>
+            <ToastProvider>
+              <ModalProvider>
+                <AnalyticsProvider>
+                  {children}
+                </AnalyticsProvider>
+              </ModalProvider>
+            </ToastProvider>
+          </AuthProvider>
+        </I18nProvider>
+      </ThemeProvider>
+    </QueryProvider>
   );
 }
