@@ -1,23 +1,24 @@
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { cacheManager } from '@/cache/cacheManager';
 
-export const setupCacheInterceptor = (instance: AxiosInstance, ttlMs = 5 * 60 * 1000) => {
-  instance.interceptors.request.use((config) => {
+export function setupCacheInterceptor(api: AxiosInstance, ttlMs: number = 60000) {
+  api.interceptors.request.use((config: AxiosRequestConfig) => {
     if (config.method === 'get') {
-      const key = config.url + JSON.stringify(config.params || {});
-      const cached = cacheManager.get(key);
+      const cacheKey = config.url + JSON.stringify(config.params || {});
+      const cached = cacheManager.get(cacheKey);
       if (cached) {
-        config.adapter = () => Promise.resolve({ data: cached, status: 200, statusText: 'OK', headers: {}, config });
+        (config as any)._fromCache = true;
+        (config as any)._cachedData = cached;
       }
     }
     return config;
   });
 
-  instance.interceptors.response.use((response) => {
-    if (response.config.method === 'get') {
-      const key = response.config.url + JSON.stringify(response.config.params || {});
-      cacheManager.set(key, response.data, ttlMs);
+  api.interceptors.response.use(response => {
+    if (response.config.method === 'get' && !(response.config as any)._fromCache) {
+      const cacheKey = response.config.url + JSON.stringify(response.config.params || {});
+      cacheManager.set(cacheKey, response.data, ttlMs);
     }
     return response;
   });
-};
+}
