@@ -1,0 +1,1 @@
+export function highlight(text: string, query: string, className = 'bg-yellow-200'): string { if (!query) return text; const regex = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'); return text.replace(regex, '<mark class="' + className + '">$1</mark>'); }
