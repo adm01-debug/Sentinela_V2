@@ -1,0 +1,2 @@
+export const MessageTypes = { USER_CREATED: 'user:created', USER_UPDATED: 'user:updated', USER_DELETED: 'user:deleted', EMPLOYEE_CREATED: 'employee:created', EMPLOYEE_UPDATED: 'employee:updated', ACTIVITY_LOGGED: 'activity:logged', VIOLATION_DETECTED: 'violation:detected', REPORT_GENERATED: 'report:generated', SYNC_STARTED: 'sync:started', SYNC_COMPLETED: 'sync:completed', ERROR_OCCURRED: 'error:occurred', } as const;
+export type MessageType = typeof MessageTypes[keyof typeof MessageTypes];
