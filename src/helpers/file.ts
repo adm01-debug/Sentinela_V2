@@ -1,25 +1,8 @@
 export const fileHelpers = {
-  toBase64: (file: File): Promise<string> => new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.readAsDataURL(file);
-  }),
-  formatSize: (bytes: number): string => {
-    const units = ['B', 'KB', 'MB', 'GB'];
-    let i = 0;
-    while (bytes >= 1024 && i < units.length - 1) { bytes /= 1024; i++; }
-    return bytes.toFixed(2) + ' ' + units[i];
-  },
-  getExtension: (filename: string): string => filename.split('.').pop() || '',
-  getMimeType: (filename: string): string => {
-    const ext = filename.split('.').pop()?.toLowerCase();
-    const types: Record<string, string> = { pdf: 'application/pdf', jpg: 'image/jpeg', png: 'image/png', gif: 'image/gif' };
-    return types[ext || ''] || 'application/octet-stream';
-  },
-  download: (blob: Blob, filename: string): void => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = filename; a.click();
-    URL.revokeObjectURL(url);
-  },
+  getExtension: (filename: string): string => filename.split('.').pop()?.toLowerCase() || '',
+  getName: (filename: string): string => filename.replace(/\.[^.]+$/, ''),
+  isImage: (filename: string): boolean => ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(fileHelpers.getExtension(filename)),
+  isPdf: (filename: string): boolean => fileHelpers.getExtension(filename) === 'pdf',
+  download: (url: string, filename: string): void => { const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); },
+  formatSize: (bytes: number): string => { if (bytes === 0) return '0 B'; const k = 1024; const sizes = ['B', 'KB', 'MB', 'GB']; const i = Math.floor(Math.log(bytes) / Math.log(k)); return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]; },
 };
