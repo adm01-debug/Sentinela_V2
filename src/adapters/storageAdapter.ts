@@ -5,16 +5,20 @@ export interface StorageAdapter {
   clear(): void;
 }
 
-export const localStorageAdapter: StorageAdapter = {
-  get: <T>(key: string) => { const v = localStorage.getItem(key); return v ? JSON.parse(v) : null; },
-  set: <T>(key: string, value: T) => localStorage.setItem(key, JSON.stringify(value)),
-  remove: (key: string) => localStorage.removeItem(key),
-  clear: () => localStorage.clear(),
-};
+export function createStorageAdapter(storage: Storage): StorageAdapter {
+  return {
+    get: <T>(key: string): T | null => {
+      const item = storage.getItem(key);
+      if (!item) return null;
+      try { return JSON.parse(item) as T; } catch { return item as unknown as T; }
+    },
+    set: <T>(key: string, value: T): void => {
+      storage.setItem(key, JSON.stringify(value));
+    },
+    remove: (key: string): void => { storage.removeItem(key); },
+    clear: (): void => { storage.clear(); },
+  };
+}
 
-export const sessionStorageAdapter: StorageAdapter = {
-  get: <T>(key: string) => { const v = sessionStorage.getItem(key); return v ? JSON.parse(v) : null; },
-  set: <T>(key: string, value: T) => sessionStorage.setItem(key, JSON.stringify(value)),
-  remove: (key: string) => sessionStorage.removeItem(key),
-  clear: () => sessionStorage.clear(),
-};
+export const localStorageAdapter = createStorageAdapter(localStorage);
+export const sessionStorageAdapter = createStorageAdapter(sessionStorage);
