@@ -1,24 +1,24 @@
-type EventCallback = (...args: any[]) => void;
+type EventCallback<T = any> = (data: T) => void;
 
 class EventBus {
-  private events = new Map<string, Set<EventCallback>>();
+  private events: Map<string, Set<EventCallback>> = new Map();
 
-  on(event: string, callback: EventCallback): () => void {
+  on<T>(event: string, callback: EventCallback<T>): () => void {
     if (!this.events.has(event)) this.events.set(event, new Set());
     this.events.get(event)!.add(callback);
     return () => this.off(event, callback);
   }
 
-  off(event: string, callback: EventCallback): void {
+  off<T>(event: string, callback: EventCallback<T>): void {
     this.events.get(event)?.delete(callback);
   }
 
-  emit(event: string, ...args: any[]): void {
-    this.events.get(event)?.forEach(cb => cb(...args));
+  emit<T>(event: string, data?: T): void {
+    this.events.get(event)?.forEach(callback => callback(data));
   }
 
-  once(event: string, callback: EventCallback): void {
-    const wrapper = (...args: any[]) => { callback(...args); this.off(event, wrapper); };
+  once<T>(event: string, callback: EventCallback<T>): void {
+    const wrapper: EventCallback<T> = (data) => { this.off(event, wrapper); callback(data); };
     this.on(event, wrapper);
   }
 
