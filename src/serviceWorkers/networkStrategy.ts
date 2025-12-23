@@ -1,0 +1,4 @@
+export const isOnline = (): boolean => navigator.onLine;
+export const waitForOnline = (): Promise<void> => new Promise((resolve) => { if (isOnline()) return resolve(); window.addEventListener('online', () => resolve(), { once: true }); });
+export const withTimeout = async <T>(promise: Promise<T>, timeoutMs: number): Promise<T> => { const timeout = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeoutMs)); return Promise.race([promise, timeout]); };
+export const retryFetch = async (url: string, options?: RequestInit, retries = 3): Promise<Response> => { for (let i = 0; i < retries; i++) { try { return await fetch(url, options); } catch (e) { if (i === retries - 1) throw e; await new Promise(r => setTimeout(r, 1000 * (i + 1))); } } throw new Error('Max retries reached'); };
