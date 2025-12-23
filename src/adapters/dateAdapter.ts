@@ -1,11 +1,22 @@
-import { format, parse, parseISO, isValid } from 'date-fns';
+import { format, parseISO, formatDistance, isValid } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-export const dateAdapter = {
-  format: (date: Date | string, pattern = 'dd/MM/yyyy') => format(typeof date === 'string' ? parseISO(date) : date, pattern, { locale: ptBR }),
-  parse: (dateStr: string, pattern = 'dd/MM/yyyy') => parse(dateStr, pattern, new Date(), { locale: ptBR }),
-  toISO: (date: Date) => date.toISOString(),
-  fromISO: (str: string) => parseISO(str),
-  isValid: (date: any) => isValid(date),
-  now: () => new Date(),
+export interface DateAdapter {
+  format(date: Date | string, pattern?: string): string;
+  parse(dateString: string): Date;
+  formatRelative(date: Date | string): string;
+  isValid(date: any): boolean;
+}
+
+export const dateAdapter: DateAdapter = {
+  format: (date, pattern = 'dd/MM/yyyy') => {
+    const d = typeof date === 'string' ? parseISO(date) : date;
+    return format(d, pattern, { locale: ptBR });
+  },
+  parse: (dateString) => parseISO(dateString),
+  formatRelative: (date) => {
+    const d = typeof date === 'string' ? parseISO(date) : date;
+    return formatDistance(d, new Date(), { addSuffix: true, locale: ptBR });
+  },
+  isValid: (date) => isValid(typeof date === 'string' ? parseISO(date) : date),
 };
