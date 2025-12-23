@@ -1,17 +1,27 @@
-const ENCRYPTION_KEY = 'sentinela-secure';
+const ENCRYPTION_KEY = 'sentinela-secure-key';
 
-const encrypt = (data: string): string => btoa(encodeURIComponent(data));
-const decrypt = (data: string): string => decodeURIComponent(atob(data));
+function encrypt(data: string): string {
+  return btoa(encodeURIComponent(data).split('').reverse().join(''));
+}
 
-export const secureStore = {
-  get: <T>(key: string): T | null => {
-    try {
-      const v = localStorage.getItem(ENCRYPTION_KEY + ':' + key);
-      return v ? JSON.parse(decrypt(v)) : null;
-    } catch { return null; }
-  },
+function decrypt(data: string): string {
+  return decodeURIComponent(atob(data).split('').reverse().join(''));
+}
+
+export const secureStorage = {
   set: <T>(key: string, value: T): void => {
-    localStorage.setItem(ENCRYPTION_KEY + ':' + key, encrypt(JSON.stringify(value)));
+    const encrypted = encrypt(JSON.stringify(value));
+    localStorage.setItem(ENCRYPTION_KEY + ':' + key, encrypted);
+  },
+  get: <T>(key: string): T | null => {
+    const encrypted = localStorage.getItem(ENCRYPTION_KEY + ':' + key);
+    if (!encrypted) return null;
+    try { return JSON.parse(decrypt(encrypted)) as T; } catch { return null; }
   },
   remove: (key: string): void => localStorage.removeItem(ENCRYPTION_KEY + ':' + key),
+  clear: (): void => {
+    Object.keys(localStorage)
+      .filter(k => k.startsWith(ENCRYPTION_KEY + ':'))
+      .forEach(k => localStorage.removeItem(k));
+  },
 };
