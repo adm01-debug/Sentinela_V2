@@ -1,0 +1,5 @@
+export const dashboardAggregator = {
+  buildSummary: (data: { employees: any[]; activities: any[]; violations: any[] }) => ({ totalEmployees: data.employees.length, activeEmployees: data.employees.filter(e => e.status === 'active').length, totalActivities: data.activities.length, totalViolations: data.violations.length, pendingViolations: data.violations.filter(v => v.status === 'pending').length }),
+  buildChartData: (activities: { date: string; duration: number }[]) => { const byDate = activities.reduce((acc, a) => { acc[a.date] = (acc[a.date] || 0) + a.duration; return acc; }, {} as Record<string, number>); return Object.entries(byDate).map(([date, value]) => ({ date, value })).sort((a, b) => a.date.localeCompare(b.date)); },
+  buildStats: (data: { current: number; previous: number }) => ({ value: data.current, change: data.previous > 0 ? ((data.current - data.previous) / data.previous) * 100 : 0, trend: data.current > data.previous ? 'up' : data.current < data.previous ? 'down' : 'stable' }),
+};
