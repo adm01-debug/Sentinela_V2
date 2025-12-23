@@ -1,10 +1,10 @@
-import { parseISO, format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { parseISO, format, isValid } from 'date-fns';
 
 export const dateTransformer = {
   toDate: (value: string | Date): Date => typeof value === 'string' ? parseISO(value) : value,
-  toString: (date: Date, pattern = 'dd/MM/yyyy'): string => format(date, pattern, { locale: ptBR }),
+  toString: (date: Date, pattern = 'yyyy-MM-dd'): string => format(date, pattern),
   toISO: (date: Date): string => date.toISOString(),
   toTimestamp: (date: Date): number => date.getTime(),
-  fromTimestamp: (ts: number): Date => new Date(ts),
+  fromTimestamp: (timestamp: number): Date => new Date(timestamp),
+  isValidDate: (value: any): boolean => isValid(typeof value === 'string' ? parseISO(value) : value),
 };
