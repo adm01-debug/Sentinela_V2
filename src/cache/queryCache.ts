@@ -6,7 +6,14 @@ export const queryCache = new QueryClient({
   },
 });
 
-export const invalidateCache = (key: string | string[]) => queryCache.invalidateQueries({ queryKey: Array.isArray(key) ? key : [key] });
-export const prefetchQuery = async <T>(key: string[], fn: () => Promise<T>) => queryCache.prefetchQuery({ queryKey: key, queryFn: fn });
-export const setQueryData = <T>(key: string[], data: T) => queryCache.setQueryData(key, data);
-export const getQueryData = <T>(key: string[]): T | undefined => queryCache.getQueryData(key);
+export function invalidateQueries(queryKey: string[]) {
+  return queryCache.invalidateQueries({ queryKey });
+}
+
+export function prefetchQuery<T>(queryKey: string[], queryFn: () => Promise<T>) {
+  return queryCache.prefetchQuery({ queryKey, queryFn });
+}
+
+export function setQueryData<T>(queryKey: string[], data: T) {
+  return queryCache.setQueryData(queryKey, data);
+}
