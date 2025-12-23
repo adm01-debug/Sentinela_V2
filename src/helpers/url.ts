@@ -1,5 +1,4 @@
 export const urlHelpers = {
-  parse: (url: string): URL => new URL(url),
   getParams: (url: string): Record<string, string> => Object.fromEntries(new URL(url).searchParams),
   setParams: (url: string, params: Record<string, string>): string => {
     const u = new URL(url);
@@ -11,6 +10,8 @@ export const urlHelpers = {
     keys.forEach(k => u.searchParams.delete(k));
     return u.toString();
   },
-  join: (...parts: string[]): string => parts.map(p => p.replace(/^\/|\/$/g, '')).join('/'),
-  isAbsolute: (url: string): boolean => /^https?:\/\//.test(url),
+  getPath: (url: string): string => new URL(url).pathname,
+  getHost: (url: string): string => new URL(url).hostname,
+  isAbsolute: (url: string): boolean => url.startsWith('http://') || url.startsWith('https://'),
+  join: (...parts: string[]): string => parts.map(p => p.replace(/^\/|\/$/g, '')).filter(Boolean).join('/'),
 };
