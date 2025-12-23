@@ -1,23 +1,20 @@
-export const ROUTES = {
-  HOME: '/',
-  DASHBOARD: '/dashboard',
-  EMPLOYEES: '/employees',
-  EMPLOYEE_DETAIL: (id: string) => '/employees/' + id,
-  TEAMS: '/teams',
-  TEAM_DETAIL: (id: string) => '/teams/' + id,
-  REPORTS: '/reports',
-  SETTINGS: '/settings',
-  PROFILE: '/profile',
-  LOGIN: '/auth/login',
-  REGISTER: '/auth/register',
-  FORGOT_PASSWORD: '/auth/forgot-password',
-  RESET_PASSWORD: '/auth/reset-password',
-} as const;
+import { LazyRoutes } from './LazyRoutes';
 
-export const ROUTE_TITLES: Record<string, string> = {
-  '/': 'Dashboard',
-  '/employees': 'Colaboradores',
-  '/teams': 'Equipes',
-  '/reports': 'Relatórios',
-  '/settings': 'Configurações',
+export const routeConfig = {
+  public: [
+    { path: '/login', component: LazyRoutes.Login },
+    { path: '/register', component: LazyRoutes.Register },
+    { path: '/forgot-password', component: LazyRoutes.ForgotPassword },
+  ],
+  private: [
+    { path: '/', component: LazyRoutes.Dashboard },
+    { path: '/dashboard', component: LazyRoutes.Dashboard },
+    { path: '/employees', component: LazyRoutes.Employees },
+    { path: '/teams', component: LazyRoutes.Teams },
+    { path: '/activities', component: LazyRoutes.Activities },
+    { path: '/screenshots', component: LazyRoutes.Screenshots },
+    { path: '/reports', component: LazyRoutes.Reports },
+    { path: '/settings', component: LazyRoutes.Settings, role: 'admin' },
+    { path: '/profile', component: LazyRoutes.Profile },
+  ],
 };
