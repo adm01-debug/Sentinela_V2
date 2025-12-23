@@ -1,4 +1,4 @@
-import { Employee, EmployeeDTO } from '@/types';
+import type { Employee, EmployeeDTO } from '@/types';
 
 export const employeeMapper = {
   toEntity: (dto: EmployeeDTO): Employee => ({
@@ -10,18 +10,20 @@ export const employeeMapper = {
     position: dto.position,
     status: dto.status,
     teamId: dto.team_id,
-    startDate: new Date(dto.start_date),
+    hiredAt: dto.hired_at ? new Date(dto.hired_at) : undefined,
+    createdAt: new Date(dto.created_at),
   }),
-  toDTO: (entity: Employee): EmployeeDTO => ({
-    id: entity.id,
-    user_id: entity.userId,
-    name: entity.name,
-    email: entity.email,
-    department: entity.department,
-    position: entity.position,
-    status: entity.status,
-    team_id: entity.teamId,
-    start_date: entity.startDate.toISOString(),
+  toDTO: (employee: Employee): EmployeeDTO => ({
+    id: employee.id,
+    user_id: employee.userId,
+    name: employee.name,
+    email: employee.email,
+    department: employee.department,
+    position: employee.position,
+    status: employee.status,
+    team_id: employee.teamId,
+    hired_at: employee.hiredAt?.toISOString(),
+    created_at: employee.createdAt.toISOString(),
   }),
   toEntityList: (dtos: EmployeeDTO[]): Employee[] => dtos.map(employeeMapper.toEntity),
 };
