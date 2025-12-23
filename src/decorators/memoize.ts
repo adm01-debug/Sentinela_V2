@@ -1,7 +1,7 @@
-export function memoize<T extends (...args: any[]) => any>(fn: T, keyFn?: (...args: Parameters<T>) => string): T {
+export function memoize<T extends (...args: any[]) => any>(fn: T, keyResolver?: (...args: Parameters<T>) => string): T {
   const cache = new Map<string, ReturnType<T>>();
   return ((...args: Parameters<T>) => {
-    const key = keyFn ? keyFn(...args) : JSON.stringify(args);
+    const key = keyResolver ? keyResolver(...args) : JSON.stringify(args);
     if (cache.has(key)) return cache.get(key)!;
     const result = fn(...args);
     cache.set(key, result);
@@ -9,13 +9,14 @@ export function memoize<T extends (...args: any[]) => any>(fn: T, keyFn?: (...ar
   }) as T;
 }
 
-export function memoizeAsync<T extends (...args: any[]) => Promise<any>>(fn: T): T {
-  const cache = new Map<string, ReturnType<T>>();
-  return (async (...args: Parameters<T>) => {
+export function memoizeWithTTL<T extends (...args: any[]) => any>(fn: T, ttlMs: number): T {
+  const cache = new Map<string, { value: ReturnType<T>; expiresAt: number }>();
+  return ((...args: Parameters<T>) => {
     const key = JSON.stringify(args);
-    if (cache.has(key)) return cache.get(key)!;
-    const result = await fn(...args);
-    cache.set(key, result);
+    const cached = cache.get(key);
+    if (cached && Date.now() < cached.expiresAt) return cached.value;
+    const result = fn(...args);
+    cache.set(key, { value: result, expiresAt: Date.now() + ttlMs });
     return result;
   }) as T;
 }
