@@ -1,38 +1,36 @@
-import { KafkaConfig, ConsumerConfig, KafkaMessage } from './types';
+import { KafkaConfig, ConsumerMessage } from './types';
 
 export class KafkaConsumer {
-  private connected: boolean = false;
   private subscriptions: Set<string> = new Set();
-  private handlers: Map<string, (message: KafkaMessage) => Promise<void>> = new Map();
+  private handlers: Map<string, (msg: ConsumerMessage) => Promise<void>> = new Map();
+  private running: boolean = false;
   
-  constructor(private config: KafkaConfig, private consumerConfig: ConsumerConfig) {}
+  constructor(private config: KafkaConfig, private groupId: string) {}
   
-  async connect(): Promise<void> { this.connected = true; }
-  async disconnect(): Promise<void> { this.connected = false; }
-  
-  async subscribe(topic: string, handler: (message: KafkaMessage) => Promise<void>): Promise<void> {
+  subscribe(topic: string, handler: (msg: ConsumerMessage) => Promise<void>): void {
     this.subscriptions.add(topic);
     this.handlers.set(topic, handler);
   }
   
-  async unsubscribe(topic: string): Promise<void> {
-    this.subscriptions.delete(topic);
-    this.handlers.delete(topic);
-  }
+  async start(): Promise<void> { this.running = true; console.log('Consumer started, group:', this.groupId); }
+  async stop(): Promise<void> { this.running = false; }
   
   async commitOffset(topic: string, partition: number, offset: string): Promise<void> {
-    console.log('Committed offset', offset, 'for', topic, partition);
+    console.log('Committing offset:', topic, partition, offset);
   }
-  
-  getSubscriptions(): string[] { return Array.from(this.subscriptions); }
 }
 
 export class ConsumerGroup {
   private consumers: KafkaConsumer[] = [];
+  constructor(private config: KafkaConfig, private groupId: string, private consumerCount: number) {}
   
-  addConsumer(consumer: KafkaConsumer): void { this.consumers.push(consumer); }
-  
-  async rebalance(): Promise<void> {
-    console.log('Rebalancing', this.consumers.length, 'consumers');
+  async start(): Promise<void> {
+    for (let i = 0; i < this.consumerCount; i++) {
+      const consumer = new KafkaConsumer(this.config, this.groupId);
+      this.consumers.push(consumer);
+      await consumer.start();
+    }
   }
+  
+  async stop(): Promise<void> { await Promise.all(this.consumers.map(c => c.stop())); }
 }
