@@ -1,4 +1,4 @@
 export * from './types';
-export * from './connector';
-export * from './processor';
+export * from './capturer';
 export * from './publisher';
+export * from './consumer';
