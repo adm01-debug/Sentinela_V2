@@ -1,45 +1,57 @@
-import { BackpressureConfig, BackpressureMetrics, BackpressureStrategy } from './types';
+import { BackpressureConfig, BackpressureStats, BackpressureStrategy } from './types';
 
 export class BackpressureController<T> {
   private buffer: T[] = [];
-  private isPaused: boolean = false;
-  private metrics: BackpressureMetrics = { currentLoad: 0, droppedCount: 0, bufferedCount: 0, throttledCount: 0, isPaused: false };
-  private onPause?: () => void;
-  private onResume?: () => void;
+  private droppedCount: number = 0;
+  private processedCount: number = 0;
+  private paused: boolean = false;
   
-  constructor(private config: BackpressureConfig) {}
+  constructor(private config: BackpressureConfig, private processor: (item: T) => Promise<void>) {}
   
-  push(item: T): boolean {
-    this.metrics.currentLoad++;
-    if (this.metrics.currentLoad >= this.config.highWaterMark) {
-      this.pause();
-      return this.applyStrategy(item);
+  async push(item: T): Promise<boolean> {
+    if (this.buffer.length >= this.config.highWaterMark) {
+      switch (this.config.strategy) {
+        case 'drop': this.droppedCount++; return false;
+        case 'error': throw new Error('Backpressure limit reached');
+        case 'buffer':
+          if (this.buffer.length < this.config.bufferSize) { this.buffer.push(item); return true; }
+          this.droppedCount++; return false;
+        case 'throttle': this.paused = true; await this.waitForLowWaterMark(); break;
+      }
     }
     this.buffer.push(item);
+    this.processNext();
     return true;
   }
   
-  pull(): T | undefined {
-    const item = this.buffer.shift();
-    if (item) this.metrics.currentLoad--;
-    if (this.metrics.currentLoad <= this.config.lowWaterMark && this.isPaused) this.resume();
-    return item;
+  private async processNext(): Promise<void> {
+    if (this.paused || this.buffer.length === 0) return;
+    const item = this.buffer.shift()!;
+    try {
+      await this.processor(item);
+      this.processedCount++;
+      if (this.buffer.length <= this.config.lowWaterMark) this.paused = false;
+    } catch (e) { console.error('Process error:', e); }
+    this.processNext();
   }
   
-  private applyStrategy(item: T): boolean {
-    switch (this.config.strategy) {
-      case 'drop': this.metrics.droppedCount++; return false;
-      case 'buffer': this.buffer.push(item); this.metrics.bufferedCount++; return true;
-      case 'throttle': this.metrics.throttledCount++; return false;
-      case 'error': throw new Error('Backpressure limit reached');
-    }
+  private waitForLowWaterMark(): Promise<void> {
+    return new Promise(resolve => {
+      const check = () => {
+        if (this.buffer.length <= this.config.lowWaterMark) resolve();
+        else setTimeout(check, 100);
+      };
+      check();
+    });
   }
   
-  private pause(): void { this.isPaused = true; this.metrics.isPaused = true; this.onPause?.(); }
-  private resume(): void { this.isPaused = false; this.metrics.isPaused = false; this.onResume?.(); }
-  
-  onPauseCallback(fn: () => void): void { this.onPause = fn; }
-  onResumeCallback(fn: () => void): void { this.onResume = fn; }
-  getMetrics(): BackpressureMetrics { return { ...this.metrics }; }
-  size(): number { return this.buffer.length; }
+  getStats(): BackpressureStats {
+    return {
+      currentLoad: this.buffer.length,
+      bufferUsage: this.buffer.length / this.config.bufferSize,
+      droppedCount: this.droppedCount,
+      processedCount: this.processedCount,
+      isOverloaded: this.buffer.length >= this.config.highWaterMark
+    };
+  }
 }
