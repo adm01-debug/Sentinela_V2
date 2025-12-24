@@ -1,39 +1,30 @@
-import { PartitionBoundary } from './types';
+import { PartitionConfig } from './types';
 
 export class RangePartitionStrategy {
-  constructor(private interval: 'day' | 'week' | 'month' | 'year') {}
-  
-  generateBoundaries(from: Date, to: Date): PartitionBoundary[] {
-    const boundaries: PartitionBoundary[] = [];
-    let current = new Date(from);
-    while (current < to) {
-      const next = this.addInterval(current);
-      boundaries.push({ type: 'range', from: new Date(current), to: next });
-      current = next;
+  generatePartitions(min: number, max: number, count: number): { minValue: number; maxValue: number }[] {
+    const step = (max - min) / count;
+    const partitions = [];
+    for (let i = 0; i < count; i++) {
+      partitions.push({ minValue: min + i * step, maxValue: min + (i + 1) * step });
     }
-    return boundaries;
+    return partitions;
   }
-  
-  private addInterval(date: Date): Date {
-    const result = new Date(date);
-    switch (this.interval) {
-      case 'day': result.setDate(result.getDate() + 1); break;
-      case 'week': result.setDate(result.getDate() + 7); break;
-      case 'month': result.setMonth(result.getMonth() + 1); break;
-      case 'year': result.setFullYear(result.getFullYear() + 1); break;
+}
+
+export class DatePartitionStrategy {
+  generateMonthlyPartitions(startDate: Date, months: number): { minValue: Date; maxValue: Date; name: string }[] {
+    const partitions = [];
+    for (let i = 0; i < months; i++) {
+      const start = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
+      const end = new Date(startDate.getFullYear(), startDate.getMonth() + i + 1, 0);
+      partitions.push({ minValue: start, maxValue: end, name: 'p' + start.getFullYear() + '_' + (start.getMonth() + 1) });
     }
-    return result;
+    return partitions;
   }
 }
 
 export class ListPartitionStrategy {
-  generateBoundaries(values: unknown[][]): PartitionBoundary[] {
-    return values.map(v => ({ type: 'list', values: v }));
+  generatePartitions(values: unknown[][], names: string[]): { values: unknown[]; name: string }[] {
+    return values.map((v, i) => ({ values: v, name: names[i] ?? 'p' + i }));
   }
-}
-
-export class HashPartitionStrategy {
-  constructor(private partitionCount: number) {}
-  getPartitionIndex(key: unknown): number { return Math.abs(this.hash(String(key))) % this.partitionCount; }
-  private hash(str: string): number { let h = 0; for (let i = 0; i < str.length; i++) { h = ((h << 5) - h) + str.charCodeAt(i); h |= 0; } return h; }
 }
