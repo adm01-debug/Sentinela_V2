@@ -1,12 +1,27 @@
-// Kafka Consumer
-export interface ConsumerConfig { brokers: string[]; groupId: string; topics: string[]; }
-export interface ConsumerMessage { topic: string; partition: number; offset: string; key?: string; value: unknown; }
+import { KafkaConfig, ConsumerMessage } from './types';
+
 export type MessageHandler = (message: ConsumerMessage) => Promise<void>;
+
 export class KafkaConsumer {
-  private running = false; private handlers: Map<string, MessageHandler> = new Map();
-  constructor(private config: ConsumerConfig) {}
-  async subscribe(topic: string, handler: MessageHandler): Promise<void> { this.handlers.set(topic, handler); }
-  async start(): Promise<void> { this.running = true; console.log("[Kafka] Consumer started, group:", this.config.groupId); }
-  async stop(): Promise<void> { this.running = false; }
-  async commit(message: ConsumerMessage): Promise<void> { console.log("[Kafka] Committed offset", message.offset); }
+  private connected: boolean = false;
+  private subscriptions: Map<string, MessageHandler> = new Map();
+  
+  constructor(private config: KafkaConfig) {}
+  
+  async connect(): Promise<void> { this.connected = true; console.log('Kafka consumer connected'); }
+  async disconnect(): Promise<void> { this.connected = false; this.subscriptions.clear(); }
+  
+  subscribe(topic: string, handler: MessageHandler): void {
+    if (!this.connected) throw new Error('Consumer not connected');
+    this.subscriptions.set(topic, handler);
+  }
+  
+  unsubscribe(topic: string): void { this.subscriptions.delete(topic); }
+  
+  async commitOffset(topic: string, partition: number, offset: string): Promise<void> {
+    console.log('Committed offset:', topic, partition, offset);
+  }
+  
+  getSubscriptions(): string[] { return Array.from(this.subscriptions.keys()); }
+  isConnected(): boolean { return this.connected; }
 }
