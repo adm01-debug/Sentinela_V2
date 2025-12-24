@@ -1,0 +1,2 @@
+export interface CSRFToken { token: string; sessionId: string; createdAt: Date; expiresAt: Date; used: boolean; }
+export interface CSRFConfig { tokenLength: number; ttlSeconds: number; cookieName: string; headerName: string; doubleSubmit: boolean; sameSite: 'strict' | 'lax' | 'none'; }
