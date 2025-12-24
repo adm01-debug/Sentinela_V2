@@ -1,9 +1,42 @@
-// Service Registry Core
-export interface ServiceInfo { name: string; version: string; endpoints: string[]; metadata: Record<string, string>; health: "up" | "down" | "unknown"; }
+import { ServiceDefinition, ServiceRegistration, RegistrationStatus } from './types';
+import { v4 as uuidv4 } from 'uuid';
+
 export class ServiceRegistry {
-  private services: Map<string, ServiceInfo[]> = new Map();
-  register(service: ServiceInfo): void { if (!this.services.has(service.name)) this.services.set(service.name, []); this.services.get(service.name)!.push(service); }
-  deregister(name: string, version?: string): void { if (version) { const services = this.services.get(name); if (services) this.services.set(name, services.filter(s => s.version !== version)); } else { this.services.delete(name); } }
-  lookup(name: string): ServiceInfo[] { return this.services.get(name)?.filter(s => s.health === "up") || []; }
-  all(): ServiceInfo[] { return Array.from(this.services.values()).flat(); }
+  private registrations: Map<string, ServiceRegistration> = new Map();
+  
+  register(service: ServiceDefinition): string {
+    const id = uuidv4();
+    this.registrations.set(id, {
+      id, service, status: RegistrationStatus.Active, registeredAt: new Date(), lastHeartbeat: new Date()
+    });
+    return id;
+  }
+  
+  deregister(id: string): boolean { return this.registrations.delete(id); }
+  
+  heartbeat(id: string): boolean {
+    const reg = this.registrations.get(id);
+    if (reg) { reg.lastHeartbeat = new Date(); return true; }
+    return false;
+  }
+  
+  find(name: string, version?: string): ServiceRegistration[] {
+    return Array.from(this.registrations.values()).filter(r => 
+      r.service.name === name && r.status === RegistrationStatus.Active &&
+      (!version || r.service.version === version)
+    );
+  }
+  
+  findOne(name: string): ServiceRegistration | undefined {
+    const services = this.find(name);
+    return services[Math.floor(Math.random() * services.length)];
+  }
+  
+  getAll(): ServiceRegistration[] { return Array.from(this.registrations.values()); }
+  
+  setStatus(id: string, status: RegistrationStatus): boolean {
+    const reg = this.registrations.get(id);
+    if (reg) { reg.status = status; return true; }
+    return false;
+  }
 }
