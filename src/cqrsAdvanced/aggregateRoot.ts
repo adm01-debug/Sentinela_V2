@@ -1,116 +1,182 @@
-// Aggregate Root - CQRS Advanced
-import { DomainEvent, EventMetadata } from "./eventStore";
-import { v4 as uuid } from "uuid";
+// Aggregate Root Base Implementation
+import { DomainEvent, AggregateRoot as IAggregateRoot, EventMetadata } from './types';
+import { EventBuilder } from './eventStore';
 
-export abstract class AggregateRoot<TState = Record<string, unknown>> {
-  protected state: TState;
-  private uncommittedEvents: DomainEvent[] = [];
+export abstract class AggregateRoot<S = unknown> implements IAggregateRoot<S> {
+  protected state!: S;
   private _version: number = 0;
+  private _uncommittedEvents: DomainEvent[] = [];
 
-  constructor(protected readonly id: string, protected readonly aggregateType: string) {
-    this.state = this.getInitialState();
-  }
+  constructor(public readonly id: string) {}
 
   get version(): number {
     return this._version;
   }
 
-  protected abstract getInitialState(): TState;
-  protected abstract applyEvent(event: DomainEvent): void;
+  get uncommittedEvents(): DomainEvent[] {
+    return [...this._uncommittedEvents];
+  }
 
-  protected raise(eventType: string, payload: Record<string, unknown>, metadata: Partial<EventMetadata> = {}): void {
-    const event: DomainEvent = {
-      eventId: uuid(),
-      eventType,
-      aggregateId: this.id,
-      aggregateType: this.aggregateType,
-      version: this._version + this.uncommittedEvents.length + 1,
-      payload,
-      metadata: {
-        correlationId: metadata.correlationId || uuid(),
-        causationId: metadata.causationId,
-        userId: metadata.userId
-      },
-      timestamp: new Date()
-    };
-
-    this.applyEvent(event);
-    this.uncommittedEvents.push(event);
+  getState(): S {
+    return this.state;
   }
 
   loadFromHistory(events: DomainEvent[]): void {
     for (const event of events) {
-      this.applyEvent(event);
+      this.apply(event, false);
       this._version = event.version;
     }
   }
 
-  getUncommittedEvents(): DomainEvent[] {
-    return [...this.uncommittedEvents];
+  commit(): DomainEvent[] {
+    const events = this._uncommittedEvents;
+    this._uncommittedEvents = [];
+    return events;
   }
 
-  clearUncommittedEvents(): void {
-    this.uncommittedEvents = [];
+  protected raise<T>(
+    eventType: string,
+    payload: T,
+    metadata?: Partial<EventMetadata>
+  ): void {
+    const event = EventBuilder.create(
+      eventType,
+      this.id,
+      this.constructor.name,
+      payload,
+      metadata
+    );
+    
+    this.apply(event, true);
   }
 
-  getSnapshot(): { state: TState; version: number } {
-    return { state: { ...this.state }, version: this._version };
-  }
-
-  restoreFromSnapshot(snapshot: { state: TState; version: number }): void {
-    this.state = { ...snapshot.state };
-    this._version = snapshot.version;
-  }
-}
-
-// Example: Order Aggregate
-interface OrderState {
-  status: "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
-  items: Array<{ productId: string; quantity: number; price: number }>;
-  totalAmount: number;
-  customerId: string;
-}
-
-export class OrderAggregate extends AggregateRoot<OrderState> {
-  constructor(id: string) {
-    super(id, "Order");
-  }
-
-  protected getInitialState(): OrderState {
-    return { status: "pending", items: [], totalAmount: 0, customerId: "" };
-  }
-
-  protected applyEvent(event: DomainEvent): void {
-    switch (event.eventType) {
-      case "OrderCreated":
-        this.state.customerId = event.payload.customerId as string;
-        this.state.items = event.payload.items as OrderState["items"];
-        this.state.totalAmount = this.state.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
-        break;
-      case "OrderConfirmed":
-        this.state.status = "confirmed";
-        break;
-      case "OrderShipped":
-        this.state.status = "shipped";
-        break;
-      case "OrderCancelled":
-        this.state.status = "cancelled";
-        break;
+  private apply(event: DomainEvent, isNew: boolean): void {
+    const handler = this.getEventHandler(event.eventType);
+    if (handler) {
+      this.state = handler.call(this, event.payload, this.state);
+    }
+    
+    if (isNew) {
+      this._uncommittedEvents.push({
+        ...event,
+        version: this._version + this._uncommittedEvents.length + 1
+      });
     }
   }
 
-  create(customerId: string, items: OrderState["items"], metadata?: Partial<EventMetadata>): void {
-    if (this.state.items.length > 0) throw new Error("Order already created");
-    this.raise("OrderCreated", { customerId, items }, metadata);
+  protected abstract getEventHandler(eventType: string): ((payload: unknown, state: S) => S) | null;
+  protected abstract createInitialState(): S;
+}
+
+// Example implementation
+export interface OrderState {
+  id: string;
+  customerId: string;
+  items: OrderItem[];
+  status: OrderStatus;
+  totalAmount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface OrderItem {
+  productId: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+export enum OrderStatus {
+  Created = 'created',
+  Confirmed = 'confirmed',
+  Shipped = 'shipped',
+  Delivered = 'delivered',
+  Cancelled = 'cancelled'
+}
+
+export class Order extends AggregateRoot<OrderState> {
+  static create(id: string, customerId: string): Order {
+    const order = new Order(id);
+    order.raise('OrderCreated', { customerId });
+    return order;
   }
 
-  confirm(metadata?: Partial<EventMetadata>): void {
-    if (this.state.status !== "pending") throw new Error("Can only confirm pending orders");
-    this.raise("OrderConfirmed", {}, metadata);
+  addItem(productId: string, quantity: number, unitPrice: number): void {
+    if (this.state.status !== OrderStatus.Created) {
+      throw new Error('Cannot add items to confirmed order');
+    }
+    this.raise('ItemAdded', { productId, quantity, unitPrice });
   }
 
-  cancel(reason: string, metadata?: Partial<EventMetadata>): void {
-    if (this.state.status === "shipped") throw new Error("Cannot cancel shipped orders");
-    this.raise("OrderCancelled", { reason }, metadata);
+  confirm(): void {
+    if (this.state.status !== OrderStatus.Created) {
+      throw new Error('Order already confirmed');
+    }
+    if (this.state.items.length === 0) {
+      throw new Error('Cannot confirm empty order');
+    }
+    this.raise('OrderConfirmed', {});
+  }
+
+  ship(): void {
+    if (this.state.status !== OrderStatus.Confirmed) {
+      throw new Error('Order must be confirmed before shipping');
+    }
+    this.raise('OrderShipped', {});
+  }
+
+  cancel(reason: string): void {
+    if (this.state.status === OrderStatus.Delivered) {
+      throw new Error('Cannot cancel delivered order');
+    }
+    this.raise('OrderCancelled', { reason });
+  }
+
+  protected createInitialState(): OrderState {
+    return {
+      id: this.id,
+      customerId: '',
+      items: [],
+      status: OrderStatus.Created,
+      totalAmount: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+  }
+
+  protected getEventHandler(eventType: string): ((payload: unknown, state: OrderState) => OrderState) | null {
+    const handlers: Record<string, (payload: any, state: OrderState) => OrderState> = {
+      'OrderCreated': (payload, state) => ({
+        ...this.createInitialState(),
+        customerId: payload.customerId,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }),
+      'ItemAdded': (payload, state) => ({
+        ...state,
+        items: [...state.items, {
+          productId: payload.productId,
+          quantity: payload.quantity,
+          unitPrice: payload.unitPrice
+        }],
+        totalAmount: state.totalAmount + (payload.quantity * payload.unitPrice),
+        updatedAt: new Date()
+      }),
+      'OrderConfirmed': (_, state) => ({
+        ...state,
+        status: OrderStatus.Confirmed,
+        updatedAt: new Date()
+      }),
+      'OrderShipped': (_, state) => ({
+        ...state,
+        status: OrderStatus.Shipped,
+        updatedAt: new Date()
+      }),
+      'OrderCancelled': (_, state) => ({
+        ...state,
+        status: OrderStatus.Cancelled,
+        updatedAt: new Date()
+      })
+    };
+    return handlers[eventType] ?? null;
   }
 }
