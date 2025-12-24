@@ -1,34 +1,32 @@
-import { ReplicaConfig, ReplicaStatus } from './types';
+import { Replica, ReplicaStatus } from './types';
 
 export class ReplicaManager {
-  private replicas: Map<string, ReplicaConfig> = new Map();
-  private status: Map<string, ReplicaStatus> = new Map();
-  private primary?: string;
+  private replicas: Map<string, Replica> = new Map();
+  private primary?: Replica;
   
-  addReplica(config: ReplicaConfig): void {
-    this.replicas.set(config.id, config);
-    if (config.role === 'primary') this.primary = config.id;
-    this.status.set(config.id, { id: config.id, isHealthy: true, lagSeconds: 0, activeConnections: 0, lastChecked: new Date() });
+  addReplica(replica: Replica): void {
+    this.replicas.set(replica.id, replica);
+    if (replica.role === 'primary') this.primary = replica;
   }
   
-  removeReplica(id: string): void { this.replicas.delete(id); this.status.delete(id); }
+  removeReplica(id: string): boolean { return this.replicas.delete(id); }
+  getPrimary(): Replica | undefined { return this.primary; }
   
-  getPrimary(): ReplicaConfig | undefined { return this.primary ? this.replicas.get(this.primary) : undefined; }
-  
-  getReplicas(): ReplicaConfig[] { return Array.from(this.replicas.values()).filter(r => r.role === 'replica'); }
-  
-  getHealthyReplicas(maxLagSeconds: number = 10): ReplicaConfig[] {
-    return this.getReplicas().filter(r => {
-      const s = this.status.get(r.id);
-      return s?.isHealthy && s.lagSeconds <= maxLagSeconds;
-    });
+  getReadReplicas(): Replica[] {
+    return Array.from(this.replicas.values()).filter(r => r.role === 'replica' && r.status === 'online');
   }
   
-  updateStatus(id: string, status: Partial<ReplicaStatus>): void {
-    const current = this.status.get(id);
-    if (current) this.status.set(id, { ...current, ...status, lastChecked: new Date() });
+  updateStatus(id: string, status: ReplicaStatus, lag?: number): void {
+    const replica = this.replicas.get(id);
+    if (replica) { replica.status = status; if (lag !== undefined) replica.lag = lag; }
   }
   
-  getStatus(id: string): ReplicaStatus | undefined { return this.status.get(id); }
-  getAllStatus(): ReplicaStatus[] { return Array.from(this.status.values()); }
+  promoteToPrimary(id: string): void {
+    const replica = this.replicas.get(id);
+    if (replica && replica.role === 'replica') {
+      if (this.primary) this.primary.role = 'replica';
+      replica.role = 'primary';
+      this.primary = replica;
+    }
+  }
 }
