@@ -1,46 +1,30 @@
-// Sidecar Proxy Pattern
-import { ServiceProxy, ProxyConfig } from "./proxy";
+import { ServiceMeshConfig, SidecarConfig } from './types';
 
-export interface SidecarConfig {
-  serviceName: string;
-  inboundPort: number;
-  outboundPort: number;
-  upstreams: Record<string, ProxyConfig>;
+export class SidecarProxy {
+  private config: SidecarConfig;
+  private isRunning: boolean = false;
+  
+  constructor(config: SidecarConfig) { this.config = config; }
+  
+  start(): void { this.isRunning = true; console.log('Sidecar started on port', this.config.port); }
+  stop(): void { this.isRunning = false; console.log('Sidecar stopped'); }
+  isActive(): boolean { return this.isRunning; }
+  
+  async intercept(request: ProxyRequest): Promise<ProxyResponse> {
+    console.log('Intercepting request:', request.path);
+    return { statusCode: 200, body: {}, headers: {} };
+  }
 }
 
-export class Sidecar {
-  private proxies: Map<string, ServiceProxy> = new Map();
-  private running = false;
+export interface ProxyRequest {
+  method: string;
+  path: string;
+  headers: Record<string, string>;
+  body?: unknown;
+}
 
-  constructor(private config: SidecarConfig) {
-    for (const [name, proxyConfig] of Object.entries(config.upstreams)) {
-      this.proxies.set(name, new ServiceProxy(proxyConfig));
-    }
-  }
-
-  async handleInbound(request: Request): Promise<Response> {
-    console.log(\`[Sidecar] Inbound: \${request.method} \${request.url}\`);
-    return new Response("OK", { status: 200 });
-  }
-
-  async handleOutbound(serviceName: string, request: Request): Promise<Response> {
-    const proxy = this.proxies.get(serviceName);
-    if (!proxy) throw new Error(\`Unknown service: \${serviceName}\`);
-    console.log(\`[Sidecar] Outbound to \${serviceName}: \${request.method}\`);
-    return proxy.forward(request);
-  }
-
-  start(): void {
-    this.running = true;
-    console.log(\`[Sidecar] Started for \${this.config.serviceName}\`);
-  }
-
-  stop(): void {
-    this.running = false;
-    console.log(\`[Sidecar] Stopped\`);
-  }
-
-  getProxyMetrics(serviceName: string) {
-    return this.proxies.get(serviceName)?.getMetrics();
-  }
+export interface ProxyResponse {
+  statusCode: number;
+  body: unknown;
+  headers: Record<string, string>;
 }
