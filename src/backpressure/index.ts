@@ -1,4 +1,4 @@
 export * from './types';
-export * from './backpressure';
+export * from './controller';
+export * from './strategies';
 export * from './buffer';
-export * from './throttle';
