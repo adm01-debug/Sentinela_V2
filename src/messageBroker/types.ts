@@ -1,27 +1,3 @@
-export interface BrokerConfig {
-  name: string;
-  persistence: boolean;
-  maxQueueSize: number;
-}
-
-export interface BrokerMessage {
-  id: string;
-  topic: string;
-  payload: unknown;
-  headers: Record<string, string>;
-  timestamp: Date;
-  ttl?: number;
-}
-
-export interface PublishOptions {
-  persistent?: boolean;
-  priority?: number;
-  ttl?: number;
-  headers?: Record<string, string>;
-}
-
-export interface SubscribeOptions {
-  autoAck?: boolean;
-  prefetch?: number;
-  exclusive?: boolean;
-}
+export interface BrokerConfig { name: string; maxTopics: number; maxSubscribers: number; messageRetention: number; }
+export interface TopicConfig { name: string; partitions: number; retentionMs: number; }
+export interface PublishResult { messageId: string; topic: string; partition: number; offset: number; }
