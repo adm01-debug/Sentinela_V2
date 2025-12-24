@@ -7,7 +7,7 @@ export class RingBuffer<T> {
   constructor(private capacity: number) { this.buffer = new Array(capacity); }
   
   push(item: T): boolean {
-    if (this.count === this.capacity) return false;
+    if (this.count >= this.capacity) return false;
     this.buffer[this.tail] = item;
     this.tail = (this.tail + 1) % this.capacity;
     this.count++;
@@ -23,8 +23,9 @@ export class RingBuffer<T> {
     return item;
   }
   
-  peek(): T | undefined { return this.count === 0 ? undefined : this.buffer[this.head]; }
+  peek(): T | undefined { return this.count > 0 ? this.buffer[this.head] : undefined; }
   size(): number { return this.count; }
+  isFull(): boolean { return this.count >= this.capacity; }
   isEmpty(): boolean { return this.count === 0; }
-  isFull(): boolean { return this.count === this.capacity; }
+  clear(): void { this.buffer = new Array(this.capacity); this.head = 0; this.tail = 0; this.count = 0; }
 }
