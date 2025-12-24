@@ -1,0 +1,4 @@
+import { riskAssessment, Risk, RiskLevel } from './riskAssessment';
+import { riskMitigation, MitigationPlan } from './riskMitigation';
+export interface RiskReport { generatedAt: Date; totalRisks: number; byLevel: Record<RiskLevel, number>; mitigationStatus: { planned: number; inProgress: number; completed: number }; topRisks: Risk[]; }
+export function generateRiskReport(): RiskReport { const risks = riskAssessment.getRisks(); const plans = riskMitigation.getPlans(); const byLevel: Record<RiskLevel, number> = { negligible: 0, low: 0, medium: 0, high: 0, critical: 0 }; risks.forEach(r => byLevel[r.level]++); return { generatedAt: new Date(), totalRisks: risks.length, byLevel, mitigationStatus: { planned: plans.filter(p => p.status === 'planned').length, inProgress: plans.filter(p => p.status === 'in_progress').length, completed: plans.filter(p => p.status === 'completed').length }, topRisks: risks.filter(r => ['high', 'critical'].includes(r.level)).slice(0, 10) }; }
