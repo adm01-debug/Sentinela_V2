@@ -1,34 +1,32 @@
-import { ServiceDefinition, HealthCheckConfig } from './types';
+import { ServiceHealth } from './types';
+import { ServiceRegistry, RegisteredService } from './registry';
 
 export class HealthChecker {
-  private timers: Map<string, NodeJS.Timeout> = new Map();
-  private status: Map<string, HealthStatus> = new Map();
+  constructor(private registry: ServiceRegistry) {}
   
-  startChecking(service: ServiceDefinition, onStatusChange: (healthy: boolean) => void): void {
-    const check = async () => {
-      const healthy = await this.performCheck(service.healthCheck);
-      const prev = this.status.get(service.name);
-      this.status.set(service.name, { healthy, lastCheck: new Date(), consecutiveFailures: healthy ? 0 : (prev?.consecutiveFailures ?? 0) + 1 });
-      if (prev?.healthy !== healthy) onStatusChange(healthy);
-    };
-    check();
-    this.timers.set(service.name, setInterval(check, service.healthCheck.interval));
+  async checkAll(): Promise<Map<string, ServiceHealth>> {
+    const results = new Map<string, ServiceHealth>();
+    for (const service of this.registry.getAll()) {
+      const health = await this.check(service);
+      this.registry.updateHealth(service.id, health);
+      results.set(service.id, health);
+    }
+    return results;
   }
   
-  stopChecking(serviceName: string): void {
-    const timer = this.timers.get(serviceName);
-    if (timer) { clearInterval(timer); this.timers.delete(serviceName); }
-  }
-  
-  private async performCheck(config: HealthCheckConfig): Promise<boolean> {
+  async check(service: RegisteredService): Promise<ServiceHealth> {
+    const start = Date.now();
     try {
-      const controller = new AbortController();
-      setTimeout(() => controller.abort(), config.timeout);
-      return true;
-    } catch { return false; }
+      const endpoint = service.definition.endpoints[0];
+      const url = endpoint.protocol + '://' + endpoint.host + ':' + endpoint.port + '/health';
+      await fetch(url, { signal: AbortSignal.timeout(5000) });
+      return { status: 'healthy', lastCheck: new Date(), latency: Date.now() - start };
+    } catch {
+      return { status: 'unhealthy', lastCheck: new Date(), latency: Date.now() - start };
+    }
   }
   
-  getStatus(serviceName: string): HealthStatus | undefined { return this.status.get(serviceName); }
+  startPeriodicCheck(intervalMs: number = 30000): NodeJS.Timeout {
+    return setInterval(() => this.checkAll(), intervalMs);
+  }
 }
-
-interface HealthStatus { healthy: boolean; lastCheck: Date; consecutiveFailures: number; }
