@@ -1,26 +1,24 @@
 export class QueryHints {
-  private hints: Map<string, string> = new Map();
+  private hints: Map<string, string[]> = new Map();
   
-  forceIndex(indexName: string): this { this.hints.set('FORCE INDEX', indexName); return this; }
-  useIndex(indexName: string): this { this.hints.set('USE INDEX', indexName); return this; }
-  ignoreIndex(indexName: string): this { this.hints.set('IGNORE INDEX', indexName); return this; }
-  noCache(): this { this.hints.set('SQL_NO_CACHE', ''); return this; }
-  straightJoin(): this { this.hints.set('STRAIGHT_JOIN', ''); return this; }
+  forceIndex(table: string, index: string): this { this.addHint(table, 'FORCE INDEX(' + index + ')'); return this; }
+  useIndex(table: string, index: string): this { this.addHint(table, 'USE INDEX(' + index + ')'); return this; }
+  ignoreIndex(table: string, index: string): this { this.addHint(table, 'IGNORE INDEX(' + index + ')'); return this; }
   
-  apply(query: string): string {
-    let result = query;
-    this.hints.forEach((value, key) => {
-      if (value) result = result.replace(/FROM/i, key + '(' + value + ') FROM');
-      else result = result.replace(/SELECT/i, 'SELECT ' + key);
+  private addHint(table: string, hint: string): void {
+    const existing = this.hints.get(table) ?? [];
+    existing.push(hint);
+    this.hints.set(table, existing);
+  }
+  
+  apply(sql: string): string {
+    let result = sql;
+    this.hints.forEach((hints, table) => {
+      const tableRegex = new RegExp('FROM\\s+' + table + '(\\s|$)', 'gi');
+      result = result.replace(tableRegex, 'FROM ' + table + ' ' + hints.join(' ') + ' ');
     });
     return result;
   }
   
-  toString(): string {
-    return Array.from(this.hints.entries()).map(([k, v]) => v ? k + '(' + v + ')' : k).join(' ');
-  }
-}
-
-export class HintBuilder {
-  static forQuery(query: string): QueryHints { return new QueryHints(); }
+  clear(): void { this.hints.clear(); }
 }
