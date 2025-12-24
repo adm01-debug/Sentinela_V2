@@ -1,37 +1,25 @@
-import { KafkaConfig } from './types';
+import { KafkaConfig, TopicConfig } from './types';
 
 export class KafkaAdmin {
   constructor(private config: KafkaConfig) {}
   
   async createTopic(topic: TopicConfig): Promise<void> {
-    console.log('Creating topic', topic.name);
+    console.log('Creating topic:', topic.name, 'partitions:', topic.partitions);
   }
   
-  async deleteTopic(name: string): Promise<void> {
-    console.log('Deleting topic', name);
+  async deleteTopic(name: string): Promise<void> { console.log('Deleting topic:', name); }
+  
+  async listTopics(): Promise<string[]> { return ['topic1', 'topic2']; }
+  
+  async describeTopic(name: string): Promise<TopicDescription> {
+    return { name, partitions: [{ id: 0, leader: 1, replicas: [1], isr: [1] }] };
   }
   
-  async listTopics(): Promise<string[]> { return []; }
-  
-  async describeTopics(topics: string[]): Promise<TopicDescription[]> {
-    return topics.map(name => ({ name, partitions: 3, replicationFactor: 1, configs: {} }));
-  }
-  
-  async createPartitions(topic: string, count: number): Promise<void> {
-    console.log('Creating', count, 'partitions for', topic);
+  async getConsumerGroupOffsets(groupId: string): Promise<GroupOffsets> {
+    return { groupId, offsets: [] };
   }
 }
 
-export interface TopicConfig {
-  name: string;
-  partitions: number;
-  replicationFactor: number;
-  configs?: Record<string, string>;
-}
-
-export interface TopicDescription {
-  name: string;
-  partitions: number;
-  replicationFactor: number;
-  configs: Record<string, string>;
-}
+export interface TopicDescription { name: string; partitions: PartitionInfo[]; }
+export interface PartitionInfo { id: number; leader: number; replicas: number[]; isr: number[]; }
+export interface GroupOffsets { groupId: string; offsets: { topic: string; partition: number; offset: string }[]; }
