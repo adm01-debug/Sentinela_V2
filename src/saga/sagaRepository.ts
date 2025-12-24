@@ -1,55 +1,143 @@
-// Saga Repository - Persistence
-import { SagaState, SagaStatus } from "./sagaOrchestrator";
+// Saga Repository Implementation
+import { Saga, SagaState } from './types';
 
-export interface SagaRepository<TContext = Record<string, unknown>> {
-  save(state: SagaState<TContext>): Promise<void>;
-  findById(id: string): Promise<SagaState<TContext> | null>;
-  findByStatus(status: SagaStatus): Promise<SagaState<TContext>[]>;
-  findPending(): Promise<SagaState<TContext>[]>;
-  update(state: SagaState<TContext>): Promise<void>;
-  delete(id: string): Promise<void>;
+export interface SagaRepository {
+  save(saga: Saga): Promise<void>;
+  findById(sagaId: string): Promise<Saga | null>;
+  findByCorrelationId(correlationId: string): Promise<Saga[]>;
+  findByState(state: SagaState): Promise<Saga[]>;
+  findPending(): Promise<Saga[]>;
+  delete(sagaId: string): Promise<void>;
 }
 
-export class InMemorySagaRepository<TContext extends Record<string, unknown>> implements SagaRepository<TContext> {
-  private sagas: Map<string, SagaState<TContext>> = new Map();
+export class InMemorySagaRepository implements SagaRepository {
+  private sagas: Map<string, Saga> = new Map();
 
-  async save(state: SagaState<TContext>): Promise<void> {
-    this.sagas.set(state.id, { ...state });
+  async save(saga: Saga): Promise<void> {
+    this.sagas.set(saga.sagaId, { ...saga });
   }
 
-  async findById(id: string): Promise<SagaState<TContext> | null> {
-    return this.sagas.get(id) || null;
+  async findById(sagaId: string): Promise<Saga | null> {
+    const saga = this.sagas.get(sagaId);
+    return saga ? { ...saga } : null;
   }
 
-  async findByStatus(status: SagaStatus): Promise<SagaState<TContext>[]> {
-    return Array.from(this.sagas.values()).filter(s => s.status === status);
+  async findByCorrelationId(correlationId: string): Promise<Saga[]> {
+    return Array.from(this.sagas.values())
+      .filter(s => s.metadata.correlationId === correlationId);
   }
 
-  async findPending(): Promise<SagaState<TContext>[]> {
-    return this.findByStatus("pending");
+  async findByState(state: SagaState): Promise<Saga[]> {
+    return Array.from(this.sagas.values())
+      .filter(s => s.state === state);
   }
 
-  async update(state: SagaState<TContext>): Promise<void> {
-    if (!this.sagas.has(state.id)) throw new Error(`Saga ${state.id} not found`);
-    this.sagas.set(state.id, { ...state });
+  async findPending(): Promise<Saga[]> {
+    return Array.from(this.sagas.values())
+      .filter(s => s.state === SagaState.Running || s.state === SagaState.Compensating);
   }
 
-  async delete(id: string): Promise<void> {
-    this.sagas.delete(id);
+  async delete(sagaId: string): Promise<void> {
+    this.sagas.delete(sagaId);
   }
 }
 
-export class SagaRecoveryService<TContext extends Record<string, unknown>> {
-  constructor(private repository: SagaRepository<TContext>) {}
+export class SagaRecoveryService {
+  private repository: SagaRepository;
+  private checkIntervalMs: number;
+  private timeoutMs: number;
+  private timer?: NodeJS.Timeout;
 
-  async recoverStuckSagas(maxAge: number = 3600000): Promise<SagaState<TContext>[]> {
-    const running = await this.repository.findByStatus("running");
-    const stuck = running.filter(s => Date.now() - s.startedAt.getTime() > maxAge);
-    for (const saga of stuck) {
-      saga.status = "failed";
-      saga.error = "Saga recovery: marked as failed due to timeout";
-      await this.repository.update(saga);
+  constructor(repository: SagaRepository, checkIntervalMs: number = 60000, timeoutMs: number = 300000) {
+    this.repository = repository;
+    this.checkIntervalMs = checkIntervalMs;
+    this.timeoutMs = timeoutMs;
+  }
+
+  start(): void {
+    this.timer = setInterval(() => this.checkAndRecover(), this.checkIntervalMs);
+  }
+
+  stop(): void {
+    if (this.timer) {
+      clearInterval(this.timer);
     }
-    return stuck;
   }
+
+  async checkAndRecover(): Promise<RecoveryReport> {
+    const pendingSagas = await this.repository.findPending();
+    const report: RecoveryReport = {
+      checked: pendingSagas.length,
+      recovered: 0,
+      failed: 0,
+      timedOut: 0
+    };
+
+    for (const saga of pendingSagas) {
+      const age = Date.now() - new Date(saga.startedAt).getTime();
+      
+      if (age > this.timeoutMs) {
+        report.timedOut++;
+        console.warn('Saga timed out:', saga.sagaId, 'Type:', saga.sagaType);
+      }
+    }
+
+    return report;
+  }
+}
+
+export interface RecoveryReport {
+  checked: number;
+  recovered: number;
+  failed: number;
+  timedOut: number;
+}
+
+export class SagaQueryService {
+  private repository: SagaRepository;
+
+  constructor(repository: SagaRepository) {
+    this.repository = repository;
+  }
+
+  async getSagaStatus(sagaId: string): Promise<SagaStatusDTO | null> {
+    const saga = await this.repository.findById(sagaId);
+    if (!saga) return null;
+
+    return {
+      sagaId: saga.sagaId,
+      sagaType: saga.sagaType,
+      state: saga.state,
+      progress: this.calculateProgress(saga),
+      currentStep: saga.steps[saga.currentStep - 1]?.stepName ?? 'Not started',
+      startedAt: saga.startedAt,
+      completedAt: saga.completedAt,
+      duration: saga.completedAt 
+        ? new Date(saga.completedAt).getTime() - new Date(saga.startedAt).getTime()
+        : Date.now() - new Date(saga.startedAt).getTime()
+    };
+  }
+
+  private calculateProgress(saga: Saga): number {
+    if (saga.state === SagaState.Completed) return 100;
+    if (saga.steps.length === 0) return 0;
+    return Math.round((saga.currentStep / saga.steps.length) * 100);
+  }
+
+  async getSagasByUser(userId: string): Promise<SagaStatusDTO[]> {
+    const allSagas = await this.repository.findByState(SagaState.Running);
+    const userSagas = allSagas.filter(s => s.metadata.userId === userId);
+    return Promise.all(userSagas.map(s => this.getSagaStatus(s.sagaId) as Promise<SagaStatusDTO>));
+  }
+}
+
+export interface SagaStatusDTO {
+  sagaId: string;
+  sagaType: string;
+  state: SagaState;
+  progress: number;
+  currentStep: string;
+  startedAt: Date;
+  completedAt?: Date;
+  duration: number;
 }
