@@ -1,27 +1,31 @@
 export interface CompositionConfig {
-  name: string;
-  sources: DataSource[];
-  transforms: Transform[];
-  caching?: CacheConfig;
+  services: ServiceConfig[];
+  timeout: number;
+  cacheConfig?: CacheConfig;
 }
 
-export interface DataSource {
+export interface ServiceConfig {
   name: string;
-  type: 'rest' | 'graphql' | 'grpc';
   endpoint: string;
-  headers?: Record<string, string>;
+  required: boolean;
+  transform?: (data: unknown) => unknown;
 }
 
-export interface Transform {
-  type: 'merge' | 'filter' | 'map' | 'reduce';
-  config: Record<string, unknown>;
+export interface CacheConfig {
+  enabled: boolean;
+  ttl: number;
+  key: string;
 }
-
-export interface CacheConfig { enabled: boolean; ttlMs: number; }
 
 export interface CompositionResult<T = unknown> {
   data: T;
-  sources: string[];
-  timing: Record<string, number>;
-  cached: boolean;
+  sources: SourceResult[];
+  duration: number;
+}
+
+export interface SourceResult {
+  service: string;
+  success: boolean;
+  duration: number;
+  error?: string;
 }
