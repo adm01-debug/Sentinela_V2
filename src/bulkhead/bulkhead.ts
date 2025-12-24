@@ -1,49 +1,51 @@
-import { BulkheadConfig, BulkheadMetrics } from './types';
+import { BulkheadConfig, BulkheadStats } from './types';
 
 export class Bulkhead {
-  private activeCount: number = 0;
-  private queue: Array<{ resolve: () => void; reject: (e: Error) => void; timestamp: number }> = [];
-  private metrics: BulkheadMetrics = { activeCount: 0, queuedCount: 0, completedCount: 0, rejectedCount: 0, averageWaitTime: 0 };
+  private active: number = 0;
+  private waiting: (() => void)[] = [];
+  private totalExecutions: number = 0;
+  private rejections: number = 0;
   
   constructor(private config: BulkheadConfig) {}
   
   async execute<T>(fn: () => Promise<T>): Promise<T> {
-    await this.acquire();
-    try { const result = await fn(); this.metrics.completedCount++; return result; }
-    finally { this.release(); }
+    if (this.active >= this.config.maxConcurrent) {
+      if (this.waiting.length >= this.config.maxWait) {
+        this.rejections++;
+        throw new Error('Bulkhead ' + this.config.name + ' full');
+      }
+      await this.waitForSlot();
+    }
+    this.active++;
+    this.totalExecutions++;
+    try {
+      return await Promise.race([
+        fn(),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Timeout')), this.config.timeout))
+      ]);
+    } finally {
+      this.active--;
+      this.releaseSlot();
+    }
   }
   
-  private acquire(): Promise<void> {
-    if (this.activeCount < this.config.maxConcurrent) {
-      this.activeCount++; this.metrics.activeCount = this.activeCount;
-      return Promise.resolve();
-    }
-    if (this.queue.length >= this.config.maxWait) {
-      this.metrics.rejectedCount++;
-      return Promise.reject(new Error('Bulkhead queue full'));
-    }
-    return new Promise((resolve, reject) => {
-      const timestamp = Date.now();
-      this.queue.push({ resolve, reject, timestamp });
-      this.metrics.queuedCount = this.queue.length;
-      setTimeout(() => {
-        const idx = this.queue.findIndex(q => q.resolve === resolve);
-        if (idx !== -1) { this.queue.splice(idx, 1); reject(new Error('Bulkhead timeout')); }
-      }, this.config.timeout);
-    });
+  private waitForSlot(): Promise<void> {
+    return new Promise(resolve => this.waiting.push(resolve));
   }
   
-  private release(): void {
-    this.activeCount--;
-    if (this.queue.length > 0) {
-      const next = this.queue.shift()!;
-      this.activeCount++;
-      this.metrics.averageWaitTime = (this.metrics.averageWaitTime + (Date.now() - next.timestamp)) / 2;
-      next.resolve();
-    }
-    this.metrics.activeCount = this.activeCount;
-    this.metrics.queuedCount = this.queue.length;
+  private releaseSlot(): void {
+    const next = this.waiting.shift();
+    if (next) next();
   }
   
-  getMetrics(): BulkheadMetrics { return { ...this.metrics }; }
+  getStats(): BulkheadStats {
+    return {
+      name: this.config.name,
+      activeCount: this.active,
+      waitingCount: this.waiting.length,
+      availableSlots: this.config.maxConcurrent - this.active,
+      totalExecutions: this.totalExecutions,
+      rejections: this.rejections
+    };
+  }
 }
