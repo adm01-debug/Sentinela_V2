@@ -1,61 +1,48 @@
-// Service Mesh Proxy
-export interface ProxyConfig {
-  upstream: string;
-  timeout: number;
-  retries: number;
-  circuitBreaker: { threshold: number; timeout: number };
-}
+import { TrafficConfig } from './types';
 
-export interface ProxyMetrics {
-  requestCount: number;
-  successCount: number;
-  failureCount: number;
-  latencyMs: number[];
-}
-
-export class ServiceProxy {
-  private metrics: ProxyMetrics = { requestCount: 0, successCount: 0, failureCount: 0, latencyMs: [] };
-  private circuitOpen = false;
-  private failures = 0;
-
-  constructor(private config: ProxyConfig) {}
-
-  async forward(request: Request): Promise<Response> {
-    if (this.circuitOpen) throw new Error("Circuit breaker open");
-    
-    this.metrics.requestCount++;
-    const start = Date.now();
-    
-    try {
-      const response = await this.executeWithRetry(request);
-      this.metrics.successCount++;
-      this.metrics.latencyMs.push(Date.now() - start);
-      this.failures = 0;
-      return response;
-    } catch (error) {
-      this.metrics.failureCount++;
-      this.failures++;
-      if (this.failures >= this.config.circuitBreaker.threshold) {
-        this.circuitOpen = true;
-        setTimeout(() => { this.circuitOpen = false; this.failures = 0; }, this.config.circuitBreaker.timeout);
-      }
-      throw error;
-    }
-  }
-
-  private async executeWithRetry(request: Request): Promise<Response> {
-    let lastError: Error | null = null;
+export class TrafficProxy {
+  constructor(private config: TrafficConfig) {}
+  
+  async forward(target: string, request: unknown): Promise<unknown> {
+    let lastError: Error | undefined;
     for (let i = 0; i <= this.config.retries; i++) {
       try {
-        const controller = new AbortController();
-        setTimeout(() => controller.abort(), this.config.timeout);
-        return await fetch(this.config.upstream + new URL(request.url).pathname, {
-          method: request.method, headers: request.headers, body: request.body, signal: controller.signal
-        });
+        return await this.makeRequest(target, request);
       } catch (e) { lastError = e as Error; }
     }
     throw lastError;
   }
+  
+  private async makeRequest(target: string, request: unknown): Promise<unknown> {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('Timeout')), this.config.timeout);
+      Promise.resolve({ target, request }).then(r => { clearTimeout(timer); resolve(r); });
+    });
+  }
+}
 
-  getMetrics(): ProxyMetrics { return { ...this.metrics }; }
+export class CircuitBreaker {
+  private failures: number = 0;
+  private lastFailure?: Date;
+  private state: 'closed' | 'open' | 'half-open' = 'closed';
+  
+  constructor(private threshold: number, private timeoutMs: number) {}
+  
+  async execute<T>(fn: () => Promise<T>): Promise<T> {
+    if (this.state === 'open') {
+      if (this.lastFailure && Date.now() - this.lastFailure.getTime() > this.timeoutMs) {
+        this.state = 'half-open';
+      } else { throw new Error('Circuit breaker is open'); }
+    }
+    try {
+      const result = await fn();
+      if (this.state === 'half-open') { this.state = 'closed'; this.failures = 0; }
+      return result;
+    } catch (e) {
+      this.failures++;
+      this.lastFailure = new Date();
+      if (this.failures >= this.threshold) this.state = 'open';
+      throw e;
+    }
+  }
 }
