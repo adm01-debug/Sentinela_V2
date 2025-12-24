@@ -1,8 +1,8 @@
 export class Semaphore {
   private permits: number;
-  private waiting: Array<() => void> = [];
+  private waiting: (() => void)[] = [];
   
-  constructor(permits: number) { this.permits = permits; }
+  constructor(private maxPermits: number) { this.permits = maxPermits; }
   
   async acquire(): Promise<void> {
     if (this.permits > 0) { this.permits--; return; }
@@ -10,8 +10,9 @@ export class Semaphore {
   }
   
   release(): void {
-    if (this.waiting.length > 0) { this.waiting.shift()!(); }
-    else { this.permits++; }
+    const next = this.waiting.shift();
+    if (next) next();
+    else this.permits = Math.min(this.permits + 1, this.maxPermits);
   }
   
   async withPermit<T>(fn: () => Promise<T>): Promise<T> {
@@ -21,5 +22,5 @@ export class Semaphore {
   }
   
   availablePermits(): number { return this.permits; }
-  queueLength(): number { return this.waiting.length; }
+  waitingCount(): number { return this.waiting.length; }
 }
