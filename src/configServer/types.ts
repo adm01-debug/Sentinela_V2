@@ -1,22 +1,26 @@
-export interface ConfigEntry {
+export interface ConfigServerConfig {
+  port: number;
+  sources: ConfigSource[];
+  refreshInterval: number;
+  encryption: EncryptionConfig;
+}
+
+export interface ConfigSource {
+  name: string;
+  type: 'file' | 'env' | 'vault' | 'etcd';
+  priority: number;
+}
+
+export interface EncryptionConfig {
+  enabled: boolean;
+  algorithm: string;
+  keyPath?: string;
+}
+
+export interface ConfigValue {
   key: string;
   value: unknown;
+  source: string;
   version: number;
-  environment: string;
-  application: string;
-  createdAt: Date;
   updatedAt: Date;
-}
-
-export interface ConfigQuery {
-  application?: string;
-  environment?: string;
-  keys?: string[];
-}
-
-export interface ConfigChange {
-  key: string;
-  oldValue: unknown;
-  newValue: unknown;
-  timestamp: Date;
 }
