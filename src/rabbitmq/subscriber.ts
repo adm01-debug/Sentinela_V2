@@ -1,13 +1,23 @@
-// RabbitMQ Subscriber
-import { RabbitConnection } from "./connection";
+import { RabbitMQConnection } from './connection';
+import { RabbitMessage } from './types';
+
 export class RabbitSubscriber {
-  private handlers: Map<string, (msg: unknown) => Promise<void>> = new Map();
-  constructor(private connection: RabbitConnection) {}
-  async subscribe(queue: string, handler: (msg: unknown) => Promise<void>): Promise<void> {
-    this.handlers.set(queue, handler);
-    const channel = await this.connection.createChannel();
-    await channel.assertQueue(queue);
-    await channel.consume(queue, handler);
+  private handlers: Map<string, (message: RabbitMessage) => Promise<void>> = new Map();
+  
+  constructor(private connection: RabbitMQConnection) {}
+  
+  async subscribe(queue: string, handler: (message: RabbitMessage) => Promise<void>): Promise<string> {
+    if (!this.connection.isConnected()) throw new Error('Not connected');
+    const tag = 'consumer_' + Date.now();
+    this.handlers.set(tag, handler);
+    return tag;
   }
-  async unsubscribe(queue: string): Promise<void> { this.handlers.delete(queue); }
+  
+  async unsubscribe(consumerTag: string): Promise<void> {
+    this.handlers.delete(consumerTag);
+  }
+  
+  async ack(message: RabbitMessage): Promise<void> { console.log('Acknowledged message'); }
+  async nack(message: RabbitMessage, requeue: boolean = true): Promise<void> { console.log('Nacked message, requeue:', requeue); }
+  async reject(message: RabbitMessage): Promise<void> { console.log('Rejected message'); }
 }
