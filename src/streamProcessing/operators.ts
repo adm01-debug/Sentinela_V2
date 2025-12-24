@@ -1,55 +1,53 @@
-import { StreamRecord } from './types';
+import { StreamEvent } from './types';
 
-export class KeyBy<T, K> {
-  constructor(private keyExtractor: (value: T) => K) {}
-  apply(record: StreamRecord<T>): StreamRecord<T> & { extractedKey: K } {
-    return { ...record, extractedKey: this.keyExtractor(record.value) };
+export class StreamOperators {
+  static keyBy<T, K>(fn: (value: T) => K): (event: StreamEvent<T>) => StreamEvent<T> & { key: K } {
+    return event => ({ ...event, key: fn(event.value) });
+  }
+  
+  static groupBy<T, K>(fn: (value: T) => K): GroupedStream<T, K> {
+    return new GroupedStream(fn);
+  }
+  
+  static reduce<T, U>(initial: U, fn: (acc: U, value: T) => U): Reducer<T, U> {
+    return new Reducer(initial, fn);
+  }
+  
+  static distinct<T>(keyFn?: (value: T) => unknown): DistinctOperator<T> {
+    return new DistinctOperator(keyFn);
   }
 }
 
-export class Reduce<T> {
-  private state: Map<string, T> = new Map();
-  constructor(private reducer: (acc: T, value: T) => T) {}
+export class GroupedStream<T, K> {
+  private groups: Map<K, T[]> = new Map();
+  constructor(private keyFn: (value: T) => K) {}
   
-  apply(record: StreamRecord<T>): StreamRecord<T> {
-    const current = this.state.get(record.key);
-    const newValue = current ? this.reducer(current, record.value) : record.value;
-    this.state.set(record.key, newValue);
-    return { ...record, value: newValue };
+  add(value: T): void {
+    const key = this.keyFn(value);
+    const group = this.groups.get(key) ?? [];
+    group.push(value);
+    this.groups.set(key, group);
   }
+  
+  getGroups(): Map<K, T[]> { return new Map(this.groups); }
 }
 
-export class Aggregate<T, A> {
-  private state: Map<string, A> = new Map();
-  constructor(private initializer: () => A, private aggregator: (acc: A, value: T) => A) {}
-  
-  apply(record: StreamRecord<T>): StreamRecord<A> {
-    const current = this.state.get(record.key) ?? this.initializer();
-    const newValue = this.aggregator(current, record.value);
-    this.state.set(record.key, newValue);
-    return { ...record, value: newValue };
-  }
+export class Reducer<T, U> {
+  private state: U;
+  constructor(initial: U, private fn: (acc: U, value: T) => U) { this.state = initial; }
+  add(value: T): U { this.state = this.fn(this.state, value); return this.state; }
+  getState(): U { return this.state; }
+  reset(initial: U): void { this.state = initial; }
 }
 
-export class Join<L, R, O> {
-  private leftState: Map<string, L[]> = new Map();
-  private rightState: Map<string, R[]> = new Map();
+export class DistinctOperator<T> {
+  private seen: Set<unknown> = new Set();
+  constructor(private keyFn?: (value: T) => unknown) {}
   
-  constructor(private joiner: (left: L, right: R) => O) {}
-  
-  addLeft(record: StreamRecord<L>): StreamRecord<O>[] {
-    const lefts = this.leftState.get(record.key) ?? [];
-    lefts.push(record.value);
-    this.leftState.set(record.key, lefts);
-    const rights = this.rightState.get(record.key) ?? [];
-    return rights.map(r => ({ ...record, value: this.joiner(record.value, r) }));
-  }
-  
-  addRight(record: StreamRecord<R>): StreamRecord<O>[] {
-    const rights = this.rightState.get(record.key) ?? [];
-    rights.push(record.value);
-    this.rightState.set(record.key, rights);
-    const lefts = this.leftState.get(record.key) ?? [];
-    return lefts.map(l => ({ ...record, value: this.joiner(l, record.value) }));
+  process(value: T): T | null {
+    const key = this.keyFn ? this.keyFn(value) : value;
+    if (this.seen.has(key)) return null;
+    this.seen.add(key);
+    return value;
   }
 }
