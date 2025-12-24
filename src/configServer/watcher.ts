@@ -1,22 +1,30 @@
-import { ConfigChange } from './types';
+import { ConfigEntry } from './types';
+import { ConfigClient } from './client';
 
 export class ConfigWatcher {
-  private watchers: Map<string, Set<(change: ConfigChange) => void>> = new Map();
+  private callbacks: Map<string, Set<(value: unknown) => void>> = new Map();
+  private pollingInterval?: NodeJS.Timeout;
   
-  watch(key: string, callback: (change: ConfigChange) => void): () => void {
-    const callbacks = this.watchers.get(key) ?? new Set();
+  constructor(private client: ConfigClient) {}
+  
+  watch(key: string, callback: (value: unknown) => void): () => void {
+    const callbacks = this.callbacks.get(key) ?? new Set();
     callbacks.add(callback);
-    this.watchers.set(key, callbacks);
+    this.callbacks.set(key, callbacks);
     return () => callbacks.delete(callback);
   }
   
-  notify(change: ConfigChange): void {
-    const callbacks = this.watchers.get(change.key) ?? new Set();
-    const allCallbacks = this.watchers.get('*') ?? new Set();
-    [...callbacks, ...allCallbacks].forEach(cb => cb(change));
+  startPolling(intervalMs: number = 30000): void {
+    this.pollingInterval = setInterval(async () => {
+      await this.client.refresh();
+      for (const [key, callbacks] of this.callbacks) {
+        const value = await this.client.get(key);
+        callbacks.forEach(cb => cb(value));
+      }
+    }, intervalMs);
   }
   
-  watchAll(callback: (change: ConfigChange) => void): () => void {
-    return this.watch('*', callback);
+  stopPolling(): void {
+    if (this.pollingInterval) clearInterval(this.pollingInterval);
   }
 }
