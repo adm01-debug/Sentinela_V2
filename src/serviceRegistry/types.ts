@@ -1,21 +1,21 @@
 export interface ServiceDefinition {
   name: string;
   version: string;
-  endpoints: EndpointDefinition[];
+  endpoints: ServiceEndpoint[];
   metadata: Record<string, string>;
-  healthCheck: HealthCheckConfig;
+  tags: string[];
 }
 
-export interface EndpointDefinition {
+export interface ServiceEndpoint {
+  protocol: 'http' | 'https' | 'grpc';
   host: string;
   port: number;
-  protocol: 'http' | 'https' | 'grpc';
-  weight: number;
+  path?: string;
 }
 
-export interface HealthCheckConfig {
-  endpoint: string;
-  interval: number;
-  timeout: number;
-  unhealthyThreshold: number;
+export interface ServiceHealth {
+  status: 'healthy' | 'degraded' | 'unhealthy';
+  lastCheck: Date;
+  latency: number;
+  details?: Record<string, unknown>;
 }
