@@ -1,56 +1,57 @@
-import { Migration, MigrationStatus, MigrationConfig } from './types';
+import { Migration, MigrationRecord, MigrationConfig } from './types';
 
 export class Migrator {
   private migrations: Migration[] = [];
-  private executed: MigrationStatus[] = [];
-  private currentBatch: number = 0;
+  private executed: MigrationRecord[] = [];
+  private batch: number = 0;
   
   constructor(private config: MigrationConfig) {}
   
-  register(migration: Migration): void {
-    this.migrations.push(migration);
-    this.migrations.sort((a, b) => a.version.localeCompare(b.version));
-  }
+  register(migration: Migration): void { this.migrations.push(migration); }
   
-  async migrate(): Promise<string[]> {
-    const pending = this.getPendingMigrations();
-    this.currentBatch++;
-    const executed: string[] = [];
+  async migrate(): Promise<MigrationResult> {
+    const pending = this.getPending();
+    this.batch++;
+    const result: MigrationResult = { migrated: [], failed: [] };
+    
     for (const migration of pending) {
-      await migration.up();
-      this.executed.push({ version: migration.version, name: migration.name, executedAt: new Date(), batch: this.currentBatch });
-      executed.push(migration.name);
+      try {
+        await migration.up();
+        this.executed.push({ id: migration.id, name: migration.name, executedAt: new Date(), batch: this.batch });
+        result.migrated.push(migration.name);
+      } catch (e) {
+        result.failed.push({ name: migration.name, error: (e as Error).message });
+        break;
+      }
     }
-    return executed;
+    return result;
   }
   
-  async rollback(steps: number = 1): Promise<string[]> {
-    const toRollback = this.executed.filter(m => m.batch >= this.currentBatch - steps + 1).reverse();
-    const rolledBack: string[] = [];
-    for (const status of toRollback) {
-      const migration = this.migrations.find(m => m.version === status.version);
-      if (migration) { await migration.down(); rolledBack.push(migration.name); }
+  async rollback(): Promise<MigrationResult> {
+    const lastBatch = this.executed.filter(m => m.batch === this.batch);
+    const result: MigrationResult = { migrated: [], failed: [] };
+    
+    for (const record of lastBatch.reverse()) {
+      const migration = this.migrations.find(m => m.id === record.id);
+      if (migration) {
+        try {
+          await migration.down();
+          this.executed = this.executed.filter(e => e.id !== record.id);
+          result.migrated.push(migration.name);
+        } catch (e) {
+          result.failed.push({ name: migration.name, error: (e as Error).message });
+        }
+      }
     }
-    this.executed = this.executed.filter(m => !toRollback.includes(m));
-    return rolledBack;
+    return result;
   }
   
-  async reset(): Promise<string[]> {
-    const all = [...this.executed].reverse();
-    const rolledBack: string[] = [];
-    for (const status of all) {
-      const migration = this.migrations.find(m => m.version === status.version);
-      if (migration) { await migration.down(); rolledBack.push(migration.name); }
-    }
-    this.executed = [];
-    this.currentBatch = 0;
-    return rolledBack;
+  getPending(): Migration[] {
+    const executedIds = new Set(this.executed.map(e => e.id));
+    return this.migrations.filter(m => !executedIds.has(m.id)).sort((a, b) => a.timestamp - b.timestamp);
   }
   
-  getPendingMigrations(): Migration[] {
-    const executedVersions = new Set(this.executed.map(m => m.version));
-    return this.migrations.filter(m => !executedVersions.has(m.version));
-  }
-  
-  getStatus(): MigrationStatus[] { return [...this.executed]; }
+  getExecuted(): MigrationRecord[] { return [...this.executed]; }
 }
+
+export interface MigrationResult { migrated: string[]; failed: { name: string; error: string }[]; }
