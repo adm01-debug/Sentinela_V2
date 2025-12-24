@@ -1,30 +1,28 @@
-import { DatabaseResolver, ResolverContext } from './types';
-import { MultiDatabaseManager } from './manager';
+import { DatabaseConfig } from './types';
 
-export class DatabaseResolverManager {
-  private resolvers: DatabaseResolver[] = [];
+export class ConnectionResolver {
+  private resolvers: Map<string, () => DatabaseConfig> = new Map();
   
-  constructor(private manager: MultiDatabaseManager) {}
+  register(name: string, resolver: () => DatabaseConfig): void { this.resolvers.set(name, resolver); }
   
-  addResolver(resolver: DatabaseResolver): void { this.resolvers.push(resolver); }
-  
-  resolve(context: ResolverContext): string {
-    for (const resolver of this.resolvers) {
-      const result = resolver(context);
-      if (result) return result;
-    }
-    throw new Error('Could not resolve database');
+  resolve(name: string): DatabaseConfig | undefined {
+    const resolver = this.resolvers.get(name);
+    return resolver ? resolver() : undefined;
   }
   
-  getConnection(context: ResolverContext) {
-    const dbName = this.resolve(context);
-    return this.manager.getConnection(dbName);
+  resolveForModel(model: string): DatabaseConfig | undefined {
+    return this.resolve(this.getConnectionName(model));
   }
+  
+  private getConnectionName(model: string): string { return 'default'; }
 }
 
-export const Resolvers = {
-  byTenant: (mapping: Record<string, string>): DatabaseResolver => (ctx) => ctx.tenantId ? mapping[ctx.tenantId] : '',
-  byRegion: (mapping: Record<string, string>): DatabaseResolver => (ctx) => ctx.region ? mapping[ctx.region] : '',
-  byOperation: (readDb: string, writeDb: string): DatabaseResolver => (ctx) => ctx.operation === 'read' ? readDb : writeDb,
-  fallback: (dbName: string): DatabaseResolver => () => dbName,
-};
+export class TenantResolver {
+  private tenantConnections: Map<string, DatabaseConfig> = new Map();
+  
+  setForTenant(tenantId: string, config: DatabaseConfig): void { this.tenantConnections.set(tenantId, config); }
+  getForTenant(tenantId: string): DatabaseConfig | undefined { return this.tenantConnections.get(tenantId); }
+  
+  resolveTenant(): string { return 'default'; }
+  getCurrentConnection(): DatabaseConfig | undefined { return this.getForTenant(this.resolveTenant()); }
+}
