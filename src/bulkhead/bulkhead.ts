@@ -1,63 +1,49 @@
-import { BulkheadConfig, BulkheadStats, BulkheadState } from './types';
+import { BulkheadConfig, BulkheadMetrics } from './types';
 
 export class Bulkhead {
-  private active: number = 0;
-  private waiting: (() => void)[] = [];
-  private rejections: number = 0;
-  private timeouts: number = 0;
+  private activeCount: number = 0;
+  private queue: Array<{ resolve: () => void; reject: (e: Error) => void; timestamp: number }> = [];
+  private metrics: BulkheadMetrics = { activeCount: 0, queuedCount: 0, completedCount: 0, rejectedCount: 0, averageWaitTime: 0 };
   
   constructor(private config: BulkheadConfig) {}
   
   async execute<T>(fn: () => Promise<T>): Promise<T> {
-    if (this.active >= this.config.maxConcurrent) {
-      if (this.waiting.length >= this.config.maxWait) {
-        this.rejections++;
-        throw new Error('Bulkhead full: ' + this.config.name);
-      }
-      await this.wait();
+    await this.acquire();
+    try { const result = await fn(); this.metrics.completedCount++; return result; }
+    finally { this.release(); }
+  }
+  
+  private acquire(): Promise<void> {
+    if (this.activeCount < this.config.maxConcurrent) {
+      this.activeCount++; this.metrics.activeCount = this.activeCount;
+      return Promise.resolve();
     }
-    
-    this.active++;
-    try {
-      return await this.withTimeout(fn);
-    } finally {
-      this.active--;
-      this.releaseOne();
+    if (this.queue.length >= this.config.maxWait) {
+      this.metrics.rejectedCount++;
+      return Promise.reject(new Error('Bulkhead queue full'));
     }
+    return new Promise((resolve, reject) => {
+      const timestamp = Date.now();
+      this.queue.push({ resolve, reject, timestamp });
+      this.metrics.queuedCount = this.queue.length;
+      setTimeout(() => {
+        const idx = this.queue.findIndex(q => q.resolve === resolve);
+        if (idx !== -1) { this.queue.splice(idx, 1); reject(new Error('Bulkhead timeout')); }
+      }, this.config.timeout);
+    });
   }
   
-  private wait(): Promise<void> {
-    return new Promise(resolve => this.waiting.push(resolve));
+  private release(): void {
+    this.activeCount--;
+    if (this.queue.length > 0) {
+      const next = this.queue.shift()!;
+      this.activeCount++;
+      this.metrics.averageWaitTime = (this.metrics.averageWaitTime + (Date.now() - next.timestamp)) / 2;
+      next.resolve();
+    }
+    this.metrics.activeCount = this.activeCount;
+    this.metrics.queuedCount = this.queue.length;
   }
   
-  private releaseOne(): void {
-    const next = this.waiting.shift();
-    if (next) next();
-  }
-  
-  private withTimeout<T>(fn: () => Promise<T>): Promise<T> {
-    return Promise.race([
-      fn(),
-      new Promise<never>((_, reject) => 
-        setTimeout(() => { this.timeouts++; reject(new Error('Timeout')); }, this.config.timeout)
-      )
-    ]);
-  }
-  
-  getStats(): BulkheadStats {
-    return {
-      name: this.config.name,
-      active: this.active,
-      waiting: this.waiting.length,
-      available: this.config.maxConcurrent - this.active,
-      rejections: this.rejections,
-      timeouts: this.timeouts
-    };
-  }
-  
-  getState(): BulkheadState {
-    if (this.active === 0 && this.waiting.length === 0) return BulkheadState.Open;
-    if (this.active >= this.config.maxConcurrent) return BulkheadState.Full;
-    return BulkheadState.Closed;
-  }
+  getMetrics(): BulkheadMetrics { return { ...this.metrics }; }
 }
