@@ -1,51 +1,36 @@
-import { StoredEvent, EventStream, EventMetadata } from './types';
+import { StoredEvent, EventStream } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 export class EventStore {
   private streams: Map<string, StoredEvent[]> = new Map();
-  private allEvents: StoredEvent[] = [];
-  private subscribers: Array<(event: StoredEvent) => void> = [];
+  private globalEvents: StoredEvent[] = [];
+  private subscribers: ((event: StoredEvent) => void)[] = [];
   
-  async append(streamId: string, eventType: string, data: unknown, metadata?: Partial<EventMetadata>, expectedVersion?: number): Promise<StoredEvent> {
+  async append(streamId: string, events: Omit<StoredEvent, 'eventId' | 'version' | 'timestamp'>[], expectedVersion?: number): Promise<void> {
     const stream = this.streams.get(streamId) ?? [];
     if (expectedVersion !== undefined && stream.length !== expectedVersion) {
-      throw new ConcurrencyError(streamId, expectedVersion, stream.length);
+      throw new Error('Concurrency conflict: expected ' + expectedVersion + ', got ' + stream.length);
     }
-    const event: StoredEvent = {
-      eventId: uuidv4(),
-      streamId,
-      eventType,
-      data,
-      metadata: { correlationId: metadata?.correlationId ?? uuidv4(), causationId: metadata?.causationId, userId: metadata?.userId, timestamp: new Date() },
-      version: stream.length + 1,
-      timestamp: new Date()
-    };
-    stream.push(event);
-    this.streams.set(streamId, stream);
-    this.allEvents.push(event);
-    this.subscribers.forEach(s => s(event));
-    return event;
+    const newEvents = events.map((e, i) => ({
+      ...e, eventId: uuidv4(), version: stream.length + i + 1, timestamp: new Date()
+    }));
+    this.streams.set(streamId, [...stream, ...newEvents]);
+    this.globalEvents.push(...newEvents);
+    newEvents.forEach(e => this.subscribers.forEach(s => s(e)));
   }
   
-  async getStream(streamId: string, fromVersion?: number, toVersion?: number): Promise<EventStream> {
-    let events = this.streams.get(streamId) ?? [];
-    if (fromVersion) events = events.filter(e => e.version >= fromVersion);
-    if (toVersion) events = events.filter(e => e.version <= toVersion);
-    return { streamId, events, version: events.length > 0 ? events[events.length - 1].version : 0 };
+  async readStream(streamId: string, fromVersion?: number): Promise<EventStream> {
+    const events = this.streams.get(streamId) ?? [];
+    const filtered = fromVersion ? events.filter(e => e.version > fromVersion) : events;
+    return { streamId, events: filtered, version: events.length };
   }
   
-  async getAllEvents(fromPosition?: number): Promise<StoredEvent[]> {
-    return fromPosition ? this.allEvents.slice(fromPosition) : [...this.allEvents];
+  async readAll(fromPosition?: number): Promise<StoredEvent[]> {
+    return fromPosition ? this.globalEvents.slice(fromPosition) : this.globalEvents;
   }
   
   subscribe(handler: (event: StoredEvent) => void): () => void {
     this.subscribers.push(handler);
-    return () => { const idx = this.subscribers.indexOf(handler); if (idx > -1) this.subscribers.splice(idx, 1); };
-  }
-}
-
-export class ConcurrencyError extends Error {
-  constructor(streamId: string, expected: number, actual: number) {
-    super('Concurrency error for ' + streamId + ': expected ' + expected + ', got ' + actual);
+    return () => { this.subscribers = this.subscribers.filter(s => s !== handler); };
   }
 }
