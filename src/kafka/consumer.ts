@@ -1,27 +1,38 @@
-import { KafkaConfig, ConsumerMessage } from './types';
-
-export type MessageHandler = (message: ConsumerMessage) => Promise<void>;
+import { KafkaConfig, ConsumerConfig, KafkaMessage } from './types';
 
 export class KafkaConsumer {
   private connected: boolean = false;
-  private subscriptions: Map<string, MessageHandler> = new Map();
+  private subscriptions: Set<string> = new Set();
+  private handlers: Map<string, (message: KafkaMessage) => Promise<void>> = new Map();
   
-  constructor(private config: KafkaConfig) {}
+  constructor(private config: KafkaConfig, private consumerConfig: ConsumerConfig) {}
   
-  async connect(): Promise<void> { this.connected = true; console.log('Kafka consumer connected'); }
-  async disconnect(): Promise<void> { this.connected = false; this.subscriptions.clear(); }
+  async connect(): Promise<void> { this.connected = true; }
+  async disconnect(): Promise<void> { this.connected = false; }
   
-  subscribe(topic: string, handler: MessageHandler): void {
-    if (!this.connected) throw new Error('Consumer not connected');
-    this.subscriptions.set(topic, handler);
+  async subscribe(topic: string, handler: (message: KafkaMessage) => Promise<void>): Promise<void> {
+    this.subscriptions.add(topic);
+    this.handlers.set(topic, handler);
   }
   
-  unsubscribe(topic: string): void { this.subscriptions.delete(topic); }
+  async unsubscribe(topic: string): Promise<void> {
+    this.subscriptions.delete(topic);
+    this.handlers.delete(topic);
+  }
   
   async commitOffset(topic: string, partition: number, offset: string): Promise<void> {
-    console.log('Committed offset:', topic, partition, offset);
+    console.log('Committed offset', offset, 'for', topic, partition);
   }
   
-  getSubscriptions(): string[] { return Array.from(this.subscriptions.keys()); }
-  isConnected(): boolean { return this.connected; }
+  getSubscriptions(): string[] { return Array.from(this.subscriptions); }
+}
+
+export class ConsumerGroup {
+  private consumers: KafkaConsumer[] = [];
+  
+  addConsumer(consumer: KafkaConsumer): void { this.consumers.push(consumer); }
+  
+  async rebalance(): Promise<void> {
+    console.log('Rebalancing', this.consumers.length, 'consumers');
+  }
 }
