@@ -1,4 +1,4 @@
 export * from './types';
-export * from './documentStore';
-export * from './keyValueStore';
-export * from './graphStore';
+export * from './document';
+export * from './keyValue';
+export * from './graph';
