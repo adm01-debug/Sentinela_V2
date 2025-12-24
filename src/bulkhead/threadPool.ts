@@ -1,11 +1,35 @@
-// Thread Pool Simulation
 export class ThreadPool {
-  private workers: number = 0; private queue: (() => Promise<void>)[] = [];
-  constructor(private size: number) {}
+  private queue: (() => Promise<void>)[] = [];
+  private running: number = 0;
+  
+  constructor(private maxThreads: number) {}
+  
   async submit<T>(task: () => Promise<T>): Promise<T> {
-    if (this.workers < this.size) { this.workers++; try { return await task(); } finally { this.workers--; this.runNext(); } }
-    return new Promise((resolve, reject) => { this.queue.push(async () => { try { resolve(await task()); } catch (e) { reject(e); } }); });
+    return new Promise((resolve, reject) => {
+      const wrappedTask = async () => {
+        try { resolve(await task()); }
+        catch (e) { reject(e); }
+        finally { this.running--; this.processQueue(); }
+      };
+      
+      if (this.running < this.maxThreads) {
+        this.running++;
+        wrappedTask();
+      } else {
+        this.queue.push(wrappedTask);
+      }
+    });
   }
-  private async runNext() { if (this.queue.length > 0 && this.workers < this.size) { this.workers++; const task = this.queue.shift()!; await task(); this.workers--; this.runNext(); } }
-  getStats() { return { workers: this.workers, queued: this.queue.length }; }
+  
+  private processQueue(): void {
+    while (this.running < this.maxThreads && this.queue.length > 0) {
+      const task = this.queue.shift()!;
+      this.running++;
+      task();
+    }
+  }
+  
+  getStats(): { running: number; queued: number; available: number } {
+    return { running: this.running, queued: this.queue.length, available: this.maxThreads - this.running };
+  }
 }
