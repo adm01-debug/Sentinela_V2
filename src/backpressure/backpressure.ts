@@ -1,18 +1,57 @@
-// Backpressure Handler
-export type BackpressureStrategy = "drop" | "buffer" | "throttle" | "block";
-export interface BackpressureConfig { strategy: BackpressureStrategy; bufferSize: number; throttleMs: number; }
-export class BackpressureHandler<T> {
-  private buffer: T[] = []; private lastProcess = 0;
-  constructor(private config: BackpressureConfig, private processor: (item: T) => Promise<void>) {}
+import { BackpressureConfig, BackpressureStrategy, BackpressureStats } from './types';
+
+export class BackpressureController<T> {
+  private buffer: T[] = [];
+  private stats: BackpressureStats = { pending: 0, processed: 0, dropped: 0, blocked: 0 };
+  private paused: boolean = false;
+  
+  constructor(private config: BackpressureConfig) {}
+  
   async push(item: T): Promise<boolean> {
-    switch (this.config.strategy) {
-      case "drop": if (this.buffer.length >= this.config.bufferSize) return false; break;
-      case "buffer": if (this.buffer.length >= this.config.bufferSize) { await this.flush(); } break;
-      case "throttle": const now = Date.now(); if (now - this.lastProcess < this.config.throttleMs) { await new Promise(r => setTimeout(r, this.config.throttleMs - (now - this.lastProcess))); } break;
-      case "block": while (this.buffer.length >= this.config.bufferSize) { await new Promise(r => setTimeout(r, 10)); } break;
+    this.stats.pending++;
+    
+    if (this.buffer.length >= this.config.highWaterMark) {
+      this.paused = true;
+      switch (this.config.strategy) {
+        case BackpressureStrategy.Drop:
+          this.stats.dropped++;
+          return false;
+        case BackpressureStrategy.Error:
+          throw new Error('Backpressure limit reached');
+        case BackpressureStrategy.Block:
+          this.stats.blocked++;
+          await this.waitForSpace();
+          break;
+        case BackpressureStrategy.Buffer:
+          break;
+      }
     }
-    this.buffer.push(item); return true;
+    
+    this.buffer.push(item);
+    return true;
   }
-  async flush(): Promise<void> { while (this.buffer.length > 0) { await this.processor(this.buffer.shift()!); this.lastProcess = Date.now(); } }
-  getBufferSize(): number { return this.buffer.length; }
+  
+  pull(): T | undefined {
+    const item = this.buffer.shift();
+    if (item) {
+      this.stats.processed++;
+      if (this.buffer.length <= this.config.lowWaterMark) this.paused = false;
+    }
+    return item;
+  }
+  
+  private waitForSpace(): Promise<void> {
+    return new Promise(resolve => {
+      const check = setInterval(() => {
+        if (this.buffer.length < this.config.highWaterMark) {
+          clearInterval(check);
+          resolve();
+        }
+      }, 10);
+    });
+  }
+  
+  isPaused(): boolean { return this.paused; }
+  getStats(): BackpressureStats { return { ...this.stats }; }
+  size(): number { return this.buffer.length; }
 }
