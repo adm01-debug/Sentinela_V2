@@ -1,22 +1,3 @@
-export interface Message {
-  id: string;
-  type: string;
-  payload: unknown;
-  headers: Record<string, string>;
-  timestamp: Date;
-}
-
-export interface Route {
-  name: string;
-  condition: RouteCondition;
-  destination: string;
-  transform?: (message: Message) => Message;
-}
-
-export type RouteCondition = (message: Message) => boolean;
-
-export interface RouterConfig {
-  defaultRoute?: string;
-  errorRoute?: string;
-  routes: Route[];
-}
+export interface Message { id: string; type: string; payload: unknown; headers: Record<string, string>; }
+export interface Route { pattern: string | RegExp; destination: string; transform?: (msg: Message) => Message; }
+export interface RoutingResult { destination: string; message: Message; matched: boolean; }
