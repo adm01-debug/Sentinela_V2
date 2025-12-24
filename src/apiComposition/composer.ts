@@ -1,47 +1,30 @@
-import { CompositionConfig, CompositionResult, DataSource } from './types';
+import { CompositionConfig, CompositionResult, SourceResult } from './types';
 
 export class APIComposer {
-  private cache: Map<string, { data: unknown; expiresAt: number }> = new Map();
+  constructor(private config: CompositionConfig) {}
   
-  async compose<T>(config: CompositionConfig, params?: Record<string, unknown>): Promise<CompositionResult<T>> {
-    const cacheKey = config.name + ':' + JSON.stringify(params);
+  async compose<T>(): Promise<CompositionResult<T>> {
+    const start = Date.now();
+    const results: SourceResult[] = [];
+    const data: Record<string, unknown> = {};
     
-    if (config.caching?.enabled) {
-      const cached = this.cache.get(cacheKey);
-      if (cached && cached.expiresAt > Date.now()) {
-        return { data: cached.data as T, sources: [], timing: {}, cached: true };
+    await Promise.all(this.config.services.map(async service => {
+      const serviceStart = Date.now();
+      try {
+        const response = await this.fetchService(service.endpoint);
+        const transformed = service.transform ? service.transform(response) : response;
+        data[service.name] = transformed;
+        results.push({ service: service.name, success: true, duration: Date.now() - serviceStart });
+      } catch (e) {
+        results.push({ service: service.name, success: false, duration: Date.now() - serviceStart, error: (e as Error).message });
+        if (service.required) throw e;
       }
-    }
-    
-    const timing: Record<string, number> = {};
-    const results: Record<string, unknown> = {};
-    
-    await Promise.all(config.sources.map(async source => {
-      const start = Date.now();
-      results[source.name] = await this.fetchSource(source, params);
-      timing[source.name] = Date.now() - start;
     }));
     
-    let data = this.mergeResults(results) as T;
-    
-    for (const transform of config.transforms) {
-      data = this.applyTransform(data, transform) as T;
-    }
-    
-    if (config.caching?.enabled) {
-      this.cache.set(cacheKey, { data, expiresAt: Date.now() + config.caching.ttlMs });
-    }
-    
-    return { data, sources: config.sources.map(s => s.name), timing, cached: false };
+    return { data: data as T, sources: results, duration: Date.now() - start };
   }
   
-  private async fetchSource(source: DataSource, params?: Record<string, unknown>): Promise<unknown> {
-    return { source: source.name, type: source.type, params };
+  private async fetchService(endpoint: string): Promise<unknown> {
+    return { endpoint, fetched: true };
   }
-  
-  private mergeResults(results: Record<string, unknown>): unknown {
-    return Object.values(results).reduce((acc: any, val: any) => ({ ...acc, ...val }), {});
-  }
-  
-  private applyTransform(data: unknown, transform: any): unknown { return data; }
 }
