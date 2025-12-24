@@ -1,35 +1,18 @@
-import { ScanResult, Vulnerability } from './types';
+import { ScanResult } from './types';
 
 export class ScanReporter {
-  generateReport(result: ScanResult): ScanReport {
-    const bySeverity = this.groupBySeverity(result.vulnerabilities);
+  generateReport(results: ScanResult[]): ScanReport {
+    const allVulns = results.flatMap(r => r.vulnerabilities);
     return {
-      summary: { scanId: result.scanId, target: result.target, score: result.score, totalVulnerabilities: result.vulnerabilities.length, duration: result.completedAt.getTime() - result.startedAt.getTime() },
-      bySeverity,
-      recommendations: this.getRecommendations(result.vulnerabilities)
+      summary: { total: allVulns.length, critical: allVulns.filter(v => v.severity === 'critical').length, high: allVulns.filter(v => v.severity === 'high').length, medium: allVulns.filter(v => v.severity === 'medium').length, low: allVulns.filter(v => v.severity === 'low').length },
+      avgScore: results.reduce((sum, r) => sum + r.score, 0) / results.length,
+      results,
+      generatedAt: new Date()
     };
   }
   
-  private groupBySeverity(vulns: Vulnerability[]): Record<string, Vulnerability[]> {
-    const grouped: Record<string, Vulnerability[]> = { critical: [], high: [], medium: [], low: [] };
-    vulns.forEach(v => grouped[v.severity].push(v));
-    return grouped;
-  }
-  
-  private getRecommendations(vulns: Vulnerability[]): string[] {
-    return [...new Set(vulns.map(v => v.remediation))];
-  }
-  
-  toMarkdown(report: ScanReport): string {
-    let md = '# Security Scan Report\n\n';
-    md += '## Summary\n- Score: ' + report.summary.score + '/100\n';
-    md += '- Vulnerabilities: ' + report.summary.totalVulnerabilities + '\n\n';
-    md += '## Findings\n';
-    Object.entries(report.bySeverity).forEach(([sev, vulns]) => {
-      if (vulns.length) md += '### ' + sev.toUpperCase() + ' (' + vulns.length + ')\n';
-    });
-    return md;
-  }
+  toJSON(report: ScanReport): string { return JSON.stringify(report, null, 2); }
+  toHTML(report: ScanReport): string { return '<html><body><h1>Security Report</h1><p>Score: ' + report.avgScore.toFixed(1) + '</p></body></html>'; }
 }
 
-export interface ScanReport { summary: { scanId: string; target: string; score: number; totalVulnerabilities: number; duration: number }; bySeverity: Record<string, Vulnerability[]>; recommendations: string[]; }
+export interface ScanReport { summary: { total: number; critical: number; high: number; medium: number; low: number }; avgScore: number; results: ScanResult[]; generatedAt: Date; }
