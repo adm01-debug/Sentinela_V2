@@ -1,4 +1,4 @@
 export * from './types';
 export * from './replayEngine';
-export * from './replayStore';
-export * from './replayController';
+export * from './storage';
+export * from './filter';
