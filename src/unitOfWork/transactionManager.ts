@@ -1,66 +1,39 @@
-// Transaction Manager
-export interface Transaction {
-  id: string;
-  begin(): Promise<void>;
-  commit(): Promise<void>;
-  rollback(): Promise<void>;
-  isActive(): boolean;
-}
-
 export interface TransactionManager {
   begin(): Promise<Transaction>;
-  current(): Transaction | null;
-  runInTransaction<T>(fn: (tx: Transaction) => Promise<T>): Promise<T>;
+  commit(tx: Transaction): Promise<void>;
+  rollback(tx: Transaction): Promise<void>;
 }
 
-export class InMemoryTransaction implements Transaction {
-  private active = false;
-  
-  constructor(public readonly id: string = crypto.randomUUID()) {}
-
-  async begin(): Promise<void> {
-    this.active = true;
-  }
-
-  async commit(): Promise<void> {
-    this.active = false;
-  }
-
-  async rollback(): Promise<void> {
-    this.active = false;
-  }
-
-  isActive(): boolean {
-    return this.active;
-  }
-}
+export interface Transaction { id: string; startedAt: Date; status: TransactionStatus; }
+export enum TransactionStatus { Active = 'active', Committed = 'committed', RolledBack = 'rolled_back' }
 
 export class InMemoryTransactionManager implements TransactionManager {
-  private currentTx: Transaction | null = null;
+  private transactions: Map<string, Transaction> = new Map();
+  private counter: number = 0;
 
   async begin(): Promise<Transaction> {
-    if (this.currentTx?.isActive()) {
-      throw new Error("Transaction already active");
-    }
-    const tx = new InMemoryTransaction();
-    await tx.begin();
-    this.currentTx = tx;
+    const tx: Transaction = { id: 'tx_' + (++this.counter), startedAt: new Date(), status: TransactionStatus.Active };
+    this.transactions.set(tx.id, tx);
     return tx;
   }
 
-  current(): Transaction | null {
-    return this.currentTx?.isActive() ? this.currentTx : null;
+  async commit(tx: Transaction): Promise<void> {
+    const t = this.transactions.get(tx.id);
+    if (!t || t.status !== TransactionStatus.Active) throw new Error('Invalid transaction');
+    t.status = TransactionStatus.Committed;
   }
 
-  async runInTransaction<T>(fn: (tx: Transaction) => Promise<T>): Promise<T> {
-    const tx = await this.begin();
-    try {
-      const result = await fn(tx);
-      await tx.commit();
-      return result;
-    } catch (error) {
-      await tx.rollback();
-      throw error;
-    }
+  async rollback(tx: Transaction): Promise<void> {
+    const t = this.transactions.get(tx.id);
+    if (!t || t.status !== TransactionStatus.Active) throw new Error('Invalid transaction');
+    t.status = TransactionStatus.RolledBack;
+  }
+}
+
+export class TransactionScope {
+  static async run<T>(manager: TransactionManager, work: (tx: Transaction) => Promise<T>): Promise<T> {
+    const tx = await manager.begin();
+    try { const result = await work(tx); await manager.commit(tx); return result; }
+    catch (error) { await manager.rollback(tx); throw error; }
   }
 }
