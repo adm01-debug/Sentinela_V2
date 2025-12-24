@@ -1,45 +1,17 @@
-import { SecurityHeadersConfig } from './types';
-
-export const SecurityPresets: Record<string, SecurityHeadersConfig> = {
-  strict: {
-    csp: { defaultSrc: ["'self'"], scriptSrc: ["'self'"], styleSrc: ["'self'"] },
-    hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
-    xfo: 'DENY',
-    xcto: true,
-    xxss: true,
-    referrer: 'strict-origin-when-cross-origin'
-  },
-  moderate: {
-    csp: { defaultSrc: ["'self'"], scriptSrc: ["'self'", "'unsafe-inline'"], styleSrc: ["'self'", "'unsafe-inline'"] },
-    hsts: { maxAge: 86400 },
-    xfo: 'SAMEORIGIN',
-    xcto: true,
-    referrer: 'same-origin'
-  },
-  relaxed: {
-    xfo: 'SAMEORIGIN',
-    xcto: true
-  }
-};
-
-export class PolicyBuilder {
-  private config: SecurityHeadersConfig = {};
+export class CSPBuilder {
+  private directives: Map<string, string[]> = new Map();
   
-  usePreset(name: keyof typeof SecurityPresets): this {
-    this.config = { ...SecurityPresets[name] };
-    return this;
-  }
+  defaultSrc(...sources: string[]): this { this.directives.set('default-src', sources); return this; }
+  scriptSrc(...sources: string[]): this { this.directives.set('script-src', sources); return this; }
+  styleSrc(...sources: string[]): this { this.directives.set('style-src', sources); return this; }
+  imgSrc(...sources: string[]): this { this.directives.set('img-src', sources); return this; }
+  connectSrc(...sources: string[]): this { this.directives.set('connect-src', sources); return this; }
+  fontSrc(...sources: string[]): this { this.directives.set('font-src', sources); return this; }
+  objectSrc(...sources: string[]): this { this.directives.set('object-src', sources); return this; }
+  frameSrc(...sources: string[]): this { this.directives.set('frame-src', sources); return this; }
+  reportUri(uri: string): this { this.directives.set('report-uri', [uri]); return this; }
   
-  addCSPDirective(directive: string, values: string[]): this {
-    if (!this.config.csp) this.config.csp = { defaultSrc: ["'self'"] };
-    (this.config.csp as any)[directive] = values;
-    return this;
-  }
-  
-  enableHSTS(maxAge: number, options?: { includeSubDomains?: boolean; preload?: boolean }): this {
-    this.config.hsts = { maxAge, ...options };
-    return this;
-  }
-  
-  build(): SecurityHeadersConfig { return { ...this.config }; }
+  build(): string { return Array.from(this.directives.entries()).map(([k, v]) => k + ' ' + v.join(' ')).join('; '); }
 }
+
+export const CSPSources = { SELF: "'self'", NONE: "'none'", UNSAFE_INLINE: "'unsafe-inline'", UNSAFE_EVAL: "'unsafe-eval'", DATA: 'data:', BLOB: 'blob:' };
