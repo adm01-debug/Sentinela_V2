@@ -1,22 +1,29 @@
-import { ConnectionInfo } from './types';
-import { v4 as uuidv4 } from 'uuid';
+import { Connection } from './types';
 
-export class PooledConnection {
-  private info: ConnectionInfo;
+export class ManagedConnection implements Connection {
+  id: string;
+  createdAt: Date;
+  lastUsedAt: Date;
+  inUse: boolean = false;
+  private queries: number = 0;
   
-  constructor() {
-    this.info = { id: uuidv4(), createdAt: new Date(), lastUsedAt: new Date(), useCount: 0, isValid: true };
+  constructor(id: string) {
+    this.id = id;
+    this.createdAt = new Date();
+    this.lastUsedAt = new Date();
   }
   
-  markUsed(): void { this.info.lastUsedAt = new Date(); this.info.useCount++; }
-  getInfo(): ConnectionInfo { return { ...this.info }; }
-  isValid(): boolean { return this.info.isValid; }
-  invalidate(): void { this.info.isValid = false; }
+  async query<T>(sql: string, params?: unknown[]): Promise<T> {
+    this.queries++;
+    this.lastUsedAt = new Date();
+    console.log('Executing:', sql, params);
+    return {} as T;
+  }
   
-  async query<T>(sql: string, params?: unknown[]): Promise<T[]> { return []; }
-  async execute(sql: string, params?: unknown[]): Promise<number> { return 0; }
-  async close(): Promise<void> { this.info.isValid = false; }
+  async beginTransaction(): Promise<void> { console.log('Begin transaction'); }
+  async commit(): Promise<void> { console.log('Commit'); }
+  async rollback(): Promise<void> { console.log('Rollback'); }
   
-  getIdleTime(): number { return Date.now() - this.info.lastUsedAt.getTime(); }
-  getAge(): number { return Date.now() - this.info.createdAt.getTime(); }
+  getQueryCount(): number { return this.queries; }
+  isStale(maxIdleMs: number): boolean { return Date.now() - this.lastUsedAt.getTime() > maxIdleMs; }
 }
