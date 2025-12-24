@@ -1,41 +1,33 @@
-import { ReplicaConfig } from './types';
-import { ReplicaManager } from './replicaManager';
+import { Replica, ReplicationConfig } from './types';
 
 export class ReplicaLoadBalancer {
-  private currentIndex: number = 0;
+  private index: number = 0;
   
-  constructor(private manager: ReplicaManager, private strategy: 'round-robin' | 'least-connections' | 'weighted' = 'round-robin') {}
+  constructor(private config: ReplicationConfig) {}
   
-  getReadReplica(): ReplicaConfig | undefined {
-    const replicas = this.manager.getHealthyReplicas();
-    if (replicas.length === 0) return this.manager.getPrimary();
-    switch (this.strategy) {
-      case 'round-robin': return this.roundRobin(replicas);
-      case 'least-connections': return this.leastConnections(replicas);
-      case 'weighted': return this.weighted(replicas);
+  selectForRead(replicas: Replica[], primary?: Replica): Replica | undefined {
+    const eligible = this.getEligibleReplicas(replicas);
+    
+    switch (this.config.readPreference) {
+      case 'primary': return primary;
+      case 'secondary': return this.roundRobin(eligible);
+      case 'nearest': return this.selectNearest(eligible);
     }
   }
   
-  getWriteReplica(): ReplicaConfig | undefined { return this.manager.getPrimary(); }
+  private getEligibleReplicas(replicas: Replica[]): Replica[] {
+    return replicas.filter(r => r.status === 'online' && r.lag <= this.config.maxLag);
+  }
   
-  private roundRobin(replicas: ReplicaConfig[]): ReplicaConfig {
-    const replica = replicas[this.currentIndex % replicas.length];
-    this.currentIndex++;
+  private roundRobin(replicas: Replica[]): Replica | undefined {
+    if (replicas.length === 0) return undefined;
+    const replica = replicas[this.index % replicas.length];
+    this.index++;
     return replica;
   }
   
-  private leastConnections(replicas: ReplicaConfig[]): ReplicaConfig {
-    return replicas.reduce((min, r) => {
-      const minConn = this.manager.getStatus(min.id)?.activeConnections ?? 0;
-      const rConn = this.manager.getStatus(r.id)?.activeConnections ?? 0;
-      return rConn < minConn ? r : min;
-    });
-  }
-  
-  private weighted(replicas: ReplicaConfig[]): ReplicaConfig {
-    const totalWeight = replicas.reduce((sum, r) => sum + r.weight, 0);
-    let random = Math.random() * totalWeight;
-    for (const r of replicas) { random -= r.weight; if (random <= 0) return r; }
-    return replicas[0];
+  private selectNearest(replicas: Replica[]): Replica | undefined {
+    if (replicas.length === 0) return undefined;
+    return replicas.reduce((min, r) => r.lag < min.lag ? r : min);
   }
 }
