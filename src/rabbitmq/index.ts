@@ -1,4 +1,4 @@
 export * from './types';
 export * from './connection';
-export * from './publisher';
-export * from './subscriber';
+export * from './channel';
+export * from './exchanges';
