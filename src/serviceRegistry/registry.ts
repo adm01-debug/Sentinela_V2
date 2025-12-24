@@ -1,31 +1,42 @@
-import { ServiceDefinition, EndpointDefinition } from './types';
+import { ServiceDefinition, ServiceHealth } from './types';
 
 export class ServiceRegistry {
-  private services: Map<string, ServiceDefinition> = new Map();
-  private listeners: Map<string, Set<(service: ServiceDefinition) => void>> = new Map();
+  private services: Map<string, RegisteredService> = new Map();
   
-  register(service: ServiceDefinition): void {
-    this.services.set(service.name, service);
-    this.notifyListeners(service.name, service);
+  register(definition: ServiceDefinition): string {
+    const id = definition.name + '-' + Date.now();
+    this.services.set(id, {
+      id,
+      definition,
+      health: { status: 'healthy', lastCheck: new Date(), latency: 0 },
+      registeredAt: new Date()
+    });
+    return id;
   }
   
-  deregister(name: string): void { this.services.delete(name); }
+  deregister(id: string): boolean { return this.services.delete(id); }
   
-  get(name: string): ServiceDefinition | undefined { return this.services.get(name); }
-  getAll(): ServiceDefinition[] { return Array.from(this.services.values()); }
-  
-  getEndpoints(name: string): EndpointDefinition[] {
-    return this.services.get(name)?.endpoints ?? [];
+  lookup(name: string): RegisteredService[] {
+    return Array.from(this.services.values())
+      .filter(s => s.definition.name === name && s.health.status !== 'unhealthy');
   }
   
-  watch(name: string, callback: (service: ServiceDefinition) => void): () => void {
-    const listeners = this.listeners.get(name) ?? new Set();
-    listeners.add(callback);
-    this.listeners.set(name, listeners);
-    return () => listeners.delete(callback);
+  lookupByTag(tag: string): RegisteredService[] {
+    return Array.from(this.services.values())
+      .filter(s => s.definition.tags.includes(tag) && s.health.status !== 'unhealthy');
   }
   
-  private notifyListeners(name: string, service: ServiceDefinition): void {
-    this.listeners.get(name)?.forEach(cb => cb(service));
+  updateHealth(id: string, health: ServiceHealth): void {
+    const service = this.services.get(id);
+    if (service) service.health = health;
   }
+  
+  getAll(): RegisteredService[] { return Array.from(this.services.values()); }
+}
+
+export interface RegisteredService {
+  id: string;
+  definition: ServiceDefinition;
+  health: ServiceHealth;
+  registeredAt: Date;
 }
