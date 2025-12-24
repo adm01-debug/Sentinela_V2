@@ -1,31 +1,23 @@
-export interface CompositionConfig {
-  services: ServiceConfig[];
+export interface CompositionPlan {
+  name: string;
+  steps: CompositionStep[];
   timeout: number;
-  cacheConfig?: CacheConfig;
+  fallback?: unknown;
 }
 
-export interface ServiceConfig {
+export interface CompositionStep {
   name: string;
+  service: string;
   endpoint: string;
-  required: boolean;
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  params?: Record<string, string>;
+  dependsOn?: string[];
   transform?: (data: unknown) => unknown;
 }
 
-export interface CacheConfig {
-  enabled: boolean;
-  ttl: number;
-  key: string;
-}
-
-export interface CompositionResult<T = unknown> {
-  data: T;
-  sources: SourceResult[];
-  duration: number;
-}
-
-export interface SourceResult {
-  service: string;
+export interface CompositionResult {
   success: boolean;
+  data: Record<string, unknown>;
+  errors: Record<string, string>;
   duration: number;
-  error?: string;
 }
