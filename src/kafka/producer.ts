@@ -1,34 +1,21 @@
-import { KafkaConfig, ProducerConfig, KafkaMessage } from './types';
+import { KafkaConfig, ProducerMessage } from './types';
 
 export class KafkaProducer {
   private connected: boolean = false;
-  private messageQueue: KafkaMessage[] = [];
+  constructor(private config: KafkaConfig) {}
   
-  constructor(private config: KafkaConfig, private producerConfig: ProducerConfig) {}
-  
-  async connect(): Promise<void> { this.connected = true; console.log('Kafka producer connected'); }
+  async connect(): Promise<void> { this.connected = true; console.log('Producer connected to', this.config.brokers); }
   async disconnect(): Promise<void> { this.connected = false; }
   
-  async send(message: KafkaMessage): Promise<RecordMetadata> {
+  async send(message: ProducerMessage): Promise<RecordMetadata> {
     if (!this.connected) throw new Error('Producer not connected');
-    this.messageQueue.push(message);
-    if (this.messageQueue.length >= this.producerConfig.batchSize) await this.flush();
-    return { topic: message.topic, partition: message.partition ?? 0, offset: '0', timestamp: new Date().toISOString() };
+    console.log('Sending to', message.topic);
+    return { topic: message.topic, partition: message.partition ?? 0, offset: String(Date.now()) };
   }
   
-  async sendBatch(messages: KafkaMessage[]): Promise<RecordMetadata[]> {
+  async sendBatch(messages: ProducerMessage[]): Promise<RecordMetadata[]> {
     return Promise.all(messages.map(m => this.send(m)));
-  }
-  
-  async flush(): Promise<void> {
-    console.log('Flushing', this.messageQueue.length, 'messages');
-    this.messageQueue = [];
   }
 }
 
-export interface RecordMetadata {
-  topic: string;
-  partition: number;
-  offset: string;
-  timestamp: string;
-}
+export interface RecordMetadata { topic: string; partition: number; offset: string; }
