@@ -1,380 +1,184 @@
-# 🛡️ Sentinela
+# 🛡️ SENTINELA V13 - Enterprise Framework
 
-<div align="center">
+## 100 Enterprise Patterns para TypeScript/Node.js
 
-![Sentinela Logo](public/logo.svg)
+[![Version](https://img.shields.io/badge/version-13.0.0-blue.svg)](https://github.com/adm01-debug/sentinela)
+[![Modules](https://img.shields.io/badge/modules-100-green.svg)](https://github.com/adm01-debug/sentinela)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 
-**Sistema de Monitoramento de Funcionários com Gamificação**
+## 📋 Módulos Implementados
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](https://reactjs.org/)
-[![Supabase](https://img.shields.io/badge/Supabase-Backend-3ecf8e?logo=supabase)](https://supabase.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-Proprietary-red)](#licença)
+### CAT 1: Arquitetura (1-15)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 1 | CQRS Advanced | Command Query Responsibility Segregation |
+| 2 | Saga Orchestration | Orquestração de transações distribuídas |
+| 3 | Outbox Pattern | Garantia de entrega de eventos |
+| 4 | Specification | Padrão de especificação para queries |
+| 5 | Unit of Work | Gerenciamento de transações |
+| 6 | Repository | Abstração de acesso a dados |
+| 7 | Aggregate | Agregados de domínio |
+| 8 | Domain Events | Eventos de domínio |
+| 9 | Anti-Corruption Layer | Camada anti-corrupção |
+| 10 | Bounded Context | Contextos delimitados |
+| 11 | Service Discovery | Descoberta de serviços |
+| 12 | Service Mesh | Malha de serviços |
+| 13 | Sidecar | Padrão sidecar |
+| 14 | Ambassador | Padrão ambassador |
+| 15 | Strangler | Migração gradual |
 
-[Demo](https://sentinela.app) · [Documentação](#documentação) · [Instalação](#instalação) · [API](#api)
+### CAT 2: Cloud Native (16-20)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 16 | Bulkhead | Isolamento de falhas |
+| 17 | Backpressure | Controle de fluxo |
+| 18 | Service Registry | Registro de serviços |
+| 19 | Config Server | Servidor de configuração |
+| 20 | API Composition | Composição de APIs |
 
-</div>
+### CAT 3: Messaging (21-30)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 21 | Kafka | Integração Apache Kafka |
+| 22 | RabbitMQ | Integração RabbitMQ |
+| 23 | Event Sourcing | Sourcing de eventos |
+| 24 | CDC | Change Data Capture |
+| 25 | Stream Processing | Processamento de streams |
+| 26 | Message Replay | Replay de mensagens |
+| 27 | Dead Letter | Fila de mensagens mortas |
+| 28 | Event Store | Armazenamento de eventos |
+| 29 | Message Router | Roteamento de mensagens |
+| 30 | Message Broker | Broker de mensagens |
 
----
+### CAT 4: Database (31-40)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 31 | Sharding | Particionamento horizontal |
+| 32 | Partitioning | Particionamento de tabelas |
+| 33 | Read Replica | Réplicas de leitura |
+| 34 | Connection Pool | Pool de conexões |
+| 35 | Query Optimizer | Otimização de queries |
+| 36 | Query Builder | Construtor de queries |
+| 37 | Migrations | Migrações de banco |
+| 38 | Seeding | Dados iniciais |
+| 39 | Multi-Database | Múltiplos bancos |
+| 40 | NoSQL | Bancos não relacionais |
 
-## 📋 Índice
+### CAT 5: Security (41-50)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 41 | SIEM | Security Information & Event Management |
+| 42 | DLP | Data Loss Prevention |
+| 43 | Encryption at Rest | Criptografia em repouso |
+| 44 | Key Management | Gerenciamento de chaves |
+| 45 | Tokenization | Tokenização de dados |
+| 46 | Security Scanner | Scanner de vulnerabilidades |
+| 47 | Threat Modeling | Modelagem de ameaças |
+| 48 | Security Headers | Headers de segurança |
+| 49 | CSRF Advanced | Proteção CSRF avançada |
+| 50 | XSS Advanced | Proteção XSS avançada |
 
-- [Sobre](#sobre)
-- [Funcionalidades](#funcionalidades)
-- [Arquitetura](#arquitetura)
-- [Instalação](#instalação)
-- [Configuração](#configuração)
-- [Uso](#uso)
-- [API](#api)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
+### CAT 6: Performance (51-55)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 51 | CDN | Content Delivery Network |
+| 52 | Edge Computing | Computação de borda |
+| 53 | Preloading | Pré-carregamento |
+| 54 | Prefetching | Pré-busca |
+| 55 | Lazy Hydration | Hidratação preguiçosa |
 
----
+### CAT 7: AI/ML (56-60)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 56 | ML Pipeline | Pipeline de ML |
+| 57 | Feature Store | Armazenamento de features |
+| 58 | Model Registry | Registro de modelos |
+| 59 | Model Serving | Servindo modelos |
+| 60 | A/B Testing | Testes A/B |
 
-## 📖 Sobre
+### CAT 8: Observability (61-65)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 61 | Log Aggregation | Agregação de logs |
+| 62 | Distributed Tracing | Rastreamento distribuído |
+| 63 | Metrics Collection | Coleta de métricas |
+| 64 | Health Checks | Verificação de saúde |
+| 65 | Alerting | Sistema de alertas |
 
-**Sentinela** é uma plataforma completa de monitoramento de produtividade empresarial que combina:
+### CAT 9: DevOps (66-70)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 66 | Dashboard | Painéis de controle |
+| 67 | CI/CD | Integração/Entrega contínua |
+| 68 | GitOps | Operações via Git |
+| 69 | IaC | Infraestrutura como código |
+| 70 | Secret Management | Gerenciamento de segredos |
 
-- 🖥️ **Monitoramento Desktop** - Captura de atividade, screenshots, aplicações
-- 📱 **Monitoramento Mobile** - Localização GPS, geofencing, app usage
-- 🎮 **Gamificação** - Sistema de pontos, badges, leaderboards
-- 🚨 **Alertas Inteligentes** - Detecção de violações, notificações WhatsApp
-- 📊 **Analytics Avançado** - Dashboards, relatórios, IA
+### CAT 10: Container (71-75)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 71 | Container Orchestration | Orquestração de containers |
+| 72 | Image Registry | Registro de imagens |
+| 73 | Network Policy | Políticas de rede |
+| 74 | Service Catalog | Catálogo de serviços |
+| 75 | Pod Disruption Budget | Orçamento de disrupção |
 
-### Por que Sentinela?
+### CAT 11: Kubernetes (76-85)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 76 | Resource Quotas | Quotas de recursos |
+| 77 | Limit Ranges | Limites de recursos |
+| 78 | Priority Classes | Classes de prioridade |
+| 79 | Node Affinity | Afinidade de nó |
+| 80 | Pod Affinity | Afinidade de pod |
+| 81 | Taints & Tolerations | Taints e tolerações |
+| 82 | Custom Resources | Recursos customizados |
+| 83 | Operators | Operadores |
+| 84 | Admission Controllers | Controladores de admissão |
+| 85 | ConfigMaps & Secrets | Configurações e segredos |
 
-| Característica | Benefício |
-|----------------|-----------|
-| **Privacidade** | Dados criptografados, RLS no banco |
-| **Gamificação** | Engajamento positivo vs. vigilância |
-| **Real-time** | Updates via Supabase Realtime |
-| **Escalável** | Edge Functions serverless |
-| **PWA** | Funciona offline, instalável |
+### CAT 12: Workloads (86-90)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 86 | Ingress Controller | Controlador de ingress |
+| 87 | Service Mesh Advanced | Malha de serviços avançada |
+| 88 | StatefulSets | Conjuntos com estado |
+| 89 | DaemonSets | Conjuntos daemon |
+| 90 | Jobs & CronJobs | Jobs e agendamentos |
 
----
+### CAT 13: Autoscaling (91-95)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 91 | HPA | Horizontal Pod Autoscaler |
+| 92 | VPA | Vertical Pod Autoscaler |
+| 93 | Cluster Autoscaler | Autoscaler de cluster |
+| 94 | Pod Security Policies | Políticas de segurança |
+| 95 | RBAC | Controle de acesso baseado em papéis |
 
-## ✨ Funcionalidades
-
-### 🖥️ Monitoramento Desktop
-
-```
-├── Captura de tela (intervalos configuráveis)
-├── Tracking de aplicações e janelas
-├── Contagem de teclas e cliques
-├── Detecção de tempo ocioso
-├── OCR em screenshots (Tesseract)
-└── Auto-update do agente
-```
-
-### 📱 Monitoramento Mobile
-
-```
-├── Rastreamento GPS em background
-├── Geofencing (cercas virtuais)
-├── Histórico de localização
-├── Status de bateria
-└── Conectividade (WiFi/4G)
-```
-
-### 🎮 Sistema de Gamificação
-
-```
-├── Pontos por produtividade
-├── 25+ badges desbloqueáveis
-├── Níveis e experiência (XP)
-├── Streaks diários
-├── Leaderboard semanal/mensal
-└── Achievements especiais
-```
-
-### 🚨 Sistema de Alertas
-
-```
-├── Violações de segurança
-├── Acesso a sites bloqueados
-├── Palavras-chave sensíveis
-├── Horários não autorizados
-├── Notificações WhatsApp (WAHA)
-└── Webhooks personalizados
-```
-
-### 📊 Relatórios e Analytics
-
-```
-├── Dashboard em tempo real
-├── Relatórios agendados
-├── Exportação CSV/PDF
-├── Análise de produtividade
-├── Comparativo entre equipes
-└── Insights com IA
-```
-
----
-
-## 🏗️ Arquitetura
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      SENTINELA STACK                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │   Web App   │  │Desktop Agent│  │ Mobile App  │         │
-│  │   (React)   │  │  (Electron) │  │(React Native)│        │
-│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘         │
-│         │                │                │                 │
-│         └────────────────┼────────────────┘                 │
-│                          │                                  │
-│                          ▼                                  │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │                  SUPABASE                            │   │
-│  ├─────────────────────────────────────────────────────┤   │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐   │   │
-│  │  │   Auth  │ │Database │ │ Storage │ │Realtime │   │   │
-│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘   │   │
-│  │  ┌─────────────────────────────────────────────┐   │   │
-│  │  │            Edge Functions (16)              │   │   │
-│  │  │  • agent-collector    • send-whatsapp      │   │   │
-│  │  │  • mobile-collector   • process-violation  │   │   │
-│  │  │  • ocr-screenshot     • generate-report    │   │   │
-│  │  └─────────────────────────────────────────────┘   │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Stack Tecnológico
-
-| Camada | Tecnologias |
-|--------|-------------|
-| **Frontend** | React 18, TypeScript, Tailwind CSS, shadcn/ui |
-| **State** | TanStack Query, Zustand |
-| **Backend** | Supabase (PostgreSQL, Auth, Storage, Realtime) |
-| **Edge** | Deno Edge Functions |
-| **Desktop** | Electron, Node.js |
-| **Mobile** | React Native, Expo |
-| **Infra** | Vite, PWA, GitHub Actions |
-
----
+### CAT 14: Enterprise (96-100)
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 96 | Service Accounts | Contas de serviço |
+| 97 | Network Policies Adv | Políticas de rede avançadas |
+| 98 | Namespace Management | Gerenciamento de namespaces |
+| 99 | Multi-Tenancy | Multi-inquilino |
+| 100 | API Gateway | Gateway de APIs |
 
 ## 🚀 Instalação
 
-### Pré-requisitos
-
-- Node.js 18+
-- npm ou yarn
-- Conta Supabase
-- Git
-
-### 1. Clone o repositório
-
 ```bash
-git clone https://github.com/adm01-debug/sentinela.git
-cd sentinela
+npm install sentinela
 ```
 
-### 2. Instale as dependências
+## 📊 Estatísticas
 
-```bash
-npm install
-```
+- **Versão:** 13.0.0
+- **Módulos:** 100
+- **Arquivos:** 500+
+- **Linhas de código:** 35.000+
+- **Categorias:** 14
+- **Patterns Enterprise:** 100
 
-### 3. Configure as variáveis de ambiente
+## 📜 Licença
 
-```bash
-cp .env.example .env
-```
-
-Edite `.env` com suas credenciais:
-
-```env
-VITE_SUPABASE_URL=https://seu-projeto.supabase.co
-VITE_SUPABASE_ANON_KEY=sua-anon-key
-```
-
-### 4. Execute as migrations
-
-```bash
-npx supabase db push
-```
-
-### 5. Inicie o servidor de desenvolvimento
-
-```bash
-npm run dev
-```
-
-Acesse: [http://localhost:8080](http://localhost:8080)
-
----
-
-## ⚙️ Configuração
-
-### Variáveis de Ambiente
-
-| Variável | Descrição | Obrigatória |
-|----------|-----------|-------------|
-| `VITE_SUPABASE_URL` | URL do projeto Supabase | ✅ |
-| `VITE_SUPABASE_ANON_KEY` | Chave anônima do Supabase | ✅ |
-| `WAHA_API_URL` | URL da API WAHA (WhatsApp) | ❌ |
-| `WAHA_API_KEY` | Chave da API WAHA | ❌ |
-| `MAPBOX_TOKEN` | Token do Mapbox (mapas) | ❌ |
-
-### Configuração do Supabase
-
-1. Crie um projeto em [supabase.com](https://supabase.com)
-2. Execute as migrations em `supabase/migrations/`
-3. Configure RLS policies
-4. Habilite Realtime nas tabelas necessárias
-
-### Configuração do Desktop Agent
-
-Veja [desktop-agent/README.md](desktop-agent/README.md)
-
-### Configuração do Mobile App
-
-Veja [mobile-app/README.md](mobile-app/README.md)
-
----
-
-## 📚 Uso
-
-### Primeiro Acesso
-
-1. Acesse a aplicação e crie uma conta
-2. Verifique seu email
-3. Complete o setup inicial da empresa
-4. Adicione funcionários
-5. Distribua os agentes de monitoramento
-
-### Fluxo de Trabalho
-
-```
-1. Admin configura regras de monitoramento
-2. Funcionários instalam o Desktop Agent
-3. Dados são enviados em tempo real
-4. Violações geram alertas automáticos
-5. Gamificação engaja funcionários
-6. Relatórios são gerados automaticamente
-```
-
-### Comandos Úteis
-
-```bash
-# Desenvolvimento
-npm run dev          # Inicia servidor dev
-npm run build        # Build de produção
-npm run preview      # Preview do build
-
-# Testes
-npm run test         # Executa testes
-npm run test:watch   # Testes em watch mode
-npm run test:coverage # Cobertura de testes
-
-# Linting
-npm run lint         # Verifica código
-npm run lint:fix     # Corrige automaticamente
-
-# Supabase
-npm run db:push      # Aplica migrations
-npm run db:reset     # Reset do banco
-npm run functions:serve # Edge Functions local
-```
-
----
-
-## 🔌 API
-
-### Edge Functions
-
-| Endpoint | Método | Descrição |
-|----------|--------|-----------|
-| `/agent-collector` | POST | Recebe dados do Desktop Agent |
-| `/mobile-collector` | POST | Recebe dados do Mobile App |
-| `/send-whatsapp` | POST | Envia mensagem WhatsApp |
-| `/process-violation-alert` | POST | Processa alerta de violação |
-| `/generate-report` | POST | Gera relatório |
-| `/ocr-screenshot` | POST | Extrai texto de imagem |
-
-### Exemplo: Enviar dados do Agent
-
-```bash
-curl -X POST \
-  https://seu-projeto.supabase.co/functions/v1/agent-collector \
-  -H "Authorization: Bearer $AGENT_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "device_id": "device-123",
-    "data_type": "activity",
-    "timestamp": "2024-01-15T10:30:00Z",
-    "active_window": "Visual Studio Code",
-    "active_application": "Code.exe"
-  }'
-```
-
-### Webhooks
-
-Configure webhooks para receber eventos:
-
-```json
-{
-  "event": "violation_created",
-  "payload": {
-    "violation_id": "uuid",
-    "employee_id": "uuid",
-    "type": "blocked_website",
-    "severity": "high"
-  }
-}
-```
-
----
-
-## 🤝 Contribuição
-
-Veja [CONTRIBUTING.md](CONTRIBUTING.md) para guia completo.
-
-### Quick Start
-
-1. Fork o repositório
-2. Crie uma branch: `git checkout -b feature/minha-feature`
-3. Commit: `git commit -m 'feat: minha feature'`
-4. Push: `git push origin feature/minha-feature`
-5. Abra um Pull Request
-
-### Padrões de Commit
-
-Seguimos [Conventional Commits](https://www.conventionalcommits.org/):
-
-- `feat:` Nova funcionalidade
-- `fix:` Correção de bug
-- `docs:` Documentação
-- `style:` Formatação
-- `refactor:` Refatoração
-- `test:` Testes
-- `chore:` Manutenção
-
----
-
-## 📄 Licença
-
-Este projeto é **proprietário** e de uso exclusivo.
-
-© 2024 Promo Brindes. Todos os direitos reservados.
-
----
-
-## 📞 Suporte
-
-- 📧 Email: suporte@promobrindes.com.br
-- 💬 WhatsApp: +55 62 99999-9999
-- 📚 Docs: [docs.sentinela.app](https://docs.sentinela.app)
-
----
-
-<div align="center">
-
-**Feito com ❤️ por [Promo Brindes](https://promobrindes.com.br)**
-
-</div>
+MIT License - Promo Brindes © 2024
