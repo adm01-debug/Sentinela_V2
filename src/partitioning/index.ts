@@ -1,4 +1,4 @@
 export * from './types';
-export * from './partitionManager';
+export * from './partitioner';
 export * from './strategies';
-export * from './pruning';
+export * from './manager';
