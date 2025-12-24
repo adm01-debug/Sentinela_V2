@@ -1,0 +1,3 @@
+import { qualityChecker, QualityResult } from './qualityChecker';
+export interface QualityReport { generatedAt: Date; overallScore: number; totalChecks: number; passed: number; failed: number; byRule: { name: string; passed: boolean }[]; }
+export function generateQualityReport(data: any): QualityReport { const results = qualityChecker.check(data); const passed = results.filter(r => r.passed).length; return { generatedAt: new Date(), overallScore: qualityChecker.getScore(results), totalChecks: results.length, passed, failed: results.length - passed, byRule: results.map(r => ({ name: r.rule.name, passed: r.passed })) }; }
