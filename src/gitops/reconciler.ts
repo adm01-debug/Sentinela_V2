@@ -1,7 +1,35 @@
-export interface DesiredState { kind: string; name: string; spec: any; }
-export interface ActualState { kind: string; name: string; spec: any; status: any; }
-export interface ReconcileResult { action: 'create' | 'update' | 'delete' | 'none'; resource: string; success: boolean; }
+import { Manifest } from './types';
+
 export class Reconciler {
-  async reconcile(desired: DesiredState[], actual: ActualState[]): Promise<ReconcileResult[]> { const results: ReconcileResult[] = []; for (const d of desired) { const a = actual.find(a => a.kind === d.kind && a.name === d.name); if (!a) { results.push({ action: 'create', resource: d.kind + '/' + d.name, success: true }); } else if (JSON.stringify(d.spec) !== JSON.stringify(a.spec)) { results.push({ action: 'update', resource: d.kind + '/' + d.name, success: true }); } else { results.push({ action: 'none', resource: d.kind + '/' + d.name, success: true }); } } for (const a of actual) { if (!desired.find(d => d.kind === a.kind && d.name === a.name)) { results.push({ action: 'delete', resource: a.kind + '/' + a.name, success: true }); } } return results; }
+  private desired: Map<string, Manifest> = new Map();
+  private actual: Map<string, Manifest> = new Map();
+  
+  setDesired(manifests: Manifest[]): void {
+    this.desired.clear();
+    manifests.forEach(m => this.desired.set(this.getKey(m), m));
+  }
+  
+  setActual(manifests: Manifest[]): void {
+    this.actual.clear();
+    manifests.forEach(m => this.actual.set(this.getKey(m), m));
+  }
+  
+  reconcile(): ReconcileActions {
+    const actions: ReconcileActions = { create: [], update: [], delete: [] };
+    
+    this.desired.forEach((manifest, key) => {
+      if (!this.actual.has(key)) actions.create.push(manifest);
+      else if (JSON.stringify(manifest) !== JSON.stringify(this.actual.get(key))) actions.update.push(manifest);
+    });
+    
+    this.actual.forEach((manifest, key) => {
+      if (!this.desired.has(key)) actions.delete.push(manifest);
+    });
+    
+    return actions;
+  }
+  
+  private getKey(m: Manifest): string { return m.kind + '/' + (m.metadata.namespace ?? 'default') + '/' + m.metadata.name; }
 }
-export const reconciler = new Reconciler();
+
+export interface ReconcileActions { create: Manifest[]; update: Manifest[]; delete: Manifest[]; }
