@@ -1,25 +1,3 @@
-export interface PoolConfig {
-  minConnections: number;
-  maxConnections: number;
-  acquireTimeout: number;
-  idleTimeout: number;
-  maxLifetime: number;
-  validationQuery?: string;
-}
-
-export interface PoolStats {
-  totalConnections: number;
-  activeConnections: number;
-  idleConnections: number;
-  waitingRequests: number;
-  acquiredCount: number;
-  releasedCount: number;
-}
-
-export interface ConnectionInfo {
-  id: string;
-  createdAt: Date;
-  lastUsedAt: Date;
-  useCount: number;
-  isValid: boolean;
-}
+export interface PoolConfig { minConnections: number; maxConnections: number; acquireTimeout: number; idleTimeout: number; }
+export interface Connection { id: string; createdAt: Date; lastUsedAt: Date; inUse: boolean; }
+export interface PoolStats { total: number; inUse: number; idle: number; waiting: number; }
