@@ -1,0 +1,4 @@
+import { policyEngine, Policy } from './policyEngine';
+import { complianceChecker, ComplianceResult } from './complianceChecker';
+export interface GovernanceReport { generatedAt: Date; policies: { total: number; enabled: number }; compliance: { total: number; passed: number; violations: number }; riskScore: number; }
+export function generateGovernanceReport(data: any): GovernanceReport { const policies = policyEngine.list(); const complianceResults = complianceChecker.check(data); const violations = complianceResults.filter(r => !r.passed); const riskScore = Math.max(0, 100 - (violations.length * 10)); return { generatedAt: new Date(), policies: { total: policies.length, enabled: policies.filter(p => p.enabled).length }, compliance: { total: complianceResults.length, passed: complianceResults.length - violations.length, violations: violations.length }, riskScore }; }
