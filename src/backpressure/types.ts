@@ -1,19 +1,15 @@
 export interface BackpressureConfig {
-  strategy: BackpressureStrategy;
   highWaterMark: number;
   lowWaterMark: number;
+  strategy: BackpressureStrategy;
 }
 
-export enum BackpressureStrategy {
-  Drop = 'drop',
-  Buffer = 'buffer',
-  Block = 'block',
-  Error = 'error'
-}
+export type BackpressureStrategy = 'drop' | 'buffer' | 'throttle' | 'error';
 
-export interface BackpressureStats {
-  pending: number;
-  processed: number;
-  dropped: number;
-  blocked: number;
+export interface BackpressureMetrics {
+  currentLoad: number;
+  droppedCount: number;
+  bufferedCount: number;
+  throttledCount: number;
+  isPaused: boolean;
 }
