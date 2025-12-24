@@ -1,33 +1,34 @@
-import { ConfigValue } from './types';
+import { ConfigEntry } from './types';
 
 export class ConfigClient {
-  private cache: Map<string, ConfigValue> = new Map();
-  private refreshInterval?: NodeJS.Timeout;
+  private cache: Map<string, ConfigEntry> = new Map();
+  private serverUrl: string;
   
-  constructor(private serverUrl: string) {}
+  constructor(serverUrl: string, private app: string, private env: string) {
+    this.serverUrl = serverUrl;
+  }
   
-  async get(key: string): Promise<unknown> {
+  async get<T>(key: string, defaultValue?: T): Promise<T> {
     const cached = this.cache.get(key);
-    if (cached) return cached.value;
-    const value = await this.fetch(key);
-    if (value) this.cache.set(key, value);
-    return value?.value;
+    if (cached) return cached.value as T;
+    try {
+      const entry = await this.fetchFromServer(key);
+      if (entry) { this.cache.set(key, entry); return entry.value as T; }
+    } catch (e) { console.error('Config fetch error:', e); }
+    return defaultValue as T;
   }
   
   async refresh(): Promise<void> {
     for (const key of this.cache.keys()) {
-      const value = await this.fetch(key);
-      if (value) this.cache.set(key, value);
+      const entry = await this.fetchFromServer(key);
+      if (entry) this.cache.set(key, entry);
     }
   }
   
-  startAutoRefresh(intervalMs: number): void {
-    this.refreshInterval = setInterval(() => this.refresh(), intervalMs);
+  private async fetchFromServer(key: string): Promise<ConfigEntry | null> {
+    // Simulated - would make HTTP request to config server
+    return null;
   }
   
-  stopAutoRefresh(): void { if (this.refreshInterval) clearInterval(this.refreshInterval); }
-  
-  private async fetch(key: string): Promise<ConfigValue | null> {
-    return { key, value: null, source: 'server', version: 1, updatedAt: new Date() };
-  }
+  clearCache(): void { this.cache.clear(); }
 }
