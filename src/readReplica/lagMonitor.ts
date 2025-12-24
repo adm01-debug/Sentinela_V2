@@ -1,36 +1,33 @@
+import { Replica } from './types';
 import { ReplicaManager } from './replicaManager';
-import { ReplicationConfig } from './types';
 
-export class ReplicationLagMonitor {
-  private timer?: NodeJS.Timeout;
-  private alerts: LagAlert[] = [];
+export class LagMonitor {
+  private alerts: Alert[] = [];
   
-  constructor(private manager: ReplicaManager, private config: ReplicationConfig) {}
+  constructor(private manager: ReplicaManager, private maxLag: number) {}
   
-  start(): void {
-    this.timer = setInterval(() => this.checkLag(), this.config.healthCheckInterval);
-  }
-  
-  stop(): void { if (this.timer) clearInterval(this.timer); }
-  
-  private async checkLag(): Promise<void> {
-    for (const replica of this.manager.getReplicas()) {
-      const lag = await this.measureLag(replica.id);
-      this.manager.updateStatus(replica.id, { lagSeconds: lag, isHealthy: lag <= this.config.maxLagSeconds });
-      if (lag > this.config.maxLagSeconds) {
-        this.alerts.push({ replicaId: replica.id, lagSeconds: lag, timestamp: new Date() });
-        console.warn('Replica lag alert:', replica.id, lag, 'seconds');
+  async checkLag(): Promise<LagReport> {
+    const replicas = this.manager.getReadReplicas();
+    const report: LagReport = { timestamp: new Date(), replicas: [], alerts: [] };
+    
+    for (const replica of replicas) {
+      report.replicas.push({ id: replica.id, lag: replica.lag, status: replica.status });
+      if (replica.lag > this.maxLag) {
+        const alert: Alert = { replicaId: replica.id, lag: replica.lag, threshold: this.maxLag, timestamp: new Date() };
+        report.alerts.push(alert);
+        this.alerts.push(alert);
+        this.manager.updateStatus(replica.id, 'lagging');
       }
     }
+    
+    return report;
   }
   
-  private async measureLag(replicaId: string): Promise<number> { return Math.random() * 5; }
-  
-  getAlerts(since?: Date): LagAlert[] {
-    return since ? this.alerts.filter(a => a.timestamp >= since) : [...this.alerts];
+  getRecentAlerts(minutes: number = 60): Alert[] {
+    const cutoff = Date.now() - minutes * 60 * 1000;
+    return this.alerts.filter(a => a.timestamp.getTime() > cutoff);
   }
-  
-  clearAlerts(): void { this.alerts = []; }
 }
 
-export interface LagAlert { replicaId: string; lagSeconds: number; timestamp: Date; }
+export interface LagReport { timestamp: Date; replicas: { id: string; lag: number; status: string }[]; alerts: Alert[]; }
+export interface Alert { replicaId: string; lag: number; threshold: number; timestamp: Date; }
