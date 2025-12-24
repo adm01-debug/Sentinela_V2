@@ -1,3 +1,3 @@
-export interface SanitizerConfig { allowedTags: string[]; allowedAttributes: Record<string, string[]>; allowedProtocols: string[]; stripComments: boolean; }
-export interface XSSDetectionResult { detected: boolean; patterns: DetectedPattern[]; riskLevel: 'low' | 'medium' | 'high' | 'critical'; }
-export interface DetectedPattern { type: string; location: number; matched: string; }
+export interface SanitizeConfig { allowedTags: string[]; allowedAttributes: Record<string, string[]>; stripScripts: boolean; }
+export interface XSSDetection { detected: boolean; type?: XSSType; payload?: string; location?: string; }
+export type XSSType = 'reflected' | 'stored' | 'dom' | 'mutation';
