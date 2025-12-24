@@ -1,31 +1,31 @@
-import { ChangeEvent } from './types';
+import { ChangeEvent, SinkConfig } from './types';
 
-export interface CDCPublisher {
-  publish(event: ChangeEvent): Promise<void>;
+export abstract class CDCPublisher {
+  abstract publish(event: ChangeEvent): Promise<void>;
+  abstract publishBatch(events: ChangeEvent[]): Promise<void>;
 }
 
-export class KafkaCDCPublisher implements CDCPublisher {
-  constructor(private topic: string) {}
+export class KafkaCDCPublisher extends CDCPublisher {
+  constructor(private config: SinkConfig) { super(); }
   
   async publish(event: ChangeEvent): Promise<void> {
-    console.log('Publishing to Kafka topic', this.topic, ':', event.table, event.operation);
+    const topic = (this.config.topicPrefix ?? 'cdc') + '.' + event.table;
+    console.log('Publishing to Kafka topic:', topic);
+  }
+  
+  async publishBatch(events: ChangeEvent[]): Promise<void> {
+    await Promise.all(events.map(e => this.publish(e)));
   }
 }
 
-export class WebhookCDCPublisher implements CDCPublisher {
-  constructor(private webhookUrl: string) {}
+export class HTTPCDCPublisher extends CDCPublisher {
+  constructor(private config: SinkConfig) { super(); }
   
   async publish(event: ChangeEvent): Promise<void> {
-    console.log('Publishing to webhook', this.webhookUrl);
+    console.log('Publishing to HTTP:', this.config.endpoint);
   }
-}
-
-export class MultiPublisher implements CDCPublisher {
-  private publishers: CDCPublisher[] = [];
   
-  add(publisher: CDCPublisher): this { this.publishers.push(publisher); return this; }
-  
-  async publish(event: ChangeEvent): Promise<void> {
-    await Promise.all(this.publishers.map(p => p.publish(event)));
+  async publishBatch(events: ChangeEvent[]): Promise<void> {
+    console.log('Publishing batch of', events.length, 'events to HTTP');
   }
 }
