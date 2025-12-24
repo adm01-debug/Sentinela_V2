@@ -5,10 +5,11 @@ export interface BulkheadConfig {
   timeout: number;
 }
 
-export interface BulkheadMetrics {
+export interface BulkheadStats {
+  name: string;
   activeCount: number;
-  queuedCount: number;
-  completedCount: number;
-  rejectedCount: number;
-  averageWaitTime: number;
+  waitingCount: number;
+  availableSlots: number;
+  totalExecutions: number;
+  rejections: number;
 }
