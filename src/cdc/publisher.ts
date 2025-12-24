@@ -1,31 +1,42 @@
-import { ChangeEvent, SinkConfig } from './types';
+import { ChangeEvent } from './types';
 
-export abstract class CDCPublisher {
-  abstract publish(event: ChangeEvent): Promise<void>;
-  abstract publishBatch(events: ChangeEvent[]): Promise<void>;
+export class CDCPublisher {
+  private subscribers: ((events: ChangeEvent[]) => Promise<void>)[] = [];
+  
+  subscribe(handler: (events: ChangeEvent[]) => Promise<void>): () => void {
+    this.subscribers.push(handler);
+    return () => { this.subscribers = this.subscribers.filter(s => s !== handler); };
+  }
+  
+  async publish(events: ChangeEvent[]): Promise<void> {
+    await Promise.all(this.subscribers.map(s => s(events)));
+  }
+  
+  async publishOne(event: ChangeEvent): Promise<void> {
+    await this.publish([event]);
+  }
 }
 
-export class KafkaCDCPublisher extends CDCPublisher {
-  constructor(private config: SinkConfig) { super(); }
+export class BatchPublisher {
+  private buffer: ChangeEvent[] = [];
+  private timer?: NodeJS.Timeout;
   
-  async publish(event: ChangeEvent): Promise<void> {
-    const topic = (this.config.topicPrefix ?? 'cdc') + '.' + event.table;
-    console.log('Publishing to Kafka topic:', topic);
+  constructor(private publisher: CDCPublisher, private batchSize: number, private flushInterval: number) {}
+  
+  add(event: ChangeEvent): void {
+    this.buffer.push(event);
+    if (this.buffer.length >= this.batchSize) this.flush();
+    else this.scheduleFlush();
   }
   
-  async publishBatch(events: ChangeEvent[]): Promise<void> {
-    await Promise.all(events.map(e => this.publish(e)));
-  }
-}
-
-export class HTTPCDCPublisher extends CDCPublisher {
-  constructor(private config: SinkConfig) { super(); }
-  
-  async publish(event: ChangeEvent): Promise<void> {
-    console.log('Publishing to HTTP:', this.config.endpoint);
+  private scheduleFlush(): void {
+    if (!this.timer) this.timer = setTimeout(() => this.flush(), this.flushInterval);
   }
   
-  async publishBatch(events: ChangeEvent[]): Promise<void> {
-    console.log('Publishing batch of', events.length, 'events to HTTP');
+  async flush(): Promise<void> {
+    if (this.timer) { clearTimeout(this.timer); this.timer = undefined; }
+    if (this.buffer.length === 0) return;
+    const batch = this.buffer.splice(0, this.batchSize);
+    await this.publisher.publish(batch);
   }
 }
