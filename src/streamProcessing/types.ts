@@ -4,11 +4,11 @@ export interface StreamConfig {
   checkpointInterval: number;
 }
 
-export interface StreamEvent<T = unknown> {
-  key?: string;
+export interface StreamRecord<T> {
+  key: string;
   value: T;
   timestamp: Date;
-  partition?: number;
+  partition: number;
 }
 
 export interface WindowConfig {
