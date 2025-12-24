@@ -1,42 +1,20 @@
 import { STRIDECategory, Threat } from './types';
 
-export class STRIDEAnalyzer {
-  private templates: Map<STRIDECategory, ThreatTemplate[]> = new Map();
-  
-  constructor() { this.initializeTemplates(); }
-  
-  private initializeTemplates(): void {
-    this.templates.set('spoofing', [
-      { description: 'Attacker impersonates legitimate user', defaultMitigations: ['Multi-factor authentication', 'Strong password policy'] }
-    ]);
-    this.templates.set('tampering', [
-      { description: 'Data modified in transit', defaultMitigations: ['Use TLS/HTTPS', 'Digital signatures'] }
-    ]);
-    this.templates.set('repudiation', [
-      { description: 'User denies performing action', defaultMitigations: ['Audit logging', 'Digital signatures'] }
-    ]);
-    this.templates.set('information_disclosure', [
-      { description: 'Sensitive data exposed', defaultMitigations: ['Encryption at rest', 'Access controls'] }
-    ]);
-    this.templates.set('denial_of_service', [
-      { description: 'Service unavailable', defaultMitigations: ['Rate limiting', 'Load balancing'] }
-    ]);
-    this.templates.set('elevation_of_privilege', [
-      { description: 'Unauthorized access to resources', defaultMitigations: ['Principle of least privilege', 'Input validation'] }
-    ]);
-  }
-  
-  analyzeAsset(assetId: string, assetType: string): Partial<Threat>[] {
-    const threats: Partial<Threat>[] = [];
-    for (const [category, templates] of this.templates) {
-      templates.forEach(t => {
-        threats.push({ category, description: t.description, targetAsset: assetId, mitigations: t.defaultMitigations });
-      });
-    }
-    return threats;
-  }
-  
-  getTemplates(category: STRIDECategory): ThreatTemplate[] { return this.templates.get(category) ?? []; }
-}
+export const STRIDEThreats: Record<STRIDECategory, { description: string; examples: string[] }> = {
+  spoofing: { description: 'Pretending to be something or someone else', examples: ['Credential theft', 'Session hijacking'] },
+  tampering: { description: 'Modifying data or code', examples: ['SQL injection', 'Man-in-the-middle'] },
+  repudiation: { description: 'Claiming to not have performed an action', examples: ['Missing audit logs', 'Unsigned transactions'] },
+  information_disclosure: { description: 'Exposing information to unauthorized parties', examples: ['Data breach', 'Error messages with sensitive info'] },
+  denial_of_service: { description: 'Denying or degrading service to users', examples: ['DDoS attack', 'Resource exhaustion'] },
+  elevation_of_privilege: { description: 'Gaining capabilities without authorization', examples: ['Privilege escalation', 'Authorization bypass'] }
+};
 
-export interface ThreatTemplate { description: string; defaultMitigations: string[]; }
+export class STRIDEAnalyzer {
+  analyze(assetType: string): STRIDECategory[] {
+    const applicable: STRIDECategory[] = [];
+    if (assetType === 'data') applicable.push('tampering', 'information_disclosure');
+    if (assetType === 'process') applicable.push('spoofing', 'tampering', 'denial_of_service', 'elevation_of_privilege');
+    if (assetType === 'external') applicable.push('spoofing', 'repudiation');
+    return applicable;
+  }
+}
