@@ -1,50 +1,39 @@
-import { WindowConfig, StreamEvent } from './types';
+import { StreamEvent, WindowConfig } from './types';
 
-export class WindowedStream<T> {
+export class WindowOperator<T> {
   private windows: Map<string, WindowBuffer<T>> = new Map();
   
   constructor(private config: WindowConfig) {}
   
-  add(event: StreamEvent<T>): WindowResult<T>[] {
+  add(event: StreamEvent<T>): void {
     const windowKey = this.getWindowKey(event.timestamp);
-    let buffer = this.windows.get(windowKey);
-    
-    if (!buffer) {
-      buffer = new WindowBuffer<T>(this.config.size);
-      this.windows.set(windowKey, buffer);
-    }
-    
-    buffer.add(event);
-    return this.emitCompletedWindows();
+    let window = this.windows.get(windowKey);
+    if (!window) { window = new WindowBuffer(this.config); this.windows.set(windowKey, window); }
+    window.add(event);
   }
   
   private getWindowKey(timestamp: Date): string {
     const time = timestamp.getTime();
-    const windowStart = Math.floor(time / this.config.size) * this.config.size;
-    return windowStart.toString();
+    return String(Math.floor(time / this.config.size) * this.config.size);
   }
   
-  private emitCompletedWindows(): WindowResult<T>[] {
-    const now = Date.now();
-    const results: WindowResult<T>[] = [];
-    
-    for (const [key, buffer] of this.windows) {
-      const windowEnd = parseInt(key) + this.config.size;
-      if (now >= windowEnd) {
-        results.push({ windowStart: new Date(parseInt(key)), windowEnd: new Date(windowEnd), events: buffer.getEvents() });
-        this.windows.delete(key);
-      }
+  getWindow(key: string): StreamEvent<T>[] { return this.windows.get(key)?.getEvents() ?? []; }
+  
+  closeExpiredWindows(currentTime: Date): Map<string, StreamEvent<T>[]> {
+    const closed = new Map<string, StreamEvent<T>[]>();
+    const threshold = currentTime.getTime() - this.config.size;
+    for (const [key, window] of this.windows) {
+      if (parseInt(key) < threshold) { closed.set(key, window.getEvents()); this.windows.delete(key); }
     }
-    
-    return results;
+    return closed;
   }
 }
 
-class WindowBuffer<T> {
+export class WindowBuffer<T> {
   private events: StreamEvent<T>[] = [];
-  constructor(private maxSize: number) {}
+  constructor(private config: WindowConfig) {}
   add(event: StreamEvent<T>): void { this.events.push(event); }
   getEvents(): StreamEvent<T>[] { return [...this.events]; }
+  clear(): void { this.events = []; }
+  size(): number { return this.events.length; }
 }
-
-export interface WindowResult<T> { windowStart: Date; windowEnd: Date; events: StreamEvent<T>[]; }
