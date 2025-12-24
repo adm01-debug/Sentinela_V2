@@ -1,70 +1,155 @@
-// Outbox Processor - Message Processing
-import { OutboxMessage } from "./outboxMessage";
-import { OutboxRepository } from "./outboxRepository";
-
-export interface MessagePublisher {
-  publish(message: OutboxMessage): Promise<void>;
-}
-
-export interface OutboxProcessorConfig {
-  batchSize: number;
-  pollIntervalMs: number;
-  maxRetries: number;
-  retryDelayMs: number;
-}
+// Outbox Processor
+import { OutboxMessage, OutboxStatus, OutboxConfig, DEFAULT_OUTBOX_CONFIG, MessagePublisher, OutboxStats } from './types';
+import { OutboxRepository } from './outboxRepository';
+import { v4 as uuidv4 } from 'uuid';
 
 export class OutboxProcessor {
-  private running = false;
+  private config: OutboxConfig;
+  private repository: OutboxRepository;
+  private publisher: MessagePublisher;
+  private isRunning: boolean = false;
   private timer?: NodeJS.Timeout;
+  private processedCount: number = 0;
+  private startTime: number = 0;
 
   constructor(
-    private repository: OutboxRepository,
-    private publisher: MessagePublisher,
-    private config: OutboxProcessorConfig = { batchSize: 100, pollIntervalMs: 1000, maxRetries: 3, retryDelayMs: 5000 }
-  ) {}
+    repository: OutboxRepository,
+    publisher: MessagePublisher,
+    config: Partial<OutboxConfig> = {}
+  ) {
+    this.repository = repository;
+    this.publisher = publisher;
+    this.config = { ...DEFAULT_OUTBOX_CONFIG, ...config };
+  }
 
   start(): void {
-    if (this.running) return;
-    this.running = true;
+    if (this.isRunning) return;
+    this.isRunning = true;
+    this.startTime = Date.now();
     this.poll();
   }
 
   stop(): void {
-    this.running = false;
-    if (this.timer) clearTimeout(this.timer);
+    this.isRunning = false;
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
   }
 
   private async poll(): Promise<void> {
-    if (!this.running) return;
+    if (!this.isRunning) return;
+
     try {
-      await this.processBatch();
+      await this.processMessages();
     } catch (error) {
-      console.error("[Outbox] Polling error:", error);
+      console.error('Outbox processing error:', error);
     }
+
     this.timer = setTimeout(() => this.poll(), this.config.pollIntervalMs);
   }
 
-  private async processBatch(): Promise<void> {
-    const messages = await this.repository.findPending(this.config.batchSize);
-    for (const message of messages) {
-      await this.processMessage(message);
+  private async processMessages(): Promise<void> {
+    const messages = await this.repository.findPendingMessages(
+      this.config.batchSize,
+      this.config.lockTimeoutMs
+    );
+
+    if (messages.length === 0) return;
+
+    const results = await this.publisher.publishBatch(messages);
+
+    for (let i = 0; i < results.length; i++) {
+      const result = results[i];
+      const message = messages[i];
+
+      if (result.success) {
+        await this.repository.markAsProcessed(message.id);
+        this.processedCount++;
+      } else {
+        if (message.retryCount >= this.config.maxRetries) {
+          await this.repository.markAsDeadLetter(message.id, result.error);
+        } else {
+          await this.repository.markAsFailed(message.id, result.error);
+        }
+      }
     }
   }
 
-  private async processMessage(message: OutboxMessage): Promise<void> {
-    const locked = await this.repository.markAsProcessing(message.id);
-    if (!locked) return;
+  async getStats(): Promise<OutboxStats> {
+    const counts = await this.repository.getCounts();
+    const elapsedSeconds = (Date.now() - this.startTime) / 1000;
 
-    try {
-      await this.publisher.publish(message);
-      await this.repository.markAsProcessed(message.id);
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      await this.repository.markAsFailed(message.id, errorMsg);
-      
-      if (message.retryCount >= this.config.maxRetries) {
-        await this.repository.moveToDeadLetter(message.id);
-      }
+    return {
+      ...counts,
+      avgProcessingTimeMs: 0,
+      messagesPerSecond: elapsedSeconds > 0 ? this.processedCount / elapsedSeconds : 0
+    };
+  }
+
+  async cleanup(): Promise<number> {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - this.config.cleanupAfterDays);
+    return this.repository.deleteProcessedBefore(cutoffDate);
+  }
+}
+
+export class OutboxMessageBuilder {
+  private message: Partial<OutboxMessage> = {
+    id: uuidv4(),
+    status: OutboxStatus.Pending,
+    createdAt: new Date(),
+    retryCount: 0,
+    metadata: {
+      correlationId: uuidv4()
     }
+  };
+
+  static create(): OutboxMessageBuilder {
+    return new OutboxMessageBuilder();
+  }
+
+  withAggregateId(id: string): this {
+    this.message.aggregateId = id;
+    return this;
+  }
+
+  withAggregateType(type: string): this {
+    this.message.aggregateType = type;
+    return this;
+  }
+
+  withEventType(type: string): this {
+    this.message.eventType = type;
+    return this;
+  }
+
+  withPayload(payload: unknown): this {
+    this.message.payload = payload;
+    return this;
+  }
+
+  withCorrelationId(id: string): this {
+    this.message.metadata!.correlationId = id;
+    return this;
+  }
+
+  withDestination(destination: string): this {
+    this.message.metadata!.destination = destination;
+    return this;
+  }
+
+  withHeader(key: string, value: string): this {
+    if (!this.message.metadata!.headers) {
+      this.message.metadata!.headers = {};
+    }
+    this.message.metadata!.headers[key] = value;
+    return this;
+  }
+
+  build(): OutboxMessage {
+    if (!this.message.aggregateId || !this.message.aggregateType || !this.message.eventType) {
+      throw new Error('Missing required fields');
+    }
+    return this.message as OutboxMessage;
   }
 }
