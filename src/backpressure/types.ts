@@ -1,15 +1,16 @@
 export interface BackpressureConfig {
+  strategy: BackpressureStrategy;
   highWaterMark: number;
   lowWaterMark: number;
-  strategy: BackpressureStrategy;
+  bufferSize: number;
 }
 
 export type BackpressureStrategy = 'drop' | 'buffer' | 'throttle' | 'error';
 
-export interface BackpressureMetrics {
+export interface BackpressureStats {
   currentLoad: number;
+  bufferUsage: number;
   droppedCount: number;
-  bufferedCount: number;
-  throttledCount: number;
-  isPaused: boolean;
+  processedCount: number;
+  isOverloaded: boolean;
 }
