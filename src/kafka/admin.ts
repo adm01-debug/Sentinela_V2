@@ -1,23 +1,37 @@
-import { KafkaConfig, TopicConfig } from './types';
+import { KafkaConfig } from './types';
 
 export class KafkaAdmin {
   constructor(private config: KafkaConfig) {}
   
-  async createTopic(config: TopicConfig): Promise<void> {
-    console.log('Creating topic:', config.topic);
+  async createTopic(topic: TopicConfig): Promise<void> {
+    console.log('Creating topic', topic.name);
   }
   
-  async deleteTopic(topic: string): Promise<void> {
-    console.log('Deleting topic:', topic);
+  async deleteTopic(name: string): Promise<void> {
+    console.log('Deleting topic', name);
   }
   
-  async listTopics(): Promise<string[]> { return ['topic1', 'topic2']; }
+  async listTopics(): Promise<string[]> { return []; }
   
   async describeTopics(topics: string[]): Promise<TopicDescription[]> {
-    return topics.map(t => ({ name: t, partitions: 3, replicationFactor: 1 }));
+    return topics.map(name => ({ name, partitions: 3, replicationFactor: 1, configs: {} }));
   }
   
-  async listConsumerGroups(): Promise<string[]> { return ['group1']; }
+  async createPartitions(topic: string, count: number): Promise<void> {
+    console.log('Creating', count, 'partitions for', topic);
+  }
 }
 
-export interface TopicDescription { name: string; partitions: number; replicationFactor: number; }
+export interface TopicConfig {
+  name: string;
+  partitions: number;
+  replicationFactor: number;
+  configs?: Record<string, string>;
+}
+
+export interface TopicDescription {
+  name: string;
+  partitions: number;
+  replicationFactor: number;
+  configs: Record<string, string>;
+}
