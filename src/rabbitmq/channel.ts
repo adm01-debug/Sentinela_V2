@@ -1,38 +1,28 @@
-import { QueueOptions, ExchangeOptions, PublishOptions, ConsumeOptions } from './types';
+import { QueueOptions, ConsumeOptions, PublishOptions } from './types';
 
-export class RabbitMQChannel {
-  private open: boolean = true;
-  private queues: Map<string, QueueOptions> = new Map();
+export class ChannelPool {
+  private channels: PooledChannel[] = [];
+  private maxChannels: number;
   
-  async assertQueue(queue: string, options?: QueueOptions): Promise<QueueInfo> {
-    this.queues.set(queue, options ?? {});
-    return { queue, messageCount: 0, consumerCount: 0 };
+  constructor(maxChannels: number = 10) { this.maxChannels = maxChannels; }
+  
+  async acquire(): Promise<PooledChannel> {
+    const available = this.channels.find(c => !c.inUse);
+    if (available) { available.inUse = true; return available; }
+    if (this.channels.length < this.maxChannels) {
+      const channel: PooledChannel = { id: this.channels.length, inUse: true };
+      this.channels.push(channel);
+      return channel;
+    }
+    throw new Error('No channels available');
   }
   
-  async assertExchange(exchange: string, type: string, options?: Partial<ExchangeOptions>): Promise<void> {
-    console.log('Exchange asserted:', exchange, type);
-  }
+  release(channel: PooledChannel): void { channel.inUse = false; }
   
-  async bindQueue(queue: string, exchange: string, routingKey: string): Promise<void> {
-    console.log('Queue bound:', queue, exchange, routingKey);
+  getStats(): { total: number; inUse: number; available: number } {
+    const inUse = this.channels.filter(c => c.inUse).length;
+    return { total: this.channels.length, inUse, available: this.channels.length - inUse };
   }
-  
-  async publish(exchange: string, routingKey: string, content: Buffer, options?: PublishOptions): Promise<boolean> {
-    return true;
-  }
-  
-  async sendToQueue(queue: string, content: Buffer, options?: PublishOptions): Promise<boolean> {
-    return true;
-  }
-  
-  async consume(queue: string, handler: (msg: Message | null) => void, options?: ConsumeOptions): Promise<string> {
-    return 'consumer-tag-' + Date.now();
-  }
-  
-  async ack(message: Message): Promise<void> { console.log('Message acked'); }
-  async nack(message: Message, requeue?: boolean): Promise<void> { console.log('Message nacked'); }
-  async close(): Promise<void> { this.open = false; }
 }
 
-export interface QueueInfo { queue: string; messageCount: number; consumerCount: number; }
-export interface Message { content: Buffer; fields: { deliveryTag: number; routingKey: string }; properties: Record<string, unknown>; }
+export interface PooledChannel { id: number; inUse: boolean; }
