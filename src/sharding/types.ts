@@ -1,29 +1,4 @@
-export interface ShardConfig {
-  shardId: string;
-  host: string;
-  port: number;
-  database: string;
-  weight: number;
-  status: ShardStatus;
-}
-
-export type ShardStatus = 'active' | 'readonly' | 'offline' | 'migrating';
-
-export interface ShardKey {
-  field: string;
-  type: 'hash' | 'range' | 'list';
-}
-
-export interface ShardMapping {
-  shardId: string;
-  keyRange?: { min: unknown; max: unknown };
-  keyList?: unknown[];
-}
-
-export interface ShardStats {
-  shardId: string;
-  recordCount: number;
-  sizeBytes: number;
-  connections: number;
-  latencyMs: number;
-}
+export interface ShardConfig { shardId: string; minKey: string; maxKey: string; host: string; port: number; status: ShardStatus; }
+export type ShardStatus = 'active' | 'draining' | 'offline' | 'readonly';
+export interface ShardKey { value: string; hash: number; }
+export interface ShardingStrategy { getShard(key: ShardKey, shards: ShardConfig[]): ShardConfig; }
