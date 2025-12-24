@@ -5,13 +5,10 @@ export interface BulkheadConfig {
   timeout: number;
 }
 
-export interface BulkheadStats {
-  name: string;
-  active: number;
-  waiting: number;
-  available: number;
-  rejections: number;
-  timeouts: number;
+export interface BulkheadMetrics {
+  activeCount: number;
+  queuedCount: number;
+  completedCount: number;
+  rejectedCount: number;
+  averageWaitTime: number;
 }
-
-export enum BulkheadState { Open = 'open', Full = 'full', Closed = 'closed' }
