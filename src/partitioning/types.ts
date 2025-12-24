@@ -1,24 +1,3 @@
-export interface PartitionConfig {
-  tableName: string;
-  partitionKey: string;
-  strategy: PartitionStrategy;
-  retentionDays?: number;
-}
-
-export type PartitionStrategy = 'range' | 'list' | 'hash' | 'composite';
-
-export interface Partition {
-  name: string;
-  tableName: string;
-  constraint: string;
-  rowCount: number;
-  sizeBytes: number;
-  createdAt: Date;
-}
-
-export interface PartitionBoundary {
-  type: 'range' | 'list';
-  from?: unknown;
-  to?: unknown;
-  values?: unknown[];
-}
+export interface Partition { id: string; name: string; minValue: unknown; maxValue: unknown; tableName: string; }
+export interface PartitionConfig { strategy: 'range' | 'list' | 'hash'; column: string; partitions: number; }
+export interface PartitionStats { id: string; rowCount: number; sizeBytes: number; lastUpdated: Date; }
