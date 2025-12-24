@@ -1,32 +1,25 @@
 export class DataAggregator {
-  private aggregations: Map<string, AggregationRule> = new Map();
-  
-  addRule(name: string, rule: AggregationRule): void { this.aggregations.set(name, rule); }
-  
-  aggregate(sources: Record<string, unknown>): unknown {
-    const result: Record<string, unknown> = {};
-    this.aggregations.forEach((rule, name) => {
-      result[name] = rule.aggregate(sources);
-    });
+  aggregate<T>(sources: T[], strategy: AggregationStrategy<T>): T {
+    return strategy.aggregate(sources);
+  }
+}
+
+export interface AggregationStrategy<T> {
+  aggregate(sources: T[]): T;
+}
+
+export class MergeStrategy<T extends Record<string, unknown>> implements AggregationStrategy<T> {
+  aggregate(sources: T[]): T { return Object.assign({}, ...sources); }
+}
+
+export class FirstNonNullStrategy<T> implements AggregationStrategy<T> {
+  aggregate(sources: T[]): T {
+    const result = sources.find(s => s !== null && s !== undefined);
+    if (!result) throw new Error('All sources returned null');
     return result;
   }
 }
 
-export interface AggregationRule {
-  aggregate(sources: Record<string, unknown>): unknown;
-}
-
-export class MergeRule implements AggregationRule {
-  constructor(private sourceKeys: string[]) {}
-  aggregate(sources: Record<string, unknown>): unknown {
-    return this.sourceKeys.reduce((acc, key) => ({ ...acc, ...(sources[key] as object ?? {}) }), {});
-  }
-}
-
-export class SelectRule implements AggregationRule {
-  constructor(private sourceKey: string, private path: string) {}
-  aggregate(sources: Record<string, unknown>): unknown {
-    const source = sources[this.sourceKey] as Record<string, unknown>;
-    return this.path.split('.').reduce((obj, key) => (obj as Record<string, unknown>)?.[key], source);
-  }
+export class ArrayConcatStrategy<T> implements AggregationStrategy<T[]> {
+  aggregate(sources: T[][]): T[] { return sources.flat(); }
 }
