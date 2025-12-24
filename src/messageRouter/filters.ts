@@ -1,27 +1,26 @@
 import { Message } from './types';
 
-export interface MessageFilter {
-  filter(message: Message): boolean;
-}
+export interface MessageFilter { accept(message: Message): boolean; }
 
 export class TypeFilter implements MessageFilter {
-  constructor(private allowedTypes: Set<string>) {}
-  filter(message: Message): boolean { return this.allowedTypes.has(message.type); }
+  constructor(private types: string[]) {}
+  accept(message: Message): boolean { return this.types.includes(message.type); }
 }
 
 export class HeaderFilter implements MessageFilter {
-  constructor(private requiredHeaders: string[]) {}
-  filter(message: Message): boolean { return this.requiredHeaders.every(h => h in message.headers); }
+  constructor(private headerKey: string, private expectedValue: string) {}
+  accept(message: Message): boolean { return message.headers[this.headerKey] === this.expectedValue; }
 }
 
 export class CompositeFilter implements MessageFilter {
   constructor(private filters: MessageFilter[], private mode: 'all' | 'any' = 'all') {}
-  filter(message: Message): boolean {
-    return this.mode === 'all' ? this.filters.every(f => f.filter(message)) : this.filters.some(f => f.filter(message));
+  accept(message: Message): boolean {
+    return this.mode === 'all' ? this.filters.every(f => f.accept(message)) : this.filters.some(f => f.accept(message));
   }
 }
 
-export class ContentFilter implements MessageFilter {
-  constructor(private predicate: (payload: unknown) => boolean) {}
-  filter(message: Message): boolean { return this.predicate(message.payload); }
+export class FilterChain {
+  private filters: MessageFilter[] = [];
+  add(filter: MessageFilter): this { this.filters.push(filter); return this; }
+  process(messages: Message[]): Message[] { return messages.filter(m => this.filters.every(f => f.accept(m))); }
 }
