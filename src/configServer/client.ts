@@ -1,33 +1,33 @@
-import { ConfigEntry } from './types';
+import { ConfigValue } from './types';
 
 export class ConfigClient {
-  private cache: Map<string, ConfigEntry> = new Map();
+  private cache: Map<string, ConfigValue> = new Map();
   private refreshInterval?: NodeJS.Timeout;
   
-  constructor(private serverUrl: string, private app: string, private env: string) {}
+  constructor(private serverUrl: string) {}
   
-  async get<T>(key: string, defaultValue?: T): Promise<T> {
+  async get(key: string): Promise<unknown> {
     const cached = this.cache.get(key);
-    if (cached) return cached.value as T;
-    return defaultValue as T;
+    if (cached) return cached.value;
+    const value = await this.fetch(key);
+    if (value) this.cache.set(key, value);
+    return value?.value;
   }
   
   async refresh(): Promise<void> {
-    // Simulated refresh
-    console.log('Refreshing config from server:', this.serverUrl);
+    for (const key of this.cache.keys()) {
+      const value = await this.fetch(key);
+      if (value) this.cache.set(key, value);
+    }
   }
   
-  startAutoRefresh(intervalMs: number = 60000): void {
+  startAutoRefresh(intervalMs: number): void {
     this.refreshInterval = setInterval(() => this.refresh(), intervalMs);
   }
   
-  stopAutoRefresh(): void {
-    if (this.refreshInterval) clearInterval(this.refreshInterval);
-  }
+  stopAutoRefresh(): void { if (this.refreshInterval) clearInterval(this.refreshInterval); }
   
-  getAll(): Record<string, unknown> {
-    const result: Record<string, unknown> = {};
-    this.cache.forEach((entry, key) => { result[key] = entry.value; });
-    return result;
+  private async fetch(key: string): Promise<ConfigValue | null> {
+    return { key, value: null, source: 'server', version: 1, updatedAt: new Date() };
   }
 }
