@@ -1,4 +1,4 @@
 export * from './types';
-export * from './protection';
-export * from './tokenStore';
+export * from './tokenManager';
+export * from './middleware';
 export * from './validator';
