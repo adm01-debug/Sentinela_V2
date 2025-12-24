@@ -1,4 +1,4 @@
 export * from './types';
 export * from './router';
-export * from './rules';
+export * from './strategies';
 export * from './filters';
