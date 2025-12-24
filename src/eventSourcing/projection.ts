@@ -1,40 +1,40 @@
 import { StoredEvent, Projection } from './types';
-import { EventStore } from './eventStore';
 
-export class ProjectionManager {
-  private projections: Map<string, Projection> = new Map();
-  private positions: Map<string, number> = new Map();
+export class ProjectionManager<S> {
+  private state: S;
+  private position: number = 0;
   
-  register(projection: Projection): void { this.projections.set(projection.name, projection); this.positions.set(projection.name, 0); }
+  constructor(private projection: Projection<S>) { this.state = projection.initialState; }
   
-  async run(eventStore: EventStore): Promise<void> {
-    for (const [name, projection] of this.projections) {
-      const position = this.positions.get(name) ?? 0;
-      const events = await eventStore.getAllEvents(position);
-      for (const event of events) { await projection.handle(event); this.positions.set(name, event.version); }
-    }
+  apply(event: StoredEvent): S {
+    const handler = this.projection.handlers[event.eventType];
+    if (handler) this.state = handler(this.state, event);
+    this.position++;
+    return this.state;
   }
   
-  async reset(projectionName: string): Promise<void> {
-    const projection = this.projections.get(projectionName);
-    if (projection) { await projection.reset(); this.positions.set(projectionName, 0); }
+  applyAll(events: StoredEvent[]): S {
+    events.forEach(e => this.apply(e));
+    return this.state;
   }
   
-  getPosition(projectionName: string): number { return this.positions.get(projectionName) ?? 0; }
+  getState(): S { return this.state; }
+  getPosition(): number { return this.position; }
+  reset(): void { this.state = this.projection.initialState; this.position = 0; }
 }
 
-export abstract class BaseProjection implements Projection {
-  abstract name: string;
-  protected handlers: Map<string, (event: StoredEvent) => Promise<void>> = new Map();
+export class LiveProjection<S> {
+  private manager: ProjectionManager<S>;
+  private unsubscribe?: () => void;
   
-  async handle(event: StoredEvent): Promise<void> {
-    const handler = this.handlers.get(event.eventType);
-    if (handler) await handler(event);
+  constructor(projection: Projection<S>, private eventStore: { subscribe: (h: (e: StoredEvent) => void) => () => void }) {
+    this.manager = new ProjectionManager(projection);
   }
   
-  protected on(eventType: string, handler: (event: StoredEvent) => Promise<void>): void {
-    this.handlers.set(eventType, handler);
+  start(): void {
+    this.unsubscribe = this.eventStore.subscribe(event => this.manager.apply(event));
   }
   
-  abstract reset(): Promise<void>;
+  stop(): void { this.unsubscribe?.(); }
+  getState(): S { return this.manager.getState(); }
 }
