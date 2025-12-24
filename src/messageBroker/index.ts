@@ -1,4 +1,4 @@
 export * from './types';
 export * from './broker';
-export * from './exchange';
-export * from './queue';
+export * from './topic';
+export * from './subscription';
