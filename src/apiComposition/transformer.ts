@@ -1,39 +1,33 @@
-export class ResponseTransformer {
-  private transforms: Transform[] = [];
+export class DataTransformer {
+  private transformers: Map<string, (data: unknown) => unknown> = new Map();
   
-  addTransform(transform: Transform): this { this.transforms.push(transform); return this; }
+  register(name: string, transformer: (data: unknown) => unknown): void {
+    this.transformers.set(name, transformer);
+  }
   
-  transform(data: unknown): unknown {
-    return this.transforms.reduce((result, t) => t.apply(result), data);
+  transform(name: string, data: unknown): unknown {
+    const transformer = this.transformers.get(name);
+    if (!transformer) throw new Error('Transformer not found: ' + name);
+    return transformer(data);
+  }
+  
+  pipe(data: unknown, ...names: string[]): unknown {
+    return names.reduce((d, name) => this.transform(name, d), data);
   }
 }
 
-export interface Transform {
-  apply(data: unknown): unknown;
-}
-
-export class MapTransform implements Transform {
-  constructor(private fn: (item: unknown) => unknown) {}
-  apply(data: unknown): unknown {
-    return Array.isArray(data) ? data.map(this.fn) : this.fn(data);
-  }
-}
-
-export class FilterTransform implements Transform {
-  constructor(private predicate: (item: unknown) => boolean) {}
-  apply(data: unknown): unknown {
-    return Array.isArray(data) ? data.filter(this.predicate) : data;
-  }
-}
-
-export class RenameTransform implements Transform {
-  constructor(private mapping: Record<string, string>) {}
-  apply(data: unknown): unknown {
-    if (typeof data !== 'object' || data === null) return data;
-    const result: Record<string, unknown> = {};
-    Object.entries(data as Record<string, unknown>).forEach(([key, value]) => {
-      result[this.mapping[key] ?? key] = value;
-    });
+export const CommonTransformers = {
+  flatten: (data: unknown) => Array.isArray(data) ? data.flat() : data,
+  unique: (data: unknown) => Array.isArray(data) ? [...new Set(data)] : data,
+  sort: (data: unknown) => Array.isArray(data) ? [...data].sort() : data,
+  pick: (keys: string[]) => (data: unknown) => {
+    if (typeof data !== 'object' || !data) return data;
+    return keys.reduce((r, k) => ({ ...r, [k]: (data as Record<string, unknown>)[k] }), {});
+  },
+  omit: (keys: string[]) => (data: unknown) => {
+    if (typeof data !== 'object' || !data) return data;
+    const result = { ...(data as Record<string, unknown>) };
+    keys.forEach(k => delete result[k]);
     return result;
   }
-}
+};
