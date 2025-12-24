@@ -1,22 +1,33 @@
-import { ServiceDefinition } from './types';
+import { ServiceRegistry, RegisteredService } from './registry';
 
 export class ServiceWatcher {
-  private watchers: Map<string, Set<WatchCallback>> = new Map();
+  private watchers: Map<string, Set<ServiceCallback>> = new Map();
   
-  watch(serviceName: string, callback: WatchCallback): () => void {
-    const watchers = this.watchers.get(serviceName) ?? new Set();
-    watchers.add(callback);
-    this.watchers.set(serviceName, watchers);
-    return () => watchers.delete(callback);
+  constructor(private registry: ServiceRegistry) {}
+  
+  watch(serviceName: string, callback: ServiceCallback): () => void {
+    const callbacks = this.watchers.get(serviceName) ?? new Set();
+    callbacks.add(callback);
+    this.watchers.set(serviceName, callbacks);
+    return () => callbacks.delete(callback);
   }
   
-  notify(serviceName: string, event: WatchEvent, service: ServiceDefinition): void {
-    this.watchers.get(serviceName)?.forEach(cb => cb(event, service));
-    this.watchers.get('*')?.forEach(cb => cb(event, service));
+  notify(serviceName: string, event: ServiceEvent): void {
+    const callbacks = this.watchers.get(serviceName);
+    if (callbacks) callbacks.forEach(cb => cb(event));
   }
   
-  watchAll(callback: WatchCallback): () => void { return this.watch('*', callback); }
+  startPolling(intervalMs: number = 5000): NodeJS.Timeout {
+    return setInterval(() => {
+      this.registry.getAll().forEach(service => {
+        this.notify(service.definition.name, { type: 'update', service });
+      });
+    }, intervalMs);
+  }
 }
 
-export type WatchEvent = 'added' | 'updated' | 'removed';
-export type WatchCallback = (event: WatchEvent, service: ServiceDefinition) => void;
+export type ServiceCallback = (event: ServiceEvent) => void;
+export interface ServiceEvent {
+  type: 'register' | 'deregister' | 'update' | 'healthChange';
+  service: RegisteredService;
+}
