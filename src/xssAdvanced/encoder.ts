@@ -1,28 +1,29 @@
-export class OutputEncoder {
-  static htmlEncode(input: string): string {
-    const entities: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;', '/': '&#x2F;' };
-    return input.replace(/[&<>"'\/]/g, char => entities[char]);
-  }
+export class HTMLEncoder {
+  private entityMap: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;', '/': '&#x2F;' };
   
-  static urlEncode(input: string): string { return encodeURIComponent(input); }
+  encode(input: string): string { return input.replace(/[&<>"'/]/g, char => this.entityMap[char] ?? char); }
+  decode(input: string): string { return input.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&#x2F;/g, '/'); }
+}
+
+export class URLEncoder {
+  encode(input: string): string { return encodeURIComponent(input); }
+  decode(input: string): string { return decodeURIComponent(input); }
+}
+
+export class JavaScriptEncoder {
+  encode(input: string): string { return input.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r'); }
+}
+
+export class ContextEncoder {
+  html = new HTMLEncoder();
+  url = new URLEncoder();
+  js = new JavaScriptEncoder();
   
-  static jsEncode(input: string): string {
-    return input.replace(/[\\'"\n\r\t]/g, char => {
-      const escapes: Record<string, string> = { '\\': '\\\\', "'": "\\'", '"': '\\"', '\n': '\\n', '\r': '\\r', '\t': '\\t' };
-      return escapes[char] ?? char;
-    });
-  }
-  
-  static cssEncode(input: string): string {
-    return input.replace(/[^a-zA-Z0-9]/g, char => '\\' + char.charCodeAt(0).toString(16) + ' ');
-  }
-  
-  static encodeForContext(input: string, context: 'html' | 'url' | 'js' | 'css'): string {
+  forContext(context: 'html' | 'url' | 'js', input: string): string {
     switch (context) {
-      case 'html': return this.htmlEncode(input);
-      case 'url': return this.urlEncode(input);
-      case 'js': return this.jsEncode(input);
-      case 'css': return this.cssEncode(input);
+      case 'html': return this.html.encode(input);
+      case 'url': return this.url.encode(input);
+      case 'js': return this.js.encode(input);
     }
   }
 }
