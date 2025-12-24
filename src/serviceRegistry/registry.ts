@@ -1,42 +1,31 @@
-import { ServiceDefinition, ServiceRegistration, RegistrationStatus } from './types';
-import { v4 as uuidv4 } from 'uuid';
+import { ServiceDefinition, EndpointDefinition } from './types';
 
 export class ServiceRegistry {
-  private registrations: Map<string, ServiceRegistration> = new Map();
+  private services: Map<string, ServiceDefinition> = new Map();
+  private listeners: Map<string, Set<(service: ServiceDefinition) => void>> = new Map();
   
-  register(service: ServiceDefinition): string {
-    const id = uuidv4();
-    this.registrations.set(id, {
-      id, service, status: RegistrationStatus.Active, registeredAt: new Date(), lastHeartbeat: new Date()
-    });
-    return id;
+  register(service: ServiceDefinition): void {
+    this.services.set(service.name, service);
+    this.notifyListeners(service.name, service);
   }
   
-  deregister(id: string): boolean { return this.registrations.delete(id); }
+  deregister(name: string): void { this.services.delete(name); }
   
-  heartbeat(id: string): boolean {
-    const reg = this.registrations.get(id);
-    if (reg) { reg.lastHeartbeat = new Date(); return true; }
-    return false;
+  get(name: string): ServiceDefinition | undefined { return this.services.get(name); }
+  getAll(): ServiceDefinition[] { return Array.from(this.services.values()); }
+  
+  getEndpoints(name: string): EndpointDefinition[] {
+    return this.services.get(name)?.endpoints ?? [];
   }
   
-  find(name: string, version?: string): ServiceRegistration[] {
-    return Array.from(this.registrations.values()).filter(r => 
-      r.service.name === name && r.status === RegistrationStatus.Active &&
-      (!version || r.service.version === version)
-    );
+  watch(name: string, callback: (service: ServiceDefinition) => void): () => void {
+    const listeners = this.listeners.get(name) ?? new Set();
+    listeners.add(callback);
+    this.listeners.set(name, listeners);
+    return () => listeners.delete(callback);
   }
   
-  findOne(name: string): ServiceRegistration | undefined {
-    const services = this.find(name);
-    return services[Math.floor(Math.random() * services.length)];
-  }
-  
-  getAll(): ServiceRegistration[] { return Array.from(this.registrations.values()); }
-  
-  setStatus(id: string, status: RegistrationStatus): boolean {
-    const reg = this.registrations.get(id);
-    if (reg) { reg.status = status; return true; }
-    return false;
+  private notifyListeners(name: string, service: ServiceDefinition): void {
+    this.listeners.get(name)?.forEach(cb => cb(service));
   }
 }
