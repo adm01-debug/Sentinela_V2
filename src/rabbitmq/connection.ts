@@ -1,28 +1,40 @@
-import { RabbitMQConfig, ExchangeConfig, QueueConfig } from './types';
+import { RabbitConfig } from './types';
 
-export class RabbitMQConnection {
+export class RabbitConnection {
   private connected: boolean = false;
-  private exchanges: Map<string, ExchangeConfig> = new Map();
-  private queues: Map<string, QueueConfig> = new Map();
+  constructor(private config: RabbitConfig) {}
   
-  constructor(private config: RabbitMQConfig) {}
-  
-  async connect(): Promise<void> { this.connected = true; }
-  async disconnect(): Promise<void> { this.connected = false; }
+  async connect(): Promise<void> { this.connected = true; console.log('Connected to RabbitMQ'); }
+  async close(): Promise<void> { this.connected = false; }
   isConnected(): boolean { return this.connected; }
   
-  async declareExchange(config: ExchangeConfig): Promise<void> {
-    this.exchanges.set(config.name, config);
-  }
-  
-  async declareQueue(config: QueueConfig): Promise<void> {
-    this.queues.set(config.name, config);
-  }
-  
-  async bindQueue(queue: string, exchange: string, routingKey: string): Promise<void> {
-    console.log('Bound', queue, 'to', exchange, 'with key', routingKey);
-  }
-  
-  async deleteExchange(name: string): Promise<void> { this.exchanges.delete(name); }
-  async deleteQueue(name: string): Promise<void> { this.queues.delete(name); }
+  createChannel(): RabbitChannel { return new RabbitChannel(this); }
 }
+
+export class RabbitChannel {
+  private queues: Set<string> = new Set();
+  private exchanges: Set<string> = new Set();
+  
+  constructor(private connection: RabbitConnection) {}
+  
+  async assertQueue(name: string): Promise<void> { this.queues.add(name); }
+  async assertExchange(name: string, type: string): Promise<void> { this.exchanges.add(name); }
+  async bindQueue(queue: string, exchange: string, routingKey: string): Promise<void> {
+    console.log('Binding', queue, 'to', exchange, 'with key', routingKey);
+  }
+  
+  async publish(exchange: string, routingKey: string, content: Buffer): Promise<boolean> {
+    console.log('Publishing to', exchange, routingKey);
+    return true;
+  }
+  
+  async consume(queue: string, handler: (msg: RabbitMessage) => void): Promise<string> {
+    console.log('Consuming from', queue);
+    return 'consumer-tag-' + Date.now();
+  }
+  
+  ack(msg: RabbitMessage): void { console.log('Acked message'); }
+  nack(msg: RabbitMessage, requeue?: boolean): void { console.log('Nacked message, requeue:', requeue); }
+}
+
+export interface RabbitMessage { content: Buffer; fields: { routingKey: string; exchange: string }; properties: Record<string, unknown>; }
