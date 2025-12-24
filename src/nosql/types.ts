@@ -1,20 +1,4 @@
-export interface Document {
-  _id: string;
-  _rev?: string;
-  [key: string]: unknown;
-}
-
-export interface QueryOptions {
-  filter?: Record<string, unknown>;
-  sort?: Record<string, 1 | -1>;
-  limit?: number;
-  skip?: number;
-  projection?: string[];
-}
-
-export interface IndexDefinition {
-  name: string;
-  fields: string[];
-  unique?: boolean;
-  sparse?: boolean;
-}
+export interface Document { _id: string; [key: string]: unknown; }
+export interface KeyValueEntry { key: string; value: unknown; ttl?: number; createdAt: Date; }
+export interface GraphNode { id: string; labels: string[]; properties: Record<string, unknown>; }
+export interface GraphEdge { id: string; type: string; from: string; to: string; properties: Record<string, unknown>; }
