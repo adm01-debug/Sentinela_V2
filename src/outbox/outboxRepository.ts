@@ -1,70 +1,121 @@
-// Outbox Repository - Persistence Layer
-import { OutboxMessage, OutboxStatus } from "./outboxMessage";
+// Outbox Repository
+import { OutboxMessage, OutboxStatus } from './types';
 
 export interface OutboxRepository {
   save(message: OutboxMessage): Promise<void>;
-  saveMany(messages: OutboxMessage[]): Promise<void>;
-  findPending(limit?: number): Promise<OutboxMessage[]>;
-  findById(id: string): Promise<OutboxMessage | null>;
-  markAsProcessing(id: string): Promise<boolean>;
+  saveBatch(messages: OutboxMessage[]): Promise<void>;
+  findPendingMessages(limit: number, lockTimeoutMs: number): Promise<OutboxMessage[]>;
   markAsProcessed(id: string): Promise<void>;
-  markAsFailed(id: string, error: string): Promise<void>;
-  moveToDeadLetter(id: string): Promise<void>;
-  deleteProcessed(olderThan: Date): Promise<number>;
+  markAsFailed(id: string, error?: string): Promise<void>;
+  markAsDeadLetter(id: string, error?: string): Promise<void>;
+  getCounts(): Promise<OutboxCounts>;
+  deleteProcessedBefore(date: Date): Promise<number>;
+  findById(id: string): Promise<OutboxMessage | null>;
+}
+
+export interface OutboxCounts {
+  pending: number;
+  processing: number;
+  processed: number;
+  failed: number;
+  deadLetter: number;
 }
 
 export class InMemoryOutboxRepository implements OutboxRepository {
   private messages: Map<string, OutboxMessage> = new Map();
+  private locks: Map<string, number> = new Map();
 
   async save(message: OutboxMessage): Promise<void> {
     this.messages.set(message.id, { ...message });
   }
 
-  async saveMany(messages: OutboxMessage[]): Promise<void> {
-    for (const msg of messages) await this.save(msg);
+  async saveBatch(messages: OutboxMessage[]): Promise<void> {
+    for (const message of messages) {
+      await this.save(message);
+    }
   }
 
-  async findPending(limit: number = 100): Promise<OutboxMessage[]> {
-    return Array.from(this.messages.values())
-      .filter(m => m.status === "pending")
-      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
-      .slice(0, limit);
-  }
+  async findPendingMessages(limit: number, lockTimeoutMs: number): Promise<OutboxMessage[]> {
+    const now = Date.now();
+    const pending: OutboxMessage[] = [];
 
-  async findById(id: string): Promise<OutboxMessage | null> {
-    return this.messages.get(id) || null;
-  }
+    for (const [id, message] of this.messages) {
+      if (pending.length >= limit) break;
 
-  async markAsProcessing(id: string): Promise<boolean> {
-    const msg = this.messages.get(id);
-    if (!msg || msg.status !== "pending") return false;
-    msg.status = "processing";
-    return true;
+      const isLocked = this.locks.has(id) && this.locks.get(id)! > now;
+      
+      if (!isLocked && (message.status === OutboxStatus.Pending || message.status === OutboxStatus.Failed)) {
+        this.locks.set(id, now + lockTimeoutMs);
+        message.status = OutboxStatus.Processing;
+        pending.push({ ...message });
+      }
+    }
+
+    return pending;
   }
 
   async markAsProcessed(id: string): Promise<void> {
-    const msg = this.messages.get(id);
-    if (msg) { msg.status = "processed"; msg.processedAt = new Date(); }
+    const message = this.messages.get(id);
+    if (message) {
+      message.status = OutboxStatus.Processed;
+      message.processedAt = new Date();
+    }
+    this.locks.delete(id);
   }
 
-  async markAsFailed(id: string, error: string): Promise<void> {
-    const msg = this.messages.get(id);
-    if (msg) { msg.status = "failed"; msg.retryCount++; msg.lastError = error; }
+  async markAsFailed(id: string, error?: string): Promise<void> {
+    const message = this.messages.get(id);
+    if (message) {
+      message.status = OutboxStatus.Failed;
+      message.retryCount++;
+      message.lastError = error;
+    }
+    this.locks.delete(id);
   }
 
-  async moveToDeadLetter(id: string): Promise<void> {
-    const msg = this.messages.get(id);
-    if (msg) msg.status = "dead_letter";
+  async markAsDeadLetter(id: string, error?: string): Promise<void> {
+    const message = this.messages.get(id);
+    if (message) {
+      message.status = OutboxStatus.DeadLetter;
+      message.lastError = error;
+    }
+    this.locks.delete(id);
   }
 
-  async deleteProcessed(olderThan: Date): Promise<number> {
-    let count = 0;
-    for (const [id, msg] of this.messages) {
-      if (msg.status === "processed" && msg.processedAt && msg.processedAt < olderThan) {
-        this.messages.delete(id);
-        count++;
+  async getCounts(): Promise<OutboxCounts> {
+    const counts: OutboxCounts = {
+      pending: 0,
+      processing: 0,
+      processed: 0,
+      failed: 0,
+      deadLetter: 0
+    };
+
+    for (const message of this.messages.values()) {
+      switch (message.status) {
+        case OutboxStatus.Pending: counts.pending++; break;
+        case OutboxStatus.Processing: counts.processing++; break;
+        case OutboxStatus.Processed: counts.processed++; break;
+        case OutboxStatus.Failed: counts.failed++; break;
+        case OutboxStatus.DeadLetter: counts.deadLetter++; break;
       }
     }
-    return count;
+
+    return counts;
+  }
+
+  async deleteProcessedBefore(date: Date): Promise<number> {
+    let deleted = 0;
+    for (const [id, message] of this.messages) {
+      if (message.status === OutboxStatus.Processed && message.processedAt && message.processedAt < date) {
+        this.messages.delete(id);
+        deleted++;
+      }
+    }
+    return deleted;
+  }
+
+  async findById(id: string): Promise<OutboxMessage | null> {
+    return this.messages.get(id) ?? null;
   }
 }
