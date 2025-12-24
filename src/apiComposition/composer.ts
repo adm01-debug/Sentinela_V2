@@ -1,30 +1,41 @@
-import { CompositionConfig, CompositionResult, SourceResult } from './types';
+import { CompositionPlan, CompositionStep, CompositionResult } from './types';
 
 export class APIComposer {
-  constructor(private config: CompositionConfig) {}
+  private plans: Map<string, CompositionPlan> = new Map();
   
-  async compose<T>(): Promise<CompositionResult<T>> {
+  registerPlan(plan: CompositionPlan): void { this.plans.set(plan.name, plan); }
+  
+  async execute(planName: string, context: Record<string, unknown> = {}): Promise<CompositionResult> {
+    const plan = this.plans.get(planName);
+    if (!plan) throw new Error('Plan not found: ' + planName);
+    
     const start = Date.now();
-    const results: SourceResult[] = [];
-    const data: Record<string, unknown> = {};
+    const results: Record<string, unknown> = { ...context };
+    const errors: Record<string, string> = {};
     
-    await Promise.all(this.config.services.map(async service => {
-      const serviceStart = Date.now();
-      try {
-        const response = await this.fetchService(service.endpoint);
-        const transformed = service.transform ? service.transform(response) : response;
-        data[service.name] = transformed;
-        results.push({ service: service.name, success: true, duration: Date.now() - serviceStart });
-      } catch (e) {
-        results.push({ service: service.name, success: false, duration: Date.now() - serviceStart, error: (e as Error).message });
-        if (service.required) throw e;
-      }
-    }));
+    const executed = new Set<string>();
+    const pending = [...plan.steps];
     
-    return { data: data as T, sources: results, duration: Date.now() - start };
+    while (pending.length > 0) {
+      const ready = pending.filter(s => !s.dependsOn || s.dependsOn.every(d => executed.has(d)));
+      if (ready.length === 0) throw new Error('Circular dependency detected');
+      
+      await Promise.all(ready.map(async step => {
+        try {
+          const data = await this.executeStep(step, results);
+          results[step.name] = step.transform ? step.transform(data) : data;
+        } catch (e) { errors[step.name] = (e as Error).message; }
+        executed.add(step.name);
+      }));
+      
+      pending.splice(0, pending.length, ...pending.filter(s => !executed.has(s.name)));
+    }
+    
+    return { success: Object.keys(errors).length === 0, data: results, errors, duration: Date.now() - start };
   }
   
-  private async fetchService(endpoint: string): Promise<unknown> {
-    return { endpoint, fetched: true };
+  private async executeStep(step: CompositionStep, context: Record<string, unknown>): Promise<unknown> {
+    console.log('Executing step:', step.name, '->', step.service + step.endpoint);
+    return { step: step.name, service: step.service };
   }
 }
