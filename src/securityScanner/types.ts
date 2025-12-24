@@ -1,0 +1,3 @@
+export interface ScanResult { scanId: string; target: string; startedAt: Date; completedAt: Date; vulnerabilities: Vulnerability[]; score: number; }
+export interface Vulnerability { id: string; type: VulnType; severity: 'low' | 'medium' | 'high' | 'critical'; description: string; location: string; remediation: string; }
+export type VulnType = 'xss' | 'sqli' | 'csrf' | 'ssrf' | 'auth' | 'crypto' | 'injection' | 'misc';
