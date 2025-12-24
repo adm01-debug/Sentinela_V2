@@ -7,25 +7,15 @@ export interface ServiceDefinition {
 }
 
 export interface EndpointDefinition {
-  protocol: 'http' | 'https' | 'grpc';
   host: string;
   port: number;
-  path?: string;
+  protocol: 'http' | 'https' | 'grpc';
+  weight: number;
 }
 
 export interface HealthCheckConfig {
-  enabled: boolean;
+  endpoint: string;
   interval: number;
   timeout: number;
-  endpoint: string;
+  unhealthyThreshold: number;
 }
-
-export interface ServiceRegistration {
-  id: string;
-  service: ServiceDefinition;
-  status: RegistrationStatus;
-  registeredAt: Date;
-  lastHeartbeat: Date;
-}
-
-export enum RegistrationStatus { Active = 'active', Inactive = 'inactive', Draining = 'draining' }
