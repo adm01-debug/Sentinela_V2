@@ -1,4 +1,4 @@
 export * from './types';
 export * from './shardManager';
-export * from './shardRouter';
-export * from './consistentHash';
+export * from './router';
+export * from './rebalancer';
