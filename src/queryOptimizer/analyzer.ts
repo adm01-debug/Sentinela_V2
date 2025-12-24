@@ -1,29 +1,36 @@
-import { QueryStats, OptimizationSuggestion } from './types';
+import { QueryStats } from './types';
 
 export class QueryAnalyzer {
-  private slowQueryThreshold: number;
-  private slowQueries: SlowQuery[] = [];
+  private queryHistory: Map<string, QueryStats[]> = new Map();
   
-  constructor(slowQueryThresholdMs: number = 1000) { this.slowQueryThreshold = slowQueryThresholdMs; }
-  
-  analyze(query: string, stats: QueryStats): AnalysisResult {
-    const suggestions: OptimizationSuggestion[] = [];
-    if (stats.executionTime > this.slowQueryThreshold) {
-      this.slowQueries.push({ query, stats, timestamp: new Date() });
-      suggestions.push({ type: 'hint', description: 'Query is slow, consider optimization', impact: 'high' });
-    }
-    if (stats.rowsExamined > stats.rowsReturned * 10) {
-      suggestions.push({ type: 'index', description: 'High row examination ratio, consider adding index', impact: 'high' });
-    }
-    if (stats.indexesUsed.length === 0) {
-      suggestions.push({ type: 'index', description: 'No indexes used, full table scan detected', impact: 'high' });
-    }
-    return { query, stats, suggestions, isSlow: stats.executionTime > this.slowQueryThreshold };
+  record(sql: string, stats: QueryStats): void {
+    const history = this.queryHistory.get(sql) ?? [];
+    history.push(stats);
+    if (history.length > 100) history.shift();
+    this.queryHistory.set(sql, history);
   }
   
-  getSlowQueries(limit: number = 10): SlowQuery[] { return this.slowQueries.slice(-limit); }
-  clearSlowQueries(): void { this.slowQueries = []; }
+  getSlowQueries(threshold: number): { sql: string; avgTime: number }[] {
+    const slow: { sql: string; avgTime: number }[] = [];
+    this.queryHistory.forEach((stats, sql) => {
+      const avgTime = stats.reduce((sum, s) => sum + s.executionTime, 0) / stats.length;
+      if (avgTime > threshold) slow.push({ sql, avgTime });
+    });
+    return slow.sort((a, b) => b.avgTime - a.avgTime);
+  }
+  
+  suggestIndexes(): IndexSuggestion[] {
+    const suggestions: IndexSuggestion[] = [];
+    this.queryHistory.forEach((stats, sql) => {
+      if (stats.some(s => s.indexesUsed.length === 0 && s.rowsRead > 1000)) {
+        suggestions.push({ table: this.extractTable(sql), columns: this.extractWhereColumns(sql), reason: 'Full table scan on large table' });
+      }
+    });
+    return suggestions;
+  }
+  
+  private extractTable(sql: string): string { return sql.match(/FROM\s+(\w+)/i)?.[1] ?? 'unknown'; }
+  private extractWhereColumns(sql: string): string[] { return sql.match(/WHERE\s+(\w+)/gi)?.map(m => m.replace(/WHERE\s+/i, '')) ?? []; }
 }
 
-export interface AnalysisResult { query: string; stats: QueryStats; suggestions: OptimizationSuggestion[]; isSlow: boolean; }
-export interface SlowQuery { query: string; stats: QueryStats; timestamp: Date; }
+export interface IndexSuggestion { table: string; columns: string[]; reason: string; }
