@@ -1,0 +1,3 @@
+import { a11yChecker, A11yIssue } from './a11yChecker';
+export interface A11yReport { generatedAt: Date; totalIssues: number; errors: number; warnings: number; issues: A11yIssue[]; score: number; }
+export function generateA11yReport(element?: HTMLElement): A11yReport { const issues = a11yChecker.check(element); const errors = issues.filter(i => i.severity === 'error').length; const warnings = issues.filter(i => i.severity === 'warning').length; const score = Math.max(0, 100 - errors * 10 - warnings * 5); return { generatedAt: new Date(), totalIssues: issues.length, errors, warnings, issues, score }; }
