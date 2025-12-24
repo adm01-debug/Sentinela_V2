@@ -1,26 +1,18 @@
-import { ScanResult, Vulnerability } from './types';
+import { ScanResult, Vulnerability, ScanConfig } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 export class SecurityScanner {
-  private checks: SecurityCheck[] = [];
+  private rules: ScanRule[] = [];
   
-  addCheck(check: SecurityCheck): void { this.checks.push(check); }
+  addRule(rule: ScanRule): void { this.rules.push(rule); }
   
-  async scan(target: string): Promise<ScanResult> {
-    const scanId = uuidv4();
-    const startedAt = new Date();
+  async scan(target: string, config: ScanConfig): Promise<ScanResult> {
     const vulnerabilities: Vulnerability[] = [];
-    
-    for (const check of this.checks) {
-      const results = await check.execute(target);
-      vulnerabilities.push(...results);
+    for (const rule of this.rules) {
+      const findings = await rule.check(target);
+      vulnerabilities.push(...findings);
     }
-    
-    return {
-      scanId, target, startedAt, completedAt: new Date(),
-      vulnerabilities,
-      score: this.calculateScore(vulnerabilities)
-    };
+    return { target, vulnerabilities, score: this.calculateScore(vulnerabilities), scannedAt: new Date() };
   }
   
   private calculateScore(vulns: Vulnerability[]): number {
@@ -30,4 +22,4 @@ export class SecurityScanner {
   }
 }
 
-export interface SecurityCheck { name: string; execute(target: string): Promise<Vulnerability[]>; }
+export interface ScanRule { name: string; check: (target: string) => Promise<Vulnerability[]>; }
