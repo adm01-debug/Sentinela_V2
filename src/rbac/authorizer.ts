@@ -1,3 +1,9 @@
+/**
+ * @fileoverview RBAC authorizer
+ * @module @sentinela/core/rbac
+ * @version 13.0.0
+ */
+
 import { Subject, PolicyRule } from './types';
 import { RoleManager } from './roles';
 import { BindingManager } from './bindings';
