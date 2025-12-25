@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Event store for event sourcing
+ * @module @sentinela/core/cqrsAdvanced
+ * @version 13.0.0
+ */
+
 // Event Store Implementation
 import { DomainEvent, EventMetadata, EventHandler } from './types';
 import { v4 as uuidv4 } from 'uuid';
