@@ -1,144 +1,172 @@
 /**
- * @packageDocumentation
- * @module Core/Events
- * Event emitter utilities
+ * @fileoverview Event emitter utilities
+ * @module @sentinela/core/events
  */
-import { Logger, logger as defaultLogger } from './logger';
 
-export type EventHandler<T> = (event: T) => void | Promise<void>;
+import { Disposable } from './disposable';
+import { createLogger } from './logger';
 
-export interface EventSubscription {
-  unsubscribe(): void;
+const logger = createLogger('events');
+
+export type EventHandler<T = unknown> = (event: T) => void | Promise<void>;
+
+export interface TypedEventEmitter<Events extends Record<string, unknown>> extends Disposable {
+  on<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): () => void;
+  once<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): () => void;
+  off<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): void;
+  emit<K extends keyof Events>(event: K, payload: Events[K]): Promise<void>;
 }
 
 /**
  * Type-safe event emitter
  */
-export class EventEmitter<TEvents extends Record<string, unknown>> {
-  private handlers: Map<keyof TEvents, Set<EventHandler<unknown>>> = new Map();
-  private readonly logger: Logger;
+export class EventBus<Events extends Record<string, unknown>> implements TypedEventEmitter<Events> {
+  private readonly handlers: Map<keyof Events, Set<EventHandler>> = new Map();
+  private readonly onceHandlers: Map<keyof Events, Set<EventHandler>> = new Map();
 
-  constructor(logger: Logger = defaultLogger) {
-    this.logger = logger.child({ component: 'EventEmitter' });
-  }
-
-  on<K extends keyof TEvents>(event: K, handler: EventHandler<TEvents[K]>): EventSubscription {
+  on<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): () => void {
     if (!this.handlers.has(event)) {
       this.handlers.set(event, new Set());
     }
-    this.handlers.get(event)!.add(handler as EventHandler<unknown>);
+    this.handlers.get(event)!.add(handler as EventHandler);
     
-    return {
-      unsubscribe: () => this.off(event, handler)
-    };
+    return () => this.off(event, handler);
   }
 
-  once<K extends keyof TEvents>(event: K, handler: EventHandler<TEvents[K]>): EventSubscription {
-    const wrapper: EventHandler<TEvents[K]> = (data) => {
-      this.off(event, wrapper);
-      handler(data);
-    };
-    return this.on(event, wrapper);
-  }
-
-  off<K extends keyof TEvents>(event: K, handler: EventHandler<TEvents[K]>): void {
-    this.handlers.get(event)?.delete(handler as EventHandler<unknown>);
-  }
-
-  async emit<K extends keyof TEvents>(event: K, data: TEvents[K]): Promise<void> {
-    const handlers = this.handlers.get(event);
-    if (!handlers || handlers.size === 0) return;
-
-    const promises: Promise<void>[] = [];
-    for (const handler of handlers) {
-      try {
-        const result = handler(data);
-        if (result instanceof Promise) {
-          promises.push(result.catch(e => {
-            this.logger.error('Event handler error', e as Error, { event: String(event) });
-          }));
-        }
-      } catch (error) {
-        this.logger.error('Event handler error', error as Error, { event: String(event) });
-      }
+  once<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): () => void {
+    if (!this.onceHandlers.has(event)) {
+      this.onceHandlers.set(event, new Set());
     }
-
-    await Promise.all(promises);
-  }
-
-  removeAllListeners<K extends keyof TEvents>(event?: K): void {
-    if (event) {
-      this.handlers.delete(event);
-    } else {
-      this.handlers.clear();
-    }
-  }
-
-  listenerCount<K extends keyof TEvents>(event: K): number {
-    return this.handlers.get(event)?.size ?? 0;
-  }
-}
-
-/**
- * Domain event base interface
- */
-export interface DomainEvent {
-  readonly eventId: string;
-  readonly eventType: string;
-  readonly occurredAt: Date;
-  readonly aggregateId?: string;
-  readonly aggregateType?: string;
-  readonly version?: number;
-  readonly metadata?: Record<string, unknown>;
-}
-
-/**
- * Domain event bus for DDD
- */
-export class DomainEventBus {
-  private handlers: Map<string, Set<EventHandler<DomainEvent>>> = new Map();
-  private readonly logger: Logger;
-
-  constructor(logger: Logger = defaultLogger) {
-    this.logger = logger.child({ component: 'DomainEventBus' });
-  }
-
-  subscribe(eventType: string, handler: EventHandler<DomainEvent>): EventSubscription {
-    if (!this.handlers.has(eventType)) {
-      this.handlers.set(eventType, new Set());
-    }
-    this.handlers.get(eventType)!.add(handler);
-
-    return {
-      unsubscribe: () => this.handlers.get(eventType)?.delete(handler)
-    };
-  }
-
-  async publish(event: DomainEvent): Promise<void> {
-    this.logger.debug('Publishing domain event', { eventType: event.eventType, eventId: event.eventId });
-
-    const handlers = this.handlers.get(event.eventType) ?? new Set();
-    const wildcardHandlers = this.handlers.get('*') ?? new Set();
-
-    const allHandlers = [...handlers, ...wildcardHandlers];
+    this.onceHandlers.get(event)!.add(handler as EventHandler);
     
+    return () => {
+      this.onceHandlers.get(event)?.delete(handler as EventHandler);
+    };
+  }
+
+  off<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): void {
+    this.handlers.get(event)?.delete(handler as EventHandler);
+    this.onceHandlers.get(event)?.delete(handler as EventHandler);
+  }
+
+  async emit<K extends keyof Events>(event: K, payload: Events[K]): Promise<void> {
+    const handlers = this.handlers.get(event) || new Set();
+    const onceHandlers = this.onceHandlers.get(event) || new Set();
+    
+    const allHandlers = [...handlers, ...onceHandlers];
+    this.onceHandlers.delete(event);
+
     for (const handler of allHandlers) {
       try {
-        await handler(event);
+        await handler(payload);
       } catch (error) {
-        this.logger.error('Domain event handler error', error as Error, {
-          eventType: event.eventType,
-          eventId: event.eventId
-        });
+        logger.error(`Error in event handler for ${String(event)}`, error as Error);
       }
     }
   }
 
-  async publishAll(events: DomainEvent[]): Promise<void> {
-    for (const event of events) {
-      await this.publish(event);
+  removeAllListeners(event?: keyof Events): void {
+    if (event) {
+      this.handlers.delete(event);
+      this.onceHandlers.delete(event);
+    } else {
+      this.handlers.clear();
+      this.onceHandlers.clear();
     }
+  }
+
+  listenerCount(event: keyof Events): number {
+    const regular = this.handlers.get(event)?.size || 0;
+    const once = this.onceHandlers.get(event)?.size || 0;
+    return regular + once;
+  }
+
+  dispose(): void {
+    this.removeAllListeners();
   }
 }
 
-export const globalEventBus = new DomainEventBus();
+/**
+ * Observable pattern
+ */
+export interface Observable<T> {
+  subscribe(observer: Observer<T>): () => void;
+}
+
+export interface Observer<T> {
+  next(value: T): void;
+  error?(error: Error): void;
+  complete?(): void;
+}
+
+export class Subject<T> implements Observable<T>, Disposable {
+  private readonly observers: Set<Observer<T>> = new Set();
+  private completed = false;
+
+  subscribe(observer: Observer<T>): () => void {
+    if (this.completed) {
+      observer.complete?.();
+      return () => {};
+    }
+    
+    this.observers.add(observer);
+    return () => this.observers.delete(observer);
+  }
+
+  next(value: T): void {
+    if (this.completed) return;
+    for (const observer of this.observers) {
+      try {
+        observer.next(value);
+      } catch (error) {
+        observer.error?.(error as Error);
+      }
+    }
+  }
+
+  error(error: Error): void {
+    for (const observer of this.observers) {
+      observer.error?.(error);
+    }
+    this.complete();
+  }
+
+  complete(): void {
+    if (this.completed) return;
+    this.completed = true;
+    for (const observer of this.observers) {
+      observer.complete?.();
+    }
+    this.observers.clear();
+  }
+
+  dispose(): void {
+    this.complete();
+  }
+}
+
+/**
+ * BehaviorSubject - Subject that remembers the last value
+ */
+export class BehaviorSubject<T> extends Subject<T> {
+  private currentValue: T;
+
+  constructor(initialValue: T) {
+    super();
+    this.currentValue = initialValue;
+  }
+
+  getValue(): T {
+    return this.currentValue;
+  }
+
+  override next(value: T): void {
+    this.currentValue = value;
+    super.next(value);
+  }
+
+  override subscribe(observer: Observer<T>): () => void {
+    observer.next(this.currentValue);
+    return super.subscribe(observer);
+  }
+}
