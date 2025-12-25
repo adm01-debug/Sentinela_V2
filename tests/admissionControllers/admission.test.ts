@@ -1,33 +1,15 @@
-import { AdmissionController, AdmissionReview, AdmissionResponse } from '../../admissionControllers';
+import { AdmissionController } from '../../admissionControllers';
 describe('AdmissionController', () => {
-  let controller: AdmissionController;
-  beforeEach(() => { controller = new AdmissionController(); });
-  it('should register validating webhook', () => {
-    controller.registerValidator({
-      name: 'validate-pods',
-      resources: ['pods'],
-      validate: async (review) => ({ allowed: true })
-    });
-    expect(controller.getValidators()).toContain('validate-pods');
+  let ctrl: AdmissionController;
+  beforeEach(() => { ctrl = new AdmissionController(); });
+  it('should validate requests', async () => {
+    ctrl.addValidator(req => req.kind === 'Pod');
+    expect((await ctrl.validate({ kind: 'Pod', spec: {} })).allowed).toBe(true);
+    expect((await ctrl.validate({ kind: 'Secret', spec: {} })).allowed).toBe(false);
   });
-  it('should register mutating webhook', () => {
-    controller.registerMutator({
-      name: 'inject-sidecar',
-      resources: ['pods'],
-      mutate: async (review) => ({ allowed: true, patch: [] })
-    });
-    expect(controller.getMutators()).toContain('inject-sidecar');
-  });
-  it('should validate request', async () => {
-    controller.registerValidator({
-      name: 'deny-privileged',
-      resources: ['pods'],
-      validate: async (review) => {
-        const privileged = review.object?.spec?.containers?.some(c => c.securityContext?.privileged);
-        return { allowed: !privileged, message: privileged ? 'Privileged not allowed' : undefined };
-      }
-    });
-    const result = await controller.validate({ object: { spec: { containers: [{ securityContext: { privileged: true } }] } } });
-    expect(result.allowed).toBe(false);
+  it('should mutate requests', async () => {
+    ctrl.addMutator(() => [{ op: 'add', path: '/metadata/labels', value: {} }]);
+    const result = await ctrl.mutate({ kind: 'Pod', spec: {} });
+    expect(result.patches.length).toBe(1);
   });
 });
