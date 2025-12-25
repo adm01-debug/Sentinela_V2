@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Pod security policy manager
+ * @module @sentinela/core/podSecurityPolicies
+ * @version 13.0.0
+ */
+
 import { PodSecurityPolicy, PSPSpec } from './types';
 
 export class PSPManager {
