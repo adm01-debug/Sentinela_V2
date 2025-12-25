@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Backpressure controller
+ * @module @sentinela/core/backpressure
+ * @version 13.0.0
+ */
+
 import { BackpressureConfig, BackpressureStats, BackpressureStrategy } from './types';
 
 export class BackpressureController<T> {
