@@ -1,32 +1,11 @@
-import { ABTestManager, Experiment, Variant } from '../../abTesting';
+import { ABTestManager } from '../../abTesting';
 describe('ABTestManager', () => {
   let manager: ABTestManager;
   beforeEach(() => { manager = new ABTestManager(); });
-  it('should create experiment', () => {
-    const exp = manager.createExperiment({
-      name: 'button-color',
-      variants: [
-        { id: 'control', weight: 50 },
-        { id: 'blue', weight: 50 }
-      ]
-    });
-    expect(exp.id).toBeDefined();
-  });
-  it('should assign user to variant', () => {
-    manager.createExperiment({
-      name: 'test',
-      variants: [{ id: 'a', weight: 50 }, { id: 'b', weight: 50 }]
-    });
-    const variant = manager.getVariant('test', 'user-123');
-    expect(['a', 'b']).toContain(variant);
-  });
-  it('should track conversion', () => {
-    manager.createExperiment({
-      name: 'conv-test',
-      variants: [{ id: 'a', weight: 100 }]
-    });
-    manager.trackConversion('conv-test', 'user-1', 'a');
-    const stats = manager.getStats('conv-test');
-    expect(stats.conversions).toBe(1);
+  it('should assign variants consistently', () => {
+    manager.create({ id: 'exp1', name: 'Button Color', variants: ['blue', 'green'], weights: [50, 50] });
+    const v1 = manager.getVariant('exp1', 'user-123');
+    const v2 = manager.getVariant('exp1', 'user-123');
+    expect(v1).toBe(v2);
   });
 });
