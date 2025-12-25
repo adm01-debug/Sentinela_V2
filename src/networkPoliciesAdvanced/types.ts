@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Advanced network policies types
+ * @module @sentinela/core/networkPoliciesAdvanced
+ * @version 13.0.0
+ */
+
 export interface NetworkPolicyAdvanced { name: string; namespace: string; podSelector: LabelSelector; policyTypes: ('Ingress' | 'Egress')[]; ingress?: IngressRule[]; egress?: EgressRule[]; }
 export interface LabelSelector { matchLabels?: Record<string, string>; matchExpressions?: LabelSelectorRequirement[]; }
 export interface LabelSelectorRequirement { key: string; operator: 'In' | 'NotIn' | 'Exists' | 'DoesNotExist'; values?: string[]; }
