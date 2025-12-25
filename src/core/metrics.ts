@@ -1,70 +1,44 @@
 /**
- * @packageDocumentation
- * @module Core/Metrics
- * Metrics collection utilities
+ * @fileoverview Metrics collection utilities
+ * @module @sentinela/core/metrics
  */
 
-export type MetricType = 'counter' | 'gauge' | 'histogram' | 'summary';
-
-export interface MetricLabels {
+export interface Labels {
   [key: string]: string;
 }
 
 export interface MetricValue {
   value: number;
-  labels: MetricLabels;
   timestamp: Date;
-}
-
-export interface Metric {
-  name: string;
-  type: MetricType;
-  help: string;
-  values: MetricValue[];
+  labels: Labels;
 }
 
 /**
- * Counter metric - only increases
+ * Counter metric - only increments
  */
 export class Counter {
-  private values: Map<string, number> = new Map();
+  private value: number = 0;
+  private readonly name: string;
+  private readonly help: string;
+  private readonly labels: Labels;
 
-  constructor(
-    public readonly name: string,
-    public readonly help: string
-  ) {}
-
-  inc(labels: MetricLabels = {}, value = 1): void {
-    const key = this.labelsKey(labels);
-    this.values.set(key, (this.values.get(key) ?? 0) + value);
+  constructor(name: string, help: string, labels: Labels = {}) {
+    this.name = name;
+    this.help = help;
+    this.labels = labels;
   }
 
-  get(labels: MetricLabels = {}): number {
-    return this.values.get(this.labelsKey(labels)) ?? 0;
+  inc(amount: number = 1): void {
+    if (amount < 0) throw new Error('Counter can only be incremented');
+    this.value += amount;
   }
 
-  reset(): void { this.values.clear(); }
-
-  private labelsKey(labels: MetricLabels): string {
-    return Object.entries(labels).sort().map(([k, v]) => k + '=' + v).join(',');
+  get(): MetricValue {
+    return { value: this.value, timestamp: new Date(), labels: this.labels };
   }
 
-  collect(): Metric {
-    return {
-      name: this.name,
-      type: 'counter',
-      help: this.help,
-      values: Array.from(this.values.entries()).map(([key, value]) => ({
-        value,
-        labels: this.parseLabels(key),
-        timestamp: new Date()
-      }))
-    };
-  }
-
-  private parseLabels(key: string): MetricLabels {
-    if (!key) return {};
-    return Object.fromEntries(key.split(',').map(kv => kv.split('=')));
+  reset(): void {
+    this.value = 0;
   }
 }
 
@@ -72,143 +46,140 @@ export class Counter {
  * Gauge metric - can increase or decrease
  */
 export class Gauge {
-  private values: Map<string, number> = new Map();
+  private value: number = 0;
+  private readonly name: string;
+  private readonly help: string;
+  private readonly labels: Labels;
 
-  constructor(
-    public readonly name: string,
-    public readonly help: string
-  ) {}
-
-  set(value: number, labels: MetricLabels = {}): void {
-    this.values.set(this.labelsKey(labels), value);
+  constructor(name: string, help: string, labels: Labels = {}) {
+    this.name = name;
+    this.help = help;
+    this.labels = labels;
   }
 
-  inc(labels: MetricLabels = {}, value = 1): void {
-    const key = this.labelsKey(labels);
-    this.values.set(key, (this.values.get(key) ?? 0) + value);
+  set(value: number): void {
+    this.value = value;
   }
 
-  dec(labels: MetricLabels = {}, value = 1): void {
-    this.inc(labels, -value);
+  inc(amount: number = 1): void {
+    this.value += amount;
   }
 
-  get(labels: MetricLabels = {}): number {
-    return this.values.get(this.labelsKey(labels)) ?? 0;
+  dec(amount: number = 1): void {
+    this.value -= amount;
   }
 
-  private labelsKey(labels: MetricLabels): string {
-    return Object.entries(labels).sort().map(([k, v]) => k + '=' + v).join(',');
-  }
-
-  collect(): Metric {
-    return {
-      name: this.name,
-      type: 'gauge',
-      help: this.help,
-      values: Array.from(this.values.entries()).map(([key, value]) => ({
-        value,
-        labels: key ? Object.fromEntries(key.split(',').map(kv => kv.split('='))) : {},
-        timestamp: new Date()
-      }))
-    };
+  get(): MetricValue {
+    return { value: this.value, timestamp: new Date(), labels: this.labels };
   }
 }
 
 /**
- * Histogram metric for measuring distributions
+ * Histogram metric - tracks distribution of values
  */
 export class Histogram {
-  private buckets: number[];
-  private counts: Map<string, number[]> = new Map();
-  private sums: Map<string, number> = new Map();
-  private totals: Map<string, number> = new Map();
+  private sum: number = 0;
+  private count: number = 0;
+  private readonly buckets: Map<number, number>;
+  private readonly name: string;
+  private readonly help: string;
+  private readonly labels: Labels;
 
   constructor(
-    public readonly name: string,
-    public readonly help: string,
-    buckets: number[] = [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10]
+    name: string,
+    help: string,
+    buckets: number[] = [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],
+    labels: Labels = {}
   ) {
-    this.buckets = [...buckets].sort((a, b) => a - b);
+    this.name = name;
+    this.help = help;
+    this.labels = labels;
+    this.buckets = new Map(buckets.sort((a, b) => a - b).map(b => [b, 0]));
   }
 
-  observe(value: number, labels: MetricLabels = {}): void {
-    const key = this.labelsKey(labels);
+  observe(value: number): void {
+    this.sum += value;
+    this.count++;
     
-    if (!this.counts.has(key)) {
-      this.counts.set(key, new Array(this.buckets.length).fill(0));
-      this.sums.set(key, 0);
-      this.totals.set(key, 0);
-    }
-
-    const counts = this.counts.get(key)!;
-    for (let i = 0; i < this.buckets.length; i++) {
-      if (value <= this.buckets[i]) {
-        counts[i]++;
+    for (const [bound] of this.buckets) {
+      if (value <= bound) {
+        this.buckets.set(bound, (this.buckets.get(bound) || 0) + 1);
       }
     }
-
-    this.sums.set(key, (this.sums.get(key) ?? 0) + value);
-    this.totals.set(key, (this.totals.get(key) ?? 0) + 1);
   }
 
-  private labelsKey(labels: MetricLabels): string {
-    return Object.entries(labels).sort().map(([k, v]) => k + '=' + v).join(',');
-  }
-
-  collect(): Metric {
+  get(): { sum: number; count: number; buckets: Record<number, number>; labels: Labels } {
     return {
-      name: this.name,
-      type: 'histogram',
-      help: this.help,
-      values: []
+      sum: this.sum,
+      count: this.count,
+      buckets: Object.fromEntries(this.buckets),
+      labels: this.labels
     };
+  }
+
+  /**
+   * Measure execution time of a function
+   */
+  async time<T>(fn: () => Promise<T>): Promise<T> {
+    const start = process.hrtime.bigint();
+    try {
+      return await fn();
+    } finally {
+      const end = process.hrtime.bigint();
+      const durationMs = Number(end - start) / 1_000_000;
+      this.observe(durationMs);
+    }
   }
 }
 
 /**
- * Metrics registry for managing all metrics
+ * Metrics registry
  */
 export class MetricsRegistry {
-  private metrics: Map<string, Counter | Gauge | Histogram> = new Map();
+  private counters: Map<string, Counter> = new Map();
+  private gauges: Map<string, Gauge> = new Map();
+  private histograms: Map<string, Histogram> = new Map();
 
-  counter(name: string, help: string): Counter {
-    let metric = this.metrics.get(name);
-    if (!metric) {
-      metric = new Counter(name, help);
-      this.metrics.set(name, metric);
+  counter(name: string, help: string, labels?: Labels): Counter {
+    const key = this.makeKey(name, labels);
+    if (!this.counters.has(key)) {
+      this.counters.set(key, new Counter(name, help, labels));
     }
-    return metric as Counter;
+    return this.counters.get(key)!;
   }
 
-  gauge(name: string, help: string): Gauge {
-    let metric = this.metrics.get(name);
-    if (!metric) {
-      metric = new Gauge(name, help);
-      this.metrics.set(name, metric);
+  gauge(name: string, help: string, labels?: Labels): Gauge {
+    const key = this.makeKey(name, labels);
+    if (!this.gauges.has(key)) {
+      this.gauges.set(key, new Gauge(name, help, labels));
     }
-    return metric as Gauge;
+    return this.gauges.get(key)!;
   }
 
-  histogram(name: string, help: string, buckets?: number[]): Histogram {
-    let metric = this.metrics.get(name);
-    if (!metric) {
-      metric = new Histogram(name, help, buckets);
-      this.metrics.set(name, metric);
+  histogram(name: string, help: string, buckets?: number[], labels?: Labels): Histogram {
+    const key = this.makeKey(name, labels);
+    if (!this.histograms.has(key)) {
+      this.histograms.set(key, new Histogram(name, help, buckets, labels));
     }
-    return metric as Histogram;
+    return this.histograms.get(key)!;
   }
 
-  collect(): Metric[] {
-    return Array.from(this.metrics.values()).map(m => m.collect());
+  private makeKey(name: string, labels?: Labels): string {
+    return labels ? `${name}:${JSON.stringify(labels)}` : name;
   }
 
-  clear(): void { this.metrics.clear(); }
+  getAll(): {
+    counters: Record<string, MetricValue>;
+    gauges: Record<string, MetricValue>;
+    histograms: Record<string, unknown>;
+  } {
+    return {
+      counters: Object.fromEntries([...this.counters].map(([k, v]) => [k, v.get()])),
+      gauges: Object.fromEntries([...this.gauges].map(([k, v]) => [k, v.get()])),
+      histograms: Object.fromEntries([...this.histograms].map(([k, v]) => [k, v.get()]))
+    };
+  }
 }
 
-export const globalMetrics = new MetricsRegistry();
-
-/** Timer helper for measuring duration */
-export function startTimer(): () => number {
-  const start = process.hrtime.bigint();
-  return () => Number(process.hrtime.bigint() - start) / 1e9;
-}
+/** Global metrics registry */
+export const metrics = new MetricsRegistry();
