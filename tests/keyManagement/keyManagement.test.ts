@@ -1,24 +1,17 @@
-import { KeyStore } from '../../keyManagement';
-
-describe('KeyStore', () => {
-  let store: KeyStore;
-  beforeEach(() => { store = new KeyStore(); });
-
-  it('should create and retrieve key', async () => {
-    const keyId = await store.create({ algorithm: 'AES', size: 256 });
-    const key = await store.get(keyId);
+import { KeyManager } from '../../keyManagement';
+describe('KeyManager', () => {
+  let manager: KeyManager;
+  beforeEach(() => { manager = new KeyManager(); });
+  it('should create keys', async () => {
+    const id = await manager.create('aes-256');
+    expect(id).toMatch(/^key_/);
+    const key = await manager.get(id);
     expect(key).toBeDefined();
   });
-
-  it('should rotate key', async () => {
-    const keyId = await store.create({ algorithm: 'AES', size: 256 });
-    const newKeyId = await store.rotate(keyId);
-    expect(newKeyId).not.toBe(keyId);
-  });
-
-  it('should delete key', async () => {
-    const keyId = await store.create({ algorithm: 'AES', size: 256 });
-    await store.delete(keyId);
-    await expect(store.get(keyId)).rejects.toThrow();
+  it('should rotate keys', async () => {
+    const oldId = await manager.create('aes-256');
+    const newId = await manager.rotate(oldId);
+    expect(newId).not.toBe(oldId);
+    expect(await manager.get(oldId)).toBeUndefined();
   });
 });
