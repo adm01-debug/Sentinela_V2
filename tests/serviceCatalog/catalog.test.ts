@@ -1,10 +1,11 @@
 import { ServiceCatalog } from '../../serviceCatalog';
-
 describe('ServiceCatalog', () => {
-  it('should register service', async () => {
-    const catalog = new ServiceCatalog();
-    await catalog.register({ name: 'user-service', version: '1.0.0', endpoints: [] });
-    const service = await catalog.find('user-service');
-    expect(service).toBeDefined();
+  let catalog: ServiceCatalog;
+  beforeEach(() => { catalog = new ServiceCatalog(); });
+  it('should register and search services', () => {
+    catalog.register({ name: 'user-api', version: '1.0', description: 'User management', endpoints: ['/users'] });
+    catalog.register({ name: 'order-api', version: '2.0', description: 'Order processing', endpoints: ['/orders'] });
+    expect(catalog.search('user').length).toBe(1);
+    expect(catalog.list().length).toBe(2);
   });
 });
