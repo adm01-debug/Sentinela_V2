@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Unit of Work implementation
+ * @module @sentinela/core/unitOfWork
+ * @version 13.0.0
+ */
+
 import { UnitOfWork, Entity, Repository, EntityState } from './types';
 import { EntityTracker } from './entityTracker';
 
