@@ -1,27 +1,41 @@
 /**
- * @fileoverview Kafka producer
+ * @fileoverview Kafka Producer implementation
  * @module @sentinela/core/kafka
  * @version 13.0.0
  */
 
-import { KafkaConfig, ProducerMessage } from './types';
-
-export class KafkaProducer {
-  private connected: boolean = false;
-  constructor(private config: KafkaConfig) {}
-  
-  async connect(): Promise<void> { this.connected = true; console.log('Producer connected to', this.config.brokers); }
-  async disconnect(): Promise<void> { this.connected = false; }
-  
-  async send(message: ProducerMessage): Promise<RecordMetadata> {
-    if (!this.connected) throw new Error('Producer not connected');
-    console.log('Sending to', message.topic);
-    return { topic: message.topic, partition: message.partition ?? 0, offset: String(Date.now()) };
-  }
-  
-  async sendBatch(messages: ProducerMessage[]): Promise<RecordMetadata[]> {
-    return Promise.all(messages.map(m => this.send(m)));
-  }
+export interface KafkaMessage {
+  key?: string;
+  value: string;
+  headers?: Record<string, string>;
+  partition?: number;
 }
 
-export interface RecordMetadata { topic: string; partition: number; offset: string; }
+export interface ProducerConfig {
+  brokers: string[];
+  clientId?: string;
+}
+
+export class KafkaProducer {
+  private connected = false;
+
+  constructor(private config: ProducerConfig) {}
+
+  async connect(): Promise<void> {
+    this.connected = true;
+  }
+
+  async disconnect(): Promise<void> {
+    this.connected = false;
+  }
+
+  async send(topic: string, message: KafkaMessage): Promise<{ partition: number; offset: string }> {
+    if (!this.connected) await this.connect();
+    return { partition: message.partition ?? 0, offset: '0' };
+  }
+
+  async sendBatch(topic: string, messages: KafkaMessage[]): Promise<{ count: number }> {
+    if (!this.connected) await this.connect();
+    return { count: messages.length };
+  }
+}
