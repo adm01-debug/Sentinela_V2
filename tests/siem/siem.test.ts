@@ -1,50 +1,17 @@
-import { SIEMCollector, SecurityEvent, AlertRule } from '../../siem';
+import { SIEMCollector } from '../../siem';
 
 describe('SIEMCollector', () => {
   let collector: SIEMCollector;
+  beforeEach(() => { collector = new SIEMCollector({ endpoint: 'http://siem.local' }); });
 
-  beforeEach(() => {
-    collector = new SIEMCollector({
-      bufferSize: 100,
-      flushInterval: 5000
-    });
+  it('should collect security events', async () => {
+    await collector.collect({ type: 'LOGIN_ATTEMPT', userId: 'user1', success: true });
+    expect(collector.pendingEvents()).toBe(1);
   });
 
-  afterEach(() => {
-    collector.stop();
-  });
-
-  it('should collect security events', () => {
-    const event: SecurityEvent = {
-      type: 'LOGIN_ATTEMPT',
-      severity: 'medium',
-      source: '192.168.1.1',
-      timestamp: new Date(),
-      details: { username: 'admin', success: false }
-    };
-
-    collector.collect(event);
-    expect(collector.getBufferSize()).toBe(1);
-  });
-
-  it('should apply alert rules', () => {
-    const alertTriggered = jest.fn();
-    
-    collector.addRule({
-      name: 'FailedLoginAlert',
-      condition: (e) => e.type === 'LOGIN_ATTEMPT' && !e.details?.success,
-      severity: 'high',
-      action: alertTriggered
-    });
-
-    collector.collect({
-      type: 'LOGIN_ATTEMPT',
-      severity: 'medium',
-      source: '192.168.1.1',
-      timestamp: new Date(),
-      details: { success: false }
-    });
-
-    expect(alertTriggered).toHaveBeenCalled();
+  it('should flush events', async () => {
+    await collector.collect({ type: 'LOGIN_ATTEMPT', userId: 'user1', success: true });
+    await collector.flush();
+    expect(collector.pendingEvents()).toBe(0);
   });
 });
