@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Anti-corruption layer types
+ * @module @sentinela/core/antiCorruptionLayer
+ * @version 13.0.0
+ */
+
 export interface ACLConfig {
   name: string;
   sourceSystem: string;
