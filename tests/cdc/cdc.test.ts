@@ -1,13 +1,11 @@
 import { CDCCapturer } from '../../cdc';
-
 describe('CDCCapturer', () => {
-  let capturer: CDCCapturer;
-  beforeEach(() => { capturer = new CDCCapturer({ source: 'postgres' }); });
-
-  it('should capture changes', async () => {
-    const changes = [];
-    capturer.on('change', (c) => changes.push(c));
-    await capturer.start();
-    expect(capturer.isRunning()).toBe(true);
+  it('should emit change events', () => {
+    const capturer = new CDCCapturer();
+    const events: any[] = [];
+    capturer.onChange(e => events.push(e));
+    capturer.emit({ table: 'users', operation: 'INSERT', after: { id: 1 }, timestamp: Date.now() });
+    expect(events.length).toBe(1);
+    expect(events[0].operation).toBe('INSERT');
   });
 });
