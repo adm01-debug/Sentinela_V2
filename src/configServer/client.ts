@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Config server client
+ * @module @sentinela/core/configServer
+ * @version 13.0.0
+ */
+
 import { ConfigEntry } from './types';
 
 export class ConfigClient {
