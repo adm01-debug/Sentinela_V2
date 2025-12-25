@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Edge runtime
+ * @module @sentinela/core/edgeComputing
+ * @version 13.0.0
+ */
+
 import { EdgeFunction } from './types';
 
 export class EdgeRuntime {
