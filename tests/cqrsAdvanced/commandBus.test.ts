@@ -1,22 +1,22 @@
-import { CommandBus, CommandHandler, Command } from '../../src/cqrsAdvanced';
-
+import { CommandBus, QueryBus } from '../../cqrsAdvanced';
 describe('CommandBus', () => {
   let bus: CommandBus;
-
-  beforeEach(() => {
-    bus = new CommandBus();
+  beforeEach(() => { bus = new CommandBus(); });
+  it('should execute commands', async () => {
+    bus.register('CreateUser', { execute: async (cmd: any) => ({ id: '1', name: cmd.name }) });
+    const result = await bus.execute({ type: 'CreateUser', name: 'Test' });
+    expect(result).toEqual({ id: '1', name: 'Test' });
   });
-
-  it('should register and execute handler', async () => {
-    const handler = jest.fn().mockResolvedValue({ success: true });
-    bus.register('CreateUser', handler);
-    
-    const result = await bus.execute({ type: 'CreateUser', payload: { name: 'John' } });
-    expect(handler).toHaveBeenCalled();
+  it('should throw for unknown command', async () => {
+    await expect(bus.execute({ type: 'Unknown' })).rejects.toThrow();
   });
-
-  it('should throw if no handler registered', async () => {
-    await expect(bus.execute({ type: 'Unknown', payload: {} }))
-      .rejects.toThrow();
+});
+describe('QueryBus', () => {
+  let bus: QueryBus;
+  beforeEach(() => { bus = new QueryBus(); });
+  it('should execute queries', async () => {
+    bus.register('GetUser', { execute: async () => ({ id: '1' }) });
+    const result = await bus.execute({ type: 'GetUser' });
+    expect(result).toEqual({ id: '1' });
   });
 });
