@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Resource quota manager
+ * @module @sentinela/core/resourceQuotas
+ * @version 13.0.0
+ */
+
 import { ResourceQuota, ResourceLimits, QuotaStatus } from './types';
 
 export class QuotaManager {
