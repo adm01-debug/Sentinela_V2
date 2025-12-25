@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Log aggregator
+ * @module @sentinela/core/logAggregation
+ * @version 13.0.0
+ */
+
 import { LogEntry, LogQuery, LogLevel } from './types';
 
 export class LogAggregator {
