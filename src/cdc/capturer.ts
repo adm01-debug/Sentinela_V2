@@ -1,3 +1,9 @@
+/**
+ * @fileoverview CDC capturer
+ * @module @sentinela/core/cdc
+ * @version 13.0.0
+ */
+
 import { ChangeEvent, CDCConfig } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
