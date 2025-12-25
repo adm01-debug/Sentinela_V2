@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Data prefetcher
+ * @module @sentinela/core/prefetching
+ * @version 13.0.0
+ */
+
 import { PrefetchConfig, PrefetchRequest, PrefetchResult } from './types';
 
 export class Prefetcher {
