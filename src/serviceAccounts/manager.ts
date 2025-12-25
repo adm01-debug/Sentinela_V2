@@ -1,40 +1,15 @@
 /**
- * @fileoverview Service account manager
+ * @fileoverview Service Accounts Manager
  * @module @sentinela/core/serviceAccounts
- * @version 13.0.0
  */
-
-import { ServiceAccount, SecretRef } from './types';
-
+export interface ServiceAccount { name: string; namespace: string; secrets?: string[]; }
 export class ServiceAccountManager {
-  private accounts: Map<string, ServiceAccount> = new Map();
-  
-  create(sa: ServiceAccount): ServiceAccount {
-    const account = { ...sa, secrets: sa.secrets ?? [], automountServiceAccountToken: sa.automountServiceAccountToken ?? true };
-    this.accounts.set(this.key(sa), account);
-    return account;
+  private accounts = new Map<string, ServiceAccount>();
+  async create(sa: ServiceAccount): Promise<void> { this.accounts.set(sa.namespace + '/' + sa.name, sa); }
+  async get(namespace: string, name: string): Promise<ServiceAccount | undefined> { return this.accounts.get(namespace + '/' + name); }
+  async delete(namespace: string, name: string): Promise<void> { this.accounts.delete(namespace + '/' + name); }
+  async addSecret(namespace: string, name: string, secret: string): Promise<void> {
+    const sa = await this.get(namespace, name);
+    if (sa) { sa.secrets = sa.secrets ?? []; sa.secrets.push(secret); }
   }
-  
-  delete(namespace: string, name: string): boolean { return this.accounts.delete(namespace + '/' + name); }
-  get(namespace: string, name: string): ServiceAccount | undefined { return this.accounts.get(namespace + '/' + name); }
-  
-  list(namespace?: string): ServiceAccount[] {
-    const all = Array.from(this.accounts.values());
-    return namespace ? all.filter(sa => sa.namespace === namespace) : all;
-  }
-  
-  addSecret(namespace: string, name: string, secretName: string): void {
-    const sa = this.get(namespace, name);
-    if (sa) sa.secrets?.push({ name: secretName });
-  }
-  
-  addImagePullSecret(namespace: string, name: string, secretName: string): void {
-    const sa = this.get(namespace, name);
-    if (sa) {
-      if (!sa.imagePullSecrets) sa.imagePullSecrets = [];
-      sa.imagePullSecrets.push({ name: secretName });
-    }
-  }
-  
-  private key(sa: ServiceAccount): string { return sa.namespace + '/' + sa.name; }
 }
