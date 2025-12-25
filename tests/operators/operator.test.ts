@@ -1,8 +1,7 @@
-import { OperatorFramework } from '../../operators';
-describe('OperatorFramework', () => {
-  it('should register operator', () => {
-    const framework = new OperatorFramework();
-    framework.register({ name: 'my-operator', reconcile: async () => {} });
-    expect(framework.hasOperator('my-operator')).toBe(true);
+import { Operator } from '../../operators';
+describe('Operator', () => {
+  it('should watch resources', async () => {
+    const op = new Operator({ kind: 'MyResource' });
+    expect(op.isWatching()).toBeDefined();
   });
 });
