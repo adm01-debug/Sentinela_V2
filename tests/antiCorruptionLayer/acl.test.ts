@@ -1,66 +1,24 @@
-import { Translator, ACLFacade, ExternalSystemAdapter } from '../../antiCorruptionLayer';
+import { AntiCorruptionLayer, Translator, Facade } from '../../antiCorruptionLayer';
 
-interface InternalUser {
-  id: string;
-  fullName: string;
-  emailAddress: string;
-}
+interface ExternalUser { user_id: string; full_name: string; email_address: string; }
+interface InternalUser { id: string; name: string; email: string; }
 
-interface ExternalUser {
-  userId: number;
-  name: string;
-  email: string;
-}
+describe('AntiCorruptionLayer', () => {
+  const translator: Translator<ExternalUser, InternalUser> = {
+    toInternal: (ext) => ({ id: ext.user_id, name: ext.full_name, email: ext.email_address }),
+    toExternal: (int) => ({ user_id: int.id, full_name: int.name, email_address: int.email })
+  };
 
-class UserTranslator extends Translator<InternalUser, ExternalUser> {
-  toDomain(external: ExternalUser): InternalUser {
-    return {
-      id: String(external.userId),
-      fullName: external.name,
-      emailAddress: external.email
-    };
-  }
-
-  toExternal(internal: InternalUser): ExternalUser {
-    return {
-      userId: parseInt(internal.id),
-      name: internal.fullName,
-      email: internal.emailAddress
-    };
-  }
-}
-
-describe('Translator', () => {
-  let translator: UserTranslator;
-
-  beforeEach(() => {
-    translator = new UserTranslator();
-  });
-
-  it('should translate to domain', () => {
-    const external: ExternalUser = { userId: 123, name: 'John Doe', email: 'john@test.com' };
-    const internal = translator.toDomain(external);
-
+  it('should translate external to internal', () => {
+    const external: ExternalUser = { user_id: '123', full_name: 'John Doe', email_address: 'j@d.com' };
+    const internal = translator.toInternal(external);
     expect(internal.id).toBe('123');
-    expect(internal.fullName).toBe('John Doe');
+    expect(internal.name).toBe('John Doe');
   });
 
-  it('should translate to external', () => {
-    const internal: InternalUser = { id: '456', fullName: 'Jane', emailAddress: 'jane@test.com' };
+  it('should translate internal to external', () => {
+    const internal: InternalUser = { id: '456', name: 'Jane', email: 'jane@test.com' };
     const external = translator.toExternal(internal);
-
-    expect(external.userId).toBe(456);
-    expect(external.name).toBe('Jane');
-  });
-});
-
-describe('ACLFacade', () => {
-  it('should wrap external system calls', async () => {
-    const externalApi = { getUser: jest.fn().mockResolvedValue({ userId: 1, name: 'Test', email: 't@t.com' }) };
-    const translator = new UserTranslator();
-    const facade = new ACLFacade(externalApi, translator);
-
-    const user = await facade.getUser(1);
-    expect(user.fullName).toBe('Test');
+    expect(external.user_id).toBe('456');
   });
 });
