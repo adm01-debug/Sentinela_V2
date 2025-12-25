@@ -1,3 +1,9 @@
+/**
+ * @fileoverview NoSQL adapter types
+ * @module @sentinela/core/nosql
+ * @version 13.0.0
+ */
+
 export interface Document { _id: string; [key: string]: unknown; }
 export interface KeyValueEntry { key: string; value: unknown; ttl?: number; createdAt: Date; }
 export interface GraphNode { id: string; labels: string[]; properties: Record<string, unknown>; }
