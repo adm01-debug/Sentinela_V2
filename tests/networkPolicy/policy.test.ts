@@ -1,9 +1,9 @@
 import { NetworkPolicyManager } from '../../networkPolicy';
-
 describe('NetworkPolicyManager', () => {
-  it('should create policy', async () => {
-    const manager = new NetworkPolicyManager();
-    const policy = await manager.create({ name: 'deny-all', namespace: 'default' });
-    expect(policy.name).toBe('deny-all');
+  let manager: NetworkPolicyManager;
+  beforeEach(() => { manager = new NetworkPolicyManager(); });
+  it('should check if traffic allowed', () => {
+    manager.create({ name: 'api-policy', ingress: ['frontend'], egress: ['database', 'cache'] });
+    expect(manager.isAllowed('api-policy', 'frontend', 'database')).toBe(true);
   });
 });
