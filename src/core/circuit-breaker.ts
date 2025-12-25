@@ -1,179 +1,196 @@
 /**
- * @packageDocumentation
- * @module Core/CircuitBreaker
- * Circuit breaker pattern implementation
+ * @fileoverview Circuit breaker implementation
+ * @module @sentinela/core/circuit-breaker
  */
+
 import { CircuitBreakerOpenError } from './errors';
-import { Logger, logger as defaultLogger } from './logger';
+import { createLogger } from './logger';
+import { EventEmitter } from 'events';
+
+const logger = createLogger('circuit-breaker');
 
 export type CircuitState = 'closed' | 'open' | 'half-open';
 
 export interface CircuitBreakerConfig {
+  name: string;
   failureThreshold: number;
   successThreshold: number;
   timeout: number;
-  resetTimeoutMs: number;
+  resetTimeout: number;
+  volumeThreshold: number;
 }
 
-const DEFAULT_CONFIG: CircuitBreakerConfig = {
-  failureThreshold: 5,
-  successThreshold: 2,
-  timeout: 30000,
-  resetTimeoutMs: 30000
-};
-
-export interface CircuitBreakerStats {
+export interface CircuitBreakerMetrics {
   state: CircuitState;
   failures: number;
   successes: number;
+  requests: number;
   lastFailure?: Date;
   lastSuccess?: Date;
-  totalCalls: number;
-  totalFailures: number;
+  lastStateChange: Date;
 }
+
+const DEFAULT_CONFIG: Omit<CircuitBreakerConfig, 'name'> = {
+  failureThreshold: 5,
+  successThreshold: 3,
+  timeout: 30000,
+  resetTimeout: 60000,
+  volumeThreshold: 10
+};
 
 /**
  * Circuit breaker implementation
  */
-export class CircuitBreaker {
+export class CircuitBreaker extends EventEmitter {
   private state: CircuitState = 'closed';
-  private failures = 0;
-  private successes = 0;
+  private failures: number = 0;
+  private successes: number = 0;
+  private requests: number = 0;
   private lastFailure?: Date;
   private lastSuccess?: Date;
-  private nextRetryTime?: Date;
-  private totalCalls = 0;
-  private totalFailures = 0;
+  private lastStateChange: Date = new Date();
+  private resetTimer?: NodeJS.Timeout;
   private readonly config: CircuitBreakerConfig;
-  private readonly logger: Logger;
 
-  constructor(
-    private readonly name: string,
-    config: Partial<CircuitBreakerConfig> = {},
-    logger: Logger = defaultLogger
-  ) {
+  constructor(config: Partial<CircuitBreakerConfig> & { name: string }) {
+    super();
     this.config = { ...DEFAULT_CONFIG, ...config };
-    this.logger = logger.child({ circuit: name });
+  }
+
+  get name(): string {
+    return this.config.name;
+  }
+
+  getState(): CircuitState {
+    return this.state;
+  }
+
+  getMetrics(): CircuitBreakerMetrics {
+    return {
+      state: this.state,
+      failures: this.failures,
+      successes: this.successes,
+      requests: this.requests,
+      lastFailure: this.lastFailure,
+      lastSuccess: this.lastSuccess,
+      lastStateChange: this.lastStateChange
+    };
+  }
+
+  private setState(newState: CircuitState): void {
+    if (this.state !== newState) {
+      const oldState = this.state;
+      this.state = newState;
+      this.lastStateChange = new Date();
+      
+      logger.info(`Circuit '${this.config.name}' state changed`, {
+        from: oldState,
+        to: newState
+      });
+      
+      this.emit('stateChange', { from: oldState, to: newState });
+    }
+  }
+
+  private onSuccess(): void {
+    this.successes++;
+    this.lastSuccess = new Date();
+    
+    if (this.state === 'half-open') {
+      if (this.successes >= this.config.successThreshold) {
+        this.reset();
+      }
+    }
+  }
+
+  private onFailure(error: Error): void {
+    this.failures++;
+    this.lastFailure = new Date();
+    
+    if (this.state === 'half-open') {
+      this.trip();
+    } else if (this.state === 'closed') {
+      if (this.requests >= this.config.volumeThreshold &&
+          this.failures >= this.config.failureThreshold) {
+        this.trip();
+      }
+    }
+  }
+
+  private trip(): void {
+    this.setState('open');
+    this.clearResetTimer();
+    
+    this.resetTimer = setTimeout(() => {
+      this.setState('half-open');
+      this.successes = 0;
+    }, this.config.resetTimeout);
+  }
+
+  private reset(): void {
+    this.setState('closed');
+    this.failures = 0;
+    this.successes = 0;
+    this.requests = 0;
+    this.clearResetTimer();
+  }
+
+  private clearResetTimer(): void {
+    if (this.resetTimer) {
+      clearTimeout(this.resetTimer);
+      this.resetTimer = undefined;
+    }
   }
 
   async execute<T>(fn: () => Promise<T>): Promise<T> {
-    if (!this.canExecute()) {
-      throw new CircuitBreakerOpenError(this.name, this.getRemainingTime());
+    if (this.state === 'open') {
+      throw new CircuitBreakerOpenError(this.config.name);
     }
 
-    this.totalCalls++;
+    this.requests++;
 
     try {
       const result = await Promise.race([
         fn(),
-        this.createTimeout()
+        new Promise<never>((_, reject) => {
+          setTimeout(() => reject(new Error('Circuit breaker timeout')), this.config.timeout);
+        })
       ]);
+      
       this.onSuccess();
-      return result as T;
+      return result;
     } catch (error) {
       this.onFailure(error as Error);
       throw error;
     }
   }
 
-  private canExecute(): boolean {
-    if (this.state === 'closed') return true;
-    if (this.state === 'open') {
-      if (this.nextRetryTime && new Date() >= this.nextRetryTime) {
-        this.state = 'half-open';
-        this.logger.info('Circuit breaker entering half-open state');
-        return true;
-      }
-      return false;
-    }
-    return true;
+  forceOpen(): void {
+    this.trip();
   }
 
-  private onSuccess(): void {
-    this.lastSuccess = new Date();
-    this.failures = 0;
-
-    if (this.state === 'half-open') {
-      this.successes++;
-      if (this.successes >= this.config.successThreshold) {
-        this.state = 'closed';
-        this.successes = 0;
-        this.logger.info('Circuit breaker closed');
-      }
-    }
+  forceClose(): void {
+    this.reset();
   }
 
-  private onFailure(error: Error): void {
-    this.lastFailure = new Date();
-    this.failures++;
-    this.totalFailures++;
-    this.successes = 0;
-
-    if (this.state === 'half-open') {
-      this.open();
-    } else if (this.failures >= this.config.failureThreshold) {
-      this.open();
-    }
-
-    this.logger.warn('Circuit breaker recorded failure', { error: error.message, failures: this.failures });
-  }
-
-  private open(): void {
-    this.state = 'open';
-    this.nextRetryTime = new Date(Date.now() + this.config.resetTimeoutMs);
-    this.logger.warn('Circuit breaker opened', { resetAt: this.nextRetryTime });
-  }
-
-  private createTimeout(): Promise<never> {
-    return new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Circuit breaker timeout')), this.config.timeout);
-    });
-  }
-
-  private getRemainingTime(): number {
-    if (!this.nextRetryTime) return 0;
-    return Math.max(0, this.nextRetryTime.getTime() - Date.now());
-  }
-
-  getState(): CircuitState { return this.state; }
-  
-  getStats(): CircuitBreakerStats {
-    return {
-      state: this.state,
-      failures: this.failures,
-      successes: this.successes,
-      lastFailure: this.lastFailure,
-      lastSuccess: this.lastSuccess,
-      totalCalls: this.totalCalls,
-      totalFailures: this.totalFailures
-    };
-  }
-
-  reset(): void {
-    this.state = 'closed';
-    this.failures = 0;
-    this.successes = 0;
-    this.nextRetryTime = undefined;
-    this.logger.info('Circuit breaker reset');
+  dispose(): void {
+    this.clearResetTimer();
+    this.removeAllListeners();
   }
 }
 
-/** Registry for managing multiple circuit breakers */
-export class CircuitBreakerRegistry {
-  private breakers: Map<string, CircuitBreaker> = new Map();
+/** Circuit breaker registry */
+const circuits = new Map<string, CircuitBreaker>();
 
-  get(name: string, config?: Partial<CircuitBreakerConfig>): CircuitBreaker {
-    let breaker = this.breakers.get(name);
-    if (!breaker) {
-      breaker = new CircuitBreaker(name, config);
-      this.breakers.set(name, breaker);
-    }
-    return breaker;
+/**
+ * Get or create a circuit breaker
+ */
+export function getCircuitBreaker(
+  name: string,
+  config?: Partial<Omit<CircuitBreakerConfig, 'name'>>
+): CircuitBreaker {
+  if (!circuits.has(name)) {
+    circuits.set(name, new CircuitBreaker({ name, ...config }));
   }
-
-  getAll(): Map<string, CircuitBreaker> { return new Map(this.breakers); }
-  reset(name: string): void { this.breakers.get(name)?.reset(); }
-  resetAll(): void { this.breakers.forEach(b => b.reset()); }
+  return circuits.get(name)!;
 }
-
-export const circuitBreakerRegistry = new CircuitBreakerRegistry();
