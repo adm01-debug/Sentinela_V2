@@ -1,2 +1,8 @@
+/**
+ * @fileoverview Security headers types
+ * @module @sentinela/core/securityHeaders
+ * @version 13.0.0
+ */
+
 export interface SecurityHeaders { 'Content-Security-Policy'?: string; 'X-Frame-Options'?: string; 'X-Content-Type-Options'?: string; 'Strict-Transport-Security'?: string; 'X-XSS-Protection'?: string; 'Referrer-Policy'?: string; 'Permissions-Policy'?: string; }
 export interface HeaderConfig { enableCSP: boolean; enableHSTS: boolean; hstsMaxAge: number; frameOptions: 'DENY' | 'SAMEORIGIN'; }
