@@ -120,7 +120,7 @@
     "vite-plugin-pwa": "^0.20.0",
     "vite-plugin-compression2": "^1.0.0"
   },
-  "description": "Enterprise-grade TypeScript framework with 100+ patterns for building scalable, resilient applications",
+  "description": "Enterprise-grade TypeScript framework with 100 production-ready modules for building scalable, resilient applications",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
@@ -130,40 +130,41 @@
       "require": "./dist/cjs/index.js",
       "types": "./dist/types/index.d.ts"
     },
-    "./*": {
-      "import": "./dist/esm/*.js",
-      "require": "./dist/cjs/*.js",
-      "types": "./dist/types/*.d.ts"
-    }
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
+    "src",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
   ],
   "keywords": [
-    "enterprise",
     "typescript",
+    "enterprise",
     "framework",
     "cqrs",
-    "event-sourcing",
+    "ddd",
     "saga",
+    "event-sourcing",
     "microservices",
     "kubernetes",
-    "cloud-native",
-    "ddd",
-    "domain-driven-design",
-    "patterns",
-    "architecture",
-    "node",
-    "backend",
-    "api",
-    "service-mesh",
+    "docker",
+    "kafka",
+    "rabbitmq",
+    "redis",
+    "monitoring",
     "observability",
-    "monitoring"
+    "security",
+    "api-gateway",
+    "service-mesh",
+    "circuit-breaker",
+    "rate-limiting",
+    "caching",
+    "database",
+    "orm"
   ],
-  "author": "Promo Brindes <dev@promobrindes.com.br>",
+  "author": "Sentinela Team <team@sentinela.dev>",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -177,5 +178,8 @@
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  }
 }
