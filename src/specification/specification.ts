@@ -4,58 +4,99 @@
  * @version 13.0.0
  */
 
-import { Specification, AsyncSpecification } from './types';
-
-export abstract class BaseSpecification<T> implements Specification<T> {
-  abstract isSatisfiedBy(candidate: T): boolean;
-  and(other: Specification<T>): Specification<T> { return new AndSpecification(this, other); }
-  or(other: Specification<T>): Specification<T> { return new OrSpecification(this, other); }
-  not(): Specification<T> { return new NotSpecification(this); }
+export interface ISpecification<T> {
+  isSatisfiedBy(candidate: T): boolean;
+  and(other: ISpecification<T>): ISpecification<T>;
+  or(other: ISpecification<T>): ISpecification<T>;
+  not(): ISpecification<T>;
 }
 
-export class AndSpecification<T> extends BaseSpecification<T> {
-  constructor(private left: Specification<T>, private right: Specification<T>) { super(); }
+export class Specification<T> implements ISpecification<T> {
+  constructor(private readonly predicate: (candidate: T) => boolean) {}
+
+  isSatisfiedBy(candidate: T): boolean {
+    return this.predicate(candidate);
+  }
+
+  and(other: ISpecification<T>): ISpecification<T> {
+    return new AndSpecification(this, other);
+  }
+
+  or(other: ISpecification<T>): ISpecification<T> {
+    return new OrSpecification(this, other);
+  }
+
+  not(): ISpecification<T> {
+    return new NotSpecification(this);
+  }
+}
+
+export class AndSpecification<T> implements ISpecification<T> {
+  constructor(
+    private readonly left: ISpecification<T>,
+    private readonly right: ISpecification<T>
+  ) {}
+
   isSatisfiedBy(candidate: T): boolean {
     return this.left.isSatisfiedBy(candidate) && this.right.isSatisfiedBy(candidate);
   }
+
+  and(other: ISpecification<T>): ISpecification<T> {
+    return new AndSpecification(this, other);
+  }
+
+  or(other: ISpecification<T>): ISpecification<T> {
+    return new OrSpecification(this, other);
+  }
+
+  not(): ISpecification<T> {
+    return new NotSpecification(this);
+  }
 }
 
-export class OrSpecification<T> extends BaseSpecification<T> {
-  constructor(private left: Specification<T>, private right: Specification<T>) { super(); }
+export class OrSpecification<T> implements ISpecification<T> {
+  constructor(
+    private readonly left: ISpecification<T>,
+    private readonly right: ISpecification<T>
+  ) {}
+
   isSatisfiedBy(candidate: T): boolean {
     return this.left.isSatisfiedBy(candidate) || this.right.isSatisfiedBy(candidate);
   }
-}
 
-export class NotSpecification<T> extends BaseSpecification<T> {
-  constructor(private spec: Specification<T>) { super(); }
-  isSatisfiedBy(candidate: T): boolean { return !this.spec.isSatisfiedBy(candidate); }
-}
+  and(other: ISpecification<T>): ISpecification<T> {
+    return new AndSpecification(this, other);
+  }
 
-export abstract class BaseAsyncSpecification<T> implements AsyncSpecification<T> {
-  abstract isSatisfiedBy(candidate: T): Promise<boolean>;
-  and(other: AsyncSpecification<T>): AsyncSpecification<T> { return new AsyncAndSpec(this, other); }
-  or(other: AsyncSpecification<T>): AsyncSpecification<T> { return new AsyncOrSpec(this, other); }
-  not(): AsyncSpecification<T> { return new AsyncNotSpec(this); }
-}
+  or(other: ISpecification<T>): ISpecification<T> {
+    return new OrSpecification(this, other);
+  }
 
-class AsyncAndSpec<T> extends BaseAsyncSpecification<T> {
-  constructor(private left: AsyncSpecification<T>, private right: AsyncSpecification<T>) { super(); }
-  async isSatisfiedBy(c: T): Promise<boolean> {
-    const [l, r] = await Promise.all([this.left.isSatisfiedBy(c), this.right.isSatisfiedBy(c)]);
-    return l && r;
+  not(): ISpecification<T> {
+    return new NotSpecification(this);
   }
 }
 
-class AsyncOrSpec<T> extends BaseAsyncSpecification<T> {
-  constructor(private left: AsyncSpecification<T>, private right: AsyncSpecification<T>) { super(); }
-  async isSatisfiedBy(c: T): Promise<boolean> {
-    const [l, r] = await Promise.all([this.left.isSatisfiedBy(c), this.right.isSatisfiedBy(c)]);
-    return l || r;
+export class NotSpecification<T> implements ISpecification<T> {
+  constructor(private readonly spec: ISpecification<T>) {}
+
+  isSatisfiedBy(candidate: T): boolean {
+    return !this.spec.isSatisfiedBy(candidate);
+  }
+
+  and(other: ISpecification<T>): ISpecification<T> {
+    return new AndSpecification(this, other);
+  }
+
+  or(other: ISpecification<T>): ISpecification<T> {
+    return new OrSpecification(this, other);
+  }
+
+  not(): ISpecification<T> {
+    return this.spec;
   }
 }
 
-class AsyncNotSpec<T> extends BaseAsyncSpecification<T> {
-  constructor(private spec: AsyncSpecification<T>) { super(); }
-  async isSatisfiedBy(c: T): Promise<boolean> { return !(await this.spec.isSatisfiedBy(c)); }
+export function spec<T>(predicate: (candidate: T) => boolean): Specification<T> {
+  return new Specification(predicate);
 }
