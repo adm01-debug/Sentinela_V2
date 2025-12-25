@@ -1,86 +1,64 @@
-# API Documentation
+# Sentinela API Reference
 
-## Authentication
+## Core Utilities
 
-All API requests require authentication via JWT token.
-
-```http
-Authorization: Bearer <token>
+### Logger
+```typescript
+import { createLogger } from '@sentinela/core';
+const logger = createLogger('my-module');
+logger.info('Message', { context: 'data' });
 ```
 
-## Endpoints
-
-### Employees
-
-```http
-GET /api/employees
-POST /api/employees
-GET /api/employees/:id
-PUT /api/employees/:id
-DELETE /api/employees/:id
+### Circuit Breaker
+```typescript
+import { CircuitBreaker } from '@sentinela/core';
+const cb = new CircuitBreaker({ name: 'api', failureThreshold: 5 });
+const result = await cb.execute(() => fetch('/api'));
 ```
 
-### Devices
-
-```http
-GET /api/devices
-POST /api/devices
-GET /api/devices/:id
-PUT /api/devices/:id
-DELETE /api/devices/:id
+### Retry
+```typescript
+import { retry } from '@sentinela/core';
+const result = await retry(() => riskyOperation(), { maxAttempts: 3 });
 ```
 
-### Violations
-
-```http
-GET /api/violations
-POST /api/violations
-GET /api/violations/:id
-PUT /api/violations/:id
+### Cache
+```typescript
+import { Cache } from '@sentinela/core';
+const cache = new Cache<string>({ defaultTtlMs: 60000 });
+cache.set('key', 'value');
+const value = cache.get('key');
 ```
 
-### Reports
-
-```http
-GET /api/reports
-POST /api/reports/generate
-GET /api/reports/:id
-DELETE /api/reports/:id
+### Rate Limiter
+```typescript
+import { RateLimiter } from '@sentinela/core';
+const limiter = new RateLimiter({ maxRequests: 100, windowMs: 60000 });
+if (limiter.consume('user-id').allowed) { /* proceed */ }
 ```
 
-### Agent
-
-```http
-POST /api/agent/screenshots
-POST /api/agent/activities
-POST /api/agent/heartbeat
-GET /api/agent/config
+### Validation
+```typescript
+import { validateObject, required, email } from '@sentinela/core';
+const result = validateObject(data, {
+  email: [required('email'), email('email')]
+});
 ```
 
-## Rate Limiting
+## Architecture Patterns
 
-- 100 requests per minute per IP
-- 1000 requests per hour per user
-
-## Error Responses
-
-```json
-{
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "Human readable message"
-  }
-}
+### CQRS
+```typescript
+import { CommandBus, QueryBus } from '@sentinela/core/cqrsAdvanced';
+const commandBus = new CommandBus();
+commandBus.register('CreateUser', handler);
+await commandBus.execute({ type: 'CreateUser', data });
 ```
 
-## Pagination
-
-```http
-GET /api/employees?page=1&limit=20
+### Saga
+```typescript
+import { SagaOrchestrator, StepBuilder } from '@sentinela/core/sagaOrchestration';
+const saga = new SagaOrchestrator();
+saga.register({ name: 'OrderSaga', steps: [...] });
+await saga.start('OrderSaga', context);
 ```
-
-Response includes:
-- `data`: Array of items
-- `total`: Total count
-- `page`: Current page
-- `limit`: Items per page
