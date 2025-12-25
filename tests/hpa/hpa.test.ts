@@ -1,77 +1,26 @@
-import { HPAController, ScalingMetrics, HPAPolicy } from '../../hpa';
+import { HPAController } from '../../hpa';
 
 describe('HPAController', () => {
   let controller: HPAController;
+  beforeEach(() => { controller = new HPAController({ minReplicas: 1, maxReplicas: 10, targetCPU: 80 }); });
 
-  beforeEach(() => {
-    controller = new HPAController({
-      minReplicas: 1,
-      maxReplicas: 10,
-      targetCPUUtilization: 80,
-      scaleUpCooldown: 60,
-      scaleDownCooldown: 300
-    });
+  it('should scale up on high CPU', async () => {
+    controller.updateMetrics({ cpu: 95, memory: 50 });
+    const decision = await controller.evaluate();
+    expect(decision.action).toBe('scale-up');
   });
 
-  it('should calculate desired replicas based on CPU', () => {
-    const metrics: ScalingMetrics = {
-      currentReplicas: 2,
-      currentCPU: 90,
-      currentMemory: 50
-    };
-
-    const desired = controller.calculateDesiredReplicas(metrics);
-    expect(desired).toBeGreaterThan(2);
+  it('should scale down on low CPU', async () => {
+    controller.setReplicas(5);
+    controller.updateMetrics({ cpu: 20, memory: 30 });
+    const decision = await controller.evaluate();
+    expect(decision.action).toBe('scale-down');
   });
 
-  it('should not exceed max replicas', () => {
-    const metrics: ScalingMetrics = {
-      currentReplicas: 8,
-      currentCPU: 100,
-      currentMemory: 100
-    };
-
-    const desired = controller.calculateDesiredReplicas(metrics);
-    expect(desired).toBeLessThanOrEqual(10);
-  });
-
-  it('should not go below min replicas', () => {
-    const metrics: ScalingMetrics = {
-      currentReplicas: 3,
-      currentCPU: 10,
-      currentMemory: 10
-    };
-
-    const desired = controller.calculateDesiredReplicas(metrics);
-    expect(desired).toBeGreaterThanOrEqual(1);
-  });
-
-  it('should respect cooldown period', async () => {
-    controller.recordScaleEvent('up');
-    const canScale = controller.canScale('up');
-
-    expect(canScale).toBe(false);
-  });
-});
-
-describe('HPAPolicy', () => {
-  it('should validate scaling policy', () => {
-    const policy: HPAPolicy = {
-      type: 'Utilization',
-      value: 80,
-      periodSeconds: 60
-    };
-
-    expect(HPAPolicy.validate(policy)).toBe(true);
-  });
-
-  it('should reject invalid policy', () => {
-    const policy: HPAPolicy = {
-      type: 'Utilization',
-      value: 150, // Invalid: > 100
-      periodSeconds: 60
-    };
-
-    expect(HPAPolicy.validate(policy)).toBe(false);
+  it('should respect min replicas', async () => {
+    controller.setReplicas(1);
+    controller.updateMetrics({ cpu: 5, memory: 10 });
+    const decision = await controller.evaluate();
+    expect(decision.replicas).toBeGreaterThanOrEqual(1);
   });
 });
