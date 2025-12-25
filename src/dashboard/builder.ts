@@ -1,39 +1,13 @@
 /**
- * @fileoverview Dashboard builder
+ * @fileoverview Dashboard Builder
  * @module @sentinela/core/dashboard
- * @version 13.0.0
  */
-
-import { Dashboard, DashboardRow, Panel, Variable } from './types';
-import { v4 as uuidv4 } from 'uuid';
-
+export interface Panel { title: string; type: string; query?: string; }
+export interface Dashboard { id: string; title: string; panels: Panel[]; }
 export class DashboardBuilder {
-  private dashboard: Dashboard = { id: uuidv4(), name: '', rows: [], variables: [], refreshInterval: 30 };
-  
-  name(name: string): this { this.dashboard.name = name; return this; }
-  refreshInterval(seconds: number): this { this.dashboard.refreshInterval = seconds; return this; }
-  
-  addRow(height: number, panels: Panel[]): this {
-    this.dashboard.rows.push({ height, panels });
-    return this;
-  }
-  
-  addVariable(variable: Variable): this {
-    this.dashboard.variables.push(variable);
-    return this;
-  }
-  
-  build(): Dashboard { return { ...this.dashboard }; }
-}
-
-export class PanelBuilder {
-  private panel: Partial<Panel> = { config: {} };
-  
-  id(id: string): this { this.panel.id = id; return this; }
-  type(type: Panel['type']): this { this.panel.type = type; return this; }
-  title(title: string): this { this.panel.title = title; return this; }
-  gridPos(pos: Panel['gridPos']): this { this.panel.gridPos = pos; return this; }
-  config(key: string, value: unknown): this { this.panel.config![key] = value; return this; }
-  
-  build(): Panel { return { id: uuidv4(), ...this.panel } as Panel; }
+  private panels: Panel[] = [];
+  private title = 'Dashboard';
+  setTitle(t: string): this { this.title = t; return this; }
+  addPanel(p: Panel): this { this.panels.push(p); return this; }
+  build(): Dashboard { return { id: 'dash_' + Date.now(), title: this.title, panels: this.panels }; }
 }
