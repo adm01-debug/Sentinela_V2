@@ -1,90 +1,47 @@
 /**
- * @fileoverview Translation layer
+ * @fileoverview Anti-Corruption Layer implementation
  * @module @sentinela/core/antiCorruptionLayer
  * @version 13.0.0
  */
 
-import { TranslationResult, ExternalModel, DomainModel, TranslationContext } from './types';
+export interface Translator<TExternal, TInternal> {
+  toInternal(external: TExternal): TInternal;
+  toExternal(internal: TInternal): TExternal;
+}
 
-export abstract class Translator<TExternal extends ExternalModel, TDomain extends DomainModel> {
-  abstract toDomain(external: TExternal, context?: TranslationContext): TranslationResult<TDomain>;
-  abstract toExternal(domain: TDomain, context?: TranslationContext): TranslationResult<TExternal>;
+export abstract class ACLFacade<TExternalService> {
+  constructor(protected readonly externalService: TExternalService) {}
+}
 
-  protected success<T>(data: T): TranslationResult<T> {
-    return { success: true, data };
+export abstract class ACLAdapter<TExternal, TInternal> {
+  constructor(protected readonly translator: Translator<TExternal, TInternal>) {}
+
+  adapt(external: TExternal): TInternal {
+    return this.translator.toInternal(external);
   }
 
-  protected failure<T>(errors: string[]): TranslationResult<T> {
-    return { success: false, errors };
-  }
-
-  protected withWarnings<T>(data: T, warnings: string[]): TranslationResult<T> {
-    return { success: true, data, warnings };
+  adaptBack(internal: TInternal): TExternal {
+    return this.translator.toExternal(internal);
   }
 }
 
-export class TranslatorRegistry {
-  private translators: Map<string, Translator<any, any>> = new Map();
+export class ACLGateway<TRequest, TResponse, TExternalRequest, TExternalResponse> {
+  constructor(
+    private readonly requestTranslator: Translator<TRequest, TExternalRequest>,
+    private readonly responseTranslator: Translator<TExternalResponse, TResponse>,
+    private readonly externalCall: (req: TExternalRequest) => Promise<TExternalResponse>
+  ) {}
 
-  register<E extends ExternalModel, D extends DomainModel>(
-    key: string,
-    translator: Translator<E, D>
-  ): void {
-    this.translators.set(key, translator);
-  }
-
-  get<E extends ExternalModel, D extends DomainModel>(key: string): Translator<E, D> | undefined {
-    return this.translators.get(key);
-  }
-
-  translate<E extends ExternalModel, D extends DomainModel>(
-    key: string,
-    direction: 'toDomain' | 'toExternal',
-    data: E | D,
-    context?: TranslationContext
-  ): TranslationResult<E | D> {
-    const translator = this.translators.get(key);
-    if (!translator) {
-      return { success: false, errors: ['Translator not found: ' + key] };
-    }
-    return direction === 'toDomain'
-      ? translator.toDomain(data as E, context)
-      : translator.toExternal(data as D, context);
+  async execute(request: TRequest): Promise<TResponse> {
+    const externalRequest = this.requestTranslator.toExternal(request);
+    const externalResponse = await this.externalCall(externalRequest);
+    return this.responseTranslator.toInternal(externalResponse);
   }
 }
 
-export class CompositeTranslator<E extends ExternalModel, D extends DomainModel> extends Translator<E, D> {
-  private translators: Translator<any, any>[] = [];
-
-  add(translator: Translator<any, any>): void {
-    this.translators.push(translator);
-  }
-
-  toDomain(external: E, context?: TranslationContext): TranslationResult<D> {
-    let current: any = external;
-    const allWarnings: string[] = [];
-
-    for (const translator of this.translators) {
-      const result = translator.toDomain(current, context);
-      if (!result.success) return result;
-      if (result.warnings) allWarnings.push(...result.warnings);
-      current = result.data;
-    }
-
-    return this.withWarnings(current, allWarnings);
-  }
-
-  toExternal(domain: D, context?: TranslationContext): TranslationResult<E> {
-    let current: any = domain;
-    const allWarnings: string[] = [];
-
-    for (const translator of [...this.translators].reverse()) {
-      const result = translator.toExternal(current, context);
-      if (!result.success) return result;
-      if (result.warnings) allWarnings.push(...result.warnings);
-      current = result.data;
-    }
-
-    return this.withWarnings(current, allWarnings);
-  }
+export function createTranslator<TExternal, TInternal>(
+  toInternal: (external: TExternal) => TInternal,
+  toExternal: (internal: TInternal) => TExternal
+): Translator<TExternal, TInternal> {
+  return { toInternal, toExternal };
 }
