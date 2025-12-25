@@ -1,3 +1,9 @@
+/**
+ * @fileoverview CI/CD pipeline
+ * @module @sentinela/core/cicd
+ * @version 13.0.0
+ */
+
 import { CIPipeline, CIStage, Trigger } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
