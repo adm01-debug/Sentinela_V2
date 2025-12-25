@@ -1,3 +1,9 @@
+/**
+ * @fileoverview ACL Facade
+ * @module @sentinela/core/antiCorruptionLayer
+ * @version 13.0.0
+ */
+
 import { TranslatorRegistry } from './translator';
 import { TranslationContext, TranslationResult, ExternalModel, DomainModel } from './types';
 
