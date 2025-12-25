@@ -1,3 +1,9 @@
+/**
+ * @fileoverview CQRS Advanced module exports
+ * @module @sentinela/core/cqrsAdvanced
+ * @version 13.0.0
+ */
+
 // CQRS Advanced - Event Sourcing Pattern
 // Sentinela V13 - Enterprise Architecture
 
