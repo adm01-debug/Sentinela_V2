@@ -1,42 +1,20 @@
 /**
- * @fileoverview A/B testing experiment
+ * @fileoverview A/B Testing
  * @module @sentinela/core/abTesting
  * @version 13.0.0
  */
-
-import { Experiment, Variant, ExperimentStatus } from './types';
-import { v4 as uuidv4 } from 'uuid';
-
-export class ExperimentManager {
-  private experiments: Map<string, Experiment> = new Map();
-  
-  create(name: string, variants: Omit<Variant, 'id'>[]): Experiment {
-    const experiment: Experiment = {
-      id: uuidv4(),
-      name,
-      variants: variants.map(v => ({ id: uuidv4(), ...v })),
-      status: 'draft',
-      startDate: new Date()
-    };
-    this.experiments.set(experiment.id, experiment);
-    return experiment;
+export interface Variant { name: string; weight: number; }
+export interface Experiment { name: string; variants: Variant[]; }
+export class ABTesting {
+  private experiments = new Map<string, Experiment>();
+  register(exp: Experiment): void { this.experiments.set(exp.name, exp); }
+  assign(expName: string, userId: string): string {
+    const exp = this.experiments.get(expName);
+    if (!exp) throw new Error('Experiment not found');
+    const hash = userId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+    const total = exp.variants.reduce((s, v) => s + v.weight, 0);
+    let point = hash % total, cumulative = 0;
+    for (const v of exp.variants) { cumulative += v.weight; if (point < cumulative) return v.name; }
+    return exp.variants[0].name;
   }
-  
-  start(id: string): void {
-    const exp = this.experiments.get(id);
-    if (exp) { exp.status = 'running'; exp.startDate = new Date(); }
-  }
-  
-  pause(id: string): void {
-    const exp = this.experiments.get(id);
-    if (exp) exp.status = 'paused';
-  }
-  
-  complete(id: string): void {
-    const exp = this.experiments.get(id);
-    if (exp) { exp.status = 'completed'; exp.endDate = new Date(); }
-  }
-  
-  get(id: string): Experiment | undefined { return this.experiments.get(id); }
-  getRunning(): Experiment[] { return Array.from(this.experiments.values()).filter(e => e.status === 'running'); }
 }
