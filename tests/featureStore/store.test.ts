@@ -1,19 +1,10 @@
 import { FeatureStore } from '../../featureStore';
-
 describe('FeatureStore', () => {
   let store: FeatureStore;
   beforeEach(() => { store = new FeatureStore(); });
-
-  it('should register and retrieve features', async () => {
-    await store.register('user_age', { type: 'numeric', source: 'users' });
-    const feature = await store.get('user_age');
-    expect(feature).toBeDefined();
-  });
-
-  it('should get feature vector', async () => {
-    await store.register('user_age', { type: 'numeric', source: 'users' });
-    await store.register('user_score', { type: 'numeric', source: 'scores' });
-    const vector = await store.getVector(['user_age', 'user_score'], 'user-123');
-    expect(vector.length).toBe(2);
+  it('should register and get features', async () => {
+    await store.register({ name: 'user-embedding', version: 1, vector: [0.1, 0.2, 0.3] });
+    const feature = await store.get('user-embedding');
+    expect(feature?.vector).toEqual([0.1, 0.2, 0.3]);
   });
 });
