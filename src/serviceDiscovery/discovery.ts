@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Service discovery implementation
+ * @module @sentinela/core/serviceDiscovery
+ * @version 13.0.0
+ */
+
 import { ServiceInstance, ServiceRegistry } from './types';
 
 export class ServiceDiscovery {
