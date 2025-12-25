@@ -1,49 +1,18 @@
 /**
  * Kubernetes patterns example
  */
-import {
-  HPAController,
-  PDBManager,
-  ResourceQuotaManager,
-  StatefulSetManager
-} from '@sentinela/core';
-
-// Horizontal Pod Autoscaler
-async function hpaExample() {
-  const hpa = new HPAController({ minReplicas: 2, maxReplicas: 10, targetCPU: 70 });
+import { HPAController } from '../src/hpa';
+import { PDBManager } from '../src/podDisruptionBudget';
+import { ResourceQuotaManager } from '../src/resourceQuotas';
+const hpa = new HPAController({ minReplicas: 2, maxReplicas: 10, targetCPU: 70 });
+const pdb = new PDBManager();
+const quota = new ResourceQuotaManager();
+async function setup() {
+  await pdb.create({ name: 'api-pdb', minAvailable: 2, selector: { app: 'api' } });
+  await quota.set({ namespace: 'prod', cpu: '100', memory: '200Gi', pods: '50' });
+}
+async function scale() {
   hpa.updateMetrics({ cpu: 85, memory: 60 });
   const decision = await hpa.evaluate();
-  console.log('HPA decision:', decision);
+  console.log('Scaling:', decision);
 }
-
-// Pod Disruption Budget
-async function pdbExample() {
-  const pdb = new PDBManager();
-  await pdb.create({ name: 'api-pdb', minAvailable: 2, selector: { app: 'api' } });
-  console.log('PDB created');
-}
-
-// Resource Quotas
-async function quotaExample() {
-  const quotaManager = new ResourceQuotaManager();
-  await quotaManager.set({
-    namespace: 'production',
-    cpu: '100',
-    memory: '200Gi',
-    pods: '50'
-  });
-  console.log('Quota set');
-}
-
-// StatefulSet
-async function statefulSetExample() {
-  const stsManager = new StatefulSetManager();
-  await stsManager.create({
-    name: 'postgres',
-    replicas: 3,
-    volumeClaim: { size: '100Gi', storageClass: 'fast' }
-  });
-  console.log('StatefulSet created');
-}
-
-Promise.all([hpaExample(), pdbExample(), quotaExample(), statefulSetExample()]);
