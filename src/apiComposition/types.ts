@@ -1,3 +1,9 @@
+/**
+ * @fileoverview API composition types
+ * @module @sentinela/core/apiComposition
+ * @version 13.0.0
+ */
+
 export interface CompositionPlan {
   name: string;
   steps: CompositionStep[];
