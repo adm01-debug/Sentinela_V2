@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Dashboard builder
+ * @module @sentinela/core/dashboard
+ * @version 13.0.0
+ */
+
 import { Dashboard, DashboardRow, Panel, Variable } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
