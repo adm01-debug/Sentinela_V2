@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Ambassador sidecar
+ * @module @sentinela/core/sidecar
+ * @version 13.0.0
+ */
+
 import { AmbassadorConfig } from './types';
 
 export class AmbassadorProxy {
