@@ -1,17 +1,21 @@
 import { GitOpsController, Repository, SyncStatus } from '../../gitops';
 describe('GitOpsController', () => {
   let controller: GitOpsController;
-  beforeEach(() => { controller = new GitOpsController({ repoUrl: 'https://github.com/test/repo' }); });
+  beforeEach(() => { controller = new GitOpsController({ repo: 'test/repo' }); });
   it('should sync repository', async () => {
-    const syncResult = await controller.sync();
-    expect(syncResult.status).toBeDefined();
+    const result = await controller.sync();
+    expect(result.synced).toBeDefined();
   });
   it('should detect drift', async () => {
     const drift = await controller.detectDrift();
-    expect(drift).toBeDefined();
+    expect(drift.hasDrift).toBeDefined();
   });
-  it('should rollback to revision', async () => {
-    const result = await controller.rollback('abc123');
+  it('should get sync status', () => {
+    const status = controller.getStatus();
+    expect(['synced', 'pending', 'failed']).toContain(status.state);
+  });
+  it('should rollback', async () => {
+    const result = await controller.rollback('previous-commit');
     expect(result.success).toBeDefined();
   });
 });
