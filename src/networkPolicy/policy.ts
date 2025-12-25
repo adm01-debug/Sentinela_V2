@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Network policy manager
+ * @module @sentinela/core/networkPolicy
+ * @version 13.0.0
+ */
+
 import { NetworkPolicy, IngressRule, EgressRule, Selector } from './types';
 
 export class NetworkPolicyBuilder {
