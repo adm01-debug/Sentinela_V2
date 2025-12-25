@@ -1,3 +1,9 @@
+/**
+ * @fileoverview RBAC types
+ * @module @sentinela/core/rbac
+ * @version 13.0.0
+ */
+
 export interface Role { name: string; namespace?: string; rules: PolicyRule[]; }
 export interface ClusterRole { name: string; rules: PolicyRule[]; aggregationRule?: AggregationRule; }
 export interface PolicyRule { apiGroups: string[]; resources: string[]; verbs: string[]; resourceNames?: string[]; }
