@@ -1,24 +1,16 @@
 /**
  * @fileoverview Alert Manager
  * @module @sentinela/core/alerting
- * @version 13.0.0
  */
-export interface Alert { id: string; name: string; severity: 'critical' | 'warning' | 'info'; message: string; createdAt: Date; }
-export interface AlertRule { name: string; condition: () => boolean; severity: Alert['severity']; message: string; }
+export interface Alert { id: string; name: string; severity: string; condition: string; triggered: boolean; }
 export class AlertManager {
-  private rules: AlertRule[] = [];
-  private alerts: Alert[] = [];
+  private alerts = new Map<string, Alert>();
   private idCounter = 0;
-  addRule(rule: AlertRule): void { this.rules.push(rule); }
-  async evaluate(): Promise<Alert[]> {
-    const newAlerts: Alert[] = [];
-    for (const rule of this.rules) {
-      if (rule.condition()) {
-        const alert: Alert = { id: String(++this.idCounter), name: rule.name, severity: rule.severity, message: rule.message, createdAt: new Date() };
-        this.alerts.push(alert);
-        newAlerts.push(alert);
-      }
-    }
-    return newAlerts;
+  async create(alert: Omit<Alert, 'id' | 'triggered'>): Promise<string> {
+    const id = 'alert_' + (++this.idCounter);
+    this.alerts.set(id, { ...alert, id, triggered: false });
+    return id;
   }
+  async trigger(id: string): Promise<void> { const a = this.alerts.get(id); if (a) a.triggered = true; }
+  async resolve(id: string): Promise<void> { const a = this.alerts.get(id); if (a) a.triggered = false; }
 }
