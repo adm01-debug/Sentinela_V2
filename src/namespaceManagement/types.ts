@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Namespace management types
+ * @module @sentinela/core/namespaceManagement
+ * @version 13.0.0
+ */
+
 export interface Namespace { name: string; labels?: Record<string, string>; annotations?: Record<string, string>; status: NamespaceStatus; }
 export type NamespaceStatus = 'Active' | 'Terminating';
 export interface NamespaceConfig { defaultResourceQuota?: ResourceQuota; defaultLimitRange?: LimitRange; networkPolicy?: string; }
