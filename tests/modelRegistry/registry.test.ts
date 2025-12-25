@@ -1,26 +1,27 @@
-import { ModelRegistry, ModelVersion, ModelMetadata } from '../../modelRegistry';
+import { ModelRegistry, Model, ModelVersion } from '../../modelRegistry';
 describe('ModelRegistry', () => {
   let registry: ModelRegistry;
   beforeEach(() => { registry = new ModelRegistry(); });
   it('should register model', async () => {
-    const model = await registry.register({
-      name: 'sentiment-classifier',
+    await registry.register({
+      name: 'fraud-detector',
       version: '1.0.0',
-      framework: 'pytorch',
-      metrics: { accuracy: 0.95 }
+      type: 'classification',
+      artifacts: { model: 'path/to/model' }
     });
-    expect(model.id).toBeDefined();
+    const model = await registry.get('fraud-detector', '1.0.0');
+    expect(model).toBeDefined();
   });
-  it('should get latest version', async () => {
-    await registry.register({ name: 'test-model', version: '1.0.0', framework: 'tf' });
-    await registry.register({ name: 'test-model', version: '2.0.0', framework: 'tf' });
-    const latest = await registry.getLatest('test-model');
-    expect(latest.version).toBe('2.0.0');
-  });
-  it('should list versions', async () => {
-    await registry.register({ name: 'multi-v', version: '1.0.0', framework: 'tf' });
-    await registry.register({ name: 'multi-v', version: '1.1.0', framework: 'tf' });
-    const versions = await registry.listVersions('multi-v');
+  it('should list model versions', async () => {
+    await registry.register({ name: 'test', version: '1.0.0', type: 'regression' });
+    await registry.register({ name: 'test', version: '2.0.0', type: 'regression' });
+    const versions = await registry.listVersions('test');
     expect(versions.length).toBe(2);
+  });
+  it('should promote model', async () => {
+    await registry.register({ name: 'prod-model', version: '1.0.0', type: 'classification' });
+    await registry.promote('prod-model', '1.0.0', 'production');
+    const model = await registry.get('prod-model', '1.0.0');
+    expect(model.stage).toBe('production');
   });
 });
