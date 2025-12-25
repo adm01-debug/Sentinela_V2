@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Saga step builder
+ * @module @sentinela/core/sagaOrchestration
+ * @version 13.0.0
+ */
+
 import { StepDefinition, StepStatus } from './types';
 
 export class StepBuilder<T = unknown> {
