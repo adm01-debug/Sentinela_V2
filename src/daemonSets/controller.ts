@@ -1,3 +1,9 @@
+/**
+ * @fileoverview DaemonSet controller
+ * @module @sentinela/core/daemonSets
+ * @version 13.0.0
+ */
+
 import { DaemonSet } from './types';
 
 export class DaemonSetController {
