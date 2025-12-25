@@ -1,3 +1,9 @@
+/**
+ * @fileoverview External system adapter
+ * @module @sentinela/core/antiCorruptionLayer
+ * @version 13.0.0
+ */
+
 import { ExternalModel, DomainModel, TranslationResult } from './types';
 import { Translator } from './translator';
 
