@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Ambassador pattern types
+ * @module @sentinela/core/ambassador
+ * @version 13.0.0
+ */
+
 export interface AmbassadorGatewayConfig {
   port: number;
   routes: RouteConfig[];
