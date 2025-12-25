@@ -1,3 +1,9 @@
+/**
+ * @fileoverview CRD controller
+ * @module @sentinela/core/customResources
+ * @version 13.0.0
+ */
+
 import { CustomResource, CustomResourceDefinition } from './types';
 
 export class CustomResourceController {
