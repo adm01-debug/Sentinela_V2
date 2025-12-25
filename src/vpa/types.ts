@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Vertical Pod Autoscaler types
+ * @module @sentinela/core/vpa
+ * @version 13.0.0
+ */
+
 export interface VPA { name: string; namespace: string; targetRef: TargetRef; updatePolicy: UpdatePolicy; resourcePolicy?: ResourcePolicy; }
 export interface TargetRef { apiVersion: string; kind: string; name: string; }
 export interface UpdatePolicy { updateMode: 'Off' | 'Initial' | 'Recreate' | 'Auto'; }
