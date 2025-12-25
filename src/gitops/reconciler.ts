@@ -1,3 +1,9 @@
+/**
+ * @fileoverview GitOps reconciler
+ * @module @sentinela/core/gitops
+ * @version 13.0.0
+ */
+
 import { Manifest } from './types';
 
 export class Reconciler {
