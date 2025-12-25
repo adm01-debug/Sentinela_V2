@@ -1,48 +1,27 @@
-import { KafkaProducer, KafkaConsumer, KafkaMessage } from '../../kafka';
+import { KafkaProducer, KafkaConsumer } from '../../kafka';
 
 describe('KafkaProducer', () => {
   let producer: KafkaProducer;
-
-  beforeEach(() => {
-    producer = new KafkaProducer({ brokers: ['localhost:9092'] });
-  });
-
-  it('should create producer with config', () => {
-    expect(producer).toBeDefined();
-  });
+  beforeEach(() => { producer = new KafkaProducer({ brokers: ['localhost:9092'] }); });
+  afterEach(async () => { await producer.disconnect(); });
 
   it('should send message', async () => {
-    const message: KafkaMessage = {
-      topic: 'test-topic',
-      key: 'key-1',
-      value: JSON.stringify({ data: 'test' }),
-      headers: { source: 'test' }
-    };
+    const result = await producer.send('test-topic', { key: 'key1', value: JSON.stringify({ data: 'test' }) });
+    expect(result).toBeDefined();
+  });
 
-    // Mock the internal send
-    jest.spyOn(producer as any, 'send').mockResolvedValue(undefined);
-    await producer.send(message);
-    expect((producer as any).send).toHaveBeenCalled();
+  it('should send batch', async () => {
+    const messages = [{ key: 'k1', value: 'v1' }, { key: 'k2', value: 'v2' }];
+    const result = await producer.sendBatch('test-topic', messages);
+    expect(result).toBeDefined();
   });
 });
 
 describe('KafkaConsumer', () => {
-  let consumer: KafkaConsumer;
-
-  beforeEach(() => {
-    consumer = new KafkaConsumer({ 
-      brokers: ['localhost:9092'],
-      groupId: 'test-group'
-    });
-  });
-
-  it('should create consumer with config', () => {
-    expect(consumer).toBeDefined();
-  });
-
-  it('should subscribe to topics', async () => {
-    jest.spyOn(consumer as any, 'subscribe').mockResolvedValue(undefined);
-    await consumer.subscribe(['topic-1', 'topic-2']);
-    expect((consumer as any).subscribe).toHaveBeenCalled();
+  it('should subscribe to topic', async () => {
+    const consumer = new KafkaConsumer({ brokers: ['localhost:9092'], groupId: 'test-group' });
+    await consumer.subscribe('test-topic');
+    expect(consumer.isSubscribed('test-topic')).toBe(true);
+    await consumer.disconnect();
   });
 });
