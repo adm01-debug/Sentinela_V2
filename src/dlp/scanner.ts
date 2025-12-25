@@ -1,54 +1,57 @@
 /**
- * @fileoverview DLP scanner
+ * @fileoverview DLP Scanner implementation
  * @module @sentinela/core/dlp
  * @version 13.0.0
  */
 
-import { DLPPolicy, DataPattern, ScanResult, Violation } from './types';
+export interface DLPFinding {
+  type: 'SSN' | 'CREDIT_CARD' | 'EMAIL' | 'PHONE' | 'API_KEY' | 'PASSWORD';
+  value: string;
+  location: { start: number; end: number };
+  confidence: number;
+}
+
+export interface ScanResult {
+  findings: DLPFinding[];
+  scannedAt: Date;
+  inputLength: number;
+}
+
+const PATTERNS: Array<{ type: DLPFinding['type']; regex: RegExp }> = [
+  { type: 'SSN', regex: /\b\d{3}-\d{2}-\d{4}\b/g },
+  { type: 'CREDIT_CARD', regex: /\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13})\b/g },
+  { type: 'EMAIL', regex: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g },
+  { type: 'PHONE', regex: /\b(?:\+1[-.]?)?\(?[0-9]{3}\)?[-.]?[0-9]{3}[-.]?[0-9]{4}\b/g },
+];
 
 export class DLPScanner {
-  private policies: DLPPolicy[] = [];
-  
-  addPolicy(policy: DLPPolicy): void { this.policies.push(policy); }
-  removePolicy(id: string): void { this.policies = this.policies.filter(p => p.id !== id); }
-  
-  scan(content: string): ScanResult {
-    const violations: Violation[] = [];
-    const actions = new Set<string>();
+  async scan(text: string): Promise<ScanResult> {
+    const findings: DLPFinding[] = [];
     
-    for (const policy of this.policies) {
-      for (const pattern of policy.patterns) {
-        const matches = this.findMatches(content, pattern);
-        matches.forEach(match => {
-          violations.push({ policy: policy.id, pattern: pattern.value.toString(), location: match.location, matched: match.text });
-          policy.actions.forEach(a => actions.add(a));
+    for (const { type, regex } of PATTERNS) {
+      let match;
+      while ((match = regex.exec(text)) !== null) {
+        findings.push({
+          type,
+          value: match[0],
+          location: { start: match.index, end: match.index + match[0].length },
+          confidence: 0.9
         });
       }
     }
-    
-    return { content, violations, actions: Array.from(actions) as ScanResult['actions'] };
+
+    return { findings, scannedAt: new Date(), inputLength: text.length };
   }
-  
-  private findMatches(content: string, pattern: DataPattern): { text: string; location: { start: number; end: number } }[] {
-    const matches: { text: string; location: { start: number; end: number } }[] = [];
+
+  async redact(text: string): Promise<string> {
+    let result = text;
+    const { findings } = await this.scan(text);
     
-    if (pattern.type === 'regex') {
-      const regex = new RegExp(pattern.value as string, 'gi');
-      let match;
-      while ((match = regex.exec(content)) !== null) {
-        matches.push({ text: match[0], location: { start: match.index, end: match.index + match[0].length } });
-      }
-    } else if (pattern.type === 'keyword') {
-      const keywords = Array.isArray(pattern.value) ? pattern.value : [pattern.value];
-      keywords.forEach(kw => {
-        let index = content.toLowerCase().indexOf(kw.toLowerCase());
-        while (index !== -1) {
-          matches.push({ text: content.substr(index, kw.length), location: { start: index, end: index + kw.length } });
-          index = content.toLowerCase().indexOf(kw.toLowerCase(), index + 1);
-        }
-      });
+    for (const finding of findings.sort((a, b) => b.location.start - a.location.start)) {
+      const replacement = '[REDACTED]';
+      result = result.slice(0, finding.location.start) + replacement + result.slice(finding.location.end);
     }
     
-    return matches;
+    return result;
   }
 }
