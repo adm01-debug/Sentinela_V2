@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Event sourcing types
+ * @module @sentinela/core/eventSourcing
+ * @version 13.0.0
+ */
+
 export interface StoredEvent {
   eventId: string;
   streamId: string;
