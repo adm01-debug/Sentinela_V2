@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Job scheduler
+ * @module @sentinela/core/jobsCronJobs
+ * @version 13.0.0
+ */
+
 export class CronScheduler {
   private schedules: Map<string, { cron: string; callback: () => void; lastRun?: Date }> = new Map();
   
