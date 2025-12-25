@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Domain events types
+ * @module @sentinela/core/domainEvents
+ * @version 13.0.0
+ */
+
 export interface DomainEvent<T = unknown> {
   readonly eventId: string;
   readonly eventType: string;
