@@ -1,47 +1,15 @@
 /**
- * @fileoverview VPA recommender
+ * @fileoverview VPA Recommender
  * @module @sentinela/core/vpa
- * @version 13.0.0
  */
-
-import { VPA, Recommendation, ContainerRecommendation, Resources } from './types';
-
+export interface ResourceRecommendation { cpu: string; memory: string; }
 export class VPARecommender {
-  private history: Map<string, ResourceSample[]> = new Map();
-  
-  recordSample(namespace: string, podName: string, containerName: string, cpu: number, memory: number): void {
-    const key = namespace + '/' + podName + '/' + containerName;
-    const samples = this.history.get(key) ?? [];
-    samples.push({ cpu, memory, timestamp: new Date() });
-    if (samples.length > 1000) samples.shift();
-    this.history.set(key, samples);
-  }
-  
-  recommend(vpa: VPA): Recommendation {
-    const containerRecommendations: ContainerRecommendation[] = [];
-    
-    this.history.forEach((samples, key) => {
-      if (!key.startsWith(vpa.namespace + '/')) return;
-      const containerName = key.split('/')[2];
-      
-      const cpuValues = samples.map(s => s.cpu).sort((a, b) => a - b);
-      const memValues = samples.map(s => s.memory).sort((a, b) => a - b);
-      
-      containerRecommendations.push({
-        containerName,
-        lowerBound: { cpu: this.percentile(cpuValues, 10) + 'm', memory: this.percentile(memValues, 10) + 'Mi' },
-        target: { cpu: this.percentile(cpuValues, 90) + 'm', memory: this.percentile(memValues, 90) + 'Mi' },
-        upperBound: { cpu: this.percentile(cpuValues, 99) + 'm', memory: this.percentile(memValues, 99) + 'Mi' }
-      });
-    });
-    
-    return { containerRecommendations };
-  }
-  
-  private percentile(sorted: number[], p: number): number {
-    const index = Math.ceil(p / 100 * sorted.length) - 1;
-    return Math.round(sorted[Math.max(0, index)] ?? 0);
+  private samples: Array<{ cpu: number; memory: number }> = [];
+  addSample(cpu: number, memory: number): void { this.samples.push({ cpu, memory }); }
+  recommend(): ResourceRecommendation {
+    if (this.samples.length === 0) return { cpu: '100m', memory: '128Mi' };
+    const avgCpu = this.samples.reduce((a, s) => a + s.cpu, 0) / this.samples.length;
+    const avgMem = this.samples.reduce((a, s) => a + s.memory, 0) / this.samples.length;
+    return { cpu: Math.ceil(avgCpu * 1.2) + 'm', memory: Math.ceil(avgMem * 1.2) + 'Mi' };
   }
 }
-
-export interface ResourceSample { cpu: number; memory: number; timestamp: Date; }
