@@ -1,13 +1,17 @@
 /**
- * @packageDocumentation
- * @module Core/Logger
- * Structured logging for Sentinela framework
+ * @fileoverview Structured logger for Sentinela framework
+ * @module @sentinela/core/logger
  */
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'fatal';
 
 export interface LogContext {
   [key: string]: unknown;
+  correlationId?: string;
+  requestId?: string;
+  userId?: string;
+  service?: string;
+  module?: string;
 }
 
 export interface LogEntry {
@@ -22,20 +26,12 @@ export interface LogEntry {
   };
 }
 
-export interface Logger {
-  debug(message: string, context?: LogContext): void;
-  info(message: string, context?: LogContext): void;
-  warn(message: string, context?: LogContext): void;
-  error(message: string, error?: Error, context?: LogContext): void;
-  fatal(message: string, error?: Error, context?: LogContext): void;
-  child(context: LogContext): Logger;
-}
-
 export interface LoggerConfig {
   level: LogLevel;
-  format: 'json' | 'text';
-  output: 'console' | 'file' | 'stream';
-  filePath?: string;
+  pretty: boolean;
+  includeTimestamp: boolean;
+  includeLevel: boolean;
+  redactKeys: string[];
 }
 
 const LOG_LEVELS: Record<LogLevel, number> = {
@@ -47,43 +43,58 @@ const LOG_LEVELS: Record<LogLevel, number> = {
 };
 
 /**
- * Default structured logger implementation
+ * Structured logger implementation
  */
-export class SentinelaLogger implements Logger {
-  private readonly config: LoggerConfig;
-  private readonly baseContext: LogContext;
+export class Logger {
+  private config: LoggerConfig;
+  private defaultContext: LogContext;
 
-  constructor(config: Partial<LoggerConfig> = {}, baseContext: LogContext = {}) {
+  constructor(config?: Partial<LoggerConfig>, defaultContext?: LogContext) {
     this.config = {
-      level: config.level ?? 'info',
-      format: config.format ?? 'json',
-      output: config.output ?? 'console',
-      filePath: config.filePath
+      level: 'info',
+      pretty: process.env.NODE_ENV !== 'production',
+      includeTimestamp: true,
+      includeLevel: true,
+      redactKeys: ['password', 'token', 'secret', 'apiKey', 'authorization'],
+      ...config
     };
-    this.baseContext = baseContext;
+    this.defaultContext = defaultContext || {};
   }
 
   private shouldLog(level: LogLevel): boolean {
     return LOG_LEVELS[level] >= LOG_LEVELS[this.config.level];
   }
 
-  private formatEntry(entry: LogEntry): string {
-    if (this.config.format === 'json') {
-      return JSON.stringify(entry);
+  private redact(obj: Record<string, unknown>): Record<string, unknown> {
+    const redacted = { ...obj };
+    for (const key of Object.keys(redacted)) {
+      if (this.config.redactKeys.some(k => key.toLowerCase().includes(k.toLowerCase()))) {
+        redacted[key] = '[REDACTED]';
+      } else if (typeof redacted[key] === 'object' && redacted[key] !== null) {
+        redacted[key] = this.redact(redacted[key] as Record<string, unknown>);
+      }
     }
-    const ctx = entry.context ? ' ' + JSON.stringify(entry.context) : '';
-    const err = entry.error ? ' [' + entry.error.name + ': ' + entry.error.message + ']' : '';
-    return '[' + entry.timestamp + '] ' + entry.level.toUpperCase() + ': ' + entry.message + ctx + err;
+    return redacted;
   }
 
-  private log(level: LogLevel, message: string, error?: Error, context?: LogContext): void {
+  private formatEntry(entry: LogEntry): string {
+    const redacted = entry.context ? this.redact(entry.context as Record<string, unknown>) : undefined;
+    const output = { ...entry, context: redacted };
+    
+    if (this.config.pretty) {
+      return JSON.stringify(output, null, 2);
+    }
+    return JSON.stringify(output);
+  }
+
+  private log(level: LogLevel, message: string, context?: LogContext, error?: Error): void {
     if (!this.shouldLog(level)) return;
 
     const entry: LogEntry = {
       level,
       message,
       timestamp: new Date().toISOString(),
-      context: { ...this.baseContext, ...context }
+      context: { ...this.defaultContext, ...context }
     };
 
     if (error) {
@@ -96,46 +107,48 @@ export class SentinelaLogger implements Logger {
 
     const formatted = this.formatEntry(entry);
     
-    if (this.config.output === 'console') {
-      if (level === 'error' || level === 'fatal') {
+    switch (level) {
+      case 'error':
+      case 'fatal':
         console.error(formatted);
-      } else if (level === 'warn') {
+        break;
+      case 'warn':
         console.warn(formatted);
-      } else {
+        break;
+      default:
         console.log(formatted);
-      }
     }
   }
 
   debug(message: string, context?: LogContext): void {
-    this.log('debug', message, undefined, context);
+    this.log('debug', message, context);
   }
 
   info(message: string, context?: LogContext): void {
-    this.log('info', message, undefined, context);
+    this.log('info', message, context);
   }
 
   warn(message: string, context?: LogContext): void {
-    this.log('warn', message, undefined, context);
+    this.log('warn', message, context);
   }
 
   error(message: string, error?: Error, context?: LogContext): void {
-    this.log('error', message, error, context);
+    this.log('error', message, context, error);
   }
 
   fatal(message: string, error?: Error, context?: LogContext): void {
-    this.log('fatal', message, error, context);
+    this.log('fatal', message, context, error);
   }
 
   child(context: LogContext): Logger {
-    return new SentinelaLogger(this.config, { ...this.baseContext, ...context });
+    return new Logger(this.config, { ...this.defaultContext, ...context });
   }
 }
 
-/** Global logger instance */
-export const logger = new SentinelaLogger();
+/** Default logger instance */
+export const logger = new Logger();
 
-/** Create a logger with custom config */
-export function createLogger(config?: Partial<LoggerConfig>, context?: LogContext): Logger {
-  return new SentinelaLogger(config, context);
+/** Create a child logger for a specific module */
+export function createLogger(module: string, context?: LogContext): Logger {
+  return logger.child({ module, ...context });
 }
