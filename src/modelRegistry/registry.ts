@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Model registry
+ * @module @sentinela/core/modelRegistry
+ * @version 13.0.0
+ */
+
 import { Model, ModelVersion, ModelStage } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
