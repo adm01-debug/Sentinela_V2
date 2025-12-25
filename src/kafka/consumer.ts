@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Kafka consumer
+ * @module @sentinela/core/kafka
+ * @version 13.0.0
+ */
+
 import { KafkaConfig, ConsumerMessage } from './types';
 
 export class KafkaConsumer {
