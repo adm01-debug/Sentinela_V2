@@ -1,48 +1,54 @@
 /**
- * @fileoverview Security event collector
+ * @fileoverview SIEM Collector implementation
  * @module @sentinela/core/siem
  * @version 13.0.0
  */
 
-import { SecurityEvent } from './types';
-import { v4 as uuidv4 } from 'uuid';
-
-export class EventCollector {
-  private events: SecurityEvent[] = [];
-  private listeners: ((event: SecurityEvent) => void)[] = [];
-  
-  collect(source: string, type: string, severity: SecurityEvent['severity'], data: Record<string, unknown>): SecurityEvent {
-    const event: SecurityEvent = { id: uuidv4(), source, type, severity, timestamp: new Date(), data };
-    this.events.push(event);
-    if (this.events.length > 100000) this.events.shift();
-    this.listeners.forEach(l => l(event));
-    return event;
-  }
-  
-  subscribe(listener: (event: SecurityEvent) => void): () => void {
-    this.listeners.push(listener);
-    return () => { this.listeners = this.listeners.filter(l => l !== listener); };
-  }
-  
-  query(filter: Partial<SecurityEvent>, limit?: number): SecurityEvent[] {
-    let results = this.events.filter(e => {
-      if (filter.source && e.source !== filter.source) return false;
-      if (filter.type && e.type !== filter.type) return false;
-      if (filter.severity && e.severity !== filter.severity) return false;
-      return true;
-    });
-    return limit ? results.slice(-limit) : results;
-  }
-  
-  getStats(): CollectorStats {
-    const byType: Record<string, number> = {};
-    const bySeverity: Record<string, number> = {};
-    this.events.forEach(e => {
-      byType[e.type] = (byType[e.type] ?? 0) + 1;
-      bySeverity[e.severity] = (bySeverity[e.severity] ?? 0) + 1;
-    });
-    return { total: this.events.length, byType, bySeverity };
-  }
+export interface SecurityEvent {
+  type: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  source: string;
+  timestamp: Date;
+  userId?: string;
+  details: Record<string, unknown>;
 }
 
-export interface CollectorStats { total: number; byType: Record<string, number>; bySeverity: Record<string, number>; }
+export interface SIEMConfig {
+  endpoint: string;
+  batchSize?: number;
+  flushInterval?: number;
+}
+
+export class SIEMCollector {
+  private events: SecurityEvent[] = [];
+  private flushTimer?: NodeJS.Timeout;
+
+  constructor(private config: SIEMConfig) {
+    const interval = config.flushInterval ?? 5000;
+    this.flushTimer = setInterval(() => this.flush(), interval);
+  }
+
+  async collect(event: Omit<SecurityEvent, 'timestamp'>): Promise<void> {
+    this.events.push({ ...event, timestamp: new Date() });
+    const batchSize = this.config.batchSize ?? 100;
+    if (this.events.length >= batchSize) {
+      await this.flush();
+    }
+  }
+
+  async flush(): Promise<void> {
+    if (this.events.length === 0) return;
+    const toSend = [...this.events];
+    this.events = [];
+    // In real impl: send to SIEM endpoint
+    console.log('Flushing', toSend.length, 'events to SIEM');
+  }
+
+  pendingEvents(): number {
+    return this.events.length;
+  }
+
+  dispose(): void {
+    if (this.flushTimer) clearInterval(this.flushTimer);
+  }
+}
