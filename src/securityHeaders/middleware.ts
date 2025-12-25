@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Security headers middleware
+ * @module @sentinela/core/securityHeaders
+ * @version 13.0.0
+ */
+
 import { SecurityHeaders, HeaderConfig } from './types';
 
 export class SecurityHeadersMiddleware {
