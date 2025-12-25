@@ -1,3 +1,9 @@
+/**
+ * @fileoverview PDB controller
+ * @module @sentinela/core/podDisruptionBudget
+ * @version 13.0.0
+ */
+
 import { PDBManager } from './budget';
 import { Pod, PodDisruptionBudget } from './types';
 
