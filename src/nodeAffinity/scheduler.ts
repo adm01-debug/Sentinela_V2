@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Node affinity scheduler
+ * @module @sentinela/core/nodeAffinity
+ * @version 13.0.0
+ */
+
 import { NodeAffinity, Node } from './types';
 import { AffinityMatcher } from './matcher';
 
