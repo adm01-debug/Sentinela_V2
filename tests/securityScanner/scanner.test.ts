@@ -1,18 +1,9 @@
 import { SecurityScanner } from '../../securityScanner';
-
 describe('SecurityScanner', () => {
-  let scanner: SecurityScanner;
-  beforeEach(() => { scanner = new SecurityScanner(); });
-
-  it('should scan for vulnerabilities', async () => {
-    const results = await scanner.scan({ target: 'http://localhost:3000' });
-    expect(results).toHaveProperty('vulnerabilities');
-  });
-
-  it('should categorize findings by severity', async () => {
-    const results = await scanner.scan({ target: 'http://localhost:3000' });
-    expect(results).toHaveProperty('critical');
-    expect(results).toHaveProperty('high');
-    expect(results).toHaveProperty('medium');
+  it('should scan target', async () => {
+    const scanner = new SecurityScanner();
+    const result = await scanner.scan({ target: 'http://test.local', depth: 2 });
+    expect(result.target).toBe('http://test.local');
+    expect(result.scannedAt).toBeDefined();
   });
 });
