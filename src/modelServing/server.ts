@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Model server
+ * @module @sentinela/core/modelServing
+ * @version 13.0.0
+ */
+
 import { InferenceRequest, InferenceResponse, ServingConfig } from './types';
 
 export class ModelServer {
