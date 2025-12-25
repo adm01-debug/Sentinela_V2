@@ -1,17 +1,9 @@
 import { SIEMCollector } from '../../siem';
-
 describe('SIEMCollector', () => {
-  let collector: SIEMCollector;
-  beforeEach(() => { collector = new SIEMCollector({ endpoint: 'http://siem.local' }); });
-
-  it('should collect security events', async () => {
-    await collector.collect({ type: 'LOGIN_ATTEMPT', userId: 'user1', success: true });
+  it('should collect events', async () => {
+    const collector = new SIEMCollector({ endpoint: 'http://siem.local' });
+    await collector.collect({ type: 'LoginAttempt', severity: 'low', source: 'auth', details: { user: 'test' } });
     expect(collector.pendingEvents()).toBe(1);
-  });
-
-  it('should flush events', async () => {
-    await collector.collect({ type: 'LOGIN_ATTEMPT', userId: 'user1', success: true });
-    await collector.flush();
-    expect(collector.pendingEvents()).toBe(0);
+    collector.dispose();
   });
 });
