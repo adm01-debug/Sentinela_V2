@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Namespace manager
+ * @module @sentinela/core/namespaceManagement
+ * @version 13.0.0
+ */
+
 import { Namespace, NamespaceConfig } from './types';
 
 export class NamespaceManager {
