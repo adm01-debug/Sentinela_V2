@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Security event collector
+ * @module @sentinela/core/siem
+ * @version 13.0.0
+ */
+
 import { SecurityEvent } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
