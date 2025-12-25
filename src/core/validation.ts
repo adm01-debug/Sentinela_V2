@@ -1,14 +1,11 @@
 /**
- * @packageDocumentation
- * @module Core/Validation
- * Input validation utilities
+ * @fileoverview Validation utilities
+ * @module @sentinela/core/validation
  */
+
 import { ValidationError } from './errors';
 
-export interface ValidationRule<T> {
-  validate(value: T): boolean;
-  message: string;
-}
+export type Validator<T> = (value: T) => ValidationResult;
 
 export interface ValidationResult {
   valid: boolean;
@@ -22,104 +19,129 @@ export interface ValidationErrorDetail {
 }
 
 /**
- * Validator class for composable validation
+ * Validate required field
  */
-export class Validator<T> {
-  private rules: Map<keyof T, ValidationRule<unknown>[]> = new Map();
-
-  addRule<K extends keyof T>(field: K, rule: ValidationRule<T[K]>): this {
-    const fieldRules = this.rules.get(field) ?? [];
-    fieldRules.push(rule as ValidationRule<unknown>);
-    this.rules.set(field, fieldRules);
-    return this;
-  }
-
-  validate(data: T): ValidationResult {
-    const errors: ValidationErrorDetail[] = [];
-
-    this.rules.forEach((rules, field) => {
-      const value = data[field as keyof T];
-      for (const rule of rules) {
-        if (!rule.validate(value)) {
-          errors.push({ field: String(field), message: rule.message, value });
-        }
-      }
-    });
-
-    return { valid: errors.length === 0, errors };
-  }
-
-  validateOrThrow(data: T): void {
-    const result = this.validate(data);
-    if (!result.valid) {
-      const firstError = result.errors[0];
-      throw new ValidationError(firstError.message, firstError.field, firstError.value);
-    }
-  }
+export function required(field: string): Validator<unknown> {
+  return (value) => {
+    const valid = value !== undefined && value !== null && value !== '';
+    return {
+      valid,
+      errors: valid ? [] : [{ field, message: `${field} is required`, value }]
+    };
+  };
 }
 
-/** Common validation rules */
-export const Rules = {
-  required: <T>(message = 'Field is required'): ValidationRule<T> => ({
-    validate: (v) => v !== undefined && v !== null && v !== '',
-    message
-  }),
-
-  minLength: (min: number, message?: string): ValidationRule<string> => ({
-    validate: (v) => typeof v === 'string' && v.length >= min,
-    message: message ?? 'Minimum length is ' + min
-  }),
-
-  maxLength: (max: number, message?: string): ValidationRule<string> => ({
-    validate: (v) => typeof v === 'string' && v.length <= max,
-    message: message ?? 'Maximum length is ' + max
-  }),
-
-  min: (min: number, message?: string): ValidationRule<number> => ({
-    validate: (v) => typeof v === 'number' && v >= min,
-    message: message ?? 'Minimum value is ' + min
-  }),
-
-  max: (max: number, message?: string): ValidationRule<number> => ({
-    validate: (v) => typeof v === 'number' && v <= max,
-    message: message ?? 'Maximum value is ' + max
-  }),
-
-  email: (message = 'Invalid email format'): ValidationRule<string> => ({
-    validate: (v) => typeof v === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-    message
-  }),
-
-  pattern: (regex: RegExp, message = 'Invalid format'): ValidationRule<string> => ({
-    validate: (v) => typeof v === 'string' && regex.test(v),
-    message
-  }),
-
-  oneOf: <T>(values: T[], message?: string): ValidationRule<T> => ({
-    validate: (v) => values.includes(v),
-    message: message ?? 'Must be one of: ' + values.join(', ')
-  }),
-
-  custom: <T>(fn: (v: T) => boolean, message: string): ValidationRule<T> => ({
-    validate: fn,
-    message
-  })
-};
-
-/** Validate a single value */
-export function validate<T>(value: T, rules: ValidationRule<T>[]): ValidationResult {
-  const errors: ValidationErrorDetail[] = [];
-  for (const rule of rules) {
-    if (!rule.validate(value)) {
-      errors.push({ field: 'value', message: rule.message, value });
-    }
-  }
-  return { valid: errors.length === 0, errors };
+/**
+ * Validate string min length
+ */
+export function minLength(field: string, min: number): Validator<string> {
+  return (value) => {
+    const valid = typeof value === 'string' && value.length >= min;
+    return {
+      valid,
+      errors: valid ? [] : [{ field, message: `${field} must be at least ${min} characters`, value }]
+    };
+  };
 }
 
-/** Assert a condition or throw */
-export function assert(condition: boolean, message: string, field?: string): asserts condition {
-  if (!condition) {
-    throw new ValidationError(message, field);
+/**
+ * Validate string max length
+ */
+export function maxLength(field: string, max: number): Validator<string> {
+  return (value) => {
+    const valid = typeof value === 'string' && value.length <= max;
+    return {
+      valid,
+      errors: valid ? [] : [{ field, message: `${field} must be at most ${max} characters`, value }]
+    };
+  };
+}
+
+/**
+ * Validate email format
+ */
+export function email(field: string): Validator<string> {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return (value) => {
+    const valid = typeof value === 'string' && emailRegex.test(value);
+    return {
+      valid,
+      errors: valid ? [] : [{ field, message: `${field} must be a valid email address`, value }]
+    };
+  };
+}
+
+/**
+ * Validate number range
+ */
+export function range(field: string, min: number, max: number): Validator<number> {
+  return (value) => {
+    const valid = typeof value === 'number' && value >= min && value <= max;
+    return {
+      valid,
+      errors: valid ? [] : [{ field, message: `${field} must be between ${min} and ${max}`, value }]
+    };
+  };
+}
+
+/**
+ * Validate pattern
+ */
+export function pattern(field: string, regex: RegExp, message?: string): Validator<string> {
+  return (value) => {
+    const valid = typeof value === 'string' && regex.test(value);
+    return {
+      valid,
+      errors: valid ? [] : [{ field, message: message || `${field} format is invalid`, value }]
+    };
+  };
+}
+
+/**
+ * Combine multiple validators
+ */
+export function combine<T>(...validators: Validator<T>[]): Validator<T> {
+  return (value) => {
+    const allErrors: ValidationErrorDetail[] = [];
+    for (const validator of validators) {
+      const result = validator(value);
+      allErrors.push(...result.errors);
+    }
+    return { valid: allErrors.length === 0, errors: allErrors };
+  };
+}
+
+/**
+ * Validate object with schema
+ */
+export function validateObject<T extends Record<string, unknown>>(
+  obj: T,
+  schema: Record<keyof T, Validator<unknown>[]>
+): ValidationResult {
+  const allErrors: ValidationErrorDetail[] = [];
+  
+  for (const [field, validators] of Object.entries(schema)) {
+    const value = obj[field as keyof T];
+    for (const validator of validators as Validator<unknown>[]) {
+      const result = validator(value);
+      allErrors.push(...result.errors);
+    }
+  }
+  
+  return { valid: allErrors.length === 0, errors: allErrors };
+}
+
+/**
+ * Assert validation passes or throw
+ */
+export function assertValid(result: ValidationResult): void {
+  if (!result.valid) {
+    const firstError = result.errors[0];
+    throw new ValidationError(
+      firstError.message,
+      firstError.field,
+      firstError.value,
+      { allErrors: result.errors }
+    );
   }
 }
