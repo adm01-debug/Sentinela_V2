@@ -1,38 +1,48 @@
 # Sentinela Examples
 
-This directory contains examples demonstrating how to use Sentinela.
-
-## Examples
-
-### Basic Usage
-`examples/basic/` - Basic usage of core features
-
-```bash
-npx ts-node examples/basic/index.ts
-```
-
-### CQRS Pattern
-`examples/cqrs/` - Command Query Responsibility Segregation
-
-### Saga Pattern
-`examples/saga/` - Distributed transactions with saga
-
-### Microservices
-`examples/microservices/` - Microservices architecture patterns
+This directory contains example code demonstrating how to use Sentinela modules.
 
 ## Running Examples
 
-1. Install dependencies:
 ```bash
+# Install dependencies
 npm install
+
+# Run an example
+npx ts-node examples/basic-usage.ts
 ```
 
-2. Run an example:
-```bash
-npx ts-node examples/<example>/index.ts
-```
+## Available Examples
 
-## Requirements
+### Basic Usage (`basic-usage.ts`)
+Demonstrates core features: logging, caching, retry, circuit breaker.
 
-- Node.js >= 18.0.0
-- TypeScript >= 5.0.0
+### CQRS Pattern (`cqrs-pattern.ts`)
+Shows how to implement Command Query Responsibility Segregation.
+
+### Event-Driven Architecture (`event-driven.ts`)
+Event sourcing and domain events implementation.
+
+### Resilience Patterns (`resilience-patterns.ts`)
+Combined resilience patterns for fault-tolerant systems.
+
+## Example Categories
+
+| Category | Examples |
+|----------|----------|
+| Core Patterns | basic-usage, resilience-patterns |
+| Architecture | cqrs-pattern, event-driven |
+| Security | authentication, authorization |
+| Messaging | kafka-integration, rabbitmq-integration |
+| Database | repository-pattern, event-sourcing |
+
+## Contributing Examples
+
+1. Create a new `.ts` file in this directory
+2. Add comprehensive comments
+3. Include error handling
+4. Update this README
+
+## Questions?
+
+Open an issue or check the main documentation.
