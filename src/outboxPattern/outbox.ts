@@ -1,74 +1,85 @@
 /**
- * @fileoverview Outbox implementation
+ * @fileoverview Outbox pattern implementation
  * @module @sentinela/core/outboxPattern
  * @version 13.0.0
  */
 
-import { OutboxMessage, OutboxEntry, OutboxStatus, OutboxConfig } from './types';
-import { v4 as uuidv4 } from 'uuid';
+export interface OutboxMessage {
+  id: string;
+  type: string;
+  payload: unknown;
+  createdAt: Date;
+  processedAt?: Date;
+  retries: number;
+  error?: string;
+}
+
+export interface OutboxConfig {
+  tableName?: string;
+  maxRetries?: number;
+  retryDelayMs?: number;
+}
 
 export class Outbox {
-  private messages: Map<string, OutboxMessage> = new Map();
-  private config: OutboxConfig;
+  private messages: OutboxMessage[] = [];
+  private idCounter = 0;
 
-  constructor(config?: Partial<OutboxConfig>) {
-    this.config = {
-      tableName: 'outbox',
-      batchSize: 100,
-      retryLimit: 3,
-      retryDelayMs: 1000,
-      cleanupAfterDays: 7,
-      ...config
-    };
-  }
+  constructor(private readonly config: OutboxConfig = {}) {}
 
-  async add(entry: OutboxEntry): Promise<OutboxMessage> {
-    const message: OutboxMessage = {
-      id: uuidv4(),
-      ...entry,
-      status: 'pending',
+  async add(message: { type: string; payload: unknown }): Promise<string> {
+    const id = String(++this.idCounter);
+    this.messages.push({
+      id,
+      type: message.type,
+      payload: message.payload,
       createdAt: new Date(),
       retries: 0
-    };
-    this.messages.set(message.id, message);
-    return message;
+    });
+    return id;
   }
 
-  async addBatch(entries: OutboxEntry[]): Promise<OutboxMessage[]> {
-    return Promise.all(entries.map(e => this.add(e)));
+  async getPending(): Promise<OutboxMessage[]> {
+    const maxRetries = this.config.maxRetries ?? 3;
+    return this.messages.filter(m => !m.processedAt && m.retries < maxRetries);
   }
 
-  async getPending(limit?: number): Promise<OutboxMessage[]> {
-    const pending = Array.from(this.messages.values())
-      .filter(m => m.status === 'pending')
-      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-    return pending.slice(0, limit ?? this.config.batchSize);
-  }
-
-  async markProcessing(id: string): Promise<void> {
-    const message = this.messages.get(id);
-    if (message) message.status = 'processing';
-  }
-
-  async markPublished(id: string): Promise<void> {
-    const message = this.messages.get(id);
-    if (message) {
-      message.status = 'published';
-      message.processedAt = new Date();
-    }
+  async markProcessed(id: string): Promise<void> {
+    const msg = this.messages.find(m => m.id === id);
+    if (msg) msg.processedAt = new Date();
   }
 
   async markFailed(id: string, error: string): Promise<void> {
-    const message = this.messages.get(id);
-    if (message) {
-      message.retries++;
-      message.error = error;
-      message.status = message.retries >= this.config.retryLimit ? 'failed' : 'pending';
+    const msg = this.messages.find(m => m.id === id);
+    if (msg) {
+      msg.retries++;
+      msg.error = error;
     }
   }
 
-  async getByAggregate(aggregateType: string, aggregateId: string): Promise<OutboxMessage[]> {
-    return Array.from(this.messages.values())
-      .filter(m => m.aggregateType === aggregateType && m.aggregateId === aggregateId);
+  clear(): void {
+    this.messages = [];
+    this.idCounter = 0;
+  }
+}
+
+export class OutboxProcessor {
+  constructor(
+    private readonly outbox: Outbox,
+    private readonly publisher: { publish: (msg: OutboxMessage) => Promise<void> }
+  ) {}
+
+  async process(): Promise<number> {
+    const pending = await this.outbox.getPending();
+    let processed = 0;
+    for (const msg of pending) {
+      try {
+        await this.publisher.publish(msg);
+        await this.outbox.markProcessed(msg.id);
+        processed++;
+      } catch (error) {
+        await this.outbox.markFailed(msg.id, String(error));
+      }
+    }
+    return processed;
   }
 }
