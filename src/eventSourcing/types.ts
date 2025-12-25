@@ -1,19 +1,2 @@
-/**
- * @fileoverview Event sourcing types
- * @module @sentinela/core/eventSourcing
- * @version 13.0.0
- */
-
-export interface StoredEvent {
-  eventId: string;
-  streamId: string;
-  eventType: string;
-  data: unknown;
-  metadata: EventMetadata;
-  version: number;
-  timestamp: Date;
-}
-
-export interface EventMetadata { correlationId: string; causationId?: string; userId?: string; }
-export interface EventStream { streamId: string; events: StoredEvent[]; version: number; }
-export interface Projection<S> { name: string; initialState: S; handlers: Record<string, (state: S, event: StoredEvent) => S>; }
+export interface Event { type: string; version: number; data: unknown; timestamp?: Date; }
+export interface Snapshot { state: unknown; version: number; }
