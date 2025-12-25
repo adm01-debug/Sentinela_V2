@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Aggregate pattern types
+ * @module @sentinela/core/aggregate
+ * @version 13.0.0
+ */
+
 export interface AggregateRoot<ID = string> {
   readonly id: ID;
   readonly version: number;
