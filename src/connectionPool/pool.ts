@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Connection pool
+ * @module @sentinela/core/connectionPool
+ * @version 13.0.0
+ */
+
 import { PoolConfig, Connection, PoolStats } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
