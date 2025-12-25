@@ -1,9 +1,13 @@
 #!/bin/bash
 set -e
-VERSION=${1:-patch}
-echo "Releasing: $VERSION"
-npm run test:run
-npm run build
+VERSION=$1
+if [ -z "$VERSION" ]; then
+  echo "Usage: ./release.sh <version>"
+  exit 1
+fi
+echo "Releasing version $VERSION..."
 npm version $VERSION
-git push origin main --tags
-echo "Released!"
+npm run build
+npm publish
+git push --tags
+echo "Release complete!"
