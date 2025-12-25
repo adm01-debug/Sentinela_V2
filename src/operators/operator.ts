@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Operator framework
+ * @module @sentinela/core/operators
+ * @version 13.0.0
+ */
+
 import { OperatorConfig, ReconcileRequest, ReconcileResult } from './types';
 
 export abstract class Operator {
