@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Image registry
+ * @module @sentinela/core/imageRegistry
+ * @version 13.0.0
+ */
+
 import { Image, Repository, Layer } from './types';
 
 export class ImageRegistry {
