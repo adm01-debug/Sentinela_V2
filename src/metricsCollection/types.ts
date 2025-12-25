@@ -1,9 +1,1 @@
-/**
- * @fileoverview Metrics collection types
- * @module @sentinela/core/metricsCollection
- * @version 13.0.0
- */
-
-export interface Metric { name: string; type: MetricType; value: number; timestamp: Date; labels: Record<string, string>; }
-export type MetricType = 'counter' | 'gauge' | 'histogram' | 'summary';
-export interface MetricDefinition { name: string; type: MetricType; description: string; labels: string[]; }
+export interface Metric { name: string; value: number; timestamp: number; }
