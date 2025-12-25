@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Lazy hydrator
+ * @module @sentinela/core/lazyHydration
+ * @version 13.0.0
+ */
+
 import { HydrationConfig, HydrationTarget } from './types';
 
 export class LazyHydrator {
