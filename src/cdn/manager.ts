@@ -1,3 +1,9 @@
+/**
+ * @fileoverview CDN manager
+ * @module @sentinela/core/cdn
+ * @version 13.0.0
+ */
+
 import { CDNConfig, Origin, CacheRule, CDNStats } from './types';
 
 export class CDNManager {
