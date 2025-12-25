@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Query builder
+ * @module @sentinela/core/queryBuilder
+ * @version 13.0.0
+ */
+
 import { QueryOptions, JoinClause, OrderClause, WhereClause } from './types';
 
 export class QueryBuilder {
