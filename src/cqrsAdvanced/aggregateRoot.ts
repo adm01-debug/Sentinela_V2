@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Aggregate root base class
+ * @module @sentinela/core/cqrsAdvanced
+ * @version 13.0.0
+ */
+
 // Aggregate Root Base Implementation
 import { DomainEvent, AggregateRoot as IAggregateRoot, EventMetadata } from './types';
 import { EventBuilder } from './eventStore';
