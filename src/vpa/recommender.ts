@@ -1,3 +1,9 @@
+/**
+ * @fileoverview VPA recommender
+ * @module @sentinela/core/vpa
+ * @version 13.0.0
+ */
+
 import { VPA, Recommendation, ContainerRecommendation, Resources } from './types';
 
 export class VPARecommender {
