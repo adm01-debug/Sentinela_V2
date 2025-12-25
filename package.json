@@ -1,7 +1,7 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "@sentinela/core",
   "private": true,
-  "version": "0.0.0",
+  "version": "13.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -26,7 +26,15 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "analyze": "vite-bundle-visualizer",
-    "analyze:bundle": "npx vite-bundle-analyzer"
+    "analyze:bundle": "npx vite-bundle-analyzer",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:types": "tsc -p tsconfig.types.json --emitDeclarationOnly",
+    "build:all": "npm run build:esm && npm run build:cjs && npm run build:types",
+    "prepublishOnly": "npm run build:all && npm run test",
+    "release": "semantic-release",
+    "docs": "typedoc --out docs/api src/index.ts",
+    "docs:watch": "typedoc --watch --out docs/api src/index.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -111,5 +119,63 @@
     "jsdom": "^25.0.0",
     "vite-plugin-pwa": "^0.20.0",
     "vite-plugin-compression2": "^1.0.0"
-  }
+  },
+  "description": "Enterprise-grade TypeScript framework with 100+ patterns for building scalable, resilient applications",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/esm/*.js",
+      "require": "./dist/cjs/*.js",
+      "types": "./dist/types/*.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "enterprise",
+    "typescript",
+    "framework",
+    "cqrs",
+    "event-sourcing",
+    "saga",
+    "microservices",
+    "kubernetes",
+    "cloud-native",
+    "ddd",
+    "domain-driven-design",
+    "patterns",
+    "architecture",
+    "node",
+    "backend",
+    "api",
+    "service-mesh",
+    "observability",
+    "monitoring"
+  ],
+  "author": "Promo Brindes <dev@promobrindes.com.br>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adm01-debug/sentinela.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adm01-debug/sentinela/issues"
+  },
+  "homepage": "https://github.com/adm01-debug/sentinela#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "sideEffects": false
 }
