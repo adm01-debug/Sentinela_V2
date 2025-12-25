@@ -1,56 +1,77 @@
 /**
- * @fileoverview RBAC authorizer
+ * @fileoverview RBAC implementation
  * @module @sentinela/core/rbac
  * @version 13.0.0
  */
 
-import { Subject, PolicyRule } from './types';
-import { RoleManager } from './roles';
-import { BindingManager } from './bindings';
+export interface Role {
+  name: string;
+  permissions: string[];
+  inherits?: string[];
+}
 
-export class RBACAuthorizer {
-  constructor(private roleManager: RoleManager, private bindingManager: BindingManager) {}
-  
-  authorize(subject: Subject, verb: string, resource: string, namespace?: string): AuthorizationResult {
-    const rules = this.getRulesForSubject(subject, namespace);
-    
-    for (const rule of rules) {
-      if (this.ruleMatches(rule, verb, resource)) {
-        return { allowed: true, reason: 'RBAC: allowed by rule' };
-      }
-    }
-    
-    return { allowed: false, reason: 'RBAC: no matching rule' };
+export class RoleManager {
+  private roles = new Map<string, Role>();
+  private userRoles = new Map<string, Set<string>>();
+
+  async createRole(name: string, permissions: string[], inherits?: string[]): Promise<void> {
+    this.roles.set(name, { name, permissions, inherits });
   }
-  
-  private getRulesForSubject(subject: Subject, namespace?: string): PolicyRule[] {
-    const rules: PolicyRule[] = [];
-    
-    const roleBindings = this.bindingManager.getRoleBindingsForSubject(subject, namespace);
-    for (const rb of roleBindings) {
-      if (rb.roleRef.kind === 'Role') {
-        const role = this.roleManager.getRole(rb.namespace, rb.roleRef.name);
-        if (role) rules.push(...role.rules);
-      } else {
-        const clusterRole = this.roleManager.getClusterRole(rb.roleRef.name);
-        if (clusterRole) rules.push(...clusterRole.rules);
-      }
-    }
-    
-    const clusterRoleBindings = this.bindingManager.getClusterRoleBindingsForSubject(subject);
-    for (const crb of clusterRoleBindings) {
-      const clusterRole = this.roleManager.getClusterRole(crb.roleRef.name);
-      if (clusterRole) rules.push(...clusterRole.rules);
-    }
-    
-    return rules;
+
+  async deleteRole(name: string): Promise<void> {
+    this.roles.delete(name);
   }
-  
-  private ruleMatches(rule: PolicyRule, verb: string, resource: string): boolean {
-    const verbMatch = rule.verbs.includes(verb) || rule.verbs.includes('*');
-    const resourceMatch = rule.resources.includes(resource) || rule.resources.includes('*');
-    return verbMatch && resourceMatch;
+
+  async getRole(name: string): Promise<Role | undefined> {
+    return this.roles.get(name);
+  }
+
+  async assignRole(userId: string, roleName: string): Promise<void> {
+    if (!this.roles.has(roleName)) throw new Error('Role not found');
+    const userRoleSet = this.userRoles.get(userId) ?? new Set();
+    userRoleSet.add(roleName);
+    this.userRoles.set(userId, userRoleSet);
+  }
+
+  async removeRole(userId: string, roleName: string): Promise<void> {
+    this.userRoles.get(userId)?.delete(roleName);
+  }
+
+  async getUserRoles(userId: string): Promise<string[]> {
+    return Array.from(this.userRoles.get(userId) ?? []);
+  }
+
+  async getPermissions(userId: string): Promise<Set<string>> {
+    const permissions = new Set<string>();
+    const roleNames = await this.getUserRoles(userId);
+    
+    const processRole = (name: string): void => {
+      const role = this.roles.get(name);
+      if (!role) return;
+      role.permissions.forEach(p => permissions.add(p));
+      role.inherits?.forEach(processRole);
+    };
+
+    roleNames.forEach(processRole);
+    return permissions;
   }
 }
 
-export interface AuthorizationResult { allowed: boolean; reason: string; }
+export class Authorizer {
+  constructor(private roleManager: RoleManager) {}
+
+  async can(userId: string, permission: string): Promise<boolean> {
+    const permissions = await this.roleManager.getPermissions(userId);
+    return permissions.has(permission) || permissions.has('*');
+  }
+
+  async canAll(userId: string, permissions: string[]): Promise<boolean> {
+    const userPerms = await this.roleManager.getPermissions(userId);
+    return permissions.every(p => userPerms.has(p) || userPerms.has('*'));
+  }
+
+  async canAny(userId: string, permissions: string[]): Promise<boolean> {
+    const userPerms = await this.roleManager.getPermissions(userId);
+    return permissions.some(p => userPerms.has(p) || userPerms.has('*'));
+  }
+}
