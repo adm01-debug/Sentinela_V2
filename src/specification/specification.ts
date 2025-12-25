@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Specification pattern implementation
+ * @module @sentinela/core/specification
+ * @version 13.0.0
+ */
+
 import { Specification, AsyncSpecification } from './types';
 
 export abstract class BaseSpecification<T> implements Specification<T> {
