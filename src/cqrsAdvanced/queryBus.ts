@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Query bus implementation for CQRS pattern
+ * @module @sentinela/core/cqrsAdvanced
+ * @version 13.0.0
+ */
+
 // Query Bus Implementation
 import { Query, QueryHandler, QueryMetadata } from './types';
 import { v4 as uuidv4 } from 'uuid';
