@@ -1,18 +1,13 @@
 /**
- * @fileoverview Ambassador sidecar
+ * @fileoverview Ambassador Pattern
  * @module @sentinela/core/sidecar
- * @version 13.0.0
  */
-
-import { AmbassadorConfig } from './types';
-
-export class AmbassadorProxy {
+export interface AmbassadorConfig { targetHost: string; targetPort: number; }
+export class Ambassador {
   constructor(private config: AmbassadorConfig) {}
-  
-  async proxy(request: unknown): Promise<unknown> {
-    console.log('Proxying to', this.config.targetService + ':' + this.config.targetPort);
-    return { proxied: true, target: this.config.targetService };
+  async proxy(request: { method: string; path: string; body?: unknown }): Promise<unknown> {
+    // Proxy request to target
+    return { status: 200, proxied: true, target: this.config.targetHost };
   }
-  
-  getLocalEndpoint(): string { return 'http://localhost:' + this.config.localPort; }
+  async healthCheck(): Promise<boolean> { return true; }
 }
