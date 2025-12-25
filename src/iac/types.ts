@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Infrastructure as Code types
+ * @module @sentinela/core/iac
+ * @version 13.0.0
+ */
+
 export interface Stack { name: string; resources: Resource[]; outputs: Output[]; }
 export interface Resource { type: string; name: string; properties: Record<string, unknown>; dependsOn?: string[]; }
 export interface Output { name: string; value: string; export?: boolean; }
