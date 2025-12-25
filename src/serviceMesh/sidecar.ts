@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Sidecar proxy
+ * @module @sentinela/core/serviceMesh
+ * @version 13.0.0
+ */
+
 import { ServiceMeshConfig, SidecarConfig } from './types';
 
 export class SidecarProxy {
