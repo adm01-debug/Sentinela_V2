@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Health checker
+ * @module @sentinela/core/healthChecksAdvanced
+ * @version 13.0.0
+ */
+
 import { HealthCheck, HealthResult, HealthStatus } from './types';
 
 export class HealthChecker {
