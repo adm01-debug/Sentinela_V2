@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Data encryptor
+ * @module @sentinela/core/encryptionAtRest
+ * @version 13.0.0
+ */
+
 import { EncryptedData, EncryptionConfig } from './types';
 import { KeyStore } from './keyStore';
 
