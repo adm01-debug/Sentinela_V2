@@ -1,30 +1,56 @@
-import { ConnectionPool, PoolConfig } from '../../src/connectionPool';
+import { ConnectionPool, PooledConnection } from '../../connectionPool';
 
 describe('ConnectionPool', () => {
-  it('should create pool with config', () => {
-    const pool = new ConnectionPool({
-      minConnections: 2,
-      maxConnections: 10,
-      acquireTimeoutMs: 5000,
-      idleTimeoutMs: 30000
-    });
+  let pool: ConnectionPool;
 
-    expect(pool).toBeDefined();
+  beforeEach(() => {
+    pool = new ConnectionPool({
+      minSize: 2,
+      maxSize: 10,
+      acquireTimeout: 5000,
+      idleTimeout: 30000,
+      factory: () => Promise.resolve({ id: Math.random().toString() })
+    });
   });
 
-  it('should acquire and release connections', async () => {
-    const pool = new ConnectionPool({
-      minConnections: 1,
-      maxConnections: 5,
-      acquireTimeoutMs: 1000,
-      idleTimeoutMs: 10000
-    });
+  afterEach(async () => {
+    await pool.drain();
+  });
 
+  it('should acquire connection', async () => {
     const conn = await pool.acquire();
     expect(conn).toBeDefined();
+    expect(conn.id).toBeDefined();
+  });
 
-    pool.release(conn);
-    const stats = pool.getStats();
-    expect(stats.available).toBeGreaterThan(0);
+  it('should release connection back to pool', async () => {
+    const conn = await pool.acquire();
+    const initialSize = pool.size;
+    
+    await pool.release(conn);
+    expect(pool.available).toBeGreaterThanOrEqual(1);
+  });
+
+  it('should respect max size', async () => {
+    const connections = [];
+    
+    for (let i = 0; i < 10; i++) {
+      connections.push(await pool.acquire());
+    }
+
+    expect(pool.size).toBe(10);
+    
+    // Release all
+    for (const conn of connections) {
+      await pool.release(conn);
+    }
+  });
+
+  it('should get pool stats', () => {
+    const stats = pool.stats();
+    
+    expect(stats).toHaveProperty('size');
+    expect(stats).toHaveProperty('available');
+    expect(stats).toHaveProperty('pending');
   });
 });
