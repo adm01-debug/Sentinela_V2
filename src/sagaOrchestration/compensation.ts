@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Saga compensation handling
+ * @module @sentinela/core/sagaOrchestration
+ * @version 13.0.0
+ */
+
 import { SagaStep } from './types';
 
 export class CompensationStrategy<T = unknown> {
