@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Saga orchestration types
+ * @module @sentinela/core/sagaOrchestration
+ * @version 13.0.0
+ */
+
 export interface Saga<T = unknown> {
   id: string;
   name: string;
