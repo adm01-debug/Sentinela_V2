@@ -1,82 +1,57 @@
 /**
- * Resilience Patterns Example
- * 
- * Demonstrates:
- * - Circuit Breaker
- * - Retry with backoff
- * - Rate Limiting
- * - Bulkhead
+ * @fileoverview Resilience patterns example
  */
 
-import {
-  CircuitBreaker,
-  retry,
+import { 
+  CircuitBreaker, 
+  retry, 
   RateLimiter,
   withTimeout,
-  createLogger
+  Bulkhead
 } from '@sentinela/core';
 
-const logger = createLogger('resilience-example');
+// Combine patterns for robust external calls
+async function resilientApiCall(url: string): Promise<unknown> {
+  const circuit = new CircuitBreaker({ 
+    name: 'external-api',
+    failureThreshold: 5,
+    resetTimeout: 30000
+  });
+  
+  const limiter = new RateLimiter({ 
+    maxRequests: 100, 
+    windowMs: 60000 
+  });
+  
+  const bulkhead = new Bulkhead({ 
+    maxConcurrent: 10, 
+    maxQueue: 50 
+  });
 
-// External service simulation
-async function unreliableService(shouldFail: boolean): Promise<string> {
-  await new Promise(r => setTimeout(r, 100));
-  if (shouldFail) throw new Error('Service unavailable');
-  return 'Success!';
-}
-
-// Circuit breaker setup
-const circuit = new CircuitBreaker({
-  name: 'external-service',
-  failureThreshold: 3,
-  successThreshold: 2,
-  resetTimeout: 10000
-});
-
-// Rate limiter setup
-const rateLimiter = new RateLimiter({
-  maxRequests: 10,
-  windowMs: 1000
-});
-
-// Combined resilience pattern
-async function resilientCall(userId: string): Promise<string> {
-  // Rate limiting
-  const rateResult = rateLimiter.consume(userId);
-  if (!rateResult.allowed) {
-    throw new Error(\`Rate limited. Retry after \${rateResult.retryAfter}s\`);
-  }
-
-  // Circuit breaker + retry + timeout
-  return circuit.execute(() =>
-    withTimeout(
-      () => retry(
-        () => unreliableService(Math.random() > 0.7),
-        { maxAttempts: 3, initialDelayMs: 200 }
-      ),
-      5000,
-      'external-service-call'
-    )
-  );
-}
-
-// Main
-async function main() {
-  logger.info('Starting resilience demo');
-
-  for (let i = 0; i < 20; i++) {
-    try {
-      const result = await resilientCall('user-1');
-      logger.info(\`Call \${i + 1} succeeded: \${result}\`);
-    } catch (error) {
-      logger.error(\`Call \${i + 1} failed\`, error as Error);
-    }
+  return bulkhead.execute(async () => {
+    await limiter.consumeOrThrow('api-calls');
     
-    await new Promise(r => setTimeout(r, 200));
-  }
+    return circuit.execute(() => 
+      retry(
+        () => withTimeout(
+          () => fetch(url).then(r => r.json()),
+          5000,
+          'api-fetch'
+        ),
+        { maxAttempts: 3, initialDelayMs: 1000 }
+      )
+    );
+  });
+}
 
-  logger.info('Circuit state:', { state: circuit.getState() });
-  logger.info('Circuit metrics:', circuit.getMetrics());
+// Usage
+async function main() {
+  try {
+    const data = await resilientApiCall('https://api.example.com/data');
+    console.log('Data:', data);
+  } catch (error) {
+    console.error('Failed after all resilience measures:', error);
+  }
 }
 
 main();
