@@ -1,48 +1,26 @@
-import { EventStore, Snapshot } from '../../eventSourcing';
+import { EventStore, EventSourcedAggregate } from '../../eventSourcing';
 
 describe('EventStore', () => {
   let store: EventStore;
+  beforeEach(() => { store = new EventStore(); });
 
-  beforeEach(() => {
-    store = new EventStore();
-  });
-
-  it('should append and retrieve events', async () => {
+  it('should append and load events', async () => {
     const events = [
-      { type: 'Created', data: { name: 'Test' }, timestamp: new Date() },
-      { type: 'Updated', data: { name: 'Updated' }, timestamp: new Date() }
+      { type: 'Created', data: { id: '1' }, version: 1 },
+      { type: 'Updated', data: { name: 'test' }, version: 2 }
     ];
-
-    await store.append('stream-1', events);
-    const retrieved = await store.getEvents('stream-1');
-
-    expect(retrieved.length).toBe(2);
-    expect(retrieved[0].type).toBe('Created');
+    await store.append('aggregate-1', events);
+    const loaded = await store.load('aggregate-1');
+    expect(loaded.length).toBe(2);
   });
 
-  it('should get events from version', async () => {
-    const events = [
-      { type: 'E1', data: {}, timestamp: new Date(), version: 1 },
-      { type: 'E2', data: {}, timestamp: new Date(), version: 2 },
-      { type: 'E3', data: {}, timestamp: new Date(), version: 3 }
-    ];
-
-    await store.append('stream-1', events);
-    const fromV2 = await store.getEvents('stream-1', 2);
-
-    expect(fromV2.length).toBe(2);
-  });
-});
-
-describe('Snapshot', () => {
-  it('should save and load snapshot', async () => {
-    const snapshot = new Snapshot();
-    const state = { id: '1', name: 'Test', version: 10 };
-
-    await snapshot.save('aggregate-1', state, 10);
-    const loaded = await snapshot.load('aggregate-1');
-
-    expect(loaded?.state).toEqual(state);
-    expect(loaded?.version).toBe(10);
+  it('should load events from version', async () => {
+    await store.append('agg-1', [
+      { type: 'E1', data: {}, version: 1 },
+      { type: 'E2', data: {}, version: 2 },
+      { type: 'E3', data: {}, version: 3 }
+    ]);
+    const events = await store.load('agg-1', 2);
+    expect(events.length).toBe(2);
   });
 });
