@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Database replicator
+ * @module @sentinela/core/replication
+ * @version 13.0.0
+ */
+
 export interface ReplicationConfig { sourceId: string; targetId: string; mode: 'sync' | 'async'; interval?: number; }
 export interface ReplicatedData { id: string; data: any; version: number; replicatedAt: Date; source: string; }
 export class Replicator {
