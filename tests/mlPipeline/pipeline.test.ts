@@ -1,12 +1,10 @@
-import { MLPipeline, PipelineStep } from '../../mlPipeline';
-
+import { MLPipeline } from '../../mlPipeline';
 describe('MLPipeline', () => {
   it('should execute pipeline steps', async () => {
     const pipeline = new MLPipeline();
-    pipeline.addStep({ name: 'preprocess', execute: async (data) => ({ ...data, processed: true }) });
-    pipeline.addStep({ name: 'predict', execute: async (data) => ({ ...data, prediction: 0.95 }) });
-    const result = await pipeline.run({ input: 'test' });
-    expect(result.processed).toBe(true);
-    expect(result.prediction).toBe(0.95);
+    pipeline.add({ name: 'normalize', transform: async (d: any) => d.map((x: number) => x / 100) });
+    pipeline.add({ name: 'double', transform: async (d: any) => d.map((x: number) => x * 2) });
+    const result = await pipeline.execute([50, 100]);
+    expect(result).toEqual([1, 2]);
   });
 });
