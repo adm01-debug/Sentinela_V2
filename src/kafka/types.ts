@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Kafka message types
+ * @module @sentinela/core/kafka
+ * @version 13.0.0
+ */
+
 export interface KafkaConfig {
   brokers: string[];
   clientId: string;
