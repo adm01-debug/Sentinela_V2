@@ -1,109 +1,124 @@
 /**
- * @packageDocumentation
- * @module Core/Disposable
- * Resource cleanup and graceful shutdown utilities
+ * @fileoverview Disposable pattern utilities
+ * @module @sentinela/core/disposable
  */
-import { Logger, logger as defaultLogger } from './logger';
 
-/** Interface for disposable resources */
+import { createLogger } from './logger';
+
+const logger = createLogger('disposable');
+
+/**
+ * Interface for disposable resources
+ */
 export interface Disposable {
-  dispose(): Promise<void>;
-}
-
-/** Interface for initializable resources */
-export interface Initializable {
-  initialize(): Promise<void>;
-}
-
-/** Combined interface for managed resources */
-export interface ManagedResource extends Disposable, Initializable {
-  readonly isInitialized: boolean;
-  readonly isDisposed: boolean;
+  dispose(): Promise<void> | void;
 }
 
 /**
- * Manages multiple disposable resources with ordered shutdown
+ * Check if an object is disposable
  */
-export class DisposableManager {
-  private resources: { name: string; resource: Disposable; priority: number }[] = [];
+export function isDisposable(obj: unknown): obj is Disposable {
+  return obj !== null && typeof obj === 'object' && 'dispose' in obj;
+}
+
+/**
+ * Dispose multiple resources
+ */
+export async function disposeAll(...disposables: (Disposable | undefined)[]): Promise<void> {
+  const errors: Error[] = [];
+  
+  for (const disposable of disposables) {
+    if (!disposable) continue;
+    
+    try {
+      await disposable.dispose();
+    } catch (error) {
+      errors.push(error as Error);
+      logger.error('Error disposing resource', error as Error);
+    }
+  }
+  
+  if (errors.length > 0) {
+    throw new AggregateError(errors, 'Failed to dispose some resources');
+  }
+}
+
+/**
+ * Disposable container that manages multiple disposables
+ */
+export class DisposableContainer implements Disposable {
+  private readonly disposables: Disposable[] = [];
   private disposed = false;
-  private readonly logger: Logger;
 
-  constructor(logger: Logger = defaultLogger) {
-    this.logger = logger.child({ component: 'DisposableManager' });
-  }
-
-  register(name: string, resource: Disposable, priority = 0): void {
+  add<T extends Disposable>(disposable: T): T {
     if (this.disposed) {
-      throw new Error('Manager is already disposed');
+      throw new Error('Container is already disposed');
     }
-    this.resources.push({ name, resource, priority });
-    this.logger.debug('Registered disposable resource', { name, priority });
-  }
-
-  async disposeAll(): Promise<void> {
-    if (this.disposed) return;
-    this.disposed = true;
-
-    const sorted = [...this.resources].sort((a, b) => b.priority - a.priority);
-    this.logger.info('Starting graceful shutdown', { count: sorted.length });
-
-    for (const { name, resource } of sorted) {
-      try {
-        this.logger.debug('Disposing resource', { name });
-        await resource.dispose();
-        this.logger.debug('Resource disposed', { name });
-      } catch (error) {
-        this.logger.error('Failed to dispose resource', error as Error, { name });
-      }
-    }
-
-    this.logger.info('Graceful shutdown complete');
-  }
-
-  isDisposed(): boolean { return this.disposed; }
-}
-
-/**
- * Abstract base class for managed resources
- */
-export abstract class BaseManagedResource implements ManagedResource {
-  private _isInitialized = false;
-  private _isDisposed = false;
-
-  get isInitialized(): boolean { return this._isInitialized; }
-  get isDisposed(): boolean { return this._isDisposed; }
-
-  async initialize(): Promise<void> {
-    if (this._isInitialized) return;
-    if (this._isDisposed) throw new Error('Resource is disposed');
-    await this.doInitialize();
-    this._isInitialized = true;
+    this.disposables.push(disposable);
+    return disposable;
   }
 
   async dispose(): Promise<void> {
-    if (this._isDisposed) return;
-    await this.doDispose();
-    this._isDisposed = true;
-    this._isInitialized = false;
+    if (this.disposed) return;
+    this.disposed = true;
+    
+    await disposeAll(...this.disposables.reverse());
+    this.disposables.length = 0;
+  }
+}
+
+/**
+ * Using pattern for automatic disposal
+ */
+export async function using<T extends Disposable, R>(
+  resource: T | Promise<T>,
+  fn: (resource: T) => Promise<R>
+): Promise<R> {
+  const resolvedResource = await resource;
+  try {
+    return await fn(resolvedResource);
+  } finally {
+    await resolvedResource.dispose();
+  }
+}
+
+/**
+ * Graceful shutdown handler
+ */
+export class GracefulShutdown {
+  private readonly handlers: Array<() => Promise<void> | void> = [];
+  private shuttingDown = false;
+
+  register(handler: () => Promise<void> | void): void {
+    this.handlers.push(handler);
   }
 
-  protected abstract doInitialize(): Promise<void>;
-  protected abstract doDispose(): Promise<void>;
+  registerDisposable(disposable: Disposable): void {
+    this.handlers.push(() => disposable.dispose());
+  }
+
+  async shutdown(): Promise<void> {
+    if (this.shuttingDown) return;
+    this.shuttingDown = true;
+    
+    logger.info('Starting graceful shutdown...');
+    
+    for (const handler of this.handlers.reverse()) {
+      try {
+        await handler();
+      } catch (error) {
+        logger.error('Error during shutdown', error as Error);
+      }
+    }
+    
+    logger.info('Graceful shutdown complete');
+  }
+
+  setupSignalHandlers(): void {
+    process.on('SIGTERM', () => this.shutdown());
+    process.on('SIGINT', () => this.shutdown());
+  }
 }
 
-/** Global disposable manager for application shutdown */
-export const globalDisposableManager = new DisposableManager();
-
-/** Register shutdown handlers */
-export function registerShutdownHandlers(): void {
-  const shutdown = async (signal: string) => {
-    defaultLogger.info('Received shutdown signal', { signal });
-    await globalDisposableManager.disposeAll();
-    process.exit(0);
-  };
-
-  process.on('SIGTERM', () => shutdown('SIGTERM'));
-  process.on('SIGINT', () => shutdown('SIGINT'));
-  process.on('SIGHUP', () => shutdown('SIGHUP'));
-}
+/** Global shutdown handler */
+export const gracefulShutdown = new GracefulShutdown();
