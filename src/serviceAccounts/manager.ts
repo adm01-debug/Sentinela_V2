@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Service account manager
+ * @module @sentinela/core/serviceAccounts
+ * @version 13.0.0
+ */
+
 import { ServiceAccount, SecretRef } from './types';
 
 export class ServiceAccountManager {
