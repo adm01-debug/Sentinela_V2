@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Saga state management
+ * @module @sentinela/core/sagaOrchestration
+ * @version 13.0.0
+ */
+
 import { Saga, SagaState } from './types';
 
 export class SagaStateManager<T = unknown> {
