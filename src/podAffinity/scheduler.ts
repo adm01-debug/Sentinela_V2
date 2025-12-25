@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Pod affinity scheduler
+ * @module @sentinela/core/podAffinity
+ * @version 13.0.0
+ */
+
 import { PodAffinity, Pod } from './types';
 import { PodAffinityMatcher } from './matcher';
 import { AntiAffinityChecker } from './antiAffinity';
