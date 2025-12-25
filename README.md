@@ -1,184 +1,369 @@
-# 🛡️ SENTINELA V13 - Enterprise Framework
+# 🛡️ SENTINELA
 
-## 100 Enterprise Patterns para TypeScript/Node.js
+> Enterprise-grade TypeScript framework with 100+ patterns for building scalable, resilient applications
 
 [![Version](https://img.shields.io/badge/version-13.0.0-blue.svg)](https://github.com/adm01-debug/sentinela)
-[![Modules](https://img.shields.io/badge/modules-100-green.svg)](https://github.com/adm01-debug/sentinela)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 
-## 📋 Módulos Implementados
+## 📋 Table of Contents
 
-### CAT 1: Arquitetura (1-15)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 1 | CQRS Advanced | Command Query Responsibility Segregation |
-| 2 | Saga Orchestration | Orquestração de transações distribuídas |
-| 3 | Outbox Pattern | Garantia de entrega de eventos |
-| 4 | Specification | Padrão de especificação para queries |
-| 5 | Unit of Work | Gerenciamento de transações |
-| 6 | Repository | Abstração de acesso a dados |
-| 7 | Aggregate | Agregados de domínio |
-| 8 | Domain Events | Eventos de domínio |
-| 9 | Anti-Corruption Layer | Camada anti-corrupção |
-| 10 | Bounded Context | Contextos delimitados |
-| 11 | Service Discovery | Descoberta de serviços |
-| 12 | Service Mesh | Malha de serviços |
-| 13 | Sidecar | Padrão sidecar |
-| 14 | Ambassador | Padrão ambassador |
-| 15 | Strangler | Migração gradual |
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Usage Examples](#usage-examples)
+- [API Documentation](#api-documentation)
+- [Modules](#modules)
+- [Contributing](#contributing)
+- [FAQ](#faq)
+- [License](#license)
 
-### CAT 2: Cloud Native (16-20)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 16 | Bulkhead | Isolamento de falhas |
-| 17 | Backpressure | Controle de fluxo |
-| 18 | Service Registry | Registro de serviços |
-| 19 | Config Server | Servidor de configuração |
-| 20 | API Composition | Composição de APIs |
-
-### CAT 3: Messaging (21-30)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 21 | Kafka | Integração Apache Kafka |
-| 22 | RabbitMQ | Integração RabbitMQ |
-| 23 | Event Sourcing | Sourcing de eventos |
-| 24 | CDC | Change Data Capture |
-| 25 | Stream Processing | Processamento de streams |
-| 26 | Message Replay | Replay de mensagens |
-| 27 | Dead Letter | Fila de mensagens mortas |
-| 28 | Event Store | Armazenamento de eventos |
-| 29 | Message Router | Roteamento de mensagens |
-| 30 | Message Broker | Broker de mensagens |
-
-### CAT 4: Database (31-40)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 31 | Sharding | Particionamento horizontal |
-| 32 | Partitioning | Particionamento de tabelas |
-| 33 | Read Replica | Réplicas de leitura |
-| 34 | Connection Pool | Pool de conexões |
-| 35 | Query Optimizer | Otimização de queries |
-| 36 | Query Builder | Construtor de queries |
-| 37 | Migrations | Migrações de banco |
-| 38 | Seeding | Dados iniciais |
-| 39 | Multi-Database | Múltiplos bancos |
-| 40 | NoSQL | Bancos não relacionais |
-
-### CAT 5: Security (41-50)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 41 | SIEM | Security Information & Event Management |
-| 42 | DLP | Data Loss Prevention |
-| 43 | Encryption at Rest | Criptografia em repouso |
-| 44 | Key Management | Gerenciamento de chaves |
-| 45 | Tokenization | Tokenização de dados |
-| 46 | Security Scanner | Scanner de vulnerabilidades |
-| 47 | Threat Modeling | Modelagem de ameaças |
-| 48 | Security Headers | Headers de segurança |
-| 49 | CSRF Advanced | Proteção CSRF avançada |
-| 50 | XSS Advanced | Proteção XSS avançada |
-
-### CAT 6: Performance (51-55)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 51 | CDN | Content Delivery Network |
-| 52 | Edge Computing | Computação de borda |
-| 53 | Preloading | Pré-carregamento |
-| 54 | Prefetching | Pré-busca |
-| 55 | Lazy Hydration | Hidratação preguiçosa |
-
-### CAT 7: AI/ML (56-60)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 56 | ML Pipeline | Pipeline de ML |
-| 57 | Feature Store | Armazenamento de features |
-| 58 | Model Registry | Registro de modelos |
-| 59 | Model Serving | Servindo modelos |
-| 60 | A/B Testing | Testes A/B |
-
-### CAT 8: Observability (61-65)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 61 | Log Aggregation | Agregação de logs |
-| 62 | Distributed Tracing | Rastreamento distribuído |
-| 63 | Metrics Collection | Coleta de métricas |
-| 64 | Health Checks | Verificação de saúde |
-| 65 | Alerting | Sistema de alertas |
-
-### CAT 9: DevOps (66-70)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 66 | Dashboard | Painéis de controle |
-| 67 | CI/CD | Integração/Entrega contínua |
-| 68 | GitOps | Operações via Git |
-| 69 | IaC | Infraestrutura como código |
-| 70 | Secret Management | Gerenciamento de segredos |
-
-### CAT 10: Container (71-75)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 71 | Container Orchestration | Orquestração de containers |
-| 72 | Image Registry | Registro de imagens |
-| 73 | Network Policy | Políticas de rede |
-| 74 | Service Catalog | Catálogo de serviços |
-| 75 | Pod Disruption Budget | Orçamento de disrupção |
-
-### CAT 11: Kubernetes (76-85)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 76 | Resource Quotas | Quotas de recursos |
-| 77 | Limit Ranges | Limites de recursos |
-| 78 | Priority Classes | Classes de prioridade |
-| 79 | Node Affinity | Afinidade de nó |
-| 80 | Pod Affinity | Afinidade de pod |
-| 81 | Taints & Tolerations | Taints e tolerações |
-| 82 | Custom Resources | Recursos customizados |
-| 83 | Operators | Operadores |
-| 84 | Admission Controllers | Controladores de admissão |
-| 85 | ConfigMaps & Secrets | Configurações e segredos |
-
-### CAT 12: Workloads (86-90)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 86 | Ingress Controller | Controlador de ingress |
-| 87 | Service Mesh Advanced | Malha de serviços avançada |
-| 88 | StatefulSets | Conjuntos com estado |
-| 89 | DaemonSets | Conjuntos daemon |
-| 90 | Jobs & CronJobs | Jobs e agendamentos |
-
-### CAT 13: Autoscaling (91-95)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 91 | HPA | Horizontal Pod Autoscaler |
-| 92 | VPA | Vertical Pod Autoscaler |
-| 93 | Cluster Autoscaler | Autoscaler de cluster |
-| 94 | Pod Security Policies | Políticas de segurança |
-| 95 | RBAC | Controle de acesso baseado em papéis |
-
-### CAT 14: Enterprise (96-100)
-| # | Módulo | Descrição |
-|---|--------|-----------|
-| 96 | Service Accounts | Contas de serviço |
-| 97 | Network Policies Adv | Políticas de rede avançadas |
-| 98 | Namespace Management | Gerenciamento de namespaces |
-| 99 | Multi-Tenancy | Multi-inquilino |
-| 100 | API Gateway | Gateway de APIs |
-
-## 🚀 Instalação
+## Installation
 
 ```bash
-npm install sentinela
+# npm
+npm install @sentinela/core
+
+# yarn
+yarn add @sentinela/core
+
+# pnpm
+pnpm add @sentinela/core
 ```
 
-## 📊 Estatísticas
+### Requirements
 
-- **Versão:** 13.0.0
-- **Módulos:** 100
-- **Arquivos:** 500+
-- **Linhas de código:** 35.000+
-- **Categorias:** 14
-- **Patterns Enterprise:** 100
+- Node.js >= 18.0.0
+- TypeScript >= 5.0.0
 
-## 📜 Licença
+## Quick Start
 
-MIT License - Promo Brindes © 2024
+```typescript
+import { 
+  SentinelaLogger, 
+  retry, 
+  CircuitBreaker,
+  Validator,
+  Rules
+} from '@sentinela/core';
+
+// Create a logger
+const logger = new SentinelaLogger({ level: 'info' });
+
+// Use retry with exponential backoff
+const result = await retry(
+  () => fetch('https://api.example.com/data'),
+  { maxAttempts: 3, initialDelayMs: 100 }
+);
+
+// Circuit breaker for external services
+const breaker = new CircuitBreaker('api-service', {
+  failureThreshold: 5,
+  resetTimeoutMs: 30000
+});
+
+const data = await breaker.execute(() => fetchExternalService());
+
+// Validate input data
+const validator = new Validator<User>()
+  .addRule('email', Rules.email())
+  .addRule('name', Rules.required())
+  .addRule('age', Rules.min(18));
+
+validator.validateOrThrow(userData);
+```
+
+## Features
+
+### 🏗️ Architecture Patterns (15 modules)
+- **CQRS** - Command Query Responsibility Segregation
+- **Saga Orchestration** - Distributed transaction management
+- **Event Sourcing** - Full audit trail with event replay
+- **Domain Events** - Decouple business logic
+- **Repository Pattern** - Clean data access abstraction
+
+### ☁️ Cloud Native (5 modules)
+- **Service Discovery** - Dynamic service registration
+- **Config Server** - Centralized configuration
+- **API Composition** - Aggregate multiple services
+
+### 📨 Messaging (10 modules)
+- **Kafka Integration** - High-throughput messaging
+- **RabbitMQ** - Reliable message queuing
+- **Dead Letter Queue** - Failed message handling
+
+### 💾 Database (10 modules)
+- **Sharding** - Horizontal partitioning
+- **Connection Pool** - Efficient connection management
+- **Query Builder** - Type-safe query construction
+
+### 🔒 Security (10 modules)
+- **Encryption at Rest** - Data protection
+- **Token Management** - JWT/OAuth handling
+- **Rate Limiting** - API protection
+
+### ⚡ Performance (5 modules)
+- **Caching** - Multi-layer caching strategies
+- **Lazy Loading** - On-demand resource loading
+
+### 🤖 AI/ML (5 modules)
+- **ML Pipeline** - Machine learning workflows
+- **Feature Store** - Feature management
+- **A/B Testing** - Experiment framework
+
+### 📊 Observability (5 modules)
+- **Distributed Tracing** - Request tracking
+- **Metrics Collection** - Performance monitoring
+- **Health Checks** - Service health monitoring
+
+### 🔧 DevOps (5 modules)
+- **CI/CD Pipeline** - Automated deployments
+- **GitOps** - Git-based operations
+- **Secret Management** - Secure secret handling
+
+### 🐳 Kubernetes (20 modules)
+- **HPA/VPA** - Auto-scaling
+- **RBAC** - Access control
+- **Network Policies** - Traffic management
+
+## Usage Examples
+
+### Error Handling
+
+```typescript
+import { 
+  SentinelaError, 
+  ValidationError, 
+  NotFoundError,
+  retry,
+  CircuitBreaker
+} from '@sentinela/core';
+
+// Custom errors with context
+throw new ValidationError('Invalid email format', 'email', userInput);
+throw new NotFoundError('User', userId);
+
+// Retry with custom predicate
+await retry(
+  () => unreliableOperation(),
+  {
+    maxAttempts: 5,
+    retryOn: (error) => error.code !== 'FATAL_ERROR'
+  }
+);
+```
+
+### Logging
+
+```typescript
+import { createLogger } from '@sentinela/core';
+
+const logger = createLogger(
+  { level: 'debug', format: 'json' },
+  { service: 'user-service', version: '1.0.0' }
+);
+
+logger.info('User created', { userId: '123', email: 'user@example.com' });
+logger.error('Failed to process', error, { orderId: '456' });
+```
+
+### Metrics
+
+```typescript
+import { globalMetrics, startTimer } from '@sentinela/core';
+
+const requestCounter = globalMetrics.counter(
+  'http_requests_total',
+  'Total HTTP requests'
+);
+
+const latencyHistogram = globalMetrics.histogram(
+  'http_request_duration_seconds',
+  'HTTP request latency'
+);
+
+// In your handler
+const end = startTimer();
+requestCounter.inc({ method: 'GET', path: '/users' });
+// ... process request
+latencyHistogram.observe(end(), { method: 'GET', path: '/users' });
+```
+
+### Validation
+
+```typescript
+import { Validator, Rules } from '@sentinela/core';
+
+interface CreateUserDto {
+  email: string;
+  password: string;
+  age: number;
+  role: string;
+}
+
+const userValidator = new Validator<CreateUserDto>()
+  .addRule('email', Rules.required())
+  .addRule('email', Rules.email())
+  .addRule('password', Rules.minLength(8))
+  .addRule('age', Rules.min(18))
+  .addRule('role', Rules.oneOf(['admin', 'user', 'guest']));
+
+// Returns { valid: boolean, errors: ValidationErrorDetail[] }
+const result = userValidator.validate(userData);
+
+// Or throws ValidationError if invalid
+userValidator.validateOrThrow(userData);
+```
+
+### Event Handling
+
+```typescript
+import { EventEmitter, DomainEventBus } from '@sentinela/core';
+
+// Type-safe events
+interface AppEvents {
+  userCreated: { id: string; email: string };
+  orderPlaced: { orderId: string; total: number };
+}
+
+const events = new EventEmitter<AppEvents>();
+
+events.on('userCreated', async (data) => {
+  await sendWelcomeEmail(data.email);
+});
+
+await events.emit('userCreated', { id: '123', email: 'user@example.com' });
+```
+
+### Graceful Shutdown
+
+```typescript
+import { 
+  globalDisposableManager, 
+  registerShutdownHandlers 
+} from '@sentinela/core';
+
+// Register resources
+globalDisposableManager.register('database', dbConnection, 10);
+globalDisposableManager.register('cache', redisClient, 5);
+globalDisposableManager.register('queue', messageQueue, 1);
+
+// Enable graceful shutdown
+registerShutdownHandlers();
+```
+
+## API Documentation
+
+Full API documentation is available at [docs/API.md](docs/API.md).
+
+### Core Modules
+
+| Module | Description |
+|--------|-------------|
+| `errors` | Hierarchical error classes |
+| `logger` | Structured logging |
+| `retry` | Retry with exponential backoff |
+| `circuit-breaker` | Circuit breaker pattern |
+| `validation` | Input validation |
+| `metrics` | Metrics collection |
+| `events` | Event emitter utilities |
+| `disposable` | Resource cleanup |
+
+## Modules
+
+<details>
+<summary>📁 Complete Module List (100 modules)</summary>
+
+### Architecture (1-15)
+1. cqrsAdvanced - CQRS pattern
+2. sagaOrchestration - Saga pattern
+3. outboxPattern - Outbox pattern
+4. specification - Specification pattern
+5. unitOfWork - Unit of Work
+6. repository - Repository pattern
+7. aggregate - DDD Aggregates
+8. domainEvents - Domain events
+9. antiCorruptionLayer - ACL pattern
+10. boundedContext - DDD contexts
+11. serviceDiscovery - Service discovery
+12. serviceMesh - Service mesh
+13. sidecar - Sidecar pattern
+14. ambassador - Ambassador pattern
+15. strangler - Strangler pattern
+
+### Cloud Native (16-20)
+16. bulkhead - Bulkhead pattern
+17. backpressure - Backpressure handling
+18. serviceRegistry - Service registry
+19. configServer - Config server
+20. apiComposition - API composition
+
+... and 80 more modules
+
+</details>
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/adm01-debug/sentinela.git
+cd sentinela
+
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Build
+npm run build:all
+
+# Lint
+npm run lint
+```
+
+### Commit Convention
+
+We use [Conventional Commits](https://www.conventionalcommits.org/):
+
+- `feat:` New features
+- `fix:` Bug fixes
+- `docs:` Documentation
+- `test:` Tests
+- `refactor:` Refactoring
+- `chore:` Maintenance
+
+## FAQ
+
+### Is Sentinela production-ready?
+
+Yes! Sentinela is designed for enterprise applications with a focus on reliability, scalability, and maintainability.
+
+### What Node.js versions are supported?
+
+Node.js 18.0.0 and above.
+
+### Can I use individual modules?
+
+Yes, all modules are tree-shakeable. Import only what you need.
+
+### How do I report bugs?
+
+Open an issue at [GitHub Issues](https://github.com/adm01-debug/sentinela/issues).
+
+### Is there commercial support?
+
+Contact us at dev@promobrindes.com.br for enterprise support options.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+Made with ❤️ by [Promo Brindes](https://promobrindes.com.br)
