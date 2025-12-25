@@ -1,10 +1,1 @@
-/**
- * @fileoverview Query builder types
- * @module @sentinela/core/queryBuilder
- * @version 13.0.0
- */
-
-export interface QueryOptions { distinct?: boolean; limit?: number; offset?: number; }
-export interface JoinClause { type: 'inner' | 'left' | 'right' | 'full'; table: string; on: string; }
-export interface OrderClause { column: string; direction: 'asc' | 'desc'; }
-export interface WhereClause { column: string; operator: string; value: unknown; logic: 'and' | 'or'; }
+export interface QueryParts { select?: string[]; from?: string; where?: string[]; orderBy?: string; limit?: number; }
