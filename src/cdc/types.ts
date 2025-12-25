@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Change Data Capture types
+ * @module @sentinela/core/cdc
+ * @version 13.0.0
+ */
+
 export interface ChangeEvent {
   id: string;
   source: string;
