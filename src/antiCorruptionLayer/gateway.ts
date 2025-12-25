@@ -1,3 +1,9 @@
+/**
+ * @fileoverview ACL Gateway
+ * @module @sentinela/core/antiCorruptionLayer
+ * @version 13.0.0
+ */
+
 import { ACLFacade } from './facade';
 import { TranslationResult, ExternalModel, DomainModel, TranslationContext } from './types';
 
