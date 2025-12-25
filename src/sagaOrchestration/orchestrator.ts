@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Saga orchestrator implementation
+ * @module @sentinela/core/sagaOrchestration
+ * @version 13.0.0
+ */
+
 import { Saga, SagaDefinition, SagaState, SagaStep, StepStatus } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
