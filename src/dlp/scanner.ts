@@ -1,3 +1,9 @@
+/**
+ * @fileoverview DLP scanner
+ * @module @sentinela/core/dlp
+ * @version 13.0.0
+ */
+
 import { DLPPolicy, DataPattern, ScanResult, Violation } from './types';
 
 export class DLPScanner {
