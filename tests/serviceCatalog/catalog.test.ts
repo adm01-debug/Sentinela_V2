@@ -1,28 +1,27 @@
-import { ServiceCatalog, Service, ServiceBinding } from '../../serviceCatalog';
+import { ServiceCatalog, ServiceEntry, Category } from '../../serviceCatalog';
 describe('ServiceCatalog', () => {
   let catalog: ServiceCatalog;
   beforeEach(() => { catalog = new ServiceCatalog(); });
   it('should register service', async () => {
-    const svc = await catalog.register({
-      name: 'database', type: 'postgresql', plans: ['small', 'medium', 'large']
+    await catalog.register({
+      name: 'user-service',
+      description: 'User management',
+      owner: 'team-a',
+      endpoints: [{ url: 'http://users', protocol: 'http' }]
     });
-    expect(svc.id).toBeDefined();
+    const service = await catalog.get('user-service');
+    expect(service).toBeDefined();
   });
-  it('should list services', async () => {
-    await catalog.register({ name: 'db', type: 'mysql', plans: ['basic'] });
-    await catalog.register({ name: 'cache', type: 'redis', plans: ['standard'] });
-    const services = await catalog.list();
-    expect(services.length).toBe(2);
+  it('should search services', async () => {
+    await catalog.register({ name: 'auth-service', tags: ['security'] });
+    await catalog.register({ name: 'payment-service', tags: ['billing'] });
+    const results = await catalog.search({ tags: ['security'] });
+    expect(results.length).toBe(1);
   });
-  it('should provision instance', async () => {
-    await catalog.register({ name: 'mq', type: 'rabbitmq', plans: ['free'] });
-    const instance = await catalog.provision('mq', 'free', { name: 'my-mq' });
-    expect(instance.status).toBe('provisioned');
-  });
-  it('should bind to application', async () => {
-    await catalog.register({ name: 'storage', type: 's3', plans: ['basic'] });
-    const instance = await catalog.provision('storage', 'basic', { name: 'my-bucket' });
-    const binding = await catalog.bind(instance.id, 'my-app');
-    expect(binding.credentials).toBeDefined();
+  it('should list by category', async () => {
+    await catalog.register({ name: 's1', category: 'infrastructure' });
+    await catalog.register({ name: 's2', category: 'application' });
+    const infra = await catalog.listByCategory('infrastructure');
+    expect(infra.length).toBe(1);
   });
 });
