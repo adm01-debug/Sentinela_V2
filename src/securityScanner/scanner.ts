@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Vulnerability scanner
+ * @module @sentinela/core/securityScanner
+ * @version 13.0.0
+ */
+
 import { ScanResult, Vulnerability, ScanConfig } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
