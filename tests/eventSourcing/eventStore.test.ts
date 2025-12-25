@@ -1,57 +1,60 @@
-import { EventStore, Event } from '../../src/eventSourcing';
+import { EventStore, Snapshot, AggregateStream } from '../../eventSourcing';
+
+interface AccountEvent {
+  type: string;
+  amount?: number;
+  timestamp: Date;
+}
 
 describe('EventStore', () => {
-  let store: EventStore;
+  let store: EventStore<AccountEvent>;
 
   beforeEach(() => {
-    store = new EventStore();
+    store = new EventStore<AccountEvent>();
   });
 
-  it('should append events', async () => {
-    const event: Event = {
-      id: '1',
-      type: 'UserCreated',
-      aggregateId: 'user-1',
-      data: { name: 'John' },
-      timestamp: new Date(),
-      version: 1
-    };
+  it('should append events to stream', async () => {
+    await store.append({
+      streamId: 'account-123',
+      event: { type: 'Deposited', amount: 100, timestamp: new Date() }
+    });
 
-    await store.append(event);
-    const events = await store.getEvents('user-1');
+    const events = await store.getEvents('account-123');
     expect(events).toHaveLength(1);
+    expect(events[0].type).toBe('Deposited');
   });
 
-  it('should get events for aggregate', async () => {
+  it('should return events in order', async () => {
     await store.append({
-      id: '1', type: 'Created', aggregateId: 'a1',
-      data: {}, timestamp: new Date(), version: 1
+      streamId: 'account-123',
+      event: { type: 'Deposited', amount: 100, timestamp: new Date() }
     });
     await store.append({
-      id: '2', type: 'Updated', aggregateId: 'a1',
-      data: {}, timestamp: new Date(), version: 2
-    });
-    await store.append({
-      id: '3', type: 'Created', aggregateId: 'a2',
-      data: {}, timestamp: new Date(), version: 1
+      streamId: 'account-123',
+      event: { type: 'Withdrawn', amount: 50, timestamp: new Date() }
     });
 
-    const events = await store.getEvents('a1');
+    const events = await store.getEvents('account-123');
     expect(events).toHaveLength(2);
+    expect(events[0].type).toBe('Deposited');
+    expect(events[1].type).toBe('Withdrawn');
   });
 
-  it('should get events from version', async () => {
-    await store.append({
-      id: '1', type: 'V1', aggregateId: 'a1',
-      data: {}, timestamp: new Date(), version: 1
-    });
-    await store.append({
-      id: '2', type: 'V2', aggregateId: 'a1',
-      data: {}, timestamp: new Date(), version: 2
+  it('should return empty array for unknown stream', async () => {
+    const events = await store.getEvents('unknown');
+    expect(events).toHaveLength(0);
+  });
+});
+
+describe('Snapshot', () => {
+  it('should create snapshot from state', () => {
+    const snapshot = new Snapshot({
+      streamId: 'account-123',
+      version: 10,
+      state: { balance: 500 }
     });
 
-    const events = await store.getEventsFromVersion('a1', 2);
-    expect(events).toHaveLength(1);
-    expect(events[0].type).toBe('V2');
+    expect(snapshot.version).toBe(10);
+    expect(snapshot.state.balance).toBe(500);
   });
 });
