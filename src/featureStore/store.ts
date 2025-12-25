@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Feature store
+ * @module @sentinela/core/featureStore
+ * @version 13.0.0
+ */
+
 import { Feature, FeatureValue, FeatureSet } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
