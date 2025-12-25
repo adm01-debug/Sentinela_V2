@@ -1,17 +1,14 @@
 /**
- * @fileoverview Database replicator
+ * @fileoverview Data Replicator
  * @module @sentinela/core/replication
- * @version 13.0.0
  */
-
-export interface ReplicationConfig { sourceId: string; targetId: string; mode: 'sync' | 'async'; interval?: number; }
-export interface ReplicatedData { id: string; data: any; version: number; replicatedAt: Date; source: string; }
+export interface ReplicationConfig { primary: string; replicas: string[]; mode: 'sync' | 'async'; }
 export class Replicator {
-  private configs: ReplicationConfig[] = [];
-  private data = new Map<string, ReplicatedData>();
-  configure(config: ReplicationConfig): void { this.configs.push(config); }
-  async replicate(sourceId: string, data: any): Promise<ReplicatedData> { const existing = this.data.get(sourceId); const version = existing ? existing.version + 1 : 1; const replicated: ReplicatedData = { id: crypto.randomUUID(), data, version, replicatedAt: new Date(), source: sourceId }; this.data.set(sourceId, replicated); return replicated; }
-  get(sourceId: string): ReplicatedData | undefined { return this.data.get(sourceId); }
-  getVersion(sourceId: string): number { return this.data.get(sourceId)?.version || 0; }
+  constructor(private config: ReplicationConfig) {}
+  async replicate(data: unknown): Promise<{ success: boolean; replicated: number }> {
+    let replicated = 0;
+    for (const r of this.config.replicas) replicated++;
+    return { success: true, replicated };
+  }
+  async getStatus(): Promise<{ lag: number; healthy: boolean }> { return { lag: 0, healthy: true }; }
 }
-export const replicator = new Replicator();
