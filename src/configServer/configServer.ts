@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Configuration server implementation
+ * @module @sentinela/core/configServer
+ * @version 13.0.0
+ */
+
 // Config Server
 export interface ConfigEntry { key: string; value: unknown; env: string; version: number; }
 export class ConfigServer {
