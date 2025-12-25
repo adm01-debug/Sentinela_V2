@@ -1,0 +1,15 @@
+/**
+ * @fileoverview Double-ended queue
+ * @module @sentinela/core/deque
+ */
+export class Deque<T> {
+  private items: T[] = [];
+  pushFront(item: T): void { this.items.unshift(item); }
+  pushBack(item: T): void { this.items.push(item); }
+  popFront(): T | undefined { return this.items.shift(); }
+  popBack(): T | undefined { return this.items.pop(); }
+  peekFront(): T | undefined { return this.items[0]; }
+  peekBack(): T | undefined { return this.items[this.items.length - 1]; }
+  isEmpty(): boolean { return this.items.length === 0; }
+  size(): number { return this.items.length; }
+}
