@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Translation layer
+ * @module @sentinela/core/antiCorruptionLayer
+ * @version 13.0.0
+ */
+
 import { TranslationResult, ExternalModel, DomainModel, TranslationContext } from './types';
 
 export abstract class Translator<TExternal extends ExternalModel, TDomain extends DomainModel> {
