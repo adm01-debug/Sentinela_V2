@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Data tokenizer
+ * @module @sentinela/core/tokenization
+ * @version 13.0.0
+ */
+
 import { Token, TokenizationConfig, TokenFormat } from './types';
 import { TokenVault } from './vault';
 import { v4 as uuidv4 } from 'uuid';
