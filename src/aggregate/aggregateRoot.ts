@@ -1,41 +1,64 @@
 /**
- * @fileoverview Aggregate root implementation
+ * @fileoverview Aggregate Root pattern implementation
  * @module @sentinela/core/aggregate
  * @version 13.0.0
  */
 
-import { AggregateRoot as IAggregateRoot, DomainEvent } from './types';
-import { v4 as uuidv4 } from 'uuid';
+export interface DomainEvent {
+  type: string;
+  occurredAt: Date;
+  aggregateId: string;
+}
 
-export abstract class AggregateRoot<ID = string> implements IAggregateRoot<ID> {
-  private _domainEvents: DomainEvent[] = [];
-  private _version: number = 0;
-  
-  constructor(public readonly id: ID) {}
-  
+export abstract class AggregateRoot {
+  private uncommittedEvents: DomainEvent[] = [];
+  private _version = 0;
+
+  constructor(protected readonly id: string) {}
+
   get version(): number { return this._version; }
-  get domainEvents(): DomainEvent[] { return [...this._domainEvents]; }
-  
-  protected addDomainEvent(eventType: string, payload: unknown): void {
-    this._domainEvents.push({
-      eventId: uuidv4(),
-      eventType,
-      aggregateId: String(this.id),
+
+  protected apply(event: Omit<DomainEvent, 'occurredAt' | 'aggregateId'>): void {
+    const fullEvent: DomainEvent = {
+      ...event,
       occurredAt: new Date(),
-      payload
-    });
+      aggregateId: this.id
+    };
+    this.onEvent(fullEvent);
+    this.uncommittedEvents.push(fullEvent);
     this._version++;
   }
-  
-  clearEvents(): void { this._domainEvents = []; }
-  
-  protected apply(event: DomainEvent): void {
-    const handler = (this as any)[`on${event.eventType}`];
-    if (handler) handler.call(this, event.payload);
-    this._version = Math.max(this._version, 1);
+
+  protected abstract onEvent(event: DomainEvent): void;
+
+  getUncommittedEvents(): DomainEvent[] {
+    return [...this.uncommittedEvents];
   }
-  
+
+  commit(): void {
+    this.uncommittedEvents = [];
+  }
+
   loadFromHistory(events: DomainEvent[]): void {
-    events.forEach(e => this.apply(e));
+    for (const event of events) {
+      this.onEvent(event);
+      this._version++;
+    }
+  }
+}
+
+export abstract class Entity {
+  constructor(protected readonly id: string) {}
+  
+  equals(other: Entity): boolean {
+    return this.id === other.id;
+  }
+}
+
+export abstract class ValueObject<T> {
+  constructor(protected readonly props: T) {}
+
+  equals(other: ValueObject<T>): boolean {
+    return JSON.stringify(this.props) === JSON.stringify(other.props);
   }
 }
