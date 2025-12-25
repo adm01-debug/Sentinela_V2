@@ -1,3 +1,9 @@
+/**
+ * @fileoverview StatefulSet controller
+ * @module @sentinela/core/statefulSets
+ * @version 13.0.0
+ */
+
 import { StatefulSet } from './types';
 
 export class StatefulSetController {
