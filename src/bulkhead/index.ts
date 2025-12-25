@@ -1,2 +1,2 @@
-export * from './types';
 export * from './bulkhead';
+export * from './types';
