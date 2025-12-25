@@ -1,42 +1,68 @@
 /**
- * @fileoverview Event store implementation
+ * @fileoverview Event Store implementation
  * @module @sentinela/core/eventSourcing
  * @version 13.0.0
  */
 
-import { StoredEvent, EventStream } from './types';
-import { v4 as uuidv4 } from 'uuid';
+export interface StoredEvent {
+  id: string;
+  aggregateId: string;
+  type: string;
+  data: unknown;
+  version: number;
+  timestamp: Date;
+  metadata?: Record<string, unknown>;
+}
 
-export class EventStore {
-  private streams: Map<string, StoredEvent[]> = new Map();
-  private globalEvents: StoredEvent[] = [];
-  private subscribers: ((event: StoredEvent) => void)[] = [];
-  
-  async append(streamId: string, events: Omit<StoredEvent, 'eventId' | 'version' | 'timestamp'>[], expectedVersion?: number): Promise<void> {
-    const stream = this.streams.get(streamId) ?? [];
-    if (expectedVersion !== undefined && stream.length !== expectedVersion) {
-      throw new Error('Concurrency conflict: expected ' + expectedVersion + ', got ' + stream.length);
+export interface EventStore {
+  append(aggregateId: string, events: Omit<StoredEvent, 'id' | 'timestamp'>[]): Promise<void>;
+  load(aggregateId: string, fromVersion?: number): Promise<StoredEvent[]>;
+  loadAll(fromPosition?: number): Promise<StoredEvent[]>;
+}
+
+export class InMemoryEventStore implements EventStore {
+  private events: StoredEvent[] = [];
+  private idCounter = 0;
+
+  async append(aggregateId: string, events: Omit<StoredEvent, 'id' | 'timestamp'>[]): Promise<void> {
+    for (const event of events) {
+      this.events.push({
+        ...event,
+        id: String(++this.idCounter),
+        aggregateId,
+        timestamp: new Date()
+      });
     }
-    const newEvents = events.map((e, i) => ({
-      ...e, eventId: uuidv4(), version: stream.length + i + 1, timestamp: new Date()
-    }));
-    this.streams.set(streamId, [...stream, ...newEvents]);
-    this.globalEvents.push(...newEvents);
-    newEvents.forEach(e => this.subscribers.forEach(s => s(e)));
   }
-  
-  async readStream(streamId: string, fromVersion?: number): Promise<EventStream> {
-    const events = this.streams.get(streamId) ?? [];
-    const filtered = fromVersion ? events.filter(e => e.version > fromVersion) : events;
-    return { streamId, events: filtered, version: events.length };
+
+  async load(aggregateId: string, fromVersion = 0): Promise<StoredEvent[]> {
+    return this.events
+      .filter(e => e.aggregateId === aggregateId && e.version >= fromVersion)
+      .sort((a, b) => a.version - b.version);
   }
-  
-  async readAll(fromPosition?: number): Promise<StoredEvent[]> {
-    return fromPosition ? this.globalEvents.slice(fromPosition) : this.globalEvents;
+
+  async loadAll(fromPosition = 0): Promise<StoredEvent[]> {
+    return this.events.slice(fromPosition);
   }
-  
-  subscribe(handler: (event: StoredEvent) => void): () => void {
-    this.subscribers.push(handler);
-    return () => { this.subscribers = this.subscribers.filter(s => s !== handler); };
+
+  clear(): void {
+    this.events = [];
+    this.idCounter = 0;
+  }
+}
+
+export class SnapshotStore {
+  private snapshots = new Map<string, { state: unknown; version: number }>();
+
+  async save(aggregateId: string, snapshot: { state: unknown; version: number }): Promise<void> {
+    this.snapshots.set(aggregateId, snapshot);
+  }
+
+  async load(aggregateId: string): Promise<{ state: unknown; version: number } | null> {
+    return this.snapshots.get(aggregateId) || null;
+  }
+
+  clear(): void {
+    this.snapshots.clear();
   }
 }
