@@ -1,3 +1,9 @@
+/**
+ * @fileoverview API Gateway implementation
+ * @module @sentinela/core/apiGateway
+ * @version 13.0.0
+ */
+
 import { APIGateway, Route, Request, Response } from './types';
 
 export class Gateway {
