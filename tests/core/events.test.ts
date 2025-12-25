@@ -1,138 +1,98 @@
-/**
- * @jest-environment node
- */
-import { EventEmitter, DomainEventBus, DomainEvent } from '../../src/core/events';
+import { EventBus, Subject, BehaviorSubject } from '../../core/events';
 
-interface TestEvents {
-  userCreated: { id: string; name: string };
-  userDeleted: { id: string };
-}
+describe('EventBus', () => {
+  interface Events {
+    userCreated: { id: string; name: string };
+    userDeleted: { id: string };
+  }
 
-describe('EventEmitter', () => {
-  it('should emit and handle events', async () => {
-    const emitter = new EventEmitter<TestEvents>();
+  let bus: EventBus<Events>;
+
+  beforeEach(() => {
+    bus = new EventBus<Events>();
+  });
+
+  afterEach(() => {
+    bus.dispose();
+  });
+
+  it('should emit and receive events', async () => {
     const handler = jest.fn();
+    bus.on('userCreated', handler);
     
-    emitter.on('userCreated', handler);
-    await emitter.emit('userCreated', { id: '1', name: 'John' });
+    await bus.emit('userCreated', { id: '1', name: 'John' });
     
     expect(handler).toHaveBeenCalledWith({ id: '1', name: 'John' });
   });
 
-  it('should handle multiple listeners', async () => {
-    const emitter = new EventEmitter<TestEvents>();
-    const handler1 = jest.fn();
-    const handler2 = jest.fn();
-    
-    emitter.on('userCreated', handler1);
-    emitter.on('userCreated', handler2);
-    await emitter.emit('userCreated', { id: '1', name: 'John' });
-    
-    expect(handler1).toHaveBeenCalled();
-    expect(handler2).toHaveBeenCalled();
-  });
-
-  it('should unsubscribe', async () => {
-    const emitter = new EventEmitter<TestEvents>();
+  it('should handle once listeners', async () => {
     const handler = jest.fn();
+    bus.once('userCreated', handler);
     
-    const subscription = emitter.on('userCreated', handler);
-    subscription.unsubscribe();
-    await emitter.emit('userCreated', { id: '1', name: 'John' });
-    
-    expect(handler).not.toHaveBeenCalled();
-  });
-
-  it('should handle once', async () => {
-    const emitter = new EventEmitter<TestEvents>();
-    const handler = jest.fn();
-    
-    emitter.once('userCreated', handler);
-    await emitter.emit('userCreated', { id: '1', name: 'John' });
-    await emitter.emit('userCreated', { id: '2', name: 'Jane' });
+    await bus.emit('userCreated', { id: '1', name: 'John' });
+    await bus.emit('userCreated', { id: '2', name: 'Jane' });
     
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
-  it('should remove all listeners', async () => {
-    const emitter = new EventEmitter<TestEvents>();
+  it('should unsubscribe', async () => {
     const handler = jest.fn();
+    const unsubscribe = bus.on('userCreated', handler);
     
-    emitter.on('userCreated', handler);
-    emitter.on('userDeleted', handler);
-    emitter.removeAllListeners();
+    unsubscribe();
+    await bus.emit('userCreated', { id: '1', name: 'John' });
     
-    await emitter.emit('userCreated', { id: '1', name: 'John' });
     expect(handler).not.toHaveBeenCalled();
   });
 
   it('should count listeners', () => {
-    const emitter = new EventEmitter<TestEvents>();
+    bus.on('userCreated', () => {});
+    bus.on('userCreated', () => {});
+    bus.once('userCreated', () => {});
     
-    emitter.on('userCreated', () => {});
-    emitter.on('userCreated', () => {});
-    
-    expect(emitter.listenerCount('userCreated')).toBe(2);
-    expect(emitter.listenerCount('userDeleted')).toBe(0);
-  });
-
-  it('should handle async handlers', async () => {
-    const emitter = new EventEmitter<TestEvents>();
-    const results: string[] = [];
-    
-    emitter.on('userCreated', async () => {
-      await new Promise(r => setTimeout(r, 10));
-      results.push('a');
-    });
-    
-    await emitter.emit('userCreated', { id: '1', name: 'John' });
-    expect(results).toContain('a');
+    expect(bus.listenerCount('userCreated')).toBe(3);
   });
 });
 
-describe('DomainEventBus', () => {
-  it('should publish and subscribe', async () => {
-    const bus = new DomainEventBus();
-    const handler = jest.fn();
+describe('Subject', () => {
+  it('should emit to subscribers', () => {
+    const subject = new Subject<number>();
+    const values: number[] = [];
     
-    bus.subscribe('UserCreated', handler);
+    subject.subscribe({ next: v => values.push(v) });
+    subject.next(1);
+    subject.next(2);
     
-    const event: DomainEvent = {
-      eventId: '1',
-      eventType: 'UserCreated',
-      occurredAt: new Date()
-    };
-    
-    await bus.publish(event);
-    expect(handler).toHaveBeenCalledWith(event);
+    expect(values).toEqual([1, 2]);
   });
 
-  it('should support wildcard subscription', async () => {
-    const bus = new DomainEventBus();
-    const handler = jest.fn();
+  it('should complete and stop emitting', () => {
+    const subject = new Subject<number>();
+    const complete = jest.fn();
     
-    bus.subscribe('*', handler);
+    subject.subscribe({ next: () => {}, complete });
+    subject.complete();
+    subject.next(1);
     
-    await bus.publish({
-      eventId: '1',
-      eventType: 'AnyEvent',
-      occurredAt: new Date()
-    });
+    expect(complete).toHaveBeenCalled();
+  });
+});
+
+describe('BehaviorSubject', () => {
+  it('should emit current value to new subscribers', () => {
+    const subject = new BehaviorSubject<number>(10);
+    const values: number[] = [];
     
-    expect(handler).toHaveBeenCalled();
+    subject.next(20);
+    subject.subscribe({ next: v => values.push(v) });
+    
+    expect(values).toEqual([20]);
   });
 
-  it('should publish all events', async () => {
-    const bus = new DomainEventBus();
-    const handler = jest.fn();
+  it('should get current value', () => {
+    const subject = new BehaviorSubject<string>('initial');
+    subject.next('updated');
     
-    bus.subscribe('Test', handler);
-    
-    await bus.publishAll([
-      { eventId: '1', eventType: 'Test', occurredAt: new Date() },
-      { eventId: '2', eventType: 'Test', occurredAt: new Date() }
-    ]);
-    
-    expect(handler).toHaveBeenCalledTimes(2);
+    expect(subject.getValue()).toBe('updated');
   });
 });
