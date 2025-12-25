@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Advanced service mesh types
+ * @module @sentinela/core/serviceMeshAdvanced
+ * @version 13.0.0
+ */
+
 export interface VirtualService { name: string; hosts: string[]; http: HTTPRoute[]; }
 export interface HTTPRoute { match?: HTTPMatchRequest[]; route: HTTPRouteDestination[]; retries?: HTTPRetry; timeout?: string; }
 export interface HTTPMatchRequest { uri?: StringMatch; headers?: Record<string, StringMatch>; }
