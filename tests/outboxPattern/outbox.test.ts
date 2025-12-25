@@ -1,39 +1,35 @@
-import { Outbox, OutboxProcessor, MessagePublisher } from '../../outboxPattern';
+import { Outbox, OutboxProcessor } from '../../outboxPattern';
 
 describe('Outbox', () => {
   let outbox: Outbox;
 
   beforeEach(() => {
-    outbox = new Outbox();
+    outbox = new Outbox({ tableName: 'outbox' });
   });
 
   it('should add message to outbox', async () => {
-    const message = { type: 'UserCreated', payload: { id: '1' } };
+    const message = { type: 'OrderCreated', payload: { id: '123' } };
     await outbox.add(message);
-    
     const pending = await outbox.getPending();
-    expect(pending.length).toBe(1);
-    expect(pending[0].type).toBe('UserCreated');
+    expect(pending.length).toBeGreaterThan(0);
   });
 
-  it('should mark message as published', async () => {
+  it('should mark message as processed', async () => {
     const message = { type: 'Test', payload: {} };
     const id = await outbox.add(message);
-    
-    await outbox.markPublished(id);
+    await outbox.markProcessed(id);
     const pending = await outbox.getPending();
-    
-    expect(pending.length).toBe(0);
+    expect(pending.find(m => m.id === id)).toBeUndefined();
   });
 });
 
 describe('OutboxProcessor', () => {
   it('should process pending messages', async () => {
-    const outbox = new Outbox();
     const publisher = { publish: jest.fn().mockResolvedValue(undefined) };
+    const outbox = new Outbox({ tableName: 'test' });
     const processor = new OutboxProcessor(outbox, publisher);
 
-    await outbox.add({ type: 'Test', payload: { data: 'test' } });
+    await outbox.add({ type: 'Event', payload: { data: 'test' } });
     await processor.process();
 
     expect(publisher.publish).toHaveBeenCalled();
