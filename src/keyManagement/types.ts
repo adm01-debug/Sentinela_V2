@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Key management types
+ * @module @sentinela/core/keyManagement
+ * @version 13.0.0
+ */
+
 export interface ManagedKey { id: string; alias: string; type: 'symmetric' | 'asymmetric'; algorithm: string; state: KeyState; metadata: KeyMetadata; }
 export type KeyState = 'enabled' | 'disabled' | 'pending_deletion' | 'deleted';
 export interface KeyMetadata { createdAt: Date; createdBy: string; rotatedAt?: Date; expiresAt?: Date; tags: Record<string, string>; }
