@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Service mesh types
+ * @module @sentinela/core/serviceMesh
+ * @version 13.0.0
+ */
+
 export interface ServiceMeshConfig {
   name: string;
   namespace: string;
