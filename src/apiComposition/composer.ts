@@ -1,3 +1,9 @@
+/**
+ * @fileoverview API composition implementation
+ * @module @sentinela/core/apiComposition
+ * @version 13.0.0
+ */
+
 import { CompositionPlan, CompositionStep, CompositionResult } from './types';
 
 export class APIComposer {
