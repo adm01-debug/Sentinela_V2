@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Kafka producer
+ * @module @sentinela/core/kafka
+ * @version 13.0.0
+ */
+
 import { KafkaConfig, ProducerMessage } from './types';
 
 export class KafkaProducer {
