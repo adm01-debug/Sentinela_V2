@@ -1,58 +1,94 @@
 /**
- * @fileoverview Unit of Work implementation
+ * @fileoverview Unit of Work pattern implementation
  * @module @sentinela/core/unitOfWork
  * @version 13.0.0
  */
 
-import { UnitOfWork, Entity, Repository, EntityState } from './types';
-import { EntityTracker } from './entityTracker';
+export interface Entity { id: string; }
 
-export class DefaultUnitOfWork implements UnitOfWork {
-  private tracker: EntityTracker = new EntityTracker();
-  private repositories: Map<string, Repository<Entity>> = new Map();
-  private isCommitting: boolean = false;
+export interface IUnitOfWork {
+  registerNew(entity: Entity): void;
+  registerDirty(entity: Entity): void;
+  registerDeleted(entity: Entity): void;
+  registerClean(entity: Entity): void;
+  commit(): Promise<void>;
+  rollback(): Promise<void>;
+  hasChanges(): boolean;
+}
 
-  registerRepository<T extends Entity>(name: string, repository: Repository<T>): void {
-    this.repositories.set(name, repository as Repository<Entity>);
+export class UnitOfWork implements IUnitOfWork {
+  private newEntities: Entity[] = [];
+  private dirtyEntities: Entity[] = [];
+  private deletedEntities: Entity[] = [];
+  private cleanEntities = new Set<string>();
+
+  registerNew(entity: Entity): void {
+    if (!this.cleanEntities.has(entity.id)) {
+      this.newEntities.push(entity);
+    }
   }
 
-  registerNew<T extends Entity>(entity: T): void { this.tracker.track(entity, EntityState.New); }
-  registerDirty<T extends Entity>(entity: T): void {
-    if (this.tracker.getState(entity) !== EntityState.New) this.tracker.track(entity, EntityState.Dirty);
+  registerDirty(entity: Entity): void {
+    if (!this.newEntities.find(e => e.id === entity.id) &&
+        !this.deletedEntities.find(e => e.id === entity.id)) {
+      if (!this.dirtyEntities.find(e => e.id === entity.id)) {
+        this.dirtyEntities.push(entity);
+      }
+    }
   }
-  registerDeleted<T extends Entity>(entity: T): void {
-    const state = this.tracker.getState(entity);
-    if (state === EntityState.New) this.tracker.untrack(entity);
-    else this.tracker.track(entity, EntityState.Deleted);
+
+  registerDeleted(entity: Entity): void {
+    const newIdx = this.newEntities.findIndex(e => e.id === entity.id);
+    if (newIdx >= 0) {
+      this.newEntities.splice(newIdx, 1);
+      return;
+    }
+    const dirtyIdx = this.dirtyEntities.findIndex(e => e.id === entity.id);
+    if (dirtyIdx >= 0) {
+      this.dirtyEntities.splice(dirtyIdx, 1);
+    }
+    if (!this.deletedEntities.find(e => e.id === entity.id)) {
+      this.deletedEntities.push(entity);
+    }
   }
-  registerClean<T extends Entity>(entity: T): void { this.tracker.track(entity, EntityState.Clean); }
+
+  registerClean(entity: Entity): void {
+    this.cleanEntities.add(entity.id);
+  }
+
+  hasChanges(): boolean {
+    return this.newEntities.length > 0 ||
+           this.dirtyEntities.length > 0 ||
+           this.deletedEntities.length > 0;
+  }
 
   async commit(): Promise<void> {
-    if (this.isCommitting) throw new Error('Commit already in progress');
-    this.isCommitting = true;
-    try {
-      const newEntities = this.tracker.getByState(EntityState.New);
-      const dirtyEntities = this.tracker.getByState(EntityState.Dirty);
-      const deletedEntities = this.tracker.getByState(EntityState.Deleted);
-      for (const tracked of [...newEntities, ...dirtyEntities]) {
-        const repo = this.getRepository(tracked.entity);
-        await repo.save(tracked.entity);
-        this.tracker.track(tracked.entity, EntityState.Clean);
-      }
-      for (const tracked of deletedEntities) {
-        const repo = this.getRepository(tracked.entity);
-        await repo.delete(tracked.entity);
-        this.tracker.untrack(tracked.entity);
-      }
-    } finally { this.isCommitting = false; }
+    // Insert new entities
+    for (const entity of this.newEntities) {
+      this.cleanEntities.add(entity.id);
+    }
+    // Update dirty entities
+    for (const entity of this.dirtyEntities) {
+      this.cleanEntities.add(entity.id);
+    }
+    // Delete removed entities
+    for (const entity of this.deletedEntities) {
+      this.cleanEntities.delete(entity.id);
+    }
+    this.clear();
   }
 
-  async rollback(): Promise<void> { this.tracker.clear(); }
-
-  private getRepository(entity: Entity): Repository<Entity> {
-    const name = entity.constructor.name;
-    const repo = this.repositories.get(name);
-    if (!repo) throw new Error('No repository for: ' + name);
-    return repo;
+  async rollback(): Promise<void> {
+    this.clear();
   }
+
+  private clear(): void {
+    this.newEntities = [];
+    this.dirtyEntities = [];
+    this.deletedEntities = [];
+  }
+
+  getNewEntities(): Entity[] { return [...this.newEntities]; }
+  getDirtyEntities(): Entity[] { return [...this.dirtyEntities]; }
+  getDeletedEntities(): Entity[] { return [...this.deletedEntities]; }
 }
