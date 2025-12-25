@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Bulkhead implementation
+ * @module @sentinela/core/bulkhead
+ * @version 13.0.0
+ */
+
 import { BulkheadConfig, BulkheadStats } from './types';
 
 export class Bulkhead {
