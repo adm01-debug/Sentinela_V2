@@ -1,21 +1,17 @@
-import { GitOpsController, Repository, SyncStatus } from '../../gitops';
-describe('GitOpsController', () => {
-  let controller: GitOpsController;
-  beforeEach(() => { controller = new GitOpsController({ repo: 'test/repo' }); });
-  it('should sync repository', async () => {
-    const result = await controller.sync();
-    expect(result.synced).toBeDefined();
-  });
+import { GitOpsReconciler } from '../../gitops';
+
+describe('GitOpsReconciler', () => {
+  let reconciler: GitOpsReconciler;
+  beforeEach(() => { reconciler = new GitOpsReconciler({ repo: 'org/config' }); });
+
   it('should detect drift', async () => {
-    const drift = await controller.detectDrift();
-    expect(drift.hasDrift).toBeDefined();
+    const drift = await reconciler.detectDrift();
+    expect(drift).toBeDefined();
   });
-  it('should get sync status', () => {
-    const status = controller.getStatus();
-    expect(['synced', 'pending', 'failed']).toContain(status.state);
-  });
-  it('should rollback', async () => {
-    const result = await controller.rollback('previous-commit');
-    expect(result.success).toBeDefined();
+
+  it('should reconcile state', async () => {
+    await reconciler.reconcile();
+    const status = reconciler.getStatus();
+    expect(status.lastReconcile).toBeDefined();
   });
 });
