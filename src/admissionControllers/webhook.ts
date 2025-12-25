@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Admission webhook
+ * @module @sentinela/core/admissionControllers
+ * @version 13.0.0
+ */
+
 import { AdmissionRequest, AdmissionResponse } from './types';
 import { ValidatingWebhook } from './validator';
 import { MutatingWebhook } from './mutator';
