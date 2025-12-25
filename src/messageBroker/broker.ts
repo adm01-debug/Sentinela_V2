@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Message broker
+ * @module @sentinela/core/messageBroker
+ * @version 13.0.0
+ */
+
 import { BrokerConfig, TopicConfig, PublishResult } from './types';
 import { Topic } from './topic';
 import { v4 as uuidv4 } from 'uuid';
