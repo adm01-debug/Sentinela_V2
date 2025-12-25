@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Metrics collector
+ * @module @sentinela/core/metricsCollection
+ * @version 13.0.0
+ */
+
 import { Metric, MetricType, MetricDefinition } from './types';
 
 export class MetricCollector {
