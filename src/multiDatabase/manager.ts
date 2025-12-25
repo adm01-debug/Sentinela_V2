@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Multi-database manager
+ * @module @sentinela/core/multiDatabase
+ * @version 13.0.0
+ */
+
 import { DatabaseConfig, ConnectionState } from './types';
 
 export class MultiDatabaseManager {
