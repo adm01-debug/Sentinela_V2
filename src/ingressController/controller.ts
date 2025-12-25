@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Ingress controller
+ * @module @sentinela/core/ingressController
+ * @version 13.0.0
+ */
+
 import { Ingress } from './types';
 
 export class IngressController {
