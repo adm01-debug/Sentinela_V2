@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Event store implementation
+ * @module @sentinela/core/eventSourcing
+ * @version 13.0.0
+ */
+
 import { StoredEvent, EventStream } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
