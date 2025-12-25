@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Alert manager
+ * @module @sentinela/core/alerting
+ * @version 13.0.0
+ */
+
 import { Alert, AlertStatus, AlertSeverity } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
