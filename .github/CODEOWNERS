@@ -1,17 +1,5 @@
-# Default owners for everything
+# Code owners
 * @adm01-debug
-
-# Frontend
-/src/ @adm01-debug
-
-# Backend / Edge Functions
-/supabase/ @adm01-debug
-
-# Documentation
+/src/core/ @adm01-debug
+/src/security/ @adm01-debug
 /docs/ @adm01-debug
-*.md @adm01-debug
-
-# Configuration
-/*.json @adm01-debug
-/*.yml @adm01-debug
-/*.yaml @adm01-debug
