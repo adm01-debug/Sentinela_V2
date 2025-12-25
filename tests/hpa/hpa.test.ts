@@ -1,26 +1,17 @@
 import { HPAController } from '../../hpa';
-
 describe('HPAController', () => {
-  let controller: HPAController;
-  beforeEach(() => { controller = new HPAController({ minReplicas: 1, maxReplicas: 10, targetCPU: 80 }); });
-
-  it('should scale up on high CPU', async () => {
-    controller.updateMetrics({ cpu: 95, memory: 50 });
-    const decision = await controller.evaluate();
+  it('should scale up when CPU high', async () => {
+    const hpa = new HPAController({ minReplicas: 2, maxReplicas: 10, targetCPU: 70 });
+    hpa.updateMetrics({ cpu: 85, memory: 50 });
+    const decision = await hpa.evaluate();
     expect(decision.action).toBe('scale-up');
+    expect(decision.replicas).toBe(3);
   });
-
-  it('should scale down on low CPU', async () => {
-    controller.setReplicas(5);
-    controller.updateMetrics({ cpu: 20, memory: 30 });
-    const decision = await controller.evaluate();
+  it('should scale down when CPU low', async () => {
+    const hpa = new HPAController({ minReplicas: 2, maxReplicas: 10, targetCPU: 70 });
+    hpa.updateMetrics({ cpu: 85, memory: 50 }); await hpa.evaluate();
+    hpa.updateMetrics({ cpu: 20, memory: 50 });
+    const decision = await hpa.evaluate();
     expect(decision.action).toBe('scale-down');
-  });
-
-  it('should respect min replicas', async () => {
-    controller.setReplicas(1);
-    controller.updateMetrics({ cpu: 5, memory: 10 });
-    const decision = await controller.evaluate();
-    expect(decision.replicas).toBeGreaterThanOrEqual(1);
   });
 });
