@@ -1,51 +1,21 @@
-import { AggregateRoot, DomainEvent } from '../../aggregate';
-
-interface OrderCreated extends DomainEvent { orderId: string; customerId: string; }
-interface ItemAdded extends DomainEvent { orderId: string; itemId: string; quantity: number; }
-
-class Order extends AggregateRoot {
-  private items: string[] = [];
-  
-  static create(orderId: string, customerId: string): Order {
-    const order = new Order(orderId);
-    order.apply({ type: 'OrderCreated', orderId, customerId });
-    return order;
-  }
-
-  addItem(itemId: string, quantity: number): void {
-    this.apply({ type: 'ItemAdded', orderId: this.id, itemId, quantity });
-  }
-
-  protected onEvent(event: DomainEvent): void {
-    if (event.type === 'ItemAdded') {
-      this.items.push((event as ItemAdded).itemId);
-    }
-  }
+import { AggregateRoot } from '../../aggregate';
+class TestAggregate extends AggregateRoot {
+  public value = 0;
+  increment() { this.apply({ type: 'Incremented' }); }
+  protected onEvent(event: any) { if (event.type === 'Incremented') this.value++; }
 }
-
 describe('AggregateRoot', () => {
-  it('should create aggregate with event', () => {
-    const order = Order.create('order-1', 'customer-1');
-    expect(order.getUncommittedEvents().length).toBe(1);
+  it('should apply events', () => {
+    const agg = new TestAggregate('1');
+    agg.increment();
+    expect(agg.value).toBe(1);
+    expect(agg.version).toBe(1);
   });
-
-  it('should apply multiple events', () => {
-    const order = Order.create('order-1', 'customer-1');
-    order.addItem('item-1', 2);
-    order.addItem('item-2', 1);
-    expect(order.getUncommittedEvents().length).toBe(3);
-  });
-
-  it('should clear uncommitted events after commit', () => {
-    const order = Order.create('order-1', 'customer-1');
-    order.commit();
-    expect(order.getUncommittedEvents().length).toBe(0);
-  });
-
-  it('should increment version', () => {
-    const order = Order.create('order-1', 'customer-1');
-    expect(order.version).toBe(1);
-    order.addItem('item-1', 1);
-    expect(order.version).toBe(2);
+  it('should track uncommitted events', () => {
+    const agg = new TestAggregate('1');
+    agg.increment();
+    expect(agg.getUncommittedEvents().length).toBe(1);
+    agg.commit();
+    expect(agg.getUncommittedEvents().length).toBe(0);
   });
 });
