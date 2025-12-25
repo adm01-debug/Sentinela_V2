@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Custom resources types
+ * @module @sentinela/core/customResources
+ * @version 13.0.0
+ */
+
 export interface CustomResourceDefinition { apiVersion: string; kind: string; metadata: { name: string }; spec: CRDSpec; }
 export interface CRDSpec { group: string; names: CRDNames; scope: 'Namespaced' | 'Cluster'; versions: CRDVersion[]; }
 export interface CRDNames { plural: string; singular: string; kind: string; shortNames?: string[]; }
