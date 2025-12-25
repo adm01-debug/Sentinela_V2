@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Bounded context types
+ * @module @sentinela/core/boundedContext
+ * @version 13.0.0
+ */
+
 export interface BoundedContext {
   name: string;
   description: string;
