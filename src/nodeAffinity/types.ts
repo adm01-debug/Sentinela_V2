@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Node affinity types
+ * @module @sentinela/core/nodeAffinity
+ * @version 13.0.0
+ */
+
 export interface NodeAffinity { requiredDuringSchedulingIgnoredDuringExecution?: NodeSelector; preferredDuringSchedulingIgnoredDuringExecution?: PreferredSchedulingTerm[]; }
 export interface NodeSelector { nodeSelectorTerms: NodeSelectorTerm[]; }
 export interface NodeSelectorTerm { matchExpressions?: NodeSelectorRequirement[]; matchFields?: NodeSelectorRequirement[]; }
