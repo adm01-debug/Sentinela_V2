@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Priority classes manager
+ * @module @sentinela/core/priorityClasses
+ * @version 13.0.0
+ */
+
 import { PriorityClass } from './types';
 
 export class PriorityClassManager {
