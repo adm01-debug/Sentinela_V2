@@ -1,16 +1,10 @@
 import { ServiceMeshSidecar } from '../../serviceMesh';
-
 describe('ServiceMeshSidecar', () => {
-  let sidecar: ServiceMeshSidecar;
-  beforeEach(() => { sidecar = new ServiceMeshSidecar({ serviceName: 'test-service' }); });
-
-  it('should intercept outbound requests', async () => {
-    const result = await sidecar.intercept({ url: 'http://other-service/api', method: 'GET' });
-    expect(result).toBeDefined();
-  });
-
-  it('should report metrics', () => {
-    const metrics = sidecar.getMetrics();
-    expect(metrics).toHaveProperty('requestCount');
+  it('should intercept requests when active', async () => {
+    const sidecar = new ServiceMeshSidecar({ serviceName: 'api', port: 3000 });
+    await sidecar.start();
+    const result = await sidecar.intercept({ method: 'GET', path: '/api/users' });
+    expect(result.forwarded).toBe(true);
+    await sidecar.stop();
   });
 });
