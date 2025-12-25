@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Outbox pattern types
+ * @module @sentinela/core/outboxPattern
+ * @version 13.0.0
+ */
+
 export interface OutboxMessage {
   id: string;
   aggregateType: string;
