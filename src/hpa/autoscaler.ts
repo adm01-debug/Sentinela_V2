@@ -1,3 +1,9 @@
+/**
+ * @fileoverview HPA autoscaler
+ * @module @sentinela/core/hpa
+ * @version 13.0.0
+ */
+
 import { HPA, HPAStatus } from './types';
 
 export class HPAController {
