@@ -1,3 +1,9 @@
+/**
+ * @fileoverview CQRS Advanced types and interfaces
+ * @module @sentinela/core/cqrsAdvanced
+ * @version 13.0.0
+ */
+
 // CQRS Advanced Types
 export interface Command<T = unknown> {
   readonly type: string;
