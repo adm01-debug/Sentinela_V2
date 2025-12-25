@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Outbox cleaner
+ * @module @sentinela/core/outboxPattern
+ * @version 13.0.0
+ */
+
 import { OutboxMessage, OutboxStatus } from './types';
 
 export class OutboxCleaner {
