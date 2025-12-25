@@ -1,113 +1,91 @@
 /**
- * @fileoverview Basic usage example for Sentinela
- * @example
- * npx ts-node examples/basic-usage.ts
+ * Basic Sentinela Usage Example
+ * 
+ * This example demonstrates core features:
+ * - Error handling
+ * - Logging
+ * - Retry with circuit breaker
+ * - Caching
  */
 
 import {
+  Logger,
   createLogger,
-  CircuitBreaker,
   retry,
+  CircuitBreaker,
   Cache,
-  RateLimiter,
-  Counter,
-  Histogram,
-  metrics
+  ValidationError,
+  NotFoundError
 } from '@sentinela/core';
 
-// 1. Logging
-const logger = createLogger('my-app');
-logger.info('Application starting', { version: '1.0.0' });
+// Create a logger
+const logger = createLogger('example-app');
 
-// 2. Circuit Breaker
-async function callExternalAPI(): Promise<string> {
-  const circuit = new CircuitBreaker({
-    name: 'external-api',
-    failureThreshold: 3,
-    resetTimeout: 30000
-  });
+// Create a cache
+const cache = new Cache<string>({ defaultTtlMs: 60000 });
 
-  return circuit.execute(async () => {
-    // Simulated API call
-    const response = await fetch('https://api.example.com/data');
-    return response.json();
-  });
+// Create a circuit breaker
+const apiCircuit = new CircuitBreaker({
+  name: 'external-api',
+  failureThreshold: 3,
+  resetTimeout: 30000
+});
+
+// Simulated external API call
+async function fetchUserFromApi(userId: string): Promise<{ id: string; name: string }> {
+  // Simulate API call
+  if (Math.random() > 0.7) {
+    throw new Error('API temporarily unavailable');
+  }
+  return { id: userId, name: `User ${userId}` };
 }
 
-// 3. Retry with backoff
-async function fetchWithRetry(): Promise<void> {
-  const data = await retry(
-    async () => {
-      logger.debug('Attempting to fetch data');
-      return callExternalAPI();
-    },
-    {
-      maxAttempts: 3,
-      initialDelayMs: 1000,
-      backoffMultiplier: 2,
-      jitter: true
-    }
+// Main function with all patterns
+async function getUser(userId: string): Promise<{ id: string; name: string }> {
+  // Validate input
+  if (!userId) {
+    throw new ValidationError('User ID is required', 'userId', userId);
+  }
+
+  // Check cache first
+  const cached = cache.get(`user:${userId}`);
+  if (cached) {
+    logger.debug('Cache hit', { userId });
+    return JSON.parse(cached);
+  }
+
+  logger.info('Fetching user from API', { userId });
+
+  // Use circuit breaker with retry
+  const user = await apiCircuit.execute(() =>
+    retry(
+      () => fetchUserFromApi(userId),
+      { maxAttempts: 3, initialDelayMs: 500 }
+    )
   );
+
+  // Cache the result
+  cache.set(`user:${userId}`, JSON.stringify(user));
   
-  logger.info('Data fetched successfully', { data });
+  return user;
 }
 
-// 4. Caching
-const cache = new Cache<string>({
-  defaultTtlMs: 60000,
-  maxSize: 100
-});
-
-async function getCachedData(key: string): Promise<string> {
-  return cache.getOrSet(key, async () => {
-    return callExternalAPI();
-  });
-}
-
-// 5. Rate Limiting
-const limiter = new RateLimiter({
-  maxRequests: 100,
-  windowMs: 60000,
-  keyPrefix: 'api'
-});
-
-async function handleRequest(userId: string): Promise<void> {
-  await limiter.consumeOrThrow(userId);
-  // Process request...
-}
-
-// 6. Metrics
-const requestCounter = metrics.counter('http_requests_total', 'Total HTTP requests');
-const requestDuration = metrics.histogram('http_request_duration_ms', 'Request duration');
-
-async function handleHTTPRequest(): Promise<void> {
-  requestCounter.inc();
-  
-  await requestDuration.time(async () => {
-    // Process request
-    await new Promise(r => setTimeout(r, 100));
-  });
-}
-
-// Main
+// Run example
 async function main() {
   try {
-    logger.info('Running examples...');
-    
-    await fetchWithRetry();
-    await getCachedData('user:123');
-    await handleRequest('user-1');
-    await handleHTTPRequest();
-    
-    // Print metrics
-    console.log('Metrics:', metrics.getAll());
-    
-    logger.info('Examples completed successfully');
+    const user = await getUser('123');
+    logger.info('User fetched successfully', { user });
+
+    // Fetch again (should hit cache)
+    const cachedUser = await getUser('123');
+    logger.info('User from cache', { cachedUser });
+
   } catch (error) {
-    logger.error('Example failed', error as Error);
-  } finally {
-    cache.dispose();
-    limiter.dispose();
+    if (error instanceof ValidationError) {
+      logger.error('Validation failed', error, { field: error.field });
+    } else {
+      logger.error('Failed to fetch user', error as Error);
+    }
   }
 }
 
