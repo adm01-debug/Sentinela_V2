@@ -1,11 +1,15 @@
 /**
  * @fileoverview Service Mesh Sidecar
  * @module @sentinela/core/serviceMesh
- * @version 13.0.0
  */
 export interface SidecarConfig { serviceName: string; port: number; }
-export class Sidecar {
+export class ServiceMeshSidecar {
+  private intercepting = false;
   constructor(private config: SidecarConfig) {}
-  async intercept(req: any): Promise<any> { return req; }
-  async proxy(target: string, req: any): Promise<any> { return { status: 200 }; }
+  async start(): Promise<void> { this.intercepting = true; }
+  async stop(): Promise<void> { this.intercepting = false; }
+  isActive(): boolean { return this.intercepting; }
+  async intercept(req: { method: string; path: string }): Promise<{ forwarded: boolean }> {
+    return { forwarded: this.intercepting };
+  }
 }
