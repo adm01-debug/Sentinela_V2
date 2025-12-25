@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Outbox implementation
+ * @module @sentinela/core/outboxPattern
+ * @version 13.0.0
+ */
+
 import { OutboxMessage, OutboxEntry, OutboxStatus, OutboxConfig } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
