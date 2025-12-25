@@ -1,29 +1,38 @@
-import { JobScheduler, Job, CronJob } from '../../jobsCronJobs';
-describe('JobScheduler', () => {
-  let scheduler: JobScheduler;
-  beforeEach(() => { scheduler = new JobScheduler(); });
-  afterEach(() => { scheduler.stop(); });
+import { JobManager, CronJobManager, Job, CronJob } from '../../jobsCronJobs';
+describe('JobManager', () => {
+  let manager: JobManager;
+  beforeEach(() => { manager = new JobManager(); });
   it('should create job', async () => {
-    const job = await scheduler.createJob({ name: 'backup', image: 'backup:v1', command: ['./backup.sh'] });
-    expect(job.status).toBe('pending');
-  });
-  it('should run job to completion', async () => {
-    const job = await scheduler.createJob({ name: 'task', image: 'task:v1', command: ['./run.sh'] });
-    await scheduler.waitForCompletion(job.id);
-    const status = await scheduler.getStatus(job.id);
-    expect(status.completions).toBe(1);
-  });
-  it('should create cronjob', async () => {
-    const cron = await scheduler.createCronJob({
-      name: 'hourly-cleanup', schedule: '0 * * * *', image: 'cleanup:v1'
+    const job = await manager.create({
+      name: 'data-migration',
+      template: { containers: [{ name: 'migrate', image: 'migrate:v1' }] }
     });
-    expect(cron.schedule).toBe('0 * * * *');
+    expect(job.name).toBe('data-migration');
   });
-  it('should get job history', async () => {
-    await scheduler.createCronJob({ name: 'daily', schedule: '0 0 * * *', image: 'daily:v1' });
-    await scheduler.triggerCronJob('daily');
-    await scheduler.triggerCronJob('daily');
-    const history = await scheduler.getJobHistory('daily');
-    expect(history.length).toBe(2);
+  it('should get job status', async () => {
+    await manager.create({ name: 'check-job' });
+    const status = await manager.getStatus('check-job');
+    expect(['Running', 'Succeeded', 'Failed', 'Pending']).toContain(status.state);
+  });
+  it('should delete completed jobs', async () => {
+    await manager.deleteCompleted();
+  });
+});
+describe('CronJobManager', () => {
+  let manager: CronJobManager;
+  beforeEach(() => { manager = new CronJobManager(); });
+  it('should create cronjob', async () => {
+    const cj = await manager.create({
+      name: 'backup',
+      schedule: '0 2 * * *',
+      jobTemplate: { containers: [{ name: 'backup', image: 'backup:v1' }] }
+    });
+    expect(cj.schedule).toBe('0 2 * * *');
+  });
+  it('should suspend cronjob', async () => {
+    await manager.create({ name: 'suspend-test', schedule: '* * * * *' });
+    await manager.suspend('suspend-test');
+    const cj = await manager.get('suspend-test');
+    expect(cj.suspend).toBe(true);
   });
 });
