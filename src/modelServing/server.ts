@@ -1,34 +1,16 @@
 /**
- * @fileoverview Model server
+ * @fileoverview Model Serving
  * @module @sentinela/core/modelServing
- * @version 13.0.0
  */
-
-import { InferenceRequest, InferenceResponse, ServingConfig } from './types';
-
+export interface ModelConfig { name: string; version: string; endpoint: string; }
 export class ModelServer {
-  private models: Map<string, LoadedModel> = new Map();
-  
-  constructor(private config: ServingConfig) {}
-  
-  loadModel(modelId: string, model: LoadedModel): void { this.models.set(modelId, model); }
-  unloadModel(modelId: string): void { this.models.delete(modelId); }
-  
-  async infer(request: InferenceRequest): Promise<InferenceResponse> {
-    const model = this.models.get(request.modelId);
-    if (!model) throw new Error('Model not loaded: ' + request.modelId);
-    
-    const start = Date.now();
-    const outputs = await model.predict(request.inputs);
-    return { modelId: request.modelId, outputs, latency: Date.now() - start };
+  private models = new Map<string, ModelConfig>();
+  deploy(model: ModelConfig): void { this.models.set(model.name, model); }
+  async predict(modelName: string, input: unknown): Promise<unknown> {
+    const model = this.models.get(modelName);
+    if (!model) throw new Error('Model not found');
+    return { prediction: 'mock', model: modelName };
   }
-  
-  getLoadedModels(): string[] { return Array.from(this.models.keys()); }
-  
-  getStats(): ServerStats {
-    return { loadedModels: this.models.size, config: this.config };
-  }
+  undeploy(name: string): void { this.models.delete(name); }
+  list(): ModelConfig[] { return Array.from(this.models.values()); }
 }
-
-export interface LoadedModel { predict: (inputs: unknown[]) => Promise<unknown[]>; }
-export interface ServerStats { loadedModels: number; config: ServingConfig; }
