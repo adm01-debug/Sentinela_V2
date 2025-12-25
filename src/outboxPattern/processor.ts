@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Outbox processor
+ * @module @sentinela/core/outboxPattern
+ * @version 13.0.0
+ */
+
 import { Outbox } from './outbox';
 import { MessagePublisher } from './publisher';
 import { OutboxMessage } from './types';
