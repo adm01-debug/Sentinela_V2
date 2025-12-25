@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Shard manager
+ * @module @sentinela/core/sharding
+ * @version 13.0.0
+ */
+
 import { ShardConfig, ShardStatus } from './types';
 
 export class ShardManager {
