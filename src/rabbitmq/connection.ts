@@ -1,3 +1,9 @@
+/**
+ * @fileoverview RabbitMQ connection
+ * @module @sentinela/core/rabbitmq
+ * @version 13.0.0
+ */
+
 import { RabbitConfig } from './types';
 
 export class RabbitConnection {
