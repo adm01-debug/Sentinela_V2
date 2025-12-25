@@ -1,11 +1,8 @@
-/**
- * @jest-environment node
- */
-import { SentinelaLogger, createLogger, LogLevel } from '../../src/core/logger';
+import { Logger, createLogger } from '../../core/logger';
 
-describe('SentinelaLogger', () => {
+describe('Logger', () => {
   let consoleSpy: jest.SpyInstance;
-
+  
   beforeEach(() => {
     consoleSpy = jest.spyOn(console, 'log').mockImplementation();
     jest.spyOn(console, 'warn').mockImplementation();
@@ -17,51 +14,45 @@ describe('SentinelaLogger', () => {
   });
 
   it('should log info messages', () => {
-    const logger = new SentinelaLogger({ level: 'info', format: 'json' });
+    const logger = new Logger({ level: 'info', pretty: false });
     logger.info('Test message', { key: 'value' });
+    
     expect(consoleSpy).toHaveBeenCalled();
+    const logged = JSON.parse(consoleSpy.mock.calls[0][0]);
+    expect(logged.level).toBe('info');
+    expect(logged.message).toBe('Test message');
   });
 
-  it('should respect log level', () => {
-    const logger = new SentinelaLogger({ level: 'error' });
+  it('should not log debug when level is info', () => {
+    const logger = new Logger({ level: 'info' });
     logger.debug('Debug message');
-    logger.info('Info message');
+    
     expect(consoleSpy).not.toHaveBeenCalled();
   });
 
+  it('should redact sensitive fields', () => {
+    const logger = new Logger({ level: 'info', pretty: false });
+    logger.info('Auth', { password: 'secret123', user: 'john' });
+    
+    const logged = JSON.parse(consoleSpy.mock.calls[0][0]);
+    expect(logged.context.password).toBe('[REDACTED]');
+    expect(logged.context.user).toBe('john');
+  });
+
   it('should create child logger with context', () => {
-    const parent = new SentinelaLogger({ level: 'info' });
-    const child = parent.child({ service: 'test' });
-    expect(child).toBeInstanceOf(SentinelaLogger);
-  });
-
-  it('should format as JSON', () => {
-    const logger = new SentinelaLogger({ level: 'info', format: 'json' });
-    logger.info('Test');
-    const call = consoleSpy.mock.calls[0][0];
-    expect(() => JSON.parse(call)).not.toThrow();
-  });
-
-  it('should format as text', () => {
-    const logger = new SentinelaLogger({ level: 'info', format: 'text' });
-    logger.info('Test');
-    const call = consoleSpy.mock.calls[0][0];
-    expect(call).toContain('INFO');
-    expect(call).toContain('Test');
-  });
-
-  it('should include error details', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation();
-    const logger = new SentinelaLogger({ level: 'error', format: 'json' });
-    const error = new Error('Test error');
-    logger.error('Error occurred', error);
-    expect(errorSpy).toHaveBeenCalled();
+    const parent = new Logger({ level: 'info', pretty: false });
+    const child = parent.child({ module: 'test' });
+    
+    child.info('Child message');
+    
+    const logged = JSON.parse(consoleSpy.mock.calls[0][0]);
+    expect(logged.context.module).toBe('test');
   });
 });
 
 describe('createLogger', () => {
-  it('should create logger with config', () => {
-    const logger = createLogger({ level: 'debug' });
-    expect(logger).toBeInstanceOf(SentinelaLogger);
+  it('should create logger with module context', () => {
+    const logger = createLogger('myModule');
+    expect(logger).toBeInstanceOf(Logger);
   });
 });
