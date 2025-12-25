@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Secret vault
+ * @module @sentinela/core/secretManagement
+ * @version 13.0.0
+ */
+
 import { Secret, SecretMetadata } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
