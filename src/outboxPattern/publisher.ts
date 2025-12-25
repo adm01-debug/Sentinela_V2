@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Message publisher
+ * @module @sentinela/core/outboxPattern
+ * @version 13.0.0
+ */
+
 import { OutboxMessage } from './types';
 
 export interface MessagePublisher {
