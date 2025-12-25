@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Database seeder
+ * @module @sentinela/core/seeding
+ * @version 13.0.0
+ */
+
 import { Seeder, SeederConfig } from './types';
 
 export class SeederRunner {
