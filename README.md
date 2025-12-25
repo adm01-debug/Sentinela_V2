@@ -1,25 +1,22 @@
-# 🛡️ SENTINELA
+# 🛡️ Sentinela
 
-> Enterprise-grade TypeScript framework with 100+ patterns for building scalable, resilient applications
-
-[![Version](https://img.shields.io/badge/version-13.0.0-blue.svg)](https://github.com/adm01-debug/sentinela)
+[![npm version](https://badge.fury.io/js/@sentinela/core.svg)](https://www.npmjs.com/package/@sentinela/core)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-## 📋 Table of Contents
+> Enterprise-grade TypeScript framework with 100+ production-ready modules for building scalable, resilient applications.
 
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Features](#features)
-- [Usage Examples](#usage-examples)
-- [API Documentation](#api-documentation)
-- [Modules](#modules)
-- [Contributing](#contributing)
-- [FAQ](#faq)
-- [License](#license)
+## ✨ Features
 
-## Installation
+- 🏗️ **100 Enterprise Modules** - CQRS, Event Sourcing, Saga, DDD patterns
+- ☁️ **Cloud Native** - Kubernetes, Docker, Service Mesh ready
+- 🔒 **Security First** - SIEM, DLP, Encryption, RBAC
+- 📊 **Observability** - Metrics, Tracing, Logging, Alerting
+- 🚀 **Performance** - Caching, CDN, Edge Computing
+- 🤖 **AI/ML Ready** - ML Pipeline, Feature Store, Model Serving
+
+## 📦 Installation
 
 ```bash
 # npm
@@ -32,338 +29,159 @@ yarn add @sentinela/core
 pnpm add @sentinela/core
 ```
 
-### Requirements
-
-- Node.js >= 18.0.0
-- TypeScript >= 5.0.0
-
-## Quick Start
+## 🚀 Quick Start
 
 ```typescript
 import { 
-  SentinelaLogger, 
-  retry, 
+  CommandBus, 
+  EventStore, 
+  SagaOrchestrator,
   CircuitBreaker,
-  Validator,
-  Rules
-} from '@sentinela/core';
-
-// Create a logger
-const logger = new SentinelaLogger({ level: 'info' });
-
-// Use retry with exponential backoff
-const result = await retry(
-  () => fetch('https://api.example.com/data'),
-  { maxAttempts: 3, initialDelayMs: 100 }
-);
-
-// Circuit breaker for external services
-const breaker = new CircuitBreaker('api-service', {
-  failureThreshold: 5,
-  resetTimeoutMs: 30000
-});
-
-const data = await breaker.execute(() => fetchExternalService());
-
-// Validate input data
-const validator = new Validator<User>()
-  .addRule('email', Rules.email())
-  .addRule('name', Rules.required())
-  .addRule('age', Rules.min(18));
-
-validator.validateOrThrow(userData);
-```
-
-## Features
-
-### 🏗️ Architecture Patterns (15 modules)
-- **CQRS** - Command Query Responsibility Segregation
-- **Saga Orchestration** - Distributed transaction management
-- **Event Sourcing** - Full audit trail with event replay
-- **Domain Events** - Decouple business logic
-- **Repository Pattern** - Clean data access abstraction
-
-### ☁️ Cloud Native (5 modules)
-- **Service Discovery** - Dynamic service registration
-- **Config Server** - Centralized configuration
-- **API Composition** - Aggregate multiple services
-
-### 📨 Messaging (10 modules)
-- **Kafka Integration** - High-throughput messaging
-- **RabbitMQ** - Reliable message queuing
-- **Dead Letter Queue** - Failed message handling
-
-### 💾 Database (10 modules)
-- **Sharding** - Horizontal partitioning
-- **Connection Pool** - Efficient connection management
-- **Query Builder** - Type-safe query construction
-
-### 🔒 Security (10 modules)
-- **Encryption at Rest** - Data protection
-- **Token Management** - JWT/OAuth handling
-- **Rate Limiting** - API protection
-
-### ⚡ Performance (5 modules)
-- **Caching** - Multi-layer caching strategies
-- **Lazy Loading** - On-demand resource loading
-
-### 🤖 AI/ML (5 modules)
-- **ML Pipeline** - Machine learning workflows
-- **Feature Store** - Feature management
-- **A/B Testing** - Experiment framework
-
-### 📊 Observability (5 modules)
-- **Distributed Tracing** - Request tracking
-- **Metrics Collection** - Performance monitoring
-- **Health Checks** - Service health monitoring
-
-### 🔧 DevOps (5 modules)
-- **CI/CD Pipeline** - Automated deployments
-- **GitOps** - Git-based operations
-- **Secret Management** - Secure secret handling
-
-### 🐳 Kubernetes (20 modules)
-- **HPA/VPA** - Auto-scaling
-- **RBAC** - Access control
-- **Network Policies** - Traffic management
-
-## Usage Examples
-
-### Error Handling
-
-```typescript
-import { 
-  SentinelaError, 
-  ValidationError, 
-  NotFoundError,
   retry,
-  CircuitBreaker
+  createLogger
 } from '@sentinela/core';
 
-// Custom errors with context
-throw new ValidationError('Invalid email format', 'email', userInput);
-throw new NotFoundError('User', userId);
+// Create logger
+const logger = createLogger('my-app');
 
-// Retry with custom predicate
-await retry(
-  () => unreliableOperation(),
-  {
-    maxAttempts: 5,
-    retryOn: (error) => error.code !== 'FATAL_ERROR'
-  }
-);
-```
+// Use circuit breaker for resilience
+const circuit = new CircuitBreaker({ name: 'api' });
+const result = await circuit.execute(() => fetchData());
 
-### Logging
-
-```typescript
-import { createLogger } from '@sentinela/core';
-
-const logger = createLogger(
-  { level: 'debug', format: 'json' },
-  { service: 'user-service', version: '1.0.0' }
-);
-
-logger.info('User created', { userId: '123', email: 'user@example.com' });
-logger.error('Failed to process', error, { orderId: '456' });
-```
-
-### Metrics
-
-```typescript
-import { globalMetrics, startTimer } from '@sentinela/core';
-
-const requestCounter = globalMetrics.counter(
-  'http_requests_total',
-  'Total HTTP requests'
-);
-
-const latencyHistogram = globalMetrics.histogram(
-  'http_request_duration_seconds',
-  'HTTP request latency'
-);
-
-// In your handler
-const end = startTimer();
-requestCounter.inc({ method: 'GET', path: '/users' });
-// ... process request
-latencyHistogram.observe(end(), { method: 'GET', path: '/users' });
-```
-
-### Validation
-
-```typescript
-import { Validator, Rules } from '@sentinela/core';
-
-interface CreateUserDto {
-  email: string;
-  password: string;
-  age: number;
-  role: string;
-}
-
-const userValidator = new Validator<CreateUserDto>()
-  .addRule('email', Rules.required())
-  .addRule('email', Rules.email())
-  .addRule('password', Rules.minLength(8))
-  .addRule('age', Rules.min(18))
-  .addRule('role', Rules.oneOf(['admin', 'user', 'guest']));
-
-// Returns { valid: boolean, errors: ValidationErrorDetail[] }
-const result = userValidator.validate(userData);
-
-// Or throws ValidationError if invalid
-userValidator.validateOrThrow(userData);
-```
-
-### Event Handling
-
-```typescript
-import { EventEmitter, DomainEventBus } from '@sentinela/core';
-
-// Type-safe events
-interface AppEvents {
-  userCreated: { id: string; email: string };
-  orderPlaced: { orderId: string; total: number };
-}
-
-const events = new EventEmitter<AppEvents>();
-
-events.on('userCreated', async (data) => {
-  await sendWelcomeEmail(data.email);
+// Retry with exponential backoff
+const data = await retry(() => unreliableOperation(), {
+  maxAttempts: 3,
+  initialDelayMs: 1000
 });
-
-await events.emit('userCreated', { id: '123', email: 'user@example.com' });
 ```
 
-### Graceful Shutdown
+## 📚 Documentation
+
+### Core Utilities
 
 ```typescript
-import { 
-  globalDisposableManager, 
-  registerShutdownHandlers 
-} from '@sentinela/core';
+// Errors
+import { SentinelaError, ValidationError, NotFoundError } from '@sentinela/core';
 
-// Register resources
-globalDisposableManager.register('database', dbConnection, 10);
-globalDisposableManager.register('cache', redisClient, 5);
-globalDisposableManager.register('queue', messageQueue, 1);
+// Logging
+import { Logger, createLogger } from '@sentinela/core';
 
-// Enable graceful shutdown
-registerShutdownHandlers();
+// Retry & Circuit Breaker
+import { retry, CircuitBreaker } from '@sentinela/core';
+
+// Validation
+import { required, minLength, email, validateObject } from '@sentinela/core';
+
+// Caching
+import { Cache, LRUCache } from '@sentinela/core';
+
+// Metrics
+import { Counter, Gauge, Histogram, metrics } from '@sentinela/core';
+
+// Rate Limiting
+import { RateLimiter, TokenBucket } from '@sentinela/core';
 ```
 
-## API Documentation
+### Architecture Patterns
 
-Full API documentation is available at [docs/API.md](docs/API.md).
+```typescript
+// CQRS
+import { CommandBus, QueryBus, EventStore } from '@sentinela/core/cqrsAdvanced';
 
-### Core Modules
+// Saga Orchestration
+import { SagaOrchestrator, StepBuilder } from '@sentinela/core/sagaOrchestration';
 
-| Module | Description |
-|--------|-------------|
-| `errors` | Hierarchical error classes |
-| `logger` | Structured logging |
-| `retry` | Retry with exponential backoff |
-| `circuit-breaker` | Circuit breaker pattern |
-| `validation` | Input validation |
-| `metrics` | Metrics collection |
-| `events` | Event emitter utilities |
-| `disposable` | Resource cleanup |
+// Event Sourcing
+import { EventStore, Snapshot } from '@sentinela/core/eventSourcing';
 
-## Modules
+// Repository Pattern
+import { Repository, QueryRepository } from '@sentinela/core/repository';
+```
 
-<details>
-<summary>📁 Complete Module List (100 modules)</summary>
+## 📋 Module Categories
 
-### Architecture (1-15)
-1. cqrsAdvanced - CQRS pattern
-2. sagaOrchestration - Saga pattern
-3. outboxPattern - Outbox pattern
-4. specification - Specification pattern
-5. unitOfWork - Unit of Work
-6. repository - Repository pattern
-7. aggregate - DDD Aggregates
-8. domainEvents - Domain events
-9. antiCorruptionLayer - ACL pattern
-10. boundedContext - DDD contexts
-11. serviceDiscovery - Service discovery
-12. serviceMesh - Service mesh
-13. sidecar - Sidecar pattern
-14. ambassador - Ambassador pattern
-15. strangler - Strangler pattern
+| Category | Modules | Description |
+|----------|---------|-------------|
+| Architecture | 15 | CQRS, DDD, Saga, Event Sourcing |
+| Cloud Native | 5 | Bulkhead, Backpressure, Config Server |
+| Messaging | 10 | Kafka, RabbitMQ, Stream Processing |
+| Database | 10 | Sharding, Replication, Query Builder |
+| Security | 10 | SIEM, DLP, Encryption, RBAC |
+| Performance | 5 | CDN, Edge Computing, Lazy Loading |
+| AI/ML | 5 | ML Pipeline, Feature Store, A/B Testing |
+| Observability | 5 | Logging, Tracing, Metrics, Alerting |
+| DevOps | 5 | CI/CD, GitOps, IaC, Secrets |
+| Container | 5 | Orchestration, Registry, Network Policy |
+| Kubernetes | 10 | Autoscaling, Affinity, Operators |
+| Workloads | 5 | StatefulSets, DaemonSets, Jobs |
+| Autoscaling | 5 | HPA, VPA, Cluster Autoscaler |
+| Enterprise | 5 | Multi-tenancy, API Gateway, Billing |
 
-### Cloud Native (16-20)
-16. bulkhead - Bulkhead pattern
-17. backpressure - Backpressure handling
-18. serviceRegistry - Service registry
-19. configServer - Config server
-20. apiComposition - API composition
+## 🔧 Configuration
 
-... and 80 more modules
+```typescript
+// Configure globally
+import { configure } from '@sentinela/core';
 
-</details>
+configure({
+  logging: {
+    level: 'info',
+    pretty: process.env.NODE_ENV !== 'production'
+  },
+  metrics: {
+    enabled: true,
+    prefix: 'myapp_'
+  },
+  circuitBreaker: {
+    defaultFailureThreshold: 5,
+    defaultResetTimeout: 30000
+  }
+});
+```
 
-## Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-### Development Setup
+## 🧪 Testing
 
 ```bash
-# Clone the repository
-git clone https://github.com/adm01-debug/sentinela.git
-cd sentinela
-
-# Install dependencies
-npm install
-
 # Run tests
 npm test
 
-# Build
-npm run build:all
+# Run with coverage
+npm run test:coverage
 
-# Lint
-npm run lint
+# Run specific module tests
+npm test -- --grep "CircuitBreaker"
 ```
 
-### Commit Convention
+## 🤝 Contributing
 
-We use [Conventional Commits](https://www.conventionalcommits.org/):
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-- `feat:` New features
-- `fix:` Bug fixes
-- `docs:` Documentation
-- `test:` Tests
-- `refactor:` Refactoring
-- `chore:` Maintenance
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## FAQ
+## 📄 License
 
-### Is Sentinela production-ready?
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Yes! Sentinela is designed for enterprise applications with a focus on reliability, scalability, and maintainability.
+## 🔗 Links
 
-### What Node.js versions are supported?
+- [Documentation](https://github.com/adm01-debug/sentinela/wiki)
+- [API Reference](https://github.com/adm01-debug/sentinela/blob/main/docs/API.md)
+- [Changelog](CHANGELOG.md)
+- [Security Policy](SECURITY.md)
 
-Node.js 18.0.0 and above.
+## 💖 Support
 
-### Can I use individual modules?
+If you find this project useful, please consider:
 
-Yes, all modules are tree-shakeable. Import only what you need.
-
-### How do I report bugs?
-
-Open an issue at [GitHub Issues](https://github.com/adm01-debug/sentinela/issues).
-
-### Is there commercial support?
-
-Contact us at dev@promobrindes.com.br for enterprise support options.
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
+- ⭐ Starring the repository
+- 🐛 Reporting bugs
+- 💡 Suggesting new features
+- 📖 Improving documentation
 
 ---
 
-Made with ❤️ by [Promo Brindes](https://promobrindes.com.br)
+Made with ❤️ by the Sentinela Team
