@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Specification pattern types
+ * @module @sentinela/core/specification
+ * @version 13.0.0
+ */
+
 export interface Specification<T> {
   isSatisfiedBy(candidate: T): boolean;
   and(other: Specification<T>): Specification<T>;
