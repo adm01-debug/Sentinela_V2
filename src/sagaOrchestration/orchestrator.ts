@@ -1,91 +1,113 @@
 /**
- * @fileoverview Saga orchestrator implementation
+ * @fileoverview Saga Orchestrator implementation  
  * @module @sentinela/core/sagaOrchestration
  * @version 13.0.0
  */
 
-import { Saga, SagaDefinition, SagaState, SagaStep, StepStatus } from './types';
-import { v4 as uuidv4 } from 'uuid';
+export type SagaState = 'pending' | 'running' | 'completed' | 'failed' | 'compensating' | 'compensated';
 
-export class SagaOrchestrator<T = unknown> {
-  private sagas: Map<string, Saga<T>> = new Map();
-  private definitions: Map<string, SagaDefinition<T>> = new Map();
+export interface SagaStep<T> {
+  name: string;
+  execute: (context: T) => Promise<T>;
+  compensate?: (context: T) => Promise<T>;
+}
 
-  register(definition: SagaDefinition<T>): void {
-    this.definitions.set(definition.name, definition);
+export interface SagaDefinition<T> {
+  name: string;
+  steps: SagaStep<T>[];
+}
+
+export interface SagaInstance<T> {
+  id: string;
+  name: string;
+  state: SagaState;
+  context: T;
+  currentStep: number;
+  completedSteps: string[];
+  error?: Error;
+}
+
+export class SagaOrchestrator<T = Record<string, unknown>> {
+  private sagas = new Map<string, SagaDefinition<T>>();
+  private instances = new Map<string, SagaInstance<T>>();
+  private idCounter = 0;
+
+  register(saga: SagaDefinition<T>): void {
+    this.sagas.set(saga.name, saga);
   }
 
-  async start(name: string, initialContext: T): Promise<Saga<T>> {
-    const definition = this.definitions.get(name);
-    if (!definition) throw new Error('Saga definition not found: ' + name);
+  async start(sagaName: string, context: T): Promise<SagaInstance<T>> {
+    const saga = this.sagas.get(sagaName);
+    if (!saga) throw new Error('Saga not found: ' + sagaName);
 
-    const saga: Saga<T> = {
-      id: uuidv4(),
-      name,
-      steps: definition.steps.map(step => ({
-        id: uuidv4(),
-        name: step.name,
-        execute: step.execute,
-        compensate: step.compensate,
-        status: 'pending' as StepStatus
-      })),
-      state: 'pending',
-      context: initialContext,
-      createdAt: new Date()
+    const instance: SagaInstance<T> = {
+      id: String(++this.idCounter),
+      name: sagaName,
+      state: 'running',
+      context,
+      currentStep: 0,
+      completedSteps: []
     };
 
-    this.sagas.set(saga.id, saga);
-    return this.execute(saga);
-  }
+    this.instances.set(instance.id, instance);
 
-  private async execute(saga: Saga<T>): Promise<Saga<T>> {
-    saga.state = 'running';
-    let currentContext = saga.context;
-
-    for (const step of saga.steps) {
-      try {
-        step.status = 'executing';
-        step.executedAt = new Date();
-        currentContext = await step.execute(currentContext);
-        step.status = 'completed';
-        saga.context = currentContext;
-      } catch (error) {
-        step.status = 'failed';
-        step.error = error as Error;
-        saga.state = 'compensating';
-        await this.compensate(saga);
-        return saga;
+    try {
+      for (let i = 0; i < saga.steps.length; i++) {
+        const step = saga.steps[i];
+        instance.currentStep = i;
+        instance.context = await step.execute(instance.context);
+        instance.completedSteps.push(step.name);
       }
+      instance.state = 'completed';
+    } catch (error) {
+      instance.error = error as Error;
+      instance.state = 'compensating';
+      await this.compensate(instance, saga);
     }
 
-    saga.state = 'completed';
-    saga.completedAt = new Date();
-    return saga;
+    return instance;
   }
 
-  private async compensate(saga: Saga<T>): Promise<void> {
-    const completedSteps = saga.steps.filter(s => s.status === 'completed').reverse();
-    
-    for (const step of completedSteps) {
-      try {
-        step.status = 'compensating';
-        saga.context = await step.compensate(saga.context);
-        step.status = 'compensated';
-        step.compensatedAt = new Date();
-      } catch (error) {
-        saga.state = 'failed';
-        return;
+  private async compensate(instance: SagaInstance<T>, saga: SagaDefinition<T>): Promise<void> {
+    for (let i = instance.completedSteps.length - 1; i >= 0; i--) {
+      const stepName = instance.completedSteps[i];
+      const step = saga.steps.find(s => s.name === stepName);
+      if (step?.compensate) {
+        try {
+          instance.context = await step.compensate(instance.context);
+        } catch { /* compensation failed */ }
       }
     }
-    
-    saga.state = 'compensated';
+    instance.state = 'compensated';
   }
 
-  getSaga(id: string): Saga<T> | undefined {
-    return this.sagas.get(id);
+  getInstance(id: string): SagaInstance<T> | undefined {
+    return this.instances.get(id);
+  }
+}
+
+export class StepBuilder<T> {
+  private step: Partial<SagaStep<T>> = {};
+
+  name(name: string): this {
+    this.step.name = name;
+    return this;
   }
 
-  listSagas(): Saga<T>[] {
-    return Array.from(this.sagas.values());
+  execute(fn: (context: T) => Promise<T>): this {
+    this.step.execute = fn;
+    return this;
+  }
+
+  compensate(fn: (context: T) => Promise<T>): this {
+    this.step.compensate = fn;
+    return this;
+  }
+
+  build(): SagaStep<T> {
+    if (!this.step.name || !this.step.execute) {
+      throw new Error('Step requires name and execute');
+    }
+    return this.step as SagaStep<T>;
   }
 }
