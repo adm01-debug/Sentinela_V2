@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Horizontal Pod Autoscaler types
+ * @module @sentinela/core/hpa
+ * @version 13.0.0
+ */
+
 export interface HPA { name: string; namespace: string; scaleTargetRef: ScaleTargetRef; minReplicas: number; maxReplicas: number; metrics: MetricSpec[]; }
 export interface ScaleTargetRef { apiVersion: string; kind: string; name: string; }
 export interface MetricSpec { type: 'Resource' | 'Pods' | 'Object' | 'External'; resource?: ResourceMetricSource; }
