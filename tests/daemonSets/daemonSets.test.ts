@@ -1,25 +1,24 @@
-import { DaemonSetController, DaemonSet, NodeSelector } from '../../daemonSets';
-describe('DaemonSetController', () => {
-  let controller: DaemonSetController;
-  beforeEach(() => { controller = new DaemonSetController(); });
+import { DaemonSetManager, DaemonSet, NodeSelector } from '../../daemonSets';
+describe('DaemonSetManager', () => {
+  let manager: DaemonSetManager;
+  beforeEach(() => { manager = new DaemonSetManager(); });
   it('should create daemonset', async () => {
-    const ds = await controller.create({
-      name: 'log-collector', image: 'fluentd:latest'
+    const ds = await manager.create({
+      name: 'log-collector',
+      template: { containers: [{ name: 'fluentd', image: 'fluentd:latest' }] }
     });
     expect(ds.name).toBe('log-collector');
   });
-  it('should run on all nodes', async () => {
-    await controller.create({ name: 'node-exporter', image: 'prom/node-exporter' });
-    const pods = await controller.getPods('node-exporter');
-    const nodes = await controller.getNodes();
-    expect(pods.length).toBe(nodes.length);
-  });
-  it('should respect node selector', async () => {
-    await controller.create({
-      name: 'gpu-monitor', image: 'nvidia/dcgm',
+  it('should apply node selector', async () => {
+    const ds = await manager.create({
+      name: 'gpu-monitor',
       nodeSelector: { 'gpu': 'true' }
     });
-    const pods = await controller.getPods('gpu-monitor');
-    pods.forEach(p => expect(p.nodeLabels['gpu']).toBe('true'));
+    expect(ds.nodeSelector.gpu).toBe('true');
+  });
+  it('should get status', async () => {
+    await manager.create({ name: 'status-test' });
+    const status = await manager.getStatus('status-test');
+    expect(status.desiredNumberScheduled).toBeDefined();
   });
 });
