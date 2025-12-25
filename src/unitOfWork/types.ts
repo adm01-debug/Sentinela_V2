@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Unit of Work pattern types
+ * @module @sentinela/core/unitOfWork
+ * @version 13.0.0
+ */
+
 export interface UnitOfWork {
   registerNew<T extends Entity>(entity: T): void;
   registerDirty<T extends Entity>(entity: T): void;
