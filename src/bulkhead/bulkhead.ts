@@ -1,57 +1,58 @@
 /**
- * @fileoverview Bulkhead implementation
+ * @fileoverview Bulkhead pattern implementation
  * @module @sentinela/core/bulkhead
  * @version 13.0.0
  */
 
-import { BulkheadConfig, BulkheadStats } from './types';
+export interface BulkheadConfig {
+  maxConcurrent: number;
+  maxQueue?: number;
+  timeout?: number;
+}
 
 export class Bulkhead {
-  private active: number = 0;
-  private waiting: (() => void)[] = [];
-  private totalExecutions: number = 0;
-  private rejections: number = 0;
-  
+  private running = 0;
+  private queue: Array<{
+    fn: () => Promise<unknown>;
+    resolve: (value: unknown) => void;
+    reject: (error: Error) => void;
+  }> = [];
+
   constructor(private config: BulkheadConfig) {}
-  
+
   async execute<T>(fn: () => Promise<T>): Promise<T> {
-    if (this.active >= this.config.maxConcurrent) {
-      if (this.waiting.length >= this.config.maxWait) {
-        this.rejections++;
-        throw new Error('Bulkhead ' + this.config.name + ' full');
-      }
-      await this.waitForSlot();
+    if (this.running < this.config.maxConcurrent) {
+      return this.run(fn);
     }
-    this.active++;
-    this.totalExecutions++;
+
+    const maxQueue = this.config.maxQueue ?? 100;
+    if (this.queue.length >= maxQueue) {
+      throw new Error('Bulkhead queue full');
+    }
+
+    return new Promise((resolve, reject) => {
+      this.queue.push({ fn, resolve: resolve as any, reject });
+    });
+  }
+
+  private async run<T>(fn: () => Promise<T>): Promise<T> {
+    this.running++;
     try {
-      return await Promise.race([
-        fn(),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Timeout')), this.config.timeout))
-      ]);
+      return await fn();
     } finally {
-      this.active--;
-      this.releaseSlot();
+      this.running--;
+      this.processQueue();
     }
   }
-  
-  private waitForSlot(): Promise<void> {
-    return new Promise(resolve => this.waiting.push(resolve));
+
+  private processQueue(): void {
+    if (this.queue.length > 0 && this.running < this.config.maxConcurrent) {
+      const item = this.queue.shift()!;
+      this.run(item.fn).then(item.resolve).catch(item.reject);
+    }
   }
-  
-  private releaseSlot(): void {
-    const next = this.waiting.shift();
-    if (next) next();
-  }
-  
-  getStats(): BulkheadStats {
-    return {
-      name: this.config.name,
-      activeCount: this.active,
-      waitingCount: this.waiting.length,
-      availableSlots: this.config.maxConcurrent - this.active,
-      totalExecutions: this.totalExecutions,
-      rejections: this.rejections
-    };
+
+  get stats(): { running: number; queued: number } {
+    return { running: this.running, queued: this.queue.length };
   }
 }
