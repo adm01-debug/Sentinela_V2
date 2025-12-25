@@ -1,96 +1,78 @@
-/**
- * @jest-environment node
- */
-import { DisposableManager, BaseManagedResource } from '../../src/core/disposable';
+import { 
+  DisposableContainer, 
+  disposeAll, 
+  using, 
+  GracefulShutdown,
+  isDisposable 
+} from '../../core/disposable';
 
-describe('DisposableManager', () => {
-  it('should register and dispose resources', async () => {
-    const manager = new DisposableManager();
-    const disposed: string[] = [];
+describe('DisposableContainer', () => {
+  it('should dispose all resources', async () => {
+    const container = new DisposableContainer();
+    const dispose1 = jest.fn();
+    const dispose2 = jest.fn();
     
-    manager.register('a', { dispose: async () => { disposed.push('a'); } });
-    manager.register('b', { dispose: async () => { disposed.push('b'); } });
+    container.add({ dispose: dispose1 });
+    container.add({ dispose: dispose2 });
     
-    await manager.disposeAll();
+    await container.dispose();
     
-    expect(disposed).toContain('a');
-    expect(disposed).toContain('b');
+    expect(dispose1).toHaveBeenCalled();
+    expect(dispose2).toHaveBeenCalled();
   });
 
-  it('should dispose in priority order', async () => {
-    const manager = new DisposableManager();
-    const disposed: string[] = [];
+  it('should dispose in reverse order', async () => {
+    const order: number[] = [];
+    const container = new DisposableContainer();
     
-    manager.register('low', { dispose: async () => { disposed.push('low'); } }, 1);
-    manager.register('high', { dispose: async () => { disposed.push('high'); } }, 10);
+    container.add({ dispose: () => order.push(1) });
+    container.add({ dispose: () => order.push(2) });
     
-    await manager.disposeAll();
+    await container.dispose();
     
-    expect(disposed[0]).toBe('high');
-    expect(disposed[1]).toBe('low');
-  });
-
-  it('should not register after disposed', async () => {
-    const manager = new DisposableManager();
-    await manager.disposeAll();
-    
-    expect(() => manager.register('test', { dispose: async () => {} }))
-      .toThrow('Manager is already disposed');
-  });
-
-  it('should handle dispose errors gracefully', async () => {
-    const manager = new DisposableManager();
-    
-    manager.register('failing', { dispose: async () => { throw new Error('fail'); } });
-    manager.register('success', { dispose: async () => {} });
-    
-    await expect(manager.disposeAll()).resolves.toBeUndefined();
+    expect(order).toEqual([2, 1]);
   });
 });
 
-describe('BaseManagedResource', () => {
-  class TestResource extends BaseManagedResource {
-    public initCalled = false;
-    public disposeCalled = false;
-
-    protected async doInitialize(): Promise<void> {
-      this.initCalled = true;
-    }
-
-    protected async doDispose(): Promise<void> {
-      this.disposeCalled = true;
-    }
-  }
-
-  it('should initialize', async () => {
-    const resource = new TestResource();
-    await resource.initialize();
+describe('disposeAll', () => {
+  it('should dispose all resources', async () => {
+    const d1 = { dispose: jest.fn() };
+    const d2 = { dispose: jest.fn() };
     
-    expect(resource.isInitialized).toBe(true);
-    expect(resource.initCalled).toBe(true);
+    await disposeAll(d1, undefined, d2);
+    
+    expect(d1.dispose).toHaveBeenCalled();
+    expect(d2.dispose).toHaveBeenCalled();
+  });
+});
+
+describe('using', () => {
+  it('should dispose after use', async () => {
+    const dispose = jest.fn();
+    const resource = { dispose, value: 42 };
+    
+    const result = await using(resource, async (r) => r.value * 2);
+    
+    expect(result).toBe(84);
+    expect(dispose).toHaveBeenCalled();
   });
 
-  it('should dispose', async () => {
-    const resource = new TestResource();
-    await resource.initialize();
-    await resource.dispose();
+  it('should dispose on error', async () => {
+    const dispose = jest.fn();
+    const resource = { dispose };
     
-    expect(resource.isDisposed).toBe(true);
-    expect(resource.disposeCalled).toBe(true);
+    await expect(
+      using(resource, async () => { throw new Error('fail'); })
+    ).rejects.toThrow();
+    
+    expect(dispose).toHaveBeenCalled();
   });
+});
 
-  it('should not initialize twice', async () => {
-    const resource = new TestResource();
-    await resource.initialize();
-    await resource.initialize();
-    
-    expect(resource.initCalled).toBe(true);
-  });
-
-  it('should not initialize after disposed', async () => {
-    const resource = new TestResource();
-    await resource.dispose();
-    
-    await expect(resource.initialize()).rejects.toThrow('Resource is disposed');
+describe('isDisposable', () => {
+  it('should detect disposable objects', () => {
+    expect(isDisposable({ dispose: () => {} })).toBe(true);
+    expect(isDisposable({ close: () => {} })).toBe(false);
+    expect(isDisposable(null)).toBe(false);
   });
 });
