@@ -1,33 +1,12 @@
 /**
- * @fileoverview Service catalog
+ * @fileoverview Service Catalog
  * @module @sentinela/core/serviceCatalog
- * @version 13.0.0
  */
-
-import { ServiceClass, ServicePlan } from './types';
-import { v4 as uuidv4 } from 'uuid';
-
+export interface ServiceEntry { name: string; version: string; description: string; endpoints: string[]; }
 export class ServiceCatalog {
-  private classes: Map<string, ServiceClass> = new Map();
-  
-  register(serviceClass: Omit<ServiceClass, 'id'>): ServiceClass {
-    const sc: ServiceClass = { id: uuidv4(), ...serviceClass };
-    this.classes.set(sc.id, sc);
-    return sc;
-  }
-  
-  get(id: string): ServiceClass | undefined { return this.classes.get(id); }
-  getByName(name: string): ServiceClass | undefined { return Array.from(this.classes.values()).find(c => c.name === name); }
-  
-  list(): ServiceClass[] { return Array.from(this.classes.values()); }
-  
-  getPlan(classId: string, planId: string): ServicePlan | undefined {
-    const sc = this.classes.get(classId);
-    return sc?.plans.find(p => p.id === planId);
-  }
-  
-  search(query: string): ServiceClass[] {
-    const lower = query.toLowerCase();
-    return this.list().filter(c => c.name.toLowerCase().includes(lower) || c.description.toLowerCase().includes(lower));
-  }
+  private services = new Map<string, ServiceEntry>();
+  register(svc: ServiceEntry): void { this.services.set(svc.name, svc); }
+  get(name: string): ServiceEntry | undefined { return this.services.get(name); }
+  list(): ServiceEntry[] { return Array.from(this.services.values()); }
+  search(query: string): ServiceEntry[] { return this.list().filter(s => s.name.includes(query) || s.description.includes(query)); }
 }
