@@ -1,0 +1,35 @@
+# Source files
+src/
+tests/
+examples/
+benchmarks/
+docs/
+
+# Config files
+.github/
+.vscode/
+.husky/
+*.config.js
+*.config.ts
+tsconfig*.json
+jest.config.*
+.eslintrc*
+.prettierrc*
+.editorconfig
+.gitattributes
+.gitignore
+.npmignore
+.env*
+
+# Build artifacts
+*.log
+*.tsbuildinfo
+coverage/
+.nyc_output/
+
+# Development
+node_modules/
+*.test.ts
+*.spec.ts
+__tests__/
+__mocks__/
