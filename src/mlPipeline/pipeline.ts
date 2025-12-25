@@ -1,3 +1,9 @@
+/**
+ * @fileoverview ML pipeline
+ * @module @sentinela/core/mlPipeline
+ * @version 13.0.0
+ */
+
 import { Pipeline, PipelineStage, PipelineConfig } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
