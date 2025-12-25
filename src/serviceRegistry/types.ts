@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Service registry types
+ * @module @sentinela/core/serviceRegistry
+ * @version 13.0.0
+ */
+
 export interface ServiceDefinition {
   name: string;
   version: string;
