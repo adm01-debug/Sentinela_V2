@@ -1,3 +1,9 @@
+/**
+ * @fileoverview RabbitMQ publisher
+ * @module @sentinela/core/rabbitmq
+ * @version 13.0.0
+ */
+
 import { RabbitMQConnection } from './connection';
 import { RabbitMessage, MessageProperties } from './types';
 
