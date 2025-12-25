@@ -1,10 +1,12 @@
 /**
- * @packageDocumentation
- * @module Core/Retry
- * Retry logic with exponential backoff and jitter
+ * @fileoverview Retry utilities with exponential backoff
+ * @module @sentinela/core/retry
  */
+
 import { RetryExhaustedError } from './errors';
-import { Logger, logger as defaultLogger } from './logger';
+import { createLogger } from './logger';
+
+const logger = createLogger('retry');
 
 export interface RetryConfig {
   maxAttempts: number;
@@ -12,13 +14,14 @@ export interface RetryConfig {
   maxDelayMs: number;
   backoffMultiplier: number;
   jitter: boolean;
-  retryOn?: (error: Error) => boolean;
+  retryableErrors?: (error: Error) => boolean;
+  onRetry?: (attempt: number, error: Error, delayMs: number) => void;
 }
 
 const DEFAULT_CONFIG: RetryConfig = {
   maxAttempts: 3,
-  initialDelayMs: 100,
-  maxDelayMs: 10000,
+  initialDelayMs: 1000,
+  maxDelayMs: 30000,
   backoffMultiplier: 2,
   jitter: true
 };
@@ -31,19 +34,26 @@ function calculateDelay(attempt: number, config: RetryConfig): number {
   delay = Math.min(delay, config.maxDelayMs);
   
   if (config.jitter) {
-    delay = delay * (0.5 + Math.random());
+    const jitterRange = delay * 0.2;
+    delay = delay + (Math.random() * jitterRange * 2 - jitterRange);
   }
   
   return Math.floor(delay);
 }
 
 /**
- * Execute a function with retry logic
+ * Sleep for specified milliseconds
+ */
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Execute function with retry logic
  */
 export async function retry<T>(
   fn: () => Promise<T>,
-  config: Partial<RetryConfig> = {},
-  logger: Logger = defaultLogger
+  config?: Partial<RetryConfig>
 ): Promise<T> {
   const cfg = { ...DEFAULT_CONFIG, ...config };
   let lastError: Error | undefined;
@@ -54,35 +64,47 @@ export async function retry<T>(
     } catch (error) {
       lastError = error as Error;
       
-      if (cfg.retryOn && !cfg.retryOn(lastError)) {
-        throw lastError;
+      const shouldRetry = cfg.retryableErrors 
+        ? cfg.retryableErrors(lastError) 
+        : true;
+
+      if (!shouldRetry || attempt === cfg.maxAttempts) {
+        logger.error(`Retry exhausted after ${attempt} attempts`, lastError, { attempt });
+        throw new RetryExhaustedError(attempt, lastError);
       }
 
-      if (attempt === cfg.maxAttempts) {
-        break;
-      }
-
-      const delay = calculateDelay(attempt, cfg);
-      logger.warn('Retry attempt failed', { attempt, maxAttempts: cfg.maxAttempts, delayMs: delay, error: lastError.message });
+      const delayMs = calculateDelay(attempt, cfg);
       
-      await new Promise(resolve => setTimeout(resolve, delay));
+      logger.warn(`Attempt ${attempt} failed, retrying in ${delayMs}ms`, {
+        attempt,
+        maxAttempts: cfg.maxAttempts,
+        delayMs,
+        error: lastError.message
+      });
+
+      cfg.onRetry?.(attempt, lastError, delayMs);
+      await sleep(delayMs);
     }
   }
 
-  throw new RetryExhaustedError('All retry attempts exhausted', cfg.maxAttempts, lastError);
+  throw new RetryExhaustedError(cfg.maxAttempts, lastError);
 }
 
 /**
  * Decorator for retry logic
  */
-export function Retryable(config: Partial<RetryConfig> = {}) {
-  return function (_target: unknown, _propertyKey: string, descriptor: PropertyDescriptor) {
-    const originalMethod = descriptor.value;
-
+export function Retry(config?: Partial<RetryConfig>) {
+  return function <T extends (...args: unknown[]) => Promise<unknown>>(
+    target: object,
+    propertyKey: string,
+    descriptor: TypedPropertyDescriptor<T>
+  ): TypedPropertyDescriptor<T> {
+    const originalMethod = descriptor.value!;
+    
     descriptor.value = async function (...args: unknown[]) {
       return retry(() => originalMethod.apply(this, args), config);
-    };
-
+    } as T;
+    
     return descriptor;
   };
 }
@@ -90,6 +112,11 @@ export function Retryable(config: Partial<RetryConfig> = {}) {
 /**
  * Create a retryable version of a function
  */
-export function withRetry<T>(fn: () => Promise<T>, config: Partial<RetryConfig> = {}): () => Promise<T> {
-  return () => retry(fn, config);
+export function withRetry<T extends (...args: unknown[]) => Promise<unknown>>(
+  fn: T,
+  config?: Partial<RetryConfig>
+): T {
+  return (async (...args: unknown[]) => {
+    return retry(() => fn(...args), config);
+  }) as T;
 }
