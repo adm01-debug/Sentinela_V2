@@ -1,101 +1,152 @@
 /**
- * @fileoverview CQRS pattern example
+ * CQRS Pattern Example
+ * 
+ * This example demonstrates:
+ * - Command Bus
+ * - Query Bus
+ * - Event Store
+ * - Saga Orchestration
  */
 
-import { CommandBus, QueryBus, EventStore } from '@sentinela/core/cqrsAdvanced';
+import {
+  CommandBus,
+  QueryBus,
+  EventStore,
+  SagaOrchestrator
+} from '@sentinela/core';
 
-// Domain Events
-interface UserCreated {
-  type: 'UserCreated';
-  userId: string;
-  name: string;
-  email: string;
-  timestamp: Date;
+// Types
+interface CreateOrderCommand {
+  type: 'CreateOrder';
+  customerId: string;
+  items: { productId: string; quantity: number }[];
 }
 
-// Commands
-interface CreateUserCommand {
-  type: 'CreateUser';
-  name: string;
-  email: string;
+interface GetOrderQuery {
+  type: 'GetOrder';
+  orderId: string;
 }
 
-// Queries
-interface GetUserQuery {
-  type: 'GetUser';
-  userId: string;
-}
-
-// Read Model
-interface UserReadModel {
+interface Order {
   id: string;
-  name: string;
-  email: string;
-  createdAt: Date;
+  customerId: string;
+  items: { productId: string; quantity: number }[];
+  status: 'pending' | 'confirmed' | 'shipped';
 }
 
-// In-memory store for demo
-const users = new Map<string, UserReadModel>();
+// In-memory store
+const orders = new Map<string, Order>();
 
-// Setup
+// Command Handlers
 const commandBus = new CommandBus();
+
+commandBus.register('CreateOrder', {
+  async execute(command: CreateOrderCommand) {
+    const orderId = `order-${Date.now()}`;
+    const order: Order = {
+      id: orderId,
+      customerId: command.customerId,
+      items: command.items,
+      status: 'pending'
+    };
+    orders.set(orderId, order);
+    console.log('Order created:', orderId);
+    return { orderId };
+  }
+});
+
+// Query Handlers
 const queryBus = new QueryBus();
-const eventStore = new EventStore();
 
-// Register Command Handlers
-commandBus.register('CreateUser', {
-  async execute(command: CreateUserCommand) {
-    const userId = crypto.randomUUID();
-    
-    // Store event
-    await eventStore.append({
-      streamId: `user-${userId}`,
-      event: {
-        type: 'UserCreated',
-        userId,
-        name: command.name,
-        email: command.email,
-        timestamp: new Date()
+queryBus.register('GetOrder', {
+  async execute(query: GetOrderQuery) {
+    const order = orders.get(query.orderId);
+    if (!order) {
+      throw new Error(`Order ${query.orderId} not found`);
+    }
+    return order;
+  }
+});
+
+// Saga for order processing
+const sagaOrchestrator = new SagaOrchestrator();
+
+sagaOrchestrator.register({
+  name: 'ProcessOrder',
+  steps: [
+    {
+      name: 'ReserveInventory',
+      execute: async (ctx) => {
+        console.log('Reserving inventory for order:', ctx.orderId);
+        return { ...ctx, inventoryReserved: true };
+      },
+      compensate: async (ctx) => {
+        console.log('Releasing inventory for order:', ctx.orderId);
+        return { ...ctx, inventoryReserved: false };
       }
-    });
-    
-    // Update read model
-    users.set(userId, {
-      id: userId,
-      name: command.name,
-      email: command.email,
-      createdAt: new Date()
-    });
-    
-    return { userId };
-  }
+    },
+    {
+      name: 'ProcessPayment',
+      execute: async (ctx) => {
+        console.log('Processing payment for order:', ctx.orderId);
+        return { ...ctx, paymentProcessed: true };
+      },
+      compensate: async (ctx) => {
+        console.log('Refunding payment for order:', ctx.orderId);
+        return { ...ctx, paymentProcessed: false };
+      }
+    },
+    {
+      name: 'ConfirmOrder',
+      execute: async (ctx) => {
+        const order = orders.get(ctx.orderId);
+        if (order) {
+          order.status = 'confirmed';
+          orders.set(ctx.orderId, order);
+        }
+        console.log('Order confirmed:', ctx.orderId);
+        return { ...ctx, orderConfirmed: true };
+      },
+      compensate: async (ctx) => {
+        const order = orders.get(ctx.orderId);
+        if (order) {
+          order.status = 'pending';
+          orders.set(ctx.orderId, order);
+        }
+        return { ...ctx, orderConfirmed: false };
+      }
+    }
+  ]
 });
 
-// Register Query Handlers
-queryBus.register('GetUser', {
-  async execute(query: GetUserQuery) {
-    return users.get(query.userId) || null;
-  }
-});
-
-// Usage
+// Run example
 async function main() {
-  // Create a user
-  const result = await commandBus.execute<CreateUserCommand, { userId: string }>({
-    type: 'CreateUser',
-    name: 'John Doe',
-    email: 'john@example.com'
+  // Create order via command
+  const result = await commandBus.execute<CreateOrderCommand, { orderId: string }>({
+    type: 'CreateOrder',
+    customerId: 'customer-1',
+    items: [
+      { productId: 'product-1', quantity: 2 },
+      { productId: 'product-2', quantity: 1 }
+    ]
   });
-  
-  console.log('User created:', result.userId);
-  
-  // Query the user
-  const user = await queryBus.execute<GetUserQuery, UserReadModel | null>({
-    type: 'GetUser',
-    userId: result.userId
+
+  console.log('Command result:', result);
+
+  // Process order via saga
+  const saga = await sagaOrchestrator.start('ProcessOrder', {
+    orderId: result.orderId
   });
-  
-  console.log('User retrieved:', user);
+
+  console.log('Saga completed with state:', saga.state);
+
+  // Query order
+  const order = await queryBus.execute<GetOrderQuery, Order>({
+    type: 'GetOrder',
+    orderId: result.orderId
+  });
+
+  console.log('Order status:', order.status);
 }
 
 main();
