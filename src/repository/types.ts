@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Repository pattern types
+ * @module @sentinela/core/repository
+ * @version 13.0.0
+ */
+
 export interface Repository<T, ID = string> {
   findById(id: ID): Promise<T | null>;
   findAll(): Promise<T[]>;
