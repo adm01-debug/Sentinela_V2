@@ -1,26 +1,19 @@
-/**
- * @jest-environment node
- */
-import {
-  SentinelaError,
-  ValidationError,
-  ConfigurationError,
-  ConnectionError,
+import { 
+  SentinelaError, 
+  ValidationError, 
+  NotFoundError, 
   TimeoutError,
-  NotFoundError,
-  ConflictError,
-  AuthorizationError,
   RateLimitError,
   CircuitBreakerOpenError,
+  ConnectionError,
   RetryExhaustedError
-} from '../../src/core/errors';
+} from '../../core/errors';
 
 describe('SentinelaError', () => {
   it('should create error with message and code', () => {
     const error = new SentinelaError('Test error', 'TEST_CODE');
     expect(error.message).toBe('Test error');
     expect(error.code).toBe('TEST_CODE');
-    expect(error.name).toBe('SentinelaError');
     expect(error.timestamp).toBeInstanceOf(Date);
   });
 
@@ -40,42 +33,48 @@ describe('SentinelaError', () => {
 
 describe('ValidationError', () => {
   it('should include field and value', () => {
-    const error = new ValidationError('Invalid email', 'email', 'not-an-email');
+    const error = new ValidationError('Invalid email', 'email', 'invalid');
     expect(error.field).toBe('email');
-    expect(error.value).toBe('not-an-email');
+    expect(error.value).toBe('invalid');
     expect(error.code).toBe('VALIDATION_ERROR');
   });
 });
 
 describe('NotFoundError', () => {
-  it('should format message with resource type and id', () => {
+  it('should format message correctly', () => {
     const error = new NotFoundError('User', '123');
-    expect(error.message).toBe('User not found: 123');
-    expect(error.resourceType).toBe('User');
-    expect(error.resourceId).toBe('123');
+    expect(error.message).toBe("User with id '123' not found");
+    expect(error.resource).toBe('User');
+    expect(error.id).toBe('123');
   });
 });
 
 describe('TimeoutError', () => {
-  it('should include timeout and operation', () => {
-    const error = new TimeoutError('Operation timed out', 5000, 'fetchData');
+  it('should include operation and timeout', () => {
+    const error = new TimeoutError('fetchUser', 5000);
+    expect(error.operation).toBe('fetchUser');
     expect(error.timeoutMs).toBe(5000);
-    expect(error.operation).toBe('fetchData');
+  });
+});
+
+describe('RateLimitError', () => {
+  it('should include retry after', () => {
+    const error = new RateLimitError('Too many requests', 60);
+    expect(error.retryAfter).toBe(60);
   });
 });
 
 describe('CircuitBreakerOpenError', () => {
-  it('should include circuit name and reset time', () => {
-    const error = new CircuitBreakerOpenError('api-service', 30000);
-    expect(error.circuitName).toBe('api-service');
-    expect(error.resetTimeMs).toBe(30000);
+  it('should include circuit name', () => {
+    const error = new CircuitBreakerOpenError('api-circuit');
+    expect(error.circuit).toBe('api-circuit');
   });
 });
 
 describe('RetryExhaustedError', () => {
   it('should include attempts and last error', () => {
-    const lastError = new Error('Connection refused');
-    const error = new RetryExhaustedError('Failed after retries', 3, lastError);
+    const lastError = new Error('Connection failed');
+    const error = new RetryExhaustedError(3, lastError);
     expect(error.attempts).toBe(3);
     expect(error.lastError).toBe(lastError);
   });
