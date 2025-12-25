@@ -1,4 +1,4 @@
-import { Outbox, OutboxEntry } from '../../src/outboxPattern';
+import { Outbox, OutboxProcessor, MessagePublisher } from '../../outboxPattern';
 
 describe('Outbox', () => {
   let outbox: Outbox;
@@ -7,54 +7,35 @@ describe('Outbox', () => {
     outbox = new Outbox();
   });
 
-  it('should add message', async () => {
-    const entry: OutboxEntry = {
-      aggregateType: 'Order',
-      aggregateId: '123',
-      eventType: 'OrderCreated',
-      payload: { amount: 100 }
-    };
-
-    const message = await outbox.add(entry);
-    expect(message.id).toBeDefined();
-    expect(message.status).toBe('pending');
-  });
-
-  it('should get pending messages', async () => {
-    await outbox.add({
-      aggregateType: 'Order',
-      aggregateId: '1',
-      eventType: 'Created',
-      payload: {}
-    });
-
+  it('should add message to outbox', async () => {
+    const message = { type: 'UserCreated', payload: { id: '1' } };
+    await outbox.add(message);
+    
     const pending = await outbox.getPending();
     expect(pending.length).toBe(1);
+    expect(pending[0].type).toBe('UserCreated');
   });
 
-  it('should mark as published', async () => {
-    const message = await outbox.add({
-      aggregateType: 'Order',
-      aggregateId: '1',
-      eventType: 'Created',
-      payload: {}
-    });
-
-    await outbox.markPublished(message.id);
+  it('should mark message as published', async () => {
+    const message = { type: 'Test', payload: {} };
+    const id = await outbox.add(message);
+    
+    await outbox.markPublished(id);
     const pending = await outbox.getPending();
+    
     expect(pending.length).toBe(0);
   });
+});
 
-  it('should mark as failed with retry', async () => {
-    const message = await outbox.add({
-      aggregateType: 'Order',
-      aggregateId: '1',
-      eventType: 'Created',
-      payload: {}
-    });
+describe('OutboxProcessor', () => {
+  it('should process pending messages', async () => {
+    const outbox = new Outbox();
+    const publisher = { publish: jest.fn().mockResolvedValue(undefined) };
+    const processor = new OutboxProcessor(outbox, publisher);
 
-    await outbox.markFailed(message.id, 'Connection error');
-    const pending = await outbox.getPending();
-    expect(pending.length).toBe(1);
+    await outbox.add({ type: 'Test', payload: { data: 'test' } });
+    await processor.process();
+
+    expect(publisher.publish).toHaveBeenCalled();
   });
 });
