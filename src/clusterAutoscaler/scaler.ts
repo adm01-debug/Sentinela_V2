@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Cluster autoscaler
+ * @module @sentinela/core/clusterAutoscaler
+ * @version 13.0.0
+ */
+
 import { NodeGroup, ScaleUpDecision, ScaleDownCandidate } from './types';
 
 export class ClusterAutoscaler {
