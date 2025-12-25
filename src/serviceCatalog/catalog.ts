@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Service catalog
+ * @module @sentinela/core/serviceCatalog
+ * @version 13.0.0
+ */
+
 import { ServiceClass, ServicePlan } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
