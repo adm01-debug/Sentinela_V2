@@ -1,92 +1,57 @@
 /**
- * Basic Sentinela Usage Example
- * 
- * This example demonstrates core features:
- * - Error handling
- * - Logging
- * - Retry with circuit breaker
- * - Caching
+ * @fileoverview Basic usage examples for Sentinela
  */
 
-import {
-  Logger,
+import { 
+  CircuitBreaker, 
+  retry, 
   createLogger,
-  retry,
-  CircuitBreaker,
   Cache,
-  ValidationError,
-  NotFoundError
+  RateLimiter,
+  validateObject,
+  required,
+  email
 } from '@sentinela/core';
 
-// Create a logger
-const logger = createLogger('example-app');
+// 1. Logger
+const logger = createLogger('my-app');
+logger.info('Application started', { version: '1.0.0' });
 
-// Create a cache
+// 2. Circuit Breaker
+const circuit = new CircuitBreaker({ name: 'api-circuit', failureThreshold: 5 });
+
+async function fetchWithCircuitBreaker() {
+  return circuit.execute(async () => {
+    const response = await fetch('https://api.example.com/data');
+    return response.json();
+  });
+}
+
+// 3. Retry
+async function fetchWithRetry() {
+  return retry(
+    () => fetch('https://api.example.com/data').then(r => r.json()),
+    { maxAttempts: 3, initialDelayMs: 1000 }
+  );
+}
+
+// 4. Cache
 const cache = new Cache<string>({ defaultTtlMs: 60000 });
+cache.set('user:123', JSON.stringify({ name: 'John' }));
+const cached = cache.get('user:123');
 
-// Create a circuit breaker
-const apiCircuit = new CircuitBreaker({
-  name: 'external-api',
-  failureThreshold: 3,
-  resetTimeout: 30000
+// 5. Rate Limiter
+const limiter = new RateLimiter({ maxRequests: 100, windowMs: 60000 });
+const result = limiter.consume('user-123');
+if (!result.allowed) {
+  console.log('Rate limited, retry after:', result.retryAfter);
+}
+
+// 6. Validation
+const userData = { name: 'John', email: 'john@example.com' };
+const validation = validateObject(userData, {
+  name: [required('name')],
+  email: [required('email'), email('email')]
 });
 
-// Simulated external API call
-async function fetchUserFromApi(userId: string): Promise<{ id: string; name: string }> {
-  // Simulate API call
-  if (Math.random() > 0.7) {
-    throw new Error('API temporarily unavailable');
-  }
-  return { id: userId, name: `User ${userId}` };
-}
-
-// Main function with all patterns
-async function getUser(userId: string): Promise<{ id: string; name: string }> {
-  // Validate input
-  if (!userId) {
-    throw new ValidationError('User ID is required', 'userId', userId);
-  }
-
-  // Check cache first
-  const cached = cache.get(`user:${userId}`);
-  if (cached) {
-    logger.debug('Cache hit', { userId });
-    return JSON.parse(cached);
-  }
-
-  logger.info('Fetching user from API', { userId });
-
-  // Use circuit breaker with retry
-  const user = await apiCircuit.execute(() =>
-    retry(
-      () => fetchUserFromApi(userId),
-      { maxAttempts: 3, initialDelayMs: 500 }
-    )
-  );
-
-  // Cache the result
-  cache.set(`user:${userId}`, JSON.stringify(user));
-  
-  return user;
-}
-
-// Run example
-async function main() {
-  try {
-    const user = await getUser('123');
-    logger.info('User fetched successfully', { user });
-
-    // Fetch again (should hit cache)
-    const cachedUser = await getUser('123');
-    logger.info('User from cache', { cachedUser });
-
-  } catch (error) {
-    if (error instanceof ValidationError) {
-      logger.error('Validation failed', error, { field: error.field });
-    } else {
-      logger.error('Failed to fetch user', error as Error);
-    }
-  }
-}
-
-main();
+console.log('Validation result:', validation);
