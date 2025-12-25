@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Tenant billing
+ * @module @sentinela/core/multiTenancy
+ * @version 13.0.0
+ */
+
 import { TenantUsage } from './types';
 
 export class TenantBilling {
