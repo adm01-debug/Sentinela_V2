@@ -1,3 +1,9 @@
+/**
+ * @fileoverview API Gateway types
+ * @module @sentinela/core/apiGateway
+ * @version 13.0.0
+ */
+
 export interface APIGateway { name: string; routes: Route[]; plugins: Plugin[]; }
 export interface Route { path: string; methods: string[]; upstream: Upstream; plugins?: string[]; }
 export interface Upstream { service: string; port: number; timeout?: number; retries?: number; }
