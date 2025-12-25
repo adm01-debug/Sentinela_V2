@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Service accounts types
+ * @module @sentinela/core/serviceAccounts
+ * @version 13.0.0
+ */
+
 export interface ServiceAccount { name: string; namespace: string; secrets?: SecretRef[]; imagePullSecrets?: LocalObjectReference[]; automountServiceAccountToken?: boolean; }
 export interface SecretRef { name: string; }
 export interface LocalObjectReference { name: string; }
