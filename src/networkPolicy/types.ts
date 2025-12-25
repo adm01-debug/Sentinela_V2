@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Network policy types
+ * @module @sentinela/core/networkPolicy
+ * @version 13.0.0
+ */
+
 export interface NetworkPolicy { name: string; namespace: string; podSelector: Selector; ingress: IngressRule[]; egress: EgressRule[]; }
 export interface Selector { matchLabels: Record<string, string>; }
 export interface IngressRule { from: PeerSelector[]; ports: PortRule[]; }
