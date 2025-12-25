@@ -1,3 +1,9 @@
+/**
+ * @fileoverview A/B testing experiment
+ * @module @sentinela/core/abTesting
+ * @version 13.0.0
+ */
+
 import { Experiment, Variant, ExperimentStatus } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
