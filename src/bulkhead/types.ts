@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Bulkhead pattern types
+ * @module @sentinela/core/bulkhead
+ * @version 13.0.0
+ */
+
 export interface BulkheadConfig {
   name: string;
   maxConcurrent: number;
