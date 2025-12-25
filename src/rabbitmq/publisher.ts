@@ -1,26 +1,58 @@
 /**
- * @fileoverview RabbitMQ publisher
+ * @fileoverview RabbitMQ connection and publisher
  * @module @sentinela/core/rabbitmq
  * @version 13.0.0
  */
 
-import { RabbitMQConnection } from './connection';
-import { RabbitMessage, MessageProperties } from './types';
+export interface RabbitMQConfig {
+  url: string;
+  heartbeat?: number;
+}
 
-export class RabbitPublisher {
+export interface Channel {
+  assertQueue(queue: string): Promise<void>;
+  sendToQueue(queue: string, content: Buffer): boolean;
+  close(): Promise<void>;
+}
+
+export class RabbitMQConnection {
+  private connected = false;
+  private channels: Channel[] = [];
+
+  constructor(private config: RabbitMQConfig) {}
+
+  async connect(): Promise<void> {
+    this.connected = true;
+  }
+
+  async disconnect(): Promise<void> {
+    for (const ch of this.channels) await ch.close();
+    this.connected = false;
+  }
+
+  async createChannel(): Promise<Channel> {
+    if (!this.connected) await this.connect();
+    const channel: Channel = {
+      assertQueue: async () => {},
+      sendToQueue: () => true,
+      close: async () => {}
+    };
+    this.channels.push(channel);
+    return channel;
+  }
+}
+
+export class RabbitMQPublisher {
+  private channel?: Channel;
+
   constructor(private connection: RabbitMQConnection) {}
-  
-  async publish(exchange: string, routingKey: string, message: unknown, properties?: Partial<MessageProperties>): Promise<void> {
-    if (!this.connection.isConnected()) throw new Error('Not connected');
-    console.log('Publishing to', exchange, 'with key', routingKey);
-  }
-  
-  async sendToQueue(queue: string, message: unknown, properties?: Partial<MessageProperties>): Promise<void> {
-    if (!this.connection.isConnected()) throw new Error('Not connected');
-    console.log('Sending to queue', queue);
-  }
-  
-  async publishBatch(exchange: string, messages: Array<{ routingKey: string; content: unknown }>): Promise<void> {
-    for (const msg of messages) await this.publish(exchange, msg.routingKey, msg.content);
+
+  async publish(queue: string, message: unknown): Promise<boolean> {
+    if (!this.channel) {
+      this.channel = await this.connection.createChannel();
+      await this.channel.assertQueue(queue);
+    }
+    const content = Buffer.from(JSON.stringify(message));
+    return this.channel.sendToQueue(queue, content);
   }
 }
