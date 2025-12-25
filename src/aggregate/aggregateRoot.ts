@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Aggregate root implementation
+ * @module @sentinela/core/aggregate
+ * @version 13.0.0
+ */
+
 import { AggregateRoot as IAggregateRoot, DomainEvent } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
