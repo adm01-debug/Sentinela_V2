@@ -11,7 +11,7 @@ serve(async (req) => {
   
   // Archive to storage
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-  await supabase.storage.from('archives').upload(\`activities-\${Date.now()}.json\`, blob);
+  await supabase.storage.from('archives').upload(`activities-${Date.now()}.json`, blob);
   
   // Delete archived data
   await supabase.from('activities').delete().lt('created_at', cutoff);
