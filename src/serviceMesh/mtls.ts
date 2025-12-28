@@ -33,7 +33,7 @@ export class MTLSManager {
       issuer: "mesh-ca",
       validFrom: new Date(),
       validTo: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-      publicKey: \`pub-key-\${serviceName}\`
+      publicKey: `pub-key-${serviceName}`
     };
     this.serviceCerts.set(serviceName, cert);
     return cert;

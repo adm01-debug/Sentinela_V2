@@ -32,7 +32,7 @@ export class RequiredFieldSpec<T> extends BaseValidationSpecification<T> {
     const isValid = value !== undefined && value !== null && value !== "";
     return {
       isValid,
-      errors: isValid ? [] : [{ field: String(this.field), code: "REQUIRED", message: this.message || \`\${String(this.field)} is required\` }]
+      errors: isValid ? [] : [{ field: String(this.field), code: "REQUIRED", message: this.message || `${String(this.field)} is required` }]
     };
   }
 }
@@ -45,7 +45,7 @@ export class RangeSpec<T> extends BaseValidationSpecification<T> {
     const isValid = value >= this.min && value <= this.max;
     return {
       isValid,
-      errors: isValid ? [] : [{ field: String(this.field), code: "OUT_OF_RANGE", message: \`\${String(this.field)} must be between \${this.min} and \${this.max}\` }]
+      errors: isValid ? [] : [{ field: String(this.field), code: "OUT_OF_RANGE", message: `${String(this.field)} must be between ${this.min} and ${this.max}` }]
     };
   }
 }
@@ -58,7 +58,7 @@ export class PatternSpec<T> extends BaseValidationSpecification<T> {
     const isValid = this.pattern.test(value);
     return {
       isValid,
-      errors: isValid ? [] : [{ field: String(this.field), code: "INVALID_FORMAT", message: this.message || \`\${String(this.field)} has invalid format\` }]
+      errors: isValid ? [] : [{ field: String(this.field), code: "INVALID_FORMAT", message: this.message || `${String(this.field)} has invalid format` }]
     };
   }
 }

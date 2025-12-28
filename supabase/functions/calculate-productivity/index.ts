@@ -46,7 +46,7 @@ serve(async (req) => {
         totalTime,
         activeTime,
         idleTime: totalTime - activeTime,
-        topApplications: Object.entries(topApps)
+        topApplications: (Object.entries(topApps) as Array<[string, number]>)
           .sort((a, b) => b[1] - a[1])
           .slice(0, 5)
           .map(([name, duration]) => ({ name, duration })),
@@ -54,8 +54,9 @@ serve(async (req) => {
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

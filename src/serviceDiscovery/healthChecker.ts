@@ -12,7 +12,7 @@ export class HttpHealthCheck implements HealthCheck {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-      const response = await fetch(\`http://\${instance.host}:\${instance.port}\${this.path}\`, { signal: controller.signal });
+      const response = await fetch(`http://${instance.host}:${instance.port}${this.path}`, { signal: controller.signal });
       clearTimeout(timeoutId);
       return response.ok;
     } catch {
@@ -22,7 +22,7 @@ export class HttpHealthCheck implements HealthCheck {
 }
 
 export class HealthChecker {
-  private interval?: NodeJS.Timeout;
+  private interval?: ReturnType<typeof setInterval>;
 
   constructor(
     private registry: ServiceRegistry,
