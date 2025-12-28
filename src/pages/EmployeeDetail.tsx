@@ -9,15 +9,15 @@ import { ApplicationCard } from '@/components/ApplicationCard';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { EmployeeAlertItem } from '@/components/EmployeeAlertItem';
 import { EmployeeDetailSkeleton } from '@/components/PageSkeletons';
+import { ArrowLeft, Mail, Building2, Monitor, Smartphone, Clock, Shield, AlertTriangle } from 'lucide-react';
 
-import { 
-import { useEmployeeDetailPage } from '@/hooks/useEmployeeDetailPage';
-
-  employeeApplications, 
-  employeeActivities, 
-  defaultApplications, 
-  defaultActivities 
+import {
+  employeeApplications,
+  employeeActivities,
+  defaultApplications,
+  defaultActivities,
 } from '@/data/employeeDetailData';
+
 
 const statusStyles = {
   online: 'bg-success',
@@ -36,13 +36,8 @@ const EmployeeDetailContent = memo(function EmployeeDetailContent() {
   const navigate = useNavigate();
 
   const employee = employees.find(e => e.id === id);
-  
+
   if (!employee) {
-  if (isLoading) {
-    return <EmployeeDetailSkeleton />;
-  }
-
-
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
