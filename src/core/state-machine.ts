@@ -34,7 +34,7 @@ export class StateMachine<S extends string, E extends string> {
     const nextState = stateConfig.on?.[event];
     
     if (!nextState) {
-      throw new Error(\`Invalid transition: \${this.currentState} + \${event}\`);
+      throw new Error(`Invalid transition: ${this.currentState} + ${event}`);
     }
 
     stateConfig.onExit?.();

@@ -6,14 +6,14 @@ class TwilioClient {
 
   constructor(config: TwilioConfig) {
     this.config = config;
-    this.baseUrl = \`https://api.twilio.com/2010-04-01/Accounts/\${config.accountSid}\`;
+    this.baseUrl = `https://api.twilio.com/2010-04-01/Accounts/${config.accountSid}`;
   }
 
   async sendSMS(to: string, body: string) {
-    const auth = btoa(\`\${this.config.accountSid}:\${this.config.authToken}\`);
-    const response = await fetch(\`\${this.baseUrl}/Messages.json\`, {
+    const auth = btoa(`${this.config.accountSid}:${this.config.authToken}`);
+    const response = await fetch(`${this.baseUrl}/Messages.json`, {
       method: 'POST',
-      headers: { 'Authorization': \`Basic \${auth}\`, 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({ To: to, From: this.config.fromNumber, Body: body }),
     });
     return response.json();

@@ -6,11 +6,11 @@ class DatadogClient {
 
   constructor(config: DatadogConfig) {
     this.apiKey = config.apiKey;
-    this.baseUrl = \`https://api.\${config.site || 'datadoghq.com'}/api/v1\`;
+    this.baseUrl = `https://api.${config.site || 'datadoghq.com'}/api/v1`;
   }
 
   async sendMetric(metric: string, value: number, tags?: string[]) {
-    const response = await fetch(\`\${this.baseUrl}/series\`, {
+    const response = await fetch(`${this.baseUrl}/series`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'DD-API-KEY': this.apiKey },
       body: JSON.stringify({
@@ -21,7 +21,7 @@ class DatadogClient {
   }
 
   async sendEvent(title: string, text: string, alertType = 'info') {
-    const response = await fetch(\`\${this.baseUrl}/events\`, {
+    const response = await fetch(`${this.baseUrl}/events`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'DD-API-KEY': this.apiKey },
       body: JSON.stringify({ title, text, alert_type: alertType }),

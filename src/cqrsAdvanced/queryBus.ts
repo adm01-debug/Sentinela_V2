@@ -6,7 +6,6 @@
 
 // Query Bus Implementation
 import { Query, QueryHandler, QueryMetadata } from './types';
-import { v4 as uuidv4 } from 'uuid';
 
 export class QueryBus {
   private handlers: Map<string, QueryHandler> = new Map();
@@ -15,7 +14,7 @@ export class QueryBus {
 
   register<Q extends Query, R>(handler: QueryHandler<Q, R>): void {
     if (this.handlers.has(handler.queryType)) {
-      throw new Error(\`Handler for \${handler.queryType} already registered\`);
+      throw new Error(`Handler for ${handler.queryType} already registered`);
     }
     this.handlers.set(handler.queryType, handler);
   }
@@ -31,7 +30,7 @@ export class QueryBus {
   async execute<Q extends Query, R>(query: Q): Promise<R> {
     const handler = this.handlers.get(query.type);
     if (!handler) {
-      throw new Error(\`No handler registered for query: \${query.type}\`);
+      throw new Error(`No handler registered for query: ${query.type}`);
     }
 
     const context: QueryContext = {
@@ -74,8 +73,8 @@ export class QueryBus {
       type,
       payload,
       metadata: {
-        queryId: options?.queryId ?? uuidv4(),
-        correlationId: options?.correlationId ?? uuidv4(),
+        queryId: options?.queryId ?? crypto.randomUUID(),
+        correlationId: options?.correlationId ?? crypto.randomUUID(),
         timestamp: options?.timestamp ?? new Date(),
         userId: options?.userId,
         tenantId: options?.tenantId
@@ -110,7 +109,7 @@ export class InMemoryQueryCache implements QueryCache {
   }
 
   generateKey(query: Query): string {
-    return \`\${query.type}:\${JSON.stringify(query.payload)}\`;
+    return `${query.type}:${JSON.stringify(query.payload)}`;
   }
 
   async get<T>(key: string): Promise<T | null> {
@@ -142,17 +141,17 @@ export class InMemoryQueryCache implements QueryCache {
 
 export class QueryLoggingMiddleware implements QueryMiddleware {
   async execute<R>(context: QueryContext, next: () => Promise<R>): Promise<R> {
-    console.log(\`[QUERY] Executing: \${context.query.type}\`, {
+    console.log(`[QUERY] Executing: ${context.query.type}`, {
       queryId: context.metadata.queryId,
       correlationId: context.metadata.correlationId
     });
     
     try {
       const result = await next();
-      console.log(\`[QUERY] Completed: \${context.query.type} in \${Date.now() - context.startTime}ms\`);
+      console.log(`[QUERY] Completed: ${context.query.type} in ${Date.now() - context.startTime}ms`);
       return result;
     } catch (error) {
-      console.error(\`[QUERY] Failed: \${context.query.type}\`, error);
+      console.error(`[QUERY] Failed: ${context.query.type}`, error);
       throw error;
     }
   }

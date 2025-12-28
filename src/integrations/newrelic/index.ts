@@ -10,7 +10,7 @@ class NewRelicClient {
   }
 
   async sendCustomEvent(eventType: string, attributes: Record<string, unknown>) {
-    const response = await fetch(\`https://insights-collector.newrelic.com/v1/accounts/\${this.accountId}/events\`, {
+    const response = await fetch(`https://insights-collector.newrelic.com/v1/accounts/${this.accountId}/events`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Api-Key': this.licenseKey },
       body: JSON.stringify([{ eventType, ...attributes }]),

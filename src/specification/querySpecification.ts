@@ -19,17 +19,17 @@ export abstract class BaseQuerySpecification<T> implements QuerySpecification<T>
   toSql(): string {
     return this.toCriteria().map(c => {
       switch (c.operator) {
-        case "eq": return \`\${c.field} = '\${c.value}'\`;
-        case "neq": return \`\${c.field} != '\${c.value}'\`;
-        case "gt": return \`\${c.field} > \${c.value}\`;
-        case "gte": return \`\${c.field} >= \${c.value}\`;
-        case "lt": return \`\${c.field} < \${c.value}\`;
-        case "lte": return \`\${c.field} <= \${c.value}\`;
-        case "in": return \`\${c.field} IN (\${(c.value as unknown[]).map(v => \`'\${v}'\`).join(",")})\`;
-        case "like": return \`\${c.field} LIKE '\${c.value}'\`;
+        case "eq": return `${c.field} = '${c.value}'`;
+        case "neq": return `${c.field} != '${c.value}'`;
+        case "gt": return `${c.field} > ${c.value}`;
+        case "gte": return `${c.field} >= ${c.value}`;
+        case "lt": return `${c.field} < ${c.value}`;
+        case "lte": return `${c.field} <= ${c.value}`;
+        case "in": return `${c.field} IN (${(c.value as unknown[]).map(v => `'${v}'`).join(",")})`;
+        case "like": return `${c.field} LIKE '${c.value}'`;
         case "between": {
           const [min, max] = c.value as [unknown, unknown];
-          return \`\${c.field} BETWEEN \${min} AND \${max}\`;
+          return `${c.field} BETWEEN ${min} AND ${max}`;
         }
         default: return "";
       }

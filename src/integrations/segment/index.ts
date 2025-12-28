@@ -7,9 +7,9 @@ class SegmentClient {
   constructor(config: SegmentConfig) { this.writeKey = config.writeKey; }
 
   private async send(type: string, payload: Record<string, unknown>) {
-    const response = await fetch(\`\${this.baseUrl}/\${type}\`, {
+    const response = await fetch(`${this.baseUrl}/${type}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': \`Basic \${btoa(this.writeKey + ':')}\` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Basic ${btoa(this.writeKey + ':')}` },
       body: JSON.stringify(payload),
     });
     return response.ok;

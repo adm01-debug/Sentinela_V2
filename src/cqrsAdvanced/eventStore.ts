@@ -6,7 +6,6 @@
 
 // Event Store Implementation
 import { DomainEvent, EventMetadata, EventHandler } from './types';
-import { v4 as uuidv4 } from 'uuid';
 
 export interface EventStore {
   append(aggregateId: string, events: DomainEvent[], expectedVersion: number): Promise<void>;
@@ -61,7 +60,7 @@ export class InMemoryEventStore implements EventStore {
         try {
           await handler.handle(event);
         } catch (error) {
-          console.error(\`Error handling event \${event.eventType}:\`, error);
+          console.error(`Error handling event ${event.eventType}:`, error);
         }
       }
     }
@@ -74,7 +73,7 @@ export class ConcurrencyError extends Error {
     public readonly expectedVersion: number,
     public readonly actualVersion: number
   ) {
-    super(\`Concurrency conflict for aggregate \${aggregateId}: expected version \${expectedVersion}, got \${actualVersion}\`);
+    super(`Concurrency conflict for aggregate ${aggregateId}: expected version ${expectedVersion}, got ${actualVersion}`);
     this.name = 'ConcurrencyError';
   }
 }
@@ -88,14 +87,14 @@ export class EventBuilder {
     metadata: Partial<EventMetadata> = {}
   ): DomainEvent<T> {
     return {
-      eventId: uuidv4(),
+      eventId: crypto.randomUUID(),
       eventType,
       aggregateId,
       aggregateType,
       payload,
       metadata: {
-        correlationId: metadata.correlationId ?? uuidv4(),
-        causationId: metadata.causationId ?? uuidv4(),
+        correlationId: metadata.correlationId ?? crypto.randomUUID(),
+        causationId: metadata.causationId ?? crypto.randomUUID(),
         timestamp: metadata.timestamp ?? new Date(),
         userId: metadata.userId,
         tenantId: metadata.tenantId

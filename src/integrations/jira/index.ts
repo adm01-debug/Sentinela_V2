@@ -6,13 +6,13 @@ class JiraClient {
 
   constructor(config: JiraConfig) {
     this.baseUrl = config.baseUrl;
-    this.auth = btoa(\`\${config.email}:\${config.token}\`);
+    this.auth = btoa(`${config.email}:${config.token}`);
   }
 
   async createIssue(projectKey: string, summary: string, issueType = 'Task') {
-    const response = await fetch(\`\${this.baseUrl}/rest/api/3/issue\`, {
+    const response = await fetch(`${this.baseUrl}/rest/api/3/issue`, {
       method: 'POST',
-      headers: { 'Authorization': \`Basic \${this.auth}\`, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': `Basic ${this.auth}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         fields: { project: { key: projectKey }, summary, issuetype: { name: issueType } }
       }),
@@ -21,8 +21,8 @@ class JiraClient {
   }
 
   async getIssue(issueKey: string) {
-    const response = await fetch(\`\${this.baseUrl}/rest/api/3/issue/\${issueKey}\`, {
-      headers: { 'Authorization': \`Basic \${this.auth}\` },
+    const response = await fetch(`${this.baseUrl}/rest/api/3/issue/${issueKey}`, {
+      headers: { 'Authorization': `Basic ${this.auth}` },
     });
     return response.json();
   }
