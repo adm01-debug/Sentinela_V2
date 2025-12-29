@@ -1,4 +1,8 @@
 export interface Attribute { key: string; value: any; }
+
+// NOTE: 'any' types in ABAC are intentional for flexible attribute handling
+// This allows dynamic policy evaluation with various attribute types
+
 export interface ABACPolicy { id: string; name: string; rules: ABACRule[]; }
 export interface ABACRule { subject: Record<string, any>; resource: Record<string, any>; action: string; effect: 'allow' | 'deny'; }
 export class ABAC {
