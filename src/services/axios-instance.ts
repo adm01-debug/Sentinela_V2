@@ -6,7 +6,7 @@ export class AxiosinstanceService {
     return this.instance;
   }
   
-  async init() { console.log('axios-instance service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('axios-instance service initialized'); }
 }
 
 export const axiosinstanceService = AxiosinstanceService.getInstance();
