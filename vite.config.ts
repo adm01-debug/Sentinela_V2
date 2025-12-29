@@ -1,3 +1,4 @@
+// Build timestamp: 2025-12-29T23:32:34.410733
 // Build refresh - force clean rebuild
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
