@@ -6,77 +6,124 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
 
 // Check if Supabase is configured
-const isSupabaseConfigured = SUPABASE_URL && SUPABASE_ANON_KEY;
+const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
 // Create a mock client for development when Supabase is not configured
 const createMockClient = (): SupabaseClient<Database> => {
-  const mockResponse = {
-    data: null,
-    error: { message: 'Supabase not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.' },
+  const notConfiguredError = { message: 'Supabase not configured', name: 'AuthError' };
+  
+  const mockQueryBuilder = {
+    select: () => mockQueryBuilder,
+    insert: () => mockQueryBuilder,
+    update: () => mockQueryBuilder,
+    delete: () => mockQueryBuilder,
+    upsert: () => mockQueryBuilder,
+    eq: () => mockQueryBuilder,
+    neq: () => mockQueryBuilder,
+    gt: () => mockQueryBuilder,
+    gte: () => mockQueryBuilder,
+    lt: () => mockQueryBuilder,
+    lte: () => mockQueryBuilder,
+    like: () => mockQueryBuilder,
+    ilike: () => mockQueryBuilder,
+    is: () => mockQueryBuilder,
+    in: () => mockQueryBuilder,
+    contains: () => mockQueryBuilder,
+    containedBy: () => mockQueryBuilder,
+    order: () => mockQueryBuilder,
+    limit: () => mockQueryBuilder,
+    range: () => mockQueryBuilder,
+    single: () => Promise.resolve({ data: null, error: null }),
+    maybeSingle: () => Promise.resolve({ data: null, error: null }),
+    then: (resolve: (value: { data: null; error: null }) => void) => 
+      Promise.resolve({ data: null, error: null }).then(resolve),
   };
 
-  const mockBuilder = {
-    select: () => mockBuilder,
-    insert: () => mockBuilder,
-    update: () => mockBuilder,
-    delete: () => mockBuilder,
-    eq: () => mockBuilder,
-    neq: () => mockBuilder,
-    gt: () => mockBuilder,
-    gte: () => mockBuilder,
-    lt: () => mockBuilder,
-    lte: () => mockBuilder,
-    like: () => mockBuilder,
-    ilike: () => mockBuilder,
-    is: () => mockBuilder,
-    in: () => mockBuilder,
-    contains: () => mockBuilder,
-    containedBy: () => mockBuilder,
-    order: () => mockBuilder,
-    limit: () => mockBuilder,
-    range: () => mockBuilder,
-    single: () => Promise.resolve(mockResponse),
-    maybeSingle: () => Promise.resolve(mockResponse),
-    then: (resolve: (value: typeof mockResponse) => void) => Promise.resolve(mockResponse).then(resolve),
+  const mockAuth = {
+    getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+    getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+    signInWithPassword: () => Promise.resolve({ 
+      data: { user: null, session: null }, 
+      error: notConfiguredError 
+    }),
+    signUp: () => Promise.resolve({ 
+      data: { user: null, session: null }, 
+      error: notConfiguredError 
+    }),
+    signOut: () => Promise.resolve({ error: null }),
+    signInWithOAuth: () => Promise.resolve({ 
+      data: { provider: '', url: '' }, 
+      error: notConfiguredError 
+    }),
+    resetPasswordForEmail: () => Promise.resolve({ data: {}, error: notConfiguredError }),
+    updateUser: () => Promise.resolve({ data: { user: null }, error: notConfiguredError }),
+    refreshSession: () => Promise.resolve({ 
+      data: { user: null, session: null }, 
+      error: null 
+    }),
+    onAuthStateChange: (callback: (event: string, session: null) => void) => {
+      // Simulate initial call
+      setTimeout(() => callback('INITIAL_SESSION', null), 0);
+      return { 
+        data: { 
+          subscription: { 
+            id: 'mock',
+            callback,
+            unsubscribe: () => {} 
+          } 
+        } 
+      };
+    },
+    exchangeCodeForSession: () => Promise.resolve({ 
+      data: { user: null, session: null }, 
+      error: null 
+    }),
+    setSession: () => Promise.resolve({ 
+      data: { user: null, session: null }, 
+      error: null 
+    }),
+  };
+
+  const mockStorage = {
+    from: () => ({
+      upload: () => Promise.resolve({ data: null, error: notConfiguredError }),
+      download: () => Promise.resolve({ data: null, error: notConfiguredError }),
+      remove: () => Promise.resolve({ data: null, error: null }),
+      list: () => Promise.resolve({ data: [], error: null }),
+      getPublicUrl: () => ({ data: { publicUrl: '' } }),
+      createSignedUrl: () => Promise.resolve({ data: null, error: notConfiguredError }),
+    }),
   };
 
   return {
-    from: () => mockBuilder,
-    auth: {
-      getSession: () => Promise.resolve({ data: { session: null }, error: null }),
-      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
-      signInWithPassword: () => Promise.resolve({ data: { user: null, session: null }, error: { message: 'Supabase not configured' } }),
-      signUp: () => Promise.resolve({ data: { user: null, session: null }, error: { message: 'Supabase not configured' } }),
-      signOut: () => Promise.resolve({ error: null }),
-      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
-    },
-    storage: {
-      from: () => ({
-        upload: () => Promise.resolve({ data: null, error: { message: 'Supabase not configured' } }),
-        download: () => Promise.resolve({ data: null, error: { message: 'Supabase not configured' } }),
-        getPublicUrl: () => ({ data: { publicUrl: '' } }),
-      }),
-    },
+    from: () => mockQueryBuilder,
+    auth: mockAuth,
+    storage: mockStorage,
     functions: {
-      invoke: () => Promise.resolve({ data: null, error: { message: 'Supabase not configured' } }),
+      invoke: () => Promise.resolve({ data: null, error: notConfiguredError }),
     },
     channel: () => ({
-      on: () => ({ subscribe: () => {} }),
-      subscribe: () => {},
-      unsubscribe: () => {},
+      on: () => ({ subscribe: () => ({ unsubscribe: () => {} }) }),
+      subscribe: () => ({ unsubscribe: () => {} }),
+      unsubscribe: () => Promise.resolve('ok'),
     }),
     removeChannel: () => Promise.resolve('ok'),
+    rpc: () => Promise.resolve({ data: null, error: null }),
   } as unknown as SupabaseClient<Database>;
 };
 
 // Log warning in development if not configured
-if (!isSupabaseConfigured && import.meta.env.DEV) {
-  console.warn(
-    '[Supabase] Not configured. Please set environment variables:\n' +
-    '  VITE_SUPABASE_URL=your-project-url\n' +
-    '  VITE_SUPABASE_ANON_KEY=your-anon-key\n' +
-    'The app will run with mock data.'
-  );
+if (!isSupabaseConfigured) {
+  if (typeof window !== 'undefined') {
+    console.warn(
+      '%c[Supabase] Not configured',
+      'color: orange; font-weight: bold',
+      '\n\nPlease set environment variables:',
+      '\n  VITE_SUPABASE_URL=your-project-url',
+      '\n  VITE_SUPABASE_ANON_KEY=your-anon-key',
+      '\n\nThe app will run with mock data.'
+    );
+  }
 }
 
 // Export the client (real or mock)
