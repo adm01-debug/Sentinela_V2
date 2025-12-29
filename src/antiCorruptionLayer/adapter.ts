@@ -40,12 +40,12 @@ export class HTTPAdapter<TExternal extends ExternalModel, TDomain extends Domain
   }
 
   async fetch(id: string): Promise<TExternal> {
-    console.log('Fetching from', this.baseUrl + '/' + id);
+    if (import.meta.env.DEV) console.log('Fetching from', this.baseUrl + '/' + id);
     return {} as TExternal;
   }
 
   async save(external: TExternal): Promise<void> {
-    console.log('Saving to', this.baseUrl);
+    if (import.meta.env.DEV) console.log('Saving to', this.baseUrl);
   }
 }
 
@@ -60,11 +60,11 @@ export class DatabaseAdapter<TExternal extends ExternalModel, TDomain extends Do
   }
 
   async fetch(id: string): Promise<TExternal> {
-    console.log('Fetching from table', this.tableName, 'id:', id);
+    if (import.meta.env.DEV) console.log('Fetching from table', this.tableName, 'id:', id);
     return {} as TExternal;
   }
 
   async save(external: TExternal): Promise<void> {
-    console.log('Saving to table', this.tableName);
+    if (import.meta.env.DEV) console.log('Saving to table', this.tableName);
   }
 }
