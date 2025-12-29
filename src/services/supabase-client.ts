@@ -1,12 +1,3 @@
-export class SupabaseclientService {
-  private static instance: SupabaseclientService;
-  
-  static getInstance() {
-    if (!this.instance) this.instance = new SupabaseclientService();
-    return this.instance;
-  }
-  
-  async init() { if (import.meta.env.DEV) console.log('supabase-client service initialized'); }
-}
-
-export const supabaseclientService = SupabaseclientService.getInstance();
+// Re-export from the main Supabase client
+// This ensures we have a single source of truth for the Supabase client
+export { supabase, isSupabaseReady } from '@/integrations/supabase/client';
