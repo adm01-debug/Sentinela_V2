@@ -6,7 +6,7 @@ export class FormatService {
     return this.instance;
   }
   
-  async init() { console.log('format service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('format service initialized'); }
 }
 
 export const formatService = FormatService.getInstance();
