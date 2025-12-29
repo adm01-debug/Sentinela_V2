@@ -6,7 +6,7 @@ export class OauthService {
     return this.instance;
   }
   
-  async init() { console.log('oauth service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('oauth service initialized'); }
 }
 
 export const oauthService = OauthService.getInstance();
