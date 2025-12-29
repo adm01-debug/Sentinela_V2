@@ -8,7 +8,7 @@ import { initSentry } from './lib/sentry';
 initSentry();
 
 // Register Service Worker for PWA with update notifications
-import { registerServiceWorker, skipWaiting } from './lib/serviceWorker';
+import { registerServiceWorker } from './lib/serviceWorker';
 
 registerServiceWorker({
   onUpdate: (registration) => {
