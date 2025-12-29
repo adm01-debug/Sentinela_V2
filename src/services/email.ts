@@ -6,7 +6,7 @@ export class EmailService {
     return this.instance;
   }
   
-  async init() { console.log('email service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('email service initialized'); }
 }
 
 export const emailService = EmailService.getInstance();
