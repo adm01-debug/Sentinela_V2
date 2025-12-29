@@ -6,7 +6,7 @@ export class AmbassadorGateway {
   
   constructor(config: AmbassadorGatewayConfig) { this.config = config; }
   
-  start(): void { this.running = true; console.log('Gateway started on port', this.config.port); }
+  start(): void { this.running = true; if (import.meta.env.DEV) console.log('Gateway started on port', this.config.port); }
   stop(): void { this.running = false; }
   
   async handleRequest(method: string, path: string, body?: unknown): Promise<GatewayResponse> {
