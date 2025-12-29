@@ -5,14 +5,14 @@ export interface AlertNotifier { notify(alert: Alert): Promise<void>; }
 export class EmailNotifier implements AlertNotifier {
   constructor(private recipients: string[]) {}
   async notify(alert: Alert): Promise<void> {
-    console.log('Email to', this.recipients.join(','), ':', alert.message);
+    if (import.meta.env.DEV) console.log('Email to', this.recipients.join(','), ':', alert.message);
   }
 }
 
 export class SlackNotifier implements AlertNotifier {
   constructor(private webhookUrl: string) {}
   async notify(alert: Alert): Promise<void> {
-    console.log('Slack notification:', alert.message);
+    if (import.meta.env.DEV) console.log('Slack notification:', alert.message);
   }
 }
 
