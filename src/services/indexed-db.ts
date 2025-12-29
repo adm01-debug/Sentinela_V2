@@ -6,7 +6,7 @@ export class IndexeddbService {
     return this.instance;
   }
   
-  async init() { console.log('indexed-db service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('indexed-db service initialized'); }
 }
 
 export const indexeddbService = IndexeddbService.getInstance();
