@@ -41,7 +41,7 @@ export class APIComposer {
   }
   
   private async executeStep(step: CompositionStep, context: Record<string, unknown>): Promise<unknown> {
-    console.log('Executing step:', step.name, '->', step.service + step.endpoint);
+    if (import.meta.env.DEV) console.log('Executing step:', step.name, '->', step.service + step.endpoint);
     return { step: step.name, service: step.service };
   }
 }
