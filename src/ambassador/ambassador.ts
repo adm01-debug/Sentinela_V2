@@ -24,12 +24,12 @@ export class Ambassador {
 
   async start(): Promise<void> {
     this.running = true;
-    console.log("[Ambassador] Started for", this.config.targetService);
+    if (import.meta.env.DEV) console.log("[Ambassador] Started for", this.config.targetService);
   }
 
   async stop(): Promise<void> {
     this.running = false;
-    console.log("[Ambassador] Stopped");
+    if (import.meta.env.DEV) console.log("[Ambassador] Stopped");
   }
 
   async handle(ctx: RequestContext): Promise<Response> {
