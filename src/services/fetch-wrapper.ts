@@ -6,7 +6,7 @@ export class FetchwrapperService {
     return this.instance;
   }
   
-  async init() { console.log('fetch-wrapper service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('fetch-wrapper service initialized'); }
 }
 
 export const fetchwrapperService = FetchwrapperService.getInstance();
