@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (data.session) {
         setSession(data.session);
         setUser(data.user);
-        console.log('Sessão renovada com sucesso');
+        if (import.meta.env.DEV) console.log('Sessão renovada com sucesso')
       }
     } catch (error) {
       console.error('Erro inesperado ao renovar sessão:', error);
@@ -107,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Se estiver próximo de expirar, renovar
     if (timeUntilExpiry <= REFRESH_MARGIN_SECONDS && timeUntilExpiry > 0) {
-      console.log(`Sessão expira em ${timeUntilExpiry}s, renovando...`);
+      if (import.meta.env.DEV) console.log(`Sessão expira em ${timeUntilExpiry}s, renovando...`)
       await refreshSession();
     }
   }, [session, refreshSession]);
@@ -158,7 +158,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, newSession) => {
-        console.log('Auth event:', event);
+        if (import.meta.env.DEV) console.log('Auth event:', event)
         
         setSession(newSession);
         setUser(newSession?.user ?? null);
@@ -181,7 +181,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         // Quando token é renovado automaticamente pelo Supabase
         if (event === 'TOKEN_REFRESHED' && newSession) {
-          console.log('Token renovado pelo Supabase');
+          if (import.meta.env.DEV) console.log('Token renovado pelo Supabase')
         }
       }
     );
