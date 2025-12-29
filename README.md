@@ -185,3 +185,54 @@ If you find this project useful, please consider:
 ---
 
 Made with ❤️ by the Sentinela Team
+
+## 🚀 Usage
+
+### Quick Start
+
+1. Access the dashboard at `http://localhost:8080`
+2. Login with your credentials
+3. Navigate through the sidebar to access different modules
+
+### Key Features
+
+- **Dashboard**: Real-time overview of all monitored activities
+- **Employees**: Manage and monitor employee activities
+- **Devices**: Track and manage company devices
+- **Reports**: Generate comprehensive reports and analytics
+- **Settings**: Configure system preferences and policies
+
+
+## 💻 Development
+
+### Project Structure
+
+```
+src/
+├── components/     # Reusable UI components
+├── pages/          # Page components
+├── hooks/          # Custom React hooks
+├── services/       # API and business logic
+├── lib/            # Utility functions
+├── types/          # TypeScript types
+└── stores/         # State management
+```
+
+### Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run test         # Run tests
+npm run lint         # Run ESLint
+npm run format       # Format code with Prettier
+npm run storybook    # Start Storybook
+```
+
+### Code Quality
+
+- ESLint for linting
+- Prettier for formatting
+- Vitest for unit testing
+- Playwright for E2E testing
+
