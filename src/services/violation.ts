@@ -6,7 +6,7 @@ export class ViolationService {
     return this.instance;
   }
   
-  async init() { console.log('violation service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('violation service initialized'); }
 }
 
 export const violationService = ViolationService.getInstance();
