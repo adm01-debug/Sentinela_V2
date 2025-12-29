@@ -6,7 +6,7 @@ export class GeofenceService {
     return this.instance;
   }
   
-  async init() { console.log('geofence service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('geofence service initialized'); }
 }
 
 export const geofenceService = GeofenceService.getInstance();
