@@ -6,7 +6,7 @@ export class AnalyticsService {
     return this.instance;
   }
   
-  async init() { console.log('analytics service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('analytics service initialized'); }
 }
 
 export const analyticsService = AnalyticsService.getInstance();
