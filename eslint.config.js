@@ -18,6 +18,7 @@ export default tseslint.config(
       "react-refresh": reactRefresh,
     },
     rules: {
+      "no-console": ["warn", { "allow": ["warn", "error"] }],
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "@typescript-eslint/no-unused-vars": "off",
