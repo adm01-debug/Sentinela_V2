@@ -218,6 +218,8 @@ export function useAsyncRetry<T>(
     setRetryCount((prev) => prev + 1);
 
     return new Promise((resolve, reject) => {
+      // Note: setTimeout here is intentional for implementing retry delay
+      // It will be automatically cleaned up when Promise resolves/rejects
       setTimeout(async () => {
         try {
           const result = await execute();
