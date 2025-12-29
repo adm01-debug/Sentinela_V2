@@ -6,7 +6,7 @@ export class AuthService {
     return this.instance;
   }
   
-  async init() { console.log('auth service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('auth service initialized'); }
 }
 
 export const authService = AuthService.getInstance();
