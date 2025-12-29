@@ -13,5 +13,5 @@ export function trackEvent(name: string, properties?: Record<string, any>) {
   if (typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('event', name, properties);
   }
-  console.log('[Analytics]', name, properties);
+  if (import.meta.env.DEV) console.log('[Analytics]', name, properties);
 }
