@@ -19,17 +19,17 @@ export abstract class CDCConnector {
 export class PostgresCDCConnector extends CDCConnector {
   constructor(private config: SourceConfig) { super(); }
   
-  async connect(): Promise<void> { console.log('Connected to PostgreSQL'); }
-  async disconnect(): Promise<void> { console.log('Disconnected from PostgreSQL'); }
-  async start(): Promise<void> { this.running = true; console.log('Started CDC for PostgreSQL'); }
+  async connect(): Promise<void> { if (import.meta.env.DEV) console.log('Connected to PostgreSQL'); }
+  async disconnect(): Promise<void> { if (import.meta.env.DEV) console.log('Disconnected from PostgreSQL'); }
+  async start(): Promise<void> { this.running = true; if (import.meta.env.DEV) console.log('Started CDC for PostgreSQL'); }
   async stop(): Promise<void> { this.running = false; }
 }
 
 export class MySQLCDCConnector extends CDCConnector {
   constructor(private config: SourceConfig) { super(); }
   
-  async connect(): Promise<void> { console.log('Connected to MySQL'); }
-  async disconnect(): Promise<void> { console.log('Disconnected from MySQL'); }
-  async start(): Promise<void> { this.running = true; console.log('Started CDC for MySQL'); }
+  async connect(): Promise<void> { if (import.meta.env.DEV) console.log('Connected to MySQL'); }
+  async disconnect(): Promise<void> { if (import.meta.env.DEV) console.log('Disconnected from MySQL'); }
+  async start(): Promise<void> { this.running = true; if (import.meta.env.DEV) console.log('Started CDC for MySQL'); }
   async stop(): Promise<void> { this.running = false; }
 }
