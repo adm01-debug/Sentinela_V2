@@ -6,7 +6,7 @@ export class SessionService {
     return this.instance;
   }
   
-  async init() { console.log('session service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('session service initialized'); }
 }
 
 export const sessionService = SessionService.getInstance();
