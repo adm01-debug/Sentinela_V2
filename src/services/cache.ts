@@ -6,7 +6,7 @@ export class CacheService {
     return this.instance;
   }
   
-  async init() { console.log('cache service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('cache service initialized'); }
 }
 
 export const cacheService = CacheService.getInstance();
