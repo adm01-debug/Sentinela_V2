@@ -16,7 +16,7 @@ interface ServiceWorkerConfig {
 
 export function registerServiceWorker(config?: ServiceWorkerConfig) {
   if (!('serviceWorker' in navigator)) {
-    console.log('[SW] Service workers not supported');
+    if (import.meta.env.DEV) console.log('[SW] Service workers not supported');
     return;
   }
 
@@ -25,7 +25,7 @@ export function registerServiceWorker(config?: ServiceWorkerConfig) {
       const swUrl = '/sw.js';
       const registration = await navigator.serviceWorker.register(swUrl);
 
-      console.log('[SW] Service worker registered:', registration.scope);
+      if (import.meta.env.DEV) console.log('[SW] Service worker registered:', registration.scope);
 
       // Check for updates
       registration.onupdatefound = () => {
@@ -36,29 +36,29 @@ export function registerServiceWorker(config?: ServiceWorkerConfig) {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
               // New update available
-              console.log('[SW] New content available, please refresh');
+              if (import.meta.env.DEV) console.log('[SW] New content available, please refresh');
               config?.onUpdate?.(registration);
             } else {
               // Content cached for offline use
-              console.log('[SW] Content cached for offline use');
+              if (import.meta.env.DEV) console.log('[SW] Content cached for offline use');
               config?.onSuccess?.(registration);
             }
           }
         };
       };
     } catch (error) {
-      console.error('[SW] Registration failed:', error);
+      if (import.meta.env.DEV) console.error('[SW] Registration failed:', error);
     }
   });
 
   // Listen for online/offline events
   window.addEventListener('online', () => {
-    console.log('[SW] Back online');
+    if (import.meta.env.DEV) console.log('[SW] Back online');
     config?.onOnline?.();
   });
 
   window.addEventListener('offline', () => {
-    console.log('[SW] Gone offline');
+    if (import.meta.env.DEV) console.log('[SW] Gone offline');
     config?.onOffline?.();
   });
 }
@@ -73,9 +73,9 @@ export async function unregisterServiceWorker() {
   try {
     const registration = await navigator.serviceWorker.ready;
     await registration.unregister();
-    console.log('[SW] Service worker unregistered');
+    if (import.meta.env.DEV) console.log('[SW] Service worker unregistered');
   } catch (error) {
-    console.error('[SW] Unregistration failed:', error);
+    if (import.meta.env.DEV) console.error('[SW] Unregistration failed:', error);
   }
 }
 
@@ -89,9 +89,9 @@ export async function checkForUpdates() {
   try {
     const registration = await navigator.serviceWorker.ready;
     await registration.update();
-    console.log('[SW] Checked for updates');
+    if (import.meta.env.DEV) console.log('[SW] Checked for updates');
   } catch (error) {
-    console.error('[SW] Update check failed:', error);
+    if (import.meta.env.DEV) console.error('[SW] Update check failed:', error);
   }
 }
 
