@@ -6,7 +6,7 @@ export class ReportService {
     return this.instance;
   }
   
-  async init() { console.log('report service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('report service initialized'); }
 }
 
 export const reportService = ReportService.getInstance();
