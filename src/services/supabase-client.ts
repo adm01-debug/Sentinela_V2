@@ -6,7 +6,7 @@ export class SupabaseclientService {
     return this.instance;
   }
   
-  async init() { console.log('supabase-client service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('supabase-client service initialized'); }
 }
 
 export const supabaseclientService = SupabaseclientService.getInstance();
