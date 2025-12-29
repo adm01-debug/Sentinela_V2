@@ -6,7 +6,7 @@ export class ApiService {
     return this.instance;
   }
   
-  async init() { console.log('api service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('api service initialized'); }
 }
 
 export const apiService = ApiService.getInstance();
