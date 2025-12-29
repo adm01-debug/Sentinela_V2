@@ -288,6 +288,8 @@ export async function retry<T>(
 /**
  * Debounce function
  */
+// NOTE: 'any' types in generic utility functions (debounce, throttle, memoize) are intentional
+// This allows these utilities to work with any function signature while preserving type inference
 export function debounce<T extends (...args: any[]) => any>(
   fn: T,
   delay: number
