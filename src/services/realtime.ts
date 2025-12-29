@@ -6,7 +6,7 @@ export class RealtimeService {
     return this.instance;
   }
   
-  async init() { console.log('realtime service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('realtime service initialized'); }
 }
 
 export const realtimeService = RealtimeService.getInstance();
