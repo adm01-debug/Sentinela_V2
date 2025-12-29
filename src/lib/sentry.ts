@@ -33,7 +33,7 @@ export function initSentry() {
 
   // Don't initialize in development without DSN
   if (!dsn) {
-    console.log('[Sentry] DSN not configured, skipping initialization');
+    if (import.meta.env.DEV) console.log('[Sentry] DSN not configured, skipping initialization');
     return;
   }
 
@@ -65,7 +65,7 @@ export function initSentry() {
     beforeSend(event, hint) {
       // Don't send errors in development
       if (environment === 'development') {
-        console.error('[Sentry] Error captured:', hint.originalException);
+        if (import.meta.env.DEV) console.error('[Sentry] Error captured:', hint.originalException);
         return null;
       }
 
@@ -113,7 +113,7 @@ export function initSentry() {
     ],
   });
 
-  console.log('[Sentry] Initialized successfully');
+  if (import.meta.env.DEV) console.log('[Sentry] Initialized successfully');
 }
 
 // ============================================================
