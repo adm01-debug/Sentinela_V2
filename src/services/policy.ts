@@ -6,7 +6,7 @@ export class PolicyService {
     return this.instance;
   }
   
-  async init() { console.log('policy service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('policy service initialized'); }
 }
 
 export const policyService = PolicyService.getInstance();
