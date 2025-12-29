@@ -6,7 +6,7 @@ export class EncryptionService {
     return this.instance;
   }
   
-  async init() { console.log('encryption service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('encryption service initialized'); }
 }
 
 export const encryptionService = EncryptionService.getInstance();
