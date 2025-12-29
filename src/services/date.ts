@@ -6,7 +6,7 @@ export class DateService {
     return this.instance;
   }
   
-  async init() { console.log('date service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('date service initialized'); }
 }
 
 export const dateService = DateService.getInstance();
