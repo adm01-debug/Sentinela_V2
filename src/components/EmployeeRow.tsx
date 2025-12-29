@@ -18,7 +18,7 @@ export function EmployeeRow({ employee }: EmployeeRowProps) {
 
   return (
     <div 
-      onClick={() => navigate(`/employee/${employee.id}`)}
+      onClick={() = role="button" tabIndex={0}> navigate(`/employee/${employee.id}`)}
       className="flex items-center gap-4 rounded-lg border border-border/50 bg-card p-4 transition-all duration-200 hover:bg-accent/50 hover:border-primary/30 cursor-pointer"
     >
       <div className="relative">
