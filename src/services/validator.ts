@@ -6,7 +6,7 @@ export class ValidatorService {
     return this.instance;
   }
   
-  async init() { console.log('validator service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('validator service initialized'); }
 }
 
 export const validatorService = ValidatorService.getInstance();
