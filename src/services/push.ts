@@ -6,7 +6,7 @@ export class PushService {
     return this.instance;
   }
   
-  async init() { console.log('push service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('push service initialized'); }
 }
 
 export const pushService = PushService.getInstance();
