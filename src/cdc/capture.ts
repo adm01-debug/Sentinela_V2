@@ -7,7 +7,7 @@ export class ChangeDataCapture {
   
   constructor(private config: CDCConfig) {}
   
-  start(): void { this.running = true; console.log('CDC started for:', this.config.tables); }
+  start(): void { this.running = true; if (import.meta.env.DEV) console.log('CDC started for:', this.config.tables); }
   stop(): void { this.running = false; }
   
   onEvent(handler: (event: ChangeEvent) => Promise<void>): () => void {
