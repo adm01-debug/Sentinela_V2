@@ -47,6 +47,8 @@ export function useFocusTrap(isActive: boolean = true) {
  * Hook for announcing messages to screen readers
  */
 export function useAnnounce() {
+  // Note: timeouts here are intentionally not cleaned up as they are 
+  // short-lived one-shot operations for screen reader announcements
   const announce = useCallback((message: string, priority: 'polite' | 'assertive' = 'polite') => {
     const announcer = document.createElement('div');
     announcer.setAttribute('aria-live', priority);
