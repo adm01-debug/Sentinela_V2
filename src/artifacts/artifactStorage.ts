@@ -2,9 +2,9 @@ export interface StorageConfig { type: 'local' | 's3' | 'gcs'; path: string; max
 export class ArtifactStorage {
   private config: StorageConfig = { type: 'local', path: './artifacts' };
   configure(config: StorageConfig): void { this.config = config; }
-  async save(id: string, data: Uint8Array): Promise<string> { const path = this.config.path + '/' + id; console.log('Saving artifact to ' + path); return path; }
-  async load(id: string): Promise<Uint8Array | null> { console.log('Loading artifact ' + id); return null; }
-  async delete(id: string): Promise<void> { console.log('Deleting artifact ' + id); }
+  async save(id: string, data: Uint8Array): Promise<string> { const path = this.config.path + '/' + id; if (import.meta.env.DEV) console.log('Saving artifact to ' + path); return path; }
+  async load(id: string): Promise<Uint8Array | null> { if (import.meta.env.DEV) console.log('Loading artifact ' + id); return null; }
+  async delete(id: string): Promise<void> { if (import.meta.env.DEV) console.log('Deleting artifact ' + id); }
   async getSize(): Promise<number> { return 0; }
 }
 export const artifactStorage = new ArtifactStorage();
