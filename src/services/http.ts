@@ -6,7 +6,7 @@ export class HttpService {
     return this.instance;
   }
   
-  async init() { console.log('http service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('http service initialized'); }
 }
 
 export const httpService = HttpService.getInstance();
