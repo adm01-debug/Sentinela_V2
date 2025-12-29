@@ -6,7 +6,7 @@ export class ActivityService {
     return this.instance;
   }
   
-  async init() { console.log('activity service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('activity service initialized'); }
 }
 
 export const activityService = ActivityService.getInstance();
