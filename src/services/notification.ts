@@ -6,7 +6,7 @@ export class NotificationService {
     return this.instance;
   }
   
-  async init() { console.log('notification service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('notification service initialized'); }
 }
 
 export const notificationService = NotificationService.getInstance();
