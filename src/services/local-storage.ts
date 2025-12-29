@@ -6,7 +6,7 @@ export class LocalstorageService {
     return this.instance;
   }
   
-  async init() { console.log('local-storage service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('local-storage service initialized'); }
 }
 
 export const localstorageService = LocalstorageService.getInstance();
