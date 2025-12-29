@@ -6,7 +6,7 @@ export class WebsocketService {
     return this.instance;
   }
   
-  async init() { console.log('websocket service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('websocket service initialized'); }
 }
 
 export const websocketService = WebsocketService.getInstance();
