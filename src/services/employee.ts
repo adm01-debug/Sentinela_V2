@@ -6,7 +6,7 @@ export class EmployeeService {
     return this.instance;
   }
   
-  async init() { console.log('employee service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('employee service initialized'); }
 }
 
 export const employeeService = EmployeeService.getInstance();
