@@ -6,7 +6,7 @@ export class ScreenshotService {
     return this.instance;
   }
   
-  async init() { console.log('screenshot service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('screenshot service initialized'); }
 }
 
 export const screenshotService = ScreenshotService.getInstance();
