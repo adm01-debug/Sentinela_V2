@@ -6,7 +6,7 @@ export class LoggerService {
     return this.instance;
   }
   
-  async init() { console.log('logger service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('logger service initialized'); }
 }
 
 export const loggerService = LoggerService.getInstance();
