@@ -9,7 +9,7 @@ const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
 
 export function initErrorMonitoring() {
   if (!SENTRY_DSN) {
-    console.warn('Sentry DSN not configured, error monitoring disabled');
+    if (import.meta.env.DEV) console.warn('Sentry DSN not configured, error monitoring disabled');
     return;
   }
 
@@ -125,7 +125,7 @@ export function trackWebVitals() {
   // Track Core Web Vitals
   const reportWebVital = ({ name, value, id }: { name: string; value: number; id: string }) => {
     // Send to analytics
-    console.log(`[Web Vital] ${name}: ${value}`);
+    if (import.meta.env.DEV) console.log(`[Web Vital] ${name}: ${value}`);
     
     // Optional: Send to Sentry
     Sentry.addBreadcrumb({
