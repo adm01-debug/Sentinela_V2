@@ -6,7 +6,7 @@ export class CryptoService {
     return this.instance;
   }
   
-  async init() { console.log('crypto service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('crypto service initialized'); }
 }
 
 export const cryptoService = CryptoService.getInstance();
