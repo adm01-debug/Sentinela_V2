@@ -6,7 +6,7 @@ export class MapboxService {
     return this.instance;
   }
   
-  async init() { console.log('mapbox service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('mapbox service initialized'); }
 }
 
 export const mapboxService = MapboxService.getInstance();
