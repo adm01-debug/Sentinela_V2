@@ -1,3 +1,4 @@
+// TODO: Add event listener cleanup in useEffect return to prevent memory leak
 import { useState, useEffect } from 'react';
 
 export function useBattery() {
