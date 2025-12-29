@@ -17,7 +17,8 @@ registerServiceWorker({
     window.dispatchEvent(event);
   },
   onSuccess: () => {
-    console.log('[PWA] App is ready for offline use');
+    // PWA ready for offline use - logged in development only
+    if (import.meta.env.DEV) console.log('[PWA] App is ready for offline use');
   },
   onOffline: () => {
     // Show offline notification
