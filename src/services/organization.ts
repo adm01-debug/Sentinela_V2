@@ -6,7 +6,7 @@ export class OrganizationService {
     return this.instance;
   }
   
-  async init() { console.log('organization service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('organization service initialized'); }
 }
 
 export const organizationService = OrganizationService.getInstance();
