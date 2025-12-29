@@ -2,7 +2,7 @@ export function setUserProperties(userId: string, properties: Record<string, any
   if (typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('set', 'user_properties', { user_id: userId, ...properties });
   }
-  console.log('[UserProperties]', userId, properties);
+  if (import.meta.env.DEV) console.log('[UserProperties]', userId, properties);
 }
 
 export function identifyUser(userId: string) {
