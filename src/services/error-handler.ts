@@ -6,7 +6,7 @@ export class ErrorhandlerService {
     return this.instance;
   }
   
-  async init() { console.log('error-handler service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('error-handler service initialized'); }
 }
 
 export const errorhandlerService = ErrorhandlerService.getInstance();
