@@ -6,7 +6,7 @@ export class StorageService {
     return this.instance;
   }
   
-  async init() { console.log('storage service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('storage service initialized'); }
 }
 
 export const storageService = StorageService.getInstance();
