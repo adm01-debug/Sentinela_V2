@@ -6,7 +6,7 @@ export class TeamService {
     return this.instance;
   }
   
-  async init() { console.log('team service initialized'); }
+  async init() { if (import.meta.env.DEV) console.log('team service initialized'); }
 }
 
 export const teamService = TeamService.getInstance();
