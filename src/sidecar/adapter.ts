@@ -17,7 +17,7 @@ export class LoggingAdapter {
   
   log(level: string, message: string, context?: Record<string, unknown>): void {
     this.logs.push({ timestamp: new Date(), level, message, context });
-    console.log('[' + level.toUpperCase() + ']', message, context ?? '');
+    if (import.meta.env.DEV) console.log('[' + level.toUpperCase() + ']', message, context ?? '');
   }
   
   getLogs(level?: string): LogEntry[] {
