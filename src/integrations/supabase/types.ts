@@ -1,3 +1,14 @@
+/**
+ * Supabase Database Types
+ * 
+ * This file contains TypeScript types for all database tables.
+ * 
+ * To regenerate this file:
+ * npx supabase gen types typescript --project-id <PROJECT_ID> > src/integrations/supabase/types.ts
+ * 
+ * Last sync: Check CHANGELOG for latest update
+ */
+
 export type Json =
   | string
   | number
