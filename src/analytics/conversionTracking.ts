@@ -2,7 +2,7 @@ export function trackConversion(conversionId: string, value?: number, currency =
   if (typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('event', 'conversion', { send_to: conversionId, value, currency });
   }
-  console.log('[Conversion]', conversionId, value);
+  if (import.meta.env.DEV) console.log('[Conversion]', conversionId, value);
 }
 
 export function trackPurchase(transactionId: string, value: number, items: any[]) {
