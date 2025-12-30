@@ -196,6 +196,8 @@ export const queryKeys = {
     all: ['dashboard'] as const,
     stats: () => [...queryKeys.dashboard.all, 'stats'] as const,
     activity: () => [...queryKeys.dashboard.all, 'activity'] as const,
+    recentActivity: () => [...queryKeys.dashboard.all, 'recent-activity'] as const,
+    recentViolations: () => [...queryKeys.dashboard.all, 'recent-violations'] as const,
     security: () => [...queryKeys.dashboard.all, 'security'] as const,
     layout: () => [...queryKeys.dashboard.all, 'layout'] as const,
     widgets: () => [...queryKeys.dashboard.all, 'widgets'] as const,
@@ -387,6 +389,12 @@ export const queryPresets = {
 // ============================================================
 
 export const invalidateRelated = {
+  employee: (queryClient: QueryClient, id: string) => {
+    queryClient.invalidateQueries({ queryKey: queryKeys.employees.detail(id) });
+    queryClient.invalidateQueries({ queryKey: queryKeys.employees.lists() });
+    queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
+  },
+
   employees: (queryClient: QueryClient) => {
     queryClient.invalidateQueries({ queryKey: queryKeys.employees.all });
     queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });

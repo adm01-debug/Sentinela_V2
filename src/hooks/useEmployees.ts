@@ -313,7 +313,7 @@ export function useDeleteEmployee() {
 
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.employees.lists() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
     },
   });
 }

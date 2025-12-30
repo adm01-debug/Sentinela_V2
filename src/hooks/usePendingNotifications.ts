@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { queryKeys, queryPresets, invalidateRelated, REFETCH_INTERVALS } from '@/lib/queryClient';
+import { useNotificationsStore } from '@/lib/stores';
 
 export interface PendingNotification {
   id: string;
@@ -13,19 +13,22 @@ export interface PendingNotification {
   created_at: string;
 }
 
+// Note: Uses local Zustand store since 'notifications' table doesn't exist in DB
 export function usePendingNotifications() {
+  const { notifications } = useNotificationsStore();
+  
   return useQuery({
     queryKey: queryKeys.notifications.pending(),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('read', false)
-        .order('created_at', { ascending: false })
-        .limit(50);
-
-      if (error) throw error;
-      return data as PendingNotification[];
+    queryFn: async (): Promise<PendingNotification[]> => {
+      // Transform store notifications to expected format
+      return notifications.filter(n => !n.read).map(n => ({
+        id: n.id,
+        type: n.type,
+        title: n.title,
+        message: n.message,
+        read: n.read,
+        created_at: n.createdAt.toISOString(),
+      }));
     },
     ...queryPresets.realtime,
     refetchInterval: REFETCH_INTERVALS.FREQUENT,
@@ -33,16 +36,12 @@ export function usePendingNotifications() {
 }
 
 export function useUnreadNotificationsCount() {
+  const { unreadCount } = useNotificationsStore();
+  
   return useQuery({
     queryKey: queryKeys.notifications.unread(),
-    queryFn: async () => {
-      const { count, error } = await supabase
-        .from('notifications')
-        .select('id', { count: 'exact', head: true })
-        .eq('read', false);
-
-      if (error) throw error;
-      return count || 0;
+    queryFn: async (): Promise<number> => {
+      return unreadCount;
     },
     ...queryPresets.realtime,
   });
@@ -50,15 +49,11 @@ export function useUnreadNotificationsCount() {
 
 export function useMarkNotificationAsRead() {
   const queryClient = useQueryClient();
+  const { markAsRead } = useNotificationsStore();
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('id', id);
-
-      if (error) throw error;
+      markAsRead(id);
     },
     onSuccess: () => {
       invalidateRelated.notifications(queryClient);
@@ -69,15 +64,11 @@ export function useMarkNotificationAsRead() {
 export function useMarkAllNotificationsAsRead() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { markAllAsRead } = useNotificationsStore();
 
   return useMutation({
     mutationFn: async () => {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('read', false);
-
-      if (error) throw error;
+      markAllAsRead();
     },
     onSuccess: () => {
       invalidateRelated.notifications(queryClient);
