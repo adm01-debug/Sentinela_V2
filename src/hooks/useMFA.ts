@@ -113,6 +113,8 @@ export function useMFA() {
   const queryClient = useQueryClient();
   const factorsQuery = useMFAFactors();
   const statusQuery = useMFAStatus();
+  const enrollMutation = useEnrollMFA();
+  const verifyMutation = useVerifyMFA();
   const unenrollMutation = useUnenrollMFA();
 
   const factors = factorsQuery.data || [];
@@ -124,6 +126,25 @@ export function useMFA() {
     status: statusQuery.data,
     loading: factorsQuery.isLoading || statusQuery.isLoading,
     error: factorsQuery.error || statusQuery.error,
+    
+    enroll: async (friendlyName?: string) => {
+      try {
+        const data = await enrollMutation.mutateAsync(friendlyName);
+        return { data, error: null };
+      } catch (error) {
+        return { data: null, error: error as Error };
+      }
+    },
+    
+    verify: async (factorId: string, code: string) => {
+      try {
+        const data = await verifyMutation.mutateAsync({ factorId, code });
+        return { data, error: null };
+      } catch (error) {
+        return { data: null, error: error as Error };
+      }
+    },
+    
     unenroll: async (factorId: string) => {
       try {
         await unenrollMutation.mutateAsync(factorId);
@@ -132,6 +153,7 @@ export function useMFA() {
         return { error: error as Error };
       }
     },
+    
     checkMFAStatus: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.mfa.all });
     },

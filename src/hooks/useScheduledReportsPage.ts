@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export interface ScheduledReport {
@@ -64,12 +64,30 @@ export function useScheduledReportsPage() {
   const [formData, setFormData] = useState<ReportFormData>(initialFormData);
   const [newRecipient, setNewRecipient] = useState('');
 
+  // Use scheduled_report_settings table that exists
   const { data: reports = [], isLoading } = useQuery({
     queryKey: ['scheduled-reports'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('scheduled_reports').select('*').order('name');
+      const { data, error } = await supabase
+        .from('scheduled_report_settings')
+        .select('*')
+        .order('created_at', { ascending: false });
       if (error) throw error;
-      return data as ScheduledReport[];
+      return (data || []).map(r => ({
+        id: r.id,
+        name: `Relatório ${r.report_type}`,
+        description: '',
+        report_type: r.report_type as any,
+        format: 'pdf' as const,
+        schedule: r.report_type as any,
+        schedule_time: r.send_time,
+        schedule_day: r.send_day_of_week || undefined,
+        recipients: r.recipient_emails || [],
+        is_active: r.enabled,
+        last_sent: r.last_sent_at || undefined,
+        next_run: undefined,
+        created_at: r.created_at,
+      })) as ScheduledReport[];
     },
   });
 

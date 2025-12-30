@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export type ViolationSeverity = 'low' | 'medium' | 'high' | 'critical';
@@ -50,29 +50,38 @@ export function useViolationsPage() {
     queryKey: ['violations'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('violations')
-        .select('*, employees(name)')
-        .order('created_at', { ascending: false });
+        .from('security_violations')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(200);
       if (error) throw error;
-      return data.map(v => ({ ...v, employee_name: v.employees?.name || 'Desconhecido' })) as Violation[];
+      return data.map(v => ({
+        id: v.id,
+        employee_id: '',
+        employee_name: v.employee_name,
+        violation_type: v.violation_type,
+        severity: v.severity as ViolationSeverity,
+        status: v.read ? 'resolved' : 'open' as ViolationStatus,
+        description: v.description || undefined,
+        created_at: v.created_at,
+      })) as Violation[];
     },
   });
 
   const resolveMutation = useMutation({
     mutationFn: async ({ id, status, notes }: { id: string; status: ViolationStatus; notes?: string }) => {
       const { error } = await supabase
-        .from('violations')
+        .from('security_violations')
         .update({
-          status,
-          resolution_notes: notes,
-          resolved_at: new Date().toISOString(),
+          read: status === 'resolved' || status === 'dismissed',
+          description: notes || undefined,
         })
         .eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['violations'] });
-      toast({ title: 'Violacao atualizada!' });
+      toast({ title: 'Violação atualizada!' });
       setIsResolveOpen(false);
       setSelectedViolation(null);
       setResolutionNotes('');
