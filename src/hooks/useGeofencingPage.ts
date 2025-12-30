@@ -74,25 +74,49 @@ export function useGeofencingPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('geofences')
-        .select('*, geofence_employees(count)')
+        .select('*')
         .order('name');
       if (error) throw error;
+      
+      // Count employees per geofence from employee_geofences table
+      const geofenceIds = data.map(g => g.id);
+      const { data: employeeCounts } = await supabase
+        .from('employee_geofences')
+        .select('geofence_id')
+        .in('geofence_id', geofenceIds);
+      
+      const countMap = (employeeCounts || []).reduce((acc, eg) => {
+        acc[eg.geofence_id] = (acc[eg.geofence_id] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+      
       return data.map(g => ({
-        ...g,
-        employees_count: g.geofence_employees?.[0]?.count || 0,
+        id: g.id,
+        name: g.name,
+        description: g.description,
+        type: 'circle' as const,
+        center_lat: g.latitude,
+        center_lng: g.longitude,
+        radius: g.radius_meters,
+        color: '#3b82f6',
+        is_active: g.is_active,
+        restricted: false,
+        required: false,
+        created_at: g.created_at,
+        employees_count: countMap[g.id] || 0,
       })) as Geofence[];
     },
   });
 
   const { data: events = [] } = useQuery({
-    queryKey: ['geofence-events', selectedGeofence?.id],
+    queryKey: ['geofence-violations', selectedGeofence?.id],
     queryFn: async () => {
       if (!selectedGeofence) return [];
       const { data, error } = await supabase
-        .from('geofence_events')
-        .select('*, employees(name)')
-        .eq('geofence_id', selectedGeofence.id)
-        .order('occurred_at', { ascending: false })
+        .from('geofence_violations')
+        .select('*')
+        .eq('nearest_geofence_id', selectedGeofence.id)
+        .order('created_at', { ascending: false })
         .limit(50);
       if (error) throw error;
       return data;
@@ -103,10 +127,12 @@ export function useGeofencingPage() {
   const createMutation = useMutation({
     mutationFn: async (data: GeofenceFormData) => {
       const geofenceData = {
-        ...data,
-        geometry: data.type === 'polygon' && drawnPoints.length >= 3
-          ? { type: 'polygon', coordinates: drawnPoints.map(p => [p.lng, p.lat]) }
-          : null,
+        name: data.name,
+        description: data.description,
+        latitude: data.center_lat,
+        longitude: data.center_lng,
+        radius_meters: data.radius,
+        is_active: data.is_active,
       };
       const { error } = await supabase.from('geofences').insert(geofenceData);
       if (error) throw error;
@@ -124,10 +150,12 @@ export function useGeofencingPage() {
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: GeofenceFormData }) => {
       const geofenceData = {
-        ...data,
-        geometry: data.type === 'polygon' && drawnPoints.length >= 3
-          ? { type: 'polygon', coordinates: drawnPoints.map(p => [p.lng, p.lat]) }
-          : null,
+        name: data.name,
+        description: data.description,
+        latitude: data.center_lat,
+        longitude: data.center_lng,
+        radius_meters: data.radius,
+        is_active: data.is_active,
       };
       const { error } = await supabase.from('geofences').update(geofenceData).eq('id', id);
       if (error) throw error;

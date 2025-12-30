@@ -69,15 +69,53 @@ export function useMonitoringPoliciesPage() {
   const { data: policies = [], isLoading } = useQuery({
     queryKey: ['monitoring-policies'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('monitoring_policies').select('*').order('name');
+      const { data, error } = await supabase
+        .from('monitoring_settings')
+        .select('*')
+        .order('setting_key');
       if (error) throw error;
-      return data as MonitoringPolicy[];
+      
+      // Map monitoring_settings to policy format
+      return (data || []).map(setting => ({
+        id: setting.id,
+        name: setting.setting_key,
+        description: setting.description,
+        screenshot_interval: (setting.setting_value as any)?.screenshot_interval || 300,
+        activity_tracking: (setting.setting_value as any)?.activity_tracking ?? true,
+        app_tracking: (setting.setting_value as any)?.app_tracking ?? true,
+        url_tracking: (setting.setting_value as any)?.url_tracking ?? true,
+        keystroke_tracking: (setting.setting_value as any)?.keystroke_tracking ?? false,
+        location_tracking: (setting.setting_value as any)?.location_tracking ?? false,
+        idle_detection: (setting.setting_value as any)?.idle_detection ?? true,
+        idle_threshold: (setting.setting_value as any)?.idle_threshold || 300,
+        work_hours_only: (setting.setting_value as any)?.work_hours_only ?? true,
+        applies_to: (setting.setting_value as any)?.applies_to || 'all',
+        is_active: (setting.setting_value as any)?.is_active ?? true,
+        created_at: setting.created_at,
+      })) as MonitoringPolicy[];
     },
   });
 
   const createMutation = useMutation({
     mutationFn: async (data: PolicyFormData) => {
-      const { error } = await supabase.from('monitoring_policies').insert(data);
+      const settingData = {
+        setting_key: data.name,
+        description: data.description,
+        setting_value: {
+          screenshot_interval: data.screenshot_interval,
+          activity_tracking: data.activity_tracking,
+          app_tracking: data.app_tracking,
+          url_tracking: data.url_tracking,
+          keystroke_tracking: data.keystroke_tracking,
+          location_tracking: data.location_tracking,
+          idle_detection: data.idle_detection,
+          idle_threshold: data.idle_threshold,
+          work_hours_only: data.work_hours_only,
+          applies_to: data.applies_to,
+          is_active: data.is_active,
+        },
+      };
+      const { error } = await supabase.from('monitoring_settings').insert(settingData);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -92,7 +130,24 @@ export function useMonitoringPoliciesPage() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: PolicyFormData }) => {
-      const { error } = await supabase.from('monitoring_policies').update(data).eq('id', id);
+      const settingData = {
+        setting_key: data.name,
+        description: data.description,
+        setting_value: {
+          screenshot_interval: data.screenshot_interval,
+          activity_tracking: data.activity_tracking,
+          app_tracking: data.app_tracking,
+          url_tracking: data.url_tracking,
+          keystroke_tracking: data.keystroke_tracking,
+          location_tracking: data.location_tracking,
+          idle_detection: data.idle_detection,
+          idle_threshold: data.idle_threshold,
+          work_hours_only: data.work_hours_only,
+          applies_to: data.applies_to,
+          is_active: data.is_active,
+        },
+      };
+      const { error } = await supabase.from('monitoring_settings').update(settingData).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -107,7 +162,7 @@ export function useMonitoringPoliciesPage() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('monitoring_policies').delete().eq('id', id);
+      const { error } = await supabase.from('monitoring_settings').delete().eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {

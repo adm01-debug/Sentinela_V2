@@ -9,38 +9,25 @@ export type RuleSeverity = 'low' | 'medium' | 'high' | 'critical';
 
 export interface ViolationRule {
   id: string;
-  name: string;
+  name: string; // derived from rule_value
   description?: string;
-  type: RuleType;
-  conditions: RuleCondition[];
-  actions: RuleAction[];
+  type: RuleType; // maps to rule_type
   severity: RuleSeverity;
   is_active: boolean;
-  applies_to: 'all' | 'teams' | 'employees';
-  team_ids?: string[];
-  employee_ids?: string[];
+  notify_employee: boolean;
+  notify_admin: boolean;
   created_at: string;
   updated_at: string;
-  triggered_count: number;
-}
-
-export interface RuleCondition {
-  field: string;
-  operator: 'equals' | 'contains' | 'regex' | 'greater_than' | 'less_than' | 'in' | 'not_in';
-  value: string | number | string[];
 }
 
 export interface RuleFormData {
   name: string;
   description: string;
   type: RuleType;
-  conditions: RuleCondition[];
-  actions: RuleAction[];
   severity: RuleSeverity;
   is_active: boolean;
-  applies_to: 'all' | 'teams' | 'employees';
-  team_ids: string[];
-  employee_ids: string[];
+  notify_employee: boolean;
+  notify_admin: boolean;
 }
 
 export const RULE_TYPES: Array<{ value: RuleType; label: string; icon: string }> = [
@@ -65,13 +52,10 @@ const initialFormData: RuleFormData = {
   name: '',
   description: '',
   type: 'app',
-  conditions: [{ field: 'app_name', operator: 'contains', value: '' }],
-  actions: ['alert'],
   severity: 'medium',
   is_active: true,
-  applies_to: 'all',
-  team_ids: [],
-  employee_ids: [],
+  notify_employee: false,
+  notify_admin: true,
 };
 
 export function useViolationRulesPage() {
@@ -96,7 +80,18 @@ export function useViolationRulesPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return data as ViolationRule[];
+      return (data || []).map(r => ({
+        id: r.id,
+        name: r.rule_value,
+        description: r.description,
+        type: r.rule_type as RuleType,
+        severity: r.severity as RuleSeverity,
+        is_active: r.is_active,
+        notify_employee: r.notify_employee,
+        notify_admin: r.notify_admin,
+        created_at: r.created_at,
+        updated_at: r.updated_at,
+      })) as ViolationRule[];
     },
   });
 
@@ -111,7 +106,16 @@ export function useViolationRulesPage() {
 
   const createMutation = useMutation({
     mutationFn: async (data: RuleFormData) => {
-      const { error } = await supabase.from('violation_rules').insert(data);
+      const dbData = {
+        rule_type: data.type,
+        rule_value: data.name,
+        description: data.description,
+        severity: data.severity,
+        is_active: data.is_active,
+        notify_employee: data.notify_employee,
+        notify_admin: data.notify_admin,
+      };
+      const { error } = await supabase.from('violation_rules').insert(dbData);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -126,7 +130,16 @@ export function useViolationRulesPage() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: RuleFormData }) => {
-      const { error } = await supabase.from('violation_rules').update(data).eq('id', id);
+      const dbData = {
+        rule_type: data.type,
+        rule_value: data.name,
+        description: data.description,
+        severity: data.severity,
+        is_active: data.is_active,
+        notify_employee: data.notify_employee,
+        notify_admin: data.notify_admin,
+      };
+      const { error } = await supabase.from('violation_rules').update(dbData).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -203,13 +216,10 @@ export function useViolationRulesPage() {
       name: rule.name,
       description: rule.description || '',
       type: rule.type,
-      conditions: rule.conditions || [],
-      actions: rule.actions || [],
       severity: rule.severity,
       is_active: rule.is_active,
-      applies_to: rule.applies_to,
-      team_ids: rule.team_ids || [],
-      employee_ids: rule.employee_ids || [],
+      notify_employee: rule.notify_employee,
+      notify_admin: rule.notify_admin,
     });
     setIsDialogOpen(true);
   }, []);
