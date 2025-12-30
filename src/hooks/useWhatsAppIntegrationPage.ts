@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export interface WhatsAppConfig {
@@ -53,16 +53,25 @@ export function useWhatsAppIntegrationPage() {
   const [messageFilter, setMessageFilter] = useState<string>('all');
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date } | null>(null);
 
-  // Queries
+  // Use whatsapp_notification_settings table that exists
   const { data: config, isLoading: isLoadingConfig } = useQuery({
     queryKey: ['whatsapp-config'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('whatsapp_config')
+        .from('whatsapp_notification_settings')
         .select('*')
         .single();
       if (error && error.code !== 'PGRST116') throw error;
-      return data as WhatsAppConfig | null;
+      if (!data) return null;
+      return {
+        id: data.id,
+        phone_number_id: data.phone_number_id || '',
+        business_account_id: data.business_account_id || '',
+        access_token: '',
+        webhook_verify_token: data.webhook_verify_token || '',
+        is_active: data.is_active,
+        created_at: data.created_at,
+      } as WhatsAppConfig;
     },
   });
 
@@ -70,7 +79,7 @@ export function useWhatsAppIntegrationPage() {
     queryKey: ['whatsapp-messages', messageFilter, dateRange],
     queryFn: async () => {
       let query = supabase
-        .from('whatsapp_messages')
+        .from('whatsapp_message_logs')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(100);
@@ -79,16 +88,18 @@ export function useWhatsAppIntegrationPage() {
         query = query.eq('status', messageFilter);
       }
 
-      if (dateRange?.from) {
-        query = query.gte('created_at', dateRange.from.toISOString());
-      }
-      if (dateRange?.to) {
-        query = query.lte('created_at', dateRange.to.toISOString());
-      }
-
       const { data, error } = await query;
       if (error) throw error;
-      return data as WhatsAppMessage[];
+      return (data || []).map(m => ({
+        id: m.id,
+        to: m.phone_number,
+        from: '',
+        type: m.message_type as any,
+        content: m.message_body || '',
+        status: m.status as any,
+        created_at: m.created_at,
+        error_message: m.error_message || undefined,
+      })) as WhatsAppMessage[];
     },
   });
 

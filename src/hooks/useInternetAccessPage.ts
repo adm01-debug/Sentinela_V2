@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export interface InternetAccessRule {
@@ -59,12 +59,28 @@ export function useInternetAccessPage() {
   const [deletingRule, setDeletingRule] = useState<InternetAccessRule | null>(null);
   const [formData, setFormData] = useState<RuleFormData>(initialFormData);
 
+  // Using internet_access_settings table that exists
   const { data: rules = [], isLoading } = useQuery({
     queryKey: ['internet-access-rules'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('internet_access_rules').select('*').order('name');
+      const { data, error } = await supabase
+        .from('internet_access_settings')
+        .select('*')
+        .order('employee_name');
       if (error) throw error;
-      return data as InternetAccessRule[];
+      // Map to expected interface
+      return (data || []).map(item => ({
+        id: item.id,
+        name: `Regra - ${item.employee_name}`,
+        description: item.notes || '',
+        type: item.access_level === 'blocked' ? 'block' : 'allow' as 'block' | 'allow',
+        target_type: 'domain' as const,
+        target_value: item.blocked_sites?.join(', ') || '',
+        applies_to: 'employees' as const,
+        is_active: true,
+        created_at: item.created_at,
+        blocked_count: item.blocked_sites?.length || 0,
+      })) as InternetAccessRule[];
     },
   });
 

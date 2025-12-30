@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export interface AIAnalysisResult {
@@ -34,25 +34,32 @@ export function useAIAnalysisPage() {
     queryKey: ['ai-analyses', selectedEmployee, analysisType, dateRange],
     queryFn: async () => {
       let query = supabase
-        .from('ai_analyses')
-        .select('*, employees(name)')
+        .from('ai_analysis_reports')
+        .select('*')
         .order('created_at', { ascending: false })
         .limit(50);
 
       if (selectedEmployee !== 'all') {
-        query = query.eq('employee_id', selectedEmployee);
+        query = query.eq('employee_name', selectedEmployee);
       }
 
       if (analysisType !== 'all') {
-        query = query.eq('analysis_type', analysisType);
+        query = query.eq('report_type', analysisType);
       }
 
       const { data, error } = await query;
       if (error) throw error;
 
-      return data.map(a => ({
-        ...a,
-        employee_name: a.employees?.name || 'Unknown',
+      return (data || []).map(a => ({
+        id: a.id,
+        employee_id: '',
+        employee_name: a.employee_name || 'Desconhecido',
+        analysis_type: a.report_type as 'productivity' | 'behavior' | 'risk' | 'summary',
+        score: a.risk_score || 0,
+        insights: Array.isArray(a.insights) ? a.insights as string[] : [],
+        recommendations: Array.isArray(a.recommendations) ? a.recommendations as string[] : [],
+        data: a.raw_data as Record<string, unknown> || {},
+        created_at: a.created_at,
       })) as AIAnalysisResult[];
     },
   });
