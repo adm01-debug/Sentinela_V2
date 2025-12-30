@@ -6,21 +6,20 @@ import { queryKeys } from '@/lib/queryClient';
 
 interface AgentKey {
   id: string;
-  key: string;
-  name: string;
-  description: string;
+  key_name: string;
+  agent_key: string;
+  employee_name: string | null;
+  device_name: string | null;
   is_active: boolean;
   created_at: string;
-  expires_at: string | null;
-  last_used_at: string | null;
-  usage_count: number;
-  company_id: string;
+  last_seen_at: string | null;
+  company_id: string | null;
 }
 
 interface CreateKeyData {
-  name: string;
-  description?: string;
-  expires_at?: string;
+  key_name: string;
+  employee_name?: string;
+  device_name?: string;
 }
 
 export function useAgentKeysPage() {
@@ -46,7 +45,7 @@ export function useAgentKeysPage() {
         query = query.eq('is_active', statusFilter === 'active');
       }
       if (search) {
-        query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`);
+        query = query.or(`key_name.ilike.%${search}%,employee_name.ilike.%${search}%`);
       }
 
       const { data, error } = await query;
@@ -60,34 +59,35 @@ export function useAgentKeysPage() {
     const keys = keysQuery.data || [];
     const total = keys.length;
     const active = keys.filter(k => k.is_active).length;
-    const expired = keys.filter(k => k.expires_at && new Date(k.expires_at) < new Date()).length;
     const recentlyUsed = keys.filter(k => {
-      if (!k.last_used_at) return false;
+      if (!k.last_seen_at) return false;
       const dayAgo = new Date();
       dayAgo.setDate(dayAgo.getDate() - 1);
-      return new Date(k.last_used_at) > dayAgo;
+      return new Date(k.last_seen_at) > dayAgo;
     }).length;
 
-    return { total, active, expired, recentlyUsed };
+    return { total, active, recentlyUsed };
   }, [keysQuery.data]);
 
   // Create key mutation
   const createMutation = useMutation({
     mutationFn: async (data: CreateKeyData) => {
       // Generate a secure key
-      const key = 'sk_' + Array.from(crypto.getRandomValues(new Uint8Array(32)))
+      const agentKey = 'sk_' + Array.from(crypto.getRandomValues(new Uint8Array(32)))
         .map(b => b.toString(16).padStart(2, '0'))
         .join('');
 
       const { error } = await supabase
         .from('agent_keys')
         .insert({
-          ...data,
-          key,
+          key_name: data.key_name,
+          agent_key: agentKey,
+          employee_name: data.employee_name,
+          device_name: data.device_name,
           is_active: true,
         });
       if (error) throw error;
-      return key;
+      return agentKey;
     },
     onSuccess: (key) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.agentKeys.all });
@@ -202,8 +202,8 @@ export function useAgentKeysPage() {
     deleteMutation.mutate(keyId);
   }, [deleteMutation]);
 
-  const handleCopyKey = useCallback((key: string) => {
-    navigator.clipboard.writeText(key);
+  const handleCopyKey = useCallback((agentKey: string) => {
+    navigator.clipboard.writeText(agentKey);
     toast({ title: 'Chave copiada para a área de transferência' });
   }, [toast]);
 

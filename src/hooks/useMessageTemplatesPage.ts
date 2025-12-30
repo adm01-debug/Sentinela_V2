@@ -3,17 +3,19 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-// Types
+// Types (mapped from DB schema)
 export interface MessageTemplate {
   id: string;
   name: string;
-  content: string;
-  category: string;
+  description?: string;
+  content: string; // maps to 'body' in DB
+  category: string; // maps to 'template_type' in DB
   variables: string[];
   is_active: boolean;
   created_at: string;
   updated_at: string;
-  usage_count: number;
+  subject?: string;
+  channel: string;
 }
 
 export interface TemplateFormData {
@@ -79,14 +81,34 @@ export function useMessageTemplatesPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return data as MessageTemplate[];
+      return (data || []).map(t => ({
+        id: t.id,
+        name: t.name,
+        description: t.description,
+        content: t.body,
+        category: t.template_type,
+        variables: t.variables || [],
+        is_active: t.is_active,
+        created_at: t.created_at,
+        updated_at: t.updated_at,
+        subject: t.subject,
+        channel: t.channel,
+      })) as MessageTemplate[];
     },
   });
 
   // Mutations
   const createMutation = useMutation({
     mutationFn: async (data: TemplateFormData) => {
-      const { error } = await supabase.from('message_templates').insert(data);
+      const dbData = {
+        name: data.name,
+        body: data.content,
+        template_type: data.category,
+        variables: data.variables,
+        is_active: data.is_active,
+        channel: 'email',
+      };
+      const { error } = await supabase.from('message_templates').insert(dbData);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -101,7 +123,14 @@ export function useMessageTemplatesPage() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: TemplateFormData }) => {
-      const { error } = await supabase.from('message_templates').update(data).eq('id', id);
+      const dbData = {
+        name: data.name,
+        body: data.content,
+        template_type: data.category,
+        variables: data.variables,
+        is_active: data.is_active,
+      };
+      const { error } = await supabase.from('message_templates').update(dbData).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
