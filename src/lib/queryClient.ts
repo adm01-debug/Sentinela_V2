@@ -287,6 +287,14 @@ export const queryKeys = {
     pending: () => [...queryKeys.export.all, 'pending'] as const,
   },
   
+  // Security
+  security: {
+    all: ['security'] as const,
+    events: (filters?: Record<string, unknown>) => [...queryKeys.security.all, 'events', filters] as const,
+    settings: ['security', 'settings'] as const,
+    stats: () => [...queryKeys.security.all, 'stats'] as const,
+  },
+  
   // Security Metrics
   securityMetrics: {
     all: ['security-metrics'] as const,
