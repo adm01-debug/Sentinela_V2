@@ -6,20 +6,19 @@ import { queryKeys } from '@/lib/queryClient';
 
 interface SecurityEvent {
   id: string;
-  type: 'login_failed' | 'mfa_disabled' | 'suspicious_activity' | 'brute_force';
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  user_id: string | null;
-  ip_address: string;
-  description: string;
+  violation_type: string;
+  severity: string;
+  employee_name: string;
+  policy_name: string;
+  description: string | null;
   created_at: string;
-  resolved: boolean;
+  read: boolean;
+  device: string | null;
+  ip_address: string | null;
 }
 
 interface SecuritySettings {
   mfa_required: boolean;
-  password_min_length: number;
-  session_timeout_minutes: number;
-  max_login_attempts: number;
   ip_whitelist_enabled: boolean;
 }
 
@@ -29,24 +28,45 @@ export function useSecurityPage() {
   const [severityFilter, setSeverityFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
 
+  // Use security_violations table that exists
   const eventsQuery = useQuery({
     queryKey: queryKeys.security.events({ severity: severityFilter, type: typeFilter }),
     queryFn: async () => {
-      let query = supabase.from('security_events').select('*').order('created_at', { ascending: false }).limit(50);
-      if (severityFilter !== 'all') query = query.eq('severity', severityFilter);
-      if (typeFilter !== 'all') query = query.eq('type', typeFilter);
+      let query = supabase
+        .from('security_violations')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50);
+      
+      if (severityFilter !== 'all') {
+        query = query.eq('severity', severityFilter);
+      }
+      if (typeFilter !== 'all') {
+        query = query.eq('violation_type', typeFilter);
+      }
+      
       const { data, error } = await query;
       if (error) throw error;
       return data as SecurityEvent[];
     },
   });
 
+  // Use monitoring_settings for security settings
   const settingsQuery = useQuery({
     queryKey: queryKeys.security.settings,
     queryFn: async () => {
-      const { data, error } = await supabase.from('security_settings').select('*').single();
+      const { data, error } = await supabase
+        .from('monitoring_settings')
+        .select('*')
+        .in('setting_key', ['mfa_required', 'ip_whitelist_enabled']);
+      
       if (error) throw error;
-      return data as SecuritySettings;
+      
+      const settings: SecuritySettings = {
+        mfa_required: data?.find(s => s.setting_key === 'mfa_required')?.setting_value === true,
+        ip_whitelist_enabled: data?.find(s => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
+      };
+      return settings;
     },
   });
 
@@ -55,15 +75,24 @@ export function useSecurityPage() {
     return {
       total: events.length,
       critical: events.filter(e => e.severity === 'critical').length,
-      unresolved: events.filter(e => !e.resolved).length,
+      unresolved: events.filter(e => !e.read).length,
       today: events.filter(e => new Date(e.created_at).toDateString() === new Date().toDateString()).length,
     };
   }, [eventsQuery.data]);
 
   const updateSettingsMutation = useMutation({
     mutationFn: async (settings: Partial<SecuritySettings>) => {
-      const { error } = await supabase.from('security_settings').update(settings).eq('id', 1);
-      if (error) throw error;
+      const updates = Object.entries(settings).map(([key, value]) => ({
+        setting_key: key,
+        setting_value: value,
+      }));
+      
+      for (const update of updates) {
+        const { error } = await supabase
+          .from('monitoring_settings')
+          .upsert(update, { onConflict: 'setting_key' });
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.security.settings });
@@ -73,7 +102,10 @@ export function useSecurityPage() {
 
   const resolveEventMutation = useMutation({
     mutationFn: async (eventId: string) => {
-      const { error } = await supabase.from('security_events').update({ resolved: true }).eq('id', eventId);
+      const { error } = await supabase
+        .from('security_violations')
+        .update({ read: true })
+        .eq('id', eventId);
       if (error) throw error;
     },
     onSuccess: () => {

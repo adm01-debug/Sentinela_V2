@@ -1,19 +1,18 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
 
 export interface AuditLogEntry {
   id: string;
   user_id: string;
+  user_email: string;
   action: string;
   entity_type: string;
-  entity_id?: string;
-  old_values?: Record<string, unknown>;
-  new_values?: Record<string, unknown>;
-  ip_address?: string;
-  user_agent?: string;
+  entity_id: string;
+  entity_name: string;
+  old_value?: Record<string, unknown> | null;
+  new_value?: Record<string, unknown> | null;
   created_at: string;
-  user?: { email: string; full_name?: string };
 }
 
 export function useAuditLog(filters?: {
@@ -23,25 +22,35 @@ export function useAuditLog(filters?: {
   startDate?: string;
   endDate?: string;
 }) {
-  return useQuery({
+  const queryClient = useQueryClient();
+  
+  const query = useQuery({
     queryKey: queryKeys.auditLogs.list(filters),
     queryFn: async () => {
-      let query = supabase
-        .from('audit_logs')
-        .select('*, user:users(email, full_name)')
+      // Use settings_audit_log table that exists
+      let queryBuilder = supabase
+        .from('settings_audit_log')
+        .select('*')
         .order('created_at', { ascending: false })
-        .limit(500);
+        .limit(100);
 
-      if (filters?.userId) query = query.eq('user_id', filters.userId);
-      if (filters?.action) query = query.eq('action', filters.action);
-      if (filters?.entityType) query = query.eq('entity_type', filters.entityType);
-      if (filters?.startDate) query = query.gte('created_at', filters.startDate);
-      if (filters?.endDate) query = query.lte('created_at', filters.endDate);
+      if (filters?.userId) queryBuilder = queryBuilder.eq('user_id', filters.userId);
+      if (filters?.action) queryBuilder = queryBuilder.eq('action', filters.action);
+      if (filters?.entityType) queryBuilder = queryBuilder.eq('entity_type', filters.entityType);
+      if (filters?.startDate) queryBuilder = queryBuilder.gte('created_at', filters.startDate);
+      if (filters?.endDate) queryBuilder = queryBuilder.lte('created_at', filters.endDate);
 
-      const { data, error } = await query;
+      const { data, error } = await queryBuilder;
       if (error) throw error;
       return data as AuditLogEntry[];
     },
     ...queryPresets.list,
   });
+
+  return {
+    logs: query.data || [],
+    loading: query.isLoading,
+    error: query.error,
+    refetch: () => queryClient.invalidateQueries({ queryKey: queryKeys.auditLogs.list(filters) }),
+  };
 }

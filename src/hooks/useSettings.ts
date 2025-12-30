@@ -1,10 +1,71 @@
+import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  type SecurityPolicy, 
+  type ApplicationRule, 
+  defaultPolicies, 
+  defaultAppRules 
+} from '@/data/settingsData';
+
+// Re-export types for external use
+export type { SecurityPolicy, ApplicationRule };
 
 // ============================================================
-// TYPES
+// HOOKS - POLICIES
+// ============================================================
+
+function usePolicies() {
+  const [policies, setPolicies] = useState<SecurityPolicy[]>(defaultPolicies);
+  
+  const updatePolicy = useCallback((id: string, enabled: boolean) => {
+    setPolicies(prev => prev.map(p => p.id === id ? { ...p, enabled } : p));
+  }, []);
+
+  return { policies, updatePolicy };
+}
+
+// ============================================================
+// HOOKS - APPLICATION RULES
+// ============================================================
+
+function useAppRules() {
+  const [appRules, setAppRules] = useState<ApplicationRule[]>(defaultAppRules);
+  const { toast } = useToast();
+
+  const updateAppRule = useCallback((id: string, status: 'allowed' | 'blocked' | 'monitored') => {
+    setAppRules(prev => prev.map(r => r.id === id ? { ...r, status } : r));
+  }, []);
+
+  const addAppRule = useCallback((rule: Omit<ApplicationRule, 'id'>) => {
+    const newRule: ApplicationRule = {
+      ...rule,
+      id: Date.now().toString(),
+    };
+    setAppRules(prev => [...prev, newRule]);
+    toast({ title: 'Aplicativo adicionado' });
+    return true;
+  }, [toast]);
+
+  const deleteAppRule = useCallback(async (id: string) => {
+    setAppRules(prev => prev.filter(r => r.id !== id));
+    toast({ title: 'Aplicativo removido' });
+    return true;
+  }, [toast]);
+
+  const editAppRule = useCallback((id: string, updates: Partial<ApplicationRule>) => {
+    setAppRules(prev => prev.map(r => r.id === id ? { ...r, ...updates } : r));
+    toast({ title: 'Aplicativo atualizado' });
+    return true;
+  }, [toast]);
+
+  return { appRules, updateAppRule, addAppRule, deleteAppRule, editAppRule };
+}
+
+// ============================================================
+// MONITORING SETTINGS
 // ============================================================
 
 export interface MonitoringSettings {
@@ -41,44 +102,21 @@ export interface AlertSettings {
   updated_at?: string;
 }
 
-// ============================================================
-// FETCH FUNCTIONS
-// ============================================================
-
-async function fetchMonitoringSettings(): Promise<MonitoringSettings | null> {
-  const { data, error } = await supabase
-    .from('monitoring_settings')
-    .select('*')
-    .single();
-
-  if (error && error.code !== 'PGRST116') {
-    throw error;
-  }
-
-  return data;
-}
-
-async function fetchAlertSettings(): Promise<AlertSettings | null> {
-  const { data, error } = await supabase
-    .from('alert_settings')
-    .select('*')
-    .single();
-
-  if (error && error.code !== 'PGRST116') {
-    throw error;
-  }
-
-  return data;
-}
-
-// ============================================================
-// HOOKS - MONITORING SETTINGS
-// ============================================================
-
 export function useMonitoringSettings() {
   return useQuery({
-    queryKey: queryKeys.settings.monitoring,
-    queryFn: fetchMonitoringSettings,
+    queryKey: queryKeys.settings.monitoring(),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('monitoring_settings')
+        .select('*')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        throw error;
+      }
+
+      return data;
+    },
     ...queryPresets.config,
   });
 }
@@ -133,83 +171,22 @@ export function useUpdateMonitoringSettings() {
 }
 
 // ============================================================
-// HOOKS - ALERT SETTINGS
-// ============================================================
-
-export function useAlertSettings() {
-  return useQuery({
-    queryKey: queryKeys.settings.alerts,
-    queryFn: fetchAlertSettings,
-    ...queryPresets.config,
-  });
-}
-
-export function useUpdateAlertSettings() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-
-  return useMutation({
-    mutationFn: async (settings: Partial<AlertSettings>) => {
-      const { data: existing } = await supabase
-        .from('alert_settings')
-        .select('id')
-        .single();
-
-      if (existing?.id) {
-        const { data, error } = await supabase
-          .from('alert_settings')
-          .update(settings)
-          .eq('id', existing.id)
-          .select()
-          .single();
-
-        if (error) throw error;
-        return data;
-      } else {
-        const { data, error } = await supabase
-          .from('alert_settings')
-          .insert(settings)
-          .select()
-          .single();
-
-        if (error) throw error;
-        return data;
-      }
-    },
-    onSuccess: () => {
-      invalidateRelated.settings(queryClient);
-      toast({
-        title: 'Configurações salvas',
-        description: 'As configurações de alertas foram atualizadas.',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Erro ao salvar',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-}
-
-// ============================================================
-// HOOKS - COMBINED SETTINGS
+// COMBINED SETTINGS HOOK
 // ============================================================
 
 export function useSettings() {
-  const monitoring = useMonitoringSettings();
-  const alerts = useAlertSettings();
+  const [loading] = useState(false);
+  const { policies, updatePolicy } = usePolicies();
+  const { appRules, updateAppRule, addAppRule, deleteAppRule, editAppRule } = useAppRules();
 
   return {
-    monitoring: monitoring.data,
-    alerts: alerts.data,
-    isLoading: monitoring.isLoading || alerts.isLoading,
-    isError: monitoring.isError || alerts.isError,
-    error: monitoring.error || alerts.error,
-    refetch: () => {
-      monitoring.refetch();
-      alerts.refetch();
-    },
+    policies,
+    appRules,
+    loading,
+    updatePolicy,
+    updateAppRule,
+    addAppRule,
+    deleteAppRule,
+    editAppRule,
   };
 }

@@ -107,3 +107,33 @@ export function useUnenrollMFA() {
     },
   });
 }
+
+// Combined hook for MFA management
+export function useMFA() {
+  const queryClient = useQueryClient();
+  const factorsQuery = useMFAFactors();
+  const statusQuery = useMFAStatus();
+  const unenrollMutation = useUnenrollMFA();
+
+  const factors = factorsQuery.data || [];
+  const isEnrolled = factors.some(f => f.status === 'verified');
+
+  return {
+    isEnrolled,
+    factors,
+    status: statusQuery.data,
+    loading: factorsQuery.isLoading || statusQuery.isLoading,
+    error: factorsQuery.error || statusQuery.error,
+    unenroll: async (factorId: string) => {
+      try {
+        await unenrollMutation.mutateAsync(factorId);
+        return { error: null };
+      } catch (error) {
+        return { error: error as Error };
+      }
+    },
+    checkMFAStatus: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.mfa.all });
+    },
+  };
+}
