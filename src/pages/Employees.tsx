@@ -1,6 +1,6 @@
 import React, { Suspense, memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
@@ -195,7 +195,7 @@ const LoadingSkeleton = () => (
 
 export default function Employees() {
   return (
-    <ErrorBoundary>
+    <ErrorBoundary fallback={<LoadingSkeleton />}>
       <Suspense fallback={<LoadingSkeleton />}>
         <EmployeesContent />
       </Suspense>

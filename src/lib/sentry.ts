@@ -3,6 +3,7 @@
 // Production-ready error monitoring and performance tracking
 // ============================================================
 
+import React from 'react';
 import * as Sentry from '@sentry/react';
 
 // ============================================================
@@ -259,9 +260,6 @@ export function useSentryTransaction(name: string, op: string) {
 
   return transactionRef.current;
 }
-
-// Import React for hooks
-import React from 'react';
 
 // ============================================================
 // EXPORTS

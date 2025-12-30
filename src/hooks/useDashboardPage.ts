@@ -9,11 +9,12 @@ interface ActivityItem { id: string; type: string; description: string; created_
 
 export function useDashboardPage() {
   const statsQuery = useQuery({
-    queryKey: queryKeys.dashboard.stats,
+    queryKey: queryKeys.dashboard.stats(),
     queryFn: async () => {
       const [employees, violations, devices] = await Promise.all([
-        supabase.from('employees').select('id', { count: 'exact' }).eq('is_active', true),
-        supabase.from('violations').select('id', { count: 'exact' }).gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
+        supabase.from('employees').select('id', { count: 'exact' }).eq('status', 'active'),
+        supabase.from('security_violations').select('id', { count: 'exact' }).gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
+        supabase.from('devices').select('id', { count: 'exact' }).eq('is_active', true),
         supabase.from('devices').select('id', { count: 'exact' }).eq('is_active', true),
       ]);
       return {
@@ -27,28 +28,40 @@ export function useDashboardPage() {
   });
 
   const violationsQuery = useQuery({
-    queryKey: queryKeys.dashboard.recentViolations,
+    queryKey: queryKeys.dashboard.recentViolations(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('violations')
-        .select('id, type, severity, created_at, employee:employees(name)')
+        .from('security_violations')
+        .select('id, violation_type, severity, created_at, employee_name')
         .order('created_at', { ascending: false })
         .limit(5);
       if (error) throw error;
-      return (data || []).map(v => ({ ...v, employee_name: v.employee?.name || 'N/A' })) as RecentViolation[];
+      return (data || []).map(v => ({ 
+        id: v.id,
+        employee_name: v.employee_name || 'N/A',
+        type: v.violation_type,
+        severity: v.severity,
+        created_at: v.created_at
+      })) as RecentViolation[];
     },
   });
 
   const activityQuery = useQuery({
-    queryKey: queryKeys.dashboard.recentActivity,
+    queryKey: queryKeys.dashboard.recentActivity(),
     queryFn: async () => {
+      // Using productivity_logs as activity source since activity_logs doesn't exist
       const { data, error } = await supabase
-        .from('activity_logs')
-        .select('id, type, description, created_at')
-        .order('created_at', { ascending: false })
+        .from('productivity_logs')
+        .select('id, employee_name, recorded_date, productive_time_seconds')
+        .order('recorded_date', { ascending: false })
         .limit(10);
       if (error) throw error;
-      return data as ActivityItem[];
+      return (data || []).map(item => ({
+        id: item.id,
+        type: 'productivity',
+        description: `${item.employee_name} - ${Math.round(item.productive_time_seconds / 60)}min produtivo`,
+        created_at: item.recorded_date
+      })) as ActivityItem[];
     },
   });
 

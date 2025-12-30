@@ -1,7 +1,6 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { ErrorBoundary } from '@/components/ui/error-boundary';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuthPage } from '@/hooks/useAuthPage';
 import { useAuthPage } from '@/hooks/useAuthPage';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
