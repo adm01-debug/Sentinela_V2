@@ -3,7 +3,12 @@ import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// React Query DevTools - lazy loaded only in development to avoid production bundle issues
+const ReactQueryDevtools = lazy(() =>
+  import.meta.env.DEV
+    ? import('@tanstack/react-query-devtools').then((mod) => ({ default: mod.ReactQueryDevtools }))
+    : Promise.resolve({ default: () => null })
+);
 import { BrowserRouter, Routes, Route, Outlet, Link } from 'react-router-dom';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { queryClient } from '@/lib/queryClient';
