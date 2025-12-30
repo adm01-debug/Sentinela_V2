@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
+// Initialize i18n
+import './i18n';
+
 // Initialize Sentry before rendering
 import { initSentry } from './lib/sentry';
 initSentry();
