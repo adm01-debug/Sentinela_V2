@@ -1,6 +1,6 @@
 import { memo, ReactNode } from 'react';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { TrendingUp, TrendingDown, Minus, LucideIcon } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
@@ -11,16 +11,59 @@ import { cn } from '@/lib/utils';
 interface StatCardProps {
   title: string;
   value: string | number;
+  subtitle?: string;
   description?: string;
-  icon?: ReactNode;
+  icon?: LucideIcon;
+  iconColor?: string;
   trend?: {
     value: number;
     label?: string;
+    isPositive?: boolean;
   };
   isLoading?: boolean;
   className?: string;
   valueClassName?: string;
+  variant?: 'default' | 'gradient' | 'outline' | 'minimal';
+  size?: 'sm' | 'md' | 'lg';
 }
+
+// ============================================================
+// VARIANTS
+// ============================================================
+
+const variants = {
+  default: 'bg-card hover:shadow-elevation-2 transition-shadow',
+  gradient: 'bg-gradient-card border-0 hover:shadow-elevation-3 transition-all',
+  outline: 'bg-transparent border-2 hover:border-primary/50 transition-colors',
+  minimal: 'bg-transparent border-0 shadow-none',
+};
+
+const sizes = {
+  sm: {
+    padding: 'p-4',
+    iconSize: 'h-8 w-8',
+    iconInner: 'h-4 w-4',
+    title: 'text-xs',
+    value: 'text-xl',
+    trend: 'text-[10px]',
+  },
+  md: {
+    padding: 'p-5',
+    iconSize: 'h-10 w-10',
+    iconInner: 'h-5 w-5',
+    title: 'text-sm',
+    value: 'text-2xl',
+    trend: 'text-xs',
+  },
+  lg: {
+    padding: 'p-6',
+    iconSize: 'h-12 w-12',
+    iconInner: 'h-6 w-6',
+    title: 'text-sm',
+    value: 'text-3xl',
+    trend: 'text-sm',
+  },
+};
 
 // ============================================================
 // COMPONENT
@@ -29,73 +72,99 @@ interface StatCardProps {
 function StatCardComponent({
   title,
   value,
+  subtitle,
   description,
-  icon,
+  icon: Icon,
+  iconColor = 'text-primary',
   trend,
   isLoading = false,
   className,
   valueClassName,
+  variant = 'default',
+  size = 'md',
 }: StatCardProps) {
+  const sizeConfig = sizes[size];
+
   if (isLoading) {
     return (
-      <Card className={className}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-4 rounded" />
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-8 w-20 mb-1" />
-          <Skeleton className="h-3 w-32" />
-        </CardContent>
+      <Card className={cn(variants[variant], sizeConfig.padding, className)}>
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <Skeleton className="h-4 w-24 mb-3" />
+            <Skeleton className="h-8 w-20 mb-2" />
+            <Skeleton className="h-3 w-32" />
+          </div>
+          <Skeleton className={cn('rounded-xl', sizeConfig.iconSize)} />
+        </div>
       </Card>
     );
   }
 
   const TrendIcon =
-    trend?.value && trend.value > 0
+    trend?.value !== undefined && trend.value > 0
       ? TrendingUp
-      : trend?.value && trend.value < 0
+      : trend?.value !== undefined && trend.value < 0
       ? TrendingDown
       : Minus;
 
-  const trendColor =
-    trend?.value && trend.value > 0
-      ? 'text-green-600'
-      : trend?.value && trend.value < 0
-      ? 'text-red-600'
-      : 'text-muted-foreground';
+  // Determine if trend is positive (can be overridden)
+  const isPositiveTrend = trend?.isPositive ?? (trend?.value !== undefined && trend.value > 0);
+  const trendColor = 
+    trend?.value !== undefined && trend.value !== 0
+      ? isPositiveTrend
+        ? 'text-success bg-success/10'
+        : 'text-destructive bg-destructive/10'
+      : 'text-muted-foreground bg-muted';
 
   return (
-    <Card className={className}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-        {icon && (
-          <div className="h-4 w-4 text-muted-foreground">{icon}</div>
-        )}
-      </CardHeader>
-      <CardContent>
-        <div className={cn('text-2xl font-bold', valueClassName)}>{value}</div>
-        {(description || trend) && (
-          <div className="flex items-center gap-1 mt-1">
-            {trend && (
-              <>
-                <TrendIcon className={cn('h-3 w-3', trendColor)} />
-                <span className={cn('text-xs font-medium', trendColor)}>
-                  {trend.value > 0 ? '+' : ''}
-                  {trend.value}%
-                </span>
-              </>
-            )}
-            {description && (
-              <span className="text-xs text-muted-foreground">
-                {trend ? ` ${description}` : description}
-              </span>
+    <Card className={cn(variants[variant], sizeConfig.padding, 'hover-lift', className)}>
+      <div className="flex items-start justify-between gap-4">
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <p className={cn('font-medium text-muted-foreground', sizeConfig.title)}>
+            {title}
+          </p>
+          
+          <div className="flex items-baseline gap-2 mt-1">
+            <span className={cn('font-bold tracking-tight', sizeConfig.value, valueClassName)}>
+              {value}
+            </span>
+            {subtitle && (
+              <span className="text-sm text-muted-foreground">{subtitle}</span>
             )}
           </div>
+
+          {(description || trend) && (
+            <div className="flex items-center gap-2 mt-2">
+              {trend && trend.value !== undefined && (
+                <span className={cn(
+                  'inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 font-medium',
+                  sizeConfig.trend,
+                  trendColor
+                )}>
+                  <TrendIcon className="h-3 w-3" />
+                  {trend.value > 0 ? '+' : ''}{trend.value}%
+                </span>
+              )}
+              {(description || trend?.label) && (
+                <span className={cn('text-muted-foreground truncate', sizeConfig.trend)}>
+                  {description || trend?.label}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Icon */}
+        {Icon && (
+          <div className={cn(
+            'flex items-center justify-center rounded-xl bg-muted/50',
+            sizeConfig.iconSize
+          )}>
+            <Icon className={cn(sizeConfig.iconInner, iconColor)} />
+          </div>
         )}
-      </CardContent>
+      </div>
     </Card>
   );
 }
