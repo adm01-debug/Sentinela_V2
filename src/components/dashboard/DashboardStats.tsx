@@ -1,14 +1,88 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, AlertTriangle, Monitor, TrendingUp } from 'lucide-react';
+import { StatCard, StatCardsGrid } from '@/components/StatCard';
 
-export const DashboardStats = React.memo(function DashboardStats({ employees, violations, activeDevices, productivity }: { employees: number; violations: number; activeDevices: number; productivity: number }) {
+interface DashboardStatsProps {
+  employees: number;
+  violations: number;
+  activeDevices: number;
+  productivity: number;
+  previousEmployees?: number;
+  previousViolations?: number;
+  previousDevices?: number;
+  previousProductivity?: number;
+  isLoading?: boolean;
+}
+
+export const DashboardStats = React.memo(function DashboardStats({
+  employees,
+  violations,
+  activeDevices,
+  productivity,
+  previousEmployees,
+  previousViolations,
+  previousDevices,
+  previousProductivity,
+  isLoading = false,
+}: DashboardStatsProps) {
+  // Calculate trends
+  const employeeTrend = previousEmployees
+    ? { value: Math.round(((employees - previousEmployees) / previousEmployees) * 100), label: 'vs semana anterior' }
+    : undefined;
+
+  const violationTrend = previousViolations
+    ? { value: Math.round(((violations - previousViolations) / previousViolations) * 100), label: 'vs semana anterior', isPositive: violations < previousViolations }
+    : undefined;
+
+  const deviceTrend = previousDevices
+    ? { value: Math.round(((activeDevices - previousDevices) / previousDevices) * 100), label: 'vs semana anterior' }
+    : undefined;
+
+  const productivityTrend = previousProductivity
+    ? { value: Math.round(productivity - previousProductivity), label: 'pontos vs semana anterior' }
+    : undefined;
+
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Funcionários Ativos</CardTitle><Users className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><div className="text-2xl font-bold">{employees}</div></CardContent></Card>
-      <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Violações (7 dias)</CardTitle><AlertTriangle className="h-4 w-4 text-red-500" /></CardHeader><CardContent><div className="text-2xl font-bold text-red-500">{violations}</div></CardContent></Card>
-      <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Dispositivos Ativos</CardTitle><Monitor className="h-4 w-4 text-green-500" /></CardHeader><CardContent><div className="text-2xl font-bold text-green-500">{activeDevices}</div></CardContent></Card>
-      <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Produtividade</CardTitle><TrendingUp className="h-4 w-4 text-blue-500" /></CardHeader><CardContent><div className="text-2xl font-bold text-blue-500">{productivity}%</div></CardContent></Card>
-    </div>
+    <StatCardsGrid columns={4}>
+      <StatCard
+        title="Funcionários Ativos"
+        value={employees.toLocaleString('pt-BR')}
+        icon={Users}
+        iconColor="text-primary"
+        trend={employeeTrend}
+        variant="default"
+        isLoading={isLoading}
+      />
+      <StatCard
+        title="Violações (7 dias)"
+        value={violations.toLocaleString('pt-BR')}
+        icon={AlertTriangle}
+        iconColor="text-destructive"
+        trend={violationTrend}
+        variant="default"
+        valueClassName={violations > 0 ? 'text-destructive' : undefined}
+        isLoading={isLoading}
+      />
+      <StatCard
+        title="Dispositivos Ativos"
+        value={activeDevices.toLocaleString('pt-BR')}
+        icon={Monitor}
+        iconColor="text-success"
+        trend={deviceTrend}
+        variant="default"
+        valueClassName="text-success"
+        isLoading={isLoading}
+      />
+      <StatCard
+        title="Produtividade"
+        value={`${productivity}%`}
+        icon={TrendingUp}
+        iconColor="text-info"
+        trend={productivityTrend}
+        variant="gradient"
+        valueClassName="text-info"
+        isLoading={isLoading}
+      />
+    </StatCardsGrid>
   );
 });
