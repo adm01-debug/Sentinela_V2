@@ -40,6 +40,7 @@ import { queryKeys, queryPresets } from '@/lib/queryClient';
 import { KnownDevicesPanel } from './KnownDevicesPanel';
 import { NotificationSettings } from './NotificationSettings';
 import { WebAuthnSettings } from './WebAuthnSettings';
+import { IPWhitelistManager } from './IPWhitelistManager';
 
 interface SecurityScore {
   total: number;
@@ -289,7 +290,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
 
       {/* Detailed Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-7">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="overview" className="gap-1 text-xs sm:text-sm">
             <Eye className="h-4 w-4" />
             <span className="hidden md:inline">Visão Geral</span>
@@ -313,6 +314,10 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
           <TabsTrigger value="alerts" className="gap-1 text-xs sm:text-sm">
             <Bell className="h-4 w-4" />
             <span className="hidden md:inline">Alertas</span>
+          </TabsTrigger>
+          <TabsTrigger value="whitelist" className="gap-1 text-xs sm:text-sm">
+            <Globe className="h-4 w-4" />
+            <span className="hidden md:inline">Whitelist</span>
           </TabsTrigger>
           <TabsTrigger value="notifications" className="gap-1 text-xs sm:text-sm">
             <Bell className="h-4 w-4" />
@@ -669,6 +674,11 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
               </ScrollArea>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Whitelist Tab */}
+        <TabsContent value="whitelist">
+          <IPWhitelistManager />
         </TabsContent>
 
         {/* Notifications Tab */}
