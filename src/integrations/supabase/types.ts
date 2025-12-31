@@ -3042,6 +3042,45 @@ export type Database = {
         }
         Relationships: []
       }
+      whitelisted_ips: {
+        Row: {
+          allowed_endpoints: string[] | null
+          bypass_auth: boolean
+          bypass_rate_limit: boolean
+          created_at: string
+          created_by: string | null
+          description: string | null
+          expires_at: string | null
+          id: string
+          ip_address: string
+          is_active: boolean
+        }
+        Insert: {
+          allowed_endpoints?: string[] | null
+          bypass_auth?: boolean
+          bypass_rate_limit?: boolean
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          ip_address: string
+          is_active?: boolean
+        }
+        Update: {
+          allowed_endpoints?: string[] | null
+          bypass_auth?: boolean
+          bypass_rate_limit?: boolean
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          ip_address?: string
+          is_active?: boolean
+        }
+        Relationships: []
+      }
       work_schedules: {
         Row: {
           allow_overtime: boolean
@@ -3185,6 +3224,7 @@ export type Database = {
         Args: { p_partition_date: string; p_table_name: string }
         Returns: string
       }
+      get_ip_whitelist_info: { Args: { p_ip_address: string }; Returns: Json }
       get_user_company_id: { Args: { _user_id: string }; Returns: string }
       get_user_permissions: { Args: { _user_id: string }; Returns: string[] }
       has_permission: {
@@ -3198,7 +3238,12 @@ export type Database = {
         }
         Returns: boolean
       }
+      ip_bypasses_rate_limit: {
+        Args: { p_ip_address: string }
+        Returns: boolean
+      }
       is_ip_blocked: { Args: { p_ip_address: string }; Returns: boolean }
+      is_ip_whitelisted: { Args: { p_ip_address: string }; Returns: boolean }
       user_in_company: {
         Args: { _company_id: string; _user_id: string }
         Returns: boolean

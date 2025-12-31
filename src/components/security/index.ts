@@ -9,6 +9,7 @@ export { KnownDevicesPanel } from './KnownDevicesPanel';
 export { UnifiedSecurityPanel } from './UnifiedSecurityPanel';
 export { NotificationSettings } from './NotificationSettings';
 export { WebAuthnSettings } from './WebAuthnSettings';
+export { IPWhitelistManager } from './IPWhitelistManager';
 export {
   SecurityScore,
   ThreatLevelBadge,
