@@ -1,20 +1,21 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useSecurityPage } from '@/hooks/useSecurityPage';
-import { SecurityStats, SecurityEventCard } from '@/components/security';
+import { SecurityStats, SecurityEventCard, UnifiedSecurityPanel } from '@/components/security';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Shield } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Shield, LayoutDashboard, List } from 'lucide-react';
 
 function ErrorFallback({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) {
   return <Card className="border-destructive"><CardContent className="pt-6 text-center"><h3 className="text-destructive">Erro</h3><Button onClick={resetErrorBoundary} className="mt-4">Tentar novamente</Button></CardContent></Card>;
 }
 
-const SecurityContent = React.memo(function SecurityContent() {
+const SecurityEventsView = React.memo(function SecurityEventsView() {
   const { events, settings, stats, severityFilter, typeFilter, isLoading, handleSeverityFilterChange, handleTypeFilterChange, handleUpdateSettings, handleResolveEvent } = useSecurityPage();
 
   if (isLoading) return <div className="space-y-6"><div className="grid gap-4 md:grid-cols-4">{[1,2,3,4].map(i => <Skeleton key={i} className="h-32" />)}</div></div>;
@@ -78,11 +79,50 @@ const SecurityContent = React.memo(function SecurityContent() {
   );
 });
 
+const SecurityContent = React.memo(function SecurityContent() {
+  const [view, setView] = useState<'panel' | 'events'>('panel');
+
+  return (
+    <div className="space-y-6">
+      <Tabs value={view} onValueChange={(v) => setView(v as 'panel' | 'events')}>
+        <TabsList>
+          <TabsTrigger value="panel" className="gap-2">
+            <LayoutDashboard className="h-4 w-4" />
+            Painel Unificado
+          </TabsTrigger>
+          <TabsTrigger value="events" className="gap-2">
+            <List className="h-4 w-4" />
+            Eventos
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="panel" className="mt-6">
+          <UnifiedSecurityPanel />
+        </TabsContent>
+        
+        <TabsContent value="events" className="mt-6">
+          <SecurityEventsView />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+});
+
 export default function Security() {
   return (
     <div className="container mx-auto py-6 space-y-6">
-      <div><h1 className="text-3xl font-bold">Segurança</h1><p className="text-muted-foreground">Monitore eventos e configure políticas de segurança</p></div>
-      <ErrorBoundary FallbackComponent={ErrorFallback}><Suspense fallback={<Skeleton className="h-96" />}><SecurityContent /></Suspense></ErrorBoundary>
+      <div className="flex items-center gap-3">
+        <Shield className="h-8 w-8 text-primary" />
+        <div>
+          <h1 className="text-3xl font-bold">Segurança</h1>
+          <p className="text-muted-foreground">Monitore eventos e configure políticas de segurança</p>
+        </div>
+      </div>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Suspense fallback={<Skeleton className="h-96" />}>
+          <SecurityContent />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }
