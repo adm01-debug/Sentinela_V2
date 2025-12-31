@@ -238,6 +238,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Check admin role after sign in
     if (data.user) {
       await checkAdminRole(data.user.id);
+      
+      // Trigger device detection after successful login (deferred to avoid blocking)
+      setTimeout(async () => {
+        try {
+          const { useDeviceDetection } = await import('./useDeviceDetection');
+          const { checkAndRegisterDevice } = useDeviceDetection();
+          await checkAndRegisterDevice(data.user.id, data.user.email || email);
+        } catch (e) {
+          console.error('Error in device detection:', e);
+        }
+      }, 0);
     }
   };
 

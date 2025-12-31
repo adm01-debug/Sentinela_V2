@@ -1318,6 +1318,42 @@ export type Database = {
         }
         Relationships: []
       }
+      login_security_events: {
+        Row: {
+          created_at: string
+          device_fingerprint: string | null
+          event_type: string
+          id: string
+          ip_address: string | null
+          location: string | null
+          metadata: Json | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_fingerprint?: string | null
+          event_type: string
+          id?: string
+          ip_address?: string | null
+          location?: string | null
+          metadata?: Json | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_fingerprint?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          location?: string | null
+          metadata?: Json | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       message_templates: {
         Row: {
           body: string
@@ -2537,6 +2573,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_known_devices: {
+        Row: {
+          browser_name: string | null
+          created_at: string
+          device_fingerprint: string
+          device_type: string | null
+          first_seen_at: string
+          id: string
+          ip_address: string | null
+          is_trusted: boolean | null
+          last_seen_at: string
+          location: string | null
+          os_name: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          browser_name?: string | null
+          created_at?: string
+          device_fingerprint: string
+          device_type?: string | null
+          first_seen_at?: string
+          id?: string
+          ip_address?: string | null
+          is_trusted?: boolean | null
+          last_seen_at?: string
+          location?: string | null
+          os_name?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          browser_name?: string | null
+          created_at?: string
+          device_fingerprint?: string
+          device_type?: string | null
+          first_seen_at?: string
+          id?: string
+          ip_address?: string | null
+          is_trusted?: boolean | null
+          last_seen_at?: string
+          location?: string | null
+          os_name?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
