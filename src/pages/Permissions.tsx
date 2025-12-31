@@ -1,7 +1,44 @@
 import React from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { PermissionMatrix, RoleManager } from '@/components/permissions';
+import { Shield, Users } from 'lucide-react';
 
 export default function Permissions() {
-  return <DashboardLayout><Card><CardHeader><CardTitle>Permissions</CardTitle></CardHeader><CardContent><p>Manage user permissions and access control.</p></CardContent></Card></DashboardLayout>;
+  return (
+    <DashboardLayout>
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center gap-3">
+          <Shield className="h-8 w-8 text-primary" />
+          <div>
+            <h1 className="text-2xl font-bold">Permissões Granulares</h1>
+            <p className="text-muted-foreground">
+              Gerencie roles e configure permissões detalhadas para cada módulo
+            </p>
+          </div>
+        </div>
+
+        <Tabs defaultValue="matrix" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="matrix" className="gap-2">
+              <Shield className="h-4 w-4" />
+              Matriz de Permissões
+            </TabsTrigger>
+            <TabsTrigger value="roles" className="gap-2">
+              <Users className="h-4 w-4" />
+              Gerenciar Roles
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="matrix">
+            <PermissionMatrix />
+          </TabsContent>
+
+          <TabsContent value="roles">
+            <RoleManager />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </DashboardLayout>
+  );
 }
