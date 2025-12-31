@@ -41,6 +41,7 @@ import { KnownDevicesPanel } from './KnownDevicesPanel';
 import { NotificationSettings } from './NotificationSettings';
 import { WebAuthnSettings } from './WebAuthnSettings';
 import { IPWhitelistManager } from './IPWhitelistManager';
+import { GeoBlockingManager } from './GeoBlockingManager';
 
 interface SecurityScore {
   total: number;
@@ -290,7 +291,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
 
       {/* Detailed Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-8">
+        <TabsList className="grid w-full grid-cols-9">
           <TabsTrigger value="overview" className="gap-1 text-xs sm:text-sm">
             <Eye className="h-4 w-4" />
             <span className="hidden md:inline">Visão Geral</span>
@@ -316,8 +317,12 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
             <span className="hidden md:inline">Alertas</span>
           </TabsTrigger>
           <TabsTrigger value="whitelist" className="gap-1 text-xs sm:text-sm">
+            <MapPin className="h-4 w-4" />
+            <span className="hidden md:inline">IP Whitelist</span>
+          </TabsTrigger>
+          <TabsTrigger value="geo" className="gap-1 text-xs sm:text-sm">
             <Globe className="h-4 w-4" />
-            <span className="hidden md:inline">Whitelist</span>
+            <span className="hidden md:inline">Geo</span>
           </TabsTrigger>
           <TabsTrigger value="notifications" className="gap-1 text-xs sm:text-sm">
             <Bell className="h-4 w-4" />
@@ -676,9 +681,14 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
           </Card>
         </TabsContent>
 
-        {/* Whitelist Tab */}
+        {/* IP Whitelist Tab */}
         <TabsContent value="whitelist">
           <IPWhitelistManager />
+        </TabsContent>
+
+        {/* Geo Blocking Tab */}
+        <TabsContent value="geo">
+          <GeoBlockingManager />
         </TabsContent>
 
         {/* Notifications Tab */}
