@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuthPage } from '@/hooks/useAuthPage';
@@ -9,42 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Shield, Loader2, Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-
-const PasswordStrengthIndicator = React.memo(function PasswordStrengthIndicator({ password }: { password: string }) {
-  const getStrength = (): { score: number; label: string; color: string } => {
-    let score = 0;
-    if (password.length >= 8) score++;
-    if (password.length >= 12) score++;
-    if (/[a-z]/.test(password)) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^a-zA-Z0-9]/.test(password)) score++;
-
-    if (score <= 2) return { score, label: 'Fraca', color: 'bg-destructive' };
-    if (score <= 4) return { score, label: 'Média', color: 'bg-yellow-500' };
-    return { score, label: 'Forte', color: 'bg-green-500' };
-  };
-
-  const strength = getStrength();
-  
-  if (!password) return null;
-
-  return (
-    <div className="space-y-1">
-      <div className="flex gap-1">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div
-            key={i}
-            className={`h-1 flex-1 rounded-full transition-colors ${
-              i <= strength.score ? strength.color : 'bg-muted'
-            }`}
-          />
-        ))}
-      </div>
-      <p className="text-xs text-muted-foreground">Força: {strength.label}</p>
-    </div>
-  );
-});
+import { PasswordStrengthChecker } from '@/components/auth/PasswordStrengthChecker';
 
 const AuthContent = React.memo(function AuthContent() {
   const { t } = useTranslation();
@@ -52,6 +17,8 @@ const AuthContent = React.memo(function AuthContent() {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [showPassword, setShowPassword] = React.useState(false);
   const [validationErrors, setValidationErrors] = React.useState<string[]>([]);
+  const [passwordIsValid, setPasswordIsValid] = React.useState(false);
+  const [passwordIsLeaked, setPasswordIsLeaked] = React.useState(false);
   
   const { 
     mode, email, password, name, company, 
@@ -99,6 +66,12 @@ const AuthContent = React.memo(function AuthContent() {
         }
         if (!/[0-9]/.test(password)) {
           errors.push('Senha deve conter número');
+        }
+        if (!/[^a-zA-Z0-9]/.test(password)) {
+          errors.push('Senha deve conter caractere especial');
+        }
+        if (passwordIsLeaked) {
+          errors.push('Esta senha foi encontrada em vazamentos de dados');
         }
       }
     }
@@ -263,7 +236,12 @@ const AuthContent = React.memo(function AuthContent() {
                   </Button>
                 </div>
                 {(mode === 'register' || mode === 'reset') && (
-                  <PasswordStrengthIndicator password={password} />
+                  <PasswordStrengthChecker 
+                    password={password}
+                    checkLeaked={true}
+                    onStrengthChange={(isValid) => setPasswordIsValid(isValid)}
+                    onLeakedCheck={(isLeaked) => setPasswordIsLeaked(isLeaked)}
+                  />
                 )}
               </div>
             )}
