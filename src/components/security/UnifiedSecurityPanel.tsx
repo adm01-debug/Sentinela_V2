@@ -31,13 +31,15 @@ import {
   Users,
   Ban,
   Eye,
-  RefreshCw
+  RefreshCw,
+  Fingerprint
 } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
 import { KnownDevicesPanel } from './KnownDevicesPanel';
 import { NotificationSettings } from './NotificationSettings';
+import { WebAuthnSettings } from './WebAuthnSettings';
 
 interface SecurityScore {
   total: number;
@@ -287,30 +289,34 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
 
       {/* Detailed Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="overview" className="gap-2">
+        <TabsList className="grid w-full grid-cols-7">
+          <TabsTrigger value="overview" className="gap-1 text-xs sm:text-sm">
             <Eye className="h-4 w-4" />
-            <span className="hidden sm:inline">Visão Geral</span>
+            <span className="hidden md:inline">Visão Geral</span>
           </TabsTrigger>
-          <TabsTrigger value="mfa" className="gap-2">
+          <TabsTrigger value="mfa" className="gap-1 text-xs sm:text-sm">
             <Key className="h-4 w-4" />
-            <span className="hidden sm:inline">MFA</span>
+            <span className="hidden md:inline">MFA</span>
           </TabsTrigger>
-          <TabsTrigger value="devices" className="gap-2">
+          <TabsTrigger value="passkeys" className="gap-1 text-xs sm:text-sm">
+            <Fingerprint className="h-4 w-4" />
+            <span className="hidden md:inline">Passkeys</span>
+          </TabsTrigger>
+          <TabsTrigger value="devices" className="gap-1 text-xs sm:text-sm">
             <Monitor className="h-4 w-4" />
-            <span className="hidden sm:inline">Dispositivos</span>
+            <span className="hidden md:inline">Dispositivos</span>
           </TabsTrigger>
-          <TabsTrigger value="sessions" className="gap-2">
+          <TabsTrigger value="sessions" className="gap-1 text-xs sm:text-sm">
             <Activity className="h-4 w-4" />
-            <span className="hidden sm:inline">Sessões</span>
+            <span className="hidden md:inline">Sessões</span>
           </TabsTrigger>
-          <TabsTrigger value="alerts" className="gap-2">
+          <TabsTrigger value="alerts" className="gap-1 text-xs sm:text-sm">
             <Bell className="h-4 w-4" />
-            <span className="hidden sm:inline">Alertas</span>
+            <span className="hidden md:inline">Alertas</span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="gap-2">
+          <TabsTrigger value="notifications" className="gap-1 text-xs sm:text-sm">
             <Bell className="h-4 w-4" />
-            <span className="hidden sm:inline">Notificações</span>
+            <span className="hidden md:inline">Push</span>
           </TabsTrigger>
         </TabsList>
 
@@ -499,6 +505,11 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Passkeys Tab */}
+        <TabsContent value="passkeys">
+          <WebAuthnSettings />
         </TabsContent>
 
         {/* Devices Tab */}
