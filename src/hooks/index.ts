@@ -55,6 +55,9 @@ export { useAuditLogs } from './useAuditLogs';
 // ============================================================
 export { useAuth, AuthProvider } from './useAuth';
 export { useMFA } from './useMFA';
+export { useMFAPhone } from './useMFAPhone';
+export { useReauthentication } from './useReauthentication';
+export { useRateLimitByIP } from './useRateLimitByIP';
 export { usePermissions } from './usePermissions';
 export { useSecurity, isSecureContext, validatePasswordStrength, generateSecureRandom, hashData } from './useSecurity';
 

@@ -3,6 +3,8 @@ export { SecurityEventCard } from './SecurityEventCard';
 export { SecurityBadge } from './SecurityBadge';
 export { SessionTimeoutWarning } from './SessionTimeoutWarning';
 export { SessionIndicator } from './SessionIndicator';
+export { ReauthDialog } from './ReauthDialog';
+export { MFAPhoneEnroll } from './MFAPhoneEnroll';
 export {
   SecurityScore,
   ThreatLevelBadge,
