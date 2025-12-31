@@ -7,6 +7,7 @@ export { ReauthDialog } from './ReauthDialog';
 export { MFAPhoneEnroll } from './MFAPhoneEnroll';
 export { KnownDevicesPanel } from './KnownDevicesPanel';
 export { UnifiedSecurityPanel } from './UnifiedSecurityPanel';
+export { GeoBlockingManager } from './GeoBlockingManager';
 export { NotificationSettings } from './NotificationSettings';
 export { WebAuthnSettings } from './WebAuthnSettings';
 export { IPWhitelistManager } from './IPWhitelistManager';

@@ -909,6 +909,84 @@ export type Database = {
           },
         ]
       }
+      geo_blocking_settings: {
+        Row: {
+          block_proxy: boolean
+          block_tor: boolean
+          block_vpn: boolean
+          created_at: string
+          enabled: boolean
+          id: string
+          log_blocked_attempts: boolean
+          mode: string
+          updated_at: string
+        }
+        Insert: {
+          block_proxy?: boolean
+          block_tor?: boolean
+          block_vpn?: boolean
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          log_blocked_attempts?: boolean
+          mode?: string
+          updated_at?: string
+        }
+        Update: {
+          block_proxy?: boolean
+          block_tor?: boolean
+          block_vpn?: boolean
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          log_blocked_attempts?: boolean
+          mode?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      geo_blocks: {
+        Row: {
+          block_type: string
+          country_code: string
+          country_name: string
+          created_at: string
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          reason: string | null
+          region: string | null
+          updated_at: string
+        }
+        Insert: {
+          block_type?: string
+          country_code: string
+          country_name: string
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          reason?: string | null
+          region?: string | null
+          updated_at?: string
+        }
+        Update: {
+          block_type?: string
+          country_code?: string
+          country_name?: string
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          reason?: string | null
+          region?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       geofence_violations: {
         Row: {
           action_taken: string | null
@@ -3224,6 +3302,7 @@ export type Database = {
         Args: { p_partition_date: string; p_table_name: string }
         Returns: string
       }
+      get_geo_blocking_info: { Args: { p_country_code: string }; Returns: Json }
       get_ip_whitelist_info: { Args: { p_ip_address: string }; Returns: Json }
       get_user_company_id: { Args: { _user_id: string }; Returns: string }
       get_user_permissions: { Args: { _user_id: string }; Returns: string[] }
@@ -3242,6 +3321,7 @@ export type Database = {
         Args: { p_ip_address: string }
         Returns: boolean
       }
+      is_country_blocked: { Args: { p_country_code: string }; Returns: boolean }
       is_ip_blocked: { Args: { p_ip_address: string }; Returns: boolean }
       is_ip_whitelisted: { Args: { p_ip_address: string }; Returns: boolean }
       user_in_company: {
