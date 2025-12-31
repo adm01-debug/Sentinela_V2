@@ -56,6 +56,7 @@ export { useAuditLogs } from './useAuditLogs';
 export { useAuth, AuthProvider } from './useAuth';
 export { useMFA } from './useMFA';
 export { usePermissions } from './usePermissions';
+export { useSecurity, isSecureContext, validatePasswordStrength, generateSecureRandom, hashData } from './useSecurity';
 
 // ============================================================
 // UI UTILITY HOOKS
