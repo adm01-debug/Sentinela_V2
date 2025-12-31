@@ -6,6 +6,7 @@ export { SessionIndicator } from './SessionIndicator';
 export { ReauthDialog } from './ReauthDialog';
 export { MFAPhoneEnroll } from './MFAPhoneEnroll';
 export { KnownDevicesPanel } from './KnownDevicesPanel';
+export { UnifiedSecurityPanel } from './UnifiedSecurityPanel';
 export {
   SecurityScore,
   ThreatLevelBadge,
