@@ -37,6 +37,7 @@ import { formatDistanceToNow, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
 import { KnownDevicesPanel } from './KnownDevicesPanel';
+import { NotificationSettings } from './NotificationSettings';
 
 interface SecurityScore {
   total: number;
@@ -286,26 +287,30 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
 
       {/* Detailed Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="overview" className="gap-2">
             <Eye className="h-4 w-4" />
-            Visão Geral
+            <span className="hidden sm:inline">Visão Geral</span>
           </TabsTrigger>
           <TabsTrigger value="mfa" className="gap-2">
             <Key className="h-4 w-4" />
-            MFA
+            <span className="hidden sm:inline">MFA</span>
           </TabsTrigger>
           <TabsTrigger value="devices" className="gap-2">
             <Monitor className="h-4 w-4" />
-            Dispositivos
+            <span className="hidden sm:inline">Dispositivos</span>
           </TabsTrigger>
           <TabsTrigger value="sessions" className="gap-2">
             <Activity className="h-4 w-4" />
-            Sessões
+            <span className="hidden sm:inline">Sessões</span>
           </TabsTrigger>
           <TabsTrigger value="alerts" className="gap-2">
             <Bell className="h-4 w-4" />
-            Alertas
+            <span className="hidden sm:inline">Alertas</span>
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="gap-2">
+            <Bell className="h-4 w-4" />
+            <span className="hidden sm:inline">Notificações</span>
           </TabsTrigger>
         </TabsList>
 
@@ -653,6 +658,11 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
               </ScrollArea>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Notifications Tab */}
+        <TabsContent value="notifications">
+          <NotificationSettings />
         </TabsContent>
       </Tabs>
     </div>
