@@ -1,8 +1,8 @@
 import React from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PermissionMatrix, RoleManager } from '@/components/permissions';
-import { Shield, Users } from 'lucide-react';
+import { PermissionMatrix, RoleManager, RolePermissionsEditor } from '@/components/permissions';
+import { Shield, Users, Edit } from 'lucide-react';
 
 export default function Permissions() {
   return (
@@ -18,17 +18,25 @@ export default function Permissions() {
           </div>
         </div>
 
-        <Tabs defaultValue="matrix" className="space-y-6">
+        <Tabs defaultValue="editor" className="space-y-6">
           <TabsList>
+            <TabsTrigger value="editor" className="gap-2">
+              <Edit className="h-4 w-4" />
+              Editar por Role
+            </TabsTrigger>
             <TabsTrigger value="matrix" className="gap-2">
               <Shield className="h-4 w-4" />
-              Matriz de Permissões
+              Matriz Completa
             </TabsTrigger>
             <TabsTrigger value="roles" className="gap-2">
               <Users className="h-4 w-4" />
               Gerenciar Roles
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="editor">
+            <RolePermissionsEditor />
+          </TabsContent>
 
           <TabsContent value="matrix">
             <PermissionMatrix />
