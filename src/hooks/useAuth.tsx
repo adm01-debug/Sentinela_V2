@@ -24,14 +24,20 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // ============================================================
-// CONSTANTES
+// CONSTANTES - Configuração de Sessão 24 horas
 // ============================================================
 
-// Refresh 5 minutos antes de expirar
-const REFRESH_MARGIN_SECONDS = 5 * 60;
+// Sessão expira em 24 horas (configuração do Supabase Auth)
+const SESSION_DURATION_HOURS = 24;
 
-// Verificar sessão a cada 1 minuto
-const SESSION_CHECK_INTERVAL = 60 * 1000;
+// Refresh 30 minutos antes de expirar para garantir continuidade
+const REFRESH_MARGIN_SECONDS = 30 * 60;
+
+// Verificar sessão a cada 5 minutos
+const SESSION_CHECK_INTERVAL = 5 * 60 * 1000;
+
+// Inatividade máxima: renovar ao retornar se >5min inativo
+const INACTIVITY_THRESHOLD_MS = 5 * 60 * 1000;
 
 // ============================================================
 // PROVIDER

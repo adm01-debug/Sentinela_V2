@@ -4,8 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Shield, Copy, Check, QrCode, Smartphone } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Loader2, Shield, Copy, Check, QrCode, Smartphone, Phone } from 'lucide-react';
 import { useMFA } from '@/hooks/useMFA';
+import { MFAPhoneEnroll } from '@/components/security/MFAPhoneEnroll';
 import { toast } from 'sonner';
 
 interface MFAEnrollProps {
@@ -15,7 +17,8 @@ interface MFAEnrollProps {
 
 function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
   const { enroll, verify } = useMFA();
-  const [step, setStep] = useState<'intro' | 'qrcode' | 'verify'>('intro');
+  const [method, setMethod] = useState<'totp' | 'sms' | null>(null);
+  const [step, setStep] = useState<'choose' | 'qrcode' | 'verify'>('choose');
   const [qrCodeUri, setQrCodeUri] = useState('');
   const [secret, setSecret] = useState('');
   const [factorId, setFactorId] = useState('');
@@ -73,62 +76,126 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  if (step === 'intro') {
+  // Step 1: Choose method
+  if (step === 'choose') {
     return (
       <Card className="border-border/50">
         <CardHeader className="text-center">
           <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
             <Shield className="h-8 w-8 text-primary" />
           </div>
-          <CardTitle>Ativar Autenticação de Dois Fatores</CardTitle>
+          <CardTitle>Escolha o Método de 2FA</CardTitle>
           <CardDescription>
-            Adicione uma camada extra de segurança à sua conta usando um aplicativo autenticador
+            Selecione como deseja receber os códigos de verificação
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
-                1
+          <Tabs defaultValue="totp" onValueChange={(v) => setMethod(v as 'totp' | 'sms')}>
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="totp" className="flex items-center gap-2">
+                <Smartphone className="h-4 w-4" />
+                App Autenticador
+              </TabsTrigger>
+              <TabsTrigger value="sms" className="flex items-center gap-2">
+                <Phone className="h-4 w-4" />
+                SMS
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="totp" className="mt-4 space-y-3">
+              <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                    1
+                  </div>
+                  <div>
+                    <p className="font-medium">Instale um app autenticador</p>
+                    <p className="text-sm text-muted-foreground">
+                      Google Authenticator, Microsoft Authenticator, ou similar
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                    2
+                  </div>
+                  <div>
+                    <p className="font-medium">Escaneie o QR code</p>
+                    <p className="text-sm text-muted-foreground">
+                      Use o app para escanear o código que será exibido
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                    3
+                  </div>
+                  <div>
+                    <p className="font-medium">Digite o código de verificação</p>
+                    <p className="text-sm text-muted-foreground">
+                      Confirme a configuração com o código gerado
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p className="font-medium">Instale um app autenticador</p>
-                <p className="text-sm text-muted-foreground">
-                  Google Authenticator, Microsoft Authenticator, ou similar
-                </p>
+            </TabsContent>
+
+            <TabsContent value="sms" className="mt-4 space-y-3">
+              <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                    1
+                  </div>
+                  <div>
+                    <p className="font-medium">Informe seu número de celular</p>
+                    <p className="text-sm text-muted-foreground">
+                      Usaremos este número para enviar códigos de verificação
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                    2
+                  </div>
+                  <div>
+                    <p className="font-medium">Receba o código por SMS</p>
+                    <p className="text-sm text-muted-foreground">
+                      Um código será enviado para seu celular
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                    3
+                  </div>
+                  <div>
+                    <p className="font-medium">Confirme o código</p>
+                    <p className="text-sm text-muted-foreground">
+                      Digite o código recebido para ativar
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
-                2
-              </div>
-              <div>
-                <p className="font-medium">Escaneie o QR code</p>
-                <p className="text-sm text-muted-foreground">
-                  Use o app para escanear o código que será exibido
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
-                3
-              </div>
-              <div>
-                <p className="font-medium">Digite o código de verificação</p>
-                <p className="text-sm text-muted-foreground">
-                  Confirme a configuração com o código gerado
-                </p>
-              </div>
-            </div>
-          </div>
+            </TabsContent>
+          </Tabs>
 
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onCancel} className="flex-1">
               Cancelar
             </Button>
-            <Button onClick={handleStartEnroll} disabled={loading} className="flex-1">
+            <Button 
+              onClick={() => {
+                if (method === 'sms') {
+                  setMethod('sms');
+                } else {
+                  handleStartEnroll();
+                }
+              }} 
+              disabled={loading} 
+              className="flex-1"
+            >
               {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              Começar
+              Continuar
             </Button>
           </div>
         </CardContent>
@@ -136,6 +203,12 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
     );
   }
 
+  // SMS Flow - Delegate to MFAPhoneEnroll
+  if (method === 'sms') {
+    return <MFAPhoneEnroll onEnrolled={onEnrolled} onCancel={onCancel} />;
+  }
+
+  // TOTP Flow - Step 2: QR Code
   if (step === 'qrcode') {
     return (
       <Card className="border-border/50">
@@ -184,6 +257,7 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
     );
   }
 
+  // TOTP Flow - Step 3: Verify
   return (
     <Card className="border-border/50">
       <CardHeader className="text-center">
