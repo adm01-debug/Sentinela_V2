@@ -7,6 +7,7 @@ export { ReauthDialog } from './ReauthDialog';
 export { MFAPhoneEnroll } from './MFAPhoneEnroll';
 export { KnownDevicesPanel } from './KnownDevicesPanel';
 export { UnifiedSecurityPanel } from './UnifiedSecurityPanel';
+export { NotificationSettings } from './NotificationSettings';
 export {
   SecurityScore,
   ThreatLevelBadge,
