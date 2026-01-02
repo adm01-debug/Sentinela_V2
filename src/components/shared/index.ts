@@ -9,6 +9,7 @@
 
 export { SavedFiltersDropdown } from './SavedFiltersDropdown';
 export { SearchInput, SearchInputCompact, SearchInputLarge } from './SearchInput';
+export { AdvancedFiltersPanel } from './AdvancedFiltersPanel';
 
 // ============================================================
 // IMPORTAÇÃO / EXPORTAÇÃO
@@ -36,6 +37,12 @@ export { VersionHistory } from './VersionHistory';
 export { LoadMoreButton, InfiniteScrollTrigger, LoadProgress } from './LoadMoreButton';
 
 // ============================================================
+// TOOLBAR COMPLETO
+// ============================================================
+
+export { DataTableToolbar } from './DataTableToolbar';
+
+// ============================================================
 // TYPES RE-EXPORTS
 // ============================================================
 
@@ -43,3 +50,4 @@ export type { ExportColumn, ExportFormat } from '@/hooks/useExport';
 export type { SavedFilter } from '@/hooks/useSavedFilters';
 export type { EntityVersion, VersionDiff } from '@/hooks/useVersions';
 export type { BulkActionResult } from '@/hooks/useBulkActions';
+export type { FilterField, FilterGroup, FilterCondition, FilterOperator } from '@/hooks/useAdvancedFilters';
