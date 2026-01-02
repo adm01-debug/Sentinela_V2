@@ -1,8 +1,11 @@
+// ============================================================
+// SAVED FILTERS HOOK
+// Gerenciamento de filtros salvos por usuário e entidade
+// ============================================================
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 // ============================================================
 // TYPES
@@ -10,207 +13,219 @@ import { queryKeys, queryPresets } from '@/lib/queryClient';
 
 export interface SavedFilter {
   id: string;
-  user_id: string;
-  module: string;
   name: string;
   filters: Record<string, unknown>;
   is_default: boolean;
   created_at: string;
-  updated_at: string;
+  entity_type: string;
 }
 
-export interface CreateSavedFilterInput {
-  module: string;
-  name: string;
-  filters: Record<string, unknown>;
-  is_default?: boolean;
-}
-
-export interface UpdateSavedFilterInput {
-  id: string;
-  name?: string;
-  filters?: Record<string, unknown>;
-  is_default?: boolean;
+interface UseSavedFiltersOptions {
+  entityType: string;
+  onApply?: (filters: Record<string, unknown>) => void;
 }
 
 // ============================================================
-// QUERIES
+// MOCK DATA (quando Supabase não está configurado)
 // ============================================================
 
-export function useSavedFilters(module: string) {
-  const { user } = useAuth();
-  
-  return useQuery({
-    queryKey: queryKeys.savedFilters.module(module, user?.id),
-    queryFn: async () => {
-      if (!user?.id) return [];
-      
+const mockFilters: SavedFilter[] = [
+  {
+    id: 'mock-1',
+    name: 'Filtro Padrão',
+    filters: { status: 'active' },
+    is_default: true,
+    created_at: new Date().toISOString(),
+    entity_type: 'default',
+  },
+];
+
+// ============================================================
+// HOOK PRINCIPAL
+// ============================================================
+
+export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions) {
+  const queryClient = useQueryClient();
+  const queryKey = ['saved-filters', entityType];
+
+  // ============================================================
+  // QUERY - Listar filtros salvos
+  // ============================================================
+  const {
+    data: filters = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey,
+    queryFn: async (): Promise<SavedFilter[]> => {
+      if (!isSupabaseReady) {
+        console.log('[SavedFilters] Supabase não configurado, usando mock');
+        return mockFilters.filter((f) => f.entity_type === entityType);
+      }
+
       const { data, error } = await supabase
         .from('saved_filters')
         .select('*')
-        .eq('user_id', user.id)
-        .eq('module', module)
-        .order('is_default', { ascending: false })
-        .order('name', { ascending: true });
+        .eq('entity_type', entityType)
+        .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      return data as SavedFilter[];
+      if (error) {
+        // Se a tabela não existe, retorna array vazio
+        if (error.code === '42P01') {
+          console.warn('[SavedFilters] Tabela não existe ainda');
+          return [];
+        }
+        throw error;
+      }
+
+      return (data ?? []) as SavedFilter[];
     },
-    enabled: !!user?.id && !!module,
-    ...queryPresets.list,
+    staleTime: 5 * 60 * 1000, // 5 minutos
   });
-}
 
-// ============================================================
-// MUTATIONS
-// ============================================================
+  // ============================================================
+  // MUTATION - Salvar novo filtro
+  // ============================================================
+  const saveFilterMutation = useMutation({
+    mutationFn: async (filter: { name: string; filters: Record<string, unknown>; is_default?: boolean }) => {
+      if (!isSupabaseReady) {
+        console.log('[SavedFilters] Mock: salvando filtro', filter.name);
+        return { id: `mock-${Date.now()}`, ...filter, entity_type: entityType, created_at: new Date().toISOString() };
+      }
 
-export function useCreateSavedFilter() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const { user } = useAuth();
+      const { data: userData } = await supabase.auth.getUser();
 
-  return useMutation({
-    mutationFn: async (input: CreateSavedFilterInput) => {
-      if (!user?.id) throw new Error('User not authenticated');
-      
       const { data, error } = await supabase
         .from('saved_filters')
-        .insert({ ...input, user_id: user.id })
+        .insert({
+          user_id: userData.user?.id,
+          entity_type: entityType,
+          name: filter.name,
+          filters: filter.filters,
+          is_default: filter.is_default ?? false,
+        })
         .select()
         .single();
 
       if (error) throw error;
       return data;
     },
-    onSuccess: (_, input) => {
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.savedFilters.module(input.module, user?.id) 
-      });
-      toast({
-        title: 'Filtro salvo',
-        description: 'O filtro foi salvo com sucesso.',
-      });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+      toast.success('Filtro salvo com sucesso!');
     },
-    onError: (error) => {
-      toast({
-        title: 'Erro ao salvar filtro',
-        description: error.message,
-        variant: 'destructive',
-      });
+    onError: (error: Error) => {
+      console.error('[SavedFilters] Erro ao salvar:', error);
+      toast.error('Erro ao salvar filtro');
     },
   });
-}
 
-export function useUpdateSavedFilter() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const { user } = useAuth();
+  // ============================================================
+  // MUTATION - Deletar filtro
+  // ============================================================
+  const deleteFilterMutation = useMutation({
+    mutationFn: async (id: string) => {
+      if (!isSupabaseReady) {
+        console.log('[SavedFilters] Mock: deletando filtro', id);
+        return;
+      }
 
-  return useMutation({
-    mutationFn: async ({ id, ...input }: UpdateSavedFilterInput) => {
-      const { data, error } = await supabase
-        .from('saved_filters')
-        .update(input)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.savedFilters.module(data.module, user?.id) 
-      });
-      toast({
-        title: 'Filtro atualizado',
-        description: 'O filtro foi atualizado com sucesso.',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Erro ao atualizar filtro',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-}
-
-export function useDeleteSavedFilter() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const { user } = useAuth();
-
-  return useMutation({
-    mutationFn: async ({ id, module }: { id: string; module: string }) => {
       const { error } = await supabase
         .from('saved_filters')
         .delete()
         .eq('id', id);
 
       if (error) throw error;
-      return { module };
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.savedFilters.module(data.module, user?.id) 
-      });
-      toast({
-        title: 'Filtro excluído',
-        description: 'O filtro foi excluído com sucesso.',
-      });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+      toast.success('Filtro removido');
     },
-    onError: (error) => {
-      toast({
-        title: 'Erro ao excluir filtro',
-        description: error.message,
-        variant: 'destructive',
-      });
+    onError: (error: Error) => {
+      console.error('[SavedFilters] Erro ao deletar:', error);
+      toast.error('Erro ao remover filtro');
     },
   });
-}
 
-export function useSetDefaultFilter() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const { user } = useAuth();
+  // ============================================================
+  // MUTATION - Definir filtro padrão
+  // ============================================================
+  const setDefaultMutation = useMutation({
+    mutationFn: async (id: string) => {
+      if (!isSupabaseReady) {
+        console.log('[SavedFilters] Mock: definindo padrão', id);
+        return;
+      }
 
-  return useMutation({
-    mutationFn: async ({ id, module }: { id: string; module: string }) => {
-      // First, unset all defaults for this module
+      // Remove default de todos os filtros do mesmo tipo
       await supabase
         .from('saved_filters')
         .update({ is_default: false })
-        .eq('user_id', user?.id)
-        .eq('module', module);
+        .eq('entity_type', entityType);
 
-      // Then set the new default
-      const { data, error } = await supabase
+      // Define novo default
+      const { error } = await supabase
         .from('saved_filters')
         .update({ is_default: true })
-        .eq('id', id)
-        .select()
-        .single();
+        .eq('id', id);
 
       if (error) throw error;
-      return data;
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.savedFilters.module(data.module, user?.id) 
-      });
-      toast({
-        title: 'Filtro padrão definido',
-      });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+      toast.success('Filtro padrão definido');
     },
-    onError: (error) => {
-      toast({
-        title: 'Erro ao definir filtro padrão',
-        description: error.message,
-        variant: 'destructive',
-      });
+    onError: (error: Error) => {
+      console.error('[SavedFilters] Erro ao definir padrão:', error);
+      toast.error('Erro ao definir filtro padrão');
     },
   });
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+
+  const applyFilter = (filter: SavedFilter) => {
+    if (onApply) {
+      onApply(filter.filters);
+      toast.info(`Filtro "${filter.name}" aplicado`);
+    }
+  };
+
+  const getDefaultFilter = (): SavedFilter | undefined => {
+    return filters.find((f) => f.is_default);
+  };
+
+  // ============================================================
+  // RETURN
+  // ============================================================
+
+  return {
+    // Data
+    filters,
+    defaultFilter: getDefaultFilter(),
+    isLoading,
+    error,
+
+    // Actions
+    saveFilter: saveFilterMutation.mutate,
+    deleteFilter: deleteFilterMutation.mutate,
+    setDefault: setDefaultMutation.mutate,
+    applyFilter,
+
+    // Loading states
+    isSaving: saveFilterMutation.isPending,
+    isDeleting: deleteFilterMutation.isPending,
+    isSettingDefault: setDefaultMutation.isPending,
+  };
 }
+
+// ============================================================
+// HOOK SIMPLIFICADO (para uso rápido)
+// ============================================================
+
+export function useEntityFilters(entityType: string) {
+  return useSavedFilters({ entityType });
+}
+
+export default useSavedFilters;
