@@ -1,8 +1,9 @@
 // ============================================================
 // CSV IMPORTER
-// Importação de arquivos CSV com validação Zod
+// Importação de arquivos CSV com validação Zod usando PapaParse
 // ============================================================
 
+import Papa from 'papaparse';
 import { z } from 'zod';
 
 // ============================================================
@@ -35,69 +36,6 @@ export interface CSVImportOptions {
 }
 
 // ============================================================
-// CSV PARSER (sem dependência externa)
-// ============================================================
-
-function parseCSV(text: string, options: CSVImportOptions = {}): Record<string, string>[] {
-  const { delimiter = ',', trimValues = true, skipEmptyRows = true, maxRows } = options;
-
-  const lines = text.split(/\r?\n/);
-  if (lines.length < 2) return [];
-
-  // Primeira linha são os headers
-  const headers = lines[0].split(delimiter).map((h) => (trimValues ? h.trim() : h));
-
-  const results: Record<string, string>[] = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    if (maxRows && results.length >= maxRows) break;
-
-    const line = lines[i];
-    if (skipEmptyRows && !line.trim()) continue;
-
-    const values = parseCSVLine(line, delimiter);
-    const row: Record<string, string> = {};
-
-    headers.forEach((header, index) => {
-      const value = values[index] ?? '';
-      row[header] = trimValues ? value.trim() : value;
-    });
-
-    results.push(row);
-  }
-
-  return results;
-}
-
-function parseCSVLine(line: string, delimiter: string): string[] {
-  const result: string[] = [];
-  let current = '';
-  let inQuotes = false;
-
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    const nextChar = line[i + 1];
-
-    if (char === '"') {
-      if (inQuotes && nextChar === '"') {
-        current += '"';
-        i++; // Skip next quote
-      } else {
-        inQuotes = !inQuotes;
-      }
-    } else if (char === delimiter && !inQuotes) {
-      result.push(current);
-      current = '';
-    } else {
-      current += char;
-    }
-  }
-
-  result.push(current);
-  return result;
-}
-
-// ============================================================
 // MAIN IMPORT FUNCTION
 // ============================================================
 
@@ -107,62 +45,73 @@ export async function importCSV<T>(
   options: CSVImportOptions = {}
 ): Promise<ImportResult<T>> {
   const startTime = performance.now();
+  const { maxRows, trimValues = true } = options;
 
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-      try {
-        const text = event.target?.result as string;
-        const rows = parseCSV(text, options);
-
-        const success: T[] = [];
-        const errors: ImportError[] = [];
-
-        rows.forEach((row, index) => {
-          try {
-            // Tentar converter valores numéricos
-            const processedRow = processRowValues(row);
-            const validated = schema.parse(processedRow);
-            success.push(validated);
-          } catch (error) {
-            if (error instanceof z.ZodError) {
-              error.errors.forEach((err) => {
-                errors.push({
-                  row: index + 2, // +2 porque linha 1 é header
-                  field: err.path.join('.'),
-                  value: row[err.path[0] as string],
-                  error: err.message,
-                });
-              });
-            } else {
-              errors.push({
-                row: index + 2,
-                field: 'unknown',
-                value: null,
-                error: String(error),
-              });
-            }
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      delimiter: options.delimiter,
+      encoding: options.encoding ?? 'UTF-8',
+      transformHeader: (header) => (trimValues ? header.trim() : header),
+      transform: (value) => (trimValues ? value.trim() : value),
+      complete: (results) => {
+        try {
+          let rows = results.data as Record<string, string>[];
+          
+          // Limitar linhas se necessário
+          if (maxRows && rows.length > maxRows) {
+            rows = rows.slice(0, maxRows);
           }
-        });
 
-        const duration = performance.now() - startTime;
+          const success: T[] = [];
+          const errors: ImportError[] = [];
 
-        resolve({
-          success,
-          errors,
-          total: rows.length,
-          validCount: success.length,
-          errorCount: errors.length,
-          duration,
-        });
-      } catch (error) {
-        reject(error);
-      }
-    };
+          rows.forEach((row, index) => {
+            try {
+              // Processar valores (converter tipos)
+              const processedRow = processRowValues(row);
+              const validated = schema.parse(processedRow);
+              success.push(validated);
+            } catch (error) {
+              if (error instanceof z.ZodError) {
+                error.errors.forEach((err) => {
+                  errors.push({
+                    row: index + 2, // +2 porque linha 1 é header
+                    field: err.path.join('.'),
+                    value: row[err.path[0] as string],
+                    error: err.message,
+                  });
+                });
+              } else {
+                errors.push({
+                  row: index + 2,
+                  field: 'unknown',
+                  value: null,
+                  error: String(error),
+                });
+              }
+            }
+          });
 
-    reader.onerror = () => reject(new Error('Erro ao ler arquivo'));
-    reader.readAsText(file, options.encoding ?? 'UTF-8');
+          const duration = performance.now() - startTime;
+
+          resolve({
+            success,
+            errors,
+            total: rows.length,
+            validCount: success.length,
+            errorCount: errors.length,
+            duration,
+          });
+        } catch (error) {
+          reject(error);
+        }
+      },
+      error: (error) => {
+        reject(new Error(`Erro ao processar CSV: ${error.message}`));
+      },
+    });
   });
 }
 
@@ -185,13 +134,12 @@ function parseValue(value: string): unknown {
   if (!value || value === '') return undefined;
 
   // Boolean
-  if (value.toLowerCase() === 'true') return true;
-  if (value.toLowerCase() === 'false') return false;
-  if (value.toLowerCase() === 'sim') return true;
-  if (value.toLowerCase() === 'não' || value.toLowerCase() === 'nao') return false;
+  const lowerValue = value.toLowerCase();
+  if (lowerValue === 'true' || lowerValue === 'sim' || lowerValue === 'yes') return true;
+  if (lowerValue === 'false' || lowerValue === 'não' || lowerValue === 'nao' || lowerValue === 'no') return false;
 
-  // Number
-  const numValue = value.replace(',', '.'); // Brazilian format
+  // Number (Brazilian format support)
+  const numValue = value.replace(',', '.');
   if (/^-?\d+(\.\d+)?$/.test(numValue)) {
     return parseFloat(numValue);
   }
@@ -264,15 +212,11 @@ export function validateCSVHeaders(
   requiredHeaders: string[]
 ): Promise<{ valid: boolean; missing: string[]; extra: string[] }> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-      try {
-        const text = event.target?.result as string;
-        const firstLine = text.split(/\r?\n/)[0];
-        const headers = firstLine.split(',').map((h) => h.trim().toLowerCase());
-
-        const normalizedRequired = requiredHeaders.map((h) => h.toLowerCase());
+    Papa.parse(file, {
+      preview: 1, // Só primeira linha
+      complete: (results) => {
+        const headers = (results.data[0] as string[] ?? []).map((h) => h.toLowerCase().trim());
+        const normalizedRequired = requiredHeaders.map((h) => h.toLowerCase().trim());
 
         const missing = normalizedRequired.filter((h) => !headers.includes(h));
         const extra = headers.filter((h) => !normalizedRequired.includes(h));
@@ -282,13 +226,11 @@ export function validateCSVHeaders(
           missing,
           extra,
         });
-      } catch (error) {
-        reject(error);
-      }
-    };
-
-    reader.onerror = () => reject(new Error('Erro ao ler arquivo'));
-    reader.readAsText(file);
+      },
+      error: (error) => {
+        reject(new Error(`Erro ao validar headers: ${error.message}`));
+      },
+    });
   });
 }
 
@@ -304,17 +246,45 @@ export function formatFileSize(bytes: number): string {
 
 export function estimateRowCount(file: File): Promise<number> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-      const text = event.target?.result as string;
-      const lines = text.split(/\r?\n/).filter((l) => l.trim());
-      resolve(Math.max(0, lines.length - 1)); // -1 for header
-    };
-
-    reader.onerror = () => reject(new Error('Erro ao ler arquivo'));
-    reader.readAsText(file);
+    Papa.parse(file, {
+      complete: (results) => {
+        resolve(Math.max(0, results.data.length - 1)); // -1 for header
+      },
+      error: (error) => {
+        reject(new Error(`Erro ao contar linhas: ${error.message}`));
+      },
+    });
   });
+}
+
+// ============================================================
+// EXPORT CSV
+// ============================================================
+
+export function exportToCSV<T extends Record<string, unknown>>(
+  data: T[],
+  filename: string = 'export.csv',
+  options: { delimiter?: string; includeHeaders?: boolean } = {}
+): void {
+  const { delimiter = ',', includeHeaders = true } = options;
+
+  const csv = Papa.unparse(data, {
+    delimiter,
+    header: includeHeaders,
+  });
+
+  // BOM para compatibilidade com Excel
+  const bom = '\uFEFF';
+  const blob = new Blob([bom + csv], { type: 'text/csv;charset=utf-8' });
+  
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 export default importCSV;
