@@ -1,35 +1,39 @@
-import { useRef, useCallback, MouseEvent, TouchEvent } from "react";
+import { useRef, useCallback, MouseEvent, TouchEvent } from 'react';
 
-interface UseLongPressOptions {
-  onLongPress: () => void;
-  onClick?: () => void;
+export interface UseLongPressOptions {
+  onLongPress: (e: MouseEvent | TouchEvent) => void;
+  onClick?: (e: MouseEvent | TouchEvent) => void;
   delay?: number;
+  shouldPreventDefault?: boolean;
 }
 
-export function useLongPress({ onLongPress, onClick, delay = 500 }: UseLongPressOptions) {
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+export function useLongPress(options: UseLongPressOptions) {
+  const { onLongPress, onClick, delay = 500, shouldPreventDefault = true } = options;
+  const timerRef = useRef<NodeJS.Timeout>();
   const isLongPress = useRef(false);
+  const targetRef = useRef<EventTarget | null>(null);
 
-  const start = useCallback(() => {
+  const start = useCallback((e: MouseEvent | TouchEvent) => {
+    if (shouldPreventDefault && e.target) {
+      e.target.addEventListener('contextmenu', (ev) => ev.preventDefault(), { once: true });
+    }
+    targetRef.current = e.target;
     isLongPress.current = false;
-    timerRef.current = setTimeout(() => {
-      isLongPress.current = true;
-      onLongPress();
-    }, delay);
-  }, [onLongPress, delay]);
+    timerRef.current = setTimeout(() => { isLongPress.current = true; onLongPress(e); }, delay);
+  }, [onLongPress, delay, shouldPreventDefault]);
 
-  const clear = useCallback((shouldTriggerClick = true) => {
+  const clear = useCallback((e: MouseEvent | TouchEvent, shouldTriggerClick = true) => {
     if (timerRef.current) clearTimeout(timerRef.current);
-    if (shouldTriggerClick && !isLongPress.current && onClick) onClick();
+    if (shouldTriggerClick && !isLongPress.current && onClick) onClick(e);
   }, [onClick]);
 
-  const onMouseDown = useCallback((e: MouseEvent) => { if (e.button === 0) start(); }, [start]);
-  const onMouseUp = useCallback(() => clear(), [clear]);
-  const onMouseLeave = useCallback(() => clear(false), [clear]);
-  const onTouchStart = useCallback(() => start(), [start]);
-  const onTouchEnd = useCallback(() => clear(), [clear]);
-
-  return { onMouseDown, onMouseUp, onMouseLeave, onTouchStart, onTouchEnd, handlers: { onMouseDown, onMouseUp, onMouseLeave, onTouchStart, onTouchEnd } };
+  return {
+    onMouseDown: start,
+    onMouseUp: (e: MouseEvent) => clear(e),
+    onMouseLeave: (e: MouseEvent) => clear(e, false),
+    onTouchStart: start,
+    onTouchEnd: (e: TouchEvent) => clear(e),
+  };
 }
 
 export default useLongPress;
