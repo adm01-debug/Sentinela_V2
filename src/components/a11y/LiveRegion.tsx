@@ -1,51 +1,66 @@
-import { memo, useState, useEffect } from 'react';
+import * as React from 'react';
+import { useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
-interface LiveRegionProps {
+export interface LiveRegionProps {
   message: string;
-  politeness?: 'polite' | 'assertive';
+  politeness?: 'polite' | 'assertive' | 'off';
+  atomic?: boolean;
+  relevant?: 'additions' | 'removals' | 'text' | 'all';
   clearAfter?: number;
+  className?: string;
 }
 
-/**
- * Announces dynamic content changes to screen readers
- */
-function LiveRegionComponent({ 
-  message, 
+export function LiveRegion({
+  message,
   politeness = 'polite',
-  clearAfter = 5000 
+  atomic = true,
+  relevant = 'additions',
+  clearAfter,
+  className,
 }: LiveRegionProps) {
-  const [announcement, setAnnouncement] = useState(message);
+  const regionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setAnnouncement(message);
-    
-    if (clearAfter > 0) {
-      const timer = setTimeout(() => setAnnouncement(''), clearAfter);
+    if (clearAfter && message && regionRef.current) {
+      const timer = setTimeout(() => {
+        if (regionRef.current) {
+          regionRef.current.textContent = '';
+        }
+      }, clearAfter);
       return () => clearTimeout(timer);
     }
   }, [message, clearAfter]);
 
   return (
     <div
+      ref={regionRef}
       role="status"
       aria-live={politeness}
-      aria-atomic="true"
-      className="sr-only"
+      aria-atomic={atomic}
+      aria-relevant={relevant}
+      className={cn('sr-only', className)}
     >
-      {announcement}
-    </div>
-  );
-}
-
-export const LiveRegion = memo(LiveRegionComponent);
-
-/**
- * Alert variant of LiveRegion for urgent messages
- */
-export function AlertRegion({ message }: { message: string }) {
-  return (
-    <div role="alert" aria-live="assertive" className="sr-only">
       {message}
     </div>
   );
 }
+
+// Hook for programmatic announcements
+export function useAnnounce() {
+  const [message, setMessage] = React.useState('');
+  
+  const announce = React.useCallback((text: string, delay = 0) => {
+    if (delay > 0) {
+      setTimeout(() => setMessage(text), delay);
+    } else {
+      setMessage(text);
+    }
+  }, []);
+
+  const clear = React.useCallback(() => setMessage(''), []);
+
+  return { message, announce, clear };
+}
+
+export default LiveRegion;
