@@ -1,83 +1,54 @@
-import * as React from 'react';
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { cn } from '@/lib/utils';
-import { X } from 'lucide-react';
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
 
-export interface BottomSheetProps {
+interface BottomSheetProps {
   open: boolean;
   onClose: () => void;
   children: React.ReactNode;
   title?: string;
-  snapPoints?: number[];
-  defaultSnapPoint?: number;
+  description?: string;
   className?: string;
-  showHandle?: boolean;
-  showCloseButton?: boolean;
-  blocking?: boolean;
+  height?: "auto" | "half" | "full";
 }
 
-export function BottomSheet({
-  open,
-  onClose,
-  children,
-  title,
-  snapPoints = [0.5, 0.9],
-  defaultSnapPoint = 0,
-  className,
-  showHandle = true,
-  showCloseButton = true,
-  blocking = true,
-}: BottomSheetProps) {
-  const [currentSnap, setCurrentSnap] = useState(defaultSnapPoint);
-  const [translateY, setTranslateY] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const sheetRef = useRef<HTMLDivElement>(null);
-  const startY = useRef(0);
+export function BottomSheet({ open, onClose, children, title, description, className, height = "half" }: BottomSheetProps) {
+  const [dragY, setDragY] = React.useState(0);
+  const startY = React.useRef(0);
 
-  const currentHeight = typeof window !== 'undefined' ? window.innerHeight * snapPoints[currentSnap] : 400;
+  React.useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
 
-  useEffect(() => {
-    if (open) { setCurrentSnap(defaultSnapPoint); setTranslateY(0); }
-  }, [open, defaultSnapPoint]);
+  const handleTouchStart = (e: React.TouchEvent) => { startY.current = e.touches[0].clientY; };
+  const handleTouchMove = (e: React.TouchEvent) => { const diff = e.touches[0].clientY - startY.current; if (diff > 0) setDragY(diff); };
+  const handleTouchEnd = () => { if (dragY > 100) onClose(); setDragY(0); };
 
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    startY.current = e.touches[0].clientY;
-    setIsDragging(true);
-  }, []);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isDragging) return;
-    const diff = e.touches[0].clientY - startY.current;
-    setTranslateY(Math.max(0, diff));
-  }, [isDragging]);
-
-  const handleTouchEnd = useCallback(() => {
-    setIsDragging(false);
-    if (translateY > 100) { onClose(); }
-    else if (translateY > 50 && currentSnap > 0) { setCurrentSnap(currentSnap - 1); }
-    setTranslateY(0);
-  }, [translateY, currentSnap, onClose]);
+  const heightClass = height === "full" ? "h-[90vh]" : height === "half" ? "h-[50vh]" : "h-auto max-h-[80vh]";
 
   if (!open) return null;
 
   return (
     <>
-      {blocking && <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />}
-      <div ref={sheetRef} className={cn('fixed bottom-0 left-0 right-0 bg-background rounded-t-2xl shadow-2xl z-50 flex flex-col', className)} style={{ height: currentHeight, transform: `translateY(${translateY}px)`, transition: isDragging ? 'none' : 'transform 0.3s ease-out, height 0.3s ease-out' }}>
-        {showHandle && (
-          <div className="flex justify-center py-3 cursor-grab" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-            <div className="w-12 h-1.5 bg-muted-foreground/30 rounded-full" />
+      <div className="fixed inset-0 bg-black/50 z-40 animate-in fade-in" onClick={onClose} />
+      <div className={cn("fixed bottom-0 left-0 right-0 z-50 bg-background rounded-t-2xl shadow-2xl animate-in slide-in-from-bottom duration-300", heightClass, className)} style={{ transform: `translateY(${dragY}px)` }}>
+        <div className="flex justify-center pt-3 pb-2 cursor-grab" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+          <div className="w-12 h-1.5 rounded-full bg-muted-foreground/30" />
+        </div>
+        {(title || description) && (
+          <div className="flex items-start justify-between px-4 pb-4 border-b">
+            <div>
+              {title && <h3 className="font-semibold">{title}</h3>}
+              {description && <p className="text-sm text-muted-foreground">{description}</p>}
+            </div>
+            <button onClick={onClose} className="p-1 rounded-full hover:bg-muted"><X className="h-5 w-5" /></button>
           </div>
         )}
-        {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-4 pb-2 border-b">
-            {title && <h3 className="font-semibold">{title}</h3>}
-            {showCloseButton && <button onClick={onClose} className="p-1 hover:bg-muted rounded-full"><X className="h-5 w-5" /></button>}
-          </div>
-        )}
-        <div className="flex-1 overflow-auto p-4">{children}</div>
+        <div className="overflow-auto px-4 py-4" style={{ maxHeight: "calc(100% - 80px)" }}>{children}</div>
       </div>
     </>
   );
 }
+
 export default BottomSheet;
