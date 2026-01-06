@@ -1,65 +1,56 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-
-export interface DataPoint {
-  timestamp: Date;
-  value: number;
-  label?: string;
-}
+import { useState, useCallback, useMemo } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface Anomaly {
   id: string;
-  dataPoint: DataPoint;
-  deviation: number;
-  severity: 'low' | 'medium' | 'high';
-  type: 'spike' | 'drop' | 'outlier';
+  type: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  score: number;
+  description: string;
+  timestamp: Date;
+  metadata?: Record<string, any>;
 }
 
 export interface UseAnomalyDetectionOptions {
-  data: DataPoint[];
+  entityType?: string;
   threshold?: number;
-  windowSize?: number;
-  onAnomalyDetected?: (anomaly: Anomaly) => void;
+  autoRefresh?: boolean;
+  refreshInterval?: number;
 }
 
-export function useAnomalyDetection(options: UseAnomalyDetectionOptions) {
-  const { data, threshold = 2, windowSize = 10, onAnomalyDetected } = options;
+export function useAnomalyDetection(options: UseAnomalyDetectionOptions = {}) {
+  const { entityType, threshold = 0.7, autoRefresh = false, refreshInterval = 60000 } = options;
   const [anomalies, setAnomalies] = useState<Anomaly[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-  const stats = useMemo(() => {
-    if (data.length < 2) return { mean: 0, stdDev: 0 };
-    const values = data.map(d => d.value);
-    const mean = values.reduce((a, b) => a + b, 0) / values.length;
-    const variance = values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length;
-    return { mean, stdDev: Math.sqrt(variance) };
-  }, [data]);
+  const detectAnomalies = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke('predict-anomaly', {
+        body: { entityType, threshold, timeRange: '24h' }
+      });
+      if (fnError) throw fnError;
+      setAnomalies(data?.predictions?.map((p: any) => ({
+        ...p,
+        timestamp: new Date(p.timestamp)
+      })) || []);
+    } catch (e) {
+      setError(e instanceof Error ? e : new Error('Detection failed'));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [entityType, threshold]);
 
-  const detectAnomalies = useCallback(() => {
-    if (data.length < windowSize || stats.stdDev === 0) return [];
-    const detected: Anomaly[] = [];
-    
-    data.forEach((point, i) => {
-      const deviation = Math.abs(point.value - stats.mean) / stats.stdDev;
-      if (deviation > threshold) {
-        const anomaly: Anomaly = {
-          id: `anomaly-${i}-${point.timestamp.getTime()}`,
-          dataPoint: point,
-          deviation,
-          severity: deviation > threshold * 2 ? 'high' : deviation > threshold * 1.5 ? 'medium' : 'low',
-          type: point.value > stats.mean ? 'spike' : 'drop',
-        };
-        detected.push(anomaly);
-        onAnomalyDetected?.(anomaly);
-      }
-    });
-    return detected;
-  }, [data, stats, threshold, windowSize, onAnomalyDetected]);
+  const dismissAnomaly = useCallback((id: string) => {
+    setAnomalies(prev => prev.filter(a => a.id !== id));
+  }, []);
 
-  useEffect(() => {
-    const detected = detectAnomalies();
-    setAnomalies(detected);
-  }, [detectAnomalies]);
+  const criticalCount = useMemo(() => anomalies.filter(a => a.severity === 'critical').length, [anomalies]);
+  const highCount = useMemo(() => anomalies.filter(a => a.severity === 'high').length, [anomalies]);
 
-  return { anomalies, stats, hasAnomalies: anomalies.length > 0, highSeverityCount: anomalies.filter(a => a.severity === 'high').length };
+  return { anomalies, isLoading, error, detectAnomalies, dismissAnomaly, criticalCount, highCount };
 }
 
 export default useAnomalyDetection;
