@@ -1,49 +1,53 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { FileUpload } from '../components/ui/FileUpload';
+import type { Meta, StoryObj } from "@storybook/react";
+import { FileUpload } from "../components/ui/FileUpload";
+import { useState } from "react";
 
 const meta: Meta<typeof FileUpload> = {
-  title: 'UI/FileUpload',
+  title: "UI/FileUpload",
   component: FileUpload,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
+  parameters: { layout: "centered" },
 };
+
 export default meta;
-type Story = StoryObj<typeof FileUpload>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    onFilesSelected: (files) => console.log('Files:', files),
-    accept: '*/*',
-    multiple: true,
-  },
-};
-
-export const ImagesOnly: Story = {
-  args: {
-    onFilesSelected: (files) => console.log('Files:', files),
-    accept: 'image/*',
-    multiple: true,
+    accept: "image/*",
     maxSize: 5 * 1024 * 1024,
+    onUpload: (files) => console.log("Files:", files),
   },
 };
 
-export const SingleFile: Story = {
+export const Multiple: Story = {
   args: {
-    onFilesSelected: (files) => console.log('File:', files[0]),
-    multiple: false,
+    accept: "*/*",
+    multiple: true,
+    maxFiles: 5,
+    onUpload: (files) => console.log("Files:", files),
   },
 };
 
 export const WithPreview: Story = {
   args: {
-    onFilesSelected: (files) => console.log('Files:', files),
+    accept: "image/*",
     showPreview: true,
-    accept: 'image/*',
+    onUpload: (files) => console.log("Files:", files),
   },
 };
 
 export const Disabled: Story = {
   args: {
-    onFilesSelected: () => {},
     disabled: true,
+    onUpload: (files) => console.log("Files:", files),
+  },
+};
+
+export const CustomDropzone: Story = {
+  args: {
+    dropzoneText: "Arraste arquivos aqui ou clique para selecionar",
+    accept: ".pdf,.doc,.docx",
+    onUpload: (files) => console.log("Files:", files),
   },
 };
