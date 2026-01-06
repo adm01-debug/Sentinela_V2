@@ -1,65 +1,59 @@
-import { useState, useCallback, useRef, KeyboardEvent } from "react";
+import { useState, useCallback, useRef, KeyboardEvent } from 'react';
 
-interface UseRovingTabIndexOptions {
+export interface UseRovingTabIndexOptions {
   initialIndex?: number;
   loop?: boolean;
-  orientation?: "horizontal" | "vertical" | "both";
+  orientation?: 'horizontal' | 'vertical' | 'both';
 }
 
-export function useRovingTabIndex<T extends HTMLElement>(
-  itemCount: number,
-  options: UseRovingTabIndexOptions = {}
-) {
-  const { initialIndex = 0, loop = true, orientation = "vertical" } = options;
-  const [focusedIndex, setFocusedIndex] = useState(initialIndex);
-  const itemRefs = useRef<(T | null)[]>([]);
+export interface UseRovingTabIndexReturn {
+  activeIndex: number;
+  setActiveIndex: (index: number) => void;
+  getTabIndex: (index: number) => number;
+  handleKeyDown: (e: KeyboardEvent, index: number, totalItems: number) => void;
+  focusItem: (index: number) => void;
+  itemRefs: React.MutableRefObject<(HTMLElement | null)[]>;
+}
 
-  const setItemRef = useCallback((index: number) => (el: T | null) => {
-    itemRefs.current[index] = el;
-  }, []);
+export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRovingTabIndexReturn {
+  const { initialIndex = 0, loop = true, orientation = 'both' } = options;
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
+  const itemRefs = useRef<(HTMLElement | null)[]>([]);
 
   const focusItem = useCallback((index: number) => {
-    const clampedIndex = loop
-      ? ((index % itemCount) + itemCount) % itemCount
-      : Math.max(0, Math.min(index, itemCount - 1));
-    setFocusedIndex(clampedIndex);
-    itemRefs.current[clampedIndex]?.focus();
-  }, [itemCount, loop]);
+    const item = itemRefs.current[index];
+    if (item) {
+      item.focus();
+      setActiveIndex(index);
+    }
+  }, []);
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    const isVertical = orientation === "vertical" || orientation === "both";
-    const isHorizontal = orientation === "horizontal" || orientation === "both";
+  const getNextIndex = useCallback((current: number, total: number, direction: 1 | -1): number => {
+    const next = current + direction;
+    if (loop) return (next + total) % total;
+    return Math.max(0, Math.min(total - 1, next));
+  }, [loop]);
+
+  const handleKeyDown = useCallback((e: KeyboardEvent, index: number, totalItems: number) => {
+    const isHorizontal = orientation === 'horizontal' || orientation === 'both';
+    const isVertical = orientation === 'vertical' || orientation === 'both';
+    let nextIndex: number | null = null;
 
     switch (e.key) {
-      case "ArrowDown":
-        if (isVertical) { e.preventDefault(); focusItem(focusedIndex + 1); }
-        break;
-      case "ArrowUp":
-        if (isVertical) { e.preventDefault(); focusItem(focusedIndex - 1); }
-        break;
-      case "ArrowRight":
-        if (isHorizontal) { e.preventDefault(); focusItem(focusedIndex + 1); }
-        break;
-      case "ArrowLeft":
-        if (isHorizontal) { e.preventDefault(); focusItem(focusedIndex - 1); }
-        break;
-      case "Home":
-        e.preventDefault(); focusItem(0);
-        break;
-      case "End":
-        e.preventDefault(); focusItem(itemCount - 1);
-        break;
+      case 'ArrowRight': if (isHorizontal) nextIndex = getNextIndex(index, totalItems, 1); break;
+      case 'ArrowLeft': if (isHorizontal) nextIndex = getNextIndex(index, totalItems, -1); break;
+      case 'ArrowDown': if (isVertical) nextIndex = getNextIndex(index, totalItems, 1); break;
+      case 'ArrowUp': if (isVertical) nextIndex = getNextIndex(index, totalItems, -1); break;
+      case 'Home': nextIndex = 0; break;
+      case 'End': nextIndex = totalItems - 1; break;
     }
-  }, [focusedIndex, focusItem, itemCount, orientation]);
 
-  const getItemProps = useCallback((index: number) => ({
-    ref: setItemRef(index),
-    tabIndex: index === focusedIndex ? 0 : -1,
-    onKeyDown: handleKeyDown,
-    onFocus: () => setFocusedIndex(index),
-  }), [focusedIndex, handleKeyDown, setItemRef]);
+    if (nextIndex !== null) { e.preventDefault(); focusItem(nextIndex); }
+  }, [orientation, getNextIndex, focusItem]);
 
-  return { focusedIndex, setFocusedIndex: focusItem, getItemProps };
+  const getTabIndex = useCallback((index: number) => index === activeIndex ? 0 : -1, [activeIndex]);
+
+  return { activeIndex, setActiveIndex, getTabIndex, handleKeyDown, focusItem, itemRefs };
 }
 
 export default useRovingTabIndex;
