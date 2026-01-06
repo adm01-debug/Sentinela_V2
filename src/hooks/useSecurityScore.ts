@@ -10,29 +10,31 @@ export interface SecurityCheck {
 
 export interface UseSecurityScoreOptions {
   checks: SecurityCheck[];
-  onScoreChange?: (score: number) => void;
+  refreshInterval?: number;
 }
 
 export function useSecurityScore(options: UseSecurityScoreOptions) {
-  const { checks, onScoreChange } = options;
+  const { checks, refreshInterval } = options;
+  const [lastChecked, setLastChecked] = useState<Date>(new Date());
 
-  const { score, passedChecks, failedChecks, level } = useMemo(() => {
+  const { score, level, passedChecks, failedChecks } = useMemo(() => {
     const totalWeight = checks.reduce((sum, c) => sum + c.weight, 0);
     const passedWeight = checks.filter(c => c.passed).reduce((sum, c) => sum + c.weight, 0);
     const score = totalWeight > 0 ? Math.round((passedWeight / totalWeight) * 100) : 0;
-    const passedChecks = checks.filter(c => c.passed);
-    const failedChecks = checks.filter(c => !c.passed);
     const level = score >= 80 ? 'excellent' : score >= 60 ? 'good' : score >= 40 ? 'fair' : 'critical';
-    return { score, passedChecks, failedChecks, level };
+    return { score, level, passedChecks: checks.filter(c => c.passed), failedChecks: checks.filter(c => !c.passed) };
   }, [checks]);
 
-  useEffect(() => { onScoreChange?.(score); }, [score, onScoreChange]);
+  useEffect(() => {
+    if (refreshInterval) {
+      const interval = setInterval(() => setLastChecked(new Date()), refreshInterval);
+      return () => clearInterval(interval);
+    }
+  }, [refreshInterval]);
 
-  const getRecommendations = useCallback(() => {
-    return failedChecks.sort((a, b) => b.weight - a.weight).map(c => ({ check: c, priority: c.weight >= 20 ? 'high' : c.weight >= 10 ? 'medium' : 'low' }));
-  }, [failedChecks]);
+  const refresh = useCallback(() => setLastChecked(new Date()), []);
 
-  return { score, level, passedChecks, failedChecks, totalChecks: checks.length, getRecommendations };
+  return { score, level, passedChecks, failedChecks, totalChecks: checks.length, lastChecked, refresh };
 }
 
 export default useSecurityScore;
