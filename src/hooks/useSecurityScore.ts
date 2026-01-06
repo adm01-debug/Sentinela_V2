@@ -1,60 +1,38 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
-interface SecurityCheck {
+export interface SecurityCheck {
   id: string;
   name: string;
   weight: number;
-  check: () => boolean | Promise<boolean>;
+  passed: boolean;
+  description?: string;
 }
 
-interface SecurityScoreResult {
-  score: number;
-  maxScore: number;
-  percentage: number;
-  level: "critical" | "low" | "medium" | "high" | "excellent";
-  passedChecks: string[];
-  failedChecks: string[];
+export interface UseSecurityScoreOptions {
+  checks: SecurityCheck[];
+  onScoreChange?: (score: number) => void;
 }
 
-const defaultChecks: SecurityCheck[] = [
-  { id: "https", name: "HTTPS", weight: 20, check: () => location.protocol === "https:" },
-  { id: "2fa", name: "2FA Ativado", weight: 25, check: () => localStorage.getItem("2fa_enabled") === "true" },
-  { id: "strongPassword", name: "Senha Forte", weight: 15, check: () => localStorage.getItem("password_strength") === "strong" },
-  { id: "recentLogin", name: "Login Recente", weight: 10, check: () => { const last = localStorage.getItem("last_login"); return last ? Date.now() - Number(last) < 7 * 24 * 60 * 60 * 1000 : false; } },
-  { id: "noSuspiciousActivity", name: "Sem Atividade Suspeita", weight: 30, check: () => localStorage.getItem("suspicious_activity") !== "true" },
-];
+export function useSecurityScore(options: UseSecurityScoreOptions) {
+  const { checks, onScoreChange } = options;
 
-export function useSecurityScore(customChecks?: SecurityCheck[]) {
-  const checks = customChecks || defaultChecks;
-  const [result, setResult] = useState<SecurityScoreResult | null>(null);
-  const [isCalculating, setIsCalculating] = useState(false);
+  const { score, passedChecks, failedChecks, level } = useMemo(() => {
+    const totalWeight = checks.reduce((sum, c) => sum + c.weight, 0);
+    const passedWeight = checks.filter(c => c.passed).reduce((sum, c) => sum + c.weight, 0);
+    const score = totalWeight > 0 ? Math.round((passedWeight / totalWeight) * 100) : 0;
+    const passedChecks = checks.filter(c => c.passed);
+    const failedChecks = checks.filter(c => !c.passed);
+    const level = score >= 80 ? 'excellent' : score >= 60 ? 'good' : score >= 40 ? 'fair' : 'critical';
+    return { score, passedChecks, failedChecks, level };
+  }, [checks]);
 
-  const maxScore = useMemo(() => checks.reduce((sum, c) => sum + c.weight, 0), [checks]);
+  useEffect(() => { onScoreChange?.(score); }, [score, onScoreChange]);
 
-  const calculate = useCallback(async () => {
-    setIsCalculating(true);
-    const passed: string[] = [];
-    const failed: string[] = [];
-    let score = 0;
+  const getRecommendations = useCallback(() => {
+    return failedChecks.sort((a, b) => b.weight - a.weight).map(c => ({ check: c, priority: c.weight >= 20 ? 'high' : c.weight >= 10 ? 'medium' : 'low' }));
+  }, [failedChecks]);
 
-    for (const check of checks) {
-      try {
-        const result = await check.check();
-        if (result) { passed.push(check.id); score += check.weight; }
-        else failed.push(check.id);
-      } catch { failed.push(check.id); }
-    }
-
-    const percentage = Math.round((score / maxScore) * 100);
-    const level = percentage >= 90 ? "excellent" : percentage >= 70 ? "high" : percentage >= 50 ? "medium" : percentage >= 30 ? "low" : "critical";
-
-    setResult({ score, maxScore, percentage, level, passedChecks: passed, failedChecks: failed });
-    setIsCalculating(false);
-  }, [checks, maxScore]);
-
-  useEffect(() => { calculate(); }, [calculate]);
-
-  return { ...result, isCalculating, recalculate: calculate };
+  return { score, level, passedChecks, failedChecks, totalChecks: checks.length, getRecommendations };
 }
 
 export default useSecurityScore;
