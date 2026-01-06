@@ -1,87 +1,19 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-
-export interface UseCountdownOptions {
-  autoStart?: boolean;
-  interval?: number;
-  onComplete?: () => void;
-  onTick?: (remaining: number) => void;
-}
-
-export function useCountdown(initialTime: number, options: UseCountdownOptions = {}) {
-  const { autoStart = false, interval = 1000, onComplete, onTick } = options;
-  const [remaining, setRemaining] = useState(initialTime);
-  const [isRunning, setIsRunning] = useState(autoStart);
+export function useCountdown(initialSeconds: number, onComplete?: () => void) {
+  const [seconds, setSeconds] = useState(initialSeconds);
+  const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout>();
-
-  const start = useCallback(() => {
-    setIsRunning(true);
-  }, []);
-
-  const pause = useCallback(() => {
-    setIsRunning(false);
-  }, []);
-
-  const reset = useCallback((newTime?: number) => {
-    setRemaining(newTime ?? initialTime);
-    setIsRunning(false);
-  }, [initialTime]);
-
-  const restart = useCallback((newTime?: number) => {
-    setRemaining(newTime ?? initialTime);
-    setIsRunning(true);
-  }, [initialTime]);
-
   useEffect(() => {
-    if (!isRunning) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-      return;
+    if (isRunning && seconds > 0) {
+      intervalRef.current = setInterval(() => setSeconds(s => s - 1), 1000);
+      return () => clearInterval(intervalRef.current);
     }
-
-    intervalRef.current = setInterval(() => {
-      setRemaining(prev => {
-        const newValue = prev - interval;
-        onTick?.(newValue);
-        
-        if (newValue <= 0) {
-          setIsRunning(false);
-          onComplete?.();
-          return 0;
-        }
-        return newValue;
-      });
-    }, interval);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isRunning, interval, onComplete, onTick]);
-
-  const formatTime = useCallback((ms: number) => {
-    const totalSeconds = Math.ceil(ms / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    
-    if (hours > 0) {
-      return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  }, []);
-
-  return {
-    remaining,
-    isRunning,
-    isComplete: remaining <= 0,
-    formatted: formatTime(remaining),
-    start,
-    pause,
-    reset,
-    restart,
-  };
+    if (seconds === 0 && isRunning) { setIsRunning(false); onComplete?.(); }
+  }, [isRunning, seconds, onComplete]);
+  const start = useCallback(() => setIsRunning(true), []);
+  const pause = useCallback(() => setIsRunning(false), []);
+  const reset = useCallback((newSeconds?: number) => { setIsRunning(false); setSeconds(newSeconds ?? initialSeconds); }, [initialSeconds]);
+  const formatted = `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
+  return { seconds, isRunning, formatted, start, pause, reset, toggle: () => setIsRunning(p => !p) };
 }
-
 export default useCountdown;
