@@ -1,48 +1,47 @@
-import { useRef, useCallback, TouchEvent } from "react";
+import { useRef, useCallback, TouchEvent } from 'react';
 
-interface SwipeHandlers {
+export interface SwipeHandlers {
   onSwipeLeft?: () => void;
   onSwipeRight?: () => void;
   onSwipeUp?: () => void;
   onSwipeDown?: () => void;
 }
 
-interface UseSwipeGesturesOptions extends SwipeHandlers {
+export interface UseSwipeGesturesOptions extends SwipeHandlers {
   threshold?: number;
-  preventScroll?: boolean;
+  timeout?: number;
 }
 
 export function useSwipeGestures(options: UseSwipeGesturesOptions = {}) {
-  const { threshold = 50, preventScroll = false, onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown } = options;
-  const touchStart = useRef({ x: 0, y: 0 });
-  const touchEnd = useRef({ x: 0, y: 0 });
+  const { threshold = 50, timeout = 500, onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown } = options;
+  const touchStart = useRef<{ x: number; y: number; time: number } | null>(null);
 
-  const onTouchStart = useCallback((e: TouchEvent) => {
-    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    touchEnd.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, time: Date.now() };
   }, []);
 
-  const onTouchMove = useCallback((e: TouchEvent) => {
-    touchEnd.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    if (preventScroll) e.preventDefault();
-  }, [preventScroll]);
-
-  const onTouchEnd = useCallback(() => {
-    const deltaX = touchEnd.current.x - touchStart.current.x;
-    const deltaY = touchEnd.current.y - touchStart.current.y;
+  const handleTouchEnd = useCallback((e: TouchEvent) => {
+    if (!touchStart.current) return;
+    const deltaX = e.changedTouches[0].clientX - touchStart.current.x;
+    const deltaY = e.changedTouches[0].clientY - touchStart.current.y;
+    const deltaTime = Date.now() - touchStart.current.time;
+    
+    if (deltaTime > timeout) { touchStart.current = null; return; }
+    
     const absX = Math.abs(deltaX);
     const absY = Math.abs(deltaY);
-
-    if (Math.max(absX, absY) > threshold) {
-      if (absX > absY) {
-        deltaX > 0 ? onSwipeRight?.() : onSwipeLeft?.();
-      } else {
-        deltaY > 0 ? onSwipeDown?.() : onSwipeUp?.();
-      }
+    
+    if (absX > absY && absX > threshold) {
+      if (deltaX > 0) onSwipeRight?.();
+      else onSwipeLeft?.();
+    } else if (absY > absX && absY > threshold) {
+      if (deltaY > 0) onSwipeDown?.();
+      else onSwipeUp?.();
     }
-  }, [threshold, onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown]);
+    touchStart.current = null;
+  }, [threshold, timeout, onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown]);
 
-  return { onTouchStart, onTouchMove, onTouchEnd, handlers: { onTouchStart, onTouchMove, onTouchEnd } };
+  return { onTouchStart: handleTouchStart, onTouchEnd: handleTouchEnd };
 }
 
 export default useSwipeGestures;
