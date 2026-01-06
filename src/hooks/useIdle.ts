@@ -1,16 +1,15 @@
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect, useCallback } from 'react';
 export function useIdle(timeout = 60000) {
   const [isIdle, setIsIdle] = useState(false);
-
+  const [lastActive, setLastActive] = useState(Date.now());
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    const resetTimer = () => { setIsIdle(false); clearTimeout(timer); timer = setTimeout(() => setIsIdle(true), timeout); };
-    const events = ['mousemove', 'keydown', 'scroll', 'click'];
-    events.forEach(event => window.addEventListener(event, resetTimer));
-    resetTimer();
-    return () => { clearTimeout(timer); events.forEach(event => window.removeEventListener(event, resetTimer)); };
+    let timeoutId: NodeJS.Timeout;
+    const handleActivity = () => { setIsIdle(false); setLastActive(Date.now()); clearTimeout(timeoutId); timeoutId = setTimeout(() => setIsIdle(true), timeout); };
+    const events = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+    events.forEach(e => document.addEventListener(e, handleActivity));
+    timeoutId = setTimeout(() => setIsIdle(true), timeout);
+    return () => { events.forEach(e => document.removeEventListener(e, handleActivity)); clearTimeout(timeoutId); };
   }, [timeout]);
-
-  return isIdle;
+  return { isIdle, lastActive, idleTime: isIdle ? Date.now() - lastActive : 0 };
 }
+export default useIdle;
