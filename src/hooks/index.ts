@@ -135,3 +135,47 @@ export { useOvertimeNotifications } from './useOvertimeNotifications';
 // ============================================================
 export { useToast } from './use-toast';
 export { useIsMobile } from './use-mobile';
+
+// Accessibility Hooks
+export { useHighContrast } from './useHighContrast';
+export { useSkipLinks } from './useSkipLinks';
+export { useRovingTabIndex } from './useRovingTabIndex';
+export { useColorBlindMode } from './useColorBlindMode';
+export { useVoiceControl } from './useVoiceControl';
+
+// Mobile & Gesture Hooks
+export { useSwipeGestures } from './useSwipeGestures';
+export { usePullToRefresh } from './usePullToRefresh';
+export { useLongPress } from './useLongPress';
+export { useHapticFeedback } from './useHapticFeedback';
+export { usePinchToZoom } from './usePinchToZoom';
+
+// Performance & Offline Hooks
+export { useVirtualScroll } from './useVirtualScroll';
+export { useOptimisticUpdate } from './useOptimisticUpdate';
+export { useOfflineFirst } from './useOfflineFirst';
+export { useBackgroundSync } from './useBackgroundSync';
+export { useServiceWorker } from './useServiceWorker';
+
+// Security & AI Hooks
+export { useSecurityScore } from './useSecurityScore';
+export { useThreatLevel } from './useThreatLevel';
+export { useSessionActivity } from './useSessionActivity';
+export { useAIInsights } from './useAIInsights';
+export { useNaturalLanguageSearch } from './useNaturalLanguageSearch';
+
+// Form & Notification Hooks
+export { useAutoSaveDraft } from './useAutoSaveDraft';
+export { useMultiStepWizard } from './useMultiStepWizard';
+export { useNotificationCenter } from './useNotificationCenter';
+export { usePushNotifications } from './usePushNotifications';
+export { useSoundAlerts } from './useSoundAlerts';
+
+// Chart Hooks
+export { useChartZoom } from './useChartZoom';
+export { useChartAnnotations } from './useChartAnnotations';
+export { useChartExport } from './useChartExport';
+
+// Smart Feature Hooks
+export { useRecentValues } from './useRecentValues';
+export { useContextAwareDefaults } from './useContextAwareDefaults';
