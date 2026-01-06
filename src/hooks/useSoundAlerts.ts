@@ -13,50 +13,47 @@ const DEFAULT_SOUNDS: Record<SoundType, string> = {
 export interface UseSoundAlertsOptions {
   sounds?: Partial<Record<SoundType, string>>;
   defaultVolume?: number;
-  storageKey?: string;
+  enabled?: boolean;
 }
 
 export function useSoundAlerts(options: UseSoundAlertsOptions = {}) {
-  const { sounds: customSounds = {}, defaultVolume = 0.5, storageKey = 'sound-alerts' } = options;
-  const [isEnabled, setIsEnabled] = useState(() => {
-    if (typeof window === 'undefined') return true;
-    return localStorage.getItem(storageKey) !== 'disabled';
-  });
+  const { sounds = {}, defaultVolume = 0.5, enabled: initialEnabled = true } = options;
+  const [enabled, setEnabled] = useState(initialEnabled);
   const [volume, setVolume] = useState(defaultVolume);
-  const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
+  const audioRefs = useRef<Map<SoundType, HTMLAudioElement>>(new Map());
 
-  const sounds = { ...DEFAULT_SOUNDS, ...customSounds };
+  const allSounds = { ...DEFAULT_SOUNDS, ...sounds };
 
   useEffect(() => {
-    localStorage.setItem(storageKey, isEnabled ? 'enabled' : 'disabled');
-  }, [isEnabled, storageKey]);
-
-  const getAudio = useCallback((type: SoundType): HTMLAudioElement => {
-    if (!audioRefs.current[type]) {
-      const audio = new Audio(sounds[type]);
+    Object.entries(allSounds).forEach(([type, src]) => {
+      const audio = new Audio(src);
+      audio.preload = 'auto';
       audio.volume = volume;
-      audioRefs.current[type] = audio;
-    }
-    return audioRefs.current[type];
-  }, [sounds, volume]);
-
-  const play = useCallback((type: SoundType) => {
-    if (!isEnabled) return;
-    const audio = getAudio(type);
-    audio.currentTime = 0;
-    audio.volume = volume;
-    audio.play().catch(() => {});
-  }, [isEnabled, getAudio, volume]);
-
-  const updateVolume = useCallback((newVolume: number) => {
-    const clamped = Math.max(0, Math.min(1, newVolume));
-    setVolume(clamped);
-    Object.values(audioRefs.current).forEach(audio => { audio.volume = clamped; });
+      audioRefs.current.set(type as SoundType, audio);
+    });
+    return () => { audioRefs.current.forEach(audio => { audio.pause(); audio.src = ''; }); audioRefs.current.clear(); };
   }, []);
 
-  const toggle = useCallback(() => setIsEnabled(prev => !prev), []);
+  useEffect(() => {
+    audioRefs.current.forEach(audio => { audio.volume = volume; });
+  }, [volume]);
 
-  return { isEnabled, volume, play, toggle, setEnabled: setIsEnabled, setVolume: updateVolume };
+  const play = useCallback((type: SoundType) => {
+    if (!enabled) return;
+    const audio = audioRefs.current.get(type);
+    if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
+  }, [enabled]);
+
+  const stop = useCallback((type: SoundType) => {
+    const audio = audioRefs.current.get(type);
+    if (audio) { audio.pause(); audio.currentTime = 0; }
+  }, []);
+
+  const stopAll = useCallback(() => { audioRefs.current.forEach(audio => { audio.pause(); audio.currentTime = 0; }); }, []);
+
+  const toggle = useCallback(() => setEnabled(prev => !prev), []);
+
+  return { enabled, volume, setEnabled, setVolume, toggle, play, stop, stopAll };
 }
 
 export default useSoundAlerts;
