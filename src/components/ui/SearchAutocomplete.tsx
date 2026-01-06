@@ -1,12 +1,13 @@
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Search, Loader2, X } from "lucide-react";
-import { useDebounce } from "@/hooks/useDebounce";
+import * as React from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { Check, ChevronsUpDown, Loader2, Search } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useDebounce } from '@/hooks/useDebounce';
 
-export interface AutocompleteOption {
+export interface SearchAutocompleteOption {
   value: string;
   label: string;
   description?: string;
@@ -14,119 +15,149 @@ export interface AutocompleteOption {
   disabled?: boolean;
 }
 
-interface SearchAutocompleteProps {
-  options?: AutocompleteOption[];
+export interface SearchAutocompleteProps {
+  options?: SearchAutocompleteOption[];
   value?: string;
   onChange?: (value: string) => void;
-  onSelect?: (option: AutocompleteOption) => void;
-  onSearch?: (query: string) => void | Promise<void>;
+  onSearch?: (query: string) => Promise<SearchAutocompleteOption[]>;
   placeholder?: string;
   emptyMessage?: string;
-  isLoading?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
+  className?: string;
   debounceMs?: number;
   minChars?: number;
-  className?: string;
-  disabled?: boolean;
+  maxResults?: number;
   clearable?: boolean;
+  renderOption?: (option: SearchAutocompleteOption) => React.ReactNode;
 }
 
 export function SearchAutocomplete({
-  options = [],
-  value = "",
+  options: staticOptions = [],
+  value,
   onChange,
-  onSelect,
   onSearch,
-  placeholder = "Buscar...",
-  emptyMessage = "Nenhum resultado encontrado",
-  isLoading = false,
-  debounceMs = 300,
-  minChars = 2,
-  className,
+  placeholder = 'Search...',
+  emptyMessage = 'No results found.',
+  loading: externalLoading = false,
   disabled = false,
+  className,
+  debounceMs = 300,
+  minChars = 1,
+  maxResults = 10,
   clearable = true,
+  renderOption,
 }: SearchAutocompleteProps) {
-  const [open, setOpen] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState(value);
-  const debouncedValue = useDebounce(inputValue, debounceMs);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [options, setOptions] = useState<SearchAutocompleteOption[]>(staticOptions);
+  const [internalLoading, setInternalLoading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  const debouncedQuery = useDebounce(query, debounceMs);
+  const isLoading = externalLoading || internalLoading;
 
-  React.useEffect(() => {
-    if (debouncedValue.length >= minChars) {
-      onSearch?.(debouncedValue);
+  const selectedOption = options.find(opt => opt.value === value);
+
+  const handleSearch = useCallback(async (searchQuery: string) => {
+    if (!onSearch || searchQuery.length < minChars) {
+      setOptions(staticOptions.filter(opt => 
+        opt.label.toLowerCase().includes(searchQuery.toLowerCase())
+      ));
+      return;
     }
-  }, [debouncedValue, minChars, onSearch]);
 
-  React.useEffect(() => {
-    setInputValue(value);
-  }, [value]);
+    setInternalLoading(true);
+    try {
+      const results = await onSearch(searchQuery);
+      setOptions(results.slice(0, maxResults));
+    } catch (error) {
+      console.error('Search error:', error);
+      setOptions([]);
+    } finally {
+      setInternalLoading(false);
+    }
+  }, [onSearch, staticOptions, minChars, maxResults]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setInputValue(newValue);
+  useEffect(() => {
+    handleSearch(debouncedQuery);
+  }, [debouncedQuery, handleSearch]);
+
+  useEffect(() => {
+    if (!onSearch) setOptions(staticOptions);
+  }, [staticOptions, onSearch]);
+
+  const handleSelect = (selectedValue: string) => {
+    const newValue = clearable && selectedValue === value ? '' : selectedValue;
     onChange?.(newValue);
-    if (newValue.length >= minChars) setOpen(true);
-  };
-
-  const handleSelect = (option: AutocompleteOption) => {
-    setInputValue(option.label);
-    onChange?.(option.value);
-    onSelect?.(option);
     setOpen(false);
-  };
-
-  const handleClear = () => {
-    setInputValue("");
-    onChange?.("");
-    inputRef.current?.focus();
+    setQuery('');
   };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className={cn("relative", className)}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            ref={inputRef}
-            value={inputValue}
-            onChange={handleInputChange}
-            onFocus={() => inputValue.length >= minChars && setOpen(true)}
-            placeholder={placeholder}
-            disabled={disabled}
-            className="pl-9 pr-9"
-          />
-          {isLoading && <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground" />}
-          {!isLoading && clearable && inputValue && (
-            <button onClick={handleClear} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-              <X className="h-4 w-4" />
-            </button>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          disabled={disabled}
+          className={cn('w-full justify-between', className)}
+        >
+          <span className="flex items-center gap-2 truncate">
+            {selectedOption?.icon}
+            {selectedOption?.label || placeholder}
+          </span>
+          {isLoading ? (
+            <Loader2 className="ml-2 h-4 w-4 shrink-0 animate-spin opacity-50" />
+          ) : (
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           )}
-        </div>
+        </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0 w-[var(--radix-popover-trigger-width)]" align="start">
-        <Command>
+      <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+        <Command shouldFilter={false}>
+          <div className="flex items-center border-b px-3">
+            <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+            <CommandInput
+              ref={inputRef}
+              placeholder={placeholder}
+              value={query}
+              onValueChange={setQuery}
+              className="border-0 focus:ring-0"
+            />
+          </div>
           <CommandList>
-            {isLoading ? (
-              <div className="py-6 text-center text-sm text-muted-foreground">
-                <Loader2 className="mx-auto h-4 w-4 animate-spin mb-2" />
-                Buscando...
+            {isLoading && (
+              <div className="flex items-center justify-center py-6">
+                <Loader2 className="h-4 w-4 animate-spin" />
               </div>
-            ) : options.length === 0 ? (
+            )}
+            {!isLoading && options.length === 0 && (
               <CommandEmpty>{emptyMessage}</CommandEmpty>
-            ) : (
+            )}
+            {!isLoading && options.length > 0 && (
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
                     key={option.value}
                     value={option.value}
-                    onSelect={() => handleSelect(option)}
+                    onSelect={() => handleSelect(option.value)}
                     disabled={option.disabled}
                     className="cursor-pointer"
                   >
-                    {option.icon && <span className="mr-2">{option.icon}</span>}
-                    <div className="flex flex-col">
-                      <span>{option.label}</span>
-                      {option.description && <span className="text-xs text-muted-foreground">{option.description}</span>}
-                    </div>
+                    {renderOption ? renderOption(option) : (
+                      <div className="flex items-center gap-2 flex-1">
+                        {option.icon}
+                        <div className="flex flex-col">
+                          <span>{option.label}</span>
+                          {option.description && (
+                            <span className="text-xs text-muted-foreground">{option.description}</span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    <Check className={cn('ml-auto h-4 w-4', value === option.value ? 'opacity-100' : 'opacity-0')} />
                   </CommandItem>
                 ))}
               </CommandGroup>
