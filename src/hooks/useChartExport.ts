@@ -5,62 +5,57 @@ export type ExportFormat = 'png' | 'svg' | 'pdf' | 'csv';
 export interface UseChartExportOptions {
   filename?: string;
   backgroundColor?: string;
-  scale?: number;
 }
 
 export function useChartExport(options: UseChartExportOptions = {}) {
-  const { filename = 'chart', backgroundColor = '#ffffff', scale = 2 } = options;
+  const { filename = 'chart', backgroundColor = '#ffffff' } = options;
   const [isExporting, setIsExporting] = useState(false);
 
-  const exportToPNG = useCallback(async (element: HTMLElement) => {
+  const exportToPNG = useCallback(async (chartRef: HTMLElement | null, customFilename?: string) => {
+    if (!chartRef) return;
     setIsExporting(true);
     try {
-      const html2canvas = (await import('html2canvas')).default;
-      const canvas = await html2canvas(element, { backgroundColor, scale, useCORS: true });
+      const { default: html2canvas } = await import('html2canvas');
+      const canvas = await html2canvas(chartRef, { backgroundColor });
       const link = document.createElement('a');
-      link.download = `${filename}.png`;
+      link.download = `${customFilename || filename}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
-    } finally {
-      setIsExporting(false);
-    }
-  }, [filename, backgroundColor, scale]);
+    } catch (e) { console.error('Export failed:', e); } finally { setIsExporting(false); }
+  }, [filename, backgroundColor]);
 
-  const exportToSVG = useCallback((svgElement: SVGElement) => {
+  const exportToSVG = useCallback((chartRef: HTMLElement | null, customFilename?: string) => {
+    if (!chartRef) return;
+    const svg = chartRef.querySelector('svg');
+    if (!svg) return;
     setIsExporting(true);
     try {
-      const serializer = new XMLSerializer();
-      const svgString = serializer.serializeToString(svgElement);
-      const blob = new Blob([svgString], { type: 'image/svg+xml' });
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const blob = new Blob([svgData], { type: 'image/svg+xml' });
       const link = document.createElement('a');
-      link.download = `${filename}.svg`;
+      link.download = `${customFilename || filename}.svg`;
       link.href = URL.createObjectURL(blob);
       link.click();
       URL.revokeObjectURL(link.href);
-    } finally {
-      setIsExporting(false);
-    }
+    } finally { setIsExporting(false); }
   }, [filename]);
 
-  const exportToCSV = useCallback((data: Record<string, any>[], columns?: string[]) => {
+  const exportToCSV = useCallback((data: Record<string, any>[], customFilename?: string) => {
+    if (!data.length) return;
     setIsExporting(true);
     try {
-      const cols = columns || Object.keys(data[0] || {});
-      const header = cols.join(',');
-      const rows = data.map(row => cols.map(col => JSON.stringify(row[col] ?? '')).join(','));
-      const csv = [header, ...rows].join('\n');
-      const blob = new Blob([csv], { type: 'text/csv' });
+      const headers = Object.keys(data[0]);
+      const csvContent = [headers.join(','), ...data.map(row => headers.map(h => JSON.stringify(row[h] ?? '')).join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv' });
       const link = document.createElement('a');
-      link.download = `${filename}.csv`;
+      link.download = `${customFilename || filename}.csv`;
       link.href = URL.createObjectURL(blob);
       link.click();
       URL.revokeObjectURL(link.href);
-    } finally {
-      setIsExporting(false);
-    }
+    } finally { setIsExporting(false); }
   }, [filename]);
 
-  return { exportToPNG, exportToSVG, exportToCSV, isExporting };
+  return { isExporting, exportToPNG, exportToSVG, exportToCSV };
 }
 
 export default useChartExport;
