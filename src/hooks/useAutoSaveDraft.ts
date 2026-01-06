@@ -3,52 +3,50 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 export interface UseAutoSaveDraftOptions<T> {
   key: string;
   data: T;
-  debounceMs?: number;
+  delay?: number;
   onSave?: (data: T) => void;
   onRestore?: (data: T) => void;
 }
 
 export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
-  const { key, data, debounceMs = 1000, onSave, onRestore } = options;
-  const [hasDraft, setHasDraft] = useState(false);
+  const { key, data, delay = 2000, onSave, onRestore } = options;
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [hasDraft, setHasDraft] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>();
-  const initialLoad = useRef(true);
+  const initialLoadRef = useRef(true);
 
   useEffect(() => {
-    if (initialLoad.current) {
+    if (initialLoadRef.current) {
       const stored = localStorage.getItem(key);
       if (stored) {
         try {
-          const { data: draft, timestamp } = JSON.parse(stored);
+          const { data: draftData, timestamp } = JSON.parse(stored);
           setHasDraft(true);
           setLastSaved(new Date(timestamp));
-        } catch (e) {}
+        } catch (e) { console.error('Failed to parse draft:', e); }
       }
-      initialLoad.current = false;
+      initialLoadRef.current = false;
       return;
     }
-
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
-      const payload = { data, timestamp: new Date().toISOString() };
-      localStorage.setItem(key, JSON.stringify(payload));
+      const timestamp = Date.now();
+      localStorage.setItem(key, JSON.stringify({ data, timestamp }));
+      setLastSaved(new Date(timestamp));
       setHasDraft(true);
-      setLastSaved(new Date());
       onSave?.(data);
-    }, debounceMs);
-
+    }, delay);
     return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
-  }, [key, data, debounceMs, onSave]);
+  }, [key, data, delay, onSave]);
 
-  const restoreDraft = useCallback((): T | null => {
+  const restoreDraft = useCallback(() => {
     const stored = localStorage.getItem(key);
     if (stored) {
       try {
-        const { data: draft } = JSON.parse(stored);
-        onRestore?.(draft);
-        return draft;
-      } catch (e) {}
+        const { data: draftData } = JSON.parse(stored);
+        onRestore?.(draftData);
+        return draftData;
+      } catch (e) { console.error('Failed to restore draft:', e); }
     }
     return null;
   }, [key, onRestore]);
@@ -59,7 +57,13 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
     setLastSaved(null);
   }, [key]);
 
-  return { hasDraft, lastSaved, restoreDraft, clearDraft };
+  const getDraft = useCallback(() => {
+    const stored = localStorage.getItem(key);
+    if (stored) { try { return JSON.parse(stored).data; } catch { return null; } }
+    return null;
+  }, [key]);
+
+  return { lastSaved, hasDraft, restoreDraft, clearDraft, getDraft };
 }
 
 export default useAutoSaveDraft;
