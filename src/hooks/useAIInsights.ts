@@ -1,44 +1,46 @@
 import { useState, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface AIInsight {
   id: string;
-  type: 'anomaly' | 'trend' | 'recommendation' | 'warning' | 'prediction';
+  type: 'anomaly' | 'trend' | 'recommendation' | 'prediction';
   title: string;
   description: string;
   confidence: number;
-  priority: 'low' | 'medium' | 'high' | 'critical';
-  data?: any;
-  actions?: { label: string; action: string }[];
+  severity?: 'low' | 'medium' | 'high';
+  actionable?: boolean;
+  data?: Record<string, any>;
   createdAt: Date;
 }
 
 export interface UseAIInsightsOptions {
-  fetchInsights: () => Promise<AIInsight[]>;
+  entityType?: string;
+  entityId?: string;
   autoRefresh?: boolean;
   refreshInterval?: number;
 }
 
-export function useAIInsights(options: UseAIInsightsOptions) {
-  const { fetchInsights, autoRefresh = false, refreshInterval = 60000 } = options;
+export function useAIInsights(options: UseAIInsightsOptions = {}) {
+  const { entityType, entityId } = options;
   const [insights, setInsights] = useState<AIInsight[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const refresh = useCallback(async () => {
+  const fetchInsights = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await fetchInsights();
-      setInsights(data.sort((a, b) => {
-        const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
-        return priorityOrder[a.priority] - priorityOrder[b.priority];
-      }));
+      const { data, error: fnError } = await supabase.functions.invoke('analyze-activity', {
+        body: { entityType, entityId, type: 'insights' }
+      });
+      if (fnError) throw fnError;
+      setInsights(data?.insights?.map((i: any) => ({ ...i, createdAt: new Date(i.createdAt) })) || []);
     } catch (e) {
       setError(e instanceof Error ? e : new Error('Failed to fetch insights'));
     } finally {
       setIsLoading(false);
     }
-  }, [fetchInsights]);
+  }, [entityType, entityId]);
 
   const dismissInsight = useCallback((id: string) => {
     setInsights(prev => prev.filter(i => i.id !== id));
@@ -46,9 +48,7 @@ export function useAIInsights(options: UseAIInsightsOptions) {
 
   const getInsightsByType = useCallback((type: AIInsight['type']) => insights.filter(i => i.type === type), [insights]);
 
-  const getHighPriorityInsights = useCallback(() => insights.filter(i => i.priority === 'critical' || i.priority === 'high'), [insights]);
-
-  return { insights, isLoading, error, refresh, dismissInsight, getInsightsByType, getHighPriorityInsights, count: insights.length };
+  return { insights, isLoading, error, fetchInsights, dismissInsight, getInsightsByType, anomalies: getInsightsByType('anomaly'), recommendations: getInsightsByType('recommendation') };
 }
 
 export default useAIInsights;
