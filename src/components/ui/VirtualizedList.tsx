@@ -1,92 +1,91 @@
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import { Loader2 } from "lucide-react";
+import * as React from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import { cn } from '@/lib/utils';
 
-interface VirtualizedListProps<T> {
+export interface VirtualizedListProps<T> {
   items: T[];
-  height: number;
   itemHeight: number | ((index: number) => number);
   renderItem: (item: T, index: number) => React.ReactNode;
   overscan?: number;
   className?: string;
-  isLoading?: boolean;
+  containerHeight?: number | string;
   onEndReached?: () => void;
   endReachedThreshold?: number;
-  emptyMessage?: string;
-  gap?: number;
+  keyExtractor?: (item: T, index: number) => string;
+  emptyComponent?: React.ReactNode;
+  loadingComponent?: React.ReactNode;
+  isLoading?: boolean;
 }
 
 export function VirtualizedList<T>({
   items,
-  height,
   itemHeight,
   renderItem,
   overscan = 5,
   className,
-  isLoading = false,
+  containerHeight = 400,
   onEndReached,
   endReachedThreshold = 200,
-  emptyMessage = "Nenhum item encontrado",
-  gap = 0,
+  keyExtractor = (_, i) => String(i),
+  emptyComponent,
+  loadingComponent,
+  isLoading = false,
 }: VirtualizedListProps<T>) {
-  const parentRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollTop, setScrollTop] = useState(0);
 
-  const virtualizer = useVirtualizer({
-    count: items.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: typeof itemHeight === "function" ? itemHeight : () => itemHeight,
-    overscan,
-    gap,
-  });
+  const getItemHeight = useCallback((index: number) => {
+    return typeof itemHeight === 'function' ? itemHeight(index) : itemHeight;
+  }, [itemHeight]);
 
-  const virtualItems = virtualizer.getVirtualItems();
+  const { totalHeight, itemPositions } = useMemo(() => {
+    const positions: number[] = [];
+    let total = 0;
+    for (let i = 0; i < items.length; i++) {
+      positions.push(total);
+      total += getItemHeight(i);
+    }
+    return { totalHeight: total, itemPositions: positions };
+  }, [items.length, getItemHeight]);
 
-  React.useEffect(() => {
-    const scrollElement = parentRef.current;
-    if (!scrollElement || !onEndReached) return;
+  const visibleRange = useMemo(() => {
+    const height = typeof containerHeight === 'number' ? containerHeight : 400;
+    let start = 0;
+    let end = items.length;
+    
+    for (let i = 0; i < items.length; i++) {
+      if (itemPositions[i] + getItemHeight(i) >= scrollTop) { start = Math.max(0, i - overscan); break; }
+    }
+    for (let i = start; i < items.length; i++) {
+      if (itemPositions[i] > scrollTop + height) { end = Math.min(items.length, i + overscan); break; }
+    }
+    return { start, end };
+  }, [scrollTop, itemPositions, getItemHeight, containerHeight, overscan, items.length]);
 
-    const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = scrollElement;
-      if (scrollHeight - scrollTop - clientHeight < endReachedThreshold) {
-        onEndReached();
-      }
-    };
-
-    scrollElement.addEventListener("scroll", handleScroll);
-    return () => scrollElement.removeEventListener("scroll", handleScroll);
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.currentTarget;
+    setScrollTop(target.scrollTop);
+    if (onEndReached && target.scrollHeight - target.scrollTop - target.clientHeight < endReachedThreshold) {
+      onEndReached();
+    }
   }, [onEndReached, endReachedThreshold]);
 
-  if (!isLoading && items.length === 0) {
-    return <div className="flex items-center justify-center h-32 text-muted-foreground">{emptyMessage}</div>;
-  }
+  if (items.length === 0 && !isLoading) return <>{emptyComponent}</>;
 
   return (
-    <div ref={parentRef} className={cn("overflow-auto", className)} style={{ height }}>
-      <div style={{ height: virtualizer.getTotalSize(), width: "100%", position: "relative" }}>
-        {virtualItems.map((virtualRow) => (
-          <div
-            key={virtualRow.key}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: virtualRow.size,
-              transform: \`translateY(\${virtualRow.start}px)\`,
-            }}
-          >
-            {renderItem(items[virtualRow.index], virtualRow.index)}
-          </div>
-        ))}
+    <div ref={containerRef} className={cn('overflow-auto', className)} style={{ height: containerHeight }} onScroll={handleScroll}>
+      <div style={{ height: totalHeight, position: 'relative' }}>
+        {items.slice(visibleRange.start, visibleRange.end).map((item, i) => {
+          const actualIndex = visibleRange.start + i;
+          return (
+            <div key={keyExtractor(item, actualIndex)} style={{ position: 'absolute', top: itemPositions[actualIndex], width: '100%', height: getItemHeight(actualIndex) }}>
+              {renderItem(item, actualIndex)}
+            </div>
+          );
+        })}
       </div>
-      {isLoading && (
-        <div className="flex justify-center py-4">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        </div>
-      )}
+      {isLoading && loadingComponent}
     </div>
   );
 }
-
 export default VirtualizedList;
