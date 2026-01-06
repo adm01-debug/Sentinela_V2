@@ -1,75 +1,72 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 
-interface UseOfflineFirstOptions<T> {
+export interface UseOfflineFirstOptions<T> {
   key: string;
-  fetchFn: () => Promise<T>;
+  fetchData: () => Promise<T>;
   staleTime?: number;
 }
 
-interface CachedData<T> {
-  data: T;
-  timestamp: number;
-}
-
-export function useOfflineFirst<T>({ key, fetchFn, staleTime = 5 * 60 * 1000 }: UseOfflineFirstOptions<T>) {
+export function useOfflineFirst<T>(options: UseOfflineFirstOptions<T>) {
+  const { key, fetchData, staleTime = 5 * 60 * 1000 } = options;
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isOnline, setIsOnline] = useState(typeof navigator !== "undefined" ? navigator.onLine : true);
-  const [isStale, setIsStale] = useState(false);
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  const [lastFetched, setLastFetched] = useState<number | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
-  const getCached = useCallback((): CachedData<T> | null => {
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => { window.removeEventListener('online', handleOnline); window.removeEventListener('offline', handleOffline); };
+  }, []);
+
+  const loadFromCache = useCallback(() => {
     try {
       const cached = localStorage.getItem(key);
-      return cached ? JSON.parse(cached) : null;
-    } catch { return null; }
+      if (cached) {
+        const { data: cachedData, timestamp } = JSON.parse(cached);
+        setData(cachedData);
+        setLastFetched(timestamp);
+        return { data: cachedData, timestamp };
+      }
+    } catch (e) { console.error('Cache read error:', e); }
+    return null;
   }, [key]);
 
-  const setCache = useCallback((newData: T) => {
+  const saveToCache = useCallback((newData: T) => {
     try {
-      localStorage.setItem(key, JSON.stringify({ data: newData, timestamp: Date.now() }));
-    } catch {}
+      const timestamp = Date.now();
+      localStorage.setItem(key, JSON.stringify({ data: newData, timestamp }));
+      setLastFetched(timestamp);
+    } catch (e) { console.error('Cache write error:', e); }
   }, [key]);
 
-  const refresh = useCallback(async () => {
-    if (!isOnline) return;
+  const refresh = useCallback(async (force = false) => {
+    if (!isOnline && !force) return;
     setIsLoading(true);
+    setError(null);
     try {
-      const freshData = await fetchFn();
-      setData(freshData);
-      setCache(freshData);
-      setIsStale(false);
-      setError(null);
+      const newData = await fetchData();
+      setData(newData);
+      saveToCache(newData);
     } catch (e) {
-      setError(e instanceof Error ? e : new Error("Fetch failed"));
+      setError(e instanceof Error ? e : new Error('Fetch failed'));
     } finally {
       setIsLoading(false);
     }
-  }, [isOnline, fetchFn, setCache]);
+  }, [isOnline, fetchData, saveToCache]);
 
   useEffect(() => {
-    const cached = getCached();
-    if (cached) {
-      setData(cached.data);
-      setIsStale(Date.now() - cached.timestamp > staleTime);
-      setIsLoading(false);
-    }
-    if (isOnline && (!cached || Date.now() - (cached?.timestamp || 0) > staleTime)) {
-      refresh();
-    } else if (!cached) {
-      setIsLoading(false);
-    }
-  }, []);
+    const cached = loadFromCache();
+    if (cached) setIsLoading(false);
+    const isStale = !cached || Date.now() - cached.timestamp > staleTime;
+    if (isOnline && isStale) refresh();
+    else if (!cached) setIsLoading(false);
+  }, [loadFromCache, isOnline, staleTime, refresh]);
 
-  useEffect(() => {
-    const handleOnline = () => { setIsOnline(true); refresh(); };
-    const handleOffline = () => setIsOnline(false);
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-    return () => { window.removeEventListener("online", handleOnline); window.removeEventListener("offline", handleOffline); };
-  }, [refresh]);
-
-  return { data, isLoading, isOnline, isStale, error, refresh };
+  return { data, isLoading, isOnline, lastFetched, error, refresh, isStale: lastFetched ? Date.now() - lastFetched > staleTime : true };
 }
 
 export default useOfflineFirst;
