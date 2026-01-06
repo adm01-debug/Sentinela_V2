@@ -1,43 +1,39 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
-interface UseOptimisticUpdateOptions<T> {
-  onUpdate: (data: T) => Promise<T>;
-  onError?: (error: Error, previousData: T) => void;
+export interface UseOptimisticUpdateOptions<T> {
+  onMutate: (data: T) => Promise<T>;
+  onError?: (error: Error, rollbackData: T) => void;
+  onSuccess?: (data: T) => void;
 }
 
 export function useOptimisticUpdate<T>(initialData: T, options: UseOptimisticUpdateOptions<T>) {
-  const { onUpdate, onError } = options;
+  const { onMutate, onError, onSuccess } = options;
   const [data, setData] = useState<T>(initialData);
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const update = useCallback(async (optimisticData: T) => {
+  const mutate = useCallback(async (optimisticData: T) => {
     const previousData = data;
     setData(optimisticData);
-    setIsUpdating(true);
+    setIsLoading(true);
     setError(null);
-
     try {
-      const result = await onUpdate(optimisticData);
+      const result = await onMutate(optimisticData);
       setData(result);
+      onSuccess?.(result);
       return result;
     } catch (e) {
-      const err = e instanceof Error ? e : new Error("Update failed");
-      setError(err);
+      const err = e instanceof Error ? e : new Error('Unknown error');
       setData(previousData);
+      setError(err);
       onError?.(err, previousData);
       throw err;
     } finally {
-      setIsUpdating(false);
+      setIsLoading(false);
     }
-  }, [data, onUpdate, onError]);
+  }, [data, onMutate, onError, onSuccess]);
 
-  const reset = useCallback((newData?: T) => {
-    setData(newData ?? initialData);
-    setError(null);
-  }, [initialData]);
-
-  return { data, isUpdating, error, update, reset, setData };
+  return { data, setData, mutate, isLoading, error };
 }
 
 export default useOptimisticUpdate;
