@@ -2,59 +2,46 @@ import { useState, useCallback } from 'react';
 
 export interface ChartAnnotation {
   id: string;
-  type: 'point' | 'line' | 'area' | 'text';
-  x?: number;
+  type: 'line' | 'area' | 'point' | 'text';
+  x?: number | string;
   y?: number;
   x1?: number;
-  y1?: number;
   x2?: number;
+  y1?: number;
   y2?: number;
-  text?: string;
+  label?: string;
   color?: string;
-  style?: 'solid' | 'dashed' | 'dotted';
-  visible?: boolean;
+  strokeDasharray?: string;
 }
 
-export interface UseChartAnnotationsOptions {
-  initialAnnotations?: ChartAnnotation[];
-  onAnnotationAdd?: (annotation: ChartAnnotation) => void;
-  onAnnotationRemove?: (id: string) => void;
-}
-
-export function useChartAnnotations(options: UseChartAnnotationsOptions = {}) {
-  const { initialAnnotations = [], onAnnotationAdd, onAnnotationRemove } = options;
+export function useChartAnnotations(initialAnnotations: ChartAnnotation[] = []) {
   const [annotations, setAnnotations] = useState<ChartAnnotation[]>(initialAnnotations);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const addAnnotation = useCallback((annotation: Omit<ChartAnnotation, 'id'>) => {
-    const newAnnotation: ChartAnnotation = { ...annotation, id: crypto.randomUUID(), visible: true };
+    const newAnnotation = { ...annotation, id: crypto.randomUUID() };
     setAnnotations(prev => [...prev, newAnnotation]);
-    onAnnotationAdd?.(newAnnotation);
     return newAnnotation.id;
-  }, [onAnnotationAdd]);
+  }, []);
 
   const removeAnnotation = useCallback((id: string) => {
     setAnnotations(prev => prev.filter(a => a.id !== id));
-    if (selectedId === id) setSelectedId(null);
-    onAnnotationRemove?.(id);
-  }, [selectedId, onAnnotationRemove]);
+  }, []);
 
   const updateAnnotation = useCallback((id: string, updates: Partial<ChartAnnotation>) => {
     setAnnotations(prev => prev.map(a => a.id === id ? { ...a, ...updates } : a));
   }, []);
 
-  const toggleVisibility = useCallback((id: string) => {
-    setAnnotations(prev => prev.map(a => a.id === id ? { ...a, visible: !a.visible } : a));
-  }, []);
+  const clearAnnotations = useCallback(() => setAnnotations([]), []);
 
-  const clearAll = useCallback(() => {
-    setAnnotations([]);
-    setSelectedId(null);
-  }, []);
+  const addThresholdLine = useCallback((y: number, label: string, color = '#ef4444') => {
+    return addAnnotation({ type: 'line', y, label, color, strokeDasharray: '5,5' });
+  }, [addAnnotation]);
 
-  const visibleAnnotations = annotations.filter(a => a.visible !== false);
+  const addReferenceArea = useCallback((x1: number, x2: number, label: string, color = 'rgba(59, 130, 246, 0.1)') => {
+    return addAnnotation({ type: 'area', x1, x2, label, color });
+  }, [addAnnotation]);
 
-  return { annotations, visibleAnnotations, selectedId, setSelectedId, addAnnotation, removeAnnotation, updateAnnotation, toggleVisibility, clearAll };
+  return { annotations, addAnnotation, removeAnnotation, updateAnnotation, clearAnnotations, addThresholdLine, addReferenceArea };
 }
 
 export default useChartAnnotations;
