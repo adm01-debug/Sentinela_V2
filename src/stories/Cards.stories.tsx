@@ -1,48 +1,82 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 
 const meta: Meta = {
-  title: 'UI/Cards',
-  tags: ['autodocs'],
+  title: "UI/Cards",
+  tags: ["autodocs"],
+  parameters: { layout: "centered" },
 };
+
 export default meta;
 
-export const BasicCard: StoryObj = {
+export const BasicCard = {
   render: () => (
     <Card className="w-80">
-      <CardHeader><CardTitle>Card Title</CardTitle><CardDescription>Card description here</CardDescription></CardHeader>
-      <CardContent><p>Card content goes here.</p></CardContent>
-      <CardFooter><Button>Action</Button></CardFooter>
+      <CardHeader>
+        <CardTitle>Card Title</CardTitle>
+        <CardDescription>Card description goes here</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p>Card content with any elements you want to display.</p>
+      </CardContent>
+      <CardFooter>
+        <Button>Action</Button>
+      </CardFooter>
     </Card>
   ),
 };
 
-export const StatCard: StoryObj = {
+export const StatCard = {
   render: () => (
     <Card className="w-64">
-      <CardHeader className="pb-2"><CardDescription>Total Revenue</CardDescription><CardTitle className="text-3xl">$45,231.89</CardTitle></CardHeader>
-      <CardContent><p className="text-xs text-green-500">+20.1% from last month</p></CardContent>
+      <CardHeader className="pb-2">
+        <CardDescription>Total Revenue</CardDescription>
+        <CardTitle className="text-3xl">$45,231.89</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+      </CardContent>
     </Card>
   ),
 };
 
-export const ImageCard: StoryObj = {
+export const UserCard = {
   render: () => (
-    <Card className="w-80 overflow-hidden">
-      <div className="h-40 bg-gradient-to-br from-blue-500 to-purple-600" />
-      <CardHeader><CardTitle>Featured Item</CardTitle><CardDescription>A beautiful gradient card</CardDescription></CardHeader>
-      <CardFooter className="gap-2"><Badge>New</Badge><Badge variant="outline">Featured</Badge></CardFooter>
+    <Card className="w-80">
+      <CardHeader className="flex flex-row items-center gap-4">
+        <Avatar className="h-12 w-12">
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>JD</AvatarFallback>
+        </Avatar>
+        <div>
+          <CardTitle className="text-base">John Doe</CardTitle>
+          <CardDescription>Senior Developer</CardDescription>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex gap-2">
+          <Badge>React</Badge>
+          <Badge variant="secondary">TypeScript</Badge>
+          <Badge variant="outline">Node.js</Badge>
+        </div>
+      </CardContent>
     </Card>
   ),
 };
 
-export const InteractiveCard: StoryObj = {
+export const ActionCard = {
   render: () => (
-    <Card className="w-80 cursor-pointer hover:shadow-lg transition-shadow">
-      <CardHeader><CardTitle>Clickable Card</CardTitle><CardDescription>Hover to see effect</CardDescription></CardHeader>
-      <CardContent><p>This card has hover effects.</p></CardContent>
+    <Card className="w-80 hover:shadow-lg transition-shadow cursor-pointer">
+      <CardHeader>
+        <CardTitle>Quick Action</CardTitle>
+        <CardDescription>Click to perform this action</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">This card is clickable and can trigger an action.</p>
+      </CardContent>
     </Card>
   ),
 };
