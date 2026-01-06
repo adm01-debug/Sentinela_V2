@@ -1,57 +1,61 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { LoadingStates, Spinner, Skeleton, ProgressLoader } from '../components/ui/LoadingStates';
+import type { Meta, StoryObj } from "@storybook/react";
+import { LoadingStates } from "../components/ui/LoadingStates";
+import { Skeleton } from "../components/ui/skeleton";
 
-const meta: Meta = {
-  title: 'UI/LoadingStates',
-  tags: ['autodocs'],
+const meta: Meta<typeof LoadingStates> = {
+  title: "UI/LoadingStates",
+  component: LoadingStates,
+  tags: ["autodocs"],
+  parameters: { layout: "centered" },
 };
+
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const SpinnerVariants: StoryObj = {
+export const Spinner: Story = {
   render: () => (
-    <div className="flex gap-4 items-center">
-      <Spinner size="sm" />
-      <Spinner size="md" />
-      <Spinner size="lg" />
-      <Spinner size="xl" />
+    <div className="flex items-center gap-4">
+      <LoadingStates type="spinner" size="sm" />
+      <LoadingStates type="spinner" size="md" />
+      <LoadingStates type="spinner" size="lg" />
     </div>
   ),
 };
 
-export const SkeletonVariants: StoryObj = {
+export const Dots: Story = {
   render: () => (
-    <div className="space-y-4 w-64">
-      <Skeleton className="h-4 w-full" />
+    <LoadingStates type="dots" />
+  ),
+};
+
+export const SkeletonCard: Story = {
+  render: () => (
+    <div className="w-64 space-y-3">
+      <Skeleton className="h-32 w-full" />
       <Skeleton className="h-4 w-3/4" />
-      <Skeleton className="h-20 w-full" />
-      <div className="flex gap-2">
-        <Skeleton className="h-10 w-10 rounded-full" />
-        <div className="space-y-2 flex-1">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-2/3" />
-        </div>
-      </div>
-    </div>
-  ),
-};
-
-export const ProgressLoaderVariants: StoryObj = {
-  render: () => (
-    <div className="space-y-4 w-64">
-      <ProgressLoader progress={25} />
-      <ProgressLoader progress={50} />
-      <ProgressLoader progress={75} />
-      <ProgressLoader progress={100} />
-    </div>
-  ),
-};
-
-export const CardSkeleton: StoryObj = {
-  render: () => (
-    <div className="border rounded-lg p-4 w-64">
-      <Skeleton className="h-32 w-full mb-4" />
-      <Skeleton className="h-4 w-3/4 mb-2" />
       <Skeleton className="h-4 w-1/2" />
     </div>
+  ),
+};
+
+export const SkeletonList: Story = {
+  render: () => (
+    <div className="w-80 space-y-2">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <div key={i} className="flex items-center gap-3">
+          <Skeleton className="h-10 w-10 rounded-full" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-3 w-2/3" />
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+export const WithText: Story = {
+  render: () => (
+    <LoadingStates type="spinner" text="Loading data..." />
   ),
 };
