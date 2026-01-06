@@ -1,4 +1,44 @@
 // ============================================================
+// CRUD & DATA MANAGEMENT HOOKS
+// Hooks para gestão de dados, filtros, exportação e auditoria
+// ============================================================
+
+// Filtros e Busca
+export { useSavedFilters, useEntityFilters } from './useSavedFilters';
+export type { SavedFilter } from './useSavedFilters';
+
+export { useBuscaFulltext, useSearchEmployees, useSearchAlerts, useFulltextSearch } from './useBuscaFulltext';
+export type { SearchConfig, SearchResult } from './useBuscaFulltext';
+
+export { useAdvancedFilters, OPERATOR_LABELS } from './useAdvancedFilters';
+export type { FilterField, FilterGroup, FilterCondition, FilterOperator, FilterValueType } from './useAdvancedFilters';
+
+// Versionamento e Histórico
+export { useVersions, useEntityVersions } from './useVersions';
+export type { EntityVersion, VersionDiff } from './useVersions';
+
+export { useActivityHistory } from './useActivityHistory';
+export type { ActivityRecord, ActivityType } from './useActivityHistory';
+
+// Paginação
+export { useInfiniteScroll, useVirtualizedInfiniteScroll, useLoadMore } from './useInfiniteScroll';
+export type { InfiniteScrollConfig, PageData, UseInfiniteScrollResult } from './useInfiniteScroll';
+
+// Ações CRUD
+export { useBulkActions } from './useBulkActions';
+export type { BulkActionResult, BulkActionType } from './useBulkActions';
+
+export { useDuplicate } from './useDuplicate';
+export type { DuplicateOptions, DuplicateResult } from './useDuplicate';
+
+export { useSoftDelete } from './useSoftDelete';
+export type { SoftDeleteOptions, SoftDeleteResult } from './useSoftDelete';
+
+// Export
+export { useExport } from './useExport';
+export type { ExportColumn, ExportFormat, ExportOptions, UseExportResult } from './useExport';
+
+// ============================================================
 // PAGE HOOKS
 // ============================================================
 export { useTeamsPage } from './useTeamsPage';
