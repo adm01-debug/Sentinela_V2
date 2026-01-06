@@ -1,24 +1,21 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { ErrorBoundary } from '../components/ui/error-boundary';
+import type { Meta, StoryObj } from "@storybook/react";
+import { ErrorBoundary } from "../components/ui/error-boundary";
 
 const meta: Meta<typeof ErrorBoundary> = {
-  title: 'UI/ErrorBoundary',
+  title: "UI/ErrorBoundary",
   component: ErrorBoundary,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
+  parameters: { layout: "centered" },
 };
+
 export default meta;
-type Story = StoryObj<typeof ErrorBoundary>;
+type Story = StoryObj<typeof meta>;
 
-const ThrowError = () => { throw new Error('Test error'); };
-const WorkingComponent = () => <div className="p-4 bg-green-100 rounded">This component works!</div>;
-
-export const Default: Story = {
-  render: () => (
-    <ErrorBoundary>
-      <WorkingComponent />
-    </ErrorBoundary>
-  ),
+const ThrowError = () => {
+  throw new Error("Test error for demonstration");
 };
+
+const SafeComponent = () => <div className="p-4 border rounded">Safe Content</div>;
 
 export const WithError: Story = {
   render: () => (
@@ -28,13 +25,24 @@ export const WithError: Story = {
   ),
 };
 
+export const WithoutError: Story = {
+  render: () => (
+    <ErrorBoundary fallback={<div>Error occurred</div>}>
+      <SafeComponent />
+    </ErrorBoundary>
+  ),
+};
+
 export const CustomFallback: Story = {
   render: () => (
     <ErrorBoundary
       fallback={
-        <div className="p-8 text-center border-2 border-dashed border-red-300 rounded-lg">
-          <h2 className="text-xl font-bold text-red-600 mb-2">Oops!</h2>
-          <p className="text-gray-600">We encountered an error. Please try again.</p>
+        <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <h3 className="font-bold text-yellow-800">Oops!</h3>
+          <p className="text-yellow-700">An error occurred. Please try again.</p>
+          <button className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+            Reload
+          </button>
         </div>
       }
     >
