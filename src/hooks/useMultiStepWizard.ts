@@ -12,7 +12,7 @@ export interface UseMultiStepWizardOptions {
   steps: WizardStep[];
   initialStep?: number;
   onComplete?: () => void;
-  onStepChange?: (step: number, direction: 'forward' | 'backward') => void;
+  onStepChange?: (step: number, direction: 'next' | 'prev') => void;
 }
 
 export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
@@ -26,13 +26,11 @@ export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
   const isLastStep = currentStep === steps.length - 1;
   const progress = ((currentStep + 1) / steps.length) * 100;
 
-  const goToStep = useCallback((stepIndex: number) => {
-    if (stepIndex >= 0 && stepIndex < steps.length) {
-      const direction = stepIndex > currentStep ? 'forward' : 'backward';
-      setCurrentStep(stepIndex);
-      onStepChange?.(stepIndex, direction);
+  const goToStep = useCallback((step: number) => {
+    if (step >= 0 && step < steps.length) {
+      setCurrentStep(step);
     }
-  }, [steps.length, currentStep, onStepChange]);
+  }, [steps.length]);
 
   const nextStep = useCallback(async () => {
     const step = steps[currentStep];
@@ -44,25 +42,26 @@ export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
     }
     setCompletedSteps(prev => new Set([...prev, currentStep]));
     if (isLastStep) { onComplete?.(); return true; }
-    goToStep(currentStep + 1);
+    setCurrentStep(prev => prev + 1);
+    onStepChange?.(currentStep + 1, 'next');
     return true;
-  }, [currentStep, steps, isLastStep, onComplete, goToStep]);
+  }, [currentStep, steps, isLastStep, onComplete, onStepChange]);
 
   const prevStep = useCallback(() => {
-    if (!isFirstStep) goToStep(currentStep - 1);
-  }, [isFirstStep, currentStep, goToStep]);
+    if (!isFirstStep) {
+      setCurrentStep(prev => prev - 1);
+      onStepChange?.(currentStep - 1, 'prev');
+    }
+  }, [isFirstStep, currentStep, onStepChange]);
 
   const reset = useCallback(() => {
     setCurrentStep(initialStep);
     setCompletedSteps(new Set());
   }, [initialStep]);
 
-  const isStepCompleted = useCallback((index: number) => completedSteps.has(index), [completedSteps]);
+  const isStepCompleted = useCallback((step: number) => completedSteps.has(step), [completedSteps]);
 
-  return {
-    currentStep, currentStepData, steps, isFirstStep, isLastStep, progress, isValidating,
-    nextStep, prevStep, goToStep, reset, isStepCompleted, completedSteps: Array.from(completedSteps)
-  };
+  return { currentStep, currentStepData, steps, isFirstStep, isLastStep, progress, isValidating, goToStep, nextStep, prevStep, reset, isStepCompleted, completedSteps: Array.from(completedSteps) };
 }
 
 export default useMultiStepWizard;
