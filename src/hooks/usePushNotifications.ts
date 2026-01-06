@@ -1,63 +1,62 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export interface UsePushNotificationsOptions {
-  vapidPublicKey?: string;
-  onPermissionChange?: (permission: NotificationPermission) => void;
-  onSubscriptionChange?: (subscription: PushSubscription | null) => void;
+export interface UsePushNotificationsReturn {
+  isSupported: boolean;
+  permission: NotificationPermission;
+  isSubscribed: boolean;
+  requestPermission: () => Promise<NotificationPermission>;
+  subscribe: () => Promise<PushSubscription | null>;
+  unsubscribe: () => Promise<boolean>;
+  showNotification: (title: string, options?: NotificationOptions) => void;
 }
 
-export function usePushNotifications(options: UsePushNotificationsOptions = {}) {
-  const { vapidPublicKey, onPermissionChange, onSubscriptionChange } = options;
-  const [permission, setPermission] = useState<NotificationPermission>('default');
-  const [subscription, setSubscription] = useState<PushSubscription | null>(null);
-  const [isSupported, setIsSupported] = useState(false);
+export function usePushNotifications(): UsePushNotificationsReturn {
+  const [isSupported] = useState(() => 'Notification' in window && 'serviceWorker' in navigator);
+  const [permission, setPermission] = useState<NotificationPermission>(() => isSupported ? Notification.permission : 'denied');
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
-    const supported = 'Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window;
-    setIsSupported(supported);
-    if (supported) setPermission(Notification.permission);
-  }, []);
+    if (!isSupported) return;
+    navigator.serviceWorker.ready.then(async (reg) => {
+      const subscription = await reg.pushManager.getSubscription();
+      setIsSubscribed(!!subscription);
+    }).catch(() => {});
+  }, [isSupported]);
 
   const requestPermission = useCallback(async () => {
-    if (!isSupported) return 'denied' as NotificationPermission;
+    if (!isSupported) return 'denied';
     const result = await Notification.requestPermission();
     setPermission(result);
-    onPermissionChange?.(result);
     return result;
-  }, [isSupported, onPermissionChange]);
+  }, [isSupported]);
 
   const subscribe = useCallback(async () => {
     if (!isSupported || permission !== 'granted') return null;
     try {
-      const registration = await navigator.serviceWorker.ready;
-      const sub = await registration.pushManager.subscribe({
+      const reg = await navigator.serviceWorker.ready;
+      const subscription = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: vapidPublicKey,
+        applicationServerKey: process.env.VITE_VAPID_PUBLIC_KEY
       });
-      setSubscription(sub);
-      onSubscriptionChange?.(sub);
-      return sub;
-    } catch (e) {
-      console.error('Push subscription failed:', e);
-      return null;
-    }
-  }, [isSupported, permission, vapidPublicKey, onSubscriptionChange]);
+      setIsSubscribed(true);
+      return subscription;
+    } catch (e) { console.error('Push subscription failed:', e); return null; }
+  }, [isSupported, permission]);
 
   const unsubscribe = useCallback(async () => {
-    if (subscription) {
-      await subscription.unsubscribe();
-      setSubscription(null);
-      onSubscriptionChange?.(null);
-    }
-  }, [subscription, onSubscriptionChange]);
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      const subscription = await reg.pushManager.getSubscription();
+      if (subscription) { await subscription.unsubscribe(); setIsSubscribed(false); return true; }
+      return false;
+    } catch (e) { return false; }
+  }, []);
 
-  const showNotification = useCallback(async (title: string, options?: NotificationOptions) => {
-    if (permission !== 'granted') return null;
-    const registration = await navigator.serviceWorker.ready;
-    return registration.showNotification(title, options);
+  const showNotification = useCallback((title: string, options?: NotificationOptions) => {
+    if (permission === 'granted') new Notification(title, options);
   }, [permission]);
 
-  return { isSupported, permission, subscription, requestPermission, subscribe, unsubscribe, showNotification, isSubscribed: !!subscription };
+  return { isSupported, permission, isSubscribed, requestPermission, subscribe, unsubscribe, showNotification };
 }
 
 export default usePushNotifications;
