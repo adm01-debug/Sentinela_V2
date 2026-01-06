@@ -1,44 +1,55 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { ActionButtons } from '../components/ui/ActionButtons';
-import { Edit, Trash2, Copy, MoreHorizontal } from 'lucide-react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "../components/ui/button";
+import { Edit, Trash2, Eye, Download, Share2, Copy } from "lucide-react";
 
-const meta: Meta<typeof ActionButtons> = {
-  title: 'UI/ActionButtons',
-  component: ActionButtons,
-  tags: ['autodocs'],
+const meta: Meta = {
+  title: "UI/ActionButtons",
+  tags: ["autodocs"],
+  parameters: { layout: "centered" },
 };
+
 export default meta;
-type Story = StoryObj<typeof ActionButtons>;
 
-export const Default: Story = {
-  args: {
-    actions: [
-      { icon: <Edit className="h-4 w-4" />, label: 'Edit', onClick: () => alert('Edit clicked') },
-      { icon: <Copy className="h-4 w-4" />, label: 'Copy', onClick: () => alert('Copy clicked') },
-      { icon: <Trash2 className="h-4 w-4" />, label: 'Delete', onClick: () => alert('Delete clicked'), variant: 'destructive' },
-    ],
-  },
+export const IconButtons = {
+  render: () => (
+    <div className="flex gap-2">
+      <Button variant="ghost" size="icon"><Eye className="h-4 w-4" /></Button>
+      <Button variant="ghost" size="icon"><Edit className="h-4 w-4" /></Button>
+      <Button variant="ghost" size="icon"><Copy className="h-4 w-4" /></Button>
+      <Button variant="ghost" size="icon"><Download className="h-4 w-4" /></Button>
+      <Button variant="ghost" size="icon"><Share2 className="h-4 w-4" /></Button>
+      <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
+    </div>
+  ),
 };
 
-export const WithMenu: Story = {
-  args: {
-    actions: [
-      { icon: <Edit className="h-4 w-4" />, label: 'Edit', onClick: () => {} },
-    ],
-    moreActions: [
-      { label: 'Duplicate', onClick: () => {} },
-      { label: 'Archive', onClick: () => {} },
-      { label: 'Delete', onClick: () => {}, variant: 'destructive' },
-    ],
-  },
+export const WithLabels = {
+  render: () => (
+    <div className="flex gap-2">
+      <Button variant="outline" size="sm"><Eye className="h-4 w-4 mr-2" />View</Button>
+      <Button variant="outline" size="sm"><Edit className="h-4 w-4 mr-2" />Edit</Button>
+      <Button variant="destructive" size="sm"><Trash2 className="h-4 w-4 mr-2" />Delete</Button>
+    </div>
+  ),
 };
 
-export const IconOnly: Story = {
-  args: {
-    actions: [
-      { icon: <Edit className="h-4 w-4" />, onClick: () => {} },
-      { icon: <Trash2 className="h-4 w-4" />, onClick: () => {} },
-    ],
-    showLabels: false,
-  },
+export const TableActions = {
+  render: () => (
+    <div className="flex items-center justify-end gap-1">
+      <Button variant="ghost" size="sm" className="h-8 w-8 p-0"><Eye className="h-4 w-4" /></Button>
+      <Button variant="ghost" size="sm" className="h-8 w-8 p-0"><Edit className="h-4 w-4" /></Button>
+      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-destructive hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
+    </div>
+  ),
+};
+
+export const BulkActions = {
+  render: () => (
+    <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
+      <span className="text-sm text-muted-foreground">3 items selected</span>
+      <div className="flex-1" />
+      <Button variant="outline" size="sm">Export</Button>
+      <Button variant="destructive" size="sm">Delete All</Button>
+    </div>
+  ),
 };
