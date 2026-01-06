@@ -1,35 +1,56 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 
-interface SessionEvent {
+export interface SessionActivity {
   id: string;
-  type: "login" | "logout" | "action" | "navigation" | "error";
+  type: 'login' | 'logout' | 'action' | 'error' | 'warning';
   description: string;
   timestamp: Date;
   metadata?: Record<string, any>;
+  ipAddress?: string;
+  userAgent?: string;
 }
 
-export function useSessionActivity(maxEvents = 100) {
-  const [events, setEvents] = useState<SessionEvent[]>([]);
-  const [sessionStart] = useState(() => new Date());
+export interface UseSessionActivityOptions {
+  maxItems?: number;
+  storageKey?: string;
+  onNewActivity?: (activity: SessionActivity) => void;
+}
 
-  const logEvent = useCallback((type: SessionEvent["type"], description: string, metadata?: Record<string, any>) => {
-    const event: SessionEvent = { id: crypto.randomUUID(), type, description, timestamp: new Date(), metadata };
-    setEvents((prev) => [event, ...prev].slice(0, maxEvents));
-  }, [maxEvents]);
+export function useSessionActivity(options: UseSessionActivityOptions = {}) {
+  const { maxItems = 100, storageKey = 'session-activity', onNewActivity } = options;
+  const [activities, setActivities] = useState<SessionActivity[]>([]);
 
-  const logAction = useCallback((description: string, metadata?: Record<string, any>) => logEvent("action", description, metadata), [logEvent]);
-  const logNavigation = useCallback((path: string) => logEvent("navigation", `Navegou para ${path}`, { path }), [logEvent]);
-  const logError = useCallback((error: string, metadata?: Record<string, any>) => logEvent("error", error, metadata), [logEvent]);
+  useEffect(() => {
+    const stored = localStorage.getItem(storageKey);
+    if (stored) setActivities(JSON.parse(stored).map((a: any) => ({ ...a, timestamp: new Date(a.timestamp) })));
+  }, [storageKey]);
 
-  const getSessionDuration = useCallback(() => Math.floor((Date.now() - sessionStart.getTime()) / 1000), [sessionStart]);
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(activities));
+  }, [activities, storageKey]);
 
-  const clearEvents = useCallback(() => setEvents([]), []);
+  const logActivity = useCallback((type: SessionActivity['type'], description: string, metadata?: Record<string, any>) => {
+    const activity: SessionActivity = {
+      id: crypto.randomUUID(),
+      type,
+      description,
+      timestamp: new Date(),
+      metadata,
+      userAgent: navigator.userAgent,
+    };
+    setActivities(prev => [activity, ...prev].slice(0, maxItems));
+    onNewActivity?.(activity);
+    return activity;
+  }, [maxItems, onNewActivity]);
 
-  const getEventsByType = useCallback((type: SessionEvent["type"]) => events.filter((e) => e.type === type), [events]);
+  const clearActivities = useCallback(() => {
+    setActivities([]);
+    localStorage.removeItem(storageKey);
+  }, [storageKey]);
 
-  useEffect(() => { logEvent("login", "Sessão iniciada"); }, []);
+  const getActivitiesByType = useCallback((type: SessionActivity['type']) => activities.filter(a => a.type === type), [activities]);
 
-  return { events, sessionStart, logEvent, logAction, logNavigation, logError, getSessionDuration, clearEvents, getEventsByType };
+  return { activities, logActivity, clearActivities, getActivitiesByType, recentActivity: activities[0] || null };
 }
 
 export default useSessionActivity;
