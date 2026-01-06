@@ -1,39 +1,31 @@
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
-type HapticType = "light" | "medium" | "heavy" | "selection" | "success" | "warning" | "error";
+export type HapticPattern = 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error' | 'selection';
 
-const vibrationPatterns: Record<HapticType, number | number[]> = {
-  light: 10,
-  medium: 20,
-  heavy: 30,
-  selection: 5,
+const PATTERNS: Record<HapticPattern, number[]> = {
+  light: [10],
+  medium: [20],
+  heavy: [30],
   success: [10, 50, 10],
-  warning: [20, 50, 20],
-  error: [30, 50, 30, 50, 30],
+  warning: [20, 30, 20],
+  error: [30, 20, 30, 20, 30],
+  selection: [5],
 };
 
 export function useHapticFeedback() {
-  const isSupported = typeof navigator !== "undefined" && "vibrate" in navigator;
+  const isSupported = typeof navigator !== 'undefined' && 'vibrate' in navigator;
 
-  const trigger = useCallback((type: HapticType = "light") => {
+  const trigger = useCallback((pattern: HapticPattern | number[]) => {
     if (!isSupported) return false;
-    try {
-      navigator.vibrate(vibrationPatterns[type]);
-      return true;
-    } catch {
-      return false;
-    }
+    const vibrationPattern = Array.isArray(pattern) ? pattern : PATTERNS[pattern];
+    return navigator.vibrate(vibrationPattern);
   }, [isSupported]);
 
-  const light = useCallback(() => trigger("light"), [trigger]);
-  const medium = useCallback(() => trigger("medium"), [trigger]);
-  const heavy = useCallback(() => trigger("heavy"), [trigger]);
-  const selection = useCallback(() => trigger("selection"), [trigger]);
-  const success = useCallback(() => trigger("success"), [trigger]);
-  const warning = useCallback(() => trigger("warning"), [trigger]);
-  const error = useCallback(() => trigger("error"), [trigger]);
+  const stop = useCallback(() => {
+    if (isSupported) navigator.vibrate(0);
+  }, [isSupported]);
 
-  return { isSupported, trigger, light, medium, heavy, selection, success, warning, error };
+  return { isSupported, trigger, stop, patterns: PATTERNS };
 }
 
 export default useHapticFeedback;
