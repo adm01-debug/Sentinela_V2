@@ -1,74 +1,63 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from 'react';
 
-interface SyncItem<T> {
-  id: string;
-  data: T;
-  timestamp: number;
-  retries: number;
-}
+export interface SyncItem<T> { id: string; data: T; timestamp: number; retries: number; }
 
-interface UseBackgroundSyncOptions<T> {
-  key: string;
-  syncFn: (data: T) => Promise<void>;
+export interface UseBackgroundSyncOptions<T> {
+  storageKey: string;
+  syncFn: (item: T) => Promise<void>;
   maxRetries?: number;
   retryDelay?: number;
 }
 
-export function useBackgroundSync<T>({ key, syncFn, maxRetries = 3, retryDelay = 5000 }: UseBackgroundSyncOptions<T>) {
-  const [pendingItems, setPendingItems] = useState<SyncItem<T>[]>([]);
+export function useBackgroundSync<T>(options: UseBackgroundSyncOptions<T>) {
+  const { storageKey, syncFn, maxRetries = 3, retryDelay = 5000 } = options;
+  const [queue, setQueue] = useState<SyncItem<T>[]>([]);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const syncingRef = useRef(false);
 
-  const loadPending = useCallback(() => {
-    try {
-      const stored = localStorage.getItem(`sync_${key}`);
-      return stored ? JSON.parse(stored) : [];
-    } catch { return []; }
-  }, [key]);
+  useEffect(() => {
+    const stored = localStorage.getItem(storageKey);
+    if (stored) setQueue(JSON.parse(stored));
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => { window.removeEventListener('online', handleOnline); window.removeEventListener('offline', handleOffline); };
+  }, [storageKey]);
 
-  const savePending = useCallback((items: SyncItem<T>[]) => {
-    try { localStorage.setItem(`sync_${key}`, JSON.stringify(items)); } catch {}
-  }, [key]);
+  useEffect(() => { localStorage.setItem(storageKey, JSON.stringify(queue)); }, [queue, storageKey]);
 
   const addToQueue = useCallback((data: T) => {
     const item: SyncItem<T> = { id: crypto.randomUUID(), data, timestamp: Date.now(), retries: 0 };
-    setPendingItems((prev) => { const next = [...prev, item]; savePending(next); return next; });
-  }, [savePending]);
+    setQueue(prev => [...prev, item]);
+    return item.id;
+  }, []);
 
   const processQueue = useCallback(async () => {
-    if (syncingRef.current || !navigator.onLine) return;
+    if (syncingRef.current || !isOnline || queue.length === 0) return;
     syncingRef.current = true;
     setIsSyncing(true);
-
-    const items = loadPending();
-    const failed: SyncItem<T>[] = [];
-
-    for (const item of items) {
-      try {
-        await syncFn(item.data);
-      } catch {
-        if (item.retries < maxRetries) {
-          failed.push({ ...item, retries: item.retries + 1 });
-        }
+    const item = queue[0];
+    try {
+      await syncFn(item.data);
+      setQueue(prev => prev.filter(i => i.id !== item.id));
+    } catch (e) {
+      if (item.retries < maxRetries) {
+        setQueue(prev => prev.map(i => i.id === item.id ? { ...i, retries: i.retries + 1 } : i));
+        setTimeout(processQueue, retryDelay);
+      } else {
+        setQueue(prev => prev.filter(i => i.id !== item.id));
       }
+    } finally {
+      syncingRef.current = false;
+      setIsSyncing(false);
     }
+  }, [isOnline, queue, syncFn, maxRetries, retryDelay]);
 
-    setPendingItems(failed);
-    savePending(failed);
-    syncingRef.current = false;
-    setIsSyncing(false);
-  }, [loadPending, savePending, syncFn, maxRetries]);
+  useEffect(() => { if (isOnline && queue.length > 0) processQueue(); }, [isOnline, queue.length, processQueue]);
 
-  useEffect(() => { setPendingItems(loadPending()); }, [loadPending]);
-
-  useEffect(() => {
-    if (navigator.onLine && pendingItems.length > 0) processQueue();
-    const handleOnline = () => processQueue();
-    window.addEventListener("online", handleOnline);
-    return () => window.removeEventListener("online", handleOnline);
-  }, [pendingItems.length, processQueue]);
-
-  return { addToQueue, pendingCount: pendingItems.length, isSyncing, processQueue };
+  return { queue, addToQueue, isSyncing, isOnline, pendingCount: queue.length, clearQueue: () => setQueue([]) };
 }
 
 export default useBackgroundSync;
