@@ -1,46 +1,42 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo } from 'react';
 
-type ThreatLevel = "none" | "low" | "medium" | "high" | "critical";
+export type ThreatLevel = 'low' | 'medium' | 'high' | 'critical';
 
-interface ThreatIndicator {
+export interface ThreatIndicator {
   id: string;
   type: string;
-  severity: ThreatLevel;
-  message: string;
+  severity: number;
   timestamp: Date;
+  description?: string;
 }
 
-export function useThreatLevel() {
-  const [level, setLevel] = useState<ThreatLevel>("none");
-  const [indicators, setIndicators] = useState<ThreatIndicator[]>([]);
-  const [isMonitoring, setIsMonitoring] = useState(true);
+export interface UseThreatLevelOptions {
+  indicators: ThreatIndicator[];
+  thresholds?: { medium: number; high: number; critical: number };
+}
 
-  const addIndicator = useCallback((indicator: Omit<ThreatIndicator, "id" | "timestamp">) => {
-    const newIndicator: ThreatIndicator = { ...indicator, id: crypto.randomUUID(), timestamp: new Date() };
-    setIndicators((prev) => [...prev, newIndicator].slice(-50));
-  }, []);
+export function useThreatLevel(options: UseThreatLevelOptions) {
+  const { indicators, thresholds = { medium: 30, high: 60, critical: 80 } } = options;
 
-  const clearIndicator = useCallback((id: string) => {
-    setIndicators((prev) => prev.filter((i) => i.id !== id));
-  }, []);
+  const { level, score, recentThreats, criticalCount } = useMemo(() => {
+    const now = Date.now();
+    const hourAgo = now - 60 * 60 * 1000;
+    const recentThreats = indicators.filter(i => i.timestamp.getTime() > hourAgo);
+    const score = recentThreats.reduce((sum, i) => sum + i.severity, 0);
+    const criticalCount = recentThreats.filter(i => i.severity >= 80).length;
+    let level: ThreatLevel = 'low';
+    if (score >= thresholds.critical || criticalCount > 0) level = 'critical';
+    else if (score >= thresholds.high) level = 'high';
+    else if (score >= thresholds.medium) level = 'medium';
+    return { level, score, recentThreats, criticalCount };
+  }, [indicators, thresholds]);
 
-  const clearAll = useCallback(() => setIndicators([]), []);
+  const color = useMemo(() => {
+    const colors = { low: 'green', medium: 'yellow', high: 'orange', critical: 'red' };
+    return colors[level];
+  }, [level]);
 
-  useEffect(() => {
-    if (!isMonitoring) return;
-    const severityOrder: ThreatLevel[] = ["none", "low", "medium", "high", "critical"];
-    const maxSeverity = indicators.reduce((max, ind) => {
-      const current = severityOrder.indexOf(ind.severity);
-      const maxIndex = severityOrder.indexOf(max);
-      return current > maxIndex ? ind.severity : max;
-    }, "none" as ThreatLevel);
-    setLevel(maxSeverity);
-  }, [indicators, isMonitoring]);
-
-  const pause = useCallback(() => setIsMonitoring(false), []);
-  const resume = useCallback(() => setIsMonitoring(true), []);
-
-  return { level, indicators, addIndicator, clearIndicator, clearAll, isMonitoring, pause, resume };
+  return { level, score, color, recentThreats, criticalCount, totalIndicators: indicators.length };
 }
 
 export default useThreatLevel;
