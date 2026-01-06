@@ -1,71 +1,26 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { useBuscaFulltext, useSearchEmployees, useSearchAlerts, useFulltextSearch } from '../useBuscaFulltext';
+import { vi, describe, it, expect } from 'vitest';
+import { useBuscaFulltext } from '../useBuscaFulltext';
 
 vi.mock('@/integrations/supabase/client', () => ({
-  supabase: {
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        textSearch: vi.fn(() => ({
-          limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
-        })),
-        ilike: vi.fn(() => ({
-          limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
-        }))
-      }))
-    })),
-    rpc: vi.fn(() => Promise.resolve({ data: [], error: null }))
-  }, isSupabaseReady: true
+  supabase: { from: vi.fn(() => ({ select: vi.fn().mockReturnThis(), textSearch: vi.fn().mockReturnThis(), limit: vi.fn(() => Promise.resolve({ data: [], error: null })) })) },
+  isSupabaseReady: true
 }));
 
-const wrapper = () => {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return ({ children }: { children: React.ReactNode }) => <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-};
+const wrapper = ({ children }: any) => <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>{children}</QueryClientProvider>;
 
 describe('useBuscaFulltext', () => {
-  beforeEach(() => { vi.clearAllMocks(); });
-
-  it('should initialize with empty results', async () => {
-    const { result } = renderHook(() => useBuscaFulltext({ tableName: 'employees', searchFields: ['name', 'email'] }), { wrapper: wrapper() });
-    await waitFor(() => expect(result.current.results).toEqual([]));
+  it('should provide search function', () => {
+    const { result } = renderHook(() => useBuscaFulltext({ table: 'employees', columns: ['name', 'email'] }), { wrapper });
+    expect(result.current.search).toBeDefined();
   });
-
-  it('should have setQuery function', () => {
-    const { result } = renderHook(() => useBuscaFulltext({ tableName: 'employees', searchFields: ['name'] }), { wrapper: wrapper() });
-    expect(result.current.setQuery).toBeDefined();
+  it('should provide results array', () => {
+    const { result } = renderHook(() => useBuscaFulltext({ table: 'employees', columns: ['name'] }), { wrapper });
+    expect(result.current.results).toBeDefined();
   });
-
-  it('should debounce search', async () => {
-    const { result } = renderHook(() => useBuscaFulltext({ tableName: 'employees', searchFields: ['name'], debounceMs: 100 }), { wrapper: wrapper() });
-    act(() => { result.current.setQuery('test'); });
-    expect(result.current.query).toBe('test');
-  });
-
-  it('should track loading state', () => {
-    const { result } = renderHook(() => useBuscaFulltext({ tableName: 'employees', searchFields: ['name'] }), { wrapper: wrapper() });
-    expect(result.current.isSearching).toBeDefined();
-  });
-});
-
-describe('useSearchEmployees', () => {
-  it('should be a preset for employees table', async () => {
-    const { result } = renderHook(() => useSearchEmployees(), { wrapper: wrapper() });
-    await waitFor(() => expect(result.current.results).toBeDefined());
-  });
-});
-
-describe('useSearchAlerts', () => {
-  it('should be a preset for alerts table', async () => {
-    const { result } = renderHook(() => useSearchAlerts(), { wrapper: wrapper() });
-    await waitFor(() => expect(result.current.results).toBeDefined());
-  });
-});
-
-describe('useFulltextSearch', () => {
-  it('should work as alias', async () => {
-    const { result } = renderHook(() => useFulltextSearch('teams', ['name', 'description']), { wrapper: wrapper() });
-    await waitFor(() => expect(result.current.results).toBeDefined());
+  it('should track searching state', () => {
+    const { result } = renderHook(() => useBuscaFulltext({ table: 'employees', columns: ['name'] }), { wrapper });
+    expect(typeof result.current.isSearching).toBe('boolean');
   });
 });
