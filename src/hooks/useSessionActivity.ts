@@ -1,56 +1,44 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export interface SessionActivity {
+export interface SessionEvent {
   id: string;
-  type: 'login' | 'logout' | 'action' | 'error' | 'warning';
-  description: string;
+  type: 'login' | 'logout' | 'action' | 'error' | 'security';
   timestamp: Date;
+  description: string;
   metadata?: Record<string, any>;
-  ipAddress?: string;
-  userAgent?: string;
 }
 
 export interface UseSessionActivityOptions {
-  maxItems?: number;
-  storageKey?: string;
-  onNewActivity?: (activity: SessionActivity) => void;
+  maxEvents?: number;
+  persistKey?: string;
 }
 
 export function useSessionActivity(options: UseSessionActivityOptions = {}) {
-  const { maxItems = 100, storageKey = 'session-activity', onNewActivity } = options;
-  const [activities, setActivities] = useState<SessionActivity[]>([]);
+  const { maxEvents = 100, persistKey = 'session-activity' } = options;
+  const [events, setEvents] = useState<SessionEvent[]>(() => {
+    if (typeof window === 'undefined') return [];
+    const stored = sessionStorage.getItem(persistKey);
+    return stored ? JSON.parse(stored).map((e: any) => ({ ...e, timestamp: new Date(e.timestamp) })) : [];
+  });
+  const [sessionStart] = useState(() => new Date());
 
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey);
-    if (stored) setActivities(JSON.parse(stored).map((a: any) => ({ ...a, timestamp: new Date(a.timestamp) })));
-  }, [storageKey]);
+    sessionStorage.setItem(persistKey, JSON.stringify(events));
+  }, [events, persistKey]);
 
-  useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(activities));
-  }, [activities, storageKey]);
+  const logEvent = useCallback((type: SessionEvent['type'], description: string, metadata?: Record<string, any>) => {
+    const event: SessionEvent = { id: crypto.randomUUID(), type, timestamp: new Date(), description, metadata };
+    setEvents(prev => [event, ...prev].slice(0, maxEvents));
+    return event;
+  }, [maxEvents]);
 
-  const logActivity = useCallback((type: SessionActivity['type'], description: string, metadata?: Record<string, any>) => {
-    const activity: SessionActivity = {
-      id: crypto.randomUUID(),
-      type,
-      description,
-      timestamp: new Date(),
-      metadata,
-      userAgent: navigator.userAgent,
-    };
-    setActivities(prev => [activity, ...prev].slice(0, maxItems));
-    onNewActivity?.(activity);
-    return activity;
-  }, [maxItems, onNewActivity]);
+  const clearEvents = useCallback(() => setEvents([]), []);
 
-  const clearActivities = useCallback(() => {
-    setActivities([]);
-    localStorage.removeItem(storageKey);
-  }, [storageKey]);
+  const getEventsByType = useCallback((type: SessionEvent['type']) => events.filter(e => e.type === type), [events]);
 
-  const getActivitiesByType = useCallback((type: SessionActivity['type']) => activities.filter(a => a.type === type), [activities]);
+  const sessionDuration = Math.floor((Date.now() - sessionStart.getTime()) / 1000);
 
-  return { activities, logActivity, clearActivities, getActivitiesByType, recentActivity: activities[0] || null };
+  return { events, logEvent, clearEvents, getEventsByType, sessionStart, sessionDuration, eventCount: events.length };
 }
 
 export default useSessionActivity;
