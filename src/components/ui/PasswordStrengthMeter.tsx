@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, X, AlertTriangle, Shield, ShieldCheck, ShieldAlert } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
 
 export interface PasswordStrengthMeterProps {
   password: string;
@@ -44,7 +43,7 @@ export function PasswordStrengthMeter({
 }: PasswordStrengthMeterProps) {
   const strength = useMemo(() => {
     const requirements: PasswordRequirement[] = [
-      { id: 'length', label: \`At least \${minLength} characters\`, met: password.length >= minLength },
+      { id: 'length', label: `At least ${minLength} characters`, met: password.length >= minLength },
       { id: 'lowercase', label: 'Contains lowercase letter', met: /[a-z]/.test(password) },
       { id: 'uppercase', label: 'Contains uppercase letter', met: /[A-Z]/.test(password) },
       { id: 'number', label: 'Contains number', met: /[0-9]/.test(password) },
@@ -56,7 +55,7 @@ export function PasswordStrengthMeter({
     const levelData = STRENGTH_LEVELS[score as keyof typeof STRENGTH_LEVELS];
 
     const feedback: string[] = [];
-    if (!requirements[0].met) feedback.push(\`Add \${minLength - password.length} more characters\`);
+    if (!requirements[0].met) feedback.push(`Add ${minLength - password.length} more characters`);
     if (!requirements[1].met) feedback.push('Add a lowercase letter');
     if (!requirements[2].met) feedback.push('Add an uppercase letter');
     if (!requirements[3].met) feedback.push('Add a number');
