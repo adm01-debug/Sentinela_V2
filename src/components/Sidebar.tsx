@@ -1,8 +1,9 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { prefetchRoute } from '@/App';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
   Users,
@@ -10,7 +11,6 @@ import {
   Settings,
   Monitor,
   FileText,
-  Bell,
   Map,
   MessageSquare,
   Webhook,
@@ -29,6 +29,15 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  ChevronDown,
+  Activity,
+  Database,
+  Briefcase,
+  Zap,
+  Lock,
+  Send,
+  Download,
+  Eye,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -43,35 +52,102 @@ interface NavItem {
   badge?: number;
 }
 
-const navigationItems: NavItem[] = [
-  { titleKey: 'navigation.dashboard', href: '/', icon: LayoutDashboard },
-  { titleKey: 'navigation.employees', href: '/employees', icon: Users },
-  { titleKey: 'navigation.teams', href: '/teams', icon: Users },
-  { titleKey: 'navigation.monitoring', href: '/monitoring', icon: Monitor },
-  { titleKey: 'navigation.violations', href: '/violations', icon: AlertTriangle },
-  { titleKey: 'navigation.policies', href: '/violation-rules', icon: Shield },
-  { titleKey: 'navigation.reports', href: '/reports', icon: FileText },
-  { titleKey: 'navigation.devices', href: '/devices', icon: Smartphone },
-  { titleKey: 'navigation.mobileMonitoring', href: '/mobile-monitoring', icon: Smartphone },
-  { titleKey: 'navigation.geofencing', href: '/geofencing', icon: Map },
-  { titleKey: 'navigation.schedules', href: '/work-schedules', icon: Calendar },
-  { titleKey: 'navigation.policies', href: '/monitoring-policies', icon: ClipboardCheck },
-  { titleKey: 'common.actions', href: '/policy-acknowledgments', icon: ClipboardCheck },
-  { titleKey: 'dashboard.productivity', href: '/productivity-comparison', icon: BarChart3 },
-  { titleKey: 'navigation.aiAnalysis', href: '/ai-analysis', icon: Brain },
-  { titleKey: 'navigation.gamification', href: '/gamification', icon: Award },
-  { titleKey: 'navigation.internetAccess', href: '/internet-access', icon: Globe },
-  { titleKey: 'navigation.security', href: '/rate-limit-dashboard', icon: Shield },
-  { titleKey: 'navigation.keywords', href: '/sensitive-keywords', icon: FileSearch },
-  { titleKey: 'navigation.templates', href: '/message-templates', icon: MessageSquare },
-  { titleKey: 'navigation.webhooks', href: '/webhooks', icon: Webhook },
-  { titleKey: 'common.settings', href: '/whatsapp-integration', icon: MessageSquare },
-  { titleKey: 'reports.schedule', href: '/scheduled-reports', icon: Clock },
-  { titleKey: 'navigation.dataExport', href: '/data-export', icon: FileText },
-  { titleKey: 'navigation.agentKeys', href: '/agent-keys', icon: Key },
-  { titleKey: 'navigation.userManagement', href: '/user-management', icon: UserCog },
-  { titleKey: 'navigation.security', href: '/security', icon: Shield },
-  { titleKey: 'common.settings', href: '/settings', icon: Settings },
+interface NavGroup {
+  id: string;
+  labelKey: string;
+  icon: React.ComponentType<{ className?: string }>;
+  items: NavItem[];
+  defaultOpen?: boolean;
+}
+
+const navigationGroups: NavGroup[] = [
+  {
+    id: 'overview',
+    labelKey: 'Dashboard',
+    icon: LayoutDashboard,
+    defaultOpen: true,
+    items: [
+      { titleKey: 'Dashboard', href: '/', icon: LayoutDashboard },
+    ],
+  },
+  {
+    id: 'people',
+    labelKey: 'Pessoas',
+    icon: Users,
+    defaultOpen: true,
+    items: [
+      { titleKey: 'Funcionários', href: '/employees', icon: Users },
+      { titleKey: 'Equipes', href: '/teams', icon: Briefcase },
+      { titleKey: 'Gamificação', href: '/gamification', icon: Award },
+    ],
+  },
+  {
+    id: 'monitoring',
+    labelKey: 'Monitoramento',
+    icon: Eye,
+    defaultOpen: true,
+    items: [
+      { titleKey: 'Atividades', href: '/monitoring', icon: Activity },
+      { titleKey: 'Mobile', href: '/mobile-monitoring', icon: Smartphone },
+      { titleKey: 'Dispositivos', href: '/devices', icon: Monitor },
+      { titleKey: 'Produtividade', href: '/productivity-comparison', icon: BarChart3 },
+      { titleKey: 'Análise IA', href: '/ai-analysis', icon: Brain },
+    ],
+  },
+  {
+    id: 'security',
+    labelKey: 'Segurança',
+    icon: Shield,
+    items: [
+      { titleKey: 'Violações', href: '/violations', icon: AlertTriangle },
+      { titleKey: 'Regras', href: '/violation-rules', icon: Shield },
+      { titleKey: 'Políticas', href: '/monitoring-policies', icon: ClipboardCheck },
+      { titleKey: 'Aceites', href: '/policy-acknowledgments', icon: ClipboardCheck },
+      { titleKey: 'Palavras-chave', href: '/sensitive-keywords', icon: FileSearch },
+      { titleKey: 'Rate Limit', href: '/rate-limit-dashboard', icon: Lock },
+      { titleKey: 'Central', href: '/security', icon: Shield },
+    ],
+  },
+  {
+    id: 'location',
+    labelKey: 'Localização',
+    icon: Map,
+    items: [
+      { titleKey: 'Geofencing', href: '/geofencing', icon: Map },
+      { titleKey: 'Horários', href: '/work-schedules', icon: Calendar },
+      { titleKey: 'Internet', href: '/internet-access', icon: Globe },
+    ],
+  },
+  {
+    id: 'reports',
+    labelKey: 'Relatórios',
+    icon: FileText,
+    items: [
+      { titleKey: 'Relatórios', href: '/reports', icon: FileText },
+      { titleKey: 'Agendados', href: '/scheduled-reports', icon: Clock },
+      { titleKey: 'Exportar', href: '/data-export', icon: Download },
+    ],
+  },
+  {
+    id: 'integrations',
+    labelKey: 'Integrações',
+    icon: Zap,
+    items: [
+      { titleKey: 'Agent Keys', href: '/agent-keys', icon: Key },
+      { titleKey: 'Webhooks', href: '/webhooks', icon: Webhook },
+      { titleKey: 'WhatsApp', href: '/whatsapp', icon: MessageSquare },
+      { titleKey: 'Templates', href: '/message-templates', icon: Send },
+    ],
+  },
+  {
+    id: 'admin',
+    labelKey: 'Administração',
+    icon: Settings,
+    items: [
+      { titleKey: 'Usuários', href: '/user-management', icon: UserCog },
+      { titleKey: 'Configurações', href: '/settings', icon: Settings },
+    ],
+  },
 ];
 
 interface NavItemComponentProps {
@@ -85,9 +161,7 @@ const NavItemComponent = memo(function NavItemComponent({
   isCollapsed,
   isActive,
 }: NavItemComponentProps) {
-  const { t } = useTranslation();
   const Icon = item.icon;
-  const title = t(item.titleKey);
 
   const handleMouseEnter = useCallback(() => {
     prefetchRoute(item.href);
@@ -99,12 +173,15 @@ const NavItemComponent = memo(function NavItemComponent({
       onMouseEnter={handleMouseEnter}
       onFocus={handleMouseEnter}
       className={cn(
-        'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent',
-        isActive ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'
+        'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all duration-200',
+        'hover:bg-accent/80 hover:translate-x-0.5',
+        isActive 
+          ? 'bg-primary/10 text-primary font-medium border-l-2 border-primary' 
+          : 'text-muted-foreground hover:text-foreground'
       )}
     >
-      <Icon className="h-4 w-4 shrink-0" />
-      {!isCollapsed && <span className="truncate">{title}</span>}
+      <Icon className={cn('h-4 w-4 shrink-0', isActive && 'text-primary')} />
+      {!isCollapsed && <span className="truncate">{item.titleKey}</span>}
       {!isCollapsed && item.badge !== undefined && item.badge > 0 && (
         <span className="ml-auto flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
           {item.badge > 99 ? '99+' : item.badge}
@@ -118,7 +195,7 @@ const NavItemComponent = memo(function NavItemComponent({
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>{content}</TooltipTrigger>
         <TooltipContent side="right" className="flex items-center gap-4">
-          {title}
+          {item.titleKey}
           {item.badge !== undefined && item.badge > 0 && (
             <span className="ml-auto text-muted-foreground">{item.badge}</span>
           )}
@@ -130,10 +207,139 @@ const NavItemComponent = memo(function NavItemComponent({
   return content;
 });
 
+interface NavGroupComponentProps {
+  group: NavGroup;
+  isCollapsed: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
+  activeHref: string;
+}
+
+const NavGroupComponent = memo(function NavGroupComponent({
+  group,
+  isCollapsed,
+  isOpen,
+  onToggle,
+  activeHref,
+}: NavGroupComponentProps) {
+  const Icon = group.icon;
+  const hasActiveItem = group.items.some(item => item.href === activeHref);
+
+  // For single-item groups like Dashboard, render just the item
+  if (group.items.length === 1) {
+    return (
+      <NavItemComponent
+        item={group.items[0]}
+        isCollapsed={isCollapsed}
+        isActive={activeHref === group.items[0].href}
+      />
+    );
+  }
+
+  if (isCollapsed) {
+    return (
+      <Tooltip delayDuration={0}>
+        <TooltipTrigger asChild>
+          <button
+            className={cn(
+              'flex w-full items-center justify-center rounded-lg p-2 transition-all duration-200',
+              hasActiveItem 
+                ? 'bg-primary/10 text-primary' 
+                : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+            )}
+          >
+            <Icon className="h-5 w-5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="p-0">
+          <div className="min-w-[160px] p-1">
+            <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+              {group.labelKey}
+            </div>
+            {group.items.map((item) => (
+              <NavLink
+                key={item.href}
+                to={item.href}
+                className={cn(
+                  'flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
+                  activeHref === item.href
+                    ? 'bg-primary/10 text-primary font-medium'
+                    : 'hover:bg-accent'
+                )}
+              >
+                <item.icon className="h-4 w-4" />
+                {item.titleKey}
+              </NavLink>
+            ))}
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <div className="space-y-1">
+      <button
+        onClick={onToggle}
+        className={cn(
+          'flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200',
+          hasActiveItem 
+            ? 'text-primary' 
+            : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+        )}
+      >
+        <div className="flex items-center gap-3">
+          <Icon className={cn('h-4 w-4', hasActiveItem && 'text-primary')} />
+          <span>{group.labelKey}</span>
+        </div>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <ChevronDown className="h-4 w-4" />
+        </motion.div>
+      </button>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="ml-4 space-y-0.5 border-l border-border/50 pl-2">
+              {group.items.map((item) => (
+                <NavItemComponent
+                  key={item.href}
+                  item={item}
+                  isCollapsed={false}
+                  isActive={activeHref === item.href}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+});
+
 function SidebarComponent() {
   const location = useLocation();
   const { signOut } = useAuth();
   const { isCollapsed, toggle } = useSidebarStore();
+  
+  // Track which groups are open
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => {
+    const initial = new Set<string>();
+    navigationGroups.forEach(group => {
+      if (group.defaultOpen || group.items.some(item => item.href === location.pathname)) {
+        initial.add(group.id);
+      }
+    });
+    return initial;
+  });
 
   const handleSignOut = useCallback(async () => {
     await signOut();
@@ -143,26 +349,58 @@ function SidebarComponent() {
     toggle();
   }, [toggle]);
 
-  const navItems = useMemo(() => {
-    return navigationItems.map((item) => ({
-      ...item,
-      isActive: location.pathname === item.href,
-    }));
-  }, [location.pathname]);
+  const toggleGroup = useCallback((groupId: string) => {
+    setOpenGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(groupId)) {
+        next.delete(groupId);
+      } else {
+        next.add(groupId);
+      }
+      return next;
+    });
+  }, []);
 
   return (
-    <div
+    <motion.div
+      initial={false}
+      animate={{ width: isCollapsed ? 64 : 256 }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
       className={cn(
-        'flex h-screen flex-col border-r bg-background transition-all duration-300',
-        isCollapsed ? 'w-16' : 'w-64'
+        'fixed left-0 top-0 z-40 flex h-screen flex-col border-r bg-background/95 backdrop-blur-sm',
+        'shadow-lg'
       )}
     >
-      {/* Header */}
-      <div className="flex h-14 items-center justify-between border-b px-3">
+      {/* Header with Logo */}
+      <div className={cn(
+        'flex h-16 items-center border-b px-4',
+        isCollapsed ? 'justify-center' : 'justify-between'
+      )}>
         {!isCollapsed && (
-          <span className="text-lg font-semibold">Sentinela</span>
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 shadow-lg">
+              <Shield className="h-5 w-5 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold tracking-tight">Sentinela</h1>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Enterprise Security</p>
+            </div>
+          </div>
         )}
-        <Button variant="ghost" size="icon" onClick={handleToggle}>
+        {isCollapsed && (
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 shadow-lg">
+            <Shield className="h-5 w-5 text-primary-foreground" />
+          </div>
+        )}
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={handleToggle}
+          className={cn(
+            'h-8 w-8 rounded-full',
+            isCollapsed && 'absolute -right-3 top-6 bg-background border shadow-sm'
+          )}
+        >
           {isCollapsed ? (
             <ChevronRight className="h-4 w-4" />
           ) : (
@@ -172,31 +410,43 @@ function SidebarComponent() {
       </div>
 
       {/* Navigation */}
-      <ScrollArea className="flex-1 py-2">
-        <nav className="grid gap-1 px-2">
-          {navItems.map((item) => (
-            <NavItemComponent
-              key={item.href}
-              item={item}
+      <ScrollArea className="flex-1 py-4">
+        <nav className="space-y-2 px-3">
+          {navigationGroups.map((group) => (
+            <NavGroupComponent
+              key={group.id}
+              group={group}
               isCollapsed={isCollapsed}
-              isActive={item.isActive}
+              isOpen={openGroups.has(group.id)}
+              onToggle={() => toggleGroup(group.id)}
+              activeHref={location.pathname}
             />
           ))}
         </nav>
       </ScrollArea>
 
       {/* Footer */}
-      <div className="border-t p-2">
-        <Button
-          variant="ghost"
-          className={cn('w-full justify-start', isCollapsed && 'justify-center')}
-          onClick={handleSignOut}
-        >
-          <LogOut className="h-4 w-4" />
-          {!isCollapsed && <span className="ml-2">Sair</span>}
-        </Button>
+      <div className="border-t p-3">
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              className={cn(
+                'w-full gap-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10',
+                isCollapsed ? 'justify-center px-2' : 'justify-start'
+              )}
+              onClick={handleSignOut}
+            >
+              <LogOut className="h-4 w-4" />
+              {!isCollapsed && <span>Sair</span>}
+            </Button>
+          </TooltipTrigger>
+          {isCollapsed && (
+            <TooltipContent side="right">Sair</TooltipContent>
+          )}
+        </Tooltip>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
