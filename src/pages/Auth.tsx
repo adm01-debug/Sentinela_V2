@@ -391,7 +391,7 @@ const AuthContent = React.memo(function AuthContent() {
             
             <Button 
               type="submit" 
-              className="w-full h-12 text-base font-semibold bg-gradient-primary hover:opacity-90 transition-opacity group"
+              className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors group"
               disabled={isLoading}
             >
               {isLoading ? (

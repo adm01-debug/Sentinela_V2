@@ -538,62 +538,153 @@
 
   /* Responsive spacing */
   .gap-responsive {
-    @apply gap-4 md:gap-6;
+    gap: 1rem;
   }
+  @media (min-width: 768px) {
+    .gap-responsive {
+      gap: 1.5rem;
+    }
+  }
+  
   .p-responsive {
-    @apply p-4 md:p-6 lg:p-8;
+    padding: 1rem;
   }
+  @media (min-width: 768px) {
+    .p-responsive {
+      padding: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .p-responsive {
+      padding: 2rem;
+    }
+  }
+  
   .px-responsive {
-    @apply px-4 md:px-6 lg:px-8;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
+  @media (min-width: 768px) {
+    .px-responsive {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .px-responsive {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
   .py-responsive {
-    @apply py-4 md:py-6 lg:py-8;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  @media (min-width: 768px) {
+    .py-responsive {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .py-responsive {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
   }
 
   /* Pull to refresh indicator */
   .pull-indicator {
-    @apply absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full;
-    @apply flex items-center justify-center p-3;
-    @apply text-muted-foreground transition-all duration-200;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    color: hsl(var(--muted-foreground));
+    transition: all 200ms ease;
   }
   .pull-indicator.active {
-    @apply text-primary;
+    color: hsl(var(--primary));
   }
 
   /* Swipe action container */
   .swipe-container {
-    @apply relative overflow-hidden;
+    position: relative;
+    overflow: hidden;
   }
   .swipe-action {
-    @apply absolute inset-y-0 flex items-center justify-center;
-    @apply w-20 transition-all duration-200;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    transition: all 200ms ease;
   }
   .swipe-action-left {
-    @apply left-0 bg-destructive text-destructive-foreground;
+    left: 0;
+    background-color: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
   }
   .swipe-action-right {
-    @apply right-0 bg-success text-success-foreground;
+    right: 0;
+    background-color: hsl(var(--success));
+    color: hsl(var(--success-foreground));
   }
 
   /* Responsive table wrapper */
   .table-responsive {
-    @apply overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0;
+    overflow-x: auto;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     -webkit-overflow-scrolling: touch;
+  }
+  @media (min-width: 768px) {
+    .table-responsive {
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 
   /* Card stack on mobile */
   .card-stack {
-    @apply flex flex-col gap-3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
   .card-stack > * {
-    @apply flex-shrink-0;
+    flex-shrink: 0;
   }
 
   /* Horizontal scroll container */
   .scroll-horizontal {
-    @apply flex overflow-x-auto gap-3 pb-2 -mx-4 px-4 md:mx-0 md:px-0;
+    display: flex;
+    overflow-x: auto;
+    gap: 0.75rem;
+    padding-bottom: 0.5rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+  }
+  @media (min-width: 768px) {
+    .scroll-horizontal {
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
   .scroll-horizontal::-webkit-scrollbar {
     display: none;
@@ -601,33 +692,63 @@
 
   /* Bottom sheet padding */
   .bottom-sheet-content {
-    @apply pb-safe pt-4 px-4;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   /* Floating action button */
   .fab {
-    @apply fixed bottom-20 right-4 z-40 md:bottom-6;
-    @apply h-14 w-14 rounded-full shadow-lg;
-    @apply flex items-center justify-center;
-    @apply bg-primary text-primary-foreground;
-    @apply transition-all duration-200;
+    position: fixed;
+    bottom: 5rem;
+    right: 1rem;
+    z-index: 40;
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 9999px;
+    box-shadow: var(--elevation-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    transition: all 200ms ease;
+  }
+  @media (min-width: 768px) {
+    .fab {
+      bottom: 1.5rem;
+    }
   }
   .fab:hover {
-    @apply scale-110 shadow-xl;
+    transform: scale(1.1);
+    box-shadow: var(--elevation-4);
   }
   .fab:active {
-    @apply scale-95;
+    transform: scale(0.95);
   }
 
   /* Mobile header */
   .mobile-header {
-    @apply sticky top-0 z-40 bg-background/95 backdrop-blur-sm;
-    @apply border-b px-4 py-3 safe-area-pt;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background-color: hsl(var(--background) / 0.95);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-bottom: 1px solid hsl(var(--border));
+    padding: 0.75rem 1rem;
+    padding-top: env(safe-area-inset-top);
   }
 
   /* Mobile content area with bottom nav space */
   .mobile-content {
-    @apply pb-20 md:pb-0;
+    padding-bottom: 5rem;
+  }
+  @media (min-width: 768px) {
+    .mobile-content {
+      padding-bottom: 0;
+    }
   }
 }
 
