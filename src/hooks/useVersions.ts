@@ -81,10 +81,10 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
 
       const { data, error } = await supabase
         .from('entity_versions')
-        .select(\`
+        .select(`
           *,
           user:changed_by(full_name, email)
-        \`)
+        `)
         .eq('entity_type', entityType)
         .eq('entity_id', entityId)
         .order('version_number', { ascending: false });
@@ -111,7 +111,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
     mutationFn: async (params: { data: Record<string, unknown>; summary?: string }) => {
       if (!isSupabaseReady) {
         console.log('[Versions] Mock: criando versão');
-        return { id: \`mock-\${Date.now()}\`, version_number: versions.length + 1 };
+        return { id: `mock-${Date.now()}`, version_number: versions.length + 1 };
       }
 
       const { data: userData } = await supabase.auth.getUser();
@@ -169,7 +169,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
           version_number: nextVersion,
           data: version.data,
           changed_by: userData.user?.id,
-          change_summary: \`Restaurado da versão \${version.version_number}\`,
+          change_summary: `Restaurado da versão ${version.version_number}`,
         });
 
       if (versionError) throw versionError;

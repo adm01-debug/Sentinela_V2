@@ -101,10 +101,10 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
 
       let query = supabase
         .from('activity_logs')
-        .select(\`
+        .select(`
           *,
           user:user_id(full_name, email, avatar_url)
-        \`)
+        `)
         .eq('entity_type', entityType)
         .order('created_at', { ascending: false })
         .limit(limit);
