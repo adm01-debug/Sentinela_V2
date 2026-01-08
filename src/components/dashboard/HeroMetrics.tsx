@@ -133,8 +133,7 @@ const HeroMetricCard = ({
     >
       <Card className={cn(
         'relative overflow-hidden p-6 hover:shadow-lg transition-all duration-300',
-        'border-0 bg-card/80 backdrop-blur-sm',
-        `hover:shadow-${color}/10`
+        'border-0 bg-card/80 backdrop-blur-sm'
       )}>
         {/* Glow effect */}
         <div className={cn(
