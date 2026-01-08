@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useQuery } from '@tanstack/react-query';
 
 // ============================================================
 // TYPES
@@ -160,18 +160,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initSession();
   }, [refreshSession, checkAdminRole]);
 
-  // Listener para mudanças de autenticação
+  // Listener para mudanças de autenticação - SÍNCRONO para evitar deadlock
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, newSession) => {
-        if (import.meta.env.DEV) console.log('Auth event:', event)
+      (event, newSession) => {
+        if (import.meta.env.DEV) console.log('Auth event:', event);
         
+        // Atualizações síncronas de estado
         setSession(newSession);
         setUser(newSession?.user ?? null);
 
-        // Check admin role when user changes
+        // Check admin role com setTimeout para evitar deadlock
         if (newSession?.user) {
-          // Use setTimeout to avoid deadlock
           setTimeout(() => {
             checkAdminRole(newSession.user.id);
           }, 0);
@@ -179,15 +179,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setIsAdmin(false);
         }
 
-        // Limpar cache quando usuário muda
+        // Limpar cache quando usuário sair - usar setTimeout
         if (event === 'SIGNED_OUT') {
-          queryClient.clear();
+          setTimeout(() => {
+            queryClient.clear();
+          }, 0);
           setIsAdmin(false);
         }
 
-        // Quando token é renovado automaticamente pelo Supabase
+        // Log de token renovado
         if (event === 'TOKEN_REFRESHED' && newSession) {
-          if (import.meta.env.DEV) console.log('Token renovado pelo Supabase')
+          if (import.meta.env.DEV) console.log('Token renovado pelo Supabase');
         }
       }
     );
@@ -365,12 +367,69 @@ export class AuthenticationError extends Error {
 // ============================================================
 
 /**
- * Hook para verificar se usuário tem role específica
+ * Hook SEGURO para verificar se usuário tem role específica
+ * Consulta a tabela user_roles no banco (não usa metadata do cliente)
  */
 export function useHasRole(role: string): boolean {
   const { user } = useAuth();
-  const userRole = user?.user_metadata?.role || user?.app_metadata?.role;
-  return userRole === role;
+  
+  const { data: hasRole } = useQuery({
+    queryKey: ['user-role-check', user?.id, role],
+    queryFn: async () => {
+      if (!user?.id) return false;
+      
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', role)
+        .maybeSingle();
+      
+      if (error) {
+        console.error('Error checking role:', error);
+        return false;
+      }
+      
+      return !!data;
+    },
+    enabled: !!user?.id,
+    staleTime: 5 * 60 * 1000, // 5 minutos
+    gcTime: 10 * 60 * 1000,
+  });
+  
+  return hasRole ?? false;
+}
+
+/**
+ * Hook SEGURO para obter todas as roles do usuário
+ * Consulta a tabela user_roles no banco
+ */
+export function useUserRoles(): string[] {
+  const { user } = useAuth();
+  
+  const { data: roles } = useQuery({
+    queryKey: ['user-roles', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id);
+      
+      if (error) {
+        console.error('Error fetching roles:', error);
+        return [];
+      }
+      
+      return data?.map(r => r.role) ?? [];
+    },
+    enabled: !!user?.id,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+  
+  return roles ?? [];
 }
 
 /**
