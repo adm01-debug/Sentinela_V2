@@ -258,136 +258,131 @@ const AuthContent = React.memo(function AuthContent() {
           
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            <AnimatePresence>
-              {validationErrors.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
-                  <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>
-                      <ul className="list-disc list-inside text-sm space-y-1">
-                        {validationErrors.map((error, i) => (
-                          <li key={i}>{error}</li>
-                        ))}
-                      </ul>
-                    </AlertDescription>
-                  </Alert>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            
-            <AnimatePresence mode="wait">
+            {validationErrors.length > 0 && (
               <motion.div
-                key={mode}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="space-y-4"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
               >
-                {mode === 'register' && (
-                  <>
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-sm font-medium">Nome completo</Label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                          id="name"
-                          value={name} 
-                          onChange={(e) => setName(e.target.value.slice(0, 100))} 
-                          placeholder="Seu nome"
-                          autoComplete="name"
-                          maxLength={100}
-                          className="pl-10 h-12 bg-muted/50 border-muted-foreground/20 focus:border-primary"
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="company" className="text-sm font-medium">Empresa</Label>
-                      <div className="relative">
-                        <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                          id="company"
-                          value={company} 
-                          onChange={(e) => setCompany(e.target.value.slice(0, 100))} 
-                          placeholder="Nome da empresa"
-                          autoComplete="organization"
-                          maxLength={100}
-                          className="pl-10 h-12 bg-muted/50 border-muted-foreground/20 focus:border-primary"
-                        />
-                      </div>
-                    </div>
-                  </>
-                )}
-                
-                {mode !== 'reset' && (
+                <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    <ul className="list-disc list-inside text-sm space-y-1">
+                      {validationErrors.map((error, i) => (
+                        <li key={i}>{error}</li>
+                      ))}
+                    </ul>
+                  </AlertDescription>
+                </Alert>
+              </motion.div>
+            )}
+            
+            <motion.div
+              key={mode}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-4"
+            >
+              {mode === 'register' && (
+                <>
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                    <Label htmlFor="name" className="text-sm font-medium">Nome completo</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input 
-                        id="email"
-                        type="email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value.toLowerCase().trim().slice(0, 255))} 
-                        placeholder="seu@email.com"
-                        autoComplete="email"
-                        maxLength={255}
-                        required
+                        id="name"
+                        value={name} 
+                        onChange={(e) => setName(e.target.value.slice(0, 100))} 
+                        placeholder="Seu nome"
+                        autoComplete="name"
+                        maxLength={100}
                         className="pl-10 h-12 bg-muted/50 border-muted-foreground/20 focus:border-primary"
                       />
                     </div>
                   </div>
-                )}
-                
-                {(mode === 'login' || mode === 'register' || mode === 'reset') && (
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="password" className="text-sm font-medium">Senha</Label>
-                      {mode === 'login' && (
-                        <button
-                          type="button"
-                          onClick={() => { setMode('forgot'); setValidationErrors([]); }}
-                          className="text-sm text-primary hover:text-primary/80 transition-colors"
-                        >
-                          Esqueceu a senha?
-                        </button>
-                      )}
-                    </div>
+                    <Label htmlFor="company" className="text-sm font-medium">Empresa</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input 
-                        id="password"
-                        type={showPassword ? 'text' : 'password'}
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        placeholder="••••••••"
-                        autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                        className="pl-10 pr-10 h-12 bg-muted/50 border-muted-foreground/20 focus:border-primary"
-                        required
+                        id="company"
+                        value={company} 
+                        onChange={(e) => setCompany(e.target.value.slice(0, 100))} 
+                        placeholder="Nome da empresa"
+                        autoComplete="organization"
+                        maxLength={100}
+                        className="pl-10 h-12 bg-muted/50 border-muted-foreground/20 focus:border-primary"
                       />
+                    </div>
+                  </div>
+                </>
+              )}
+              
+              {mode !== 'reset' && (
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      id="email"
+                      type="email" 
+                      value={email} 
+                      onChange={(e) => setEmail(e.target.value.toLowerCase().trim().slice(0, 255))} 
+                      placeholder="seu@email.com"
+                      autoComplete="email"
+                      maxLength={255}
+                      required
+                      className="pl-10 h-12 bg-muted/50 border-muted-foreground/20 focus:border-primary"
+                    />
+                  </div>
+                </div>
+              )}
+              
+              {(mode === 'login' || mode === 'register' || mode === 'reset') && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="password" className="text-sm font-medium">Senha</Label>
+                    {mode === 'login' && (
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                        onClick={() => setShowPassword(!showPassword)}
+                        onClick={() => { setMode('forgot'); setValidationErrors([]); }}
+                        className="text-sm text-primary hover:text-primary/80 transition-colors"
                       >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        Esqueceu a senha?
                       </button>
-                    </div>
-                    {(mode === 'register' || mode === 'reset') && (
-                      <PasswordStrengthChecker 
-                        password={password}
-                        checkLeaked={true}
-                        onStrengthChange={(isValid) => setPasswordIsValid(isValid)}
-                        onLeakedCheck={(isLeaked) => setPasswordIsLeaked(isLeaked)}
-                      />
                     )}
                   </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={password} 
+                      onChange={(e) => setPassword(e.target.value)} 
+                      placeholder="••••••••"
+                      autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                      className="pl-10 pr-10 h-12 bg-muted/50 border-muted-foreground/20 focus:border-primary"
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {(mode === 'register' || mode === 'reset') && (
+                    <PasswordStrengthChecker 
+                      password={password}
+                      checkLeaked={true}
+                      onStrengthChange={(isValid) => setPasswordIsValid(isValid)}
+                      onLeakedCheck={(isLeaked) => setPasswordIsLeaked(isLeaked)}
+                    />
+                  )}
+                </div>
+              )}
+            </motion.div>
             
             <Button 
               type="submit" 

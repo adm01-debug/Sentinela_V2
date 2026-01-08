@@ -17,6 +17,16 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
+import { cn } from '@/lib/utils';
+
+// Color variants for quick action cards
+const colorVariants = {
+  primary: { bg: 'bg-primary/10', bgHover: 'group-hover:bg-primary/20', text: 'text-primary' },
+  success: { bg: 'bg-success/10', bgHover: 'group-hover:bg-success/20', text: 'text-success' },
+  info: { bg: 'bg-info/10', bgHover: 'group-hover:bg-info/20', text: 'text-info' },
+  warning: { bg: 'bg-warning/10', bgHover: 'group-hover:bg-warning/20', text: 'text-warning' },
+  destructive: { bg: 'bg-destructive/10', bgHover: 'group-hover:bg-destructive/20', text: 'text-destructive' },
+};
 
 // Quick action card component
 const QuickActionCard = ({ 
@@ -31,10 +41,11 @@ const QuickActionCard = ({
   description: string;
   icon: React.ElementType;
   href: string;
-  color: string;
+  color: keyof typeof colorVariants;
   delay?: number;
 }) => {
   const navigate = useNavigate();
+  const colorClasses = colorVariants[color];
   
   return (
     <motion.div
@@ -48,8 +59,8 @@ const QuickActionCard = ({
       >
         <CardContent className="p-5">
           <div className="flex items-start gap-4">
-            <div className={`p-3 rounded-xl bg-${color}/10 group-hover:bg-${color}/20 transition-colors`}>
-              <Icon className={`h-5 w-5 text-${color}`} />
+            <div className={cn('p-3 rounded-xl transition-colors', colorClasses.bg, colorClasses.bgHover)}>
+              <Icon className={cn('h-5 w-5', colorClasses.text)} />
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-sm group-hover:text-primary transition-colors">{title}</h3>

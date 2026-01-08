@@ -249,11 +249,19 @@ export const OnboardingWizard = ({
                   <div className="flex items-start gap-4">
                     <div className={cn(
                       'p-3 rounded-xl',
-                      `bg-${currentStepData.color}/10`
+                      currentStepData.color === 'primary' && 'bg-primary/10',
+                      currentStepData.color === 'success' && 'bg-success/10',
+                      currentStepData.color === 'warning' && 'bg-warning/10',
+                      currentStepData.color === 'destructive' && 'bg-destructive/10',
+                      currentStepData.color === 'info' && 'bg-info/10'
                     )}>
                       <currentStepData.icon className={cn(
                         'h-8 w-8',
-                        `text-${currentStepData.color}`
+                        currentStepData.color === 'primary' && 'text-primary',
+                        currentStepData.color === 'success' && 'text-success',
+                        currentStepData.color === 'warning' && 'text-warning',
+                        currentStepData.color === 'destructive' && 'text-destructive',
+                        currentStepData.color === 'info' && 'text-info'
                       )} />
                     </div>
                     <div className="flex-1">
