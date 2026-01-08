@@ -125,3 +125,12 @@ export function useErrorHandler() {
     setError(error);
   }, []);
 }
+
+// Page-level Error Boundary with default props
+export function PageErrorBoundary({ children }: { children: ReactNode }) {
+  return (
+    <ErrorBoundary showDetails>
+      {children}
+    </ErrorBoundary>
+  );
+}
