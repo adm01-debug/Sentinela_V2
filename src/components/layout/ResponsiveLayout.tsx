@@ -1,6 +1,7 @@
 import { memo, ReactNode, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Sidebar } from '@/components/Sidebar';
+import { MobileSidebar } from '@/components/layout/MobileSidebar';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
 import { useSidebarStore } from '@/lib/stores';
@@ -35,10 +36,10 @@ function ResponsiveLayoutComponent({ children }: ResponsiveLayoutProps) {
         <Sidebar />
       </div>
 
-      {/* Mobile Sidebar Sheet */}
+      {/* Mobile Sidebar Sheet - Uses MobileSidebar without fixed positioning */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent side="left" className="w-72 p-0">
-          <Sidebar />
+          <MobileSidebar onNavigate={handleMobileMenuClose} />
         </SheetContent>
       </Sheet>
 
