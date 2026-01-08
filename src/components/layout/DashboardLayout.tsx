@@ -1,6 +1,7 @@
 import { memo, ReactNode } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
+import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 import { useSidebarStore } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 
@@ -22,6 +23,7 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
       >
         <Header />
         <main id="main-content" className="p-4 lg:p-6">
+          <Breadcrumbs className="mb-4" />
           {children}
         </main>
       </div>
