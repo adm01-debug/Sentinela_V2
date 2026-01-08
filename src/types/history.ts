@@ -1,1 +1,0 @@
-export interface HistoryEntry { id: string; action: string; entityType: string; entityId: string; timestamp: Date; userId: string; }

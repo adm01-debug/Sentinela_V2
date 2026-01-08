@@ -1,1 +1,0 @@
-export function useCamera() { return { takePicture: async () => '', pickImage: async () => '' }; }

@@ -1,1 +1,0 @@
-export const CHANNELS = { MAIN: 'main-channel', WORKER: 'worker-channel', SYNC: 'sync-channel' };
