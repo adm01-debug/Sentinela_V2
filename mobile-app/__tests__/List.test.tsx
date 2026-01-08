@@ -1,5 +1,0 @@
-import { describe, it, expect } from 'vitest';
-
-describe('List', () => {
-  it('exists', () => expect(true).toBe(true));
-});
