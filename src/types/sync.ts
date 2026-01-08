@@ -1,1 +1,0 @@
-export interface SyncStatus { lastSync: Date; pending: number; errors: string[]; inProgress: boolean; }

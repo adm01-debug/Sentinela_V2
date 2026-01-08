@@ -1,1 +1,0 @@
-export interface Badge { id: string; name: string; level: 'bronze' | 'silver' | 'gold'; earnedAt: Date; }

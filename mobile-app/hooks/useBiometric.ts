@@ -1,1 +1,0 @@
-export function useBiometric() { return { isAvailable: false, authenticate: async () => false }; }

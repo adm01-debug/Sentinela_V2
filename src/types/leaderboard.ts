@@ -1,1 +1,0 @@
-export interface LeaderboardEntry { rank: number; userId: string; name: string; score: number; avatar?: string; }

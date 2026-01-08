@@ -1,1 +1,0 @@
-export function useDevice() { return { platform: 'ios', version: '1.0' }; }
