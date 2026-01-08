@@ -53,10 +53,10 @@ export default function Index() {
   const { t } = useTranslation();
   
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">{t('dashboard.title')}</h1>
-        <p className="text-muted-foreground">{t('dashboard.subtitle')}</p>
+        <h1 className="text-2xl sm:text-3xl font-bold">{t('dashboard.title')}</h1>
+        <p className="text-muted-foreground text-sm sm:text-base">{t('dashboard.subtitle')}</p>
       </div>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <Suspense fallback={<LoadingSkeleton />}>

@@ -40,28 +40,28 @@ const variants = {
 
 const sizes = {
   sm: {
-    padding: 'p-4',
+    padding: 'p-3 sm:p-4',
     iconSize: 'h-8 w-8',
     iconInner: 'h-4 w-4',
-    title: 'text-xs',
-    value: 'text-xl',
-    trend: 'text-[10px]',
+    title: 'text-[10px] sm:text-xs',
+    value: 'text-lg sm:text-xl',
+    trend: 'text-[9px] sm:text-[10px]',
   },
   md: {
-    padding: 'p-5',
-    iconSize: 'h-10 w-10',
-    iconInner: 'h-5 w-5',
-    title: 'text-sm',
-    value: 'text-2xl',
-    trend: 'text-xs',
+    padding: 'p-4 sm:p-5',
+    iconSize: 'h-9 w-9 sm:h-10 sm:w-10',
+    iconInner: 'h-4 w-4 sm:h-5 sm:w-5',
+    title: 'text-xs sm:text-sm',
+    value: 'text-xl sm:text-2xl',
+    trend: 'text-[10px] sm:text-xs',
   },
   lg: {
-    padding: 'p-6',
-    iconSize: 'h-12 w-12',
-    iconInner: 'h-6 w-6',
-    title: 'text-sm',
-    value: 'text-3xl',
-    trend: 'text-sm',
+    padding: 'p-5 sm:p-6',
+    iconSize: 'h-10 w-10 sm:h-12 sm:w-12',
+    iconInner: 'h-5 w-5 sm:h-6 sm:w-6',
+    title: 'text-xs sm:text-sm',
+    value: 'text-2xl sm:text-3xl',
+    trend: 'text-xs sm:text-sm',
   },
 };
 
@@ -187,13 +187,13 @@ function StatCardsGridComponent({
   className,
 }: StatCardsGridProps) {
   const gridCols = {
-    2: 'md:grid-cols-2',
-    3: 'md:grid-cols-3',
-    4: 'md:grid-cols-2 lg:grid-cols-4',
+    2: 'grid-cols-1 sm:grid-cols-2',
+    3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+    4: 'grid-cols-2 lg:grid-cols-4',
   };
 
   return (
-    <div className={cn('grid gap-4', gridCols[columns], className)}>
+    <div className={cn('grid gap-3 sm:gap-4', gridCols[columns], className)}>
       {children}
     </div>
   );

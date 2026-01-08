@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Loader2, ShieldAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { ResponsiveLayout } from '@/components/layout';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -139,5 +140,5 @@ export function ProtectedRoute({
     );
   }
 
-  return <>{children}</>;
+  return <ResponsiveLayout>{children}</ResponsiveLayout>;
 }

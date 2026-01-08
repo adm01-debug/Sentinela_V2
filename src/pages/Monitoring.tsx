@@ -42,7 +42,7 @@ const MonitoringContent = memo(function MonitoringContent() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-6">
+    <div className="space-y-6">
       <PageHeader
         title={t('monitoring.title')}
         description={t('monitoring.subtitle')}
@@ -64,8 +64,10 @@ const MonitoringContent = memo(function MonitoringContent() {
         onAutoRefreshChange={setAutoRefresh}
       />
 
+      {/* Layout responsivo: stack em mobile, side-by-side em desktop */}
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+        {/* Lista de funcionários */}
+        <div className="lg:col-span-2 order-2 lg:order-1">
           {isLoadingEmployees ? (
             <div className="flex justify-center py-12">
               <Loader2 className="h-8 w-8 animate-spin" />
@@ -78,7 +80,7 @@ const MonitoringContent = memo(function MonitoringContent() {
               </CardContent>
             </Card>
           ) : (
-            <div className={viewMode === 'grid' ? 'grid gap-4 md:grid-cols-2' : 'space-y-2'}>
+            <div className={viewMode === 'grid' ? 'grid gap-4 grid-cols-1 sm:grid-cols-2' : 'space-y-2'}>
               {employees.map((employee) => (
                 <EmployeeMonitoringCard
                   key={employee.id}
@@ -91,17 +93,18 @@ const MonitoringContent = memo(function MonitoringContent() {
           )}
         </div>
 
-        <div className="lg:col-span-1">
-          <Card className="sticky top-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+        {/* Painel de detalhes - aparece primeiro em mobile quando há seleção */}
+        <div className={`lg:col-span-1 order-1 lg:order-2 ${!selectedEmployee ? 'hidden lg:block' : ''}`}>
+          <Card className="lg:sticky lg:top-6">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
                 <Activity className="h-5 w-5" />
                 {selectedEmployee ? selectedEmployee.name : t('common.details')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               {!selectedEmployee ? (
-                <p className="text-muted-foreground text-center py-8">
+                <p className="text-muted-foreground text-center py-8 text-sm">
                   {t('common.select')}
                 </p>
               ) : isLoadingSummary ? (
@@ -111,19 +114,23 @@ const MonitoringContent = memo(function MonitoringContent() {
               ) : activitySummary ? (
                 <Tabs defaultValue="activity">
                   <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="activity">{t('monitoring.realtimeActivity')}</TabsTrigger>
-                    <TabsTrigger value="apps">{t('monitoring.applications')}</TabsTrigger>
+                    <TabsTrigger value="activity" className="text-xs sm:text-sm">
+                      {t('monitoring.realtimeActivity')}
+                    </TabsTrigger>
+                    <TabsTrigger value="apps" className="text-xs sm:text-sm">
+                      {t('monitoring.applications')}
+                    </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="activity" className="space-y-4 mt-4">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-3">
                       <div className="text-center p-3 rounded-lg bg-muted/50">
-                        <p className="text-2xl font-bold">{activitySummary.total_keystrokes}</p>
-                        <p className="text-xs text-muted-foreground">{t('monitoring.keystrokes')}</p>
+                        <p className="text-xl sm:text-2xl font-bold">{activitySummary.total_keystrokes}</p>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground">{t('monitoring.keystrokes')}</p>
                       </div>
                       <div className="text-center p-3 rounded-lg bg-muted/50">
-                        <p className="text-2xl font-bold">{activitySummary.total_clicks}</p>
-                        <p className="text-xs text-muted-foreground">{t('monitoring.clicks')}</p>
+                        <p className="text-xl sm:text-2xl font-bold">{activitySummary.total_clicks}</p>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground">{t('monitoring.clicks')}</p>
                       </div>
                     </div>
 
@@ -146,33 +153,33 @@ const MonitoringContent = memo(function MonitoringContent() {
                   </TabsContent>
 
                   <TabsContent value="apps" className="mt-4">
-                    <ScrollArea className="h-[300px]">
+                    <ScrollArea className="h-[250px] sm:h-[300px]">
                       <div className="space-y-4">
                         <div>
-                          <h4 className="font-medium mb-2 flex items-center gap-2">
+                          <h4 className="font-medium mb-2 flex items-center gap-2 text-sm">
                             <AppWindow className="h-4 w-4" />
                             {t('monitoring.topApplications')}
                           </h4>
                           <div className="space-y-2">
                             {activitySummary.top_apps.map((app, i) => (
                               <div key={i} className="flex items-center justify-between text-sm">
-                                <span className="truncate">{app.name}</span>
-                                <Badge variant="outline">{formatDuration(app.duration)}</Badge>
+                                <span className="truncate max-w-[120px] sm:max-w-[150px]">{app.name}</span>
+                                <Badge variant="outline" className="text-xs">{formatDuration(app.duration)}</Badge>
                               </div>
                             ))}
                           </div>
                         </div>
 
                         <div>
-                          <h4 className="font-medium mb-2 flex items-center gap-2">
+                          <h4 className="font-medium mb-2 flex items-center gap-2 text-sm">
                             <Globe className="h-4 w-4" />
                             {t('monitoring.topWebsites')}
                           </h4>
                           <div className="space-y-2">
                             {activitySummary.top_urls.map((url, i) => (
                               <div key={i} className="flex items-center justify-between text-sm">
-                                <span className="truncate">{url.domain}</span>
-                                <Badge variant="outline">{url.visits} visitas</Badge>
+                                <span className="truncate max-w-[120px] sm:max-w-[150px]">{url.domain}</span>
+                                <Badge variant="outline" className="text-xs">{url.visits} visitas</Badge>
                               </div>
                             ))}
                           </div>
@@ -191,9 +198,9 @@ const MonitoringContent = memo(function MonitoringContent() {
 });
 
 const LoadingSkeleton = () => (
-  <div className="space-y-4 p-6">
+  <div className="space-y-4">
     <Skeleton className="h-8 w-64" />
-    <div className="grid gap-4 md:grid-cols-4">
+    <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
       {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
     </div>
     <Skeleton className="h-96" />
