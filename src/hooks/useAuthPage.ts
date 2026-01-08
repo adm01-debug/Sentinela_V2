@@ -225,17 +225,46 @@ export function useAuthPage() {
       setPassword('');
     },
     onError: (e: Error) => { 
+      console.error('Registration error:', e);
+      
       // Check for specific errors
-      if (e.message.includes('already registered')) {
+      const errorMessage = e.message.toLowerCase();
+      
+      if (errorMessage.includes('already registered') || errorMessage.includes('user already registered')) {
         toast({ 
           title: 'Email já cadastrado', 
           description: 'Use outro email ou faça login', 
           variant: 'destructive' 
         }); 
+      } else if (errorMessage.includes('invalid email') || errorMessage.includes('email')) {
+        toast({ 
+          title: 'Email inválido', 
+          description: 'Verifique o formato do email', 
+          variant: 'destructive' 
+        }); 
+      } else if (errorMessage.includes('password') || errorMessage.includes('senha')) {
+        toast({ 
+          title: 'Senha inválida', 
+          description: e.message, 
+          variant: 'destructive' 
+        }); 
+      } else if (errorMessage.includes('rate limit') || errorMessage.includes('too many requests')) {
+        toast({ 
+          title: 'Muitas tentativas', 
+          description: 'Aguarde alguns minutos e tente novamente', 
+          variant: 'destructive' 
+        }); 
+      } else if (errorMessage.includes('signups not allowed') || errorMessage.includes('signup_disabled')) {
+        toast({ 
+          title: 'Cadastro desativado', 
+          description: 'O cadastro de novos usuários está temporariamente desativado', 
+          variant: 'destructive' 
+        }); 
       } else {
+        // Show the actual error for debugging
         toast({ 
           title: 'Erro no cadastro', 
-          description: 'Verifique os dados e tente novamente', 
+          description: e.message || 'Verifique os dados e tente novamente', 
           variant: 'destructive' 
         }); 
       }
