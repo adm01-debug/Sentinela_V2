@@ -1,38 +1,14 @@
 export const colors = {
-  // Brand colors
-  brand: {
-    primary: '#3b82f6',
-    secondary: '#0ea5e9',
-    accent: '#8b5cf6',
-  },
-  // Semantic colors
-  semantic: {
-    success: '#22c55e',
-    warning: '#f59e0b',
-    error: '#ef4444',
-    info: '#3b82f6',
-  },
-  // Background colors
-  background: {
-    default: '#ffffff',
-    secondary: '#f8fafc',
-    tertiary: '#f1f5f9',
-    inverse: '#0f172a',
-  },
-  // Text colors
-  text: {
-    primary: '#0f172a',
-    secondary: '#475569',
-    tertiary: '#94a3b8',
-    inverse: '#ffffff',
-    link: '#3b82f6',
-  },
-  // Border colors
-  border: {
-    default: '#e2e8f0',
-    focus: '#3b82f6',
-    error: '#ef4444',
-  },
-} as const;
+  brand: { primary: '#3B82F6', secondary: '#6366F1', accent: '#8B5CF6' },
+  semantic: { success: '#22C55E', warning: '#F59E0B', error: '#EF4444', info: '#0EA5E9' },
+  neutral: { white: '#FFFFFF', black: '#000000', gray: { 50: '#F8FAFC', 100: '#F1F5F9', 200: '#E2E8F0', 300: '#CBD5E1', 400: '#94A3B8', 500: '#64748B', 600: '#475569', 700: '#334155', 800: '#1E293B', 900: '#0F172A' } },
+  text: { primary: '#1E293B', secondary: '#64748B', muted: '#94A3B8', inverse: '#FFFFFF' },
+  background: { primary: '#FFFFFF', secondary: '#F8FAFC', tertiary: '#F1F5F9' },
+  border: { default: '#E2E8F0', muted: '#F1F5F9', strong: '#CBD5E1' },
+};
 
-export type Colors = typeof colors;
+export const darkColors = {
+  text: { primary: '#F8FAFC', secondary: '#CBD5E1', muted: '#64748B', inverse: '#1E293B' },
+  background: { primary: '#0F172A', secondary: '#1E293B', tertiary: '#334155' },
+  border: { default: '#334155', muted: '#1E293B', strong: '#475569' },
+};
