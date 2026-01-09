@@ -14,13 +14,13 @@ describe('useSteps', () => {
     expect(result.current.currentStep).toBe(1);
   });
 
-  it('should go to previous step', () => {
+  it('should go to prev step', () => {
     const { result } = renderHook(() => useSteps(5, 2));
     act(() => { result.current.prevStep(); });
     expect(result.current.currentStep).toBe(1);
   });
 
-  it('should not exceed max', () => {
+  it('should not exceed max steps', () => {
     const { result } = renderHook(() => useSteps(3, 2));
     act(() => { result.current.nextStep(); });
     expect(result.current.currentStep).toBe(2);
