@@ -3,11 +3,11 @@ import { describe, it, expect, vi } from 'vitest';
 import { useEffectOnce } from '../useEffectOnce';
 
 describe('useEffectOnce', () => {
-  it('should run effect only once', () => {
-    const cb = vi.fn();
-    const { rerender } = renderHook(() => useEffectOnce(cb));
-    expect(cb).toHaveBeenCalledTimes(1);
+  it('should run effect once', () => {
+    const effect = vi.fn();
+    const { rerender } = renderHook(() => useEffectOnce(effect));
     rerender();
-    expect(cb).toHaveBeenCalledTimes(1);
+    rerender();
+    expect(effect).toHaveBeenCalledTimes(1);
   });
 });
