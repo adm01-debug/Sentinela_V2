@@ -3,15 +3,28 @@ import { test, expect, devices } from '@playwright/test';
 test.describe('Mobile Responsive', () => {
   test.use({ ...devices['iPhone 12'] });
 
-  test('should show mobile menu', async ({ page }) => {
-    await page.goto('/dashboard');
-    await expect(page.getByRole('button', { name: /menu/i })).toBeVisible();
+  test('should display mobile navigation', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByTestId('mobile-nav')).toBeVisible();
+    await expect(page.getByTestId('hamburger-menu')).toBeVisible();
   });
 
-  test('should open mobile navigation', async ({ page }) => {
+  test('should open mobile menu', async ({ page }) => {
+    await page.goto('/');
+    await page.getByTestId('hamburger-menu').click();
+    await expect(page.getByTestId('mobile-sidebar')).toBeVisible();
+  });
+
+  test('should navigate via mobile menu', async ({ page }) => {
+    await page.goto('/');
+    await page.getByTestId('hamburger-menu').click();
+    await page.getByRole('link', { name: /funcionários/i }).click();
+    await expect(page).toHaveURL(/employees/);
+  });
+
+  test('should display bottom navigation', async ({ page }) => {
     await page.goto('/dashboard');
-    await page.getByRole('button', { name: /menu/i }).click();
-    await expect(page.getByRole('navigation')).toBeVisible();
+    await expect(page.getByTestId('bottom-nav')).toBeVisible();
   });
 
   test('should have touch-friendly buttons', async ({ page }) => {
@@ -21,57 +34,41 @@ test.describe('Mobile Responsive', () => {
     expect(box?.height).toBeGreaterThanOrEqual(44);
   });
 
-  test('should display cards in single column', async ({ page }) => {
-    await page.goto('/dashboard');
-    const card = page.locator('[data-card]').first();
-    const viewport = page.viewportSize();
-    const box = await card.boundingBox();
-    if (box && viewport) {
-      expect(box.width).toBeCloseTo(viewport.width - 32, 10);
-    }
-  });
-
-  test('should show bottom navigation', async ({ page }) => {
-    await page.goto('/dashboard');
-    const bottomNav = page.locator('[data-bottom-nav]');
-    if (await bottomNav.isVisible()) {
-      await expect(bottomNav).toBeVisible();
-    }
-  });
-
-  test('should hide sidebar by default', async ({ page }) => {
-    await page.goto('/dashboard');
-    const sidebar = page.locator('[data-sidebar]');
-    await expect(sidebar).not.toBeVisible();
-  });
-
-  test('should handle swipe gestures', async ({ page }) => {
+  test('should show mobile-optimized tables', async ({ page }) => {
     await page.goto('/employees');
-    const row = page.getByRole('row').nth(1);
-    await row.hover();
-    // Swipe simulation would go here
+    await expect(page.getByTestId('mobile-list')).toBeVisible();
   });
 
-  test('should display pull to refresh', async ({ page }) => {
+  test('should support pull to refresh', async ({ page }) => {
     await page.goto('/dashboard');
-    const pullToRefresh = page.locator('[data-pull-to-refresh]');
-    if (await pullToRefresh.isVisible()) {
-      await expect(pullToRefresh).toBeVisible();
-    }
+    await page.getByTestId('pull-to-refresh').evaluate(el => {
+      el.dispatchEvent(new TouchEvent('touchstart', { touches: [{ clientY: 0 }] }));
+      el.dispatchEvent(new TouchEvent('touchmove', { touches: [{ clientY: 100 }] }));
+      el.dispatchEvent(new TouchEvent('touchend'));
+    });
   });
 
-  test('should work in landscape', async ({ page }) => {
-    await page.setViewportSize({ width: 844, height: 390 });
-    await page.goto('/dashboard');
-    await expect(page.getByRole('main')).toBeVisible();
-  });
-
-  test('should maintain scroll position', async ({ page }) => {
+  test('should have swipe actions', async ({ page }) => {
     await page.goto('/employees');
-    await page.evaluate(() => window.scrollTo(0, 500));
-    await page.getByRole('row').nth(1).click();
-    await page.goBack();
-    const scroll = await page.evaluate(() => window.scrollY);
-    expect(scroll).toBeGreaterThan(0);
+    const row = page.getByTestId('employee-row').first();
+    await row.evaluate(el => {
+      el.dispatchEvent(new TouchEvent('touchstart', { touches: [{ clientX: 300 }] }));
+      el.dispatchEvent(new TouchEvent('touchmove', { touches: [{ clientX: 100 }] }));
+      el.dispatchEvent(new TouchEvent('touchend'));
+    });
+    await expect(page.getByTestId('swipe-actions')).toBeVisible();
+  });
+
+  test('should adapt forms for mobile', async ({ page }) => {
+    await page.goto('/employees/new');
+    const input = page.getByLabel(/nome/i);
+    await expect(input).toHaveAttribute('autocomplete');
+  });
+
+  test('should show mobile-friendly charts', async ({ page }) => {
+    await page.goto('/dashboard');
+    const chart = page.getByTestId('activity-chart');
+    const box = await chart.boundingBox();
+    expect(box?.width).toBeLessThanOrEqual(375);
   });
 });
