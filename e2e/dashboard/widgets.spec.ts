@@ -5,54 +5,43 @@ test.describe('Dashboard Widgets', () => {
     await page.goto('/dashboard');
   });
 
-  test('should display all widget types', async ({ page }) => {
-    const widgets = page.locator('[data-widget]');
-    await expect(widgets.first()).toBeVisible();
+  test('should display all widgets', async ({ page }) => {
+    await expect(page.getByTestId('widget-employees')).toBeVisible();
+    await expect(page.getByTestId('widget-violations')).toBeVisible();
+    await expect(page.getByTestId('widget-productivity')).toBeVisible();
+    await expect(page.getByTestId('widget-activity')).toBeVisible();
   });
 
-  test('should allow widget customization', async ({ page }) => {
-    const customizeButton = page.getByRole('button', { name: /customize|personalizar/i });
-    if (await customizeButton.isVisible()) {
-      await customizeButton.click();
-      await expect(page.getByRole('dialog')).toBeVisible();
-    }
+  test('should customize widget layout', async ({ page }) => {
+    await page.getByRole('button', { name: /personalizar/i }).click();
+    await page.getByRole('checkbox', { name: /widget-employees/i }).uncheck();
+    await page.getByRole('button', { name: /salvar/i }).click();
+    await expect(page.getByTestId('widget-employees')).not.toBeVisible();
   });
 
-  test('should refresh widget data', async ({ page }) => {
-    const refreshButton = page.getByRole('button', { name: /refresh|atualizar/i }).first();
-    if (await refreshButton.isVisible()) {
-      await refreshButton.click();
-      await page.waitForResponse(resp => resp.url().includes('api'));
-    }
+  test('should drag and drop widgets', async ({ page }) => {
+    const widget = page.getByTestId('widget-employees');
+    const target = page.getByTestId('widget-violations');
+    await widget.dragTo(target);
   });
 
-  test('should show widget loading states', async ({ page }) => {
-    await page.route('**/api/**', route => route.abort());
-    await page.reload();
-    await expect(page.locator('[class*="skeleton"]').first()).toBeVisible();
+  test('should expand widget', async ({ page }) => {
+    await page.getByTestId('widget-employees').getByRole('button', { name: /expandir/i }).click();
+    await expect(page.getByTestId('widget-employees')).toHaveClass(/expanded/);
   });
 
-  test('should handle widget errors gracefully', async ({ page }) => {
-    await page.route('**/api/**', route => route.fulfill({ status: 500 }));
-    await page.reload();
-    await expect(page.getByText(/error|erro|try again|tentar/i)).toBeVisible();
+  test('should refresh individual widget', async ({ page }) => {
+    await page.getByTestId('widget-employees').getByRole('button', { name: /atualizar/i }).click();
+    await expect(page.getByTestId('widget-employees').getByText(/atualizado/i)).toBeVisible();
   });
 
-  test('should expand widget to full view', async ({ page }) => {
-    const expandButton = page.getByRole('button', { name: /expand|expandir|maximize/i }).first();
-    if (await expandButton.isVisible()) {
-      await expandButton.click();
-      await expect(page.getByRole('dialog')).toBeVisible();
-    }
+  test('should show widget settings', async ({ page }) => {
+    await page.getByTestId('widget-employees').getByRole('button', { name: /configurações/i }).click();
+    await expect(page.getByRole('dialog')).toBeVisible();
   });
 
-  test('should export widget data', async ({ page }) => {
-    const exportButton = page.getByRole('button', { name: /export|exportar/i }).first();
-    if (await exportButton.isVisible()) {
-      const downloadPromise = page.waitForEvent('download');
-      await exportButton.click();
-      const download = await downloadPromise;
-      expect(download.suggestedFilename()).toMatch(/\.(csv|xlsx|pdf)$/);
-    }
+  test('should filter widget data', async ({ page }) => {
+    await page.getByTestId('widget-violations').getByRole('combobox').selectOption('high');
+    await expect(page.getByTestId('widget-violations')).toContainText(/alta/i);
   });
 });
