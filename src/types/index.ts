@@ -1,59 +1,51 @@
-// Core Types
+// Core types for Sentinela
+
 export interface User {
   id: string;
   email: string;
   name: string;
-  role: UserRole;
+  role: 'admin' | 'manager' | 'viewer';
   avatar?: string;
   createdAt: Date;
+  updatedAt: Date;
 }
-
-export type UserRole = 'admin' | 'manager' | 'viewer';
 
 export interface Employee {
   id: string;
+  userId?: string;
   name: string;
   email: string;
   department: string;
-  teamId?: string;
-  status: EmployeeStatus;
+  position: string;
+  status: 'active' | 'inactive' | 'suspended';
   createdAt: Date;
+  updatedAt: Date;
 }
-
-export type EmployeeStatus = 'active' | 'inactive' | 'suspended';
 
 export interface Violation {
   id: string;
   employeeId: string;
-  type: ViolationType;
-  severity: Severity;
+  type: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
   description: string;
+  status: 'open' | 'reviewed' | 'resolved';
   createdAt: Date;
 }
-
-export type ViolationType = 'security' | 'policy' | 'productivity' | 'access';
-export type Severity = 'low' | 'medium' | 'high' | 'critical';
 
 export interface Activity {
   id: string;
   employeeId: string;
   type: string;
-  metadata: Record<string, unknown>;
-  createdAt: Date;
+  data: Record<string, unknown>;
+  timestamp: Date;
 }
 
-export interface Team {
+export interface Report {
   id: string;
-  name: string;
-  description?: string;
-  managerId?: string;
+  type: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  data: Record<string, unknown>;
   createdAt: Date;
-}
-
-export interface ApiResponse<T> {
-  data: T | null;
-  error: Error | null;
-  loading: boolean;
 }
 
 export interface PaginatedResponse<T> {
@@ -61,5 +53,11 @@ export interface PaginatedResponse<T> {
   total: number;
   page: number;
   pageSize: number;
-  hasMore: boolean;
+  totalPages: number;
+}
+
+export interface ApiError {
+  code: string;
+  message: string;
+  details?: Record<string, unknown>;
 }
