@@ -2,41 +2,40 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Employee Detail', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/employees');
-    await page.getByRole('row').nth(1).click();
+    await page.goto('/employees/1');
   });
 
-  test('should display employee info', async ({ page }) => {
-    await expect(page.getByRole('heading')).toBeVisible();
+  test('should display employee information', async ({ page }) => {
+    await expect(page.getByTestId('employee-name')).toBeVisible();
+    await expect(page.getByTestId('employee-email')).toBeVisible();
+    await expect(page.getByTestId('employee-department')).toBeVisible();
+    await expect(page.getByTestId('employee-status')).toBeVisible();
   });
 
-  test('should show activity timeline', async ({ page }) => {
-    await expect(page.getByText(/activity|atividade|timeline/i)).toBeVisible();
+  test('should display activity timeline', async ({ page }) => {
+    await expect(page.getByTestId('activity-timeline')).toBeVisible();
   });
 
   test('should display violations history', async ({ page }) => {
-    const violationsTab = page.getByRole('tab', { name: /violation|violação/i });
-    if (await violationsTab.isVisible()) {
-      await violationsTab.click();
-      await expect(page.getByRole('tabpanel')).toBeVisible();
-    }
+    await page.getByRole('tab', { name: /violações/i }).click();
+    await expect(page.getByTestId('violations-list')).toBeVisible();
   });
 
-  test('should show productivity metrics', async ({ page }) => {
-    const productivityTab = page.getByRole('tab', { name: /productivity|produtividade/i });
-    if (await productivityTab.isVisible()) {
-      await productivityTab.click();
-      await expect(page.locator('[class*="chart"]')).toBeVisible();
-    }
+  test('should display productivity metrics', async ({ page }) => {
+    await page.getByRole('tab', { name: /produtividade/i }).click();
+    await expect(page.getByTestId('productivity-chart')).toBeVisible();
   });
 
-  test('should allow editing from detail view', async ({ page }) => {
-    await page.getByRole('button', { name: /edit|editar/i }).click();
-    await expect(page.getByRole('form')).toBeVisible();
+  test('should navigate to edit', async ({ page }) => {
+    await page.getByRole('button', { name: /editar/i }).click();
+    await expect(page).toHaveURL(/employees\/1\/edit/);
   });
 
-  test('should navigate back to list', async ({ page }) => {
-    await page.getByRole('button', { name: /back|voltar/i }).click();
-    await expect(page).toHaveURL(/employees$/);
+  test('should download report', async ({ page }) => {
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      page.getByRole('button', { name: /baixar relatório/i }).click(),
+    ]);
+    expect(download.suggestedFilename()).toContain('employee-report');
   });
 });
