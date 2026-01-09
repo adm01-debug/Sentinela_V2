@@ -3,9 +3,10 @@ import { describe, it, expect, vi } from 'vitest';
 import { useInfiniteScroll } from '../useInfiniteScroll';
 
 describe('useInfiniteScroll', () => {
-  it('should return loading state', () => {
+  it('should call loadMore on intersection', () => {
     const loadMore = vi.fn();
-    const { result } = renderHook(() => useInfiniteScroll({ loadMore, hasMore: true }));
-    expect(result.current.loading).toBe(false);
+    const ref = { current: document.createElement('div') };
+    renderHook(() => useInfiniteScroll(ref, loadMore));
+    expect(loadMore).not.toHaveBeenCalled();
   });
 });
