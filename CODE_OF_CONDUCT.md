@@ -6,23 +6,22 @@ We pledge to make participation in our project a harassment-free experience for 
 
 ## Our Standards
 
-Examples of behavior that contributes to a positive environment:
-- Using welcoming and inclusive language
+**Positive behavior:**
+- Using welcoming language
 - Being respectful of differing viewpoints
-- Accepting constructive criticism gracefully
+- Accepting constructive criticism
 - Focusing on what is best for the community
 
-Examples of unacceptable behavior:
-- Trolling, insulting, or derogatory comments
-- Public or private harassment
+**Unacceptable behavior:**
+- Harassment or discriminatory comments
+- Personal or political attacks
 - Publishing others' private information
-- Other conduct which could be considered inappropriate
 
 ## Enforcement
 
-Instances of abusive behavior may be reported to the project team.
-All complaints will be reviewed and investigated.
+Instances of unacceptable behavior may be reported to the project team.
+All complaints will be reviewed and investigated promptly and fairly.
 
 ## Attribution
 
-This Code of Conduct is adapted from the Contributor Covenant, version 2.0.
+This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/).
