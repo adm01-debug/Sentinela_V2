@@ -5,6 +5,6 @@ import { useStylesheet } from '../useStylesheet';
 describe('useStylesheet', () => {
   it('should load stylesheet', () => {
     const { result } = renderHook(() => useStylesheet('https://example.com/style.css'));
-    expect(result.current.loading).toBeDefined();
+    expect(result.current.loaded).toBeDefined();
   });
 });
