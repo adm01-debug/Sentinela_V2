@@ -1,32 +1,26 @@
 ---
 name: Bug Report
-about: Report a bug to help us improve
-title: '[BUG] '
+about: Reportar um bug
+title: "[BUG] "
 labels: bug
 assignees: ''
 ---
 
-## Bug Description
-<!-- Clear description of the bug -->
+## Descrição do Bug
+<!-- Descrição clara do bug -->
 
-## Steps to Reproduce
-1. Go to '...'
-2. Click on '...'
-3. See error
+## Passos para Reproduzir
+1. Vá para '...'
+2. Clique em '...'
+3. Veja o erro
 
-## Expected Behavior
-<!-- What should happen -->
-
-## Actual Behavior
-<!-- What actually happens -->
-
-## Environment
-- OS: [e.g. Windows 11]
-- Browser: [e.g. Chrome 120]
-- Version: [e.g. 13.0.0]
+## Comportamento Esperado
+<!-- O que deveria acontecer -->
 
 ## Screenshots
-<!-- If applicable -->
+<!-- Se aplicável -->
 
-## Additional Context
-<!-- Any other context -->
+## Ambiente
+- OS: [ex: Windows 11]
+- Browser: [ex: Chrome 120]
+- Versão: [ex: 13.0.0]
