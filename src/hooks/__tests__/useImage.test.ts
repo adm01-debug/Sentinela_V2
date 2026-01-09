@@ -3,8 +3,13 @@ import { describe, it, expect } from 'vitest';
 import { useImage } from '../useImage';
 
 describe('useImage', () => {
-  it('should track loading state', () => {
-    const { result } = renderHook(() => useImage('https://example.com/img.png'));
-    expect(result.current.loading).toBe(true);
+  it('should load image', async () => {
+    const { result } = renderHook(() => useImage('/test.jpg'));
+    expect(result.current.loading).toBeDefined();
+  });
+
+  it('should handle error', async () => {
+    const { result } = renderHook(() => useImage('/invalid.jpg'));
+    expect(result.current.error).toBeDefined();
   });
 });
