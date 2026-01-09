@@ -1,23 +1,20 @@
-## Description
-<!-- Describe your changes -->
+## Descrição
+<!-- Descreva as mudanças feitas neste PR -->
 
-## Type of Change
+## Tipo de Mudança
 - [ ] Bug fix
-- [ ] New feature
+- [ ] Nova feature
 - [ ] Breaking change
-- [ ] Documentation update
-- [ ] Refactoring
-- [ ] Performance improvement
+- [ ] Documentação
 
 ## Checklist
-- [ ] My code follows the project style guidelines
-- [ ] I have performed a self-review
-- [ ] I have added tests that prove my fix/feature works
-- [ ] New and existing tests pass locally
-- [ ] I have updated the documentation accordingly
+- [ ] Código segue os padrões do projeto
+- [ ] Testes foram adicionados/atualizados
+- [ ] Documentação foi atualizada
+- [ ] Self-review realizado
 
-## Screenshots (if applicable)
-<!-- Add screenshots here -->
+## Screenshots (se aplicável)
+<!-- Adicione screenshots se houver mudanças visuais -->
 
-## Related Issues
-<!-- Link related issues: Fixes #123 -->
+## Issues Relacionadas
+<!-- Closes #issue_number -->
