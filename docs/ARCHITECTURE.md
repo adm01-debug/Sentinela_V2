@@ -2,45 +2,35 @@
 
 ## Overview
 
-Sentinela is a modern employee monitoring system built with:
+Sentinela follows a modern React architecture with:
 
 - **Frontend**: React 18 + TypeScript + Vite
-- **Backend**: Supabase (PostgreSQL + Edge Functions)
 - **State**: Zustand + React Query
-- **UI**: Radix UI + Tailwind CSS
+- **Backend**: Supabase (PostgreSQL + Edge Functions)
+- **Auth**: Supabase Auth with MFA support
 
 ## Directory Structure
 
 ```
 src/
-├── components/     # React components
-│   ├── ui/         # Base UI components
-│   ├── dashboard/  # Dashboard widgets
-│   ├── employees/  # Employee components
+├── components/    # UI components (156+)
+│   ├── ui/        # Core UI components
+│   ├── dashboard/ # Dashboard widgets
 │   └── ...
-├── hooks/          # Custom React hooks
-├── pages/          # Page components
-├── lib/            # Utilities and configs
-├── locales/        # i18n translations
-└── integrations/   # External integrations
+├── hooks/         # Custom hooks (253+)
+├── pages/         # Page components (112+)
+├── lib/           # Utilities and helpers
+├── locales/       # i18n translations
+└── design-system/ # Design tokens
 
 supabase/
-├── functions/      # Edge Functions
-└── migrations/     # Database migrations
+├── functions/     # Edge functions (63+)
+└── migrations/    # Database migrations (54+)
 ```
 
 ## Data Flow
 
-1. User interacts with UI
-2. Component calls custom hook
-3. Hook uses React Query for data fetching
-4. React Query calls Supabase API
-5. Data is cached and returned
-6. UI updates reactively
-
-## Key Patterns
-
-- **Hooks Pattern**: Business logic in custom hooks
-- **Compound Components**: Flexible UI composition
-- **Feature Folders**: Co-located feature code
-- **Edge Functions**: Serverless backend logic
+1. User interacts with UI components
+2. Components use custom hooks for logic
+3. Hooks use React Query for data fetching
+4. Supabase handles persistence and real-time
