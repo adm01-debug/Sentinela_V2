@@ -7,44 +7,38 @@ test.describe('Employees List', () => {
 
   test('should display employees table', async ({ page }) => {
     await expect(page.getByRole('table')).toBeVisible();
+    await expect(page.getByRole('columnheader', { name: /nome/i })).toBeVisible();
+    await expect(page.getByRole('columnheader', { name: /departamento/i })).toBeVisible();
   });
 
-  test('should show search functionality', async ({ page }) => {
-    const searchInput = page.getByPlaceholder(/search|buscar|pesquisar/i);
-    await expect(searchInput).toBeVisible();
-  });
-
-  test('should filter employees by search', async ({ page }) => {
-    const searchInput = page.getByPlaceholder(/search|buscar/i);
-    await searchInput.fill('test');
-    await page.waitForTimeout(500);
-    await expect(page.getByRole('row')).toHaveCount.greaterThan(0);
-  });
-
-  test('should have pagination', async ({ page }) => {
-    const pagination = page.getByRole('navigation', { name: /pagination/i });
-    if (await pagination.isVisible()) {
-      await expect(pagination).toBeVisible();
-    }
-  });
-
-  test('should sort by columns', async ({ page }) => {
-    const nameHeader = page.getByRole('columnheader', { name: /name|nome/i });
-    await nameHeader.click();
-    await expect(nameHeader).toHaveAttribute('aria-sort');
-  });
-
-  test('should open employee details', async ({ page }) => {
-    const firstRow = page.getByRole('row').nth(1);
-    await firstRow.click();
-    await expect(page).toHaveURL(/employees\/[a-z0-9-]+/);
+  test('should search employees', async ({ page }) => {
+    await page.getByPlaceholder(/buscar/i).fill('John');
+    await expect(page.getByRole('row')).toHaveCount(2); // header + 1 result
   });
 
   test('should filter by department', async ({ page }) => {
-    const filterButton = page.getByRole('button', { name: /filter|filtrar/i });
-    if (await filterButton.isVisible()) {
-      await filterButton.click();
-      await expect(page.getByRole('listbox')).toBeVisible();
-    }
+    await page.getByRole('combobox', { name: /departamento/i }).selectOption('TI');
+    await expect(page.getByRole('cell', { name: /TI/i })).toBeVisible();
+  });
+
+  test('should filter by status', async ({ page }) => {
+    await page.getByRole('combobox', { name: /status/i }).selectOption('active');
+    await expect(page.getByRole('cell', { name: /ativo/i })).toBeVisible();
+  });
+
+  test('should sort by column', async ({ page }) => {
+    await page.getByRole('columnheader', { name: /nome/i }).click();
+    await expect(page.getByRole('columnheader', { name: /nome/i })).toHaveAttribute('aria-sort', 'ascending');
+  });
+
+  test('should paginate results', async ({ page }) => {
+    await page.getByRole('button', { name: /próxima/i }).click();
+    await expect(page.getByText(/página 2/i)).toBeVisible();
+  });
+
+  test('should select multiple employees', async ({ page }) => {
+    await page.getByRole('checkbox').first().check();
+    await page.getByRole('checkbox').nth(1).check();
+    await expect(page.getByText(/2 selecionados/i)).toBeVisible();
   });
 });
