@@ -5,14 +5,14 @@ import { useSessionStorage } from '../useSessionStorage';
 describe('useSessionStorage', () => {
   beforeEach(() => { sessionStorage.clear(); });
 
-  it('should store in sessionStorage', () => {
-    const { result } = renderHook(() => useSessionStorage('key', 'value'));
-    expect(result.current[0]).toBe('value');
+  it('should return initial value', () => {
+    const { result } = renderHook(() => useSessionStorage('key', 'initial'));
+    expect(result.current[0]).toBe('initial');
   });
 
-  it('should update value', () => {
+  it('should persist value', () => {
     const { result } = renderHook(() => useSessionStorage('key', 'initial'));
-    act(() => { result.current[1]('new'); });
-    expect(JSON.parse(sessionStorage.getItem('key') || '')).toBe('new');
+    act(() => { result.current[1]('updated'); });
+    expect(sessionStorage.getItem('key')).toBe('"updated"');
   });
 });
