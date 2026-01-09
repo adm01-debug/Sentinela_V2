@@ -8,7 +8,7 @@ describe('useMounted', () => {
     expect(result.current()).toBe(true);
   });
 
-  it('should return false after unmount', () => {
+  it('should return false when unmounted', () => {
     const { result, unmount } = renderHook(() => useMounted());
     unmount();
     expect(result.current()).toBe(false);
