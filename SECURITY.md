@@ -5,29 +5,17 @@
 | Version | Supported          |
 | ------- | ------------------ |
 | 13.x    | :white_check_mark: |
-| 12.x    | :x:                |
-| < 12.0  | :x:                |
+| < 13.0  | :x:                |
 
 ## Reporting a Vulnerability
 
-Please report security vulnerabilities to security@sentinela.app
+Please report security vulnerabilities to: security@sentinela.app
 
-Do NOT create public GitHub issues for security vulnerabilities.
-
-### What to include:
-- Description of the vulnerability
-- Steps to reproduce
-- Potential impact
-- Suggested fix (if any)
-
-### Response Timeline:
-- Initial response: 24-48 hours
-- Status update: 5 business days
-- Resolution: 30-90 days (depending on severity)
+We will respond within 48 hours and provide updates on the fix timeline.
 
 ## Security Best Practices
 
 - Keep dependencies updated
-- Use strong passwords
-- Enable MFA
-- Review audit logs regularly
+- Use environment variables for secrets
+- Enable 2FA for all accounts
+- Review access logs regularly
