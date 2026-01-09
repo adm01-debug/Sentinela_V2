@@ -7,9 +7,13 @@ export const shadows = {
   xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
   '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
   inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
-  focus: '0 0 0 3px rgb(59 130 246 / 0.5)',
-  error: '0 0 0 3px rgb(239 68 68 / 0.5)',
-  success: '0 0 0 3px rgb(34 197 94 / 0.5)',
-} as const;
+};
 
-export type Shadows = typeof shadows;
+export const elevation = {
+  0: shadows.none,
+  1: shadows.sm,
+  2: shadows.DEFAULT,
+  3: shadows.md,
+  4: shadows.lg,
+  5: shadows.xl,
+};
