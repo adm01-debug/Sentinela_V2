@@ -3,7 +3,6 @@ import '../src/index.css';
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -14,7 +13,8 @@ const preview: Preview = {
       default: 'light',
       values: [
         { name: 'light', value: '#ffffff' },
-        { name: 'dark', value: '#0f172a' },
+        { name: 'dark', value: '#1a1a1a' },
+        { name: 'gray', value: '#f5f5f5' },
       ],
     },
     viewport: {
@@ -27,12 +27,13 @@ const preview: Preview = {
   },
   globalTypes: {
     theme: {
-      name: 'Theme',
       description: 'Global theme',
       defaultValue: 'light',
       toolbar: {
+        title: 'Theme',
         icon: 'circlehollow',
         items: ['light', 'dark'],
+        dynamicTitle: true,
       },
     },
   },
