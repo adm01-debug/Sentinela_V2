@@ -5,46 +5,54 @@ test.describe('Dashboard Overview', () => {
     await page.goto('/dashboard');
   });
 
-  test('should display main dashboard', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: /dashboard|painel/i })).toBeVisible();
-  });
-
-  test('should show statistics cards', async ({ page }) => {
-    await expect(page.getByTestId('stat-card').first()).toBeVisible();
+  test('should display main metrics', async ({ page }) => {
+    await expect(page.getByTestId('total-employees')).toBeVisible();
+    await expect(page.getByTestId('active-violations')).toBeVisible();
+    await expect(page.getByTestId('productivity-score')).toBeVisible();
+    await expect(page.getByTestId('online-users')).toBeVisible();
   });
 
   test('should display activity chart', async ({ page }) => {
-    const chart = page.locator('[class*="recharts"]').first();
-    await expect(chart).toBeVisible();
+    await expect(page.getByTestId('activity-chart')).toBeVisible();
   });
 
-  test('should show recent activity', async ({ page }) => {
-    await expect(page.getByText(/recent|recente|activity|atividade/i)).toBeVisible();
+  test('should display recent violations', async ({ page }) => {
+    await expect(page.getByTestId('recent-violations')).toBeVisible();
   });
 
-  test('should have navigation sidebar', async ({ page }) => {
-    await expect(page.getByRole('navigation')).toBeVisible();
+  test('should refresh data', async ({ page }) => {
+    await page.getByRole('button', { name: /atualizar/i }).click();
+    await expect(page.getByText(/atualizado/i)).toBeVisible();
   });
 
-  test('should display user menu', async ({ page }) => {
-    await expect(page.getByRole('button', { name: /user|usuário|profile|perfil/i })).toBeVisible();
+  test('should change date range', async ({ page }) => {
+    await page.getByRole('button', { name: /período/i }).click();
+    await page.getByRole('option', { name: /últimos 7 dias/i }).click();
+    await expect(page.getByText(/7 dias/i)).toBeVisible();
   });
 
-  test('should be responsive', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 });
-    await expect(page.getByRole('button', { name: /menu/i })).toBeVisible();
+  test('should navigate to employee details', async ({ page }) => {
+    await page.getByTestId('top-employees').getByRole('link').first().click();
+    await expect(page).toHaveURL(/employees/);
   });
 
-  test('should load data without errors', async ({ page }) => {
-    await page.waitForLoadState('networkidle');
-    await expect(page.getByText(/error|erro/i)).not.toBeVisible();
+  test('should display loading state', async ({ page }) => {
+    await page.route('**/api/**', route => route.abort());
+    await page.reload();
+    await expect(page.getByTestId('loading-skeleton')).toBeVisible();
   });
 
-  test('should allow date range selection', async ({ page }) => {
-    const dateButton = page.getByRole('button', { name: /date|data|period|período/i });
-    if (await dateButton.isVisible()) {
-      await dateButton.click();
-      await expect(page.getByRole('dialog')).toBeVisible();
-    }
+  test('should handle empty state', async ({ page }) => {
+    await page.route('**/api/dashboard', route => route.fulfill({ json: { data: [] } }));
+    await page.reload();
+    await expect(page.getByText(/nenhum dado/i)).toBeVisible();
+  });
+
+  test('should export dashboard data', async ({ page }) => {
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      page.getByRole('button', { name: /exportar/i }).click(),
+    ]);
+    expect(download.suggestedFilename()).toContain('dashboard');
   });
 });
