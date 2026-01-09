@@ -3,17 +3,17 @@ import { describe, it, expect, vi } from 'vitest';
 import { useUpdateEffect } from '../useUpdateEffect';
 
 describe('useUpdateEffect', () => {
-  it('should not call on mount', () => {
-    const cb = vi.fn();
-    renderHook(() => useUpdateEffect(cb, []));
-    expect(cb).not.toHaveBeenCalled();
+  it('should not run on initial render', () => {
+    const effect = vi.fn();
+    renderHook(() => useUpdateEffect(effect, []));
+    expect(effect).not.toHaveBeenCalled();
   });
 
-  it('should call on update', () => {
-    const cb = vi.fn();
-    const { rerender } = renderHook(({ d }) => useUpdateEffect(cb, [d]), { initialProps: { d: 1 } });
-    expect(cb).not.toHaveBeenCalled();
-    rerender({ d: 2 });
-    expect(cb).toHaveBeenCalledTimes(1);
+  it('should run on updates', () => {
+    const effect = vi.fn();
+    const { rerender } = renderHook(({ dep }) => useUpdateEffect(effect, [dep]), { initialProps: { dep: 1 } });
+    expect(effect).not.toHaveBeenCalled();
+    rerender({ dep: 2 });
+    expect(effect).toHaveBeenCalled();
   });
 });
