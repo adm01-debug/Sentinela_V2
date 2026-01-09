@@ -10,21 +10,20 @@ describe('useForm', () => {
 
   it('should update field value', () => {
     const { result } = renderHook(() => useForm({ name: '' }));
-    act(() => { result.current.handleChange({ target: { name: 'name', value: 'John' } }); });
+    act(() => { result.current.setField('name', 'John'); });
     expect(result.current.values.name).toBe('John');
   });
 
   it('should reset form', () => {
-    const { result } = renderHook(() => useForm({ name: 'John' }));
-    act(() => { result.current.handleChange({ target: { name: 'name', value: 'Jane' } }); });
-    act(() => { result.current.reset(); });
-    expect(result.current.values.name).toBe('John');
+    const { result } = renderHook(() => useForm({ name: '' }));
+    act(() => { result.current.setField('name', 'John'); result.current.reset(); });
+    expect(result.current.values.name).toBe('');
   });
 
-  it('should validate form', () => {
-    const validate = (v: any) => v.name ? {} : { name: 'Required' };
-    const { result } = renderHook(() => useForm({ name: '' }, validate));
-    act(() => { result.current.handleSubmit({ preventDefault: () => {} }); });
-    expect(result.current.errors.name).toBe('Required');
+  it('should track dirty state', () => {
+    const { result } = renderHook(() => useForm({ name: '' }));
+    expect(result.current.isDirty).toBe(false);
+    act(() => { result.current.setField('name', 'John'); });
+    expect(result.current.isDirty).toBe(true);
   });
 });
