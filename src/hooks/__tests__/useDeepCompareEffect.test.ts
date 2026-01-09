@@ -3,17 +3,18 @@ import { describe, it, expect, vi } from 'vitest';
 import { useDeepCompareEffect } from '../useDeepCompareEffect';
 
 describe('useDeepCompareEffect', () => {
-  it('should not trigger on shallow equal deps', () => {
-    const cb = vi.fn();
-    const { rerender } = renderHook(({ d }) => useDeepCompareEffect(cb, [d]), { initialProps: { d: { a: 1 } } });
-    rerender({ d: { a: 1 } });
-    expect(cb).toHaveBeenCalledTimes(1);
+  it('should not re-run for equal objects', () => {
+    const effect = vi.fn();
+    const { rerender } = renderHook(({ obj }) => useDeepCompareEffect(effect, [obj]), { initialProps: { obj: { a: 1 } } });
+    expect(effect).toHaveBeenCalledTimes(1);
+    rerender({ obj: { a: 1 } });
+    expect(effect).toHaveBeenCalledTimes(1);
   });
 
-  it('should trigger on deep change', () => {
-    const cb = vi.fn();
-    const { rerender } = renderHook(({ d }) => useDeepCompareEffect(cb, [d]), { initialProps: { d: { a: 1 } } });
-    rerender({ d: { a: 2 } });
-    expect(cb).toHaveBeenCalledTimes(2);
+  it('should re-run for different objects', () => {
+    const effect = vi.fn();
+    const { rerender } = renderHook(({ obj }) => useDeepCompareEffect(effect, [obj]), { initialProps: { obj: { a: 1 } } });
+    rerender({ obj: { a: 2 } });
+    expect(effect).toHaveBeenCalledTimes(2);
   });
 });
