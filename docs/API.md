@@ -1,42 +1,42 @@
 # API Reference
 
-## Supabase Client
-
-```typescript
-import { supabase } from '@/integrations/supabase/client';
-
-// Query data
-const { data, error } = await supabase
-  .from('employees')
-  .select('*');
-
-// Insert data
-const { data, error } = await supabase
-  .from('employees')
-  .insert({ name: 'John' });
-```
-
 ## Edge Functions
 
 ### Authentication
-- `POST /functions/v1/refresh-tokens` - Refresh auth tokens
-- `POST /functions/v1/verify-email` - Verify email address
+- `POST /auth/login` - User login
+- `POST /auth/register` - User registration
+- `POST /auth/logout` - User logout
+- `POST /auth/reset-password` - Password reset
 
 ### Employees
-- `POST /functions/v1/sync-employee` - Sync employee data
-- `POST /functions/v1/import-employees` - Bulk import
+- `GET /employees` - List employees
+- `GET /employees/:id` - Get employee
+- `POST /employees` - Create employee
+- `PUT /employees/:id` - Update employee
+- `DELETE /employees/:id` - Delete employee
+
+### Violations
+- `GET /violations` - List violations
+- `GET /violations/:id` - Get violation
+- `POST /violations` - Create violation
+- `PUT /violations/:id` - Update violation
 
 ### Reports
-- `POST /functions/v1/generate-report` - Generate report
-- `POST /functions/v1/send-scheduled-report` - Send scheduled
+- `GET /reports` - List reports
+- `POST /reports/generate` - Generate report
+- `GET /reports/:id/download` - Download report
 
-### Notifications
-- `POST /functions/v1/send-email-notification` - Email
-- `POST /functions/v1/send-push-notification` - Push
-- `POST /functions/v1/send-slack-notification` - Slack
-- `POST /functions/v1/send-whatsapp` - WhatsApp
+### Analytics
+- `GET /analytics/dashboard` - Dashboard stats
+- `GET /analytics/trends` - Trend data
+- `GET /analytics/ai-insights` - AI insights
 
-### AI Features
-- `POST /functions/v1/analyze-activity` - Analyze activity
-- `POST /functions/v1/predict-anomaly` - Predict anomalies
-- `POST /functions/v1/generate-insights` - Generate insights
+## Response Format
+
+```json
+{
+  "success": true,
+  "data": {},
+  "error": null
+}
+```
