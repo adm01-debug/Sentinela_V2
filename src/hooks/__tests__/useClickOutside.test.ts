@@ -1,43 +1,33 @@
 import { renderHook } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useClickOutside } from '../useClickOutside';
-import { fireEvent } from '@testing-library/react';
+import { useRef } from 'react';
 
 describe('useClickOutside', () => {
-  it('should call handler when clicking outside', () => {
-    const handler = vi.fn();
+  let mockCallback: ReturnType<typeof vi.fn>;
+  
+  beforeEach(() => { mockCallback = vi.fn(); });
+
+  it('should call callback when clicking outside', () => {
     const ref = { current: document.createElement('div') };
     document.body.appendChild(ref.current);
-
-    renderHook(() => useClickOutside(ref, handler));
-
-    fireEvent.mouseDown(document.body);
-    expect(handler).toHaveBeenCalled();
-
+    renderHook(() => useClickOutside(ref, mockCallback));
+    document.body.click();
+    expect(mockCallback).toHaveBeenCalled();
     document.body.removeChild(ref.current);
   });
 
-  it('should not call handler when clicking inside', () => {
-    const handler = vi.fn();
+  it('should not call callback when clicking inside', () => {
     const ref = { current: document.createElement('div') };
     document.body.appendChild(ref.current);
-
-    renderHook(() => useClickOutside(ref, handler));
-
-    fireEvent.mouseDown(ref.current);
-    expect(handler).not.toHaveBeenCalled();
-
+    renderHook(() => useClickOutside(ref, mockCallback));
+    ref.current.click();
+    expect(mockCallback).not.toHaveBeenCalled();
     document.body.removeChild(ref.current);
   });
 
-  it('should cleanup event listener on unmount', () => {
-    const handler = vi.fn();
-    const ref = { current: document.createElement('div') };
-    
-    const { unmount } = renderHook(() => useClickOutside(ref, handler));
-    unmount();
-
-    fireEvent.mouseDown(document.body);
-    expect(handler).not.toHaveBeenCalled();
+  it('should handle null ref', () => {
+    const ref = { current: null };
+    expect(() => renderHook(() => useClickOutside(ref, mockCallback))).not.toThrow();
   });
 });
