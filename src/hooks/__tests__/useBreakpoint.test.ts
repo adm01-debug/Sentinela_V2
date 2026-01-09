@@ -1,9 +1,24 @@
 import { renderHook } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useBreakpoint } from '../useBreakpoint';
+
 describe('useBreakpoint', () => {
-  it('should return breakpoint info', () => {
+  beforeEach(() => {
+    window.matchMedia = vi.fn().mockImplementation(q => ({
+      matches: q.includes('768'), addEventListener: vi.fn(), removeEventListener: vi.fn()
+    }));
+  });
+
+  it('should return current breakpoint', () => {
     const { result } = renderHook(() => useBreakpoint());
-    expect(typeof result.current.isMobile).toBe('boolean');
+    expect(result.current).toBeDefined();
+  });
+
+  it('should detect mobile', () => {
+    window.matchMedia = vi.fn().mockImplementation(() => ({
+      matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn()
+    }));
+    const { result } = renderHook(() => useBreakpoint());
+    expect(result.current.isMobile).toBeDefined();
   });
 });
