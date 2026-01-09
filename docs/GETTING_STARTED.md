@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Node.js 20+
-- npm or yarn
+- npm 10+
 - Supabase account
 
 ## Installation
@@ -23,22 +23,15 @@ cp .env.example .env.local
 npm run dev
 ```
 
-## Configuration
+## Environment Setup
 
 1. Create a Supabase project
-2. Copy your Supabase URL and anon key to `.env.local`
+2. Copy the URL and anon key to `.env.local`
 3. Run migrations: `npx supabase db push`
 
 ## First Steps
 
-1. Access http://localhost:8080
-2. Create an admin account
-3. Configure your organization settings
-4. Add your first employee
-
-## Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run test` - Run tests
-- `npm run lint` - Run linter
+1. Register an admin account
+2. Configure organization settings
+3. Add employees
+4. Set up monitoring rules
