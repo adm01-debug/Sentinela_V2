@@ -1,22 +1,22 @@
 ---
 name: Feature Request
-about: Suggest a new feature
-title: '[FEATURE] '
+about: Sugerir uma nova feature
+title: "[FEATURE] "
 labels: enhancement
 assignees: ''
 ---
 
-## Feature Description
-<!-- Clear description of the feature -->
+## Descrição da Feature
+<!-- Descrição clara da feature desejada -->
 
-## Problem Statement
-<!-- What problem does this solve? -->
+## Problema que Resolve
+<!-- Qual problema esta feature resolve? -->
 
-## Proposed Solution
-<!-- How should it work? -->
+## Solução Proposta
+<!-- Descreva a solução que você gostaria -->
 
-## Alternatives Considered
-<!-- Other solutions you've considered -->
+## Alternativas Consideradas
+<!-- Outras soluções que você considerou -->
 
-## Additional Context
-<!-- Any other context, mockups, etc -->
+## Contexto Adicional
+<!-- Qualquer contexto adicional -->
