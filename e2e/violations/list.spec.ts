@@ -10,35 +10,27 @@ test.describe('Violations List', () => {
   });
 
   test('should filter by severity', async ({ page }) => {
-    const severityFilter = page.getByRole('combobox', { name: /severity|gravidade/i });
-    if (await severityFilter.isVisible()) {
-      await severityFilter.click();
-      await page.getByRole('option', { name: /high|alta|critical|crítica/i }).click();
-    }
+    await page.getByRole('combobox', { name: /severidade/i }).selectOption('high');
+    await expect(page.getByTestId('severity-badge')).toHaveText(/alta/i);
   });
 
-  test('should filter by type', async ({ page }) => {
-    const typeFilter = page.getByRole('combobox', { name: /type|tipo/i });
-    if (await typeFilter.isVisible()) {
-      await typeFilter.click();
-      await page.getByRole('option').first().click();
-    }
+  test('should filter by status', async ({ page }) => {
+    await page.getByRole('combobox', { name: /status/i }).selectOption('open');
+    await expect(page.getByTestId('status-badge')).toHaveText(/aberta/i);
   });
 
   test('should filter by date range', async ({ page }) => {
-    const dateFilter = page.getByRole('button', { name: /date|data/i });
-    if (await dateFilter.isVisible()) {
-      await dateFilter.click();
-      await expect(page.getByRole('dialog')).toBeVisible();
-    }
+    await page.getByRole('button', { name: /período/i }).click();
+    await page.getByRole('option', { name: /últimos 7 dias/i }).click();
   });
 
-  test('should show severity badges', async ({ page }) => {
-    await expect(page.locator('[data-severity]').first()).toBeVisible();
+  test('should search violations', async ({ page }) => {
+    await page.getByPlaceholder(/buscar/i).fill('keyword');
+    await expect(page.getByRole('row')).toHaveCount(2);
   });
 
-  test('should open violation details', async ({ page }) => {
+  test('should navigate to violation detail', async ({ page }) => {
     await page.getByRole('row').nth(1).click();
-    await expect(page).toHaveURL(/violations\/[a-z0-9-]+/);
+    await expect(page).toHaveURL(/violations\/\d+/);
   });
 });
