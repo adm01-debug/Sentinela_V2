@@ -1,40 +1,40 @@
 # Contributing to Sentinela
 
-Thank you for your interest in contributing!
-
-## Development Setup
-
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Copy `.env.example` to `.env.local`
-4. Start development server: `npm run dev`
-
-## Code Style
-
-- We use ESLint and Prettier
-- Run `npm run lint` before committing
-- Follow conventional commits
-
-## Pull Request Process
+## Getting Started
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Write/update tests
-5. Submit a PR
+2. Clone your fork: `git clone https://github.com/your-username/sentinela.git`
+3. Install dependencies: `npm install`
+4. Create a branch: `git checkout -b feature/your-feature`
 
-## Commit Messages
+## Development
 
-We follow [Conventional Commits](https://conventionalcommits.org/):
+```bash
+npm run dev      # Start development server
+npm run test     # Run tests
+npm run lint     # Run linter
+npm run build    # Build for production
+```
+
+## Commit Convention
+
+We use [Conventional Commits](https://www.conventionalcommits.org/):
 
 - `feat:` New feature
 - `fix:` Bug fix
 - `docs:` Documentation
-- `style:` Formatting
+- `style:` Code style
 - `refactor:` Code refactoring
-- `test:` Adding tests
+- `test:` Tests
 - `chore:` Maintenance
 
-## Questions?
+## Pull Request Process
 
-Open an issue or start a discussion.
+1. Update documentation if needed
+2. Add tests for new features
+3. Ensure all tests pass
+4. Request review from maintainers
+
+## Code of Conduct
+
+Please read our [Code of Conduct](CODE_OF_CONDUCT.md).
