@@ -1,16 +1,10 @@
+// Design System exports
 export { tokens } from './tokens';
-export { colors } from './colors';
-export { typography } from './typography';
-export { spacing } from './spacing';
-export { shadows } from './shadows';
-export { animations } from './animations';
-export { breakpoints, mediaQueries } from './breakpoints';
-
-// Type exports
-export type { Tokens } from './tokens';
-export type { Colors } from './colors';
-export type { Typography } from './typography';
-export type { Spacing } from './spacing';
-export type { Shadows } from './shadows';
-export type { Animations } from './animations';
-export type { Breakpoints } from './breakpoints';
+export { colors, darkColors } from './colors';
+export { typography, textStyles } from './typography';
+export { spacing, layout } from './spacing';
+export { shadows, elevation } from './shadows';
+export { animations, transitions } from './animations';
+export { breakpoints, mediaQueries, containerMaxWidths } from './breakpoints';
+export { ThemeProvider, useTheme, ThemeContext } from './ThemeProvider';
+export { useIsDarkMode, useColorScheme } from './useTheme';
