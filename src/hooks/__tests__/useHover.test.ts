@@ -4,7 +4,12 @@ import { useHover } from '../useHover';
 
 describe('useHover', () => {
   it('should track hover state', () => {
-    const { result } = renderHook(() => useHover());
-    expect(result.current[1]).toBe(false);
+    const element = document.createElement('div');
+    const { result } = renderHook(() => useHover({ current: element }));
+    expect(result.current).toBe(false);
+    act(() => { element.dispatchEvent(new MouseEvent('mouseenter')); });
+    expect(result.current).toBe(true);
+    act(() => { element.dispatchEvent(new MouseEvent('mouseleave')); });
+    expect(result.current).toBe(false);
   });
 });
