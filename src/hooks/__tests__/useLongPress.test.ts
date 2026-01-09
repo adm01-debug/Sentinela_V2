@@ -1,4 +1,18 @@
-import { renderHook } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useLongPress } from '../useLongPress';
-describe('useLongPress', () => { it('should handle long press', () => { const handler = vi.fn(); const { result } = renderHook(() => useLongPress(handler)); expect(result.current).toBeDefined(); }); });
+
+describe('useLongPress', () => {
+  beforeEach(() => { vi.useFakeTimers(); });
+  afterEach(() => { vi.useRealTimers(); });
+
+  it('should trigger on long press', () => {
+    const callback = vi.fn();
+    const { result } = renderHook(() => useLongPress(callback, { delay: 500 }));
+    const element = document.createElement('button');
+    act(() => {
+      element.dispatchEvent(new MouseEvent('mousedown'));
+      vi.advanceTimersByTime(500);
+    });
+  });
+});
