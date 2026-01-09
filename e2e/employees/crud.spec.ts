@@ -1,73 +1,95 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Employee CRUD', () => {
-  test('should open create employee form', async ({ page }) => {
-    await page.goto('/employees');
-    await page.getByRole('button', { name: /add|novo|create|criar/i }).click();
-    await expect(page.getByRole('dialog')).toBeVisible();
-  });
-
-  test('should validate required fields on create', async ({ page }) => {
-    await page.goto('/employees/create');
-    await page.getByRole('button', { name: /save|salvar|create|criar/i }).click();
-    await expect(page.getByText(/required|obrigatório/i)).toBeVisible();
-  });
-
+test.describe('Employees CRUD', () => {
   test('should create new employee', async ({ page }) => {
-    await page.goto('/employees/create');
-    await page.getByLabel(/name|nome/i).fill('Test Employee');
-    await page.getByLabel(/email/i).fill('test@example.com');
-    await page.getByRole('button', { name: /save|salvar/i }).click();
-    await expect(page.getByText(/success|sucesso|created|criado/i)).toBeVisible();
+    await page.goto('/employees/new');
+    await page.getByLabel(/nome/i).fill('New Employee');
+    await page.getByLabel(/email/i).fill('new@company.com');
+    await page.getByLabel(/departamento/i).selectOption('TI');
+    await page.getByLabel(/cargo/i).fill('Developer');
+    await page.getByRole('button', { name: /salvar/i }).click();
+    await expect(page.getByText(/funcionário criado/i)).toBeVisible();
   });
 
-  test('should edit existing employee', async ({ page }) => {
-    await page.goto('/employees');
-    const editButton = page.getByRole('button', { name: /edit|editar/i }).first();
-    await editButton.click();
-    await page.getByLabel(/name|nome/i).fill('Updated Name');
-    await page.getByRole('button', { name: /save|salvar/i }).click();
-    await expect(page.getByText(/updated|atualizado/i)).toBeVisible();
+  test('should validate required fields', async ({ page }) => {
+    await page.goto('/employees/new');
+    await page.getByRole('button', { name: /salvar/i }).click();
+    await expect(page.getByText(/campo obrigatório/i)).toBeVisible();
   });
 
-  test('should confirm before delete', async ({ page }) => {
-    await page.goto('/employees');
-    const deleteButton = page.getByRole('button', { name: /delete|excluir/i }).first();
-    await deleteButton.click();
-    await expect(page.getByRole('alertdialog')).toBeVisible();
-    await expect(page.getByText(/confirm|confirmar|sure|certeza/i)).toBeVisible();
+  test('should edit employee', async ({ page }) => {
+    await page.goto('/employees/1/edit');
+    await page.getByLabel(/nome/i).fill('Updated Name');
+    await page.getByRole('button', { name: /salvar/i }).click();
+    await expect(page.getByText(/atualizado com sucesso/i)).toBeVisible();
   });
 
   test('should delete employee', async ({ page }) => {
-    await page.goto('/employees');
-    await page.getByRole('button', { name: /delete|excluir/i }).first().click();
-    await page.getByRole('button', { name: /confirm|confirmar|yes|sim/i }).click();
-    await expect(page.getByText(/deleted|excluído|removed|removido/i)).toBeVisible();
+    await page.goto('/employees/1');
+    await page.getByRole('button', { name: /excluir/i }).click();
+    await page.getByRole('button', { name: /confirmar/i }).click();
+    await expect(page.getByText(/excluído com sucesso/i)).toBeVisible();
+    await expect(page).toHaveURL(/employees/);
   });
 
-  test('should bulk select employees', async ({ page }) => {
-    await page.goto('/employees');
-    const selectAll = page.getByRole('checkbox', { name: /select all|selecionar todos/i });
-    if (await selectAll.isVisible()) {
-      await selectAll.check();
-      await expect(page.getByText(/selected|selecionados/i)).toBeVisible();
-    }
+  test('should cancel delete', async ({ page }) => {
+    await page.goto('/employees/1');
+    await page.getByRole('button', { name: /excluir/i }).click();
+    await page.getByRole('button', { name: /cancelar/i }).click();
+    await expect(page.getByRole('dialog')).not.toBeVisible();
   });
 
-  test('should export employees list', async ({ page }) => {
+  test('should duplicate employee', async ({ page }) => {
+    await page.goto('/employees/1');
+    await page.getByRole('button', { name: /duplicar/i }).click();
+    await expect(page).toHaveURL(/employees\/new/);
+    await expect(page.getByLabel(/nome/i)).toHaveValue(/Copy/);
+  });
+
+  test('should bulk delete employees', async ({ page }) => {
     await page.goto('/employees');
-    const exportButton = page.getByRole('button', { name: /export|exportar/i });
-    if (await exportButton.isVisible()) {
-      const downloadPromise = page.waitForEvent('download');
-      await exportButton.click();
-      const download = await downloadPromise;
-      expect(download).toBeDefined();
-    }
+    await page.getByRole('checkbox').first().check();
+    await page.getByRole('checkbox').nth(1).check();
+    await page.getByRole('button', { name: /excluir selecionados/i }).click();
+    await page.getByRole('button', { name: /confirmar/i }).click();
+    await expect(page.getByText(/2 funcionários excluídos/i)).toBeVisible();
   });
 
   test('should import employees', async ({ page }) => {
     await page.goto('/employees/import');
-    await expect(page.getByText(/import|importar/i)).toBeVisible();
-    await expect(page.getByLabel(/file|arquivo/i)).toBeVisible();
+    const fileChooserPromise = page.waitForEvent('filechooser');
+    await page.getByRole('button', { name: /selecionar arquivo/i }).click();
+    const fileChooser = await fileChooserPromise;
+    await fileChooser.setFiles('test-data/employees.csv');
+    await page.getByRole('button', { name: /importar/i }).click();
+    await expect(page.getByText(/importação concluída/i)).toBeVisible();
+  });
+
+  test('should export employees', async ({ page }) => {
+    await page.goto('/employees');
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      page.getByRole('button', { name: /exportar/i }).click(),
+    ]);
+    expect(download.suggestedFilename()).toContain('employees');
+  });
+
+  test('should archive employee', async ({ page }) => {
+    await page.goto('/employees/1');
+    await page.getByRole('button', { name: /arquivar/i }).click();
+    await expect(page.getByText(/arquivado/i)).toBeVisible();
+  });
+
+  test('should restore archived employee', async ({ page }) => {
+    await page.goto('/employees?status=archived');
+    await page.getByRole('row').first().getByRole('button', { name: /restaurar/i }).click();
+    await expect(page.getByText(/restaurado/i)).toBeVisible();
+  });
+
+  test('should validate email uniqueness', async ({ page }) => {
+    await page.goto('/employees/new');
+    await page.getByLabel(/email/i).fill('existing@company.com');
+    await page.getByRole('button', { name: /salvar/i }).click();
+    await expect(page.getByText(/email já cadastrado/i)).toBeVisible();
   });
 });
