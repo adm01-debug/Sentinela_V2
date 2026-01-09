@@ -1,40 +1,48 @@
 # Database Schema
 
-## Core Tables
+## Tables
+
+### users
+- `id` UUID PRIMARY KEY
+- `email` VARCHAR UNIQUE
+- `role` VARCHAR
+- `created_at` TIMESTAMP
+- `updated_at` TIMESTAMP
 
 ### employees
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| name | text | Employee name |
-| email | text | Email address |
-| department | text | Department |
-| team_id | uuid | Team reference |
-| created_at | timestamp | Creation date |
+- `id` UUID PRIMARY KEY
+- `user_id` UUID REFERENCES users
+- `name` VARCHAR
+- `department` VARCHAR
+- `status` VARCHAR
+- `created_at` TIMESTAMP
 
 ### violations
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| employee_id | uuid | Employee reference |
-| type | text | Violation type |
-| severity | text | low/medium/high/critical |
-| created_at | timestamp | When occurred |
+- `id` UUID PRIMARY KEY
+- `employee_id` UUID REFERENCES employees
+- `type` VARCHAR
+- `severity` VARCHAR
+- `description` TEXT
+- `created_at` TIMESTAMP
 
 ### activities
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| employee_id | uuid | Employee reference |
-| type | text | Activity type |
-| metadata | jsonb | Activity details |
-| created_at | timestamp | When occurred |
+- `id` UUID PRIMARY KEY
+- `employee_id` UUID REFERENCES employees
+- `type` VARCHAR
+- `data` JSONB
+- `timestamp` TIMESTAMP
 
-## Migrations
+### reports
+- `id` UUID PRIMARY KEY
+- `type` VARCHAR
+- `status` VARCHAR
+- `data` JSONB
+- `created_at` TIMESTAMP
 
-Run migrations:
-```bash
-npx supabase db push
-```
+## Indexes
+- `idx_employees_user_id`
+- `idx_violations_employee_id`
+- `idx_activities_employee_timestamp`
 
-View migrations in `supabase/migrations/`
+## RLS Policies
+All tables have Row Level Security enabled.
