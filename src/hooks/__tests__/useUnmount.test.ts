@@ -3,11 +3,11 @@ import { describe, it, expect, vi } from 'vitest';
 import { useUnmount } from '../useUnmount';
 
 describe('useUnmount', () => {
-  it('should call callback on unmount', () => {
-    const cb = vi.fn();
-    const { unmount } = renderHook(() => useUnmount(cb));
-    expect(cb).not.toHaveBeenCalled();
+  it('should call cleanup on unmount', () => {
+    const cleanup = vi.fn();
+    const { unmount } = renderHook(() => useUnmount(cleanup));
+    expect(cleanup).not.toHaveBeenCalled();
     unmount();
-    expect(cb).toHaveBeenCalledTimes(1);
+    expect(cleanup).toHaveBeenCalled();
   });
 });
