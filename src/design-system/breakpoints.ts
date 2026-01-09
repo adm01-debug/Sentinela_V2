@@ -1,11 +1,11 @@
 export const breakpoints = {
-  xs: '320px',
+  xs: '0px',
   sm: '640px',
   md: '768px',
   lg: '1024px',
   xl: '1280px',
   '2xl': '1536px',
-} as const;
+};
 
 export const mediaQueries = {
   xs: `@media (min-width: ${breakpoints.xs})`,
@@ -14,16 +14,17 @@ export const mediaQueries = {
   lg: `@media (min-width: ${breakpoints.lg})`,
   xl: `@media (min-width: ${breakpoints.xl})`,
   '2xl': `@media (min-width: ${breakpoints['2xl']})`,
-  // Max-width queries
-  maxXs: `@media (max-width: ${breakpoints.xs})`,
-  maxSm: `@media (max-width: ${breakpoints.sm})`,
-  maxMd: `@media (max-width: ${breakpoints.md})`,
-  maxLg: `@media (max-width: ${breakpoints.lg})`,
-  maxXl: `@media (max-width: ${breakpoints.xl})`,
-  // Preference queries
-  prefersReducedMotion: '@media (prefers-reduced-motion: reduce)',
-  prefersDark: '@media (prefers-color-scheme: dark)',
-  prefersLight: '@media (prefers-color-scheme: light)',
-} as const;
+  mobile: `@media (max-width: ${breakpoints.md})`,
+  tablet: `@media (min-width: ${breakpoints.md}) and (max-width: ${breakpoints.lg})`,
+  desktop: `@media (min-width: ${breakpoints.lg})`,
+  reducedMotion: '@media (prefers-reduced-motion: reduce)',
+  darkMode: '@media (prefers-color-scheme: dark)',
+};
 
-export type Breakpoints = typeof breakpoints;
+export const containerMaxWidths = {
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1280px',
+  '2xl': '1536px',
+};
