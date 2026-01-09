@@ -6,50 +6,50 @@ test.describe('Report Generation', () => {
   });
 
   test('should display report types', async ({ page }) => {
-    await expect(page.getByText(/activity|atividade/i)).toBeVisible();
-    await expect(page.getByText(/productivity|produtividade/i)).toBeVisible();
+    await expect(page.getByText(/produtividade/i)).toBeVisible();
+    await expect(page.getByText(/violações/i)).toBeVisible();
+    await expect(page.getByText(/atividades/i)).toBeVisible();
   });
 
-  test('should select report type', async ({ page }) => {
-    const reportCard = page.locator('[data-report-type]').first();
-    await reportCard.click();
-    await expect(page).toHaveURL(/reports\/generate/);
+  test('should generate productivity report', async ({ page }) => {
+    await page.getByRole('button', { name: /produtividade/i }).click();
+    await page.getByRole('button', { name: /gerar/i }).click();
+    await expect(page.getByText(/relatório gerado/i)).toBeVisible();
   });
 
-  test('should configure date range', async ({ page }) => {
-    await page.goto('/reports/generate');
-    const dateRange = page.getByRole('button', { name: /date|data|period|período/i });
-    if (await dateRange.isVisible()) {
-      await dateRange.click();
-      await expect(page.getByRole('dialog')).toBeVisible();
-    }
+  test('should customize date range', async ({ page }) => {
+    await page.getByRole('button', { name: /período/i }).click();
+    await page.getByLabel(/de/i).fill('2024-01-01');
+    await page.getByLabel(/até/i).fill('2024-01-31');
   });
 
-  test('should select export format', async ({ page }) => {
-    await page.goto('/reports/generate');
-    const formatSelect = page.getByRole('combobox', { name: /format|formato/i });
-    if (await formatSelect.isVisible()) {
-      await formatSelect.click();
-      await expect(page.getByRole('option', { name: /pdf/i })).toBeVisible();
-      await expect(page.getByRole('option', { name: /excel|xlsx/i })).toBeVisible();
-    }
+  test('should select employees', async ({ page }) => {
+    await page.getByRole('button', { name: /funcionários/i }).click();
+    await page.getByRole('checkbox').first().check();
+    await page.getByRole('button', { name: /aplicar/i }).click();
   });
 
-  test('should generate and download report', async ({ page }) => {
-    await page.goto('/reports/generate');
-    await page.getByRole('button', { name: /generate|gerar/i }).click();
-    await expect(page.getByText(/generating|gerando|processing/i)).toBeVisible();
+  test('should download report', async ({ page }) => {
+    await page.goto('/reports/1');
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      page.getByRole('button', { name: /baixar/i }).click(),
+    ]);
+    expect(download.suggestedFilename()).toContain('report');
   });
 
-  test('should show report history', async ({ page }) => {
-    await expect(page.getByText(/history|histórico|recent|recentes/i)).toBeVisible();
+  test('should schedule report', async ({ page }) => {
+    await page.getByRole('button', { name: /agendar/i }).click();
+    await page.getByLabel(/frequência/i).selectOption('weekly');
+    await page.getByRole('button', { name: /salvar/i }).click();
+    await expect(page.getByText(/agendado/i)).toBeVisible();
   });
 
-  test('should schedule reports', async ({ page }) => {
-    const scheduleButton = page.getByRole('button', { name: /schedule|agendar/i });
-    if (await scheduleButton.isVisible()) {
-      await scheduleButton.click();
-      await expect(page.getByRole('dialog')).toBeVisible();
-    }
+  test('should share report', async ({ page }) => {
+    await page.goto('/reports/1');
+    await page.getByRole('button', { name: /compartilhar/i }).click();
+    await page.getByLabel(/email/i).fill('share@test.com');
+    await page.getByRole('button', { name: /enviar/i }).click();
+    await expect(page.getByText(/enviado/i)).toBeVisible();
   });
 });
