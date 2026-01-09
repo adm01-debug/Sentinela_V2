@@ -1,37 +1,33 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Violation Detail', () => {
-  test('should display violation information', async ({ page }) => {
-    await page.goto('/violations');
-    await page.getByRole('row').nth(1).click();
-    await expect(page.getByRole('heading')).toBeVisible();
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/violations/1');
   });
 
-  test('should show employee info', async ({ page }) => {
-    await page.goto('/violations');
-    await page.getByRole('row').nth(1).click();
-    await expect(page.getByText(/employee|funcionário/i)).toBeVisible();
+  test('should display violation details', async ({ page }) => {
+    await expect(page.getByTestId('violation-type')).toBeVisible();
+    await expect(page.getByTestId('violation-severity')).toBeVisible();
+    await expect(page.getByTestId('violation-description')).toBeVisible();
   });
 
-  test('should display severity badge', async ({ page }) => {
-    await page.goto('/violations');
-    await page.getByRole('row').nth(1).click();
-    await expect(page.locator('[data-severity]')).toBeVisible();
+  test('should display employee info', async ({ page }) => {
+    await expect(page.getByTestId('employee-name')).toBeVisible();
   });
 
-  test('should allow adding comments', async ({ page }) => {
-    await page.goto('/violations');
-    await page.getByRole('row').nth(1).click();
-    const commentInput = page.getByPlaceholder(/comment|comentário/i);
-    if (await commentInput.isVisible()) {
-      await commentInput.fill('Test comment');
-      await page.getByRole('button', { name: /add|adicionar|send|enviar/i }).click();
-    }
+  test('should add comment', async ({ page }) => {
+    await page.getByLabel(/comentário/i).fill('Test comment');
+    await page.getByRole('button', { name: /adicionar/i }).click();
+    await expect(page.getByText('Test comment')).toBeVisible();
   });
 
-  test('should show action buttons', async ({ page }) => {
-    await page.goto('/violations');
-    await page.getByRole('row').nth(1).click();
-    await expect(page.getByRole('button', { name: /resolve|resolver|dismiss|ignorar/i })).toBeVisible();
+  test('should change status', async ({ page }) => {
+    await page.getByRole('button', { name: /marcar como revisado/i }).click();
+    await expect(page.getByTestId('status-badge')).toHaveText(/revisado/i);
+  });
+
+  test('should view screenshot', async ({ page }) => {
+    await page.getByRole('button', { name: /ver screenshot/i }).click();
+    await expect(page.getByRole('dialog')).toBeVisible();
   });
 });
