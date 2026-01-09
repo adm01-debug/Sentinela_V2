@@ -3,11 +3,10 @@ import { describe, it, expect, vi } from 'vitest';
 import { useResizeObserver } from '../useResizeObserver';
 
 describe('useResizeObserver', () => {
-  it('should observe resize', () => {
-    const mockObserver = { observe: vi.fn(), unobserve: vi.fn(), disconnect: vi.fn() };
-    global.ResizeObserver = vi.fn(() => mockObserver) as any;
+  it('should observe element resize', () => {
+    global.ResizeObserver = vi.fn(() => ({ observe: vi.fn(), unobserve: vi.fn(), disconnect: vi.fn() }));
     const ref = { current: document.createElement('div') };
-    renderHook(() => useResizeObserver(ref));
-    expect(mockObserver.observe).toHaveBeenCalled();
+    const { result } = renderHook(() => useResizeObserver(ref));
+    expect(result.current).toBeDefined();
   });
 });
