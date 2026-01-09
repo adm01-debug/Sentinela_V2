@@ -6,47 +6,52 @@ test.describe('Security Settings', () => {
   });
 
   test('should display security options', async ({ page }) => {
-    await expect(page.getByText(/security|segurança/i)).toBeVisible();
+    await expect(page.getByText(/autenticação/i)).toBeVisible();
+    await expect(page.getByText(/sessões/i)).toBeVisible();
   });
 
-  test('should show password change form', async ({ page }) => {
-    await expect(page.getByLabel(/current password|senha atual/i)).toBeVisible();
-    await expect(page.getByLabel(/new password|nova senha/i)).toBeVisible();
+  test('should enable 2FA', async ({ page }) => {
+    await page.getByRole('button', { name: /ativar 2FA/i }).click();
+    await expect(page.getByTestId('qr-code')).toBeVisible();
   });
 
-  test('should validate password requirements', async ({ page }) => {
-    await page.getByLabel(/new password|nova senha/i).first().fill('weak');
-    await expect(page.getByText(/weak|fraca|requirements|requisitos/i)).toBeVisible();
+  test('should change password', async ({ page }) => {
+    await page.getByLabel(/senha atual/i).fill('currentpass');
+    await page.getByLabel(/nova senha/i).fill('NewPass123!');
+    await page.getByLabel(/confirmar/i).fill('NewPass123!');
+    await page.getByRole('button', { name: /alterar senha/i }).click();
+    await expect(page.getByText(/senha alterada/i)).toBeVisible();
   });
 
-  test('should show active sessions', async ({ page }) => {
-    await expect(page.getByText(/session|sessão|device|dispositivo/i)).toBeVisible();
+  test('should view active sessions', async ({ page }) => {
+    await page.getByRole('tab', { name: /sessões/i }).click();
+    await expect(page.getByTestId('sessions-list')).toBeVisible();
   });
 
-  test('should allow terminating sessions', async ({ page }) => {
-    const terminateButton = page.getByRole('button', { name: /terminate|encerrar|logout|sair/i });
-    if (await terminateButton.isVisible()) {
-      await terminateButton.click();
-      await expect(page.getByRole('alertdialog')).toBeVisible();
-    }
+  test('should revoke session', async ({ page }) => {
+    await page.getByRole('tab', { name: /sessões/i }).click();
+    await page.getByRole('button', { name: /revogar/i }).first().click();
+    await expect(page.getByText(/sessão encerrada/i)).toBeVisible();
   });
 
-  test('should show 2FA status', async ({ page }) => {
-    await expect(page.getByText(/two-factor|2fa|autenticação/i)).toBeVisible();
+  test('should configure IP whitelist', async ({ page }) => {
+    await page.getByRole('tab', { name: /ip/i }).click();
+    await page.getByLabel(/ip/i).fill('192.168.1.1');
+    await page.getByRole('button', { name: /adicionar/i }).click();
+    await expect(page.getByText('192.168.1.1')).toBeVisible();
   });
 
-  test('should display API keys section', async ({ page }) => {
-    const apiSection = page.getByText(/api key|chave api/i);
-    if (await apiSection.isVisible()) {
-      await expect(apiSection).toBeVisible();
-    }
+  test('should view audit log', async ({ page }) => {
+    await page.getByRole('tab', { name: /auditoria/i }).click();
+    await expect(page.getByTestId('audit-log')).toBeVisible();
   });
 
-  test('should show audit log', async ({ page }) => {
-    const auditTab = page.getByRole('tab', { name: /audit|auditoria/i });
-    if (await auditTab.isVisible()) {
-      await auditTab.click();
-      await expect(page.getByRole('table')).toBeVisible();
-    }
+  test('should export audit log', async ({ page }) => {
+    await page.getByRole('tab', { name: /auditoria/i }).click();
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      page.getByRole('button', { name: /exportar/i }).click(),
+    ]);
+    expect(download.suggestedFilename()).toContain('audit');
   });
 });
