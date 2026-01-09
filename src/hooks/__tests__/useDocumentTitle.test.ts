@@ -1,10 +1,19 @@
 import { renderHook } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { useDocumentTitle } from '../useDocumentTitle';
 
 describe('useDocumentTitle', () => {
-  it('should update document title', () => {
-    renderHook(() => useDocumentTitle('Test Title'));
-    expect(document.title).toBe('Test Title');
+  const originalTitle = document.title;
+  beforeEach(() => { document.title = originalTitle; });
+
+  it('should set document title', () => {
+    renderHook(() => useDocumentTitle('New Title'));
+    expect(document.title).toBe('New Title');
+  });
+
+  it('should restore title on unmount', () => {
+    const { unmount } = renderHook(() => useDocumentTitle('New Title'));
+    unmount();
+    expect(document.title).toBe(originalTitle);
   });
 });
