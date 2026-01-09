@@ -3,23 +3,29 @@ import { describe, it, expect } from 'vitest';
 import { useSelection } from '../useSelection';
 
 describe('useSelection', () => {
-  it('should select items', () => {
+  it('should select item', () => {
     const { result } = renderHook(() => useSelection());
-    act(() => { result.current.select('a'); });
-    expect(result.current.isSelected('a')).toBe(true);
+    act(() => { result.current.select('item1'); });
+    expect(result.current.isSelected('item1')).toBe(true);
   });
 
-  it('should deselect items', () => {
-    const { result } = renderHook(() => useSelection(['a']));
-    act(() => { result.current.deselect('a'); });
-    expect(result.current.isSelected('a')).toBe(false);
+  it('should deselect item', () => {
+    const { result } = renderHook(() => useSelection());
+    act(() => { result.current.select('item1'); result.current.deselect('item1'); });
+    expect(result.current.isSelected('item1')).toBe(false);
   });
 
   it('should toggle selection', () => {
     const { result } = renderHook(() => useSelection());
-    act(() => { result.current.toggle('a'); });
-    expect(result.current.isSelected('a')).toBe(true);
-    act(() => { result.current.toggle('a'); });
-    expect(result.current.isSelected('a')).toBe(false);
+    act(() => { result.current.toggle('item1'); });
+    expect(result.current.isSelected('item1')).toBe(true);
+    act(() => { result.current.toggle('item1'); });
+    expect(result.current.isSelected('item1')).toBe(false);
+  });
+
+  it('should clear selection', () => {
+    const { result } = renderHook(() => useSelection());
+    act(() => { result.current.select('item1'); result.current.select('item2'); result.current.clear(); });
+    expect(result.current.selected.size).toBe(0);
   });
 });
