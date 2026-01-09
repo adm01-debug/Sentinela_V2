@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { useColorScheme } from '../useColorScheme';
 
 describe('useColorScheme', () => {
-  it('should detect system preference', () => {
+  it('should detect color scheme', () => {
     window.matchMedia = vi.fn().mockReturnValue({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() });
     const { result } = renderHook(() => useColorScheme());
     expect(result.current).toBeDefined();
