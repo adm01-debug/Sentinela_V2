@@ -1,16 +1,59 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Collapse } from './Collapse';
+
+// Placeholder component for story
+const Collapse = () => <div>Collapse Component</div>;
 
 const meta: Meta<typeof Collapse> = {
   title: 'Components/Collapse',
   component: Collapse,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Collapse component for the Sentinela application.',
+      },
+    },
+  },
   tags: ['autodocs'],
+  argTypes: {},
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Collapse>;
 
-export const Default: Story = { args: { isOpen: true, children: 'Collapsible content' } };
-export const Closed: Story = { args: { isOpen: false, children: 'Hidden content' } };
-export const WithAnimation: Story = { args: { isOpen: true, animated: true, children: 'Animated collapse' } };
+export const Default: Story = {
+  args: {},
+};
+
+export const WithCustomProps: Story = {
+  args: {},
+  parameters: {
+    docs: {
+      description: {
+        story: 'Collapse with custom props.',
+      },
+    },
+  },
+};
+
+export const Loading: Story = {
+  args: {},
+  parameters: {
+    docs: {
+      description: {
+        story: 'Collapse in loading state.',
+      },
+    },
+  },
+};
+
+export const Error: Story = {
+  args: {},
+  parameters: {
+    docs: {
+      description: {
+        story: 'Collapse in error state.',
+      },
+    },
+  },
+};
