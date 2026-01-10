@@ -1,36 +1,12 @@
-import { memo } from 'react';
+import React from 'react';
 
 interface VisuallyHiddenProps {
   children: React.ReactNode;
   as?: keyof JSX.IntrinsicElements;
 }
 
-/**
- * Visually hides content while keeping it accessible to screen readers
- */
-function VisuallyHiddenComponent({ children, as: Component = 'span' }: VisuallyHiddenProps) {
-  return (
-    <Component
-      style={{
-        position: 'absolute',
-        width: '1px',
-        height: '1px',
-        padding: 0,
-        margin: '-1px',
-        overflow: 'hidden',
-        clip: 'rect(0, 0, 0, 0)',
-        whiteSpace: 'nowrap',
-        border: 0,
-      }}
-    >
-      {children}
-    </Component>
-  );
-}
+export const VisuallyHidden: React.FC<VisuallyHiddenProps> = ({ children, as: Component = 'span' }) => (
+  <Component className="sr-only">{children}</Component>
+);
 
-export const VisuallyHidden = memo(VisuallyHiddenComponent);
-
-/**
- * Alias for VisuallyHidden
- */
-export const SrOnly = VisuallyHidden;
+export default VisuallyHidden;
