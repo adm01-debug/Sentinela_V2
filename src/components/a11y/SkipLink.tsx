@@ -1,19 +1,12 @@
-import { memo } from 'react';
+import React from 'react';
 
-interface SkipLinkProps {
-  href?: string;
-  children?: React.ReactNode;
-}
+export const SkipLink = ({ href = '#main-content', children = 'Skip to main content' }) => (
+  <a
+    href={href}
+    className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded"
+  >
+    {children}
+  </a>
+);
 
-function SkipLinkComponent({ href = '#main-content', children = 'Pular para conteúdo principal' }: SkipLinkProps) {
-  return (
-    <a
-      href={href}
-      className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:shadow-lg focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background focus:outline-none focus:font-medium focus:text-sm transition-all"
-    >
-      {children}
-    </a>
-  );
-}
-
-export const SkipLink = memo(SkipLinkComponent);
+export default SkipLink;
