@@ -4,7 +4,7 @@ import App from './App';
 import './index.css';
 
 // Initialize i18n
-import './i18n';
+import './i18n/index';
 
 // Initialize Sentry before rendering
 import { initSentry } from './lib/sentry';
