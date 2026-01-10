@@ -1,26 +1,21 @@
 ---
 name: Bug Report
-about: Reportar um bug
-title: "[BUG] "
+about: Report a bug
 labels: bug
-assignees: ''
 ---
 
-## Descrição do Bug
-<!-- Descrição clara do bug -->
+## Description
+<!-- Describe the bug -->
 
-## Passos para Reproduzir
-1. Vá para '...'
-2. Clique em '...'
-3. Veja o erro
+## Steps to Reproduce
+1. 
+2. 
 
-## Comportamento Esperado
-<!-- O que deveria acontecer -->
+## Expected Behavior
 
-## Screenshots
-<!-- Se aplicável -->
+## Actual Behavior
 
-## Ambiente
-- OS: [ex: Windows 11]
-- Browser: [ex: Chrome 120]
-- Versão: [ex: 13.0.0]
+## Environment
+- OS:
+- Browser:
+- Version:
