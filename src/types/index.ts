@@ -1,63 +1,79 @@
-// Core types for Sentinela
+/**
+ * Types Index
+ * Central export file for all type definitions
+ */
 
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: 'admin' | 'manager' | 'viewer';
-  avatar?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+// Core entity types
+export * from './employee.types';
+export * from './violation.types';
+export * from './report.types';
 
-export interface Employee {
-  id: string;
-  userId?: string;
-  name: string;
-  email: string;
-  department: string;
-  position: string;
-  status: 'active' | 'inactive' | 'suspended';
-  createdAt: Date;
-  updatedAt: Date;
-}
+// Authentication and authorization types
+export * from './auth.types';
 
-export interface Violation {
-  id: string;
-  employeeId: string;
-  type: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  description: string;
-  status: 'open' | 'reviewed' | 'resolved';
-  createdAt: Date;
-}
+// API types
+export * from './api.types';
 
-export interface Activity {
-  id: string;
-  employeeId: string;
-  type: string;
-  data: Record<string, unknown>;
-  timestamp: Date;
-}
+// Analytics types
+export * from './analytics.types';
 
-export interface Report {
-  id: string;
-  type: string;
-  status: 'pending' | 'processing' | 'completed' | 'failed';
-  data: Record<string, unknown>;
-  createdAt: Date;
-}
+// Re-export commonly used types for convenience
+export type {
+  // Employee
+  Employee,
+  EmployeeStatus,
+  EmployeeRole,
+  EmployeeFilters,
+  EmployeeCreateInput,
+  EmployeeUpdateInput,
+  EmployeeWithRelations,
+} from './employee.types';
 
-export interface PaginatedResponse<T> {
-  data: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
-}
+export type {
+  // Violation
+  Violation,
+  ViolationSeverity,
+  ViolationStatus,
+  ViolationRule,
+  ViolationFilters,
+  ViolationStatistics,
+} from './violation.types';
 
-export interface ApiError {
-  code: string;
-  message: string;
-  details?: Record<string, unknown>;
-}
+export type {
+  // Report
+  Report,
+  ReportType,
+  ReportFormat,
+  ReportFilters,
+  ScheduledReport,
+  ReportTemplate,
+} from './report.types';
+
+export type {
+  // Auth
+  AuthUser,
+  AuthSession,
+  AuthCredentials,
+  AuthResponse,
+  UserRole,
+  Permission,
+  Role,
+} from './auth.types';
+
+export type {
+  // API
+  ApiResponse,
+  ApiError,
+  PaginatedResponse,
+  PaginationInfo,
+  QueryParams,
+} from './api.types';
+
+export type {
+  // Analytics
+  DashboardWidget,
+  MetricValue,
+  TimeSeriesData,
+  AggregationQuery,
+  AggregationResult,
+} from './analytics.types';
