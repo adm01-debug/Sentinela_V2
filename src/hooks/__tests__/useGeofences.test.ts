@@ -1,4 +1,15 @@
-import { renderHook } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { renderHook, act, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useGeofences } from '../useGeofences';
-describe('useGeofences', () => { it('should fetch geofences', () => { const { result } = renderHook(() => useGeofences()); expect(result.current).toBeDefined(); }); });
+
+const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
+
+describe('useGeofences', () => {
+  beforeEach(() => { vi.clearAllMocks(); queryClient.clear(); });
+  it('should return initial state', () => { const { result } = renderHook(() => useGeofences(), { wrapper }); expect(result.current).toBeDefined(); });
+  it('should handle operations', async () => { const { result } = renderHook(() => useGeofences(), { wrapper }); await waitFor(() => { expect(result.current).toBeDefined(); }); });
+});
