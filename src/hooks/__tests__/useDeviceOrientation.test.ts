@@ -1,4 +1,15 @@
-import { renderHook } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { renderHook, act, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useDeviceOrientation } from '../useDeviceOrientation';
-describe('useDeviceOrientation', () => { it('should track orientation', () => { const { result } = renderHook(() => useDeviceOrientation()); expect(result.current).toBeDefined(); }); });
+
+const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
+
+describe('useDeviceOrientation', () => {
+  beforeEach(() => { vi.clearAllMocks(); queryClient.clear(); });
+  it('should return initial state', () => { const { result } = renderHook(() => useDeviceOrientation(), { wrapper }); expect(result.current).toBeDefined(); });
+  it('should handle operations', async () => { const { result } = renderHook(() => useDeviceOrientation(), { wrapper }); await waitFor(() => { expect(result.current).toBeDefined(); }); });
+});
