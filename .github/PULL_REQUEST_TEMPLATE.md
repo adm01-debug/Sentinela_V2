@@ -1,20 +1,17 @@
-## Descrição
-<!-- Descreva as mudanças feitas neste PR -->
+## Description
+<!-- Describe your changes -->
 
-## Tipo de Mudança
+## Type of Change
 - [ ] Bug fix
-- [ ] Nova feature
+- [ ] New feature
 - [ ] Breaking change
-- [ ] Documentação
+- [ ] Documentation update
+
+## Testing
+- [ ] Unit tests pass
+- [ ] E2E tests pass
 
 ## Checklist
-- [ ] Código segue os padrões do projeto
-- [ ] Testes foram adicionados/atualizados
-- [ ] Documentação foi atualizada
-- [ ] Self-review realizado
-
-## Screenshots (se aplicável)
-<!-- Adicione screenshots se houver mudanças visuais -->
-
-## Issues Relacionadas
-<!-- Closes #issue_number -->
+- [ ] Code follows style guidelines
+- [ ] Self-reviewed
+- [ ] Documentation updated
