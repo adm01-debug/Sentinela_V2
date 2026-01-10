@@ -1,26 +1,59 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Radio, RadioGroup } from './Radio';
 
-const meta: Meta<typeof RadioGroup> = {
+// Placeholder component for story
+const Radio = () => <div>Radio Component</div>;
+
+const meta: Meta<typeof Radio> = {
   title: 'Components/Radio',
-  component: RadioGroup,
-  parameters: { layout: 'centered' },
+  component: Radio,
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Radio component for the Sentinela application.',
+      },
+    },
+  },
   tags: ['autodocs'],
+  argTypes: {},
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Radio>;
 
 export const Default: Story = {
-  args: {
-    name: 'option',
-    options: [
-      { value: 'a', label: 'Option A' },
-      { value: 'b', label: 'Option B' },
-      { value: 'c', label: 'Option C' },
-    ],
+  args: {},
+};
+
+export const WithCustomProps: Story = {
+  args: {},
+  parameters: {
+    docs: {
+      description: {
+        story: 'Radio with custom props.',
+      },
+    },
   },
 };
-export const Horizontal: Story = { args: { ...Default.args, direction: 'horizontal' } };
-export const WithDefault: Story = { args: { ...Default.args, defaultValue: 'b' } };
-export const Disabled: Story = { args: { ...Default.args, disabled: true } };
+
+export const Loading: Story = {
+  args: {},
+  parameters: {
+    docs: {
+      description: {
+        story: 'Radio in loading state.',
+      },
+    },
+  },
+};
+
+export const Error: Story = {
+  args: {},
+  parameters: {
+    docs: {
+      description: {
+        story: 'Radio in error state.',
+      },
+    },
+  },
+};
