@@ -1,0 +1,1 @@
+export function trackPage(path: string) { console.log('Page:', path); }
