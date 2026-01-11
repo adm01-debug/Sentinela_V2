@@ -1,0 +1,23 @@
+replicaCount: 3
+image:
+  repository: sentinela/web
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  type: LoadBalancer
+  port: 80
+ingress:
+  enabled: true
+  hosts:
+    - host: sentinela.app
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
