@@ -1,9 +1,8 @@
 node_modules
+dist
 .git
-.github
-.env*
+.gitignore
 *.md
-tests
+.env*
 coverage
-.storybook
-storybook-static
+playwright-report
