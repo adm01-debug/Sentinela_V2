@@ -1,79 +1,41 @@
-/**
- * Types Index
- * Central export file for all type definitions
- */
+export * from './employee';
+export * from './activity';
+export * from './alert';
+export * from './report';
+export * from './settings';
 
-// Core entity types
-export * from './employee.types';
-export * from './violation.types';
-export * from './report.types';
+export interface ApiResponse<T> {
+  data: T;
+  message?: string;
+  errors?: Array<{ field: string; message: string }>;
+}
 
-// Authentication and authorization types
-export * from './auth.types';
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
 
-// API types
-export * from './api.types';
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin' | 'manager' | 'analyst' | 'viewer';
+  avatar?: string;
+  lastLogin?: string;
+  createdAt: string;
+}
 
-// Analytics types
-export * from './analytics.types';
-
-// Re-export commonly used types for convenience
-export type {
-  // Employee
-  Employee,
-  EmployeeStatus,
-  EmployeeRole,
-  EmployeeFilters,
-  EmployeeCreateInput,
-  EmployeeUpdateInput,
-  EmployeeWithRelations,
-} from './employee.types';
-
-export type {
-  // Violation
-  Violation,
-  ViolationSeverity,
-  ViolationStatus,
-  ViolationRule,
-  ViolationFilters,
-  ViolationStatistics,
-} from './violation.types';
-
-export type {
-  // Report
-  Report,
-  ReportType,
-  ReportFormat,
-  ReportFilters,
-  ScheduledReport,
-  ReportTemplate,
-} from './report.types';
-
-export type {
-  // Auth
-  AuthUser,
-  AuthSession,
-  AuthCredentials,
-  AuthResponse,
-  UserRole,
-  Permission,
-  Role,
-} from './auth.types';
-
-export type {
-  // API
-  ApiResponse,
-  ApiError,
-  PaginatedResponse,
-  PaginationInfo,
-  QueryParams,
-} from './api.types';
-
-export type {
-  // Analytics
-  DashboardWidget,
-  MetricValue,
-  TimeSeriesData,
-  AggregationQuery,
-  AggregationResult,
-} from './analytics.types';
+export interface Session {
+  id: string;
+  userId: string;
+  device: string;
+  browser: string;
+  ip: string;
+  location?: string;
+  current: boolean;
+  lastActive: string;
+  createdAt: string;
+}
