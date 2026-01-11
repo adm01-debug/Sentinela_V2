@@ -1,139 +1,53 @@
-import { supabase } from '@/integrations/supabase/client';
-import type { User, Session } from '@supabase/supabase-js';
+import { apiClient } from '@/lib/api';
+import type { User, Session } from '@/types';
 
-export interface AuthCredentials {
-  email: string;
-  password: string;
-}
-
-export interface SignUpData extends AuthCredentials {
-  fullName?: string;
-  organizationName?: string;
-}
-
-export interface AuthResponse {
-  user: User | null;
-  session: Session | null;
-  error: Error | null;
+interface LoginResponse {
+  token: string;
+  refreshToken: string;
+  user: User;
 }
 
 export const authService = {
-  /**
-   * Sign in with email and password
-   */
-  async signIn({ email, password }: AuthCredentials): Promise<AuthResponse> {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return {
-      user: data?.user ?? null,
-      session: data?.session ?? null,
-      error: error as Error | null,
-    };
+  async login(email: string, password: string): Promise<LoginResponse> {
+    const response = await apiClient.post<LoginResponse>('/auth/login', { email, password });
+    apiClient.setToken(response.token);
+    return response;
   },
-
-  /**
-   * Sign up with email and password
-   */
-  async signUp({ email, password, fullName, organizationName }: SignUpData): Promise<AuthResponse> {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-          organization_name: organizationName,
-        },
-      },
-    });
-    return {
-      user: data?.user ?? null,
-      session: data?.session ?? null,
-      error: error as Error | null,
-    };
+  async logout(): Promise<void> {
+    await apiClient.post('/auth/logout');
+    apiClient.setToken(null);
   },
-
-  /**
-   * Sign out the current user
-   */
-  async signOut(): Promise<{ error: Error | null }> {
-    const { error } = await supabase.auth.signOut();
-    return { error: error as Error | null };
+  async refreshToken(refreshToken: string): Promise<{ token: string }> {
+    return apiClient.post('/auth/refresh', { refreshToken });
   },
-
-  /**
-   * Get the current session
-   */
-  async getSession(): Promise<Session | null> {
-    const { data } = await supabase.auth.getSession();
-    return data?.session ?? null;
+  async me(): Promise<User> {
+    return apiClient.get('/auth/me');
   },
-
-  /**
-   * Get the current user
-   */
-  async getUser(): Promise<User | null> {
-    const { data } = await supabase.auth.getUser();
-    return data?.user ?? null;
+  async updateProfile(data: Partial<User>): Promise<User> {
+    return apiClient.put('/auth/profile', data);
   },
-
-  /**
-   * Reset password for email
-   */
-  async resetPassword(email: string): Promise<{ error: Error | null }> {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    return { error: error as Error | null };
+  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    return apiClient.post('/auth/change-password', { currentPassword, newPassword });
   },
-
-  /**
-   * Update user password
-   */
-  async updatePassword(newPassword: string): Promise<{ error: Error | null }> {
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
-    return { error: error as Error | null };
+  async forgotPassword(email: string): Promise<void> {
+    return apiClient.post('/auth/forgot-password', { email });
   },
-
-  /**
-   * Verify OTP token
-   */
-  async verifyOtp(email: string, token: string, type: 'email' | 'sms' = 'email'): Promise<AuthResponse> {
-    const { data, error } = await supabase.auth.verifyOtp({
-      email,
-      token,
-      type: type === 'email' ? 'email' : 'sms',
-    });
-    return {
-      user: data?.user ?? null,
-      session: data?.session ?? null,
-      error: error as Error | null,
-    };
+  async resetPassword(token: string, password: string): Promise<void> {
+    return apiClient.post('/auth/reset-password', { token, password });
   },
-
-  /**
-   * Subscribe to auth state changes
-   */
-  onAuthStateChange(callback: (event: string, session: Session | null) => void) {
-    return supabase.auth.onAuthStateChange((event, session) => {
-      callback(event, session);
-    });
+  async getSessions(): Promise<Session[]> {
+    return apiClient.get('/auth/sessions');
   },
-
-  /**
-   * Refresh the current session
-   */
-  async refreshSession(): Promise<AuthResponse> {
-    const { data, error } = await supabase.auth.refreshSession();
-    return {
-      user: data?.user ?? null,
-      session: data?.session ?? null,
-      error: error as Error | null,
-    };
+  async revokeSession(sessionId: string): Promise<void> {
+    return apiClient.delete('/auth/sessions/' + sessionId);
   },
+  async enable2FA(): Promise<{ qrCode: string; secret: string }> {
+    return apiClient.post('/auth/2fa/enable');
+  },
+  async verify2FA(code: string): Promise<void> {
+    return apiClient.post('/auth/2fa/verify', { code });
+  },
+  async disable2FA(code: string): Promise<void> {
+    return apiClient.post('/auth/2fa/disable', { code });
+  }
 };
-
-export default authService;
