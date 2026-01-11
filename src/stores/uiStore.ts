@@ -1,0 +1,44 @@
+import { create } from 'zustand';
+
+interface ModalConfig {
+  id: string;
+  component: string;
+  props?: Record<string, unknown>;
+}
+
+interface UIState {
+  sidebarOpen: boolean;
+  sidebarCollapsed: boolean;
+  activeModal: ModalConfig | null;
+  commandPaletteOpen: boolean;
+  globalLoading: boolean;
+  toasts: Array<{ id: string; message: string; type: string }>;
+  toggleSidebar: () => void;
+  setSidebarCollapsed: (collapsed: boolean) => void;
+  openModal: (config: ModalConfig) => void;
+  closeModal: () => void;
+  toggleCommandPalette: () => void;
+  setGlobalLoading: (loading: boolean) => void;
+  addToast: (message: string, type: string) => void;
+  removeToast: (id: string) => void;
+}
+
+export const useUIStore = create<UIState>()((set) => ({
+  sidebarOpen: true,
+  sidebarCollapsed: false,
+  activeModal: null,
+  commandPaletteOpen: false,
+  globalLoading: false,
+  toasts: [],
+  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+  setSidebarCollapsed: (collapsed) => set({ sidebarCollapsed: collapsed }),
+  openModal: (config) => set({ activeModal: config }),
+  closeModal: () => set({ activeModal: null }),
+  toggleCommandPalette: () => set((state) => ({ commandPaletteOpen: !state.commandPaletteOpen })),
+  setGlobalLoading: (loading) => set({ globalLoading: loading }),
+  addToast: (message, type) =>
+    set((state) => ({
+      toasts: [...state.toasts, { id: Date.now().toString(), message, type }],
+    })),
+  removeToast: (id) => set((state) => ({ toasts: state.toasts.filter((t) => t.id !== id) })),
+}));
