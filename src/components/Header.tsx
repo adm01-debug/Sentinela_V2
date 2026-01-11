@@ -1,115 +1,32 @@
-import { memo, useCallback, useMemo } from 'react';
-import { Bell, Search, Menu, Moon, Sun, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/hooks/useAuth';
-import { useTheme } from '@/components/ThemeProvider';
-import { NotificationsDropdown } from '@/components/NotificationsDropdown';
-import { CommandPalette } from '@/components/CommandPalette';
+import { Bell, Search, Menu, Sun, Moon } from 'lucide-react';
+import { useUIStore, useAuthStore, useThemeStore } from '@/stores';
+import { Avatar } from './ui/Avatar';
+import { Dropdown, DropdownItem } from './ui/Dropdown';
+import { useLogout } from '@/hooks';
 
-interface HeaderProps {
-  onMenuClick?: () => void;
-}
-
-function HeaderComponent({ onMenuClick }: HeaderProps) {
-  const { user, signOut } = useAuth();
-  const { theme, setTheme } = useTheme();
-
-  const handleSignOut = useCallback(async () => {
-    await signOut();
-  }, [signOut]);
-
-  const handleThemeToggle = useCallback(() => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  }, [theme, setTheme]);
-
-  const handleMenuClick = useCallback(() => {
-    onMenuClick?.();
-  }, [onMenuClick]);
-
-  const userInitials = useMemo(() => {
-    if (!user?.email) return 'U';
-    return user.email.substring(0, 2).toUpperCase();
-  }, [user?.email]);
-
-  const ThemeIcon = useMemo(() => {
-    return theme === 'dark' ? Sun : Moon;
-  }, [theme]);
+export const Header = () => {
+  const { toggleSidebar, openCommandPalette } = useUIStore();
+  const { user } = useAuthStore();
+  const { theme, toggleTheme } = useThemeStore();
+  const logout = useLogout();
 
   return (
-    <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-background px-4 sm:px-6">
-      {/* Mobile Menu Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="md:hidden"
-        onClick={handleMenuClick}
-      >
-        <Menu className="h-5 w-5" />
-      </Button>
-
-      {/* Search */}
-      <div className="flex-1">
-        <CommandPalette />
+    <header className="h-16 border-b bg-background px-6 flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <button onClick={toggleSidebar}><Menu className="h-5 w-5" /></button>
+        <button onClick={openCommandPalette} className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted text-sm text-muted-foreground">
+          <Search className="h-4 w-4" /><span>Search...</span><kbd className="ml-2 text-xs">⌘K</kbd>
+        </button>
       </div>
-
-      {/* Actions */}
-      <div className="flex items-center gap-2">
-        {/* Theme Toggle */}
-        <Button variant="ghost" size="icon" onClick={handleThemeToggle}>
-          <ThemeIcon className="h-5 w-5" />
-        </Button>
-
-        {/* Notifications */}
-        <NotificationsDropdown />
-
-        {/* User Menu */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.user_metadata?.avatar_url} alt="Avatar" />
-                <AvatarFallback>{userInitials}</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end" forceMount>
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {user?.user_metadata?.full_name || 'Usuário'}
-                </p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  {user?.email}
-                </p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <a href="/settings">
-                <User className="mr-2 h-4 w-4" />
-                Configurações
-              </a>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut}>
-              Sair
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="flex items-center gap-4">
+        <button onClick={toggleTheme}>{theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}</button>
+        <button className="relative"><Bell className="h-5 w-5" /><span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">3</span></button>
+        <Dropdown trigger={<Avatar src={user?.avatar} alt={user?.name} size="sm" />} align="right">
+          <DropdownItem>Profile</DropdownItem>
+          <DropdownItem>Settings</DropdownItem>
+          <DropdownItem onClick={() => logout.mutate()}>Logout</DropdownItem>
+        </Dropdown>
       </div>
     </header>
   );
-}
-
-export const Header = memo(HeaderComponent);
+};
