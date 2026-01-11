@@ -1,0 +1,37 @@
+{
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "search": "Rechercher",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès"
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "register": "S'inscrire",
+    "forgotPassword": "Mot de passe oublié",
+    "email": "E-mail",
+    "password": "Mot de passe"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "employees": "Employés",
+    "violations": "Violations",
+    "reports": "Rapports",
+    "settings": "Paramètres"
+  },
+  "employees": {
+    "title": "Employés",
+    "name": "Nom",
+    "email": "E-mail",
+    "department": "Département",
+    "status": "Statut",
+    "active": "Actif",
+    "inactive": "Inactif"
+  }
+}
