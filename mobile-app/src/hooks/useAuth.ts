@@ -1,19 +1,27 @@
-import { useState, useCallback } from 'react';
-import { saveToken, removeToken } from '@/services/auth';
-
-export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  const login = useCallback(async (email: string, password: string) => {
-    // API call here
-    await saveToken('mock-token');
-    setIsAuthenticated(true);
+import { useState, useCallback, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { apiClient } from '../services/api';
+export const useAuth = () => {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const loadUser = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) { apiClient.setToken(token); const userData = await apiClient.get('/auth/me'); setUser(userData); }
+      setIsLoading(false);
+    };
+    loadUser();
   }, []);
-  
+  const login = useCallback(async (email, password) => {
+    const { token, user } = await apiClient.post('/auth/login', { email, password });
+    await AsyncStorage.setItem('token', token);
+    apiClient.setToken(token);
+    setUser(user);
+  }, []);
   const logout = useCallback(async () => {
-    await removeToken();
-    setIsAuthenticated(false);
+    await AsyncStorage.removeItem('token');
+    apiClient.setToken(null);
+    setUser(null);
   }, []);
-  
-  return { isAuthenticated, login, logout };
-}
+  return { user, isLoading, login, logout, isAuthenticated: !!user };
+};
