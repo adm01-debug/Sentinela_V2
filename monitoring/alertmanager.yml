@@ -1,0 +1,10 @@
+global:
+  resolve_timeout: 5m
+route:
+  group_by: ['alertname']
+  receiver: 'slack'
+receivers:
+  - name: 'slack'
+    slack_configs:
+      - channel: '#alerts'
+        send_resolved: true
