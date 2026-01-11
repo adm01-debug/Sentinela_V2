@@ -1,0 +1,1 @@
+export function addResourceHint(url: string, rel: 'preload' | 'prefetch') { const link = document.createElement('link'); link.rel = rel; link.href = url; document.head.appendChild(link); }
