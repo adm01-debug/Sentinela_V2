@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sentinela-service
+  namespace: sentinela
+spec:
+  type: LoadBalancer
+  selector:
+    app: sentinela-web
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
