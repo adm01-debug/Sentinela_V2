@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Sentinela Agent</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a1a; color: #fff; padding: 20px; -webkit-app-region: drag; }
+  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .logo { font-size: 18px; font-weight: bold; }
+  .status { display: flex; align-items: center; gap: 8px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #4CAF50; }
+  .status-dot.paused { background: #FF9800; }
+  .stats { background: #252525; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #333; }
+  .stat-row:last-child { border: none; }
+  .buttons { display: flex; gap: 8px; -webkit-app-region: no-drag; }
+  button { flex: 1; padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+  .primary { background: #007AFF; color: #fff; }
+  .secondary { background: #333; color: #fff; }
+</style>
+</head>
+<body>
+  <div class="header"><span class="logo">Sentinela</span><div class="status"><span class="status-dot" id="statusDot"></span><span id="statusText">Active</span></div></div>
+  <div class="stats"><div class="stat-row"><span>Uptime</span><span id="uptime">0h 0m</span></div><div class="stat-row"><span>Activities</span><span id="activities">0</span></div><div class="stat-row"><span>Screenshots</span><span id="screenshots">0</span></div></div>
+  <div class="buttons"><button class="secondary" id="pauseBtn">Pause</button><button class="primary" id="settingsBtn">Settings</button></div>
+  <script>const { ipcRenderer } = require('electron');
+    async function updateStatus() { const status = await ipcRenderer.invoke('get-status'); document.getElementById('uptime').textContent = formatUptime(status.uptime); }
+    function formatUptime(s) { const h = Math.floor(s/3600), m = Math.floor((s%3600)/60); return h+'h '+m+'m'; }
+    setInterval(updateStatus, 5000); updateStatus();
+  </script>
+</body>
+</html>
