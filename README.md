@@ -1,28 +1,44 @@
-# 🛡️ Sentinela
+# Sentinela
 
-Employee Monitoring Platform - v15.0.0
+Employee Monitoring & Productivity Platform
 
 ## Features
+- Real-time activity tracking
+- Screenshot capture
+- Productivity analytics
+- Alert system
+- Report generation
+- Mobile app
+- Desktop agent
 
-- 📊 Real-time monitoring
-- 🔒 Advanced security
-- 📱 Mobile app
-- 🖥️ Desktop agent
-- 🔌 6+ integrations
-- 🌐 8 languages
-- ☸️ Kubernetes ready
-
-## Getting Started
-
+## Quick Start
 ```bash
+# Install dependencies
 npm install
+
+# Run development server
 npm run dev
+
+# Run tests
+npm test
+
+# Build for production
+npm run build
 ```
 
 ## Documentation
+- [Installation Guide](docs/installation.md)
+- [User Guide](docs/user-guide.md)
+- [API Reference](docs/api-reference.md)
+- [Contributing](CONTRIBUTING.md)
 
-See `/docs` for full documentation.
+## Tech Stack
+- React 18 + TypeScript
+- Vite
+- TailwindCSS
+- Zustand
+- React Query
+- Vitest + Playwright
 
 ## License
-
 MIT
