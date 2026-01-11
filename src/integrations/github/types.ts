@@ -1,0 +1,2 @@
+// GitHub types.ts
+export {};
