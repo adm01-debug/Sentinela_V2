@@ -1,0 +1,15 @@
+groups:
+  - name: sentinela
+    rules:
+      - alert: HighErrorRate
+        expr: rate(http_errors_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: High error rate detected
+      - alert: HighLatency
+        expr: http_request_duration_seconds > 1
+        for: 5m
+        labels:
+          severity: warning
