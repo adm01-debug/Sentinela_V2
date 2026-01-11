@@ -1,0 +1,1 @@
+export function trackUser(id: string, traits?: any) { console.log('User:', id, traits); }
