@@ -1,0 +1,1 @@
+export function generateSitemap(urls: string[]): string { return `<?xml version='1.0'?><urlset>${urls.map(u => `<url><loc>${u}</loc></url>`).join('')}</urlset>`; }
