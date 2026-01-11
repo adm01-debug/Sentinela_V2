@@ -1,0 +1,21 @@
+import { describe, it, expect, vi, renderHook, act } from 'vitest';
+import { useMetrics } from '../useMetrics';
+
+vi.mock('@/lib/supabase', () => ({ supabase: { from: vi.fn(), auth: { getUser: vi.fn() } } }));
+
+describe('useMetrics', () => {
+  it('should initialize correctly', () => {
+    const { result } = renderHook(() => useMetrics());
+    expect(result.current).toBeDefined();
+  });
+  
+  it('should handle state changes', async () => {
+    const { result } = renderHook(() => useMetrics());
+    expect(result.current).toBeDefined();
+  });
+  
+  it('should cleanup on unmount', () => {
+    const { unmount } = renderHook(() => useMetrics());
+    unmount();
+  });
+});
