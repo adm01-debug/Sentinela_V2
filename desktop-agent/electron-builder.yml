@@ -1,0 +1,12 @@
+appId: com.sentinela.desktop
+productName: Sentinela Desktop
+directories:
+  buildResources: assets
+  output: release
+mac:
+  target: [dmg, zip]
+  category: public.app-category.business
+win:
+  target: [nsis, portable]
+linux:
+  target: [AppImage, deb]
