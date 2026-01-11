@@ -3,19 +3,13 @@ name: Bug Report
 about: Report a bug
 labels: bug
 ---
-
-## Description
-<!-- Describe the bug -->
+## Bug Description
 
 ## Steps to Reproduce
-1. 
-2. 
+1.
+2.
+3.
 
 ## Expected Behavior
 
-## Actual Behavior
-
-## Environment
-- OS:
-- Browser:
-- Version:
+## Screenshots
