@@ -1,0 +1,2 @@
+// Notion types.ts
+export {};
