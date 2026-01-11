@@ -1,5 +1,9 @@
-export * from './api';
-export * from './auth';
-export * from './employees';
-export * from './violations';
-export * from './reports';
+export { employeeService } from './employeeService';
+export { activityService } from './activityService';
+export { alertService } from './alertService';
+export { reportService } from './reportService';
+export { screenshotService } from './screenshotService';
+export { settingsService } from './settingsService';
+export { authService } from './authService';
+export { dashboardService } from './dashboardService';
+export { userService } from './userService';
