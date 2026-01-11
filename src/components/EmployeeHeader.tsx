@@ -1,0 +1,30 @@
+import { Employee } from '@/types';
+import { Avatar } from './ui/Avatar';
+import { Badge } from './ui/Badge';
+import { Button } from './ui/Button';
+import { Edit, Trash2, Mail, Phone } from 'lucide-react';
+
+interface Props { employee: Employee; }
+
+export const EmployeeHeader = ({ employee }: Props) => (
+  <div className="flex items-start justify-between bg-card rounded-lg p-6">
+    <div className="flex gap-4">
+      <Avatar src={employee.avatar} alt={employee.name} size="lg" />
+      <div>
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold">{employee.name}</h1>
+          <Badge variant={employee.status === 'active' ? 'success' : 'secondary'}>{employee.status}</Badge>
+        </div>
+        <p className="text-muted-foreground">{employee.role} - {employee.department}</p>
+        <div className="flex gap-4 mt-2 text-sm">
+          <span className="flex items-center gap-1"><Mail className="h-4 w-4" /> {employee.email}</span>
+          {employee.phone && <span className="flex items-center gap-1"><Phone className="h-4 w-4" /> {employee.phone}</span>}
+        </div>
+      </div>
+    </div>
+    <div className="flex gap-2">
+      <Button variant="outline"><Edit className="h-4 w-4 mr-2" /> Edit</Button>
+      <Button variant="destructive"><Trash2 className="h-4 w-4" /></Button>
+    </div>
+  </div>
+);
