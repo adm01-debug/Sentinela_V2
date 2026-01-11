@@ -1,5 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { useAuthStore } from '../authStore';
 describe('authStore', () => {
-  it('should have initial state', () => { expect(true).toBe(true); });
-  it('should update state', () => { expect(true).toBe(true); });
+  beforeEach(() => { useAuthStore.setState({ user: null, token: null, isAuthenticated: false }); });
+  it('sets user', () => { useAuthStore.getState().setUser({ id: '1', email: 'test@test.com', name: 'Test', role: 'admin' }); expect(useAuthStore.getState().user?.name).toBe('Test'); });
+  it('logs out', () => { useAuthStore.getState().setUser({ id: '1', email: 'test@test.com', name: 'Test', role: 'admin' }); useAuthStore.getState().logout(); expect(useAuthStore.getState().user).toBeNull(); });
 });
