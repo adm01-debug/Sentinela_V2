@@ -1,0 +1,1 @@
+export function trackPerformance(metric: string, value: number) { console.log('Perf:', metric, value); }
