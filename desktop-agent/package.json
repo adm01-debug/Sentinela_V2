@@ -1,20 +1,27 @@
 {
-  "name": "sentinela-desktop",
+  "name": "sentinela-agent",
   "version": "1.0.0",
-  "main": "dist/main/index.js",
-  "scripts": {
-    "dev": "electron-vite dev",
-    "build": "electron-vite build",
-    "test": "jest"
-  },
+  "description": "Sentinela Desktop Agent",
+  "main": "src/main.js",
+  "scripts": { "start": "electron .", "build": "electron-builder", "build:win": "electron-builder --win", "build:mac": "electron-builder --mac", "build:linux": "electron-builder --linux" },
   "dependencies": {
-    "electron-store": "^8.0.0",
-    "node-schedule": "^2.0.0"
+    "active-win": "^8.0.0",
+    "auto-launch": "^5.0.6",
+    "electron-updater": "^6.1.0",
+    "form-data": "^4.0.0",
+    "systeminformation": "^5.21.0",
+    "uiohook-napi": "^1.5.0"
   },
   "devDependencies": {
-    "electron": "^28.0.0",
-    "electron-builder": "^24.0.0",
-    "electron-vite": "^2.0.0",
-    "typescript": "^5.0.0"
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.0"
+  },
+  "build": {
+    "appId": "com.sentinela.agent",
+    "productName": "Sentinela Agent",
+    "directories": { "output": "dist" },
+    "win": { "target": ["nsis"], "icon": "assets/icon.ico" },
+    "mac": { "target": ["dmg"], "icon": "assets/icon.icns" },
+    "linux": { "target": ["AppImage", "deb"], "icon": "assets/icon.png" }
   }
 }
