@@ -1,4 +1,5 @@
 * @adm01-debug
-/src/components/ @adm01-debug
-/src/hooks/ @adm01-debug
-/supabase/ @adm01-debug
+/src/components/ @frontend-team
+/src/lib/ @backend-team
+/e2e/ @qa-team
+/.github/ @devops-team
