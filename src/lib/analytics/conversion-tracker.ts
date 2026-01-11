@@ -1,0 +1,1 @@
+export function trackConversion(goalId: string, value?: number) { console.log('Conversion:', goalId, value); }
