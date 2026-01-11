@@ -1,0 +1,2 @@
+// GitHub hooks.ts
+export {};
