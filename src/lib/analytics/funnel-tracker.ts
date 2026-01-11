@@ -1,0 +1,1 @@
+export function trackFunnelStep(funnelId: string, step: number) { console.log('Funnel:', funnelId, step); }
