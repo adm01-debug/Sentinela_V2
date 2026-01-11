@@ -1,6 +1,11 @@
-# Monitoring
+# Monitoring Guide
+
+## Health Checks
+
+- `/health` - overall health
+- `/live` - liveness probe
+- `/ready` - readiness probe
 
 ## Metrics
-- Web Vitals
-- Error tracking (Sentry)
-- Analytics
+
+- Prometheus metrics at `/metrics`
