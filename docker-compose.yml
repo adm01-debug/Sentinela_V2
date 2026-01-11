@@ -1,15 +1,37 @@
 version: '3.8'
 services:
-  app:
+  web:
     build: .
     ports:
       - "3000:80"
     environment:
-      - NODE_ENV=development
-  
-  db:
-    image: supabase/postgres:15
+      - NODE_ENV=production
+    restart: unless-stopped
+  api:
+    image: sentinela-api:latest
     ports:
-      - "5432:5432"
+      - "8080:8080"
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - db
+      - redis
+    restart: unless-stopped
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=sentinela
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  redis_data:
