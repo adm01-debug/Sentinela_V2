@@ -1,0 +1,2 @@
+// Jira types.ts
+export {};
