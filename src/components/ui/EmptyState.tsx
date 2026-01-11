@@ -1,24 +1,13 @@
-import { memo } from 'react';
-import { LucideIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ReactNode } from 'react';
+import { cn } from '@/utils/cn';
 
-interface EmptyStateProps {
-  icon: LucideIcon;
-  title: string;
-  description?: string;
-  action?: React.ReactNode;
-  className?: string;
-}
+interface EmptyStateProps { icon?: ReactNode; title: string; description?: string; action?: ReactNode; className?: string; }
 
-function EmptyStateComponent({ icon: Icon, title, description, action, className }: EmptyStateProps) {
-  return (
-    <div className={cn("flex flex-col items-center justify-center py-12 text-center", className)}>
-      <Icon className="h-12 w-12 text-muted-foreground mb-4 opacity-50" />
-      <h3 className="text-lg font-medium">{title}</h3>
-      {description && <p className="text-sm text-muted-foreground mt-1 max-w-sm">{description}</p>}
-      {action && <div className="mt-4">{action}</div>}
-    </div>
-  );
-}
-
-export const EmptyState = memo(EmptyStateComponent);
+export const EmptyState = ({ icon, title, description, action, className }: EmptyStateProps) => (
+  <div className={cn('flex flex-col items-center justify-center py-12 text-center', className)}>
+    {icon && <div className="mb-4 text-muted-foreground">{icon}</div>}
+    <h3 className="text-lg font-semibold">{title}</h3>
+    {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
+    {action && <div className="mt-4">{action}</div>}
+  </div>
+);
