@@ -1,0 +1,1 @@
+let deferredPrompt: any; window.addEventListener('beforeinstallprompt', (e) => { deferredPrompt = e; }); export function showInstallPrompt() { deferredPrompt?.prompt(); }
