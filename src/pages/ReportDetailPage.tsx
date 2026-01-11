@@ -1,0 +1,57 @@
+import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Download, Calendar, User, FileText } from 'lucide-react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { Button } from '@/components/ui/Button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { Skeleton } from '@/components/Skeleton';
+import { useReport } from '@/hooks/useReports';
+
+export default function ReportDetailPage() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { data: report, isLoading } = useReport(id!);
+
+  if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
+  if (!report) return <div className="p-6">Relatório não encontrado</div>;
+
+  return (
+    <div className="p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" onClick={() => navigate(-1)}><ArrowLeft className="mr-2 h-4 w-4" />Voltar</Button>
+          <h1 className="text-2xl font-bold">{report.name}</h1>
+          <Badge variant={report.status === 'completed' ? 'default' : 'secondary'}>{report.status}</Badge>
+        </div>
+        <Button><Download className="mr-2 h-4 w-4" />Baixar</Button>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /><span>Tipo</span></div>
+            <p className="mt-2 font-medium">{report.type}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 text-muted-foreground"><Calendar className="h-4 w-4" /><span>Período</span></div>
+            <p className="mt-2 font-medium">{format(new Date(report.startDate), 'dd/MM/yyyy')} - {format(new Date(report.endDate), 'dd/MM/yyyy')}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 text-muted-foreground"><User className="h-4 w-4" /><span>Criado por</span></div>
+            <p className="mt-2 font-medium">{report.createdBy}</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader><CardTitle>Conteúdo do Relatório</CardTitle></CardHeader>
+        <CardContent><div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: report.content || '' }} /></CardContent>
+      </Card>
+    </div>
+  );
+}
