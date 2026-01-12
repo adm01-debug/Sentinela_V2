@@ -1,8 +1,14 @@
 node_modules
-dist
 .git
 .gitignore
 *.md
 .env*
+.vscode
 coverage
-playwright-report
+dist
+.next
+.cache
+*.log
+.DS_Store
+e2e/results
+test-results
