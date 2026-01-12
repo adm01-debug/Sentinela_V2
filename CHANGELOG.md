@@ -2,48 +2,38 @@
 
 All notable changes to Sentinela will be documented in this file.
 
-## [17.0.0] - 2026-01-11
+## [17.1.0] - 2025-01-12
 
 ### Added
-- **Types (32 files)**: Comprehensive TypeScript type definitions
-  - Core entities: user, team, department, project, screenshot, notification, auditLog, integration
-  - System types: billing, subscription, webhook, apiKey, permission, role, session, device
-  - Content types: application, category, tag, comment, attachment, export, import, filter
-  - UI types: sort, pagination, common, form, table, chart
+- **Tests**: 25+ new component tests (CommandPalette, ToastContainer, DataTable, PermissionGate, GlobalSearch, etc.)
+- **E2E Tests**: 5 Playwright test files (auth, dashboard, employees, screenshots, settings)
+- **Components**: TimeAgo, CopyButton, UserAvatar, ToastContainer, ConfirmDialog
+- **Hooks**: useApiKeys, useBilling, useCommandPalette
+- **Services**: apiKeyService, billingService integration
+- **Context**: SidebarContext for sidebar state management
+- **Constants**: routes.ts, permissions.ts, api.ts with full type definitions
+- **Scripts**: check-imports.ts, analyze-bundle.ts for code quality
+- **CI/CD**: test.yml, lint.yml workflows
+- **Documentation**: I18N.md, PERMISSIONS.md, API_KEYS.md, WEBHOOKS.md, STATE_MANAGEMENT.md
+- **i18n**: pt-BR.json and en-US.json translation files
 
-- **Stores (14 new)**: Zustand state management stores
-  - projectStore, screenshotStore, analyticsStore, billingStore, integrationStore
-  - auditStore, modalStore, toastStore, sidebarStore, breadcrumbStore
-  - commandStore, searchStore, selectionStore, clipboardStore
+### Improved
+- Store tests with comprehensive coverage
+- Service tests for API layer
+- Hook tests with mocking
+- Component barrel file exports
 
-- **Utils (12 new)**: Utility functions
-  - url, query, file, image, hash, random, sleep, retry, memoize, deepClone
-  - currency, duration
-
-- **Tests**: Comprehensive test coverage
-  - Store tests: analytics, billing, integration, sidebar, command, selection
-  - Utils tests: url, retry, memoize, currency
-
-### Changed
-- Updated all barrel files (index.ts) for types, stores, and utils
-- Improved type safety across the application
-- Enhanced state management patterns
-
-### Technical
-- Full TypeScript coverage with strict mode
-- Zustand stores with devtools and persist middleware
-- Comprehensive utility functions for common operations
-
-## [16.0.0] - 2025-12-XX
+## [17.0.0] - 2025-01-11
 
 ### Added
-- Previous version features...
+- **Types**: 32 new TypeScript type definitions
+- **Stores**: 14 new Zustand stores with devtools and persist
+- **Utils**: 12 new utility modules
+- **Tests**: Comprehensive test suite for stores and utils
 
-## [15.0.0] - 2025-11-XX
+### Architecture
+- Full TypeScript strict mode compliance
+- Modular store architecture
+- Barrel file pattern for exports
 
-### Added
-- Previous version features...
-
----
-
-For more details, see the [commit history](https://github.com/adm01-debug/sentinela/commits/main).
+[Full changelog available in repository]
