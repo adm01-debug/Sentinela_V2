@@ -1,9 +1,12 @@
-export { employeeService } from './employeeService';
-export { activityService } from './activityService';
-export { alertService } from './alertService';
-export { reportService } from './reportService';
-export { screenshotService } from './screenshotService';
-export { settingsService } from './settingsService';
-export { authService } from './authService';
-export { dashboardService } from './dashboardService';
-export { userService } from './userService';
+// Services barrel file for Sentinela v17
+export * from './analyticsService';
+export * from './apiKeyService';
+export * from './authService';
+export * from './billingService';
+export * from './employeeService';
+export * from './geofenceService';
+export * from './notificationService';
+export * from './reportService';
+export * from './screenshotService';
+export * from './settingsService';
+export * from './webhookService';
