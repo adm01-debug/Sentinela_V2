@@ -1,0 +1,45 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "register": "Register"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "employees": "Employees",
+    "active": "Active",
+    "productivity": "Productivity"
+  },
+  "employees": {
+    "title": "Employees",
+    "name": "Name",
+    "email": "Email",
+    "department": "Department",
+    "status": "Status"
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": "Profile",
+    "security": "Security",
+    "notifications": "Notifications"
+  }
+}
