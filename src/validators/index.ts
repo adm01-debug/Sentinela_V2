@@ -1,5 +1,7 @@
 export * from "./auth";
 export * from "./employee";
+export * from "./report";
+export * from "./settings";
 
 import { z } from "zod";
 
