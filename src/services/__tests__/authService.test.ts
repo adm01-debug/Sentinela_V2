@@ -1,22 +1,34 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import authService from '../authService';
+import { authService } from '../authService';
 
-vi.mock('@/integrations/supabase/client', () => ({
-  supabase: {
-    auth: {
-      signInWithPassword: vi.fn(),
-      signUp: vi.fn(),
-      signOut: vi.fn(),
-      getSession: vi.fn(),
-      getUser: vi.fn(),
-    },
+vi.mock('@/utils/api', () => ({
+  api: {
+    post: vi.fn(),
+    get: vi.fn(),
+    delete: vi.fn(),
   },
 }));
 
 describe('authService', () => {
   beforeEach(() => { vi.clearAllMocks(); });
-  it('should sign in user', async () => { expect(authService.signIn).toBeDefined(); });
-  it('should sign up user', async () => { expect(authService.signUp).toBeDefined(); });
-  it('should sign out user', async () => { expect(authService.signOut).toBeDefined(); });
-  it('should get session', async () => { expect(authService.getSession).toBeDefined(); });
+
+  it('should have login method', () => {
+    expect(typeof authService.login).toBe('function');
+  });
+
+  it('should have logout method', () => {
+    expect(typeof authService.logout).toBe('function');
+  });
+
+  it('should have getCurrentUser method', () => {
+    expect(typeof authService.getCurrentUser).toBe('function');
+  });
+
+  it('should have register method', () => {
+    expect(typeof authService.register).toBe('function');
+  });
+
+  it('should have refreshToken method', () => {
+    expect(typeof authService.refreshToken).toBe('function');
+  });
 });
