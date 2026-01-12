@@ -1,19 +1,38 @@
 # Security Policy
 
 ## Supported Versions
-| Version | Supported |
-| ------- | --------- |
-| 1.x.x   | Yes       |
-| < 1.0   | No        |
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 18.x    | :white_check_mark: |
+| 17.x    | :white_check_mark: |
+| < 17.0  | :x:                |
 
 ## Reporting a Vulnerability
-1. Do NOT open a public issue
-2. Email security@sentinela.com
-3. Include detailed description
-4. Allow 48 hours for response
+
+Please report security vulnerabilities to security@sentinela.app
+
+**Do NOT create public GitHub issues for security vulnerabilities.**
+
+### What to include:
+- Description of the vulnerability
+- Steps to reproduce
+- Potential impact
+- Suggested fix (if any)
+
+### Response Timeline:
+- Initial response: 24 hours
+- Status update: 72 hours
+- Resolution target: 7-30 days (depending on severity)
 
 ## Security Measures
+
+- All data encrypted at rest (AES-256)
 - All data encrypted in transit (TLS 1.3)
-- Passwords hashed with bcrypt
 - Regular security audits
-- Dependency vulnerability scanning
+- Penetration testing
+- Bug bounty program
+
+## Contact
+
+security@sentinela.app
