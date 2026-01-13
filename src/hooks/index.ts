@@ -1,112 +1,462 @@
 // ============================================================
-// HOOKS BARREL FILE - SENTINELA v20
-// Export centralizado de todos os hooks
+// HOOKS BARREL EXPORT - SENTINELA v20
+// Auto-generated comprehensive export of all 456 hooks
 // ============================================================
 
-// ============================================================
-// API HOOKS
-// ============================================================
-export * from "./api";
-
-// ============================================================
-// AUTH & PERMISSIONS
-// ============================================================
-export { 
-  useAuth, 
-  useLogin, 
-  useLogout, 
-  useCurrentUser, 
-  useUpdateProfile, 
-  useChangePassword, 
-  useSessions, 
-  useRevokeSession 
-} from "./useAuth";
-
-export { 
-  usePermissions, 
-  useUserPermissions, 
-  useHasPermission, 
-  useRoles 
-} from "./usePermissions";
-
-export { useFeatureFlags } from "./useFeatureFlags";
-export { useSubscription } from "./useSubscription";
-export { useAppConfig } from "./useAppConfig";
-
-// ============================================================
-// DASHBOARD HOOKS
-// ============================================================
-export { 
-  useDashboardStats, 
-  useActivityChart, 
-  useProductivityChart,
-  useTopEmployees,
-  useTopApplications 
-} from "./useDashboard";
-
-// ============================================================
-// ENTITY HOOKS
-// ============================================================
-export * from "./useEmployees";
-export * from "./useActivities";
-export * from "./useAlerts";
-export * from "./useReports";
-export * from "./useTeams";
-export * from "./useSettings";
-export * from "./useNotifications";
-export * from "./useAnalytics";
-export * from "./useAuditLog";
-
-// ============================================================
-// UTILITY HOOKS
-// ============================================================
-export { useDebounce } from "./useDebounce";
-export { useThrottle } from "./useThrottle";
-export { useLocalStorage } from "./useLocalStorage";
-export { useSessionStorage } from "./useSessionStorage";
-export { useMediaQuery, useIsMobile, useIsTablet, useIsDesktop } from "./useMediaQuery";
-export { useAsync } from "./useAsync";
-export { useOnlineStatus } from "./useOnlineStatus";
-export { useClipboard } from "./useClipboard";
-export { usePrevious } from "./usePrevious";
-export { useWindowSize } from "./useWindowSize";
-export { useClickOutside } from "./useClickOutside";
-export { useKeyPress } from "./useKeyPress";
-export { useHover } from "./useHover";
-export { useIntersectionObserver } from "./useIntersectionObserver";
-export { useScrollPosition } from "./useScrollPosition";
-export { useInterval } from "./useInterval";
-export { useTimeout } from "./useTimeout";
-export { useToggle } from "./useToggle";
-export { useCopyToClipboard } from "./useCopyToClipboard";
-export { useEventListener } from "./useEventListener";
-export { useMountedState } from "./useMountedState";
-export { useUpdateEffect } from "./useUpdateEffect";
-export { useFirstMountState } from "./useFirstMountState";
-
-// ============================================================
-// FORM HOOKS
-// ============================================================
-export { useForm } from "./useForm";
-export { usePagination } from "./usePagination";
-export { useSearch } from "./useSearch";
-export { useSort } from "./useSort";
-export { useFilter } from "./useFilter";
-
-// ============================================================
-// GEOFENCING
-// ============================================================
-export * from "./useGeofencing";
-
-// ============================================================
-// A11Y HOOKS
-// ============================================================
-export { useA11y } from "./useA11y";
-export { useAnnounce } from "./useAnnounce";
-export { useFocusTrap } from "./useFocusTrap";
-export { useReducedMotion } from "./useReducedMotion";
-
-// ============================================================
-// RE-EXPORT DO AUTH CONTEXT (para retrocompatibilidade)
-// ============================================================
-export * from "./useAuthContext";
+export * from './api';
+export * from './use-mobilex';
+export * from './use-toast';
+export * from './useA11y';
+export * from './useAIAnalysisPage';
+export * from './useAIInsights';
+export * from './useAPIKeys';
+export * from './useAccessControl';
+export * from './useAccordion';
+export * from './useActiveEmployees';
+export * from './useActivities';
+export * from './useActivityHistory';
+export * from './useActivitySummary';
+export * from './useAdvancedFilters';
+export * from './useAgentKeysPage';
+export * from './useAggregate';
+export * from './useAlert';
+export * from './useAlertSettings';
+export * from './useAlerts';
+export * from './useAnalytics';
+export * from './useAnimation';
+export * from './useAnnounce';
+export * from './useAnomalyDetection';
+export * from './useApiKeys';
+export * from './useAppConfig';
+export * from './useAsync';
+export * from './useAttachments';
+export * from './useAudio';
+export * from './useAuditLog';
+export * from './useAuditLogs';
+export * from './useAuth';
+export * from './useAuthPage';
+export * from './useAuthx';
+export * from './useAutoSaveDraft';
+export * from './useBackgroundSync';
+export * from './useBackup';
+export * from './useBattery';
+export * from './useBeforeUnload';
+export * from './useBehaviorPatterns';
+export * from './useBilling';
+export * from './useBlockNavigation';
+export * from './useBlockedIPs';
+export * from './useBoolean';
+export * from './useBreadcrumbs';
+export * from './useBreakpoint';
+export * from './useBroadcastChannel';
+export * from './useBulkActions';
+export * from './useBuscaFulltext';
+export * from './useCache';
+export * from './useCalendar';
+export * from './useCamera';
+export * from './useCarousel';
+export * from './useCategories';
+export * from './useChart';
+export * from './useChartAnnotations';
+export * from './useChartExport';
+export * from './useChartZoom';
+export * from './useClickAway';
+export * from './useClickOutside';
+export * from './useClipboard';
+export * from './useClock';
+export * from './useClone';
+export * from './useCohortAnalysis';
+export * from './useCollapse';
+export * from './useColorBlindMode';
+export * from './useColorBlindModex';
+export * from './useColorScheme';
+export * from './useCommandPalette';
+export * from './useComments';
+export * from './useCompare';
+export * from './useCompliance';
+export * from './useConfirm';
+export * from './useConnectionQuality';
+export * from './useConsent';
+export * from './useConst';
+export * from './useConstant';
+export * from './useContextAwareDefaults';
+export * from './useContextMenu';
+export * from './useCookie';
+export * from './useCopyToClipboard';
+export * from './useCountdown';
+export * from './useCounter';
+export * from './useCurrencyFormat';
+export * from './useDarkMode';
+export * from './useDashboard';
+export * from './useDashboardLayout';
+export * from './useDashboardPage';
+export * from './useDataExportPage';
+export * from './useDataGrid';
+export * from './useDataRetention';
+export * from './useDateFormat';
+export * from './useDebounce';
+export * from './useDebounceCallback';
+export * from './useDebugValue';
+export * from './useDeepCompareEffect';
+export * from './useDeepMerge';
+export * from './useDeferredValue';
+export * from './useDenormalize';
+export * from './useDeviceDetection';
+export * from './useDeviceMotion';
+export * from './useDeviceOrientation';
+export * from './useDeviceStats';
+export * from './useDeviceTrust';
+export * from './useDevicesPage';
+export * from './useDialog';
+export * from './useDiff';
+export * from './useDisclosure';
+export * from './useDocumentTitle';
+export * from './useDoubleClick';
+export * from './useDownload';
+export * from './useDrag';
+export * from './useDragAndDrop';
+export * from './useDrawer';
+export * from './useDrop';
+export * from './useDropdown';
+export * from './useDropzone';
+export * from './useDuplicate';
+export * from './useEffectOnce';
+export * from './useElementSize';
+export * from './useEmailNotification';
+export * from './useEmployeeDetailPage';
+export * from './useEmployees';
+export * from './useEmployeesPage';
+export * from './useEncryption';
+export * from './useErrorBoundary';
+export * from './useErrorState';
+export * from './useEvent';
+export * from './useEventListener';
+export * from './useEventSource';
+export * from './useExperiment';
+export * from './useExport';
+export * from './useFeatureFlags';
+export * from './useFetch';
+export * from './useField';
+export * from './useFieldArray';
+export * from './useFileDrop';
+export * from './useFileReader';
+export * from './useFileUpload';
+export * from './useFilter';
+export * from './useFirstMountState';
+export * from './useFirstRender';
+export * from './useFocus';
+export * from './useFocusReturn';
+export * from './useFocusTrap';
+export * from './useFocusVisible';
+export * from './useFocusWithin';
+export * from './useForceUpdate';
+export * from './useForm';
+export * from './useFormContext';
+export * from './useFormState';
+export * from './useFormValidation';
+export * from './useFullscreen';
+export * from './useFunnelAnalysis';
+export * from './useGamification';
+export * from './useGamificationPage';
+export * from './useGeoBlocking';
+export * from './useGeofences';
+export * from './useGeofencingPage';
+export * from './useGeolocation';
+export * from './useGeolocationWatch';
+export * from './useGesture';
+export * from './useGetSet';
+export * from './useGetSetState';
+export * from './useGranularPermissions';
+export * from './useGroupBy';
+export * from './useHapticFeedback';
+export * from './useHash';
+export * from './useHeatmap';
+export * from './useHierarchy';
+export * from './useHighContrast';
+export * from './useHistory';
+export * from './useHotkeys';
+export * from './useHover';
+export * from './useI18n';
+export * from './useIPWhitelist';
+export * from './useIdle';
+export * from './useIdleDetection';
+export * from './useImage';
+export * from './useImagePreload';
+export * from './useImageUpload';
+export * from './useImmer';
+export * from './useImport';
+export * from './useInView';
+export * from './useIndexedDB';
+export * from './useInfiniteQuery';
+export * from './useInfiniteScroll';
+export * from './useInput';
+export * from './useInstallPage';
+export * from './useIntegrations';
+export * from './useInternetAccess';
+export * from './useInternetAccessPage';
+export * from './useIntersection';
+export * from './useIntersectionObserver';
+export * from './useInterval';
+export * from './useIsFirstRender';
+export * from './useIsMounted';
+export * from './useIsomorphicLayoutEffect';
+export * from './useKeyDown';
+export * from './useKeyPress';
+export * from './useKeyboardShortcut';
+export * from './useKeyboardShortcuts';
+export * from './useLazyImage';
+export * from './useLazyRef';
+export * from './useLifecycle';
+export * from './useList';
+export * from './useLoadingState';
+export * from './useLocalStorage';
+export * from './useLocale';
+export * from './useLockBodyScroll';
+export * from './useLogger';
+export * from './useLongPress';
+export * from './useMFA';
+export * from './useMFAPhone';
+export * from './useMap';
+export * from './useMapbox';
+export * from './useMeasure';
+export * from './useMediaDevices';
+export * from './useMediaQuery';
+export * from './useMediaRecorder';
+export * from './useMemoizedCallback';
+export * from './useMerge';
+export * from './useMessageTemplates';
+export * from './useMessageTemplatesPage';
+export * from './useMetrics';
+export * from './useMicrophone';
+export * from './useMixpanel';
+export * from './useMobileDevices';
+export * from './useMobileMonitoringPage';
+export * from './useModal';
+export * from './useMonitoringPage';
+export * from './useMonitoringPoliciesPage';
+export * from './useMonitoringSettings';
+export * from './useMount';
+export * from './useMounted';
+export * from './useMountedState';
+export * from './useMouse';
+export * from './useMultiSelect';
+export * from './useMultiStepWizard';
+export * from './useMutation';
+export * from './useMutationObserver';
+export * from './useNaturalLanguageSearch';
+export * from './useNavigation';
+export * from './useNetwork';
+export * from './useNetworkState';
+export * from './useNetworkStatus';
+export * from './useNormalize';
+export * from './useNotification';
+export * from './useNotificationCenter';
+export * from './useNotifications';
+export * from './useNow';
+export * from './useNumber';
+export * from './useNumberFormat';
+export * from './useOffline';
+export * from './useOfflineFirst';
+export * from './useOfflineStorage';
+export * from './useOnClickOutside';
+export * from './useOnScreen';
+export * from './useOnline';
+export * from './useOnlineStatus';
+export * from './useOptimistic';
+export * from './useOptimisticUpdate';
+export * from './useOrganization';
+export * from './useOrientation';
+export * from './useOvertimeNotifications';
+export * from './usePWA';
+export * from './usePWAPushNotifications';
+export * from './usePageLeave';
+export * from './usePageVisibility';
+export * from './usePagination';
+export * from './usePan';
+export * from './usePasswordResetRequests';
+export * from './usePaste';
+export * from './usePendingNotifications';
+export * from './usePerformanceMonitor';
+export * from './usePerformanceObserver';
+export * from './usePermission';
+export * from './usePermissions';
+export * from './usePinch';
+export * from './usePinchToZoom';
+export * from './usePointer';
+export * from './usePolicies';
+export * from './usePolicyAcknowledgments';
+export * from './usePolling';
+export * from './usePopover';
+export * from './usePortal';
+export * from './usePreferredLanguage';
+export * from './usePrevious';
+export * from './usePrivacy';
+export * from './useProductivity';
+export * from './useProductivityComparison';
+export * from './useProjects';
+export * from './usePrompt';
+export * from './usePullToRefresh';
+export * from './usePushNotifications';
+export * from './useQuery';
+export * from './useQueryClient';
+export * from './useQueryString';
+export * from './useQueue';
+export * from './useRaf';
+export * from './useRafState';
+export * from './useRateLimitByIP';
+export * from './useRateLimitDashboardPage';
+export * from './useRateLimitLogs';
+export * from './useRateLimitSettings';
+export * from './useRealTimeMonitor';
+export * from './useRealtime';
+export * from './useRealtimeActivity';
+export * from './useRealtimeSync';
+export * from './useReauthentication';
+export * from './useRecentValues';
+export * from './useReducedMotion';
+export * from './useReducerWithMiddleware';
+export * from './useRelativeTime';
+export * from './useRenderCount';
+export * from './useReports';
+export * from './useReportsPage';
+export * from './useRerender';
+export * from './useResize';
+export * from './useResizeObserver';
+export * from './useRetry';
+export * from './useRole';
+export * from './useRoles';
+export * from './useRotate';
+export * from './useRouteParams';
+export * from './useRovingTabIndex';
+export * from './useRules';
+export * from './useSSE';
+export * from './useSafeState';
+export * from './useSavedFilters';
+export * from './useSchedule';
+export * from './useScheduledReports';
+export * from './useScheduledReportsPage';
+export * from './useSchema';
+export * from './useScreenWakeLock';
+export * from './useScreenshots';
+export * from './useScript';
+export * from './useScroll';
+export * from './useScrollDirection';
+export * from './useScrollIntoView';
+export * from './useScrollLock';
+export * from './useScrollPosition';
+export * from './useScrollTo';
+export * from './useSearch';
+export * from './useSearchParams';
+export * from './useSecureStorage';
+export * from './useSecurity';
+export * from './useSecurityHeaders';
+export * from './useSecurityMetrics';
+export * from './useSecurityNotifications';
+export * from './useSecurityPage';
+export * from './useSecurityScore';
+export * from './useSecurityViolations';
+export * from './useSelection';
+export * from './useSensitiveKeywordsPage';
+export * from './useServerSentEvents';
+export * from './useServiceWorker';
+export * from './useSession';
+export * from './useSessionActivity';
+export * from './useSessionManager';
+export * from './useSessionStorage';
+export * from './useSet';
+export * from './useSettings';
+export * from './useShare';
+export * from './useShifts';
+export * from './useSingleton';
+export * from './useSkipLinks';
+export * from './useSkipLinksx';
+export * from './useSlackNotification';
+export * from './useSmartRecommendations';
+export * from './useSmartSuggestions';
+export * from './useSnackbar';
+export * from './useSoftDelete';
+export * from './useSort';
+export * from './useSortable';
+export * from './useSoundAlerts';
+export * from './useSpeechRecognition';
+export * from './useSpeechSynthesis';
+export * from './useSpring';
+export * from './useStack';
+export * from './useStateHistory';
+export * from './useStateMachine';
+export * from './useStateWithHistory';
+export * from './useStep';
+export * from './useStepper';
+export * from './useSteps';
+export * from './useStopwatch';
+export * from './useStorage';
+export * from './useStylesheet';
+export * from './useSubscription';
+export * from './useSummarize';
+export * from './useSwipe';
+export * from './useSwipeGestures';
+export * from './useSync';
+export * from './useTable';
+export * from './useTabs';
+export * from './useTags';
+export * from './useTasks';
+export * from './useTeams';
+export * from './useTeamsPage';
+export * from './useTenant';
+export * from './useTextSelection';
+export * from './useTheme';
+export * from './useThreatLevel';
+export * from './useThrottle';
+export * from './useThrottleCallback';
+export * from './useTick';
+export * from './useTimeAgo';
+export * from './useTimeTracking';
+export * from './useTimeout';
+export * from './useTimer';
+export * from './useToast';
+export * from './useToggle';
+export * from './useTooltip';
+export * from './useTouch';
+export * from './useTransform';
+export * from './useTransition';
+export * from './useTranslation';
+export * from './useTreeData';
+export * from './useTrendAnalysis';
+export * from './useUndo';
+export * from './useUndoRedo';
+export * from './useUnmount';
+export * from './useUpdateEffect';
+export * from './useUser';
+export * from './useUserManagementPage';
+export * from './useUsers';
+export * from './useValidation';
+export * from './useVersions';
+export * from './useVibrate';
+export * from './useVibration';
+export * from './useVideo';
+export * from './useViolationComments';
+export * from './useViolationRules';
+export * from './useViolationRulesPage';
+export * from './useViolations';
+export * from './useViolationsPage';
+export * from './useVirtualList';
+export * from './useVirtualScroll';
+export * from './useVisibility';
+export * from './useVoiceControl';
+export * from './useWatch';
+export * from './useWebAuthn';
+export * from './useWebSocket';
+export * from './useWebhook';
+export * from './useWebhooks';
+export * from './useWebhooksPage';
+export * from './useWhatsAppIntegrationPage';
+export * from './useWhatsAppSettings';
+export * from './useWhyDidYouUpdate';
+export * from './useWindowFocus';
+export * from './useWindowSize';
+export * from './useWorkHours';
+export * from './useWorkSchedules';
+export * from './useWorkSchedulesPage';
+export * from './useWorker';
+export * from './useWorkerFn';
+export * from './useZoom';
