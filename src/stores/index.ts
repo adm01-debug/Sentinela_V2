@@ -38,3 +38,8 @@ export * from './commandStore';
 export * from './searchStore';
 export * from './selectionStore';
 export * from './clipboardStore';
+
+// QA Added - Missing stores
+export * from './paginationStore';
+export * from './preferencesStore';
+export * from './sortStore';
