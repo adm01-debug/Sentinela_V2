@@ -1,2 +1,0 @@
-// Zapier webhooks.ts
-export {};
