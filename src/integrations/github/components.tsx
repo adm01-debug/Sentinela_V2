@@ -1,2 +1,0 @@
-// GitHub components.tsx
-export {};
