@@ -63,3 +63,7 @@ export * from './auth.types';
 export * from './event.types';
 export * from './chart';
 export * from './form';
+
+// Missing exports added by QA
+export * from './table';
+export * from './utility.types';
