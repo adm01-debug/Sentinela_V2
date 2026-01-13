@@ -1,2 +1,0 @@
-// Jira components.tsx
-export {};
