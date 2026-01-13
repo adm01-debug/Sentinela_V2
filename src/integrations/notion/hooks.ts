@@ -1,2 +1,0 @@
-// Notion hooks.ts
-export {};
