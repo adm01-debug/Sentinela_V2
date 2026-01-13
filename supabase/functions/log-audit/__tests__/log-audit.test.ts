@@ -1,9 +1,0 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-describe('log-audit Edge Function', () => {
-  beforeEach(() => { vi.clearAllMocks(); });
-  it('should handle valid requests', async () => { expect(true).toBe(true); });
-  it('should validate authentication', async () => { expect(true).toBe(true); });
-  it('should handle errors gracefully', async () => { expect(true).toBe(true); });
-  it('should return proper responses', async () => { expect(true).toBe(true); });
-});
