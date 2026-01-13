@@ -1,5 +1,4 @@
 // Performance utilities index
-export * from './codeSplitting';
 export * from './bundleOptimization';
 export * from './runtime';
 export * from './caching';
@@ -9,3 +8,4 @@ export * from './code-splitting';
 export * from './critical-css';
 export * from './image-optimization';
 export * from './resource-hints';
+
