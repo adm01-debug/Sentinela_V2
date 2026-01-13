@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useCallback, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
@@ -15,10 +16,23 @@ export interface UserRole {
   permissions: string[];
 }
 
-export function useUserPermissions() {
+// ============================================================
+// HOOK PRINCIPAL - usePermissions (compatível com Guards)
+// ============================================================
+export interface UsePermissionsReturn {
+  permissions: string[];
+  isLoading: boolean;
+  error: string | null;
+  hasPermission: (permission: string) => boolean;
+  hasAnyPermission: (permissions: string[]) => boolean;
+  hasAllPermissions: (permissions: string[]) => boolean;
+  refresh: () => Promise<void>;
+}
+
+export function usePermissions(): UsePermissionsReturn {
   const { user } = useAuth();
   
-  return useQuery({
+  const { data: permissions = [], isLoading, error, refetch } = useQuery({
     queryKey: queryKeys.permissions.user(user?.id || ''),
     queryFn: async () => {
       if (!user?.id) return [];
@@ -30,21 +44,54 @@ export function useUserPermissions() {
 
       if (error) throw error;
       
-      const permissions = new Set<string>();
+      const perms = new Set<string>();
       data?.forEach(ur => {
-        (ur.role as any)?.permissions?.forEach((p: string) => permissions.add(p));
+        (ur.role as any)?.permissions?.forEach((p: string) => perms.add(p));
       });
       
-      return Array.from(permissions);
+      return Array.from(perms);
     },
     enabled: !!user?.id,
     ...queryPresets.config,
   });
+
+  const hasPermission = useCallback((permission: string): boolean => {
+    return permissions.includes(permission) || permissions.includes('admin') || permissions.includes('*');
+  }, [permissions]);
+
+  const hasAnyPermission = useCallback((perms: string[]): boolean => {
+    if (permissions.includes('admin') || permissions.includes('*')) return true;
+    return perms.some(p => permissions.includes(p));
+  }, [permissions]);
+
+  const hasAllPermissions = useCallback((perms: string[]): boolean => {
+    if (permissions.includes('admin') || permissions.includes('*')) return true;
+    return perms.every(p => permissions.includes(p));
+  }, [permissions]);
+
+  return {
+    permissions,
+    isLoading,
+    error: error?.message || null,
+    hasPermission,
+    hasAnyPermission,
+    hasAllPermissions,
+    refresh: async () => { await refetch(); },
+  };
+}
+
+// ============================================================
+// HOOKS ESPECÍFICOS (mantidos para retrocompatibilidade)
+// ============================================================
+
+export function useUserPermissions() {
+  const { permissions, isLoading, error } = usePermissions();
+  return { data: permissions, isLoading, error };
 }
 
 export function useHasPermission(permission: string) {
-  const { data: permissions = [] } = useUserPermissions();
-  return permissions.includes(permission) || permissions.includes('admin');
+  const { hasPermission } = usePermissions();
+  return hasPermission(permission);
 }
 
 export function useRoles() {
@@ -62,3 +109,5 @@ export function useRoles() {
     ...queryPresets.config,
   });
 }
+
+export default usePermissions;
