@@ -15,6 +15,7 @@ interface UIState {
   toasts: Array<{ id: string; message: string; type: string }>;
   toggleSidebar: () => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
+  toggleSidebarCollapse: () => void;
   openModal: (config: ModalConfig) => void;
   closeModal: () => void;
   toggleCommandPalette: () => void;
@@ -32,6 +33,7 @@ export const useUIStore = create<UIState>()((set) => ({
   toasts: [],
   toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
   setSidebarCollapsed: (collapsed) => set({ sidebarCollapsed: collapsed }),
+  toggleSidebarCollapse: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
   openModal: (config) => set({ activeModal: config }),
   closeModal: () => set({ activeModal: null }),
   toggleCommandPalette: () => set((state) => ({ commandPaletteOpen: !state.commandPaletteOpen })),
