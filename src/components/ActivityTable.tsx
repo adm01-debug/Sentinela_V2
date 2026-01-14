@@ -1,7 +1,7 @@
 import { Activity } from '@/types';
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from './ui/Table';
-import { Badge } from './ui/Badge';
-import { Skeleton } from './Skeleton';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 
 interface Props { activities: Activity[]; isLoading?: boolean; }

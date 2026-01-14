@@ -1,5 +1,5 @@
-import { Select } from './ui/Select';
-import { Button } from './ui/Button';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 
 interface Props { filters: { severity?: string; acknowledged?: boolean }; onChange: (f: any) => void; }

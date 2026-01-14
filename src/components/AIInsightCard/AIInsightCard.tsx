@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, CardHeader, CardContent, CardTitle } from "../ui/Card";
-import { Badge } from "../ui/Badge";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
 
 interface AIInsightCardProps {
