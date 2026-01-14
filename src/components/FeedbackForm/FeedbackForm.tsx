@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Button } from "../ui/Button";
-import { Textarea } from "../ui/Textarea";
-import { Label } from "../ui/Label";
-import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "../ui/Card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
 import { Star } from "lucide-react";
 
 interface FeedbackFormProps {
@@ -22,28 +22,40 @@ export function FeedbackForm({ onSubmit, loading }: FeedbackFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Share Your Feedback</CardTitle>
+        <CardTitle>Compartilhe seu Feedback</CardTitle>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div>
-            <Label>Rating</Label>
+            <Label>Avaliação</Label>
             <div className="flex gap-1 mt-2">
               {[1, 2, 3, 4, 5].map((star) => (
-                <button key={star} type="button" onClick={() => setRating(star)} className="focus:outline-none">
-                  <Star className={`h-6 w-6 ${star <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} />
+                <button 
+                  key={star} 
+                  type="button" 
+                  onClick={() => setRating(star)} 
+                  className="focus:outline-none"
+                >
+                  <Star 
+                    className={`h-6 w-6 ${star <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} 
+                  />
                 </button>
               ))}
             </div>
           </div>
           <div>
-            <Label htmlFor="comment">Comments</Label>
-            <Textarea id="comment" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Tell us what you think..." />
+            <Label htmlFor="comment">Comentários</Label>
+            <Textarea 
+              id="comment" 
+              value={comment} 
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value)} 
+              placeholder="Conte-nos o que você achou..." 
+            />
           </div>
         </CardContent>
         <CardFooter>
           <Button type="submit" disabled={loading || rating === 0}>
-            {loading ? "Submitting..." : "Submit Feedback"}
+            {loading ? "Enviando..." : "Enviar Feedback"}
           </Button>
         </CardFooter>
       </form>

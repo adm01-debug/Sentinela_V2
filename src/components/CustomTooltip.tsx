@@ -1,4 +1,4 @@
-import { memo, ReactNode } from 'react';
+import { memo, ReactNode, useRef, useState, useEffect, useCallback } from 'react';
 import {
   Tooltip,
   TooltipContent,
@@ -6,6 +6,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+import { Info, HelpCircle, AlertCircle, Copy, Check } from 'lucide-react';
+import { useClipboard } from '@/hooks/useClipboard';
 
 // ============================================================
 // TYPES
@@ -59,8 +61,6 @@ export const SimpleTooltip = memo(SimpleTooltipComponent);
 // InfoTooltip - Icon with tooltip
 // ============================================================
 
-import { Info, HelpCircle, AlertCircle } from 'lucide-react';
-
 type InfoTooltipVariant = 'info' | 'help' | 'warning';
 
 interface InfoTooltipProps {
@@ -106,8 +106,6 @@ export const InfoTooltip = memo(InfoTooltipComponent);
 // ============================================================
 // TruncatedText - Text with tooltip on overflow
 // ============================================================
-
-import { useRef, useState, useEffect } from 'react';
 
 interface TruncatedTextProps {
   text: string;
@@ -155,10 +153,6 @@ export const TruncatedText = memo(TruncatedTextComponent);
 // CopyableText - Text that can be copied with tooltip feedback
 // ============================================================
 
-import { useState, useCallback } from 'react';
-import { Copy, Check } from 'lucide-react';
-import { useClipboard } from '@/hooks/useClipboard';
-
 interface CopyableTextProps {
   text: string;
   displayText?: string;
@@ -172,7 +166,7 @@ function CopyableTextComponent({
   className,
   showIcon = true,
 }: CopyableTextProps) {
-  const { copy, copied } = useClipboard({ showToast: false });
+  const { copy, copied } = useClipboard();
 
   const handleCopy = useCallback(() => {
     copy(text);

@@ -40,7 +40,7 @@ export const LiveViewCard = memo(() => {
         .order('recorded_at', { ascending: false });
       
       if (data) {
-        const unique = [...new Set(data.map(d => d.employee_name))];
+        const unique = [...new Set(data.map((d: { employee_name: string }) => d.employee_name))] as string[];
         setEmployees(unique);
         if (unique.length > 0 && !selectedEmployee) {
           setSelectedEmployee(unique[0]);
@@ -48,7 +48,7 @@ export const LiveViewCard = memo(() => {
       }
     };
     fetchEmployees();
-  }, []);
+  }, [selectedEmployee]);
 
   // Fetch latest screenshot for selected employee
   const fetchLatestScreenshot = async () => {
@@ -64,7 +64,7 @@ export const LiveViewCard = memo(() => {
       .single();
     
     if (data) {
-      setLatestScreenshot(data);
+      setLatestScreenshot(data as SessionRecording);
     }
     setLoading(false);
   };
