@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardContent, CardTitle } from "../ui/Card";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface DashboardWidgetProps {

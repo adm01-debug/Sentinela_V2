@@ -87,8 +87,10 @@ export const LiveViewCard = memo(() => {
           table: 'session_recordings',
           filter: `employee_name=eq.${selectedEmployee}`,
         },
-        (payload) => {
-          setLatestScreenshot(payload.new as SessionRecording);
+        (payload: { new: Record<string, unknown> }) => {
+          if (payload.new && typeof payload.new === 'object') {
+            setLatestScreenshot(payload.new as unknown as SessionRecording);
+          }
         }
       )
       .subscribe();

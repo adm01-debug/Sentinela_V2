@@ -6,12 +6,12 @@ import { useState, useCallback, useMemo } from 'react';
 
 export interface DashboardWidget {
   id: string;
-  type: string;
+  type: 'stats' | 'chart' | 'alerts' | 'employees' | 'ranking' | 'security' | 'custom';
   title: string;
   position: { x: number; y: number; w: number; h: number };
   config?: Record<string, unknown>;
   visible?: boolean;
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large' | 'full';
 }
 
 export interface DashboardLayout {
@@ -25,8 +25,8 @@ export interface DashboardLayout {
 const DEFAULT_WIDGETS: DashboardWidget[] = [
   { id: 'employees', type: 'employees', title: 'Funcionários', position: { x: 0, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
   { id: 'alerts', type: 'alerts', title: 'Alertas', position: { x: 1, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
-  { id: 'productivity', type: 'productivity', title: 'Produtividade', position: { x: 2, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
-  { id: 'activity', type: 'activity', title: 'Atividade', position: { x: 0, y: 1, w: 2, h: 1 }, visible: true, size: 'large' },
+  { id: 'stats', type: 'stats', title: 'Produtividade', position: { x: 2, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
+  { id: 'activity', type: 'chart', title: 'Atividade', position: { x: 0, y: 1, w: 2, h: 1 }, visible: true, size: 'large' },
 ];
 
 export function useDashboardLayout() {
@@ -103,7 +103,7 @@ export function useDashboardLayout() {
     saveMutation.mutate(newWidgets);
   }, [widgets, localWidgets, saveMutation]);
 
-  const resizeWidget = useCallback((widgetId: string, size: 'small' | 'medium' | 'large') => {
+  const resizeWidget = useCallback((widgetId: string, size: DashboardWidget['size']) => {
     const currentWidgets = localWidgets || widgets;
     const newWidgets = currentWidgets.map(w =>
       w.id === widgetId ? { ...w, size } : w

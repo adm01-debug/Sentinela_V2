@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, Check, CheckCheck, AlertTriangle, AlertCircle, Info, X } from 'lucide-react';
+import { Bell, Check, CheckCheck, AlertTriangle, AlertCircle, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { useSecurityViolations, type SecurityViolation } from '@/hooks/useSecurityViolations';
+import { useSecurityViolations, SecurityViolation, useUpdateViolationStatus } from '@/hooks/useSecurityViolations';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -53,12 +53,13 @@ function ViolationItem({
 }) {
   const config = severityConfig[violation.severity] || severityConfig.medium;
   const Icon = config.icon;
+  const isRead = violation.status !== 'pending';
 
   return (
     <div 
       className={cn(
         'p-3 border-b border-border last:border-b-0 transition-colors',
-        !violation.read && 'bg-primary/5'
+        !isRead && 'bg-primary/5'
       )}
     >
       <div className="flex gap-3">
@@ -67,13 +68,13 @@ function ViolationItem({
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
-            <p className="font-medium text-sm truncate">{violation.policy_name}</p>
+            <p className="font-medium text-sm truncate">{violation.violation_type}</p>
             <Badge variant="outline" className={cn('text-xs shrink-0', config.color, config.border)}>
               {config.label}
             </Badge>
           </div>
           <p className="text-sm text-muted-foreground mt-0.5">
-            {violation.employee_name} - {violation.violation_type}
+            {violation.employee?.name || 'Unknown'} - {violation.violation_type}
           </p>
           {violation.description && (
             <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
@@ -87,7 +88,7 @@ function ViolationItem({
                 locale: ptBR 
               })}
             </span>
-            {!violation.read && (
+            {!isRead && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -107,7 +108,20 @@ function ViolationItem({
 
 export function NotificationsPanel() {
   const [open, setOpen] = useState(false);
-  const { violations, loading, unreadCount, markAsRead, markAllAsRead } = useSecurityViolations();
+  const { data: violations = [], isLoading } = useSecurityViolations();
+  const updateStatus = useUpdateViolationStatus();
+
+  const unreadCount = violations.filter(v => v.status === 'pending').length;
+
+  const handleMarkAsRead = (id: string) => {
+    updateStatus.mutate({ id, status: 'reviewed' });
+  };
+
+  const handleMarkAllAsRead = () => {
+    violations
+      .filter(v => v.status === 'pending')
+      .forEach(v => updateStatus.mutate({ id: v.id, status: 'reviewed' }));
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -130,7 +144,7 @@ export function NotificationsPanel() {
             </p>
           </div>
           {unreadCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={markAllAsRead}>
+            <Button variant="ghost" size="sm" onClick={handleMarkAllAsRead}>
               <CheckCheck className="h-4 w-4 mr-1" />
               Marcar todas
             </Button>
@@ -138,7 +152,7 @@ export function NotificationsPanel() {
         </div>
         
         <ScrollArea className="h-[400px]">
-          {loading ? (
+          {isLoading ? (
             <div className="p-8 text-center text-muted-foreground">
               Carregando...
             </div>
@@ -148,11 +162,11 @@ export function NotificationsPanel() {
               <p>Nenhuma notificação</p>
             </div>
           ) : (
-            violations.map(violation => (
+            violations.map((violation: SecurityViolation) => (
               <ViolationItem 
                 key={violation.id} 
                 violation={violation} 
-                onMarkAsRead={markAsRead}
+                onMarkAsRead={handleMarkAsRead}
               />
             ))
           )}

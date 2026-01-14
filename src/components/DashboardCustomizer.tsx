@@ -39,7 +39,7 @@ const widgetIcons: Record<DashboardWidget['type'], string> = {
   custom: '⚙️',
 };
 
-const sizeLabels: Record<DashboardWidget['size'], string> = {
+const sizeLabels: Record<NonNullable<DashboardWidget['size']>, string> = {
   small: 'Pequeno (1/4)',
   medium: 'Médio (1/3)',
   large: 'Grande (2/3)',
@@ -105,7 +105,7 @@ export function DashboardCustomizer() {
 
               {/* Seletor de tamanho */}
               <Select
-                value={widget.size}
+                value={widget.size || 'medium'}
                 onValueChange={(value) => resizeWidget(widget.id, value as DashboardWidget['size'])}
                 disabled={!widget.visible}
               >

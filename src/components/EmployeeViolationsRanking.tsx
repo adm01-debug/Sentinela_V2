@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Trophy, Medal, Award, AlertTriangle } from 'lucide-react';
-import { useSecurityViolations } from '@/hooks/useSecurityViolations';
+import { useSecurityViolations, SecurityViolation } from '@/hooks/useSecurityViolations';
 
 interface EmployeeRanking {
   name: string;
@@ -15,14 +15,15 @@ interface EmployeeRanking {
 }
 
 export function EmployeeViolationsRanking() {
-  const { violations, loading } = useSecurityViolations();
+  const { data: violations = [], isLoading } = useSecurityViolations();
 
   const ranking = useMemo(() => {
     const employeeMap = new Map<string, EmployeeRanking>();
 
-    violations.forEach((violation) => {
-      const existing = employeeMap.get(violation.employee_name) || {
-        name: violation.employee_name,
+    violations.forEach((violation: SecurityViolation & { employee_name?: string }) => {
+      const employeeName = violation.employee?.name || violation.employee_name || 'Unknown';
+      const existing = employeeMap.get(employeeName) || {
+        name: employeeName,
         totalViolations: 0,
         criticalCount: 0,
         highCount: 0,
@@ -36,7 +37,7 @@ export function EmployeeViolationsRanking() {
       else if (violation.severity === 'medium') existing.mediumCount += 1;
       else existing.lowCount += 1;
 
-      employeeMap.set(violation.employee_name, existing);
+      employeeMap.set(employeeName, existing);
     });
 
     return Array.from(employeeMap.values())
@@ -60,7 +61,7 @@ export function EmployeeViolationsRanking() {
       .slice(0, 2);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Card>
         <CardHeader>

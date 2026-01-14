@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardContent, CardTitle } from "../ui/Card";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { MapPin, Circle } from "lucide-react";
 
 interface GeofenceMapProps {
