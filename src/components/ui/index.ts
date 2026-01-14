@@ -1,119 +1,100 @@
 // ============================================================
 // UI COMPONENTS BARREL EXPORT - SENTINELA v20
-// Auto-generated comprehensive export of all UI components
+// Core shadcn/ui components only - import custom components directly
 // ============================================================
 
-// Shadcn core components (lowercase - primary exports)
-export * from './button';
-export * from './badge';
-export * from './card';
-export * from './avatar';
-export * from './accordion';
-export * from './alert';
-export * from './alert-dialog';
-export * from './breadcrumb';
-export * from './calendar';
-export * from './carousel';
-export * from './chart';
-export * from './checkbox';
-export * from './collapsible';
-export * from './command';
-export * from './context-menu';
-export * from './dialog';
-export * from './drawer';
-export * from './dropdown-menu';
-export * from './form';
-export * from './hover-card';
-export * from './input';
-export * from './input-otp';
-export * from './label';
-export * from './menubar';
-export * from './navigation-menu';
-export * from './pagination';
-export * from './popover';
-export * from './progress';
-export * from './radio-group';
-export * from './resizable';
-export * from './scroll-area';
-export * from './select';
-export * from './separator';
-export * from './sheet';
-export * from './sidebar';
-export * from './skeleton';
-export * from './slider';
-export * from './sonner';
-export * from './switch';
-export * from './table';
-export * from './tabs';
-export * from './textarea';
-export * from './toast';
-export * from './toaster';
-export * from './toggle';
-export * from './toggle-group';
-export * from './tooltip';
-
-// Custom UI components (that don't conflict with shadcn)
-export * from './ActionButtons';
-export * from './Blockquote';
-export * from './BottomSheet';
-export * from './Cards';
-export * from './Chip';
-export * from './Code';
-export * from './ColorPicker';
-export * from './Combobox';
-export * from './ConfirmButton';
-export * from './DatePicker';
-export * from './Dropdown';
-export * from './EmptyState';
-export * from './EnhancedSystemAlert';
-export * from './EnhancedTooltip';
-export * from './ErrorFallback';
-export * from './Feedback';
-export * from './FilterBar';
-export * from './FormItem';
-export * from './FormMessage';
-export * from './GridList';
-export * from './Headers';
-export * from './Heading';
-export * from './IconButton';
-export * from './ImageGallery';
-export * from './InfiniteScrollList';
-export * from './InfoCard';
-export * from './KanbanBoard';
-export * from './Lightbox';
-export * from './LoadingOverlay';
-export * from './LoadingSpinner';
-export * from './LoadingStates';
-export * from './MicroInteractions';
-export * from './Modal';
-export * from './Overlay';
-export * from './PageContainer';
-export * from './PasswordStrengthMeter';
-export * from './Portal';
-export * from './ProgressIndicator';
-export * from './PullToRefresh';
-export * from './Radio';
-export * from './RichTextEditor';
-export * from './SearchAutocomplete';
-export * from './SearchInput';
-export * from './SecurityScoreDashboard';
-export * from './SimpleDataTable';
-export * from './Spinner';
-export * from './StatCard';
-export * from './StatusBadge';
-export * from './Stepper';
-export * from './Tag';
-export * from './Text';
-export * from './TimePicker';
-export * from './TreeView';
-export * from './TrendIndicators';
-export * from './TwoFactorWizard';
-export * from './UserDisplay';
-export * from './VirtualizedList';
-export * from './VoiceInput';
-export * from './a11y-button';
-export * from './a11y-input';
-export * from './data-display';
-export * from './error-boundary';
-export * from './loading';
-export * from './responsive';
+// Core shadcn components
+export { Button, buttonVariants, type ButtonProps } from './button';
+export { Badge, badgeVariants, type BadgeProps } from './badge';
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './card';
+export { Avatar, AvatarImage, AvatarFallback } from './avatar';
+export { Skeleton, SkeletonText, SkeletonCard, SkeletonAvatar } from './skeleton';
+export { Input, SearchInput, inputVariants, type InputProps } from './input';
+export { Label } from './label';
+export { Textarea } from './textarea';
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
+} from './select';
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from './dialog';
+export { Checkbox } from './checkbox';
+export { Switch } from './switch';
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from './table';
+export { Progress } from './progress';
+export { Slider } from './slider';
+export { Separator } from './separator';
+export { ScrollArea, ScrollBar } from './scroll-area';
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip';
+export { Popover, PopoverTrigger, PopoverContent } from './popover';
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+} from './dropdown-menu';
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from './alert-dialog';
+export { Alert, AlertTitle, AlertDescription } from './alert';
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion';
+export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './collapsible';
+export { RadioGroup, RadioGroupItem } from './radio-group';
+export { HoverCard, HoverCardTrigger, HoverCardContent } from './hover-card';
+export { Sheet, SheetPortal, SheetOverlay, SheetTrigger, SheetClose, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription } from './sheet';
+export { Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandShortcut, CommandSeparator } from './command';
+export { Calendar } from './calendar';
+export { Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField, useFormField } from './form';
+export { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis } from './breadcrumb';
+export { Toaster } from './sonner';
+export { Toggle, toggleVariants } from './toggle';
+export { ToggleGroup, ToggleGroupItem } from './toggle-group';

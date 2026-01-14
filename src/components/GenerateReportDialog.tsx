@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Dialog, DialogHeader, DialogTitle, DialogContent, DialogFooter } from './ui/Dialog';
-import { Select } from './ui/Select';
-import { Input } from './ui/Input';
-import { Button } from './ui/Button';
+import { Dialog, DialogHeader, DialogTitle, DialogContent, DialogFooter } from '@/components/ui/dialog';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { ReportTemplate, Report, ReportFilters } from '@/types';
 import { format, subDays } from 'date-fns';
 

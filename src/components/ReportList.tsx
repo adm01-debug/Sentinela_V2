@@ -1,7 +1,7 @@
 import { Report } from '@/types';
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from './ui/Table';
-import { Badge } from './ui/Badge';
-import { Button } from './ui/Button';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Download, Trash2 } from 'lucide-react';
 import { Skeleton } from './Skeleton';
 import { format } from 'date-fns';

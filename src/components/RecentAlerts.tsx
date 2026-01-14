@@ -1,6 +1,6 @@
 import { useAlerts } from '@/hooks';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
-import { Badge } from './ui/Badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { AlertTriangle, AlertCircle, Info } from 'lucide-react';
 
 const severityIcons = { low: Info, medium: AlertCircle, high: AlertTriangle, critical: AlertTriangle };

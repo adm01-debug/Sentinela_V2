@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
-import { Avatar } from './ui/Avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 interface Employee { employee: string; productivity: number; }
 
