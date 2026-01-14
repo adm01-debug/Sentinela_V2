@@ -4,10 +4,21 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 
-interface Props { activities: Activity[]; isLoading?: boolean; }
+interface Props {
+  activities: Activity[];
+  isLoading?: boolean;
+}
 
 export const ActivityTable = ({ activities, isLoading }: Props) => {
-  if (isLoading) return <div className="space-y-2">{[1,2,3,4,5].map(i => <Skeleton key={i} height={48} />)}</div>;
+  if (isLoading) {
+    return (
+      <div className="space-y-2">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <Skeleton key={i} className="h-12 w-full" />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <Table>
@@ -21,13 +32,17 @@ export const ActivityTable = ({ activities, isLoading }: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {activities.map(a => (
+        {activities.map((a) => (
           <TableRow key={a.id}>
             <TableCell>{format(new Date(a.timestamp), 'HH:mm')}</TableCell>
             <TableCell className="font-medium">{a.application}</TableCell>
             <TableCell className="text-muted-foreground">{a.title}</TableCell>
             <TableCell>{Math.round(a.duration / 60)}min</TableCell>
-            <TableCell><Badge variant={a.productive ? 'success' : 'secondary'}>{a.productive ? 'Productive' : 'Unproductive'}</Badge></TableCell>
+            <TableCell>
+              <Badge variant={a.productive ? 'success' : 'secondary'}>
+                {a.productive ? 'Productive' : 'Unproductive'}
+              </Badge>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

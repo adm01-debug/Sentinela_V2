@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dialog } from './ui/Dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { format } from 'date-fns';
 
 interface Screenshot { id: string; url: string; thumbnailUrl: string; timestamp: string; }

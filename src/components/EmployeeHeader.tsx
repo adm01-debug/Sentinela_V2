@@ -1,7 +1,7 @@
 import { Employee } from '@/types';
-import { Avatar } from './ui/Avatar';
-import { Badge } from './ui/Badge';
-import { Button } from './ui/Button';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Edit, Trash2, Mail, Phone } from 'lucide-react';
 
 interface Props { employee: Employee; }
