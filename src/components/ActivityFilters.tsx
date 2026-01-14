@@ -1,6 +1,6 @@
-import { Input } from './ui/Input';
-import { Select } from './ui/Select';
-import { Button } from './ui/Button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 
 interface Props { filters: { startDate: string; endDate: string; employeeId?: string }; onChange: (f: any) => void; }
 

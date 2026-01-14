@@ -1,7 +1,7 @@
 import { Alert } from '@/types';
-import { Badge } from './ui/Badge';
-import { Button } from './ui/Button';
-import { Skeleton } from './Skeleton';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 
 interface Props { alerts: Alert[]; isLoading?: boolean; onAcknowledge: (id: string) => void; }
