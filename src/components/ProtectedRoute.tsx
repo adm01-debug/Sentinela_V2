@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth, User } from '@/hooks/useAuth';
 import { Loader2, ShieldAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -18,7 +18,7 @@ export function ProtectedRoute({
   requiredRoles = [],
   requiredPermissions = [],
 }: ProtectedRouteProps) {
-  const { user, isAdmin, isLoading, session } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
   const [hasRequiredRoles, setHasRequiredRoles] = useState<boolean | null>(null);
   const [isValidatingSession, setIsValidatingSession] = useState(true);
@@ -26,7 +26,7 @@ export function ProtectedRoute({
   // Validate session on mount and route change
   useEffect(() => {
     const validateSession = async () => {
-      if (!session) {
+      if (!isAuthenticated) {
         setIsValidatingSession(false);
         return;
       }
@@ -55,7 +55,7 @@ export function ProtectedRoute({
     };
 
     validateSession();
-  }, [session, location.pathname]);
+  }, [isAuthenticated, location.pathname]);
 
   // Check required roles
   useEffect(() => {
@@ -76,7 +76,7 @@ export function ProtectedRoute({
           return;
         }
 
-        const userRoles = data?.map(r => r.role) || [];
+        const userRoles = data?.map((r: { role: string }) => r.role) || [];
         const hasRole = requiredRoles.some(role => userRoles.includes(role));
         setHasRequiredRoles(hasRole);
       } catch {
@@ -100,11 +100,12 @@ export function ProtectedRoute({
   }
 
   // Not authenticated
-  if (!user || !session) {
+  if (!user || !isAuthenticated) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
   // Requires admin but user is not admin
+  const isAdmin = (user as User).isAdmin ?? false;
   if (requireAdmin && !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">

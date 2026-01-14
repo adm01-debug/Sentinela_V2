@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "../ui/Card";
-import { Badge } from "../ui/Badge";
+import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Activity, Clock, AlertTriangle } from "lucide-react";
 
 interface MonitoringCardProps {

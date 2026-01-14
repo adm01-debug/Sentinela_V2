@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge } from "../ui/Badge";
+import { Badge } from "@/components/ui/badge";
 import { Trophy, Star, Award, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 

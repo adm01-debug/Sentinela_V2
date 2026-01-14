@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Home, ArrowLeft } from "lucide-react";
 
@@ -17,12 +17,12 @@ export function NotFound({
       <h2 className="text-2xl font-semibold mb-2">{title}</h2>
       <p className="text-muted-foreground mb-8 max-w-md">{message}</p>
       <div className="flex gap-4">
-        <Button variant="outline" onClick={() => history.back()}>
+        <Button variant="outline" onClick={() => window.history.back()}>
           <ArrowLeft className="w-4 h-4 mr-2" />
           Go back
         </Button>
         <Button asChild>
-          <Link href="/dashboard">
+          <Link to="/dashboard">
             <Home className="w-4 h-4 mr-2" />
             Dashboard
           </Link>
