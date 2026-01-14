@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "../ui/Card";
-import { Button } from "../ui/Button";
-import { Input } from "../ui/Input";
-import { Textarea } from "../ui/Textarea";
-import { Label } from "../ui/Label";
+import React, { useState, ChangeEvent } from "react";
+import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 interface TemplateEditorProps {
   initialTemplate?: { name: string; content: string; variables: string[] };
@@ -29,11 +29,20 @@ export function TemplateEditor({ initialTemplate, onSave }: TemplateEditorProps)
       <CardContent className="space-y-4">
         <div>
           <Label>Template Name</Label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter template name" />
+          <Input 
+            value={name} 
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)} 
+            placeholder="Enter template name" 
+          />
         </div>
         <div>
           <Label>Content</Label>
-          <Textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Enter template content. Use {{variable}} for dynamic values." rows={6} />
+          <Textarea 
+            value={content} 
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)} 
+            placeholder="Enter template content. Use {{variable}} for dynamic values." 
+            rows={6} 
+          />
         </div>
         {variables.length > 0 && (
           <div>
@@ -47,7 +56,9 @@ export function TemplateEditor({ initialTemplate, onSave }: TemplateEditorProps)
         )}
       </CardContent>
       <CardFooter>
-        <Button onClick={() => onSave({ name, content, variables })} disabled={!name || !content}>Save Template</Button>
+        <Button onClick={() => onSave({ name, content, variables })} disabled={!name || !content}>
+          Save Template
+        </Button>
       </CardFooter>
     </Card>
   );

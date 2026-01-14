@@ -1,9 +1,8 @@
-import { memo, useCallback } from 'react';
+import React, { memo, useCallback, Component, ReactNode } from 'react';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { AlertTriangle, RefreshCw, WifiOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ErrorBoundary } from './ErrorBoundary';
 
 interface QueryErrorFallbackProps {
   error: Error;
@@ -44,53 +43,12 @@ function QueryErrorFallbackComponent({ error, resetErrorBoundary }: QueryErrorFa
 
 const QueryErrorFallback = memo(QueryErrorFallbackComponent);
 
-interface QueryErrorBoundaryProps {
-  children: React.ReactNode;
-}
-
-export function QueryErrorBoundary({ children }: QueryErrorBoundaryProps) {
-  const { reset } = useQueryErrorResetBoundary();
-
-  return (
-    <ErrorBoundary
-      onError={() => {
-        // Could log to error tracking service
-      }}
-      fallback={undefined}
-    >
-      <QueryErrorBoundaryInner reset={reset}>
-        {children}
-      </QueryErrorBoundaryInner>
-    </ErrorBoundary>
-  );
-}
-
-// Inner component to handle the reset
-function QueryErrorBoundaryInner({ 
-  children, 
-  reset 
-}: { 
-  children: React.ReactNode; 
-  reset: () => void;
-}) {
-  const handleReset = useCallback(() => {
-    reset();
-    window.location.reload();
-  }, [reset]);
-
-  return (
-    <ErrorBoundaryWithReset onReset={handleReset}>
-      {children}
-    </ErrorBoundaryWithReset>
-  );
-}
-
-// Simple error boundary with reset capability
-class ErrorBoundaryWithReset extends React.Component<
-  { children: React.ReactNode; onReset: () => void },
+// Error boundary class component
+class ErrorBoundaryWithReset extends Component<
+  { children: ReactNode; onReset: () => void },
   { hasError: boolean; error: Error | null }
 > {
-  constructor(props: { children: React.ReactNode; onReset: () => void }) {
+  constructor(props: { children: ReactNode; onReset: () => void }) {
     super(props);
     this.state = { hasError: false, error: null };
   }
@@ -118,4 +76,20 @@ class ErrorBoundaryWithReset extends React.Component<
   }
 }
 
-import React from 'react';
+interface QueryErrorBoundaryProps {
+  children: ReactNode;
+}
+
+export function QueryErrorBoundary({ children }: QueryErrorBoundaryProps) {
+  const { reset } = useQueryErrorResetBoundary();
+
+  const handleReset = useCallback(() => {
+    reset();
+  }, [reset]);
+
+  return (
+    <ErrorBoundaryWithReset onReset={handleReset}>
+      {children}
+    </ErrorBoundaryWithReset>
+  );
+}

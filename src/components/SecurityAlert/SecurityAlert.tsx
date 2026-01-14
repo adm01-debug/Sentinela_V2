@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, AlertTitle, AlertDescription } from "../ui/Alert";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { ShieldAlert, ShieldCheck, AlertTriangle } from "lucide-react";
 
 interface SecurityAlertProps {
@@ -12,10 +12,10 @@ interface SecurityAlertProps {
 
 export function SecurityAlert({ severity, title, description, timestamp, onDismiss }: SecurityAlertProps) {
   const severityConfig = {
-    critical: { icon: ShieldAlert, variant: "destructive" as const, bg: "bg-red-50" },
-    high: { icon: AlertTriangle, variant: "destructive" as const, bg: "bg-orange-50" },
-    medium: { icon: AlertTriangle, variant: "default" as const, bg: "bg-yellow-50" },
-    low: { icon: ShieldCheck, variant: "default" as const, bg: "bg-blue-50" }
+    critical: { icon: ShieldAlert, variant: "destructive" as const, bg: "bg-red-50 dark:bg-red-950/20" },
+    high: { icon: AlertTriangle, variant: "destructive" as const, bg: "bg-orange-50 dark:bg-orange-950/20" },
+    medium: { icon: AlertTriangle, variant: "default" as const, bg: "bg-yellow-50 dark:bg-yellow-950/20" },
+    low: { icon: ShieldCheck, variant: "default" as const, bg: "bg-blue-50 dark:bg-blue-950/20" }
   };
   const config = severityConfig[severity];
   const Icon = config.icon;

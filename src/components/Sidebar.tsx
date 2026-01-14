@@ -1,8 +1,7 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import { prefetchRoute } from '@/App';
+import { prefetchRoute } from '@/lib/prefetch';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -31,7 +30,6 @@ import {
   LogOut,
   ChevronDown,
   Activity,
-  Database,
   Briefcase,
   Zap,
   Lock,
@@ -225,7 +223,6 @@ const NavGroupComponent = memo(function NavGroupComponent({
   const Icon = group.icon;
   const hasActiveItem = group.items.some(item => item.href === activeHref);
 
-  // For single-item groups like Dashboard, render just the item
   if (group.items.length === 1) {
     return (
       <NavItemComponent
@@ -327,10 +324,9 @@ const NavGroupComponent = memo(function NavGroupComponent({
 
 function SidebarComponent() {
   const location = useLocation();
-  const { signOut } = useAuth();
+  const { logout } = useAuth();
   const { isCollapsed, toggle } = useSidebarStore();
   
-  // Track which groups are open
   const [openGroups, setOpenGroups] = useState<Set<string>>(() => {
     const initial = new Set<string>();
     navigationGroups.forEach(group => {
@@ -342,8 +338,8 @@ function SidebarComponent() {
   });
 
   const handleSignOut = useCallback(async () => {
-    await signOut();
-  }, [signOut]);
+    await logout();
+  }, [logout]);
 
   const handleToggle = useCallback(() => {
     toggle();
@@ -371,7 +367,6 @@ function SidebarComponent() {
         'shadow-lg'
       )}
     >
-      {/* Header with Logo */}
       <div className={cn(
         'flex h-16 items-center border-b px-4',
         isCollapsed ? 'justify-center' : 'justify-between'
@@ -409,7 +404,6 @@ function SidebarComponent() {
         </Button>
       </div>
 
-      {/* Navigation */}
       <ScrollArea className="flex-1 py-4">
         <nav className="space-y-2 px-3">
           {navigationGroups.map((group) => (
@@ -425,7 +419,6 @@ function SidebarComponent() {
         </nav>
       </ScrollArea>
 
-      {/* Footer */}
       <div className="border-t p-3">
         <Tooltip delayDuration={0}>
           <TooltipTrigger asChild>

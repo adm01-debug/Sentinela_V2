@@ -16,8 +16,10 @@ const COLORS = [
 
 export function ViolationsByEmployeeChart({ violations }: ViolationsByEmployeeChartProps) {
   const data = useMemo(() => {
+    // Use employee?.name or employee_id as fallback since SecurityViolation uses employee relation
     const employeeCounts = violations.reduce((acc, v) => {
-      acc[v.employee_name] = (acc[v.employee_name] || 0) + 1;
+      const name = v.employee?.name || v.employee_id || 'Unknown';
+      acc[name] = (acc[name] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
 

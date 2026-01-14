@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, CardHeader, CardContent, CardTitle } from "../ui/Card";
-import { Calendar } from "../ui/Calendar";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
 
 interface ScheduleEvent {
   date: Date;
@@ -14,8 +14,6 @@ interface ScheduleCalendarProps {
 }
 
 export function ScheduleCalendar({ events, onDateSelect }: ScheduleCalendarProps) {
-  const eventDates = events.map(e => e.date.toDateString());
-
   return (
     <Card>
       <CardHeader>
@@ -24,7 +22,7 @@ export function ScheduleCalendar({ events, onDateSelect }: ScheduleCalendarProps
       <CardContent>
         <Calendar
           mode="single"
-          onSelect={(date) => date && onDateSelect?.(date)}
+          onSelect={(date: Date | undefined) => date && onDateSelect?.(date)}
           modifiers={{ event: events.map(e => e.date) }}
           modifiersStyles={{ event: { backgroundColor: "#e0e7ff", borderRadius: "50%" } }}
         />
