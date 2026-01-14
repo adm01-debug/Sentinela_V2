@@ -98,3 +98,4 @@ export { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbP
 export { Toaster } from './sonner';
 export { Toggle, toggleVariants } from './toggle';
 export { ToggleGroup, ToggleGroupItem } from './toggle-group';
+export { LoadingSpinner } from './LoadingSpinner';
