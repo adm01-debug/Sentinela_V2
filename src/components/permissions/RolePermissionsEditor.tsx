@@ -176,10 +176,10 @@ export function RolePermissionsEditor() {
 
   const handleReset = () => {
     if (rolePermissions.length > 0) {
-      const permIds = new Set(rolePermissions.map((rp: any) => rp.permission_id));
+      const permIds = new Set<string>(rolePermissions.map((rp: { permission_id: string }) => rp.permission_id));
       setSelectedPermissions(permIds);
     } else {
-      setSelectedPermissions(new Set());
+      setSelectedPermissions(new Set<string>());
     }
     setHasChanges(false);
   };

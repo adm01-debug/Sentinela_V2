@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import type { EmployeeWithDetails } from '@/hooks/useEmployees';
+import type { EmployeeWithDetails, EmployeeDevice } from '@/hooks/useEmployees';
 import { statusConfig, getInitials } from '@/hooks/useEmployeesPage';
 
 interface Team {
@@ -144,7 +144,7 @@ function EmployeeTableComponent({
       render: (employee) => (
         <div className="flex flex-wrap gap-1">
           {employee.devices && employee.devices.length > 0 ? (
-            employee.devices.slice(0, 2).map((device) => {
+            employee.devices.slice(0, 2).map((device: EmployeeDevice) => {
               const DeviceIcon = deviceTypeIcons[device.device_type as keyof typeof deviceTypeIcons] || Monitor;
               return (
                 <TooltipProvider key={device.id}>

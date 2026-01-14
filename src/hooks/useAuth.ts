@@ -2,9 +2,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '@/services';
 import { useAuthStore } from '@/stores';
 
-// ============================================================
-// HOOK PRINCIPAL - useAuth
-// ============================================================
 export interface User {
   id: string;
   email: string;
@@ -17,8 +14,18 @@ export interface User {
   updatedAt?: string;
 }
 
+export interface Session {
+  id: string;
+  userId: string;
+  userAgent?: string;
+  ipAddress?: string;
+  createdAt: string;
+  expiresAt: string;
+}
+
 export interface UseAuthReturn {
   user: User | null;
+  session: Session | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
@@ -31,13 +38,10 @@ export function useAuth(): UseAuthReturn {
   const { user, isAuthenticated, setUser, setToken, logout: storeLogout } = useAuthStore();
   const queryClient = useQueryClient();
 
-  const { isLoading, error, refetch } = useQuery({
+  const { isLoading, error, refetch, data } = useQuery({
     queryKey: ['current-user'],
     queryFn: () => authService.me(),
     enabled: isAuthenticated,
-    onSuccess: (data) => {
-      if (data) setUser(data);
-    },
   });
 
   const loginMutation = useMutation({
@@ -59,6 +63,7 @@ export function useAuth(): UseAuthReturn {
 
   return {
     user: user as User | null,
+    session: null,
     isAuthenticated,
     isLoading: isLoading || loginMutation.isPending || logoutMutation.isPending,
     error: error?.message || loginMutation.error?.message || null,
@@ -73,10 +78,6 @@ export function useAuth(): UseAuthReturn {
     },
   };
 }
-
-// ============================================================
-// HOOKS ESPECÍFICOS (mantidos para retrocompatibilidade)
-// ============================================================
 
 export const useLogin = () => {
   const { setUser, setToken } = useAuthStore();
