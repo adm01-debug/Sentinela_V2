@@ -19,5 +19,9 @@ export function Providers({ children }: ProvidersProps) {
   );
 }
 
+// Export all providers
 export { QueryProvider } from "./QueryProvider";
 export { ThemeProvider } from "./ThemeProvider";
+export { AnalyticsProvider } from "./AnalyticsProvider";
+export { FeatureFlagsProvider } from "./FeatureFlagsProvider";
+export { AppProviders } from "./AppProviders";
