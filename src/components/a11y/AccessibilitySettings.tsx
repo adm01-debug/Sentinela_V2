@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useHighContrast } from '@/hooks/useHighContrast';
-import { useColorBlindMode, ColorBlindMode } from '@/hooks/useColorBlindMode';
+import { useColorBlindMode, type ColorBlindMode } from '@/hooks/useColorBlindMode';
 import { Settings, Eye, Contrast, Volume2, Keyboard } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';

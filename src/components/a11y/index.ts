@@ -15,7 +15,5 @@ export {
 } from './KeyboardShortcuts';
 
 // Settings
-export { 
-  AccessibilitySettings,
-  type AccessibilitySettingsData,
-} from './AccessibilitySettings';
+export { AccessibilitySettings } from './AccessibilitySettings';
+export type { AccessibilitySettingsProps } from './AccessibilitySettings';

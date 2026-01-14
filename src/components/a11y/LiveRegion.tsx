@@ -16,4 +16,13 @@ export const LiveRegion: React.FC<LiveRegionProps> = ({ message, politeness = 'p
   </div>
 );
 
+// Alias for AlertRegion (assertive by default)
+interface AlertRegionProps {
+  message: string;
+}
+
+export const AlertRegion: React.FC<AlertRegionProps> = ({ message }) => (
+  <LiveRegion message={message} politeness="assertive" />
+);
+
 export default LiveRegion;
