@@ -9,4 +9,7 @@ export const VisuallyHidden: React.FC<VisuallyHiddenProps> = ({ children, as: Co
   <Component className="sr-only">{children}</Component>
 );
 
+// Alias for SrOnly
+export const SrOnly = VisuallyHidden;
+
 export default VisuallyHidden;

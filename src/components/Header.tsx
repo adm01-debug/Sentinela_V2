@@ -4,8 +4,20 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useUIStore } from '@/stores/uiStore';
 
-export const Header = memo(function Header() {
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+export const Header = memo(function Header({ onMenuClick }: HeaderProps) {
   const { toggleSidebarCollapse } = useUIStore();
+
+  const handleMenuClick = () => {
+    if (onMenuClick) {
+      onMenuClick();
+    } else {
+      toggleSidebarCollapse();
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:px-6">
@@ -13,7 +25,7 @@ export const Header = memo(function Header() {
         variant="ghost"
         size="icon"
         className="lg:hidden"
-        onClick={toggleSidebarCollapse}
+        onClick={handleMenuClick}
       >
         <Menu className="h-5 w-5" />
         <span className="sr-only">Toggle Menu</span>

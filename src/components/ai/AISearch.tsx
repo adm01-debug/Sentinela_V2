@@ -30,6 +30,47 @@ import {
 } from '@/components/ui/dialog';
 
 // ============================================
+// WEB SPEECH API TYPES
+// ============================================
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionResultList {
+  length: number;
+  [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionResult {
+  isFinal: boolean;
+  [index: number]: SpeechRecognitionAlternative;
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onend: (() => void) | null;
+  onerror: ((event: Event) => void) | null;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition?: new () => SpeechRecognition;
+    webkitSpeechRecognition?: new () => SpeechRecognition;
+  }
+}
+
+// ============================================
 // NATURAL LANGUAGE SEARCH COMPONENT
 // ============================================
 interface SearchResult {
@@ -95,22 +136,22 @@ export function NaturalLanguageSearch({
 
   // Initialize speech recognition
   useEffect(() => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = (window as Window & typeof globalThis & { 
-        webkitSpeechRecognition?: typeof globalThis.SpeechRecognition 
-      }).webkitSpeechRecognition || window.SpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
+    const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognitionClass) {
+      recognitionRef.current = new SpeechRecognitionClass();
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = 'pt-BR';
 
       recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-        const transcript = Array.from(event.results)
-          .map(result => result[0].transcript)
-          .join('');
+        const results = event.results;
+        let transcript = '';
+        for (let i = 0; i < results.length; i++) {
+          transcript += results[i][0].transcript;
+        }
         setQuery(transcript);
         
-        if (event.results[0].isFinal) {
+        if (results[0]?.isFinal) {
           handleSearch(transcript);
           onVoiceSearch?.(transcript);
         }
@@ -499,31 +540,19 @@ export function CommandPalette({
         </DialogHeader>
         
         <div className="flex items-center border-b px-3">
-          <Search className="h-4 w-4 text-muted-foreground mr-2" />
-          <input
+          <Search className="h-4 w-4 text-muted-foreground shrink-0" />
+          <Input
             ref={inputRef}
             value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setSelectedIndex(0);
-            }}
+            onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Digite um comando ou busque..."
-            className="flex-1 py-3 bg-transparent border-0 focus:outline-none text-sm"
+            className="border-0 focus-visible:ring-0 px-3"
           />
-          {query && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6"
-              onClick={() => setQuery('')}
-            >
-              <X className="h-3 w-3" />
-            </Button>
-          )}
+          <Badge variant="outline" className="shrink-0 text-xs">ESC</Badge>
         </div>
 
-        <div className="max-h-[400px] overflow-y-auto p-2">
+        <div className="max-h-[300px] overflow-y-auto p-2">
           {Object.entries(groupedActions).map(([category, categoryActions]) => (
             <div key={category} className="mb-2">
               <p className="px-2 py-1 text-xs text-muted-foreground font-medium">
@@ -531,37 +560,30 @@ export function CommandPalette({
               </p>
               {categoryActions.map((action) => {
                 const currentIndex = flatIndex++;
-                const Icon = action.icon || Sparkles;
+                const Icon = action.icon;
                 return (
                   <button
                     key={action.id}
                     className={cn(
-                      'w-full flex items-center gap-3 px-2 py-2 rounded-md text-left',
-                      currentIndex === selectedIndex && 'bg-accent'
+                      'w-full flex items-center justify-between gap-2 px-2 py-2 rounded-md hover:bg-accent',
+                      selectedIndex === currentIndex && 'bg-accent'
                     )}
                     onClick={() => {
                       action.action();
                       onOpenChange(false);
                     }}
+                    onMouseEnter={() => setSelectedIndex(currentIndex)}
                   >
-                    <Icon className="h-4 w-4 text-muted-foreground" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium">{action.title}</p>
-                      {action.description && (
-                        <p className="text-xs text-muted-foreground truncate">
-                          {action.description}
-                        </p>
-                      )}
+                    <div className="flex items-center gap-2">
+                      {Icon && <Icon className="h-4 w-4 text-muted-foreground" />}
+                      <span className="text-sm">{action.title}</span>
                     </div>
                     {action.shortcut && (
                       <div className="flex gap-1">
                         {action.shortcut.map((key, i) => (
-                          <kbd
-                            key={i}
-                            className="px-1.5 py-0.5 text-[10px] rounded bg-muted border text-muted-foreground"
-                          >
+                          <Badge key={i} variant="outline" className="text-xs px-1.5">
                             {key}
-                          </kbd>
+                          </Badge>
                         ))}
                       </div>
                     )}
@@ -572,32 +594,14 @@ export function CommandPalette({
           ))}
 
           {filteredActions.length === 0 && (
-            <div className="py-8 text-center">
-              <p className="text-sm text-muted-foreground">
-                Nenhum comando encontrado
-              </p>
+            <div className="py-6 text-center text-sm text-muted-foreground">
+              Nenhum comando encontrado
             </div>
           )}
-        </div>
-
-        <div className="flex items-center justify-between px-3 py-2 border-t text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <kbd className="px-1.5 py-0.5 rounded bg-muted border">↑↓</kbd>
-            <span>navegar</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <kbd className="px-1.5 py-0.5 rounded bg-muted border">Enter</kbd>
-            <span>selecionar</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <kbd className="px-1.5 py-0.5 rounded bg-muted border">Esc</kbd>
-            <span>fechar</span>
-          </div>
         </div>
       </DialogContent>
     </Dialog>
   );
 }
 
-// Export types
-export type { SearchResult, SearchSuggestion, CommandAction };
+export default NaturalLanguageSearch;

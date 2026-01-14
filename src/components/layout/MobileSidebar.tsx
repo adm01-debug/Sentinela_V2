@@ -143,7 +143,7 @@ interface MobileSidebarProps {
 
 function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
   const location = useLocation();
-  const { signOut } = useAuth();
+  const { logout } = useAuth();
   
   const [openGroups, setOpenGroups] = useState<Set<string>>(() => {
     const initial = new Set<string>();
@@ -156,9 +156,9 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
   });
 
   const handleSignOut = useCallback(async () => {
-    await signOut();
+    await logout();
     onNavigate?.();
-  }, [signOut, onNavigate]);
+  }, [logout, onNavigate]);
 
   const toggleGroup = useCallback((groupId: string) => {
     setOpenGroups(prev => {
