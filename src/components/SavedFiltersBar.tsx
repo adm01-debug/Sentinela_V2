@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -22,8 +22,6 @@ import {
   Plus, 
   MoreHorizontal, 
   Trash2, 
-  Check,
-  Filter,
   Loader2
 } from 'lucide-react';
 import { useSavedFilters, SavedFilter } from '@/hooks/useSavedFilters';
@@ -31,8 +29,8 @@ import { cn } from '@/lib/utils';
 
 interface SavedFiltersBarProps {
   module: string;
-  currentFilters: Record<string, any>;
-  onApplyFilter: (filters: Record<string, any>) => void;
+  currentFilters: Record<string, unknown>;
+  onApplyFilter: (filters: Record<string, unknown>) => void;
   className?: string;
 }
 
@@ -46,22 +44,30 @@ function SavedFiltersBarBase({
     filters,
     defaultFilter,
     isLoading,
-    createFilter,
+    saveFilter,
     deleteFilter,
-    setAsDefault,
-    useFilter,
-  } = useSavedFilters(module);
+    setDefault,
+    applyFilter,
+    isSaving,
+  } = useSavedFilters({ entityType: module, onApply: onApplyFilter });
 
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [newFilterName, setNewFilterName] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
+  // Apply default filter on mount
+  useEffect(() => {
+    if (defaultFilter && !selectedFilter) {
+      setSelectedFilter(defaultFilter.id);
+      onApplyFilter(defaultFilter.filters);
+    }
+  }, [defaultFilter]);
+
   const handleSaveFilter = () => {
     if (!newFilterName.trim()) return;
     
-    createFilter.mutate({
+    saveFilter({
       name: newFilterName,
-      module,
       filters: currentFilters,
     }, {
       onSuccess: () => {
@@ -73,8 +79,7 @@ function SavedFiltersBarBase({
 
   const handleApplyFilter = (filter: SavedFilter) => {
     setSelectedFilter(filter.id);
-    onApplyFilter(filter.filters);
-    useFilter.mutate(filter.id);
+    applyFilter(filter);
   };
 
   const hasActiveFilters = Object.values(currentFilters).some(v => v !== '' && v !== null && v !== undefined);
@@ -89,7 +94,7 @@ function SavedFiltersBarBase({
 
   return (
     <div className={cn('flex items-center gap-2 flex-wrap', className)}>
-      {/* Filtros salvos */}
+      {/* Saved filters */}
       {filters.map((filter) => (
         <div key={filter.id} className="flex items-center">
           <Button
@@ -113,7 +118,7 @@ function SavedFiltersBarBase({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {!filter.is_default && (
-                <DropdownMenuItem onClick={() => setAsDefault.mutate(filter.id)}>
+                <DropdownMenuItem onClick={() => setDefault(filter.id)}>
                   <Star className="h-4 w-4 mr-2" />
                   Definir como padrão
                 </DropdownMenuItem>
@@ -121,7 +126,7 @@ function SavedFiltersBarBase({
               <DropdownMenuSeparator />
               <DropdownMenuItem 
                 className="text-destructive"
-                onClick={() => deleteFilter.mutate(filter.id)}
+                onClick={() => deleteFilter(filter.id)}
               >
                 <Trash2 className="h-4 w-4 mr-2" />
                 Excluir
@@ -131,7 +136,7 @@ function SavedFiltersBarBase({
         </div>
       ))}
 
-      {/* Botão para salvar filtro atual */}
+      {/* Save current filter button */}
       {hasActiveFilters && (
         <Button
           variant="ghost"
@@ -143,7 +148,7 @@ function SavedFiltersBarBase({
         </Button>
       )}
 
-      {/* Limpar seleção */}
+      {/* Clear selection */}
       {selectedFilter && (
         <Button
           variant="ghost"
@@ -157,7 +162,7 @@ function SavedFiltersBarBase({
         </Button>
       )}
 
-      {/* Dialog para salvar novo filtro */}
+      {/* Save filter dialog */}
       <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
         <DialogContent>
           <DialogHeader>
@@ -197,9 +202,9 @@ function SavedFiltersBarBase({
             </Button>
             <Button 
               onClick={handleSaveFilter}
-              disabled={!newFilterName.trim() || createFilter.isPending}
+              disabled={!newFilterName.trim() || isSaving}
             >
-              {createFilter.isPending && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+              {isSaving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
               Salvar
             </Button>
           </DialogFooter>
@@ -209,5 +214,4 @@ function SavedFiltersBarBase({
   );
 }
 
-// Memo wrappers
 export const SavedFiltersBar = memo(SavedFiltersBarBase);

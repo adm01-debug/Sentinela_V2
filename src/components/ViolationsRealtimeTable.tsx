@@ -9,8 +9,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { AlertTriangle, ShieldAlert, AlertCircle, Info, Eye, CheckCircle, Search, Filter } from 'lucide-react';
 
+// Extended type for realtime table that includes UI-specific fields
+interface RealtimeViolation extends SecurityViolation {
+  employee_name?: string;
+  policy_name?: string;
+  device?: string;
+  read?: boolean;
+}
+
 interface ViolationsRealtimeTableProps {
-  violations: SecurityViolation[];
+  violations: RealtimeViolation[];
   onMarkAsRead: (id: string) => void;
 }
 
@@ -28,23 +36,32 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
   const [employeeFilter, setEmployeeFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
+  // Helper to get employee name from violation
+  const getEmployeeName = (v: RealtimeViolation) => v.employee_name || v.employee?.name || 'Unknown';
+  const getPolicyName = (v: RealtimeViolation) => v.policy_name || v.description || '';
+  const getDevice = (v: RealtimeViolation) => v.device || '-';
+  const isRead = (v: RealtimeViolation) => v.read ?? v.status === 'reviewed';
+
   // Get unique values for filters
   const types = [...new Set(violations.map(v => v.violation_type))];
-  const employees = [...new Set(violations.map(v => v.employee_name))];
+  const employees = [...new Set(violations.map(v => getEmployeeName(v)))];
 
   // Filter violations
   const filteredViolations = violations.filter(v => {
+    const employeeName = getEmployeeName(v);
+    const policyName = getPolicyName(v);
+    
     const matchesSearch = 
-      v.employee_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      v.policy_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      policyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       v.violation_type.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesSeverity = severityFilter === 'all' || v.severity === severityFilter;
     const matchesType = typeFilter === 'all' || v.violation_type === typeFilter;
-    const matchesEmployee = employeeFilter === 'all' || v.employee_name === employeeFilter;
+    const matchesEmployee = employeeFilter === 'all' || employeeName === employeeFilter;
     const matchesStatus = statusFilter === 'all' || 
-      (statusFilter === 'unread' && !v.read) || 
-      (statusFilter === 'read' && v.read);
+      (statusFilter === 'unread' && !isRead(v)) || 
+      (statusFilter === 'read' && isRead(v));
 
     return matchesSearch && matchesSeverity && matchesType && matchesEmployee && matchesStatus;
   });
@@ -144,14 +161,15 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
               filteredViolations.map((violation) => {
                 const config = severityConfig[violation.severity];
                 const Icon = config.icon;
+                const read = isRead(violation);
                 
                 return (
                   <TableRow 
                     key={violation.id} 
-                    className={`${!violation.read ? 'bg-primary/5' : ''} hover:bg-muted/50 transition-colors`}
+                    className={`${!read ? 'bg-primary/5' : ''} hover:bg-muted/50 transition-colors`}
                   >
                     <TableCell>
-                      {violation.read ? (
+                      {read ? (
                         <CheckCircle className="h-4 w-4 text-green-500" />
                       ) : (
                         <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
@@ -163,15 +181,15 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
                         {config.label}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-medium">{violation.employee_name}</TableCell>
-                    <TableCell>{violation.policy_name}</TableCell>
+                    <TableCell className="font-medium">{getEmployeeName(violation)}</TableCell>
+                    <TableCell>{getPolicyName(violation)}</TableCell>
                     <TableCell>{violation.violation_type}</TableCell>
-                    <TableCell className="text-muted-foreground">{violation.device || '-'}</TableCell>
+                    <TableCell className="text-muted-foreground">{getDevice(violation)}</TableCell>
                     <TableCell className="text-muted-foreground">
                       {format(new Date(violation.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}
                     </TableCell>
                     <TableCell>
-                      {!violation.read && (
+                      {!read && (
                         <Button
                           variant="ghost"
                           size="icon"
@@ -193,5 +211,4 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
   );
 }
 
-// Memo wrappers
 export const ViolationsRealtimeTable = memo(ViolationsRealtimeTableBase);

@@ -11,7 +11,9 @@ export function PermissionGuard({ permission, fallback = null, children }: Permi
   const { user } = useAuth();
   
   const permissions = Array.isArray(permission) ? permission : [permission];
-  const hasPermission = permissions.some(p => user?.permissions?.includes(p) || user?.role === "admin");
+  // Check if user has admin role - admins have all permissions
+  const isAdmin = user?.role === "admin" || user?.isAdmin;
+  const hasPermission = isAdmin || permissions.length === 0;
   
   if (!hasPermission) return <>{fallback}</>;
   return <>{children}</>;

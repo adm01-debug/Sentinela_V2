@@ -15,7 +15,8 @@ export function PolicyGate({ children }: PolicyGateProps) {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
-  const employeeName = user?.user_metadata?.full_name || user?.email || 'Funcionário';
+  // Get employee name from user data - handle different possible structures
+  const employeeName = user?.name || user?.email || 'Funcionário';
 
   const isToday = (date: Date) => {
     const today = new Date();
@@ -36,14 +37,13 @@ export function PolicyGate({ children }: PolicyGateProps) {
 
       if (!error && data && data.length > 0) {
         const exemption = data[0];
-        // Check if exemption has expired
         if (exemption.expires_at) {
           const expiresAt = new Date(exemption.expires_at);
           if (expiresAt < new Date()) {
-            return false; // Expired
+            return false;
           }
         }
-        return true; // Valid exemption
+        return true;
       }
       return false;
     } catch (err) {
@@ -59,7 +59,6 @@ export function PolicyGate({ children }: PolicyGateProps) {
     }
 
     try {
-      // First check if user is exempt
       const exempt = await checkExemption();
       setIsExempt(exempt);
 
@@ -68,7 +67,6 @@ export function PolicyGate({ children }: PolicyGateProps) {
         return;
       }
 
-      // If not exempt, check for daily acknowledgment
       const { data, error } = await supabase
         .from('policy_acknowledgments')
         .select('id, acknowledged_at')
@@ -98,7 +96,6 @@ export function PolicyGate({ children }: PolicyGateProps) {
     setHasAcknowledgedToday(true);
   };
 
-  // Loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -110,17 +107,14 @@ export function PolicyGate({ children }: PolicyGateProps) {
     );
   }
 
-  // User is exempt - grant access
   if (isExempt) {
     return <>{children}</>;
   }
 
-  // Block access if not acknowledged today
   if (hasAcknowledgedToday === false) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="max-w-lg w-full">
-          {/* Blocked Access Card */}
           <Card className="border-destructive/50 bg-destructive/5">
             <CardContent className="pt-8 pb-8">
               <div className="text-center mb-6">
@@ -164,7 +158,6 @@ export function PolicyGate({ children }: PolicyGateProps) {
             </CardContent>
           </Card>
 
-          {/* Footer */}
           <p className="text-center text-xs text-muted-foreground mt-4">
             Em caso de dúvidas, entre em contato com o departamento de TI.
           </p>
@@ -173,6 +166,5 @@ export function PolicyGate({ children }: PolicyGateProps) {
     );
   }
 
-  // Access granted
   return <>{children}</>;
 }

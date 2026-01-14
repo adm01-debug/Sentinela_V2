@@ -90,7 +90,7 @@ export const SessionPlayback = memo(() => {
         .order('recorded_at', { ascending: false });
       
       if (data) {
-        const unique = [...new Set(data.map(d => d.employee_name))];
+        const unique = [...new Set(data.map((d: { employee_name: string }) => d.employee_name))] as string[];
         setEmployees(unique);
         if (unique.length > 0 && !selectedEmployee) {
           setSelectedEmployee(unique[0]);
@@ -120,10 +120,17 @@ export const SessionPlayback = memo(() => {
     
     if (data) {
       // Parse events JSONB - handle unknown type from Supabase
-      const parsed = data.map(d => ({
+      const parsed = data.map((d: Record<string, unknown>) => ({
         ...d,
-        events: Array.isArray(d.events) ? (d.events as unknown as SessionEvent[]) : []
-      }));
+        id: d.id as string,
+        employee_name: d.employee_name as string,
+        device: d.device as string | null,
+        screenshot_url: d.screenshot_url as string,
+        app_name: d.app_name as string | null,
+        window_title: d.window_title as string | null,
+        recorded_at: d.recorded_at as string,
+        events: Array.isArray(d.events) ? (d.events as SessionEvent[]) : []
+      })) as SessionRecording[];
       setRecordings(parsed);
       setCurrentIndex(0);
     }
