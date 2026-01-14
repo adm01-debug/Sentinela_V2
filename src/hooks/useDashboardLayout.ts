@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useState, useCallback, useMemo } from 'react';
 
 export interface DashboardWidget {
   id: string;
@@ -9,6 +10,8 @@ export interface DashboardWidget {
   title: string;
   position: { x: number; y: number; w: number; h: number };
   config?: Record<string, unknown>;
+  visible?: boolean;
+  size?: 'small' | 'medium' | 'large';
 }
 
 export interface DashboardLayout {
@@ -19,10 +22,20 @@ export interface DashboardLayout {
   updated_at: string;
 }
 
+const DEFAULT_WIDGETS: DashboardWidget[] = [
+  { id: 'employees', type: 'employees', title: 'Funcionários', position: { x: 0, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
+  { id: 'alerts', type: 'alerts', title: 'Alertas', position: { x: 1, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
+  { id: 'productivity', type: 'productivity', title: 'Produtividade', position: { x: 2, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
+  { id: 'activity', type: 'activity', title: 'Atividade', position: { x: 0, y: 1, w: 2, h: 1 }, visible: true, size: 'large' },
+];
+
 export function useDashboardLayout() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [localWidgets, setLocalWidgets] = useState<DashboardWidget[] | null>(null);
 
-  return useQuery({
+  const query = useQuery({
     queryKey: queryKeys.dashboard.layout(),
     queryFn: async () => {
       if (!user?.id) return null;
@@ -39,6 +52,81 @@ export function useDashboardLayout() {
     enabled: !!user?.id,
     ...queryPresets.config,
   });
+
+  const widgets = useMemo(() => {
+    if (localWidgets) return localWidgets;
+    if (query.data?.widgets) return query.data.widgets;
+    return DEFAULT_WIDGETS;
+  }, [localWidgets, query.data]);
+
+  const saveMutation = useMutation({
+    mutationFn: async (newWidgets: DashboardWidget[]) => {
+      if (!user?.id) throw new Error('User not authenticated');
+
+      const { data: existing } = await supabase
+        .from('dashboard_layouts')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (existing) {
+        const { data, error } = await supabase
+          .from('dashboard_layouts')
+          .update({ widgets: newWidgets })
+          .eq('id', existing.id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      } else {
+        const { data, error } = await supabase
+          .from('dashboard_layouts')
+          .insert({ user_id: user.id, widgets: newWidgets })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.layout() });
+      setLocalWidgets(null);
+    },
+  });
+
+  const toggleWidget = useCallback((widgetId: string) => {
+    const currentWidgets = localWidgets || widgets;
+    const newWidgets = currentWidgets.map(w =>
+      w.id === widgetId ? { ...w, visible: !w.visible } : w
+    );
+    setLocalWidgets(newWidgets);
+    saveMutation.mutate(newWidgets);
+  }, [widgets, localWidgets, saveMutation]);
+
+  const resizeWidget = useCallback((widgetId: string, size: 'small' | 'medium' | 'large') => {
+    const currentWidgets = localWidgets || widgets;
+    const newWidgets = currentWidgets.map(w =>
+      w.id === widgetId ? { ...w, size } : w
+    );
+    setLocalWidgets(newWidgets);
+    saveMutation.mutate(newWidgets);
+  }, [widgets, localWidgets, saveMutation]);
+
+  const resetLayout = useCallback(() => {
+    setLocalWidgets(DEFAULT_WIDGETS);
+    saveMutation.mutate(DEFAULT_WIDGETS);
+  }, [saveMutation]);
+
+  return {
+    ...query,
+    widgets,
+    isEditMode,
+    setIsEditMode,
+    toggleWidget,
+    resizeWidget,
+    resetLayout,
+    saveLayout: saveMutation.mutate,
+  };
 }
 
 export function useSaveDashboardLayout() {

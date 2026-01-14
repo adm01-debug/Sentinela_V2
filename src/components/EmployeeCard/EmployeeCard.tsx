@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, CardHeader, CardContent } from "../ui/Card";
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/Avatar";
-import { Badge } from "../ui/Badge";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 interface EmployeeCardProps {
   name: string;
@@ -23,10 +23,13 @@ export function EmployeeCard({ name, email, role, department, avatar, status, on
   };
 
   return (
-    <Card className="cursor-pointer hover:bg-accent/50 transition-colors" onClick={onClick}>
+    <Card 
+      className={`cursor-pointer hover:bg-accent/50 transition-colors ${onClick ? '' : ''}`}
+      onClick={onClick}
+    >
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar>
-          {avatar && <AvatarImage src={avatar} alt={name} />}
+          <AvatarImage src={avatar} alt={name} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <div className="flex-1">
