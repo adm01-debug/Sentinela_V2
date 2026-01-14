@@ -1,45 +1,44 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import { ActivityTimeline } from '../ActivityTimeline';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
 describe('ActivityTimeline', () => {
-  const mockEvents = [
-    { id: '1', title: 'Login', time: '10:00', type: 'auth' },
-    { id: '2', title: 'File Access', time: '10:30', type: 'file' },
-    { id: '3', title: 'Logout', time: '18:00', type: 'auth' },
+  // ActivityTimeline expects 'activities' prop with TimelineActivity objects
+  const mockActivities = [
+    { id: '1', timestamp: '2026-01-01T10:00:00Z', application: 'Chrome', title: 'Opened browser', duration: 3600 },
+    { id: '2', timestamp: '2026-01-01T10:30:00Z', application: 'VS Code', title: 'Editing file', duration: 1800 },
+    { id: '3', timestamp: '2026-01-01T18:00:00Z', application: 'Slack', title: 'Messaging', duration: 600 },
   ];
 
-  it('renders timeline events', () => {
-    render(<ActivityTimeline events={mockEvents} />);
-    expect(screen.getByText('Login')).toBeInTheDocument();
-    expect(screen.getByText('File Access')).toBeInTheDocument();
+  it('renders timeline activities', () => {
+    render(<ActivityTimeline activities={mockActivities} />, { wrapper });
+    expect(screen.getByText('Chrome')).toBeInTheDocument();
+    expect(screen.getByText('VS Code')).toBeInTheDocument();
   });
 
-  it('groups events by date', () => {
-    render(<ActivityTimeline events={mockEvents} groupByDate />);
-    expect(screen.getByTestId('timeline-group')).toBeInTheDocument();
+  it('shows loading state', () => {
+    render(<ActivityTimeline isLoading />, { wrapper });
+    // Should show skeleton loaders
+    expect(document.querySelectorAll('[class*="skeleton"], [class*="Skeleton"]').length).toBeGreaterThan(0);
   });
 
-  it('expands event details on click', () => {
-    render(<ActivityTimeline events={mockEvents} expandable />);
-    fireEvent.click(screen.getByText('Login'));
-    expect(screen.getByTestId('event-details')).toBeInTheDocument();
+  it('handles empty activities', () => {
+    render(<ActivityTimeline activities={[]} />, { wrapper });
+    // Component renders container without errors
+    expect(document.querySelector('.space-y-4')).toBeInTheDocument();
   });
 
-  it('filters by event type', () => {
-    render(<ActivityTimeline events={mockEvents} filter="auth" />);
-    expect(screen.getByText('Login')).toBeInTheDocument();
-    expect(screen.queryByText('File Access')).not.toBeInTheDocument();
-  });
-
-  it('handles empty state', () => {
-    render(<ActivityTimeline events={[]} />);
-    expect(screen.getByText(/no events/i)).toBeInTheDocument();
-  });
-
-  it('supports infinite scroll', () => {
-    const onLoadMore = vi.fn();
-    render(<ActivityTimeline events={mockEvents} onLoadMore={onLoadMore} hasMore />);
-    expect(screen.getByTestId('load-more-trigger')).toBeInTheDocument();
+  it('displays activity details', () => {
+    render(<ActivityTimeline activities={mockActivities} />, { wrapper });
+    expect(screen.getByText('Opened browser')).toBeInTheDocument();
   });
 });

@@ -3,36 +3,42 @@ import { render, screen } from '@testing-library/react';
 import { ActivityStatsCards } from '../ActivityStatsCards';
 
 describe('ActivityStatsCards', () => {
-  const mockStats = {
-    totalActivities: 1500,
-    activeUsers: 45,
-    avgDuration: 120,
-    violations: 3,
+  // ActivityStatsCards expects props with activeEmployeesCount (not activeEmployees)
+  const mockProps = {
+    totalKeystrokes: 1500,
+    totalClicks: 500,
+    activeEmployeesCount: 45,
+    keystrokesPerMinute: 25,
+    clicksPerMinute: 10,
   };
 
   it('renders all stat cards', () => {
-    render(<ActivityStatsCards stats={mockStats} />);
-    expect(screen.getByText('1,500')).toBeInTheDocument();
+    render(<ActivityStatsCards {...mockProps} />);
+    // totalKeystrokes is formatted as 1.500 in pt-BR
+    expect(screen.getByText('1.500')).toBeInTheDocument();
+  });
+
+  it('displays active employees count', () => {
+    render(<ActivityStatsCards {...mockProps} />);
     expect(screen.getByText('45')).toBeInTheDocument();
   });
 
-  it('displays loading skeletons', () => {
-    render(<ActivityStatsCards stats={mockStats} loading />);
-    expect(screen.getAllByTestId('skeleton')).toHaveLength(4);
-  });
-
-  it('shows trend indicators', () => {
-    render(<ActivityStatsCards stats={mockStats} trends={{ totalActivities: 5.2 }} />);
-    expect(screen.getByText('+5.2%')).toBeInTheDocument();
-  });
-
   it('handles zero values', () => {
-    render(<ActivityStatsCards stats={{ ...mockStats, violations: 0 }} />);
-    expect(screen.getByText('0')).toBeInTheDocument();
+    render(
+      <ActivityStatsCards
+        totalKeystrokes={0}
+        totalClicks={0}
+        activeEmployeesCount={0}
+        keystrokesPerMinute={0}
+        clicksPerMinute={0}
+      />
+    );
+    expect(screen.getAllByText('0').length).toBeGreaterThan(0);
   });
 
-  it('applies custom grid layout', () => {
-    const { container } = render(<ActivityStatsCards stats={mockStats} columns={2} />);
-    expect(container.firstChild).toHaveClass('grid-cols-2');
+  it('shows activity per minute', () => {
+    render(<ActivityStatsCards {...mockProps} />);
+    // keystrokesPerMinute + clicksPerMinute = 35
+    expect(screen.getByText('35')).toBeInTheDocument();
   });
 });

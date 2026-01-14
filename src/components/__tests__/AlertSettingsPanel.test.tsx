@@ -1,28 +1,55 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { AlertSettingsPanel } from '../AlertSettingsPanel';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// Mock the useAlertSettings hook since component uses internal hook
+vi.mock('@/hooks/useAlertSettings', () => ({
+  useAlertSettings: () => ({
+    settings: {
+      enabled: true,
+      notify_critical: true,
+      notify_high: true,
+      notify_medium: false,
+      notify_low: false,
+      recipient_emails: ['test@example.com'],
+    },
+    loading: false,
+    updateSettings: vi.fn(),
+    addEmail: vi.fn(),
+    removeEmail: vi.fn(),
+    testNotification: vi.fn(),
+  }),
+}));
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
 describe('AlertSettingsPanel', () => {
-  const mockSettings = { emailEnabled: true, slackEnabled: false, threshold: 80 };
-  it('renders settings form', () => {
-    render(<AlertSettingsPanel settings={mockSettings} onSave={vi.fn()} />);
-    expect(screen.getByLabelText(/email/i)).toBeChecked();
-    expect(screen.getByLabelText(/slack/i)).not.toBeChecked();
+  // AlertSettingsPanel takes no props - it uses internal hook
+  it('renders settings panel', () => {
+    render(<AlertSettingsPanel />, { wrapper });
+    expect(screen.getByText('Alertas por Email')).toBeInTheDocument();
   });
-  it('updates settings on change', () => {
-    render(<AlertSettingsPanel settings={mockSettings} onSave={vi.fn()} />);
-    fireEvent.click(screen.getByLabelText(/slack/i));
-    expect(screen.getByLabelText(/slack/i)).toBeChecked();
+
+  it('shows severity toggles', () => {
+    render(<AlertSettingsPanel />, { wrapper });
+    expect(screen.getByText('Crítica')).toBeInTheDocument();
+    expect(screen.getByText('Alta')).toBeInTheDocument();
   });
-  it('saves settings', () => {
-    const onSave = vi.fn();
-    render(<AlertSettingsPanel settings={mockSettings} onSave={onSave} />);
-    fireEvent.click(screen.getByText(/save/i));
-    expect(onSave).toHaveBeenCalled();
+
+  it('displays recipient emails', () => {
+    render(<AlertSettingsPanel />, { wrapper });
+    expect(screen.getByText('test@example.com')).toBeInTheDocument();
   });
-  it('validates threshold range', () => {
-    render(<AlertSettingsPanel settings={mockSettings} onSave={vi.fn()} />);
-    fireEvent.change(screen.getByLabelText(/threshold/i), { target: { value: '150' } });
-    expect(screen.getByText(/must be between/i)).toBeInTheDocument();
+
+  it('has test notification button', () => {
+    render(<AlertSettingsPanel />, { wrapper });
+    expect(screen.getByText('Enviar Teste')).toBeInTheDocument();
   });
 });
