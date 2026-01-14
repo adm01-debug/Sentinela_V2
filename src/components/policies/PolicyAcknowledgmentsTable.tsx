@@ -68,15 +68,12 @@ function PolicyAcknowledgmentsTableComponent({
             <TableRow key={ack.id}>
               <TableCell>
                 <div>
-                  <div className="font-medium">{ack.employee?.full_name}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {ack.employee?.email}
-                  </div>
+                  <div className="font-medium">{ack.employee_name}</div>
                 </div>
               </TableCell>
               <TableCell>
                 <Badge variant="outline">
-                  {ack.policy?.name} v{ack.policy?.version}
+                  {ack.policy_version || 'v1.0'}
                 </Badge>
               </TableCell>
               <TableCell>
@@ -85,11 +82,11 @@ function PolicyAcknowledgmentsTableComponent({
                 })}
               </TableCell>
               <TableCell>
-                {ack.location ? (
+                {ack.latitude && ack.longitude ? (
                   <div className="flex items-center gap-1 text-sm">
                     <MapPin className="h-3 w-3" />
                     <span>
-                      {ack.location.latitude.toFixed(4)}, {ack.location.longitude.toFixed(4)}
+                      {ack.latitude.toFixed(4)}, {ack.longitude.toFixed(4)}
                     </span>
                   </div>
                 ) : (
@@ -100,28 +97,28 @@ function PolicyAcknowledgmentsTableComponent({
                 <div className="flex items-center gap-1 text-sm">
                   <Monitor className="h-3 w-3" />
                   <span className="truncate max-w-[150px]">
-                    {ack.user_agent?.split(' ')[0] || 'Desconhecido'}
+                    {ack.device_name || 'Desconhecido'}
                   </span>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex gap-1">
-                  {ack.screenshot_url && (
+                  {ack.photo_url && (
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => setSelectedScreenshot(ack.screenshot_url!)}
+                      onClick={() => setSelectedScreenshot(ack.photo_url!)}
                     >
                       <ImageIcon className="h-4 w-4" />
                     </Button>
                   )}
-                  {ack.location && (
+                  {ack.latitude && ack.longitude && (
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => {
                         window.open(
-                          `https://www.google.com/maps?q=${ack.location!.latitude},${ack.location!.longitude}`,
+                          `https://www.google.com/maps?q=${ack.latitude},${ack.longitude}`,
                           '_blank'
                         );
                       }}

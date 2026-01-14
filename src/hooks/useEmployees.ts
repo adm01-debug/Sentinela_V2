@@ -2,6 +2,29 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { employeeService } from '@/services';
 import type { EmployeeFilters, CreateEmployeeInput, UpdateEmployeeInput } from '@/types';
 
+// Extended type with device info
+export interface EmployeeDevice {
+  id: string;
+  device_name: string;
+  device_type: string;
+  is_primary: boolean;
+}
+
+export interface EmployeeWithDetails {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  department: string | null;
+  position: string | null;
+  team_id: string | null;
+  status: string;
+  avatar_url: string | null;
+  created_at: string;
+  updated_at: string;
+  devices?: EmployeeDevice[];
+}
+
 export const useEmployees = (filters?: EmployeeFilters) => {
   return useQuery({ queryKey: ['employees', filters], queryFn: () => employeeService.list(filters) });
 };

@@ -1,34 +1,98 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
-import { Input } from '../ui/Input';
-import { Switch } from '../ui/Switch';
-import { Select } from '../ui/Select';
-import { Button } from '../ui/Button';
-import { MonitoringSettings as Settings } from '@/types';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 
-interface Props { settings?: Settings; onSave: (data: Partial<Settings>) => void; }
+interface MonitoringSettingsData {
+  screenshotEnabled: boolean;
+  screenshotInterval: number;
+  screenshotQuality: 'low' | 'medium' | 'high';
+  blurScreenshots: boolean;
+  trackKeystrokes: boolean;
+  trackMouseClicks: boolean;
+  idleThreshold: number;
+}
 
-const qualities = [{ value: 'low', label: 'Low' }, { value: 'medium', label: 'Medium' }, { value: 'high', label: 'High' }];
+interface Props {
+  settings?: MonitoringSettingsData;
+  onSave: (data: Partial<MonitoringSettingsData>) => void;
+}
 
 export const MonitoringSettings = ({ settings, onSave }: Props) => {
-  const [form, setForm] = useState({ screenshotEnabled: true, screenshotInterval: 5, screenshotQuality: 'medium' as Settings['screenshotQuality'], blurScreenshots: false, trackKeystrokes: false, trackMouseClicks: false, idleThreshold: 300 });
-  useEffect(() => { if (settings) setForm({ ...form, ...settings }); }, [settings]);
+  const [form, setForm] = useState<MonitoringSettingsData>({
+    screenshotEnabled: true,
+    screenshotInterval: 5,
+    screenshotQuality: 'medium',
+    blurScreenshots: false,
+    trackKeystrokes: false,
+    trackMouseClicks: false,
+    idleThreshold: 300,
+  });
+
+  useEffect(() => {
+    if (settings) setForm({ ...form, ...settings });
+  }, [settings]);
 
   return (
     <Card>
-      <CardHeader><CardTitle>Monitoring Settings</CardTitle></CardHeader>
+      <CardHeader>
+        <CardTitle>Monitoring Settings</CardTitle>
+      </CardHeader>
       <CardContent className="space-y-4">
-        <Switch checked={form.screenshotEnabled} onChange={v => setForm({ ...form, screenshotEnabled: v })} label="Enable Screenshots" />
+        <div className="flex items-center justify-between">
+          <Label htmlFor="screenshotEnabled">Enable Screenshots</Label>
+          <Switch
+            id="screenshotEnabled"
+            checked={form.screenshotEnabled}
+            onCheckedChange={(v: boolean) => setForm({ ...form, screenshotEnabled: v })}
+          />
+        </div>
         {form.screenshotEnabled && (
           <>
-            <Input label="Screenshot Interval (minutes)" type="number" value={form.screenshotInterval} onChange={e => setForm({ ...form, screenshotInterval: Number(e.target.value) })} />
-            <Select label="Screenshot Quality" options={qualities} value={form.screenshotQuality} onChange={e => setForm({ ...form, screenshotQuality: e.target.value as Settings['screenshotQuality'] })} />
-            <Switch checked={form.blurScreenshots} onChange={v => setForm({ ...form, blurScreenshots: v })} label="Blur Sensitive Areas" />
+            <div className="space-y-2">
+              <Label>Screenshot Interval (minutes)</Label>
+              <Input
+                type="number"
+                value={form.screenshotInterval}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm({ ...form, screenshotInterval: Number(e.target.value) })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Screenshot Quality</Label>
+              <Select value={form.screenshotQuality} onValueChange={(v: 'low' | 'medium' | 'high') => setForm({ ...form, screenshotQuality: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="blur">Blur Sensitive Areas</Label>
+              <Switch id="blur" checked={form.blurScreenshots} onCheckedChange={(v: boolean) => setForm({ ...form, blurScreenshots: v })} />
+            </div>
           </>
         )}
-        <Switch checked={form.trackKeystrokes} onChange={v => setForm({ ...form, trackKeystrokes: v })} label="Track Keystrokes" />
-        <Switch checked={form.trackMouseClicks} onChange={v => setForm({ ...form, trackMouseClicks: v })} label="Track Mouse Clicks" />
-        <Input label="Idle Threshold (seconds)" type="number" value={form.idleThreshold} onChange={e => setForm({ ...form, idleThreshold: Number(e.target.value) })} />
+        <div className="flex items-center justify-between">
+          <Label htmlFor="keystrokes">Track Keystrokes</Label>
+          <Switch id="keystrokes" checked={form.trackKeystrokes} onCheckedChange={(v: boolean) => setForm({ ...form, trackKeystrokes: v })} />
+        </div>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="clicks">Track Mouse Clicks</Label>
+          <Switch id="clicks" checked={form.trackMouseClicks} onCheckedChange={(v: boolean) => setForm({ ...form, trackMouseClicks: v })} />
+        </div>
+        <div className="space-y-2">
+          <Label>Idle Threshold (seconds)</Label>
+          <Input
+            type="number"
+            value={form.idleThreshold}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm({ ...form, idleThreshold: Number(e.target.value) })}
+          />
+        </div>
         <Button onClick={() => onSave(form)}>Save Changes</Button>
       </CardContent>
     </Card>

@@ -39,7 +39,7 @@ export function ReportSummary({ sections, title = 'Report Summary', className }:
                     <div key={i} className="p-4 rounded-lg border">
                       <div className="flex items-start justify-between">
                         <p className="text-sm text-muted-foreground">{metric.label}</p>
-                        {metric.description && <Info className="h-4 w-4 text-muted-foreground cursor-help" title={metric.description} />}
+                        {metric.description && <Info className="h-4 w-4 text-muted-foreground cursor-help" aria-label={metric.description} />}
                       </div>
                       <p className="text-2xl font-bold mt-1">{formatValue(metric.value, metric.format)}</p>
                       {change && (
