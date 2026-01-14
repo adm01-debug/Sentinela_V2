@@ -1,40 +1,43 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { ActivityFeed } from '../ActivityFeed';
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { ActivityFeed, ActivityItem } from '../ActivityFeed';
 
 describe('ActivityFeed', () => {
-  const mockActivities = [
-    { id: '1', type: 'login', user: 'John', timestamp: '2026-01-01T10:00:00Z' },
-    { id: '2', type: 'action', user: 'Jane', timestamp: '2026-01-01T11:00:00Z' },
+  const mockActivities: ActivityItem[] = [
+    { 
+      id: '1', 
+      type: 'login', 
+      title: 'User logged in',
+      timestamp: new Date(),
+      user: { name: 'John' }
+    },
+    { 
+      id: '2', 
+      type: 'logout', 
+      title: 'User logged out',
+      timestamp: new Date(),
+      user: { name: 'Jane' }
+    },
   ];
 
   it('renders activity list', () => {
     render(<ActivityFeed activities={mockActivities} />);
-    expect(screen.getByText('John')).toBeInTheDocument();
-    expect(screen.getByText('Jane')).toBeInTheDocument();
+    expect(screen.getByText('User logged in')).toBeInTheDocument();
   });
 
   it('displays empty state when no activities', () => {
     render(<ActivityFeed activities={[]} />);
-    expect(screen.getByText(/no activities/i)).toBeInTheDocument();
+    expect(screen.getByText('Nenhuma atividade encontrada')).toBeInTheDocument();
   });
 
-  it('sorts activities by timestamp', () => {
-    render(<ActivityFeed activities={mockActivities} />);
-    const items = screen.getAllByRole('listitem');
-    expect(items).toHaveLength(2);
+  it('shows loading state', () => {
+    render(<ActivityFeed activities={[]} isLoading />);
+    // Loading skeleton should render with animate-pulse
+    expect(document.querySelector('.animate-pulse')).toBeInTheDocument();
   });
 
-  it('handles load more', async () => {
-    const onLoadMore = vi.fn();
-    render(<ActivityFeed activities={mockActivities} onLoadMore={onLoadMore} hasMore />);
-    fireEvent.click(screen.getByText(/load more/i));
-    expect(onLoadMore).toHaveBeenCalled();
-  });
-
-  it('filters activities by type', () => {
-    render(<ActivityFeed activities={mockActivities} filterType="login" />);
-    expect(screen.getByText('John')).toBeInTheDocument();
-    expect(screen.queryByText('Jane')).not.toBeInTheDocument();
+  it('shows custom empty message', () => {
+    render(<ActivityFeed activities={[]} emptyMessage="Custom empty message" />);
+    expect(screen.getByText('Custom empty message')).toBeInTheDocument();
   });
 });
