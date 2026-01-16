@@ -4,7 +4,7 @@ import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { EmployeeStats } from '@/components/EmployeeStats';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { ScreenshotGallery } from '@/components/ScreenshotGallery';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger  } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
 import { format, subDays } from 'date-fns';
 
