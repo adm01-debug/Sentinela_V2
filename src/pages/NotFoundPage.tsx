@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '@/constants';
-import { Button } from '@/components/ui/Button';
+import { Button  } from '@/components/ui/button';
 
 export const NotFoundPage = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
