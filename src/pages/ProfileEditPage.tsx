@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ArrowLeft, Upload } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/Card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
-import { Textarea } from '@/components/ui/Textarea';
+import { Button  } from '@/components/ui/button';
+import { Input  } from '@/components/ui/input';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter  } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback  } from '@/components/ui/avatar';
+import { Textarea  } from '@/components/ui/textarea';
 import { useAuthStore } from '@/stores/authStore';
 import { useUpdateProfile } from '@/hooks/useAuth';
 
