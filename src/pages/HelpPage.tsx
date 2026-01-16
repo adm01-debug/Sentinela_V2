@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Search, Book, MessageCircle, FileText, Video, ExternalLink } from 'lucide-react';
-import { Input } from '@/components/ui/Input';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+import { Input  } from '@/components/ui/input';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent  } from '@/components/ui/card';
+import { Button  } from '@/components/ui/button';
 
 const categories = [
   { icon: Book, title: 'Documentação', description: 'Guias completos do sistema', link: '/docs' },
