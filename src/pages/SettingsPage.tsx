@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSettings, useUpdateSettings } from '@/hooks';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger  } from '@/components/ui/tabs';
 import { GeneralSettings } from '@/components/settings/GeneralSettings';
 import { SecuritySettings } from '@/components/settings/SecuritySettings';
 import { NotificationSettings } from '@/components/settings/NotificationSettings';
