@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useReports, useGenerateReport, useReportTemplates } from '@/hooks';
 import { ReportList } from '@/components/ReportList';
 import { GenerateReportDialog } from '@/components/GenerateReportDialog';
-import { Button } from '@/components/ui/Button';
+import { Button  } from '@/components/ui/button';
 
 export const ReportsPage = () => {
   const [showGenerateDialog, setShowGenerateDialog] = useState(false);
