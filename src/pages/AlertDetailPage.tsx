@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, AlertTriangle, Clock, User, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
-import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { Button  } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
+import { Badge  } from '@/components/ui/badge';
 import { Skeleton } from '@/components/Skeleton';
 import { useAlert, useAcknowledgeAlert } from '@/hooks/useAlerts';
 
