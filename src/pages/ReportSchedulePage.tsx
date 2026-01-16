@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Plus, Trash2, Calendar, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
-import { Input } from '@/components/ui/Input';
-import { Switch } from '@/components/ui/Switch';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/Dialog';
+import { Button  } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue  } from '@/components/ui/select';
+import { Input  } from '@/components/ui/input';
+import { Switch  } from '@/components/ui/switch';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter  } from '@/components/ui/dialog';
 import { useScheduledReports, useCreateSchedule, useDeleteSchedule } from '@/hooks/useReports';
 
 export default function ReportSchedulePage() {
