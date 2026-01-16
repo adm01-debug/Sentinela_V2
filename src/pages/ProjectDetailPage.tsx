@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, FolderKanban, Calendar, Users, Clock, TrendingUp } from 'lucide-react';
 import { format } from 'date-fns';
-import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { Progress } from '@/components/ui/Progress';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
+import { Button  } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
+import { Badge  } from '@/components/ui/badge';
+import { Progress  } from '@/components/ui/progress';
+import { Avatar, AvatarImage, AvatarFallback  } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/Skeleton';
 import { useProject } from '@/hooks/useProjects';
 
