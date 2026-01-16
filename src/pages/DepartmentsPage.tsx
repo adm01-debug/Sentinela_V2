@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Building, MoreVertical, Edit, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
+import { Button  } from '@/components/ui/button';
+import { Input  } from '@/components/ui/input';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent  } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/DropdownMenu';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/Dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter  } from '@/components/ui/dialog';
 import { useDepartments, useCreateDepartment, useDeleteDepartment } from '@/hooks/useDepartments';
 
 export default function DepartmentsPage() {
