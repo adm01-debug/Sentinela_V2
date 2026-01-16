@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Progress } from '@/components/ui/Progress';
-import { Badge } from '@/components/ui/Badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
+import { Progress  } from '@/components/ui/progress';
+import { Badge  } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger  } from '@/components/ui/tabs';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import { useApplicationAnalytics } from '@/hooks/useAnalytics';
 
