@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Building, Users, TrendingUp } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
+import { Button  } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback  } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/Skeleton';
 import { useDepartment } from '@/hooks/useDepartments';
 
