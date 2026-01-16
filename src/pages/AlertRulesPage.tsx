@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit, Trash2, AlertTriangle } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Switch } from '@/components/ui/Switch';
-import { Badge } from '@/components/ui/Badge';
+import { Button  } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
+import { Switch  } from '@/components/ui/switch';
+import { Badge  } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/AlertDialog';
 import { useAlertRules, useDeleteAlertRule, useToggleAlertRule } from '@/hooks/useAlerts';
 
