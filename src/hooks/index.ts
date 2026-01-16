@@ -460,3 +460,5 @@ export * from './useWorkSchedulesPage';
 export * from './useWorker';
 export * from './useWorkerFn';
 export * from './useZoom';
+
+export * from './useDepartments';
