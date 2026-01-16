@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAlerts, useAcknowledgeAlert, useAcknowledgeAllAlerts } from '@/hooks';
 import { AlertList } from '@/components/AlertList';
 import { AlertFilters } from '@/components/AlertFilters';
-import { Button } from '@/components/ui/Button';
+import { Button  } from '@/components/ui/button';
 
 export const AlertsPage = () => {
   const [filters, setFilters] = useState<{ severity?: string; acknowledged?: boolean }>({});
