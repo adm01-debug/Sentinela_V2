@@ -2,9 +2,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock, Monitor, Keyboard, Mouse, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { Button  } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
+import { Badge  } from '@/components/ui/badge';
 import { Skeleton } from '@/components/Skeleton';
 import { useActivity } from '@/hooks/useActivities';
 
