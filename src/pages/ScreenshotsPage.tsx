@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { Grid, List, Search } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
+import { Button  } from '@/components/ui/button';
+import { Input  } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue  } from '@/components/ui/select';
 import { DatePicker } from '@/components/ui/DatePicker';
 import { ImageGallery } from '@/components/ui/ImageGallery';
 import { Skeleton } from '@/components/Skeleton';
