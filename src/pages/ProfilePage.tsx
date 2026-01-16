@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { User, Mail, Phone, Building, Calendar, Edit, Shield, Activity } from 'lucide-react';
 import { format } from 'date-fns';
-import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
-import { Badge } from '@/components/ui/Badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Button  } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback  } from '@/components/ui/avatar';
+import { Badge  } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger  } from '@/components/ui/tabs';
 import { useAuthStore } from '@/stores/authStore';
 import { useUserStats } from '@/hooks/useAuth';
 
