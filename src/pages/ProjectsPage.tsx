@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search, FolderKanban, MoreVertical, Edit, Trash2, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { Progress } from '@/components/ui/Progress';
+import { Button  } from '@/components/ui/button';
+import { Input  } from '@/components/ui/input';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent  } from '@/components/ui/card';
+import { Badge  } from '@/components/ui/badge';
+import { Progress  } from '@/components/ui/progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/DropdownMenu';
 import { useProjects, useDeleteProject } from '@/hooks/useProjects';
 
