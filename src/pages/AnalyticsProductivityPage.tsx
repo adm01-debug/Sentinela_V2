@@ -1,6 +1,6 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Progress } from '@/components/ui/Progress';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
+import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
+import { Progress  } from '@/components/ui/progress';
+import { Avatar, AvatarImage, AvatarFallback  } from '@/components/ui/avatar';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { useProductivityAnalytics } from '@/hooks/useAnalytics';
 
