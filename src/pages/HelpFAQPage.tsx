@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
-import { Input } from '@/components/ui/Input';
+import { Input  } from '@/components/ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/Accordion';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger  } from '@/components/ui/tabs';
 
 const faqs = {
   geral: [
