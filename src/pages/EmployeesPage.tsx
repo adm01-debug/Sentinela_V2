@@ -3,7 +3,7 @@ import { useEmployees, useDeleteEmployee } from '@/hooks';
 import { DataTable } from '@/components/DataTable';
 import { EmployeeFilters } from '@/components/EmployeeFilters';
 import { AddEmployeeDialog } from '@/components/AddEmployeeDialog';
-import { Button } from '@/components/ui/Button';
+import { Button  } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
 export const EmployeesPage = () => {
