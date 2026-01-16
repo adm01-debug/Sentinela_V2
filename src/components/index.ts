@@ -30,3 +30,13 @@ export * from './LanguageSwitcher';
 
 // Chart Components
 export * from './ViolationsByTypeChart';
+
+// Re-exports from subfolders for backward compatibility
+export { DataTable } from './data-display/DataTable';
+export { EmployeeFilters } from './employees/EmployeeFilters';
+export { EmployeeStats } from './employees/EmployeeStats';
+export { EmployeeStatsCards } from './employees/EmployeeStatsCards';
+export { PageHeader } from './layout/PageHeader';
+export { ConfirmDialog } from './ConfirmDialog';
+export { LocationMap } from './LocationMap';
+export { OnboardingWizard } from './onboarding/OnboardingWizard';
