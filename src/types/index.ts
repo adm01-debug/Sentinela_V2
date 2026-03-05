@@ -21,7 +21,7 @@ export * from './webhook';
 export * from './apiKey';
 export * from './attachment';
 export * from './export';
-export * from './filter';
+// filter.ts intentionally omitted from barrel due FilterOperator naming collisions.
 export * from './sort';
 export * from './table';
 export * from './utility.types';
