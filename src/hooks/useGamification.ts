@@ -157,7 +157,7 @@ async function fetchPointTransactions(
 
 export function useBadges() {
   return useQuery({
-    queryKey: queryKeys.gamification.badges,
+    queryKey: queryKeys.gamification.badges(),
     queryFn: fetchBadges,
     staleTime: CACHE_TIMES.IMMUTABLE,
   });
