@@ -2,11 +2,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock, Monitor, Keyboard, Mouse, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Button  } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
-import { Badge  } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/Skeleton';
-import { useActivity } from '@/hooks/useActivities';
+import { useQuery } from '@tanstack/react-query';
+import { activityService } from '@/services';
+
+function useActivity(id: string) {
+  return useQuery({
+    queryKey: ['activity', id],
+    queryFn: () => activityService.get(id),
+    enabled: !!id,
+  });
+}
 
 export default function ActivityDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -27,19 +36,19 @@ export default function ActivityDetailPage() {
         <Card>
           <CardHeader><CardTitle>Informações Gerais</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center gap-2"><Monitor className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Aplicação:</span>{activity.application}</div>
-            <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Data:</span>{format(new Date(activity.timestamp), "PPP 'às' HH:mm", { locale: ptBR })}</div>
-            <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Duração:</span>{activity.duration} minutos</div>
-            <div><span className="font-medium">Categoria:</span><Badge className="ml-2" variant={activity.category === 'productive' ? 'default' : 'secondary'}>{activity.category}</Badge></div>
+            <div className="flex items-center gap-2"><Monitor className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Aplicação:</span>{(activity as any).application}</div>
+            <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Data:</span>{format(new Date((activity as any).timestamp), "PPP 'às' HH:mm", { locale: ptBR })}</div>
+            <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Duração:</span>{(activity as any).duration} minutos</div>
+            <div><span className="font-medium">Categoria:</span><Badge className="ml-2" variant={(activity as any).category === 'productive' ? 'default' : 'secondary'}>{(activity as any).category}</Badge></div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader><CardTitle>Métricas de Atividade</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center gap-2"><Keyboard className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Teclas digitadas:</span>{activity.keystrokes || 0}</div>
-            <div className="flex items-center gap-2"><Mouse className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Cliques:</span>{activity.mouseClicks || 0}</div>
-            <div><span className="font-medium">Título da janela:</span><p className="text-muted-foreground mt-1">{activity.windowTitle}</p></div>
+            <div className="flex items-center gap-2"><Keyboard className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Teclas digitadas:</span>{(activity as any).keystrokes || 0}</div>
+            <div className="flex items-center gap-2"><Mouse className="h-4 w-4 text-muted-foreground" /><span className="font-medium">Cliques:</span>{(activity as any).mouseClicks || 0}</div>
+            <div><span className="font-medium">Título da janela:</span><p className="text-muted-foreground mt-1">{(activity as any).windowTitle}</p></div>
           </CardContent>
         </Card>
       </div>

@@ -1,16 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ArrowLeft } from 'lucide-react';
-import { Button  } from '@/components/ui/button';
-import { Input  } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue  } from '@/components/ui/select';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter  } from '@/components/ui/card';
-import { Textarea  } from '@/components/ui/textarea';
-import { useCreateAlertRule } from '@/hooks/useAlerts';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { alertService } from '@/services';
 
 export default function AlertRuleCreatePage() {
   const navigate = useNavigate();
-  const createRule = useCreateAlertRule();
+  const queryClient = useQueryClient();
+  const createRule = useMutation({
+    mutationFn: (data: any) => (alertService as any).createRule ? (alertService as any).createRule(data) : Promise.resolve(data),
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
+  });
   const { register, handleSubmit, setValue } = useForm();
 
   const onSubmit = async (data: any) => {
@@ -25,9 +31,16 @@ export default function AlertRuleCreatePage() {
         <CardHeader><CardTitle>Nova Regra de Alerta</CardTitle></CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
-            <Input label="Nome da regra" {...register('name')} />
-            <Textarea label="Descrição" {...register('description')} />
-            <div><label className="text-sm font-medium">Severidade</label>
+            <div className="space-y-2">
+              <Label>Nome da regra</Label>
+              <Input {...register('name')} />
+            </div>
+            <div className="space-y-2">
+              <Label>Descrição</Label>
+              <Textarea {...register('description')} />
+            </div>
+            <div className="space-y-2">
+              <Label>Severidade</Label>
               <Select onValueChange={v => setValue('severity', v)}>
                 <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
                 <SelectContent>
@@ -38,7 +51,8 @@ export default function AlertRuleCreatePage() {
                 </SelectContent>
               </Select>
             </div>
-            <div><label className="text-sm font-medium">Condição</label>
+            <div className="space-y-2">
+              <Label>Condição</Label>
               <Select onValueChange={v => setValue('condition', v)}>
                 <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
                 <SelectContent>
@@ -48,11 +62,14 @@ export default function AlertRuleCreatePage() {
                 </SelectContent>
               </Select>
             </div>
-            <Input label="Valor limite" type="number" {...register('threshold')} />
+            <div className="space-y-2">
+              <Label>Valor limite</Label>
+              <Input type="number" {...register('threshold')} />
+            </div>
           </CardContent>
           <CardFooter className="gap-2">
             <Button type="button" variant="outline" onClick={() => navigate(-1)}>Cancelar</Button>
-            <Button type="submit" loading={createRule.isPending}>Criar Regra</Button>
+            <Button type="submit" disabled={createRule.isPending}>{createRule.isPending ? 'Criando...' : 'Criar Regra'}</Button>
           </CardFooter>
         </form>
       </Card>

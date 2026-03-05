@@ -141,11 +141,11 @@ const DevicesContent = React.memo(function DevicesContent() {
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {devices.map((device) => (
+          {devices.map((device: any) => (
             <DeviceCard
               key={device.id}
               device={device}
-              onViewDetails={handleViewDetails}
+              onViewDetails={handleViewDetails as any}
               onDeactivate={handleDeactivate}
               onReactivate={handleReactivate}
             />
@@ -172,11 +172,11 @@ const DevicesContent = React.memo(function DevicesContent() {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Tipo</label>
-                  <p className="font-medium capitalize">{selectedDevice.type}</p>
+                  <p className="font-medium capitalize">{(selectedDevice as any).type || (selectedDevice as any).device_type}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Sistema</label>
-                  <p className="font-medium">{selectedDevice.os}</p>
+                  <p className="font-medium">{(selectedDevice as any).os || (selectedDevice as any).os_name}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">IP</label>

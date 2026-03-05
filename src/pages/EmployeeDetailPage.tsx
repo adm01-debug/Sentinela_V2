@@ -1,36 +1,36 @@
 import { useParams } from 'react-router-dom';
-import { useEmployee, useEmployeeStats, useScreenshots } from '@/hooks';
+import { useEmployee, useEmployeeStats } from '@/hooks/useEmployees';
 import { EmployeeHeader } from '@/components/EmployeeHeader';
-import { EmployeeStats } from '@/components/EmployeeStats';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
-import { ScreenshotGallery } from '@/components/ScreenshotGallery';
-import { Tabs, TabsContent, TabsList, TabsTrigger  } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
 import { format, subDays } from 'date-fns';
 
-export const EmployeeDetailPage = () => {
+export default function EmployeeDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { data: employee, isLoading } = useEmployee(id!);
   const startDate = format(subDays(new Date(), 7), 'yyyy-MM-dd');
   const endDate = format(new Date(), 'yyyy-MM-dd');
   const { data: stats } = useEmployeeStats(id!, startDate, endDate);
-  const { data: screenshots } = useScreenshots(id!, endDate);
 
-  if (isLoading) return <Skeleton height={400} />;
-  if (!employee) return <div>Employee not found</div>;
+  if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
+  if (!employee) return <div className="p-6">Funcionário não encontrado</div>;
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6">
       <EmployeeHeader employee={employee} />
-      <EmployeeStats stats={stats} />
-      <Tabs defaultValue="activity">
+      <Tabs defaultValue="timeline">
         <TabsList>
-          <TabsTrigger value="activity">Activity</TabsTrigger>
-          <TabsTrigger value="screenshots">Screenshots</TabsTrigger>
+          <TabsTrigger value="timeline">Timeline</TabsTrigger>
+          <TabsTrigger value="stats">Estatísticas</TabsTrigger>
         </TabsList>
-        <TabsContent value="activity"><ActivityTimeline employeeId={id!} /></TabsContent>
-        <TabsContent value="screenshots"><ScreenshotGallery screenshots={screenshots || []} /></TabsContent>
+        <TabsContent value="timeline">
+          <ActivityTimeline employeeId={id!} />
+        </TabsContent>
+        <TabsContent value="stats">
+          <div className="text-muted-foreground">Dados de estatísticas</div>
+        </TabsContent>
       </Tabs>
     </div>
   );
-};
+}

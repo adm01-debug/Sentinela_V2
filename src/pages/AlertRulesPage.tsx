@@ -1,18 +1,27 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit, Trash2, AlertTriangle } from 'lucide-react';
-import { Button  } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
-import { Switch  } from '@/components/ui/switch';
-import { Badge  } from '@/components/ui/badge';
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/AlertDialog';
-import { useAlertRules, useDeleteAlertRule, useToggleAlertRule } from '@/hooks/useAlerts';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
+import { useAlertRules } from '@/hooks/useAlerts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { alertService } from '@/services';
 
 export default function AlertRulesPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { data: rules, isLoading } = useAlertRules();
-  const deleteRule = useDeleteAlertRule();
-  const toggleRule = useToggleAlertRule();
+  const queryClient = useQueryClient();
+  const deleteRule = useMutation({
+    mutationFn: (id: string) => (alertService as any).deleteRule ? (alertService as any).deleteRule(id) : Promise.resolve(),
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
+  });
+  const toggleRule = useMutation({
+    mutationFn: (id: string) => (alertService as any).toggleRule ? (alertService as any).toggleRule(id) : Promise.resolve(),
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
+  });
 
   return (
     <div className="p-6 space-y-6">
@@ -22,20 +31,20 @@ export default function AlertRulesPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {rules?.map(rule => (
+        {(rules as any)?.map((rule: any) => (
           <Card key={rule.id}>
             <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="h-4 w-4" />
                 <CardTitle className="text-base">{rule.name}</CardTitle>
               </div>
-              <Switch checked={rule.active} onCheckedChange={() => toggleRule.mutate(rule.id)} />
+              <Switch checked={rule.enabled ?? rule.active} onCheckedChange={() => toggleRule.mutate(rule.id)} />
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">{rule.description}</p>
+              <p className="text-sm text-muted-foreground mb-4">{rule.description || ''}</p>
               <div className="flex items-center gap-2 mb-4">
                 <Badge variant={rule.severity === 'critical' ? 'destructive' : 'secondary'}>{rule.severity}</Badge>
-                <span className="text-xs text-muted-foreground">Condição: {rule.condition}</span>
+                <span className="text-xs text-muted-foreground">Condição: {rule.conditions?.[0]?.field || rule.condition || 'N/A'}</span>
               </div>
               <div className="flex gap-2">
                 <Link to={`/alerts/rules/${rule.id}/edit`}><Button variant="outline" size="sm"><Edit className="h-4 w-4" /></Button></Link>

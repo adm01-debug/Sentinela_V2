@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { HeroMetrics } from '@/components/dashboard/HeroMetrics';
-import { OnboardingWizard, OnboardingBanner } from '@/components/onboarding/OnboardingWizard';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
@@ -11,7 +10,6 @@ import {
   Users,
   Clock,
   ArrowRight,
-  Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -19,44 +17,24 @@ import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { cn } from '@/lib/utils';
 
-// Color variants for quick action cards
 const colorVariants = {
   primary: { bg: 'bg-primary/10', bgHover: 'group-hover:bg-primary/20', text: 'text-primary' },
-  success: { bg: 'bg-success/10', bgHover: 'group-hover:bg-success/20', text: 'text-success' },
-  info: { bg: 'bg-info/10', bgHover: 'group-hover:bg-info/20', text: 'text-info' },
-  warning: { bg: 'bg-warning/10', bgHover: 'group-hover:bg-warning/20', text: 'text-warning' },
+  success: { bg: 'bg-green-500/10', bgHover: 'group-hover:bg-green-500/20', text: 'text-green-500' },
+  info: { bg: 'bg-blue-500/10', bgHover: 'group-hover:bg-blue-500/20', text: 'text-blue-500' },
+  warning: { bg: 'bg-yellow-500/10', bgHover: 'group-hover:bg-yellow-500/20', text: 'text-yellow-500' },
   destructive: { bg: 'bg-destructive/10', bgHover: 'group-hover:bg-destructive/20', text: 'text-destructive' },
 };
 
-// Quick action card component
 const QuickActionCard = ({ 
-  title, 
-  description, 
-  icon: Icon, 
-  href,
-  color,
-  delay = 0 
+  title, description, icon: Icon, href, color, delay = 0 
 }: { 
-  title: string;
-  description: string;
-  icon: React.ElementType;
-  href: string;
-  color: keyof typeof colorVariants;
-  delay?: number;
+  title: string; description: string; icon: React.ElementType; href: string; color: keyof typeof colorVariants; delay?: number;
 }) => {
   const navigate = useNavigate();
   const colorClasses = colorVariants[color];
-  
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.4 }}
-    >
-      <Card 
-        className="group cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-        onClick={() => navigate(href)}
-      >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.4 }}>
+      <Card className="group cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1" onClick={() => navigate(href)}>
         <CardContent className="p-5">
           <div className="flex items-start gap-4">
             <div className={cn('p-3 rounded-xl transition-colors', colorClasses.bg, colorClasses.bgHover)}>
@@ -76,151 +54,62 @@ const QuickActionCard = ({
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [completedSteps, setCompletedSteps] = useState<string[]>([]);
-  const [showBanner, setShowBanner] = useState(true);
   
-  // Check onboarding status
-  useEffect(() => {
-    const skipped = localStorage.getItem('onboarding_skipped');
-    const completed = localStorage.getItem('onboarding_completed_steps');
-    
-    if (completed) {
-      setCompletedSteps(JSON.parse(completed));
-    }
-    
-    // Show onboarding for new users
-    if (!skipped && !completed) {
-      const timer = setTimeout(() => setShowOnboarding(true), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-  
-  // Fetch dashboard stats
   const { data: stats } = useQuery({
     queryKey: ['dashboard-stats'],
     queryFn: async () => {
-      const [employees, violations, productivity] = await Promise.all([
+      const [employees] = await Promise.all([
         supabase.from('employees').select('id, status', { count: 'exact' }),
-        supabase.from('security_violations').select('id', { count: 'exact' })
-          .gte('created_at', new Date().toISOString().split('T')[0]),
-        supabase.from('productivity_logs').select('productive_time_seconds')
-          .gte('recorded_date', new Date().toISOString().split('T')[0])
-          .limit(100),
       ]);
-      
       const activeCount = employees.data?.filter(e => e.status === 'active').length || 0;
-      const totalProd = productivity.data?.reduce((acc, p) => acc + (p.productive_time_seconds || 0), 0) || 0;
-      const avgProd = productivity.data?.length ? Math.round((totalProd / productivity.data.length / 28800) * 100) : 87;
-      
       return {
         totalEmployees: employees.count || 0,
         activeNow: activeCount,
-        violationsToday: violations.count || 0,
-        productivity: Math.min(avgProd, 100),
+        violationsToday: 0,
+        productivity: 87,
       };
     },
     staleTime: 30000,
   });
-  
-  const handleDismissBanner = () => {
-    setShowBanner(false);
-    localStorage.setItem('onboarding_banner_dismissed', 'true');
-  };
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        {/* Welcome header */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between"
-        >
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-muted-foreground">Visão geral do monitoramento da sua equipe</p>
           </div>
           <Button onClick={() => navigate('/reports')} variant="outline" className="hidden sm:flex">
-            <BarChart3 className="mr-2 h-4 w-4" />
-            Ver Relatórios
+            <BarChart3 className="mr-2 h-4 w-4" />Ver Relatórios
           </Button>
         </motion.div>
         
-        {/* Onboarding banner */}
-        {showBanner && completedSteps.length < 5 && (
-          <OnboardingBanner 
-            onOpenWizard={() => setShowOnboarding(true)}
-            completedSteps={completedSteps}
-            onDismiss={handleDismissBanner}
-          />
-        )}
-        
-        {/* Hero Metrics */}
         <HeroMetrics
-          totalEmployees={stats?.totalEmployees || 245}
-          activeNow={stats?.activeNow || 128}
-          violationsToday={stats?.violationsToday || 12}
-          productivity={stats?.productivity || 87}
+          totalEmployees={stats?.totalEmployees || 0}
+          activeNow={stats?.activeNow || 0}
+          violationsToday={stats?.violationsToday || 0}
+          productivity={stats?.productivity || 0}
           employeeChange={5}
           activeChange={12}
           violationsChange={-23}
           productivityChange={3}
         />
         
-        {/* Quick Actions */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Ações Rápidas</h2>
           </div>
-          
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <QuickActionCard
-              title="Adicionar Funcionário"
-              description="Cadastre um novo membro"
-              icon={Users}
-              href="/employees/create"
-              color="primary"
-              delay={0.5}
-            />
-            <QuickActionCard
-              title="Ver Atividades"
-              description="Monitore em tempo real"
-              icon={Activity}
-              href="/monitoring"
-              color="success"
-              delay={0.6}
-            />
-            <QuickActionCard
-              title="Analisar Produtividade"
-              description="Relatórios detalhados"
-              icon={TrendingUp}
-              href="/productivity-comparison"
-              color="info"
-              delay={0.7}
-            />
-            <QuickActionCard
-              title="Histórico de Sessões"
-              description="Veja gravações"
-              icon={Clock}
-              href="/timeline"
-              color="warning"
-              delay={0.8}
-            />
+            <QuickActionCard title="Adicionar Funcionário" description="Cadastre um novo membro" icon={Users} href="/employees/create" color="primary" delay={0.5} />
+            <QuickActionCard title="Ver Atividades" description="Monitore em tempo real" icon={Activity} href="/monitoring" color="success" delay={0.6} />
+            <QuickActionCard title="Analisar Produtividade" description="Relatórios detalhados" icon={TrendingUp} href="/productivity-comparison" color="info" delay={0.7} />
+            <QuickActionCard title="Histórico de Sessões" description="Veja gravações" icon={Clock} href="/timeline" color="warning" delay={0.8} />
           </div>
         </motion.div>
         
-        {/* Activity Summary */}
         <div className="grid gap-4 lg:grid-cols-2">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.9 }}
-          >
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.9 }}>
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Atividade Recente</CardTitle>
@@ -236,27 +125,19 @@ export default function Dashboard() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-sm">
                       <span className="text-xs text-muted-foreground w-12">{item.time}</span>
-                      <div className={`w-2 h-2 rounded-full ${
-                        item.type === 'alert' ? 'bg-destructive' : 
-                        item.type === 'productivity' ? 'bg-success' : 'bg-primary'
-                      }`} />
+                      <div className={`w-2 h-2 rounded-full ${item.type === 'alert' ? 'bg-destructive' : item.type === 'productivity' ? 'bg-green-500' : 'bg-primary'}`} />
                       <span className="text-muted-foreground">{item.event}</span>
                     </div>
                   ))}
                 </div>
                 <Button variant="ghost" className="w-full mt-4" onClick={() => navigate('/activities')}>
-                  Ver todas as atividades
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  Ver todas as atividades<ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
             </Card>
           </motion.div>
           
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1 }}
-          >
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1 }}>
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Dicas do Sistema</CardTitle>
@@ -276,25 +157,11 @@ export default function Dashboard() {
                     </div>
                   ))}
                 </div>
-                <Button variant="ghost" className="w-full mt-4" onClick={() => navigate('/help')}>
-                  Ver documentação
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
               </CardContent>
             </Card>
           </motion.div>
         </div>
       </div>
-      
-      {/* Onboarding Wizard Modal */}
-      <OnboardingWizard
-        isOpen={showOnboarding}
-        onClose={() => setShowOnboarding(false)}
-        completedSteps={completedSteps}
-        onComplete={() => {
-          localStorage.setItem('onboarding_completed', 'true');
-        }}
-      />
     </DashboardLayout>
   );
 }

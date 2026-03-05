@@ -3,12 +3,13 @@ import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAIAnalysisPage } from '@/hooks/useAIAnalysisPage';
 import { AIStatsCards } from '@/components/ai';
-import { PageHeader } from '@/components/PageHeader';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { TrendingUp, AlertTriangle, Brain, Loader2, Play, Lightbulb } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -53,16 +54,17 @@ const AIAnalysisContent = memo(function AIAnalysisContent() {
       <PageHeader
         title="Analise com IA"
         description="Insights e recomendacoes baseados em inteligencia artificial"
-      >
-        <Button onClick={() => handleRunAnalysis()} disabled={isAnalyzing}>
-          {isAnalyzing ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Play className="mr-2 h-4 w-4" />
-          )}
-          Executar Analise
-        </Button>
-      </PageHeader>
+        actions={
+          <Button onClick={() => handleRunAnalysis()} disabled={isAnalyzing}>
+            {isAnalyzing ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Play className="mr-2 h-4 w-4" />
+            )}
+            Executar Analise
+          </Button>
+        }
+      />
 
       <AIStatsCards stats={stats} />
 
@@ -73,7 +75,7 @@ const AIAnalysisContent = memo(function AIAnalysisContent() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
-            {employees.map((emp) => (
+            {employees.map((emp: any) => (
               <SelectItem key={emp.id} value={emp.id}>{emp.name}</SelectItem>
             ))}
           </SelectContent>
@@ -114,7 +116,7 @@ const AIAnalysisContent = memo(function AIAnalysisContent() {
             ) : (
               <ScrollArea className="h-[400px]">
                 <div className="space-y-4">
-                  {analyses.map((analysis) => (
+                  {analyses.map((analysis: any) => (
                     <div key={analysis.id} className="p-4 rounded-lg border">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
@@ -161,7 +163,7 @@ const AIAnalysisContent = memo(function AIAnalysisContent() {
             ) : (
               <ScrollArea className="h-[400px]">
                 <div className="space-y-3">
-                  {stats.recentInsights.map((insight, i) => (
+                  {stats.recentInsights.map((insight: any, i: number) => (
                     <div key={i} className="p-3 rounded-lg bg-muted/50">
                       <p className="text-sm">{insight}</p>
                     </div>

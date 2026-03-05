@@ -20,6 +20,7 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
   onCancel?: () => void;
   variant?: 'default' | 'destructive';
+  isLoading?: boolean;
 }
 
 export function ConfirmDialog({
