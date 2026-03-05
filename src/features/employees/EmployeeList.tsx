@@ -41,14 +41,36 @@ export function EmployeeList({ filters = {}, page = 1, onPageChange }: Props) {
   ];
 
   return (
-    <DataTable
-      data={data?.data || []}
-      columns={columns}
-      isLoading={isLoading}
-      page={page}
-      totalPages={Math.ceil((data?.total || 0) / 20)}
-      onPageChange={onPageChange}
-      emptyMessage="No employees found"
-    />
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Employee</TableHead>
+          <TableHead>Department</TableHead>
+          <TableHead>Position</TableHead>
+          <TableHead>Status</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {(data?.data || []).map((emp: any) => (
+          <TableRow key={emp.id}>
+            <TableCell>
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={emp.avatar} />
+                  <AvatarFallback>{initials(emp.name)}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <div className="font-medium">{emp.name}</div>
+                  <div className="text-sm text-muted-foreground">{emp.email}</div>
+                </div>
+              </div>
+            </TableCell>
+            <TableCell>{emp.department}</TableCell>
+            <TableCell>{emp.position}</TableCell>
+            <TableCell><StatusBadge status={emp.status} /></TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
