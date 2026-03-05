@@ -131,8 +131,8 @@ export function useRateLimitDashboardPage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.blockedIPs.all });
-      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimitLogs.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.blockedIPs() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.logs() });
       toast({ title: 'IP desbloqueado com sucesso' });
     },
     onError: () => {
