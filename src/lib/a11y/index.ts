@@ -1,7 +1,6 @@
 // Accessibility utilities index
 export * from './aria';
-// Selectively re-export to avoid conflicts
-export { getAriaLabel, getAriaDescribedBy } from './ariaUtils';
+export { getAriaLabel, setAriaExpanded } from './ariaUtils';
 export * from './colorContrast';
 export * from './headingUtils';
 export * from './keyboard';

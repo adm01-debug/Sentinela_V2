@@ -11,7 +11,7 @@ export function CalendarWidget({ credentials }: { credentials: any }) {
       <h3>Upcoming Events</h3>
       <ul>
         {events.map(e => (
-          <li key={e.id}>{e.summary} - {e.start.toLocaleDateString()}</li>
+          <li key={e.id}>{e.summary} - {String(e.start)}</li>
         ))}
       </ul>
     </div>

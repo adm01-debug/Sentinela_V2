@@ -1,8 +1,4 @@
-// ============================================================
 // LIB BARREL EXPORT - SENTINELA v20
-// Comprehensive export of all lib modules
-// ============================================================
-
 // Core modules
 export * from './api';
 export * from './cache';
@@ -14,10 +10,11 @@ export * from './error-handling';
 // Feature modules
 export * from './feature-flags';
 export * from './permissions';
-export * from './a11y';
-export * from './analytics';
+// a11y and analytics have conflicts - import directly from submodules
+// export * from './a11y';
+// export * from './analytics';
 export * from './monitoring';
-export * from './performance';
+// export * from './performance';
 
 // Utility modules
 export * from './pwa';
