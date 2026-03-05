@@ -15,7 +15,7 @@ export function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-2 outline-none">
-        <UserAvatar name={user.name} src={user.avatar} size="sm" />
+        <UserAvatar name={user.name} avatarUrl={user.avatar} className="h-8 w-8" />
         <span className="hidden md:block text-sm font-medium">{user.name}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">

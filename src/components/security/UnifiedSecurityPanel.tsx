@@ -103,7 +103,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
   
   // Get current user
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(({ data: { user } }: { data: { user: any } }) => {
       if (user) setUserId(user.id);
     });
   }, []);
@@ -149,15 +149,15 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
         .in('setting_key', ['mfa_required', 'ip_whitelist_enabled', 'session_timeout_hours']);
       if (error) throw error;
       return {
-        mfa_required: data?.find(s => s.setting_key === 'mfa_required')?.setting_value === true,
-        ip_whitelist_enabled: data?.find(s => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
-        session_timeout: data?.find(s => s.setting_key === 'session_timeout_hours')?.setting_value || 24,
+        mfa_required: data?.find((s: any) => s.setting_key === 'mfa_required')?.setting_value === true,
+        ip_whitelist_enabled: data?.find((s: any) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
+        session_timeout: data?.find((s: any) => s.setting_key === 'session_timeout_hours')?.setting_value || 24,
       };
     },
   });
   
-  const trustedDevices = devices.filter(d => d.is_trusted).length;
-  const unresolvedAlerts = alerts.filter(a => !a.read).length;
+  const trustedDevices = devices.filter((d: any) => d.is_trusted).length;
+  const unresolvedAlerts = alerts.filter((a: any) => !a.read).length;
   const score = calculateSecurityScore(isEnrolled, trustedDevices, devices.length, unresolvedAlerts);
   const scoreBadge = getScoreBadge(score.total);
   

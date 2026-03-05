@@ -58,6 +58,7 @@ export const PulseDots = memo(function PulseDots({ count = 3, className }: Pulse
 interface ShimmerProps {
   className?: string;
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  style?: React.CSSProperties;
 }
 
 const roundedClasses = {
@@ -69,7 +70,7 @@ const roundedClasses = {
   full: 'rounded-full',
 };
 
-export const Shimmer = memo(function Shimmer({ className, rounded = 'md' }: ShimmerProps) {
+export const Shimmer = memo(function Shimmer({ className, rounded = 'md', style }: ShimmerProps) {
   return (
     <div
       className={cn(
@@ -77,6 +78,7 @@ export const Shimmer = memo(function Shimmer({ className, rounded = 'md' }: Shim
         roundedClasses[rounded],
         className
       )}
+      style={style}
     >
       <div
         className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]"
@@ -233,7 +235,7 @@ export const PageLoading = memo(function PageLoading({
 
       {/* Stats grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((i) => (
+        {Array.from({ length: 4 }).map((_, i) => (
           <SkeletonCard key={i} variant="stat" />
         ))}
       </div>

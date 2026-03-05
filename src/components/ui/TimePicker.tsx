@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Clock } from 'lucide-react';
 import { cn } from '@/utils/cn';
-import { Button } from './Button';
-import { Popover, PopoverContent, PopoverTrigger } from './Popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select';
+import { Button } from './button';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 
 interface TimePickerProps {
   value?: string;

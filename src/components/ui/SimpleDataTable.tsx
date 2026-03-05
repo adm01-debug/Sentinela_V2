@@ -43,7 +43,7 @@ function DataTableComponent<T>({
   if (data.length === 0) {
     return (
       <EmptyState
-        icon={FileText}
+        icon={<FileText className="h-8 w-8" />}
         title={emptyMessage}
         description={emptyDescription}
       />

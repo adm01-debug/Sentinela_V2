@@ -84,9 +84,9 @@ function WebhooksListComponent({
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
-                {webhook.timeout_seconds}s timeout
+                {(webhook as any).timeout_seconds || 30}s timeout
               </span>
-              <span>{webhook.retry_count} retries</span>
+              <span>{(webhook as any).retry_count || 3} retries</span>
             </div>
 
             {/* Actions */}

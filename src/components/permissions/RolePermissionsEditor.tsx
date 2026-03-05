@@ -96,7 +96,7 @@ export function RolePermissionsEditor() {
   // Initialize selected permissions when role changes
   useEffect(() => {
     if (rolePermissions.length > 0) {
-      const permIds = new Set(rolePermissions.map((rp: any) => rp.permission_id));
+      const permIds = new Set<string>(rolePermissions.map((rp: any) => rp.permission_id as string));
       setSelectedPermissions(permIds);
       setHasChanges(false);
     } else if (selectedRoleId) {

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Download } from 'lucide-react';
 import { cn } from '@/utils/cn';
-import { Button } from './Button';
-import { Dialog, DialogContent } from './Dialog';
+import { Button } from './button';
+import { Dialog, DialogContent } from './dialog';
 
 interface LightboxProps {
   images: { src: string; alt?: string; title?: string }[];
