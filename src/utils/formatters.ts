@@ -3,6 +3,7 @@
  */
 
 import { format, formatDistance, formatRelative, parseISO, isValid } from 'date-fns';
+import type { Locale } from 'date-fns';
 import { ptBR, es, enUS } from 'date-fns/locale';
 
 const locales: Record<string, Locale> = {

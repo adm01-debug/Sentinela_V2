@@ -153,7 +153,7 @@ export type { DashboardLayout, DashboardStats, DashboardFilter } from './dashboa
 export type { DashboardWidget, WidgetType, WidgetConfig, WidgetPosition } from './analytics.types';
 
 // api.types.ts — skip ApiResponse, PaginatedResponse
-export type { ApiConfig, ApiRequestConfig, ApiEndpoint, ApiVersion } from './api.types';
+export type { ApiRequestConfig, ApiVersion, HttpMethod, QueryParams } from './api.types';
 
 // response.types.ts — skip ApiResponse, PaginatedResponse
 export type { ResponseMeta, BulkResponse } from './response.types';
