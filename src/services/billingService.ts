@@ -46,7 +46,7 @@ export const billingService = {
   },
 
   async downloadInvoice(id: string): Promise<Blob> {
-    return api.get(`${BASE_URL}/invoices/${id}/download`, { responseType: 'blob' });
+    return api.get(`${BASE_URL}/invoices/${id}/download`) as Promise<Blob>;
   },
 
   async payInvoice(id: string, paymentMethodId?: string): Promise<Invoice> {

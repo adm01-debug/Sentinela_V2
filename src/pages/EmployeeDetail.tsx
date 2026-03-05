@@ -20,7 +20,7 @@ const EmployeeDetailContent = memo(function EmployeeDetailContent() {
     <div className="p-6 space-y-6">
       <div className="flex items-center gap-4">
         <Button variant="ghost" onClick={() => navigate(-1)}><ArrowLeft className="mr-2 h-4 w-4" />Voltar</Button>
-        <h1 className="text-2xl font-bold">{employee.name}</h1>
+        <h1 className="text-2xl font-bold">{(employee as any).full_name ?? (employee as any).name}</h1>
         <Badge variant={employee.status === 'active' ? 'default' : 'secondary'}>{employee.status}</Badge>
       </div>
       <div className="grid gap-6 md:grid-cols-2">

@@ -33,7 +33,7 @@ export default function EmployeeEditPage() {
   });
 
   const onSubmit = async (data: FormData) => {
-    await updateEmployee.mutateAsync({ id: id!, data: { ...data, position: data.role } as any });
+    await updateEmployee.mutateAsync({ id: id!, data: { full_name: data.name, email: data.email, department: data.department, role: data.role as any, status: data.status as any } });
     navigate(`/employees/${id}`);
   };
 

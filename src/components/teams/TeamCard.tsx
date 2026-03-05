@@ -4,15 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Users, Edit, Trash2, Crown } from 'lucide-react';
-
-interface Team {
-  id: string;
-  name: string;
-  description?: string;
-  manager_name?: string;
-  is_active: boolean;
-  members_count: number;
-}
+import type { Team } from '@/hooks/useTeamsPage';
 
 interface TeamCardProps {
   team: Team;

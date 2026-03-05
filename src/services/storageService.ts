@@ -11,9 +11,9 @@ export const storageService = {
     if (options?.folder) formData.append('folder', options.folder);
     if (options?.isPublic !== undefined) formData.append('isPublic', String(options.isPublic));
     
-    return api.post(`${BASE_URL}/upload`, formData, {
-      onUploadProgress: (e) => options?.onProgress?.(Math.round((e.loaded * 100) / (e.total || 1))),
-    });
+    const result = await api.post<Attachment>(`${BASE_URL}/upload`, formData);
+    options?.onProgress?.(100);
+    return result;
   },
 
   async uploadMultiple(files: File[], options?: { folder?: string; onProgress?: (progress: UploadProgress[]) => void }): Promise<Attachment[]> {
