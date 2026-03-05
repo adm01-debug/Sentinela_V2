@@ -57,7 +57,7 @@ export function useAppConfig(): UseAppConfigReturn {
         .single();
       
       if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
-      setConfig(data || defaultConfig);
+      setConfig(data as AppConfig || defaultConfig);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch app config');
       setConfig(defaultConfig);
