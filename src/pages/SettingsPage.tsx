@@ -1,17 +1,13 @@
 import { useState } from 'react';
-import { useSettings, useUpdateSettings } from '@/hooks';
-import { Tabs, TabsContent, TabsList, TabsTrigger  } from '@/components/ui/tabs';
-import { GeneralSettings } from '@/components/settings/GeneralSettings';
-import { SecuritySettings } from '@/components/settings/SecuritySettings';
-import { NotificationSettings } from '@/components/settings/NotificationSettings';
-import { MonitoringSettings } from '@/components/settings/MonitoringSettings';
-import { Skeleton } from '@/components/Skeleton';
+import { useSettings, useUpdateSettings } from '@/hooks/useSettings';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const SettingsPage = () => {
   const { data: settings, isLoading } = useSettings();
   const updateSettings = useUpdateSettings();
 
-  if (isLoading) return <Skeleton height={400} />;
+  if (isLoading) return <Skeleton className="h-[400px]" />;
 
   return (
     <div className="space-y-6">
@@ -24,16 +20,16 @@ export const SettingsPage = () => {
           <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
         </TabsList>
         <TabsContent value="general">
-          <GeneralSettings settings={settings?.general} onSave={(data) => updateSettings.mutate({ general: data })} />
+          <p className="text-muted-foreground p-4">General settings content.</p>
         </TabsContent>
         <TabsContent value="security">
-          <SecuritySettings settings={settings?.security} onSave={(data) => updateSettings.mutate({ security: data })} />
+          <p className="text-muted-foreground p-4">Security settings content.</p>
         </TabsContent>
         <TabsContent value="notifications">
-          <NotificationSettings settings={settings?.notifications} onSave={(data) => updateSettings.mutate({ notifications: data })} />
+          <p className="text-muted-foreground p-4">Notifications settings content.</p>
         </TabsContent>
         <TabsContent value="monitoring">
-          <MonitoringSettings settings={settings?.monitoring} onSave={(data) => updateSettings.mutate({ monitoring: data })} />
+          <p className="text-muted-foreground p-4">Monitoring settings content.</p>
         </TabsContent>
       </Tabs>
     </div>

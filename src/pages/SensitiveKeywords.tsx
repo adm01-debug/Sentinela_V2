@@ -1,4 +1,5 @@
 import React, { Suspense, memo } from 'react';
+import { Plus, Key, Eye, AlertTriangle, Search, Loader2, Edit, Trash2 } from 'lucide-react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useSensitiveKeywordsPage } from '@/hooks/useSensitiveKeywordsPage';

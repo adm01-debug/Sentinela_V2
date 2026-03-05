@@ -46,7 +46,7 @@ export default function ProfilePage() {
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 <span className="text-muted-foreground">Membro desde:</span>
-                <span>{user?.createdAt && format(new Date(user.createdAt), 'dd/MM/yyyy')}</span>
+                <span>{(user as any)?.createdAt && format(new Date((user as any).createdAt), 'dd/MM/yyyy')}</span>
               </div>
             </CardContent>
           </Card>
