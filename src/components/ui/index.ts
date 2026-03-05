@@ -61,7 +61,7 @@ export { ToggleGroup, ToggleGroupItem } from './toggle-group';
 export { LoadingSpinner } from './LoadingSpinner';
 
 // Custom components - explicit exports to avoid duplicates
-export { ActionButtons } from './ActionButtons';
+export { default as ActionButtons } from './ActionButtons';
 export { Blockquote } from './Blockquote';
 export { BottomSheet } from './BottomSheet';
 export { Chip } from './Chip';
