@@ -3,7 +3,7 @@
  * Core type definitions for authentication and authorization
  */
 
-import type { User, Session } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 
 export type AuthProvider = 'email' | 'google' | 'github' | 'microsoft' | 'saml' | 'oidc';
 export type MFAMethod = 'totp' | 'sms' | 'email' | 'webauthn';
