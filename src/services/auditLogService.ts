@@ -1,7 +1,7 @@
 // Audit Log Service for Sentinela v17
 import { api } from './api';
 import type { AuditLog, AuditLogFilters, AuditLogStats, AuditLogExport, AuditRetentionPolicy } from '@/types/auditLog';
-import type { PaginatedResponse } from '@/types/common';
+import type { PaginatedResponse } from '@/types/pagination';
 
 const BASE_URL = '/audit-logs';
 

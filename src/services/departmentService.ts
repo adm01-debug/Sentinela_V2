@@ -1,7 +1,7 @@
 // Department Service for Sentinela v17
 import { api } from './api';
 import type { Department, DepartmentCreateInput, DepartmentUpdateInput, DepartmentFilters, DepartmentStats, DepartmentHierarchy } from '@/types/department';
-import type { PaginatedResponse } from '@/types/common';
+import type { PaginatedResponse } from '@/types/pagination';
 
 const BASE_URL = '/departments';
 

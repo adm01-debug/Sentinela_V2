@@ -1,7 +1,7 @@
 // Export Service for Sentinela v17
 import { api } from './api';
 import type { Export, ExportCreateInput, ExportFilters, ExportStats, ExportSchedule, ExportTemplate } from '@/types/export';
-import type { PaginatedResponse } from '@/types/common';
+import type { PaginatedResponse } from '@/types/pagination';
 
 const BASE_URL = '/exports';
 

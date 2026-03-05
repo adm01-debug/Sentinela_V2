@@ -1,7 +1,7 @@
 // Team Service for Sentinela v17
 import { api } from './api';
 import type { Team, TeamCreateInput, TeamUpdateInput, TeamFilters, TeamStats, AddMemberInput } from '@/types/team';
-import type { PaginatedResponse } from '@/types/common';
+import type { PaginatedResponse } from '@/types/pagination';
 
 const BASE_URL = '/teams';
 
