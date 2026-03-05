@@ -3,9 +3,13 @@
 // Core entity types
 export * from './activity';
 export * from './alert';
-export * from './employee';
+// NOTE: employee.ts and employee.types.ts have overlapping exports (Employee, EmployeeFilters).
+// We skip employee.ts and use employee.types.ts as the canonical source.
+// export * from './employee';
 export * from './employee.types';
-export * from './report';
+// NOTE: report.ts and report.types.ts have overlapping exports (Report, ReportFilters, ReportTemplate).
+// We skip report.ts and use report.types.ts as the canonical source.
+// export * from './report';
 export * from './report.types';
 export * from './settings';
 export * from './violation.types';
