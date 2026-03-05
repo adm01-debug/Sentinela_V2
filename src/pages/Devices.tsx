@@ -172,7 +172,7 @@ const DevicesContent = React.memo(function DevicesContent() {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Tipo</label>
-                  <p className="font-medium capitalize">{selectedDevice.type}</p>
+                  <p className="font-medium capitalize">{(selectedDevice as any).type || (selectedDevice as any).device_type}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Sistema</label>
