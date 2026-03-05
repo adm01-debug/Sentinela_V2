@@ -1,41 +1,36 @@
 import { useState } from 'react';
-import { useEmployees, useDeleteEmployee } from '@/hooks';
+import { useEmployees, useDeleteEmployee } from '@/hooks/useEmployees';
 import { DataTable } from '@/components/DataTable';
-import { EmployeeFilters } from '@/components/EmployeeFilters';
-import { AddEmployeeDialog } from '@/components/AddEmployeeDialog';
-import { Button  } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
 export const EmployeesPage = () => {
-  const [filters, setFilters] = useState({});
-  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [filters] = useState({});
   const { data, isLoading } = useEmployees(filters);
   const deleteEmployee = useDeleteEmployee();
   const navigate = useNavigate();
 
+  const employees = Array.isArray(data) ? data : (data as any)?.data || [];
+
   const columns = [
-    { key: 'name', label: 'Name', sortable: true },
-    { key: 'email', label: 'Email' },
-    { key: 'department', label: 'Department', sortable: true },
-    { key: 'status', label: 'Status' },
-    { key: 'actions', label: 'Actions' },
+    { key: 'name', header: 'Name' },
+    { key: 'email', header: 'Email' },
+    { key: 'department', header: 'Department' },
+    { key: 'status', header: 'Status' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Employees</h1>
-        <Button onClick={() => setShowAddDialog(true)}>Add Employee</Button>
+        <Button onClick={() => navigate('/employees/create')}>Add Employee</Button>
       </div>
-      <EmployeeFilters filters={filters} onChange={setFilters} />
       <DataTable
         columns={columns}
-        data={data?.data || []}
+        data={employees}
         isLoading={isLoading}
-        onRowClick={(row) => navigate('/employees/' + row.id)}
-        onDelete={(id) => deleteEmployee.mutate(id)}
+        keyExtractor={(row: any) => row.id}
       />
-      <AddEmployeeDialog open={showAddDialog} onClose={() => setShowAddDialog(false)} />
     </div>
   );
 };

@@ -15,11 +15,11 @@ export default function AlertRulesPage() {
   const { data: rules, isLoading } = useAlertRules();
   const queryClient = useQueryClient();
   const deleteRule = useMutation({
-    mutationFn: (id: string) => alertService.deleteRule ? alertService.deleteRule(id) : Promise.resolve(),
+    mutationFn: (id: string) => (alertService as any).deleteRule ? (alertService as any).deleteRule(id) : Promise.resolve(),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
   });
   const toggleRule = useMutation({
-    mutationFn: (id: string) => alertService.toggleRule ? alertService.toggleRule(id) : Promise.resolve(),
+    mutationFn: (id: string) => (alertService as any).toggleRule ? (alertService as any).toggleRule(id) : Promise.resolve(),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
   });
 

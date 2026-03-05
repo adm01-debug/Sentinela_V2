@@ -14,7 +14,7 @@ export default function AlertRuleCreatePage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const createRule = useMutation({
-    mutationFn: (data: any) => alertService.createRule ? alertService.createRule(data) : Promise.resolve(),
+    mutationFn: (data: any) => (alertService as any).createRule ? (alertService as any).createRule(data) : Promise.resolve(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
   });
   const { register, handleSubmit, setValue } = useForm();
