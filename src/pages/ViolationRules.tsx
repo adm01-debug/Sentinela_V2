@@ -1,7 +1,8 @@
 import React, { Suspense, memo } from 'react';
+import { Plus, Search, Loader2 } from 'lucide-react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useViolationRulesPage } from '@/hooks/useViolationRulesPage';
+import { useViolationRulesPage, type ViolationRule, type RuleFormData } from '@/hooks/useViolationRulesPage';
 import { RulesStatsCards, RulesList } from '@/components/rules';
 import { PageHeader } from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';

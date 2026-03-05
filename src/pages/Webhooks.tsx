@@ -99,7 +99,7 @@ const WebhooksContent = memo(function WebhooksContent() {
               </Button>
               <div>
                 <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-                  <Webhook className="h-8 w-8" />
+                  <WebhookIcon className="h-8 w-8" />
                   Webhooks
                 </h1>
                 <p className="text-muted-foreground">
