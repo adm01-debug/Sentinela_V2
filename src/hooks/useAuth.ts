@@ -49,7 +49,7 @@ export function useAuth(): UseAuthReturn {
     mutationFn: ({ email, password }: { email: string; password: string }) => 
       authService.login(email, password),
     onSuccess: (data) => {
-      setUser(data.user);
+      setUser(data.user as any);
       setToken(data.token);
     },
   });
