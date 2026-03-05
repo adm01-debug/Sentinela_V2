@@ -28,9 +28,9 @@ const SettingsContent = memo(function SettingsContent() {
   const appRules = settingsData?.appRules || settingsData?.applicationRules || [];
   const updatePolicy = (id: string, enabled: boolean) => {};
   const updateAppRule = (id: string, status: string) => {};
-  const addAppRule = (rule: any) => {};
-  const deleteAppRule = (id: string) => {};
-  const editAppRule = (rule: any) => {};
+  const addAppRule = async (_name: string, _cat: string, _status: 'allowed' | 'blocked' | 'monitored') => true;
+  const deleteAppRule = async (_id: string) => true;
+  const editAppRule = async (_id: string, _name: string, _cat: string) => true;
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [editingRule, setEditingRule] = useState<ApplicationRule | null>(null);
