@@ -65,6 +65,16 @@ export function useEmployeesPage() {
   const employees = (employeesQuery.data as any)?.data || employeesQuery.data || [];
   const loading = employeesQuery.isLoading;
   
+  const createMutation = useCreateEmployee();
+  const updateMutation = useUpdateEmployee();
+  const deleteMutation = useDeleteEmployee();
+  
+  const createEmployee = async (data: any) => createMutation.mutateAsync(data);
+  const updateEmployee = async (id: string, data: any) => updateMutation.mutateAsync({ id, data });
+  const deleteEmployee = async (id: string) => deleteMutation.mutateAsync(id);
+  const assignDevice = async (_empId: string, _name: string, _type: string, _primary: boolean) => { /* stub */ };
+  const unassignDevice = async (_empId: string, _deviceId: string) => { /* stub */ };
+  
   const teamsQuery = useTeams();
   const teams = (teamsQuery as any).teams || (teamsQuery.data as any)?.data || teamsQuery.data || [];
 

@@ -43,14 +43,13 @@ const initialFormData: WebhookFormData = {
 // ============================================================
 
 export function useWebhooksPage() {
-  const {
-    webhooks,
-    loading,
-    createWebhook,
-    updateWebhook,
-    deleteWebhook,
-    testWebhook,
-  } = useWebhooks();
+  const webhooksResult = useWebhooks() as any;
+  const webhooks = webhooksResult.webhooks || webhooksResult.data || [];
+  const loading = webhooksResult.loading || webhooksResult.isLoading || false;
+  const createWebhook = webhooksResult.createWebhook || (async () => {});
+  const updateWebhook = webhooksResult.updateWebhook || (async () => {});
+  const deleteWebhook = webhooksResult.deleteWebhook || (async () => {});
+  const testWebhook = webhooksResult.testWebhook || (async () => {});
 
   // Search & Filters
   const [searchTerm, setSearchTerm] = useState('');

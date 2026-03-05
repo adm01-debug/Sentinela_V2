@@ -150,7 +150,7 @@ export function useRateLimitDashboardPage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimitSettings.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.settings() });
       toast({ title: 'Configurações atualizadas' });
     },
     onError: () => {
