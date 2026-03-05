@@ -46,7 +46,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateEmployeeInput) => employeeService.create(data),
+    mutationFn: (data: EmployeeCreateInput) => employeeService.create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['employees'] }); }
   });
 };
