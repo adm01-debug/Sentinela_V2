@@ -70,7 +70,7 @@ const roundedClasses = {
   full: 'rounded-full',
 };
 
-export const Shimmer = memo(function Shimmer({ className, rounded = 'md' }: ShimmerProps) {
+export const Shimmer = memo(function Shimmer({ className, rounded = 'md', style }: ShimmerProps) {
   return (
     <div
       className={cn(
