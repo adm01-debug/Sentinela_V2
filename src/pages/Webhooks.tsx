@@ -78,7 +78,7 @@ const WebhooksContent = memo(function WebhooksContent() {
         <div className="pl-64">
           <Header />
           <main className="p-6 flex items-center justify-center min-h-[60vh]">
-            <Spinner size="lg" />
+            <Loader2 className="h-8 w-8 animate-spin" />
           </main>
         </div>
       </div>
