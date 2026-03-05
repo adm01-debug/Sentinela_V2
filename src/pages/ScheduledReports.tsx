@@ -13,6 +13,9 @@ import { Badge } from '@/components/ui/badge';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import {
+  Plus, FileText, Clock, Calendar, Search, Loader2, Mail, Play, Edit, Trash2, X,
+} from 'lucide-react';
 
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,

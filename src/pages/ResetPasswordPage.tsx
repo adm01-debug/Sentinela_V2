@@ -3,9 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Button  } from '@/components/ui/button';
-import { Input  } from '@/components/ui/input';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter  } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { authService } from '@/services/authService';
 
 const schema = z.object({
@@ -56,11 +57,21 @@ export default function ResetPasswordPage() {
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
-            <Input label="Nova senha" type="password" {...register('password')} error={errors.password?.message} />
-            <Input label="Confirmar senha" type="password" {...register('confirmPassword')} error={errors.confirmPassword?.message} />
+            <div className="space-y-2">
+              <Label>Nova senha</Label>
+              <Input type="password" {...register('password')} />
+              {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
+            </div>
+            <div className="space-y-2">
+              <Label>Confirmar senha</Label>
+              <Input type="password" {...register('confirmPassword')} />
+              {errors.confirmPassword && <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>}
+            </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full" loading={isLoading}>Alterar senha</Button>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Alterando...' : 'Alterar senha'}
+            </Button>
           </CardFooter>
         </form>
       </Card>

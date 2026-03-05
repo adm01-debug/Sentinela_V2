@@ -1,28 +1,32 @@
 import { useState } from 'react';
-import { useReports, useGenerateReport, useReportTemplates } from '@/hooks';
-import { ReportList } from '@/components/ReportList';
-import { GenerateReportDialog } from '@/components/GenerateReportDialog';
-import { Button  } from '@/components/ui/button';
+import { useReports, useGenerateReport, useReportTemplates } from '@/hooks/useReports';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Loader2 } from 'lucide-react';
 
 export const ReportsPage = () => {
-  const [showGenerateDialog, setShowGenerateDialog] = useState(false);
   const { data: reports, isLoading } = useReports();
   const { data: templates } = useReportTemplates();
-  const generateReport = useGenerateReport();
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Reports</h1>
-        <Button onClick={() => setShowGenerateDialog(true)}>Generate Report</Button>
       </div>
-      <ReportList reports={reports?.data || []} isLoading={isLoading} />
-      <GenerateReportDialog
-        open={showGenerateDialog}
-        onClose={() => setShowGenerateDialog(false)}
-        templates={templates || []}
-        onGenerate={(data) => { generateReport.mutate(data); setShowGenerateDialog(false); }}
-      />
+      {isLoading ? (
+        <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin" /></div>
+      ) : (
+        <div className="space-y-2">
+          {((reports as any)?.data || reports || []).map((report: any) => (
+            <Card key={report.id}>
+              <CardContent className="p-4">
+                <p className="font-medium">{report.name || report.report_type}</p>
+                <p className="text-sm text-muted-foreground">{report.status}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
