@@ -6,12 +6,13 @@ export interface User {
   id: string;
   email: string;
   name?: string;
-  role?: string;
+  role?: any;
   avatar?: string;
   isAdmin?: boolean;
   onboardingCompleted?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  [key: string]: any;
 }
 
 export interface Session {

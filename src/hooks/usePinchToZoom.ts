@@ -7,26 +7,28 @@ export interface UsePinchToZoomOptions {
 }
 
 export function usePinchToZoom(options: UsePinchToZoomOptions = {}) {
-  const { minScale = 0.5, maxScale = 4, initialScale = 1 } = options;
-  const [scale, setScale] = useState(initialScale);
+  const { minScale = 0.5, maxScale = 4, initialScale: defaultScale = 1 } = options;
+  const [scale, setScale] = useState(defaultScale);
   const [origin, setOrigin] = useState({ x: 0, y: 0 });
   const initialDistance = useRef<number | null>(null);
-  const initialScale = useRef(scale);
+  const scaleAtStart = useRef(defaultScale);
 
-  const getDistance = (touches: TouchList) => {
-    const [t1, t2] = [touches[0], touches[1]];
+  const getDistance = (touches: React.TouchList) => {
+    const t1 = touches[0];
+    const t2 = touches[1];
     return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
   };
 
-  const getCenter = (touches: TouchList) => {
-    const [t1, t2] = [touches[0], touches[1]];
+  const getCenter = (touches: React.TouchList) => {
+    const t1 = touches[0];
+    const t2 = touches[1];
     return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
   };
 
   const handleTouchStart = useCallback((e: TouchEvent) => {
     if (e.touches.length === 2) {
       initialDistance.current = getDistance(e.touches);
-      initialScale.current = scale;
+      scaleAtStart.current = scale;
       setOrigin(getCenter(e.touches));
     }
   }, [scale]);
@@ -34,7 +36,7 @@ export function usePinchToZoom(options: UsePinchToZoomOptions = {}) {
   const handleTouchMove = useCallback((e: TouchEvent) => {
     if (e.touches.length === 2 && initialDistance.current) {
       const currentDistance = getDistance(e.touches);
-      const newScale = (currentDistance / initialDistance.current) * initialScale.current;
+      const newScale = (currentDistance / initialDistance.current) * scaleAtStart.current;
       setScale(Math.max(minScale, Math.min(maxScale, newScale)));
       setOrigin(getCenter(e.touches));
     }

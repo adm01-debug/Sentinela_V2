@@ -47,7 +47,7 @@ export function useDevicesPage() {
 
   // Fetch devices
   const devicesQuery = useQuery({
-    queryKey: queryKeys.devices.list(filters),
+    queryKey: [...queryKeys.devices.lists(), filters],
     queryFn: async () => {
       let query = supabase
         .from('devices')

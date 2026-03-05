@@ -172,8 +172,8 @@ export function useRateLimitDashboardPage() {
   }, [updateSettingsMutation]);
 
   const handleRefresh = useCallback(() => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.rateLimitLogs.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.blockedIPs.all });
+    queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.logs() });
+    queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.blockedIPs() });
   }, [queryClient]);
 
   return {

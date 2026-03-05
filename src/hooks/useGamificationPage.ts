@@ -22,7 +22,7 @@ export function useGamificationPage() {
   });
 
   const achievementsQuery = useQuery({
-    queryKey: queryKeys.gamification.achievements,
+    queryKey: queryKeys.gamification.achievements(),
     queryFn: async () => {
       const { data, error } = await supabase.from('achievements').select('*').order('points', { ascending: false });
       if (error) throw error;

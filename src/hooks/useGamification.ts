@@ -277,7 +277,7 @@ export function useAwardPoints() {
         queryKey: queryKeys.gamification.points(variables.employeeId) 
       });
       queryClient.invalidateQueries({ 
-        queryKey: queryKeys.gamification.leaderboard() 
+        queryKey: queryKeys.gamification.leaderboard('all') 
       });
       toast({
         title: 'Pontos concedidos',

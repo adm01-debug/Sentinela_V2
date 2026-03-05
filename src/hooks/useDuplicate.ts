@@ -125,7 +125,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
     mutationFn: async (ids: string[]): Promise<T[]> => {
       if (!isSupabaseReady) {
         console.log('[Duplicate] Mock: duplicando', ids.length, 'registros');
-        return ids.map((id) => ({ id: `mock-${id}-copy` })) as T[];
+        return ids.map((id) => ({ id: `mock-${id}-copy` })) as unknown as T[];
       }
 
       // Buscar registros originais
