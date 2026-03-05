@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { Grid, List, Search } from 'lucide-react';
-import { Button  } from '@/components/ui/button';
-import { Input  } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue  } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DatePicker } from '@/components/ui/DatePicker';
 import { ImageGallery } from '@/components/ui/ImageGallery';
-import { Skeleton } from '@/components/Skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useScreenshots } from '@/hooks/useScreenshots';
 import { useEmployees } from '@/hooks/useEmployees';
 
@@ -16,10 +16,11 @@ export default function ScreenshotsPage() {
   const [date, setDate] = useState<Date>();
   const [search, setSearch] = useState('');
 
-  const { data: employees } = useEmployees();
-  const { data: screenshots, isLoading } = useScreenshots({ employeeId, date: date?.toISOString(), search });
+  const { data: employeesData } = useEmployees();
+  const employees = Array.isArray(employeesData) ? employeesData : (employeesData as any)?.data || [];
+  const { data: screenshots, isLoading } = useScreenshots(employeeId, date?.toISOString() || '');
 
-  const images = screenshots?.map(s => ({ src: s.url, alt: s.application, title: `${s.employeeName} - ${format(new Date(s.capturedAt), 'HH:mm')}` })) || [];
+  const images = screenshots?.map((s: any) => ({ src: s.url, alt: s.metadata?.activeApplication || '', title: `${s.employeeId} - ${format(new Date(s.capturedAt), 'HH:mm')}` })) || [];
 
   return (
     <div className="p-6 space-y-6">
@@ -30,7 +31,6 @@ export default function ScreenshotsPage() {
           <Button variant={view === 'list' ? 'default' : 'outline'} size="icon" onClick={() => setView('list')}><List className="h-4 w-4" /></Button>
         </div>
       </div>
-
       <div className="flex gap-4 flex-wrap">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -38,11 +38,10 @@ export default function ScreenshotsPage() {
         </div>
         <Select value={employeeId} onValueChange={setEmployeeId}>
           <SelectTrigger className="w-[200px]"><SelectValue placeholder="Funcionário" /></SelectTrigger>
-          <SelectContent>{employees?.map(e => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
+          <SelectContent>{employees?.map((e: any) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
         </Select>
         <DatePicker date={date} onDateChange={setDate} placeholder="Selecionar data" />
       </div>
-
       {isLoading ? (
         <div className="grid grid-cols-4 gap-4">{[1,2,3,4,5,6,7,8].map(i => <Skeleton key={i} className="aspect-video" />)}</div>
       ) : images.length === 0 ? (

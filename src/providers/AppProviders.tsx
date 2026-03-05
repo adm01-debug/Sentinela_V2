@@ -1,8 +1,6 @@
 import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter } from 'react-router-dom';
-import { I18nProvider } from '@/lib/i18n';
 import { FeatureFlagsProvider } from '@/lib/feature-flags/provider';
 import { PermissionsProvider } from '@/lib/permissions/provider';
 import { ErrorBoundary } from '@/lib/error-handling';
@@ -21,15 +19,12 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <I18nProvider>
-            <FeatureFlagsProvider>
-              <PermissionsProvider role={user?.role || 'viewer'}>
-                {children}
-              </PermissionsProvider>
-            </FeatureFlagsProvider>
-          </I18nProvider>
+          <FeatureFlagsProvider>
+            <PermissionsProvider role={(user?.role as any) || 'viewer'}>
+              {children}
+            </PermissionsProvider>
+          </FeatureFlagsProvider>
         </BrowserRouter>
-        <ReactQueryDevtools />
       </QueryClientProvider>
     </ErrorBoundary>
   );

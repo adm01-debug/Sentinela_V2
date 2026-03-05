@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ServerCrash, RefreshCw, Home, MessageSquare } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export default function ServerErrorPage() {
   return (

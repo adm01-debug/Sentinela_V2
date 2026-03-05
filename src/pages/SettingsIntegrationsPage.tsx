@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Plus, ExternalLink, Trash2, Check } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
-import { useIntegrations, useConnectIntegration, useDisconnectIntegration } from '@/hooks/useIntegrations';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useIntegrations } from '@/hooks/useIntegrations';
 
 const availableIntegrations = [
   { id: 'slack', name: 'Slack', description: 'Envie alertas para canais do Slack', icon: '💬' },
@@ -15,11 +15,9 @@ const availableIntegrations = [
 
 export default function SettingsIntegrationsPage() {
   const [open, setOpen] = useState(false);
-  const { data: connected } = useIntegrations();
-  const connect = useConnectIntegration();
-  const disconnect = useDisconnectIntegration();
+  const { integrations, add, remove } = useIntegrations();
 
-  const connectedIds = connected?.map(c => c.id) || [];
+  const connectedIds = integrations.map(c => c.id);
 
   return (
     <div className="space-y-6">
@@ -27,25 +25,22 @@ export default function SettingsIntegrationsPage() {
         <div><h2 className="text-xl font-bold">Integrações</h2><p className="text-muted-foreground">Conecte com suas ferramentas favoritas</p></div>
         <Button onClick={() => setOpen(true)}><Plus className="mr-2 h-4 w-4" />Adicionar</Button>
       </div>
-
       <div className="grid gap-4 md:grid-cols-2">
-        {connected?.map(integration => (
+        {integrations.map(integration => (
           <Card key={integration.id}>
             <CardHeader className="flex-row items-center gap-4">
               <span className="text-3xl">{availableIntegrations.find(i => i.id === integration.id)?.icon}</span>
               <div className="flex-1">
                 <CardTitle className="flex items-center gap-2">{integration.name}<Badge variant="default"><Check className="h-3 w-3 mr-1" />Conectado</Badge></CardTitle>
-                <CardDescription>Conectado em {new Date(integration.connectedAt).toLocaleDateString()}</CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex gap-2">
               <Button variant="outline" size="sm"><ExternalLink className="mr-2 h-4 w-4" />Configurar</Button>
-              <Button variant="outline" size="sm" onClick={() => disconnect.mutate(integration.id)}><Trash2 className="mr-2 h-4 w-4 text-destructive" />Desconectar</Button>
+              <Button variant="outline" size="sm" onClick={() => remove(integration.id)}><Trash2 className="mr-2 h-4 w-4 text-destructive" />Desconectar</Button>
             </CardContent>
           </Card>
         ))}
       </div>
-
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader><DialogTitle>Adicionar Integração</DialogTitle></DialogHeader>
@@ -56,7 +51,7 @@ export default function SettingsIntegrationsPage() {
                   <span className="text-2xl">{integration.icon}</span>
                   <div><p className="font-medium">{integration.name}</p><p className="text-sm text-muted-foreground">{integration.description}</p></div>
                 </div>
-                <Button size="sm" onClick={() => { connect.mutate(integration.id); setOpen(false); }}>Conectar</Button>
+                <Button size="sm" onClick={() => { add(integration.name); setOpen(false); }}>Conectar</Button>
               </div>
             ))}
           </div>

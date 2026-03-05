@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
-import { Spinner } from '@/components/LoadingState';
+import { LoadingSpinner as Spinner } from '@/components/ui/LoadingSpinner';
 import {
   ScheduleStatsCards,
   SchedulesList,

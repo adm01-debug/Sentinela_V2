@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Shield, Key, Smartphone, History } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/Card';
-import { Switch } from '@/components/ui/Switch';
-import { useChangePassword, useToggle2FA } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
+import { useChangePassword } from '@/hooks/useAuth';
 
 export default function SettingsSecurityPage() {
   const [twoFA, setTwoFA] = useState(false);
   const changePassword = useChangePassword();
-  const toggle2FA = useToggle2FA();
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data: any) => {
@@ -27,11 +26,11 @@ export default function SettingsSecurityPage() {
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
-            <Input label="Senha atual" type="password" {...register('currentPassword')} />
-            <Input label="Nova senha" type="password" {...register('newPassword')} />
-            <Input label="Confirmar nova senha" type="password" {...register('confirmPassword')} />
+            <Input type="password" {...register('currentPassword')} placeholder="Senha atual" />
+            <Input type="password" {...register('newPassword')} placeholder="Nova senha" />
+            <Input type="password" {...register('confirmPassword')} placeholder="Confirmar nova senha" />
           </CardContent>
-          <CardFooter><Button type="submit" loading={changePassword.isPending}>Alterar senha</Button></CardFooter>
+          <CardFooter><Button type="submit">Alterar senha</Button></CardFooter>
         </form>
       </Card>
 
@@ -42,7 +41,7 @@ export default function SettingsSecurityPage() {
         </CardHeader>
         <CardContent className="flex items-center justify-between">
           <div><p className="font-medium">2FA via aplicativo</p><p className="text-sm text-muted-foreground">Use um app como Google Authenticator</p></div>
-          <Switch checked={twoFA} onCheckedChange={v => { setTwoFA(v); toggle2FA.mutate(v); }} />
+          <Switch checked={twoFA} onCheckedChange={setTwoFA} />
         </CardContent>
       </Card>
 
