@@ -11,4 +11,4 @@ export const hasPermission = (role: Role, resource: Resource, permission: Permis
   const perms = rolePermissions[role]?.[resource] || [];
   return perms.includes('*') || perms.includes(permission);
 };
-export const getPermissions = (role: Role): Record<Resource, Permission[]> => rolePermissions[role] || {};
+export const getPermissions = (role: Role): Record<Resource, Permission[]> => (rolePermissions[role] || {}) as Record<Resource, Permission[]>;

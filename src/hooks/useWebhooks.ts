@@ -16,6 +16,8 @@ export interface Webhook {
   is_active: boolean;
   last_triggered_at?: string;
   failure_count: number;
+  retry_count?: number;
+  timeout_seconds?: number;
   created_at: string;
   updated_at: string;
 }
