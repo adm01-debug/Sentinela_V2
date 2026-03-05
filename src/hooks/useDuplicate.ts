@@ -68,7 +68,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
     mutationFn: async (id: string): Promise<T> => {
       if (!isSupabaseReady) {
         console.log('[Duplicate] Mock: duplicando', id);
-        return { id: `mock-${Date.now()}` } as T;
+        return { id: `mock-${Date.now()}` } as unknown as T;
       }
 
       // Buscar registro original
