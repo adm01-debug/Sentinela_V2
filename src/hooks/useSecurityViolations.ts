@@ -215,7 +215,7 @@ export function useUpdateViolationStatus() {
       }
 
       // Update unread count optimistically
-      const previousUnread = queryClient.getQueryData<number>(queryKeys.violations.unread);
+      const previousUnread = queryClient.getQueryData<number>(queryKeys.violations.unread());
       if (previousUnread !== undefined && status !== 'pending') {
         queryClient.setQueryData(queryKeys.violations.unread, Math.max(0, previousUnread - 1));
       }
