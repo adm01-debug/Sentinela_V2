@@ -43,7 +43,7 @@ export function useRateLimitDashboardPage() {
 
   // Fetch rate limit logs
   const logsQuery = useQuery({
-    queryKey: queryKeys.rateLimitLogs.list(filters),
+    queryKey: [...queryKeys.rateLimiting.logs(), filters],
     queryFn: async () => {
       let query = supabase
         .from('rate_limit_logs')
