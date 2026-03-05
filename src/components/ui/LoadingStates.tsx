@@ -235,7 +235,7 @@ export const PageLoading = memo(function PageLoading({
 
       {/* Stats grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((i) => (
+        {Array.from({ length: 4 }).map((_, i) => (
           <SkeletonCard key={i} variant="stat" />
         ))}
       </div>

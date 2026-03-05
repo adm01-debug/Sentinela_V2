@@ -13,41 +13,19 @@ export { Input, SearchInput, inputVariants, type InputProps } from './input';
 export { Label } from './label';
 export { Textarea } from './textarea';
 export {
-  Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
-  SelectContent,
-  SelectLabel,
-  SelectItem,
-  SelectSeparator,
-  SelectScrollUpButton,
-  SelectScrollDownButton,
+  Select, SelectGroup, SelectValue, SelectTrigger, SelectContent,
+  SelectLabel, SelectItem, SelectSeparator, SelectScrollUpButton, SelectScrollDownButton,
 } from './select';
 export {
-  Dialog,
-  DialogPortal,
-  DialogOverlay,
-  DialogClose,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
+  Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTrigger,
+  DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription,
 } from './dialog';
 export { Checkbox } from './checkbox';
 export { Switch } from './switch';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption,
+  Table, TableHeader, TableBody, TableFooter, TableHead,
+  TableRow, TableCell, TableCaption,
 } from './table';
 export { Progress } from './progress';
 export { Slider } from './slider';
@@ -56,34 +34,16 @@ export { ScrollArea, ScrollBar } from './scroll-area';
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip';
 export { Popover, PopoverTrigger, PopoverContent } from './popover';
 export {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuCheckboxItem,
-  DropdownMenuRadioItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuGroup,
-  DropdownMenuPortal,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuRadioGroup,
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuCheckboxItem, DropdownMenuRadioItem, DropdownMenuLabel,
+  DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuGroup,
+  DropdownMenuPortal, DropdownMenuSub, DropdownMenuSubContent,
+  DropdownMenuSubTrigger, DropdownMenuRadioGroup,
 } from './dropdown-menu';
 export {
-  AlertDialog,
-  AlertDialogPortal,
-  AlertDialogOverlay,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogAction,
-  AlertDialogCancel,
+  AlertDialog, AlertDialogPortal, AlertDialogOverlay, AlertDialogTrigger,
+  AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle,
+  AlertDialogDescription, AlertDialogAction, AlertDialogCancel,
 } from './alert-dialog';
 export { Alert, AlertTitle, AlertDescription } from './alert';
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion';
@@ -100,71 +60,43 @@ export { Toggle, toggleVariants } from './toggle';
 export { ToggleGroup, ToggleGroupItem } from './toggle-group';
 export { LoadingSpinner } from './LoadingSpinner';
 
-// Auto-added exports [PHD-QA-FIX]
-export * from './ActionButtons';
-export * from './Blockquote';
-export * from './BottomSheet';
-export * from './Cards';
-export * from './Chip';
-export * from './Code';
-export * from './ColorPicker';
-export * from './Combobox';
-export * from './ConfirmButton';
-export * from './DatePicker';
-export * from './EmptyState';
-export * from './EnhancedSystemAlert';
-export * from './EnhancedTooltip';
-export * from './ErrorFallback';
-export * from './Feedback';
-export * from './FilterBar';
-export * from './GridList';
-export * from './Headers';
-export * from './Heading';
-export * from './IconButton';
-export * from './ImageGallery';
-export * from './InfiniteScrollList';
-export * from './InfoCard';
-export * from './KanbanBoard';
-export * from './Lightbox';
-export * from './LoadingOverlay';
-export * from './LoadingStates';
-export * from './MicroInteractions';
-export * from './Modal';
-export * from './PageContainer';
-export * from './PasswordStrengthMeter';
-export * from './ProgressIndicator';
-export * from './PullToRefresh';
-export * from './RichTextEditor';
-export * from './SearchAutocomplete';
-export * from './SecurityScoreDashboard';
-export * from './SimpleDataTable';
-export * from './StatCard';
-export * from './StatusBadge';
-export * from './Stepper';
-export * from './Tag';
-export * from './TimePicker';
-export * from './TreeView';
-export * from './TrendIndicators';
-export * from './TwoFactorWizard';
-export * from './UserDisplay';
-export * from './VirtualizedList';
-export * from './VoiceInput';
-export * from './a11y-button';
-export * from './a11y-input';
+// Custom components - explicit exports to avoid duplicates
+export { ActionButtons } from './ActionButtons';
+export { Blockquote } from './Blockquote';
+export { BottomSheet } from './BottomSheet';
+export { Chip } from './Chip';
+export { Code } from './Code';
+export { ColorPicker } from './ColorPicker';
+export { ConfirmButton } from './ConfirmButton';
+export { EnhancedSystemAlert } from './EnhancedSystemAlert';
+export { EnhancedTooltip } from './EnhancedTooltip';
+export { ErrorFallback } from './ErrorFallback';
+export { FilterBar } from './FilterBar';
+export { Heading } from './Heading';
+export { IconButton } from './IconButton';
+export { ImageGallery } from './ImageGallery';
+export { KanbanBoard } from './KanbanBoard';
+export { PasswordStrengthMeter } from './PasswordStrengthMeter';
+export { SearchAutocomplete } from './SearchAutocomplete';
+export { SecurityScoreDashboard } from './SecurityScoreDashboard';
+export { StatCard } from './StatCard';
+export { Stepper } from './Stepper';
+export { Tag } from './Tag';
+export { TwoFactorWizard } from './TwoFactorWizard';
+export { UserDisplay } from './UserDisplay';
+export { VoiceInput } from './VoiceInput';
+
+// Re-export from files that don't conflict
 export * from './aspect-ratio';
 export * from './carousel';
 export * from './chart';
 export * from './context-menu';
-export * from './data-display';
 export * from './drawer';
-export * from './error-boundary';
 export * from './input-otp';
-export * from './loading';
 export * from './menubar';
 export * from './navigation-menu';
 export * from './pagination';
 export * from './resizable';
-export * from './responsive';
 export * from './sidebar';
 export * from './toast';
 export * from './toaster';

@@ -8,9 +8,10 @@ export const APP_VERSION = '20.0.0';
 // Re-export all constants
 export * from './routes';
 export * from './api';
-export * from './permissions';
+export { PERMISSIONS, ROLE_PERMISSIONS, type Permission } from './permissions';
 export * from './priorities';
-export * from './roles';
+export { ROLES } from './roles';
+export type { Role } from './roles';
 export * from './status';
 
 // Pagination defaults

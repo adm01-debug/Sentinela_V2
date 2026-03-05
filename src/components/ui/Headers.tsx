@@ -42,7 +42,7 @@ export function Breadcrumb({
     : items;
 
   const shouldCollapse = allItems.length > maxItems;
-  const visibleItems = shouldCollapse
+  const visibleItems: any[] = shouldCollapse
     ? [allItems[0], { label: '...', collapsed: true }, ...allItems.slice(-2)]
     : allItems;
   const collapsedItems = shouldCollapse
