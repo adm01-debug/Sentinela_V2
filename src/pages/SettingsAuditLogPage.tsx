@@ -13,7 +13,7 @@ export default function SettingsAuditLogPage() {
   const [search, setSearch] = useState('');
   const [action, setAction] = useState('');
   const [date, setDate] = useState<Date>();
-  const { data: logs } = useAuditLog();
+  const { logs } = useAuditLog();
 
   const filteredLogs = (logs || []).filter((log: any) => {
     if (search && !log.action?.toLowerCase().includes(search.toLowerCase())) return false;

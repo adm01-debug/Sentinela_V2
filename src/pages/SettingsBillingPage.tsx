@@ -17,7 +17,7 @@ export default function SettingsBillingPage() {
         <CardContent>
           <div className="flex items-center justify-between p-6 bg-primary/5 rounded-lg">
             <div>
-              <h3 className="text-2xl font-bold">{billing.subscription?.plan_id || 'Free'}</h3>
+              <h3 className="text-2xl font-bold">{billing.subscription?.planId || 'Free'}</h3>
               <p className="text-muted-foreground">Plano ativo</p>
             </div>
             <Badge variant="default" className="mt-2"><CheckCircle className="h-3 w-3 mr-1" />Ativo</Badge>

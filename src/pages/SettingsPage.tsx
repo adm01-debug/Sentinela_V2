@@ -3,6 +3,8 @@ import { useSettings, useUpdateSettings } from '@/hooks/useSettings';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 
+// Re-export for route compatibility
+export { default } from '@/pages/Settings';
 export const SettingsPage = () => {
   const { data: settings, isLoading } = useSettings();
   const updateSettings = useUpdateSettings();
@@ -19,18 +21,10 @@ export const SettingsPage = () => {
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
         </TabsList>
-        <TabsContent value="general">
-          <p className="text-muted-foreground p-4">General settings content.</p>
-        </TabsContent>
-        <TabsContent value="security">
-          <p className="text-muted-foreground p-4">Security settings content.</p>
-        </TabsContent>
-        <TabsContent value="notifications">
-          <p className="text-muted-foreground p-4">Notifications settings content.</p>
-        </TabsContent>
-        <TabsContent value="monitoring">
-          <p className="text-muted-foreground p-4">Monitoring settings content.</p>
-        </TabsContent>
+        <TabsContent value="general"><p className="text-muted-foreground p-4">General settings.</p></TabsContent>
+        <TabsContent value="security"><p className="text-muted-foreground p-4">Security settings.</p></TabsContent>
+        <TabsContent value="notifications"><p className="text-muted-foreground p-4">Notifications settings.</p></TabsContent>
+        <TabsContent value="monitoring"><p className="text-muted-foreground p-4">Monitoring settings.</p></TabsContent>
       </Tabs>
     </div>
   );
