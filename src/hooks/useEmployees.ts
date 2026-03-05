@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { employeeService } from '@/services';
-import type { EmployeeFilters, CreateEmployeeInput, UpdateEmployeeInput } from '@/types';
+import type { EmployeeFilters, EmployeeCreateInput, EmployeeUpdateInput } from '@/types';
 
 // Extended type with device info
 export interface EmployeeDevice {

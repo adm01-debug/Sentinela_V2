@@ -29,7 +29,7 @@ export default function EmployeeEditPage() {
 
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: employee ? { name: employee.name, email: employee.email || '', department: employee.department || '', role: (employee as any).position || (employee as any).role || '', status: (employee.status === 'active' || employee.status === 'inactive' ? employee.status : 'active') as 'active' | 'inactive' } : undefined,
+    values: employee ? { name: (employee as any).full_name ?? '', email: employee.email || '', department: employee.department || '', role: (employee as any).role || '', status: (employee.status === 'active' || employee.status === 'inactive' ? employee.status : 'active') as 'active' | 'inactive' } : undefined,
   });
 
   const onSubmit = async (data: FormData) => {
