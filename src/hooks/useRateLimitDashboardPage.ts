@@ -75,7 +75,7 @@ export function useRateLimitDashboardPage() {
 
   // Fetch settings
   const settingsQuery = useQuery({
-    queryKey: queryKeys.rateLimitSettings.all,
+    queryKey: queryKeys.rateLimiting.settings(),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('rate_limit_settings')
