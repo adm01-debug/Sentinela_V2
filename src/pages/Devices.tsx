@@ -176,7 +176,7 @@ const DevicesContent = React.memo(function DevicesContent() {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Sistema</label>
-                  <p className="font-medium">{selectedDevice.os}</p>
+                  <p className="font-medium">{(selectedDevice as any).os || (selectedDevice as any).os_name}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">IP</label>
