@@ -2,11 +2,12 @@ import { useToastStore } from '@/stores/toastStore';
 import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
-const icons = {
+const icons: Record<string, typeof CheckCircle> = {
   success: CheckCircle,
   error: AlertCircle,
   warning: AlertTriangle,
   info: Info,
+  loading: Info,
 };
 
 export function ToastContainer() {
