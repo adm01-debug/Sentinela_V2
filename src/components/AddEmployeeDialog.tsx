@@ -46,7 +46,7 @@ export const AddEmployeeDialog = ({ open, onClose }: Props) => {
 
   const handleSubmit = () => {
     createEmployee.mutate(
-      { ...form, status: 'active', hireDate: new Date().toISOString() },
+      { full_name: form.name, email: form.email, department: form.department, role: form.role as any, organization_id: 'default-org', hire_date: new Date().toISOString() } as any,
       {
         onSuccess: () => {
           onClose();

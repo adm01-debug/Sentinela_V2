@@ -4,16 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Edit, Trash2, Activity } from 'lucide-react';
-
-interface ViolationRule {
-  id: string;
-  name: string;
-  description?: string;
-  type: string;
-  severity: string;
-  is_active: boolean;
-  triggered_count: number;
-}
+import type { ViolationRule } from '@/hooks/useViolationRulesPage';
 
 interface RulesListProps {
   rules: ViolationRule[];
@@ -63,12 +54,7 @@ function RulesListComponent({ rules, ruleTypes, onEdit, onDelete, onToggle }: Ru
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="text-right">
-                  <p className="text-sm font-medium">{rule.triggered_count}</p>
-                  <p className="text-xs text-muted-foreground">acionamentos</p>
-                </div>
-
+              <div className="flex items-center gap-2">
                 <Switch checked={rule.is_active} onCheckedChange={() => onToggle(rule)} />
 
                 <Button variant="ghost" size="icon" onClick={() => onEdit(rule)}>
