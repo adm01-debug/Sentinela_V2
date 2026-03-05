@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useEmployees, type EmployeeWithDetails } from '@/hooks/useEmployees';
+import { useEmployees, useCreateEmployee, useUpdateEmployee, useDeleteEmployee, type EmployeeWithDetails } from '@/hooks/useEmployees';
 import { useTeams } from '@/hooks/useTeams';
+import { supabase } from '@/integrations/supabase/client';
 
 // ============================================================
 // TYPES

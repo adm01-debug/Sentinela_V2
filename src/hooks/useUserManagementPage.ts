@@ -45,7 +45,7 @@ export function useUserManagementPage() {
 
   // Fetch users
   const usersQuery = useQuery({
-    queryKey: queryKeys.users.list({ search, role: roleFilter, status: statusFilter }),
+    queryKey: [...queryKeys.users.lists(), { search, role: roleFilter, status: statusFilter }],
     queryFn: async () => {
       let query = supabase
         .from('profiles')

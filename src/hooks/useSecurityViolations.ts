@@ -229,7 +229,7 @@ export function useUpdateViolationStatus() {
         queryClient.setQueryData(queryKeys.violations.list(), context.previousViolations);
       }
       if (context?.previousUnread !== undefined) {
-        queryClient.setQueryData(queryKeys.violations.unread, context.previousUnread);
+        queryClient.setQueryData(queryKeys.violations.unread(), context.previousUnread);
       }
       toast({
         title: 'Erro ao atualizar',

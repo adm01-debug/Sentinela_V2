@@ -15,7 +15,7 @@ export function useReportsPage() {
   const [selectedType, setSelectedType] = useState<ReportType>('summary');
 
   const reportsQuery = useQuery({
-    queryKey: queryKeys.reports.list({ type: typeFilter }),
+    queryKey: [...queryKeys.reports.history(), { type: typeFilter }],
     queryFn: async () => {
       let query = supabase.from('reports').select('*').order('created_at', { ascending: false }).limit(20);
       if (typeFilter !== 'all') query = query.eq('type', typeFilter);
