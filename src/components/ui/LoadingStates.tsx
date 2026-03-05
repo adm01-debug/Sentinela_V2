@@ -58,6 +58,7 @@ export const PulseDots = memo(function PulseDots({ count = 3, className }: Pulse
 interface ShimmerProps {
   className?: string;
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  style?: React.CSSProperties;
 }
 
 const roundedClasses = {
