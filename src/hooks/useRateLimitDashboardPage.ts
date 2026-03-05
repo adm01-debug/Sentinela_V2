@@ -88,7 +88,7 @@ export function useRateLimitDashboardPage() {
 
   // Fetch blocked IPs
   const blockedIPsQuery = useQuery({
-    queryKey: queryKeys.blockedIPs.all,
+    queryKey: queryKeys.rateLimiting.blockedIPs(),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('blocked_ips')
