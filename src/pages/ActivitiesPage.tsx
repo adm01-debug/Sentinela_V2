@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useActivities, useActivitySummary } from '@/hooks';
+import { useActivities, useActivitySummary } from '@/hooks/useActivities';
 import { ActivityFilters } from '@/components/ActivityFilters';
 import { ActivityChart } from '@/components/ActivityChart';
 import { ActivityTable } from '@/components/ActivityTable';
@@ -19,10 +19,10 @@ export const ActivitiesPage = () => {
       <h1 className="text-2xl font-bold">Activities</h1>
       <ActivityFilters filters={filters} onChange={setFilters} />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2"><ActivityChart data={summary?.hourlyDistribution || []} /></div>
-        <div><ApplicationBreakdown data={summary?.applicationBreakdown || []} /></div>
+        <div className="lg:col-span-2"><ActivityChart data={(summary as any)?.hourlyDistribution || []} /></div>
+        <div><ApplicationBreakdown data={(summary as any)?.applicationBreakdown || []} /></div>
       </div>
-      <ActivityTable activities={activities?.data || []} isLoading={isLoading} />
+      <ActivityTable activities={(activities as any)?.data || activities || []} isLoading={isLoading} />
     </div>
   );
 };
