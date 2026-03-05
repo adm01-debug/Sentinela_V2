@@ -1,4 +1,5 @@
 import React, { Suspense, memo } from 'react';
+import { ArrowLeft, Plus, Search, Loader2, CheckCircle, XCircle, Webhook as WebhookIcon } from 'lucide-react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
-import { Spinner } from '@/components/LoadingState';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { WebhooksList, WebhookFormDialog } from '@/components/webhooks';
 import { useWebhooksPage } from '@/hooks/useWebhooksPage';
 
