@@ -215,8 +215,8 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
 
       // Dynamic import of jspdf and autotable
       const [{ jsPDF }, { default: autoTable }] = await Promise.all([
-        import('jspdf'),
-        import('jspdf-autotable'),
+        import('jspdf' as string),
+        import('jspdf-autotable' as string),
       ]);
 
       // Auto-detect columns

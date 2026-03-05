@@ -60,16 +60,12 @@ const initialDeviceData: DeviceFormData = {
 // ============================================================
 
 export function useEmployeesPage() {
-  const { 
-    employees, 
-    loading, 
-    createEmployee, 
-    updateEmployee, 
-    deleteEmployee, 
-    assignDevice,
-    unassignDevice 
-  } = useEmployees();
-  const { teams } = useTeams();
+  const employeesQuery = useEmployees();
+  const employees = (employeesQuery.data as any)?.data || employeesQuery.data || [];
+  const loading = employeesQuery.isLoading;
+  
+  const teamsQuery = useTeams();
+  const teams = (teamsQuery as any).teams || (teamsQuery.data as any)?.data || teamsQuery.data || [];
 
   // Filters
   const [filters, setFilters] = useState<EmployeeFilters>({

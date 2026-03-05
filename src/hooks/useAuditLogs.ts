@@ -17,7 +17,7 @@ export function useAuditLogs(entityType?: string, entityId?: string) {
   return useQuery({
     queryKey: queryKeys.auditLogs.list({ entityType, entityId }),
     queryFn: async () => {
-      let query = supabase
+      let query = (supabase as any)
         .from('audit_logs')
         .select('*, user:users(email)')
         .order('created_at', { ascending: false })

@@ -122,7 +122,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
 
       if (error) {
         // Se soft delete não funcionar, tenta hard delete
-        const { error: hardError } = await supabase
+        const { error: hardError } = await (supabase as any)
           .from(table)
           .delete()
           .in('id', ids);

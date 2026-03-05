@@ -17,7 +17,7 @@ export function useActiveEmployees() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('employees')
-        .select('id, full_name, email, department, last_activity_at')
+        .select('id, name, email, department, status')
         .eq('status', 'active')
         .order('last_activity_at', { ascending: false, nullsFirst: false });
 
