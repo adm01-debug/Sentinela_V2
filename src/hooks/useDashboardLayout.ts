@@ -40,7 +40,7 @@ export function useDashboardLayout() {
     queryFn: async () => {
       if (!user?.id) return null;
       
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('dashboard_layouts')
         .select('*')
         .eq('user_id', user.id)
