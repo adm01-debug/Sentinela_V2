@@ -4,8 +4,8 @@ import { ptBR } from 'date-fns/locale';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import { cn } from '@/utils/cn';
-import { Button } from './Button';
-import { Popover, PopoverContent, PopoverTrigger } from './Popover';
+import { Button } from './button';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 interface DatePickerProps {
   date?: Date;

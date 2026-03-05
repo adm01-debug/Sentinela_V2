@@ -65,8 +65,7 @@ export const EmployeeStats = memo(function EmployeeStats({
           value={stat.value}
           icon={stat.icon}
           description={stat.description}
-          color={stat.color}
-          loading={isLoading}
+          isLoading={isLoading}
         />
       ))}
     </div>
