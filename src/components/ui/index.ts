@@ -83,7 +83,7 @@ export { StatCard } from './StatCard';
 export { Stepper } from './Stepper';
 export { Tag } from './Tag';
 export { TwoFactorWizard } from './TwoFactorWizard';
-export { UserDisplay } from './UserDisplay';
+export { default as UserDisplay } from './UserDisplay';
 export { VoiceInput } from './VoiceInput';
 
 // Re-export from files that don't conflict

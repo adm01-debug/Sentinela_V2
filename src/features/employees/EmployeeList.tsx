@@ -36,7 +36,7 @@ export function EmployeeList({ filters = {}, page = 1, onPageChange }: Props) {
     {
       key: "status",
       header: "Status",
-      render: (emp: any) => <StatusBadge status={emp.status}>{emp.status}</StatusBadge>,
+      render: (emp: any) => <StatusBadge status={emp.status} />,
     },
   ];
 
