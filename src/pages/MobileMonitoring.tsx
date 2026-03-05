@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { MobileDevicesMap } from '@/components/MobileDevicesMap';
+import { Smartphone, Wifi, WifiOff, BatteryLow, Search, RefreshCw, List, MapIcon, Loader2 } from 'lucide-react';
 
 import {
   Select,
@@ -31,8 +31,6 @@ const MobileMonitoringContent = memo(function MobileMonitoringContent() {
     autoRefresh,
     setAutoRefresh,
     devices,
-    allDevices,
-    locationHistory,
     stats,
     isLoadingDevices,
     handleSelectDevice,
@@ -131,7 +129,7 @@ const MobileMonitoringContent = memo(function MobileMonitoringContent() {
               size="icon"
               onClick={() => setViewMode('map')}
             >
-              <Map className="h-4 w-4" />
+              <MapIcon className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -143,13 +141,12 @@ const MobileMonitoringContent = memo(function MobileMonitoringContent() {
         </div>
       ) : viewMode === 'map' ? (
         <Card>
-          <CardContent className="p-0">
-            <div className="h-[600px]">
-              <MobileDevicesMap
-                devices={allDevices.filter(d => d.last_location)}
-                selectedDeviceId={selectedDevice?.device_id}
-                onDeviceClick={(device) => handleSelectDevice(device as any)}
-              />
+          <CardContent className="p-4">
+            <div className="h-[600px] bg-muted rounded-lg flex items-center justify-center">
+              <div className="text-center text-muted-foreground">
+                <MapIcon className="h-12 w-12 mx-auto mb-2" />
+                <p>Map view placeholder</p>
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -1,4 +1,4 @@
-import { useMonitoringPoliciesPage } from '@/hooks/useMonitoringPoliciesPage';
+import { useMonitoringPoliciesPage, type MonitoringPolicy } from '@/hooks/useMonitoringPoliciesPage';
 import { PolicyCard } from '@/components/policies';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -53,7 +53,7 @@ export default function MonitoringPolicies() {
         <Card><CardContent className="text-center py-12 text-muted-foreground"><Shield className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma politica encontrada</p></CardContent></Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {policies.map((p) => (<PolicyCard key={p.id} policy={p} onEdit={handleOpenEdit} onDelete={(policy) => { setDeletingPolicy(policy); setIsDeleteDialogOpen(true); }} />))}
+          {policies.map((p) => (<PolicyCard key={p.id} policy={p as any} onEdit={(policy: any) => handleOpenEdit(policy as MonitoringPolicy)} onDelete={(policy: any) => { setDeletingPolicy(policy as MonitoringPolicy); setIsDeleteDialogOpen(true); }} />))}
         </div>
       )}
 

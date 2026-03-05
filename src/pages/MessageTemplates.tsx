@@ -2,7 +2,7 @@ import React, { Suspense, memo } from 'react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMessageTemplatesPage } from '@/hooks/useMessageTemplatesPage';
-import { TemplateStatsCards, TemplateFilters, TemplatesList } from '@/components/templates';
+import { TemplateStatsCards } from '@/components/templates';
 import { PageHeader } from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +11,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
+import { Loader2, Plus, Search, MoreHorizontal, Edit, Trash2 } from 'lucide-react';
 
 import {
   Dialog,
@@ -28,6 +30,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const MessageTemplatesContent = memo(function MessageTemplatesContent() {
   const {
@@ -70,28 +78,99 @@ const MessageTemplatesContent = memo(function MessageTemplatesContent() {
       <PageHeader
         title="Templates de Mensagem"
         description="Gerencie templates de mensagens para notificações e alertas"
+      >
+        <Button onClick={handleOpenCreate}>
+          <Plus className="mr-2 h-4 w-4" />
+          Novo Template
+        </Button>
+      </PageHeader>
+
+      <TemplateStatsCards
+        total={stats.total}
+        active={stats.active}
+        inactive={stats.inactive}
       />
 
-      <TemplateStatsCards stats={stats} isLoading={isLoading} />
+      {/* Filters */}
+      <div className="flex flex-wrap gap-4 items-center">
+        <div className="relative flex-1 min-w-[200px] max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Buscar templates..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Categoria" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todas</SelectItem>
+            {TEMPLATE_CATEGORIES.map((cat) => (
+              <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="w-[150px]">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos</SelectItem>
+            <SelectItem value="active">Ativo</SelectItem>
+            <SelectItem value="inactive">Inativo</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-      <TemplateFilters
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        categoryFilter={categoryFilter}
-        onCategoryChange={setCategoryFilter}
-        statusFilter={statusFilter}
-        onStatusChange={setStatusFilter}
-        onCreateClick={handleOpenCreate}
-        categories={TEMPLATE_CATEGORIES}
-      />
-
-      <TemplatesList
-        templates={templates}
-        categories={TEMPLATE_CATEGORIES}
-        onEdit={handleOpenEdit}
-        onDelete={handleOpenDelete}
-        onToggleStatus={handleToggleStatus}
-      />
+      {/* Templates List */}
+      {isLoading ? (
+        <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin" /></div>
+      ) : templates.length === 0 ? (
+        <Card><CardContent className="text-center py-12 text-muted-foreground">Nenhum template encontrado</CardContent></Card>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {templates.map((template) => (
+            <Card key={template.id}>
+              <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+                <div>
+                  <CardTitle className="text-base">{template.name}</CardTitle>
+                  <CardDescription className="mt-1">
+                    {TEMPLATE_CATEGORIES.find(c => c.value === template.category)?.label || template.category}
+                  </CardDescription>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon"><MoreHorizontal className="h-4 w-4" /></Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => handleOpenEdit(template)}>
+                      <Edit className="mr-2 h-4 w-4" />Editar
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-destructive" onClick={() => handleOpenDelete(template)}>
+                      <Trash2 className="mr-2 h-4 w-4" />Excluir
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground line-clamp-2">{template.content}</p>
+                <div className="flex items-center justify-between mt-3">
+                  <Badge variant={template.is_active ? 'default' : 'secondary'}>
+                    {template.is_active ? 'Ativo' : 'Inativo'}
+                  </Badge>
+                  <Switch
+                    checked={template.is_active}
+                    onCheckedChange={() => handleToggleStatus(template)}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>

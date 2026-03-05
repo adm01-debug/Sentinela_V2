@@ -1,16 +1,20 @@
-import React, { Suspense, memo } from 'react';
+import React, { Suspense, memo, useState, useMemo, useCallback } from 'react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Sidebar } from '@/components/Sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PolicyAcknowledgmentsSkeleton } from '@/components/PageSkeletons';
-
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Search } from 'lucide-react';
 import {
-  PolicyStatsCards,
-  PolicyAcknowledgmentsTable,
-  PolicyFilters,
-} from '@/components/policies';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 import {
   usePolicies,
   usePolicyAcknowledgments,
@@ -21,40 +25,28 @@ import {
 const PolicyAcknowledgmentsContent = memo(function PolicyAcknowledgmentsContent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPolicy, setSelectedPolicy] = useState('all');
-  const [dateRange, setDateRange] = useState<{ from: Date; to: Date } | undefined>();
   const [activeTab, setActiveTab] = useState('acknowledged');
 
-  // Queries
   const { data: policies = [], isLoading: policiesLoading } = usePolicies();
   const { data: acknowledgments = [], isLoading: acksLoading } = usePolicyAcknowledgments();
   const { data: pending = [], isLoading: pendingLoading } = usePendingAcknowledgments();
   const { data: stats, isLoading: statsLoading } = usePolicyStats();
 
-  // Filtered data
   const filteredAcknowledgments = useMemo(() => {
     return acknowledgments.filter((ack) => {
-      const matchesSearch = 
+      const matchesSearch =
         !searchTerm ||
-        ack.employee?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        ack.employee?.email?.toLowerCase().includes(searchTerm.toLowerCase());
+        ack.employee_name?.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesPolicy = 
-        selectedPolicy === 'all' || ack.policy_id === selectedPolicy;
-
-      const matchesDate = 
-        !dateRange ||
-        (new Date(ack.acknowledged_at) >= dateRange.from &&
-         new Date(ack.acknowledged_at) <= dateRange.to);
-
-      return matchesSearch && matchesPolicy && matchesDate;
+      return matchesSearch;
     });
-  }, [acknowledgments, searchTerm, selectedPolicy, dateRange]);
+  }, [acknowledgments, searchTerm]);
 
   const filteredPending = useMemo(() => {
     return pending.filter((p) => {
       const matchesSearch =
         !searchTerm ||
-        p.employee.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.employee.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.employee.email?.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesPolicy =
@@ -64,11 +56,9 @@ const PolicyAcknowledgmentsContent = memo(function PolicyAcknowledgmentsContent(
     });
   }, [pending, searchTerm, selectedPolicy]);
 
-  // Callbacks
   const handleClearFilters = useCallback(() => {
     setSearchTerm('');
     setSelectedPolicy('all');
-    setDateRange(undefined);
   }, []);
 
   const isLoading = policiesLoading || acksLoading || pendingLoading || statsLoading;
@@ -78,7 +68,13 @@ const PolicyAcknowledgmentsContent = memo(function PolicyAcknowledgmentsContent(
       <div className="flex min-h-screen">
         <Sidebar />
         <main className="flex-1 p-6">
-          <PolicyAcknowledgmentsSkeleton />
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-64" />
+            <div className="grid gap-4 md:grid-cols-4">
+              {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+            </div>
+            <Skeleton className="h-96" />
+          </div>
         </main>
       </div>
     );
@@ -95,23 +91,54 @@ const PolicyAcknowledgmentsContent = memo(function PolicyAcknowledgmentsContent(
           </p>
         </div>
 
-        <PolicyStatsCards stats={stats} isLoading={statsLoading} />
+        {/* Stats */}
+        <div className="grid gap-4 md:grid-cols-4">
+          <Card>
+            <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Total Políticas</CardTitle></CardHeader>
+            <CardContent><div className="text-2xl font-bold">{stats?.total_policies ?? 0}</div></CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Ativas</CardTitle></CardHeader>
+            <CardContent><div className="text-2xl font-bold">{stats?.active_policies ?? 0}</div></CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Aceites</CardTitle></CardHeader>
+            <CardContent><div className="text-2xl font-bold">{stats?.total_acknowledgments ?? 0}</div></CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Pendentes</CardTitle></CardHeader>
+            <CardContent><div className="text-2xl font-bold">{stats?.pending_acknowledgments ?? 0}</div></CardContent>
+          </Card>
+        </div>
 
         <Card>
           <CardHeader>
             <CardTitle>Histórico de Aceites</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <PolicyFilters
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              selectedPolicy={selectedPolicy}
-              onPolicyChange={setSelectedPolicy}
-              policies={policies}
-              dateRange={dateRange}
-              onDateRangeChange={setDateRange}
-              onClearFilters={handleClearFilters}
-            />
+            {/* Filters */}
+            <div className="flex flex-wrap gap-4">
+              <div className="relative flex-1 min-w-[200px] max-w-sm">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              <Select value={selectedPolicy} onValueChange={setSelectedPolicy}>
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Política" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas</SelectItem>
+                  {policies.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList>
@@ -124,10 +151,23 @@ const PolicyAcknowledgmentsContent = memo(function PolicyAcknowledgmentsContent(
               </TabsList>
 
               <TabsContent value="acknowledged">
-                <PolicyAcknowledgmentsTable
-                  acknowledgments={filteredAcknowledgments}
-                  isLoading={acksLoading}
-                />
+                {filteredAcknowledgments.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">Nenhum aceite encontrado</div>
+                ) : (
+                  <div className="space-y-2">
+                    {filteredAcknowledgments.map((ack) => (
+                      <div key={ack.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <div className="font-medium">{ack.employee_name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {new Date(ack.acknowledged_at).toLocaleDateString('pt-BR')}
+                          </div>
+                        </div>
+                        <Badge variant="default">Aceito</Badge>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </TabsContent>
 
               <TabsContent value="pending">
@@ -143,11 +183,12 @@ const PolicyAcknowledgmentsContent = memo(function PolicyAcknowledgmentsContent(
                         className="flex items-center justify-between p-3 border rounded-lg"
                       >
                         <div>
-                          <div className="font-medium">{p.employee.full_name}</div>
+                          <div className="font-medium">{p.employee.name}</div>
                           <div className="text-sm text-muted-foreground">
                             {p.employee.email}
                           </div>
                         </div>
+                        <Badge variant="secondary">Pendente</Badge>
                       </div>
                     ))
                   )}
