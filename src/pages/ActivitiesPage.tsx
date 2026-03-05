@@ -26,3 +26,5 @@ export const ActivitiesPage = () => {
     </div>
   );
 };
+
+export default ActivitiesPage;

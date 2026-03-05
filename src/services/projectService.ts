@@ -1,7 +1,7 @@
 // Project Service for Sentinela v17
 import { api } from './api';
 import type { Project, ProjectCreateInput, ProjectUpdateInput, ProjectFilters, ProjectStats, ProjectMember } from '@/types/project';
-import type { PaginatedResponse } from '@/types/common';
+import type { PaginatedResponse } from '@/types/pagination';
 
 const BASE_URL = '/projects';
 

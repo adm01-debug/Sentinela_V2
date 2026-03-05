@@ -7,7 +7,7 @@ export const api = {
     return data;
   },
   
-  async post<T>(path: string, body: unknown): Promise<T> {
+  async post<T>(path: string, body?: unknown): Promise<T> {
     const { data, error } = await supabase.functions.invoke(path, { method: 'POST', body });
     if (error) throw error;
     return data;

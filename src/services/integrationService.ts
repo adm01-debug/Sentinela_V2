@@ -1,7 +1,7 @@
 // Integration Service for Sentinela v17
 import { api } from './api';
 import type { Integration, IntegrationCreateInput, IntegrationUpdateInput, IntegrationFilters, IntegrationStats, IntegrationEvent } from '@/types/integration';
-import type { PaginatedResponse } from '@/types/common';
+import type { PaginatedResponse } from '@/types/pagination';
 
 const BASE_URL = '/integrations';
 
