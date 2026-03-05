@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { employeeService } from '@/services';
-import type { EmployeeFilters, CreateEmployeeInput, UpdateEmployeeInput } from '@/types';
+import type { EmployeeFilters, EmployeeCreateInput, EmployeeUpdateInput } from '@/types';
 
 // Extended type with device info
 export interface EmployeeDevice {
@@ -46,7 +46,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateEmployeeInput) => employeeService.create(data),
+    mutationFn: (data: EmployeeCreateInput) => employeeService.create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['employees'] }); }
   });
 };
@@ -54,7 +54,7 @@ export const useCreateEmployee = () => {
 export const useUpdateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateEmployeeInput }) => employeeService.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: EmployeeUpdateInput }) => employeeService.update(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['employees'] });
       queryClient.invalidateQueries({ queryKey: ['employee', id] });

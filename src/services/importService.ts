@@ -49,7 +49,7 @@ export const importService = {
   },
 
   async downloadTemplate(resourceType: string, format: string): Promise<Blob> {
-    return api.get(`${BASE_URL}/templates/${resourceType}/download?format=${format}`, { responseType: 'blob' });
+    return api.get(`${BASE_URL}/templates/${resourceType}/download?format=${format}`) as Promise<Blob>;
   },
 
   async getFieldMappingSuggestions(fileId: string, resourceType: string): Promise<{ source: string; target: string; confidence: number }[]> {

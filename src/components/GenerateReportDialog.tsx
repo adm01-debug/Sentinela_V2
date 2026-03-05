@@ -52,7 +52,7 @@ export const GenerateReportDialog = ({
   const handleSubmit = () => {
     onGenerate({
       type: form.type,
-      filters: { startDate: form.startDate, endDate: form.endDate },
+      filters: { date_from: form.startDate, date_to: form.endDate },
       format: form.format,
     });
   };

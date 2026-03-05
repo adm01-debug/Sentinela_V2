@@ -29,8 +29,8 @@ export default function ReportCreatePage() {
     await generateReport.mutateAsync({
       type: data.type as any,
       filters: {
-        startDate: data.startDate.toISOString(),
-        endDate: data.endDate.toISOString(),
+        date_from: data.startDate.toISOString(),
+        date_to: data.endDate.toISOString(),
       },
     });
     navigate('/reports');

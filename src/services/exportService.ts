@@ -25,7 +25,7 @@ export const exportService = {
   },
 
   async download(id: string): Promise<Blob> {
-    return api.get(`${BASE_URL}/${id}/download`, { responseType: 'blob' });
+    return api.get(`${BASE_URL}/${id}/download`) as Promise<Blob>;
   },
 
   async getStats(): Promise<ExportStats> {

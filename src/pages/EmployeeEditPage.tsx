@@ -29,11 +29,11 @@ export default function EmployeeEditPage() {
 
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: employee ? { name: employee.name, email: employee.email || '', department: employee.department || '', role: (employee as any).position || (employee as any).role || '', status: (employee.status === 'active' || employee.status === 'inactive' ? employee.status : 'active') as 'active' | 'inactive' } : undefined,
+    values: employee ? { name: (employee as any).full_name ?? '', email: employee.email || '', department: employee.department || '', role: (employee as any).role || '', status: (employee.status === 'active' || employee.status === 'inactive' ? employee.status : 'active') as 'active' | 'inactive' } : undefined,
   });
 
   const onSubmit = async (data: FormData) => {
-    await updateEmployee.mutateAsync({ id: id!, data: { ...data, position: data.role } as any });
+    await updateEmployee.mutateAsync({ id: id!, data: { full_name: data.name, email: data.email, department: data.department, role: data.role as any, status: data.status as any } });
     navigate(`/employees/${id}`);
   };
 

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -12,6 +12,14 @@ export interface WhatsAppConfig {
   is_active: boolean;
   created_at: string;
 }
+
+type WhatsAppConfigInput = {
+  phone_number_id: string;
+  business_account_id: string;
+  access_token: string;
+  webhook_verify_token: string;
+  is_active: boolean;
+};
 
 export interface WhatsAppMessage {
   id: string;
@@ -32,7 +40,7 @@ export interface WhatsAppTemplate {
   category: string;
 }
 
-const initialConfig: Partial<WhatsAppConfig> = {
+const initialConfig: WhatsAppConfigInput = {
   phone_number_id: '',
   business_account_id: '',
   access_token: '',
@@ -44,16 +52,14 @@ export function useWhatsAppIntegrationPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // State
   const [activeTab, setActiveTab] = useState('config');
-  const [configData, setConfigData] = useState(initialConfig);
+  const [configData, setConfigData] = useState<WhatsAppConfigInput>(initialConfig);
   const [testNumber, setTestNumber] = useState('');
   const [testMessage, setTestMessage] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
   const [messageFilter, setMessageFilter] = useState<string>('all');
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date } | null>(null);
 
-  // Use whatsapp_notification_settings table that exists
   const { data: config, isLoading: isLoadingConfig } = useQuery({
     queryKey: ['whatsapp-config'],
     queryFn: async () => {
@@ -115,9 +121,8 @@ export function useWhatsAppIntegrationPage() {
     },
   });
 
-  // Mutations
   const saveConfigMutation = useMutation({
-    mutationFn: async (data: Partial<WhatsAppConfig>) => {
+    mutationFn: async (data: WhatsAppConfigInput) => {
       if (config?.id) {
         const { error } = await supabase
           .from('whatsapp_config')
@@ -175,7 +180,6 @@ export function useWhatsAppIntegrationPage() {
     },
   });
 
-  // Stats
   const stats = useMemo(() => ({
     totalMessages: messages.length,
     sent: messages.filter(m => m.status === 'sent').length,
@@ -186,7 +190,6 @@ export function useWhatsAppIntegrationPage() {
     approvedTemplates: templates.filter(t => t.status === 'approved').length,
   }), [messages, templates]);
 
-  // Handlers
   const handleSaveConfig = useCallback(() => {
     saveConfigMutation.mutate(configData);
   }, [configData, saveConfigMutation]);
@@ -207,8 +210,7 @@ export function useWhatsAppIntegrationPage() {
     syncTemplatesMutation.mutate();
   }, [syncTemplatesMutation]);
 
-  // Initialize config form when data loads
-  useMemo(() => {
+  useEffect(() => {
     if (config) {
       setConfigData({
         phone_number_id: config.phone_number_id,
@@ -221,7 +223,6 @@ export function useWhatsAppIntegrationPage() {
   }, [config]);
 
   return {
-    // State
     activeTab,
     setActiveTab,
     configData,
@@ -236,22 +237,16 @@ export function useWhatsAppIntegrationPage() {
     setMessageFilter,
     dateRange,
     setDateRange,
-
-    // Data
     config,
     messages,
     templates,
     stats,
-
-    // Loading states
     isLoadingConfig,
     isLoadingMessages,
     isLoadingTemplates,
     isSavingConfig: saveConfigMutation.isPending,
     isSendingTest: sendTestMutation.isPending,
     isSyncingTemplates: syncTemplatesMutation.isPending,
-
-    // Handlers
     handleSaveConfig,
     handleSendTest,
     handleSyncTemplates,

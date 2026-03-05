@@ -2,7 +2,7 @@ import React, { Suspense, memo } from 'react';
 import { Plus, Search, Loader2 } from 'lucide-react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useViolationRulesPage, type ViolationRule, type RuleFormData } from '@/hooks/useViolationRulesPage';
+import { useViolationRulesPage } from '@/hooks/useViolationRulesPage';
 import { RulesStatsCards, RulesList } from '@/components/rules';
 import { PageHeader } from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
@@ -10,9 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
-
 import {
   Dialog,
   DialogContent,
@@ -41,7 +39,7 @@ const ViolationRulesContent = memo(function ViolationRulesContent() {
     isCreating, isUpdating, isDeleting,
     handleOpenCreate, handleOpenEdit, handleCloseDialog,
     handleSubmit, handleDelete, handleToggle,
-    RULE_TYPES, RULE_ACTIONS,
+    RULE_TYPES,
   } = useViolationRulesPage();
 
   return (
@@ -170,25 +168,20 @@ const ViolationRulesContent = memo(function ViolationRulesContent() {
               </div>
             </div>
 
-            <div className="grid gap-2">
-              <Label>Ações</Label>
-              <div className="flex flex-wrap gap-2">
-                {RULE_ACTIONS.map((action) => (
-                  <Badge
-                    key={action.value}
-                    variant={formData.actions.includes(action.value) ? 'default' : 'outline'}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      const actions = formData.actions.includes(action.value)
-                        ? formData.actions.filter(a => a !== action.value)
-                        : [...formData.actions, action.value];
-                      setFormData({ ...formData, actions });
-                    }}
-                  >
-                    {action.label}
-                  </Badge>
-                ))}
-              </div>
+            <div className="flex items-center justify-between pt-2">
+              <Label>Notificar colaborador</Label>
+              <Switch
+                checked={formData.notify_employee}
+                onCheckedChange={(v) => setFormData({ ...formData, notify_employee: v })}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <Label>Notificar admin</Label>
+              <Switch
+                checked={formData.notify_admin}
+                onCheckedChange={(v) => setFormData({ ...formData, notify_admin: v })}
+              />
             </div>
 
             <div className="flex items-center justify-between pt-4 border-t">

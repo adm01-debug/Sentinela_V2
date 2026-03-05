@@ -1,3 +1,5 @@
+import type { Alert } from './alert';
+
 export interface Settings {
   general: GeneralSettings;
   security: SecuritySettings;

@@ -21,7 +21,7 @@ export * from './webhook';
 export * from './apiKey';
 export * from './attachment';
 export * from './export';
-export * from './filter';
+// filter.ts intentionally omitted from barrel due FilterOperator naming collisions.
 export * from './sort';
 export * from './table';
 export * from './utility.types';
@@ -149,11 +149,11 @@ export type { Rule, RuleType, RuleCondition, ConditionOperator, RuleAction, Acti
 // dashboard.types.ts — skip DashboardWidget, WidgetConfig, WidgetPosition, WidgetType (in analytics.types.ts)
 export type { DashboardLayout, DashboardStats, DashboardFilter } from './dashboard.types';
 
-// analytics.types.ts — has DashboardWidget, WidgetType, WidgetConfig, WidgetPosition
-export * from './analytics.types';
+// analytics.types.ts — export only dashboard widget types to avoid FilterOperator collisions
+export type { DashboardWidget, WidgetType, WidgetConfig, WidgetPosition } from './analytics.types';
 
 // api.types.ts — skip ApiResponse, PaginatedResponse
-export type { ApiConfig, ApiRequestConfig, ApiEndpoint, ApiVersion } from './api.types';
+export type { ApiRequestConfig, ApiVersion, HttpMethod, QueryParams } from './api.types';
 
 // response.types.ts — skip ApiResponse, PaginatedResponse
 export type { ResponseMeta, BulkResponse } from './response.types';
