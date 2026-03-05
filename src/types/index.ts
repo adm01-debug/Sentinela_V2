@@ -1,12 +1,15 @@
 // Types barrel file for Sentinela v20
-// IMPORTANT: Many type files have overlapping exports. 
-// We use the most complete version of each type and skip duplicates.
+// 
+// ARCHITECTURE NOTE: Many type files have overlapping exports.
+// This barrel uses selective re-exports to avoid TS2308 ambiguity errors.
+// For types not exported here, import directly from the specific file:
+//   e.g. import type { Geofence } from '@/types/geofence.types';
+//
 
-// === CANONICAL SOURCES (full re-export) ===
+// === Core domain types (no conflicts) ===
 export * from './activity';
 export * from './alert';
-export * from './employee.types';  // canonical Employee (skip employee.ts)
-export * from './report.types';    // canonical Report (skip report.ts)
+export * from './employee.types';
 export * from './settings';
 export * from './user';
 export * from './team';
@@ -21,31 +24,32 @@ export * from './billing';
 export * from './subscription';
 export * from './webhook';
 export * from './apiKey';
-export * from './application';
-export * from './category';
-export * from './tag';
-export * from './comment';
 export * from './attachment';
 export * from './export';
 export * from './filter';
 export * from './sort';
-export * from './chart';
-export * from './form';
 export * from './table';
 export * from './utility.types';
-export * from './dashboard.types';
-export * from './analytics.types';
-export * from './async.types';
+export * from './category';
+export * from './tag';
+export * from './comment';
+export * from './form';
 export * from './auth.types';
 export * from './event.types';
-export * from './schedule.types';
+export * from './async.types';
 export * from './search.types';
+export * from './schedule.types';
 export * from './template.types';
-export * from './widget.types';
+export * from './validation.types';
+export * from './request.types';
+export * from './import';
 
-// === SELECTIVE RE-EXPORTS (files with overlapping names) ===
+// === Pagination (canonical PaginatedResponse) ===
+export * from './pagination';
 
-// notification.ts: skip NotificationPreferences (conflicts with user.ts)
+// === Selective re-exports for conflicting files ===
+
+// notification.ts — skip NotificationPreferences (in user.ts)
 export type {
   Notification,
   NotificationType,
@@ -64,14 +68,13 @@ export type {
   FrequencySettings,
 } from './notification';
 
-// device.ts: skip DeviceType (conflicts with employee.types.ts)
+// device.ts — skip DeviceType (in employee.types.ts)
 export type {
   Device,
   DevicePlatform,
   DeviceStatus,
   DeviceSpecs,
   DeviceSettings,
-  DeviceActivity,
   DeviceCreateInput,
   DeviceUpdateInput,
   DeviceFilters,
@@ -79,23 +82,7 @@ export type {
   DeviceCommand,
 } from './device';
 
-// integration.ts: skip FieldMapping (conflicts with import.ts)
-export type {
-  Integration,
-  IntegrationType,
-  IntegrationStatus,
-  IntegrationConfig,
-  IntegrationEvent,
-  IntegrationCreateInput,
-  IntegrationUpdateInput,
-  IntegrationFilters,
-  IntegrationStats,
-} from './integration';
-
-// import.ts: has FieldMapping (canonical)
-export * from './import';
-
-// common.ts: skip ValidationError, Coordinates, ApiResponse (conflicts with other files)
+// common.ts — skip ValidationError, Coordinates, ApiResponse (in other files)
 export type {
   ID,
   Nullable,
@@ -125,12 +112,83 @@ export type {
   Theme,
 } from './common';
 
-// pagination.ts: canonical PaginatedResponse
-export * from './pagination';
+// report.types.ts — skip ChartType (in chart.ts)
+export type {
+  ReportType,
+  ReportFormat,
+  ReportFrequency,
+  ReportStatus,
+  Report,
+  ReportFilters,
+  ReportColumn,
+  ColumnType,
+  AggregateFunction,
+  ReportGrouping,
+  ReportSorting,
+  ReportTemplate,
+  ReportTemplateConfig,
+  ReportChartConfig,
+  ScheduledReport,
+  ScheduleConfig,
+  ReportRecipient,
+  ReportDelivery,
+  ReportData,
+  ReportRow,
+  ReportSummary,
+  ReportMetadata,
+  ReportQueryOptions,
+  ReportCreateInput,
+  ScheduledReportCreateInput,
+  ReportListResponse,
+  ReportGenerationResult,
+} from './report.types';
 
-// violation.types.ts already exported above — its RuleSchedule is the canonical one
+// chart.ts — canonical ChartType
+export * from './chart';
 
-// rule.types.ts: skip RuleSchedule (conflicts with violation.types.ts and application.ts)
+// application.ts — skip RuleSchedule (in violation.types.ts)
+export type {
+  Application,
+  ApplicationCategory,
+  ApplicationRule,
+  ApplicationUsage,
+  ApplicationCreateInput,
+  ApplicationUpdateInput,
+  ApplicationFilters,
+  ApplicationStats,
+} from './application';
+
+// integration.ts — skip FieldMapping (in import.ts)
+export type {
+  Integration,
+  IntegrationType,
+  IntegrationStatus,
+  IntegrationConfig,
+  IntegrationEvent,
+  IntegrationCreateInput,
+  IntegrationUpdateInput,
+  IntegrationFilters,
+  IntegrationStats,
+} from './integration';
+
+// error.types.ts — skip ValidationError (in common.ts already skipped but defined here)
+export type {
+  AppError,
+  ErrorCode,
+  ErrorBoundaryState,
+  ErrorLogEntry,
+} from './error.types';
+
+// geofence.types.ts — skip Coordinates (in common.ts)
+export type {
+  Geofence,
+  GeofenceType,
+  GeofenceEvent,
+  GeofenceAlert,
+  GeofenceStats,
+} from './geofence.types';
+
+// rule.types.ts — skip RuleSchedule (in violation.types.ts)
 export type {
   Rule,
   RuleType,
@@ -141,29 +199,24 @@ export type {
   RuleStats,
 } from './rule.types';
 
-// geofence.types.ts: skip Coordinates (conflicts with common.ts)
+// dashboard.types.ts — skip DashboardWidget, WidgetConfig, WidgetPosition (in analytics.types.ts)
 export type {
-  Geofence,
-  GeofenceType,
-  GeofenceEvent,
-  GeofenceAlert,
-  GeofenceStats,
-} from './geofence.types';
+  DashboardLayout,
+  DashboardStats,
+  DashboardFilter,
+} from './dashboard.types';
 
-// error.types.ts: skip ValidationError, ApiError (conflicts with common.ts)
-export type {
-  AppError,
-  ErrorCode,
-  ErrorBoundaryState,
-  ErrorLogEntry,
-} from './error.types';
+// analytics.types.ts — canonical DashboardWidget, WidgetConfig, WidgetPosition
+export * from './analytics.types';
 
-// policy.types.ts: check for conflicts
+// widget.types.ts — check conflicts with dashboard/analytics
+// Skip entirely since analytics.types.ts covers widgets
+// export * from './widget.types';
+
+// policy.types.ts
 export * from './policy.types';
-// validation.types.ts: check for conflicts  
-export * from './validation.types';
 
-// api.types.ts: skip ApiResponse, PaginatedResponse (conflicts)
+// api.types.ts — skip ApiResponse, PaginatedResponse, CursorPaginatedResponse (in pagination.ts)
 export type {
   ApiConfig,
   ApiRequestConfig,
@@ -171,11 +224,8 @@ export type {
   ApiVersion,
 } from './api.types';
 
-// response.types.ts: skip ApiResponse, PaginatedResponse (conflicts)
+// response.types.ts — skip ApiResponse, PaginatedResponse
 export type {
   ResponseMeta,
   BulkResponse,
 } from './response.types';
-
-// request.types.ts
-export * from './request.types';
