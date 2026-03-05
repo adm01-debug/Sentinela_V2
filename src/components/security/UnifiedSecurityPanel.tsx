@@ -103,7 +103,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
   
   // Get current user
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(({ data: { user } }: { data: { user: any } }) => {
       if (user) setUserId(user.id);
     });
   }, []);
