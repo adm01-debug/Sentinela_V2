@@ -1,20 +1,22 @@
 // Types barrel file for Sentinela v20
+// NOTE: Some type files have overlapping exports. We use explicit re-exports to avoid ambiguity.
 
 // Core entity types
 export * from './activity';
 export * from './alert';
-// NOTE: employee.ts and employee.types.ts have overlapping exports (Employee, EmployeeFilters).
-// We skip employee.ts and use employee.types.ts as the canonical source.
-// export * from './employee';
+
+// employee.types.ts is the canonical source; skip employee.ts to avoid duplicate Employee/EmployeeFilters
 export * from './employee.types';
-// NOTE: report.ts and report.types.ts have overlapping exports (Report, ReportFilters, ReportTemplate).
-// We skip report.ts and use report.types.ts as the canonical source.
-// export * from './report';
+
+// report.types.ts is the canonical source; skip report.ts to avoid duplicate Report/ReportFilters/ReportTemplate
 export * from './report.types';
+
 export * from './settings';
 export * from './violation.types';
 
 // User & Auth types
+// user.ts exports NotificationPreferences which conflicts with notification.ts
+// We re-export user.ts fully and skip the conflicting member from notification.ts
 export * from './user';
 export * from './team';
 export * from './department';
@@ -25,14 +27,43 @@ export * from './session';
 
 // Feature types
 export * from './screenshot';
-export * from './notification';
+// notification.ts has NotificationPreferences which conflicts with user.ts
+export {
+  type Notification,
+  type NotificationType,
+  type NotificationCategory,
+  type NotificationPriority,
+  type NotificationChannel,
+  type NotificationAction,
+  type NotificationGroup,
+  type NotificationTemplate,
+  type NotificationSchedule,
+  type NotificationFilters,
+  type NotificationStats,
+  type NotificationBatch,
+  type NotificationConfig,
+  type NotificationRule,
+} from './notification';
 export * from './auditLog';
 export * from './integration';
 export * from './billing';
 export * from './subscription';
 export * from './webhook';
 export * from './apiKey';
-export * from './device';
+// device.ts has DeviceType which conflicts with employee.types.ts
+export {
+  type Device,
+  type DevicePlatform,
+  type DeviceStatus,
+  type DeviceInfo,
+  type DeviceRegistration,
+  type DeviceFilters,
+  type DeviceStats,
+  type DevicePolicy,
+  type DeviceAgent,
+  type DeviceHealth,
+  type DeviceSession,
+} from './device';
 export * from './application';
 export * from './category';
 export * from './tag';

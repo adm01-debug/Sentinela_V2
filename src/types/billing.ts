@@ -1,4 +1,5 @@
 // Billing types for Sentinela v17
+import type { Subscription } from './subscription';
 
 export interface BillingAccount {
   id: string;
