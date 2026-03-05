@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { FileText, Download, Calendar as CalendarIcon, Filter, Loader2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { format as formatDate } from 'date-fns';
 import { cn } from '@/lib/utils';
 
 interface ReportConfig { id: string; name: string; type: 'pdf' | 'excel' | 'csv'; filters?: { key: string; label: string; options: { value: string; label: string }[] }[]; }
