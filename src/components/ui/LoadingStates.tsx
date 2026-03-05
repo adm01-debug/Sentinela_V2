@@ -78,6 +78,7 @@ export const Shimmer = memo(function Shimmer({ className, rounded = 'md', style 
         roundedClasses[rounded],
         className
       )}
+      style={style}
     >
       <div
         className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]"
