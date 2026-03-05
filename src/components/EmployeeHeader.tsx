@@ -18,22 +18,27 @@ export const EmployeeHeader = ({ employee }: Props) => {
       .slice(0, 2);
   };
 
+  const displayName = (employee as { full_name?: string; name?: string }).full_name ?? (employee as { name?: string }).name ?? 'Sem nome';
+  const avatarSrc = (employee as { avatar_url?: string; avatar?: string }).avatar_url ?? (employee as { avatar?: string }).avatar;
+  const roleLabel = (employee as { role?: string; position?: string }).role ?? (employee as { position?: string }).position ?? '-';
+  const departmentLabel = (employee as { department?: string }).department ?? '-';
+
   return (
     <div className="flex items-start justify-between bg-card rounded-lg p-6">
       <div className="flex gap-4">
         <Avatar className="h-16 w-16">
-          <AvatarImage src={employee.avatar} alt={employee.name} />
-          <AvatarFallback>{getInitials(employee.name)}</AvatarFallback>
+          <AvatarImage src={avatarSrc} alt={displayName} />
+          <AvatarFallback>{getInitials(displayName)}</AvatarFallback>
         </Avatar>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold">{employee.name}</h1>
+            <h1 className="text-2xl font-bold">{displayName}</h1>
             <Badge variant={employee.status === 'active' ? 'default' : 'secondary'}>
               {employee.status}
             </Badge>
           </div>
           <p className="text-muted-foreground">
-            {employee.role} - {employee.department}
+            {roleLabel} - {departmentLabel}
           </p>
           <div className="flex gap-4 mt-2 text-sm">
             <span className="flex items-center gap-1">

@@ -37,10 +37,10 @@ export const ReportList = ({ reports, isLoading }: Props) => {
       <TableBody>
         {reports.map(r => (
           <TableRow key={r.id}>
-            <TableCell className="font-medium">{r.title}</TableCell>
+            <TableCell className="font-medium">{r.name}</TableCell>
             <TableCell>{r.type}</TableCell>
             <TableCell><Badge variant={statusVariants[r.status]}>{r.status}</Badge></TableCell>
-            <TableCell>{format(new Date(r.createdAt), 'MMM dd, yyyy')}</TableCell>
+            <TableCell>{format(new Date(r.created_at), 'MMM dd, yyyy')}</TableCell>
             <TableCell>
               {r.status === 'completed' && <Button variant="ghost" size="sm" onClick={() => handleDownload(r.id)}><Download className="h-4 w-4" /></Button>}
             </TableCell>
