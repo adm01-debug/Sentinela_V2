@@ -6,12 +6,13 @@ export interface User {
   id: string;
   email: string;
   name?: string;
-  role?: string;
+  role?: any;
   avatar?: string;
   isAdmin?: boolean;
   onboardingCompleted?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  [key: string]: any;
 }
 
 export interface Session {
@@ -48,7 +49,7 @@ export function useAuth(): UseAuthReturn {
     mutationFn: ({ email, password }: { email: string; password: string }) => 
       authService.login(email, password),
     onSuccess: (data) => {
-      setUser(data.user);
+      setUser(data.user as any);
       setToken(data.token);
     },
   });
@@ -85,7 +86,7 @@ export const useLogin = () => {
     mutationFn: ({ email, password }: { email: string; password: string }) => 
       authService.login(email, password),
     onSuccess: (data) => { 
-      setUser(data.user); 
+      setUser(data.user as any); 
       setToken(data.token); 
     }
   });

@@ -157,7 +157,7 @@ async function fetchPointTransactions(
 
 export function useBadges() {
   return useQuery({
-    queryKey: queryKeys.gamification.badges,
+    queryKey: queryKeys.gamification.badges(),
     queryFn: fetchBadges,
     staleTime: CACHE_TIMES.IMMUTABLE,
   });
@@ -277,7 +277,7 @@ export function useAwardPoints() {
         queryKey: queryKeys.gamification.points(variables.employeeId) 
       });
       queryClient.invalidateQueries({ 
-        queryKey: queryKeys.gamification.leaderboard() 
+        queryKey: queryKeys.gamification.leaderboard('all') 
       });
       toast({
         title: 'Pontos concedidos',

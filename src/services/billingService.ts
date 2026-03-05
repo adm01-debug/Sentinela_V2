@@ -76,6 +76,14 @@ export const billingService = {
   async removeCoupon(): Promise<void> {
     return api.delete(`${BASE_URL}/coupon`);
   },
+
+  async getSubscription(): Promise<any> {
+    return api.get(`${BASE_URL}/subscription`);
+  },
+
+  async subscribeToPlan(planId: string): Promise<any> {
+    return api.post(`${BASE_URL}/subscribe`, { planId });
+  },
 };
 
 export default billingService;

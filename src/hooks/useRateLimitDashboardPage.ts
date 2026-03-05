@@ -43,7 +43,7 @@ export function useRateLimitDashboardPage() {
 
   // Fetch rate limit logs
   const logsQuery = useQuery({
-    queryKey: queryKeys.rateLimitLogs.list(filters),
+    queryKey: [...queryKeys.rateLimiting.logs(), filters],
     queryFn: async () => {
       let query = supabase
         .from('rate_limit_logs')
@@ -75,7 +75,7 @@ export function useRateLimitDashboardPage() {
 
   // Fetch settings
   const settingsQuery = useQuery({
-    queryKey: queryKeys.rateLimitSettings.all,
+    queryKey: queryKeys.rateLimiting.settings(),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('rate_limit_settings')
@@ -88,7 +88,7 @@ export function useRateLimitDashboardPage() {
 
   // Fetch blocked IPs
   const blockedIPsQuery = useQuery({
-    queryKey: queryKeys.blockedIPs.all,
+    queryKey: queryKeys.rateLimiting.blockedIPs(),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('blocked_ips')
@@ -131,8 +131,8 @@ export function useRateLimitDashboardPage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.blockedIPs.all });
-      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimitLogs.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.blockedIPs() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.logs() });
       toast({ title: 'IP desbloqueado com sucesso' });
     },
     onError: () => {
@@ -150,7 +150,7 @@ export function useRateLimitDashboardPage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimitSettings.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.settings() });
       toast({ title: 'Configurações atualizadas' });
     },
     onError: () => {
@@ -172,8 +172,8 @@ export function useRateLimitDashboardPage() {
   }, [updateSettingsMutation]);
 
   const handleRefresh = useCallback(() => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.rateLimitLogs.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.blockedIPs.all });
+    queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.logs() });
+    queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.blockedIPs() });
   }, [queryClient]);
 
   return {

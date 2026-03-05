@@ -7,7 +7,7 @@ export const useReports = () => {
 };
 
 export const useReport = (id: string) => {
-  return useQuery({ queryKey: ['report', id], queryFn: () => reportService.get(id), enabled: !!id, refetchInterval: (data) => data?.status === 'generating' ? 2000 : false });
+  return useQuery({ queryKey: ['report', id], queryFn: () => reportService.get(id), enabled: !!id, refetchInterval: (query) => (query.state?.data as any)?.status === 'generating' ? 2000 : false });
 };
 
 export const useGenerateReport = () => {

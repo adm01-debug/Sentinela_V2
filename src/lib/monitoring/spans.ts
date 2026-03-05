@@ -1,4 +1,14 @@
-import { trace } from '@opentelemetry/api';
+// OpenTelemetry stub - browser-side replacement
+const trace = {
+  getTracer: (_name: string) => ({
+    startSpan: (name: string) => ({ recordException: () => {}, end: () => {}, setStatus: () => {}, setAttributes: () => {} }),
+    startActiveSpan: async (_name: string, fn: (span: any) => Promise<any>) => {
+      const span = { setStatus: () => {}, end: () => {}, setAttributes: () => {} };
+      return fn(span);
+    },
+  }),
+  getActiveSpan: () => null,
+};
 
 export function createSpan(name: string) {
   const tracer = trace.getTracer('sentinela');

@@ -86,7 +86,7 @@ async function fetchUnreadCount(): Promise<number> {
 
 export function useSecurityViolations(filters?: ViolationFilters) {
   return useQuery({
-    queryKey: queryKeys.violations.list(filters),
+    queryKey: queryKeys.violations.list(filters as unknown as Record<string, unknown>),
     queryFn: () => fetchViolations(filters),
     ...queryPresets.list,
   });
@@ -115,7 +115,7 @@ export function useViolation(id: string | undefined) {
 
 export function useUnreadViolationsCount() {
   return useQuery({
-    queryKey: queryKeys.violations.unread,
+    queryKey: queryKeys.violations.unread(),
     queryFn: fetchUnreadCount,
     ...queryPresets.realtime,
   });
@@ -215,9 +215,9 @@ export function useUpdateViolationStatus() {
       }
 
       // Update unread count optimistically
-      const previousUnread = queryClient.getQueryData<number>(queryKeys.violations.unread);
+      const previousUnread = queryClient.getQueryData<number>(queryKeys.violations.unread());
       if (previousUnread !== undefined && status !== 'pending') {
-        queryClient.setQueryData(queryKeys.violations.unread, Math.max(0, previousUnread - 1));
+        queryClient.setQueryData(queryKeys.violations.unread(), Math.max(0, (previousUnread as number) - 1));
       }
 
       return { previousViolations, previousUnread };
@@ -229,7 +229,7 @@ export function useUpdateViolationStatus() {
         queryClient.setQueryData(queryKeys.violations.list(), context.previousViolations);
       }
       if (context?.previousUnread !== undefined) {
-        queryClient.setQueryData(queryKeys.violations.unread, context.previousUnread);
+        queryClient.setQueryData(queryKeys.violations.unread(), context.previousUnread);
       }
       toast({
         title: 'Erro ao atualizar',

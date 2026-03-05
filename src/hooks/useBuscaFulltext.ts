@@ -100,7 +100,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
         .map((col) => `${col}.ilike.%${debouncedTerm}%`)
         .join(',');
 
-      let query = supabase
+      let query = (supabase as any)
         .from(table)
         .select(selectColumns)
         .or(searchConditions)

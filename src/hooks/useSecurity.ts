@@ -35,7 +35,7 @@ const ACTIVITY_EVENTS = ['mousedown', 'keydown', 'scroll', 'touchstart'];
 // ============================================================
 
 export function useSecurity() {
-  const { user, session, signOut } = useAuth();
+  const { user, session, logout: signOut } = useAuth() as any;
   const { toast } = useToast();
   const [securityState, setSecurityState] = useState<SecurityState>({
     lastActivity: new Date(),

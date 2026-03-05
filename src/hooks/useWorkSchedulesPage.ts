@@ -64,20 +64,21 @@ const initialAssignForm: AssignFormData = {
 // ============================================================
 
 export function useWorkSchedulesPage() {
-  const { 
-    schedules, 
-    employeeSchedules, 
-    overtimeRequests,
-    blockLogs,
-    loading, 
-    addSchedule, 
-    updateSchedule, 
-    deleteSchedule,
-    assignSchedule,
-    removeEmployeeSchedule,
-    updateOvertimeRequest
-  } = useWorkSchedules();
-  const { employees } = useEmployees();
+  const schedulesResult = useWorkSchedules() as any;
+  const schedules = schedulesResult.schedules || schedulesResult.data || [];
+  const employeeSchedules = schedulesResult.employeeSchedules || [];
+  const overtimeRequests = schedulesResult.overtimeRequests || [];
+  const blockLogs = schedulesResult.blockLogs || [];
+  const loading = schedulesResult.loading || schedulesResult.isLoading || false;
+  const addSchedule = schedulesResult.addSchedule || (async () => {});
+  const updateSchedule = schedulesResult.updateSchedule || (async () => {});
+  const deleteSchedule = schedulesResult.deleteSchedule || (async () => {});
+  const assignSchedule = schedulesResult.assignSchedule || (async () => {});
+  const removeEmployeeSchedule = schedulesResult.removeEmployeeSchedule || (async () => {});
+  const updateOvertimeRequest = schedulesResult.updateOvertimeRequest || (async () => {});
+  
+  const employeesResult = useEmployees() as any;
+  const employees = employeesResult.employees || (employeesResult.data as any)?.data || employeesResult.data || [];
   
   // Enable realtime notifications
   useOvertimeNotifications();

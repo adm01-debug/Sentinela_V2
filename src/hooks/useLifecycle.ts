@@ -11,9 +11,11 @@ export function useLifecycle(
   unmountRef.current = onUnmount;
 
   useEffect(() => {
-    const cleanup = mountRef.current?.();
+    const result = mountRef.current?.();
     return () => {
-      cleanup?.();
+      if (typeof result === 'function') {
+        result();
+      }
       unmountRef.current?.();
     };
   }, []);

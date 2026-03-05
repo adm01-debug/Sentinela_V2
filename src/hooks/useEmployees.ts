@@ -22,6 +22,8 @@ export interface EmployeeWithDetails {
   avatar_url: string | null;
   created_at: string;
   updated_at: string;
+  hire_date?: string | null;
+  notes?: string | null;
   devices?: EmployeeDevice[];
 }
 

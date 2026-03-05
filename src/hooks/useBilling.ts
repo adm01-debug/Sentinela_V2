@@ -12,7 +12,7 @@ export function useBilling() {
         billingService.getAccount(),
         billingService.getSubscription(),
         billingService.getPlans(),
-        billingService.getInvoices(),
+        billingService.getInvoices().then(r => (r as any)?.data || r),
         billingService.getUsage(),
       ]);
       store.setAccount(account);

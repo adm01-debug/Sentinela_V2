@@ -51,13 +51,13 @@ export function useAppConfig(): UseAppConfigReturn {
       setIsLoading(true);
       setError(null);
       
-      const { data, error: fetchError } = await supabase
+      const { data, error: fetchError } = await (supabase as any)
         .from('app_config')
         .select('*')
         .single();
       
       if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
-      setConfig(data || defaultConfig);
+      setConfig(data as AppConfig || defaultConfig);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch app config');
       setConfig(defaultConfig);
@@ -71,7 +71,7 @@ export function useAppConfig(): UseAppConfigReturn {
   }, [fetchConfig]);
 
   const updateConfig = useCallback(async (updates: Partial<AppConfig>) => {
-    const { error } = await supabase
+    const { error } = await (supabase as any)
       .from('app_config')
       .upsert({ ...config, ...updates });
     

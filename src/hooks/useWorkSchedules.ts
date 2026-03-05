@@ -20,6 +20,7 @@ export interface WorkSchedule {
   flexible_start?: boolean;
   flexible_minutes?: number;
   overtime_allowed?: boolean;
+  overtime_requires_approval?: boolean;
   block_outside_hours?: boolean;
 }
 

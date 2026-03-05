@@ -34,7 +34,7 @@ export function useAgentKeysPage() {
 
   // Fetch agent keys
   const keysQuery = useQuery({
-    queryKey: queryKeys.agentKeys.list({ search, status: statusFilter }),
+    queryKey: [...queryKeys.agentKeys.lists(), { search, status: statusFilter }],
     queryFn: async () => {
       let query = supabase
         .from('agent_keys')

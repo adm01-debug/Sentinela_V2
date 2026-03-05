@@ -114,7 +114,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       const result: BulkActionResult = { success: [], failed: [], total: ids.length };
 
       // Soft delete (se a tabela suporta)
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from(table)
         .update({ deleted_at: new Date().toISOString() })
         .in('id', ids)
@@ -122,7 +122,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
 
       if (error) {
         // Se soft delete não funcionar, tenta hard delete
-        const { error: hardError } = await supabase
+        const { error: hardError } = await (supabase as any)
           .from(table)
           .delete()
           .in('id', ids);

@@ -15,7 +15,7 @@ export function useChartExport(options: UseChartExportOptions = {}) {
     if (!chartRef) return;
     setIsExporting(true);
     try {
-      const { default: html2canvas } = await import('html2canvas');
+      const html2canvas = (await import('html2canvas' as string)).default;
       const canvas = await html2canvas(chartRef, { backgroundColor });
       const link = document.createElement('a');
       link.download = `${customFilename || filename}.png`;

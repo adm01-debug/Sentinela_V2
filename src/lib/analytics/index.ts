@@ -1,8 +1,8 @@
 export * from './google-analytics';
-export * from './gtag';
+export { initGTM, pushToDataLayer } from './gtag';
 export * from './mixpanel';
 export * from './ab-testing';
-export * from './event-tracker';
+export { trackEvent } from './event-tracker';
 export * from './page-tracker';
 export * from './user-tracker';
 export * from './performance-tracker';

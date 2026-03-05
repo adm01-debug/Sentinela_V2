@@ -58,7 +58,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
   } = options;
 
   const queryClient = useQueryClient();
-  const allExcludeFields = [...DEFAULT_EXCLUDE_FIELDS, ...excludeFields];
+  const allExcludeFields = [...DEFAULT_EXCLUDE_FIELDS, ...(excludeFields as string[])];
 
   // ============================================================
   // SINGLE DUPLICATE MUTATION
@@ -68,7 +68,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
     mutationFn: async (id: string): Promise<T> => {
       if (!isSupabaseReady) {
         console.log('[Duplicate] Mock: duplicando', id);
-        return { id: `mock-${Date.now()}` } as T;
+        return { id: `mock-${Date.now()}` } as unknown as T;
       }
 
       // Buscar registro original
@@ -125,7 +125,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
     mutationFn: async (ids: string[]): Promise<T[]> => {
       if (!isSupabaseReady) {
         console.log('[Duplicate] Mock: duplicando', ids.length, 'registros');
-        return ids.map((id) => ({ id: `mock-${id}-copy` })) as T[];
+        return ids.map((id) => ({ id: `mock-${id}-copy` })) as unknown as T[];
       }
 
       // Buscar registros originais

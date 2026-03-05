@@ -22,7 +22,7 @@ export function useGamificationPage() {
   });
 
   const achievementsQuery = useQuery({
-    queryKey: queryKeys.gamification.achievements,
+    queryKey: queryKeys.gamification.achievements(),
     queryFn: async () => {
       const { data, error } = await supabase.from('achievements').select('*').order('points', { ascending: false });
       if (error) throw error;
@@ -42,7 +42,7 @@ export function useGamificationPage() {
 
   const awardPointsMutation = useMutation({
     mutationFn: async ({ employeeId, points }: { employeeId: string; points: number }) => {
-      const { error } = await supabase.rpc('award_gamification_points', { p_employee_id: employeeId, p_points: points });
+      const { error } = await (supabase as any).rpc('award_gamification_points', { p_employee_id: employeeId, p_points: points });
       if (error) throw error;
     },
     onSuccess: () => {
