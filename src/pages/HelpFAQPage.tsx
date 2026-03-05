@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import { Input  } from '@/components/ui/input';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/Accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger  } from '@/components/ui/tabs';
 
 const faqs = {

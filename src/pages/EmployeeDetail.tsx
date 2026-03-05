@@ -29,7 +29,7 @@ const EmployeeDetailContent = memo(function EmployeeDetailContent() {
           <CardContent className="space-y-3">
             {employee.email && <div className="flex items-center gap-2"><Mail className="h-4 w-4 text-muted-foreground" />{employee.email}</div>}
             {employee.department && <div className="flex items-center gap-2"><Building2 className="h-4 w-4 text-muted-foreground" />{employee.department}</div>}
-            {employee.position && <div className="flex items-center gap-2"><Monitor className="h-4 w-4 text-muted-foreground" />{employee.position}</div>}
+            {(employee as any).position && <div className="flex items-center gap-2"><Monitor className="h-4 w-4 text-muted-foreground" />{(employee as any).position}</div>}
           </CardContent>
         </Card>
       </div>

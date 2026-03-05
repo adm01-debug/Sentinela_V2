@@ -141,11 +141,11 @@ const DevicesContent = React.memo(function DevicesContent() {
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {devices.map((device) => (
+          {devices.map((device: any) => (
             <DeviceCard
               key={device.id}
               device={device}
-              onViewDetails={handleViewDetails}
+              onViewDetails={handleViewDetails as any}
               onDeactivate={handleDeactivate}
               onReactivate={handleReactivate}
             />
