@@ -149,8 +149,8 @@ export type { Rule, RuleType, RuleCondition, ConditionOperator, RuleAction, Acti
 // dashboard.types.ts — skip DashboardWidget, WidgetConfig, WidgetPosition, WidgetType (in analytics.types.ts)
 export type { DashboardLayout, DashboardStats, DashboardFilter } from './dashboard.types';
 
-// analytics.types.ts — has DashboardWidget, WidgetType, WidgetConfig, WidgetPosition
-export * from './analytics.types';
+// analytics.types.ts — export only dashboard widget types to avoid FilterOperator collisions
+export type { DashboardWidget, WidgetType, WidgetConfig, WidgetPosition } from './analytics.types';
 
 // api.types.ts — skip ApiResponse, PaginatedResponse
 export type { ApiConfig, ApiRequestConfig, ApiEndpoint, ApiVersion } from './api.types';
