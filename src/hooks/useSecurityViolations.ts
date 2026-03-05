@@ -86,7 +86,7 @@ async function fetchUnreadCount(): Promise<number> {
 
 export function useSecurityViolations(filters?: ViolationFilters) {
   return useQuery({
-    queryKey: queryKeys.violations.list(filters),
+    queryKey: queryKeys.violations.list(filters as unknown as Record<string, unknown>),
     queryFn: () => fetchViolations(filters),
     ...queryPresets.list,
   });
