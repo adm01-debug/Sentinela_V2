@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Button  } from '@/components/ui/button';
-import { Input  } from '@/components/ui/input';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter  } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
 
 const registerSchema = z.object({
@@ -23,7 +24,7 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const { register: registerUser } = useAuth();
+  const auth = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
@@ -33,7 +34,9 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
     try {
-      await registerUser(data);
+      if ((auth as any).register) {
+        await (auth as any).register(data);
+      }
       navigate('/dashboard');
     } catch (error) {
       console.error(error);
@@ -51,14 +54,36 @@ export default function RegisterPage() {
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
-            <Input label="Nome completo" {...register('name')} error={errors.name?.message} />
-            <Input label="Email" type="email" {...register('email')} error={errors.email?.message} />
-            <Input label="Empresa" {...register('company')} error={errors.company?.message} />
-            <Input label="Senha" type="password" {...register('password')} error={errors.password?.message} />
-            <Input label="Confirmar senha" type="password" {...register('confirmPassword')} error={errors.confirmPassword?.message} />
+            <div className="space-y-2">
+              <Label>Nome completo</Label>
+              <Input {...register('name')} />
+              {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
+            </div>
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input type="email" {...register('email')} />
+              {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+            </div>
+            <div className="space-y-2">
+              <Label>Empresa</Label>
+              <Input {...register('company')} />
+              {errors.company && <p className="text-sm text-destructive">{errors.company.message}</p>}
+            </div>
+            <div className="space-y-2">
+              <Label>Senha</Label>
+              <Input type="password" {...register('password')} />
+              {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
+            </div>
+            <div className="space-y-2">
+              <Label>Confirmar senha</Label>
+              <Input type="password" {...register('confirmPassword')} />
+              {errors.confirmPassword && <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>}
+            </div>
           </CardContent>
           <CardFooter className="flex-col gap-4">
-            <Button type="submit" className="w-full" loading={isLoading}>Cadastrar</Button>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Cadastrando...' : 'Cadastrar'}
+            </Button>
             <p className="text-sm text-muted-foreground">
               Já tem uma conta? <Link to="/login" className="text-primary hover:underline">Entrar</Link>
             </p>

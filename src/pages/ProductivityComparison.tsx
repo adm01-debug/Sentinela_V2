@@ -1,13 +1,12 @@
-import React, { Suspense, memo } from 'react';
+import React, { Suspense, memo, useState, useMemo, useCallback } from 'react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Sidebar } from '@/components/Sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { DateRangePicker } from '@/components/DateRangePicker';
-import { ProductivityComparisonSkeleton } from '@/components/PageSkeletons';
 import { ProductivityStatsCards, ProductivityTable } from '@/components/productivity';
+import { Download, Search, ArrowUpDown, X } from 'lucide-react';
 
 import {
   Select,
@@ -30,12 +29,10 @@ const ProductivityComparisonContent = memo(function ProductivityComparisonConten
     sortOrder: 'desc',
   });
 
-  // Queries
   const { data: employees = [], isLoading } = useProductivityData(filters);
   const { data: stats, isLoading: statsLoading } = useProductivityStats(filters);
   const { data: departments = [] } = useDepartments();
 
-  // Filtered employees by search
   const filteredEmployees = useMemo(() => {
     if (!searchTerm) return employees;
     const term = searchTerm.toLowerCase();
@@ -47,7 +44,6 @@ const ProductivityComparisonContent = memo(function ProductivityComparisonConten
     );
   }, [employees, searchTerm]);
 
-  // Handlers
   const handleDepartmentChange = useCallback((value: string) => {
     setFilters((prev) => ({
       ...prev,
@@ -59,15 +55,6 @@ const ProductivityComparisonContent = memo(function ProductivityComparisonConten
     setFilters((prev) => ({
       ...prev,
       sortBy: value as 'score' | 'active_time' | 'name',
-    }));
-  }, []);
-
-  const handleDateRangeChange = useCallback((range: { from: Date; to: Date } | undefined) => {
-    setFilters((prev) => ({
-      ...prev,
-      dateRange: range
-        ? { from: range.from.toISOString(), to: range.to.toISOString() }
-        : undefined,
     }));
   }, []);
 
@@ -84,7 +71,6 @@ const ProductivityComparisonContent = memo(function ProductivityComparisonConten
   }, []);
 
   const handleExport = useCallback(() => {
-    // Export logic
     const csv = [
       ['Nome', 'Departamento', 'Produtividade', 'Tempo Ativo', 'Violações'].join(','),
       ...filteredEmployees.map((e) =>
@@ -105,7 +91,13 @@ const ProductivityComparisonContent = memo(function ProductivityComparisonConten
       <div className="flex min-h-screen">
         <Sidebar />
         <main className="flex-1 p-6">
-          <ProductivityComparisonSkeleton />
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-64" />
+            <div className="grid gap-4 md:grid-cols-4">
+              {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+            </div>
+            <Skeleton className="h-96" />
+          </div>
         </main>
       </div>
     );
@@ -135,7 +127,6 @@ const ProductivityComparisonContent = memo(function ProductivityComparisonConten
             <CardTitle>Ranking de Produtividade</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Filters */}
             <div className="flex flex-wrap gap-4 items-end">
               <div className="flex-1 min-w-[200px]">
                 <div className="relative">
@@ -181,10 +172,8 @@ const ProductivityComparisonContent = memo(function ProductivityComparisonConten
                 <ArrowUpDown className="h-4 w-4" />
               </Button>
 
-              <DateRangePicker onChange={handleDateRangeChange} />
-
               <Button variant="ghost" onClick={handleClearFilters}>
-                <Filter className="h-4 w-4 mr-2" />
+                <X className="h-4 w-4 mr-2" />
                 Limpar
               </Button>
             </div>

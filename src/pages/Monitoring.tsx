@@ -57,16 +57,14 @@ const MonitoringContent = memo(function MonitoringContent() {
         onStatusChange={setStatusFilter}
         departmentFilter={departmentFilter}
         onDepartmentChange={setDepartmentFilter}
-        departments={departments}
+        departments={departments as string[]}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
         autoRefresh={autoRefresh}
         onAutoRefreshChange={setAutoRefresh}
       />
 
-      {/* Layout responsivo: stack em mobile, side-by-side em desktop */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Lista de funcionários */}
         <div className="lg:col-span-2 order-2 lg:order-1">
           {isLoadingEmployees ? (
             <div className="flex justify-center py-12">
@@ -93,7 +91,6 @@ const MonitoringContent = memo(function MonitoringContent() {
           )}
         </div>
 
-        {/* Painel de detalhes - aparece primeiro em mobile quando há seleção */}
         <div className={`lg:col-span-1 order-1 lg:order-2 ${!selectedEmployee ? 'hidden lg:block' : ''}`}>
           <Card className="lg:sticky lg:top-6">
             <CardHeader className="pb-3">

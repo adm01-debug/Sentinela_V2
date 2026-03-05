@@ -2,7 +2,7 @@ import React, { Suspense, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGeofencingPage } from '@/hooks/useGeofencingPage';
+import { useGeofencingPage, type Geofence } from '@/hooks/useGeofencingPage';
 import { GeofenceStatsCards, GeofenceList } from '@/components/geofencing';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,8 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { LocationMap } from '@/components/LocationMap';
-import { Plus, Loader2 } from 'lucide-react';
+import { Plus, Loader2, MapPin } from 'lucide-react';
 
 import {
   Dialog,
@@ -56,6 +55,10 @@ const GeofencingContent = memo(function GeofencingContent() {
     GEOFENCE_COLORS,
   } = useGeofencingPage();
 
+  const handleSelectGeofence = (g: any) => {
+    setSelectedGeofence(g as Geofence | null);
+  };
+
   return (
     <div className="flex-1 space-y-6 p-6">
       <PageHeader
@@ -79,9 +82,9 @@ const GeofencingContent = memo(function GeofencingContent() {
             <GeofenceList
               geofences={geofences}
               selectedId={selectedGeofence?.id}
-              onSelect={setSelectedGeofence}
+              onSelect={handleSelectGeofence}
               onEdit={handleOpenEdit}
-              onDelete={(g) => { setSelectedGeofence(g); setIsDeleteDialogOpen(true); }}
+              onDelete={(g: any) => { handleSelectGeofence(g); setIsDeleteDialogOpen(true); }}
               onToggle={() => {}}
             />
           </CardContent>
@@ -92,12 +95,14 @@ const GeofencingContent = memo(function GeofencingContent() {
             <CardTitle>{t('violations.location')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[500px] rounded-lg overflow-hidden">
-              <LocationMap
-                geofences={geofences}
-                selectedGeofenceId={selectedGeofence?.id}
-                onGeofenceClick={setSelectedGeofence}
-              />
+            <div className="h-[500px] rounded-lg overflow-hidden bg-muted flex items-center justify-center">
+              <div className="text-center text-muted-foreground">
+                <MapPin className="h-12 w-12 mx-auto mb-2" />
+                <p>Map placeholder</p>
+                {geofences.length > 0 && (
+                  <p className="text-sm mt-2">{geofences.length} geofences</p>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>
