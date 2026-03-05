@@ -58,7 +58,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
   } = options;
 
   const queryClient = useQueryClient();
-  const allExcludeFields = [...DEFAULT_EXCLUDE_FIELDS, ...excludeFields];
+  const allExcludeFields = [...DEFAULT_EXCLUDE_FIELDS, ...(excludeFields as string[])];
 
   // ============================================================
   // SINGLE DUPLICATE MUTATION
