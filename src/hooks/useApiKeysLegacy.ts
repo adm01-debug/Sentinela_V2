@@ -1,29 +1,32 @@
 import { useState, useCallback } from 'react';
-import { apiKeyService } from '@/services/apiKeyService';
-import type { ApiKey } from '@/types';
+import { supabase } from '@/integrations/supabase/client';
 
 export function useApiKeys() {
-  const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
+  const [apiKeys, setApiKeys] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchApiKeys = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await apiKeyService.getAll();
-      setApiKeys(data);
+      const { data, error } = await supabase.from('agent_keys').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      setApiKeys(data || []);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const createApiKey = useCallback(async (name: string, scopes: string[]) => {
-    const { key, apiKey } = await apiKeyService.create(name, scopes);
-    setApiKeys(prev => [...prev, apiKey]);
+  const createApiKey = useCallback(async (name: string, _scopes: string[]) => {
+    const key = crypto.randomUUID();
+    const { data, error } = await supabase.from('agent_keys').insert({ key_name: name, agent_key: key }).select().single();
+    if (error) throw error;
+    setApiKeys(prev => [...prev, data]);
     return key;
   }, []);
 
   const revokeApiKey = useCallback(async (id: string) => {
-    await apiKeyService.revoke(id);
+    const { error } = await supabase.from('agent_keys').update({ is_active: false }).eq('id', id);
+    if (error) throw error;
     setApiKeys(prev => prev.filter(k => k.id !== id));
   }, []);
 
