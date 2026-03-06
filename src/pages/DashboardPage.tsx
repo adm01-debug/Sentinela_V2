@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
 import { Users, Activity, TrendingUp, AlertTriangle } from 'lucide-react';
+import { useDashboardStats, useActivityChart, useTopEmployees } from '@/hooks/useDashboard';
 import { StatCard } from '@/components/StatCard';
 import { ActivityChart } from '@/components/ActivityChart';
 import { TopEmployeesList } from '@/components/TopEmployeesList';
@@ -7,24 +7,9 @@ import { RecentAlerts } from '@/components/RecentAlerts';
 import { Skeleton } from '@/components/Skeleton';
 
 export const DashboardPage = () => {
-  const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ['dashboard-stats-page'],
-    queryFn: async () => ({
-      totalEmployees: 0,
-      activeEmployees: 0,
-      averageProductivity: 0,
-      productivityTrend: 0,
-      alertsCount: 0,
-    }),
-  });
-  const { data: activityData } = useQuery({
-    queryKey: ['activity-chart', 'week'],
-    queryFn: async () => [] as any[],
-  });
-  const { data: topEmployees } = useQuery({
-    queryKey: ['top-employees'],
-    queryFn: async () => [] as any[],
-  });
+  const { data: stats, isLoading: statsLoading } = useDashboardStats();
+  const { data: activityData } = useActivityChart('week');
+  const { data: topEmployees } = useTopEmployees(5);
 
   if (statsLoading) return <DashboardSkeleton />;
 
