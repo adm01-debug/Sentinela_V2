@@ -31,4 +31,4 @@ export {
   formatCNPJ,
 } from './formatters';
 
-export * from './api';
+export { ApiError, fetcher, buildQueryString, parseQueryString } from './api';
