@@ -1,18 +1,16 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuthStore } from '@/stores/authStore';
 import { ROUTES } from '@/constants';
 import { MainLayout } from '@/layouts/MainLayout';
-import { AuthLayout } from '@/layouts/AuthLayout';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { supabase } from '@/integrations/supabase/client';
 
 // ============================================================
 // LAZY LOADED PAGES - SENTINELA v20
 // ============================================================
 
 // Auth Pages
-const LoginPage = lazy(() => import('@/pages/LoginPage'));
-const RegisterPage = lazy(() => import('@/pages/RegisterPage'));
+const Auth = lazy(() => import('@/pages/Auth'));
 const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPasswordPage'));
 
 // Dashboard & Main
@@ -87,11 +85,69 @@ const AIAnalysisPage = lazy(() => import('@/pages/AIAnalysisPage'));
 const GamificationPage = lazy(() => import('@/pages/GamificationPage'));
 
 // ============================================================
-// PROTECTED ROUTE WRAPPER
+// SUPABASE SESSION HOOK
+// ============================================================
+function useSupabaseSession() {
+  const [session, setSession] = useState<any>(undefined); // undefined = loading
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  return session;
+}
+
+// ============================================================
+// PROTECTED ROUTE WRAPPER (Supabase-based)
 // ============================================================
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuthStore();
-  if (!isAuthenticated) return <Navigate to={ROUTES.LOGIN} replace />;
+  const session = useSupabaseSession();
+  
+  // Still loading
+  if (session === undefined) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+  
+  // Not authenticated
+  if (!session) {
+    return <Navigate to="/auth" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
+// ============================================================
+// AUTH GUARD (redirect if already logged in)
+// ============================================================
+const AuthGuard = ({ children }: { children: React.ReactNode }) => {
+  const session = useSupabaseSession();
+  
+  if (session === undefined) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+  
+  if (session) {
+    return <Navigate to={ROUTES.DASHBOARD} replace />;
+  }
+  
   return <>{children}</>;
 };
 
@@ -111,11 +167,10 @@ export const AppRoutes = () => (
   <Suspense fallback={<PageLoader />}>
     <Routes>
       {/* Auth Routes */}
-      <Route element={<AuthLayout />}>
-        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-        <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
-        <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
-      </Route>
+      <Route path="/auth" element={<AuthGuard><Auth /></AuthGuard>} />
+      <Route path={ROUTES.LOGIN} element={<Navigate to="/auth" replace />} />
+      <Route path={ROUTES.REGISTER} element={<Navigate to="/auth" replace />} />
+      <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
