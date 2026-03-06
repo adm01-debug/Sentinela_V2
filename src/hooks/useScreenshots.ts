@@ -16,3 +16,11 @@ export const useDeleteScreenshot = () => {
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['screenshots'] }); },
   });
 };
+
+export const useScreenshot = (id: string) => {
+  return useQuery({
+    queryKey: ['screenshot', id],
+    queryFn: async () => null as any,
+    enabled: !!id,
+  });
+};

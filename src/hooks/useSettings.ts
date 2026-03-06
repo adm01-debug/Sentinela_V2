@@ -1,6 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
+export interface ApplicationRule {
+  id: string;
+  name: string;
+  category: 'productivity' | 'communication' | 'entertainment' | 'development' | 'other';
+  status: 'allowed' | 'blocked' | 'monitored';
+  created_at: string;
+  updated_at: string;
+}
+
+
 // Backward-compatible export used by UI components
 export const useSettings = () => {
   return useQuery({

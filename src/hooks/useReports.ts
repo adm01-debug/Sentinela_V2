@@ -34,3 +34,25 @@ export const useDeleteReport = () => {
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['reports'] }); },
   });
 };
+
+export const useGenerateReport = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (params: any) => {
+      const { data, error } = await supabase.from('ai_analysis_reports').insert({
+        report_type: params.type || 'general',
+        summary: params.summary || 'Report generated',
+      }).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['reports'] }); },
+  });
+};
+
+export const useReportTemplates = () => {
+  return useQuery({
+    queryKey: ['report-templates'],
+    queryFn: async () => [] as any[],
+  });
+};
