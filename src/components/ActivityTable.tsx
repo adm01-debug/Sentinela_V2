@@ -2,12 +2,18 @@ import { Activity } from '@/types';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 
 interface Props {
   activities: Activity[];
   isLoading?: boolean;
 }
+
+const formatActivityTime = (timestamp: string) => {
+  const parsed = new Date(timestamp);
+  if (!isValid(parsed)) return '--:--';
+  return format(parsed, 'HH:mm');
+};
 
 export const ActivityTable = ({ activities, isLoading }: Props) => {
   if (isLoading) {
@@ -34,10 +40,10 @@ export const ActivityTable = ({ activities, isLoading }: Props) => {
       <TableBody>
         {activities.map((a) => (
           <TableRow key={a.id}>
-            <TableCell>{format(new Date(a.timestamp), 'HH:mm')}</TableCell>
-            <TableCell className="font-medium">{a.application}</TableCell>
-            <TableCell className="text-muted-foreground">{a.title}</TableCell>
-            <TableCell>{Math.round(a.duration / 60)}min</TableCell>
+            <TableCell>{formatActivityTime(a.timestamp)}</TableCell>
+            <TableCell className="font-medium">{a.application || 'Unknown app'}</TableCell>
+            <TableCell className="text-muted-foreground">{a.title || 'Sem título'}</TableCell>
+            <TableCell>{Math.max(0, Math.round((a.duration || 0) / 60))}min</TableCell>
             <TableCell>
               <Badge variant={a.productive ? 'success' : 'secondary'}>
                 {a.productive ? 'Productive' : 'Unproductive'}
