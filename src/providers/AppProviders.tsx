@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { FeatureFlagsProvider } from '@/lib/feature-flags/provider';
 import { PermissionsProvider } from '@/lib/permissions/provider';
 import { ErrorBoundary } from '@/lib/error-handling';
-import { useAuthStore } from '@/stores';
+import { useAuthStore } from '@/stores/authStore';
 
 const queryClient = new QueryClient({
   defaultOptions: {
