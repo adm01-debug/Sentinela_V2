@@ -7,12 +7,11 @@ import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
-import { useAuthStore } from '@/stores/authStore';
-import { useUpdateProfile } from '@/hooks/useAuth';
+import { useAuth, useUpdateProfile } from '@/hooks/useAuth';
 
 export default function ProfileEditPage() {
   const navigate = useNavigate();
-  const user = useAuthStore(s => s.user);
+  const { user } = useAuth();
   const updateProfile = useUpdateProfile();
   const { register, handleSubmit } = useForm({
     defaultValues: {

@@ -1,6 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { authService } from '@/services';
-import { useAuthStore } from '@/stores';
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import type { Session as SupaSession } from '@supabase/supabase-js';
 
 export interface User {
   id: string;
@@ -35,116 +35,107 @@ export interface UseAuthReturn {
   refresh: () => Promise<void>;
 }
 
-export function useAuth(): UseAuthReturn {
-  const { user, isAuthenticated, setUser, setToken, logout: storeLogout } = useAuthStore();
-  const queryClient = useQueryClient();
-
-  const { isLoading, error, refetch, data } = useQuery({
-    queryKey: ['current-user'],
-    queryFn: () => authService.me(),
-    enabled: isAuthenticated,
-  });
-
-  const loginMutation = useMutation({
-    mutationFn: ({ email, password }: { email: string; password: string }) => 
-      authService.login(email, password),
-    onSuccess: (data) => {
-      setUser(data.user as any);
-      setToken(data.token);
-    },
-  });
-
-  const logoutMutation = useMutation({
-    mutationFn: () => authService.logout(),
-    onSuccess: () => {
-      storeLogout();
-      queryClient.clear();
-    },
-  });
-
+function mapSupabaseUser(supaUser: any): User | null {
+  if (!supaUser) return null;
   return {
-    user: user as User | null,
-    session: null,
-    isAuthenticated,
-    isLoading: isLoading || loginMutation.isPending || logoutMutation.isPending,
-    error: error?.message || loginMutation.error?.message || null,
-    login: async (email: string, password: string) => {
-      await loginMutation.mutateAsync({ email, password });
-    },
-    logout: async () => {
-      await logoutMutation.mutateAsync();
-    },
-    refresh: async () => {
-      await refetch();
-    },
+    id: supaUser.id,
+    email: supaUser.email || '',
+    name: supaUser.user_metadata?.full_name || supaUser.user_metadata?.name || supaUser.email?.split('@')[0],
+    avatar: supaUser.user_metadata?.avatar_url,
+    role: supaUser.user_metadata?.role || 'user',
+    isAdmin: false, // Will be checked via user_roles table
+    createdAt: supaUser.created_at,
   };
 }
 
-export const useLogin = () => {
-  const { setUser, setToken } = useAuthStore();
-  return useMutation({
-    mutationFn: ({ email, password }: { email: string; password: string }) => 
-      authService.login(email, password),
-    onSuccess: (data) => { 
-      setUser(data.user as any); 
-      setToken(data.token); 
+export function useAuth(): UseAuthReturn {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [supaSession, setSupaSession] = useState<SupaSession | null>(null);
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data }) => {
+      setSupaSession(data.session);
+      setUser(mapSupabaseUser(data.session?.user));
+      setIsLoading(false);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSupaSession(session);
+      setUser(mapSupabaseUser(session?.user));
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const login = useCallback(async (email: string, password: string) => {
+    setError(null);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setError(error.message);
+      throw error;
     }
-  });
-};
+  }, []);
 
-export const useLogout = () => {
-  const { logout } = useAuthStore();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: () => authService.logout(),
-    onSuccess: () => { 
-      logout(); 
-      queryClient.clear(); 
-    }
-  });
-};
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setSupaSession(null);
+  }, []);
 
-export const useCurrentUser = () => {
-  const { isAuthenticated } = useAuthStore();
-  return useQuery({ 
-    queryKey: ['current-user'], 
-    queryFn: () => authService.me(), 
-    enabled: isAuthenticated 
-  });
-};
+  const refresh = useCallback(async () => {
+    const { data } = await supabase.auth.getSession();
+    setSupaSession(data.session);
+    setUser(mapSupabaseUser(data.session?.user));
+  }, []);
 
+  return {
+    user,
+    session: null,
+    isAuthenticated: !!supaSession,
+    isLoading,
+    error,
+    login,
+    logout,
+    refresh,
+  };
+}
+
+// Re-export convenience hooks that use Supabase
 export const useUpdateProfile = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: authService.updateProfile,
-    onSuccess: () => { 
-      queryClient.invalidateQueries({ queryKey: ['current-user'] }); 
-    }
-  });
+  const [isPending, setIsPending] = useState(false);
+  return {
+    mutateAsync: async (data: Partial<User>) => {
+      setIsPending(true);
+      try {
+        const { error } = await supabase.auth.updateUser({ data });
+        if (error) throw error;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    isPending,
+  };
 };
 
 export const useChangePassword = () => {
-  return useMutation({
-    mutationFn: ({ currentPassword, newPassword }: { currentPassword: string; newPassword: string }) =>
-      authService.changePassword(currentPassword, newPassword)
-  });
-};
-
-export const useSessions = () => {
-  return useQuery({ 
-    queryKey: ['sessions'], 
-    queryFn: () => authService.getSessions() 
-  });
-};
-
-export const useRevokeSession = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (sessionId: string) => authService.revokeSession(sessionId),
-    onSuccess: () => { 
-      queryClient.invalidateQueries({ queryKey: ['sessions'] }); 
-    }
-  });
+  const [isPending, setIsPending] = useState(false);
+  return {
+    mutateAsync: async ({ newPassword }: { currentPassword: string; newPassword: string }) => {
+      setIsPending(true);
+      try {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) throw error;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    isPending,
+  };
 };
 
 export default useAuth;

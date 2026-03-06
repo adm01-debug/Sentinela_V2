@@ -7,7 +7,7 @@ import { cn } from '@/utils/cn';
 export const MainLayout = () => {
   const { sidebarOpen, sidebarCollapsed } = useUIStore();
   return (
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex h-screen bg-background">
       <AppSidebar />
       <div className={cn('flex-1 flex flex-col overflow-hidden', sidebarCollapsed ? 'ml-16' : 'ml-64')}>
         <Header />
