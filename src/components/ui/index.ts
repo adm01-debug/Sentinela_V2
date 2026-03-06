@@ -99,4 +99,5 @@ export * from './pagination';
 export * from './resizable';
 export * from './sidebar';
 export * from './toast';
-export * from './toaster';
+// Note: ./toaster is NOT re-exported here to avoid duplicate 'Toaster' with ./sonner (line 58)
+// Import Toaster from './toaster' directly if needed.
