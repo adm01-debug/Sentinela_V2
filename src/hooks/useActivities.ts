@@ -1,43 +1,39 @@
 import { useQuery } from '@tanstack/react-query';
-import { activityService } from '@/services';
-import type { ActivityFilters } from '@/types';
+import { supabase } from '@/integrations/supabase/client';
 
-export const useActivities = (filters: ActivityFilters) => {
+export const useActivities = (filters?: any) => {
   return useQuery({
     queryKey: ['activities', filters],
-    queryFn: () => activityService.list(filters),
-    enabled: !!filters.startDate && !!filters.endDate
+    queryFn: async () => {
+      let query = supabase.from('keystroke_logs').select('*').order('recorded_at', { ascending: false }).limit(100);
+      if (filters?.employee_name) query = query.eq('employee_name', filters.employee_name);
+      const { data, error } = await query;
+      if (error) throw error;
+      return { data: data || [], total: data?.length || 0 };
+    },
   });
 };
 
-export const useActivitySummary = (filters: ActivityFilters) => {
+export const useActivity = (id: string) => {
+  return useQuery({
+    queryKey: ['activity', id],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('keystroke_logs').select('*').eq('id', id).single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!id,
+  });
+};
+
+export const useActivitySummary = (filters?: any) => {
   return useQuery({
     queryKey: ['activity-summary', filters],
-    queryFn: () => activityService.getSummary(filters),
-    enabled: !!filters.startDate && !!filters.endDate
-  });
-};
-
-export const useActivityTimeline = (employeeId: string, date: string) => {
-  return useQuery({
-    queryKey: ['activity-timeline', employeeId, date],
-    queryFn: () => activityService.getTimeline(employeeId, date),
-    enabled: !!employeeId && !!date
-  });
-};
-
-export const useTopApplications = (filters: ActivityFilters) => {
-  return useQuery({
-    queryKey: ['top-applications', filters],
-    queryFn: () => activityService.getTopApplications(filters),
-    enabled: !!filters.startDate && !!filters.endDate
-  });
-};
-
-export const useProductivityScore = (employeeId: string, startDate: string, endDate: string) => {
-  return useQuery({
-    queryKey: ['productivity-score', employeeId, startDate, endDate],
-    queryFn: () => activityService.getProductivityScore(employeeId, startDate, endDate),
-    enabled: !!employeeId && !!startDate && !!endDate
+    queryFn: async () => ({
+      totalKeystrokes: 0,
+      totalActiveTime: 0,
+      totalIdleTime: 0,
+      topApps: [] as any[],
+    }),
   });
 };
