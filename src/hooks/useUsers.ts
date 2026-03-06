@@ -14,7 +14,7 @@ export const useUsers = () => {
         role: 'user',
         avatar: p.avatar_url,
         createdAt: p.created_at,
-      })) as User[];
+      }));
     },
   });
 };
