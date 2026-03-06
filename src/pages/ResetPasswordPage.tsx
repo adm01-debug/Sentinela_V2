@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { authService } from '@/services/authService';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const schema = z.object({
   password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres'),
@@ -25,11 +26,14 @@ export default function ResetPasswordPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data: FormData) => {
-    if (!token) return;
     setIsLoading(true);
     try {
-      await authService.resetPassword(token, data.password);
-      navigate('/login', { state: { message: 'Senha alterada com sucesso!' } });
+      const { error } = await supabase.auth.updateUser({ password: data.password });
+      if (error) throw error;
+      toast.success('Senha alterada com sucesso!');
+      navigate('/auth', { replace: true });
+    } catch (error: any) {
+      toast.error(error.message || 'Erro ao alterar senha');
     } finally {
       setIsLoading(false);
     }
