@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { AppSidebar } from '@/components/AppSidebar';
 import { Header } from '@/components/Header';
-import { useUIStore } from '@/stores';
+import { useUIStore } from '@/stores/uiStore';
 import { cn } from '@/utils/cn';
 
 export const MainLayout = () => {
