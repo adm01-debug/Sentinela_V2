@@ -49,7 +49,7 @@ export const useDepartmentStore = create<DepartmentState & DepartmentActions>()(
           const { data, error } = await supabase.from('employees').select('department').not('department', 'is', null);
           if (error) throw error;
           const unique = [...new Set((data || []).map(e => e.department).filter(Boolean))];
-          const depts = unique.map((name, i) => ({ id: String(i), name: name!, description: '', created_at: '', updated_at: '' })) as Department[];
+          const depts = unique.map((name, i) => ({ id: String(i), name: name! })) as unknown as Department[];
           set({ departments: depts, isLoading: false });
         } catch (error) {
           set({ error: (error as Error).message, isLoading: false });
