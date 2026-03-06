@@ -70,7 +70,7 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         fetchStats: async () => {
           try {
             const { count } = await supabase.from('teams').select('*', { count: 'exact', head: true });
-            set({ stats: { total: count || 0, active: count || 0, withMembers: 0, averageSize: 0 } as TeamStats });
+            set({ stats: { total: count || 0, active: count || 0, withMembers: 0, averageSize: 0, totalMembers: 0 } as TeamStats });
           } catch (error) {
             set({ error: (error as Error).message });
           }

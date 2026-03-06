@@ -70,7 +70,7 @@ export const useDepartmentStore = create<DepartmentState & DepartmentActions>()(
       },
 
       createDepartment: async (data) => {
-        const dept = { id: crypto.randomUUID(), ...data, created_at: new Date().toISOString(), updated_at: new Date().toISOString() } as Department;
+        const dept = { id: crypto.randomUUID(), ...data, created_at: new Date().toISOString(), updated_at: new Date().toISOString() } as unknown as Department;
         set({ departments: [...get().departments, dept] });
         return dept;
       },
