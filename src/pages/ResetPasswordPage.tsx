@@ -39,19 +39,6 @@ export default function ResetPasswordPage() {
     }
   };
 
-  if (!token) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <Card className="w-full max-w-md text-center">
-          <CardHeader>
-            <CardTitle className="text-destructive">Link inválido</CardTitle>
-            <CardDescription>O link de redefinição de senha é inválido ou expirou.</CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
