@@ -32,7 +32,7 @@ export const useUser = (id: string) => {
         role: 'user',
         avatar: data.avatar_url,
         createdAt: data.created_at,
-      } as User;
+      };
     },
     enabled: !!id,
   });
