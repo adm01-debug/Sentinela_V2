@@ -4,15 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { useAuthStore } from '@/stores/authStore';
-import { useUpdateProfile } from '@/hooks/useAuth';
+import { useAuth, useUpdateProfile } from '@/hooks/useAuth';
 
 export default function SettingsProfilePage() {
-  const user = useAuthStore(s => s.user);
+  const { user } = useAuth();
   const updateProfile = useUpdateProfile();
   const { register, handleSubmit } = useForm({ defaultValues: { name: user?.name, email: user?.email } });
 
-  const onSubmit = (data: any) => updateProfile.mutate(data);
+  const onSubmit = (data: any) => updateProfile.mutateAsync(data);
 
   return (
     <div className="space-y-6">
