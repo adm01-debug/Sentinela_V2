@@ -26,8 +26,8 @@ export default function UserDetailPage() {
           <div className="flex items-center gap-4"><h1 className="text-2xl font-bold">{user.name}</h1><Badge>{String((user.role as any)?.name || user.role || '')}</Badge></div>
           <div className="flex items-center gap-6 mt-4 text-muted-foreground">
             <span className="flex items-center gap-2"><Mail className="h-4 w-4" />{user.email}</span>
-            {user.phone && <span className="flex items-center gap-2">{user.phone}</span>}
-            {user.department && <span className="flex items-center gap-2"><Building className="h-4 w-4" />{String((user.department as any)?.name || user.department || '')}</span>}
+            {(user as any).phone && <span className="flex items-center gap-2">{(user as any).phone}</span>}
+            {(user as any).department && <span className="flex items-center gap-2"><Building className="h-4 w-4" />{String(((user as any).department as any)?.name || (user as any).department || '')}</span>}
           </div>
         </div>
         <Link to={`/users/${id}/edit`}><Button>Editar</Button></Link>
