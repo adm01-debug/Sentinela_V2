@@ -11,7 +11,8 @@ export default defineConfig({
   },
   server: {
     port: 8080,
-    host: "::",
+    host: true,
+    allowedHosts: true,
   },
   build: {
     outDir: 'dist',
