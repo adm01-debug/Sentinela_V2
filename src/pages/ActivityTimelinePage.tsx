@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Calendar, Clock, Monitor } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -8,6 +8,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@/components/Skeleton';
 import { useActivities } from '@/hooks/useActivities';
 import { useEmployees } from '@/hooks/useEmployees';
+
+const safeTime = (timestamp?: string) => {
+  if (!timestamp) return '--:--';
+  const date = new Date(timestamp);
+  return isValid(date) ? format(date, 'HH:mm') : '--:--';
+};
 
 export default function ActivityTimelinePage() {
   const [date, setDate] = useState<Date>(new Date());
@@ -55,7 +61,7 @@ export default function ActivityTimelinePage() {
                       </div>
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Clock className="h-4 w-4" />
-                        {format(new Date(activity.timestamp), 'HH:mm')} - {activity.duration}min
+                        {safeTime(activity.timestamp)} - {Math.max(0, Math.round((activity.duration || 0) / 60))}min
                       </div>
                     </div>
                   </div>
