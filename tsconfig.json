@@ -51,11 +51,7 @@
         "./src/validators/*"
       ]
     },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [],
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": false,
