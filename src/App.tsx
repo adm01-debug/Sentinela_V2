@@ -1,3 +1,4 @@
+// SecureWatch v2 - Clean build
 import { AppProviders } from './providers/AppProviders';
 import { AppRoutes } from './routes/AppRoutes';
 import './styles/globals.css';
