@@ -66,8 +66,8 @@ export function useWhatsAppIntegrationPage() {
       const { data, error } = await supabase
         .from('whatsapp_notification_settings')
         .select('*')
-        .single();
-      if (error && error.code !== 'PGRST116') throw error;
+        .maybeSingle();
+      if (error) throw error;
       if (!data) return null;
       return {
         id: data.id,

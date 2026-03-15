@@ -91,9 +91,9 @@ async function fetchEmployeePoints(employeeId: string): Promise<EmployeePoints |
     .from('employee_points')
     .select('*')
     .eq('employee_id', employeeId)
-    .single();
+    .maybeSingle();
 
-  if (error && error.code !== 'PGRST116') throw error;
+  if (error) throw error;
   return data;
 }
 

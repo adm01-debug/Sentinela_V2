@@ -61,7 +61,7 @@ export const LiveViewCard = memo(() => {
       .eq('employee_name', selectedEmployee)
       .order('recorded_at', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
     
     if (data) {
       setLatestScreenshot(data as SessionRecording);

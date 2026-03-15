@@ -60,7 +60,7 @@ export function useUpdateWhatsAppSettings() {
       const { data: existing } = await supabase
         .from('whatsapp_settings')
         .select('id')
-        .single();
+        .maybeSingle();
 
       let result;
       if (existing) {
