@@ -16,7 +16,7 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useCreateEmployee } from '@/hooks';
+import { useCreateEmployee, type EmployeeCreateInput } from '@/hooks/useEmployees';
 
 interface Props {
   open: boolean;

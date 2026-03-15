@@ -208,8 +208,8 @@ export function useWebAuthn() {
 
       return { success: true };
     } catch (error: unknown) {
-      console.error('WebAuthn registration error:', error);
-      const err = error as Error & { name?: string; message?: string };
+      const err = error instanceof Error ? error : new Error(String(error));
+      const errWithName = err as Error & { name: string };
       let errorMessage = 'Falha ao registrar passkey.';
       if (err.name === 'NotAllowedError') {
         errorMessage = 'Operação cancelada ou não permitida.';

@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useEmployees, useCreateEmployee, useUpdateEmployee, useDeleteEmployee, type EmployeeWithDetails } from '@/hooks/useEmployees';
+import { useEmployees, useCreateEmployee, useUpdateEmployee, useDeleteEmployee, type EmployeeWithDetails, type EmployeeCreateInput, type EmployeeUpdateInput } from '@/hooks/useEmployees';
 import { useTeams } from '@/hooks/useTeams';
 import { supabase } from '@/integrations/supabase/client';
 

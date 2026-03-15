@@ -14,7 +14,7 @@ import { SettingsAuditLog } from '@/components/SettingsAuditLog';
 import { MFASettings } from '@/components/MFASettings';
 import { AlertSettingsPanel } from '@/components/AlertSettingsPanel';
 import { useSettings as useSettingsHook, type ApplicationRule } from '@/hooks/useSettings';
-import { categoryLabels } from '@/data/settingsData';
+import { type SecurityPolicy, categoryLabels } from '@/data/settingsData';
 import { SettingsSkeleton } from '@/components/PageSkeletons';
 import { ArrowLeft, Shield, AppWindow, Bell, UserCog, Search, Loader2 } from 'lucide-react';
 
