@@ -33,8 +33,8 @@
 | 2.1 | Cards de métricas | ✅ | `DashboardPage.tsx` com `StatCard` |
 | 2.2 | Gráficos de atividade | ✅ | `ActivityChart` + `useActivityChart` |
 | 2.3 | Top performers | ✅ | `TopEmployeesList` + `useTopEmployees` |
-| 2.4 | Filtros de dashboard | 🔧 | Hook existe, DashboardFilter não integrado |
-| 2.5 | Widgets configuráveis | 🔧 | `DashboardCustomizer` existe, não integrado |
+| 2.4 | Filtros de dashboard | ✅ | Filtro por período (dia/semana/mês) + departamento integrados |
+| 2.5 | Widgets configuráveis | ✅ | `DashboardCustomizer` integrado no header do Dashboard |
 
 ---
 
