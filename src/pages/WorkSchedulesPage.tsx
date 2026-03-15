@@ -97,7 +97,7 @@ export default function WorkSchedulesPage() {
           {pendingOvertimeRequests.length === 0 ? (
             <Card><CardContent className="py-12 text-center text-muted-foreground"><p>Nenhuma solicitação de hora extra pendente.</p></CardContent></Card>
           ) : (
-            pendingOvertimeRequests.map((req: any) => (
+            pendingOvertimeRequests.map((req) => (
               <Card key={req.id}>
                 <CardContent className="p-4 flex items-center justify-between">
                   <div>
