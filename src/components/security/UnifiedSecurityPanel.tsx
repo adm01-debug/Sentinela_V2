@@ -646,7 +646,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {alerts.map((alert: any) => (
+                    {alerts.map((alert: SecurityAlert & { severity?: string; title?: string; description?: string; created_at?: string; policy_name?: string; violation_type?: string; employee_name?: string; device?: string; ip_address?: string }) => (
                       <div key={alert.id} className={`flex items-start gap-4 p-3 border rounded-lg ${
                         !alert.read ? 'bg-muted/50 border-primary/30' : ''
                       }`}>
