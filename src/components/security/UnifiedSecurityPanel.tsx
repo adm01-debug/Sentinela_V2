@@ -181,8 +181,8 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
     },
   });
   
-  const trustedDevices = devices.filter((d: any) => d.is_trusted).length;
-  const unresolvedAlerts = alerts.filter((a: any) => !a.read).length;
+  const trustedDevices = devices.filter((d: KnownDevice) => d.is_trusted).length;
+  const unresolvedAlerts = alerts.filter((a: SecurityAlert) => !a.read).length;
   const score = calculateSecurityScore(isEnrolled, trustedDevices, devices.length, unresolvedAlerts);
   const scoreBadge = getScoreBadge(score.total);
   
