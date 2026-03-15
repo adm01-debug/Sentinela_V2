@@ -1,1 +1,0 @@
-export function analyzeBundle() { console.log('Analyzing bundle...'); }

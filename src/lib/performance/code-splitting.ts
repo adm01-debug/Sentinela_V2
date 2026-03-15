@@ -1,1 +1,0 @@
-export function dynamicImport(path: string) { return import(path); }
