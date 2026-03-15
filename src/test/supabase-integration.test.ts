@@ -82,14 +82,14 @@ describe('RLS Policy Scenarios', () => {
 
   it('should deny cross-company access', async () => {
     setupMockQuery(null, { message: 'new row violates row-level security policy' });
-    const { error } = await supabase.from('employees' as any).select('*').eq('company_id' as any, 'other-company');
-    expect(error).toBeTruthy();
+    const result = await (supabase.from as any)('employees').select('*').eq('company_id', 'other-company');
+    expect(result.error).toBeTruthy();
   });
 
   it('should allow own company data', async () => {
     setupMockQuery([{ id: '1', company_id: 'my-company' }]);
-    const { data } = await supabase.from('employees' as any).select('*').eq('company_id' as any, 'my-company');
-    expect(data).toHaveLength(1);
+    const result = await (supabase.from as any)('employees').select('*').eq('company_id', 'my-company');
+    expect(result.data).toHaveLength(1);
   });
 });
 
