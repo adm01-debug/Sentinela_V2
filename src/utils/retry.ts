@@ -70,11 +70,11 @@ export async function retry<T>(
   throw lastError;
 }
 
-export function retryable<T extends (...args: any[]) => Promise<any>>(
-  fn: T,
+export function retryable<TArgs extends unknown[], TResult>(
+  fn: (...args: TArgs) => Promise<TResult>,
   options: RetryOptions = {}
-): (...args: Parameters<T>) => Promise<Awaited<ReturnType<T>>> {
-  return (...args: Parameters<T>) => retry(() => fn(...args), options);
+): (...args: TArgs) => Promise<TResult> {
+  return (...args: TArgs) => retry(() => fn(...args), options);
 }
 
 export async function retryWithFallback<T>(

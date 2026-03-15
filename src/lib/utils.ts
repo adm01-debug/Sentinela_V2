@@ -288,9 +288,8 @@ export async function retry<T>(
 /**
  * Debounce function
  */
-// NOTE: 'any' types in generic utility functions (debounce, throttle, memoize) are intentional
-// This allows these utilities to work with any function signature while preserving type inference
-export function debounce<T extends (...args: any[]) => any>(
+// NOTE: Generic constraints use 'never[]' to allow any function signature while preserving type inference
+export function debounce<T extends (...args: never[]) => unknown>(
   fn: T,
   delay: number
 ): (...args: Parameters<T>) => void {
@@ -305,7 +304,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: never[]) => unknown>(
   fn: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -323,14 +322,14 @@ export function throttle<T extends (...args: any[]) => any>(
 /**
  * Memoize function results
  */
-export function memoize<T extends (...args: any[]) => any>(fn: T): T {
-  const cache = new Map();
+export function memoize<T extends (...args: never[]) => unknown>(fn: T): T {
+  const cache = new Map<string, ReturnType<T>>();
   
   return ((...args: Parameters<T>) => {
     const key = JSON.stringify(args);
     if (cache.has(key)) return cache.get(key);
     const result = fn(...args);
-    cache.set(key, result);
+    cache.set(key, result as ReturnType<T>);
     return result;
   }) as T;
 }
