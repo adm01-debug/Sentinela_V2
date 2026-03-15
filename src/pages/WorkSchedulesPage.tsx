@@ -150,7 +150,7 @@ export default function WorkSchedulesPage() {
             <div><Label>Funcionário</Label>
               <Select value={assignForm.employee_id} onValueChange={v => setAssignForm(prev => ({ ...prev, employee_id: v }))}>
                 <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
-                <SelectContent>{employees.map((e: any) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{employees.map((e) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Escala</Label>
