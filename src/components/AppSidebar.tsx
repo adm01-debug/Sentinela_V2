@@ -3,7 +3,8 @@ import {
   Home, Users, Activity, FileText, Bell, Settings, ChevronLeft, ChevronRight,
   BarChart3, Shield, Monitor, Camera, Globe, Calendar, Gamepad2, Wifi,
   Building2, UserCog, ScrollText, Smartphone, MapPin, Clock, Download,
-  Key, Webhook, MessageSquare, Brain
+  Key, Webhook, MessageSquare, Brain, FolderKanban, Timer, ClipboardList,
+  UserCheck, BarChart
 } from 'lucide-react';
 import { useUIStore } from '@/stores';
 import { cn } from '@/utils/cn';
@@ -24,6 +25,16 @@ const navSections: NavSection[] = [
       { icon: Users, label: 'Funcionários', path: ROUTES.EMPLOYEES },
       { icon: Activity, label: 'Atividades', path: ROUTES.ACTIVITIES },
       { icon: Monitor, label: 'Monitoramento', path: '/monitoring' },
+    ],
+  },
+  {
+    title: 'Ponto & Horas',
+    items: [
+      { icon: Timer, label: 'Ponto Digital', path: '/time-clock' },
+      { icon: FolderKanban, label: 'Projetos & Tarefas', path: '/projects' },
+      { icon: ClipboardList, label: 'Folhas de Ponto', path: '/timesheets' },
+      { icon: UserCheck, label: 'Assiduidade', path: '/attendance' },
+      { icon: BarChart, label: 'Tracking de Horas', path: '/hours-tracking' },
     ],
   },
   {

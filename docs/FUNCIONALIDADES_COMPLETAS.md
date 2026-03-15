@@ -252,7 +252,18 @@
 
 ---
 
-## 21. ARQUITETURA TÉCNICA
+## 21. PONTO DIGITAL & HORAS (NOVO)
+
+- [x] Ponto Digital com clock-in/clock-out (`TimeClockPage`, `time_entries`)
+- [x] Status Board em tempo real (`employee_status` com Realtime)
+- [x] Projetos & Tarefas com tracking de tempo (`ProjectsPage`, `projects`, `tasks`)
+- [x] Folhas de Ponto automáticas (`TimesheetsPage`, `timesheets`)
+- [x] Controle de Assiduidade (`AttendancePage`, `attendance_records`)
+- [x] Tracking de Horas com gráficos (`HoursTrackingPage`)
+
+---
+
+## 22. ARQUITETURA TÉCNICA
 
 - [x] React 18 + TypeScript + Vite
 - [x] TailwindCSS + shadcn/ui
@@ -289,4 +300,5 @@
 | Admin | 5 |
 | Multi-Tenant | 3 |
 | Export/Compliance | 2 |
-| **TOTAL** | **~106 funcionalidades** |
+| Ponto & Horas | 6 |
+| **TOTAL** | **~112 funcionalidades** |

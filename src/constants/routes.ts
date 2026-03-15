@@ -64,6 +64,13 @@ export const ROUTES = {
   DEPARTMENTS: '/departments',
   DEPARTMENT_DETAIL: '/departments/:id',
   
+  // Time & Projects routes
+  TIME_CLOCK: '/time-clock',
+  PROJECTS: '/projects',
+  TIMESHEETS: '/timesheets',
+  ATTENDANCE: '/attendance',
+  HOURS_TRACKING: '/hours-tracking',
+
   // Other routes
   MAINTENANCE: '/maintenance',
   NOT_FOUND: '/404',

@@ -85,6 +85,13 @@ const AIAnalysisPage = lazy(() => import('@/pages/AIAnalysisPage'));
 const GamificationPage = lazy(() => import('@/pages/GamificationPage'));
 const InternetAccessPage = lazy(() => import('@/pages/InternetAccessPage'));
 
+// New Gap Pages
+const TimeClockPage = lazy(() => import('@/pages/TimeClockPage'));
+const ProjectsPage = lazy(() => import('@/pages/ProjectsPage'));
+const TimesheetsPage = lazy(() => import('@/pages/TimesheetsPage'));
+const AttendancePage = lazy(() => import('@/pages/AttendancePage'));
+const HoursTrackingPage = lazy(() => import('@/pages/HoursTrackingPage'));
+
 // ============================================================
 // SUPABASE SESSION HOOK
 // ============================================================
@@ -246,6 +253,13 @@ export const AppRoutes = () => (
         <Route path="/ai-analysis" element={<AIAnalysisPage />} />
         <Route path="/gamification" element={<GamificationPage />} />
         <Route path="/internet-access" element={<InternetAccessPage />} />
+
+        {/* New Gap Features */}
+        <Route path="/time-clock" element={<TimeClockPage />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/timesheets" element={<TimesheetsPage />} />
+        <Route path="/attendance" element={<AttendancePage />} />
+        <Route path="/hours-tracking" element={<HoursTrackingPage />} />
       </Route>
 
       {/* 404 */}
