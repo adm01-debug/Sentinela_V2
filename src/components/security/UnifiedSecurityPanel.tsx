@@ -174,9 +174,9 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
         .in('setting_key', ['mfa_required', 'ip_whitelist_enabled', 'session_timeout_hours']);
       if (error) throw error;
       return {
-        mfa_required: data?.find((s: any) => s.setting_key === 'mfa_required')?.setting_value === true,
-        ip_whitelist_enabled: data?.find((s: any) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
-        session_timeout: data?.find((s: any) => s.setting_key === 'session_timeout_hours')?.setting_value || 24,
+        mfa_required: data?.find((s: MonitoringSetting) => s.setting_key === 'mfa_required')?.setting_value === true,
+        ip_whitelist_enabled: data?.find((s: MonitoringSetting) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
+        session_timeout: (data?.find((s: MonitoringSetting) => s.setting_key === 'session_timeout_hours')?.setting_value as number) || 24,
       };
     },
   });
