@@ -1,1 +1,0 @@
-export async function subscribeToPush(): Promise<PushSubscription | null> { const reg = await navigator.serviceWorker.ready; return reg.pushManager.subscribe({ userVisibleOnly: true }); }

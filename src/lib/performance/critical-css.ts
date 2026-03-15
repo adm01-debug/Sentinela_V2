@@ -1,1 +1,0 @@
-export function extractCriticalCSS(html: string) { return html; }

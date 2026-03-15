@@ -8,20 +8,33 @@ import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { useAlertRules } from '@/hooks/useAlerts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { alertService } from '@/services';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function AlertRulesPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { data: rules, isLoading } = useAlertRules();
   const queryClient = useQueryClient();
+
   const deleteRule = useMutation({
-    mutationFn: (id: string) => (alertService as any).deleteRule ? (alertService as any).deleteRule(id) : Promise.resolve(),
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('application_rules').delete().eq('id', id);
+      if (error) throw error;
+    },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
   });
+
   const toggleRule = useMutation({
-    mutationFn: (id: string) => (alertService as any).toggleRule ? (alertService as any).toggleRule(id) : Promise.resolve(),
+    mutationFn: async (id: string) => {
+      const rule = (rules as any[])?.find((r: any) => r.id === id);
+      if (!rule) return;
+      const newStatus = rule.status === 'allowed' ? 'blocked' : 'allowed';
+      const { error } = await supabase.from('application_rules').update({ status: newStatus }).eq('id', id);
+      if (error) throw error;
+    },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
   });
+
+  if (isLoading) return <div className="p-6">Carregando...</div>;
 
   return (
     <div className="p-6 space-y-6">
@@ -31,24 +44,24 @@ export default function AlertRulesPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {(rules as any)?.map((rule: any) => (
+        {(rules as any[])?.map((rule: any) => (
           <Card key={rule.id}>
             <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="h-4 w-4" />
                 <CardTitle className="text-base">{rule.name}</CardTitle>
               </div>
-              <Switch checked={rule.enabled ?? rule.active} onCheckedChange={() => toggleRule.mutate(rule.id)} />
+              <Switch checked={rule.status === 'allowed'} onCheckedChange={() => toggleRule.mutate(rule.id)} />
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">{rule.description || ''}</p>
               <div className="flex items-center gap-2 mb-4">
-                <Badge variant={rule.severity === 'critical' ? 'destructive' : 'secondary'}>{rule.severity}</Badge>
-                <span className="text-xs text-muted-foreground">Condição: {rule.conditions?.[0]?.field || rule.condition || 'N/A'}</span>
+                <Badge variant={rule.status === 'blocked' ? 'destructive' : 'secondary'}>{rule.status}</Badge>
+                <span className="text-xs text-muted-foreground">Categoria: {rule.category || 'N/A'}</span>
               </div>
               <div className="flex gap-2">
-                <Link to={`/alerts/rules/${rule.id}/edit`}><Button variant="outline" size="sm"><Edit className="h-4 w-4" /></Button></Link>
-                <Button variant="outline" size="sm" onClick={() => setDeleteId(rule.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                <Button variant="outline" size="sm" onClick={() => setDeleteId(rule.id)}>
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
               </div>
             </CardContent>
           </Card>
