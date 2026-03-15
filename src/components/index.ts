@@ -39,4 +39,3 @@ export { EmployeeStatsCards } from './employees/EmployeeStatsCards';
 export { PageHeader } from './layout/PageHeader';
 export { ConfirmDialog } from './ConfirmDialog';
 export { LocationMap } from './LocationMap';
-export { OnboardingWizard } from './onboarding/OnboardingWizard';
