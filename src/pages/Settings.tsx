@@ -22,7 +22,8 @@ const SettingsContent = memo(function SettingsContent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const settingsQuery = useSettingsHook();
-  const settingsData = settingsQuery.data as { policies?: Array<{ id: string; category: string; enabled: boolean }>; appRules?: Array<{ id: string; name: string; category: string; status: string }>; applicationRules?: Array<{ id: string; name: string; category: string; status: string }> } | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const settingsData = settingsQuery.data as any;
   const loading = settingsQuery.isLoading;
   const policies = settingsData?.policies || [];
   const appRules = settingsData?.appRules || settingsData?.applicationRules || [];
