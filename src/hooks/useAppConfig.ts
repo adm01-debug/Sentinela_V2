@@ -51,7 +51,7 @@ export function useAppConfig(): UseAppConfigReturn {
       setIsLoading(true);
       setError(null);
       
-      const { data, error: fetchError } = await (supabase as any)
+      const { data, error: fetchError } = await supabase
         .from('app_config')
         .select('*')
         .single();
