@@ -31,7 +31,7 @@ export function SecurityAuditLog({ entries, maxHeight = 400, className }: { entr
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2"><Shield className="h-5 w-5" />Security Audit Log</CardTitle>
-          <select value={filter} onChange={(e) => setFilter(e.target.value as any)} className="text-sm border rounded px-2 py-1">
+          <select value={filter} onChange={(e) => setFilter(e.target.value as AuditLogEntry['category'] | 'all')} className="text-sm border rounded px-2 py-1">
             <option value="all">All</option>
             <option value="auth">Authentication</option>
             <option value="data">Data Access</option>

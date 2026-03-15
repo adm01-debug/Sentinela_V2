@@ -7,7 +7,19 @@ const toSafeTimestamp = (value: string | null | undefined): string => {
   return Number.isNaN(Date.parse(value)) ? new Date(0).toISOString() : value;
 };
 
-const mapKeystrokeToActivity = (row: any): Activity => {
+interface KeystrokeRow {
+  id: string;
+  employee_name: string;
+  app_name: string | null;
+  active_time_seconds: number;
+  idle_time_seconds: number;
+  keystrokes_count: number;
+  recorded_at: string;
+  created_at: string;
+  device: string | null;
+}
+
+const mapKeystrokeToActivity = (row: KeystrokeRow): Activity => {
   const activeSeconds = Number(row?.active_time_seconds ?? 0);
   const idleSeconds = Number(row?.idle_time_seconds ?? 0);
 
@@ -28,7 +40,13 @@ const mapKeystrokeToActivity = (row: any): Activity => {
   };
 };
 
-export const useActivities = (filters?: any) => {
+export interface ActivityFilters {
+  employee_name?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export const useActivities = (filters?: ActivityFilters) => {
   return useQuery({
     queryKey: ['activities', filters],
     queryFn: async () => {
@@ -45,7 +63,7 @@ export const useActivities = (filters?: any) => {
       const { data, error } = await query;
       if (error) throw error;
 
-      const mapped = (data || []).map(mapKeystrokeToActivity);
+      const mapped = (data || []).map((row) => mapKeystrokeToActivity(row as unknown as KeystrokeRow));
       return { data: mapped, total: mapped.length };
     },
   });
@@ -55,9 +73,9 @@ export const useActivity = (id: string) => {
   return useQuery({
     queryKey: ['activity', id],
     queryFn: async () => {
-      const { data, error } = await supabase.from('keystroke_logs').select('*').eq('id', id).single();
+      const { data, error } = await supabase.from('keystroke_logs').select('*').eq('id', id).maybeSingle();
       if (error) throw error;
-      return data ? mapKeystrokeToActivity(data) : null;
+      return data ? mapKeystrokeToActivity(data as unknown as KeystrokeRow) : null;
     },
     enabled: !!id,
   });

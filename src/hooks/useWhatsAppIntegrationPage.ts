@@ -100,9 +100,9 @@ export function useWhatsAppIntegrationPage() {
         id: m.id,
         to: m.phone_number,
         from: '',
-        type: m.message_type as any,
+        type: m.message_type as WhatsAppMessage['type'],
         content: m.message_body || '',
-        status: m.status as any,
+        status: m.status as WhatsAppMessage['status'],
         created_at: m.created_at,
         error_message: m.error_message || undefined,
       })) as WhatsAppMessage[];

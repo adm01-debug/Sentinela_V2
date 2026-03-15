@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
-export function useDebounceCallback<T extends (...args: any[]) => any>(fn: T, delay: number) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useDebounceCallback<T extends (...args: never[]) => unknown>(fn: T, delay: number) {
   const timeoutRef = useRef<NodeJS.Timeout>();
   return useCallback((...args: Parameters<T>) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);

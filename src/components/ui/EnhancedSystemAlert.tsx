@@ -31,7 +31,7 @@ export function EnhancedSystemAlert({ type = 'info', title, message, dismissible
   if (!visible) return null;
 
   return (
-    <Alert variant={variants[type] as any} className={cn('relative', className)}>
+    <Alert variant={variants[type]} className={cn('relative', className)}>
       <Icon className="h-4 w-4" />
       {title && <AlertTitle>{title}</AlertTitle>}
       <AlertDescription>{message}</AlertDescription>

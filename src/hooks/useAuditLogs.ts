@@ -17,18 +17,26 @@ export function useAuditLogs(entityType?: string, entityId?: string) {
   return useQuery({
     queryKey: queryKeys.auditLogs.list({ entityType, entityId }),
     queryFn: async () => {
-      let query = (supabase as any)
-        .from('audit_logs')
-        .select('*, user:users(email)')
+      let query = supabase
+        .from('login_security_events')
+        .select('*')
         .order('created_at', { ascending: false })
         .limit(100);
 
-      if (entityType) query = query.eq('entity_type', entityType);
-      if (entityId) query = query.eq('entity_id', entityId);
+      if (entityType) query = query.eq('event_type', entityType);
+      if (entityId) query = query.eq('user_id', entityId);
 
       const { data, error } = await query;
       if (error) throw error;
-      return data as AuditLog[];
+      return (data || []).map((row): AuditLog => ({
+        id: row.id,
+        user_id: row.user_id,
+        action: row.event_type,
+        entity_type: row.event_type,
+        entity_id: row.user_id,
+        changes: (row.metadata as Record<string, unknown>) || undefined,
+        created_at: row.created_at,
+      }));
     },
     ...queryPresets.list,
   });
