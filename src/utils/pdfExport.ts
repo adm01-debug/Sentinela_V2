@@ -465,7 +465,7 @@ export const generatePDF = (reportData: ReportData) => {
     }
   });
   
-  yPos = (doc as any).lastAutoTable.finalY + 15;
+  yPos = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 15;
   
   // Tabela de Colaboradores com Mais Alertas
   doc.setFontSize(12);
