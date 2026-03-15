@@ -9,7 +9,7 @@ export interface AIInsight {
   confidence: number;
   severity?: 'low' | 'medium' | 'high';
   actionable?: boolean;
-  data?: Record<string, any>;
+  data?: Record<string, string | number | boolean>;
   createdAt: Date;
 }
 
