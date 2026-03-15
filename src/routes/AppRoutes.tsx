@@ -245,6 +245,7 @@ export const AppRoutes = () => (
         <Route path="/compliance" element={<CompliancePage />} />
         <Route path="/ai-analysis" element={<AIAnalysisPage />} />
         <Route path="/gamification" element={<GamificationPage />} />
+        <Route path="/internet-access" element={<InternetAccessPage />} />
       </Route>
 
       {/* 404 */}
