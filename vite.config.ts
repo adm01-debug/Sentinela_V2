@@ -29,7 +29,7 @@ export default defineConfig({
           vendor: ['react', 'react-dom', 'react-router-dom'],
           charts: ['recharts'],
           ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
-        },
+        } as Record<string, string[]>,
       },
     },
   },
