@@ -71,9 +71,9 @@ export function useAppConfig(): UseAppConfigReturn {
   }, [fetchConfig]);
 
   const updateConfig = useCallback(async (updates: Partial<AppConfig>) => {
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from('app_config')
-      .upsert({ ...config, ...updates });
+      .upsert({ ...config, ...updates } as Record<string, unknown>);
     
     if (error) throw error;
     await fetchConfig();
