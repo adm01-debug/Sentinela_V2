@@ -37,9 +37,9 @@ export function useWhatsAppSettings() {
       const { data, error } = await supabase
         .from('whatsapp_settings')
         .select('*')
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       return data as WhatsAppSettings | null;
     },
     ...queryPresets.config,
