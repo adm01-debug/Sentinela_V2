@@ -5,11 +5,13 @@ function deepEqual(a: unknown, b: unknown): boolean {
   if (typeof a !== typeof b) return false;
   if (typeof a !== "object" || a === null || b === null) return false;
   
-  const keysA = Object.keys(a as object);
-  const keysB = Object.keys(b as object);
+  const objA = a as Record<string, unknown>;
+  const objB = b as Record<string, unknown>;
+  const keysA = Object.keys(objA);
+  const keysB = Object.keys(objB);
   if (keysA.length !== keysB.length) return false;
   
-  return keysA.every(key => deepEqual((a as any)[key], (b as any)[key]));
+  return keysA.every(key => deepEqual(objA[key], objB[key]));
 }
 
 export function useDeepCompareEffect(effect: () => void | (() => void), deps: unknown[]) {

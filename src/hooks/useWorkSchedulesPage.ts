@@ -64,7 +64,8 @@ const initialAssignForm: AssignFormData = {
 // ============================================================
 
 export function useWorkSchedulesPage() {
-  const schedulesResult = useWorkSchedules() as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const schedulesResult = useWorkSchedules() as Record<string, any>;
   const schedules = schedulesResult.schedules || schedulesResult.data || [];
   const employeeSchedules = schedulesResult.employeeSchedules || [];
   const overtimeRequests = schedulesResult.overtimeRequests || [];
@@ -77,8 +78,9 @@ export function useWorkSchedulesPage() {
   const removeEmployeeSchedule = schedulesResult.removeEmployeeSchedule || (async () => {});
   const updateOvertimeRequest = schedulesResult.updateOvertimeRequest || (async () => {});
   
-  const employeesResult = useEmployees() as any;
-  const employees = employeesResult.employees || (employeesResult.data as any)?.data || employeesResult.data || [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const employeesResult = useEmployees() as Record<string, any>;
+  const employees = employeesResult.employees || employeesResult.data?.data || employeesResult.data || [];
   
   // Enable realtime notifications
   useOvertimeNotifications();

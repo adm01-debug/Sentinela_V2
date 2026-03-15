@@ -42,6 +42,7 @@ export function useGamificationPage() {
 
   const awardPointsMutation = useMutation({
     mutationFn: async ({ employeeId, points }: { employeeId: string; points: number }) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await (supabase as any).rpc('award_gamification_points', { p_employee_id: employeeId, p_points: points });
       if (error) throw error;
     },

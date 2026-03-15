@@ -10,10 +10,19 @@ import { useAlertRules } from '@/hooks/useAlerts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
+interface AlertRule {
+  id: string;
+  name: string;
+  status: string;
+  category?: string;
+}
+
 export default function AlertRulesPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const { data: rules, isLoading } = useAlertRules();
+  const { data: rulesData, isLoading } = useAlertRules();
   const queryClient = useQueryClient();
+  
+  const rules = (rulesData || []) as AlertRule[];
 
   const deleteRule = useMutation({
     mutationFn: async (id: string) => {
@@ -25,7 +34,7 @@ export default function AlertRulesPage() {
 
   const toggleRule = useMutation({
     mutationFn: async (id: string) => {
-      const rule = (rules as any[])?.find((r: any) => r.id === id);
+      const rule = rules.find(r => r.id === id);
       if (!rule) return;
       const newStatus = rule.status === 'allowed' ? 'blocked' : 'allowed';
       const { error } = await supabase.from('application_rules').update({ status: newStatus }).eq('id', id);
@@ -44,7 +53,7 @@ export default function AlertRulesPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {(rules as any[])?.map((rule: any) => (
+        {rules.map((rule) => (
           <Card key={rule.id}>
             <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
               <div className="flex items-center gap-2">

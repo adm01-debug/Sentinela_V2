@@ -76,23 +76,39 @@ export function useMonitoringPoliciesPage() {
       if (error) throw error;
       
       // Map monitoring_settings to policy format
-      return (data || []).map(setting => ({
-        id: setting.id,
-        name: setting.setting_key,
-        description: setting.description,
-        screenshot_interval: (setting.setting_value as any)?.screenshot_interval || 300,
-        activity_tracking: (setting.setting_value as any)?.activity_tracking ?? true,
-        app_tracking: (setting.setting_value as any)?.app_tracking ?? true,
-        url_tracking: (setting.setting_value as any)?.url_tracking ?? true,
-        keystroke_tracking: (setting.setting_value as any)?.keystroke_tracking ?? false,
-        location_tracking: (setting.setting_value as any)?.location_tracking ?? false,
-        idle_detection: (setting.setting_value as any)?.idle_detection ?? true,
-        idle_threshold: (setting.setting_value as any)?.idle_threshold || 300,
-        work_hours_only: (setting.setting_value as any)?.work_hours_only ?? true,
-        applies_to: (setting.setting_value as any)?.applies_to || 'all',
-        is_active: (setting.setting_value as any)?.is_active ?? true,
-        created_at: setting.created_at,
-      })) as MonitoringPolicy[];
+      interface SettingValue {
+        screenshot_interval?: number;
+        activity_tracking?: boolean;
+        app_tracking?: boolean;
+        url_tracking?: boolean;
+        keystroke_tracking?: boolean;
+        location_tracking?: boolean;
+        idle_detection?: boolean;
+        idle_threshold?: number;
+        work_hours_only?: boolean;
+        applies_to?: string;
+        is_active?: boolean;
+      }
+      return (data || []).map(setting => {
+        const val = (setting.setting_value || {}) as SettingValue;
+        return {
+          id: setting.id,
+          name: setting.setting_key,
+          description: setting.description,
+          screenshot_interval: val.screenshot_interval || 300,
+          activity_tracking: val.activity_tracking ?? true,
+          app_tracking: val.app_tracking ?? true,
+          url_tracking: val.url_tracking ?? true,
+          keystroke_tracking: val.keystroke_tracking ?? false,
+          location_tracking: val.location_tracking ?? false,
+          idle_detection: val.idle_detection ?? true,
+          idle_threshold: val.idle_threshold || 300,
+          work_hours_only: val.work_hours_only ?? true,
+          applies_to: (val.applies_to || 'all') as MonitoringPolicy['applies_to'],
+          is_active: val.is_active ?? true,
+          created_at: setting.created_at,
+        };
+      }) as MonitoringPolicy[];
     },
   });
 

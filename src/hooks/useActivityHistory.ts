@@ -99,7 +99,7 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
         return mockActivities;
       }
 
-      let query = (supabase as any)
+      let query = supabase
         .from('activity_logs')
         .select(`
           *,

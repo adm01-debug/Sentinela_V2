@@ -22,6 +22,7 @@ const SettingsContent = memo(function SettingsContent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const settingsQuery = useSettingsHook();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const settingsData = settingsQuery.data as any;
   const loading = settingsQuery.isLoading;
   const policies = settingsData?.policies || [];
