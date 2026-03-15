@@ -63,14 +63,14 @@ export const useActivity = (id: string) => {
   });
 };
 
-export const useActivitySummary = (filters?: any) => {
+export const useActivitySummary = (filters?: Record<string, string | undefined>) => {
   return useQuery({
     queryKey: ['activity-summary', filters],
     queryFn: async () => ({
       totalKeystrokes: 0,
       totalActiveTime: 0,
       totalIdleTime: 0,
-      topApps: [] as any[],
+      topApps: [] as { name: string; duration: number }[],
     }),
   });
 };

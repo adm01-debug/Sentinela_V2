@@ -70,9 +70,9 @@ export function useDashboardLayout() {
         .maybeSingle();
 
       if (existing) {
-        const { data, error } = await (supabase as any)
+        const { data, error } = await supabase
           .from('dashboard_layouts')
-          .update({ widgets: newWidgets })
+          .update({ widgets: newWidgets } as Record<string, unknown>)
           .eq('id', existing.id)
           .select()
           .single();

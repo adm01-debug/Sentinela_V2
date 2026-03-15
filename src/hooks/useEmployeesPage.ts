@@ -76,7 +76,7 @@ export function useEmployeesPage() {
   const unassignDevice = async (_empId: string, _deviceId: string) => { /* stub */ };
   
   const teamsQuery = useTeams();
-  const teams = (teamsQuery as any).teams || (teamsQuery.data as any)?.data || teamsQuery.data || [];
+  const teams = Array.isArray(teamsQuery.data) ? teamsQuery.data : (teamsQuery as { teams?: unknown[] }).teams || (teamsQuery.data as { data?: unknown[] })?.data || [];
 
   // Filters
   const [filters, setFilters] = useState<EmployeeFilters>({

@@ -52,8 +52,10 @@ export function usePerformanceMonitor(options: UsePerformanceMonitorOptions = {}
       lastTime.current = now;
 
       // Get memory if available
-      const memory = (performance as any).memory?.usedJSHeapSize 
-        ? Math.round((performance as any).memory.usedJSHeapSize / 1048576) 
+      interface PerformanceWithMemory extends Performance { memory?: { usedJSHeapSize: number } }
+      const perf = performance as PerformanceWithMemory;
+      const memory = perf.memory?.usedJSHeapSize 
+        ? Math.round(perf.memory.usedJSHeapSize / 1048576) 
         : undefined;
 
       // Get DOM metrics
