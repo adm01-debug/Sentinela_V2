@@ -102,8 +102,8 @@ describe('Partitioned Table Queries', () => {
   partitionedTables.forEach(table => {
     it(`should query ${table}`, async () => {
       setupMockQuery([{ id: '1', recorded_at: '2026-03-15' }]);
-      const { data } = await supabase.from(table as any).select('*').order('recorded_at' as any).limit(100);
-      expect(data).toHaveLength(1);
+      const result = await (supabase.from as any)(table).select('*').order('recorded_at').limit(100);
+      expect(result.data).toHaveLength(1);
     });
   });
 
