@@ -12,9 +12,15 @@ export default defineConfig({
     preserveSymlinks: false,
   },
   optimizeDeps: {
-    force: true,
-    exclude: ['react', 'react-dom', '@tanstack/react-query'],
-    include: ['react/jsx-runtime', 'react/jsx-dev-runtime'],
+    include: [
+      'react',
+      'react-dom',
+      'react-dom/client',
+      'react/jsx-runtime',
+      'react/jsx-dev-runtime',
+      '@tanstack/react-query',
+      'react-router-dom',
+    ],
   },
   test: {
     globals: true,
