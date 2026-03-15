@@ -12,7 +12,7 @@ export default defineConfig({
   },
   optimizeDeps: {
     force: true,
-    exclude: [
+    include: [
       'react',
       'react-dom',
       'react-dom/client',
