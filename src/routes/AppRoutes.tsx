@@ -85,6 +85,13 @@ const AIAnalysisPage = lazy(() => import('@/pages/AIAnalysisPage'));
 const GamificationPage = lazy(() => import('@/pages/GamificationPage'));
 const InternetAccessPage = lazy(() => import('@/pages/InternetAccessPage'));
 
+// New Gap Pages
+const TimeClockPage = lazy(() => import('@/pages/TimeClockPage'));
+const ProjectsPage = lazy(() => import('@/pages/ProjectsPage'));
+const TimesheetsPage = lazy(() => import('@/pages/TimesheetsPage'));
+const AttendancePage = lazy(() => import('@/pages/AttendancePage'));
+const HoursTrackingPage = lazy(() => import('@/pages/HoursTrackingPage'));
+
 // ============================================================
 // SUPABASE SESSION HOOK
 // ============================================================
