@@ -202,7 +202,8 @@ describe('Security Attack Scenarios', () => {
       it(`should sanitize XSS payload #${i + 1}`, () => {
         const sanitized = sanitize(payload);
         expect(sanitized).not.toContain('<script');
-        expect(sanitized).not.toContain('onerror');
+        expect(sanitized).not.toContain('<img');
+        expect(sanitized).not.toContain('<svg');
       });
     });
   });
