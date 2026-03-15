@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth, User } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { Loader2, ShieldAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
