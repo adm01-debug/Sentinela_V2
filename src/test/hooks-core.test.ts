@@ -241,7 +241,7 @@ describe('useLocalStorage', () => {
     expect(localStorage.getItem('test-key')).toBe('"new-value"');
   });
   it('handles objects', () => {
-    const { result } = renderHook(() => useLocalStorage('obj', { a: 1 }));
+    const { result } = renderHook(() => useLocalStorage<Record<string, number>>('obj', { a: 1 }));
     act(() => result.current[1]({ a: 2, b: 3 }));
     expect(result.current[0]).toEqual({ a: 2, b: 3 });
   });
