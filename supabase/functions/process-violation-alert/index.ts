@@ -8,48 +8,17 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Validation Schemas
 const ViolationAlertSchema = z.object({
-  violation_id: z.string().uuid(),
-  employee_id: z.string().uuid(),
-  violation_type: z.enum([
-    'unauthorized_access',
-    'data_leak',
-    'policy_breach',
-    'suspicious_activity',
-    'geofence_breach',
-    'time_violation',
-    'app_violation',
-    'url_violation',
-    'keyword_detected',
-    'excessive_idle',
-    'unauthorized_software',
-    'usb_violation',
-    'print_violation',
-    'other',
-  ]),
+  employee_name: z.string().min(1),
+  violation_type: z.string().min(1),
   severity: z.enum(['low', 'medium', 'high', 'critical']),
+  policy_name: z.string().min(1),
   description: z.string().max(2000).optional(),
-  evidence: z.object({
-    screenshot_id: z.string().uuid().optional(),
-    url: z.string().url().optional(),
-    app_name: z.string().optional(),
-    keyword: z.string().optional(),
-    location: z.object({
-      latitude: z.number(),
-      longitude: z.number(),
-    }).optional(),
-    metadata: z.record(z.unknown()).optional(),
-  }).optional(),
+  device: z.string().optional(),
+  ip_address: z.string().optional(),
+  location: z.string().optional(),
+  screenshot_url: z.string().url().optional(),
   notify_managers: z.boolean().default(true),
-  auto_resolve: z.boolean().default(false),
-});
-
-const NotificationPrefsSchema = z.object({
-  email: z.boolean().default(true),
-  push: z.boolean().default(true),
-  sms: z.boolean().default(false),
-  webhook: z.boolean().default(false),
 });
 
 serve(async (req) => {
@@ -60,7 +29,6 @@ serve(async (req) => {
   try {
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
     const rateLimitResult = await checkRateLimit(clientIP, 'process-violation', 50, 60);
-    
     if (!rateLimitResult.allowed) {
       return new Response(
         JSON.stringify({ error: 'Rate limit exceeded' }),
@@ -70,7 +38,6 @@ serve(async (req) => {
 
     const body = await req.json();
     const validation = ViolationAlertSchema.safeParse(body);
-    
     if (!validation.success) {
       return new Response(
         JSON.stringify({ error: 'Validation failed', details: validation.error.flatten() }),
@@ -78,137 +45,126 @@ serve(async (req) => {
       );
     }
 
-    const { 
-      violation_id, 
-      employee_id, 
-      violation_type, 
-      severity, 
-      description, 
-      evidence,
+    const {
+      employee_name, violation_type, severity, policy_name,
+      description, device, ip_address, location, screenshot_url,
       notify_managers,
-      auto_resolve 
     } = validation.data;
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
-    // Get employee and their managers
-    const { data: employee } = await supabase
-      .from('employees')
-      .select('*, teams(*, manager_id)')
-      .eq('id', employee_id)
-      .single();
-
-    if (!employee) {
-      return new Response(
-        JSON.stringify({ error: 'Employee not found' }),
-        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Create or update violation record
+    // Insert into security_violations (real table)
     const { data: violation, error: violationError } = await supabase
       .from('security_violations')
-      .upsert({
-        id: violation_id,
-        employee_id,
+      .insert({
+        employee_name,
         violation_type,
         severity,
-        description,
-        evidence,
-        status: auto_resolve ? 'resolved' : 'open',
-        created_at: new Date().toISOString(),
-      }, { onConflict: 'id' })
+        policy_name,
+        description: description || null,
+        device: device || null,
+        ip_address: ip_address || null,
+        location: location || null,
+        screenshot_url: screenshot_url || null,
+        read: false,
+        notified_admin: false,
+        notified_employee: false,
+      })
       .select()
       .single();
 
-    if (violationError) {
-      throw violationError;
-    }
+    if (violationError) throw violationError;
 
-    const notifications = [];
+    let notificationsSent = 0;
 
-    // Notify managers if requested
-    if (notify_managers && employee.teams?.manager_id) {
-      // Get manager notification preferences
-      const { data: managerPrefs } = await supabase
-        .from('notification_preferences')
+    // Notify via configured alert channels
+    if (notify_managers) {
+      // Check alert_notification_settings (real table)
+      const { data: alertSettings } = await supabase
+        .from('alert_notification_settings')
         .select('*')
-        .eq('user_id', employee.teams.manager_id)
-        .single();
+        .eq('enabled', true)
+        .limit(1)
+        .maybeSingle();
 
-      const prefs = NotificationPrefsSchema.parse(managerPrefs || {});
+      if (alertSettings) {
+        const shouldNotify =
+          (severity === 'critical' && alertSettings.notify_critical) ||
+          (severity === 'high' && alertSettings.notify_high) ||
+          (severity === 'medium' && alertSettings.notify_medium) ||
+          (severity === 'low' && alertSettings.notify_low);
 
-      // Create in-app notification
-      const { data: notification } = await supabase
-        .from('notifications')
-        .insert({
-          user_id: employee.teams.manager_id,
-          type: 'violation_alert',
-          title: `Violação ${severity.toUpperCase()}: ${violation_type}`,
-          message: description || `Nova violação detectada para ${employee.name}`,
-          data: { violation_id, employee_id, severity },
-          read: false,
-        })
-        .select()
-        .single();
-
-      notifications.push(notification);
-
-      // Send push notification if enabled
-      if (prefs.push) {
-        await supabase.functions.invoke('send-push-notification', {
-          body: {
-            user_id: employee.teams.manager_id,
-            title: `🚨 Violação ${severity.toUpperCase()}`,
-            body: `${employee.name}: ${violation_type}`,
-            data: { violation_id },
-          },
-        });
-      }
-
-      // Trigger webhook if enabled
-      if (prefs.webhook) {
-        const { data: webhooks } = await supabase
-          .from('webhooks')
-          .select('*')
-          .eq('is_active', true)
-          .contains('events', ['violation.created']);
-
-        for (const webhook of webhooks || []) {
-          await supabase.functions.invoke('send-webhook', {
-            body: {
-              webhook_id: webhook.id,
-              event_type: 'violation.created',
-              payload: {
-                violation,
-                employee: { id: employee.id, name: employee.name },
-                timestamp: new Date().toISOString(),
+        if (shouldNotify && alertSettings.recipient_emails?.length) {
+          // Send email notification
+          try {
+            await supabase.functions.invoke('send-email-notification', {
+              body: {
+                to: alertSettings.recipient_emails,
+                subject: `🚨 Violação ${severity.toUpperCase()}: ${violation_type}`,
+                html: `<p><strong>Funcionário:</strong> ${employee_name}</p>
+                       <p><strong>Tipo:</strong> ${violation_type}</p>
+                       <p><strong>Severidade:</strong> ${severity}</p>
+                       <p><strong>Política:</strong> ${policy_name}</p>
+                       <p>${description || ''}</p>`,
               },
-            },
-          });
+            });
+            notificationsSent++;
+          } catch (e) {
+            console.error('Email notification error:', e);
+          }
         }
       }
+
+      // Mark as notified
+      await supabase.from('security_violations')
+        .update({ notified_admin: true })
+        .eq('id', violation.id);
     }
 
-    // Log audit entry
-    await supabase.from('audit_logs').insert({
+    // Log to settings_audit_log (real table)
+    await supabase.from('settings_audit_log').insert({
       action: 'violation_processed',
       entity_type: 'security_violation',
-      entity_id: violation_id,
-      details: { severity, violation_type, notify_managers },
+      entity_id: violation.id,
+      entity_name: `${violation_type} - ${employee_name}`,
+      user_id: '00000000-0000-0000-0000-000000000000',
+      user_email: 'system@sentinela.app',
+      new_value: { severity, violation_type, notify_managers },
     });
 
+    // Trigger webhooks for violation events
+    const { data: webhooks } = await supabase
+      .from('webhooks')
+      .select('id')
+      .eq('is_active', true)
+      .contains('events', ['violation.created']);
+
+    for (const wh of webhooks || []) {
+      try {
+        await supabase.functions.invoke('send-webhook', {
+          body: {
+            webhook_id: wh.id,
+            event_type: 'violation.created',
+            payload: {
+              violation,
+              timestamp: new Date().toISOString(),
+            },
+          },
+        });
+        notificationsSent++;
+      } catch (e) {
+        console.error('Webhook error:', e);
+      }
+    }
+
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        violation_id,
-        notifications_sent: notifications.length,
+      JSON.stringify({
+        success: true,
+        violation_id: violation.id,
+        notifications_sent: notificationsSent,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-
   } catch (error) {
     console.error('Process violation error:', error);
     const message = error instanceof Error ? error.message : 'Unknown error';

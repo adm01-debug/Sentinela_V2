@@ -17,39 +17,71 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { employeeId, startDate, endDate } = await req.json();
+    const { employeeName, startDate, endDate } = await req.json();
 
-    const { data: activities, error } = await supabase
-      .from('activity_logs')
+    if (!employeeName) {
+      return new Response(
+        JSON.stringify({ error: 'employeeName is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Get productivity logs
+    const { data: prodLogs, error: e1 } = await supabase
+      .from('productivity_logs')
       .select('*')
-      .eq('employee_id', employeeId)
-      .gte('timestamp', startDate)
-      .lte('timestamp', endDate);
+      .eq('employee_name', employeeName)
+      .gte('recorded_date', startDate)
+      .lte('recorded_date', endDate);
 
-    if (error) throw error;
+    if (e1) throw e1;
 
-    const totalTime = activities?.reduce((sum, a) => sum + (a.duration || 0), 0) || 0;
-    const activeTime = activities?.filter(a => a.type === 'active').reduce((sum, a) => sum + (a.duration || 0), 0) || 0;
-    const productivityScore = totalTime > 0 ? Math.round((activeTime / totalTime) * 100) : 0;
+    // Get keystroke logs
+    const { data: keyLogs, error: e2 } = await supabase
+      .from('keystroke_logs')
+      .select('*')
+      .eq('employee_name', employeeName)
+      .gte('recorded_at', startDate)
+      .lte('recorded_at', endDate);
 
-    const topApps = activities?.reduce((acc, a) => {
-      if (a.application_name) {
-        acc[a.application_name] = (acc[a.application_name] || 0) + (a.duration || 0);
+    if (e2) throw e2;
+
+    const totalProductive = prodLogs?.reduce((s, r) => s + (r.productive_time_seconds || 0), 0) || 0;
+    const totalUnproductive = prodLogs?.reduce((s, r) => s + (r.unproductive_time_seconds || 0), 0) || 0;
+    const totalNeutral = prodLogs?.reduce((s, r) => s + (r.neutral_time_seconds || 0), 0) || 0;
+    const totalTime = totalProductive + totalUnproductive + totalNeutral;
+    const productivityScore = totalTime > 0 ? Math.round((totalProductive / totalTime) * 100) : 0;
+
+    const totalKeystrokes = keyLogs?.reduce((s, r) => s + (r.keystrokes_count || 0), 0) || 0;
+    const totalActiveTime = keyLogs?.reduce((s, r) => s + (r.active_time_seconds || 0), 0) || 0;
+    const totalIdleTime = keyLogs?.reduce((s, r) => s + (r.idle_time_seconds || 0), 0) || 0;
+
+    // Extract top apps from productivity_logs.apps_used
+    const appUsage: Record<string, number> = {};
+    for (const log of prodLogs || []) {
+      if (log.apps_used && typeof log.apps_used === 'object') {
+        for (const [app, seconds] of Object.entries(log.apps_used as Record<string, number>)) {
+          appUsage[app] = (appUsage[app] || 0) + (seconds || 0);
+        }
       }
-      return acc;
-    }, {} as Record<string, number>) || {};
+    }
+
+    const topApplications = Object.entries(appUsage)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([name, duration]) => ({ name, duration }));
 
     return new Response(
       JSON.stringify({
-        employeeId,
+        employeeName,
         productivityScore,
-        totalTime,
-        activeTime,
-        idleTime: totalTime - activeTime,
-        topApplications: (Object.entries(topApps) as Array<[string, number]>)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 5)
-          .map(([name, duration]) => ({ name, duration })),
+        totalProductive,
+        totalUnproductive,
+        totalNeutral,
+        totalKeystrokes,
+        totalActiveTime,
+        totalIdleTime,
+        topApplications,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
