@@ -22,11 +22,10 @@ const SettingsContent = memo(function SettingsContent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const settingsQuery = useSettingsHook();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const settingsData = settingsQuery.data as any;
+  const settingsData = settingsQuery.data as Record<string, unknown> | null;
   const loading = settingsQuery.isLoading;
-  const policies = settingsData?.policies || [];
-  const appRules = settingsData?.appRules || settingsData?.applicationRules || [];
+  const policies = (settingsData?.policies || []) as Array<{ id: string; category: string; enabled: boolean; name: string; description: string }>;
+  const appRules = ((settingsData?.appRules || settingsData?.applicationRules || []) as ApplicationRule[]);
   const updatePolicy = (id: string, enabled: boolean) => {};
   const updateAppRule = (id: string, status: string) => {};
   const addAppRule = async (_name: string, _cat: string, _status: 'allowed' | 'blocked' | 'monitored') => true;

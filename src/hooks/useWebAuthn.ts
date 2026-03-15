@@ -308,7 +308,7 @@ export function useWebAuthn() {
         variant: 'destructive',
       });
 
-      return { success: false, error: error.message };
+      return { success: false, error: err.message };
     } finally {
       setIsAuthenticating(false);
     }

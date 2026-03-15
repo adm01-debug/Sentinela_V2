@@ -1,9 +1,28 @@
 import * as React from 'react';
 import { useState, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { Mic, MicOff, Loader2 } from 'lucide-react';
+import { Mic, MicOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionInstance extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+
+interface WindowWithSpeech extends Window {
+  SpeechRecognition?: new () => SpeechRecognitionInstance;
+  webkitSpeechRecognition?: new () => SpeechRecognitionInstance;
+}
 
 export interface VoiceInputProps {
   value?: string;
@@ -16,18 +35,20 @@ export interface VoiceInputProps {
 
 export function VoiceInput({ value = '', onChange, placeholder = 'Type or speak...', className, disabled = false, language = 'en-US' }: VoiceInputProps) {
   const [isListening, setIsListening] = useState(false);
-  const [isSupported] = useState(() => 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
-  const recognitionRef = useRef<any>(null);
+  const w = window as unknown as WindowWithSpeech;
+  const [isSupported] = useState(() => !!w.SpeechRecognition || !!w.webkitSpeechRecognition);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
 
   const startListening = useCallback(() => {
     if (!isSupported) return;
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
+    const SpeechRecognitionCtor = (window as unknown as WindowWithSpeech).SpeechRecognition || (window as unknown as WindowWithSpeech).webkitSpeechRecognition;
+    if (!SpeechRecognitionCtor) return;
+    const recognition = new SpeechRecognitionCtor();
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = language;
-    recognition.onresult = (event: any) => {
-      const transcript = Array.from(event.results).map((r: any) => r[0].transcript).join('');
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = Array.from(event.results).map((r) => r[0].transcript).join('');
       onChange?.(value + transcript);
     };
     recognition.onend = () => setIsListening(false);

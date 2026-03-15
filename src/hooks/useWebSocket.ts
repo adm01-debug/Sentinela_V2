@@ -3,9 +3,14 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 interface WebSocketConfig { url: string; reconnect?: boolean; reconnectInterval?: number; maxReconnectAttempts?: number; }
 type WSStatus = 'connecting' | 'connected' | 'disconnected' | 'error';
 
+interface WSMessage {
+  data: unknown;
+  timestamp: Date;
+}
+
 export function useWebSocket(config: WebSocketConfig) {
   const [status, setStatus] = useState<WSStatus>('disconnected');
-  const [lastMessage, setLastMessage] = useState<any>(null);
+  const [lastMessage, setLastMessage] = useState<WSMessage | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectAttempts = useRef(0);
@@ -29,7 +34,7 @@ export function useWebSocket(config: WebSocketConfig) {
   }, [config]);
 
   const disconnect = useCallback(() => { wsRef.current?.close(); wsRef.current = null; setStatus('disconnected'); }, []);
-  const send = useCallback((data: any) => { if (wsRef.current?.readyState === WebSocket.OPEN) wsRef.current.send(typeof data === 'string' ? data : JSON.stringify(data)); }, []);
+  const send = useCallback((data: string | Record<string, unknown>) => { if (wsRef.current?.readyState === WebSocket.OPEN) wsRef.current.send(typeof data === 'string' ? data : JSON.stringify(data)); }, []);
 
   useEffect(() => { return () => { wsRef.current?.close(); }; }, []);
 

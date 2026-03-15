@@ -27,7 +27,7 @@ export const useUpdateSettings = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (settings: Record<string, unknown>) => {
-      const { data, error } = await supabase.from('alert_notification_settings').upsert(settings).select().single();
+      const { data, error } = await supabase.from('alert_notification_settings').upsert(settings).select().maybeSingle();
       if (error) throw error;
       return data;
     },

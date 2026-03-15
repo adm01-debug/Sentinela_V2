@@ -139,5 +139,5 @@ export function isOnline(): boolean {
 }
 
 export function getLanguage(): string {
-  return navigator.language || (navigator as any).userLanguage || 'en';
+  return navigator.language || 'en';
 }

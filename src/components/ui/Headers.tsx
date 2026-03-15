@@ -58,7 +58,7 @@ export function Breadcrumb({
           const isLast = index === visibleItems.length - 1;
           const Icon = item.icon;
 
-          if ((item as any).collapsed) {
+          if (item.collapsed) {
             return (
               <React.Fragment key="collapsed">
                 <li className="flex items-center gap-1.5">

@@ -15,10 +15,10 @@ export const useCacheStore = create<CacheState>()((set, get) => ({
     newCache.set(key, { data, timestamp: Date.now(), ttl });
     return { cache: newCache };
   }),
-  get: (key) => {
+  get: <T,>(key: string): T | null => {
     const entry = get().cache.get(key);
     if (!entry || get().isExpired(key)) return null;
-    return entry.data as any;
+    return entry.data as T;
   },
   remove: (key) => set((s) => { const c = new Map(s.cache); c.delete(key); return { cache: c }; }),
   clear: () => set({ cache: new Map() }),

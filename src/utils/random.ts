@@ -12,7 +12,7 @@ export function randomFloat(min: number, max: number, decimals: number = 2): num
 export function randomString(length: number, charset?: string): string {
   const chars = charset || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
-  const cryptoObj = window.crypto || (window as any).msCrypto;
+  const cryptoObj = window.crypto;
   const values = new Uint32Array(length);
   cryptoObj.getRandomValues(values);
   for (let i = 0; i < length; i++) {

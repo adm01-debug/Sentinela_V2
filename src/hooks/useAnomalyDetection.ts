@@ -8,7 +8,17 @@ export interface Anomaly {
   score: number;
   description: string;
   timestamp: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
+}
+
+interface AnomalyPrediction {
+  id: string;
+  type: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  score: number;
+  description: string;
+  timestamp: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface UseAnomalyDetectionOptions {
@@ -19,7 +29,7 @@ export interface UseAnomalyDetectionOptions {
 }
 
 export function useAnomalyDetection(options: UseAnomalyDetectionOptions = {}) {
-  const { entityType, threshold = 0.7, autoRefresh = false, refreshInterval = 60000 } = options;
+  const { entityType, threshold = 0.7 } = options;
   const [anomalies, setAnomalies] = useState<Anomaly[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -32,10 +42,10 @@ export function useAnomalyDetection(options: UseAnomalyDetectionOptions = {}) {
         body: { entityType, threshold, timeRange: '24h' }
       });
       if (fnError) throw fnError;
-      setAnomalies(data?.predictions?.map((p: any) => ({
+      setAnomalies((data?.predictions as AnomalyPrediction[] || []).map((p) => ({
         ...p,
         timestamp: new Date(p.timestamp)
-      })) || []);
+      })));
     } catch (e) {
       setError(e instanceof Error ? e : new Error('Detection failed'));
     } finally {

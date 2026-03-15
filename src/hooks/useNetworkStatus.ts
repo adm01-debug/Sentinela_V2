@@ -1,5 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 
+interface NetworkConnection extends EventTarget {
+  effectiveType?: '4g' | '3g' | '2g' | 'slow-2g';
+  downlink?: number;
+  rtt?: number;
+  saveData?: boolean;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkConnection;
+}
+
 export interface NetworkStatus {
   isOnline: boolean;
   effectiveType?: '4g' | '3g' | '2g' | 'slow-2g';
@@ -16,7 +27,7 @@ export function useNetworkStatus(options: UseNetworkStatusOptions = {}) {
   const { onStatusChange } = options;
   
   const getNetworkStatus = useCallback((): NetworkStatus => {
-    const connection = (navigator as any).connection;
+    const connection = (navigator as NavigatorWithConnection).connection;
     return {
       isOnline: navigator.onLine,
       effectiveType: connection?.effectiveType,
@@ -38,7 +49,7 @@ export function useNetworkStatus(options: UseNetworkStatusOptions = {}) {
     window.addEventListener('online', updateStatus);
     window.addEventListener('offline', updateStatus);
     
-    const connection = (navigator as any).connection;
+    const connection = (navigator as NavigatorWithConnection).connection;
     if (connection) {
       connection.addEventListener('change', updateStatus);
     }

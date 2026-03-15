@@ -159,7 +159,7 @@ export function useRateLimitDashboardPage() {
   });
 
   // Handlers
-  const handleFilterChange = useCallback((key: keyof FilterState, value: any) => {
+  const handleFilterChange = useCallback((key: keyof FilterState, value: FilterState[keyof FilterState]) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   }, []);
 

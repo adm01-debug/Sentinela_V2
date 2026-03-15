@@ -27,9 +27,9 @@ export function useAlertSettings() {
         .from('alert_notification_settings')
         .select('*')
         .eq('setting_type', 'email')
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       return data as AlertNotificationSettings | null;
     },
     ...queryPresets.config,

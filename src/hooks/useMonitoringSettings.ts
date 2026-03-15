@@ -26,9 +26,9 @@ export function useMonitoringSettings() {
       const { data, error } = await supabase
         .from('monitoring_settings')
         .select('*')
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       return data as MonitoringSettings | null;
     },
     ...queryPresets.config,
@@ -44,7 +44,7 @@ export function useUpdateMonitoringSettings() {
       const { data: existing } = await supabase
         .from('monitoring_settings')
         .select('id')
-        .single();
+        .maybeSingle();
 
       let result;
       if (existing) {
