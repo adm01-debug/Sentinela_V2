@@ -8,11 +8,11 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
   },
   optimizeDeps: {
     force: true,
-    include: [
+    exclude: [
       'react',
       'react-dom',
       'react-dom/client',
@@ -36,12 +36,5 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react/jsx-runtime'],
-        },
-      },
-    },
   },
 });
