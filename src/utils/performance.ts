@@ -104,7 +104,7 @@ export class PerformanceTracker {
 
 export const tracker = new PerformanceTracker();
 
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: never[]) => unknown>(
   fn: T,
   delay: number
 ): (...args: Parameters<T>) => void {
