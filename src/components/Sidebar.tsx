@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { prefetchRoute } from '@/lib/prefetch';
+// prefetch removed - using native browser prefetching
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
