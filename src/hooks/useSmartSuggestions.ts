@@ -7,7 +7,7 @@ export interface Suggestion {
   title: string;
   description?: string;
   confidence: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string | number | boolean>;
   action?: () => void;
 }
 
