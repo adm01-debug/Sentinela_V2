@@ -162,7 +162,7 @@ const NavItemComponent = memo(function NavItemComponent({
   const Icon = item.icon;
 
   const handleMouseEnter = useCallback(() => {
-    prefetchRoute(item.href);
+    // Route prefetching handled by React lazy loading
   }, [item.href]);
 
   const content = (
