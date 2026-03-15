@@ -93,6 +93,31 @@ function DeviceIcon({ type }: { type: string }) {
   }
 }
 
+interface MonitoringSetting {
+  setting_key: string;
+  setting_value: unknown;
+}
+
+interface LoginEvent {
+  id: string;
+  event_type: string;
+  ip_address: string | null;
+  location: string | null;
+  user_agent: string | null;
+  created_at: string;
+}
+
+interface KnownDevice {
+  id: string;
+  is_trusted: boolean;
+  device_type: string;
+}
+
+interface SecurityAlert {
+  id: string;
+  read?: boolean;
+}
+
 export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
   const [userId, setUserId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
@@ -103,7 +128,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
   
   // Get current user
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }: { data: { user: any } }) => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) setUserId(user.id);
     });
   }, []);
