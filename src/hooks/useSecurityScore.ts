@@ -19,7 +19,7 @@ export function useSecurityScore() {
         supabase.from('blocked_ips').select('id', { count: 'exact', head: true }).eq('is_active', true),
         supabase.from('geo_blocking_settings').select('enabled').maybeSingle(),
         supabase.from('webauthn_credentials').select('id', { count: 'exact', head: true }),
-        supabase.from('security_policies').select('id', { count: 'exact', head: true }).eq('is_active', true),
+        supabase.from('security_policies').select('id', { count: 'exact', head: true }).eq('enabled', true),
         supabase.from('settings_audit_log').select('id', { count: 'exact', head: true }),
       ]);
 

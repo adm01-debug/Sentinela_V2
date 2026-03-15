@@ -16,22 +16,39 @@ export function useIntegrations() {
     queryFn: async (): Promise<Integration[]> => {
       const [webhooksRes, whatsappRes, alertRes] = await Promise.all([
         supabase.from('webhooks').select('id, name, url, is_active').limit(50),
-        supabase.from('whatsapp_notification_settings').select('id, phone_number, is_active').limit(10),
+        supabase.from('whatsapp_notification_settings').select('id, phone_number_id, recipient_numbers, enabled').limit(10),
         supabase.from('alert_notification_settings').select('id, setting_type, enabled').limit(10),
       ]);
 
       const integrations: Integration[] = [];
 
       for (const wh of webhooksRes.data ?? []) {
-        integrations.push({ id: wh.id, name: `Webhook: ${wh.name}`, enabled: wh.is_active ?? false, type: 'webhook', config: { url: wh.url } });
+        integrations.push({
+          id: wh.id,
+          name: `Webhook: ${wh.name}`,
+          enabled: wh.is_active ?? false,
+          type: 'webhook',
+          config: { url: wh.url },
+        });
       }
 
       for (const wa of whatsappRes.data ?? []) {
-        integrations.push({ id: wa.id, name: `WhatsApp: ${wa.phone_number}`, enabled: wa.is_active ?? false, type: 'whatsapp' });
+        const number = wa.phone_number_id ?? wa.recipient_numbers?.[0] ?? 'sem número';
+        integrations.push({
+          id: wa.id,
+          name: `WhatsApp: ${number}`,
+          enabled: wa.enabled ?? false,
+          type: 'whatsapp',
+        });
       }
 
       for (const an of alertRes.data ?? []) {
-        integrations.push({ id: an.id, name: `Email Alert: ${an.setting_type}`, enabled: an.enabled ?? false, type: 'email' });
+        integrations.push({
+          id: an.id,
+          name: `Email Alert: ${an.setting_type}`,
+          enabled: an.enabled ?? false,
+          type: 'email',
+        });
       }
 
       return integrations;
