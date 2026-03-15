@@ -69,8 +69,8 @@ export function useEmployeesPage() {
   const updateMutation = useUpdateEmployee();
   const deleteMutation = useDeleteEmployee();
   
-  const createEmployee = async (data: any) => createMutation.mutateAsync(data);
-  const updateEmployee = async (id: string, data: any) => updateMutation.mutateAsync({ id, data });
+  const createEmployee = async (data: Record<string, unknown>) => createMutation.mutateAsync(data);
+  const updateEmployee = async (id: string, data: Record<string, unknown>) => updateMutation.mutateAsync({ id, data });
   const deleteEmployee = async (id: string) => deleteMutation.mutateAsync(id);
   const assignDevice = async (_empId: string, _name: string, _type: string, _primary: boolean) => { /* stub */ };
   const unassignDevice = async (_empId: string, _deviceId: string) => { /* stub */ };
