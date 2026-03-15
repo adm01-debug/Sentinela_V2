@@ -63,11 +63,11 @@ export function useDashboardLayout() {
     mutationFn: async (newWidgets: DashboardWidget[]) => {
       if (!user?.id) throw new Error('User not authenticated');
 
-      const { data: existing } = await (supabase as any)
+      const { data: existing } = await supabase
         .from('dashboard_layouts')
         .select('id')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (existing) {
         const { data, error } = await (supabase as any)
