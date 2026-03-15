@@ -1,52 +1,39 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
-import { Button  } from '@/components/ui/button';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { Shield, Plus, Edit, Users } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+
+const SYSTEM_ROLES = [
+  { name: 'Admin', description: 'Acesso total ao sistema, incluindo configurações e gestão de usuários', permissions: ['*'], users: 0 },
+  { name: 'Manager', description: 'Gerencia funcionários, visualiza relatórios e monitoramento', permissions: ['read', 'write'], users: 0 },
+  { name: 'Analyst', description: 'Acesso a relatórios, analytics e dados de produtividade', permissions: ['read'], users: 0 },
+  { name: 'Viewer', description: 'Visualização limitada de dados e dashboards', permissions: ['read'], users: 0 },
+];
 
 export default function RolesPage() {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Funções e Permissões
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Configure funções e permissões de usuários
-          </p>
-        </div>
+        <div><h1 className="text-2xl font-bold flex items-center gap-2"><Shield className="h-6 w-6 text-primary" />Funções e Permissões</h1><p className="text-muted-foreground mt-1">Configure funções e permissões de acesso</p></div>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Funções e Permissões</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-8 text-gray-500">
-            <p>Conteúdo de Funções e Permissões será implementado aqui.</p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={() => navigate(-1)}
-            >
-              Voltar
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {SYSTEM_ROLES.map(role => (
+          <Card key={role.name}>
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base flex items-center gap-2"><Shield className="h-4 w-4" />{role.name}</CardTitle>
+                <Badge variant="outline"><Users className="h-3 w-3 mr-1" />{role.users} usuários</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-3">{role.description}</p>
+              <div className="flex gap-1 flex-wrap">
+                {role.permissions.map(p => <Badge key={p} variant="secondary" className="text-xs">{p === '*' ? 'Acesso Total' : p}</Badge>)}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

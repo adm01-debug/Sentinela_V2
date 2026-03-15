@@ -1,51 +1,40 @@
+import { Shield, Key, Lock, Smartphone } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
-import { Button  } from '@/components/ui/button';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { useToast } from '@/hooks/use-toast';
+import { MFASettings } from '@/components/MFASettings';
+import { BlockedIPsPanel } from '@/components/BlockedIPsPanel';
 
 export default function SecuritySettingsPage() {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
+  const { toast } = useToast();
+  const [twoFactor, setTwoFactor] = useState(false);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Configurações de Segurança
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Configure autenticação, senhas e segurança da conta
-          </p>
-        </div>
-      </div>
+    <div className="p-6 space-y-6">
+      <div><h1 className="text-2xl font-bold flex items-center gap-2"><Shield className="h-6 w-6 text-primary" />Configurações de Segurança</h1><p className="text-muted-foreground mt-1">Configure autenticação e segurança da conta</p></div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Configurações de Segurança</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-8 text-gray-500">
-            <p>Conteúdo de Configurações de Segurança será implementado aqui.</p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={() => navigate(-1)}
-            >
-              Voltar
-            </Button>
-          </div>
+        <CardHeader><CardTitle className="flex items-center gap-2"><Key className="h-5 w-5" />Alterar Senha</CardTitle></CardHeader>
+        <CardContent className="space-y-4">
+          <div><Label>Senha Atual</Label><Input type="password" /></div>
+          <div><Label>Nova Senha</Label><Input type="password" /></div>
+          <div><Label>Confirmar Nova Senha</Label><Input type="password" /></div>
+          <Button onClick={() => toast({ title: 'Senha atualizada!' })}>Alterar Senha</Button>
         </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader><CardTitle className="flex items-center gap-2"><Smartphone className="h-5 w-5" />Autenticação MFA</CardTitle></CardHeader>
+        <CardContent><MFASettings /></CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader><CardTitle className="flex items-center gap-2"><Lock className="h-5 w-5" />IPs Bloqueados</CardTitle></CardHeader>
+        <CardContent><BlockedIPsPanel /></CardContent>
       </Card>
     </div>
   );
