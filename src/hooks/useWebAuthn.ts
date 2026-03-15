@@ -207,11 +207,12 @@ export function useWebAuthn() {
       });
 
       return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('WebAuthn registration error:', error);
+      const err = error as Error & { name?: string; message?: string };
       
       let errorMessage = 'Falha ao registrar passkey.';
-      if (error.name === 'NotAllowedError') {
+      if (err.name === 'NotAllowedError') {
         errorMessage = 'Operação cancelada ou não permitida.';
       } else if (error.name === 'InvalidStateError') {
         errorMessage = 'Este dispositivo já está registrado.';
