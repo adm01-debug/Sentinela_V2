@@ -19,7 +19,7 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
   const [transcript, setTranscript] = useState('');
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<ReturnType<typeof Object> | null>(null);
 
   useEffect(() => {
     const w = window as unknown as Record<string, typeof globalThis.SpeechRecognition>;

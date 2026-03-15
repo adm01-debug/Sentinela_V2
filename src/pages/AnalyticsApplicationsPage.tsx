@@ -51,14 +51,14 @@ export default function AnalyticsApplicationsPage() {
         <Card>
           <CardHeader><CardTitle>Top Aplicações</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            {data?.topApps?.map((app: AppItem, i: number) => (
+            {data?.topApps?.map((app: AppCategory, i: number) => (
               <div key={i} className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="font-medium">{app.name}</span>
-                  <Badge variant={app.category === 'productive' ? 'default' : 'secondary'}>{app.category}</Badge>
+                  <span className="font-medium">{app.category}</span>
+                  <Badge variant="default">{app.count}</Badge>
                 </div>
-                <Progress value={app.percentage} />
-                <p className="text-sm text-muted-foreground">{app.hours}h ({app.percentage}%)</p>
+                <Progress value={Math.min(app.duration, 100)} />
+                <p className="text-sm text-muted-foreground">{app.duration}h ({app.count})</p>
               </div>
             ))}
           </CardContent>
