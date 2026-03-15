@@ -101,7 +101,7 @@ export default function MonitoringPage() {
           <SelectTrigger className="w-[180px]"><SelectValue placeholder="Departamento" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
-            {departments.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+            {departments.map((d: string) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
           </SelectContent>
         </Select>
       </div>
