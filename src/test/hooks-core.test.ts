@@ -517,7 +517,6 @@ describe('useDebounce', () => {
 // Auth Utility Functions
 // ============================================================
 describe('Auth Utilities', () => {
-  const { isTokenExpired, getTokenPayload, hasRole, hasPermission } = require('@/utils/auth');
 
   // Create a valid JWT-like token
   const createToken = (payload: any) => {
