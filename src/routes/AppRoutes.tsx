@@ -83,6 +83,7 @@ const DataExportPage = lazy(() => import('@/pages/DataExportPage'));
 const CompliancePage = lazy(() => import('@/pages/CompliancePage'));
 const AIAnalysisPage = lazy(() => import('@/pages/AIAnalysisPage'));
 const GamificationPage = lazy(() => import('@/pages/GamificationPage'));
+const InternetAccessPage = lazy(() => import('@/pages/InternetAccessPage'));
 
 // ============================================================
 // SUPABASE SESSION HOOK
