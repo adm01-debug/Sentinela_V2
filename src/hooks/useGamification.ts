@@ -91,9 +91,9 @@ async function fetchEmployeePoints(employeeId: string): Promise<EmployeePoints |
     .from('employee_points')
     .select('*')
     .eq('employee_id', employeeId)
-    .single();
+    .maybeSingle();
 
-  if (error && error.code !== 'PGRST116') throw error;
+  if (error) throw error;
   return data;
 }
 
@@ -235,7 +235,7 @@ export function useAwardPoints() {
         .from('employee_points')
         .select('*')
         .eq('employee_id', employeeId)
-        .single();
+        .maybeSingle();
 
       if (current) {
         const newTotal = current.total_points + points;
@@ -312,7 +312,7 @@ export function useAwardBadge() {
         .select('id')
         .eq('employee_id', employeeId)
         .eq('badge_id', badgeId)
-        .single();
+        .maybeSingle();
 
       if (existing) {
         throw new Error('Funcionário já possui este badge');

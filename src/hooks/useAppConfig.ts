@@ -54,9 +54,9 @@ export function useAppConfig(): UseAppConfigReturn {
       const { data, error: fetchError } = await supabase
         .from('app_config')
         .select('*')
-        .single();
+        .maybeSingle();
       
-      if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
+      if (fetchError) throw fetchError;
       setConfig(data as AppConfig || defaultConfig);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch app config');

@@ -1,6 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
+interface ChartDataPoint { date: string; value: number; }
+interface AppUsage { name: string; duration: number; category: string; }
+
 export const useDashboardStats = () => {
   return useQuery({
     queryKey: ['dashboard-stats'],
@@ -26,14 +29,14 @@ export const useDashboardStats = () => {
 export const useActivityChart = (period: 'day' | 'week' | 'month' = 'week') => {
   return useQuery({
     queryKey: ['activity-chart', period],
-    queryFn: async () => [] as any[],
+    queryFn: async () => [] as ChartDataPoint[],
   });
 };
 
 export const useProductivityChart = (period: 'day' | 'week' | 'month' = 'week') => {
   return useQuery({
     queryKey: ['productivity-chart', period],
-    queryFn: async () => [] as any[],
+    queryFn: async () => [] as ChartDataPoint[],
   });
 };
 
@@ -51,6 +54,6 @@ export const useTopEmployees = (limit: number = 5) => {
 export const useTopApplications = (limit: number = 10) => {
   return useQuery({
     queryKey: ['top-applications', limit],
-    queryFn: async () => [] as any[],
+    queryFn: async () => [] as AppUsage[],
   });
 };

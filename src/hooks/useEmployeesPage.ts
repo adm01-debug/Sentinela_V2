@@ -62,21 +62,21 @@ const initialDeviceData: DeviceFormData = {
 
 export function useEmployeesPage() {
   const employeesQuery = useEmployees();
-  const employees = (employeesQuery.data as any)?.data || employeesQuery.data || [];
+  const employees = Array.isArray(employeesQuery.data) ? employeesQuery.data : (employeesQuery.data as { data?: unknown[] })?.data || [];
   const loading = employeesQuery.isLoading;
   
   const createMutation = useCreateEmployee();
   const updateMutation = useUpdateEmployee();
   const deleteMutation = useDeleteEmployee();
   
-  const createEmployee = async (data: any) => createMutation.mutateAsync(data);
-  const updateEmployee = async (id: string, data: any) => updateMutation.mutateAsync({ id, data });
+  const createEmployee = async (data: Record<string, unknown>) => createMutation.mutateAsync(data);
+  const updateEmployee = async (id: string, data: Record<string, unknown>) => updateMutation.mutateAsync({ id, data });
   const deleteEmployee = async (id: string) => deleteMutation.mutateAsync(id);
   const assignDevice = async (_empId: string, _name: string, _type: string, _primary: boolean) => { /* stub */ };
   const unassignDevice = async (_empId: string, _deviceId: string) => { /* stub */ };
   
   const teamsQuery = useTeams();
-  const teams = (teamsQuery as any).teams || (teamsQuery.data as any)?.data || teamsQuery.data || [];
+  const teams = Array.isArray(teamsQuery.data) ? teamsQuery.data : (teamsQuery as { teams?: unknown[] }).teams || (teamsQuery.data as { data?: unknown[] })?.data || [];
 
   // Filters
   const [filters, setFilters] = useState<EmployeeFilters>({
