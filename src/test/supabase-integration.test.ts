@@ -111,7 +111,7 @@ describe('Partitioned Table Queries', () => {
   ['2025_12', '2026_01', '2026_02', '2026_03', '2026_04', '2026_05'].forEach(month => {
     it(`should query keystroke_logs_partitioned_${month}`, async () => {
       setupMockQuery([]);
-      await supabase.from(`keystroke_logs_partitioned_${month}` as any).select('*').order('recorded_at' as any).limit(10);
+      await (supabase.from as any)(`keystroke_logs_partitioned_${month}`).select('*').order('recorded_at').limit(10);
       expect(mockFrom).toHaveBeenCalledWith(`keystroke_logs_partitioned_${month}`);
     });
   });
