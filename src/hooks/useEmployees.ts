@@ -26,7 +26,29 @@ export interface EmployeeWithDetails {
   devices?: EmployeeDevice[];
 }
 
-export const useEmployees = (filters?: any) => {
+export interface EmployeeFilters {
+  department?: string;
+  status?: string;
+  search?: string;
+}
+
+export interface EmployeeCreateInput {
+  name: string;
+  email?: string;
+  phone?: string;
+  department?: string;
+  position?: string;
+  team_id?: string;
+  status?: string;
+  avatar_url?: string;
+  hire_date?: string;
+  notes?: string;
+  company_id?: string;
+}
+
+export interface EmployeeUpdateInput extends Partial<EmployeeCreateInput> {}
+
+export const useEmployees = (filters?: EmployeeFilters) => {
   return useQuery({
     queryKey: ['employees', filters],
     queryFn: async () => {
@@ -45,7 +67,7 @@ export const useEmployee = (id: string) => {
   return useQuery({
     queryKey: ['employee', id],
     queryFn: async () => {
-      const { data, error } = await supabase.from('employees').select('*').eq('id', id).single();
+      const { data, error } = await supabase.from('employees').select('*').eq('id', id).maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -64,7 +86,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: EmployeeCreateInput) => {
       const { data: result, error } = await supabase.from('employees').insert(data).select().single();
       if (error) throw error;
       return result;
@@ -76,7 +98,7 @@ export const useCreateEmployee = () => {
 export const useUpdateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+    mutationFn: async ({ id, data }: { id: string; data: EmployeeUpdateInput }) => {
       const { data: result, error } = await supabase.from('employees').update(data).eq('id', id).select().single();
       if (error) throw error;
       return result;

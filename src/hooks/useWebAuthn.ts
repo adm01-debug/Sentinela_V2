@@ -207,13 +207,13 @@ export function useWebAuthn() {
       });
 
       return { success: true };
-    } catch (error: any) {
-      console.error('WebAuthn registration error:', error);
-      
+    } catch (error: unknown) {
+      const err = error instanceof Error ? error : new Error(String(error));
+      const errWithName = err as Error & { name: string };
       let errorMessage = 'Falha ao registrar passkey.';
-      if (error.name === 'NotAllowedError') {
+      if (err.name === 'NotAllowedError') {
         errorMessage = 'Operação cancelada ou não permitida.';
-      } else if (error.name === 'InvalidStateError') {
+      } else if (err.name === 'InvalidStateError') {
         errorMessage = 'Este dispositivo já está registrado.';
       }
 
@@ -223,7 +223,7 @@ export function useWebAuthn() {
         variant: 'destructive',
       });
 
-      return { success: false, error: error.message };
+      return { success: false, error: err.message || 'Unknown error' };
     } finally {
       setIsRegistering(false);
     }
@@ -292,11 +292,12 @@ export function useWebAuthn() {
       });
 
       return { success: true, userId: credential.user_id };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('WebAuthn authentication error:', error);
+      const err = error as Error & { name?: string; message?: string };
 
       let errorMessage = 'Falha na autenticação biométrica.';
-      if (error.name === 'NotAllowedError') {
+      if (err.name === 'NotAllowedError') {
         errorMessage = 'Operação cancelada ou não permitida.';
       }
 
@@ -306,7 +307,7 @@ export function useWebAuthn() {
         variant: 'destructive',
       });
 
-      return { success: false, error: error.message };
+      return { success: false, error: err.message };
     } finally {
       setIsAuthenticating(false);
     }

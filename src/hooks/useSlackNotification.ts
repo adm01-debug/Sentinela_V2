@@ -1,16 +1,30 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
 interface SlackConfig { webhookUrl: string; channel?: string; username?: string; iconEmoji?: string; }
+
+interface SlackBlock {
+  type: string;
+  text?: { type: string; text: string };
+  [key: string]: unknown;
+}
+
+interface SlackPayload {
+  text: string;
+  channel?: string;
+  username?: string;
+  icon_emoji?: string;
+  blocks?: SlackBlock[];
+}
 
 export function useSlackNotification(config: SlackConfig) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const sendMessage = useCallback(async (text: string, blocks?: any[]) => {
+  const sendMessage = useCallback(async (text: string, blocks?: SlackBlock[]) => {
     setIsLoading(true);
     setError(null);
     try {
-      const payload: any = { text, channel: config.channel, username: config.username, icon_emoji: config.iconEmoji };
+      const payload: SlackPayload = { text, channel: config.channel, username: config.username, icon_emoji: config.iconEmoji };
       if (blocks) payload.blocks = blocks;
       const response = await fetch(config.webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       if (!response.ok) throw new Error('Slack notification failed');
@@ -20,9 +34,8 @@ export function useSlackNotification(config: SlackConfig) {
   }, [config]);
 
   const sendAlert = useCallback(async (title: string, message: string, severity: 'info' | 'warning' | 'error') => {
-    const colors = { info: '#2196F3', warning: '#FF9800', error: '#F44336' };
-    const blocks = [{ type: 'section', text: { type: 'mrkdwn', text: `*${title}*\n${message}` } }];
-    return sendMessage('', [{ type: 'section', text: { type: 'mrkdwn', text: `*${severity.toUpperCase()}*: ${title}` } }, ...blocks]);
+    const blocks: SlackBlock[] = [{ type: 'section', text: { type: 'mrkdwn', text: `*${severity.toUpperCase()}*: ${title}` } }, { type: 'section', text: { type: 'mrkdwn', text: `*${title}*\n${message}` } }];
+    return sendMessage('', blocks);
   }, [sendMessage]);
 
   return { sendMessage, sendAlert, isLoading, error };

@@ -14,7 +14,7 @@ import { SettingsAuditLog } from '@/components/SettingsAuditLog';
 import { MFASettings } from '@/components/MFASettings';
 import { AlertSettingsPanel } from '@/components/AlertSettingsPanel';
 import { useSettings as useSettingsHook, type ApplicationRule } from '@/hooks/useSettings';
-import { categoryLabels } from '@/data/settingsData';
+import { type SecurityPolicy, categoryLabels } from '@/data/settingsData';
 import { SettingsSkeleton } from '@/components/PageSkeletons';
 import { ArrowLeft, Shield, AppWindow, Bell, UserCog, Search, Loader2 } from 'lucide-react';
 
@@ -22,11 +22,10 @@ const SettingsContent = memo(function SettingsContent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const settingsQuery = useSettingsHook();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const settingsData = settingsQuery.data as any;
+  const settingsData = settingsQuery.data as Record<string, unknown> | null;
   const loading = settingsQuery.isLoading;
-  const policies = settingsData?.policies || [];
-  const appRules = settingsData?.appRules || settingsData?.applicationRules || [];
+  const policies = (settingsData?.policies || []) as SecurityPolicy[];
+  const appRules = ((settingsData?.appRules || settingsData?.applicationRules || []) as ApplicationRule[]);
   const updatePolicy = (id: string, enabled: boolean) => {};
   const updateAppRule = (id: string, status: string) => {};
   const addAppRule = async (_name: string, _cat: string, _status: 'allowed' | 'blocked' | 'monitored') => true;

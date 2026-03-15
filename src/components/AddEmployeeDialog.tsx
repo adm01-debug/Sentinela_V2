@@ -16,7 +16,7 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useCreateEmployee } from '@/hooks';
+import { useCreateEmployee, type EmployeeCreateInput } from '@/hooks/useEmployees';
 
 interface Props {
   open: boolean;
@@ -46,7 +46,7 @@ export const AddEmployeeDialog = ({ open, onClose }: Props) => {
 
   const handleSubmit = () => {
     createEmployee.mutate(
-      { full_name: form.name, email: form.email, department: form.department, role: form.role, organization_id: 'default-org', hire_date: new Date().toISOString() } as Record<string, unknown>,
+      { name: form.name, email: form.email, department: form.department } as EmployeeCreateInput,
       {
         onSuccess: () => {
           onClose();

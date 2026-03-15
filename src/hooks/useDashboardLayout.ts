@@ -141,7 +141,7 @@ export function useSaveDashboardLayout() {
         .from('dashboard_layouts')
         .select('id')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (existing) {
         const { data, error } = await supabase

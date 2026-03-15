@@ -1,18 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import type { Session as SupaSession } from '@supabase/supabase-js';
+import type { Session as SupaSession, User as SupaUser } from '@supabase/supabase-js';
 
 export interface User {
   id: string;
   email: string;
   name?: string;
-  role?: any;
+  role?: string;
   avatar?: string;
   isAdmin?: boolean;
   onboardingCompleted?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  [key: string]: any;
 }
 
 export interface Session {
@@ -35,7 +34,7 @@ export interface UseAuthReturn {
   refresh: () => Promise<void>;
 }
 
-function mapSupabaseUser(supaUser: any): User | null {
+function mapSupabaseUser(supaUser: SupaUser | undefined | null): User | null {
   if (!supaUser) return null;
   return {
     id: supaUser.id,

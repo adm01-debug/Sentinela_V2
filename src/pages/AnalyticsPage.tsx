@@ -7,8 +7,7 @@ import { useAnalytics } from '@/hooks/useAnalytics';
 
 export default function AnalyticsPage() {
   const [period, setPeriod] = useState('7d');
-  const result = useAnalytics({ period });
-  const data = (result as any)?.data;
+  const { data } = useAnalytics({ period });
 
   return (
     <div className="p-6 space-y-6">

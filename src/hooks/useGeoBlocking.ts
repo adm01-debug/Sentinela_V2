@@ -146,7 +146,7 @@ export function useGeoBlocking() {
       queryClient.invalidateQueries({ queryKey: ['geo-blocks'] });
       toast.success('País adicionado à whitelist');
     },
-    onError: (error: any) => {
+    onError: (error: Error & { code?: string }) => {
       console.error('Error adding country:', error);
       if (error?.code === '23505') {
         toast.error('País já está na lista');

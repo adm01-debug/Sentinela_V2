@@ -66,7 +66,7 @@ function DataTableComponent<T>({
           <TableRow key={keyExtractor(row)}>
             {columns.map((col) => (
               <TableCell key={col.key} className={col.className}>
-                {col.render ? col.render(row) : (row as any)[col.key]}
+                {col.render ? col.render(row) : (row as Record<string, unknown>)[col.key] as React.ReactNode}
               </TableCell>
             ))}
           </TableRow>
