@@ -3,7 +3,7 @@
  * Tests for useToggle, useCounter, useList, useFilter, useSort, useLocalStorage,
  * useSchema, useAccessControl, usePagination, useDebounce
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useToggle } from '@/hooks/useToggle';
 import { useCounter } from '@/hooks/useCounter';
@@ -13,10 +13,9 @@ import { useSort } from '@/hooks/useSort';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useSchema } from '@/hooks/useSchema';
 import { useAccessControl } from '@/hooks/useAccessControl';
-import { useRoles } from '@/hooks/useRoles';
 import { useDebounce } from '@/hooks/useDebounce';
 import { usePagination } from '@/hooks/usePagination';
-import { afterEach } from 'vitest';
+import { isTokenExpired, getTokenPayload, hasRole, hasPermission } from '@/utils/auth';
 
 // ============================================================
 // useToggle
