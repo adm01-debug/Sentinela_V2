@@ -223,7 +223,7 @@ export function useWebAuthn() {
         variant: 'destructive',
       });
 
-      return { success: false, error: err.message };
+      return { success: false, error: err.message || 'Unknown error' };
     } finally {
       setIsRegistering(false);
     }
