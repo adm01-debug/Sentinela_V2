@@ -32,7 +32,7 @@ export default function ScreenshotsPage() {
   const employees: EmployeeItem[] = Array.isArray(employeesData) ? employeesData : [];
   const { data: screenshots, isLoading } = useScreenshots(employeeId, date?.toISOString() || '');
 
-  const images = (screenshots as ScreenshotItem[] || []).map((s) => ({ src: s.url, alt: s.metadata?.activeApplication || '', title: `${s.employeeId} - ${format(new Date(s.capturedAt), 'HH:mm')}` }));
+  const images = (screenshots || []).map((s) => ({ src: s.url, alt: s.app_name || '', title: `${s.employee_name} - ${format(new Date(s.captured_at), 'HH:mm')}` }));
 
   return (
     <div className="p-6 space-y-6">
