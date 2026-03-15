@@ -77,7 +77,7 @@ describe('LGPD Compliance', () => {
       const [user, domain] = email.split('@');
       return `${user[0]}${'*'.repeat(Math.max(user.length - 2, 1))}${user.slice(-1)}@${domain}`;
     };
-    expect(maskEmail('joao@example.com')).toBe('j***o@example.com');
+    expect(maskEmail('joao@example.com')).toBe('j**o@example.com');
     expect(maskEmail('ab@test.com')).toBe('a*b@test.com');
   });
 
