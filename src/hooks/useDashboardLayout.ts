@@ -40,11 +40,11 @@ export function useDashboardLayout() {
     queryFn: async () => {
       if (!user?.id) return null;
       
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('dashboard_layouts')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') throw error;
       return data as DashboardLayout | null;
