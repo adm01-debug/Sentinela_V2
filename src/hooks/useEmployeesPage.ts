@@ -62,7 +62,7 @@ const initialDeviceData: DeviceFormData = {
 
 export function useEmployeesPage() {
   const employeesQuery = useEmployees();
-  const employees = (employeesQuery.data as any)?.data || employeesQuery.data || [];
+  const employees = Array.isArray(employeesQuery.data) ? employeesQuery.data : (employeesQuery.data as { data?: unknown[] })?.data || [];
   const loading = employeesQuery.isLoading;
   
   const createMutation = useCreateEmployee();
