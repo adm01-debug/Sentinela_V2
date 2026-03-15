@@ -46,7 +46,8 @@ export function usePermissions(): UsePermissionsReturn {
       
       const perms = new Set<string>();
       data?.forEach(ur => {
-        (ur.role as any)?.permissions?.forEach((p: string) => perms.add(p));
+        const role = ur.role as { permissions?: string[] } | null;
+        role?.permissions?.forEach((p: string) => perms.add(p));
       });
       
       return Array.from(perms);

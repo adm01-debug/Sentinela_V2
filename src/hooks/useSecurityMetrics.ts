@@ -45,8 +45,9 @@ export function useSecurityMetrics() {
       const byEmployee: Record<string, { name: string; count: number }> = {};
       violations.forEach(v => {
         if (!byEmployee[v.employee_id]) {
+          const emp = v.employee as { full_name?: string } | null;
           byEmployee[v.employee_id] = { 
-            name: (v.employee as any)?.full_name || 'Unknown', 
+            name: emp?.full_name || 'Unknown', 
             count: 0 
           };
         }

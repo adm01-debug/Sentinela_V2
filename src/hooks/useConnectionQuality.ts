@@ -2,13 +2,23 @@ import { useState, useEffect } from "react";
 
 type Quality = "excellent" | "good" | "fair" | "poor" | "offline";
 
+interface NetworkInformation extends EventTarget {
+  downlink: number;
+  rtt: number;
+  effectiveType: string;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkInformation;
+}
+
 export function useConnectionQuality() {
   const [quality, setQuality] = useState<Quality>("good");
   const [downlink, setDownlink] = useState<number>(0);
   const [rtt, setRtt] = useState<number>(0);
 
   useEffect(() => {
-    const conn = (navigator as any).connection;
+    const conn = (navigator as NavigatorWithConnection).connection;
     if (!conn) return;
 
     const update = () => {
