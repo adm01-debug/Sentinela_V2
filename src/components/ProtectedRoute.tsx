@@ -123,9 +123,8 @@ export function ProtectedRoute({
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
-  // Requires admin but user is not admin
-  const isAdmin = (user as User).isAdmin ?? false;
-  if (requireAdmin && !isAdmin) {
+  // Admin/role denied (already checked via hasRequiredRoles)
+  if (requireAdmin && !hasRequiredRoles) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4 text-center p-8">
