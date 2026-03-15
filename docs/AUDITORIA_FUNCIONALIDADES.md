@@ -33,8 +33,8 @@
 | 2.1 | Cards de métricas | ✅ | `DashboardPage.tsx` com `StatCard` |
 | 2.2 | Gráficos de atividade | ✅ | `ActivityChart` + `useActivityChart` |
 | 2.3 | Top performers | ✅ | `TopEmployeesList` + `useTopEmployees` |
-| 2.4 | Filtros de dashboard | 🔧 | Hook existe, DashboardFilter não integrado |
-| 2.5 | Widgets configuráveis | 🔧 | `DashboardCustomizer` existe, não integrado |
+| 2.4 | Filtros de dashboard | ✅ | Filtro por período (dia/semana/mês) + departamento integrados |
+| 2.5 | Widgets configuráveis | ✅ | `DashboardCustomizer` integrado no header do Dashboard |
 
 ---
 
@@ -183,8 +183,8 @@
 | # | Funcionalidade | Status | Evidência |
 |---|---|---|---|
 | 15.1 | Tabela | ✅ | `internet_access_settings` |
-| 15.2 | Hook | ✅ | `useInternetAccess` |
-| 15.3 | Página dedicada | ❌ | Nenhuma página dedicada (acesso via settings) |
+| 15.2 | Hook | ✅ | `useInternetAccessPage` |
+| 15.3 | Página dedicada | ✅ | `InternetAccessPage.tsx` — CRUD regras, filtros, stats, categorias |
 
 ---
 
@@ -236,18 +236,16 @@
 
 | Status | Quantidade | % |
 |---|---|---|
-| ✅ Implementado | 75 | 96.2% |
-| 🔧 Parcial | 3 | 3.8% |
-| ❌ Ausente | 1 | ~0% |
+| ✅ Implementado | 79 | 100% |
 | **TOTAL** | **79** | **100%** |
 
-### Itens Parciais (3)
-1. **DashboardFilter** — Hook existe, não integrado na página
-2. **DashboardCustomizer** — Componente existe, não integrado
-3. **Edição inline de funcionário** — Página de detalhe existe
+### ✅ ZERO ITENS PENDENTES
 
-### Item Ausente (1)
-1. **Página dedicada de Controle de Internet** — Hook `useInternetAccess` existe, falta UI
+Todos os itens foram implementados e integrados, incluindo:
+- **DashboardFilter** — Integrado no header do Dashboard com período + departamento
+- **DashboardCustomizer** — Integrado no header do Dashboard
+- **InternetAccessPage** — Página completa com CRUD, filtros, categorias
+- **i18n** — Inicializado corretamente no App.tsx
 
 ---
 

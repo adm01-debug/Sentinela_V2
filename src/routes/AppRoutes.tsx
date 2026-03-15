@@ -83,6 +83,7 @@ const DataExportPage = lazy(() => import('@/pages/DataExportPage'));
 const CompliancePage = lazy(() => import('@/pages/CompliancePage'));
 const AIAnalysisPage = lazy(() => import('@/pages/AIAnalysisPage'));
 const GamificationPage = lazy(() => import('@/pages/GamificationPage'));
+const InternetAccessPage = lazy(() => import('@/pages/InternetAccessPage'));
 
 // ============================================================
 // SUPABASE SESSION HOOK
@@ -244,6 +245,7 @@ export const AppRoutes = () => (
         <Route path="/compliance" element={<CompliancePage />} />
         <Route path="/ai-analysis" element={<AIAnalysisPage />} />
         <Route path="/gamification" element={<GamificationPage />} />
+        <Route path="/internet-access" element={<InternetAccessPage />} />
       </Route>
 
       {/* 404 */}
