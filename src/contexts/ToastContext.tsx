@@ -1,4 +1,4 @@
-"use client";
+
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface Toast { id: string; title: string; description?: string; type: "success" | "error" | "info"; }

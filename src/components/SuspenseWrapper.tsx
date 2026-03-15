@@ -1,4 +1,4 @@
-"use client";
+
 
 import { Suspense, type ReactNode } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
