@@ -23,7 +23,6 @@ serve(async (req) => {
   try {
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
     const rateLimitResult = await checkRateLimit(clientIP, 'send-webhook', 30, 60);
-    
     if (!rateLimitResult.allowed) {
       return new Response(
         JSON.stringify({ error: 'Rate limit exceeded' }),
@@ -33,7 +32,6 @@ serve(async (req) => {
 
     const body = await req.json();
     const validationResult = WebhookPayloadSchema.safeParse(body);
-    
     if (!validationResult.success) {
       return new Response(
         JSON.stringify({ error: 'Validation failed', details: validationResult.error.flatten() }),
@@ -42,12 +40,9 @@ serve(async (req) => {
     }
 
     const { webhook_id, event_type, payload, retry_count } = validationResult.data;
+    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Get webhook config
+    // Get webhook config from webhooks table
     const { data: webhook, error: webhookError } = await supabase
       .from('webhooks')
       .select('*')
@@ -68,7 +63,6 @@ serve(async (req) => {
       );
     }
 
-    // Check if event is subscribed
     if (!webhook.events?.includes(event_type)) {
       return new Response(
         JSON.stringify({ error: 'Event not subscribed' }),
@@ -79,6 +73,7 @@ serve(async (req) => {
     // Send webhook
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), (webhook.timeout_seconds || 30) * 1000);
+    const startTime = Date.now();
 
     try {
       const headers: Record<string, string> = {
@@ -87,6 +82,7 @@ serve(async (req) => {
         'X-Webhook-Delivery': crypto.randomUUID(),
       };
 
+      // HMAC signature
       if (webhook.secret) {
         const encoder = new TextEncoder();
         const key = await crypto.subtle.importKey(
@@ -96,11 +92,7 @@ serve(async (req) => {
           false,
           ['sign']
         );
-        const signature = await crypto.subtle.sign(
-          'HMAC',
-          key,
-          encoder.encode(JSON.stringify(payload))
-        );
+        const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(JSON.stringify(payload)));
         headers['X-Webhook-Signature'] = btoa(String.fromCharCode(...new Uint8Array(signature)));
       }
 
@@ -112,19 +104,30 @@ serve(async (req) => {
       });
 
       clearTimeout(timeout);
+      const durationMs = Date.now() - startTime;
+      const responseBody = await response.text().catch(() => null);
 
-      // Log delivery
-      await supabase.from('webhook_deliveries').insert({
+      // Log to webhook_logs (real table)
+      await supabase.from('webhook_logs').insert({
         webhook_id,
         event_type,
         payload,
-        status_code: response.status,
-        success: response.ok,
-        response_body: await response.text().catch(() => null),
+        status: response.ok ? 'success' : 'failed',
+        response_code: response.status,
+        response_body: responseBody,
+        attempt_number: retry_count + 1,
+        duration_ms: durationMs,
+        error_message: response.ok ? null : `HTTP ${response.status}`,
       });
 
+      // Update webhook last status
+      await supabase.from('webhooks').update({
+        last_status: response.ok ? 'success' : 'failed',
+        last_response_code: response.status,
+        last_triggered_at: new Date().toISOString(),
+      }).eq('id', webhook_id);
+
       if (!response.ok && retry_count < (webhook.retry_count || 3)) {
-        // Schedule retry
         return new Response(
           JSON.stringify({ success: false, retry: true, next_retry: retry_count + 1 }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -137,6 +140,20 @@ serve(async (req) => {
       );
     } catch (fetchError) {
       clearTimeout(timeout);
+      const durationMs = Date.now() - startTime;
+      const errMsg = fetchError instanceof Error ? fetchError.message : 'Fetch failed';
+
+      // Log failure to webhook_logs
+      await supabase.from('webhook_logs').insert({
+        webhook_id,
+        event_type,
+        payload,
+        status: 'error',
+        attempt_number: retry_count + 1,
+        duration_ms: durationMs,
+        error_message: errMsg,
+      });
+
       throw fetchError;
     }
   } catch (error) {

@@ -19,29 +19,32 @@ serve(async (req) => {
 
     const formData = await req.formData();
     const file = formData.get('file') as File;
-    const employeeId = formData.get('employeeId') as string;
+    const employeeName = formData.get('employeeName') as string;
     const metadata = JSON.parse(formData.get('metadata') as string || '{}');
 
-    if (!file || !employeeId) {
-      throw new Error('Missing file or employeeId');
+    if (!file || !employeeName) {
+      throw new Error('Missing file or employeeName');
     }
 
-    const fileName = `${employeeId}/${Date.now()}_${file.name}`;
+    // Upload to violation-screenshots bucket (real bucket)
+    const fileName = `${employeeName}/${Date.now()}_${file.name}`;
     const { error: uploadError } = await supabase.storage
-      .from('screenshots')
+      .from('violation-screenshots')
       .upload(fileName, file);
 
     if (uploadError) throw uploadError;
 
     const { data: urlData } = supabase.storage
-      .from('screenshots')
+      .from('violation-screenshots')
       .getPublicUrl(fileName);
 
-    const { error: dbError } = await supabase.from('screenshots').insert({
-      employee_id: employeeId,
-      file_path: fileName,
-      url: urlData.publicUrl,
-      metadata,
+    // Insert into screen_captures table (real table)
+    const { error: dbError } = await supabase.from('screen_captures').insert({
+      employee_name: employeeName,
+      capture_url: urlData.publicUrl,
+      app_name: metadata.app_name || null,
+      window_title: metadata.window_title || null,
+      device: metadata.device || null,
       captured_at: new Date().toISOString(),
     });
 

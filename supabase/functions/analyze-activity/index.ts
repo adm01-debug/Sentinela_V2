@@ -8,23 +8,14 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Validation Schemas
 const AnalyzeActivitySchema = z.object({
-  employee_id: z.string().uuid(),
-  date_from: z.string().datetime().optional(),
-  date_to: z.string().datetime().optional(),
-  analysis_type: z.enum([
-    'productivity',
-    'patterns',
-    'anomalies',
-    'summary',
-    'comparison',
-    'all',
-  ]).default('summary'),
+  employee_name: z.string().min(1),
+  date_from: z.string().optional(),
+  date_to: z.string().optional(),
+  analysis_type: z.enum(['productivity', 'patterns', 'anomalies', 'summary', 'all']).default('summary'),
   include_apps: z.boolean().default(true),
-  include_urls: z.boolean().default(true),
-  include_idle: z.boolean().default(true),
-  comparison_period: z.enum(['day', 'week', 'month']).optional(),
+  include_keystrokes: z.boolean().default(true),
+  include_clicks: z.boolean().default(true),
 });
 
 serve(async (req) => {
@@ -35,7 +26,6 @@ serve(async (req) => {
   try {
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
     const rateLimitResult = await checkRateLimit(clientIP, 'analyze-activity', 20, 60);
-    
     if (!rateLimitResult.allowed) {
       return new Response(
         JSON.stringify({ error: 'Rate limit exceeded' }),
@@ -45,7 +35,6 @@ serve(async (req) => {
 
     const body = await req.json();
     const validation = AnalyzeActivitySchema.safeParse(body);
-    
     if (!validation.success) {
       return new Response(
         JSON.stringify({ error: 'Validation failed', details: validation.error.flatten() }),
@@ -53,136 +42,124 @@ serve(async (req) => {
       );
     }
 
-    const { 
-      employee_id, 
-      date_from, 
-      date_to, 
-      analysis_type,
-      include_apps,
-      include_urls,
-      include_idle,
-    } = validation.data;
+    const { employee_name, date_from, date_to, analysis_type, include_apps, include_keystrokes, include_clicks } = validation.data;
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
     const now = new Date();
     const fromDate = date_from || new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const toDate = date_to || now.toISOString();
 
     const analysis: Record<string, unknown> = {
-      employee_id,
+      employee_name,
       period: { from: fromDate, to: toDate },
       generated_at: now.toISOString(),
     };
 
-    // Productivity analysis
+    // Productivity analysis from productivity_logs
     if (analysis_type === 'productivity' || analysis_type === 'summary' || analysis_type === 'all') {
-      const { data: activityData } = await supabase
-        .from('activity_logs')
+      const { data: prodData } = await supabase
+        .from('productivity_logs')
         .select('*')
-        .eq('employee_id', employee_id)
+        .eq('employee_name', employee_name)
+        .gte('recorded_date', fromDate)
+        .lte('recorded_date', toDate);
+
+      const totalProductive = prodData?.reduce((s, r) => s + (r.productive_time_seconds || 0), 0) || 0;
+      const totalUnproductive = prodData?.reduce((s, r) => s + (r.unproductive_time_seconds || 0), 0) || 0;
+      const totalNeutral = prodData?.reduce((s, r) => s + (r.neutral_time_seconds || 0), 0) || 0;
+      const totalTime = totalProductive + totalUnproductive + totalNeutral;
+
+      analysis.productivity = {
+        productive_seconds: totalProductive,
+        unproductive_seconds: totalUnproductive,
+        neutral_seconds: totalNeutral,
+        total_seconds: totalTime,
+        score: totalTime > 0 ? Math.round((totalProductive / totalTime) * 100) : 0,
+        records_count: prodData?.length || 0,
+      };
+    }
+
+    // Keystroke analysis from keystroke_logs
+    if (include_keystrokes && (analysis_type === 'summary' || analysis_type === 'all')) {
+      const { data: keyData } = await supabase
+        .from('keystroke_logs')
+        .select('*')
+        .eq('employee_name', employee_name)
         .gte('recorded_at', fromDate)
         .lte('recorded_at', toDate);
 
-      const totalKeystrokes = activityData?.reduce((sum, a) => sum + (a.keystrokes || 0), 0) || 0;
-      const totalClicks = activityData?.reduce((sum, a) => sum + (a.mouse_clicks || 0), 0) || 0;
-      const totalIdleTime = activityData?.reduce((sum, a) => sum + (a.idle_time || 0), 0) || 0;
-      const totalActiveTime = (activityData?.length || 0) * 60 - totalIdleTime; // Assuming 1 min intervals
-
-      analysis.productivity = {
-        total_keystrokes: totalKeystrokes,
-        total_clicks: totalClicks,
-        total_idle_seconds: totalIdleTime,
-        total_active_seconds: Math.max(0, totalActiveTime),
-        activity_score: totalActiveTime > 0 
-          ? Math.round((totalActiveTime / ((activityData?.length || 1) * 60)) * 100)
-          : 0,
-        records_count: activityData?.length || 0,
+      analysis.keystrokes = {
+        total_keystrokes: keyData?.reduce((s, r) => s + (r.keystrokes_count || 0), 0) || 0,
+        total_active_seconds: keyData?.reduce((s, r) => s + (r.active_time_seconds || 0), 0) || 0,
+        total_idle_seconds: keyData?.reduce((s, r) => s + (r.idle_time_seconds || 0), 0) || 0,
+        records_count: keyData?.length || 0,
       };
     }
 
-    // Application usage analysis
-    if (include_apps && (analysis_type === 'summary' || analysis_type === 'all')) {
-      const { data: appData } = await supabase
-        .from('application_usage')
+    // Click analysis from click_logs
+    if (include_clicks && (analysis_type === 'summary' || analysis_type === 'all')) {
+      const { data: clickData } = await supabase
+        .from('click_logs')
         .select('*')
-        .eq('employee_id', employee_id)
-        .gte('start_time', fromDate)
-        .lte('start_time', toDate);
+        .eq('employee_name', employee_name)
+        .gte('recorded_at', fromDate)
+        .lte('recorded_at', toDate);
+
+      const appClicks = new Map<string, number>();
+      for (const click of clickData || []) {
+        if (click.app_name) {
+          appClicks.set(click.app_name, (appClicks.get(click.app_name) || 0) + 1);
+        }
+      }
+
+      analysis.clicks = {
+        total_clicks: clickData?.length || 0,
+        top_apps: Array.from(appClicks.entries())
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 10)
+          .map(([name, count]) => ({ name, count })),
+      };
+    }
+
+    // App usage from productivity_logs.apps_used
+    if (include_apps && (analysis_type === 'summary' || analysis_type === 'all')) {
+      const { data: prodData } = await supabase
+        .from('productivity_logs')
+        .select('apps_used')
+        .eq('employee_name', employee_name)
+        .gte('recorded_date', fromDate)
+        .lte('recorded_date', toDate);
 
       const appUsage = new Map<string, number>();
-      const productiveTime = { productive: 0, unproductive: 0, neutral: 0 };
-
-      for (const app of appData || []) {
-        const duration = app.duration_seconds || 0;
-        appUsage.set(app.app_name, (appUsage.get(app.app_name) || 0) + duration);
-        
-        if (app.is_productive === true) productiveTime.productive += duration;
-        else if (app.is_productive === false) productiveTime.unproductive += duration;
-        else productiveTime.neutral += duration;
+      for (const log of prodData || []) {
+        if (log.apps_used && typeof log.apps_used === 'object') {
+          for (const [app, secs] of Object.entries(log.apps_used as Record<string, number>)) {
+            appUsage.set(app, (appUsage.get(app) || 0) + (secs || 0));
+          }
+        }
       }
-
-      const topApps = Array.from(appUsage.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10)
-        .map(([name, seconds]) => ({ name, seconds, hours: Math.round(seconds / 360) / 10 }));
 
       analysis.applications = {
-        top_apps: topApps,
-        productive_seconds: productiveTime.productive,
-        unproductive_seconds: productiveTime.unproductive,
-        neutral_seconds: productiveTime.neutral,
-        productivity_ratio: productiveTime.productive + productiveTime.unproductive > 0
-          ? Math.round((productiveTime.productive / (productiveTime.productive + productiveTime.unproductive)) * 100)
-          : 50,
-      };
-    }
-
-    // URL analysis
-    if (include_urls && (analysis_type === 'summary' || analysis_type === 'all')) {
-      const { data: urlData } = await supabase
-        .from('url_visits')
-        .select('*')
-        .eq('employee_id', employee_id)
-        .gte('visit_time', fromDate)
-        .lte('visit_time', toDate);
-
-      const domains = new Map<string, number>();
-      for (const url of urlData || []) {
-        try {
-          const domain = new URL(url.url).hostname;
-          domains.set(domain, (domains.get(domain) || 0) + (url.duration_seconds || 1));
-        } catch {}
-      }
-
-      const topDomains = Array.from(domains.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10)
-        .map(([domain, seconds]) => ({ domain, seconds }));
-
-      analysis.urls = {
-        total_visits: urlData?.length || 0,
-        top_domains: topDomains,
+        top_apps: Array.from(appUsage.entries())
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 10)
+          .map(([name, seconds]) => ({ name, seconds, hours: Math.round(seconds / 360) / 10 })),
       };
     }
 
     // Anomaly detection
     if (analysis_type === 'anomalies' || analysis_type === 'all') {
       const anomalies: string[] = [];
-      
       if (analysis.productivity) {
         const prod = analysis.productivity as any;
-        if (prod.activity_score < 30) anomalies.push('Very low activity score');
-        if (prod.total_idle_seconds > prod.total_active_seconds * 2) anomalies.push('Excessive idle time');
+        if (prod.score < 30) anomalies.push('Very low productivity score');
+        if (prod.unproductive_seconds > prod.productive_seconds * 2) anomalies.push('Excessive unproductive time');
       }
-      
-      if (analysis.applications) {
-        const apps = analysis.applications as any;
-        if (apps.productivity_ratio < 30) anomalies.push('Low productivity ratio');
+      if (analysis.keystrokes) {
+        const keys = analysis.keystrokes as any;
+        if (keys.total_idle_seconds > keys.total_active_seconds * 2) anomalies.push('Excessive idle time');
       }
-
       analysis.anomalies = anomalies;
     }
 
@@ -190,7 +167,6 @@ serve(async (req) => {
       JSON.stringify({ success: true, analysis }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-
   } catch (error) {
     console.error('Analysis error:', error);
     const message = error instanceof Error ? error.message : 'Unknown error';

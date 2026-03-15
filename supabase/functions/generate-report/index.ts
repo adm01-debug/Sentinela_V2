@@ -17,39 +17,56 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { type, startDate, endDate, employeeIds } = await req.json();
+    const { type, startDate, endDate } = await req.json();
 
-    const report: Record<string, unknown> = {
-      type,
-      generatedAt: new Date().toISOString(),
-      period: { startDate, endDate },
-      data: {},
-    };
+    const reportData: Record<string, unknown> = {};
 
     if (type === 'productivity') {
-      const { data } = await supabase
-        .from('activity_logs')
-        .select('employee_id, duration, type')
-        .gte('timestamp', startDate)
-        .lte('timestamp', endDate);
+      const { data, count } = await supabase
+        .from('productivity_logs')
+        .select('employee_name, productive_time_seconds, unproductive_time_seconds, neutral_time_seconds, apps_used', { count: 'exact' })
+        .gte('recorded_date', startDate)
+        .lte('recorded_date', endDate);
 
-      report.data = { activities: data?.length || 0 };
+      const totalProductive = data?.reduce((s, r) => s + (r.productive_time_seconds || 0), 0) || 0;
+      const totalUnproductive = data?.reduce((s, r) => s + (r.unproductive_time_seconds || 0), 0) || 0;
+
+      reportData.records = count || 0;
+      reportData.total_productive_seconds = totalProductive;
+      reportData.total_unproductive_seconds = totalUnproductive;
+      reportData.productivity_ratio = totalProductive + totalUnproductive > 0
+        ? Math.round((totalProductive / (totalProductive + totalUnproductive)) * 100)
+        : 0;
     } else if (type === 'violations') {
-      const { data } = await supabase
-        .from('violations')
-        .select('*')
+      const { data, count } = await supabase
+        .from('security_violations')
+        .select('*', { count: 'exact' })
         .gte('created_at', startDate)
         .lte('created_at', endDate);
 
-      report.data = { totalViolations: data?.length || 0, violations: data };
+      reportData.totalViolations = count || 0;
+      reportData.violations = data;
+    } else if (type === 'activity') {
+      const { data, count } = await supabase
+        .from('keystroke_logs')
+        .select('employee_name, keystrokes_count, active_time_seconds, idle_time_seconds', { count: 'exact' })
+        .gte('recorded_at', startDate)
+        .lte('recorded_at', endDate);
+
+      reportData.records = count || 0;
+      reportData.total_keystrokes = data?.reduce((s, r) => s + (r.keystrokes_count || 0), 0) || 0;
+      reportData.total_active_seconds = data?.reduce((s, r) => s + (r.active_time_seconds || 0), 0) || 0;
     }
 
-    const { error } = await supabase.from('reports').insert({
-      type,
-      data: report,
-      created_at: new Date().toISOString(),
-    });
+    const report = {
+      report_type: type,
+      summary: `Relatório ${type} de ${startDate} a ${endDate}`,
+      insights: reportData,
+      analysis_period_start: startDate,
+      analysis_period_end: endDate,
+    };
 
+    const { error } = await supabase.from('ai_analysis_reports').insert(report);
     if (error) throw error;
 
     return new Response(
