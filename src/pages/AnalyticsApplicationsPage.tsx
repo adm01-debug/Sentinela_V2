@@ -4,11 +4,17 @@ import { Badge } from '@/components/ui/badge';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import { useApplicationAnalytics } from '@/hooks/useAnalytics';
 
-const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#0088fe'];
+const COLORS = [
+  'hsl(var(--primary))',
+  'hsl(var(--secondary))',
+  'hsl(var(--accent))',
+  'hsl(var(--muted-foreground))',
+  'hsl(var(--destructive))',
+];
 
-interface PieLabelProps {
-  name: string;
-  percent: number;
+interface PieLabelRenderProps {
+  category?: string;
+  percent?: number;
 }
 
 interface AppCategory {
@@ -25,7 +31,9 @@ export default function AnalyticsApplicationsPage() {
       <h1 className="text-2xl font-bold">Uso de Aplicações</h1>
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
-          <CardHeader><CardTitle>Distribuição por Categoria</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Distribuição por Categoria</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="h-64">
               <ResponsiveContainer>
@@ -36,8 +44,9 @@ export default function AnalyticsApplicationsPage() {
                     cy="50%"
                     innerRadius={60}
                     outerRadius={80}
-                    dataKey="value"
-                    label={({ name, percent }: PieLabelProps) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    dataKey="count"
+                    nameKey="category"
+                    label={({ category, percent }: PieLabelRenderProps) => `${category ?? ''} ${((percent ?? 0) * 100).toFixed(0)}%`}
                   >
                     {data?.byCategory?.map((_: AppCategory, i: number) => (
                       <Cell key={i} fill={COLORS[i % COLORS.length]} />
@@ -48,8 +57,11 @@ export default function AnalyticsApplicationsPage() {
             </div>
           </CardContent>
         </Card>
+
         <Card>
-          <CardHeader><CardTitle>Top Aplicações</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Top Aplicações</CardTitle>
+          </CardHeader>
           <CardContent className="space-y-4">
             {data?.topApps?.map((app: AppCategory, i: number) => (
               <div key={i} className="space-y-2">
@@ -57,23 +69,26 @@ export default function AnalyticsApplicationsPage() {
                   <span className="font-medium">{app.category}</span>
                   <Badge variant="default">{app.count}</Badge>
                 </div>
-                <Progress value={Math.min(app.duration, 100)} />
+                <Progress value={Math.min(Math.max(app.duration, 0), 100)} />
                 <p className="text-sm text-muted-foreground">{app.duration}h ({app.count})</p>
               </div>
             ))}
           </CardContent>
         </Card>
       </div>
+
       <Card>
-        <CardHeader><CardTitle>Uso por Hora do Dia</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Uso por Hora do Dia</CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="h-64">
             <ResponsiveContainer>
               <BarChart data={data?.byHour}>
-                <XAxis dataKey="hour" />
+                <XAxis dataKey="label" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="usage" fill="#8884d8" />
+                <Bar dataKey="value" fill="hsl(var(--primary))" />
               </BarChart>
             </ResponsiveContainer>
           </div>
