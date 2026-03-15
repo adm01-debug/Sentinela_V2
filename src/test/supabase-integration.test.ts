@@ -76,8 +76,8 @@ describe('Database Table Operations', () => {
 describe('RLS Policy Scenarios', () => {
   it('should deny unauthenticated access', async () => {
     setupMockQuery(null, { message: 'new row violates row-level security policy', code: '42501' });
-    const { error } = await supabase.from('employees' as any).select('*').order('name' as any).limit(10);
-    expect(error?.message).toContain('row-level security');
+    const result = await (supabase.from as any)('employees').select('*').order('name').limit(10);
+    expect(result.error?.message).toContain('row-level security');
   });
 
   it('should deny cross-company access', async () => {
