@@ -39,7 +39,7 @@ export default function AnalyticsApplicationsPage() {
                     dataKey="value"
                     label={({ name, percent }: PieLabelProps) => `${name} ${(percent * 100).toFixed(0)}%`}
                   >
-                    {data?.byCategory?.map((_: CategoryItem, i: number) => (
+                    {data?.byCategory?.map((_: AppCategory, i: number) => (
                       <Cell key={i} fill={COLORS[i % COLORS.length]} />
                     ))}
                   </Pie>
