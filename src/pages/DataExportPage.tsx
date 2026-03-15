@@ -33,8 +33,9 @@ export default function DataExportPage() {
       });
       if (error) throw error;
       toast({ title: 'Exportação concluída!', description: `Dados de ${EXPORT_TYPES.find(t => t.value === dataType)?.label} exportados.` });
-    } catch (err: any) {
-      toast({ title: 'Erro na exportação', description: err.message, variant: 'destructive' });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Falha ao exportar dados';
+      toast({ title: 'Erro na exportação', description: message, variant: 'destructive' });
     } finally {
       setIsExporting(false);
     }

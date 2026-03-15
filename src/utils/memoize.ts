@@ -1,16 +1,16 @@
 // Memoization utilities for Sentinela v17
 
-type AnyFunction = (...args: any[]) => any;
+type AnyFunction<TArgs extends unknown[] = unknown[], TResult = unknown> = (...args: TArgs) => TResult;
 
-export function memoize<T extends AnyFunction>(
-  fn: T,
+export function memoize<TArgs extends unknown[], TResult>(
+  fn: AnyFunction<TArgs, TResult>,
   options?: { maxSize?: number; ttl?: number }
-): T {
-  const cache = new Map<string, { value: ReturnType<T>; timestamp: number }>();
+): AnyFunction<TArgs, TResult> {
+  const cache = new Map<string, { value: TResult; timestamp: number }>();
   const maxSize = options?.maxSize ?? 100;
   const ttl = options?.ttl ?? 0;
 
-  return ((...args: Parameters<T>): ReturnType<T> => {
+  return (...args: TArgs): TResult => {
     const key = JSON.stringify(args);
     const cached = cache.get(key);
 
@@ -22,27 +22,27 @@ export function memoize<T extends AnyFunction>(
     }
 
     const result = fn(...args);
-    
+
     if (cache.size >= maxSize) {
-      const firstKey = cache.keys().next().value;
-      if (firstKey) cache.delete(firstKey);
+      const firstKey = cache.keys().next().value as string | undefined;
+      if (firstKey !== undefined) cache.delete(firstKey);
     }
-    
+
     cache.set(key, { value: result, timestamp: Date.now() });
     return result;
-  }) as T;
+  };
 }
 
-export function memoizeAsync<T extends (...args: any[]) => Promise<any>>(
-  fn: T,
+export function memoizeAsync<TArgs extends unknown[], TResult>(
+  fn: (...args: TArgs) => Promise<TResult>,
   options?: { maxSize?: number; ttl?: number }
-): T {
-  const cache = new Map<string, { value: Awaited<ReturnType<T>>; timestamp: number }>();
-  const pending = new Map<string, Promise<Awaited<ReturnType<T>>>>();
+): (...args: TArgs) => Promise<TResult> {
+  const cache = new Map<string, { value: TResult; timestamp: number }>();
+  const pending = new Map<string, Promise<TResult>>();
   const maxSize = options?.maxSize ?? 100;
   const ttl = options?.ttl ?? 0;
 
-  return (async (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
+  return async (...args: TArgs): Promise<TResult> => {
     const key = JSON.stringify(args);
     const cached = cache.get(key);
 
@@ -63,26 +63,28 @@ export function memoizeAsync<T extends (...args: any[]) => Promise<any>>(
 
     try {
       const result = await promise;
-      
+
       if (cache.size >= maxSize) {
-        const firstKey = cache.keys().next().value;
-        if (firstKey) cache.delete(firstKey);
+        const firstKey = cache.keys().next().value as string | undefined;
+        if (firstKey !== undefined) cache.delete(firstKey);
       }
-      
+
       cache.set(key, { value: result, timestamp: Date.now() });
       return result;
     } finally {
       pending.delete(key);
     }
-  }) as T;
+  };
 }
 
-export function memoizeOne<T extends AnyFunction>(fn: T): T {
-  let lastArgs: Parameters<T> | undefined;
-  let lastResult: ReturnType<T>;
+export function memoizeOne<TArgs extends unknown[], TResult>(
+  fn: AnyFunction<TArgs, TResult>
+): AnyFunction<TArgs, TResult> {
+  let lastArgs: TArgs | undefined;
+  let lastResult: TResult;
   let hasResult = false;
 
-  return ((...args: Parameters<T>): ReturnType<T> => {
+  return (...args: TArgs): TResult => {
     if (hasResult && lastArgs && argsEqual(lastArgs, args)) {
       return lastResult;
     }
@@ -91,10 +93,10 @@ export function memoizeOne<T extends AnyFunction>(fn: T): T {
     lastResult = fn(...args);
     hasResult = true;
     return lastResult;
-  }) as T;
+  };
 }
 
-function argsEqual(a: any[], b: any[]): boolean {
+function argsEqual(a: readonly unknown[], b: readonly unknown[]): boolean {
   if (a.length !== b.length) return false;
   return a.every((arg, i) => arg === b[i]);
 }
@@ -123,8 +125,8 @@ export class MemoCache<K, V> {
 
   set(key: K, value: V): void {
     if (this.cache.size >= this.maxSize) {
-      const firstKey = this.cache.keys().next().value;
-      if (firstKey) this.cache.delete(firstKey);
+      const firstKey = this.cache.keys().next().value as K | undefined;
+      if (firstKey !== undefined) this.cache.delete(firstKey);
     }
     this.cache.set(key, { value, timestamp: Date.now() });
   }

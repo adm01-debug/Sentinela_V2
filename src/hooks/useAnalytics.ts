@@ -2,16 +2,50 @@ import { useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { trackEvent, trackPageView } from './google-analytics';
 
-interface ChartDataPoint { label: string; value: number; }
-interface AppCategory { category: string; count: number; duration: number; }
-interface Performer { id: string; name: string; score: number; }
-interface TrendInsight { id: string; title: string; value: number; change: number; }
+interface ChartDataPoint {
+  label: string;
+  value: number;
+}
+
+interface AppCategory {
+  category: string;
+  count: number;
+  duration: number;
+}
+
+interface Performer {
+  id: string;
+  name: string;
+  score: number;
+}
+
+interface TrendInsight {
+  id: string;
+  title: string;
+  value: number;
+  change: number;
+  trend?: 'up' | 'down';
+  description?: string;
+}
+
+interface MonthlyTrendData {
+  label: string;
+  productivity: number;
+  activeHours: number;
+}
+
+interface TrendPrediction {
+  metric: string;
+  current: number;
+  predicted: number;
+  change: number;
+}
 
 export function useAnalytics(params?: { period?: string }) {
   const track = useCallback((event: string, p?: Record<string, string | number | boolean>) => {
     trackEvent(event, p);
   }, []);
-  
+
   const pageView = useCallback((path: string) => {
     trackPageView(path);
   }, []);
@@ -27,11 +61,11 @@ export function useAnalytics(params?: { period?: string }) {
     }),
     enabled: !!params,
   });
-  
+
   if (params) {
     return { ...query, track, pageView };
   }
-  
+
   return { track, pageView, data: undefined };
 }
 
@@ -62,8 +96,8 @@ export function useTrendsAnalytics() {
     queryKey: ['analytics-trends'],
     queryFn: async () => ({
       insights: [] as TrendInsight[],
-      monthlyData: [] as ChartDataPoint[],
-      predictions: [] as ChartDataPoint[],
+      monthlyData: [] as MonthlyTrendData[],
+      predictions: [] as TrendPrediction[],
     }),
   });
 }
