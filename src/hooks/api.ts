@@ -1,6 +1,18 @@
-// API hooks - stub for features that import from @/hooks/api
+// API hooks - typed interfaces for Supabase operations
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
+
+type EmployeeRow = Database['public']['Tables']['employees']['Row'];
+type EmployeeInsert = Database['public']['Tables']['employees']['Insert'];
+
+interface EmployeeQueryParams {
+  status?: string;
+  department?: string;
+  search?: string;
+  page?: number;
+  pageSize?: number;
+}
 
 export function useLogin() {
   return useMutation({
@@ -12,7 +24,7 @@ export function useLogin() {
   });
 }
 
-export function useEmployees(params?: any) {
+export function useEmployees(params?: EmployeeQueryParams) {
   return useQuery({
     queryKey: ['employees', params],
     queryFn: async () => {
@@ -25,7 +37,7 @@ export function useEmployees(params?: any) {
 
 export function useCreateEmployee() {
   return useMutation({
-    mutationFn: async (employee: any) => {
+    mutationFn: async (employee: EmployeeInsert) => {
       const { data, error } = await supabase.from('employees').insert(employee).select().single();
       if (error) throw error;
       return data;
