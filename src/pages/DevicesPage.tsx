@@ -1,51 +1,171 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
-import { Button  } from '@/components/ui/button';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { Search, Monitor, Smartphone, Tablet, RefreshCw, MoreVertical, Trash2, Power, PowerOff, Eye, HardDrive } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useDevicesPage } from '@/hooks/useDevicesPage';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+const typeIcons: Record<string, React.ReactNode> = {
+  desktop: <Monitor className="h-5 w-5" />,
+  mobile: <Smartphone className="h-5 w-5" />,
+  tablet: <Tablet className="h-5 w-5" />,
+};
 
 export default function DevicesPage() {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    devices, stats, filters, selectedDevice, isDetailsOpen,
+    isLoading, isRefreshing,
+    handleFilterChange, handleViewDetails, handleCloseDetails,
+    handleDeactivate, handleReactivate, handleDelete, handleRefresh,
+    isDeactivating, isDeleting,
+  } = useDevicesPage();
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
+      <div className="p-6 space-y-6">
+        <Skeleton className="h-8 w-48" />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-20" />)}
+        </div>
+        <Skeleton className="h-96" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Dispositivos
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Gerencie dispositivos monitorados
-          </p>
+          <h1 className="text-2xl font-bold">Dispositivos</h1>
+          <p className="text-muted-foreground mt-1">Gerencie dispositivos monitorados</p>
         </div>
+        <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
+          <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+          Atualizar
+        </Button>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Dispositivos</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-8 text-gray-500">
-            <p>Conteúdo de Dispositivos será implementado aqui.</p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={() => navigate(-1)}
-            >
-              Voltar
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card><CardContent className="pt-4 text-center"><HardDrive className="h-5 w-5 mx-auto text-muted-foreground" /><p className="text-2xl font-bold mt-1">{stats.total}</p><p className="text-xs text-muted-foreground">Total</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Power className="h-5 w-5 mx-auto text-green-500" /><p className="text-2xl font-bold mt-1">{stats.active}</p><p className="text-xs text-muted-foreground">Ativos</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Monitor className="h-5 w-5 mx-auto text-blue-500" /><p className="text-2xl font-bold mt-1">{stats.desktop}</p><p className="text-xs text-muted-foreground">Desktop</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Smartphone className="h-5 w-5 mx-auto text-purple-500" /><p className="text-2xl font-bold mt-1">{stats.mobile}</p><p className="text-xs text-muted-foreground">Mobile</p></CardContent></Card>
+      </div>
+
+      {/* Filters */}
+      <div className="flex gap-4 flex-wrap">
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input placeholder="Buscar por nome ou IP..." className="pl-9" value={filters.search} onChange={e => handleFilterChange('search', e.target.value)} />
+        </div>
+        <Select value={filters.type} onValueChange={v => handleFilterChange('type', v)}>
+          <SelectTrigger className="w-[140px]"><SelectValue placeholder="Tipo" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos</SelectItem>
+            <SelectItem value="desktop">Desktop</SelectItem>
+            <SelectItem value="mobile">Mobile</SelectItem>
+            <SelectItem value="tablet">Tablet</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filters.status} onValueChange={v => handleFilterChange('status', v)}>
+          <SelectTrigger className="w-[140px]"><SelectValue placeholder="Status" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos</SelectItem>
+            <SelectItem value="active">Ativos</SelectItem>
+            <SelectItem value="inactive">Inativos</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Devices Table */}
+      {devices.length === 0 ? (
+        <Card><CardContent className="py-12 text-center text-muted-foreground"><HardDrive className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhum dispositivo encontrado.</p></CardContent></Card>
+      ) : (
+        <Card>
+          <CardContent className="p-0 divide-y">
+            {devices.map(device => (
+              <div key={device.id} className="flex items-center justify-between p-4 hover:bg-accent/50">
+                <div className="flex items-center gap-4 flex-1">
+                  <div className="p-2 rounded-lg bg-muted">
+                    {typeIcons[device.device_type] || <Monitor className="h-5 w-5" />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{device.name}</p>
+                      <Badge variant={device.is_active ? 'default' : 'secondary'}>
+                        {device.is_active ? 'Ativo' : 'Inativo'}
+                      </Badge>
+                    </div>
+                    <div className="flex gap-4 text-sm text-muted-foreground mt-1">
+                      {device.os_name && <span>{device.os_name} {device.os_version}</span>}
+                      {device.ip_address && <span>IP: {device.ip_address}</span>}
+                      {(device as any).employee && <span>👤 {(device as any).employee.name}</span>}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  {device.last_seen && (
+                    <span className="text-xs text-muted-foreground">
+                      {formatDistanceToNow(new Date(device.last_seen), { addSuffix: true, locale: ptBR })}
+                    </span>
+                  )}
+                  {device.agent_version && (
+                    <Badge variant="outline" className="text-xs">v{device.agent_version}</Badge>
+                  )}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleViewDetails(device)}><Eye className="mr-2 h-4 w-4" />Detalhes</DropdownMenuItem>
+                      {device.is_active ? (
+                        <DropdownMenuItem onClick={() => handleDeactivate(device.id)}><PowerOff className="mr-2 h-4 w-4" />Desativar</DropdownMenuItem>
+                      ) : (
+                        <DropdownMenuItem onClick={() => handleReactivate(device.id)}><Power className="mr-2 h-4 w-4" />Reativar</DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(device.id)}><Trash2 className="mr-2 h-4 w-4" />Remover</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Device Detail Dialog */}
+      <Dialog open={isDetailsOpen} onOpenChange={handleCloseDetails}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader><DialogTitle>Detalhes do Dispositivo</DialogTitle></DialogHeader>
+          {selectedDevice && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div><label className="text-sm text-muted-foreground">Nome</label><p className="font-medium">{selectedDevice.name}</p></div>
+                <div><label className="text-sm text-muted-foreground">Tipo</label><p className="capitalize">{selectedDevice.device_type}</p></div>
+                <div><label className="text-sm text-muted-foreground">Sistema</label><p>{selectedDevice.os_name} {selectedDevice.os_version}</p></div>
+                <div><label className="text-sm text-muted-foreground">Status</label><Badge variant={selectedDevice.is_active ? 'default' : 'secondary'}>{selectedDevice.is_active ? 'Ativo' : 'Inativo'}</Badge></div>
+                <div><label className="text-sm text-muted-foreground">IP</label><p>{selectedDevice.ip_address || 'N/A'}</p></div>
+                <div><label className="text-sm text-muted-foreground">MAC</label><p>{selectedDevice.mac_address || 'N/A'}</p></div>
+                <div><label className="text-sm text-muted-foreground">Agent</label><p>{selectedDevice.agent_version || 'N/A'}</p></div>
+                <div><label className="text-sm text-muted-foreground">Última Atividade</label><p>{selectedDevice.last_seen ? formatDistanceToNow(new Date(selectedDevice.last_seen), { addSuffix: true, locale: ptBR }) : 'N/A'}</p></div>
+              </div>
+              <DialogFooter className="gap-2">
+                {selectedDevice.is_active ? (
+                  <Button variant="outline" onClick={() => handleDeactivate(selectedDevice.id)} disabled={isDeactivating}>Desativar</Button>
+                ) : (
+                  <Button variant="outline" onClick={() => handleReactivate(selectedDevice.id)}>Reativar</Button>
+                )}
+                <Button variant="destructive" onClick={() => handleDelete(selectedDevice.id)} disabled={isDeleting}>Remover</Button>
+              </DialogFooter>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

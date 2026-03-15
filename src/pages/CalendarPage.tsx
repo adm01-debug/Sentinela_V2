@@ -1,48 +1,43 @@
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
-import { Button  } from '@/components/ui/button';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, getDay, isToday } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export default function CalendarPage() {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const monthStart = startOfMonth(currentDate);
+  const monthEnd = endOfMonth(currentDate);
+  const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
+  const startDay = getDay(monthStart);
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Calendário
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Visualize eventos e agendamentos
-          </p>
+        <h1 className="text-2xl font-bold flex items-center gap-2"><CalendarIcon className="h-6 w-6 text-primary" />Calendário</h1>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="icon" onClick={() => setCurrentDate(subMonths(currentDate, 1))}><ChevronLeft className="h-4 w-4" /></Button>
+          <span className="font-medium min-w-[160px] text-center capitalize">{format(currentDate, 'MMMM yyyy', { locale: ptBR })}</span>
+          <Button variant="outline" size="icon" onClick={() => setCurrentDate(addMonths(currentDate, 1))}><ChevronRight className="h-4 w-4" /></Button>
+          <Button variant="outline" size="sm" onClick={() => setCurrentDate(new Date())}>Hoje</Button>
         </div>
       </div>
-
       <Card>
-        <CardHeader>
-          <CardTitle>Calendário</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-8 text-gray-500">
-            <p>Conteúdo de Calendário será implementado aqui.</p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={() => navigate(-1)}
-            >
-              Voltar
-            </Button>
+        <CardContent className="p-4">
+          <div className="grid grid-cols-7 gap-1 mb-2">
+            {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(d => (
+              <div key={d} className="text-center text-sm font-medium text-muted-foreground py-2">{d}</div>
+            ))}
+          </div>
+          <div className="grid grid-cols-7 gap-1">
+            {Array.from({ length: startDay }).map((_, i) => <div key={`empty-${i}`} />)}
+            {days.map(day => (
+              <div key={day.toISOString()} className={`p-2 text-center rounded-lg text-sm cursor-pointer hover:bg-accent transition-colors ${isToday(day) ? 'bg-primary text-primary-foreground font-bold' : ''}`}>
+                {format(day, 'd')}
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
