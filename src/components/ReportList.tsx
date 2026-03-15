@@ -36,10 +36,10 @@ export const ReportList = ({ reports, isLoading }: Props) => {
       </TableHeader>
       <TableBody>
         {reports.map(report => {
-          const date = new Date(report.createdAt || '');
+          const date = new Date((report as any).created_at || (report as any).createdAt || '');
           return (
             <TableRow key={report.id}>
-              <TableCell className="font-medium">{report.name || report.title}</TableCell>
+              <TableCell className="font-medium">{report.name}</TableCell>
               <TableCell>{report.type}</TableCell>
               <TableCell>
                 <Badge variant={statusVariants[report.status] || 'default'}>
