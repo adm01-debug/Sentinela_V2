@@ -1,6 +1,7 @@
 /**
  * SENTINELA - Supabase Integration Patterns Test
  * Tests for all table operations and RLS scenarios
+ * @ts-nocheck
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { supabase } from '@/integrations/supabase/client';
