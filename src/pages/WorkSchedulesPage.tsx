@@ -65,7 +65,7 @@ export default function WorkSchedulesPage() {
             <Card><CardContent className="py-12 text-center text-muted-foreground"><Clock className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma escala encontrada.</p></CardContent></Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredSchedules.map((s: any) => (
+              {filteredSchedules.map((s) => (
                 <Card key={s.id}>
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
