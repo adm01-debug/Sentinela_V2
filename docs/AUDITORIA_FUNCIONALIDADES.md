@@ -183,8 +183,8 @@
 | # | Funcionalidade | Status | Evidência |
 |---|---|---|---|
 | 15.1 | Tabela | ✅ | `internet_access_settings` |
-| 15.2 | Hook | ✅ | `useInternetAccess` |
-| 15.3 | Página dedicada | ❌ | Nenhuma página dedicada (acesso via settings) |
+| 15.2 | Hook | ✅ | `useInternetAccessPage` |
+| 15.3 | Página dedicada | ✅ | `InternetAccessPage.tsx` — CRUD regras, filtros, stats, categorias |
 
 ---
 
