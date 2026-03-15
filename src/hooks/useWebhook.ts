@@ -2,12 +2,18 @@ import { useState, useCallback } from 'react';
 
 interface WebhookConfig { url: string; secret?: string; events: string[]; headers?: Record<string, string>; }
 
+interface WebhookResponse {
+  status: number;
+  data: unknown;
+  timestamp: Date;
+}
+
 export function useWebhook(config: WebhookConfig) {
   const [isLoading, setIsLoading] = useState(false);
-  const [lastResponse, setLastResponse] = useState<any>(null);
+  const [lastResponse, setLastResponse] = useState<WebhookResponse | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
-  const send = useCallback(async (event: string, payload: any) => {
+  const send = useCallback(async (event: string, payload: Record<string, unknown>) => {
     if (!config.events.includes(event) && !config.events.includes('*')) return null;
     setIsLoading(true);
     setError(null);

@@ -10,6 +10,18 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useScreenshots } from '@/hooks/useScreenshots';
 import { useEmployees } from '@/hooks/useEmployees';
 
+interface ScreenshotItem {
+  url: string;
+  employeeId: string;
+  capturedAt: string;
+  metadata?: { activeApplication?: string };
+}
+
+interface EmployeeItem {
+  id: string;
+  name: string;
+}
+
 export default function ScreenshotsPage() {
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [employeeId, setEmployeeId] = useState('');
@@ -17,10 +29,10 @@ export default function ScreenshotsPage() {
   const [search, setSearch] = useState('');
 
   const { data: employeesData } = useEmployees();
-  const employees = Array.isArray(employeesData) ? employeesData : (employeesData as any)?.data || [];
+  const employees: EmployeeItem[] = Array.isArray(employeesData) ? employeesData : [];
   const { data: screenshots, isLoading } = useScreenshots(employeeId, date?.toISOString() || '');
 
-  const images = screenshots?.map((s: any) => ({ src: s.url, alt: s.metadata?.activeApplication || '', title: `${s.employeeId} - ${format(new Date(s.capturedAt), 'HH:mm')}` })) || [];
+  const images = (screenshots || []).map((s) => ({ src: s.url, alt: s.app_name || '', title: `${s.employee_name} - ${format(new Date(s.captured_at), 'HH:mm')}` }));
 
   return (
     <div className="p-6 space-y-6">
@@ -38,7 +50,7 @@ export default function ScreenshotsPage() {
         </div>
         <Select value={employeeId} onValueChange={setEmployeeId}>
           <SelectTrigger className="w-[200px]"><SelectValue placeholder="Funcionário" /></SelectTrigger>
-          <SelectContent>{employees?.map((e: any) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
+          <SelectContent>{employees?.map((e) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
         </Select>
         <DatePicker date={date} onDateChange={setDate} placeholder="Selecionar data" />
       </div>

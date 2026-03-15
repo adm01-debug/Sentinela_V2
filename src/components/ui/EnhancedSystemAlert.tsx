@@ -15,7 +15,7 @@ export interface SystemAlertProps {
 }
 
 const icons = { info: Info, success: CheckCircle, warning: AlertTriangle, error: AlertCircle, offline: WifiOff };
-const variants = { info: 'default', success: 'default', warning: 'default', error: 'destructive', offline: 'default' };
+const variants: Record<string, 'default' | 'destructive'> = { info: 'default', success: 'default', warning: 'default', error: 'destructive', offline: 'default' };
 
 export function EnhancedSystemAlert({ type = 'info', title, message, dismissible = true, onDismiss, autoHide, className }: SystemAlertProps) {
   const [visible, setVisible] = useState(true);
@@ -31,7 +31,7 @@ export function EnhancedSystemAlert({ type = 'info', title, message, dismissible
   if (!visible) return null;
 
   return (
-    <Alert variant={variants[type] as any} className={cn('relative', className)}>
+    <Alert variant={variants[type]} className={cn('relative', className)}>
       <Icon className="h-4 w-4" />
       {title && <AlertTitle>{title}</AlertTitle>}
       <AlertDescription>{message}</AlertDescription>

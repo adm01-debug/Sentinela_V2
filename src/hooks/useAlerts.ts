@@ -18,7 +18,7 @@ export const useAlert = (id: string) => {
   return useQuery({
     queryKey: ['alert', id],
     queryFn: async () => {
-      const { data, error } = await supabase.from('security_violations').select('*').eq('id', id).single();
+      const { data, error } = await supabase.from('security_violations').select('*').eq('id', id).maybeSingle();
       if (error) throw error;
       return data;
     },

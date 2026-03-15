@@ -36,7 +36,7 @@ export default function ActivityTimelinePage() {
   const [date, setDate] = useState<Date>(new Date());
   const [employeeId, setEmployeeId] = useState<string>('');
   const { data: employeesData } = useEmployees();
-  const { data: activitiesData, isLoading } = useActivities({ startDate: date.toISOString().split('T')[0], endDate: date.toISOString().split('T')[0], employeeId: employeeId || undefined });
+  const { data: activitiesData, isLoading } = useActivities({ startDate: date.toISOString().split('T')[0], endDate: date.toISOString().split('T')[0], employee_name: employeeId || undefined });
 
   const employees = (Array.isArray(employeesData) ? employeesData : (employeesData as DataWithArray)?.data || []) as Employee[];
   const activities = (Array.isArray(activitiesData) ? activitiesData : (activitiesData as DataWithArray)?.data || []) as Activity[];

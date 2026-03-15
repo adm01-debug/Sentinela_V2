@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react';
 
+interface NetworkConnection {
+  downlink?: number;
+  effectiveType?: string;
+  rtt?: number;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkConnection;
+}
+
 interface NetworkState {
   online: boolean;
   downlink?: number;
@@ -12,7 +22,7 @@ export function useNetworkState(): NetworkState {
 
   useEffect(() => {
     const updateState = () => {
-      const conn = (navigator as any).connection;
+      const conn = (navigator as NavigatorWithConnection).connection;
       setState({
         online: navigator.onLine,
         downlink: conn?.downlink,
