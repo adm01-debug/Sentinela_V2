@@ -22,7 +22,7 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognition = (window as unknown as Record<string, unknown>).SpeechRecognition || (window as unknown as Record<string, unknown>).webkitSpeechRecognition;
     setIsSupported(!!SpeechRecognition);
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
