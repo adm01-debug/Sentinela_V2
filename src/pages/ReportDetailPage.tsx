@@ -7,6 +7,29 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/Skeleton';
 import { useReport } from '@/hooks/useReports';
 
+interface ReportData {
+  id: string;
+  report_type: string;
+  summary: string | null;
+  analysis_period_start: string | null;
+  analysis_period_end: string | null;
+  generated_by: string | null;
+  created_at: string;
+  risk_score: number | null;
+  employee_name: string | null;
+  insights: unknown;
+  recommendations: unknown;
+  raw_data: unknown;
+  // Mapped fields
+  name?: string;
+  status?: string;
+  type?: string;
+  startDate?: string;
+  endDate?: string;
+  createdBy?: string;
+  content?: string;
+}
+
 export default function ReportDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -15,7 +38,7 @@ export default function ReportDetailPage() {
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
   if (!report) return <div className="p-6">Relatório não encontrado</div>;
 
-  const r = report as any;
+  const r = report as ReportData;
 
   return (
     <div className="p-6 space-y-6">
@@ -23,7 +46,7 @@ export default function ReportDetailPage() {
         <div className="flex items-center gap-4">
           <Button variant="ghost" onClick={() => navigate(-1)}><ArrowLeft className="mr-2 h-4 w-4" />Voltar</Button>
           <h1 className="text-2xl font-bold">{r.name || r.report_type || 'Relatório'}</h1>
-          <Badge variant={r.status === 'completed' ? 'default' : 'secondary'}>{r.status}</Badge>
+          <Badge variant={r.status === 'completed' ? 'default' : 'secondary'}>{r.status || 'pending'}</Badge>
         </div>
         <Button><Download className="mr-2 h-4 w-4" />Baixar</Button>
       </div>

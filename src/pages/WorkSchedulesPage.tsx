@@ -156,7 +156,7 @@ export default function WorkSchedulesPage() {
             <div><Label>Escala</Label>
               <Select value={assignForm.schedule_id} onValueChange={v => setAssignForm(prev => ({ ...prev, schedule_id: v }))}>
                 <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
-                <SelectContent>{filteredSchedules.map((s: any) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{filteredSchedules.map((s) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Data Efetiva</Label><Input type="date" value={assignForm.effective_date} onChange={e => setAssignForm(prev => ({ ...prev, effective_date: e.target.value }))} /></div>

@@ -59,7 +59,7 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         fetchTeam: async (id) => {
           set({ isLoading: true, error: null });
           try {
-            const { data, error } = await supabase.from('teams').select('*').eq('id', id).single();
+            const { data, error } = await supabase.from('teams').select('*').eq('id', id).maybeSingle();
             if (error) throw error;
             set({ currentTeam: data as Team, isLoading: false });
           } catch (error) {
