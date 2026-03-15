@@ -22,6 +22,7 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     setIsSupported(!!SpeechRecognition);
     if (SpeechRecognition) {
@@ -29,7 +30,7 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
       recognition.continuous = continuous;
       recognition.interimResults = false;
       recognition.lang = language;
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
         const last = event.results.length - 1;
         const text = event.results[last][0].transcript.trim().toLowerCase();
         setTranscript(text);
@@ -43,7 +44,7 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
           }
         });
       };
-      recognition.onerror = (event: any) => { onError?.(event.error); setIsListening(false); };
+      recognition.onerror = (event: SpeechRecognitionErrorEvent) => { onError?.(event.error); setIsListening(false); };
       recognition.onend = () => setIsListening(false);
       recognitionRef.current = recognition;
     }

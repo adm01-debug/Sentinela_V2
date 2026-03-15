@@ -1,7 +1,26 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-export const useReports = (filters?: any) => {
+interface ReportFilters {
+  type?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  employeeName?: string;
+}
+
+interface GenerateReportParams {
+  type?: string;
+  summary?: string;
+}
+
+interface ReportTemplate {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+}
+
+export const useReports = (filters?: ReportFilters) => {
   return useQuery({
     queryKey: ['reports', filters],
     queryFn: async () => {
@@ -38,7 +57,7 @@ export const useDeleteReport = () => {
 export const useGenerateReport = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (params: any) => {
+    mutationFn: async (params: GenerateReportParams) => {
       const { data, error } = await supabase.from('ai_analysis_reports').insert({
         report_type: params.type || 'general',
         summary: params.summary || 'Report generated',
@@ -53,6 +72,6 @@ export const useGenerateReport = () => {
 export const useReportTemplates = () => {
   return useQuery({
     queryKey: ['report-templates'],
-    queryFn: async () => [] as any[],
+    queryFn: async () => [] as ReportTemplate[],
   });
 };

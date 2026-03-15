@@ -5,7 +5,7 @@ export interface SessionEvent {
   type: 'login' | 'logout' | 'action' | 'error' | 'security';
   timestamp: Date;
   description: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string | number | boolean>;
 }
 
 export interface UseSessionActivityOptions {
@@ -18,7 +18,7 @@ export function useSessionActivity(options: UseSessionActivityOptions = {}) {
   const [events, setEvents] = useState<SessionEvent[]>(() => {
     if (typeof window === 'undefined') return [];
     const stored = sessionStorage.getItem(persistKey);
-    return stored ? JSON.parse(stored).map((e: any) => ({ ...e, timestamp: new Date(e.timestamp) })) : [];
+    return stored ? JSON.parse(stored).map((e: Omit<SessionEvent, 'timestamp'> & { timestamp: string }) => ({ ...e, timestamp: new Date(e.timestamp) })) : [];
   });
   const [sessionStart] = useState(() => new Date());
 

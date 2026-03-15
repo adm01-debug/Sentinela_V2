@@ -7,7 +7,7 @@ export interface Suggestion {
   title: string;
   description?: string;
   confidence: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string | number | boolean>;
   action?: () => void;
 }
 
@@ -28,14 +28,23 @@ export function useSmartSuggestions(options: UseSmartSuggestionsOptions = {}) {
       const { data } = await supabase.functions.invoke('smart-recommendations', {
         body: { context: query || context, limit: maxSuggestions }
       });
+      interface RawSuggestion {
+        id?: string;
+        type?: string;
+        title: string;
+        description?: string;
+        confidence?: number;
+        priority?: number;
+        metrics?: Record<string, string | number | boolean>;
+      }
       const filtered = (data?.recommendations || [])
-        .filter((s: any) => (s.confidence || s.priority / 100) >= minConfidence)
-        .map((s: any) => ({
+        .filter((s: RawSuggestion) => (s.confidence || (s.priority || 0) / 100) >= minConfidence)
+        .map((s: RawSuggestion) => ({
           id: s.id || crypto.randomUUID(),
-          type: s.type || 'action',
+          type: (s.type || 'action') as Suggestion['type'],
           title: s.title,
           description: s.description,
-          confidence: s.confidence || s.priority / 100,
+          confidence: s.confidence || (s.priority || 0) / 100,
           metadata: s.metrics,
         }));
       setSuggestions(filtered);

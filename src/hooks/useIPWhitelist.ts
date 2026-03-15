@@ -68,7 +68,7 @@ export function useCreateWhitelistIP() {
       queryClient.invalidateQueries({ queryKey: ['whitelisted-ips'] });
       toast.success('IP adicionado à whitelist');
     },
-    onError: (error: any) => {
+    onError: (error: Error & { code?: string }) => {
       if (error.code === '23505') {
         toast.error('Este IP já está na whitelist');
       } else {

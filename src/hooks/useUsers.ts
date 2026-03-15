@@ -1,20 +1,45 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar: string | null;
+  createdAt: string;
+}
+
+interface ProfileRow {
+  id: string;
+  full_name?: string | null;
+  email?: string | null;
+  avatar_url?: string | null;
+  created_at: string;
+}
+
+interface UpdateUserData {
+  full_name?: string;
+  email?: string;
+  avatar_url?: string;
+}
+
+const mapProfileToUser = (p: ProfileRow): UserProfile => ({
+  id: p.id,
+  name: p.full_name || p.email?.split('@')[0] || 'Unknown',
+  email: p.email || '',
+  role: 'user',
+  avatar: p.avatar_url || null,
+  createdAt: p.created_at,
+});
+
 export const useUsers = () => {
   return useQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const { data, error } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((p: any) => ({
-        id: p.id,
-        name: p.full_name || p.email?.split('@')[0] || 'Unknown',
-        email: p.email || '',
-        role: 'user',
-        avatar: p.avatar_url,
-        createdAt: p.created_at,
-      }));
+      return (data || []).map((p: ProfileRow) => mapProfileToUser(p));
     },
   });
 };
@@ -25,14 +50,7 @@ export const useUser = (id: string) => {
     queryFn: async () => {
       const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single();
       if (error) throw error;
-      return {
-        id: data.id,
-        name: data.full_name || data.email?.split('@')[0] || 'Unknown',
-        email: data.email || '',
-        role: 'user',
-        avatar: data.avatar_url,
-        createdAt: data.created_at,
-      };
+      return mapProfileToUser(data as ProfileRow);
     },
     enabled: !!id,
   });
@@ -53,7 +71,7 @@ export const useCreateUser = () => {
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+    mutationFn: async ({ id, data }: { id: string; data: UpdateUserData }) => {
       const { data: result, error } = await supabase.from('profiles').update(data).eq('id', id).select().single();
       if (error) throw error;
       return result;
@@ -76,7 +94,6 @@ export const useDeleteUser = () => {
 export const useInviteUser = () => {
   return useMutation({
     mutationFn: async ({ email, role }: { email: string; role: string }) => {
-      // Invite via edge function or auth admin
       return { email, role };
     },
   });
