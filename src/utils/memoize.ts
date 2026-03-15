@@ -1,16 +1,16 @@
 // Memoization utilities for Sentinela v17
 
-type AnyFunction = (...args: unknown[]) => unknown;
+type AnyFunction<TArgs extends unknown[] = unknown[], TResult = unknown> = (...args: TArgs) => TResult;
 
-export function memoize<T extends AnyFunction>(
-  fn: T,
+export function memoize<TArgs extends unknown[], TResult>(
+  fn: AnyFunction<TArgs, TResult>,
   options?: { maxSize?: number; ttl?: number }
-): T {
-  const cache = new Map<string, { value: ReturnType<T>; timestamp: number }>();
+): AnyFunction<TArgs, TResult> {
+  const cache = new Map<string, { value: TResult; timestamp: number }>();
   const maxSize = options?.maxSize ?? 100;
   const ttl = options?.ttl ?? 0;
 
-  return ((...args: Parameters<T>): ReturnType<T> => {
+  return (...args: TArgs): TResult => {
     const key = JSON.stringify(args);
     const cached = cache.get(key);
 
@@ -30,19 +30,19 @@ export function memoize<T extends AnyFunction>(
 
     cache.set(key, { value: result, timestamp: Date.now() });
     return result;
-  }) as T;
+  };
 }
 
-export function memoizeAsync<T extends (...args: unknown[]) => Promise<unknown>>(
-  fn: T,
+export function memoizeAsync<TArgs extends unknown[], TResult>(
+  fn: (...args: TArgs) => Promise<TResult>,
   options?: { maxSize?: number; ttl?: number }
-): T {
-  const cache = new Map<string, { value: Awaited<ReturnType<T>>; timestamp: number }>();
-  const pending = new Map<string, Promise<Awaited<ReturnType<T>>>>();
+): (...args: TArgs) => Promise<TResult> {
+  const cache = new Map<string, { value: TResult; timestamp: number }>();
+  const pending = new Map<string, Promise<TResult>>();
   const maxSize = options?.maxSize ?? 100;
   const ttl = options?.ttl ?? 0;
 
-  return (async (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
+  return async (...args: TArgs): Promise<TResult> => {
     const key = JSON.stringify(args);
     const cached = cache.get(key);
 
@@ -58,7 +58,7 @@ export function memoizeAsync<T extends (...args: unknown[]) => Promise<unknown>>
       return existingPending;
     }
 
-    const promise = fn(...args) as Promise<Awaited<ReturnType<T>>>;
+    const promise = fn(...args);
     pending.set(key, promise);
 
     try {
@@ -74,15 +74,17 @@ export function memoizeAsync<T extends (...args: unknown[]) => Promise<unknown>>
     } finally {
       pending.delete(key);
     }
-  }) as T;
+  };
 }
 
-export function memoizeOne<T extends AnyFunction>(fn: T): T {
-  let lastArgs: Parameters<T> | undefined;
-  let lastResult: ReturnType<T>;
+export function memoizeOne<TArgs extends unknown[], TResult>(
+  fn: AnyFunction<TArgs, TResult>
+): AnyFunction<TArgs, TResult> {
+  let lastArgs: TArgs | undefined;
+  let lastResult: TResult;
   let hasResult = false;
 
-  return ((...args: Parameters<T>): ReturnType<T> => {
+  return (...args: TArgs): TResult => {
     if (hasResult && lastArgs && argsEqual(lastArgs, args)) {
       return lastResult;
     }
@@ -91,7 +93,7 @@ export function memoizeOne<T extends AnyFunction>(fn: T): T {
     lastResult = fn(...args);
     hasResult = true;
     return lastResult;
-  }) as T;
+  };
 }
 
 function argsEqual(a: readonly unknown[], b: readonly unknown[]): boolean {
