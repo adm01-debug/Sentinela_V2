@@ -211,7 +211,7 @@ describe('Security Attack Scenarios', () => {
   describe('SQL Injection Prevention', () => {
     const sqlPayloads = [
       "'; DROP TABLE employees; --",
-      "1' OR '1'='1",
+      "1' OR 1=1; --",
       "admin'--",
       "1; DELETE FROM employees",
       "' UNION SELECT * FROM employees --",
