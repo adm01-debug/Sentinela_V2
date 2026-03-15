@@ -13,7 +13,7 @@ import { useAuditLog, type AuditLogEntry } from '@/hooks/useAuditLog';
 import { formatDistanceToNow, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-const actionConfig: Record<string, { icon: any; color: string; label: string }> = {
+const actionConfig: Record<string, { icon: React.ComponentType<{ className?: string }>; color: string; label: string }> = {
   CRIAR: { icon: Plus, color: 'text-success', label: 'Criou' },
   EDITAR: { icon: Pencil, color: 'text-primary', label: 'Editou' },
   EXCLUIR: { icon: Trash2, color: 'text-destructive', label: 'Excluiu' },
