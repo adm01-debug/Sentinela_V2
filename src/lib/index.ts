@@ -13,7 +13,7 @@ export * from './permissions';
 // a11y and analytics have conflicts - import directly from submodules
 // export * from './a11y';
 // export * from './analytics';
-export * from './monitoring';
+// export * from './monitoring'; // removed - backend-only module
 // export * from './performance';
 
 // Utility modules
