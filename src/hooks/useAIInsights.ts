@@ -34,7 +34,8 @@ export function useAIInsights(options: UseAIInsightsOptions = {}) {
         body: { entityType, entityId, type: 'insights' }
       });
       if (fnError) throw fnError;
-      setInsights(data?.insights?.map((i: any) => ({ ...i, createdAt: new Date(i.createdAt) })) || []);
+      interface RawInsight { id: string; type: string; title: string; description: string; confidence: number; severity?: string; actionable?: boolean; data?: Record<string, string | number | boolean>; createdAt: string; }
+      setInsights(data?.insights?.map((i: RawInsight) => ({ ...i, createdAt: new Date(i.createdAt) } as AIInsight)) || []);
     } catch (e) {
       setError(e instanceof Error ? e : new Error('Failed to fetch insights'));
     } finally {
