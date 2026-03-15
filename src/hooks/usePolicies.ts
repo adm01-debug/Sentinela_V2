@@ -5,10 +5,9 @@ import { useCallback } from 'react';
 interface Policy {
   id: string;
   name: string;
-  description: string | null;
+  description: string;
   enabled: boolean;
-  policy_type: string;
-  content: string | null;
+  category: string;
   created_at: string;
 }
 
@@ -28,9 +27,8 @@ export function usePolicies() {
         id: row.id,
         name: row.name,
         description: row.description,
-        enabled: row.is_active ?? true,
-        policy_type: row.policy_type ?? 'general',
-        content: row.content,
+        enabled: row.enabled ?? true,
+        category: row.category,
         created_at: row.created_at,
       }));
     },
@@ -43,7 +41,7 @@ export function usePolicies() {
       if (!policy) throw new Error('Policy not found');
       const { error } = await supabase
         .from('security_policies')
-        .update({ is_active: !policy.enabled })
+        .update({ enabled: !policy.enabled })
         .eq('id', id);
       if (error) throw error;
     },
@@ -58,10 +56,15 @@ export function usePolicies() {
     queryClient.invalidateQueries({ queryKey: ['security-policies'] });
   }, [queryClient]);
 
-  const add = useCallback(async (name: string, description: string, rules: string[] = []) => {
+  const add = useCallback(async (name: string, description: string, _rules: string[] = []) => {
     const { data, error } = await supabase
       .from('security_policies')
-      .insert({ name, description, content: JSON.stringify(rules), is_active: true })
+      .insert({
+        name,
+        description,
+        category: 'general',
+        enabled: true,
+      })
       .select()
       .single();
     if (error) throw error;
