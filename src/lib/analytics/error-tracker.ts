@@ -1,1 +1,0 @@
-export function trackError(error: Error, context?: any) { console.error('Error:', error, context); }

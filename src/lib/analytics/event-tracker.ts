@@ -1,1 +1,0 @@
-export function trackEvent(name: string, props?: any) { console.log('Event:', name, props); }
