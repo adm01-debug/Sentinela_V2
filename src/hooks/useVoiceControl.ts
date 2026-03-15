@@ -29,7 +29,7 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
       recognition.continuous = continuous;
       recognition.interimResults = false;
       recognition.lang = language;
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
         const last = event.results.length - 1;
         const text = event.results[last][0].transcript.trim().toLowerCase();
         setTranscript(text);
