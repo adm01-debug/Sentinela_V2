@@ -36,7 +36,8 @@ export const ReportList = ({ reports, isLoading }: Props) => {
       </TableHeader>
       <TableBody>
         {reports.map(report => {
-          const date = new Date((report as any).created_at || (report as any).createdAt || '');
+          const reportData = report as unknown as { created_at?: string; createdAt?: string };
+          const date = new Date(reportData.created_at || reportData.createdAt || '');
           return (
             <TableRow key={report.id}>
               <TableCell className="font-medium">{report.name}</TableCell>
