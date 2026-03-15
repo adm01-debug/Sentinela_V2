@@ -53,21 +53,21 @@ describe('Database Table Operations', () => {
     describe(`Table: ${table}`, () => {
       it('should SELECT from table', async () => {
         setupMockQuery([{ id: '1' }]);
-        const { data, error } = await supabase.from(table as any).select('*').order('created_at' as any).limit(10);
-        expect(error).toBeNull();
+        const result = await (supabase.from as any)(table).select('*').order('created_at').limit(10);
+        expect(result.error).toBeNull();
         expect(mockFrom).toHaveBeenCalledWith(table);
       });
 
       it('should handle empty result', async () => {
         setupMockQuery([]);
-        const { data } = await supabase.from(table as any).select('*').order('created_at' as any).limit(10);
-        expect(data).toEqual([]);
+        const result = await (supabase.from as any)(table).select('*').order('created_at').limit(10);
+        expect(result.data).toEqual([]);
       });
 
       it('should handle database error', async () => {
         setupMockQuery(null, { message: `Permission denied on ${table}` });
-        const { error } = await supabase.from(table as any).select('*').order('created_at' as any).limit(10);
-        expect(error).toBeTruthy();
+        const result = await (supabase.from as any)(table).select('*').order('created_at').limit(10);
+        expect(result.error).toBeTruthy();
       });
     });
   });
