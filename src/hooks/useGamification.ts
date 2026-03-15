@@ -235,7 +235,7 @@ export function useAwardPoints() {
         .from('employee_points')
         .select('*')
         .eq('employee_id', employeeId)
-        .single();
+        .maybeSingle();
 
       if (current) {
         const newTotal = current.total_points + points;
