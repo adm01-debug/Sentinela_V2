@@ -1,12 +1,21 @@
-import { useState } from 'react';
-import { useReports, useGenerateReport, useReportTemplates } from '@/hooks/useReports';
-import { Button } from '@/components/ui/button';
+import { useReports, useReportTemplates } from '@/hooks/useReports';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 
+interface ReportItem {
+  id: string;
+  name?: string;
+  report_type?: string;
+  status?: string;
+}
+
 export const ReportsPage = () => {
-  const { data: reports, isLoading } = useReports();
+  const { data: reportsData, isLoading } = useReports();
   const { data: templates } = useReportTemplates();
+
+  const reports: ReportItem[] = Array.isArray(reportsData)
+    ? reportsData
+    : (reportsData as { data?: ReportItem[] })?.data || [];
 
   return (
     <div className="space-y-6">
@@ -17,7 +26,7 @@ export const ReportsPage = () => {
         <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin" /></div>
       ) : (
         <div className="space-y-2">
-          {((reports as any)?.data || reports || []).map((report: any) => (
+          {reports.map((report) => (
             <Card key={report.id}>
               <CardContent className="p-4">
                 <p className="font-medium">{report.name || report.report_type}</p>
