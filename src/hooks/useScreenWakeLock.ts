@@ -1,14 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
 
-interface WakeLockSentinel extends EventTarget {
-  release(): Promise<void>;
-  addEventListener(type: 'release', listener: () => void): void;
-}
-
-interface NavigatorWithWakeLock extends Navigator {
-  wakeLock?: { request(type: 'screen'): Promise<WakeLockSentinel> };
-}
-
 export function useScreenWakeLock() {
   const [isSupported] = useState(() => 'wakeLock' in navigator);
   const [isActive, setIsActive] = useState(false);
@@ -17,8 +8,7 @@ export function useScreenWakeLock() {
   const request = useCallback(async () => {
     if (!isSupported) return false;
     try {
-      const nav = navigator as NavigatorWithWakeLock;
-      const lock = await nav.wakeLock!.request('screen');
+      const lock = await navigator.wakeLock.request('screen');
       setWakeLock(lock);
       setIsActive(true);
       lock.addEventListener('release', () => setIsActive(false));
