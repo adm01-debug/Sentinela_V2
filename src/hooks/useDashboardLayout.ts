@@ -46,7 +46,7 @@ export function useDashboardLayout() {
         .eq('user_id', user.id)
         .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       return data as DashboardLayout | null;
     },
     enabled: !!user?.id,
