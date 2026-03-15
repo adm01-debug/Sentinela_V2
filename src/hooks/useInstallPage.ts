@@ -32,8 +32,9 @@ export function useInstallPage() {
       setAgentKey(key);
       toast({ title: 'Chave gerada com sucesso' });
       agentKeysQuery.refetch();
-    } catch (error: any) {
-      toast({ title: 'Erro ao gerar chave', description: error.message, variant: 'destructive' });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Erro desconhecido';
+      toast({ title: 'Erro ao gerar chave', description: message, variant: 'destructive' });
     }
   };
 

@@ -59,7 +59,7 @@ export function useEmployeeDetailPage() {
   });
 
   const updateEmployee = useMutation({
-    mutationFn: async (updates: any) => {
+    mutationFn: async (updates: EmployeeUpdate) => {
       if (!id) throw new Error('Employee ID required');
       const { error } = await supabase
         .from('employees')
