@@ -10,7 +10,7 @@ export const EmployeesPage = () => {
   const deleteEmployee = useDeleteEmployee();
   const navigate = useNavigate();
 
-  const employees = Array.isArray(data) ? data : (data as any)?.data || [];
+  const employees = Array.isArray(data) ? data : [];
 
   const columns = [
     { key: 'name', header: 'Name' },
