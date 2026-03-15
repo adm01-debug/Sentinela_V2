@@ -29,7 +29,7 @@ export const EmployeesPage = () => {
         columns={columns}
         data={employees}
         isLoading={isLoading}
-        keyExtractor={(row: any) => row.id}
+        keyExtractor={(row: Record<string, unknown>) => String(row.id)}
       />
     </div>
   );

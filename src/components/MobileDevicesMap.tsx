@@ -1,10 +1,20 @@
 import React from 'react';
 import { MapPin } from 'lucide-react';
 
+interface MobileDevice {
+  id: string;
+  device_id: string;
+  employee_name: string;
+  os_type: string;
+  last_location_lat: number | null;
+  last_location_lng: number | null;
+  is_active: boolean;
+}
+
 interface MobileDevicesMapProps {
-  devices?: any[];
+  devices?: MobileDevice[];
   selectedDeviceId?: string;
-  onDeviceClick?: (device: any) => void;
+  onDeviceClick?: (device: MobileDevice) => void;
 }
 
 export function MobileDevicesMap({ devices = [], selectedDeviceId, onDeviceClick }: MobileDevicesMapProps) {

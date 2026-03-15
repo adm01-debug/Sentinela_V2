@@ -39,8 +39,8 @@ export function TwoFactorWizard({ onComplete, onCancel, qrCodeUrl, secretKey, cl
     try {
       await onComplete(code);
       setStep('complete');
-    } catch (e: any) {
-      setError(e.message || 'Invalid code. Please try again.');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Invalid code. Please try again.');
     } finally {
       setLoading(false);
     }

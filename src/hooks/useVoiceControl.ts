@@ -22,8 +22,8 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const w = window as unknown as Record<string, typeof globalThis.SpeechRecognition>;
+    const SpeechRecognition = w.SpeechRecognition || w.webkitSpeechRecognition;
     setIsSupported(!!SpeechRecognition);
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();

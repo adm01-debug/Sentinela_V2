@@ -143,7 +143,7 @@ export function throttle<T extends (...args: never[]) => unknown>(
   };
 }
 
-export function rafThrottle<T extends (...args: any[]) => any>(
+export function rafThrottle<T extends (...args: never[]) => unknown>(
   fn: T
 ): (...args: Parameters<T>) => void {
   let rafId: number | null = null;
