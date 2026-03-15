@@ -43,7 +43,7 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
           }
         });
       };
-      recognition.onerror = (event: any) => { onError?.(event.error); setIsListening(false); };
+      recognition.onerror = (event: SpeechRecognitionErrorEvent) => { onError?.(event.error); setIsListening(false); };
       recognition.onend = () => setIsListening(false);
       recognitionRef.current = recognition;
     }
