@@ -11,16 +11,10 @@ interface PieLabelProps {
   percent: number;
 }
 
-interface CategoryItem {
-  name: string;
-  value: number;
-}
-
-interface AppItem {
-  name: string;
+interface AppCategory {
   category: string;
-  hours: number;
-  percentage: number;
+  count: number;
+  duration: number;
 }
 
 export default function AnalyticsApplicationsPage() {
