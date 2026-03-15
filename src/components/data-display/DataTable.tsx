@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-export interface Column<T> { key: keyof T; header: string; sortable?: boolean; render?: (value: any, row: T) => React.ReactNode; width?: number; }
+export interface Column<T> { key: keyof T; header: string; sortable?: boolean; render?: (value: T[keyof T], row: T) => React.ReactNode; width?: number; }
 export interface DataTableProps<T> { data: T[]; columns: Column<T>[]; loading?: boolean; emptyText?: string; selectable?: boolean; onSelect?: (rows: T[]) => void; className?: string; }
 export function DataTable<T extends { id: string | number }>({ data, columns, loading, emptyText = 'No data', selectable, onSelect, className }: DataTableProps<T>) {
   const [sortKey, setSortKey] = useState<keyof T | null>(null);

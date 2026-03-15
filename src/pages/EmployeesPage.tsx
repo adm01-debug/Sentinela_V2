@@ -10,7 +10,7 @@ export const EmployeesPage = () => {
   const deleteEmployee = useDeleteEmployee();
   const navigate = useNavigate();
 
-  const employees = Array.isArray(data) ? data : (data as any)?.data || [];
+  const employees = Array.isArray(data) ? data : [];
 
   const columns = [
     { key: 'name', header: 'Name' },
@@ -29,7 +29,7 @@ export const EmployeesPage = () => {
         columns={columns}
         data={employees}
         isLoading={isLoading}
-        keyExtractor={(row: any) => row.id}
+        keyExtractor={(row: Record<string, unknown>) => String(row.id)}
       />
     </div>
   );

@@ -104,7 +104,7 @@ export class PerformanceTracker {
 
 export const tracker = new PerformanceTracker();
 
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: never[]) => unknown>(
   fn: T,
   delay: number
 ): (...args: Parameters<T>) => void {
@@ -115,7 +115,7 @@ export function debounce<T extends (...args: any[]) => any>(
   };
 }
 
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: never[]) => unknown>(
   fn: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -143,7 +143,7 @@ export function throttle<T extends (...args: any[]) => any>(
   };
 }
 
-export function rafThrottle<T extends (...args: any[]) => any>(
+export function rafThrottle<T extends (...args: never[]) => unknown>(
   fn: T
 ): (...args: Parameters<T>) => void {
   let rafId: number | null = null;
