@@ -1,25 +1,73 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { useBillingStore } from '@/stores/billingStore';
+
+interface CompanyPlan {
+  companyName: string;
+  plan: string;
+  maxEmployees: number | null;
+  currentEmployees: number;
+  isActive: boolean;
+}
 
 export function useBilling() {
   const store = useBillingStore();
 
+  const companyQuery = useQuery({
+    queryKey: ['billing-company-plan'],
+    queryFn: async (): Promise<CompanyPlan | null> => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
+
+      // Get user's company
+      const { data: userCompany } = await supabase
+        .from('user_companies')
+        .select('company_id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (!userCompany) return null;
+
+      const { data: company } = await supabase
+        .from('companies')
+        .select('name, plan, max_employees, is_active')
+        .eq('id', userCompany.company_id)
+        .maybeSingle();
+
+      if (!company) return null;
+
+      // Count current employees
+      const { count } = await supabase
+        .from('employees')
+        .select('id', { count: 'exact', head: true })
+        .eq('company_id', userCompany.company_id);
+
+      return {
+        companyName: company.name,
+        plan: company.plan ?? 'free',
+        maxEmployees: company.max_employees,
+        currentEmployees: count ?? 0,
+        isActive: company.is_active ?? true,
+      };
+    },
+    staleTime: 120_000,
+  });
+
   const fetchBillingData = useCallback(async () => {
-    store.setLoading(true);
-    try {
-      // Billing data will be available when billing integration is configured
-      store.setPlans([]);
-      store.setInvoices([]);
-    } catch (err) {
-      store.setError('Erro ao carregar dados de cobrança');
-    } finally {
-      store.setLoading(false);
-    }
-  }, [store]);
+    await companyQuery.refetch();
+  }, [companyQuery]);
 
   const subscribeToPlan = useCallback(async (_planId: string) => {
-    // Stub - billing integration pending
+    // Billing gateway integration placeholder - would integrate with Stripe/etc
+    console.log('[Billing] Subscribe to plan:', _planId);
   }, []);
 
-  return { ...store, fetchBillingData, subscribeToPlan };
+  return {
+    ...store,
+    companyPlan: companyQuery.data,
+    isLoadingPlan: companyQuery.isLoading,
+    fetchBillingData,
+    subscribeToPlan,
+  };
 }
