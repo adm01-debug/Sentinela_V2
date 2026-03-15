@@ -11,28 +11,37 @@ export function useEmailNotification(config: EmailConfig = {}) {
     setIsLoading(true);
     setError(null);
     try {
-      const { data, error: fnError } = await supabase.functions.invoke('send-email', {
+      const { data, error: fnError } = await supabase.functions.invoke('send-email-notification', {
         body: { to: Array.isArray(to) ? to : [to], subject, text: body, html: html || body, from: config.from, replyTo: config.replyTo }
       });
       if (fnError) throw fnError;
       return data;
-    } catch (e) { setError(e instanceof Error ? e : new Error('Email failed')); return null; }
-    finally { setIsLoading(false); }
+    } catch (e) {
+      setError(e instanceof Error ? e : new Error('Email failed'));
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
   }, [config]);
 
-  const sendTemplate = useCallback(async (to: string | string[], templateId: string, variables: Record<string, any>) => {
+  const sendTemplate = useCallback(async (to: string | string[], templateId: string, variables: Record<string, string>) => {
     setIsLoading(true);
     setError(null);
     try {
-      const { data, error: fnError } = await supabase.functions.invoke('send-email', {
+      const { data, error: fnError } = await supabase.functions.invoke('send-email-notification', {
         body: { to: Array.isArray(to) ? to : [to], templateId, variables, from: config.from }
       });
       if (fnError) throw fnError;
       return data;
-    } catch (e) { setError(e instanceof Error ? e : new Error('Email template failed')); return null; }
-    finally { setIsLoading(false); }
+    } catch (e) {
+      setError(e instanceof Error ? e : new Error('Email template failed'));
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
   }, [config]);
 
   return { sendEmail, sendTemplate, isLoading, error };
 }
+
 export default useEmailNotification;

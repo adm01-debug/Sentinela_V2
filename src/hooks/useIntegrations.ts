@@ -1,33 +1,53 @@
-import { useState, useCallback } from "react";
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { useMemo } from 'react';
 
 interface Integration {
   id: string;
   name: string;
   enabled: boolean;
+  type: 'webhook' | 'whatsapp' | 'email' | 'slack' | 'push';
   config?: Record<string, unknown>;
 }
 
 export function useIntegrations() {
-  const [integrations, setIntegrations] = useState<Integration[]>([]);
+  const query = useQuery({
+    queryKey: ['integrations-status'],
+    queryFn: async (): Promise<Integration[]> => {
+      const [webhooksRes, whatsappRes, alertRes] = await Promise.all([
+        supabase.from('webhooks').select('id, name, url, is_active').limit(50),
+        supabase.from('whatsapp_notification_settings').select('id, phone_number, is_active').limit(10),
+        supabase.from('alert_notification_settings').select('id, setting_type, enabled').limit(10),
+      ]);
 
-  const add = useCallback((name: string, config?: Record<string, unknown>) => {
-    const integration: Integration = {
-      id: crypto.randomUUID(),
-      name,
-      enabled: true,
-      config
-    };
-    setIntegrations(prev => [...prev, integration]);
-    return integration;
-  }, []);
+      const integrations: Integration[] = [];
 
-  const toggle = useCallback((id: string) => {
-    setIntegrations(prev => prev.map(i => i.id === id ? { ...i, enabled: !i.enabled } : i));
-  }, []);
+      for (const wh of webhooksRes.data ?? []) {
+        integrations.push({ id: wh.id, name: `Webhook: ${wh.name}`, enabled: wh.is_active ?? false, type: 'webhook', config: { url: wh.url } });
+      }
 
-  const remove = useCallback((id: string) => {
-    setIntegrations(prev => prev.filter(i => i.id !== id));
-  }, []);
+      for (const wa of whatsappRes.data ?? []) {
+        integrations.push({ id: wa.id, name: `WhatsApp: ${wa.phone_number}`, enabled: wa.is_active ?? false, type: 'whatsapp' });
+      }
 
-  return { integrations, add, toggle, remove };
+      for (const an of alertRes.data ?? []) {
+        integrations.push({ id: an.id, name: `Email Alert: ${an.setting_type}`, enabled: an.enabled ?? false, type: 'email' });
+      }
+
+      return integrations;
+    },
+    staleTime: 60_000,
+  });
+
+  const integrations = query.data ?? [];
+  const activeCount = useMemo(() => integrations.filter(i => i.enabled).length, [integrations]);
+
+  return {
+    integrations,
+    activeCount,
+    totalCount: integrations.length,
+    isLoading: query.isLoading,
+    error: query.error,
+    refetch: query.refetch,
+  };
 }
