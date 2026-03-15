@@ -93,6 +93,31 @@ function DeviceIcon({ type }: { type: string }) {
   }
 }
 
+interface MonitoringSetting {
+  setting_key: string;
+  setting_value: unknown;
+}
+
+interface LoginEvent {
+  id: string;
+  event_type: string;
+  ip_address: string | null;
+  location: string | null;
+  user_agent: string | null;
+  created_at: string;
+}
+
+interface KnownDevice {
+  id: string;
+  is_trusted: boolean;
+  device_type: string;
+}
+
+interface SecurityAlert {
+  id: string;
+  read?: boolean;
+}
+
 export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
   const [userId, setUserId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
@@ -103,7 +128,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
   
   // Get current user
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }: { data: { user: any } }) => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) setUserId(user.id);
     });
   }, []);
@@ -149,15 +174,15 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
         .in('setting_key', ['mfa_required', 'ip_whitelist_enabled', 'session_timeout_hours']);
       if (error) throw error;
       return {
-        mfa_required: data?.find((s: any) => s.setting_key === 'mfa_required')?.setting_value === true,
-        ip_whitelist_enabled: data?.find((s: any) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
-        session_timeout: data?.find((s: any) => s.setting_key === 'session_timeout_hours')?.setting_value || 24,
+        mfa_required: data?.find((s: MonitoringSetting) => s.setting_key === 'mfa_required')?.setting_value === true,
+        ip_whitelist_enabled: data?.find((s: MonitoringSetting) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
+        session_timeout: (data?.find((s: MonitoringSetting) => s.setting_key === 'session_timeout_hours')?.setting_value as number) || 24,
       };
     },
   });
   
-  const trustedDevices = devices.filter((d: any) => d.is_trusted).length;
-  const unresolvedAlerts = alerts.filter((a: any) => !a.read).length;
+  const trustedDevices = devices.filter((d: KnownDevice) => d.is_trusted).length;
+  const unresolvedAlerts = alerts.filter((a: SecurityAlert) => !a.read).length;
   const score = calculateSecurityScore(isEnrolled, trustedDevices, devices.length, unresolvedAlerts);
   const scoreBadge = getScoreBadge(score.total);
   
@@ -384,7 +409,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
                     <p className="text-center text-muted-foreground py-4">Nenhum evento recente</p>
                   ) : (
                     <div className="space-y-3">
-                      {loginEvents.slice(0, 5).map((event: any) => (
+                      {loginEvents.slice(0, 5).map((event: LoginEvent) => (
                         <div key={event.id} className="flex items-start gap-3 text-sm">
                           <div className={`mt-1 p-1 rounded-full ${
                             event.event_type === 'login_success' ? 'bg-green-100 text-green-600' :
@@ -545,7 +570,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
                   <p className="text-center text-muted-foreground py-8">Nenhum evento registrado</p>
                 ) : (
                   <div className="space-y-3">
-                    {loginEvents.map((event: any) => (
+                    {loginEvents.map((event: LoginEvent) => (
                       <div key={event.id} className="flex items-start gap-4 p-3 border rounded-lg">
                         <div className={`p-2 rounded-full ${
                           event.event_type === 'login_success' ? 'bg-green-100 text-green-600 dark:bg-green-900/30' :
