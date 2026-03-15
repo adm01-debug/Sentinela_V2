@@ -65,7 +65,7 @@ export default function WorkSchedulesPage() {
             <Card><CardContent className="py-12 text-center text-muted-foreground"><Clock className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma escala encontrada.</p></CardContent></Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredSchedules.map((s: any) => (
+              {filteredSchedules.map((s) => (
                 <Card key={s.id}>
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
@@ -97,7 +97,7 @@ export default function WorkSchedulesPage() {
           {pendingOvertimeRequests.length === 0 ? (
             <Card><CardContent className="py-12 text-center text-muted-foreground"><p>Nenhuma solicitação de hora extra pendente.</p></CardContent></Card>
           ) : (
-            pendingOvertimeRequests.map((req: any) => (
+            pendingOvertimeRequests.map((req) => (
               <Card key={req.id}>
                 <CardContent className="p-4 flex items-center justify-between">
                   <div>
@@ -150,13 +150,13 @@ export default function WorkSchedulesPage() {
             <div><Label>Funcionário</Label>
               <Select value={assignForm.employee_id} onValueChange={v => setAssignForm(prev => ({ ...prev, employee_id: v }))}>
                 <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
-                <SelectContent>{employees.map((e: any) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{employees.map((e) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Escala</Label>
               <Select value={assignForm.schedule_id} onValueChange={v => setAssignForm(prev => ({ ...prev, schedule_id: v }))}>
                 <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
-                <SelectContent>{filteredSchedules.map((s: any) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{filteredSchedules.map((s) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Data Efetiva</Label><Input type="date" value={assignForm.effective_date} onChange={e => setAssignForm(prev => ({ ...prev, effective_date: e.target.value }))} /></div>

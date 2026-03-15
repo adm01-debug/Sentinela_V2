@@ -126,10 +126,10 @@ export function isRetryable(error: Error): boolean {
   const retryableCodes = ['ECONNRESET', 'ETIMEDOUT', 'ENOTFOUND', 'EAI_AGAIN'];
   const retryableStatuses = [408, 429, 500, 502, 503, 504];
 
-  if ('code' in error && retryableCodes.includes((error as any).code)) {
+  if ('code' in error && retryableCodes.includes((error as Error & { code: string }).code)) {
     return true;
   }
-  if ('status' in error && retryableStatuses.includes((error as any).status)) {
+  if ('status' in error && retryableStatuses.includes((error as Error & { status: number }).status)) {
     return true;
   }
   return false;

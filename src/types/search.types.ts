@@ -1,5 +1,5 @@
 export interface SearchQuery { query: string; filters?: SearchFilter[]; sort?: SearchSort; pagination?: SearchPagination; highlight?: boolean; }
-export interface SearchFilter { field: string; operator: FilterOperator; value: any; }
+export interface SearchFilter { field: string; operator: FilterOperator; value: string | number | boolean | string[] | number[]; }
 export type FilterOperator = 'eq' | 'ne' | 'gt' | 'gte' | 'lt' | 'lte' | 'in' | 'nin' | 'contains' | 'startsWith' | 'endsWith' | 'range';
 export interface SearchSort { field: string; order: 'asc' | 'desc'; }
 export interface SearchPagination { page: number; pageSize: number; }
