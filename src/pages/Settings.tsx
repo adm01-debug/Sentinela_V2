@@ -24,7 +24,7 @@ const SettingsContent = memo(function SettingsContent() {
   const settingsQuery = useSettingsHook();
   const settingsData = settingsQuery.data as Record<string, unknown> | null;
   const loading = settingsQuery.isLoading;
-  const policies = (settingsData?.policies || []) as Array<{ id: string; category: string; enabled: boolean; name: string; description: string }>;
+  const policies = (settingsData?.policies || []) as SecurityPolicy[];
   const appRules = ((settingsData?.appRules || settingsData?.applicationRules || []) as ApplicationRule[]);
   const updatePolicy = (id: string, enabled: boolean) => {};
   const updateAppRule = (id: string, status: string) => {};

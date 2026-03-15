@@ -42,7 +42,7 @@ export function useGamificationPage() {
 
   const awardPointsMutation = useMutation({
     mutationFn: async ({ employeeId, points }: { employeeId: string; points: number }) => {
-      const { error } = await supabase.rpc('award_gamification_points' as string, { p_employee_id: employeeId, p_points: points } as Record<string, unknown>);
+      const { error } = await supabase.rpc('award_gamification_points' as 'check_rate_limit', { p_employee_id: employeeId, p_points: points } as Record<string, unknown>);
       if (error) throw error;
     },
     onSuccess: () => {

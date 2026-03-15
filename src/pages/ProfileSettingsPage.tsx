@@ -11,7 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 export default function ProfileSettingsPage() {
   const { toast } = useToast();
   const { user } = useAuth();
-  const [name, setName] = useState(user?.user_metadata?.name || '');
+  const [name, setName] = useState(user?.name || '');
   const [phone, setPhone] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
