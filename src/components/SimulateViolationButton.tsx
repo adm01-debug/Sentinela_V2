@@ -66,8 +66,9 @@ export function SimulateViolationButton() {
       if (error) throw error;
       
       toast.success('Violação simulada com sucesso!');
-    } catch (error: any) {
-      toast.error('Erro ao simular violação: ' + error.message);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Erro desconhecido';
+      toast.error('Erro ao simular violação: ' + message);
     } finally {
       setLoading(false);
     }

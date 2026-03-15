@@ -17,14 +17,14 @@ export function timeout<T>(promise: Promise<T>, ms: number, message?: string): P
   ]);
 }
 
-export function debouncePromise<T extends (...args: any[]) => Promise<any>>(
+export function debouncePromise<T extends (...args: unknown[]) => Promise<unknown>>(
   fn: T,
   ms: number
-): (...args: Parameters<T>) => Promise<ReturnType<T>> {
-  let timeoutId: NodeJS.Timeout | null = null;
-  let pendingPromise: Promise<any> | null = null;
+): (...args: Parameters<T>) => Promise<Awaited<ReturnType<T>>> {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let pendingPromise: Promise<Awaited<ReturnType<T>>> | null = null;
 
-  return (...args: Parameters<T>): Promise<ReturnType<T>> => {
+  return (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -32,7 +32,7 @@ export function debouncePromise<T extends (...args: any[]) => Promise<any>>(
     return new Promise((resolve, reject) => {
       timeoutId = setTimeout(async () => {
         try {
-          pendingPromise = fn(...args);
+          pendingPromise = fn(...args) as Promise<Awaited<ReturnType<T>>>;
           const result = await pendingPromise;
           resolve(result);
         } catch (error) {
@@ -109,7 +109,7 @@ export function idle(options?: IdleRequestOptions): Promise<IdleDeadline> {
 export class Deferred<T> {
   promise: Promise<T>;
   resolve!: (value: T | PromiseLike<T>) => void;
-  reject!: (reason?: any) => void;
+  reject!: (reason?: unknown) => void;
 
   constructor() {
     this.promise = new Promise((resolve, reject) => {

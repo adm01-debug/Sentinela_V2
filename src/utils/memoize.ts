@@ -1,6 +1,6 @@
 // Memoization utilities for Sentinela v17
 
-type AnyFunction = (...args: any[]) => any;
+type AnyFunction = (...args: unknown[]) => unknown;
 
 export function memoize<T extends AnyFunction>(
   fn: T,
@@ -22,18 +22,18 @@ export function memoize<T extends AnyFunction>(
     }
 
     const result = fn(...args);
-    
+
     if (cache.size >= maxSize) {
-      const firstKey = cache.keys().next().value;
-      if (firstKey) cache.delete(firstKey);
+      const firstKey = cache.keys().next().value as string | undefined;
+      if (firstKey !== undefined) cache.delete(firstKey);
     }
-    
+
     cache.set(key, { value: result, timestamp: Date.now() });
     return result;
   }) as T;
 }
 
-export function memoizeAsync<T extends (...args: any[]) => Promise<any>>(
+export function memoizeAsync<T extends (...args: unknown[]) => Promise<unknown>>(
   fn: T,
   options?: { maxSize?: number; ttl?: number }
 ): T {
@@ -58,17 +58,17 @@ export function memoizeAsync<T extends (...args: any[]) => Promise<any>>(
       return existingPending;
     }
 
-    const promise = fn(...args);
+    const promise = fn(...args) as Promise<Awaited<ReturnType<T>>>;
     pending.set(key, promise);
 
     try {
       const result = await promise;
-      
+
       if (cache.size >= maxSize) {
-        const firstKey = cache.keys().next().value;
-        if (firstKey) cache.delete(firstKey);
+        const firstKey = cache.keys().next().value as string | undefined;
+        if (firstKey !== undefined) cache.delete(firstKey);
       }
-      
+
       cache.set(key, { value: result, timestamp: Date.now() });
       return result;
     } finally {
@@ -94,7 +94,7 @@ export function memoizeOne<T extends AnyFunction>(fn: T): T {
   }) as T;
 }
 
-function argsEqual(a: any[], b: any[]): boolean {
+function argsEqual(a: readonly unknown[], b: readonly unknown[]): boolean {
   if (a.length !== b.length) return false;
   return a.every((arg, i) => arg === b[i]);
 }
@@ -123,8 +123,8 @@ export class MemoCache<K, V> {
 
   set(key: K, value: V): void {
     if (this.cache.size >= this.maxSize) {
-      const firstKey = this.cache.keys().next().value;
-      if (firstKey) this.cache.delete(firstKey);
+      const firstKey = this.cache.keys().next().value as K | undefined;
+      if (firstKey !== undefined) this.cache.delete(firstKey);
     }
     this.cache.set(key, { value, timestamp: Date.now() });
   }
