@@ -21,7 +21,7 @@ export function useNotificationCenter(options: UseNotificationCenterOptions = {}
   const [notifications, setNotifications] = useState<Notification[]>(() => {
     if (typeof window === 'undefined') return [];
     const stored = localStorage.getItem(persistKey);
-    return stored ? JSON.parse(stored).map((n: any) => ({ ...n, timestamp: new Date(n.timestamp) })) : [];
+    return stored ? JSON.parse(stored).map((n: Omit<Notification, 'timestamp'> & { timestamp: string }) => ({ ...n, timestamp: new Date(n.timestamp) })) : [];
   });
 
   useEffect(() => {

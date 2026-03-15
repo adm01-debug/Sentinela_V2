@@ -18,7 +18,7 @@ export function useSessionActivity(options: UseSessionActivityOptions = {}) {
   const [events, setEvents] = useState<SessionEvent[]>(() => {
     if (typeof window === 'undefined') return [];
     const stored = sessionStorage.getItem(persistKey);
-    return stored ? JSON.parse(stored).map((e: any) => ({ ...e, timestamp: new Date(e.timestamp) })) : [];
+    return stored ? JSON.parse(stored).map((e: Omit<SessionEvent, 'timestamp'> & { timestamp: string }) => ({ ...e, timestamp: new Date(e.timestamp) })) : [];
   });
   const [sessionStart] = useState(() => new Date());
 
