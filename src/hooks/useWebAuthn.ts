@@ -213,7 +213,7 @@ export function useWebAuthn() {
       let errorMessage = 'Falha ao registrar passkey.';
       if (err.name === 'NotAllowedError') {
         errorMessage = 'Operação cancelada ou não permitida.';
-      } else if (error.name === 'InvalidStateError') {
+      } else if (err.name === 'InvalidStateError') {
         errorMessage = 'Este dispositivo já está registrado.';
       }
 
