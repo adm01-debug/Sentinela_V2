@@ -1,51 +1,38 @@
-import { useState } from 'react';
+import { Plug, Webhook, MessageCircle, Mail, Bell } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
-import { Button  } from '@/components/ui/button';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+
+const INTEGRATIONS = [
+  { name: 'Webhooks', description: 'Envie notificações para sistemas externos via HTTP', icon: Webhook, path: '/integrations/webhooks', status: 'available' },
+  { name: 'WhatsApp Business', description: 'Alertas e notificações via WhatsApp', icon: MessageCircle, path: '/integrations/whatsapp', status: 'available' },
+  { name: 'Email (Resend)', description: 'Notificações por email para alertas críticos', icon: Mail, path: '/settings/notifications', status: 'configured' },
+  { name: 'Push Notifications', description: 'Notificações push no navegador', icon: Bell, path: '/settings/notifications', status: 'available' },
+];
 
 export default function IntegrationsPage() {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Integrações
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Configure integrações com serviços externos
-          </p>
-        </div>
+    <div className="p-6 space-y-6">
+      <div><h1 className="text-2xl font-bold flex items-center gap-2"><Plug className="h-6 w-6 text-primary" />Integrações</h1><p className="text-muted-foreground mt-1">Configure integrações com serviços externos</p></div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {INTEGRATIONS.map(integration => (
+          <Card key={integration.name} className="hover:shadow-md transition-shadow">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base flex items-center gap-2"><integration.icon className="h-5 w-5 text-primary" />{integration.name}</CardTitle>
+                <Badge variant={integration.status === 'configured' ? 'default' : 'outline'}>{integration.status === 'configured' ? 'Configurado' : 'Disponível'}</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-3">{integration.description}</p>
+              <Button variant="outline" size="sm" onClick={() => navigate(integration.path)}>Configurar</Button>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Integrações</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-8 text-gray-500">
-            <p>Conteúdo de Integrações será implementado aqui.</p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={() => navigate(-1)}
-            >
-              Voltar
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }
