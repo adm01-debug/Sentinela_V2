@@ -5,7 +5,7 @@ export interface SessionEvent {
   type: 'login' | 'logout' | 'action' | 'error' | 'security';
   timestamp: Date;
   description: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string | number | boolean>;
 }
 
 export interface UseSessionActivityOptions {
