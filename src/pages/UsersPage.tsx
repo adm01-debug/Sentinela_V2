@@ -30,7 +30,7 @@ export default function UsersPage() {
                 <div><p className="font-medium">{user.name}</p><p className="text-sm text-muted-foreground">{user.email}</p></div>
               </Link>
               <div className="flex items-center gap-4">
-                <Badge>{String((user.role as any)?.name || user.role || '')}</Badge>
+                <Badge>{typeof user.role === 'object' ? String((user.role as { name?: string })?.name || '') : String(user.role || '')}</Badge>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
                   <DropdownMenuContent align="end">

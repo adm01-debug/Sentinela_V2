@@ -9,6 +9,23 @@ import { Skeleton } from '@/components/Skeleton';
 import { useActivities } from '@/hooks/useActivities';
 import { useEmployees } from '@/hooks/useEmployees';
 
+interface Employee {
+  id: string;
+  name: string;
+}
+
+interface Activity {
+  application?: string;
+  windowTitle?: string;
+  title?: string;
+  timestamp?: string;
+  duration?: number;
+}
+
+interface DataWithArray {
+  data?: Employee[] | Activity[];
+}
+
 const safeTime = (timestamp?: string) => {
   if (!timestamp) return '--:--';
   const date = new Date(timestamp);
@@ -21,8 +38,8 @@ export default function ActivityTimelinePage() {
   const { data: employeesData } = useEmployees();
   const { data: activitiesData, isLoading } = useActivities({ startDate: date.toISOString().split('T')[0], endDate: date.toISOString().split('T')[0], employeeId: employeeId || undefined });
 
-  const employees = Array.isArray(employeesData) ? employeesData : (employeesData as any)?.data || [];
-  const activities = Array.isArray(activitiesData) ? activitiesData : (activitiesData as any)?.data || [];
+  const employees = (Array.isArray(employeesData) ? employeesData : (employeesData as DataWithArray)?.data || []) as Employee[];
+  const activities = (Array.isArray(activitiesData) ? activitiesData : (activitiesData as DataWithArray)?.data || []) as Activity[];
 
   return (
     <div className="p-6 space-y-6">
@@ -31,9 +48,9 @@ export default function ActivityTimelinePage() {
         <div className="flex gap-4">
           <Select value={employeeId} onValueChange={setEmployeeId}>
             <SelectTrigger className="w-[200px]"><SelectValue placeholder="Funcionário" /></SelectTrigger>
-            <SelectContent>{employees?.map((e: any) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
+            <SelectContent>{employees?.map((e) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}</SelectContent>
           </Select>
-          <DatePicker date={date} onDateChange={(d: any) => d && setDate(d)} />
+          <DatePicker date={date} onDateChange={(d: Date | undefined) => d && setDate(d)} />
         </div>
       </div>
 
@@ -48,7 +65,7 @@ export default function ActivityTimelinePage() {
             <div className="relative">
               <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-border" />
               <div className="space-y-6">
-                {activities?.map((activity: any, index: number) => (
+                {activities?.map((activity, index) => (
                   <div key={index} className="relative pl-10">
                     <div className="absolute left-2.5 w-3 h-3 rounded-full bg-primary border-2 border-background" />
                     <div className="flex items-start gap-4 p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors">

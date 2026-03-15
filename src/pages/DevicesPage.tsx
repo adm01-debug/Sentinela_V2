@@ -106,7 +106,7 @@ export default function DevicesPage() {
                     <div className="flex gap-4 text-sm text-muted-foreground mt-1">
                       {device.os_name && <span>{device.os_name} {device.os_version}</span>}
                       {device.ip_address && <span>IP: {device.ip_address}</span>}
-                      {(device as any).employee && <span>👤 {(device as any).employee.name}</span>}
+                      {(device as { employee?: { name: string } }).employee && <span>👤 {(device as { employee?: { name: string } }).employee?.name}</span>}
                     </div>
                   </div>
                 </div>
