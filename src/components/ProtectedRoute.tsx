@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth, User } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { Loader2, ShieldAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -57,10 +57,16 @@ export function ProtectedRoute({
     validateSession();
   }, [isAuthenticated, location.pathname]);
 
-  // Check required roles
+  // Check required roles (including admin)
   useEffect(() => {
     const checkRoles = async () => {
-      if (!user?.id || requiredRoles.length === 0) {
+      if (!user?.id) {
+        setHasRequiredRoles(requiredRoles.length === 0 && !requireAdmin);
+        return;
+      }
+
+      // If no roles required and no admin required, allow
+      if (requiredRoles.length === 0 && !requireAdmin) {
         setHasRequiredRoles(true);
         return;
       }
@@ -77,15 +83,28 @@ export function ProtectedRoute({
         }
 
         const userRoles = data?.map((r: { role: string }) => r.role) || [];
-        const hasRole = requiredRoles.some(role => userRoles.includes(role));
-        setHasRequiredRoles(hasRole);
+        
+        // Check admin requirement
+        if (requireAdmin && !userRoles.includes('admin')) {
+          setHasRequiredRoles(false);
+          return;
+        }
+
+        // Check specific role requirements
+        if (requiredRoles.length > 0) {
+          const hasRole = requiredRoles.some(role => userRoles.includes(role));
+          setHasRequiredRoles(hasRole);
+          return;
+        }
+
+        setHasRequiredRoles(true);
       } catch {
         setHasRequiredRoles(false);
       }
     };
 
     checkRoles();
-  }, [user?.id, requiredRoles]);
+  }, [user?.id, requiredRoles, requireAdmin]);
 
   // Loading state
   if (isLoading || isValidatingSession || hasRequiredRoles === null) {
@@ -104,9 +123,8 @@ export function ProtectedRoute({
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
-  // Requires admin but user is not admin
-  const isAdmin = (user as User).isAdmin ?? false;
-  if (requireAdmin && !isAdmin) {
+  // Admin/role denied (already checked via hasRequiredRoles)
+  if (requireAdmin && !hasRequiredRoles) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4 text-center p-8">
