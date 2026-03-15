@@ -5,13 +5,19 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+    alias: [
+      { find: /^@\//, replacement: `${path.resolve(__dirname, './src')}/` },
+      { find: /^react$/, replacement: path.resolve(__dirname, './node_modules/react/index.js') },
+      { find: /^react\/jsx-runtime$/, replacement: path.resolve(__dirname, './node_modules/react/jsx-runtime.js') },
+      { find: /^react\/jsx-dev-runtime$/, replacement: path.resolve(__dirname, './node_modules/react/jsx-dev-runtime.js') },
+      { find: /^react-dom$/, replacement: path.resolve(__dirname, './node_modules/react-dom/index.js') },
+      { find: /^react-dom\/client$/, replacement: path.resolve(__dirname, './node_modules/react-dom/client.js') },
+    ],
     dedupe: ['react', 'react-dom'],
     preserveSymlinks: false,
   },
   optimizeDeps: {
+    force: true,
     include: [
       'react',
       'react-dom',
