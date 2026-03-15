@@ -570,7 +570,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
                   <p className="text-center text-muted-foreground py-8">Nenhum evento registrado</p>
                 ) : (
                   <div className="space-y-3">
-                    {loginEvents.map((event: any) => (
+                    {loginEvents.map((event: LoginEvent) => (
                       <div key={event.id} className="flex items-start gap-4 p-3 border rounded-lg">
                         <div className={`p-2 rounded-full ${
                           event.event_type === 'login_success' ? 'bg-green-100 text-green-600 dark:bg-green-900/30' :
