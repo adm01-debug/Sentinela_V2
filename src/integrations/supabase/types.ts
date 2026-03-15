@@ -175,6 +175,68 @@ export type Database = {
         }
         Relationships: []
       }
+      attendance_records: {
+        Row: {
+          actual_end: string | null
+          actual_start: string | null
+          created_at: string
+          date: string
+          early_departure_minutes: number | null
+          employee_id: string
+          id: string
+          late_minutes: number | null
+          notes: string | null
+          overtime_minutes: number | null
+          scheduled_end: string | null
+          scheduled_start: string | null
+          status: string
+          total_worked_minutes: number | null
+          updated_at: string
+        }
+        Insert: {
+          actual_end?: string | null
+          actual_start?: string | null
+          created_at?: string
+          date: string
+          early_departure_minutes?: number | null
+          employee_id: string
+          id?: string
+          late_minutes?: number | null
+          notes?: string | null
+          overtime_minutes?: number | null
+          scheduled_end?: string | null
+          scheduled_start?: string | null
+          status?: string
+          total_worked_minutes?: number | null
+          updated_at?: string
+        }
+        Update: {
+          actual_end?: string | null
+          actual_start?: string | null
+          created_at?: string
+          date?: string
+          early_departure_minutes?: number | null
+          employee_id?: string
+          id?: string
+          late_minutes?: number | null
+          notes?: string | null
+          overtime_minutes?: number | null
+          scheduled_end?: string | null
+          scheduled_start?: string | null
+          status?: string
+          total_worked_minutes?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_records_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       badges: {
         Row: {
           category: string
@@ -950,6 +1012,53 @@ export type Database = {
             columns: ["schedule_id"]
             isOneToOne: false
             referencedRelation: "work_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employee_status: {
+        Row: {
+          clock_in_at: string | null
+          current_project: string | null
+          current_task: string | null
+          employee_id: string
+          id: string
+          idle_minutes: number | null
+          last_activity_at: string | null
+          status: string
+          total_today_minutes: number | null
+          updated_at: string
+        }
+        Insert: {
+          clock_in_at?: string | null
+          current_project?: string | null
+          current_task?: string | null
+          employee_id: string
+          id?: string
+          idle_minutes?: number | null
+          last_activity_at?: string | null
+          status?: string
+          total_today_minutes?: number | null
+          updated_at?: string
+        }
+        Update: {
+          clock_in_at?: string | null
+          current_project?: string | null
+          current_task?: string | null
+          employee_id?: string
+          id?: string
+          idle_minutes?: number | null
+          last_activity_at?: string | null
+          status?: string
+          total_today_minutes?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_status_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employees"
             referencedColumns: ["id"]
           },
         ]
@@ -2620,6 +2729,62 @@ export type Database = {
         }
         Relationships: []
       }
+      projects: {
+        Row: {
+          budget_hours: number | null
+          client_name: string | null
+          color: string | null
+          company_id: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          name: string
+          start_date: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          budget_hours?: number | null
+          client_name?: string | null
+          color?: string | null
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name: string
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          budget_hours?: number | null
+          client_name?: string | null
+          color?: string | null
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name?: string
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rate_limit_logs: {
         Row: {
           created_at: string
@@ -3011,6 +3176,69 @@ export type Database = {
         }
         Relationships: []
       }
+      tasks: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          due_date: string | null
+          estimated_hours: number | null
+          id: string
+          name: string
+          priority: string
+          project_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          name: string
+          priority?: string
+          project_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          name?: string
+          priority?: string
+          project_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_members: {
         Row: {
           employee_name: string
@@ -3093,6 +3321,141 @@ export type Database = {
             columns: ["parent_team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      time_entries: {
+        Row: {
+          break_minutes: number | null
+          clock_in: string
+          clock_out: string | null
+          created_at: string
+          created_by: string | null
+          duration_minutes: number | null
+          employee_id: string
+          id: string
+          is_manual: boolean | null
+          notes: string | null
+          project_id: string | null
+          status: string
+          task_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          break_minutes?: number | null
+          clock_in?: string
+          clock_out?: string | null
+          created_at?: string
+          created_by?: string | null
+          duration_minutes?: number | null
+          employee_id: string
+          id?: string
+          is_manual?: boolean | null
+          notes?: string | null
+          project_id?: string | null
+          status?: string
+          task_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          break_minutes?: number | null
+          clock_in?: string
+          clock_out?: string | null
+          created_at?: string
+          created_by?: string | null
+          duration_minutes?: number | null
+          employee_id?: string
+          id?: string
+          is_manual?: boolean | null
+          notes?: string | null
+          project_id?: string | null
+          status?: string
+          task_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "time_entries_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      timesheets: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          break_hours: number | null
+          created_at: string
+          employee_id: string
+          id: string
+          notes: string | null
+          overtime_hours: number | null
+          period_end: string
+          period_start: string
+          period_type: string
+          regular_hours: number | null
+          status: string
+          total_hours: number | null
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          break_hours?: number | null
+          created_at?: string
+          employee_id: string
+          id?: string
+          notes?: string | null
+          overtime_hours?: number | null
+          period_end: string
+          period_start: string
+          period_type?: string
+          regular_hours?: number | null
+          status?: string
+          total_hours?: number | null
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          break_hours?: number | null
+          created_at?: string
+          employee_id?: string
+          id?: string
+          notes?: string | null
+          overtime_hours?: number | null
+          period_end?: string
+          period_start?: string
+          period_type?: string
+          regular_hours?: number | null
+          status?: string
+          total_hours?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "timesheets_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
             referencedColumns: ["id"]
           },
         ]
