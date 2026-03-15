@@ -293,11 +293,12 @@ export function useWebAuthn() {
       });
 
       return { success: true, userId: credential.user_id };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('WebAuthn authentication error:', error);
+      const err = error as Error & { name?: string; message?: string };
 
       let errorMessage = 'Falha na autenticação biométrica.';
-      if (error.name === 'NotAllowedError') {
+      if (err.name === 'NotAllowedError') {
         errorMessage = 'Operação cancelada ou não permitida.';
       }
 
