@@ -216,7 +216,7 @@ describe('Security Attack Scenarios', () => {
       "1; DELETE FROM employees",
       "' UNION SELECT * FROM employees --",
     ];
-    const containsSQLInjection = (input: string) => /('|--|;|UNION|DROP|DELETE|INSERT|UPDATE)\s/i.test(input);
+    const containsSQLInjection = (input: string) => /(--|;|UNION|DROP|DELETE|INSERT|UPDATE)/i.test(input);
     sqlPayloads.forEach((payload, i) => {
       it(`should detect SQL injection #${i + 1}`, () => {
         expect(containsSQLInjection(payload)).toBe(true);
