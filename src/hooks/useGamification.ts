@@ -312,7 +312,7 @@ export function useAwardBadge() {
         .select('id')
         .eq('employee_id', employeeId)
         .eq('badge_id', badgeId)
-        .single();
+        .maybeSingle();
 
       if (existing) {
         throw new Error('Funcionário já possui este badge');
