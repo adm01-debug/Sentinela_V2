@@ -434,8 +434,8 @@ const AuthContent = React.memo(function AuthContent() {
                 </Button>
               </>
             )}
+          </form>
           
-          {/* Footer links */}
           <div className="text-center space-y-3">
             {mode === 'login' && (
               <p className="text-muted-foreground">
