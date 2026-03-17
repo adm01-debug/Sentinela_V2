@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuthPage } from '@/hooks/useAuthPage';
@@ -10,6 +10,7 @@ import { Shield, Loader2, Eye, EyeOff, AlertTriangle, Lock, Mail, User, Building
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { PasswordStrengthChecker } from '@/components/auth/PasswordStrengthChecker';
 import { motion, AnimatePresence } from 'framer-motion';
+import { lovable } from '@/integrations/lovable/index';
 
 const features = [
   { icon: Shield, title: 'Monitoramento 24/7', description: 'Proteção contínua para sua equipe' },
