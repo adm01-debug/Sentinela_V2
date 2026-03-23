@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
+// Force clean rebuild v2
 
 async function resetDevRuntimeCaches() {
   if (!import.meta.env.DEV || typeof window === 'undefined') return;
