@@ -7,14 +7,17 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      // Force single React instance across all deps
-      'react': path.resolve(__dirname, './node_modules/react'),
-      'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
     },
     dedupe: [
-      'react', 'react-dom', 'react-router-dom',
-      '@tanstack/react-query', 'react-i18next', 'i18next',
-      'framer-motion', '@supabase/supabase-js',
+      'react',
+      'react-dom',
+      'react-router-dom',
+      '@tanstack/react-query',
+      'react-i18next',
+      'i18next',
+      'framer-motion',
+      '@supabase/supabase-js',
+      'zustand',
     ],
   },
   optimizeDeps: {
@@ -29,7 +32,10 @@ export default defineConfig({
       'react-i18next',
       'i18next',
       'framer-motion',
+      'zustand',
+      '@supabase/supabase-js',
     ],
+    force: true,
   },
   test: {
     globals: true,
