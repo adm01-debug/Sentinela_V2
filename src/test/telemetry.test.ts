@@ -1210,7 +1210,7 @@ describe('Telemetria de Queries - Suite Completa', () => {
 
     it('15.05 - severityFilter "slow" adiciona eq', () => {
       const filter = 'slow';
-      expect(filter !== 'all').toBe(true);
+      expect((filter as string) !== 'all').toBe(true);
     });
 
     it('15.06 - refetchInterval é 30000ms', () => {
