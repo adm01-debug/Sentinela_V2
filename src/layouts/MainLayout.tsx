@@ -11,7 +11,7 @@ export const MainLayout = () => {
       <AppSidebar />
       <div className={cn('flex-1 flex flex-col overflow-hidden', sidebarCollapsed ? 'ml-16' : 'ml-64')}>
         <Header />
-        <main className="flex-1 overflow-auto p-6">
+        <main id="main-content" role="main" className="flex-1 overflow-auto p-6">
           <Outlet />
         </main>
       </div>
