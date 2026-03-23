@@ -7,6 +7,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      // Force single React instance across all deps
+      'react': path.resolve(__dirname, './node_modules/react'),
+      'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
     },
     dedupe: [
       'react', 'react-dom', 'react-router-dom',
