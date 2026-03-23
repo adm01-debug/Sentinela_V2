@@ -1,9 +1,7 @@
-// SecureWatch v2 - Clean build
+// SecureWatch v2
+import './lib/i18n';
 import { AppProviders } from './providers/AppProviders';
 import { AppRoutes } from './routes/AppRoutes';
-
-// Initialize i18n (side-effect import)
-import './lib/i18n';
 
 export default function App() {
   return (
