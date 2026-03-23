@@ -49,7 +49,7 @@ export function classifySeverity(durationMs: number, hasError: boolean): string 
   if (hasError) return 'error';
   if (durationMs >= VERY_SLOW_THRESHOLD_MS) return 'very_slow';
   if (durationMs >= SLOW_THRESHOLD_MS) return 'slow';
-  return 'normal';
+  return 'ok';
 }
 
 export function buildTelemetryPayload(
@@ -80,15 +80,40 @@ export async function emitTelemetry(
   serviceRoleKey: string,
   payload: TelemetryPayload
 ): Promise<void> {
+  // Structured console logging
+  const target = payload.rpc_name || payload.table_name || 'unknown';
+  const icon = payload.severity === 'very_slow' ? '🔴'
+    : payload.severity === 'slow' ? '🟡'
+    : payload.severity === 'error' ? '❌'
+    : '✅';
+
+  const line = `${icon} [telemetry] ${payload.operation}:${target} ${payload.duration_ms}ms`
+    + ` | records=${payload.record_count ?? '-'}`
+    + ` limit=${payload.query_limit ?? '-'}`
+    + ` offset=${payload.query_offset ?? '-'}`
+    + ` count=${payload.count_mode ?? '-'}`;
+
+  if (payload.severity === 'very_slow') {
+    console.warn(`⚠️ VERY SLOW QUERY: ${line}`);
+  } else if (payload.severity === 'slow') {
+    console.warn(`⚠️ SLOW QUERY: ${line}`);
+  } else if (payload.severity === 'error') {
+    console.error(`${line} error=${payload.error_message}`);
+  } else {
+    console.info(line);
+  }
+
   // Only persist slow, very_slow, or error telemetry
-  if (payload.severity === 'normal') return;
+  if (payload.severity === 'ok') return;
 
   try {
     const supabase = createClient(supabaseUrl, serviceRoleKey);
-    await supabase.from('query_telemetry').insert(payload);
+    // Fire-and-forget: never block main response
+    supabase.from('query_telemetry').insert(payload).then(({ error: insertErr }) => {
+      if (insertErr) console.warn('[telemetry-persist] Insert failed:', insertErr.message);
+    });
   } catch (err) {
-    // Telemetry should never break the main flow
-    console.error('[telemetry] Failed to persist:', err);
+    // Fire-and-forget: NEVER break the main flow
   }
 }
 
@@ -152,7 +177,6 @@ async function executeQuery(
       count: req.count_mode || undefined,
     });
 
-    // Apply filters
     if (req.filters) {
       for (const [key, value] of Object.entries(req.filters)) {
         selectQuery = selectQuery.eq(key, value);
@@ -231,15 +255,15 @@ Deno.serve(async (req: Request) => {
     });
 
     const token = authHeader.replace('Bearer ', '');
-    const { data: claimsData, error: claimsError } = await adminClient.auth.getClaims(token);
-    if (claimsError || !claimsData?.claims) {
+    const { data: { user }, error: authError } = await adminClient.auth.getUser(token);
+    if (authError || !user) {
       return new Response(
         JSON.stringify({ error: 'Invalid token' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const userId = claimsData.claims.sub as string;
+    const userId = user.id;
 
     // Rate limiting
     const rateLimit = checkRateLimitInMemory(`external-db:${userId}`, 60, 60000);
