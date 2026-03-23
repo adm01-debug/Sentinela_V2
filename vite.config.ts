@@ -8,7 +8,11 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
-    dedupe: ['react', 'react-dom', 'react-router-dom', '@tanstack/react-query'],
+    dedupe: [
+      'react', 'react-dom', 'react-router-dom',
+      '@tanstack/react-query', 'react-i18next', 'i18next',
+      'framer-motion', '@supabase/supabase-js',
+    ],
   },
   optimizeDeps: {
     include: [
@@ -19,8 +23,10 @@ export default defineConfig({
       'react/jsx-dev-runtime',
       '@tanstack/react-query',
       'react-router-dom',
+      'react-i18next',
+      'i18next',
+      'framer-motion',
     ],
-    force: true,
   },
   test: {
     globals: true,
