@@ -1,10 +1,9 @@
-// Stores barrel file for Sentinela v17
+// Stores barrel file for Sentinela v20
 
 // Core stores
 export * from './activityStore';
 export * from './alertStore';
 export * from './appStore';
-export * from './authStore';
 export * from './cacheStore';
 export * from './dashboardStore';
 export * from './employeeStore';
