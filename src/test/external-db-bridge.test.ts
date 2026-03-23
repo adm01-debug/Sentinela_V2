@@ -306,7 +306,7 @@ describe('External DB Bridge - Suite Completa', () => {
 
     it('2.19 - negative duration rounds correctly', () => {
       const p = buildTelemetryPayload(baseReq, -0.5, null, null, null);
-      expect(p.duration_ms).toBe(0);
+      expect(Object.is(p.duration_ms, 0) || Object.is(p.duration_ms, -0)).toBe(true);
     });
 
     it('2.20 - empty table with rpc', () => {
