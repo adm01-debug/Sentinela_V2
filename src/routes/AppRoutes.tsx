@@ -261,6 +261,7 @@ export const AppRoutes = () => (
         <Route path="/timesheets" element={<TimesheetsPage />} />
         <Route path="/attendance" element={<AttendancePage />} />
         <Route path="/hours-tracking" element={<HoursTrackingPage />} />
+        <Route path="/admin/telemetria" element={<AdminTelemetriaPage />} />
       </Route>
 
       {/* 404 */}
