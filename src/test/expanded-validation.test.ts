@@ -172,7 +172,7 @@ describe('Permissions System', () => {
 
   describe('Admin role', () => {
     it('has wildcard on all resources', () => {
-      const resources: Array<typeof mod.Resource extends infer R ? R : never> = ['employees', 'activities', 'reports', 'alerts', 'settings', 'users'] as const;
+      const resources = ['employees', 'activities', 'reports', 'alerts', 'settings', 'users'] as const;
       resources.forEach(resource => {
         expect(mod.hasPermission('admin', resource as any, 'read')).toBe(true);
         expect(mod.hasPermission('admin', resource as any, 'write')).toBe(true);
