@@ -8,7 +8,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', 'react-router-dom', '@tanstack/react-query'],
   },
   optimizeDeps: {
     include: [
@@ -20,6 +20,7 @@ export default defineConfig({
       '@tanstack/react-query',
       'react-router-dom',
     ],
+    force: true,
   },
   test: {
     globals: true,
