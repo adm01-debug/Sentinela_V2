@@ -20,7 +20,6 @@ export default defineConfig({
       '@tanstack/react-query',
       'react-router-dom',
     ],
-    force: true,
   },
   test: {
     globals: true,
