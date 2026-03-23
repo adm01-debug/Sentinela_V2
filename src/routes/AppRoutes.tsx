@@ -91,6 +91,7 @@ const ProjectsPage = lazy(() => import('@/pages/ProjectsPage'));
 const TimesheetsPage = lazy(() => import('@/pages/TimesheetsPage'));
 const AttendancePage = lazy(() => import('@/pages/AttendancePage'));
 const HoursTrackingPage = lazy(() => import('@/pages/HoursTrackingPage'));
+const AdminTelemetriaPage = lazy(() => import('@/pages/AdminTelemetriaPage'));
 
 // ============================================================
 // SUPABASE SESSION HOOK
@@ -260,6 +261,7 @@ export const AppRoutes = () => (
         <Route path="/timesheets" element={<TimesheetsPage />} />
         <Route path="/attendance" element={<AttendancePage />} />
         <Route path="/hours-tracking" element={<HoursTrackingPage />} />
+        <Route path="/admin/telemetria" element={<AdminTelemetriaPage />} />
       </Route>
 
       {/* 404 */}
