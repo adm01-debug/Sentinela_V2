@@ -38,9 +38,11 @@ export const useUIStore = create<UIState>()((set) => ({
   closeModal: () => set({ activeModal: null }),
   toggleCommandPalette: () => set((state) => ({ commandPaletteOpen: !state.commandPaletteOpen })),
   setGlobalLoading: (loading) => set({ globalLoading: loading }),
-  addToast: (message, type) =>
+  addToast: (message, type) => {
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
     set((state) => ({
-      toasts: [...state.toasts, { id: Date.now().toString(), message, type }],
-    })),
+      toasts: [...state.toasts, { id, message, type }],
+    }));
+  },
   removeToast: (id) => set((state) => ({ toasts: state.toasts.filter((t) => t.id !== id) })),
 }));
