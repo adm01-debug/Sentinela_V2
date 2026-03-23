@@ -964,7 +964,7 @@ describe('Telemetria de Queries - Suite Completa', () => {
 
     it('11.14 - formatDuration precision', () => {
       expect(formatDuration(1234)).toBe('1.2s');
-      expect(formatDuration(1250)).toBe('1.2s'); // toFixed(1) rounds
+      expect(formatDuration(1250)).toBe('1.3s'); // toFixed(1) rounds 5 up
     });
 
     it('11.15 - concurrent filter application', () => {
