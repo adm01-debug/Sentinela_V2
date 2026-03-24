@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { FeatureFlagsProvider } from '@/lib/feature-flags/provider';
 import { PermissionsProvider } from '@/lib/permissions/provider';
 import { ErrorBoundary } from '@/lib/error-handling';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,11 +18,13 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <FeatureFlagsProvider>
-            <PermissionsProvider role="viewer">
-              {children}
-            </PermissionsProvider>
-          </FeatureFlagsProvider>
+          <ThemeProvider defaultTheme="system">
+            <FeatureFlagsProvider>
+              <PermissionsProvider role="viewer">
+                {children}
+              </PermissionsProvider>
+            </FeatureFlagsProvider>
+          </ThemeProvider>
         </BrowserRouter>
       </QueryClientProvider>
     </ErrorBoundary>
