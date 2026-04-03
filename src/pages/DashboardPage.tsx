@@ -4,7 +4,8 @@ import {
   Filter, X, ArrowRight, Eye, Monitor, Globe, CheckCircle,
   Bell
 } from 'lucide-react';
-import { useDashboardStats, useActivityChart, useTopEmployees } from '@/hooks/useDashboard';
+import { useDashboardStats } from '@/hooks/useDashboard';
+import { useChartColors } from '@/hooks/useChartColors';
 import { StatCard } from '@/components/StatCard';
 import { DashboardCustomizer } from '@/components/DashboardCustomizer';
 import { Skeleton } from '@/components/Skeleton';
