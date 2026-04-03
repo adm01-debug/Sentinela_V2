@@ -85,12 +85,14 @@ const severityLabels: Record<string, string> = {
 // CUSTOM TOOLTIP
 // ============================================================
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface TooltipPayloadEntry { color: string; name: string; value: string | number; }
+
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: TooltipPayloadEntry[]; label?: string }) => {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border bg-popover p-3 shadow-md">
       <p className="text-sm font-medium text-popover-foreground mb-1">{label}</p>
-      {payload.map((entry: any, i: number) => (
+      {payload.map((entry, i) => (
         <p key={i} className="text-xs text-muted-foreground">
           <span className="inline-block w-2 h-2 rounded-full mr-1.5" style={{ backgroundColor: entry.color }} />
           {entry.name}: <span className="font-medium text-popover-foreground">{entry.value}</span>
