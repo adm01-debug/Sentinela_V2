@@ -16,6 +16,8 @@ describe('Layout Consolidation', () => {
     const mod = await import('@/components/layout/index');
     expect((mod as any).ResponsiveLayout).toBeUndefined();
   });
+
+  it('MainLayout exists and exports correctly', async () => {
     const mod = await import('@/layouts/MainLayout');
     expect(mod.MainLayout).toBeDefined();
     expect(typeof mod.MainLayout).toBe('function');
