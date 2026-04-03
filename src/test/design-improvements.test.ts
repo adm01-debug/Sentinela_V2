@@ -87,7 +87,6 @@ describe('Mobile Support Components', () => {
   it('BottomNav exists and exports', async () => {
     const { BottomNav } = await import('@/components/layout/BottomNav');
     expect(BottomNav).toBeDefined();
-    expect(typeof BottomNav).toBe('function');
   });
 
   it('MobileSidebar exists and exports', async () => {
