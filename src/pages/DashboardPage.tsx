@@ -4,7 +4,8 @@ import {
   Filter, X, ArrowRight, Eye, Monitor, Globe, CheckCircle,
   Bell
 } from 'lucide-react';
-import { useDashboardStats, useActivityChart, useTopEmployees } from '@/hooks/useDashboard';
+import { useDashboardStats } from '@/hooks/useDashboard';
+import { useChartColors } from '@/hooks/useChartColors';
 import { StatCard } from '@/components/StatCard';
 import { DashboardCustomizer } from '@/components/DashboardCustomizer';
 import { Skeleton } from '@/components/Skeleton';
@@ -49,14 +50,7 @@ const fallbackProductivityData = [
   { day: 'Sex', horas: 7.1 },
 ];
 
-const departmentData = [
-  { name: 'Engenharia', value: 35, color: 'hsl(var(--primary))' },
-  { name: 'Marketing', value: 22, color: 'hsl(var(--accent))' },
-  { name: 'Vendas', value: 28, color: 'hsl(var(--success))' },
-  { name: 'RH', value: 15, color: 'hsl(var(--info))' },
-  { name: 'Financeiro', value: 18, color: 'hsl(var(--warning))' },
-  { name: 'Suporte', value: 10, color: 'hsl(var(--destructive))' },
-];
+// departmentData moved inside component to use computed colors
 
 const fallbackAlerts = [
   { id: '1', message: 'Acesso não autorizado detectado', severity: 'critical' as const, time: '2 min atrás', employee: 'Carlos Silva' },
@@ -91,12 +85,14 @@ const severityLabels: Record<string, string> = {
 // CUSTOM TOOLTIP
 // ============================================================
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface TooltipPayloadEntry { color: string; name: string; value: string | number; }
+
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: TooltipPayloadEntry[]; label?: string }) => {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border bg-popover p-3 shadow-md">
       <p className="text-sm font-medium text-popover-foreground mb-1">{label}</p>
-      {payload.map((entry: any, i: number) => (
+      {payload.map((entry, i) => (
         <p key={i} className="text-xs text-muted-foreground">
           <span className="inline-block w-2 h-2 rounded-full mr-1.5" style={{ backgroundColor: entry.color }} />
           {entry.name}: <span className="font-medium text-popover-foreground">{entry.value}</span>
@@ -117,10 +113,19 @@ export const DashboardPage = () => {
 
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const navigate = useNavigate();
+  const colors = useChartColors();
+
+  const departmentData = [
+    { name: 'Engenharia', value: 35, color: colors.primary },
+    { name: 'Marketing', value: 22, color: colors.accent },
+    { name: 'Vendas', value: 28, color: colors.success },
+    { name: 'RH', value: 15, color: colors.info },
+    { name: 'Financeiro', value: 18, color: colors.warning },
+    { name: 'Suporte', value: 10, color: colors.destructive },
+  ];
 
   if (statsLoading) return <DashboardSkeleton />;
 
-  // Use real data if available, fallback to demo data
   const totalEmployees = stats?.totalEmployees || 128;
   const activeEmployees = stats?.activeEmployees || 45;
   const productivity = stats?.averageProductivity || 87;
@@ -222,19 +227,19 @@ export const DashboardPage = () => {
                 <AreaChart data={fallbackActivityData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorAtivos" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                      <stop offset="5%" stopColor={colors.primary} stopOpacity={0.3} />
+                      <stop offset="95%" stopColor={colors.primary} stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                  <XAxis dataKey="time" tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
-                  <YAxis tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                  <XAxis dataKey="time" tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
+                  <YAxis tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <Tooltip content={<CustomTooltip />} />
                   <Area
                     type="monotone"
                     dataKey="ativos"
                     name="Ativos"
-                    stroke="hsl(var(--primary))"
+                    stroke={colors.primary}
                     strokeWidth={2}
                     fill="url(#colorAtivos)"
                   />
@@ -256,11 +261,11 @@ export const DashboardPage = () => {
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={fallbackProductivityData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                  <XAxis dataKey="day" tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
-                  <YAxis domain={[0, 10]} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                  <XAxis dataKey="day" tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
+                  <YAxis domain={[0, 10]} tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="horas" name="Horas" fill="hsl(var(--accent))" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="horas" name="Horas" fill={colors.accent} radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
