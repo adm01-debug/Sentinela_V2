@@ -227,19 +227,19 @@ export const DashboardPage = () => {
                 <AreaChart data={fallbackActivityData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorAtivos" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                      <stop offset="5%" stopColor={colors.primary} stopOpacity={0.3} />
+                      <stop offset="95%" stopColor={colors.primary} stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                  <XAxis dataKey="time" tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
-                  <YAxis tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                  <XAxis dataKey="time" tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
+                  <YAxis tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <Tooltip content={<CustomTooltip />} />
                   <Area
                     type="monotone"
                     dataKey="ativos"
                     name="Ativos"
-                    stroke="hsl(var(--primary))"
+                    stroke={colors.primary}
                     strokeWidth={2}
                     fill="url(#colorAtivos)"
                   />
