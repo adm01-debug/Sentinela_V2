@@ -4,13 +4,16 @@ import { AppSidebar } from '@/components/AppSidebar';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
 import { MobileSidebar } from '@/components/layout/MobileSidebar';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { useUIStore } from '@/stores/uiStore';
 import { cn } from '@/utils/cn';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { CommandPalette } from '@/components/CommandPalette';
 
 export const MainLayout = () => {
   const { sidebarCollapsed } = useUIStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
   const handleMobileMenuToggle = useCallback(() => {
     setIsMobileMenuOpen(prev => !prev);
@@ -18,6 +21,10 @@ export const MainLayout = () => {
 
   const handleMobileMenuClose = useCallback(() => {
     setIsMobileMenuOpen(false);
+  }, []);
+
+  const handleCommandPaletteOpen = useCallback(() => {
+    setIsCommandPaletteOpen(true);
   }, []);
 
   return (
@@ -34,6 +41,9 @@ export const MainLayout = () => {
         </SheetContent>
       </Sheet>
 
+      {/* Command Palette */}
+      <CommandPalette open={isCommandPaletteOpen} onOpenChange={setIsCommandPaletteOpen} />
+
       {/* Main Content Area */}
       <div
         className={cn(
@@ -42,12 +52,16 @@ export const MainLayout = () => {
           !sidebarCollapsed && 'md:ml-64'
         )}
       >
-        <Header onMenuClick={handleMobileMenuToggle} />
+        <Header
+          onMenuClick={handleMobileMenuToggle}
+          onCommandPaletteOpen={handleCommandPaletteOpen}
+        />
         <main
           id="main-content"
           role="main"
           className="flex-1 overflow-auto p-4 sm:p-6 pb-20 md:pb-6"
         >
+          <Breadcrumbs className="mb-4" />
           <Outlet />
         </main>
 

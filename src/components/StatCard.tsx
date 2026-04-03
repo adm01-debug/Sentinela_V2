@@ -45,29 +45,34 @@ export function StatCard({
   const isPositive = trend?.isPositive ?? (trend?.value !== undefined ? trend.value >= 0 : undefined);
 
   return (
-    <Card className={cn(
-      variant === 'gradient' && 'bg-gradient-to-br from-primary/5 to-primary/10'
-    )}>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
-        {Icon && <Icon className={cn('w-4 h-4', iconColor)} />}
-      </CardHeader>
-      <CardContent>
-        <div className={cn('text-2xl font-bold', valueClassName)}>{value}</div>
+    <Card variant="interactive" className="group relative overflow-hidden">
+      {/* Hover gradient accent */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
+      <CardContent className="p-5 relative">
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          {Icon && (
+            <div className={cn(
+              "flex items-center justify-center w-9 h-9 rounded-lg transition-colors",
+              iconColor.includes('bg-') ? iconColor : `bg-muted ${iconColor}`
+            )}>
+              <Icon className="w-4 h-4" />
+            </div>
+          )}
+        </div>
+        <div className={cn('text-2xl font-bold text-card-foreground tracking-tight', valueClassName)}>{value}</div>
         {trend && (
           <div className={cn(
-            'flex items-center text-xs mt-1',
+            'flex items-center text-xs mt-2 font-medium',
             isPositive ? 'text-success' : 'text-destructive'
           )}>
-            {isPositive ? (
-              <TrendingUp className="w-3 h-3 mr-1" />
-            ) : (
-              <TrendingDown className="w-3 h-3 mr-1" />
-            )}
-            {Math.abs(trend.value)}% {trend.label || 'from last period'}
+            {isPositive ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
+            <span>{Math.abs(trend.value)}%</span>
+            <span className="text-muted-foreground ml-1 font-normal">{trend.label || 'desde o último período'}</span>
           </div>
         )}
-        {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
+        {description && <p className="text-xs text-muted-foreground mt-2">{description}</p>}
       </CardContent>
     </Card>
   );

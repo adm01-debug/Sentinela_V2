@@ -69,11 +69,11 @@ export const DashboardPage = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Total Employees" value={stats?.totalEmployees || 0} icon={Users} />
-        <StatCard title="Active Now" value={stats?.activeEmployees || 0} icon={Activity} trend={{ value: 5 }} />
-        <StatCard title="Productivity" value={(stats?.averageProductivity || 0) + '%'} icon={TrendingUp} trend={{ value: stats?.productivityTrend || 0 }} />
-        <StatCard title="Open Alerts" value={stats?.alertsCount || 0} icon={AlertTriangle} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard title="Total de Funcionários" value={stats?.totalEmployees || 0} icon={Users} iconColor="bg-primary/10 text-primary" />
+        <StatCard title="Ativos Agora" value={stats?.activeEmployees || 0} icon={Activity} iconColor="bg-success/10 text-success" trend={{ value: 5 }} />
+        <StatCard title="Produtividade" value={(stats?.averageProductivity || 0) + '%'} icon={TrendingUp} iconColor="bg-warning/10 text-warning" trend={{ value: stats?.productivityTrend || 0 }} />
+        <StatCard title="Alertas Abertos" value={stats?.alertsCount || 0} icon={AlertTriangle} iconColor="bg-destructive/10 text-destructive" />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2"><ActivityChart data={activityData || []} /></div>
