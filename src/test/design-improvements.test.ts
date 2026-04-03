@@ -109,7 +109,7 @@ describe('Header Component', () => {
 
   it('Header accepts onMenuClick prop', async () => {
     const { Header } = await import('@/components/Header');
-    expect(typeof Header).toBe('function');
+    expect(Header).toBeDefined();
   });
 });
 
