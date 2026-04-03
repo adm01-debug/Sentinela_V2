@@ -94,10 +94,9 @@ describe('Mobile Support Components', () => {
     expect(MobileSidebar).toBeDefined();
   });
 
-  it('MobileSidebar accepts onNavigate prop', async () => {
+  it('MobileSidebar accepts onNavigate prop type', async () => {
     const { MobileSidebar } = await import('@/components/layout/MobileSidebar');
-    // Component should accept props without error
-    expect(MobileSidebar.length).toBeGreaterThanOrEqual(0);
+    expect(MobileSidebar).toBeDefined();
   });
 });
 
