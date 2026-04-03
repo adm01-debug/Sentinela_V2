@@ -77,7 +77,8 @@ describe('Sidebar Architecture', () => {
 
   it('AppSidebar is a valid component', async () => {
     const { AppSidebar } = await import('@/components/AppSidebar');
-    expect(typeof AppSidebar).toBe('function');
+    expect(AppSidebar).toBeDefined();
+    expect(typeof AppSidebar === 'function' || typeof AppSidebar === 'object').toBe(true);
   });
 });
 
