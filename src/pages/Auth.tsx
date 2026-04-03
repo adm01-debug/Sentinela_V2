@@ -163,7 +163,7 @@ const AuthContent = React.memo(function AuthContent() {
         <div className="absolute inset-0 grid-pattern opacity-10" />
         
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-between p-12 xl:p-16 w-full">
+        <div className="relative z-10 flex flex-col justify-center gap-10 p-12 xl:p-16 w-full min-h-full">
           {/* Logo */}
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
