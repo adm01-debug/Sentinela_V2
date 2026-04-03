@@ -113,10 +113,19 @@ export const DashboardPage = () => {
 
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const navigate = useNavigate();
+  const colors = useChartColors();
+
+  const departmentData = [
+    { name: 'Engenharia', value: 35, color: colors.primary },
+    { name: 'Marketing', value: 22, color: colors.accent },
+    { name: 'Vendas', value: 28, color: colors.success },
+    { name: 'RH', value: 15, color: colors.info },
+    { name: 'Financeiro', value: 18, color: colors.warning },
+    { name: 'Suporte', value: 10, color: colors.destructive },
+  ];
 
   if (statsLoading) return <DashboardSkeleton />;
 
-  // Use real data if available, fallback to demo data
   const totalEmployees = stats?.totalEmployees || 128;
   const activeEmployees = stats?.activeEmployees || 45;
   const productivity = stats?.averageProductivity || 87;
