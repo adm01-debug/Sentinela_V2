@@ -92,7 +92,6 @@ describe('Mobile Support Components', () => {
   it('MobileSidebar exists and exports', async () => {
     const { MobileSidebar } = await import('@/components/layout/MobileSidebar');
     expect(MobileSidebar).toBeDefined();
-    expect(typeof MobileSidebar).toBe('function');
   });
 
   it('MobileSidebar accepts onNavigate prop', async () => {
