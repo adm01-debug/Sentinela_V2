@@ -144,17 +144,28 @@ export const AppSidebar = memo(function AppSidebar() {
         )}
       >
         {/* Header */}
-        <div className="h-14 flex items-center justify-between px-4 border-b shrink-0">
-          {!sidebarCollapsed && (
-            <span className="font-bold text-lg text-primary tracking-tight">{APP_NAME}</span>
+        <div className="h-14 flex items-center justify-between px-3 border-b shrink-0">
+          {!sidebarCollapsed ? (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent shadow-sm">
+                <Shield className="h-4 w-4 text-primary-foreground" />
+              </div>
+              <span className="font-bold text-lg text-foreground tracking-tight">{APP_NAME}</span>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent shadow-sm mx-auto">
+              <Shield className="h-4 w-4 text-primary-foreground" />
+            </div>
           )}
-          <button
-            onClick={toggleSidebarCollapse}
-            className="p-1.5 rounded-md hover:bg-muted transition-colors"
-            aria-label={sidebarCollapsed ? 'Expandir sidebar' : 'Recolher sidebar'}
-          >
-            {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          </button>
+          {!sidebarCollapsed && (
+            <button
+              onClick={toggleSidebarCollapse}
+              className="p-1.5 rounded-md hover:bg-muted transition-colors"
+              aria-label="Recolher sidebar"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+          )}
         </div>
 
         {/* Navigation */}
