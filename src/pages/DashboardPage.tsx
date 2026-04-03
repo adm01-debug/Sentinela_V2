@@ -50,14 +50,7 @@ const fallbackProductivityData = [
   { day: 'Sex', horas: 7.1 },
 ];
 
-const departmentData = [
-  { name: 'Engenharia', value: 35, color: 'hsl(var(--primary))' },
-  { name: 'Marketing', value: 22, color: 'hsl(var(--accent))' },
-  { name: 'Vendas', value: 28, color: 'hsl(var(--success))' },
-  { name: 'RH', value: 15, color: 'hsl(var(--info))' },
-  { name: 'Financeiro', value: 18, color: 'hsl(var(--warning))' },
-  { name: 'Suporte', value: 10, color: 'hsl(var(--destructive))' },
-];
+// departmentData moved inside component to use computed colors
 
 const fallbackAlerts = [
   { id: '1', message: 'Acesso não autorizado detectado', severity: 'critical' as const, time: '2 min atrás', employee: 'Carlos Silva' },
