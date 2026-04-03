@@ -7,12 +7,16 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ---- 1. LAYOUT CONSOLIDATION ----
 describe('Layout Consolidation', () => {
-  it('DashboardLayout was removed (consolidated into MainLayout)', async () => {
-    await expect(import('@/components/layout/DashboardLayout')).rejects.toThrow();
+  it('DashboardLayout file does not exist (consolidated into MainLayout)', async () => {
+    // @ts-expect-error - module should not exist
+    const result = await import('@/components/layout/DashboardLayout').catch(() => null);
+    expect(result).toBeNull();
   });
 
-  it('ResponsiveLayout was removed (consolidated into MainLayout)', async () => {
-    await expect(import('@/components/layout/ResponsiveLayout')).rejects.toThrow();
+  it('ResponsiveLayout file does not exist (consolidated into MainLayout)', async () => {
+    // @ts-expect-error - module should not exist
+    const result = await import('@/components/layout/ResponsiveLayout').catch(() => null);
+    expect(result).toBeNull();
   });
 
   it('MainLayout exists and exports correctly', async () => {
