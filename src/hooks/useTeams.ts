@@ -10,15 +10,15 @@ import { queryKeys, queryPresets, invalidateRelated, CACHE_TIMES } from '@/lib/q
 export interface Team {
   id: string;
   name: string;
-  description?: string;
-  leader_id?: string;
+  description?: string | null;
+  leader_id?: string | null;
+  leader_name?: string | null;
+  company_id?: string | null;
+  parent_team_id?: string | null;
+  created_by?: string | null;
   member_count?: number;
   created_at: string;
   updated_at: string;
-  leader?: {
-    id: string;
-    full_name: string;
-  };
 }
 
 export interface CreateTeamInput {
