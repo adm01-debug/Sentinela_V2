@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAlerts, useAcknowledgeAlert, useAcknowledgeAllAlerts } from '@/hooks';
 import { AlertList } from '@/components/AlertList';
 import { AlertFilters } from '@/components/AlertFilters';
 import { Button  } from '@/components/ui/button';
 
 export const AlertsPage = () => {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState<{ severity?: string; acknowledged?: boolean }>({});
   const { data: alerts, isLoading } = useAlerts(filters);
   const acknowledgeAlert = useAcknowledgeAlert();
@@ -15,7 +17,7 @@ export const AlertsPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Alerts</h1>
+        <h1 className="text-2xl font-bold">{t('nav.alerts')}</h1>
         {unacknowledgedCount > 0 && (
           <Button variant="outline" onClick={() => acknowledgeAll.mutate()}>
             Acknowledge All ({unacknowledgedCount})

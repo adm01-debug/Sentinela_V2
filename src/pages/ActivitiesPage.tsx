@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useActivities, useActivitySummary } from '@/hooks/useActivities';
 import { ActivityFilters } from '@/components/ActivityFilters';
 import { ActivityChart } from '@/components/ActivityChart';
@@ -10,6 +11,7 @@ interface HourlyItem { date: string; value: number; }
 interface AppBreakdown { app: string; duration: number; percentage: number; }
 
 export const ActivitiesPage = () => {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState({
     startDate: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
     endDate: format(new Date(), 'yyyy-MM-dd'),
@@ -22,7 +24,7 @@ export const ActivitiesPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Activities</h1>
+      <h1 className="text-2xl font-bold">{t('nav.activities')}</h1>
       <ActivityFilters filters={filters} onChange={setFilters} />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2"><ActivityChart data={summaryObj?.hourlyDistribution || []} /></div>

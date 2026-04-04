@@ -1,35 +1,13 @@
 import { memo, useCallback, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard,
-  Users,
-  Shield,
-  Settings,
-  Monitor,
-  FileText,
-  Map,
-  MessageSquare,
-  Webhook,
-  Calendar,
-  Award,
-  AlertTriangle,
-  Globe,
-  Key,
-  BarChart3,
-  Smartphone,
-  Brain,
-  UserCog,
-  ClipboardCheck,
-  LogOut,
-  ChevronDown,
-  Activity,
-  Briefcase,
-  Lock,
-  Send,
-  Download,
-  Eye,
+  LayoutDashboard, Users, Shield, Settings, Monitor, FileText,
+  Map, MessageSquare, Webhook, Calendar, Award, AlertTriangle,
+  Globe, Key, BarChart3, Smartphone, Brain, UserCog, ClipboardCheck,
+  LogOut, ChevronDown, Activity, Briefcase, Lock, Send, Download, Eye,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -53,86 +31,86 @@ interface NavGroup {
 const navigationGroups: NavGroup[] = [
   {
     id: 'overview',
-    labelKey: 'Dashboard',
+    labelKey: 'nav.dashboard',
     icon: LayoutDashboard,
     defaultOpen: true,
     items: [
-      { titleKey: 'Dashboard', href: '/', icon: LayoutDashboard },
+      { titleKey: 'nav.dashboard', href: '/', icon: LayoutDashboard },
     ],
   },
   {
     id: 'people',
-    labelKey: 'Pessoas',
+    labelKey: 'sections.organization',
     icon: Users,
     defaultOpen: true,
     items: [
-      { titleKey: 'Funcionários', href: '/employees', icon: Users },
-      { titleKey: 'Equipes', href: '/teams', icon: Briefcase },
-      { titleKey: 'Gamificação', href: '/gamification', icon: Award },
+      { titleKey: 'nav.employees', href: '/employees', icon: Users },
+      { titleKey: 'nav.teams', href: '/teams', icon: Briefcase },
+      { titleKey: 'nav.gamification', href: '/gamification', icon: Award },
     ],
   },
   {
     id: 'monitoring',
-    labelKey: 'Monitoramento',
+    labelKey: 'nav.monitoring',
     icon: Eye,
     defaultOpen: true,
     items: [
-      { titleKey: 'Atividades', href: '/monitoring', icon: Activity },
+      { titleKey: 'nav.activities', href: '/monitoring', icon: Activity },
       { titleKey: 'Mobile', href: '/mobile-monitoring', icon: Smartphone },
-      { titleKey: 'Dispositivos', href: '/devices', icon: Monitor },
-      { titleKey: 'Produtividade', href: '/productivity-comparison', icon: BarChart3 },
-      { titleKey: 'Análise IA', href: '/ai-analysis', icon: Brain },
+      { titleKey: 'nav.devices', href: '/devices', icon: Monitor },
+      { titleKey: 'dashboard.productivity', href: '/productivity-comparison', icon: BarChart3 },
+      { titleKey: 'nav.aiAnalysis', href: '/ai-analysis', icon: Brain },
     ],
   },
   {
     id: 'security',
-    labelKey: 'Segurança',
+    labelKey: 'sections.security',
     icon: Shield,
     items: [
-      { titleKey: 'Violações', href: '/violations', icon: AlertTriangle },
-      { titleKey: 'Regras', href: '/violation-rules', icon: Shield },
-      { titleKey: 'Políticas', href: '/monitoring-policies', icon: ClipboardCheck },
+      { titleKey: 'nav.violations', href: '/violations', icon: AlertTriangle },
+      { titleKey: 'nav.roles', href: '/violation-rules', icon: Shield },
+      { titleKey: 'nav.compliance', href: '/monitoring-policies', icon: ClipboardCheck },
       { titleKey: 'Rate Limit', href: '/rate-limit-dashboard', icon: Lock },
-      { titleKey: 'Central', href: '/security', icon: Shield },
+      { titleKey: 'sections.security', href: '/security', icon: Shield },
     ],
   },
   {
     id: 'location',
-    labelKey: 'Localização',
+    labelKey: 'nav.geofencing',
     icon: Map,
     items: [
-      { titleKey: 'Geofencing', href: '/geofencing', icon: Map },
-      { titleKey: 'Horários', href: '/work-schedules', icon: Calendar },
-      { titleKey: 'Internet', href: '/internet-access', icon: Globe },
+      { titleKey: 'nav.geofencing', href: '/geofencing', icon: Map },
+      { titleKey: 'nav.workSchedules', href: '/work-schedules', icon: Calendar },
+      { titleKey: 'nav.internetAccess', href: '/internet-access', icon: Globe },
     ],
   },
   {
     id: 'reports',
-    labelKey: 'Relatórios',
+    labelKey: 'nav.reports',
     icon: FileText,
     items: [
-      { titleKey: 'Relatórios', href: '/reports', icon: FileText },
-      { titleKey: 'Exportar', href: '/data-export', icon: Download },
+      { titleKey: 'nav.reports', href: '/reports', icon: FileText },
+      { titleKey: 'nav.exportData', href: '/data-export', icon: Download },
     ],
   },
   {
     id: 'integrations',
-    labelKey: 'Integrações',
+    labelKey: 'sections.integrations',
     icon: Webhook,
     items: [
-      { titleKey: 'Agent Keys', href: '/agent-keys', icon: Key },
-      { titleKey: 'Webhooks', href: '/webhooks', icon: Webhook },
-      { titleKey: 'WhatsApp', href: '/whatsapp', icon: MessageSquare },
+      { titleKey: 'nav.apiKeys', href: '/agent-keys', icon: Key },
+      { titleKey: 'nav.webhooks', href: '/webhooks', icon: Webhook },
+      { titleKey: 'nav.whatsapp', href: '/whatsapp', icon: MessageSquare },
       { titleKey: 'Templates', href: '/message-templates', icon: Send },
     ],
   },
   {
     id: 'admin',
-    labelKey: 'Administração',
+    labelKey: 'sections.admin',
     icon: Settings,
     items: [
-      { titleKey: 'Usuários', href: '/user-management', icon: UserCog },
-      { titleKey: 'Configurações', href: '/settings', icon: Settings },
+      { titleKey: 'nav.users', href: '/user-management', icon: UserCog },
+      { titleKey: 'nav.settings', href: '/settings', icon: Settings },
     ],
   },
 ];
@@ -144,6 +122,7 @@ interface MobileSidebarProps {
 function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
   const location = useLocation();
   const { logout } = useAuth();
+  const { t } = useTranslation();
   
   const [openGroups, setOpenGroups] = useState<Set<string>>(() => {
     const initial = new Set<string>();
@@ -178,7 +157,6 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
 
   return (
     <div className="flex h-full flex-col">
-      {/* Header */}
       <SheetHeader className="p-4 border-b">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 shadow-lg">
@@ -191,7 +169,6 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
         </div>
       </SheetHeader>
 
-      {/* Navigation */}
       <ScrollArea className="flex-1 py-4">
         <nav className="space-y-2 px-3">
           {navigationGroups.map((group) => {
@@ -199,7 +176,6 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
             const hasActiveItem = group.items.some(item => item.href === location.pathname);
             const isOpen = openGroups.has(group.id);
 
-            // For single-item groups, render just the item
             if (group.items.length === 1) {
               const item = group.items[0];
               const ItemIcon = item.icon;
@@ -219,7 +195,7 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
                   )}
                 >
                   <ItemIcon className={cn('h-4 w-4 shrink-0', isActive && 'text-primary')} />
-                  <span className="truncate">{item.titleKey}</span>
+                  <span className="truncate">{t(item.titleKey)}</span>
                 </NavLink>
               );
             }
@@ -237,7 +213,7 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
                 >
                   <div className="flex items-center gap-3">
                     <Icon className={cn('h-4 w-4', hasActiveItem && 'text-primary')} />
-                    <span>{group.labelKey}</span>
+                    <span>{t(group.labelKey)}</span>
                   </div>
                   <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
@@ -274,7 +250,7 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
                               )}
                             >
                               <ItemIcon className={cn('h-4 w-4 shrink-0', isActive && 'text-primary')} />
-                              <span className="truncate">{item.titleKey}</span>
+                              <span className="truncate">{t(item.titleKey)}</span>
                             </NavLink>
                           );
                         })}
@@ -288,7 +264,6 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
         </nav>
       </ScrollArea>
 
-      {/* Footer */}
       <div className="border-t p-3">
         <Button
           variant="ghost"
@@ -296,7 +271,7 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
           onClick={handleSignOut}
         >
           <LogOut className="h-4 w-4" />
-          <span>Sair</span>
+          <span>{t('header.logout')}</span>
         </Button>
       </div>
     </div>

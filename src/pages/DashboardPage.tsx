@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Users, Activity, TrendingUp, AlertTriangle, Shield, Clock,
   Filter, X, ArrowRight, Eye, Monitor, Globe, CheckCircle,
@@ -116,6 +117,7 @@ export const DashboardPage = () => {
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const navigate = useNavigate();
   const colors = useChartColors();
+  const { t } = useTranslation();
 
   const departmentData = [
     { name: 'Engenharia', value: 35, color: colors.primary },
@@ -140,9 +142,9 @@ export const DashboardPage = () => {
       <WelcomeBanner />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">{t('dashboard.title')}</h1>
           <p className="text-sm text-muted-foreground">
-            Visão geral do monitoramento — {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+            {t('dashboard.subtitle')} — {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -186,28 +188,28 @@ export const DashboardPage = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Total de Funcionários"
+          title={t('dashboard.totalEmployees')}
           value={totalEmployees}
           icon={Users}
           iconColor="bg-primary/10 text-primary"
           trend={{ value: 5.2, label: 'desde o mês passado' }}
         />
         <StatCard
-          title="Ativos Agora"
+          title={t('dashboard.activeNow')}
           value={activeEmployees}
           icon={Activity}
           iconColor="bg-success/10 text-success"
           trend={{ value: 12, label: 'desde ontem' }}
         />
         <StatCard
-          title="Produtividade"
+          title={t('dashboard.productivity')}
           value={productivity + '%'}
           icon={TrendingUp}
           iconColor="bg-warning/10 text-warning"
           trend={{ value: 3.8, label: 'esta semana' }}
         />
         <StatCard
-          title="Alertas Abertos"
+          title={t('dashboard.alerts')}
           value={alertsCount}
           icon={AlertTriangle}
           iconColor="bg-destructive/10 text-destructive"
