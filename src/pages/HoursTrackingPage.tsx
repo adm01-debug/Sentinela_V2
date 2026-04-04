@@ -56,7 +56,7 @@ function HoursTrackingPage() {
   // Employee ranking
   const employeeHours = useMemo(() => {
     const byEmp: Record<string, { name: string; department: string; minutes: number }> = {};
-    timeEntries.forEach((e: any) => {
+    timeEntries.forEach((e) => {
       const id = e.employee_id;
       if (!byEmp[id]) byEmp[id] = { name: e.employees?.name || '?', department: e.employees?.department || '', minutes: 0 };
       byEmp[id].minutes += (e.duration_minutes || 0);
