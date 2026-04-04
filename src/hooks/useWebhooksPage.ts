@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useWebhooks, type Webhook } from '@/hooks/useWebhooks';
+import { useWebhooks, useCreateWebhook, useUpdateWebhook, useDeleteWebhook, useTestWebhook, type Webhook } from '@/hooks/useWebhooks';
 
 // ============================================================
 // TYPES
@@ -43,14 +43,27 @@ const initialFormData: WebhookFormData = {
 // ============================================================
 
 export function useWebhooksPage() {
-  const webhooksResult = useWebhooks() as Record<string, unknown>;
+  const { data: webhooks = [], isLoading: loading } = useWebhooks();
+  const createWebhookMutation = useCreateWebhook();
+  const updateWebhookMutation = useUpdateWebhook();
+  const deleteWebhookMutation = useDeleteWebhook();
+  const testWebhookMutation = useTestWebhook();
 
-  const webhooks = webhooksResult.webhooks || webhooksResult.data || [];
-  const loading = webhooksResult.loading || webhooksResult.isLoading || false;
-  const createWebhook = webhooksResult.createWebhook || (async () => {});
-  const updateWebhook = webhooksResult.updateWebhook || (async () => {});
-  const deleteWebhook = webhooksResult.deleteWebhook || (async () => {});
-  const testWebhook = webhooksResult.testWebhook || (async () => {});
+  const createWebhook = useCallback(async (input: { name: string; url: string; secret?: string; events: string[]; is_active?: boolean }) => {
+    await createWebhookMutation.mutateAsync(input);
+  }, [createWebhookMutation]);
+
+  const updateWebhook = useCallback(async (input: { id: string; name?: string; url?: string; secret?: string; events?: string[]; is_active?: boolean }) => {
+    await updateWebhookMutation.mutateAsync(input);
+  }, [updateWebhookMutation]);
+
+  const deleteWebhook = useCallback(async (id: string) => {
+    await deleteWebhookMutation.mutateAsync(id);
+  }, [deleteWebhookMutation]);
+
+  const testWebhook = useCallback(async (id: string) => {
+    await testWebhookMutation.mutateAsync(id);
+  }, [testWebhookMutation]);
 
   // Search & Filters
   const [searchTerm, setSearchTerm] = useState('');
