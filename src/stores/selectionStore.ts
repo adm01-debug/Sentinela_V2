@@ -132,7 +132,7 @@ export const createSelectionStore = <T = string>() =>
 export const useSelectionStore = createSelectionStore<string>();
 
 // Helper hook for table/list selection
-export function useSelection<T = string>(store = useSelectionStore as ReturnType<typeof createSelectionStore<T>>) {
+export function useSelection<T = string>(store = useSelectionStore as unknown as ReturnType<typeof createSelectionStore<T>>) {
   const selectedIds = store((state) => state.selectedIds);
   const toggle = store((state) => state.toggle);
   const selectAll = store((state) => state.selectAll);

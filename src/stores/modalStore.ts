@@ -88,7 +88,7 @@ export const useModalStore = create<ModalState>()(
       updateModal: (id, props) =>
         set((state) => ({
           modals: state.modals.map((m) =>
-            m.id === id ? { ...m, props: { ...m.props, ...props } } : m
+            m.id === id ? { ...m, props: { ...(m.props as object), ...(props as object) } } : m
           ),
         })),
     }),

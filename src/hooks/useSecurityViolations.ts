@@ -171,7 +171,7 @@ export function useUpdateViolationStatus() {
       status: SecurityViolation['status'];
       notes?: string;
     }) => {
-      const updates = { status };
+      const updates: Record<string, string> = { status };
 
       if (status === 'resolved') {
         updates.resolved_at = new Date().toISOString();

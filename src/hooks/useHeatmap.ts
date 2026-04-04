@@ -33,7 +33,7 @@ export function useHeatmap(elementId?: string) {
       recordPoint(e.clientX - rect.left, e.clientY - rect.top);
     };
     element.addEventListener('click', handleClick as EventListener);
-    return () => element.removeEventListener('click', handleClick);
+    return () => element.removeEventListener('click', handleClick as EventListener);
   }, [isTracking, elementId, recordPoint]);
 
   const getHotspots = useCallback((threshold = 5) => points.filter(p => p.value >= threshold).sort((a, b) => b.value - a.value), [points]);
