@@ -20,11 +20,13 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <ThemeProvider defaultTheme="system">
-            <FeatureFlagsProvider>
-              <PermissionsProvider role="viewer">
-                {children}
-              </PermissionsProvider>
-            </FeatureFlagsProvider>
+            <TooltipProvider delayDuration={200}>
+              <FeatureFlagsProvider>
+                <PermissionsProvider role="viewer">
+                  {children}
+                </PermissionsProvider>
+              </FeatureFlagsProvider>
+            </TooltipProvider>
           </ThemeProvider>
         </BrowserRouter>
       </QueryClientProvider>
