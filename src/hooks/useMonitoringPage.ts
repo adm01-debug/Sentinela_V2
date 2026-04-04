@@ -45,7 +45,7 @@ export function useMonitoringPage() {
       
       if (error) throw error;
 
-      return data.map(emp: unknown => {
+      return data.map((emp: unknown) => {
         const status: 'online' | 'offline' | 'idle' | 'busy' = 'offline';
 
         return {
@@ -101,13 +101,13 @@ export function useMonitoringPage() {
 
   // Departments list
   const departments = useMemo(() => {
-    const depts = new Set(employees.map(e: unknown => e.department));
+    const depts = new Set(employees.map((e: unknown) => e.department));
     return Array.from(depts).sort();
   }, [employees]);
 
   // Filtered employees
   const filteredEmployees = useMemo(() => {
-    return employees.filter(emp: unknown => {
+    return employees.filter((emp: unknown) => {
       const matchesSearch = !searchTerm || 
         emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         emp.email.toLowerCase().includes(searchTerm.toLowerCase());
@@ -122,10 +122,10 @@ export function useMonitoringPage() {
   // Stats
   const stats = useMemo(() => ({
     total: employees.length,
-    online: employees.filter(e: unknown => e.status === 'online').length,
-    busy: employees.filter(e: unknown => e.status === 'busy').length,
-    idle: employees.filter(e: unknown => e.status === 'idle').length,
-    offline: employees.filter(e: unknown => e.status === 'offline').length,
+    online: employees.filter((e: unknown) => e.status === 'online').length,
+    busy: employees.filter((e: unknown) => e.status === 'busy').length,
+    idle: employees.filter((e: unknown) => e.status === 'idle').length,
+    offline: employees.filter((e: unknown) => e.status === 'offline').length,
     avgProductivity: employees.length > 0
       ? Math.round(employees.reduce((sum: number, e: unknown) => sum + e.productivity_score, 0) / employees.length)
       : 0,

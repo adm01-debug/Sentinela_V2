@@ -79,7 +79,7 @@ export function useGeofencingPage() {
       if (error) throw error;
       
       // Count employees per geofence from employee_geofences table
-      const geofenceIds = data.map(g: unknown => g.id);
+      const geofenceIds = data.map((g: unknown) => g.id);
       const { data: employeeCounts } = await supabase
         .from('employee_geofences')
         .select('geofence_id')
@@ -90,7 +90,7 @@ export function useGeofencingPage() {
         return acc;
       }, {} as Record<string, number>);
       
-      return data.map(g: unknown => ({
+      return data.map((g: unknown) => ({
         id: g.id,
         name: g.name,
         description: g.description,

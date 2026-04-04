@@ -73,7 +73,7 @@ export function useScheduledReportsPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map(r: unknown => ({
+      return (data || []).map((r: unknown) => ({
         id: r.id,
         name: `Relatório ${r.report_type}`,
         description: '',

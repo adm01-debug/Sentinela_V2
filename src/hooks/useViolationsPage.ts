@@ -55,7 +55,7 @@ export function useViolationsPage() {
         .order('created_at', { ascending: false })
         .limit(200);
       if (error) throw error;
-      return data.map(v: unknown => ({
+      return data.map((v: unknown) => ({
         id: v.id,
         employee_id: '',
         employee_name: v.employee_name,

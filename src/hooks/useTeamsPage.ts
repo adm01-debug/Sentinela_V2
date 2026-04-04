@@ -67,7 +67,7 @@ export function useTeamsPage() {
         .select('*, employees!teams_manager_id_fkey(name)')
         .order('name');
       if (error) throw error;
-      return data.map(t: unknown => ({
+      return data.map((t: unknown) => ({
         ...t,
         manager_name: t.employees?.name,
         members_count: t.members_count || 0,

@@ -32,7 +32,7 @@ export function useRoles(userRoles: string[] = []) {
           .select('permission_id')
           .eq('role_id', role.id);
 
-        const permissionIds = (rolePerms ?? []).map(rp: unknown => rp.permission_id);
+        const permissionIds = (rolePerms ?? []).map((rp: unknown) => rp.permission_id);
         let permissionNames: string[] = [];
 
         if (permissionIds.length > 0) {
@@ -40,7 +40,7 @@ export function useRoles(userRoles: string[] = []) {
             .from('permissions')
             .select('name')
             .in('id', permissionIds);
-          permissionNames = (perms ?? []).map(p: unknown => p.name);
+          permissionNames = (perms ?? []).map((p: unknown) => p.name);
         }
 
         // Count users with this role

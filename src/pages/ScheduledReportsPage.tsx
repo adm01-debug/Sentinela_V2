@@ -30,7 +30,7 @@ export default function ScheduledReportsPage() {
         <Card><CardContent className="py-12 text-center text-muted-foreground"><p>Nenhum relatório agendado.</p></CardContent></Card>
       ) : (
         <div className="space-y-3">
-          {reports?.map(r: unknown => (
+          {reports?.map((r: unknown) => (
             <Card key={r.id}><CardContent className="p-4 flex items-center justify-between">
               <div><p className="font-medium">{r.report_type}</p><p className="text-sm text-muted-foreground">{r.employee_name || 'Geral'} • {new Date(r.created_at).toLocaleDateString('pt-BR')}</p></div>
               <Badge variant="outline">{r.report_type}</Badge>
