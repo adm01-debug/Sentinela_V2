@@ -82,10 +82,10 @@ export function useMonitoringPage() {
         .eq('employee_name', selectedEmployee.name)
         .gte('recorded_at', today);
 
-      const totalKeystrokes = keystrokeLogs?.reduce((sum, a) => sum + (a.keystrokes_count || 0), 0) || 0;
+      const totalKeystrokes = keystrokeLogs?.reduce((sum: number, a: Record<string, unknown>) => sum + (a.keystrokes_count || 0), 0) || 0;
       const totalClicks = clickLogs?.length || 0;
-      const totalIdle = keystrokeLogs?.reduce((sum, a) => sum + (a.idle_time_seconds || 0), 0) || 0;
-      const totalActive = keystrokeLogs?.reduce((sum, a) => sum + (a.active_time_seconds || 0), 0) || 0;
+      const totalIdle = keystrokeLogs?.reduce((sum: number, a: Record<string, unknown>) => sum + (a.idle_time_seconds || 0), 0) || 0;
+      const totalActive = keystrokeLogs?.reduce((sum: number, a: Record<string, unknown>) => sum + (a.active_time_seconds || 0), 0) || 0;
 
       return {
         total_keystrokes: totalKeystrokes,
@@ -127,7 +127,7 @@ export function useMonitoringPage() {
     idle: employees.filter(e => e.status === 'idle').length,
     offline: employees.filter(e => e.status === 'offline').length,
     avgProductivity: employees.length > 0
-      ? Math.round(employees.reduce((sum, e) => sum + e.productivity_score, 0) / employees.length)
+      ? Math.round(employees.reduce((sum: number, e: Record<string, unknown>) => sum + e.productivity_score, 0) / employees.length)
       : 0,
   }), [employees]);
 

@@ -134,16 +134,16 @@ export function useViolationStats() {
       const stats = {
         total: data?.length || 0,
         bySeverity: {
-          critical: data?.filter((v) => v.severity === 'critical').length || 0,
-          high: data?.filter((v) => v.severity === 'high').length || 0,
-          medium: data?.filter((v) => v.severity === 'medium').length || 0,
-          low: data?.filter((v) => v.severity === 'low').length || 0,
+          critical: data?.filter((v: Record<string, unknown>) => v.severity === 'critical').length || 0,
+          high: data?.filter((v: Record<string, unknown>) => v.severity === 'high').length || 0,
+          medium: data?.filter((v: Record<string, unknown>) => v.severity === 'medium').length || 0,
+          low: data?.filter((v: Record<string, unknown>) => v.severity === 'low').length || 0,
         },
         byStatus: {
-          pending: data?.filter((v) => v.status === 'pending').length || 0,
-          reviewed: data?.filter((v) => v.status === 'reviewed').length || 0,
-          resolved: data?.filter((v) => v.status === 'resolved').length || 0,
-          dismissed: data?.filter((v) => v.status === 'dismissed').length || 0,
+          pending: data?.filter((v: Record<string, unknown>) => v.status === 'pending').length || 0,
+          reviewed: data?.filter((v: Record<string, unknown>) => v.status === 'reviewed').length || 0,
+          resolved: data?.filter((v: Record<string, unknown>) => v.status === 'resolved').length || 0,
+          dismissed: data?.filter((v: Record<string, unknown>) => v.status === 'dismissed').length || 0,
         },
       };
 

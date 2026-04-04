@@ -112,7 +112,7 @@ function TimeClockPage() {
   // Clock out mutation
   const clockOut = useMutation({
     mutationFn: async (employeeId: string) => {
-      const activeEntry = activeEntries.find((e) => e.employee_id === employeeId);
+      const activeEntry = activeEntries.find((e: Record<string, unknown>) => e.employee_id === employeeId);
       if (activeEntry) {
         const duration = differenceInMinutes(new Date(), new Date(activeEntry.clock_in));
         const { error } = await supabase.from('time_entries').update({
@@ -162,7 +162,7 @@ function TimeClockPage() {
       currentTask: statusRow?.current_task,
       currentProject: statusRow?.current_project,
       lastActivity: statusRow?.last_activity_at,
-      isClockedIn: activeEntries.some((e) => e.employee_id === emp.id),
+      isClockedIn: activeEntries.some((e: Record<string, unknown>) => e.employee_id === emp.id),
     };
   });
 
@@ -237,7 +237,7 @@ function TimeClockPage() {
             <p className="text-muted-foreground text-center py-8">Nenhum funcionário encontrado</p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((emp) => {
+              {filtered.map((emp: Record<string, unknown>) => {
                 const cfg = statusConfig[emp.currentStatus] || statusConfig.offline;
                 return (
                   <div key={emp.id} className="flex items-center gap-3 p-3 rounded-lg border bg-card hover:bg-muted/50 transition-colors">

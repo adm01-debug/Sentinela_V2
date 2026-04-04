@@ -116,7 +116,7 @@ async function fetchLeaderboard(
 
   // Add rank and badges count
   const withRanks = await Promise.all(
-    (data || []).map(async (entry, index) => {
+    (data || []).map(async (entry: Record<string, unknown>, index: number) => {
       const { count } = await supabase
         .from('employee_badges')
         .select('*', { count: 'exact', head: true })
