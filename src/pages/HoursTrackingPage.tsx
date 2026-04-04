@@ -43,8 +43,8 @@ function HoursTrackingPage() {
     const days = eachDayOfInterval({ start, end });
     return days.map(day => {
       const dayStr = format(day, 'yyyy-MM-dd');
-      const dayEntries = timeEntries.filter((e: any) => format(new Date(e.clock_in), 'yyyy-MM-dd') === dayStr);
-      const totalMinutes = dayEntries.reduce((sum: number, e: any) => sum + (e.duration_minutes || 0), 0);
+      const dayEntries = timeEntries.filter((e) => format(new Date(e.clock_in), 'yyyy-MM-dd') === dayStr);
+      const totalMinutes = dayEntries.reduce((sum: number, e) => sum + (e.duration_minutes || 0), 0);
       return {
         date: format(day, 'EEE dd/MM', { locale: ptBR }),
         hours: Math.round(totalMinutes / 60 * 10) / 10,
