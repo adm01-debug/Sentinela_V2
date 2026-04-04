@@ -39,7 +39,9 @@ export function Breadcrumbs({ className }: { className?: string }) {
   const location = useLocation();
   const pathname = location.pathname;
 
-  if (pathname === '/dashboard' || pathname === '/') return null;
+  // Hide on dashboard and single-segment routes (avoids redundant breadcrumb next to H1)
+  const segments = pathname.split('/').filter(Boolean);
+  if (pathname === '/dashboard' || pathname === '/' || segments.length <= 1) return null;
 
   const segments = pathname.split('/').filter(Boolean);
   const crumbs: { label: string; path: string }[] = [];
