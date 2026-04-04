@@ -274,7 +274,7 @@ function ProjectsPage() {
                       <cfg.icon className="h-4 w-4" /> {cfg.label} ({statusTasks.length})
                     </h3>
                     <div className="space-y-2">
-                      {statusTasks.map((task: any) => (
+                      {statusTasks.map((task) => (
                         <Card key={task.id} className="hover:shadow-sm transition-shadow">
                           <CardContent className="p-3 flex items-center gap-3">
                             <button

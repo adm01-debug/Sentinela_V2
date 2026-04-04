@@ -160,7 +160,7 @@ function AttendancePage() {
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Carregando...</TableCell></TableRow>
               ) : filtered.length === 0 ? (
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Nenhum registro encontrado</TableCell></TableRow>
-              ) : filtered.slice(0, 100).map((record: any) => {
+              ) : filtered.slice(0, 100).map((record) => {
                 const cfg = statusConfig[record.status] || statusConfig.present;
                 const workedHours = Math.round((record.total_worked_minutes || 0) / 60 * 10) / 10;
                 return (

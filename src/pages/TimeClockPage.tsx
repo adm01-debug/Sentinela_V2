@@ -162,7 +162,7 @@ function TimeClockPage() {
       currentTask: statusRow?.current_task,
       currentProject: statusRow?.current_project,
       lastActivity: statusRow?.last_activity_at,
-      isClockedIn: activeEntries.some((e: any) => e.employee_id === emp.id),
+      isClockedIn: activeEntries.some((e) => e.employee_id === emp.id),
     };
   });
 

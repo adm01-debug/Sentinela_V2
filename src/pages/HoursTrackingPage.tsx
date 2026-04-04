@@ -79,8 +79,8 @@ function HoursTrackingPage() {
       .sort((a, b) => b.hours - a.hours);
   }, [timeEntries]);
 
-  const totalHours = Math.round(timeEntries.reduce((sum: number, e: any) => sum + (e.duration_minutes || 0), 0) / 60);
-  const uniqueEmployees = new Set(timeEntries.map((e: any) => e.employee_id)).size;
+  const totalHours = Math.round(timeEntries.reduce((sum: number, e) => sum + (e.duration_minutes || 0), 0) / 60);
+  const uniqueEmployees = new Set(timeEntries.map((e) => e.employee_id)).size;
   const avgPerEmployee = uniqueEmployees > 0 ? Math.round(totalHours / uniqueEmployees) : 0;
 
   const filteredEmployees = employeeHours.filter(e => e.name.toLowerCase().includes(search.toLowerCase()));
