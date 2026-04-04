@@ -146,12 +146,12 @@ export function DashboardHome() {
       {/* Charts Row */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-7">
         {/* Activity Over Time - larger chart */}
-        <Card className="lg:col-span-4">
+        <Card className="lg:col-span-4" role="img" aria-label="Gráfico de atividade ao longo do dia mostrando usuários ativos por hora">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold">Atividade ao Longo do Dia</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[280px]">
+            <div className="h-[280px]" aria-hidden="true">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={activityData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
                   <defs>
