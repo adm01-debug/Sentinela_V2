@@ -5,7 +5,7 @@ export function useCountdown(initialSeconds: number, onComplete?: () => void) {
   const intervalRef = useRef<NodeJS.Timeout>();
   useEffect(() => {
     if (isRunning && seconds > 0) {
-      intervalRef.current = setInterval(() => setSeconds(s: string => s - 1), 1000);
+      intervalRef.current = setInterval(() => setSeconds((s: number) => s - 1), 1000);
       return () => clearInterval(intervalRef.current);
     }
     if (seconds === 0 && isRunning) { setIsRunning(false); onComplete?.(); }
