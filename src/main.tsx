@@ -4,6 +4,7 @@ import App from './App';
 import './index.css';
 import { initWebVitals } from './lib/webVitals';
 import { applySecurityHeaders } from './lib/securityHeaders';
+import { initErrorTracking } from './lib/errorTracker';
 
 // Apply security headers before rendering
 applySecurityHeaders();
