@@ -74,7 +74,7 @@ export function usePagination<T>(
     return data.slice(startIndex, endIndex);
   }, [data, startIndex, endIndex]);
 
-  const goToPage = useCallback((newPage) => {
+  const goToPage = useCallback((newPage: number) => {
     setPage(Math.max(1, Math.min(newPage, totalPages)));
   }, [totalPages]);
 
@@ -89,7 +89,7 @@ export function usePagination<T>(
   const firstPage = useCallback(() => setPage(1), []);
   const lastPage = useCallback(() => setPage(totalPages), [totalPages]);
 
-  const setPageSize = useCallback((size) => {
+  const setPageSize = useCallback((size: number) => {
     setPageSizeState(size);
     setPage(1); // Reset para primeira página
   }, []);
@@ -143,7 +143,7 @@ export function useServerPagination(options: UsePaginationOptions = {}) {
     if (page > 1) setPage(page - 1);
   }, [page]);
 
-  const setPageSize = useCallback((size) => {
+  const setPageSize = useCallback((size: number) => {
     setPageSizeState(size);
     setPage(1);
   }, []);
