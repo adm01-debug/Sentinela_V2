@@ -1,5 +1,6 @@
 import { useState, useCallback, memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Home, Users, Activity, FileText, Bell, Settings, ChevronLeft, ChevronRight,
   BarChart3, Shield, Monitor, Camera, Globe, Calendar, Gamepad2,
@@ -14,100 +15,106 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { motion, AnimatePresence } from 'framer-motion';
 
+interface NavItem {
+  icon: React.ComponentType<{ className?: string }>;
+  labelKey: string;
+  path: string;
+}
+
 interface NavSection {
   id: string;
-  title: string;
+  titleKey: string;
   defaultOpen?: boolean;
-  items: { icon: React.ComponentType<{ className?: string }>; label: string; path: string }[];
+  items: NavItem[];
 }
 
 const navSections: NavSection[] = [
   {
     id: 'main',
-    title: 'Principal',
+    titleKey: 'sections.main',
     defaultOpen: true,
     items: [
-      { icon: Home, label: 'Dashboard', path: ROUTES.DASHBOARD },
-      { icon: Users, label: 'Funcionários', path: ROUTES.EMPLOYEES },
-      { icon: Activity, label: 'Atividades', path: ROUTES.ACTIVITIES },
-      { icon: Monitor, label: 'Monitoramento', path: '/monitoring' },
+      { icon: Home, labelKey: 'nav.dashboard', path: ROUTES.DASHBOARD },
+      { icon: Users, labelKey: 'nav.employees', path: ROUTES.EMPLOYEES },
+      { icon: Activity, labelKey: 'nav.activities', path: ROUTES.ACTIVITIES },
+      { icon: Monitor, labelKey: 'nav.monitoring', path: '/monitoring' },
     ],
   },
   {
     id: 'time',
-    title: 'Ponto & Horas',
+    titleKey: 'sections.timeHours',
     items: [
-      { icon: Timer, label: 'Ponto Digital', path: '/time-clock' },
-      { icon: FolderKanban, label: 'Projetos & Tarefas', path: '/projects' },
-      { icon: ClipboardList, label: 'Folhas de Ponto', path: '/timesheets' },
-      { icon: UserCheck, label: 'Assiduidade', path: '/attendance' },
-      { icon: BarChart, label: 'Tracking de Horas', path: '/hours-tracking' },
+      { icon: Timer, labelKey: 'nav.timeClock', path: '/time-clock' },
+      { icon: FolderKanban, labelKey: 'nav.projects', path: '/projects' },
+      { icon: ClipboardList, labelKey: 'nav.timesheets', path: '/timesheets' },
+      { icon: UserCheck, labelKey: 'nav.attendance', path: '/attendance' },
+      { icon: BarChart, labelKey: 'nav.hoursTracking', path: '/hours-tracking' },
     ],
   },
   {
     id: 'security',
-    title: 'Segurança',
+    titleKey: 'sections.security',
     items: [
-      { icon: Shield, label: 'Violações', path: '/violations' },
-      { icon: Bell, label: 'Alertas', path: ROUTES.ALERTS },
-      { icon: Camera, label: 'Screenshots', path: ROUTES.SCREENSHOTS },
-      { icon: Globe, label: 'Acesso Internet', path: '/internet-access' },
+      { icon: Shield, labelKey: 'nav.violations', path: '/violations' },
+      { icon: Bell, labelKey: 'nav.alerts', path: ROUTES.ALERTS },
+      { icon: Camera, labelKey: 'nav.screenshots', path: ROUTES.SCREENSHOTS },
+      { icon: Globe, labelKey: 'nav.internetAccess', path: '/internet-access' },
     ],
   },
   {
     id: 'analytics',
-    title: 'Análises',
+    titleKey: 'sections.analytics',
     items: [
-      { icon: BarChart3, label: 'Analytics', path: ROUTES.ANALYTICS },
-      { icon: FileText, label: 'Relatórios', path: ROUTES.REPORTS },
-      { icon: Brain, label: 'Análise IA', path: '/ai-analysis' },
+      { icon: BarChart3, labelKey: 'nav.analytics', path: ROUTES.ANALYTICS },
+      { icon: FileText, labelKey: 'nav.reports', path: ROUTES.REPORTS },
+      { icon: Brain, labelKey: 'nav.aiAnalysis', path: '/ai-analysis' },
     ],
   },
   {
     id: 'devices',
-    title: 'Dispositivos',
+    titleKey: 'sections.devices',
     items: [
-      { icon: Smartphone, label: 'Dispositivos', path: '/devices' },
-      { icon: MapPin, label: 'Geofencing', path: '/geofencing' },
+      { icon: Smartphone, labelKey: 'nav.devices', path: '/devices' },
+      { icon: MapPin, labelKey: 'nav.geofencing', path: '/geofencing' },
     ],
   },
   {
     id: 'org',
-    title: 'Organização',
+    titleKey: 'sections.organization',
     items: [
-      { icon: Building2, label: 'Departamentos', path: ROUTES.ADMIN_DEPARTMENTS },
-      { icon: Users, label: 'Equipes', path: ROUTES.ADMIN_TEAMS },
-      { icon: Calendar, label: 'Calendário', path: '/calendar' },
-      { icon: Clock, label: 'Horários', path: '/work-schedules' },
-      { icon: Gamepad2, label: 'Gamificação', path: '/gamification' },
+      { icon: Building2, labelKey: 'nav.departments', path: ROUTES.ADMIN_DEPARTMENTS },
+      { icon: Users, labelKey: 'nav.teams', path: ROUTES.ADMIN_TEAMS },
+      { icon: Calendar, labelKey: 'nav.calendar', path: '/calendar' },
+      { icon: Clock, labelKey: 'nav.workSchedules', path: '/work-schedules' },
+      { icon: Gamepad2, labelKey: 'nav.gamification', path: '/gamification' },
     ],
   },
   {
     id: 'admin',
-    title: 'Administração',
+    titleKey: 'sections.admin',
     items: [
-      { icon: UserCog, label: 'Usuários', path: ROUTES.ADMIN_USERS },
-      { icon: Shield, label: 'Papéis', path: ROUTES.ADMIN_ROLES },
-      { icon: ScrollText, label: 'Auditoria', path: ROUTES.ADMIN_AUDIT },
-      { icon: Shield, label: 'Compliance', path: '/compliance' },
-      { icon: Download, label: 'Exportação', path: '/export' },
+      { icon: UserCog, labelKey: 'nav.users', path: ROUTES.ADMIN_USERS },
+      { icon: Shield, labelKey: 'nav.roles', path: ROUTES.ADMIN_ROLES },
+      { icon: ScrollText, labelKey: 'nav.audit', path: ROUTES.ADMIN_AUDIT },
+      { icon: Shield, labelKey: 'nav.compliance', path: '/compliance' },
+      { icon: Download, labelKey: 'nav.exportData', path: '/export' },
     ],
   },
   {
     id: 'integrations',
-    title: 'Integrações',
+    titleKey: 'sections.integrations',
     items: [
-      { icon: Webhook, label: 'Integrações', path: '/integrations' },
-      { icon: Webhook, label: 'Webhooks', path: '/integrations/webhooks' },
-      { icon: MessageSquare, label: 'WhatsApp', path: '/integrations/whatsapp' },
+      { icon: Webhook, labelKey: 'nav.integrations', path: '/integrations' },
+      { icon: Webhook, labelKey: 'nav.webhooks', path: '/integrations/webhooks' },
+      { icon: MessageSquare, labelKey: 'nav.whatsapp', path: '/integrations/whatsapp' },
     ],
   },
   {
     id: 'settings',
-    title: 'Configurações',
+    titleKey: 'sections.settings',
     items: [
-      { icon: Settings, label: 'Configurações', path: ROUTES.SETTINGS },
-      { icon: Key, label: 'Chaves API', path: ROUTES.SETTINGS_API },
+      { icon: Settings, labelKey: 'nav.settings', path: ROUTES.SETTINGS },
+      { icon: Key, labelKey: 'nav.apiKeys', path: ROUTES.SETTINGS_API },
     ],
   },
 ];
@@ -115,6 +122,7 @@ const navSections: NavSection[] = [
 export const AppSidebar = memo(function AppSidebar() {
   const { sidebarCollapsed, toggleSidebarCollapse } = useUIStore();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const [openSections, setOpenSections] = useState<Set<string>>(() => {
     const initial = new Set<string>();
@@ -161,7 +169,7 @@ export const AppSidebar = memo(function AppSidebar() {
             <button
               onClick={toggleSidebarCollapse}
               className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              aria-label="Recolher sidebar"
+              aria-label={t('header.collapseSidebar')}
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -170,7 +178,7 @@ export const AppSidebar = memo(function AppSidebar() {
 
         {/* Navigation */}
         <ScrollArea className="flex-1">
-          <nav className="p-2 space-y-1" aria-label="Navegação principal">
+          <nav className="p-2 space-y-1" aria-label={t('header.mainNavigation')}>
             {navSections.map((section) => {
               const isOpen = openSections.has(section.id);
               const hasActiveItem = section.items.some(item =>
@@ -179,7 +187,6 @@ export const AppSidebar = memo(function AppSidebar() {
 
               return (
                 <div key={section.id}>
-                  {/* Section header (clickable to toggle) */}
                   {!sidebarCollapsed ? (
                     <button
                       onClick={() => toggleSection(section.id)}
@@ -190,7 +197,7 @@ export const AppSidebar = memo(function AppSidebar() {
                           : 'text-muted-foreground/70 hover:text-muted-foreground'
                       )}
                     >
-                      <span>{section.title}</span>
+                      <span>{t(section.titleKey)}</span>
                       <motion.div
                         animate={{ rotate: isOpen ? 180 : 0 }}
                         transition={{ duration: 0.2 }}
@@ -202,7 +209,6 @@ export const AppSidebar = memo(function AppSidebar() {
                     <div className="my-2 mx-3 border-t border-border/50" />
                   )}
 
-                  {/* Section items */}
                   <AnimatePresence initial={false}>
                     {(isOpen || sidebarCollapsed) && (
                       <motion.div
@@ -214,6 +220,7 @@ export const AppSidebar = memo(function AppSidebar() {
                       >
                         {section.items.map((item) => {
                           const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
+                          const label = t(item.labelKey);
 
                           const linkContent = (
                             <NavLink
@@ -230,7 +237,7 @@ export const AppSidebar = memo(function AppSidebar() {
                                 'h-4 w-4 shrink-0 transition-transform',
                                 !isActive && 'group-hover:scale-110'
                               )} />
-                              {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
+                              {!sidebarCollapsed && <span className="truncate">{label}</span>}
                             </NavLink>
                           );
 
@@ -241,7 +248,7 @@ export const AppSidebar = memo(function AppSidebar() {
                                   {linkContent}
                                 </TooltipTrigger>
                                 <TooltipContent side="right" className="font-medium">
-                                  {item.label}
+                                  {label}
                                 </TooltipContent>
                               </Tooltip>
                             );
