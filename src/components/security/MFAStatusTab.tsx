@@ -10,7 +10,7 @@ import { Key, ShieldCheck, ShieldAlert } from 'lucide-react';
 
 interface MFAFactor {
   id: string;
-  friendly_name: string | null;
+  friendly_name?: string | null;
   factor_type: string;
   status: string;
 }
