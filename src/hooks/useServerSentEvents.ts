@@ -5,7 +5,7 @@ type SSEStatus = 'connecting' | 'connected' | 'disconnected' | 'error';
 
 export function useServerSentEvents(config: SSEConfig) {
   const [status, setStatus] = useState<SSEStatus>('disconnected');
-  const [lastEvent, setLastEvent] = useState<any>(null);
+  const [lastEvent, setLastEvent] = useState<{ data: unknown; timestamp: Date; id?: string } | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
 

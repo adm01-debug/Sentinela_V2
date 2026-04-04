@@ -1,17 +1,21 @@
 // Type augmentation to allow supabase.from() with any table name
 // This is needed because many hooks reference tables not yet in the auto-generated schema
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient, PostgrestFilterBuilder } from '@supabase/supabase-js';
+import type { Database } from '@/integrations/supabase/types';
+
+type PublicSchema = Database['public'];
+type TableName = string & keyof PublicSchema['Tables'];
 
 declare module '@supabase/supabase-js' {
   interface SupabaseClient<
-    Database = any,
-    SchemaName extends string & keyof Database = 'public' extends keyof Database
+    DB = Database,
+    SchemaName extends string & keyof DB = 'public' extends keyof DB
       ? 'public'
-      : string & keyof Database,
-    Schema extends Record<string, unknown> = Database[SchemaName] extends Record<string, unknown>
-      ? Database[SchemaName]
-      : any
+      : string & keyof DB,
+    Schema extends Record<string, unknown> = DB[SchemaName] extends Record<string, unknown>
+      ? DB[SchemaName]
+      : Record<string, unknown>
   > {
-    from(relation: string): any;
+    from(relation: string): PostgrestFilterBuilder<PublicSchema, Record<string, unknown>, Record<string, unknown>[]>;
   }
 }
