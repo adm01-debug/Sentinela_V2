@@ -44,10 +44,7 @@ export function useTeams() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('teams')
-        .select(`
-          *,
-          leader:employees!teams_leader_id_fkey(id, full_name)
-        `)
+        .select('*')
         .order('name', { ascending: true });
 
       if (error) throw error;
