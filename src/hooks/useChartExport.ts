@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { logger } from '@/lib/logger';
 
 export type ExportFormat = 'png' | 'svg' | 'pdf' | 'csv';
 
@@ -21,7 +22,7 @@ export function useChartExport(options: UseChartExportOptions = {}) {
       link.download = `${customFilename || filename}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
-    } catch (e) { console.error('Export failed:', e); } finally { setIsExporting(false); }
+    } catch (e) { logger.error('Export failed:', e); } finally { setIsExporting(false); }
   }, [filename, backgroundColor]);
 
   const exportToSVG = useCallback((chartRef: HTMLElement | null, customFilename?: string) => {
@@ -40,7 +41,7 @@ export function useChartExport(options: UseChartExportOptions = {}) {
     } finally { setIsExporting(false); }
   }, [filename]);
 
-  const exportToCSV = useCallback((data: Record<string, any>[], customFilename?: string) => {
+  const exportToCSV = useCallback((data: Record<string, unknown>[], customFilename?: string) => {
     if (!data.length) return;
     setIsExporting(true);
     try {

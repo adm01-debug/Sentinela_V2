@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { PolicyAcknowledgmentDialog } from './PolicyAcknowledgmentDialog';
 import { Card, CardContent } from '@/components/ui/card';
+import { logger } from '@/lib/logger';
 
 interface PolicyGateProps {
   children: ReactNode;
@@ -47,7 +48,7 @@ export function PolicyGate({ children }: PolicyGateProps) {
       }
       return false;
     } catch (err) {
-      console.error('Failed to check exemption:', err);
+      logger.error('Failed to check exemption:', err);
       return false;
     }
   };
@@ -81,7 +82,7 @@ export function PolicyGate({ children }: PolicyGateProps) {
         setHasAcknowledgedToday(false);
       }
     } catch (err) {
-      console.error('Failed to check acknowledgment:', err);
+      logger.error('Failed to check acknowledgment:', err);
       setHasAcknowledgedToday(false);
     } finally {
       setLoading(false);

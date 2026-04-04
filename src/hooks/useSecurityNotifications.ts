@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/lib/logger';
 
 interface SecurityViolation {
   id: string;
@@ -74,7 +75,7 @@ export function useSecurityNotifications() {
       
       return false;
     } catch (error) {
-      console.error('Error requesting notification permission:', error);
+      logger.error('Error requesting notification permission:', error);
       toast({
         title: 'Erro ao solicitar permissão',
         description: 'Não foi possível solicitar permissão para notificações.',
@@ -87,7 +88,7 @@ export function useSecurityNotifications() {
   // Show a notification
   const showNotification = useCallback((title: string, options?: NotificationOptions) => {
     if (!isSupported || permission !== 'granted') {
-      console.log('Notifications not available or not permitted');
+      logger.info('Notifications not available or not permitted');
       return null;
     }
 
@@ -106,7 +107,7 @@ export function useSecurityNotifications() {
 
       return notification;
     } catch (error) {
-      console.error('Error showing notification:', error);
+      logger.error('Error showing notification:', error);
       return null;
     }
   }, [isSupported, permission]);
@@ -146,7 +147,7 @@ export function useSecurityNotifications() {
   useEffect(() => {
     if (!isSubscribed) return;
 
-    console.log('Subscribing to security violations realtime...');
+    logger.info('Subscribing to security violations realtime...');
 
     const channel = supabase
       .channel('security-violations-realtime')
@@ -158,17 +159,17 @@ export function useSecurityNotifications() {
           table: 'security_violations',
         },
         (payload) => {
-          console.log('New security violation:', payload);
+          logger.info('New security violation:', payload);
           const violation = payload.new as SecurityViolation;
           showSecurityAlert(violation);
         }
       )
       .subscribe((status) => {
-        console.log('Realtime subscription status:', status);
+        logger.info('Realtime subscription status:', status);
       });
 
     return () => {
-      console.log('Unsubscribing from security violations realtime...');
+      logger.info('Unsubscribing from security violations realtime...');
       supabase.removeChannel(channel);
     };
   }, [isSubscribed, showSecurityAlert]);

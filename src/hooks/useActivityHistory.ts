@@ -5,6 +5,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -95,7 +96,7 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
     queryKey,
     queryFn: async (): Promise<ActivityRecord[]> => {
       if (!isSupabaseReady) {
-        console.log('[ActivityHistory] Supabase não configurado');
+        logger.info('[ActivityHistory] Supabase não configurado');
         return mockActivities;
       }
 
@@ -122,7 +123,7 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
       if (error) {
         // Tabela não existe
         if (error.code === '42P01') {
-          console.warn('[ActivityHistory] Tabela não existe');
+          logger.warn('[ActivityHistory] Tabela não existe');
           return [];
         }
         throw error;
@@ -147,7 +148,7 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
       metadata?: Record<string, unknown>;
     }) => {
       if (!isSupabaseReady) {
-        console.log('[ActivityHistory] Mock: registrando atividade', params.activityType);
+        logger.info('[ActivityHistory] Mock: registrando atividade', params.activityType);
         return;
       }
 

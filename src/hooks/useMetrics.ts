@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 interface MetricData { timestamp: Date; value: number; }
 interface MetricConfig { name: string; table: string; column: string; aggregation: 'count' | 'sum' | 'avg' | 'min' | 'max'; filters?: Record<string, string | number | boolean>; }
@@ -30,7 +31,7 @@ export function useMetrics(configs: MetricConfig[], dateRange?: { from: Date; to
             case 'max': results[config.name] = Math.max(...values); break;
           }
         }
-      } catch (e) { console.error(`Metric ${config.name} failed:`, e); }
+      } catch (e) { logger.error(`Metric ${config.name} failed:`, e); }
     }
     setMetrics(results);
   }, [configs, dateRange]);

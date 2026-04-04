@@ -10,6 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { logger } from '@/lib/logger';
 
 interface ScreenCapture {
   id: string;
@@ -53,7 +54,7 @@ function ScreenCapturesCardBase() {
       if (error) throw error;
       setCaptures(data || []);
     } catch (error) {
-      console.error('Error fetching screen captures:', error);
+      logger.error('Error fetching screen captures:', error);
     } finally {
       setLoading(false);
     }
@@ -70,7 +71,7 @@ function ScreenCapturesCardBase() {
       if (error) throw error;
       setSensitiveKeywords(data || []);
     } catch (error) {
-      console.error('Error fetching sensitive keywords:', error);
+      logger.error('Error fetching sensitive keywords:', error);
     }
   };
 
@@ -198,7 +199,7 @@ function ScreenCapturesCardBase() {
 
       toast.success('Texto extraído com sucesso!');
     } catch (error) {
-      console.error('OCR error:', error);
+      logger.error('OCR error:', error);
       toast.error('Erro ao extrair texto da imagem');
     } finally {
       setOcrLoading(null);

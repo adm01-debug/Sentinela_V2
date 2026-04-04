@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 // Notification sound utility with multiple sound types
 let audioContext: AudioContext | null = null;
 
@@ -79,7 +80,7 @@ export const playNotificationSound = (soundType: SoundType = 'chime', volumeMult
       currentTime += duration;
     });
   } catch (error) {
-    console.warn('Could not play notification sound:', error);
+    logger.warn('Could not play notification sound:', error);
   }
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Check, X, AlertTriangle, Loader2, ShieldAlert, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 interface PasswordRequirement {
   id: string;
@@ -78,7 +79,7 @@ async function checkPasswordLeaked(password: string): Promise<{ leaked: boolean;
     });
     
     if (!response.ok) {
-      console.warn('HIBP API request failed');
+      logger.warn('HIBP API request failed');
       return { leaked: false, count: 0 };
     }
     
@@ -94,7 +95,7 @@ async function checkPasswordLeaked(password: string): Promise<{ leaked: boolean;
     
     return { leaked: false, count: 0 };
   } catch (error) {
-    console.warn('Error checking leaked password:', error);
+    logger.warn('Error checking leaked password:', error);
     return { leaked: false, count: 0 };
   }
 }

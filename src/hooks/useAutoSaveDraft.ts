@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { logger } from '@/lib/logger';
 
 export interface UseAutoSaveDraftOptions<T> {
   key: string;
@@ -23,7 +24,7 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
           const { data: draftData, timestamp } = JSON.parse(stored);
           setHasDraft(true);
           setLastSaved(new Date(timestamp));
-        } catch (e) { console.error('Failed to parse draft:', e); }
+        } catch (e) { logger.error('Failed to parse draft:', e); }
       }
       initialLoadRef.current = false;
       return;
@@ -46,7 +47,7 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
         const { data: draftData } = JSON.parse(stored);
         onRestore?.(draftData);
         return draftData;
-      } catch (e) { console.error('Failed to restore draft:', e); }
+      } catch (e) { logger.error('Failed to restore draft:', e); }
     }
     return null;
   }, [key, onRestore]);

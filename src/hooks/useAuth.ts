@@ -42,9 +42,24 @@ function mapSupabaseUser(supaUser: SupaUser | undefined | null): User | null {
     name: supaUser.user_metadata?.full_name || supaUser.user_metadata?.name || supaUser.email?.split('@')[0],
     avatar: supaUser.user_metadata?.avatar_url,
     role: supaUser.user_metadata?.role || 'user',
-    isAdmin: false, // Will be checked via user_roles table
+    isAdmin: false, // Updated async via checkAdminRole
     createdAt: supaUser.created_at,
   };
+}
+
+async function checkAdminRole(userId: string): Promise<boolean> {
+  try {
+    const { data, error } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId)
+      .eq('role', 'admin')
+      .maybeSingle();
+    if (error) return false;
+    return !!data;
+  } catch {
+    return false;
+  }
 }
 
 export function useAuth(): UseAuthReturn {
@@ -53,23 +68,31 @@ export function useAuth(): UseAuthReturn {
   const [error, setError] = useState<string | null>(null);
   const [supaSession, setSupaSession] = useState<SupaSession | null>(null);
 
+  const resolveUser = useCallback(async (supaUser: SupaUser | undefined | null) => {
+    const mapped = mapSupabaseUser(supaUser);
+    if (mapped) {
+      const isAdmin = await checkAdminRole(mapped.id);
+      mapped.isAdmin = isAdmin;
+      mapped.role = isAdmin ? 'admin' : (mapped.role || 'user');
+    }
+    setUser(mapped);
+  }, []);
+
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       setSupaSession(data.session);
-      setUser(mapSupabaseUser(data.session?.user));
+      await resolveUser(data.session?.user);
       setIsLoading(false);
     });
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSupaSession(session);
-      setUser(mapSupabaseUser(session?.user));
+      await resolveUser(session?.user);
       setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [resolveUser]);
 
   const login = useCallback(async (email: string, password: string) => {
     setError(null);

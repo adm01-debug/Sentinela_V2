@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 interface Session { id: string; userId: string; device: string; browser: string; ip: string; location?: string; createdAt: Date; lastActivity: Date; current: boolean; }
 
@@ -22,7 +23,7 @@ export function useSessionManager() {
         lastActivity: new Date(s.last_activity), current: s.id === currentSessionId
       }));
       setSessions(mapped);
-    } catch (e) { console.error('Failed to fetch sessions:', e); }
+    } catch (e) { logger.error('Failed to fetch sessions:', e); }
     finally { setIsLoading(false); }
   }, [currentSessionId]);
 

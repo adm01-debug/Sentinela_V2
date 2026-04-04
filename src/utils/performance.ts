@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 // Performance utilities for Sentinela v17
 
 export interface PerformanceMetrics {
@@ -35,7 +36,7 @@ export function measureTime<T>(fn: () => T, label?: string): { result: T; durati
   const start = performance.now();
   const result = fn();
   const duration = performance.now() - start;
-  if (label) console.log(`${label}: ${duration.toFixed(2)}ms`);
+  if (label) logger.info(`${label}: ${duration.toFixed(2)}ms`);
   return { result, duration };
 }
 
@@ -46,7 +47,7 @@ export async function measureTimeAsync<T>(
   const start = performance.now();
   const result = await fn();
   const duration = performance.now() - start;
-  if (label) console.log(`${label}: ${duration.toFixed(2)}ms`);
+  if (label) logger.info(`${label}: ${duration.toFixed(2)}ms`);
   return { result, duration };
 }
 

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Keyboard, Clock, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 interface KeystrokeLog {
   id: string;
@@ -34,7 +35,7 @@ export function KeystrokeActivityCard() {
       if (error) throw error;
       setLogs(data || []);
     } catch (error) {
-      console.error('Error fetching keystroke logs:', error);
+      logger.error('Error fetching keystroke logs:', error);
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface PushNotificationPayload {
   title: string;
@@ -43,7 +44,7 @@ export function usePWAPushNotifications() {
       // Save to backend
       await supabase.from('push_subscriptions').upsert({ endpoint: sub.endpoint, subscription: JSON.stringify(sub), user_agent: navigator.userAgent });
       return sub;
-    } catch (e) { console.error('Subscribe error:', e); return null; }
+    } catch (e) { logger.error('Subscribe error:', e); return null; }
     finally { setIsLoading(false); }
   }, [isSupported, permission]);
 

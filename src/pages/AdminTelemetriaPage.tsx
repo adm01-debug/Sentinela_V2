@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { TelemetryCharts } from "@/components/admin/telemetry/TelemetryCharts";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { logger } from '@/lib/logger';
 
 interface TelemetryRow {
   id: string;
@@ -205,7 +206,7 @@ export default function AdminTelemetriaPage() {
       doc.save(`telemetria_${date}_${timeFilter}.pdf`);
       toast.success("PDF exportado com sucesso");
     } catch (err) {
-      console.error("PDF export error:", err);
+      logger.error("PDF export error:", err);
       toast.error("Erro ao exportar PDF");
     }
   };

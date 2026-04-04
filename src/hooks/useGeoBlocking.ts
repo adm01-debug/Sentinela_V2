@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 export interface GeoBlock {
   id: string;
@@ -122,7 +123,7 @@ export function useGeoBlocking() {
       toast.success('Configurações atualizadas');
     },
     onError: (error) => {
-      console.error('Error updating settings:', error);
+      logger.error('Error updating settings:', error);
       toast.error('Erro ao atualizar configurações');
     },
   });
@@ -147,7 +148,7 @@ export function useGeoBlocking() {
       toast.success('País adicionado à whitelist');
     },
     onError: (error: Error & { code?: string }) => {
-      console.error('Error adding country:', error);
+      logger.error('Error adding country:', error);
       if (error?.code === '23505') {
         toast.error('País já está na lista');
       } else {
@@ -171,7 +172,7 @@ export function useGeoBlocking() {
       toast.success('País removido da whitelist');
     },
     onError: (error) => {
-      console.error('Error removing country:', error);
+      logger.error('Error removing country:', error);
       toast.error('Erro ao remover país');
     },
   });
@@ -191,7 +192,7 @@ export function useGeoBlocking() {
       toast.success('Status atualizado');
     },
     onError: (error) => {
-      console.error('Error toggling country:', error);
+      logger.error('Error toggling country:', error);
       toast.error('Erro ao atualizar status');
     },
   });

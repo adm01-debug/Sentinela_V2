@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -140,7 +141,7 @@ export function useSecurity() {
   const logSecurityEvent = useCallback(async (event: SecurityEvent) => {
     // In production, you would send this to your security logs
     if (import.meta.env.DEV) {
-      console.log('[Security Event]', event);
+      logger.info('[Security Event]', event);
     }
     
     // Could also be sent to an edge function for logging

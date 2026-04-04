@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 interface DeviceInfo {
   fingerprint: string;
@@ -86,7 +87,7 @@ export function useDeviceDetection() {
         .eq('device_fingerprint', fullFingerprint);
       
       if (fetchError) {
-        console.error('Error checking known devices:', fetchError);
+        logger.error('Error checking known devices:', fetchError);
         return { isNewDevice: false, deviceInfo };
       }
       
@@ -115,7 +116,7 @@ export function useDeviceDetection() {
         });
       
       if (insertError) {
-        console.error('Error registering device:', insertError);
+        logger.error('Error registering device:', insertError);
         return { isNewDevice: true, deviceInfo };
       }
       
@@ -136,12 +137,12 @@ export function useDeviceDetection() {
           },
         });
       } catch (notifyError) {
-        console.error('Error sending new device notification:', notifyError);
+        logger.error('Error sending new device notification:', notifyError);
       }
       
       return { isNewDevice: true, deviceInfo };
     } catch (error) {
-      console.error('Error in device detection:', error);
+      logger.error('Error in device detection:', error);
       return { isNewDevice: false, deviceInfo: null };
     }
   }, []);
@@ -154,7 +155,7 @@ export function useDeviceDetection() {
       .order('last_seen_at', { ascending: false });
     
     if (error) {
-      console.error('Error fetching known devices:', error);
+      logger.error('Error fetching known devices:', error);
       return [];
     }
     
@@ -168,7 +169,7 @@ export function useDeviceDetection() {
       .eq('id', deviceId);
     
     if (error) {
-      console.error('Error removing device:', error);
+      logger.error('Error removing device:', error);
       return false;
     }
     
@@ -182,7 +183,7 @@ export function useDeviceDetection() {
       .eq('id', deviceId);
     
     if (error) {
-      console.error('Error trusting device:', error);
+      logger.error('Error trusting device:', error);
       return false;
     }
     
@@ -198,7 +199,7 @@ export function useDeviceDetection() {
       .limit(limit);
     
     if (error) {
-      console.error('Error fetching login events:', error);
+      logger.error('Error fetching login events:', error);
       return [];
     }
     

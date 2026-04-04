@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { TrendingUp, Clock, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 interface ProductivityLog {
   id: string;
@@ -35,7 +36,7 @@ export function ProductivityCard() {
       if (error) throw error;
       setLogs(data || []);
     } catch (error) {
-      console.error('Error fetching productivity logs:', error);
+      logger.error('Error fetching productivity logs:', error);
     } finally {
       setLoading(false);
     }

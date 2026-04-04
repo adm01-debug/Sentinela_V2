@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 
 export interface UseServiceWorkerReturn {
   isSupported: boolean;
@@ -36,7 +37,7 @@ export function useServiceWorker(swUrl = '/sw.js'): UseServiceWorkerReturn {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) setIsUpdateAvailable(true);
         });
       });
-    } catch (e) { console.error('SW registration failed:', e); }
+    } catch (e) { logger.error('SW registration failed:', e); }
   }, [isSupported, swUrl]);
 
   const unregister = useCallback(async () => {

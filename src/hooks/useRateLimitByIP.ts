@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 interface RateLimitConfig {
   maxRequests: number;
@@ -87,7 +88,7 @@ export function useRateLimitByIP() {
       });
 
       if (error) {
-        console.error('Rate limit check error:', error);
+        logger.error('Rate limit check error:', error);
         // On error, allow the request but log it
         return {
           allowed: true,
@@ -112,7 +113,7 @@ export function useRateLimitByIP() {
         blocked: !result.allowed,
       };
     } catch (error) {
-      console.error('Rate limit check failed:', error);
+      logger.error('Rate limit check failed:', error);
       return {
         allowed: true,
         remaining: config.maxRequests - 1,
@@ -155,7 +156,7 @@ export function useRateLimitByIP() {
       });
 
       if (error) {
-        console.error('Block check error:', error);
+        logger.error('Block check error:', error);
         return false;
       }
 

@@ -7,6 +7,7 @@ import { useState, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -107,7 +108,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
   const bulkDeleteMutation = useMutation({
     mutationFn: async (ids: string[]): Promise<BulkActionResult> => {
       if (!isSupabaseReady) {
-        console.log('[BulkActions] Mock: deletando', ids.length, 'itens');
+        logger.info('[BulkActions] Mock: deletando', ids.length, 'itens');
         return { success: ids, failed: [], total: ids.length };
       }
 
@@ -163,7 +164,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       const { ids, updates } = params;
 
       if (!isSupabaseReady) {
-        console.log('[BulkActions] Mock: atualizando', ids.length, 'itens');
+        logger.info('[BulkActions] Mock: atualizando', ids.length, 'itens');
         return { success: ids, failed: [], total: ids.length };
       }
 

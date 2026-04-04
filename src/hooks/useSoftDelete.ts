@@ -6,6 +6,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -60,7 +61,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   const softDeleteMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
-        console.log('[SoftDelete] Mock: deletando', id);
+        logger.info('[SoftDelete] Mock: deletando', id);
         return;
       }
 
@@ -97,7 +98,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   const softDeleteManyMutation = useMutation({
     mutationFn: async (ids: string[]) => {
       if (!isSupabaseReady) {
-        console.log('[SoftDelete] Mock: deletando', ids.length, 'registros');
+        logger.info('[SoftDelete] Mock: deletando', ids.length, 'registros');
         return;
       }
 
@@ -133,7 +134,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   const restoreMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
-        console.log('[SoftDelete] Mock: restaurando', id);
+        logger.info('[SoftDelete] Mock: restaurando', id);
         return;
       }
 
@@ -170,7 +171,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   const restoreManyMutation = useMutation({
     mutationFn: async (ids: string[]) => {
       if (!isSupabaseReady) {
-        console.log('[SoftDelete] Mock: restaurando', ids.length, 'registros');
+        logger.info('[SoftDelete] Mock: restaurando', ids.length, 'registros');
         return;
       }
 
@@ -206,7 +207,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   const hardDeleteMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
-        console.log('[SoftDelete] Mock: deletando permanentemente', id);
+        logger.info('[SoftDelete] Mock: deletando permanentemente', id);
         return;
       }
 
@@ -234,7 +235,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   const hardDeleteManyMutation = useMutation({
     mutationFn: async (ids: string[]) => {
       if (!isSupabaseReady) {
-        console.log('[SoftDelete] Mock: deletando permanentemente', ids.length, 'registros');
+        logger.info('[SoftDelete] Mock: deletando permanentemente', ids.length, 'registros');
         return;
       }
 

@@ -12,6 +12,7 @@ import {
 import { Camera, MapPin, Check, Loader2, RefreshCw, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/lib/logger';
 
 interface PolicyAcknowledgmentDialogProps {
   employeeName: string;
@@ -43,7 +44,7 @@ function PolicyAcknowledgmentDialogBase({ employeeName, onAcknowledged }: Policy
         videoRef.current.srcObject = stream;
       }
     } catch (error) {
-      console.error('Camera error:', error);
+      logger.error('Camera error:', error);
       setCameraError('Não foi possível acessar a câmera. Verifique as permissões.');
     }
   }, []);
@@ -98,12 +99,12 @@ function PolicyAcknowledgmentDialogBase({ employeeName, onAcknowledged }: Policy
           address = data.display_name;
         }
       } catch (e) {
-        console.warn('Geocoding failed, using coordinates:', e);
+        logger.warn('Geocoding failed, using coordinates:', e);
       }
       
       setLocation({ lat: latitude, lng: longitude, address });
     } catch (error) {
-      console.error('Location error:', error);
+      logger.error('Location error:', error);
       setLocationError('Não foi possível obter a localização. Verifique as permissões.');
     } finally {
       setIsLoadingLocation(false);
@@ -180,7 +181,7 @@ function PolicyAcknowledgmentDialogBase({ employeeName, onAcknowledged }: Policy
       setPhotoData(null);
       setLocation(null);
     } catch (error) {
-      console.error('Submit error:', error);
+      logger.error('Submit error:', error);
       toast({
         title: "Erro ao registrar",
         description: "Não foi possível salvar a confirmação. Tente novamente.",
