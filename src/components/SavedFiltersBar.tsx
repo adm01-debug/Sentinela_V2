@@ -82,7 +82,7 @@ function SavedFiltersBarBase({
     applyFilter(filter);
   };
 
-  const hasActiveFilters = Object.values(currentFilters).some(v => v !== '' && v !== null && v !== undefined);
+  const hasActiveFilters = Object.values(currentFilters as Record<string, unknown>).some(v => v !== '' && v !== null && v !== undefined);
 
   if (isLoading) {
     return (
