@@ -31,6 +31,7 @@ export const MainLayout = () => {
   }, []);
 
   return (
+    <KeyboardShortcutsProvider>
     <div className="flex h-screen bg-background">
       {/* Desktop Sidebar */}
       <nav id="main-nav" aria-label="Navegação principal" className="hidden md:block">
