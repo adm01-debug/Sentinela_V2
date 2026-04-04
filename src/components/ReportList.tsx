@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Report } from '@/types';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +17,7 @@ const statusVariants: Record<string, 'default' | 'secondary' | 'destructive'> = 
   failed: 'destructive',
 };
 
-export const ReportList = ({ reports, isLoading }: Props) => {
+const ReportListBase = ({ reports, isLoading }: Props) => {
   if (isLoading) return <div className="space-y-2">{[1, 2, 3].map(i => <Skeleton key={i} className="h-12" />)}</div>;
 
   const handleDownload = (id) => {
@@ -60,3 +61,4 @@ export const ReportList = ({ reports, isLoading }: Props) => {
     </Table>
   );
 };
+export const ReportList = memo(ReportListBase);

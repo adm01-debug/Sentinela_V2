@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Activity } from '@/types';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +16,7 @@ const formatActivityTime = (timestamp) => {
   return format(parsed, 'HH:mm');
 };
 
-export const ActivityTable = ({ activities, isLoading }: Props) => {
+const ActivityTableBase = ({ activities, isLoading }: Props) => {
   if (isLoading) {
     return (
       <div className="space-y-2">
@@ -55,3 +56,4 @@ export const ActivityTable = ({ activities, isLoading }: Props) => {
     </Table>
   );
 };
+export const ActivityTable = memo(ActivityTableBase);

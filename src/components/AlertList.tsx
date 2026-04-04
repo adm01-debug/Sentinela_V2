@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Alert } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -17,7 +18,7 @@ const severityVariants: Record<string, 'default' | 'warning' | 'destructive'> = 
   critical: 'destructive',
 };
 
-export const AlertList = ({ alerts, isLoading, onAcknowledge }: Props) => {
+const AlertListBase = ({ alerts, isLoading, onAcknowledge }: Props) => {
   if (isLoading) {
     return (
       <div className="space-y-2">
@@ -58,3 +59,4 @@ export const AlertList = ({ alerts, isLoading, onAcknowledge }: Props) => {
     </div>
   );
 };
+export const AlertList = memo(AlertListBase);
