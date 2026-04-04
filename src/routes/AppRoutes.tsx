@@ -139,8 +139,9 @@ const PageLoader = () => (
 // APP ROUTES
 // ============================================================
 export const AppRoutes = () => (
-  <Suspense fallback={<PageLoader />}>
-    <Routes>
+  <RouteErrorBoundary>
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
       {/* Auth */}
       <Route path="/auth" element={<AuthGuard><Auth /></AuthGuard>} />
       <Route path={ROUTES.LOGIN} element={<Navigate to="/auth" replace />} />
