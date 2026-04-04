@@ -114,7 +114,7 @@ export async function retryUntil<T>(
 export class RetryError extends Error {
   constructor(
     message: string,
-    public readonly attempts,
+    public readonly attempts: number,
     public readonly lastError: Error
   ) {
     super(message);
