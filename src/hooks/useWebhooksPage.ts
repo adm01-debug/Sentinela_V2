@@ -129,14 +129,13 @@ export function useWebhooksPage() {
   const handleUpdate = useCallback(async () => {
     if (!selectedWebhook || !formData.name.trim() || !formData.url.trim()) return;
 
-    await updateWebhook(selectedWebhook.id, {
+    await updateWebhook({
+      id: selectedWebhook.id,
       name: formData.name.trim(),
       url: formData.url.trim(),
-      secret: formData.secret.trim() || null,
+      secret: formData.secret.trim() || undefined,
       events: formData.events,
       is_active: formData.is_active,
-      retry_count: formData.retry_count,
-      timeout_seconds: formData.timeout_seconds,
     });
 
     resetForm();
