@@ -19,7 +19,7 @@ const defaultOptions: Required<Omit<RetryOptions, 'retryOn' | 'onRetry' | 'signa
   backoffFactor: 2,
 };
 
-function calculateDelay(attempt, options: Required<RetryOptions>): number {
+function calculateDelay(attempt: number, options: Required<RetryOptions>): number {
   let delay: number;
   switch (options.backoff) {
     case 'linear':
