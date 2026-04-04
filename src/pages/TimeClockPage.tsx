@@ -106,7 +106,7 @@ function TimeClockPage() {
       queryClient.invalidateQueries({ queryKey: ['active-time-entries'] });
       toast({ title: 'Clock-in realizado com sucesso!' });
     },
-    onError: (err: any) => toast({ title: 'Erro ao fazer clock-in', description: err.message, variant: 'destructive' }),
+    onError: (err: Error) => toast({ title: 'Erro ao fazer clock-in', description: err.message, variant: 'destructive' }),
   });
 
   // Clock out mutation
