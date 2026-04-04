@@ -5,6 +5,7 @@ import { FeatureFlagsProvider } from '@/lib/feature-flags/provider';
 import { PermissionsProvider } from '@/lib/permissions/provider';
 import { ErrorBoundary } from '@/lib/error-handling';
 import { ThemeProvider } from '@/providers/ThemeProvider';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const queryClient = new QueryClient({
   defaultOptions: {
