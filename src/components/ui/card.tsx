@@ -4,28 +4,28 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const cardVariants = cva(
-  "rounded-lg border bg-card text-card-foreground transition-all duration-200",
+  "rounded-md border bg-card text-card-foreground transition-all duration-150",
   {
     variants: {
       variant: {
         default: "shadow-sm",
-        elevated: "shadow-elevation-2 hover:shadow-elevation-3",
-        glass: "bg-card/80 backdrop-blur-xl border-border/50 shadow-elevation-2",
-        outline: "border-2 shadow-none",
+        elevated: "shadow-[var(--elevation-2)] hover:shadow-[var(--elevation-3)]",
+        glass: "bg-card/80 backdrop-blur-xl border-border/50 shadow-[var(--elevation-2)]",
+        outline: "border shadow-none",
         ghost: "border-transparent shadow-none bg-transparent",
-        interactive: "shadow-sm hover:shadow-elevation-2 hover:-translate-y-0.5 cursor-pointer",
+        interactive: "shadow-sm hover:shadow-[var(--elevation-2)] hover:border-primary/20 cursor-pointer",
         gradient: "bg-gradient-card border-border/50",
         premium: "bg-gradient-to-br from-primary/5 via-transparent to-accent/5 border-primary/20",
-        success: "border-success/30 bg-success/5",
-        warning: "border-warning/30 bg-warning/5",
-        destructive: "border-destructive/30 bg-destructive/5",
-        info: "border-info/30 bg-info/5",
+        success: "border-success/20 bg-success/5",
+        warning: "border-warning/20 bg-warning/5",
+        destructive: "border-destructive/20 bg-destructive/5",
+        info: "border-info/20 bg-info/5",
       },
       padding: {
         none: "",
-        sm: "[&>*:first-child]:p-4 [&>*:first-child]:pb-2 [&>*:not(:first-child)]:p-4 [&>*:not(:first-child)]:pt-0",
-        default: "[&>*:first-child]:p-6 [&>*:first-child]:pb-2 [&>*:not(:first-child)]:p-6 [&>*:not(:first-child)]:pt-0",
-        lg: "[&>*:first-child]:p-8 [&>*:first-child]:pb-3 [&>*:not(:first-child)]:p-8 [&>*:not(:first-child)]:pt-0",
+        sm: "[&>*:first-child]:p-3 [&>*:first-child]:pb-1.5 [&>*:not(:first-child)]:p-3 [&>*:not(:first-child)]:pt-0",
+        default: "[&>*:first-child]:p-4 [&>*:first-child]:pb-1.5 [&>*:not(:first-child)]:p-4 [&>*:not(:first-child)]:pt-0",
+        lg: "[&>*:first-child]:p-6 [&>*:first-child]:pb-2 [&>*:not(:first-child)]:p-6 [&>*:not(:first-child)]:pt-0",
       },
     },
     defaultVariants: {
