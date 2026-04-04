@@ -7,7 +7,7 @@ export interface RetryOptions {
   backoff?: 'linear' | 'exponential' | 'fixed';
   backoffFactor?: number;
   retryOn?: (error: Error) => boolean;
-  onRetry?: (error: Error, attempt) => void;
+  onRetry?: (error: Error, attempt: number) => void;
   signal?: AbortSignal;
 }
 
