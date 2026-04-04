@@ -32,9 +32,9 @@ export const MainLayout = () => {
   return (
     <div className="flex h-screen bg-background">
       {/* Desktop Sidebar */}
-      <div className="hidden md:block">
+      <nav id="main-nav" aria-label="Navegação principal" className="hidden md:block">
         <AppSidebar />
-      </div>
+      </nav>
 
       {/* Mobile Sidebar Sheet */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
