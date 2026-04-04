@@ -137,7 +137,7 @@ function TimeClockPage() {
       queryClient.invalidateQueries({ queryKey: ['active-time-entries'] });
       toast({ title: 'Clock-out realizado com sucesso!' });
     },
-    onError: (err: any) => toast({ title: 'Erro ao fazer clock-out', description: err.message, variant: 'destructive' }),
+    onError: (err: Error) => toast({ title: 'Erro ao fazer clock-out', description: err.message, variant: 'destructive' }),
   });
 
   // Realtime subscription for status changes
