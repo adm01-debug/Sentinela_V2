@@ -105,7 +105,7 @@ function TimesheetsPage() {
       queryClient.invalidateQueries({ queryKey: ['timesheets'] });
       toast({ title: `${count} folhas de ponto geradas!` });
     },
-    onError: (err: any) => toast({ title: 'Erro', description: err.message, variant: 'destructive' }),
+    onError: (err: Error) => toast({ title: 'Erro', description: err.message, variant: 'destructive' }),
   });
 
   const approveTimesheet = useMutation({
