@@ -9,7 +9,7 @@ export interface CurrencyOptions {
 }
 
 export function formatCurrency(
-  amount,
+  amount: number,
   options: CurrencyOptions = {}
 ): string {
   const {
@@ -41,19 +41,19 @@ export function parseCurrency(value: string, locale: string = 'pt-BR'): number {
   return parseFloat(cleaned) || 0;
 }
 
-export function formatCompactCurrency(amount, currency: string = 'BRL'): string {
+export function formatCompactCurrency(amount: number, currency: string = 'BRL'): string {
   return formatCurrency(amount, { currency, notation: 'compact' });
 }
 
 export function convertCurrency(
-  amount,
-  fromRate,
+  amount: number,
+  fromRate: unknown,
   toRate
 ): number {
   return (amount / fromRate) * toRate;
 }
 
-export function roundCurrency(amount, decimals = 2): number {
+export function roundCurrency(amount: number, decimals = 2): number {
   const factor = Math.pow(10, decimals);
   return Math.round(amount * factor) / factor;
 }
@@ -79,7 +79,7 @@ export const CURRENCY_CODES = {
 export type CurrencyCode = keyof typeof CURRENCY_CODES;
 
 export function formatPercentage(
-  value,
+  value: number,
   options?: { decimals?: number; locale?: string }
 ): string {
   const { decimals = 2, locale = 'pt-BR' } = options || {};
@@ -90,7 +90,7 @@ export function formatPercentage(
   }).format(value / 100);
 }
 
-export function calculatePercentageChange(oldValue, newValue): number {
+export function calculatePercentageChange(oldValue: unknown, newValue: unknown): number {
   if (oldValue === 0) return newValue === 0 ? 0 : 100;
   return ((newValue - oldValue) / Math.abs(oldValue)) * 100;
 }

@@ -226,7 +226,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   /**
    * Obtém versão específica
    */
-  const getVersion = (versionNumber): EntityVersion | undefined => {
+  const getVersion = (versionNumber: unknown): EntityVersion | undefined => {
     return versions.find((v) => v.version_number === versionNumber);
   };
 

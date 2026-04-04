@@ -172,7 +172,7 @@ export interface AxisTicks {
   font?: ChartFont;
   maxRotation?: number;
   minRotation?: number;
-  callback?: (value, index) => string;
+  callback?: (value: number, index: number) => string;
 }
 
 export interface TimeScale {
@@ -220,10 +220,10 @@ export interface ChartElement {
 
 export interface ChartPlugin {
   id: string;
-  beforeInit?: (chart) => void;
-  afterInit?: (chart) => void;
-  beforeDraw?: (chart) => void;
-  afterDraw?: (chart) => void;
+  beforeInit?: (chart: unknown) => void;
+  afterInit?: (chart: unknown) => void;
+  beforeDraw?: (chart: unknown) => void;
+  afterDraw?: (chart: unknown) => void;
   [key: string]: unknown;
 }
 

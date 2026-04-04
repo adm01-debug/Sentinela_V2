@@ -6,7 +6,7 @@ export function useFunnelAnalysis(steps: string[]) {
   const [data, setData] = useState<FunnelStep[]>([]);
   const [conversionRates, setConversionRates] = useState<number[]>([]);
 
-  const updateStep = useCallback((stepId: string, count) => {
+  const updateStep = useCallback((stepId: string, count: number) => {
     setData(prev => {
       const updated = [...prev];
       const index = updated.findIndex(s => s.id === stepId);

@@ -70,7 +70,7 @@ export interface ActivityHeatmapProps {
   data: ActivityHeatmapData[];
   title?: string;
   colorScale?: 'blue' | 'green' | 'red' | 'purple' | 'orange';
-  onCellClick?: (day, hour, value) => void;
+  onCellClick?: (day: number, hour: number, value: number) => void;
   className?: string;
 }
 
@@ -164,7 +164,7 @@ export interface CalendarHeatmapProps {
   startDate?: Date;
   endDate?: Date;
   colorScale?: 'blue' | 'green' | 'red' | 'purple' | 'orange';
-  onCellClick?: (date: string, value) => void;
+  onCellClick?: (date: string, value: number) => void;
   className?: string;
 }
 

@@ -228,7 +228,7 @@ export function AnimatedToggle({
 interface AnimatedCounterProps {
   value: number;
   duration?: number;
-  formatValue?: (value) => string;
+  formatValue?: (value: number) => string;
   className?: string;
 }
 

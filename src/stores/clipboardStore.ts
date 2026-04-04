@@ -19,7 +19,7 @@ interface ClipboardState {
   maxItems: number;
   isSupported: boolean;
 
-  copy: (type: ClipboardItemType, data, source?: string) => Promise<string>;
+  copy: (type: ClipboardItemType, data: unknown, source?: string) => Promise<string>;
   paste: () => ClipboardItem | null;
   clear: () => void;
   clearItem: (id: string) => void;
@@ -27,7 +27,7 @@ interface ClipboardState {
   hasItem: (type?: ClipboardItemType) => boolean;
   copyToSystemClipboard: (text: string) => Promise<boolean>;
   readFromSystemClipboard: () => Promise<string | null>;
-  setMaxItems: (max) => void;
+  setMaxItems: (max: number) => void;
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 9);

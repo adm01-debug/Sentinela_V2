@@ -16,7 +16,7 @@ export function useRealtime<T>(url: string) {
     return () => ws.close();
   }, [url]);
 
-  const send = useCallback((message) => {
+  const send = useCallback((message: unknown) => {
     wsRef.current?.send(JSON.stringify(message));
   }, []);
 

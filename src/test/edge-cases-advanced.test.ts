@@ -149,7 +149,7 @@ describe('Date & Timezone Handling', () => {
   });
 
   it('should format relative time', () => {
-    const formatRelative = (seconds) => {
+    const formatRelative = (seconds: number) => {
       if (seconds < 60) return 'agora';
       if (seconds < 3600) return `${Math.floor(seconds / 60)}min`;
       if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
@@ -175,7 +175,7 @@ describe('Date & Timezone Handling', () => {
 // ============================================================
 describe('Error Resilience', () => {
   it('should handle network timeout gracefully', async () => {
-    const fetchWithTimeout = async (ms) => {
+    const fetchWithTimeout = async (ms: number) => {
       return new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), ms));
     };
     await expect(fetchWithTimeout(1)).rejects.toThrow('Timeout');
@@ -183,12 +183,12 @@ describe('Error Resilience', () => {
 
   it('should retry failed operations', async () => {
     let attempts = 0;
-    const retryFn = async (maxRetries) => {
+    const retryFn = async (maxRetries: unknown) => {
       attempts++;
       if (attempts < maxRetries) throw new Error('Fail');
       return 'success';
     };
-    const retry = async (fn: () => Promise<string>, max) => {
+    const retry = async (fn: () => Promise<string>, max: number) => {
       for (let i = 0; i < max; i++) {
         try { return await fn(); } catch { continue; }
       }
@@ -295,7 +295,7 @@ describe('Application Categorization', () => {
 // GAMIFICATION SCORING
 // ============================================================
 describe('Gamification Scoring', () => {
-  const calculateLevel = (points) => {
+  const calculateLevel = (points: unknown) => {
     if (points >= 1000) return 5;
     if (points >= 500) return 4;
     if (points >= 200) return 3;
@@ -354,7 +354,7 @@ describe('Gamification Scoring', () => {
 // RATE LIMITING
 // ============================================================
 describe('Rate Limiting Logic', () => {
-  const isRateLimited = (requests: number[], windowMs, maxRequests) => {
+  const isRateLimited = (requests: number[], windowMs: unknown, maxRequests: unknown) => {
     const now = Date.now();
     const recent = requests.filter(t => now - t < windowMs);
     return recent.length >= maxRequests;
@@ -385,7 +385,7 @@ describe('File Upload Validation', () => {
   const MAX_SIZE = 10 * 1024 * 1024; // 10MB
   const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'application/pdf'];
 
-  const validateFile = (size, type: string) => ({
+  const validateFile = (size: number, type: string) => ({
     valid: size <= MAX_SIZE && ALLOWED_TYPES.includes(type),
     errors: [
       ...(size > MAX_SIZE ? ['File too large'] : []),

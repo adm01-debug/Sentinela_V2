@@ -64,5 +64,5 @@ export const selectLogsByUser = (userId: string) => (state: AuditState) =>
 export const selectLogsByAction = (action: string) => (state: AuditState) =>
   state.logs.filter((l) => l.action === action);
 
-export const selectRecentLogs = (count) => (state: AuditState) =>
+export const selectRecentLogs = (count: number) => (state: AuditState) =>
   state.logs.slice(0, count);

@@ -39,7 +39,7 @@ export default function WebhooksPage() {
         <Card><CardContent className="py-12 text-center text-muted-foreground"><Webhook className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhum webhook configurado.</p><p className="text-sm mt-1">Webhooks permitem notificar sistemas externos automaticamente.</p></CardContent></Card>
       ) : (
         <div className="space-y-3">
-          {webhooks?.map((w) => (
+          {webhooks?.map((w: unknown) => (
             <Card key={w.id}><CardContent className="p-4 flex items-center justify-between">
               <div className="flex items-center gap-3"><ExternalLink className="h-5 w-5 text-muted-foreground" /><div><p className="font-medium">{w.setting_key}</p><p className="text-sm text-muted-foreground">{w.description}</p></div></div>
               <Badge variant="default">Ativo</Badge>

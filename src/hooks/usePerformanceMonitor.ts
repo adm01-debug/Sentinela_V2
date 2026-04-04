@@ -10,7 +10,7 @@ export interface PerformanceMetrics {
 
 export interface UsePerformanceMonitorOptions {
   sampleInterval?: number;
-  onThresholdExceeded?: (metric: string, value) => void;
+  onThresholdExceeded?: (metric: string, value: number) => void;
   thresholds?: {
     minFps?: number;
     maxMemory?: number;

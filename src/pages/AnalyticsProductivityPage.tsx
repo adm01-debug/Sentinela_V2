@@ -29,7 +29,7 @@ interface MetricItem {
 export default function AnalyticsProductivityPage() {
   const { data } = useProductivityAnalytics();
 
-  const getTrendIcon = (trend) => {
+  const getTrendIcon = (trend: unknown) => {
     if (trend > 0) return <TrendingUp className="h-4 w-4 text-green-500" />;
     if (trend < 0) return <TrendingDown className="h-4 w-4 text-red-500" />;
     return <Minus className="h-4 w-4 text-muted-foreground" />;

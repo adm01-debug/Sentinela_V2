@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 
 interface GridListProps<T> {
   items: T[];
-  renderItem: (item: T, index) => React.ReactNode;
+  renderItem: (item: T, index: number) => React.ReactNode;
   keyExtractor: (item: T) => string;
   columns?: 1 | 2 | 3 | 4;
   gap?: 'sm' | 'md' | 'lg';

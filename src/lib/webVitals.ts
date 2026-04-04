@@ -24,7 +24,7 @@ const thresholds: Record<string, [number, number]> = {
   TTFB: [800, 1800],
 };
 
-function rate(name: string, value): WebVitalMetric['rating'] {
+function rate(name: string, value: number): WebVitalMetric['rating'] {
   const t = thresholds[name];
   if (!t) return 'good';
   if (value <= t[0]) return 'good';

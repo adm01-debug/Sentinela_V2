@@ -3,7 +3,7 @@ import { useState, useCallback } from "react";
 export function useRotate(initialAngle = 0) {
   const [angle, setAngle] = useState(initialAngle);
 
-  const rotate = useCallback((degrees) => {
+  const rotate = useCallback((degrees: unknown) => {
     setAngle(a => (a + degrees) % 360);
   }, []);
 

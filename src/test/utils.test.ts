@@ -96,7 +96,7 @@ describe('Date Utilities', () => {
   });
 
   it('should detect work hours', () => {
-    const isWorkHour = (hour) => hour >= 9 && hour < 18;
+    const isWorkHour = (hour: number) => hour >= 9 && hour < 18;
     expect(isWorkHour(10)).toBe(true);
     expect(isWorkHour(20)).toBe(false);
     expect(isWorkHour(8)).toBe(false);
@@ -108,7 +108,7 @@ describe('Date Utilities', () => {
 // ============================================================
 
 describe('Geofence Calculations', () => {
-  const haversineDistance = (lat1, lon1, lat2, lon2) => {
+  const haversineDistance = (lat1: unknown, lon1: unknown, lat2: unknown, lon2: unknown) => {
     const R = 6371000;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -127,13 +127,13 @@ describe('Geofence Calculations', () => {
   });
 
   it('should detect point inside geofence', () => {
-    const isInside = (lat, lon, cLat, cLon, radius) =>
+    const isInside = (lat: unknown, lon: unknown, cLat: unknown, cLon: unknown, radius: unknown) =>
       haversineDistance(lat, lon, cLat, cLon) <= radius;
     expect(isInside(-23.550, -46.630, -23.550, -46.631, 500)).toBe(true);
   });
 
   it('should detect point outside geofence', () => {
-    const isInside = (lat, lon, cLat, cLon, radius) =>
+    const isInside = (lat: unknown, lon: unknown, cLat: unknown, cLon: unknown, radius: unknown) =>
       haversineDistance(lat, lon, cLat, cLon) <= radius;
     expect(isInside(-23.550, -46.630, -22.910, -43.170, 500)).toBe(false);
   });
@@ -144,7 +144,7 @@ describe('Geofence Calculations', () => {
 // ============================================================
 
 describe('Productivity Calculations', () => {
-  const calculateProductivity = (active, idle) => {
+  const calculateProductivity = (active: unknown, idle: unknown) => {
     const total = active + idle;
     return total > 0 ? Math.round((active / total) * 100) : 0;
   };
@@ -172,7 +172,7 @@ describe('Productivity Calculations', () => {
 // ============================================================
 
 describe('Security Score', () => {
-  const calcSecurityScore = (violations, totalDays) => {
+  const calcSecurityScore = (violations: unknown, totalDays: unknown) => {
     if (totalDays === 0) return 100;
     const violationsPerDay = violations / totalDays;
     return Math.max(0, Math.round(100 - violationsPerDay * 20));

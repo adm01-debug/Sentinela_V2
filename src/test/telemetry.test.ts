@@ -47,7 +47,7 @@ function createRow(overrides: Partial<TelemetryRow> = {}): TelemetryRow {
 }
 
 // --- Helpers extracted from page logic ---
-function formatDuration(ms): string {
+function formatDuration(ms: number): string {
   if (ms >= 1000) return `${(ms / 1000).toFixed(1)}s`;
   return `${ms}ms`;
 }

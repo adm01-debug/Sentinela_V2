@@ -11,7 +11,7 @@ export interface Column<T> {
   key: string;
   header: string | ReactNode;
   width?: string;
-  render: (item: T, index) => ReactNode;
+  render: (item: T, index: number) => ReactNode;
   className?: string;
 }
 
@@ -20,13 +20,13 @@ interface VirtualizedTableProps<T> {
   columns: Column<T>[];
   rowHeight?: number;
   containerHeight?: number;
-  keyExtractor: (item: T, index) => string;
-  onRowClick?: (item: T, index) => void;
+  keyExtractor: (item: T, index: number) => string;
+  onRowClick?: (item: T, index: number) => void;
   loading?: boolean;
   emptyMessage?: string;
   className?: string;
   headerClassName?: string;
-  rowClassName?: string | ((item: T, index) => string);
+  rowClassName?: string | ((item: T, index: number) => string);
 }
 
 // ============================================================
@@ -49,7 +49,7 @@ function VirtualizedTableInner<T>({
   const { t } = useTranslation();
 
   const renderRow = useCallback(
-    (item: T, index) => {
+    (item: T, index: number) => {
       const rowClass = typeof rowClassName === 'function' 
         ? rowClassName(item, index) 
         : rowClassName;

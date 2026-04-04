@@ -5,7 +5,7 @@ interface WorkEntry { date: string; hours: number; }
 export function useWorkHours() {
   const [entries, setEntries] = useState<WorkEntry[]>([]);
 
-  const log = useCallback((hours, date = new Date().toISOString().split("T")[0]) => {
+  const log = useCallback((hours: unknown, date = new Date().toISOString().split("T")[0]) => {
     setEntries(prev => {
       const existing = prev.find(e => e.date === date);
       if (existing) return prev.map(e => e.date === date ? { ...e, hours: e.hours + hours } : e);

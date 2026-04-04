@@ -64,7 +64,7 @@ describe('Boundary Conditions', () => {
 
   describe('Geofence Radius', () => {
     const radii = [0, 1, 50, 100, 500, 1000, 5000, 10000, 50000, 100000];
-    const isValidRadius = (r) => r > 0 && r <= 100000;
+    const isValidRadius = (r: unknown) => r > 0 && r <= 100000;
     radii.forEach(r => {
       it(`radius ${r}m should be ${isValidRadius(r) ? 'valid' : 'invalid'}`, () => {
         expect(isValidRadius(r)).toBe(r > 0 && r <= 100000);
@@ -82,7 +82,7 @@ describe('Boundary Conditions', () => {
       { lat: -91, lon: 0, valid: false },
       { lat: -23.5505, lon: -46.6333, valid: true }, // São Paulo
     ];
-    const isValidCoord = (lat, lon) => lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
+    const isValidCoord = (lat: unknown, lon: unknown) => lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
     coords.forEach(({ lat, lon, valid }) => {
       it(`(${lat}, ${lon}) should be ${valid ? 'valid' : 'invalid'}`, () => {
         expect(isValidCoord(lat, lon)).toBe(valid);
@@ -92,7 +92,7 @@ describe('Boundary Conditions', () => {
 
   describe('Bandwidth Limits', () => {
     const limits = [0, 0.5, 1, 5, 10, 50, 100, 500, 1000, -1];
-    const isValid = (mbps) => mbps > 0 && mbps <= 1000;
+    const isValid = (mbps: unknown) => mbps > 0 && mbps <= 1000;
     limits.forEach(l => {
       it(`${l} Mbps should be ${isValid(l) ? 'valid' : 'invalid'}`, () => {
         expect(isValid(l)).toBe(l > 0 && l <= 1000);
@@ -316,7 +316,7 @@ describe('Data Integrity', () => {
 // ============================================================
 
 describe('Pagination Logic', () => {
-  const paginate = <T>(items: T[], page, pageSize) => {
+  const paginate = <T>(items: T[], page: number, pageSize: unknown) => {
     const start = (page - 1) * pageSize;
     return { data: items.slice(start, start + pageSize), total: items.length, totalPages: Math.ceil(items.length / pageSize), page };
   };

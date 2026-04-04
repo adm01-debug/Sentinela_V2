@@ -11,7 +11,7 @@ interface ChartTooltipProps {
   payload?: Array<{ name: string; value: number; color?: string; dataKey?: string; payload?: unknown }>;
   label?: string;
   labelFormatter?: (label: string) => string;
-  valueFormatter?: (value) => string;
+  valueFormatter?: (value: number) => string;
 }
 
 export function ChartTooltipContent({

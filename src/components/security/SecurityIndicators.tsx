@@ -38,7 +38,7 @@ export const SecurityScore: React.FC<SecurityScoreProps> = ({
   showDetails = true,
   className,
 }) => {
-  const getScoreColor = (s) => {
+  const getScoreColor = (s: string) => {
     if (s >= 80) return { color: 'text-success', bg: 'bg-success', label: 'Excellent' };
     if (s >= 60) return { color: 'text-info', bg: 'bg-info', label: 'Good' };
     if (s >= 40) return { color: 'text-warning', bg: 'bg-warning', label: 'Fair' };

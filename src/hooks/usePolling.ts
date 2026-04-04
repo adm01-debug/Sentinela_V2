@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 export function usePolling<T>(
   fetchFn: () => Promise<T>,
-  interval,
+  interval: unknown,
   enabled = true
 ) {
   const [data, setData] = useState<T | null>(null);

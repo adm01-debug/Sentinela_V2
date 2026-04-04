@@ -34,7 +34,7 @@ export function toMilliseconds(duration: Duration): number {
   );
 }
 
-export function fromMilliseconds(ms): Duration {
+export function fromMilliseconds(ms: number): Duration {
   const absMs = Math.abs(ms);
   return {
     days: Math.floor(absMs / MS.day),
@@ -45,7 +45,7 @@ export function fromMilliseconds(ms): Duration {
   };
 }
 
-export function formatDuration(ms, options?: { short?: boolean; maxUnits?: number }): string {
+export function formatDuration(ms: number, options?: { short?: boolean; maxUnits?: number }): string {
   const { short = false, maxUnits = 2 } = options || {};
   const duration = fromMilliseconds(ms);
   const parts: string[] = [];
@@ -103,7 +103,7 @@ export function subtractDuration(date: Date, duration: Duration): Date {
   return new Date(date.getTime() - toMilliseconds(duration));
 }
 
-export function humanReadableDuration(seconds): string {
+export function humanReadableDuration(seconds: number): string {
   if (seconds < 60) return `${seconds}s`;
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
   const hours = Math.floor(seconds / 3600);

@@ -232,7 +232,7 @@ export default function AdminTelemetriaPage() {
     .sort((a, b) => b[1].count - a[1].count)
     .slice(0, 8);
 
-  const formatDuration = (ms) => {
+  const formatDuration = (ms: number) => {
     if (ms >= 1000) return `${(ms / 1000).toFixed(1)}s`;
     return `${ms}ms`;
   };

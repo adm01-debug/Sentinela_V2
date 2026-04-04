@@ -22,7 +22,7 @@ export function useTable<T>(initialData: T[], pageSize = 10) {
     }));
   }, []);
 
-  const setPage = useCallback((page) => setState(s => ({ ...s, page })), []);
+  const setPage = useCallback((page: number) => setState(s => ({ ...s, page })), []);
 
   const sortedData = useMemo(() => {
     if (!state.sortKey) return state.data;

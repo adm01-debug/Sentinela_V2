@@ -7,7 +7,7 @@ vi.mock('recharts', () => ({
   Pie: ({ children, data, label }: any) => (
     <div data-testid="pie" data-has-label={!!label}>
       {children}
-      {data?.map((_: any, i) => <div key={i} data-testid={`pie-entry-${i}`} />)}
+      {data?.map((_: any, i: number) => <div key={i} data-testid={`pie-entry-${i}`} />)}
     </div>
   ),
   Cell: ({ fill }: any) => <div data-testid="cell" data-fill={fill} />,

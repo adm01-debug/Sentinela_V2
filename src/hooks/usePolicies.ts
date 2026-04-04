@@ -23,7 +23,7 @@ export function usePolicies() {
         .order('created_at', { ascending: false });
       if (error) throw error;
 
-      return (data ?? []).map((row): Policy => ({
+      return (data ?? []).map((row: unknown): Policy => ({
         id: row.id,
         name: row.name,
         description: row.description,

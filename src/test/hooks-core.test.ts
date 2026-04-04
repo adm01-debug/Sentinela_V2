@@ -605,7 +605,7 @@ describe('Data Transformations', () => {
   });
 
   describe('Time Formatting', () => {
-    const formatSeconds = (s) => {
+    const formatSeconds = (s: string) => {
       const h = Math.floor(s / 3600);
       const m = Math.floor((s % 3600) / 60);
       return `${h}h ${m}m`;
@@ -629,7 +629,7 @@ describe('Data Transformations', () => {
   });
 
   describe('Productivity Score Calculation', () => {
-    const calcProductivity = (activeSeconds, totalSeconds) => {
+    const calcProductivity = (activeSeconds: unknown, totalSeconds: unknown) => {
       if (totalSeconds === 0) return 0;
       return Math.round((activeSeconds / totalSeconds) * 100);
     };

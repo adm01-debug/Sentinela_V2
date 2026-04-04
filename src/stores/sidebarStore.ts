@@ -25,7 +25,7 @@ interface SidebarState {
   setExpandedItems: (items: string[]) => void;
   expandAll: () => void;
   collapseAll: () => void;
-  setWidth: (width) => void;
+  setWidth: (width: number) => void;
   toggleMobile: () => void;
   openMobile: () => void;
   closeMobile: () => void;

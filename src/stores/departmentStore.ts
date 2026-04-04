@@ -48,7 +48,7 @@ export const useDepartmentStore = create<DepartmentState & DepartmentActions>()(
           // Departments are derived from employees table department column
           const { data, error } = await supabase.from('employees').select('department').not('department', 'is', null);
           if (error) throw error;
-          const unique = [...new Set((data || []).map((e) => e.department).filter(Boolean))];
+          const unique = [...new Set((data || []).map((e: unknown) => e.department).filter(Boolean))];
           const depts = unique.map((name, i) => ({ id: String(i), name: name! })) as unknown as Department[];
           set({ departments: depts, isLoading: false });
         } catch (error) {

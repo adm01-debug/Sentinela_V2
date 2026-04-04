@@ -60,12 +60,12 @@ export interface PaginationState {
 }
 
 export interface PaginationActions {
-  goToPage: (page) => void;
+  goToPage: (page: number) => void;
   nextPage: () => void;
   previousPage: () => void;
   firstPage: () => void;
   lastPage: () => void;
-  setPageSize: (size) => void;
+  setPageSize: (size: number) => void;
 }
 
 export interface PageInfo {
@@ -78,8 +78,8 @@ export interface PageInfo {
 }
 
 export function calculatePagination(
-  page,
-  pageSize,
+  page: number,
+  pageSize: unknown,
   total
 ): Pagination {
   const totalPages = Math.ceil(total / pageSize);
@@ -108,8 +108,8 @@ export function getPageInfo(pagination: Pagination): PageInfo {
 }
 
 export function generatePageNumbers(
-  currentPage,
-  totalPages,
+  currentPage: unknown,
+  totalPages: unknown,
   siblingCount = 1
 ): (number | 'ellipsis')[] {
   const pages: (number | 'ellipsis')[] = [];

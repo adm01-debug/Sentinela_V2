@@ -29,7 +29,7 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     setScrollTop(e.currentTarget.scrollTop);
   }, []);
 
-  const scrollToIndex = useCallback((index, behavior: ScrollBehavior = 'auto') => {
+  const scrollToIndex = useCallback((index: number, behavior: ScrollBehavior = 'auto') => {
     containerRef.current?.scrollTo({ top: index * itemHeight, behavior });
   }, [itemHeight]);
 
