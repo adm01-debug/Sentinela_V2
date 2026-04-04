@@ -83,10 +83,10 @@ export const isRequired = (value: number): boolean =>
   value !== null && value !== undefined && value !== '';
 
 // Min length validation
-export const minLength = (value: string, min: number): boolean => value.length >= min;
+export const minLength = (value: any, min: number): boolean => value.length >= min;
 
 // Max length validation
-export const maxLength = (value: string, max: number): boolean => value.length <= max;
+export const maxLength = (value: any, max: number): boolean => value.length <= max;
 
 // Range validation
 export const inRange = (value: number, min: number, max: number): boolean => 
