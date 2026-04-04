@@ -9,6 +9,7 @@ import { useUIStore } from '@/stores/uiStore';
 import { cn } from '@/utils/cn';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { CommandPalette } from '@/components/CommandPalette';
+import { KeyboardShortcutsProvider } from '@/components/KeyboardShortcutsProvider';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export const MainLayout = () => {
@@ -30,6 +31,7 @@ export const MainLayout = () => {
   }, []);
 
   return (
+    <KeyboardShortcutsProvider>
     <div className="flex h-screen bg-background">
       {/* Desktop Sidebar */}
       <nav id="main-nav" aria-label="Navegação principal" className="hidden md:block">
@@ -71,5 +73,6 @@ export const MainLayout = () => {
         <BottomNav />
       </div>
     </div>
+    </KeyboardShortcutsProvider>
   );
 };
