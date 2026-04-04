@@ -67,7 +67,7 @@ export function useWorkSchedulesPage() {
   const schedulesQuery = useWorkSchedules();
   const schedules = (schedulesQuery.data || []) as WorkSchedule[];
   const employeeSchedules: Array<{ employee_id: string; schedule_id: string; id: string; effective_from: string; [key: string]: unknown }> = [];
-  const overtimeRequests: Array<{ id: string; status: string; [key: string]: unknown }> = [];
+  const overtimeRequests: Array<{ id: string; status: string; employee_name?: string; reason?: string; hours?: number; [key: string]: unknown }> = [];
   const blockLogs: Array<{ id: string; blocked_at: string; [key: string]: unknown }> = [];
   const loading = schedulesQuery.isLoading;
   const addSchedule = async (_data: ScheduleFormData) => {};
