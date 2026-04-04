@@ -31,11 +31,11 @@ const activityData = [
 ];
 
 const productivityData = [
-  { day: 'Seg', horas: 7.5 },
-  { day: 'Ter', horas: 8.2 },
-  { day: 'Qua', horas: 7.8 },
-  { day: 'Qui', horas: 8.5 },
-  { day: 'Sex', horas: 7.1 },
+  { day: 'Seg', horas: 7.5, fill: 'hsl(262, 83%, 58%)' },
+  { day: 'Ter', horas: 8.2, fill: 'hsl(262, 83%, 58%)' },
+  { day: 'Qua', horas: 7.8, fill: 'hsl(262, 83%, 58%)' },
+  { day: 'Qui', horas: 8.5, fill: 'hsl(262, 83%, 58%)' },
+  { day: 'Sex', horas: 7.1, fill: 'hsl(0, 84%, 60%)' },
 ];
 
 const departmentData = [
