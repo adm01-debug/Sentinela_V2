@@ -146,7 +146,7 @@ function ProjectsPage() {
     return Math.round(total / 60 * 10) / 10;
   };
 
-  const filteredProjects = projects.filter((p: any) => p.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredProjects = projects.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="space-y-6">
