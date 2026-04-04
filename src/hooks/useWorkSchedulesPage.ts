@@ -153,12 +153,12 @@ export function useWorkSchedulesPage() {
     
     await addSchedule({
       name: scheduleForm.name.trim(),
-      description: scheduleForm.description.trim() || undefined,
+      description: scheduleForm.description.trim(),
       work_days: scheduleForm.work_days,
       start_time: scheduleForm.start_time,
       end_time: scheduleForm.end_time,
-      break_start: scheduleForm.break_start || undefined,
-      break_end: scheduleForm.break_end || undefined,
+      break_start: scheduleForm.break_start,
+      break_end: scheduleForm.break_end,
       flexible_start: scheduleForm.flexible_start,
       flexible_minutes: scheduleForm.flexible_minutes,
       overtime_allowed: scheduleForm.overtime_allowed,
