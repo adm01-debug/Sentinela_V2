@@ -12,7 +12,7 @@ import { useUsers } from '@/hooks/useUsers';
 export default function UsersPage() {
   const [search, setSearch] = useState('');
   const { data: users } = useUsers();
-  const filtered = (users || []).filter((u: unknown) => !search || u.name?.toLowerCase().includes(search.toLowerCase()));
+  const filtered = (users || []).filter((u: Record<string, unknown>) => !search || u.name?.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="p-6 space-y-6">
@@ -23,7 +23,7 @@ export default function UsersPage() {
       <div className="relative max-w-md"><Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar usuários..." className="pl-9" value={search} onChange={e => setSearch(e.target.value)} /></div>
       <Card>
         <CardContent className="p-0 divide-y">
-          {filtered.map((user: unknown) => (
+          {filtered.map((user: Record<string, unknown>) => (
             <div key={user.id} className="flex items-center justify-between p-4 hover:bg-accent/50">
               <Link to={`/users/${user.id}`} className="flex items-center gap-4 flex-1">
                 <Avatar><AvatarImage src={user.avatar} /><AvatarFallback>{user.name?.charAt(0)}</AvatarFallback></Avatar>

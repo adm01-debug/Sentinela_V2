@@ -43,8 +43,8 @@ function HoursTrackingPage() {
     const days = eachDayOfInterval({ start, end });
     return days.map(day => {
       const dayStr = format(day, 'yyyy-MM-dd');
-      const dayEntries = timeEntries.filter((e: unknown) => format(new Date(e.clock_in), 'yyyy-MM-dd') === dayStr);
-      const totalMinutes = dayEntries.reduce((sum: number, e: unknown) => sum + (e.duration_minutes || 0), 0);
+      const dayEntries = timeEntries.filter((e: Record<string, unknown>) => format(new Date(e.clock_in), 'yyyy-MM-dd') === dayStr);
+      const totalMinutes = dayEntries.reduce((sum: number, e: Record<string, unknown>) => sum + (e.duration_minutes || 0), 0);
       return {
         date: format(day, 'EEE dd/MM', { locale: ptBR }),
         hours: Math.round(totalMinutes / 60 * 10) / 10,
@@ -56,7 +56,7 @@ function HoursTrackingPage() {
   // Employee ranking
   const employeeHours = useMemo(() => {
     const byEmp: Record<string, { name: string; department: string; minutes: number }> = {};
-    timeEntries.forEach((e: unknown) => {
+    timeEntries.forEach((e: Record<string, unknown>) => {
       const id = e.employee_id;
       if (!byEmp[id]) byEmp[id] = { name: e.employees?.name || '?', department: e.employees?.department || '', minutes: 0 };
       byEmp[id].minutes += (e.duration_minutes || 0);
@@ -69,7 +69,7 @@ function HoursTrackingPage() {
   // Project hours
   const projectHours = useMemo(() => {
     const byProject: Record<string, { name: string; color: string; minutes: number }> = {};
-    timeEntries.forEach((e: unknown) => {
+    timeEntries.forEach((e: Record<string, unknown>) => {
       if (!e.project_id) return;
       if (!byProject[e.project_id]) byProject[e.project_id] = { name: e.projects?.name || 'Sem projeto', color: e.projects?.color || '#94a3b8', minutes: 0 };
       byProject[e.project_id].minutes += (e.duration_minutes || 0);
@@ -79,8 +79,8 @@ function HoursTrackingPage() {
       .sort((a, b) => b.hours - a.hours);
   }, [timeEntries]);
 
-  const totalHours = Math.round(timeEntries.reduce((sum: number, e: unknown) => sum + (e.duration_minutes || 0), 0) / 60);
-  const uniqueEmployees = new Set(timeEntries.map((e: unknown) => e.employee_id)).size;
+  const totalHours = Math.round(timeEntries.reduce((sum: number, e: Record<string, unknown>) => sum + (e.duration_minutes || 0), 0) / 60);
+  const uniqueEmployees = new Set(timeEntries.map((e: Record<string, unknown>) => e.employee_id)).size;
   const avgPerEmployee = uniqueEmployees > 0 ? Math.round(totalHours / uniqueEmployees) : 0;
 
   const filteredEmployees = employeeHours.filter(e => e.name.toLowerCase().includes(search.toLowerCase()));

@@ -13,7 +13,7 @@ export const useDashboardStats = () => {
         supabase.from('security_violations').select('id', { count: 'exact' }),
       ]);
       const employees = employeesRes.data || [];
-      const activeEmployees = employees.filter((e: unknown) => e.status === 'active').length;
+      const activeEmployees = employees.filter((e: Record<string, unknown>) => e.status === 'active').length;
       return {
         totalEmployees: employeesRes.count || 0,
         activeEmployees,

@@ -69,7 +69,7 @@ function TimesheetsPage() {
 
       // Group by employee
       const byEmployee: Record<string, { total: number; breaks: number }> = {};
-      (entries || []).forEach((e: unknown) => {
+      (entries || []).forEach((e: Record<string, unknown>) => {
         if (!byEmployee[e.employee_id]) byEmployee[e.employee_id] = { total: 0, breaks: 0 };
         byEmployee[e.employee_id].total += (e.duration_minutes || 0);
         byEmployee[e.employee_id].breaks += (e.break_minutes || 0);
@@ -131,9 +131,9 @@ function TimesheetsPage() {
 
   const stats = {
     total: timesheets.length,
-    pending: timesheets.filter((t: unknown) => t.status === 'pending').length,
-    approved: timesheets.filter((t: unknown) => t.status === 'approved').length,
-    totalHours: timesheets.reduce((sum: number, t: unknown) => sum + (t.total_hours || 0), 0),
+    pending: timesheets.filter((t: Record<string, unknown>) => t.status === 'pending').length,
+    approved: timesheets.filter((t: Record<string, unknown>) => t.status === 'approved').length,
+    totalHours: timesheets.reduce((sum: number, t: Record<string, unknown>) => sum + (t.total_hours || 0), 0),
   };
 
   return (

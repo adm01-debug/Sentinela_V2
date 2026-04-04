@@ -134,7 +134,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
           result.success = ids;
         }
       } else {
-        result.success = (data ?? []).map((d: unknown) => d.id);
+        result.success = (data ?? []).map((d: Record<string, unknown>) => d.id);
       }
 
       return result;
@@ -179,7 +179,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       if (error) {
         ids.forEach((id) => result.failed.push({ id, error: error.message }));
       } else {
-        result.success = (data ?? []).map((d: unknown) => d.id);
+        result.success = (data ?? []).map((d: Record<string, unknown>) => d.id);
       }
 
       return result;
@@ -216,7 +216,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         return { success: [], failed: ids.map((id) => ({ id, error: error.message })), total: ids.length };
       }
 
-      return { success: (data ?? []).map((d: unknown) => d.id), failed: [], total: ids.length };
+      return { success: (data ?? []).map((d: Record<string, unknown>) => d.id), failed: [], total: ids.length };
     },
     onSuccess: (result) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
@@ -250,7 +250,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         return { success: [], failed: ids.map((id) => ({ id, error: error.message })), total: ids.length };
       }
 
-      return { success: (data ?? []).map((d: unknown) => d.id), failed: [], total: ids.length };
+      return { success: (data ?? []).map((d: Record<string, unknown>) => d.id), failed: [], total: ids.length };
     },
     onSuccess: (result) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
@@ -303,7 +303,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         return { success: [], failed: ids.map((id) => ({ id, error: error.message })), total: ids.length };
       }
 
-      return { success: (data ?? []).map((d: unknown) => d.id), failed: [], total: ids.length };
+      return { success: (data ?? []).map((d: Record<string, unknown>) => d.id), failed: [], total: ids.length };
     },
     onSuccess: (result) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });

@@ -64,7 +64,7 @@ describe('Boundary Conditions', () => {
 
   describe('Geofence Radius', () => {
     const radii = [0, 1, 50, 100, 500, 1000, 5000, 10000, 50000, 100000];
-    const isValidRadius = (r: unknown) => r > 0 && r <= 100000;
+    const isValidRadius = (r: Record<string, unknown>) => r > 0 && r <= 100000;
     radii.forEach(r => {
       it(`radius ${r}m should be ${isValidRadius(r) ? 'valid' : 'invalid'}`, () => {
         expect(isValidRadius(r)).toBe(r > 0 && r <= 100000);

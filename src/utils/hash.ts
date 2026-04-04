@@ -23,10 +23,10 @@ export async function md5(message: string): Promise<string> {
     // Simplified - in production use a proper library
     x[0] = add32(a, x[0]); x[1] = add32(b, x[1]); x[2] = add32(c, x[2]); x[3] = add32(d, x[3]);
   }
-  function ff(a: unknown, b: unknown, c: unknown, d: unknown, x: number, s: string, t: unknown) {
+  function ff(a: Record<string, unknown>, b: Record<string, unknown>, c: unknown, d: unknown, x: number, s: string, t: unknown) {
     return add32(rol32(add32(add32(a, (b & c) | (~b & d)), add32(x, t)), s), b);
   }
-  function add32(a: unknown, b: unknown) { return (a + b) & 0xFFFFFFFF; }
+  function add32(a: Record<string, unknown>, b: Record<string, unknown>) { return (a + b) & 0xFFFFFFFF; }
   function rol32(n: number, c: unknown) { return (n << c) | (n >>> (32 - c)); }
   
   // For actual MD5, use a library - this is a placeholder

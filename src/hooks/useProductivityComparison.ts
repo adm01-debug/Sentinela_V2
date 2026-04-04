@@ -73,13 +73,13 @@ export function useProductivityData(filters?: ProductivityFilters) {
         .lte('created_at', until);
 
       // Calculate productivity for each employee
-      const productivityData: EmployeeProductivity[] = employees.map((emp: unknown) => {
-        const empLogs = prodLogs?.filter((l: unknown) => l.employee_name === emp.name) || [];
+      const productivityData: EmployeeProductivity[] = employees.map((emp: Record<string, unknown>) => {
+        const empLogs = prodLogs?.filter((l: Record<string, unknown>) => l.employee_name === emp.name) || [];
         const empViolations = violations?.filter((v: number) => v.employee_name === emp.name) || [];
 
-        const productiveTime = empLogs.reduce((sum: number, l: unknown) => sum + (l.productive_time_seconds || 0), 0) / 3600;
-        const unproductiveTime = empLogs.reduce((sum: number, l: unknown) => sum + (l.unproductive_time_seconds || 0), 0) / 3600;
-        const neutralTime = empLogs.reduce((sum: number, l: unknown) => sum + (l.neutral_time_seconds || 0), 0) / 3600;
+        const productiveTime = empLogs.reduce((sum: number, l: Record<string, unknown>) => sum + (l.productive_time_seconds || 0), 0) / 3600;
+        const unproductiveTime = empLogs.reduce((sum: number, l: Record<string, unknown>) => sum + (l.unproductive_time_seconds || 0), 0) / 3600;
+        const neutralTime = empLogs.reduce((sum: number, l: Record<string, unknown>) => sum + (l.neutral_time_seconds || 0), 0) / 3600;
 
         const totalTime = productiveTime + unproductiveTime + neutralTime;
         const activityRatio = totalTime > 0 ? productiveTime / totalTime : 0;
@@ -181,7 +181,7 @@ export function useDepartments() {
         .not('department', 'is', null);
 
       if (error) throw error;
-      return [...new Set(data.map((e: unknown) => e.department))].filter(Boolean) as string[];
+      return [...new Set(data.map((e: Record<string, unknown>) => e.department))].filter(Boolean) as string[];
     },
   });
 }
