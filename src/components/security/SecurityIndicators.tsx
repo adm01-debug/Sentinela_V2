@@ -276,7 +276,7 @@ interface PasswordStrengthProps {
   className?: string;
 }
 
-const getPasswordStrength = (password: string): {
+const getPasswordStrength = (password): {
   score: number;
   label: string;
   color: string;

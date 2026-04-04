@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-export interface VirtualListProps<T> { data: T[]; itemHeight: number; containerHeight: number; renderItem: (item: T, index) => React.ReactNode; overscan?: number; className?: string; }
+export interface VirtualListProps<T> { data: T[]; itemHeight: number; containerHeight: number; renderItem: (item: T, index: number) => React.ReactNode; overscan?: number; className?: string; }
 export function VirtualList<T>({ data, itemHeight, containerHeight, renderItem, overscan = 5, className }: VirtualListProps<T>) {
   const [scrollTop, setScrollTop] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);

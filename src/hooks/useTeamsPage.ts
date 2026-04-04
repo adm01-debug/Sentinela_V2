@@ -133,7 +133,7 @@ export function useTeamsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('teams').delete().eq('id', id);
       if (error) throw error;
     },

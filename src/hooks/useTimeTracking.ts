@@ -7,7 +7,7 @@ export function useTimeTracking() {
   const [active, setActive] = useState<TimeEntry | null>(null);
   const intervalRef = useRef<NodeJS.Timeout>();
 
-  const start = useCallback((task: string) => {
+  const start = useCallback((task) => {
     if (active) return;
     const entry: TimeEntry = { id: crypto.randomUUID(), task, start: new Date(), duration: 0 };
     setActive(entry);

@@ -22,9 +22,9 @@ interface BreadcrumbState {
   push: (item: BreadcrumbItem) => void;
   pop: () => void;
   clear: () => void;
-  replaceAt: (index, item: BreadcrumbItem) => void;
+  replaceAt: (index: number, item: BreadcrumbItem) => void;
   updateItem: (id: string, updates: Partial<BreadcrumbItem>) => void;
-  setSeparator: (separator: string) => void;
+  setSeparator: (separator) => void;
   setMaxItems: (max) => void;
   setShowHome: (show: boolean) => void;
   setHomeItem: (item: BreadcrumbItem) => void;

@@ -15,7 +15,7 @@ interface IntegrationState {
   setIntegrations: (integrations: Integration[]) => void;
   addIntegration: (integration: Integration) => void;
   updateIntegration: (id: string, data: Partial<Integration>) => void;
-  removeIntegration: (id: string) => void;
+  removeIntegration: (id) => void;
   setCurrentIntegration: (integration: Integration | null) => void;
   setEvents: (events: IntegrationEvent[]) => void;
   addEvent: (event: IntegrationEvent) => void;
@@ -91,5 +91,5 @@ export const useIntegrationStore = create<IntegrationState>()(
 export const selectActiveIntegrations = (state: IntegrationState) =>
   state.integrations.filter((i) => i.isActive && i.status === 'connected');
 
-export const selectIntegrationsByType = (type: string) => (state: IntegrationState) =>
+export const selectIntegrationsByType = (type) => (state: IntegrationState) =>
   state.integrations.filter((i) => i.type === type);

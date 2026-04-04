@@ -237,14 +237,14 @@ export default function AdminTelemetriaPage() {
     return `${ms}ms`;
   };
 
-  const formatTime = (iso: string) => {
+  const formatTime = (iso) => {
     return new Date(iso).toLocaleString("pt-BR", {
       hour: "2-digit", minute: "2-digit", second: "2-digit",
       day: "2-digit", month: "2-digit",
     });
   };
 
-  const getSeverityBadge = (severity: string) => {
+  const getSeverityBadge = (severity) => {
     switch (severity) {
       case "very_slow":
         return <Badge className="bg-destructive/20 text-destructive border-destructive/30 text-[10px]">🔴 Muito Lenta</Badge>;

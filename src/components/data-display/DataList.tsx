@@ -1,5 +1,5 @@
 import React from 'react';
-export interface DataListProps<T> { data: T[]; renderItem: (item: T, index) => React.ReactNode; loading?: boolean; emptyText?: string; bordered?: boolean; className?: string; }
+export interface DataListProps<T> { data: T[]; renderItem: (item: T, index: number) => React.ReactNode; loading?: boolean; emptyText?: string; bordered?: boolean; className?: string; }
 export function DataList<T>({ data, renderItem, loading, emptyText = 'No data', bordered = true, className }: DataListProps<T>) {
   if (loading) return <div style={{ padding: 40, textAlign: 'center' }}>Loading...</div>;
   if (!data.length) return <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>{emptyText}</div>;

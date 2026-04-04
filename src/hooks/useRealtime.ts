@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-export function useRealtime<T>(url: string) {
+export function useRealtime<T>(url) {
   const [data, setData] = useState<T | null>(null);
   const [connected, setConnected] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);

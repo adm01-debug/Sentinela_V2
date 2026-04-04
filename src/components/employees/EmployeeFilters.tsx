@@ -19,9 +19,9 @@ interface Team {
 interface EmployeeFiltersProps {
   filters: FiltersType;
   teams: Team[];
-  onSearchChange: (value: string) => void;
-  onStatusChange: (value: string) => void;
-  onTeamChange: (value: string) => void;
+  onSearchChange: (value) => void;
+  onStatusChange: (value) => void;
+  onTeamChange: (value) => void;
   onClearFilters: () => void;
 }
 

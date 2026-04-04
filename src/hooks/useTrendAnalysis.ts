@@ -58,7 +58,7 @@ export function useTrendAnalysis(options: UseTrendAnalysisOptions = {}) {
     }
   }, [metrics]);
 
-  const getTrendByMetric = useCallback((metric: string) => trends.find(t => t.metric === metric), [trends]);
+  const getTrendByMetric = useCallback((metric) => trends.find(t => t.metric === metric), [trends]);
 
   return { trends, isLoading, error, analyzeTrends, getTrendByMetric };
 }

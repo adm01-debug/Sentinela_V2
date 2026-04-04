@@ -109,7 +109,7 @@ function TimesheetsPage() {
   });
 
   const approveTimesheet = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('timesheets').update({
         status: 'approved',
         approved_at: new Date().toISOString(),
@@ -133,7 +133,7 @@ function TimesheetsPage() {
     total: timesheets.length,
     pending: timesheets.filter((t) => t.status === 'pending').length,
     approved: timesheets.filter((t) => t.status === 'approved').length,
-    totalHours: timesheets.reduce((sum, t) => sum + (t.total_hours || 0), 0),
+    totalHours: timesheets.reduce((sum: number, t: any) => sum + (t.total_hours || 0), 0),
   };
 
   return (

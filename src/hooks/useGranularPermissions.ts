@@ -193,7 +193,7 @@ export function useDeleteRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('roles').delete().eq('id', id);
       if (error) throw error;
     },
@@ -273,7 +273,7 @@ export function useBulkUpdateRolePermissions() {
 }
 
 // Check if current user has permission
-export function useHasPermission(permission: string) {
+export function useHasPermission(permission) {
   const { user } = useAuth();
 
   return useQuery({
@@ -328,7 +328,7 @@ export function useCheckPermissions(permissions: string[]) {
   return {
     hasAll: permissions.every(p => userPermissions.includes(p)),
     hasAny: permissions.some(p => userPermissions.includes(p)),
-    check: (permission: string) => userPermissions.includes(permission),
+    check: (permission) => userPermissions.includes(permission),
     permissions: userPermissions,
   };
 }

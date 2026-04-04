@@ -82,7 +82,7 @@ function TimeClockPage() {
 
   // Clock in mutation
   const clockIn = useMutation({
-    mutationFn: async (employeeId: string) => {
+    mutationFn: async (employeeId) => {
       // Create time entry
       const { error: teError } = await supabase.from('time_entries').insert({
         employee_id: employeeId,
@@ -111,7 +111,7 @@ function TimeClockPage() {
 
   // Clock out mutation
   const clockOut = useMutation({
-    mutationFn: async (employeeId: string) => {
+    mutationFn: async (employeeId) => {
       const activeEntry = activeEntries.find((e) => e.employee_id === employeeId);
       if (activeEntry) {
         const duration = differenceInMinutes(new Date(), new Date(activeEntry.clock_in));

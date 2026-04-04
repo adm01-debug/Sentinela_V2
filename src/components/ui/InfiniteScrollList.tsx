@@ -5,13 +5,13 @@ import { Loader2 } from 'lucide-react';
 
 export interface InfiniteScrollListProps<T> {
   items: T[];
-  renderItem: (item: T, index) => React.ReactNode;
+  renderItem: (item: T, index: number) => React.ReactNode;
   onLoadMore: () => void;
   hasMore: boolean;
   loading?: boolean;
   threshold?: number;
   className?: string;
-  keyExtractor?: (item: T, index) => string;
+  keyExtractor?: (item: T, index: number) => string;
   emptyComponent?: React.ReactNode;
   loadingComponent?: React.ReactNode;
   endComponent?: React.ReactNode;

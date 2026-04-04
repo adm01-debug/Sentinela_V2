@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export function useImagePreload(src: string) {
+export function useImagePreload(src) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 

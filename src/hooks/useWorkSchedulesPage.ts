@@ -72,11 +72,11 @@ export function useWorkSchedulesPage() {
   const loading = schedulesQuery.isLoading;
   const addSchedule = async (_data: ScheduleFormData) => {};
   const updateSchedule = async (_id: string, _data: Partial<ScheduleFormData>) => {};
-  const deleteSchedule = async (_id: string) => {};
+  const deleteSchedule = async (_id) => {};
   const assignSchedule = async (data: AssignFormData | string, _scheduleId?: string, _effectiveDate?: string) => {
     const _assignData = typeof data === 'string' ? { employee_id: data, schedule_id: _scheduleId || '', effective_date: _effectiveDate || '' } : data;
   };
-  const removeEmployeeSchedule = async (_id: string) => {};
+  const removeEmployeeSchedule = async (_id) => {};
   const updateOvertimeRequest = async (_id: string, _status: string) => {};
   
   const employeesQuery = useEmployees();
@@ -214,16 +214,16 @@ export function useWorkSchedulesPage() {
     setIsAssignDialogOpen(false);
   }, [assignForm, assignSchedule, resetAssignForm]);
 
-  const handleRemoveAssignment = useCallback(async (assignmentId: string) => {
+  const handleRemoveAssignment = useCallback(async (assignmentId) => {
     await removeEmployeeSchedule(assignmentId);
   }, [removeEmployeeSchedule]);
 
   // Overtime handlers
-  const handleApproveOvertime = useCallback(async (requestId: string) => {
+  const handleApproveOvertime = useCallback(async (requestId) => {
     await updateOvertimeRequest(requestId, 'approved');
   }, [updateOvertimeRequest]);
 
-  const handleRejectOvertime = useCallback(async (requestId: string) => {
+  const handleRejectOvertime = useCallback(async (requestId) => {
     await updateOvertimeRequest(requestId, 'rejected');
   }, [updateOvertimeRequest]);
 

@@ -39,7 +39,7 @@ interface ModalState {
   closeAll: () => void;
   confirm: (config: ConfirmConfig) => void;
   closeConfirm: () => void;
-  updateModal: (id: string, props) => void;
+  updateModal: (id: string, props: any) => void;
 }
 
 export const useModalStore = create<ModalState>()(
@@ -97,7 +97,7 @@ export const useModalStore = create<ModalState>()(
 );
 
 // Helper hooks
-export const useModal = (id: string) => {
+export const useModal = (id) => {
   const { modals, open, close, updateModal } = useModalStore();
   const modal = modals.find((m) => m.id === id);
   

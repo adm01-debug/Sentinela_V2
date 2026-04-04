@@ -39,7 +39,7 @@ export function useToast() {
     []
   );
 
-  const dismiss = useCallback((id: string) => {
+  const dismiss = useCallback((id) => {
     setState((prev) => ({
       toasts: prev.toasts.filter((t) => t.id !== id),
     }));

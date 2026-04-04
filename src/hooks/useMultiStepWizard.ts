@@ -12,7 +12,7 @@ export interface UseMultiStepWizardOptions {
   steps: WizardStep[];
   initialStep?: number;
   onComplete?: () => void;
-  onStepChange?: (step, direction: 'next' | 'prev') => void;
+  onStepChange?: (step: any, direction: 'next' | 'prev') => void;
 }
 
 export function useMultiStepWizard(options: UseMultiStepWizardOptions) {

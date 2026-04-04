@@ -20,7 +20,7 @@ interface Props {
   timeFilter: string;
 }
 
-function formatBucketTime(ts, timeFilter: string): string {
+function formatBucketTime(ts: number, timeFilter: string): string {
   const d = new Date(ts);
   if (timeFilter === "7d" || timeFilter === "custom") {
     return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });

@@ -1,15 +1,15 @@
 // Random utilities for Sentinela v17
 
-export function randomInt(min, max): number {
+export function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function randomFloat(min, max, decimals = 2): number {
+export function randomFloat(min: number, max: number, decimals = 2): number {
   const value = Math.random() * (max - min) + min;
   return parseFloat(value.toFixed(decimals));
 }
 
-export function randomString(length, charset?: string): string {
+export function randomString(length: number, charset?: string): string {
   const chars = charset || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   const cryptoObj = window.crypto;
@@ -38,7 +38,7 @@ export function randomElement<T>(array: T[]): T | undefined {
   return array[randomInt(0, array.length - 1)];
 }
 
-export function randomElements<T>(array: T[], count): T[] {
+export function randomElements<T>(array: T[], count: number): T[] {
   const shuffled = [...array].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, Math.min(count, array.length));
 }

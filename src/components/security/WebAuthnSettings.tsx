@@ -59,7 +59,7 @@ function DeviceIcon({ type }: { type: string | null }) {
 
 interface PasskeyItemProps {
   credential: WebAuthnCredential;
-  onDelete: (id: string) => void;
+  onDelete: (id) => void;
   onRename: (params: { id: string; name: string }) => void;
 }
 

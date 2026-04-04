@@ -11,7 +11,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const SLOW_THRESHOLD_MS = 3000;
 const VERY_SLOW_THRESHOLD_MS = 8000;
 
-function classifySeverity(durationMs, hasError: boolean): string {
+function classifySeverity(durationMs: any, hasError: boolean): string {
   if (hasError) return 'error';
   if (durationMs >= VERY_SLOW_THRESHOLD_MS) return 'very_slow';
   if (durationMs >= SLOW_THRESHOLD_MS) return 'slow';
@@ -47,7 +47,7 @@ interface TelemetryPayload {
 
 function buildTelemetryPayload(
   req: BridgeRequest,
-  durationMs,
+  durationMs: any,
   recordCount: number | null,
   errorMessage: string | null,
   userId: string | null
@@ -410,7 +410,7 @@ describe('External DB Bridge - Suite Completa', () => {
 
     it('3.08 - multiple sequential emits', async () => {
       const mockInsert = vi.fn().mockResolvedValue({ error: null });
-      const makePayload = (sev: string): TelemetryPayload => ({
+      const makePayload = (sev): TelemetryPayload => ({
         operation: 'query', table_name: 'employees', rpc_name: null,
         duration_ms: 5000, record_count: 10, query_limit: null,
         query_offset: null, count_mode: null, severity: sev,

@@ -172,7 +172,7 @@ export interface AxisTicks {
   font?: ChartFont;
   maxRotation?: number;
   minRotation?: number;
-  callback?: (value, index) => string;
+  callback?: (value: number, index: number) => string;
 }
 
 export interface TimeScale {

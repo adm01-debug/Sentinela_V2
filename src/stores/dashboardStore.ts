@@ -5,7 +5,7 @@ interface DashboardState {
   layout: 'grid' | 'list';
   refreshInterval: number;
   addWidget: (widget: Widget) => void;
-  removeWidget: (id: string) => void;
+  removeWidget: (id) => void;
   updateWidget: (id: string, data: Partial<Widget>) => void;
   setLayout: (layout: 'grid' | 'list') => void;
   setRefreshInterval: (interval) => void;

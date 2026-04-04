@@ -6,7 +6,7 @@ import { logger } from '@/lib/logger';
 interface PasswordRequirement {
   id: string;
   label: string;
-  validator: (password: string) => boolean;
+  validator: (password) => boolean;
   priority: 'required' | 'recommended';
 }
 
@@ -51,14 +51,14 @@ const REQUIREMENTS: PasswordRequirement[] = [
 
 interface PasswordStrengthCheckerProps {
   password: string;
-  onStrengthChange?: (isValid: boolean, score) => void;
+  onStrengthChange?: (isValid: boolean, score: number) => void;
   onLeakedCheck?: (isLeaked: boolean) => void;
   checkLeaked?: boolean;
   className?: string;
 }
 
 // SHA-1 hash function using Web Crypto API
-async function sha1Hash(message: string): Promise<string> {
+async function sha1Hash(message): Promise<string> {
   const msgBuffer = new TextEncoder().encode(message);
   const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
@@ -66,7 +66,7 @@ async function sha1Hash(message: string): Promise<string> {
 }
 
 // Check if password has been leaked using Have I Been Pwned API (k-anonymity)
-async function checkPasswordLeaked(password: string): Promise<{ leaked: boolean; count: number }> {
+async function checkPasswordLeaked(password): Promise<{ leaked: boolean; count: number }> {
   try {
     const hash = await sha1Hash(password);
     const prefix = hash.substring(0, 5);

@@ -58,10 +58,10 @@ export const useAuditStore = create<AuditState>()(
 );
 
 // Selectors
-export const selectLogsByUser = (userId: string) => (state: AuditState) =>
+export const selectLogsByUser = (userId) => (state: AuditState) =>
   state.logs.filter((l) => l.userId === userId);
 
-export const selectLogsByAction = (action: string) => (state: AuditState) =>
+export const selectLogsByAction = (action) => (state: AuditState) =>
   state.logs.filter((l) => l.action === action);
 
 export const selectRecentLogs = (count) => (state: AuditState) =>

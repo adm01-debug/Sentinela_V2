@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-export function useSSE<T>(url: string) {
+export function useSSE<T>(url) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [connected, setConnected] = useState(false);

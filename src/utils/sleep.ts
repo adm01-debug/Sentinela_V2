@@ -4,11 +4,11 @@ export function sleep(ms): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export function delay<T>(ms, value?: T): Promise<T | undefined> {
+export function delay<T>(ms: number, value?: T): Promise<T | undefined> {
   return new Promise((resolve) => setTimeout(() => resolve(value), ms));
 }
 
-export function timeout<T>(promise: Promise<T>, ms, message?: string): Promise<T> {
+export function timeout<T>(promise: Promise<T>, ms: number, message?: string): Promise<T> {
   return Promise.race([
     promise,
     new Promise<T>((_, reject) =>

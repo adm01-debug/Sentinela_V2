@@ -368,7 +368,7 @@ export const SessionIndicator = memo(SessionIndicatorComponent);
 interface SessionListProps {
   sessions: SessionInfo[];
   currentSessionId?: string;
-  onLogout?: (sessionId: string) => void;
+  onLogout?: (sessionId) => void;
   onLogoutAll?: () => void;
   className?: string;
 }

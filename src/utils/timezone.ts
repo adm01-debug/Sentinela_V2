@@ -80,7 +80,7 @@ export function getAllTimezones(): string[] {
   return Intl.supportedValuesOf('timeZone');
 }
 
-export function isValidTimezone(timezone: string): boolean {
+export function isValidTimezone(timezone): boolean {
   try {
     Intl.DateTimeFormat(undefined, { timeZone: timezone });
     return true;

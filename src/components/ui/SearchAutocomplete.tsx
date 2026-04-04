@@ -19,8 +19,8 @@ export interface SearchAutocompleteOption {
 export interface SearchAutocompleteProps {
   options?: SearchAutocompleteOption[];
   value?: string;
-  onChange?: (value: string) => void;
-  onSearch?: (query: string) => Promise<SearchAutocompleteOption[]>;
+  onChange?: (value) => void;
+  onSearch?: (query) => Promise<SearchAutocompleteOption[]>;
   placeholder?: string;
   emptyMessage?: string;
   loading?: boolean;
@@ -60,7 +60,7 @@ export function SearchAutocomplete({
 
   const selectedOption = options.find(opt => opt.value === value);
 
-  const handleSearch = useCallback(async (searchQuery: string) => {
+  const handleSearch = useCallback(async (searchQuery) => {
     if (!onSearch || searchQuery.length < minChars) {
       setOptions(staticOptions.filter(opt => 
         opt.label.toLowerCase().includes(searchQuery.toLowerCase())
@@ -88,7 +88,7 @@ export function SearchAutocomplete({
     if (!onSearch) setOptions(staticOptions);
   }, [staticOptions, onSearch]);
 
-  const handleSelect = (selectedValue: string) => {
+  const handleSelect = (selectedValue) => {
     const newValue = clearable && selectedValue === value ? '' : selectedValue;
     onChange?.(newValue);
     setOpen(false);

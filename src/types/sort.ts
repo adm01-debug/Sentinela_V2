@@ -77,7 +77,7 @@ export function sortToQueryString(sorts: Sort[]): string {
     .join(',');
 }
 
-export function parseQueryStringToSort(queryString: string): Sort[] {
+export function parseQueryStringToSort(queryString): Sort[] {
   if (!queryString) return [];
   return queryString.split(',').map(part => ({
     field: part.startsWith('-') ? part.slice(1) : part,

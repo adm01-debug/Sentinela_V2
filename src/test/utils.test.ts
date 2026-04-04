@@ -9,7 +9,7 @@ import { describe, it, expect } from 'vitest';
 
 describe('Data Validation', () => {
   describe('Email Validation', () => {
-    const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     it('should accept valid emails', () => {
       expect(isValidEmail('user@example.com')).toBe(true);
@@ -27,7 +27,7 @@ describe('Data Validation', () => {
   });
 
   describe('Password Strength', () => {
-    const isStrongPassword = (pwd: string) =>
+    const isStrongPassword = (pwd) =>
       pwd.length >= 8 && /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && /[0-9]/.test(pwd);
 
     it('should accept strong passwords', () => {
@@ -44,7 +44,7 @@ describe('Data Validation', () => {
   });
 
   describe('IP Address Validation', () => {
-    const isValidIP = (ip: string) => /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) && ip.split('.').every(n => parseInt(n) <= 255);
+    const isValidIP = (ip) => /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) && ip.split('.').every(n => parseInt(n) <= 255);
 
     it('should accept valid IPs', () => {
       expect(isValidIP('192.168.1.1')).toBe(true);
@@ -60,7 +60,7 @@ describe('Data Validation', () => {
   });
 
   describe('MAC Address Validation', () => {
-    const isValidMAC = (mac: string) => /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/.test(mac);
+    const isValidMAC = (mac) => /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/.test(mac);
 
     it('should accept valid MACs', () => {
       expect(isValidMAC('00:1B:44:11:3A:B7')).toBe(true);
@@ -108,7 +108,7 @@ describe('Date Utilities', () => {
 // ============================================================
 
 describe('Geofence Calculations', () => {
-  const haversineDistance = (lat1, lon1, lat2, lon2) => {
+  const haversineDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
     const R = 6371000;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -127,13 +127,13 @@ describe('Geofence Calculations', () => {
   });
 
   it('should detect point inside geofence', () => {
-    const isInside = (lat, lon, cLat, cLon, radius) =>
+    const isInside = (lat: any, lon: any, cLat: any, cLon: any, radius: any) =>
       haversineDistance(lat, lon, cLat, cLon) <= radius;
     expect(isInside(-23.550, -46.630, -23.550, -46.631, 500)).toBe(true);
   });
 
   it('should detect point outside geofence', () => {
-    const isInside = (lat, lon, cLat, cLon, radius) =>
+    const isInside = (lat: any, lon: any, cLat: any, cLon: any, radius: any) =>
       haversineDistance(lat, lon, cLat, cLon) <= radius;
     expect(isInside(-23.550, -46.630, -22.910, -43.170, 500)).toBe(false);
   });
@@ -144,7 +144,7 @@ describe('Geofence Calculations', () => {
 // ============================================================
 
 describe('Productivity Calculations', () => {
-  const calculateProductivity = (active, idle) => {
+  const calculateProductivity = (active: any, idle: any) => {
     const total = active + idle;
     return total > 0 ? Math.round((active / total) * 100) : 0;
   };
@@ -172,7 +172,7 @@ describe('Productivity Calculations', () => {
 // ============================================================
 
 describe('Security Score', () => {
-  const calcSecurityScore = (violations, totalDays) => {
+  const calcSecurityScore = (violations: any, totalDays: any) => {
     if (totalDays === 0) return 100;
     const violationsPerDay = violations / totalDays;
     return Math.max(0, Math.round(100 - violationsPerDay * 20));

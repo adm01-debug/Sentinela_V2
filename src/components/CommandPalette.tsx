@@ -91,7 +91,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
   const navigate = useNavigate();
 
   const handleSelect = useCallback(
-    (path: string) => {
+    (path) => {
       onOpenChange(false);
       navigate(path);
     },

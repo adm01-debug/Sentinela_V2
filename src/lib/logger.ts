@@ -50,7 +50,7 @@ function log(level: LogLevel, message: string, context?: string, ...args: unknow
   return entry;
 }
 
-function logError(message: string, err, context?: string) {
+function logError(message: string, err: any, context?: string) {
   const errorObj = err instanceof Error ? err : new Error(String(err));
   const entry: LogEntry = {
     level: 'error',
@@ -65,7 +65,7 @@ function logError(message: string, err, context?: string) {
 }
 
 /** Create a scoped logger for a specific module/component */
-function createLogger(context: string) {
+function createLogger(context) {
   return {
     debug: (msg: string, ...args: unknown[]) => log('debug', msg, context, ...args),
     info:  (msg: string, ...args: unknown[]) => log('info', msg, context, ...args),

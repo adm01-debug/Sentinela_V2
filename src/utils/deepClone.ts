@@ -76,7 +76,7 @@ function isObject(item): item is Record<string, unknown> {
   return item !== null && typeof item === 'object' && !Array.isArray(item);
 }
 
-export function deepEqual(a, b): boolean {
+export function deepEqual(a: any, b: any): boolean {
   if (a === b) return true;
   if (a === null || b === null) return false;
   if (typeof a !== typeof b) return false;

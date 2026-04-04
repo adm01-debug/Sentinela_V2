@@ -63,7 +63,7 @@ export const useEmployees = (filters?: EmployeeFilters) => {
   });
 };
 
-export const useEmployee = (id: string) => {
+export const useEmployee = (id) => {
   return useQuery({
     queryKey: ['employee', id],
     queryFn: async () => {
@@ -105,8 +105,8 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 
       // Calculate productivity from keystroke data
       const logs = keystrokeLogs || [];
-      const totalActive = logs.reduce((sum, l) => sum + (l.active_time_seconds || 0), 0);
-      const totalIdle = logs.reduce((sum, l) => sum + (l.idle_time_seconds || 0), 0);
+      const totalActive = logs.reduce((sum: number, l: any) => sum + (l.active_time_seconds || 0), 0);
+      const totalIdle = logs.reduce((sum: number, l: any) => sum + (l.idle_time_seconds || 0), 0);
       const totalTime = totalActive + totalIdle;
       const productivity = totalTime > 0 ? Math.round((totalActive / totalTime) * 100) : 0;
 
@@ -119,7 +119,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 
       // Attendance stats
       const attendanceRecords = attendance || [];
-      const totalWorkedMinutes = attendanceRecords.reduce((sum, r) => sum + (r.total_worked_minutes || 0), 0);
+      const totalWorkedMinutes = attendanceRecords.reduce((sum: number, r: any) => sum + (r.total_worked_minutes || 0), 0);
       const avgHoursPerDay = attendanceRecords.length > 0 
         ? Math.round((totalWorkedMinutes / attendanceRecords.length / 60) * 10) / 10 
         : 0;
@@ -128,7 +128,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
         productivity,
         activeDays,
         violations,
-        totalKeystrokes: logs.reduce((sum, l) => sum + (l.keystrokes_count || 0), 0),
+        totalKeystrokes: logs.reduce((sum: number, l: any) => sum + (l.keystrokes_count || 0), 0),
         avgHoursPerDay,
         presentDays: attendanceRecords.filter((r) => r.status === 'present').length,
       };
@@ -167,7 +167,7 @@ export const useUpdateEmployee = () => {
 export const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('employees').delete().eq('id', id);
       if (error) throw error;
     },

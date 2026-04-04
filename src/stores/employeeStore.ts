@@ -18,7 +18,7 @@ interface EmployeeState {
   setEmployees: (employees: Employee[]) => void;
   addEmployee: (employee: Employee) => void;
   updateEmployee: (id: string, data: Partial<Employee>) => void;
-  deleteEmployee: (id: string) => void;
+  deleteEmployee: (id) => void;
   selectEmployee: (employee: Employee | null) => void;
   setFilters: (filters: Partial<EmployeeState['filters']>) => void;
   setLoading: (loading: boolean) => void;

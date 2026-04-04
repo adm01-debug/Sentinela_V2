@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 
-function renderBreadcrumbs(path: string) {
+function renderBreadcrumbs(path) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <Breadcrumbs />

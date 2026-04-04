@@ -345,7 +345,7 @@ function SidebarComponent() {
     toggle();
   }, [toggle]);
 
-  const toggleGroup = useCallback((groupId: string) => {
+  const toggleGroup = useCallback((groupId) => {
     setOpenGroups(prev => {
       const next = new Set(prev);
       if (next.has(groupId)) {

@@ -28,9 +28,9 @@ export interface SearchResult<T> {
   isSearching: boolean;
   error: Error | null;
   searchTerm: string;
-  setSearchTerm: (term: string) => void;
+  setSearchTerm: (term) => void;
   clearSearch: () => void;
-  highlightMatch: (text: string) => string;
+  highlightMatch: (text) => string;
   hasResults: boolean;
   isEmpty: boolean;
 }
@@ -39,7 +39,7 @@ export interface SearchResult<T> {
 // DEBOUNCE HOOK
 // ============================================================
 
-function useDebouncedValue<T>(value: T, delay): T {
+function useDebouncedValue<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
@@ -130,7 +130,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
   // HIGHLIGHT FUNCTION
   // ============================================================
   const highlightMatch = useCallback(
-    (text: string): string => {
+    (text): string => {
       if (!debouncedTerm || !text) return text;
 
       const regex = new RegExp(`(${debouncedTerm})`, 'gi');
@@ -173,7 +173,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
 // HOOK SIMPLIFICADO PARA TABELAS ESPECÍFICAS
 // ============================================================
 
-export function useSearchEmployees(searchTerm: string) {
+export function useSearchEmployees(searchTerm) {
   return useBuscaFulltext({
     table: 'employees',
     columns: ['full_name', 'email', 'department', 'position'],
@@ -182,7 +182,7 @@ export function useSearchEmployees(searchTerm: string) {
   });
 }
 
-export function useSearchAlerts(searchTerm: string) {
+export function useSearchAlerts(searchTerm) {
   return useBuscaFulltext({
     table: 'alerts',
     columns: ['title', 'description', 'alert_type'],

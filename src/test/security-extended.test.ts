@@ -54,7 +54,7 @@ describe('Boundary Conditions', () => {
       { input: 'Mary-Jane', valid: true, desc: 'hyphen' },
       { input: 'Dr. Smith Jr.', valid: true, desc: 'dots' },
     ];
-    const isValidName = (n: string) => n.trim().length > 0;
+    const isValidName = (n) => n.trim().length > 0;
     names.forEach(({ input, valid, desc }) => {
       it(`should ${valid ? 'accept' : 'reject'} ${desc}`, () => {
         expect(isValidName(input)).toBe(valid);
@@ -82,7 +82,7 @@ describe('Boundary Conditions', () => {
       { lat: -91, lon: 0, valid: false },
       { lat: -23.5505, lon: -46.6333, valid: true }, // São Paulo
     ];
-    const isValidCoord = (lat, lon) => lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
+    const isValidCoord = (lat: any, lon: any) => lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
     coords.forEach(({ lat, lon, valid }) => {
       it(`(${lat}, ${lon}) should be ${valid ? 'valid' : 'invalid'}`, () => {
         expect(isValidCoord(lat, lon)).toBe(valid);
@@ -130,7 +130,7 @@ describe('Internet Access Rules', () => {
     { domain: '.invalid', valid: false },
     { domain: 'a'.repeat(300), valid: false },
   ];
-  const isValidDomain = (d: string) => /^[a-zA-Z0-9]([a-zA-Z0-9-]*\.)+[a-zA-Z]{2,}$/.test(d);
+  const isValidDomain = (d) => /^[a-zA-Z0-9]([a-zA-Z0-9-]*\.)+[a-zA-Z]{2,}$/.test(d);
   domains.forEach(({ domain, valid }) => {
     it(`domain "${domain.substring(0, 30)}" should be ${valid ? 'valid' : 'invalid'}`, () => {
       expect(isValidDomain(domain)).toBe(valid);
@@ -195,7 +195,7 @@ describe('Security Attack Scenarios', () => {
       '<svg/onload=alert(1)>',
       '{{constructor.constructor("alert(1)")()}}',
     ];
-    const sanitize = (input: string) => input.replace(/[<>"'&]/g, c => ({ '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '&': '&amp;' }[c] || c));
+    const sanitize = (input) => input.replace(/[<>"'&]/g, c => ({ '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '&': '&amp;' }[c] || c));
     xssPayloads.forEach((payload, i) => {
       it(`should sanitize XSS payload #${i + 1}`, () => {
         const sanitized = sanitize(payload);
@@ -214,7 +214,7 @@ describe('Security Attack Scenarios', () => {
       "1; DELETE FROM employees",
       "' UNION SELECT * FROM employees --",
     ];
-    const containsSQLInjection = (input: string) => /(--|;|UNION|DROP|DELETE|INSERT|UPDATE)/i.test(input);
+    const containsSQLInjection = (input) => /(--|;|UNION|DROP|DELETE|INSERT|UPDATE)/i.test(input);
     sqlPayloads.forEach((payload, i) => {
       it(`should detect SQL injection #${i + 1}`, () => {
         expect(containsSQLInjection(payload)).toBe(true);
@@ -242,7 +242,7 @@ describe('Security Attack Scenarios', () => {
 
   describe('Path Traversal', () => {
     const paths = ['../../../etc/passwd', '..\\windows\\system32', '/etc/shadow', '....//....//etc/passwd'];
-    const isPathTraversal = (p: string) => /(\.\.|\/etc\/|\\windows\\)/i.test(p);
+    const isPathTraversal = (p) => /(\.\.|\/etc\/|\\windows\\)/i.test(p);
     paths.forEach(p => {
       it(`should detect path traversal: ${p.substring(0, 25)}`, () => {
         expect(isPathTraversal(p)).toBe(true);
@@ -257,7 +257,7 @@ describe('Security Attack Scenarios', () => {
 
 describe('Data Integrity', () => {
   describe('UUID Format', () => {
-    const isUUID = (s: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s);
+    const isUUID = (s) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s);
     it('should validate correct UUIDs', () => {
       expect(isUUID('550e8400-e29b-41d4-a716-446655440000')).toBe(true);
     });
@@ -316,7 +316,7 @@ describe('Data Integrity', () => {
 // ============================================================
 
 describe('Pagination Logic', () => {
-  const paginate = <T>(items: T[], page, pageSize) => {
+  const paginate = <T>(items: T[], page: number, pageSize: any) => {
     const start = (page - 1) * pageSize;
     return { data: items.slice(start, start + pageSize), total: items.length, totalPages: Math.ceil(items.length / pageSize), page };
   };

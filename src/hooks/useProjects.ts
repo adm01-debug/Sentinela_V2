@@ -10,7 +10,7 @@ interface Project {
 export function useProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
 
-  const create = useCallback((name: string) => {
+  const create = useCallback((name) => {
     const project: Project = {
       id: crypto.randomUUID(),
       name,
@@ -25,7 +25,7 @@ export function useProjects() {
     setProjects(prev => prev.map(p => p.id === id ? { ...p, status } : p));
   }, []);
 
-  const remove = useCallback((id: string) => {
+  const remove = useCallback((id) => {
     setProjects(prev => prev.filter(p => p.id !== id));
   }, []);
 

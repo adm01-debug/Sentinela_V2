@@ -144,7 +144,7 @@ export function useMessageTemplatesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('message_templates').delete().eq('id', id);
       if (error) throw error;
     },
@@ -245,7 +245,7 @@ export function useMessageTemplatesPage() {
     toggleStatusMutation.mutate({ id: template.id, is_active: !template.is_active });
   }, [toggleStatusMutation]);
 
-  const handleInsertVariable = useCallback((variable: string) => {
+  const handleInsertVariable = useCallback((variable) => {
     setFormData(prev => ({
       ...prev,
       content: prev.content + variable,
@@ -253,13 +253,13 @@ export function useMessageTemplatesPage() {
     }));
   }, []);
 
-  const extractVariables = useCallback((content: string): string[] => {
+  const extractVariables = useCallback((content): string[] => {
     const regex = /\{\{[^}]+\}\}/g;
     const matches = content.match(regex);
     return matches ? [...new Set(matches)] : [];
   }, []);
 
-  const getPreviewContent = useCallback((content: string): string => {
+  const getPreviewContent = useCallback((content): string => {
     return content
       .replace(/\{\{employee_name\}\}/g, 'João Silva')
       .replace(/\{\{employee_email\}\}/g, 'joao@empresa.com')

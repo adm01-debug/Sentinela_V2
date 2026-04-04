@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export function useEventSource(url: string) {
+export function useEventSource(url) {
   const [data, setData] = useState<unknown>(null);
   const [error, setError] = useState<Error | null>(null);
   useEffect(() => {

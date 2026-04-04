@@ -73,7 +73,7 @@ describe('LGPD Compliance', () => {
   });
 
   it('should mask email for display', () => {
-    const maskEmail = (email: string) => {
+    const maskEmail = (email) => {
       const [user, domain] = email.split('@');
       return `${user[0]}${'*'.repeat(Math.max(user.length - 2, 1))}${user.slice(-1)}@${domain}`;
     };
@@ -82,7 +82,7 @@ describe('LGPD Compliance', () => {
   });
 
   it('should mask phone numbers', () => {
-    const maskPhone = (phone: string) => phone.replace(/(\d{2})\d+(\d{2})/, '$1*****$2');
+    const maskPhone = (phone) => phone.replace(/(\d{2})\d+(\d{2})/, '$1*****$2');
     expect(maskPhone('11987654321')).toBe('11*****21');
   });
 
@@ -97,7 +97,7 @@ describe('LGPD Compliance', () => {
   });
 
   it('should anonymize IP addresses', () => {
-    const anonymizeIP = (ip: string) => ip.replace(/\.\d+$/, '.0');
+    const anonymizeIP = (ip) => ip.replace(/\.\d+$/, '.0');
     expect(anonymizeIP('192.168.1.100')).toBe('192.168.1.0');
     expect(anonymizeIP('10.0.0.255')).toBe('10.0.0.0');
   });
@@ -188,7 +188,7 @@ describe('Error Resilience', () => {
       if (attempts < maxRetries) throw new Error('Fail');
       return 'success';
     };
-    const retry = async (fn: () => Promise<string>, max) => {
+    const retry = async (fn: () => Promise<string>, max: number) => {
       for (let i = 0; i < max; i++) {
         try { return await fn(); } catch { continue; }
       }
@@ -199,7 +199,7 @@ describe('Error Resilience', () => {
   });
 
   it('should handle JSON parse errors', () => {
-    const safeParse = (str: string) => { try { return JSON.parse(str); } catch { return null; } };
+    const safeParse = (str) => { try { return JSON.parse(str); } catch { return null; } };
     expect(safeParse('{"valid": true}')).toEqual({ valid: true });
     expect(safeParse('not json')).toBeNull();
     expect(safeParse('')).toBeNull();
@@ -207,7 +207,7 @@ describe('Error Resilience', () => {
   });
 
   it('should handle circular reference detection', () => {
-    const hasCircular = (obj: any) => {
+    const hasCircular = (obj) => {
       try { JSON.stringify(obj); return false; } catch { return true; }
     };
     const a: any = {};
@@ -243,7 +243,7 @@ describe('Notification Settings', () => {
   });
 
   it('should validate email recipients', () => {
-    const isValid = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     expect(isValid('admin@company.com')).toBe(true);
     expect(isValid('bad-email')).toBe(false);
     expect(isValid('')).toBe(false);
@@ -271,7 +271,7 @@ describe('Application Categorization', () => {
     neutral: ['Chrome', 'Firefox', 'File Explorer', 'Calculator', 'Notepad'],
   };
 
-  const categorize = (app: string) => {
+  const categorize = (app) => {
     for (const [cat, apps] of Object.entries(categories)) {
       if (apps.includes(app)) return cat;
     }
@@ -354,7 +354,7 @@ describe('Gamification Scoring', () => {
 // RATE LIMITING
 // ============================================================
 describe('Rate Limiting Logic', () => {
-  const isRateLimited = (requests: number[], windowMs, maxRequests) => {
+  const isRateLimited = (requests: number[], windowMs: any, maxRequests: any) => {
     const now = Date.now();
     const recent = requests.filter(t => now - t < windowMs);
     return recent.length >= maxRequests;
@@ -385,7 +385,7 @@ describe('File Upload Validation', () => {
   const MAX_SIZE = 10 * 1024 * 1024; // 10MB
   const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'application/pdf'];
 
-  const validateFile = (size, type: string) => ({
+  const validateFile = (size: number, type: string) => ({
     valid: size <= MAX_SIZE && ALLOWED_TYPES.includes(type),
     errors: [
       ...(size > MAX_SIZE ? ['File too large'] : []),

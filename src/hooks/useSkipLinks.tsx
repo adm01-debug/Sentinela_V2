@@ -23,7 +23,7 @@ export function useSkipLinks(options: UseSkipLinksOptions = {}) {
 
   const allLinks = defaultLinks ? [...DEFAULT_LINKS, ...links] : links;
 
-  const skipTo = useCallback((targetId: string) => {
+  const skipTo = useCallback((targetId) => {
     const element = document.getElementById(targetId);
     if (element) {
       element.setAttribute('tabindex', '-1');

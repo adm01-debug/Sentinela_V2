@@ -139,7 +139,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   }, [fields, onChange]);
 
   const removeGroup = useCallback(
-    (groupId: string) => {
+    (groupId) => {
       setFilterGroups((prev) => {
         const newGroups = prev.filter((g) => g.id !== groupId);
         // Garantir pelo menos um grupo
@@ -167,7 +167,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   // ============================================================
 
   const addCondition = useCallback(
-    (groupId: string) => {
+    (groupId) => {
       setFilterGroups((prev) => {
         const newGroups = prev.map((g) => {
           if (g.id !== groupId) return g;
@@ -261,7 +261,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   // ============================================================
 
   const getOperatorsForField = useCallback(
-    (fieldKey: string): FilterOperator[] => {
+    (fieldKey): FilterOperator[] => {
       const field = fields.find((f) => f.key === fieldKey);
       return field?.operators ?? DEFAULT_OPERATORS_BY_TYPE[field?.type ?? 'string'];
     },

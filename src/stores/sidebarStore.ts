@@ -21,7 +21,7 @@ interface SidebarState {
   setPinned: (pinned: boolean) => void;
   togglePinned: () => void;
   setActiveSection: (section: string | null) => void;
-  toggleExpanded: (itemId: string) => void;
+  toggleExpanded: (itemId) => void;
   setExpandedItems: (items: string[]) => void;
   expandAll: () => void;
   collapseAll: () => void;

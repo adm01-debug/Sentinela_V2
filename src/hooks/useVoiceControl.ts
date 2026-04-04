@@ -39,8 +39,8 @@ export interface UseVoiceControlOptions {
   commands?: VoiceCommand[];
   continuous?: boolean;
   language?: string;
-  onResult?: (transcript: string) => void;
-  onError?: (error: string) => void;
+  onResult?: (transcript) => void;
+  onError?: (error) => void;
 }
 
 export function useVoiceControl(options: UseVoiceControlOptions = {}) {

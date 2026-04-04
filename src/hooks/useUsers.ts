@@ -44,7 +44,7 @@ export const useUsers = () => {
   });
 };
 
-export const useUser = (id: string) => {
+export const useUser = (id) => {
   return useQuery({
     queryKey: ['user', id],
     queryFn: async () => {
@@ -83,7 +83,7 @@ export const useUpdateUser = () => {
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('profiles').delete().eq('id', id);
       if (error) throw error;
     },

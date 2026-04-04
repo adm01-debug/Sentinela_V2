@@ -17,13 +17,13 @@ export default function IntegrationsPage() {
   const navigate = useNavigate();
   const { integrations, activeCount, totalCount, isLoading } = useIntegrations();
 
-  const getStatusForType = (type: string) => {
+  const getStatusForType = (type) => {
     const items = integrations.filter(i => i.type === type);
     if (items.length === 0) return 'available';
     return items.some(i => i.enabled) ? 'configured' : 'inactive';
   };
 
-  const getCountForType = (type: string) => integrations.filter(i => i.type === type).length;
+  const getCountForType = (type) => integrations.filter(i => i.type === type).length;
 
   return (
     <div className="p-6 space-y-6">

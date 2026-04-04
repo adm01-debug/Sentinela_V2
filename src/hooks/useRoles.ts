@@ -65,11 +65,11 @@ export function useRoles(userRoles: string[] = []) {
     staleTime: 60_000,
   });
 
-  const hasRole = useCallback((roleName: string) => {
+  const hasRole = useCallback((roleName) => {
     return userRoles.includes(roleName);
   }, [userRoles]);
 
-  const hasPermission = useCallback((permission: string) => {
+  const hasPermission = useCallback((permission) => {
     const roles = rolesQuery.data ?? [];
     return roles.some(r => userRoles.includes(r.name) && r.permissions.includes(permission));
   }, [rolesQuery.data, userRoles]);

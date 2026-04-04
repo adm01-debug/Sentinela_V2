@@ -94,9 +94,9 @@ function AttendancePage() {
     late: allRecords.filter((r) => r.status === 'late' || (r.late_minutes || 0) > 0).length,
     absent: allRecords.filter((r) => r.status === 'absent').length,
     avgHours: allRecords.length > 0
-      ? Math.round(allRecords.reduce((sum, r) => sum + (r.total_worked_minutes || 0), 0) / allRecords.length / 60 * 10) / 10
+      ? Math.round(allRecords.reduce((sum: number, r: any) => sum + (r.total_worked_minutes || 0), 0) / allRecords.length / 60 * 10) / 10
       : 0,
-    totalOvertime: Math.round(allRecords.reduce((sum, r) => sum + (r.overtime_minutes || 0), 0) / 60),
+    totalOvertime: Math.round(allRecords.reduce((sum: number, r: any) => sum + (r.overtime_minutes || 0), 0) / 60),
   };
 
   const presenceRate = stats.total > 0 ? Math.round((stats.present / stats.total) * 100) : 0;

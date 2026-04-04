@@ -5,7 +5,7 @@ export interface ImageDimensions {
   height: number;
 }
 
-export async function getImageDimensions(src: string): Promise<ImageDimensions> {
+export async function getImageDimensions(src): Promise<ImageDimensions> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve({ width: img.width, height: img.height });
@@ -14,7 +14,7 @@ export async function getImageDimensions(src: string): Promise<ImageDimensions> 
   });
 }
 
-export async function loadImage(src: string): Promise<HTMLImageElement> {
+export async function loadImage(src): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
@@ -26,8 +26,8 @@ export async function loadImage(src: string): Promise<HTMLImageElement> {
 
 export async function resizeImage(
   file: File,
-  maxWidth,
-  maxHeight,
+  maxWidth: any,
+  maxHeight: any,
   quality = 0.8
 ): Promise<Blob> {
   const img = await loadImage(URL.createObjectURL(file));
@@ -75,7 +75,7 @@ export async function cropImage(
   });
 }
 
-export async function rotateImage(src: string, degrees): Promise<Blob> {
+export async function rotateImage(src: string, degrees: any): Promise<Blob> {
   const img = await loadImage(src);
   const canvas = document.createElement('canvas');
   const radians = (degrees * Math.PI) / 180;
@@ -113,7 +113,7 @@ export function base64ToBlob(base64: string, mimeType: string = 'image/png'): Bl
   return new Blob([ab], { type: mimeType });
 }
 
-export function createThumbnail(img: HTMLImageElement, size): string {
+export function createThumbnail(img: HTMLImageElement, size: number): string {
   const canvas = document.createElement('canvas');
   const scale = Math.min(size / img.width, size / img.height);
   canvas.width = img.width * scale;
@@ -124,8 +124,8 @@ export function createThumbnail(img: HTMLImageElement, size): string {
   return canvas.toDataURL('image/jpeg', 0.7);
 }
 
-export function getAspectRatio(width, height): string {
-  const gcd = (a, b): number => (b === 0 ? a : gcd(b, a % b));
+export function getAspectRatio(width: number, height: number): string {
+  const gcd = (a: any, b: any): number => (b === 0 ? a : gcd(b, a % b));
   const divisor = gcd(width, height);
   return `${width / divisor}:${height / divisor}`;
 }

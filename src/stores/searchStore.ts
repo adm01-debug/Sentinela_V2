@@ -37,13 +37,13 @@ interface SearchState {
   open: () => void;
   close: () => void;
   toggle: () => void;
-  setQuery: (query: string) => void;
+  setQuery: (query) => void;
   clearQuery: () => void;
   setResults: (results: SearchResult[]) => void;
   clearResults: () => void;
   setFilters: (filters: Partial<SearchFilters>) => void;
   clearFilters: () => void;
-  addRecentSearch: (query: string) => void;
+  addRecentSearch: (query) => void;
   clearRecentSearches: () => void;
   addRecentResult: (result: SearchResult) => void;
   clearRecentResults: () => void;

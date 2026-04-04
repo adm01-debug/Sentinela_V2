@@ -14,7 +14,7 @@ describe('Dashboard Stats', () => {
     });
     const { data, count } = await supabase.from('employees').select('id, status', { count: 'exact' } as any);
     expect(count).toBe(3);
-    expect(data!.filter((e: any) => e.status === 'active')).toHaveLength(2);
+    expect(data!.filter((e) => e.status === 'active')).toHaveLength(2);
   });
 });
 

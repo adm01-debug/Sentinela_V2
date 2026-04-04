@@ -8,7 +8,7 @@ import { Pipette, Check } from 'lucide-react';
 
 export interface ColorPickerProps {
   value?: string;
-  onChange?: (color: string) => void;
+  onChange?: (color) => void;
   presetColors?: string[];
   showInput?: boolean;
   showPresets?: boolean;
@@ -26,7 +26,7 @@ export function ColorPicker({ value = '#3b82f6', onChange, presetColors = DEFAUL
   const [localValue, setLocalValue] = useState(value);
   const [open, setOpen] = useState(false);
 
-  const handleChange = useCallback((newColor: string) => {
+  const handleChange = useCallback((newColor) => {
     setLocalValue(newColor);
     onChange?.(newColor);
   }, [onChange]);

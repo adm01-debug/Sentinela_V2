@@ -6,11 +6,11 @@ export function useCohortAnalysis() {
   const [cohorts, setCohorts] = useState<CohortData[]>([]);
   const [retentionMatrix, setRetentionMatrix] = useState<number[][]>([]);
 
-  const addCohort = useCallback((cohortName: string, initialSize) => {
+  const addCohort = useCallback((cohortName: string, initialSize: number) => {
     setCohorts(prev => [...prev, { cohort: cohortName, periods: [initialSize] }]);
   }, []);
 
-  const updatePeriod = useCallback((cohortName: string, periodIndex, activeUsers) => {
+  const updatePeriod = useCallback((cohortName: string, periodIndex: number, activeUsers: number) => {
     setCohorts(prev => prev.map(c => {
       if (c.cohort !== cohortName) return c;
       const periods = [...c.periods];

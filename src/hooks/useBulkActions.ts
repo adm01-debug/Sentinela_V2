@@ -56,7 +56,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
   // SELECTION HANDLERS
   // ============================================================
 
-  const toggleSelection = useCallback((id: string) => {
+  const toggleSelection = useCallback((id) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
@@ -99,7 +99,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
     setSelectAll(false);
   }, []);
 
-  const isSelected = useCallback((id: string) => selectedIds.has(id), [selectedIds]);
+  const isSelected = useCallback((id) => selectedIds.has(id), [selectedIds]);
 
   // ============================================================
   // BULK DELETE MUTATION

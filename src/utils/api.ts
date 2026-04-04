@@ -1,5 +1,5 @@
 export class ApiError extends Error {
-  constructor(public status, message: string, public data?: unknown) {
+  constructor(public status: any, message: string, public data?: unknown) {
     super(message);
     this.name = 'ApiError';
   }
@@ -20,5 +20,5 @@ export const buildQueryString = (params: Record<string, string | number | boolea
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
     .join('&');
 
-export const parseQueryString = (qs: string) => Object.fromEntries(new URLSearchParams(qs));
+export const parseQueryString = (qs) => Object.fromEntries(new URLSearchParams(qs));
 

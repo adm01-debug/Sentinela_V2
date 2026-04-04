@@ -202,7 +202,7 @@ export function useDeleteTeam() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('teams')
         .delete()
@@ -280,7 +280,7 @@ export function useRemoveTeamMember() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (employeeId: string) => {
+    mutationFn: async (employeeId) => {
       const { error } = await supabase
         .from('employees')
         .update({ team_id: null })

@@ -5,4 +5,4 @@ export const toCSV = <T extends Record<string, unknown>>(data: T[], columns?: (k
   const rows = data.map(row => cols.map(col => JSON.stringify(row[col] ?? '')).join(','));
   return [header, ...rows].join('\n');
 };
-export const toJSON = (data, pretty = true) => JSON.stringify(data, null, pretty ? 2 : 0);
+export const toJSON = (data: any, pretty = true) => JSON.stringify(data, null, pretty ? 2 : 0);

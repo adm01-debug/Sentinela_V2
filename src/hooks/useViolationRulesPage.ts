@@ -153,7 +153,7 @@ export function useViolationRulesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('violation_rules').delete().eq('id', id);
       if (error) throw error;
     },

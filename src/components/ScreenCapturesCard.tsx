@@ -97,7 +97,7 @@ function ScreenCapturesCardBase() {
     return 'pending';
   };
 
-  const findSensitiveKeywordsInText = (text: string): { keyword: string; severity: string }[] => {
+  const findSensitiveKeywordsInText = (text): { keyword: string; severity: string }[] => {
     if (!text) return [];
     const textLower = text.toLowerCase();
     return sensitiveKeywords.filter(kw => 
@@ -105,7 +105,7 @@ function ScreenCapturesCardBase() {
     ).map(kw => ({ keyword: kw.rule_value, severity: kw.severity }));
   };
 
-  const highlightSensitiveText = (text: string): ReactNode => {
+  const highlightSensitiveText = (text): ReactNode => {
     if (!text || sensitiveKeywords.length === 0) return text;
     
     // Build regex from all sensitive keywords
@@ -206,7 +206,7 @@ function ScreenCapturesCardBase() {
     }
   };
 
-  const copyText = async (text: string) => {
+  const copyText = async (text) => {
     await navigator.clipboard.writeText(text);
     setCopied(true);
     toast.success('Texto copiado!');

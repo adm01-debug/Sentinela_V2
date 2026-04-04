@@ -19,8 +19,8 @@ interface ReauthDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   action: SensitiveAction | null;
-  onVerifyPassword: (password: string) => Promise<boolean>;
-  onVerifyMFA: (code: string) => Promise<boolean>;
+  onVerifyPassword: (password) => Promise<boolean>;
+  onVerifyMFA: (code) => Promise<boolean>;
   isVerifying: boolean;
   error: string | null;
 }

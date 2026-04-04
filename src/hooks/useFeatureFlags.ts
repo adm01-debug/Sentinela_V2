@@ -13,9 +13,9 @@ interface UseFeatureFlagsReturn {
   flags: FeatureFlag[];
   isLoading: boolean;
   error: string | null;
-  isEnabled: (flagName: string) => boolean;
-  enableFlag: (flagName: string) => Promise<void>;
-  disableFlag: (flagName: string) => Promise<void>;
+  isEnabled: (flagName) => boolean;
+  enableFlag: (flagName) => Promise<void>;
+  disableFlag: (flagName) => Promise<void>;
   refresh: () => Promise<void>;
 }
 
@@ -47,12 +47,12 @@ export function useFeatureFlags(): UseFeatureFlagsReturn {
     fetchFlags();
   }, [fetchFlags]);
 
-  const isEnabled = useCallback((flagName: string): boolean => {
+  const isEnabled = useCallback((flagName): boolean => {
     const flag = flags.find(f => f.name === flagName);
     return flag?.enabled ?? false;
   }, [flags]);
 
-  const enableFlag = useCallback(async (flagName: string) => {
+  const enableFlag = useCallback(async (flagName) => {
     const { error } = await supabase
       .from('feature_flags')
       .update({ enabled: true })
@@ -62,7 +62,7 @@ export function useFeatureFlags(): UseFeatureFlagsReturn {
     await fetchFlags();
   }, [fetchFlags]);
 
-  const disableFlag = useCallback(async (flagName: string) => {
+  const disableFlag = useCallback(async (flagName) => {
     const { error } = await supabase
       .from('feature_flags')
       .update({ enabled: false })

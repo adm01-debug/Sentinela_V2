@@ -64,7 +64,7 @@ export function useDeviceTrust() {
 
   const revokeDevice = () => {
     if (!fingerprint) return;
-    const known = JSON.parse(localStorage.getItem("known_devices") || "[]").filter((d: string) => d !== fingerprint);
+    const known = JSON.parse(localStorage.getItem("known_devices") || "[]").filter((d) => d !== fingerprint);
     localStorage.setItem("known_devices", JSON.stringify(known));
     setIsKnownDevice(false);
     setTrustScore((prev) => Math.max(0, prev - 30));

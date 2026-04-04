@@ -35,7 +35,7 @@ export function useNotifications() {
     return notification;
   }, [permission]);
 
-  const markAsRead = useCallback((id: string) => {
+  const markAsRead = useCallback((id) => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
   }, []);
 

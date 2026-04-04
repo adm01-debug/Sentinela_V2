@@ -16,12 +16,12 @@ interface DepartmentState {
 
 interface DepartmentActions {
   fetchDepartments: (filters?: DepartmentFilters) => Promise<void>;
-  fetchDepartment: (id: string) => Promise<void>;
+  fetchDepartment: (id) => Promise<void>;
   fetchHierarchy: () => Promise<void>;
   fetchStats: () => Promise<void>;
   createDepartment: (data: { name: string; description?: string }) => Promise<Department>;
   updateDepartment: (id: string, data: Partial<Department>) => Promise<Department>;
-  deleteDepartment: (id: string) => Promise<void>;
+  deleteDepartment: (id) => Promise<void>;
   setFilters: (filters: DepartmentFilters) => void;
   setCurrentDepartment: (department: Department | null) => void;
   clearError: () => void;

@@ -185,7 +185,7 @@ export function useDeleteWebhook() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('webhooks')
         .delete()
@@ -214,7 +214,7 @@ export function useTestWebhook() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { data, error } = await supabase.functions.invoke('send-webhook', {
         body: { 
           webhook_id: id, 

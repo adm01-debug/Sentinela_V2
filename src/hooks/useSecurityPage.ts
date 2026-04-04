@@ -101,7 +101,7 @@ export function useSecurityPage() {
   });
 
   const resolveEventMutation = useMutation({
-    mutationFn: async (eventId: string) => {
+    mutationFn: async (eventId) => {
       const { error } = await supabase
         .from('security_violations')
         .update({ read: true })
@@ -121,10 +121,10 @@ export function useSecurityPage() {
     severityFilter,
     typeFilter,
     isLoading: eventsQuery.isLoading,
-    handleSeverityFilterChange: useCallback((v: string) => setSeverityFilter(v), []),
-    handleTypeFilterChange: useCallback((v: string) => setTypeFilter(v), []),
+    handleSeverityFilterChange: useCallback((v) => setSeverityFilter(v), []),
+    handleTypeFilterChange: useCallback((v) => setTypeFilter(v), []),
     handleUpdateSettings: useCallback((s: Partial<SecuritySettings>) => updateSettingsMutation.mutate(s), [updateSettingsMutation]),
-    handleResolveEvent: useCallback((id: string) => resolveEventMutation.mutate(id), [resolveEventMutation]),
+    handleResolveEvent: useCallback((id) => resolveEventMutation.mutate(id), [resolveEventMutation]),
     isUpdating: updateSettingsMutation.isPending,
   };
 }

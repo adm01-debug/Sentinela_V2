@@ -5,7 +5,7 @@ interface WebSocketState {
   socket: WebSocket | null;
   lastMessage: unknown;
   reconnectAttempts: number;
-  connect: (url: string) => void;
+  connect: (url) => void;
   disconnect: () => void;
   send: (data) => void;
   setStatus: (status: ConnectionStatus) => void;

@@ -49,8 +49,8 @@ export const queryKeys = {
     list: (filters?: unknown) => 
       [...queryKeys.employees.lists(), filters] as const,
     details: () => [...queryKeys.employees.all, 'detail'] as const,
-    detail: (id: string) => [...queryKeys.employees.details(), id] as const,
-    stats: (id: string) => [...queryKeys.employees.all, 'stats', id] as const,
+    detail: (id) => [...queryKeys.employees.details(), id] as const,
+    stats: (id) => [...queryKeys.employees.all, 'stats', id] as const,
     active: () => [...queryKeys.employees.all, 'active'] as const,
     online: () => [...queryKeys.employees.all, 'online'] as const,
   },
@@ -61,8 +61,8 @@ export const queryKeys = {
     lists: () => [...queryKeys.teams.all, 'list'] as const,
     list: (filters?: unknown) => 
       [...queryKeys.teams.lists(), filters] as const,
-    detail: (id: string) => [...queryKeys.teams.all, 'detail', id] as const,
-    members: (id: string) => [...queryKeys.teams.all, 'members', id] as const,
+    detail: (id) => [...queryKeys.teams.all, 'detail', id] as const,
+    members: (id) => [...queryKeys.teams.all, 'members', id] as const,
   },
   
   // Devices
@@ -70,8 +70,8 @@ export const queryKeys = {
     all: ['devices'] as const,
     lists: () => [...queryKeys.devices.all, 'list'] as const,
     stats: () => [...queryKeys.devices.all, 'stats'] as const,
-    detail: (id: string) => [...queryKeys.devices.all, 'detail', id] as const,
-    byEmployee: (employeeId: string) => [...queryKeys.devices.all, 'employee', employeeId] as const,
+    detail: (id) => [...queryKeys.devices.all, 'detail', id] as const,
+    byEmployee: (employeeId) => [...queryKeys.devices.all, 'employee', employeeId] as const,
   },
   
   // Violations
@@ -80,11 +80,11 @@ export const queryKeys = {
     lists: () => [...queryKeys.violations.all, 'list'] as const,
     list: (filters?: unknown) => 
       [...queryKeys.violations.lists(), filters] as const,
-    detail: (id: string) => [...queryKeys.violations.all, 'detail', id] as const,
-    comments: (id: string) => [...queryKeys.violations.all, 'comments', id] as const,
-    actions: (id: string) => [...queryKeys.violations.all, 'actions', id] as const,
+    detail: (id) => [...queryKeys.violations.all, 'detail', id] as const,
+    comments: (id) => [...queryKeys.violations.all, 'comments', id] as const,
+    actions: (id) => [...queryKeys.violations.all, 'actions', id] as const,
     unread: () => [...queryKeys.violations.all, 'unread'] as const,
-    byEmployee: (employeeId: string) => [...queryKeys.violations.all, 'employee', employeeId] as const,
+    byEmployee: (employeeId) => [...queryKeys.violations.all, 'employee', employeeId] as const,
     trend: (period?: string) => [...queryKeys.violations.all, 'trend', period] as const,
   },
   
@@ -92,7 +92,7 @@ export const queryKeys = {
   violationRules: {
     all: ['violation-rules'] as const,
     lists: () => [...queryKeys.violationRules.all, 'list'] as const,
-    detail: (id: string) => [...queryKeys.violationRules.all, 'detail', id] as const,
+    detail: (id) => [...queryKeys.violationRules.all, 'detail', id] as const,
     active: () => [...queryKeys.violationRules.all, 'active'] as const,
   },
   
@@ -110,16 +110,16 @@ export const queryKeys = {
   // Permissions & Roles
   permissions: {
     all: ['permissions'] as const,
-    user: (userId: string) => [...queryKeys.permissions.all, 'user', userId] as const,
+    user: (userId) => [...queryKeys.permissions.all, 'user', userId] as const,
     roles: () => [...queryKeys.permissions.all, 'roles'] as const,
-    check: (permission: string) => [...queryKeys.permissions.all, 'check', permission] as const,
+    check: (permission) => [...queryKeys.permissions.all, 'check', permission] as const,
   },
   
   // Users Management
   users: {
     all: ['users'] as const,
     lists: () => [...queryKeys.users.all, 'list'] as const,
-    detail: (id: string) => [...queryKeys.users.all, 'detail', id] as const,
+    detail: (id) => [...queryKeys.users.all, 'detail', id] as const,
     profile: () => [...queryKeys.users.all, 'profile'] as const,
   },
   
@@ -127,9 +127,9 @@ export const queryKeys = {
   workSchedules: {
     all: ['work-schedules'] as const,
     lists: () => [...queryKeys.workSchedules.all, 'list'] as const,
-    employee: (employeeId: string) => 
+    employee: (employeeId) => 
       [...queryKeys.workSchedules.all, 'employee', employeeId] as const,
-    detail: (id: string) => [...queryKeys.workSchedules.all, 'detail', id] as const,
+    detail: (id) => [...queryKeys.workSchedules.all, 'detail', id] as const,
     active: () => [...queryKeys.workSchedules.all, 'active'] as const,
   },
   
@@ -138,7 +138,7 @@ export const queryKeys = {
     all: ['geofences'] as const,
     lists: () => [...queryKeys.geofences.all, 'list'] as const,
     active: () => [...queryKeys.geofences.all, 'active'] as const,
-    detail: (id: string) => [...queryKeys.geofences.all, 'detail', id] as const,
+    detail: (id) => [...queryKeys.geofences.all, 'detail', id] as const,
     events: (id?: string) => [...queryKeys.geofences.all, 'events', id] as const,
   },
   
@@ -146,31 +146,31 @@ export const queryKeys = {
   webhooks: {
     all: ['webhooks'] as const,
     lists: () => [...queryKeys.webhooks.all, 'list'] as const,
-    detail: (id: string) => [...queryKeys.webhooks.all, 'detail', id] as const,
-    logs: (id: string) => [...queryKeys.webhooks.all, 'logs', id] as const,
-    test: (id: string) => [...queryKeys.webhooks.all, 'test', id] as const,
+    detail: (id) => [...queryKeys.webhooks.all, 'detail', id] as const,
+    logs: (id) => [...queryKeys.webhooks.all, 'logs', id] as const,
+    test: (id) => [...queryKeys.webhooks.all, 'test', id] as const,
   },
   
   // Message Templates
   messageTemplates: {
     all: ['message-templates'] as const,
     lists: () => [...queryKeys.messageTemplates.all, 'list'] as const,
-    detail: (id: string) => [...queryKeys.messageTemplates.all, 'detail', id] as const,
-    byType: (type: string) => [...queryKeys.messageTemplates.all, 'type', type] as const,
+    detail: (id) => [...queryKeys.messageTemplates.all, 'detail', id] as const,
+    byType: (type) => [...queryKeys.messageTemplates.all, 'type', type] as const,
   },
   
   // Gamification
   gamification: {
     all: ['gamification'] as const,
     badges: () => [...queryKeys.gamification.all, 'badges'] as const,
-    employeeBadges: (employeeId: string) => 
+    employeeBadges: (employeeId) => 
       [...queryKeys.gamification.all, 'employee-badges', employeeId] as const,
-    points: (employeeId: string) => 
+    points: (employeeId) => 
       [...queryKeys.gamification.all, 'points', employeeId] as const,
-    leaderboard: (period: string) => 
+    leaderboard: (period) => 
       [...queryKeys.gamification.all, 'leaderboard', period] as const,
     achievements: () => [...queryKeys.gamification.all, 'achievements'] as const,
-    streaks: (employeeId: string) => 
+    streaks: (employeeId) => 
       [...queryKeys.gamification.all, 'streaks', employeeId] as const,
   },
   
@@ -179,7 +179,7 @@ export const queryKeys = {
     all: ['saved-filters'] as const,
     module: (module: string, userId?: string) => 
       [...queryKeys.savedFilters.all, module, userId] as const,
-    user: (userId: string) => [...queryKeys.savedFilters.all, 'user', userId] as const,
+    user: (userId) => [...queryKeys.savedFilters.all, 'user', userId] as const,
   },
   
   // Audit Logs
@@ -188,8 +188,8 @@ export const queryKeys = {
     lists: () => [...queryKeys.auditLogs.all, 'list'] as const,
     list: (filters?: unknown) => 
       [...queryKeys.auditLogs.lists(), filters] as const,
-    detail: (id: string) => [...queryKeys.auditLogs.all, 'detail', id] as const,
-    user: (userId: string) => [...queryKeys.auditLogs.all, 'user', userId] as const,
+    detail: (id) => [...queryKeys.auditLogs.all, 'detail', id] as const,
+    user: (userId) => [...queryKeys.auditLogs.all, 'user', userId] as const,
   },
   
   // Dashboard
@@ -209,8 +209,8 @@ export const queryKeys = {
     all: ['reports'] as const,
     scheduled: () => [...queryKeys.reports.all, 'scheduled'] as const,
     history: () => [...queryKeys.reports.all, 'history'] as const,
-    detail: (id: string) => [...queryKeys.reports.all, 'detail', id] as const,
-    generate: (type: string) => [...queryKeys.reports.all, 'generate', type] as const,
+    detail: (id) => [...queryKeys.reports.all, 'detail', id] as const,
+    generate: (type) => [...queryKeys.reports.all, 'generate', type] as const,
   },
   
   // Mobile Devices
@@ -218,23 +218,23 @@ export const queryKeys = {
     all: ['mobile-devices'] as const,
     lists: () => [...queryKeys.mobileDevices.all, 'list'] as const,
     locations: () => [...queryKeys.mobileDevices.all, 'locations'] as const,
-    detail: (id: string) => [...queryKeys.mobileDevices.all, 'detail', id] as const,
-    status: (id: string) => [...queryKeys.mobileDevices.all, 'status', id] as const,
+    detail: (id) => [...queryKeys.mobileDevices.all, 'detail', id] as const,
+    status: (id) => [...queryKeys.mobileDevices.all, 'status', id] as const,
   },
   
   // Activity
   activity: {
     all: ['activity'] as const,
     realtime: () => [...queryKeys.activity.all, 'realtime'] as const,
-    employee: (employeeId: string) => 
+    employee: (employeeId) => 
       [...queryKeys.activity.all, 'employee', employeeId] as const,
-    screenshots: (employeeId: string) => 
+    screenshots: (employeeId) => 
       [...queryKeys.activity.all, 'screenshots', employeeId] as const,
-    keystrokes: (employeeId: string) => 
+    keystrokes: (employeeId) => 
       [...queryKeys.activity.all, 'keystrokes', employeeId] as const,
-    applications: (employeeId: string) => 
+    applications: (employeeId) => 
       [...queryKeys.activity.all, 'applications', employeeId] as const,
-    websites: (employeeId: string) => 
+    websites: (employeeId) => 
       [...queryKeys.activity.all, 'websites', employeeId] as const,
   },
   
@@ -260,7 +260,7 @@ export const queryKeys = {
     all: ['policies'] as const,
     lists: () => [...queryKeys.policies.all, 'list'] as const,
     acknowledgments: () => [...queryKeys.policies.all, 'acknowledgments'] as const,
-    employee: (employeeId: string) => [...queryKeys.policies.all, 'employee', employeeId] as const,
+    employee: (employeeId) => [...queryKeys.policies.all, 'employee', employeeId] as const,
     pending: () => [...queryKeys.policies.all, 'pending'] as const,
   },
   
@@ -316,7 +316,7 @@ export const queryKeys = {
     comparison: (filters?: unknown) => 
       [...queryKeys.productivity.all, 'comparison', filters] as const,
     trends: (period?: string) => [...queryKeys.productivity.all, 'trends', period] as const,
-    employee: (employeeId: string) => [...queryKeys.productivity.all, 'employee', employeeId] as const,
+    employee: (employeeId) => [...queryKeys.productivity.all, 'employee', employeeId] as const,
   },
   
   // AI Analysis
@@ -324,14 +324,14 @@ export const queryKeys = {
     all: ['ai-analysis'] as const,
     results: () => [...queryKeys.aiAnalysis.all, 'results'] as const,
     pending: () => [...queryKeys.aiAnalysis.all, 'pending'] as const,
-    employee: (employeeId: string) => [...queryKeys.aiAnalysis.all, 'employee', employeeId] as const,
+    employee: (employeeId) => [...queryKeys.aiAnalysis.all, 'employee', employeeId] as const,
   },
   
   // Agent Keys
   agentKeys: {
     all: ['agent-keys'] as const,
     lists: () => [...queryKeys.agentKeys.all, 'list'] as const,
-    detail: (id: string) => [...queryKeys.agentKeys.all, 'detail', id] as const,
+    detail: (id) => [...queryKeys.agentKeys.all, 'detail', id] as const,
     active: () => [...queryKeys.agentKeys.all, 'active'] as const,
   },
   

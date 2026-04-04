@@ -72,7 +72,7 @@ async function fetchBadges(): Promise<Badge[]> {
   return data || [];
 }
 
-async function fetchEmployeeBadges(employeeId: string): Promise<EmployeeBadge[]> {
+async function fetchEmployeeBadges(employeeId): Promise<EmployeeBadge[]> {
   const { data, error } = await supabase
     .from('employee_badges')
     .select(`
@@ -86,7 +86,7 @@ async function fetchEmployeeBadges(employeeId: string): Promise<EmployeeBadge[]>
   return data || [];
 }
 
-async function fetchEmployeePoints(employeeId: string): Promise<EmployeePoints | null> {
+async function fetchEmployeePoints(employeeId): Promise<EmployeePoints | null> {
   const { data, error } = await supabase
     .from('employee_points')
     .select('*')
@@ -116,7 +116,7 @@ async function fetchLeaderboard(
 
   // Add rank and badges count
   const withRanks = await Promise.all(
-    (data || []).map(async (entry, index) => {
+    (data || []).map(async (entry: any, index: number) => {
       const { count } = await supabase
         .from('employee_badges')
         .select('*', { count: 'exact', head: true })

@@ -19,13 +19,13 @@ interface ClipboardState {
   maxItems: number;
   isSupported: boolean;
 
-  copy: (type: ClipboardItemType, data, source?: string) => Promise<string>;
+  copy: (type: ClipboardItemType, data: any, source?: string) => Promise<string>;
   paste: () => ClipboardItem | null;
   clear: () => void;
-  clearItem: (id: string) => void;
-  getItem: (id: string) => ClipboardItem | undefined;
+  clearItem: (id) => void;
+  getItem: (id) => ClipboardItem | undefined;
   hasItem: (type?: ClipboardItemType) => boolean;
-  copyToSystemClipboard: (text: string) => Promise<boolean>;
+  copyToSystemClipboard: (text) => Promise<boolean>;
   readFromSystemClipboard: () => Promise<string | null>;
   setMaxItems: (max) => void;
 }

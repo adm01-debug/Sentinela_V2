@@ -10,7 +10,7 @@ interface ComboboxOption { value: string; label: string; }
 interface ComboboxProps {
   options: ComboboxOption[];
   value?: string;
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value) => void;
   placeholder?: string;
   searchPlaceholder?: string;
   emptyText?: string;

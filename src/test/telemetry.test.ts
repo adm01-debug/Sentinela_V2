@@ -52,14 +52,14 @@ function formatDuration(ms): string {
   return `${ms}ms`;
 }
 
-function formatTime(iso: string): string {
+function formatTime(iso): string {
   return new Date(iso).toLocaleString('pt-BR', {
     hour: '2-digit', minute: '2-digit', second: '2-digit',
     day: '2-digit', month: '2-digit',
   });
 }
 
-function getTimeThreshold(timeFilter: string): string {
+function getTimeThreshold(timeFilter): string {
   const now = new Date();
   switch (timeFilter) {
     case '1h': return new Date(now.getTime() - 60 * 60 * 1000).toISOString();

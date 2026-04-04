@@ -148,7 +148,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   // MUTATION - Restaurar versão
   // ============================================================
   const restoreVersionMutation = useMutation({
-    mutationFn: async (versionId: string) => {
+    mutationFn: async (versionId) => {
       const version = versions.find((v) => v.id === versionId);
       if (!version) throw new Error('Versão não encontrada');
 

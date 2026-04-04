@@ -15,7 +15,7 @@ export type ExportFormat = 'csv' | 'excel' | 'pdf' | 'json';
 export interface ExportColumn<T> {
   key: keyof T | string;
   header: string;
-  formatter?: (value, row: T) => string;
+  formatter?: (value: number, row: T) => string;
   width?: number; // For PDF
 }
 
@@ -40,7 +40,7 @@ export interface UseExportResult<T> {
 // HELPERS
 // ============================================================
 
-function getNestedValue(obj, path: string): unknown {
+function getNestedValue(obj: any, path: string): unknown {
   return path.split('.').reduce((acc, part) => {
     if (acc && typeof acc === 'object') {
       return (acc as Record<string, unknown>)[part];

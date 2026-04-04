@@ -55,7 +55,7 @@ export class PerformanceTracker {
   private marks = new Map<string, number>();
   private measures = new Map<string, number[]>();
 
-  mark(name: string): void {
+  mark(name): void {
     this.marks.set(name, performance.now());
     performance.mark(name);
   }
@@ -76,13 +76,13 @@ export class PerformanceTracker {
     return duration;
   }
 
-  getAverage(name: string): number {
+  getAverage(name): number {
     const values = this.measures.get(name);
     if (!values || values.length === 0) return 0;
     return values.reduce((a, b) => a + b, 0) / values.length;
   }
 
-  getStats(name: string): { min: number; max: number; avg: number; count: number } {
+  getStats(name): { min: number; max: number; avg: number; count: number } {
     const values = this.measures.get(name);
     if (!values || values.length === 0) {
       return { min: 0, max: 0, avg: 0, count: 0 };

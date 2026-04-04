@@ -45,7 +45,7 @@ const appIcons: Record<string, string> = {
 interface ApplicationRuleRowProps {
   rule: ApplicationRule;
   onStatusChange: (id: string, status: 'allowed' | 'blocked' | 'monitored') => void;
-  onDelete?: (id: string) => Promise<boolean>;
+  onDelete?: (id) => Promise<boolean>;
   onEdit?: (rule: ApplicationRule) => void;
 }
 

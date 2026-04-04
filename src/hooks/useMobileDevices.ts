@@ -159,7 +159,7 @@ export function useDeleteMobileDevice() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('mobile_devices')
         .delete()
@@ -221,7 +221,7 @@ export function useRequestDeviceLocation() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (deviceId: string) => {
+    mutationFn: async (deviceId) => {
       const { data, error } = await supabase.functions.invoke('send-push-notification', {
         body: { 
           device_id: deviceId, 

@@ -14,7 +14,7 @@ export function useHeatmap(elementId?: string) {
 
   const stopTracking = useCallback(() => setIsTracking(false), []);
 
-  const recordPoint = useCallback((x, y) => {
+  const recordPoint = useCallback((x: number, y: number) => {
     if (!isTracking) return;
     setPoints(prev => {
       const existing = prev.find(p => Math.abs(p.x - x) < 10 && Math.abs(p.y - y) < 10);

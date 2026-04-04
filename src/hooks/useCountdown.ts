@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-export function useCountdown(initialSeconds, onComplete?: () => void) {
+export function useCountdown(initialSeconds: number, onComplete?: () => void) {
   const [seconds, setSeconds] = useState(initialSeconds);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout>();
   useEffect(() => {
     if (isRunning && seconds > 0) {
-      intervalRef.current = setInterval(() => setSeconds(s => s - 1), 1000);
+      intervalRef.current = setInterval(() => setSeconds((s) => s - 1), 1000);
       return () => clearInterval(intervalRef.current);
     }
     if (seconds === 0 && isRunning) { setIsRunning(false); onComplete?.(); }

@@ -3,7 +3,7 @@
 /**
  * Copy text to clipboard
  */
-export async function copyToClipboard(text: string): Promise<boolean> {
+export async function copyToClipboard(text): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text);
     return true;

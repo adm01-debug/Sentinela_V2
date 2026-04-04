@@ -27,7 +27,7 @@ export function useSessionManager() {
     finally { setIsLoading(false); }
   }, [currentSessionId]);
 
-  const revokeSession = useCallback(async (sessionId: string) => {
+  const revokeSession = useCallback(async (sessionId) => {
     try {
       await supabase.from('user_sessions').delete().eq('id', sessionId);
       setSessions(prev => prev.filter(s => s.id !== sessionId));

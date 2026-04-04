@@ -45,7 +45,7 @@ export function fromMilliseconds(ms): Duration {
   };
 }
 
-export function formatDuration(ms, options?: { short?: boolean; maxUnits?: number }): string {
+export function formatDuration(ms: number, options?: { short?: boolean; maxUnits?: number }): string {
   const { short = false, maxUnits = 2 } = options || {};
   const duration = fromMilliseconds(ms);
   const parts: string[] = [];
@@ -111,7 +111,7 @@ export function humanReadableDuration(seconds): string {
   return `${hours}h ${mins}m`;
 }
 
-export function parseIsoDuration(iso: string): Duration {
+export function parseIsoDuration(iso): Duration {
   const match = iso.match(/P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/);
   if (!match) return {};
   return {

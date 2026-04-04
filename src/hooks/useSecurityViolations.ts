@@ -331,7 +331,7 @@ export function useDeleteViolation() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('security_violations')
         .delete()

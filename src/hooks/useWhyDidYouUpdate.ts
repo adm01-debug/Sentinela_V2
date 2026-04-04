@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { logger } from '@/lib/logger';
 
-export function useWhyDidYouUpdate(name: string, props) {
+export function useWhyDidYouUpdate(name: string, props: any) {
   const prev = useRef<Record<string, unknown>>({});
   useEffect(() => {
     const changes: Record<string, { from: unknown; to: unknown }> = {};

@@ -69,7 +69,7 @@ export const useActivities = (filters?: ActivityFilters) => {
   });
 };
 
-export const useActivity = (id: string) => {
+export const useActivity = (id) => {
   return useQuery({
     queryKey: ['activity', id],
     queryFn: async () => {

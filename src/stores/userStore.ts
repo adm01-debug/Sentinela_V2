@@ -12,10 +12,10 @@ interface UserState {
   recentSearches: string[];
   favorites: string[];
   setPreference: <K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) => void;
-  addRecentSearch: (search: string) => void;
+  addRecentSearch: (search) => void;
   clearRecentSearches: () => void;
-  addFavorite: (id: string) => void;
-  removeFavorite: (id: string) => void;
+  addFavorite: (id) => void;
+  removeFavorite: (id) => void;
 }
 
 export const useUserStore = create<UserState>()((set) => ({

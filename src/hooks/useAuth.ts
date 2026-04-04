@@ -47,7 +47,7 @@ function mapSupabaseUser(supaUser: SupaUser | undefined | null): User | null {
   };
 }
 
-async function checkAdminRole(userId: string): Promise<boolean> {
+async function checkAdminRole(userId): Promise<boolean> {
   try {
     const { data, error } = await supabase
       .from('user_roles')

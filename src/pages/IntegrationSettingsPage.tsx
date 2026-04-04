@@ -17,7 +17,7 @@ export default function IntegrationSettingsPage() {
   const navigate = useNavigate();
   const { integrations, isLoading } = useIntegrations();
 
-  const getStatus = (type: string) => {
+  const getStatus = (type) => {
     if (type === 'api' || type === 'all') return 'configured';
     const items = integrations.filter(i => i.type === type);
     return items.some(i => i.enabled) ? 'configured' : 'available';

@@ -33,7 +33,7 @@ interface ToastState {
   maxToasts: number;
 
   add: (type: ToastType, message: string, options?: ToastOptions) => string;
-  remove: (id: string) => void;
+  remove: (id) => void;
   removeAll: () => void;
   update: (id: string, updates: Partial<Toast>) => void;
   setPosition: (position: ToastState['position']) => void;
@@ -132,6 +132,6 @@ export const toast = {
   loading: (message: string, options?: ToastOptions) => useToastStore.getState().loading(message, options),
   promise: <T>(promise: Promise<T>, messages: { loading: string; success: string; error: string }) =>
     useToastStore.getState().promise(promise, messages),
-  dismiss: (id: string) => useToastStore.getState().remove(id),
+  dismiss: (id) => useToastStore.getState().remove(id),
   dismissAll: () => useToastStore.getState().removeAll(),
 };

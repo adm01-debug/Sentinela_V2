@@ -18,7 +18,7 @@ export function useCommandPalette() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [store]);
 
-  const executeCommand = useCallback((commandId: string) => {
+  const executeCommand = useCallback((commandId) => {
     const command = store.groups.flatMap(g => g.commands).find(c => c.id === commandId);
     if (command) {
       command.action();

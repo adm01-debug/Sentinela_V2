@@ -8,7 +8,7 @@ interface AppState {
   notifications: boolean;
   toggleSidebar: () => void;
   setTheme: (theme: 'light' | 'dark' | 'system') => void;
-  setLanguage: (lang: string) => void;
+  setLanguage: (lang) => void;
   setNotifications: (enabled: boolean) => void;
 }
 

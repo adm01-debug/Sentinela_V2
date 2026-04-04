@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 interface Props {
   alerts: Alert[];
   isLoading?: boolean;
-  onAcknowledge: (id: string) => void;
+  onAcknowledge: (id) => void;
 }
 
 const severityVariants: Record<string, 'default' | 'warning' | 'destructive'> = {

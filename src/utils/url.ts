@@ -11,7 +11,7 @@ export function buildUrl(base: string, params?: Record<string, string | number |
   return url.toString();
 }
 
-export function parseUrl(url: string): URL | null {
+export function parseUrl(url): URL | null {
   try {
     return new URL(url, window.location.origin);
   } catch {
@@ -44,11 +44,11 @@ export function removeQueryParams(keys: string[], url?: string): string {
   return currentUrl.toString();
 }
 
-export function isAbsoluteUrl(url: string): boolean {
+export function isAbsoluteUrl(url): boolean {
   return /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(url);
 }
 
-export function isValidUrl(url: string): boolean {
+export function isValidUrl(url): boolean {
   try {
     new URL(url);
     return true;
@@ -68,23 +68,23 @@ export function joinPaths(...paths: string[]): string {
     .join('/');
 }
 
-export function getPathSegments(url: string): string[] {
+export function getPathSegments(url): string[] {
   const parsed = parseUrl(url);
   if (!parsed) return [];
   return parsed.pathname.split('/').filter(Boolean);
 }
 
-export function getDomain(url: string): string | null {
+export function getDomain(url): string | null {
   const parsed = parseUrl(url);
   return parsed?.hostname || null;
 }
 
-export function getProtocol(url: string): string | null {
+export function getProtocol(url): string | null {
   const parsed = parseUrl(url);
   return parsed?.protocol.replace(':', '') || null;
 }
 
-export function normalizeUrl(url: string): string {
+export function normalizeUrl(url): string {
   const parsed = parseUrl(url);
   if (!parsed) return url;
   parsed.pathname = parsed.pathname.replace(/\/+/g, '/').replace(/\/$/, '') || '/';

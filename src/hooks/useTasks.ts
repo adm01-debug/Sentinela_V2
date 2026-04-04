@@ -11,11 +11,11 @@ export function useTasks() {
     return task;
   }, []);
 
-  const toggle = useCallback((id: string) => {
+  const toggle = useCallback((id) => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
   }, []);
 
-  const remove = useCallback((id: string) => {
+  const remove = useCallback((id) => {
     setTasks(prev => prev.filter(t => t.id !== id));
   }, []);
 

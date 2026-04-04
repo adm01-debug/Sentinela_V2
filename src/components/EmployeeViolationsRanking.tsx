@@ -52,7 +52,7 @@ export function EmployeeViolationsRanking() {
     return <span className="w-5 text-center text-sm text-muted-foreground">{index + 1}</span>;
   };
 
-  const getInitials = (name: string) => {
+  const getInitials = (name) => {
     return name
       .split(' ')
       .map((n) => n[0])

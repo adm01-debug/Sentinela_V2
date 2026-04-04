@@ -122,7 +122,7 @@ export function useScheduledReportsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('scheduled_reports').delete().eq('id', id);
       if (error) throw error;
     },
@@ -137,7 +137,7 @@ export function useScheduledReportsPage() {
   });
 
   const runNowMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.functions.invoke('generate-report', { body: { report_id: id } });
       if (error) throw error;
     },
@@ -215,7 +215,7 @@ export function useScheduledReportsPage() {
     }
   }, [newRecipient, formData]);
 
-  const handleRemoveRecipient = useCallback((email: string) => {
+  const handleRemoveRecipient = useCallback((email) => {
     setFormData({ ...formData, recipients: formData.recipients.filter(r => r !== email) });
   }, [formData]);
 
@@ -231,7 +231,7 @@ export function useScheduledReportsPage() {
     isRunning: runNowMutation.isPending,
     handleOpenCreate, handleOpenEdit, handleCloseDialog,
     handleSubmit, handleDelete, handleAddRecipient, handleRemoveRecipient,
-    handleRunNow: (id: string) => runNowMutation.mutate(id),
+    handleRunNow: (id) => runNowMutation.mutate(id),
     REPORT_TYPES,
   };
 }

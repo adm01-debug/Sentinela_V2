@@ -137,7 +137,7 @@ export interface ChartLegendItem {
 
 export interface ChartLegendProps {
   items: ChartLegendItem[];
-  onToggle?: (id: string) => void;
+  onToggle?: (id) => void;
   interactive?: boolean;
   orientation?: 'horizontal' | 'vertical';
   className?: string;
@@ -334,7 +334,7 @@ export interface ChartWrapperProps {
   availableChartTypes?: ChartType[];
   controls?: ReactNode;
   legend?: ChartLegendItem[];
-  onLegendToggle?: (id: string) => void;
+  onLegendToggle?: (id) => void;
   loading?: boolean;
   error?: string;
   onRetry?: () => void;

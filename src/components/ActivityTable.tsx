@@ -9,7 +9,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const formatActivityTime = (timestamp: string) => {
+const formatActivityTime = (timestamp) => {
   const parsed = new Date(timestamp);
   if (!isValid(parsed)) return '--:--';
   return format(parsed, 'HH:mm');

@@ -21,7 +21,7 @@ interface SecurityEvent {
 
 interface Props {
   event: SecurityEvent;
-  onResolve: (id: string) => void;
+  onResolve: (id) => void;
 }
 
 const severityColors = {

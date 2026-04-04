@@ -33,14 +33,14 @@ export function calculateSecurityScore(
   return { total: mfa + sessions + devices + alerts, mfa, sessions, devices, alerts };
 }
 
-export function getScoreColor(score: number): string {
+export function getScoreColor(score): string {
   if (score >= 80) return 'text-green-500';
   if (score >= 60) return 'text-yellow-500';
   if (score >= 40) return 'text-orange-500';
   return 'text-red-500';
 }
 
-export function getScoreBadge(score: number): { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' } {
+export function getScoreBadge(score): { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' } {
   if (score >= 80) return { label: 'Excelente', variant: 'default' };
   if (score >= 60) return { label: 'Bom', variant: 'secondary' };
   if (score >= 40) return { label: 'Moderado', variant: 'outline' };
