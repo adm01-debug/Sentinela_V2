@@ -131,7 +131,7 @@ export function useServerPagination(options: UsePaginationOptions = {}) {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const goToPage = useCallback((newPage) => {
+  const goToPage = useCallback((newPage: number) => {
     setPage(Math.max(1, Math.min(newPage, totalPages || 1)));
   }, [totalPages]);
 
