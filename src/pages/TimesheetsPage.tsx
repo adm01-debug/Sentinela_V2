@@ -69,7 +69,7 @@ function TimesheetsPage() {
 
       // Group by employee
       const byEmployee: Record<string, { total: number; breaks: number }> = {};
-      (entries || []).forEach((e: any) => {
+      (entries || []).forEach((e) => {
         if (!byEmployee[e.employee_id]) byEmployee[e.employee_id] = { total: 0, breaks: 0 };
         byEmployee[e.employee_id].total += (e.duration_minutes || 0);
         byEmployee[e.employee_id].breaks += (e.break_minutes || 0);
