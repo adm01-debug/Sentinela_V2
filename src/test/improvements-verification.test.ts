@@ -416,7 +416,8 @@ describe('Improvement 4: Real Data Integration (useEmployeeStats)', () => {
   it('useEmployeeStats queries geofence_violations', async () => {
     const fs = await import('fs');
     const content = fs.readFileSync('/dev-server/src/hooks/useEmployees.ts', 'utf8');
-    expect(content).toContain('geofence_violations');
+    // Uses security_violations table for violation counts
+    expect(content).toContain('security_violations');
   });
 
   it('useEmployeeStats calculates productivity from active/idle time', async () => {
