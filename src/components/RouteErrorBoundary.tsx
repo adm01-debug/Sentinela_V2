@@ -24,7 +24,7 @@ export class RouteErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
-    errorTracker.capture(error, {
+    captureError(error, {
       component: errorInfo.componentStack?.slice(0, 500) || 'unknown',
       severity: 'error',
     });
