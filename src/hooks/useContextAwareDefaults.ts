@@ -12,7 +12,7 @@ export interface UseContextAwareDefaultsOptions<T> {
   storageKey?: string;
 }
 
-export function useContextAwareDefaults<T extends Record<string, any>>(options: UseContextAwareDefaultsOptions<T>) {
+export function useContextAwareDefaults<T extends Record<string, unknown>>(options: UseContextAwareDefaultsOptions<T>) {
   const { baseDefaults, rules, storageKey } = options;
   const [userOverrides, setUserOverrides] = useState<Partial<T>>(() => {
     if (storageKey && typeof window !== 'undefined') {

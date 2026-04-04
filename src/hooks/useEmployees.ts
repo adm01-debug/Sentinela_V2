@@ -78,7 +78,61 @@ export const useEmployee = (id: string) => {
 export const useEmployeeStats = (id: string, startDate: string, endDate: string) => {
   return useQuery({
     queryKey: ['employee-stats', id, startDate, endDate],
-    queryFn: async () => ({ productivity: 0, activeDays: 0, violations: 0 }),
+    queryFn: async () => {
+      // Get activity data (keystroke logs as proxy for active days)
+      const { data: keystrokeLogs, error: klError } = await supabase
+        .from('keystroke_logs')
+        .select('recorded_at, keystrokes_count, active_time_seconds, idle_time_seconds')
+        .eq('employee_name', id)
+        .gte('recorded_at', startDate)
+        .lte('recorded_at', endDate);
+
+      // Get violations
+      const { count: violationCount, error: vError } = await supabase
+        .from('security_violations')
+        .select('id', { count: 'exact', head: true })
+        .eq('employee_name', id)
+        .gte('created_at', startDate)
+        .lte('created_at', endDate);
+
+      // Get attendance records
+      const { data: attendance, error: aError } = await supabase
+        .from('attendance_records')
+        .select('total_worked_minutes, status')
+        .eq('employee_id', id)
+        .gte('date', startDate)
+        .lte('date', endDate);
+
+      // Calculate productivity from keystroke data
+      const logs = keystrokeLogs || [];
+      const totalActive = logs.reduce((sum, l) => sum + (l.active_time_seconds || 0), 0);
+      const totalIdle = logs.reduce((sum, l) => sum + (l.idle_time_seconds || 0), 0);
+      const totalTime = totalActive + totalIdle;
+      const productivity = totalTime > 0 ? Math.round((totalActive / totalTime) * 100) : 0;
+
+      // Count unique active days
+      const activeDays = new Set(
+        logs.map(l => l.recorded_at?.split('T')[0]).filter(Boolean)
+      ).size;
+
+      const violations = violationCount ?? 0;
+
+      // Attendance stats
+      const attendanceRecords = attendance || [];
+      const totalWorkedMinutes = attendanceRecords.reduce((sum, r) => sum + (r.total_worked_minutes || 0), 0);
+      const avgHoursPerDay = attendanceRecords.length > 0 
+        ? Math.round((totalWorkedMinutes / attendanceRecords.length / 60) * 10) / 10 
+        : 0;
+
+      return {
+        productivity,
+        activeDays,
+        violations,
+        totalKeystrokes: logs.reduce((sum, l) => sum + (l.keystrokes_count || 0), 0),
+        avgHoursPerDay,
+        presentDays: attendanceRecords.filter(r => r.status === 'present').length,
+      };
+    },
     enabled: !!id && !!startDate && !!endDate,
   });
 };

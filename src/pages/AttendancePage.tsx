@@ -64,7 +64,7 @@ function AttendancePage() {
   });
 
   // Combine sources
-  const allRecords = records.length > 0 ? records : timeEntries.map((te: any) => ({
+  const allRecords = records.length > 0 ? records : timeEntries.map((te) => ({
     id: `te-${te.employee_id}-${te.clock_in}`,
     employee_id: te.employee_id,
     date: format(new Date(te.clock_in), 'yyyy-MM-dd'),
@@ -78,7 +78,7 @@ function AttendancePage() {
     employees: te.employees,
   }));
 
-  const filtered = allRecords.filter((r: any) => {
+  const filtered = allRecords.filter((r) => {
     const matchSearch = r.employees?.name?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = statusFilter === 'all' || r.status === statusFilter;
     return matchSearch !== false && matchStatus;
@@ -86,13 +86,13 @@ function AttendancePage() {
 
   const stats = {
     total: allRecords.length,
-    present: allRecords.filter((r: any) => r.status === 'present').length,
-    late: allRecords.filter((r: any) => r.status === 'late' || (r.late_minutes || 0) > 0).length,
-    absent: allRecords.filter((r: any) => r.status === 'absent').length,
+    present: allRecords.filter((r) => r.status === 'present').length,
+    late: allRecords.filter((r) => r.status === 'late' || (r.late_minutes || 0) > 0).length,
+    absent: allRecords.filter((r) => r.status === 'absent').length,
     avgHours: allRecords.length > 0
-      ? Math.round(allRecords.reduce((sum: number, r: any) => sum + (r.total_worked_minutes || 0), 0) / allRecords.length / 60 * 10) / 10
+      ? Math.round(allRecords.reduce((sum: number, r) => sum + (r.total_worked_minutes || 0), 0) / allRecords.length / 60 * 10) / 10
       : 0,
-    totalOvertime: Math.round(allRecords.reduce((sum: number, r: any) => sum + (r.overtime_minutes || 0), 0) / 60),
+    totalOvertime: Math.round(allRecords.reduce((sum: number, r) => sum + (r.overtime_minutes || 0), 0) / 60),
   };
 
   const presenceRate = stats.total > 0 ? Math.round((stats.present / stats.total) * 100) : 0;
@@ -160,7 +160,7 @@ function AttendancePage() {
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Carregando...</TableCell></TableRow>
               ) : filtered.length === 0 ? (
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Nenhum registro encontrado</TableCell></TableRow>
-              ) : filtered.slice(0, 100).map((record: any) => {
+              ) : filtered.slice(0, 100).map((record) => {
                 const cfg = statusConfig[record.status] || statusConfig.present;
                 const workedHours = Math.round((record.total_worked_minutes || 0) / 60 * 10) / 10;
                 return (

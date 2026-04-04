@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useWebhooks, type Webhook } from '@/hooks/useWebhooks';
+import { useWebhooks, useCreateWebhook, useUpdateWebhook, useDeleteWebhook, useTestWebhook, type Webhook } from '@/hooks/useWebhooks';
 
 // ============================================================
 // TYPES
@@ -43,14 +43,27 @@ const initialFormData: WebhookFormData = {
 // ============================================================
 
 export function useWebhooksPage() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const webhooksResult = useWebhooks() as Record<string, any>;
-  const webhooks = webhooksResult.webhooks || webhooksResult.data || [];
-  const loading = webhooksResult.loading || webhooksResult.isLoading || false;
-  const createWebhook = webhooksResult.createWebhook || (async () => {});
-  const updateWebhook = webhooksResult.updateWebhook || (async () => {});
-  const deleteWebhook = webhooksResult.deleteWebhook || (async () => {});
-  const testWebhook = webhooksResult.testWebhook || (async () => {});
+  const { data: webhooks = [], isLoading: loading } = useWebhooks();
+  const createWebhookMutation = useCreateWebhook();
+  const updateWebhookMutation = useUpdateWebhook();
+  const deleteWebhookMutation = useDeleteWebhook();
+  const testWebhookMutation = useTestWebhook();
+
+  const createWebhook = useCallback(async (input: { name: string; url: string; secret?: string; events: string[]; is_active?: boolean }) => {
+    await createWebhookMutation.mutateAsync(input);
+  }, [createWebhookMutation]);
+
+  const updateWebhook = useCallback(async (input: { id: string; name?: string; url?: string; secret?: string; events?: string[]; is_active?: boolean }) => {
+    await updateWebhookMutation.mutateAsync(input);
+  }, [updateWebhookMutation]);
+
+  const deleteWebhook = useCallback(async (id: string) => {
+    await deleteWebhookMutation.mutateAsync(id);
+  }, [deleteWebhookMutation]);
+
+  const testWebhook = useCallback(async (id: string) => {
+    await testWebhookMutation.mutateAsync(id);
+  }, [testWebhookMutation]);
 
   // Search & Filters
   const [searchTerm, setSearchTerm] = useState('');
@@ -104,11 +117,9 @@ export function useWebhooksPage() {
     await createWebhook({
       name: formData.name.trim(),
       url: formData.url.trim(),
-      secret: formData.secret.trim() || null,
+      secret: formData.secret.trim() || undefined,
       events: formData.events,
       is_active: formData.is_active,
-      retry_count: formData.retry_count,
-      timeout_seconds: formData.timeout_seconds,
     });
 
     resetForm();
@@ -118,14 +129,13 @@ export function useWebhooksPage() {
   const handleUpdate = useCallback(async () => {
     if (!selectedWebhook || !formData.name.trim() || !formData.url.trim()) return;
 
-    await updateWebhook(selectedWebhook.id, {
+    await updateWebhook({
+      id: selectedWebhook.id,
       name: formData.name.trim(),
       url: formData.url.trim(),
-      secret: formData.secret.trim() || null,
+      secret: formData.secret.trim() || undefined,
       events: formData.events,
       is_active: formData.is_active,
-      retry_count: formData.retry_count,
-      timeout_seconds: formData.timeout_seconds,
     });
 
     resetForm();
@@ -147,8 +157,8 @@ export function useWebhooksPage() {
     setTestResult(null);
 
     try {
-      const result = await testWebhook(selectedWebhook.id);
-      setTestResult({ success: result.success, message: result.message || 'Teste realizado com sucesso' });
+      await testWebhook(selectedWebhook.id);
+      setTestResult({ success: true, message: 'Teste realizado com sucesso' });
     } catch (error) {
       setTestResult({ success: false, message: 'Erro ao testar webhook' });
     } finally {
@@ -157,7 +167,7 @@ export function useWebhooksPage() {
   }, [selectedWebhook, testWebhook]);
 
   const handleToggleActive = useCallback(async (webhook: Webhook) => {
-    await updateWebhook(webhook.id, { is_active: !webhook.is_active });
+    await updateWebhook({ id: webhook.id, is_active: !webhook.is_active });
   }, [updateWebhook]);
 
   // Event toggle

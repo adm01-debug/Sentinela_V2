@@ -106,13 +106,13 @@ function TimeClockPage() {
       queryClient.invalidateQueries({ queryKey: ['active-time-entries'] });
       toast({ title: 'Clock-in realizado com sucesso!' });
     },
-    onError: (err: any) => toast({ title: 'Erro ao fazer clock-in', description: err.message, variant: 'destructive' }),
+    onError: (err: Error) => toast({ title: 'Erro ao fazer clock-in', description: err.message, variant: 'destructive' }),
   });
 
   // Clock out mutation
   const clockOut = useMutation({
     mutationFn: async (employeeId: string) => {
-      const activeEntry = activeEntries.find((e: any) => e.employee_id === employeeId);
+      const activeEntry = activeEntries.find((e) => e.employee_id === employeeId);
       if (activeEntry) {
         const duration = differenceInMinutes(new Date(), new Date(activeEntry.clock_in));
         const { error } = await supabase.from('time_entries').update({
@@ -137,7 +137,7 @@ function TimeClockPage() {
       queryClient.invalidateQueries({ queryKey: ['active-time-entries'] });
       toast({ title: 'Clock-out realizado com sucesso!' });
     },
-    onError: (err: any) => toast({ title: 'Erro ao fazer clock-out', description: err.message, variant: 'destructive' }),
+    onError: (err: Error) => toast({ title: 'Erro ao fazer clock-out', description: err.message, variant: 'destructive' }),
   });
 
   // Realtime subscription for status changes
@@ -162,7 +162,7 @@ function TimeClockPage() {
       currentTask: statusRow?.current_task,
       currentProject: statusRow?.current_project,
       lastActivity: statusRow?.last_activity_at,
-      isClockedIn: activeEntries.some((e: any) => e.employee_id === emp.id),
+      isClockedIn: activeEntries.some((e) => e.employee_id === emp.id),
     };
   });
 

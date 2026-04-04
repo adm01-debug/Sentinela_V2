@@ -4,7 +4,7 @@ import { Activity } from 'lucide-react';
 
 interface ActivityChartProps { data: Array<{ date: string; value: number }>; title?: string; }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) => {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border bg-popover p-3 shadow-md">
