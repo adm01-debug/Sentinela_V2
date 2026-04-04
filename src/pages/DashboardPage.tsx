@@ -134,8 +134,10 @@ export const DashboardPage = () => {
   const alertsCount = stats?.alertsCount || 3;
 
   return (
+    <PageTransition>
     <div className="space-y-6">
-      {/* Header */}
+      {/* Welcome Banner */}
+      <WelcomeBanner />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
