@@ -63,8 +63,8 @@ const recentActivities = [
 ];
 
 const severityStyles = {
-  critical: 'bg-destructive/10 text-destructive border-destructive/20',
-  high: 'bg-warning/10 text-warning border-warning/20',
+  critical: 'bg-destructive/15 text-destructive border-destructive/30 shadow-sm shadow-destructive/10',
+  high: 'bg-warning/15 text-warning border-warning/30',
   medium: 'bg-info/10 text-info border-info/20',
   low: 'bg-muted text-muted-foreground border-border',
 };
