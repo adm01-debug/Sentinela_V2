@@ -186,7 +186,7 @@ function ProjectsPage() {
         {/* Projects list */}
         <div className="space-y-3">
           <h2 className="font-semibold text-lg">Projetos ({filteredProjects.length})</h2>
-          {isLoading ? <p className="text-muted-foreground">Carregando...</p> : filteredProjects.map((project: any) => {
+          {isLoading ? <p className="text-muted-foreground">Carregando...</p> : filteredProjects.map((project) => {
             const hours = getProjectHours(project.id);
             const isSelected = selectedProject === project.id;
             return (
