@@ -9,8 +9,10 @@ import { useUIStore } from '@/stores/uiStore';
 import { cn } from '@/utils/cn';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { CommandPalette } from '@/components/CommandPalette';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export const MainLayout = () => {
+  useDocumentTitle();
   const { sidebarCollapsed } = useUIStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
