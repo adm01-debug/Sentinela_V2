@@ -2,7 +2,7 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { errorTracker } from '@/lib/errorTracker';
+import { captureError } from '@/lib/errorTracker';
 
 interface Props {
   children: ReactNode;
