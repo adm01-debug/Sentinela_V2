@@ -249,9 +249,11 @@ function EmployeeTableComponent({
 
   if (employees.length === 0) {
     return (
-      <div className="text-center py-12 text-muted-foreground">
-        <p>{t('employees.noEmployees')}</p>
-      </div>
+      <CreateFirstEmptyState
+        itemName="funcionário"
+        onCreate={() => {/* handled by parent */}}
+        size="lg"
+      />
     );
   }
 
