@@ -145,7 +145,7 @@ export function useUpdateTeam() {
         .from('teams')
         .update(input)
         .eq('id', id)
-        .select(`*, leader:employees!teams_leader_id_fkey(id, full_name)`)
+        .select('*')
         .single();
 
       if (error) throw error;
