@@ -26,7 +26,7 @@ export function useSessionActivity(options: UseSessionActivityOptions = {}) {
     sessionStorage.setItem(persistKey, JSON.stringify(events));
   }, [events, persistKey]);
 
-  const logEvent = useCallback((type: SessionEvent['type'], description: string, metadata?: Record<string, unknown>) => {
+  const logEvent = useCallback((type: SessionEvent['type'], description: string, metadata?: Record<string, string | number | boolean>) => {
     const event: SessionEvent = { id: crypto.randomUUID(), type, timestamp: new Date(), description, metadata };
     setEvents(prev => [event, ...prev].slice(0, maxEvents));
     return event;
