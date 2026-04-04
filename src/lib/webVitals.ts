@@ -96,8 +96,8 @@ export function getNavigationTiming(): Record<string, number> | null {
     ttfb: Math.round(nav.responseStart - nav.requestStart),
     download: Math.round(nav.responseEnd - nav.responseStart),
     domParse: Math.round(nav.domInteractive - nav.responseEnd),
-    domReady: Math.round(nav.domContentLoadedEventEnd - nav.navigationStart),
-    load: Math.round(nav.loadEventEnd - nav.navigationStart),
+    domReady: Math.round(nav.domContentLoadedEventEnd - nav.fetchStart),
+    load: Math.round(nav.loadEventEnd - nav.fetchStart),
   };
 }
 
