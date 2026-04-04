@@ -236,18 +236,18 @@ export function useWorkSchedulesPage() {
   const openEditScheduleDialog = useCallback((schedule: WorkSchedule) => {
     setSelectedSchedule(schedule);
     setScheduleForm({
-      name: schedule.name,
+      name: schedule.name ?? '',
       description: schedule.description || '',
-      work_days: schedule.work_days,
-      start_time: schedule.start_time,
-      end_time: schedule.end_time,
+      work_days: schedule.work_days ?? [1, 2, 3, 4, 5],
+      start_time: schedule.start_time ?? '09:00',
+      end_time: schedule.end_time ?? '18:00',
       break_start: schedule.break_start || '',
       break_end: schedule.break_end || '',
-      flexible_start: schedule.flexible_start,
-      flexible_minutes: schedule.flexible_minutes,
-      overtime_allowed: schedule.overtime_allowed,
-      overtime_requires_approval: schedule.overtime_requires_approval,
-      block_outside_hours: schedule.block_outside_hours,
+      flexible_start: schedule.flexible_start ?? false,
+      flexible_minutes: schedule.flexible_minutes ?? 15,
+      overtime_allowed: schedule.overtime_allowed ?? false,
+      overtime_requires_approval: schedule.overtime_requires_approval ?? false,
+      block_outside_hours: schedule.block_outside_hours ?? false,
     });
     setIsScheduleDialogOpen(true);
   }, []);
