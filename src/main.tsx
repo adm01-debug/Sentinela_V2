@@ -6,10 +6,12 @@ import { initWebVitals } from './lib/webVitals';
 import { applySecurityHeaders } from './lib/securityHeaders';
 import { initErrorTracking } from './lib/errorTracker';
 import { initPerformanceMonitoring } from './lib/performanceBudget';
+import { injectStructuredData } from './lib/structuredData';
 
-// Apply security headers before rendering
+// Apply security headers and SEO before rendering
 applySecurityHeaders();
 initPerformanceMonitoring();
+injectStructuredData();
 
 const rootEl = document.getElementById('root');
 if (!rootEl) throw new Error('Root element not found');
