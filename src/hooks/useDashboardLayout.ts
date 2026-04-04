@@ -94,7 +94,7 @@ export function useDashboardLayout() {
     },
   });
 
-  const toggleWidget = useCallback((widgetId: string) => {
+  const toggleWidget = useCallback((widgetId) => {
     const currentWidgets = localWidgets || widgets;
     const newWidgets = currentWidgets.map(w =>
       w.id === widgetId ? { ...w, visible: !w.visible } : w

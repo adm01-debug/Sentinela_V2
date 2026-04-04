@@ -277,7 +277,7 @@ export function ActivityFeed({
     return groups;
   }, [activities, typeFilter, groupByDate]);
 
-  const toggleGroup = (key: string) => {
+  const toggleGroup = (key) => {
     setExpandedGroups((prev) => ({
       ...prev,
       [key]: !prev[key],

@@ -45,14 +45,14 @@ export function EmployeeViolationsRanking() {
       .slice(0, 10);
   }, [violations]);
 
-  const getRankIcon = (index: number) => {
+  const getRankIcon = (index) => {
     if (index === 0) return <Trophy className="h-5 w-5 text-yellow-500" />;
     if (index === 1) return <Medal className="h-5 w-5 text-gray-400" />;
     if (index === 2) return <Award className="h-5 w-5 text-amber-600" />;
     return <span className="w-5 text-center text-sm text-muted-foreground">{index + 1}</span>;
   };
 
-  const getInitials = (name: string) => {
+  const getInitials = (name) => {
     return name
       .split(' ')
       .map((n) => n[0])

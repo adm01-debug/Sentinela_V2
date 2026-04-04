@@ -69,7 +69,7 @@ export function useInternetAccessPage() {
         .order('employee_name');
       if (error) throw error;
       // Map to expected interface
-      return (data || []).map((item: any) => ({
+      return (data || []).map((item) => ({
         id: item.id,
         name: `Regra - ${item.employee_name}`,
         description: item.notes || '',
@@ -115,7 +115,7 @@ export function useInternetAccessPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('internet_access_rules').delete().eq('id', id);
       if (error) throw error;
     },

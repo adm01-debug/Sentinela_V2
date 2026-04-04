@@ -1,3 +1,3 @@
 export const generateUUID = (): string => crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
-export const randomBytes = (length: number): string => Array.from(crypto.getRandomValues(new Uint8Array(length))).map(b => b.toString(16).padStart(2, '0')).join('');
-export const randomString = (length: number): string => { const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join(''); };
+export const randomBytes = (length): string => Array.from(crypto.getRandomValues(new Uint8Array(length))).map(b => b.toString(16).padStart(2, '0')).join('');
+export const randomString = (length): string => { const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join(''); };

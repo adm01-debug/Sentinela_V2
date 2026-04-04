@@ -24,12 +24,12 @@ export interface UsePaginationReturn<T> {
   paginatedData: T[];
   
   // Navegação
-  goToPage: (page: number) => void;
+  goToPage: (page) => void;
   nextPage: () => void;
   prevPage: () => void;
   firstPage: () => void;
   lastPage: () => void;
-  setPageSize: (size: number) => void;
+  setPageSize: (size) => void;
   
   // Info
   startIndex: number;
@@ -74,7 +74,7 @@ export function usePagination<T>(
     return data.slice(startIndex, endIndex);
   }, [data, startIndex, endIndex]);
 
-  const goToPage = useCallback((newPage: any) => {
+  const goToPage = useCallback((newPage) => {
     setPage(Math.max(1, Math.min(newPage, totalPages)));
   }, [totalPages]);
 
@@ -89,7 +89,7 @@ export function usePagination<T>(
   const firstPage = useCallback(() => setPage(1), []);
   const lastPage = useCallback(() => setPage(totalPages), [totalPages]);
 
-  const setPageSize = useCallback((size: number) => {
+  const setPageSize = useCallback((size) => {
     setPageSizeState(size);
     setPage(1); // Reset para primeira página
   }, []);
@@ -131,7 +131,7 @@ export function useServerPagination(options: UsePaginationOptions = {}) {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const goToPage = useCallback((newPage: any) => {
+  const goToPage = useCallback((newPage) => {
     setPage(Math.max(1, Math.min(newPage, totalPages || 1)));
   }, [totalPages]);
 
@@ -143,12 +143,12 @@ export function useServerPagination(options: UsePaginationOptions = {}) {
     if (page > 1) setPage(page - 1);
   }, [page]);
 
-  const setPageSize = useCallback((size: number) => {
+  const setPageSize = useCallback((size) => {
     setPageSizeState(size);
     setPage(1);
   }, []);
 
-  const setTotalItems = useCallback((count: number) => {
+  const setTotalItems = useCallback((count) => {
     setTotal(count);
   }, []);
 

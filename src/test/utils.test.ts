@@ -9,7 +9,7 @@ import { describe, it, expect } from 'vitest';
 
 describe('Data Validation', () => {
   describe('Email Validation', () => {
-    const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     it('should accept valid emails', () => {
       expect(isValidEmail('user@example.com')).toBe(true);
@@ -27,7 +27,7 @@ describe('Data Validation', () => {
   });
 
   describe('Password Strength', () => {
-    const isStrongPassword = (pwd: string) =>
+    const isStrongPassword = (pwd) =>
       pwd.length >= 8 && /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && /[0-9]/.test(pwd);
 
     it('should accept strong passwords', () => {
@@ -44,7 +44,7 @@ describe('Data Validation', () => {
   });
 
   describe('IP Address Validation', () => {
-    const isValidIP = (ip: string) => /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) && ip.split('.').every(n => parseInt(n) <= 255);
+    const isValidIP = (ip) => /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) && ip.split('.').every(n => parseInt(n) <= 255);
 
     it('should accept valid IPs', () => {
       expect(isValidIP('192.168.1.1')).toBe(true);
@@ -60,7 +60,7 @@ describe('Data Validation', () => {
   });
 
   describe('MAC Address Validation', () => {
-    const isValidMAC = (mac: string) => /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/.test(mac);
+    const isValidMAC = (mac) => /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/.test(mac);
 
     it('should accept valid MACs', () => {
       expect(isValidMAC('00:1B:44:11:3A:B7')).toBe(true);
@@ -96,7 +96,7 @@ describe('Date Utilities', () => {
   });
 
   it('should detect work hours', () => {
-    const isWorkHour = (hour: number) => hour >= 9 && hour < 18;
+    const isWorkHour = (hour) => hour >= 9 && hour < 18;
     expect(isWorkHour(10)).toBe(true);
     expect(isWorkHour(20)).toBe(false);
     expect(isWorkHour(8)).toBe(false);

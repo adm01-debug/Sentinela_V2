@@ -21,11 +21,11 @@ export function randomString(length: number, charset?: string): string {
   return result;
 }
 
-export function randomHex(length: number): string {
+export function randomHex(length): string {
   return randomString(length, '0123456789abcdef');
 }
 
-export function randomAlphanumeric(length: number): string {
+export function randomAlphanumeric(length): string {
   return randomString(length, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
 }
 

@@ -56,7 +56,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
   // SELECTION HANDLERS
   // ============================================================
 
-  const toggleSelection = useCallback((id: string) => {
+  const toggleSelection = useCallback((id) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
@@ -99,7 +99,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
     setSelectAll(false);
   }, []);
 
-  const isSelected = useCallback((id: string) => selectedIds.has(id), [selectedIds]);
+  const isSelected = useCallback((id) => selectedIds.has(id), [selectedIds]);
 
   // ============================================================
   // BULK DELETE MUTATION
@@ -134,7 +134,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
           result.success = ids;
         }
       } else {
-        result.success = (data ?? []).map((d: any) => d.id);
+        result.success = (data ?? []).map((d) => d.id);
       }
 
       return result;
@@ -179,7 +179,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       if (error) {
         ids.forEach((id) => result.failed.push({ id, error: error.message }));
       } else {
-        result.success = (data ?? []).map((d: any) => d.id);
+        result.success = (data ?? []).map((d) => d.id);
       }
 
       return result;
@@ -216,7 +216,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         return { success: [], failed: ids.map((id) => ({ id, error: error.message })), total: ids.length };
       }
 
-      return { success: (data ?? []).map((d: any) => d.id), failed: [], total: ids.length };
+      return { success: (data ?? []).map((d) => d.id), failed: [], total: ids.length };
     },
     onSuccess: (result) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
@@ -250,7 +250,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         return { success: [], failed: ids.map((id) => ({ id, error: error.message })), total: ids.length };
       }
 
-      return { success: (data ?? []).map((d: any) => d.id), failed: [], total: ids.length };
+      return { success: (data ?? []).map((d) => d.id), failed: [], total: ids.length };
     },
     onSuccess: (result) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
@@ -285,7 +285,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       }
 
       // Criar cópias (removendo id, created_at, updated_at)
-      const copies = originals.map((item: any) => {
+      const copies = originals.map((item) => {
         const { id, created_at, updated_at, ...rest } = item as Record<string, unknown>;
         return {
           ...rest,
@@ -303,7 +303,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         return { success: [], failed: ids.map((id) => ({ id, error: error.message })), total: ids.length };
       }
 
-      return { success: (data ?? []).map((d: any) => d.id), failed: [], total: ids.length };
+      return { success: (data ?? []).map((d) => d.id), failed: [], total: ids.length };
     },
     onSuccess: (result) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });

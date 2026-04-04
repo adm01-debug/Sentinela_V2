@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-export function usePaste(onPaste?: (text: string) => void) {
+export function usePaste(onPaste?: (text) => void) {
   const [pastedText, setPastedText] = useState<string | null>(null);
 
   const handlePaste = useCallback((e: ClipboardEvent) => {

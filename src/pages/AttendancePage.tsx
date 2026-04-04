@@ -68,7 +68,7 @@ function AttendancePage() {
     },
   });
 
-  const allRecords = records.length > 0 ? records : timeEntries.map((te: any) => ({
+  const allRecords = records.length > 0 ? records : timeEntries.map((te) => ({
     id: `te-${te.employee_id}-${te.clock_in}`,
     employee_id: te.employee_id,
     date: format(new Date(te.clock_in), 'yyyy-MM-dd'),
@@ -82,7 +82,7 @@ function AttendancePage() {
     employees: te.employees,
   }));
 
-  const filtered = allRecords.filter((r: any) => {
+  const filtered = allRecords.filter((r) => {
     const matchSearch = r.employees?.name?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = statusFilter === 'all' || r.status === statusFilter;
     return matchSearch !== false && matchStatus;
@@ -90,9 +90,9 @@ function AttendancePage() {
 
   const stats = {
     total: allRecords.length,
-    present: allRecords.filter((r: any) => r.status === 'present').length,
-    late: allRecords.filter((r: any) => r.status === 'late' || (r.late_minutes || 0) > 0).length,
-    absent: allRecords.filter((r: any) => r.status === 'absent').length,
+    present: allRecords.filter((r) => r.status === 'present').length,
+    late: allRecords.filter((r) => r.status === 'late' || (r.late_minutes || 0) > 0).length,
+    absent: allRecords.filter((r) => r.status === 'absent').length,
     avgHours: allRecords.length > 0
       ? Math.round(allRecords.reduce((sum: number, r: any) => sum + (r.total_worked_minutes || 0), 0) / allRecords.length / 60 * 10) / 10
       : 0,
@@ -106,12 +106,12 @@ function AttendancePage() {
     const days = eachDayOfInterval({ start, end });
     return days.map(day => {
       const dayStr = format(day, 'yyyy-MM-dd');
-      const dayRecords = allRecords.filter((r: any) => r.date === dayStr);
+      const dayRecords = allRecords.filter((r) => r.date === dayStr);
       return {
         date: format(day, 'dd/MM', { locale: ptBR }),
-        presentes: dayRecords.filter((r: any) => r.status === 'present').length,
-        ausentes: dayRecords.filter((r: any) => r.status === 'absent').length,
-        atrasados: dayRecords.filter((r: any) => r.status === 'late' || (r.late_minutes || 0) > 0).length,
+        presentes: dayRecords.filter((r) => r.status === 'present').length,
+        ausentes: dayRecords.filter((r) => r.status === 'absent').length,
+        atrasados: dayRecords.filter((r) => r.status === 'late' || (r.late_minutes || 0) > 0).length,
       };
     }).slice(-14); // Last 14 days
   }, [allRecords, start, end]);
@@ -126,7 +126,7 @@ function AttendancePage() {
   // Hours distribution
   const hoursData = useMemo(() => {
     const buckets: Record<string, number> = { '< 4h': 0, '4-6h': 0, '6-8h': 0, '8-10h': 0, '> 10h': 0 };
-    allRecords.forEach((r: any) => {
+    allRecords.forEach((r) => {
       const h = (r.total_worked_minutes || 0) / 60;
       if (h < 4) buckets['< 4h']++;
       else if (h < 6) buckets['4-6h']++;
@@ -268,7 +268,7 @@ function AttendancePage() {
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Carregando...</TableCell></TableRow>
               ) : filtered.length === 0 ? (
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Nenhum registro encontrado</TableCell></TableRow>
-              ) : filtered.slice(0, 100).map((record: any) => {
+              ) : filtered.slice(0, 100).map((record) => {
                 const cfg = statusConfig[record.status] || statusConfig.present;
                 const workedHours = Math.round((record.total_worked_minutes || 0) / 60 * 10) / 10;
                 return (

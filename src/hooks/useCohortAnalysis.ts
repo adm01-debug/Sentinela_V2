@@ -24,7 +24,7 @@ export function useCohortAnalysis() {
     setRetentionMatrix(matrix);
   }, [cohorts]);
 
-  const getAverageRetention = useCallback((periodIndex: number) => {
+  const getAverageRetention = useCallback((periodIndex) => {
     const values = retentionMatrix.map(row => row[periodIndex]).filter(v => v !== undefined);
     return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0;
   }, [retentionMatrix]);

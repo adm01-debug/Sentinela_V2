@@ -519,7 +519,7 @@ describe('useDebounce', () => {
 describe('Auth Utilities', () => {
 
   // Create a valid JWT-like token
-  const createToken = (payload: any) => {
+  const createToken = (payload) => {
     const header = btoa(JSON.stringify({ alg: 'HS256' }));
     const body = btoa(JSON.stringify(payload));
     return `${header}.${body}.signature`;
@@ -605,7 +605,7 @@ describe('Data Transformations', () => {
   });
 
   describe('Time Formatting', () => {
-    const formatSeconds = (s: string) => {
+    const formatSeconds = (s) => {
       const h = Math.floor(s / 3600);
       const m = Math.floor((s % 3600) / 60);
       return `${h}h ${m}m`;

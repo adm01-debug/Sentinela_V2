@@ -72,7 +72,7 @@ export function deepMerge<T extends Record<string, unknown>>(
   return deepMerge(result, ...sources);
 }
 
-function isObject(item: any): item is Record<string, unknown> {
+function isObject(item): item is Record<string, unknown> {
   return item !== null && typeof item === 'object' && !Array.isArray(item);
 }
 

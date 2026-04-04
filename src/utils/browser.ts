@@ -52,7 +52,7 @@ export function isServer(): boolean {
   return !isBrowser();
 }
 
-export function supportsFeature(feature: string): boolean {
+export function supportsFeature(feature): boolean {
   const features: Record<string, () => boolean> = {
     webgl: () => !!document.createElement('canvas').getContext('webgl'),
     webgl2: () => !!document.createElement('canvas').getContext('webgl2'),
@@ -106,7 +106,7 @@ export function scrollToElement(element: HTMLElement, offset = 0): void {
   scrollTo({ top: rect.top + getScrollPosition().y - offset });
 }
 
-export function copyToClipboard(text: string): Promise<boolean> {
+export function copyToClipboard(text): Promise<boolean> {
   if (navigator.clipboard) {
     return navigator.clipboard.writeText(text).then(() => true).catch(() => false);
   }
@@ -121,7 +121,7 @@ export function copyToClipboard(text: string): Promise<boolean> {
   return Promise.resolve(success);
 }
 
-export function openInNewTab(url: string): void {
+export function openInNewTab(url): void {
   window.open(url, '_blank', 'noopener,noreferrer');
 }
 

@@ -1,5 +1,5 @@
-export const isEmail = (value: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-export const isCPF = (cpf: string): boolean => {
+export const isEmail = (value): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+export const isCPF = (cpf): boolean => {
   const clean = cpf.replace(/\D/g, '');
   if (clean.length !== 11 || /^(\d)+$/.test(clean)) return false;
   let sum = 0, rest;
@@ -13,10 +13,10 @@ export const isCPF = (cpf: string): boolean => {
   if (rest === 10 || rest === 11) rest = 0;
   return rest === parseInt(clean[10]);
 };
-export const isCNPJ = (cnpj: string): boolean => {
+export const isCNPJ = (cnpj): boolean => {
   const clean = cnpj.replace(/\D/g, '');
   return clean.length === 14 && !/^(\d)+$/.test(clean);
 };
-export const isPhone = (phone: string): boolean => /^\+?[\d\s()-]{10,}$/.test(phone);
-export const isURL = (url: string): boolean => { try { new URL(url); return true; } catch { return false; } };
-export const isStrongPassword = (pwd: string): boolean => pwd.length >= 8 && /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && /\d/.test(pwd);
+export const isPhone = (phone): boolean => /^\+?[\d\s()-]{10,}$/.test(phone);
+export const isURL = (url): boolean => { try { new URL(url); return true; } catch { return false; } };
+export const isStrongPassword = (pwd): boolean => pwd.length >= 8 && /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && /\d/.test(pwd);

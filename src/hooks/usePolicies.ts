@@ -23,7 +23,7 @@ export function usePolicies() {
         .order('created_at', { ascending: false });
       if (error) throw error;
 
-      return (data ?? []).map((row: any): Policy => ({
+      return (data ?? []).map((row): Policy => ({
         id: row.id,
         name: row.name,
         description: row.description,
@@ -36,7 +36,7 @@ export function usePolicies() {
   });
 
   const toggleMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const policy = (query.data ?? []).find(p => p.id === id);
       if (!policy) throw new Error('Policy not found');
       const { error } = await supabase
@@ -48,9 +48,9 @@ export function usePolicies() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['security-policies'] }),
   });
 
-  const toggle = useCallback((id: string) => toggleMutation.mutate(id), [toggleMutation]);
+  const toggle = useCallback((id) => toggleMutation.mutate(id), [toggleMutation]);
 
-  const remove = useCallback(async (id: string) => {
+  const remove = useCallback(async (id) => {
     const { error } = await supabase.from('security_policies').delete().eq('id', id);
     if (error) throw error;
     queryClient.invalidateQueries({ queryKey: ['security-policies'] });

@@ -48,7 +48,7 @@ export function useReportsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => { const { error } = await supabase.from('reports').delete().eq('id', id); if (error) throw error; },
+    mutationFn: async (id) => { const { error } = await supabase.from('reports').delete().eq('id', id); if (error) throw error; },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: queryKeys.reports.all }); toast({ title: 'Relatório removido' }); },
   });
 
@@ -57,8 +57,8 @@ export function useReportsPage() {
     stats, typeFilter, isGenerateOpen, selectedType, isLoading: reportsQuery.isLoading,
     setTypeFilter, setIsGenerateOpen, setSelectedType,
     handleGenerate: useCallback(() => generateMutation.mutate(selectedType), [generateMutation, selectedType]),
-    handleDelete: useCallback((id: string) => deleteMutation.mutate(id), [deleteMutation]),
-    handleDownload: useCallback((url: string) => window.open(url, '_blank'), []),
+    handleDelete: useCallback((id) => deleteMutation.mutate(id), [deleteMutation]),
+    handleDownload: useCallback((url) => window.open(url, '_blank'), []),
     isGenerating: generateMutation.isPending,
   };
 }

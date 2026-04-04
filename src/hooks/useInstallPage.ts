@@ -38,7 +38,7 @@ export function useInstallPage() {
     }
   };
 
-  const copyToClipboard = async (text: string) => {
+  const copyToClipboard = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);

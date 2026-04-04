@@ -19,7 +19,7 @@ interface RealtimeViolation extends SecurityViolation {
 
 interface ViolationsRealtimeTableProps {
   violations: RealtimeViolation[];
-  onMarkAsRead: (id: string) => void;
+  onMarkAsRead: (id) => void;
 }
 
 const severityConfig = {

@@ -65,7 +65,7 @@ function logError(message: string, err: any, context?: string) {
 }
 
 /** Create a scoped logger for a specific module/component */
-function createLogger(context: string) {
+function createLogger(context) {
   return {
     debug: (msg: string, ...args: unknown[]) => log('debug', msg, context, ...args),
     info:  (msg: string, ...args: unknown[]) => log('info', msg, context, ...args),

@@ -35,7 +35,7 @@ export function hasClass(element: Element, className: string): boolean {
   return element.classList.contains(className);
 }
 
-export function getElement<T extends HTMLElement = HTMLElement>(id: string): T | null {
+export function getElement<T extends HTMLElement = HTMLElement>(id): T | null {
   return document.getElementById(id) as T | null;
 }
 

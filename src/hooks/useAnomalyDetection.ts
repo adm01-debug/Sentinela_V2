@@ -53,7 +53,7 @@ export function useAnomalyDetection(options: UseAnomalyDetectionOptions = {}) {
     }
   }, [entityType, threshold]);
 
-  const dismissAnomaly = useCallback((id: string) => {
+  const dismissAnomaly = useCallback((id) => {
     setAnomalies(prev => prev.filter(a => a.id !== id));
   }, []);
 

@@ -5,7 +5,7 @@ export function useStep(maxStep: any, initialStep = 0) {
 
   const next = useCallback(() => setStep(s => Math.min(s + 1, maxStep)), [maxStep]);
   const prev = useCallback(() => setStep(s => Math.max(s - 1, 0)), []);
-  const goTo = useCallback((s: string) => setStep(Math.max(0, Math.min(s, maxStep))), [maxStep]);
+  const goTo = useCallback((s) => setStep(Math.max(0, Math.min(s, maxStep))), [maxStep]);
   const reset = useCallback(() => setStep(initialStep), [initialStep]);
 
   return { step, next, prev, goTo, reset, isFirst: step === 0, isLast: step === maxStep };

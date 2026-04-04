@@ -105,7 +105,7 @@ export function useAgentKeysPage() {
 
   // Revoke key mutation
   const revokeMutation = useMutation({
-    mutationFn: async (keyId: string) => {
+    mutationFn: async (keyId) => {
       const { error } = await supabase
         .from('agent_keys')
         .update({ is_active: false })
@@ -124,7 +124,7 @@ export function useAgentKeysPage() {
 
   // Reactivate key mutation
   const reactivateMutation = useMutation({
-    mutationFn: async (keyId: string) => {
+    mutationFn: async (keyId) => {
       const { error } = await supabase
         .from('agent_keys')
         .update({ is_active: true })
@@ -142,7 +142,7 @@ export function useAgentKeysPage() {
 
   // Delete key mutation
   const deleteMutation = useMutation({
-    mutationFn: async (keyId: string) => {
+    mutationFn: async (keyId) => {
       const { error } = await supabase
         .from('agent_keys')
         .delete()
@@ -160,11 +160,11 @@ export function useAgentKeysPage() {
   });
 
   // Handlers
-  const handleSearchChange = useCallback((value: string) => {
+  const handleSearchChange = useCallback((value) => {
     setSearch(value);
   }, []);
 
-  const handleStatusFilterChange = useCallback((value: string) => {
+  const handleStatusFilterChange = useCallback((value) => {
     setStatusFilter(value);
   }, []);
 
@@ -190,19 +190,19 @@ export function useAgentKeysPage() {
     setSelectedKey(null);
   }, []);
 
-  const handleRevokeKey = useCallback((keyId: string) => {
+  const handleRevokeKey = useCallback((keyId) => {
     revokeMutation.mutate(keyId);
   }, [revokeMutation]);
 
-  const handleReactivateKey = useCallback((keyId: string) => {
+  const handleReactivateKey = useCallback((keyId) => {
     reactivateMutation.mutate(keyId);
   }, [reactivateMutation]);
 
-  const handleDeleteKey = useCallback((keyId: string) => {
+  const handleDeleteKey = useCallback((keyId) => {
     deleteMutation.mutate(keyId);
   }, [deleteMutation]);
 
-  const handleCopyKey = useCallback((agentKey: string) => {
+  const handleCopyKey = useCallback((agentKey) => {
     navigator.clipboard.writeText(agentKey);
     toast({ title: 'Chave copiada para a área de transferência' });
   }, [toast]);

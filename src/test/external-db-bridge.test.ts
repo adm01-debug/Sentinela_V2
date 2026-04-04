@@ -410,7 +410,7 @@ describe('External DB Bridge - Suite Completa', () => {
 
     it('3.08 - multiple sequential emits', async () => {
       const mockInsert = vi.fn().mockResolvedValue({ error: null });
-      const makePayload = (sev: string): TelemetryPayload => ({
+      const makePayload = (sev): TelemetryPayload => ({
         operation: 'query', table_name: 'employees', rpc_name: null,
         duration_ms: 5000, record_count: 10, query_limit: null,
         query_offset: null, count_mode: null, severity: sev,

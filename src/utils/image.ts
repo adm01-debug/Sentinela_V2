@@ -5,7 +5,7 @@ export interface ImageDimensions {
   height: number;
 }
 
-export async function getImageDimensions(src: string): Promise<ImageDimensions> {
+export async function getImageDimensions(src): Promise<ImageDimensions> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve({ width: img.width, height: img.height });
@@ -14,7 +14,7 @@ export async function getImageDimensions(src: string): Promise<ImageDimensions> 
   });
 }
 
-export async function loadImage(src: string): Promise<HTMLImageElement> {
+export async function loadImage(src): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);

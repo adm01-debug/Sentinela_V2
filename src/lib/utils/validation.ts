@@ -3,7 +3,7 @@
 /**
  * Check if string is valid email
  */
-export function isValidEmail(email: string): boolean {
+export function isValidEmail(email): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
@@ -11,7 +11,7 @@ export function isValidEmail(email: string): boolean {
 /**
  * Check if string is valid URL
  */
-export function isValidUrl(url: string): boolean {
+export function isValidUrl(url): boolean {
   try {
     new URL(url);
     return true;
@@ -23,7 +23,7 @@ export function isValidUrl(url: string): boolean {
 /**
  * Check if string is valid UUID
  */
-export function isValidUUID(uuid: string): boolean {
+export function isValidUUID(uuid): boolean {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   return uuidRegex.test(uuid);
 }

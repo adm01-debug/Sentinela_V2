@@ -1,7 +1,7 @@
 type Task<T> = () => Promise<T>;
 
 export class AsyncQueue {
-  private queue: Array<{ task: Task<unknown>; resolve: (v: number) => void; reject: (e: any) => void }> = [];
+  private queue: Array<{ task: Task<unknown>; resolve: (v) => void; reject: (e) => void }> = [];
   private running = 0;
   private concurrency: number;
 
@@ -9,7 +9,7 @@ export class AsyncQueue {
 
   async add<T>(task: Task<T>): Promise<T> {
     return new Promise((resolve, reject) => {
-      this.queue.push({ task, resolve: resolve as (v: number) => void, reject });
+      this.queue.push({ task, resolve: resolve as (v) => void, reject });
       this.process();
     });
   }

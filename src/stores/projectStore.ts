@@ -15,7 +15,7 @@ interface ProjectState {
   setProjects: (projects: Project[]) => void;
   addProject: (project: Project) => void;
   updateProject: (id: string, data: Partial<Project>) => void;
-  removeProject: (id: string) => void;
+  removeProject: (id) => void;
   setCurrentProject: (project: Project | null) => void;
   setFilters: (filters: Partial<ProjectFilters>) => void;
   clearFilters: () => void;
@@ -94,11 +94,11 @@ export const useProjectStore = create<ProjectState>()(
 );
 
 // Selectors
-export const selectProjectById = (id: string) => (state: ProjectState) =>
+export const selectProjectById = (id) => (state: ProjectState) =>
   state.projects.find((p) => p.id === id);
 
 export const selectActiveProjects = (state: ProjectState) =>
   state.projects.filter((p) => p.status === 'active');
 
-export const selectProjectsByTeam = (teamId: string) => (state: ProjectState) =>
+export const selectProjectsByTeam = (teamId) => (state: ProjectState) =>
   state.projects.filter((p) => p.teamId === teamId);

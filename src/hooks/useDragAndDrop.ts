@@ -4,11 +4,11 @@ export function useDragAndDrop<T>(initialItems: T[]) {
   const [items, setItems] = useState(initialItems);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
 
-  const handleDragStart = useCallback((index: number) => {
+  const handleDragStart = useCallback((index) => {
     setDragIndex(index);
   }, []);
 
-  const handleDragOver = useCallback((index: number) => {
+  const handleDragOver = useCallback((index) => {
     if (dragIndex === null || dragIndex === index) return;
     
     setItems(prev => {

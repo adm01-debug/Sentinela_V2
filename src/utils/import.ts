@@ -1,4 +1,4 @@
-export const parseCSV = <T extends Record<string, string>>(csv: string): T[] => {
+export const parseCSV = <T extends Record<string, string>>(csv): T[] => {
   const lines = csv.trim().split('\n');
   if (lines.length < 2) return [];
   const headers = lines[0].split(',').map(h => h.trim());
@@ -7,4 +7,4 @@ export const parseCSV = <T extends Record<string, string>>(csv: string): T[] => 
     return headers.reduce((obj, header, i) => ({ ...obj, [header]: values[i]?.trim() || '' }), {} as T);
   });
 };
-export const parseJSON = <T>(json: string): T | null => { try { return JSON.parse(json); } catch { return null; } };
+export const parseJSON = <T>(json): T | null => { try { return JSON.parse(json); } catch { return null; } };

@@ -11,11 +11,11 @@ export function useShifts() {
     return shift;
   }, []);
 
-  const remove = useCallback((id: string) => {
+  const remove = useCallback((id) => {
     setShifts(prev => prev.filter(s => s.id !== id));
   }, []);
 
-  const getByEmployee = useCallback((employeeId: string) => {
+  const getByEmployee = useCallback((employeeId) => {
     return shifts.filter(s => s.employeeId === employeeId);
   }, [shifts]);
 

@@ -72,7 +72,7 @@ export default function AIAnalysisPage() {
           <SelectTrigger className="w-[200px]"><SelectValue placeholder="Funcionário" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
-            {employees.map((e: any) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}
+            {employees.map((e) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={analysisType} onValueChange={setAnalysisType}>

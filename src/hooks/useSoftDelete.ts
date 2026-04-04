@@ -24,11 +24,11 @@ export interface SoftDeleteOptions {
 }
 
 export interface SoftDeleteResult {
-  softDelete: (id: string) => void;
+  softDelete: (id) => void;
   softDeleteMany: (ids: string[]) => void;
-  restore: (id: string) => void;
+  restore: (id) => void;
   restoreMany: (ids: string[]) => void;
-  hardDelete: (id: string) => void;
+  hardDelete: (id) => void;
   hardDeleteMany: (ids: string[]) => void;
   isDeleting: boolean;
   isRestoring: boolean;
@@ -59,7 +59,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const softDeleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       if (!isSupabaseReady) {
         logger.info('[SoftDelete] Mock: deletando', id);
         return;
@@ -132,7 +132,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const restoreMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       if (!isSupabaseReady) {
         logger.info('[SoftDelete] Mock: restaurando', id);
         return;
@@ -205,7 +205,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const hardDeleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       if (!isSupabaseReady) {
         logger.info('[SoftDelete] Mock: deletando permanentemente', id);
         return;

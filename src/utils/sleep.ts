@@ -1,6 +1,6 @@
 // Sleep/Delay utilities for Sentinela v17
 
-export function sleep(ms: number): Promise<void> {
+export function sleep(ms): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 

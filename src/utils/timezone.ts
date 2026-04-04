@@ -18,7 +18,7 @@ export function getTimezoneOffset(timezone?: string): number {
   return (tzDate.getTime() - utcDate.getTime()) / (60 * 1000);
 }
 
-export function formatTimezoneOffset(offsetMinutes: any): string {
+export function formatTimezoneOffset(offsetMinutes): string {
   const sign = offsetMinutes >= 0 ? '+' : '-';
   const hours = Math.floor(Math.abs(offsetMinutes) / 60);
   const minutes = Math.abs(offsetMinutes) % 60;
@@ -80,7 +80,7 @@ export function getAllTimezones(): string[] {
   return Intl.supportedValuesOf('timeZone');
 }
 
-export function isValidTimezone(timezone: string): boolean {
+export function isValidTimezone(timezone): boolean {
   try {
     Intl.DateTimeFormat(undefined, { timeZone: timezone });
     return true;

@@ -73,7 +73,7 @@ describe('LGPD Compliance', () => {
   });
 
   it('should mask email for display', () => {
-    const maskEmail = (email: string) => {
+    const maskEmail = (email) => {
       const [user, domain] = email.split('@');
       return `${user[0]}${'*'.repeat(Math.max(user.length - 2, 1))}${user.slice(-1)}@${domain}`;
     };
@@ -82,7 +82,7 @@ describe('LGPD Compliance', () => {
   });
 
   it('should mask phone numbers', () => {
-    const maskPhone = (phone: string) => phone.replace(/(\d{2})\d+(\d{2})/, '$1*****$2');
+    const maskPhone = (phone) => phone.replace(/(\d{2})\d+(\d{2})/, '$1*****$2');
     expect(maskPhone('11987654321')).toBe('11*****21');
   });
 
@@ -97,7 +97,7 @@ describe('LGPD Compliance', () => {
   });
 
   it('should anonymize IP addresses', () => {
-    const anonymizeIP = (ip: string) => ip.replace(/\.\d+$/, '.0');
+    const anonymizeIP = (ip) => ip.replace(/\.\d+$/, '.0');
     expect(anonymizeIP('192.168.1.100')).toBe('192.168.1.0');
     expect(anonymizeIP('10.0.0.255')).toBe('10.0.0.0');
   });
@@ -149,7 +149,7 @@ describe('Date & Timezone Handling', () => {
   });
 
   it('should format relative time', () => {
-    const formatRelative = (seconds: number) => {
+    const formatRelative = (seconds) => {
       if (seconds < 60) return 'agora';
       if (seconds < 3600) return `${Math.floor(seconds / 60)}min`;
       if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
@@ -175,7 +175,7 @@ describe('Date & Timezone Handling', () => {
 // ============================================================
 describe('Error Resilience', () => {
   it('should handle network timeout gracefully', async () => {
-    const fetchWithTimeout = async (ms: number) => {
+    const fetchWithTimeout = async (ms) => {
       return new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), ms));
     };
     await expect(fetchWithTimeout(1)).rejects.toThrow('Timeout');
@@ -183,7 +183,7 @@ describe('Error Resilience', () => {
 
   it('should retry failed operations', async () => {
     let attempts = 0;
-    const retryFn = async (maxRetries: any) => {
+    const retryFn = async (maxRetries) => {
       attempts++;
       if (attempts < maxRetries) throw new Error('Fail');
       return 'success';
@@ -199,7 +199,7 @@ describe('Error Resilience', () => {
   });
 
   it('should handle JSON parse errors', () => {
-    const safeParse = (str: string) => { try { return JSON.parse(str); } catch { return null; } };
+    const safeParse = (str) => { try { return JSON.parse(str); } catch { return null; } };
     expect(safeParse('{"valid": true}')).toEqual({ valid: true });
     expect(safeParse('not json')).toBeNull();
     expect(safeParse('')).toBeNull();
@@ -207,7 +207,7 @@ describe('Error Resilience', () => {
   });
 
   it('should handle circular reference detection', () => {
-    const hasCircular = (obj: any) => {
+    const hasCircular = (obj) => {
       try { JSON.stringify(obj); return false; } catch { return true; }
     };
     const a: any = {};
@@ -243,7 +243,7 @@ describe('Notification Settings', () => {
   });
 
   it('should validate email recipients', () => {
-    const isValid = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     expect(isValid('admin@company.com')).toBe(true);
     expect(isValid('bad-email')).toBe(false);
     expect(isValid('')).toBe(false);
@@ -271,7 +271,7 @@ describe('Application Categorization', () => {
     neutral: ['Chrome', 'Firefox', 'File Explorer', 'Calculator', 'Notepad'],
   };
 
-  const categorize = (app: string) => {
+  const categorize = (app) => {
     for (const [cat, apps] of Object.entries(categories)) {
       if (apps.includes(app)) return cat;
     }
@@ -295,7 +295,7 @@ describe('Application Categorization', () => {
 // GAMIFICATION SCORING
 // ============================================================
 describe('Gamification Scoring', () => {
-  const calculateLevel = (points: any) => {
+  const calculateLevel = (points) => {
     if (points >= 1000) return 5;
     if (points >= 500) return 4;
     if (points >= 200) return 3;

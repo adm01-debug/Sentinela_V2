@@ -161,7 +161,7 @@ export function useSecurity() {
   // SANITIZATION
   // ============================================================
 
-  const sanitizeInput = useCallback((input: string): string => {
+  const sanitizeInput = useCallback((input): string => {
     return input
       .replace(/[<>]/g, '') // Remove HTML brackets
       .replace(/javascript:/gi, '') // Remove javascript protocol
@@ -169,7 +169,7 @@ export function useSecurity() {
       .trim();
   }, []);
 
-  const sanitizeHTML = useCallback((html: string): string => {
+  const sanitizeHTML = useCallback((html): string => {
     const div = document.createElement('div');
     div.textContent = html;
     return div.innerHTML;
@@ -206,7 +206,7 @@ export function isSecureContext(): boolean {
 /**
  * Validate password strength
  */
-export function validatePasswordStrength(password: string): {
+export function validatePasswordStrength(password): {
   isValid: boolean;
   score: number;
   errors: string[];
@@ -250,7 +250,7 @@ export function generateSecureRandom(length = 32): string {
 /**
  * Hash sensitive data (client-side, for non-critical operations)
  */
-export async function hashData(data: string): Promise<string> {
+export async function hashData(data): Promise<string> {
   const encoder = new TextEncoder();
   const dataBuffer = encoder.encode(data);
   const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);

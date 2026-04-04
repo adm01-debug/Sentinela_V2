@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 type Status = "idle" | "loading" | "ready" | "error";
 
-export function useScript(src: string) {
+export function useScript(src) {
   const [status, setStatus] = useState<Status>(src ? "loading" : "idle");
 
   useEffect(() => {

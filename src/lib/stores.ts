@@ -43,7 +43,7 @@ interface GlobalFiltersState {
   setEmployeeFilter: (employeeId: string | null) => void;
   setTeamFilter: (teamId: string | null) => void;
   setStatusFilter: (status: string | null) => void;
-  setSearchTerm: (term: string) => void;
+  setSearchTerm: (term) => void;
   clearAllFilters: () => void;
 }
 
@@ -91,9 +91,9 @@ interface NotificationsState {
   notifications: Notification[];
   unreadCount: number;
   addNotification: (notification: Omit<Notification, 'id' | 'read' | 'createdAt'>) => void;
-  markAsRead: (id: string) => void;
+  markAsRead: (id) => void;
   markAllAsRead: () => void;
-  removeNotification: (id: string) => void;
+  removeNotification: (id) => void;
   clearAll: () => void;
 }
 
@@ -159,10 +159,10 @@ interface UserPreferencesState {
   refreshInterval: number; // seconds
   defaultView: 'grid' | 'list';
   setTheme: (theme: 'light' | 'dark' | 'system') => void;
-  setLanguage: (language: string) => void;
+  setLanguage: (language) => void;
   setCompactMode: (compact: boolean) => void;
   setAutoRefresh: (enabled: boolean) => void;
-  setRefreshInterval: (interval: any) => void;
+  setRefreshInterval: (interval) => void;
   setDefaultView: (view: 'grid' | 'list') => void;
 }
 
@@ -219,7 +219,7 @@ export const useAuthStateStore = create<AuthStateStore>()((set) => ({
 interface DashboardLayoutState {
   visibleWidgets: string[];
   widgetOrder: string[];
-  toggleWidget: (widgetId: string) => void;
+  toggleWidget: (widgetId) => void;
   reorderWidgets: (newOrder: string[]) => void;
   resetLayout: () => void;
 }

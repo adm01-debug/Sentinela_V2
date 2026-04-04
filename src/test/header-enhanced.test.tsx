@@ -11,7 +11,7 @@ vi.mock('react-router-dom', () => ({
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
+    t: (key) => {
       const translations: Record<string, string> = {
         'header.openNavMenu': 'Open navigation menu',
         'header.toggleSidebar': 'Toggle sidebar',

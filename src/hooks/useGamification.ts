@@ -72,7 +72,7 @@ async function fetchBadges(): Promise<Badge[]> {
   return data || [];
 }
 
-async function fetchEmployeeBadges(employeeId: string): Promise<EmployeeBadge[]> {
+async function fetchEmployeeBadges(employeeId): Promise<EmployeeBadge[]> {
   const { data, error } = await supabase
     .from('employee_badges')
     .select(`
@@ -86,7 +86,7 @@ async function fetchEmployeeBadges(employeeId: string): Promise<EmployeeBadge[]>
   return data || [];
 }
 
-async function fetchEmployeePoints(employeeId: string): Promise<EmployeePoints | null> {
+async function fetchEmployeePoints(employeeId): Promise<EmployeePoints | null> {
   const { data, error } = await supabase
     .from('employee_points')
     .select('*')
@@ -356,17 +356,17 @@ export function useAwardBadge() {
 // HELPER FUNCTIONS
 // ============================================================
 
-function calculateLevel(totalPoints: any): number {
+function calculateLevel(totalPoints): number {
   // Every 1000 points = 1 level
   return Math.floor(totalPoints / 1000) + 1;
 }
 
-export function getNextLevelPoints(currentPoints: any): number {
+export function getNextLevelPoints(currentPoints): number {
   const currentLevel = calculateLevel(currentPoints);
   return currentLevel * 1000;
 }
 
-export function getLevelProgress(currentPoints: any): number {
+export function getLevelProgress(currentPoints): number {
   const pointsInLevel = currentPoints % 1000;
   return (pointsInLevel / 1000) * 100;
 }

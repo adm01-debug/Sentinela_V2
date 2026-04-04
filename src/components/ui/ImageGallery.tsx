@@ -18,7 +18,7 @@ export function ImageGallery({ images, columns = 4, gap = 'md', className }: Ima
   const [lightboxOpen, setLightboxOpen] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  const openLightbox = (index: number) => {
+  const openLightbox = (index) => {
     setSelectedIndex(index);
     setLightboxOpen(true);
   };

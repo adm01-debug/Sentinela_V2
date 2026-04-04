@@ -57,11 +57,11 @@ export function useWebhooksPage() {
     await updateWebhookMutation.mutateAsync(input);
   }, [updateWebhookMutation]);
 
-  const deleteWebhook = useCallback(async (id: string) => {
+  const deleteWebhook = useCallback(async (id) => {
     await deleteWebhookMutation.mutateAsync(id);
   }, [deleteWebhookMutation]);
 
-  const testWebhook = useCallback(async (id: string) => {
+  const testWebhook = useCallback(async (id) => {
     await testWebhookMutation.mutateAsync(id);
   }, [testWebhookMutation]);
 
@@ -171,7 +171,7 @@ export function useWebhooksPage() {
   }, [updateWebhook]);
 
   // Event toggle
-  const toggleEvent = useCallback((event: string) => {
+  const toggleEvent = useCallback((event) => {
     setFormData(prev => ({
       ...prev,
       events: prev.events.includes(event)

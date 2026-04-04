@@ -42,24 +42,24 @@ export const formatCurrency = (amount: number, currency = 'BRL'): string =>
 export const formatPercent = (value: number, decimals = 1): string =>
   formatNumber(value / 100, { style: 'percent', minimumFractionDigits: decimals });
 
-export const formatCompact = (num: number): string =>
+export const formatCompact = (num): string =>
   formatNumber(num, { notation: 'compact', maximumFractionDigits: 1 });
 
 // String Formatters
-export const capitalize = (str: string): string =>
+export const capitalize = (str): string =>
   str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
-export const titleCase = (str: string): string =>
+export const titleCase = (str): string =>
   str.split(' ').map(capitalize).join(' ');
 
 export const truncate = (str: string, length: number, suffix = '...'): string =>
   str.length > length ? str.slice(0, length - suffix.length) + suffix : str;
 
-export const slugify = (str: string): string =>
+export const slugify = (str): string =>
   str.toLowerCase().replace(/[^\w]+/g, '-').replace(/^-+|-+$/g, '');
 
 // File Size Formatter
-export const formatFileSize = (bytes: any): string => {
+export const formatFileSize = (bytes): string => {
   if (bytes === 0) return '0 B';
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -68,7 +68,7 @@ export const formatFileSize = (bytes: any): string => {
 };
 
 // Phone Formatter (BR)
-export const formatPhone = (phone: string): string => {
+export const formatPhone = (phone): string => {
   const cleaned = phone.replace(/\D/g, '');
   if (cleaned.length === 11) return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '(\$1) \$2-\$3');
   if (cleaned.length === 10) return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '(\$1) \$2-\$3');
@@ -76,8 +76,8 @@ export const formatPhone = (phone: string): string => {
 };
 
 // CPF/CNPJ Formatter
-export const formatCPF = (cpf: string): string =>
+export const formatCPF = (cpf): string =>
   cpf.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '\$1.\$2.\$3-\$4');
 
-export const formatCNPJ = (cnpj: string): string =>
+export const formatCNPJ = (cnpj): string =>
   cnpj.replace(/\D/g, '').replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '\$1.\$2.\$3/\$4-\$5');

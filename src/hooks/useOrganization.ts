@@ -11,14 +11,14 @@ export function useOrganization() {
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const load = useCallback(async (id: string) => {
+  const load = useCallback(async (id) => {
     setLoading(true);
     const org: Organization = { id, name: "Organization", slug: "org", members: [] };
     setOrganization(org);
     setLoading(false);
   }, []);
 
-  const addMember = useCallback((memberId: string) => {
+  const addMember = useCallback((memberId) => {
     setOrganization(org => org ? { ...org, members: [...org.members, memberId] } : null);
   }, []);
 

@@ -89,7 +89,7 @@ export function useDataExportPage() {
   }, [toast]);
 
   // Cancel export - local
-  const handleCancelExportInternal = useCallback((jobId: string) => {
+  const handleCancelExportInternal = useCallback((jobId) => {
     setExports(prev => prev.map(job => 
       job.id === jobId 
         ? { ...job, status: 'failed' as const, error_message: 'Cancelado pelo usuário' }
@@ -99,7 +99,7 @@ export function useDataExportPage() {
   }, [toast]);
 
   // Delete export - local
-  const handleDeleteExportInternal = useCallback((jobId: string) => {
+  const handleDeleteExportInternal = useCallback((jobId) => {
     setExports(prev => prev.filter(job => job.id !== jobId));
     toast({ title: 'Exportação removida' });
   }, [toast]);
@@ -135,15 +135,15 @@ export function useDataExportPage() {
     });
   }, [handleStartExportInternal, selectedType, selectedFormat, dateRange]);
 
-  const handleCancelExport = useCallback((jobId: string) => {
+  const handleCancelExport = useCallback((jobId) => {
     handleCancelExportInternal(jobId);
   }, [handleCancelExportInternal]);
 
-  const handleDeleteExport = useCallback((jobId: string) => {
+  const handleDeleteExport = useCallback((jobId) => {
     handleDeleteExportInternal(jobId);
   }, [handleDeleteExportInternal]);
 
-  const handleDownload = useCallback((url: string) => {
+  const handleDownload = useCallback((url) => {
     window.open(url, '_blank');
   }, []);
 

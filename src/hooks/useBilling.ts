@@ -59,7 +59,7 @@ export function useBilling() {
     await companyQuery.refetch();
   }, [companyQuery]);
 
-  const subscribeToPlan = useCallback(async (_planId: string) => {
+  const subscribeToPlan = useCallback(async (_planId) => {
     // Billing gateway integration placeholder - would integrate with Stripe/etc
     logger.info('[Billing] Subscribe to plan:', _planId);
   }, []);

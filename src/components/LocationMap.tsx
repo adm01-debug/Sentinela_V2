@@ -11,7 +11,7 @@ interface LocationMapProps {
     latitude: number;
     longitude: number;
   }>;
-  onLocationSelect?: (locationId: string) => void;
+  onLocationSelect?: (locationId) => void;
   className?: string;
 }
 

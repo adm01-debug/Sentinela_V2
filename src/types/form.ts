@@ -58,7 +58,7 @@ export interface FieldValidation {
   patternMessage?: string;
   email?: boolean;
   url?: boolean;
-  custom?: (value: number) => string | undefined;
+  custom?: (value) => string | undefined;
 }
 
 export interface FieldOption {

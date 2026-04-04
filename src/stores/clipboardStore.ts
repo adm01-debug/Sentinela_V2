@@ -22,12 +22,12 @@ interface ClipboardState {
   copy: (type: ClipboardItemType, data: any, source?: string) => Promise<string>;
   paste: () => ClipboardItem | null;
   clear: () => void;
-  clearItem: (id: string) => void;
-  getItem: (id: string) => ClipboardItem | undefined;
+  clearItem: (id) => void;
+  getItem: (id) => ClipboardItem | undefined;
   hasItem: (type?: ClipboardItemType) => boolean;
-  copyToSystemClipboard: (text: string) => Promise<boolean>;
+  copyToSystemClipboard: (text) => Promise<boolean>;
   readFromSystemClipboard: () => Promise<string | null>;
-  setMaxItems: (max: number) => void;
+  setMaxItems: (max) => void;
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 9);

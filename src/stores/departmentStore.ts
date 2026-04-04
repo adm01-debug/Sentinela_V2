@@ -16,12 +16,12 @@ interface DepartmentState {
 
 interface DepartmentActions {
   fetchDepartments: (filters?: DepartmentFilters) => Promise<void>;
-  fetchDepartment: (id: string) => Promise<void>;
+  fetchDepartment: (id) => Promise<void>;
   fetchHierarchy: () => Promise<void>;
   fetchStats: () => Promise<void>;
   createDepartment: (data: { name: string; description?: string }) => Promise<Department>;
   updateDepartment: (id: string, data: Partial<Department>) => Promise<Department>;
-  deleteDepartment: (id: string) => Promise<void>;
+  deleteDepartment: (id) => Promise<void>;
   setFilters: (filters: DepartmentFilters) => void;
   setCurrentDepartment: (department: Department | null) => void;
   clearError: () => void;
@@ -48,7 +48,7 @@ export const useDepartmentStore = create<DepartmentState & DepartmentActions>()(
           // Departments are derived from employees table department column
           const { data, error } = await supabase.from('employees').select('department').not('department', 'is', null);
           if (error) throw error;
-          const unique = [...new Set((data || []).map((e: any) => e.department).filter(Boolean))];
+          const unique = [...new Set((data || []).map((e) => e.department).filter(Boolean))];
           const depts = unique.map((name, i) => ({ id: String(i), name: name! })) as unknown as Department[];
           set({ departments: depts, isLoading: false });
         } catch (error) {

@@ -22,7 +22,7 @@ export function useDataRetention(policies: RetentionPolicy[]) {
     localStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }));
   }, []);
 
-  const retrieve = useCallback((key: string) => {
+  const retrieve = useCallback((key) => {
     const stored = localStorage.getItem(key);
     if (!stored) return null;
     try {

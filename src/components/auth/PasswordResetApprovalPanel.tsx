@@ -44,7 +44,7 @@ import {
 import { formatDistanceToNow, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-function getStatusBadge(status: string) {
+function getStatusBadge(status) {
   switch (status) {
     case 'pending':
       return <Badge variant="secondary" className="gap-1"><Clock className="h-3 w-3" />Pendente</Badge>;
@@ -111,7 +111,7 @@ export function PasswordResetApprovalPanel() {
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id) => {
     deleteRequest(id, {
       onSuccess: () => setDeleteTarget(null),
     });

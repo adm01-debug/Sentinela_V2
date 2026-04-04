@@ -13,9 +13,9 @@ interface NotificationState {
   notifications: Notification[];
   unreadCount: number;
   addNotification: (notification: Omit<Notification, 'id' | 'read' | 'createdAt'>) => void;
-  markAsRead: (id: string) => void;
+  markAsRead: (id) => void;
   markAllAsRead: () => void;
-  removeNotification: (id: string) => void;
+  removeNotification: (id) => void;
   clearAll: () => void;
 }
 

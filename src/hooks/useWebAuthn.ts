@@ -14,7 +14,7 @@ function bufferToBase64(buffer: ArrayBuffer): string {
   return btoa(binary);
 }
 
-function base64ToBuffer(base64: string): ArrayBuffer {
+function base64ToBuffer(base64): ArrayBuffer {
   const binary = atob(base64);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
@@ -316,7 +316,7 @@ export function useWebAuthn() {
 
   // Delete a passkey
   const deletePasskeyMutation = useMutation({
-    mutationFn: async (credentialId: string) => {
+    mutationFn: async (credentialId) => {
       const { error } = await supabase
         .from('webauthn_credentials')
         .delete()

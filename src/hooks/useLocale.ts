@@ -9,7 +9,7 @@ export function useLocale(defaultLocale = "en") {
     document.documentElement.lang = locale;
   }, [locale]);
 
-  const setLocale = useCallback((newLocale: string) => {
+  const setLocale = useCallback((newLocale) => {
     setLocaleState(newLocale);
     localStorage.setItem("locale", newLocale);
   }, []);

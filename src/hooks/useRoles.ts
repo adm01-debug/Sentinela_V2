@@ -32,7 +32,7 @@ export function useRoles(userRoles: string[] = []) {
           .select('permission_id')
           .eq('role_id', role.id);
 
-        const permissionIds = (rolePerms ?? []).map((rp: any) => rp.permission_id);
+        const permissionIds = (rolePerms ?? []).map((rp) => rp.permission_id);
         let permissionNames: string[] = [];
 
         if (permissionIds.length > 0) {
@@ -40,7 +40,7 @@ export function useRoles(userRoles: string[] = []) {
             .from('permissions')
             .select('name')
             .in('id', permissionIds);
-          permissionNames = (perms ?? []).map((p: any) => p.name);
+          permissionNames = (perms ?? []).map((p) => p.name);
         }
 
         // Count users with this role
@@ -65,11 +65,11 @@ export function useRoles(userRoles: string[] = []) {
     staleTime: 60_000,
   });
 
-  const hasRole = useCallback((roleName: string) => {
+  const hasRole = useCallback((roleName) => {
     return userRoles.includes(roleName);
   }, [userRoles]);
 
-  const hasPermission = useCallback((permission: string) => {
+  const hasPermission = useCallback((permission) => {
     const roles = rolesQuery.data ?? [];
     return roles.some(r => userRoles.includes(r.name) && r.permissions.includes(permission));
   }, [rolesQuery.data, userRoles]);

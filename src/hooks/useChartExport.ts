@@ -46,7 +46,7 @@ export function useChartExport(options: UseChartExportOptions = {}) {
     setIsExporting(true);
     try {
       const headers = Object.keys(data[0]);
-      const csvContent = [headers.join(','), ...data.map((row: any) => headers.map(h => JSON.stringify(row[h] ?? '')).join(','))].join('\n');
+      const csvContent = [headers.join(','), ...data.map((row) => headers.map(h => JSON.stringify(row[h] ?? '')).join(','))].join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const link = document.createElement('a');
       link.download = `${customFilename || filename}.csv`;

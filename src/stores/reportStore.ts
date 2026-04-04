@@ -15,7 +15,7 @@ interface ReportState {
   isGenerating: boolean;
   addReport: (report: Report) => void;
   updateReport: (id: string, data: Partial<Report>) => void;
-  deleteReport: (id: string) => void;
+  deleteReport: (id) => void;
   setCurrentReport: (report: Report | null) => void;
   setGenerating: (generating: boolean) => void;
 }

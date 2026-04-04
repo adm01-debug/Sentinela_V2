@@ -50,7 +50,7 @@ export function useAIAnalysisPage() {
       const { data, error } = await query;
       if (error) throw error;
 
-      return (data || []).map((a: any) => ({
+      return (data || []).map((a) => ({
         id: a.id,
         employee_id: '',
         employee_name: a.employee_name || 'Desconhecido',

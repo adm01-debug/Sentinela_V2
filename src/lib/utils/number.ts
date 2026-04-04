@@ -55,7 +55,7 @@ export function formatBytes(bytes: any, decimals = 2): string {
 /**
  * Format duration in seconds to human readable
  */
-export function formatDuration(seconds: number): string {
+export function formatDuration(seconds): string {
   if (seconds < 0) return '0s';
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);

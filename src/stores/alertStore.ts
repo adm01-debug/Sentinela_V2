@@ -16,9 +16,9 @@ interface AlertState {
   unacknowledgedCount: number;
   filters: { severity: string; type: string };
   addAlert: (alert: Alert) => void;
-  acknowledgeAlert: (id: string) => void;
+  acknowledgeAlert: (id) => void;
   acknowledgeAll: () => void;
-  deleteAlert: (id: string) => void;
+  deleteAlert: (id) => void;
   setFilters: (filters: Partial<AlertState['filters']>) => void;
 }
 

@@ -137,7 +137,7 @@ export function IPWhitelistManager() {
     );
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id) => {
     deleteIP.mutate(id);
   };
 

@@ -77,7 +77,7 @@ export function useMessageTemplate(id: string | undefined) {
   });
 }
 
-export function useMessageTemplatesByType(type: string) {
+export function useMessageTemplatesByType(type) {
   return useQuery({
     queryKey: queryKeys.messageTemplates.byType(type),
     queryFn: async () => {
@@ -170,7 +170,7 @@ export function useDeleteMessageTemplate() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('message_templates')
         .delete()
@@ -232,7 +232,7 @@ export function useDuplicateMessageTemplate() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       // First get the template
       const { data: template, error: fetchError } = await supabase
         .from('message_templates')

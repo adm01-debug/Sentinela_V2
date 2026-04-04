@@ -16,8 +16,8 @@ interface UseSubscriptionReturn {
   subscription: Subscription | null;
   isLoading: boolean;
   error: string | null;
-  isPlan: (plan: string) => boolean;
-  hasFeature: (feature: string) => boolean;
+  isPlan: (plan) => boolean;
+  hasFeature: (feature) => boolean;
   isActive: boolean;
   refresh: () => Promise<void>;
 }
@@ -58,11 +58,11 @@ export function useSubscription(): UseSubscriptionReturn {
     fetchSubscription();
   }, [fetchSubscription]);
 
-  const isPlan = useCallback((plan: string): boolean => {
+  const isPlan = useCallback((plan): boolean => {
     return subscription?.plan === plan;
   }, [subscription]);
 
-  const hasFeature = useCallback((feature: string): boolean => {
+  const hasFeature = useCallback((feature): boolean => {
     return subscription?.features?.includes(feature) ?? false;
   }, [subscription]);
 

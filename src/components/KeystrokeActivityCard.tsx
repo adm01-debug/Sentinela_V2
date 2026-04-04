@@ -41,7 +41,7 @@ export function KeystrokeActivityCard() {
     }
   };
 
-  const formatTime = (seconds: number) => {
+  const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     if (hours > 0) return `${hours}h ${mins}m`;

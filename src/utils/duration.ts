@@ -34,7 +34,7 @@ export function toMilliseconds(duration: Duration): number {
   );
 }
 
-export function fromMilliseconds(ms: number): Duration {
+export function fromMilliseconds(ms): Duration {
   const absMs = Math.abs(ms);
   return {
     days: Math.floor(absMs / MS.day),
@@ -103,7 +103,7 @@ export function subtractDuration(date: Date, duration: Duration): Date {
   return new Date(date.getTime() - toMilliseconds(duration));
 }
 
-export function humanReadableDuration(seconds: number): string {
+export function humanReadableDuration(seconds): string {
   if (seconds < 60) return `${seconds}s`;
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
   const hours = Math.floor(seconds / 3600);
@@ -111,7 +111,7 @@ export function humanReadableDuration(seconds: number): string {
   return `${hours}h ${mins}m`;
 }
 
-export function parseIsoDuration(iso: string): Duration {
+export function parseIsoDuration(iso): Duration {
   const match = iso.match(/P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/);
   if (!match) return {};
   return {

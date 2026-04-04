@@ -97,15 +97,15 @@ export interface TableActions<T = unknown> {
   setSorting: (sorting: Sort[]) => void;
   toggleSort: (columnId: string, direction?: SortDirection) => void;
   setFilters: (filters: FilterGroup) => void;
-  setGlobalFilter: (filter: string) => void;
+  setGlobalFilter: (filter) => void;
   setPagination: (pagination: Partial<Pagination>) => void;
   setSelection: (selection: string[]) => void;
-  toggleRowSelection: (rowId: string) => void;
+  toggleRowSelection: (rowId) => void;
   toggleAllRowsSelection: () => void;
   setExpanded: (expanded: string[]) => void;
-  toggleRowExpanded: (rowId: string) => void;
+  toggleRowExpanded: (rowId) => void;
   setColumnVisibility: (visibility: Record<string, boolean>) => void;
-  toggleColumnVisibility: (columnId: string) => void;
+  toggleColumnVisibility: (columnId) => void;
   setColumnOrder: (order: string[]) => void;
   setColumnSizing: (sizing: Record<string, number>) => void;
   resetState: () => void;
@@ -116,7 +116,7 @@ export interface TableRef<T = unknown> {
   actions: TableActions<T>;
   getSelectedRows: () => T[];
   exportData: (format: 'csv' | 'xlsx' | 'json') => void;
-  scrollToRow: (rowId: string) => void;
+  scrollToRow: (rowId) => void;
   scrollToTop: () => void;
 }
 

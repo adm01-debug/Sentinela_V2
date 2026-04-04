@@ -32,7 +32,7 @@ export function useAudio(src?: string) {
 
   const toggle = useCallback(() => playing ? pause() : play(), [playing, play, pause]);
 
-  const seek = useCallback((time: number) => {
+  const seek = useCallback((time) => {
     if (audioRef.current) audioRef.current.currentTime = time;
   }, []);
 

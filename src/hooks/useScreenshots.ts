@@ -22,12 +22,12 @@ export const useScreenshots = (employeeId: string, date: string) => {
 export const useDeleteScreenshot = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (_id: string) => { return; },
+    mutationFn: async (_id) => { return; },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['screenshots'] }); },
   });
 };
 
-export const useScreenshot = (id: string) => {
+export const useScreenshot = (id) => {
   return useQuery({
     queryKey: ['screenshot', id],
     queryFn: async () => null as Screenshot | null,

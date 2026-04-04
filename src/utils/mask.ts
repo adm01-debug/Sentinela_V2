@@ -17,24 +17,24 @@ export function applyMask(value: string, mask: string): string {
   return result;
 }
 
-export function removeMask(value: string): string {
+export function removeMask(value): string {
   return value.replace(/\D/g, '');
 }
 
-export function maskCPF(value: string): string {
+export function maskCPF(value): string {
   return applyMask(value, '999.999.999-99');
 }
 
-export function maskCNPJ(value: string): string {
+export function maskCNPJ(value): string {
   return applyMask(value, '99.999.999/9999-99');
 }
 
-export function maskCPFCNPJ(value: string): string {
+export function maskCPFCNPJ(value): string {
   const digits = removeMask(value);
   return digits.length <= 11 ? maskCPF(value) : maskCNPJ(value);
 }
 
-export function maskPhone(value: string): string {
+export function maskPhone(value): string {
   const digits = removeMask(value);
   if (digits.length <= 10) {
     return applyMask(value, '(99) 9999-9999');
@@ -42,19 +42,19 @@ export function maskPhone(value: string): string {
   return applyMask(value, '(99) 99999-9999');
 }
 
-export function maskCEP(value: string): string {
+export function maskCEP(value): string {
   return applyMask(value, '99999-999');
 }
 
-export function maskDate(value: string): string {
+export function maskDate(value): string {
   return applyMask(value, '99/99/9999');
 }
 
-export function maskTime(value: string): string {
+export function maskTime(value): string {
   return applyMask(value, '99:99');
 }
 
-export function maskDateTime(value: string): string {
+export function maskDateTime(value): string {
   return applyMask(value, '99/99/9999 99:99');
 }
 
@@ -63,33 +63,33 @@ export function maskCurrency(value: string | number): string {
   return numValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-export function maskCreditCard(value: string): string {
+export function maskCreditCard(value): string {
   return applyMask(value, '9999 9999 9999 9999');
 }
 
-export function maskCreditCardExpiry(value: string): string {
+export function maskCreditCardExpiry(value): string {
   return applyMask(value, '99/99');
 }
 
-export function maskCVV(value: string): string {
+export function maskCVV(value): string {
   return applyMask(value, '999');
 }
 
-export function maskPercentage(value: string): string {
+export function maskPercentage(value): string {
   const num = parseFloat(removeMask(value));
   if (isNaN(num)) return '';
   return `${Math.min(100, Math.max(0, num))}%`;
 }
 
-export function maskUpperCase(value: string): string {
+export function maskUpperCase(value): string {
   return value.toUpperCase();
 }
 
-export function maskLowerCase(value: string): string {
+export function maskLowerCase(value): string {
   return value.toLowerCase();
 }
 
-export function maskCapitalize(value: string): string {
+export function maskCapitalize(value): string {
   return value
     .toLowerCase()
     .split(' ')
@@ -97,15 +97,15 @@ export function maskCapitalize(value: string): string {
     .join(' ');
 }
 
-export function maskEmail(value: string): string {
+export function maskEmail(value): string {
   return value.toLowerCase().replace(/[^a-z0-9@._-]/g, '');
 }
 
-export function maskAlphanumeric(value: string): string {
+export function maskAlphanumeric(value): string {
   return value.replace(/[^a-zA-Z0-9]/g, '');
 }
 
-export function maskNumeric(value: string): string {
+export function maskNumeric(value): string {
   return value.replace(/\D/g, '');
 }
 
@@ -115,12 +115,12 @@ export function maskDecimal(value: string, decimals = 2): string {
   return num.toFixed(decimals).replace('.', ',');
 }
 
-export function createCustomMask(pattern: string): (value: string) => string {
-  return (value: string) => applyMask(value, pattern);
+export function createCustomMask(pattern): (value) => string {
+  return (value) => applyMask(value, pattern);
 }
 
 // Validation helpers
-export function isValidCPF(cpf: string): boolean {
+export function isValidCPF(cpf): boolean {
   const digits = removeMask(cpf);
   if (digits.length !== 11 || /^(\d)+$/.test(digits)) return false;
   
@@ -137,7 +137,7 @@ export function isValidCPF(cpf: string): boolean {
   return check === parseInt(digits[10]);
 }
 
-export function isValidCNPJ(cnpj: string): boolean {
+export function isValidCNPJ(cnpj): boolean {
   const digits = removeMask(cnpj);
   if (digits.length !== 14 || /^(\d)+$/.test(digits)) return false;
   

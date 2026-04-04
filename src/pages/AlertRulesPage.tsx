@@ -25,7 +25,7 @@ export default function AlertRulesPage() {
   const rules = (rulesData || []) as AlertRule[];
 
   const deleteRule = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('application_rules').delete().eq('id', id);
       if (error) throw error;
     },
@@ -33,7 +33,7 @@ export default function AlertRulesPage() {
   });
 
   const toggleRule = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const rule = rules.find(r => r.id === id);
       if (!rule) return;
       const newStatus = rule.status === 'allowed' ? 'blocked' : 'allowed';

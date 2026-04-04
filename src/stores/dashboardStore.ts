@@ -5,10 +5,10 @@ interface DashboardState {
   layout: 'grid' | 'list';
   refreshInterval: number;
   addWidget: (widget: Widget) => void;
-  removeWidget: (id: string) => void;
+  removeWidget: (id) => void;
   updateWidget: (id: string, data: Partial<Widget>) => void;
   setLayout: (layout: 'grid' | 'list') => void;
-  setRefreshInterval: (interval: any) => void;
+  setRefreshInterval: (interval) => void;
 }
 export const useDashboardStore = create<DashboardState>()((set) => ({
   widgets: [],

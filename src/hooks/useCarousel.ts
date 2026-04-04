@@ -11,7 +11,7 @@ export function useCarousel<T>(items: T[], autoPlay = false, interval = 3000) {
     setCurrentIndex(i => (i - 1 + items.length) % items.length);
   }, [items.length]);
 
-  const goTo = useCallback((index: number) => {
+  const goTo = useCallback((index) => {
     setCurrentIndex(Math.max(0, Math.min(index, items.length - 1)));
   }, [items.length]);
 

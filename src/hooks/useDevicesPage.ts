@@ -90,7 +90,7 @@ export function useDevicesPage() {
 
   // Deactivate device mutation
   const deactivateMutation = useMutation({
-    mutationFn: async (deviceId: string) => {
+    mutationFn: async (deviceId) => {
       const { error } = await supabase
         .from('devices')
         .update({ is_active: false })
@@ -109,7 +109,7 @@ export function useDevicesPage() {
 
   // Reactivate device mutation
   const reactivateMutation = useMutation({
-    mutationFn: async (deviceId: string) => {
+    mutationFn: async (deviceId) => {
       const { error } = await supabase
         .from('devices')
         .update({ is_active: true })
@@ -127,7 +127,7 @@ export function useDevicesPage() {
 
   // Delete device mutation
   const deleteMutation = useMutation({
-    mutationFn: async (deviceId: string) => {
+    mutationFn: async (deviceId) => {
       const { error } = await supabase
         .from('devices')
         .delete()
@@ -159,15 +159,15 @@ export function useDevicesPage() {
     setSelectedDevice(null);
   }, []);
 
-  const handleDeactivate = useCallback((deviceId: string) => {
+  const handleDeactivate = useCallback((deviceId) => {
     deactivateMutation.mutate(deviceId);
   }, [deactivateMutation]);
 
-  const handleReactivate = useCallback((deviceId: string) => {
+  const handleReactivate = useCallback((deviceId) => {
     reactivateMutation.mutate(deviceId);
   }, [reactivateMutation]);
 
-  const handleDelete = useCallback((deviceId: string) => {
+  const handleDelete = useCallback((deviceId) => {
     deleteMutation.mutate(deviceId);
   }, [deleteMutation]);
 

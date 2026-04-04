@@ -5,11 +5,11 @@ interface WebSocketState {
   socket: WebSocket | null;
   lastMessage: unknown;
   reconnectAttempts: number;
-  connect: (url: string) => void;
+  connect: (url) => void;
   disconnect: () => void;
-  send: (data: any) => void;
+  send: (data) => void;
   setStatus: (status: ConnectionStatus) => void;
-  setLastMessage: (message: any) => void;
+  setLastMessage: (message) => void;
 }
 export const useWebSocketStore = create<WebSocketState>()((set, get) => ({
   status: 'disconnected',

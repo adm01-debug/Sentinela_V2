@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useStylesheet(href: string) {
+export function useStylesheet(href) {
   useEffect(() => {
     const existing = document.querySelector(`link[href="${href}"]`);
     if (existing) return;

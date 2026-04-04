@@ -57,7 +57,7 @@ export default function MonitoringPage() {
   // Productivity by department
   const deptProductivity = useMemo(() => {
     const deptMap: Record<string, { total: number; count: number }> = {};
-    employees.forEach((emp: any) => {
+    employees.forEach((emp) => {
       const dept = emp.department || 'Outros';
       if (!deptMap[dept]) deptMap[dept] = { total: 0, count: 0 };
       deptMap[dept].total += emp.productivity_score;
@@ -186,7 +186,7 @@ export default function MonitoringPage() {
         <Card><CardContent className="py-12 text-center text-muted-foreground"><Users className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhum funcionário encontrado.</p></CardContent></Card>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {employees.map((emp: any) => (
+          {employees.map((emp) => (
             <Card key={emp.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleSelectEmployee(emp)}>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
@@ -217,7 +217,7 @@ export default function MonitoringPage() {
       ) : (
         <Card>
           <CardContent className="p-0 divide-y">
-            {employees.map((emp: any) => (
+            {employees.map((emp) => (
               <div key={emp.id} className="flex items-center justify-between p-4 hover:bg-accent/50 cursor-pointer" onClick={() => handleSelectEmployee(emp)}>
                 <div className="flex items-center gap-3 flex-1">
                   <div className="relative">

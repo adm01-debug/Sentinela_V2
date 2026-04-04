@@ -23,7 +23,7 @@ export function useChartAnnotations(initialAnnotations: ChartAnnotation[] = []) 
     return newAnnotation.id;
   }, []);
 
-  const removeAnnotation = useCallback((id: string) => {
+  const removeAnnotation = useCallback((id) => {
     setAnnotations(prev => prev.filter(a => a.id !== id));
   }, []);
 

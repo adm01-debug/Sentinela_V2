@@ -16,11 +16,11 @@ interface TeamState {
 
 interface TeamActions {
   fetchTeams: (filters?: TeamFilters, page?: number) => Promise<void>;
-  fetchTeam: (id: string) => Promise<void>;
+  fetchTeam: (id) => Promise<void>;
   fetchStats: () => Promise<void>;
   createTeam: (data: { name: string; description?: string }) => Promise<Team>;
   updateTeam: (id: string, data: Partial<Team>) => Promise<Team>;
-  deleteTeam: (id: string) => Promise<void>;
+  deleteTeam: (id) => Promise<void>;
   addMember: (teamId: string, userId: string, role?: string) => Promise<void>;
   removeMember: (teamId: string, userId: string) => Promise<void>;
   setFilters: (filters: TeamFilters) => void;

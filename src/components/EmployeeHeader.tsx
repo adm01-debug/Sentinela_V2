@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const EmployeeHeader = ({ employee }: Props) => {
-  const getInitials = (name: string) => {
+  const getInitials = (name) => {
     return name
       .split(' ')
       .map((n) => n[0])

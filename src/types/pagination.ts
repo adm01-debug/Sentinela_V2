@@ -60,12 +60,12 @@ export interface PaginationState {
 }
 
 export interface PaginationActions {
-  goToPage: (page: number) => void;
+  goToPage: (page) => void;
   nextPage: () => void;
   previousPage: () => void;
   firstPage: () => void;
   lastPage: () => void;
-  setPageSize: (size: number) => void;
+  setPageSize: (size) => void;
 }
 
 export interface PageInfo {

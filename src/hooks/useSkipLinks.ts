@@ -17,9 +17,9 @@ interface UseSkipLinksOptions {
 interface UseSkipLinksReturn {
   links: SkipLink[];
   activeLink: string | null;
-  skipTo: (targetId: string) => void;
+  skipTo: (targetId) => void;
   addLink: (link: SkipLink) => void;
-  removeLink: (id: string) => void;
+  removeLink: (id) => void;
   isVisible: boolean;
   setVisible: (visible: boolean) => void;
   containerRef: React.RefObject<HTMLDivElement>;
@@ -48,7 +48,7 @@ export function useSkipLinks(options: UseSkipLinksOptions = {}): UseSkipLinksRet
 
   const sortedLinks = [...links].sort((a, b) => (a.order || 0) - (b.order || 0));
 
-  const skipTo = useCallback((targetId: string) => {
+  const skipTo = useCallback((targetId) => {
     const targetElement = document.getElementById(targetId);
     
     if (targetElement) {
@@ -81,7 +81,7 @@ export function useSkipLinks(options: UseSkipLinksOptions = {}): UseSkipLinksRet
     });
   }, []);
 
-  const removeLink = useCallback((id: string) => {
+  const removeLink = useCallback((id) => {
     setLinks(prev => prev.filter(l => l.id !== id));
   }, []);
 

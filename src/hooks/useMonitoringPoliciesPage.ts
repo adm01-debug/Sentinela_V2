@@ -89,7 +89,7 @@ export function useMonitoringPoliciesPage() {
         applies_to?: string;
         is_active?: boolean;
       }
-      return (data || []).map((setting: any) => {
+      return (data || []).map((setting) => {
         const val = (setting.setting_value || {}) as SettingValue;
         return {
           id: setting.id,
@@ -177,7 +177,7 @@ export function useMonitoringPoliciesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('monitoring_settings').delete().eq('id', id);
       if (error) throw error;
     },

@@ -6,7 +6,7 @@ interface UploadProgress {
   percentage: number;
 }
 
-export function useFileUpload(url: string) {
+export function useFileUpload(url) {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState<UploadProgress>({ loaded: 0, total: 0, percentage: 0 });
   const [error, setError] = useState<Error | null>(null);

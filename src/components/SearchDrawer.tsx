@@ -52,7 +52,7 @@ interface SearchDrawerProps {
   results?: SearchResult[];
   recentSearches?: string[];
   favorites?: SearchResult[];
-  onSearch?: (query: string) => void;
+  onSearch?: (query) => void;
   isLoading?: boolean;
   className?: string;
 }
@@ -143,7 +143,7 @@ const SearchResultItem = memo(function SearchResultItem({
 
 interface RecentSearchesProps {
   searches: string[];
-  onSelect: (query: string) => void;
+  onSelect: (query) => void;
 }
 
 const RecentSearches = memo(function RecentSearches({
@@ -287,12 +287,12 @@ function SearchDrawerComponent({
     onOpenChange(false);
   }, [navigate, onOpenChange]);
 
-  const handleQueryChange = useCallback((value: string) => {
+  const handleQueryChange = useCallback((value) => {
     setQuery(value);
     onSearch?.(value);
   }, [onSearch]);
 
-  const handleRecentSelect = useCallback((search: string) => {
+  const handleRecentSelect = useCallback((search) => {
     setQuery(search);
     onSearch?.(search);
   }, [onSearch]);

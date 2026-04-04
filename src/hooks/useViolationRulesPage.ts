@@ -80,7 +80,7 @@ export function useViolationRulesPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((r: any) => ({
+      return (data || []).map((r) => ({
         id: r.id,
         name: r.rule_value,
         description: r.description,
@@ -153,7 +153,7 @@ export function useViolationRulesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('violation_rules').delete().eq('id', id);
       if (error) throw error;
     },

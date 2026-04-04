@@ -13,7 +13,7 @@ export function useChartColors() {
     const root = document.documentElement;
     const style = getComputedStyle(root);
 
-    const resolve = (varName: string): string => {
+    const resolve = (varName): string => {
       const val = style.getPropertyValue(varName).trim();
       return val ? `hsl(${val})` : '#6366f1';
     };

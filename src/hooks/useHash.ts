@@ -9,7 +9,7 @@ export function useHash() {
     return () => window.removeEventListener("hashchange", handler);
   }, []);
 
-  const setHash = useCallback((newHash: string) => {
+  const setHash = useCallback((newHash) => {
     window.location.hash = newHash;
   }, []);
 

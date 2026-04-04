@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface Notification { id: string; title: string; message: string; type: 'info' | 'warning' | 'success' | 'error'; timestamp: Date; read: boolean; link?: string; }
 
-export function NotificationsWidget({ notifications, onMarkRead, onDismiss, className }: { notifications: Notification[]; onMarkRead?: (id: string) => void; onDismiss?: (id: string) => void; className?: string }) {
+export function NotificationsWidget({ notifications, onMarkRead, onDismiss, className }: { notifications: Notification[]; onMarkRead?: (id) => void; onDismiss?: (id) => void; className?: string }) {
   const unreadCount = notifications.filter(n => !n.read).length;
   const typeColors = { info: 'bg-blue-100 text-blue-800 border-blue-200', warning: 'bg-yellow-100 text-yellow-800 border-yellow-200', success: 'bg-green-100 text-green-800 border-green-200', error: 'bg-red-100 text-red-800 border-red-200' };
   const formatTime = (d: Date) => { const diff = Date.now() - d.getTime(); if (diff < 60000) return 'Now'; if (diff < 3600000) return `${Math.floor(diff/60000)}m`; if (diff < 86400000) return `${Math.floor(diff/3600000)}h`; return d.toLocaleDateString(); };

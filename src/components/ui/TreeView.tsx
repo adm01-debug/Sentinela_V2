@@ -31,7 +31,7 @@ interface TreeItemProps {
   selectedId?: string;
   expandedIds: string[];
   onSelect?: (node: TreeNode) => void;
-  onToggle: (id: string) => void;
+  onToggle: (id) => void;
   showIcons: boolean;
   selectable: boolean;
 }
@@ -75,7 +75,7 @@ export function TreeView({ data, selectedId, expandedIds: controlledExpanded, on
   const [internalExpanded, setInternalExpanded] = useState<string[]>(defaultExpandAll ? getAllIds(data) : []);
   const expandedIds = controlledExpanded ?? internalExpanded;
 
-  const handleToggle = useCallback((id: string) => {
+  const handleToggle = useCallback((id) => {
     const newExpanded = expandedIds.includes(id) ? expandedIds.filter(e => e !== id) : [...expandedIds, id];
     if (onExpand) onExpand(newExpanded);
     else setInternalExpanded(newExpanded);

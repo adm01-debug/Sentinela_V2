@@ -63,7 +63,7 @@ export const useEmployees = (filters?: EmployeeFilters) => {
   });
 };
 
-export const useEmployee = (id: string) => {
+export const useEmployee = (id) => {
   return useQuery({
     queryKey: ['employee', id],
     queryFn: async () => {
@@ -112,7 +112,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 
       // Count unique active days
       const activeDays = new Set(
-        logs.map((l: any) => l.recorded_at?.split('T')[0]).filter(Boolean)
+        logs.map((l) => l.recorded_at?.split('T')[0]).filter(Boolean)
       ).size;
 
       const violations = violationCount ?? 0;
@@ -130,7 +130,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
         violations,
         totalKeystrokes: logs.reduce((sum: number, l: any) => sum + (l.keystrokes_count || 0), 0),
         avgHoursPerDay,
-        presentDays: attendanceRecords.filter((r: any) => r.status === 'present').length,
+        presentDays: attendanceRecords.filter((r) => r.status === 'present').length,
       };
     },
     enabled: !!id && !!startDate && !!endDate,
@@ -167,7 +167,7 @@ export const useUpdateEmployee = () => {
 export const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('employees').delete().eq('id', id);
       if (error) throw error;
     },

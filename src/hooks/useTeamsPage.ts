@@ -67,7 +67,7 @@ export function useTeamsPage() {
         .select('*, employees!teams_manager_id_fkey(name)')
         .order('name');
       if (error) throw error;
-      return data.map((t: any) => ({
+      return data.map((t) => ({
         ...t,
         manager_name: t.employees?.name,
         members_count: t.members_count || 0,
@@ -133,7 +133,7 @@ export function useTeamsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('teams').delete().eq('id', id);
       if (error) throw error;
     },

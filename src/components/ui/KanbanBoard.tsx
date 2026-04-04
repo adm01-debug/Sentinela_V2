@@ -28,8 +28,8 @@ export interface KanbanBoardProps {
   columns: KanbanColumn[];
   onCardMove?: (cardId: string, fromColumn: string, toColumn: string, position: number) => void;
   onCardClick?: (card: KanbanCard, columnId: string) => void;
-  onAddCard?: (columnId: string) => void;
-  onColumnMenu?: (columnId: string) => void;
+  onAddCard?: (columnId) => void;
+  onColumnMenu?: (columnId) => void;
   className?: string;
   renderCard?: (card: KanbanCard) => React.ReactNode;
 }

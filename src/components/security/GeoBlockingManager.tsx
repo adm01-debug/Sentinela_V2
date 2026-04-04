@@ -43,7 +43,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 // Bandeiras usando emoji
-const getCountryFlag = (code: string) => {
+const getCountryFlag = (code) => {
   const codePoints = code
     .toUpperCase()
     .split('')
@@ -90,7 +90,7 @@ export function GeoBlockingManager() {
     }
   };
 
-  const handleRemove = (id: string) => {
+  const handleRemove = (id) => {
     removeCountry(id);
     setDeleteTarget(null);
   };

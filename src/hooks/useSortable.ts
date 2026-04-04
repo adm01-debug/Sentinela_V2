@@ -4,9 +4,9 @@ export function useSortable<T>(items: T[]) {
   const [sorted, setSorted] = useState(items);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
 
-  const onDragStart = useCallback((index: number) => setDragIndex(index), []);
+  const onDragStart = useCallback((index) => setDragIndex(index), []);
 
-  const onDragOver = useCallback((index: number) => {
+  const onDragOver = useCallback((index) => {
     if (dragIndex === null || dragIndex === index) return;
     setSorted(prev => {
       const next = [...prev];

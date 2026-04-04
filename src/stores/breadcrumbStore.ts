@@ -24,11 +24,11 @@ interface BreadcrumbState {
   clear: () => void;
   replaceAt: (index: number, item: BreadcrumbItem) => void;
   updateItem: (id: string, updates: Partial<BreadcrumbItem>) => void;
-  setSeparator: (separator: string) => void;
-  setMaxItems: (max: number) => void;
+  setSeparator: (separator) => void;
+  setMaxItems: (max) => void;
   setShowHome: (show: boolean) => void;
   setHomeItem: (item: BreadcrumbItem) => void;
-  navigateTo: (index: number) => void;
+  navigateTo: (index) => void;
 }
 
 const defaultHomeItem: BreadcrumbItem = {

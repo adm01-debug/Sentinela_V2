@@ -21,7 +21,7 @@ interface UIState {
   toggleCommandPalette: () => void;
   setGlobalLoading: (loading: boolean) => void;
   addToast: (message: string, type: string) => void;
-  removeToast: (id: string) => void;
+  removeToast: (id) => void;
 }
 
 export const useUIStore = create<UIState>()((set) => ({

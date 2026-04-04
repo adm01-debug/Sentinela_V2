@@ -3,7 +3,7 @@
 /**
  * Capitalize first letter
  */
-export function capitalize(str: string): string {
+export function capitalize(str): string {
   if (!str) return '';
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
@@ -11,7 +11,7 @@ export function capitalize(str: string): string {
 /**
  * Capitalize each word
  */
-export function capitalizeWords(str: string): string {
+export function capitalizeWords(str): string {
   return str.split(' ').map(capitalize).join(' ');
 }
 
@@ -26,7 +26,7 @@ export function truncate(str: string, length: number, suffix = '...'): string {
 /**
  * Slugify a string
  */
-export function slugify(str: string): string {
+export function slugify(str): string {
   return str
     .toLowerCase()
     .normalize('NFD')

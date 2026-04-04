@@ -23,7 +23,7 @@ export interface DuplicateOptions<T> {
 }
 
 export interface DuplicateResult<T> {
-  duplicate: (id: string) => void;
+  duplicate: (id) => void;
   duplicateMany: (ids: string[]) => void;
   isDuplicating: boolean;
   error: Error | null;
@@ -66,7 +66,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
   // ============================================================
 
   const duplicateMutation = useMutation({
-    mutationFn: async (id: string): Promise<T> => {
+    mutationFn: async (id): Promise<T> => {
       if (!isSupabaseReady) {
         logger.info('[Duplicate] Mock: duplicando', id);
         return { id: `mock-${Date.now()}` } as unknown as T;
@@ -140,7 +140,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
       }
 
       // Preparar dados para duplicação
-      const duplicatesData = originals.map((original: any) =>
+      const duplicatesData = originals.map((original) =>
         prepareDuplicateData(
           original as T,
           allExcludeFields,

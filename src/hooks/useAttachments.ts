@@ -31,7 +31,7 @@ export function useAttachments(maxFiles = 10, maxSize = 10 * 1024 * 1024) {
     return attachment;
   }, [attachments.length, maxFiles, maxSize]);
 
-  const remove = useCallback((id: string) => {
+  const remove = useCallback((id) => {
     setAttachments(prev => {
       const att = prev.find(a => a.id === id);
       if (att) URL.revokeObjectURL(att.url);

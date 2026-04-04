@@ -73,9 +73,9 @@ export function useProductivityData(filters?: ProductivityFilters) {
         .lte('created_at', until);
 
       // Calculate productivity for each employee
-      const productivityData: EmployeeProductivity[] = employees.map((emp: any) => {
-        const empLogs = prodLogs?.filter((l: any) => l.employee_name === emp.name) || [];
-        const empViolations = violations?.filter((v: number) => v.employee_name === emp.name) || [];
+      const productivityData: EmployeeProductivity[] = employees.map((emp) => {
+        const empLogs = prodLogs?.filter((l) => l.employee_name === emp.name) || [];
+        const empViolations = violations?.filter((v) => v.employee_name === emp.name) || [];
 
         const productiveTime = empLogs.reduce((sum: number, l: any) => sum + (l.productive_time_seconds || 0), 0) / 3600;
         const unproductiveTime = empLogs.reduce((sum: number, l: any) => sum + (l.unproductive_time_seconds || 0), 0) / 3600;
@@ -181,7 +181,7 @@ export function useDepartments() {
         .not('department', 'is', null);
 
       if (error) throw error;
-      return [...new Set(data.map((e: any) => e.department))].filter(Boolean) as string[];
+      return [...new Set(data.map((e) => e.department))].filter(Boolean) as string[];
     },
   });
 }

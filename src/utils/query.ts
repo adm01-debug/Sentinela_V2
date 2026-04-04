@@ -17,7 +17,7 @@ export function stringify(params: QueryParams): string {
   return searchParams.toString();
 }
 
-export function parse(queryString: string): Record<string, string | string[]> {
+export function parse(queryString): Record<string, string | string[]> {
   const params = new URLSearchParams(queryString);
   const result: Record<string, string | string[]> = {};
   params.forEach((value, key) => {
@@ -40,12 +40,12 @@ export function get(key: string, defaultValue?: string): string | undefined {
   return params.get(key) ?? defaultValue;
 }
 
-export function getAll(key: string): string[] {
+export function getAll(key): string[] {
   const params = new URLSearchParams(window.location.search);
   return params.getAll(key);
 }
 
-export function has(key: string): boolean {
+export function has(key): boolean {
   const params = new URLSearchParams(window.location.search);
   return params.has(key);
 }
@@ -56,7 +56,7 @@ export function set(key: string, value: string): void {
   window.history.replaceState({}, '', url.toString());
 }
 
-export function remove(key: string): void {
+export function remove(key): void {
   const url = new URL(window.location.href);
   url.searchParams.delete(key);
   window.history.replaceState({}, '', url.toString());

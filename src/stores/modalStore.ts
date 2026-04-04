@@ -97,7 +97,7 @@ export const useModalStore = create<ModalState>()(
 );
 
 // Helper hooks
-export const useModal = (id: string) => {
+export const useModal = (id) => {
   const { modals, open, close, updateModal } = useModalStore();
   const modal = modals.find((m) => m.id === id);
   
@@ -106,7 +106,7 @@ export const useModal = (id: string) => {
     props: modal?.props,
     open: (props?: unknown) => open({ id, component: id, props }),
     close: () => close(id),
-    update: (props: any) => updateModal(id, props),
+    update: (props) => updateModal(id, props),
   };
 };
 

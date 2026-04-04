@@ -16,10 +16,10 @@ interface ScreenshotState {
   setScreenshots: (screenshots: Screenshot[]) => void;
   addScreenshot: (screenshot: Screenshot) => void;
   updateScreenshot: (id: string, data: Partial<Screenshot>) => void;
-  removeScreenshot: (id: string) => void;
+  removeScreenshot: (id) => void;
   setCurrentScreenshot: (screenshot: Screenshot | null) => void;
   setSelectedIds: (ids: string[]) => void;
-  toggleSelection: (id: string) => void;
+  toggleSelection: (id) => void;
   selectAll: () => void;
   clearSelection: () => void;
   setFilters: (filters: Partial<ScreenshotFilters>) => void;

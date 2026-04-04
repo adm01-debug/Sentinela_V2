@@ -126,7 +126,7 @@ export function useUserManagementPage() {
 
   // Delete user mutation
   const deleteMutation = useMutation({
-    mutationFn: async (userId: string) => {
+    mutationFn: async (userId) => {
       const { error } = await supabase.auth.admin.deleteUser(userId);
       if (error) throw error;
     },
@@ -142,7 +142,7 @@ export function useUserManagementPage() {
 
   // Reset password mutation
   const resetPasswordMutation = useMutation({
-    mutationFn: async (email: string) => {
+    mutationFn: async (email) => {
       const { error } = await supabase.auth.resetPasswordForEmail(email);
       if (error) throw error;
     },
@@ -155,15 +155,15 @@ export function useUserManagementPage() {
   });
 
   // Handlers
-  const handleSearchChange = useCallback((value: string) => {
+  const handleSearchChange = useCallback((value) => {
     setSearch(value);
   }, []);
 
-  const handleRoleFilterChange = useCallback((value: string) => {
+  const handleRoleFilterChange = useCallback((value) => {
     setRoleFilter(value);
   }, []);
 
-  const handleStatusFilterChange = useCallback((value: string) => {
+  const handleStatusFilterChange = useCallback((value) => {
     setStatusFilter(value);
   }, []);
 
@@ -193,11 +193,11 @@ export function useUserManagementPage() {
     updateMutation.mutate(data);
   }, [updateMutation]);
 
-  const handleDeleteUser = useCallback((userId: string) => {
+  const handleDeleteUser = useCallback((userId) => {
     deleteMutation.mutate(userId);
   }, [deleteMutation]);
 
-  const handleResetPassword = useCallback((email: string) => {
+  const handleResetPassword = useCallback((email) => {
     resetPasswordMutation.mutate(email);
   }, [resetPasswordMutation]);
 
