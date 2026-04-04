@@ -36,7 +36,7 @@ export function usePolicies() {
   });
 
   const toggleMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const policy = (query.data ?? []).find(p => p.id === id);
       if (!policy) throw new Error('Policy not found');
       const { error } = await supabase

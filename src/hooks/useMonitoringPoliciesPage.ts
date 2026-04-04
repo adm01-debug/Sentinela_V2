@@ -177,7 +177,7 @@ export function useMonitoringPoliciesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('monitoring_settings').delete().eq('id', id);
       if (error) throw error;
     },

@@ -59,7 +59,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const softDeleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
         logger.info('[SoftDelete] Mock: deletando', id);
         return;
@@ -132,7 +132,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const restoreMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
         logger.info('[SoftDelete] Mock: restaurando', id);
         return;
@@ -205,7 +205,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const hardDeleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
         logger.info('[SoftDelete] Mock: deletando permanentemente', id);
         return;

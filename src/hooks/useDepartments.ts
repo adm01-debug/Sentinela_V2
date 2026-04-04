@@ -73,7 +73,7 @@ export function useDepartments() {
   });
 
   const deleteDepartment = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('departments')
         .delete()

@@ -115,7 +115,7 @@ export function useInternetAccessPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('internet_access_rules').delete().eq('id', id);
       if (error) throw error;
     },

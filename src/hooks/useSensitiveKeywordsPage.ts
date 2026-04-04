@@ -95,7 +95,7 @@ export function useSensitiveKeywordsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       setLocalKeywords(prev => prev.filter(k => k.id !== id));
     },
     onSuccess: () => {

@@ -38,7 +38,7 @@ export function useApproveOvertime() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { data: { user } } = await supabase.auth.getUser();
       
       const { data, error } = await supabase
@@ -66,7 +66,7 @@ export function useRejectOvertime() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { data: { user } } = await supabase.auth.getUser();
       
       const { data, error } = await supabase

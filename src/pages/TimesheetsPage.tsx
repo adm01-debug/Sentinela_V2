@@ -109,7 +109,7 @@ function TimesheetsPage() {
   });
 
   const approveTimesheet = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('timesheets').update({
         status: 'approved',
         approved_at: new Date().toISOString(),

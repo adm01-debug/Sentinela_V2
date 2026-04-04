@@ -125,7 +125,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   // MUTATION - Deletar filtro
   // ============================================================
   const deleteFilterMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
         logger.info('[SavedFilters] Mock: deletando filtro', id);
         return;
@@ -152,7 +152,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   // MUTATION - Definir filtro padrão
   // ============================================================
   const setDefaultMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
         logger.info('[SavedFilters] Mock: definindo padrão', id);
         return;

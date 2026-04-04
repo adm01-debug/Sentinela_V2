@@ -144,7 +144,7 @@ export function useMessageTemplatesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('message_templates').delete().eq('id', id);
       if (error) throw error;
     },
