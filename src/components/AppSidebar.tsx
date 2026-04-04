@@ -2,7 +2,7 @@ import { useState, useCallback, memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
-  Home, Users, Activity, FileText, Bell, Settings, ChevronLeft, ChevronRight,
+  Home, Users, Activity, FileText, Bell, Settings, ChevronLeft,
   BarChart3, Shield, Monitor, Camera, Globe, Calendar, Gamepad2,
   Building2, UserCog, ScrollText, Smartphone, MapPin, Clock, Download,
   Key, Webhook, MessageSquare, Brain, FolderKanban, Timer, ClipboardList,
@@ -147,28 +147,31 @@ export const AppSidebar = memo(function AppSidebar() {
     <TooltipProvider delayDuration={0}>
       <aside
         className={cn(
-          'fixed left-0 top-0 h-full bg-card border-r transition-all duration-300 z-40 flex flex-col',
-          sidebarCollapsed ? 'w-16' : 'w-64'
+          'fixed left-0 top-0 h-full z-40 flex flex-col transition-all duration-300',
+          'bg-[hsl(var(--sidebar-background))] border-r border-[hsl(var(--sidebar-border))]',
+          sidebarCollapsed ? 'w-[60px]' : 'w-[252px]'
         )}
       >
-        {/* Header */}
-        <div className="h-14 flex items-center justify-between px-3 border-b shrink-0">
+        {/* ── Brand Header ── */}
+        <div className="h-14 flex items-center justify-between px-3 shrink-0">
           {!sidebarCollapsed ? (
-            <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent shadow-sm">
-                <Shield className="h-4 w-4 text-primary-foreground" />
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-[hsl(var(--sidebar-primary))] to-[hsl(var(--accent))]">
+                <Shield className="h-4 w-4 text-white" />
               </div>
-              <span className="font-bold text-lg text-foreground tracking-tight">{APP_NAME}</span>
+              <span className="font-bold text-[15px] text-[hsl(var(--sidebar-accent-foreground))] tracking-tight">
+                {APP_NAME}
+              </span>
             </div>
           ) : (
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent shadow-sm mx-auto">
-              <Shield className="h-4 w-4 text-primary-foreground" />
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-[hsl(var(--sidebar-primary))] to-[hsl(var(--accent))] mx-auto">
+              <Shield className="h-4 w-4 text-white" />
             </div>
           )}
           {!sidebarCollapsed && (
             <button
               onClick={toggleSidebarCollapse}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
+              className="p-1 rounded-md text-[hsl(var(--sidebar-muted))] hover:text-[hsl(var(--sidebar-foreground))] hover:bg-[hsl(var(--sidebar-accent))] transition-colors"
               aria-label={t('header.collapseSidebar')}
             >
               <ChevronLeft className="h-4 w-4" />
@@ -176,47 +179,54 @@ export const AppSidebar = memo(function AppSidebar() {
           )}
         </div>
 
-        {/* Navigation */}
-        <ScrollArea className="flex-1">
-          <nav className="p-2 space-y-1" aria-label={t('header.mainNavigation')}>
-            {navSections.map((section) => {
+        {/* ── Divider ── */}
+        <div className="mx-3 border-t border-[hsl(var(--sidebar-border))]" />
+
+        {/* ── Navigation ── */}
+        <ScrollArea className="flex-1 py-2">
+          <nav className="px-2 space-y-0.5" aria-label={t('header.mainNavigation')}>
+            {navSections.map((section, sectionIndex) => {
               const isOpen = openSections.has(section.id);
               const hasActiveItem = section.items.some(item =>
                 location.pathname === item.path || location.pathname.startsWith(item.path + '/')
               );
 
               return (
-                <div key={section.id}>
+                <div key={section.id} className={sectionIndex > 0 ? 'mt-1' : ''}>
+                  {/* ── Section Header ── */}
                   {!sidebarCollapsed ? (
                     <button
                       onClick={() => toggleSection(section.id)}
                       className={cn(
-                        'flex w-full items-center justify-between px-3 py-1.5 rounded-md text-[11px] font-semibold uppercase tracking-wider transition-colors',
+                        'flex w-full items-center justify-between px-2 py-1.5 rounded-md text-[10px] font-semibold uppercase tracking-[0.08em] transition-colors',
                         hasActiveItem
-                          ? 'text-primary'
-                          : 'text-muted-foreground/70 hover:text-muted-foreground'
+                          ? 'text-[hsl(var(--sidebar-primary))]'
+                          : 'text-[hsl(var(--sidebar-group-label))] hover:text-[hsl(var(--sidebar-foreground))]'
                       )}
                     >
                       <span>{t(section.titleKey)}</span>
                       <motion.div
                         animate={{ rotate: isOpen ? 180 : 0 }}
-                        transition={{ duration: 0.2 }}
+                        transition={{ duration: 0.15 }}
                       >
                         <ChevronDown className="h-3 w-3" />
                       </motion.div>
                     </button>
                   ) : (
-                    <div className="my-2 mx-3 border-t border-border/50" />
+                    sectionIndex > 0 && (
+                      <div className="my-1.5 mx-2 border-t border-[hsl(var(--sidebar-border)/0.5)]" />
+                    )
                   )}
 
+                  {/* ── Section Items ── */}
                   <AnimatePresence initial={false}>
                     {(isOpen || sidebarCollapsed) && (
                       <motion.div
                         initial={sidebarCollapsed ? false : { height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden space-y-0.5"
+                        transition={{ duration: 0.15 }}
+                        className="overflow-hidden"
                       >
                         {section.items.map((item) => {
                           const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
@@ -227,17 +237,27 @@ export const AppSidebar = memo(function AppSidebar() {
                               key={item.path}
                               to={item.path}
                               className={cn(
-                                'flex items-center gap-3 px-3 py-1.5 rounded-md transition-all duration-200 text-sm group',
+                                'flex items-center gap-2.5 px-2 py-[7px] rounded-md transition-all duration-150 text-[13px] group relative',
                                 isActive
-                                  ? 'bg-primary text-primary-foreground shadow-sm'
-                                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                                  ? 'bg-[hsl(var(--sidebar-primary)/0.15)] text-[hsl(var(--sidebar-primary))] font-medium'
+                                  : 'text-[hsl(var(--sidebar-foreground))] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-accent-foreground))]'
                               )}
                             >
+                              {/* Active indicator bar */}
+                              {isActive && (
+                                <motion.div
+                                  layoutId="sidebar-active"
+                                  className="absolute left-0 top-1 bottom-1 w-[3px] rounded-full bg-[hsl(var(--sidebar-primary))]"
+                                  transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                                />
+                              )}
                               <item.icon className={cn(
-                                'h-4 w-4 shrink-0 transition-transform',
-                                !isActive && 'group-hover:scale-110'
+                                'h-[18px] w-[18px] shrink-0 transition-colors',
+                                isActive ? 'text-[hsl(var(--sidebar-primary))]' : 'text-[hsl(var(--sidebar-muted))] group-hover:text-[hsl(var(--sidebar-foreground))]'
                               )} />
-                              {!sidebarCollapsed && <span className="truncate">{label}</span>}
+                              {!sidebarCollapsed && (
+                                <span className="truncate">{label}</span>
+                              )}
                             </NavLink>
                           );
 
@@ -247,7 +267,7 @@ export const AppSidebar = memo(function AppSidebar() {
                                 <TooltipTrigger asChild>
                                   {linkContent}
                                 </TooltipTrigger>
-                                <TooltipContent side="right" className="font-medium">
+                                <TooltipContent side="right" className="font-medium text-xs">
                                   {label}
                                 </TooltipContent>
                               </Tooltip>
@@ -264,6 +284,30 @@ export const AppSidebar = memo(function AppSidebar() {
             })}
           </nav>
         </ScrollArea>
+
+        {/* ── Footer ── */}
+        <div className="shrink-0 px-3 py-2 border-t border-[hsl(var(--sidebar-border))]">
+          {!sidebarCollapsed ? (
+            <div className="flex items-center gap-2 px-1 py-1">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--sidebar-primary))] to-[hsl(var(--accent))] flex items-center justify-center text-[10px] font-bold text-white">
+                AD
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-medium text-[hsl(var(--sidebar-accent-foreground))] truncate">Admin</p>
+                <p className="text-[10px] text-[hsl(var(--sidebar-muted))] truncate">admin@sentinela.com</p>
+              </div>
+            </div>
+          ) : (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--sidebar-primary))] to-[hsl(var(--accent))] flex items-center justify-center text-[10px] font-bold text-white mx-auto cursor-pointer">
+                  AD
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="right">Admin</TooltipContent>
+            </Tooltip>
+          )}
+        </div>
       </aside>
     </TooltipProvider>
   );
