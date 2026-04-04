@@ -362,7 +362,7 @@ describe('Improvement 3: Reusable Form Components', () => {
   describe('FormSection', () => {
     it('renders title and children', async () => {
       const { FormSection } = await import('@/components/forms');
-      render(React.createElement(FormSection, { title: 'Seção', description: 'Desc' }, React.createElement('p', null, 'Child')));
+      render(React.createElement(FormSection, { title: 'Seção', description: 'Desc', children: React.createElement('p', null, 'Child') }));
       expect(screen.getByText('Seção')).toBeInTheDocument();
       expect(screen.getByText('Desc')).toBeInTheDocument();
       expect(screen.getByText('Child')).toBeInTheDocument();
