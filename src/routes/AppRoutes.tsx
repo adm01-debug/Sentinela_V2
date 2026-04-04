@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ROUTES } from '@/constants';
 import { MainLayout } from '@/layouts/MainLayout';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
 import { supabase } from '@/integrations/supabase/client';
 
 // ============================================================
@@ -138,8 +139,9 @@ const PageLoader = () => (
 // APP ROUTES
 // ============================================================
 export const AppRoutes = () => (
-  <Suspense fallback={<PageLoader />}>
-    <Routes>
+  <RouteErrorBoundary>
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
       {/* Auth */}
       <Route path="/auth" element={<AuthGuard><Auth /></AuthGuard>} />
       <Route path={ROUTES.LOGIN} element={<Navigate to="/auth" replace />} />
@@ -218,6 +220,7 @@ export const AppRoutes = () => (
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-  </Suspense>
+      </Routes>
+    </Suspense>
+  </RouteErrorBoundary>
 );
