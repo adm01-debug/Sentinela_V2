@@ -10,15 +10,15 @@ import { queryKeys, queryPresets, invalidateRelated, CACHE_TIMES } from '@/lib/q
 export interface Team {
   id: string;
   name: string;
-  description?: string;
-  leader_id?: string;
+  description?: string | null;
+  leader_id?: string | null;
+  leader_name?: string | null;
+  company_id?: string | null;
+  parent_team_id?: string | null;
+  created_by?: string | null;
   member_count?: number;
   created_at: string;
   updated_at: string;
-  leader?: {
-    id: string;
-    full_name: string;
-  };
 }
 
 export interface CreateTeamInput {
@@ -44,10 +44,7 @@ export function useTeams() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('teams')
-        .select(`
-          *,
-          leader:employees!teams_leader_id_fkey(id, full_name)
-        `)
+        .select('*')
         .order('name', { ascending: true });
 
       if (error) throw error;
@@ -66,10 +63,7 @@ export function useTeam(id: string | undefined) {
       
       const { data, error } = await supabase
         .from('teams')
-        .select(`
-          *,
-          leader:employees!teams_leader_id_fkey(id, full_name)
-        `)
+        .select('*')
         .eq('id', id)
         .single();
 
@@ -94,7 +88,7 @@ export function useCreateTeam() {
       const { data, error } = await supabase
         .from('teams')
         .insert(input)
-        .select(`*, leader:employees!teams_leader_id_fkey(id, full_name)`)
+        .select('*')
         .single();
 
       if (error) throw error;
@@ -151,7 +145,7 @@ export function useUpdateTeam() {
         .from('teams')
         .update(input)
         .eq('id', id)
-        .select(`*, leader:employees!teams_leader_id_fkey(id, full_name)`)
+        .select('*')
         .single();
 
       if (error) throw error;

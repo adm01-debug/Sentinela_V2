@@ -31,11 +31,11 @@ const activityData = [
 ];
 
 const productivityData = [
-  { day: 'Seg', horas: 7.5 },
-  { day: 'Ter', horas: 8.2 },
-  { day: 'Qua', horas: 7.8 },
-  { day: 'Qui', horas: 8.5 },
-  { day: 'Sex', horas: 7.1 },
+  { day: 'Seg', horas: 7.5, fill: 'hsl(262, 83%, 58%)' },
+  { day: 'Ter', horas: 8.2, fill: 'hsl(262, 83%, 58%)' },
+  { day: 'Qua', horas: 7.8, fill: 'hsl(262, 83%, 58%)' },
+  { day: 'Qui', horas: 8.5, fill: 'hsl(262, 83%, 58%)' },
+  { day: 'Sex', horas: 7.1, fill: 'hsl(0, 84%, 60%)' },
 ];
 
 const departmentData = [
@@ -63,8 +63,8 @@ const recentActivities = [
 ];
 
 const severityStyles = {
-  critical: 'bg-destructive/10 text-destructive border-destructive/20',
-  high: 'bg-warning/10 text-warning border-warning/20',
+  critical: 'bg-destructive/15 text-destructive border-destructive/30 shadow-sm shadow-destructive/10',
+  high: 'bg-warning/15 text-warning border-warning/30',
   medium: 'bg-info/10 text-info border-info/20',
   low: 'bg-muted text-muted-foreground border-border',
 };
@@ -111,6 +111,8 @@ export function DashboardHome() {
           icon={Users}
           iconColor="bg-primary/10 text-primary"
           trend={{ value: 5.2, label: 'desde o mês passado' }}
+          sparklineData={[{ value: 110 }, { value: 112 }, { value: 118 }, { value: 120 }, { value: 123 }, { value: 125 }, { value: 128 }]}
+          sparklineColor="hsl(var(--primary))"
         />
         <StatsCard
           title="Ativos Agora"
@@ -118,6 +120,8 @@ export function DashboardHome() {
           icon={Activity}
           iconColor="bg-success/10 text-success"
           trend={{ value: 12, label: 'desde ontem' }}
+          sparklineData={[{ value: 30 }, { value: 35 }, { value: 28 }, { value: 42 }, { value: 38 }, { value: 40 }, { value: 45 }]}
+          sparklineColor="hsl(var(--success))"
         />
         <StatsCard
           title="Alertas de Segurança"
@@ -125,6 +129,8 @@ export function DashboardHome() {
           icon={Shield}
           iconColor="bg-destructive/10 text-destructive"
           trend={{ value: -25, label: 'desde a semana passada' }}
+          sparklineData={[{ value: 8 }, { value: 6 }, { value: 5 }, { value: 7 }, { value: 4 }, { value: 4 }, { value: 3 }]}
+          sparklineColor="hsl(var(--destructive))"
         />
         <StatsCard
           title="Horas Trabalhadas"
@@ -132,18 +138,20 @@ export function DashboardHome() {
           icon={Clock}
           iconColor="bg-warning/10 text-warning"
           description="Esta semana"
+          sparklineData={[{ value: 200 }, { value: 240 }, { value: 260 }, { value: 250 }, { value: 284 }]}
+          sparklineColor="hsl(var(--warning))"
         />
       </div>
 
       {/* Charts Row */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-7">
         {/* Activity Over Time - larger chart */}
-        <Card className="lg:col-span-4">
+        <Card className="lg:col-span-4" role="img" aria-label="Gráfico de atividade ao longo do dia mostrando usuários ativos por hora">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold">Atividade ao Longo do Dia</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[280px]">
+            <div className="h-[280px]" aria-hidden="true">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={activityData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
                   <defs>
@@ -183,7 +191,11 @@ export function DashboardHome() {
                   <XAxis dataKey="day" tick={{ fill: 'hsl(220, 9%, 46%)' }} />
                   <YAxis domain={[0, 10]} tick={{ fill: 'hsl(220, 9%, 46%)' }} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="horas" name="Horas" fill="hsl(262, 83%, 58%)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="horas" name="Horas" radius={[6, 6, 0, 0]}>
+                    {productivityData.map((entry, index) => (
+                      <Cell key={index} fill={entry.fill} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -210,17 +222,20 @@ export function DashboardHome() {
             <ScrollArea className="h-[240px]">
               <div className="space-y-2.5">
                 {recentAlerts.map((alert) => (
-                  <div
+                  <button
                     key={alert.id}
-                    className={`flex items-start gap-3 p-3 rounded-lg border transition-colors hover:bg-muted/30 ${severityStyles[alert.severity]}`}
+                    type="button"
+                    onClick={() => navigate('/alerts')}
+                    className={`flex items-start gap-3 p-3 rounded-lg border transition-colors hover:bg-muted/30 w-full text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 ${severityStyles[alert.severity]}`}
+                    aria-label={`Alerta ${alert.severity}: ${alert.message} - ${alert.employee}`}
                   >
-                    <Shield className="h-4 w-4 mt-0.5 shrink-0" />
+                    <Shield className="h-4 w-4 mt-0.5 shrink-0" aria-hidden="true" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium leading-snug">{alert.message}</p>
                       <p className="text-xs opacity-70 mt-0.5">{alert.employee} · {alert.time}</p>
                     </div>
                     <Badge variant="outline" className="text-[10px] shrink-0 capitalize">{alert.severity}</Badge>
-                  </div>
+                  </button>
                 ))}
               </div>
             </ScrollArea>
