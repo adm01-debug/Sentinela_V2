@@ -44,7 +44,7 @@ function HoursTrackingPage() {
     return days.map(day => {
       const dayStr = format(day, 'yyyy-MM-dd');
       const dayEntries = timeEntries.filter((e) => format(new Date(e.clock_in), 'yyyy-MM-dd') === dayStr);
-      const totalMinutes = dayEntries.reduce((sum: number, e) => sum + (e.duration_minutes || 0), 0);
+      const totalMinutes = dayEntries.reduce((sum, e) => sum + (e.duration_minutes || 0), 0);
       return {
         date: format(day, 'EEE dd/MM', { locale: ptBR }),
         hours: Math.round(totalMinutes / 60 * 10) / 10,
@@ -79,7 +79,7 @@ function HoursTrackingPage() {
       .sort((a, b) => b.hours - a.hours);
   }, [timeEntries]);
 
-  const totalHours = Math.round(timeEntries.reduce((sum: number, e) => sum + (e.duration_minutes || 0), 0) / 60);
+  const totalHours = Math.round(timeEntries.reduce((sum, e) => sum + (e.duration_minutes || 0), 0) / 60);
   const uniqueEmployees = new Set(timeEntries.map((e) => e.employee_id)).size;
   const avgPerEmployee = uniqueEmployees > 0 ? Math.round(totalHours / uniqueEmployees) : 0;
 

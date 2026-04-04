@@ -107,7 +107,7 @@ export const tracker = new PerformanceTracker();
 
 export function debounce<T extends (...args: never[]) => unknown>(
   fn: T,
-  delay: number
+  delay
 ): (...args: Parameters<T>) => void {
   let timeoutId: NodeJS.Timeout;
   return (...args: Parameters<T>) => {
@@ -118,7 +118,7 @@ export function debounce<T extends (...args: never[]) => unknown>(
 
 export function throttle<T extends (...args: never[]) => unknown>(
   fn: T,
-  limit: number
+  limit
 ): (...args: Parameters<T>) => void {
   let lastCall = 0;
   let timeoutId: NodeJS.Timeout | null = null;
@@ -157,7 +157,7 @@ export function rafThrottle<T extends (...args: never[]) => unknown>(
   };
 }
 
-export function idleCallback(callback: () => void, timeout: number = 1000): void {
+export function idleCallback(callback: () => void, timeout = 1000): void {
   if ('requestIdleCallback' in window) {
     requestIdleCallback(callback, { timeout });
   } else {

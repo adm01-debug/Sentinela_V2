@@ -14,7 +14,7 @@ export function useHeatmap(elementId?: string) {
 
   const stopTracking = useCallback(() => setIsTracking(false), []);
 
-  const recordPoint = useCallback((x: number, y: number) => {
+  const recordPoint = useCallback((x, y) => {
     if (!isTracking) return;
     setPoints(prev => {
       const existing = prev.find(p => Math.abs(p.x - x) < 10 && Math.abs(p.y - y) < 10);
@@ -32,8 +32,8 @@ export function useHeatmap(elementId?: string) {
       const rect = element === document ? { left: 0, top: 0 } : (element as HTMLElement).getBoundingClientRect();
       recordPoint(e.clientX - rect.left, e.clientY - rect.top);
     };
-    element.addEventListener('click', handleClick);
-    return () => element.removeEventListener('click', handleClick);
+    element.addEventListener('click', handleClick as EventListener);
+    return () => element.removeEventListener('click', handleClick as EventListener);
   }, [isTracking, elementId, recordPoint]);
 
   const getHotspots = useCallback((threshold = 5) => points.filter(p => p.value >= threshold).sort((a, b) => b.value - a.value), [points]);

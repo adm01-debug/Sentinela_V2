@@ -33,11 +33,11 @@ export function useChartAnnotations(initialAnnotations: ChartAnnotation[] = []) 
 
   const clearAnnotations = useCallback(() => setAnnotations([]), []);
 
-  const addThresholdLine = useCallback((y: number, label: string, color = '#ef4444') => {
+  const addThresholdLine = useCallback((y, label: string, color = '#ef4444') => {
     return addAnnotation({ type: 'line', y, label, color, strokeDasharray: '5,5' });
   }, [addAnnotation]);
 
-  const addReferenceArea = useCallback((x1: number, x2: number, label: string, color = 'rgba(59, 130, 246, 0.1)') => {
+  const addReferenceArea = useCallback((x1, x2, label: string, color = 'rgba(59, 130, 246, 0.1)') => {
     return addAnnotation({ type: 'area', x1, x2, label, color });
   }, [addAnnotation]);
 

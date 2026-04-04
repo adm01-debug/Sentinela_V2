@@ -47,7 +47,7 @@ export interface ReportFilters {
   team_ids?: string[];
   violation_severities?: string[];
   violation_categories?: string[];
-  custom_filters?: Record<string, unknown>;
+  custom_filters?: unknown;
 }
 
 export interface ReportColumn {
@@ -163,7 +163,7 @@ export interface ReportData {
 
 export interface ReportRow {
   id: string | number;
-  data: Record<string, unknown>;
+  data: unknown;
   children?: ReportRow[]; // For grouped data
 }
 

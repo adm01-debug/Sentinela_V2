@@ -13,7 +13,7 @@ export interface ViolationRule {
   description?: string;
   type: string;
   severity: 'low' | 'medium' | 'high' | 'critical';
-  conditions: Record<string, unknown>;
+  conditions: unknown;
   actions: string[];
   is_active: boolean;
   created_at: string;
@@ -25,7 +25,7 @@ export interface CreateViolationRuleInput {
   description?: string;
   type: string;
   severity: 'low' | 'medium' | 'high' | 'critical';
-  conditions: Record<string, unknown>;
+  conditions: unknown;
   actions: string[];
   is_active?: boolean;
 }
@@ -35,7 +35,7 @@ export interface UpdateViolationRuleInput {
   name?: string;
   description?: string;
   severity?: 'low' | 'medium' | 'high' | 'critical';
-  conditions?: Record<string, unknown>;
+  conditions?: unknown;
   actions?: string[];
   is_active?: boolean;
 }

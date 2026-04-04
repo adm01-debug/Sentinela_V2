@@ -142,7 +142,7 @@ function ProjectsPage() {
 
   const getProjectHours = (projectId: string) => {
     const entries = timeEntries.filter((e) => e.project_id === projectId);
-    const total = entries.reduce((sum: number, e) => sum + (e.duration_minutes || 0), 0);
+    const total = entries.reduce((sum, e) => sum + (e.duration_minutes || 0), 0);
     return Math.round(total / 60 * 10) / 10;
   };
 

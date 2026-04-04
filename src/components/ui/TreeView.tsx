@@ -9,7 +9,7 @@ export interface TreeNode {
   icon?: React.ReactNode;
   children?: TreeNode[];
   disabled?: boolean;
-  data?: Record<string, unknown>;
+  data?: unknown;
 }
 
 export interface TreeViewProps {

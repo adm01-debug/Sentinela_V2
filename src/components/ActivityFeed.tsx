@@ -61,7 +61,7 @@ export interface ActivityItem {
     avatar?: string;
     email?: string;
   };
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   severity?: 'info' | 'warning' | 'error' | 'success';
   isRead?: boolean;
 }

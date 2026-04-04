@@ -7,7 +7,7 @@ export interface Notification {
   category: NotificationCategory;
   title: string;
   message: string;
-  data?: Record<string, unknown>;
+  data?: unknown;
   priority: NotificationPriority;
   channels: NotificationChannel[];
   status: NotificationStatus;
@@ -129,7 +129,7 @@ export interface SendNotificationInput {
   category: NotificationCategory;
   title: string;
   message: string;
-  data?: Record<string, unknown>;
+  data?: unknown;
   priority?: NotificationPriority;
   channels?: NotificationChannel[];
   actionUrl?: string;

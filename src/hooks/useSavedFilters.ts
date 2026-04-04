@@ -15,7 +15,7 @@ import { logger } from '@/lib/logger';
 export interface SavedFilter {
   id: string;
   name: string;
-  filters: Record<string, unknown>;
+  filters: unknown;
   is_default: boolean;
   created_at: string;
   entity_type: string;
@@ -23,7 +23,7 @@ export interface SavedFilter {
 
 interface UseSavedFiltersOptions {
   entityType: string;
-  onApply?: (filters: Record<string, unknown>) => void;
+  onApply?: (filters) => void;
 }
 
 // ============================================================
@@ -88,7 +88,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   // MUTATION - Salvar novo filtro
   // ============================================================
   const saveFilterMutation = useMutation({
-    mutationFn: async (filter: { name: string; filters: Record<string, unknown>; is_default?: boolean }) => {
+    mutationFn: async (filter: { name: string; filters: unknown; is_default?: boolean }) => {
       if (!isSupabaseReady) {
         logger.info('[SavedFilters] Mock: salvando filtro', filter.name);
         return { id: `mock-${Date.now()}`, ...filter, entity_type: entityType, created_at: new Date().toISOString() };

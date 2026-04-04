@@ -68,7 +68,7 @@ export interface PermissionCheck {
   resource: PermissionResource;
   action: PermissionAction;
   resourceId?: string;
-  context?: Record<string, unknown>;
+  context?: unknown;
 }
 
 export interface PermissionCheckResult {

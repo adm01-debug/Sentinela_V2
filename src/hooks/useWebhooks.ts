@@ -26,7 +26,7 @@ export interface WebhookLog {
   id: string;
   webhook_id: string;
   event_type: string;
-  payload: Record<string, unknown>;
+  payload: unknown;
   response_status?: number;
   response_body?: string;
   success: boolean;

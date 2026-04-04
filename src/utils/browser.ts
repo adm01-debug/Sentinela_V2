@@ -101,7 +101,7 @@ export function scrollToTop(): void {
   scrollTo({ top: 0 });
 }
 
-export function scrollToElement(element: HTMLElement, offset: number = 0): void {
+export function scrollToElement(element: HTMLElement, offset = 0): void {
   const rect = element.getBoundingClientRect();
   scrollTo({ top: rect.top + getScrollPosition().y - offset });
 }

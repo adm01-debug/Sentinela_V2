@@ -49,7 +49,7 @@ export interface SessionActivity {
   action: string;
   resource?: string;
   resourceId?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   timestamp: string;
 }
 

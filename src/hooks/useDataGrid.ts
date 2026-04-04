@@ -28,7 +28,7 @@ export function useDataGrid<T extends Record<string, unknown>>(
     }));
   }, []);
 
-  const setPage = useCallback((page: number) => setState(s => ({ ...s, page })), []);
+  const setPage = useCallback((page) => setState(s => ({ ...s, page })), []);
 
   const sortedData = useMemo(() => {
     if (!state.sortField) return state.data;

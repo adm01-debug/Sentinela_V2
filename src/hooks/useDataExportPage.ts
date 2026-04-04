@@ -15,7 +15,7 @@ interface ExportJob {
   error_message: string | null;
   created_at: string;
   completed_at: string | null;
-  filters: Record<string, unknown>;
+  filters: unknown;
   record_count: number | null;
 }
 
@@ -23,7 +23,7 @@ interface ExportConfig {
   type: ExportType;
   format: ExportFormat;
   dateRange?: { from: Date; to: Date };
-  filters?: Record<string, unknown>;
+  filters?: unknown;
 }
 
 export function useDataExportPage() {

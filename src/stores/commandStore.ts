@@ -41,7 +41,7 @@ interface CommandState {
   unregisterCommand: (groupId: string, commandId: string) => void;
   executeCommand: (commandId: string) => Promise<void>;
   addToRecent: (commandId: string) => void;
-  setSelectedIndex: (index: number) => void;
+  setSelectedIndex: (index) => void;
   selectNext: () => void;
   selectPrevious: () => void;
   setLoading: (loading: boolean) => void;

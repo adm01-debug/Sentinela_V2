@@ -12,7 +12,7 @@ export interface UseMultiStepWizardOptions {
   steps: WizardStep[];
   initialStep?: number;
   onComplete?: () => void;
-  onStepChange?: (step: number, direction: 'next' | 'prev') => void;
+  onStepChange?: (step, direction: 'next' | 'prev') => void;
 }
 
 export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
@@ -26,7 +26,7 @@ export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
   const isLastStep = currentStep === steps.length - 1;
   const progress = ((currentStep + 1) / steps.length) * 100;
 
-  const goToStep = useCallback((step: number) => {
+  const goToStep = useCallback((step) => {
     if (step >= 0 && step < steps.length) {
       setCurrentStep(step);
     }
@@ -59,7 +59,7 @@ export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
     setCompletedSteps(new Set());
   }, [initialStep]);
 
-  const isStepCompleted = useCallback((step: number) => completedSteps.has(step), [completedSteps]);
+  const isStepCompleted = useCallback((step) => completedSteps.has(step), [completedSteps]);
 
   return { currentStep, currentStepData, steps, isFirstStep, isLastStep, progress, isValidating, goToStep, nextStep, prevStep, reset, isStepCompleted, completedSteps: Array.from(completedSteps) };
 }

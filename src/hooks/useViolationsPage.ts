@@ -14,7 +14,7 @@ export interface Violation {
   severity: ViolationSeverity;
   status: ViolationStatus;
   description?: string;
-  evidence?: Record<string, unknown>;
+  evidence?: unknown;
   created_at: string;
   resolved_at?: string;
   resolved_by?: string;
@@ -55,7 +55,7 @@ export function useViolationsPage() {
         .order('created_at', { ascending: false })
         .limit(200);
       if (error) throw error;
-      return data.map(v => ({
+      return data.map((v) => ({
         id: v.id,
         employee_id: '',
         employee_name: v.employee_name,

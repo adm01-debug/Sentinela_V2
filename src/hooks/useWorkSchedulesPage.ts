@@ -263,7 +263,7 @@ export function useWorkSchedulesPage() {
   }, [resetAssignForm]);
 
   // Toggle work day
-  const toggleWorkDay = useCallback((day: number) => {
+  const toggleWorkDay = useCallback((day) => {
     setScheduleForm(prev => ({
       ...prev,
       work_days: prev.work_days.includes(day)

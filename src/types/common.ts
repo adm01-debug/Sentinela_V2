@@ -89,7 +89,7 @@ export interface FileInfo {
 export interface ErrorInfo {
   code: string;
   message: string;
-  details?: Record<string, unknown>;
+  details?: unknown;
   stack?: string;
 }
 
@@ -104,7 +104,7 @@ export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: ErrorInfo;
-  meta?: Record<string, unknown>;
+  meta?: unknown;
 }
 
 export interface BatchResult<T = unknown> {

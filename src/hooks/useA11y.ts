@@ -79,7 +79,7 @@ export function useArrowNavigation<T extends HTMLElement>(
   options: {
     orientation?: 'horizontal' | 'vertical' | 'both';
     loop?: boolean;
-    onSelect?: (index: number) => void;
+    onSelect?: (index) => void;
   } = {}
 ) {
   const { orientation = 'vertical', loop = true, onSelect } = options;

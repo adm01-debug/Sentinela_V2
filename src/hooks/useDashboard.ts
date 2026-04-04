@@ -13,7 +13,7 @@ export const useDashboardStats = () => {
         supabase.from('security_violations').select('id', { count: 'exact' }),
       ]);
       const employees = employeesRes.data || [];
-      const activeEmployees = employees.filter(e => e.status === 'active').length;
+      const activeEmployees = employees.filter((e) => e.status === 'active').length;
       return {
         totalEmployees: employeesRes.count || 0,
         activeEmployees,
@@ -40,7 +40,7 @@ export const useProductivityChart = (period: 'day' | 'week' | 'month' = 'week') 
   });
 };
 
-export const useTopEmployees = (limit: number = 5) => {
+export const useTopEmployees = (limit = 5) => {
   return useQuery({
     queryKey: ['top-employees', limit],
     queryFn: async () => {
@@ -51,7 +51,7 @@ export const useTopEmployees = (limit: number = 5) => {
   });
 };
 
-export const useTopApplications = (limit: number = 10) => {
+export const useTopApplications = (limit = 10) => {
   return useQuery({
     queryKey: ['top-applications', limit],
     queryFn: async () => [] as AppUsage[],

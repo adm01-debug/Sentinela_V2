@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-export function useCountdown(initialSeconds: number, onComplete?: () => void) {
+export function useCountdown(initialSeconds, onComplete?: () => void) {
   const [seconds, setSeconds] = useState(initialSeconds);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout>();

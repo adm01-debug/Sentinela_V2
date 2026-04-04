@@ -23,7 +23,7 @@ export function generateUUID(): string {
 /**
  * Sleep for specified milliseconds
  */
-export function sleep(ms: number): Promise<void> {
+export function sleep(ms): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -54,7 +54,7 @@ export async function retry<T>(
  */
 export function debounce<T extends (...args: never[]) => unknown>(
   fn: T,
-  delay: number
+  delay
 ): (...args: Parameters<T>) => void {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   return (...args: Parameters<T>) => {
@@ -68,7 +68,7 @@ export function debounce<T extends (...args: never[]) => unknown>(
  */
 export function throttle<T extends (...args: never[]) => unknown>(
   fn: T,
-  limit: number
+  limit
 ): (...args: Parameters<T>) => void {
   let inThrottle = false;
   return (...args: Parameters<T>) => {

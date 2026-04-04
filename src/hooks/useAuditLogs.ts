@@ -8,7 +8,7 @@ export interface AuditLog {
   action: string;
   entity_type: string;
   entity_id?: string;
-  changes?: Record<string, unknown>;
+  changes?: unknown;
   created_at: string;
   user?: { email: string };
 }

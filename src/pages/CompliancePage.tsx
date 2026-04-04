@@ -91,7 +91,7 @@ export default function CompliancePage() {
                   <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
                   <XAxis dataKey="name" tick={{ fill: colors.muted, fontSize: 10 }} stroke={colors.border} />
                   <YAxis domain={[0, 100]} tick={{ fill: colors.muted, fontSize: 11 }} stroke={colors.border} />
-                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} formatter={(v: number) => `${v}%`} />
+                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} formatter={(v) => `${v}%`} />
                   <Bar dataKey="conformidade" name="Conformidade %" fill={colors.success} radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>

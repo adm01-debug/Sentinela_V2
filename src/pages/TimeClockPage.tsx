@@ -152,7 +152,7 @@ function TimeClockPage() {
   }, [queryClient]);
 
   // Merge employees with status
-  const employeesWithStatus = allEmployees.map(emp => {
+  const employeesWithStatus = allEmployees.map((emp) => {
     const statusRow = statuses.find(s => s.employee_id === emp.id);
     return {
       ...emp,
@@ -166,20 +166,20 @@ function TimeClockPage() {
     };
   });
 
-  const filtered = employeesWithStatus.filter(e => {
+  const filtered = employeesWithStatus.filter((e) => {
     const matchSearch = e.name.toLowerCase().includes(search.toLowerCase());
     const matchStatus = !filterStatus || e.currentStatus === filterStatus;
     return matchSearch && matchStatus;
   });
 
   const counts = {
-    online: employeesWithStatus.filter(e => e.currentStatus === 'online').length,
-    idle: employeesWithStatus.filter(e => e.currentStatus === 'idle').length,
-    break: employeesWithStatus.filter(e => e.currentStatus === 'break').length,
-    offline: employeesWithStatus.filter(e => e.currentStatus === 'offline').length,
+    online: employeesWithStatus.filter((e) => e.currentStatus === 'online').length,
+    idle: employeesWithStatus.filter((e) => e.currentStatus === 'idle').length,
+    break: employeesWithStatus.filter((e) => e.currentStatus === 'break').length,
+    offline: employeesWithStatus.filter((e) => e.currentStatus === 'offline').length,
   };
 
-  const formatMinutes = (mins: number) => {
+  const formatMinutes = (mins) => {
     const h = Math.floor(mins / 60);
     const m = Math.round(mins % 60);
     return `${h}h ${m}m`;
@@ -246,7 +246,7 @@ function TimeClockPage() {
                         {emp.avatar_url ? (
                           <img src={emp.avatar_url} alt={emp.name} className="w-10 h-10 rounded-full object-cover" />
                         ) : (
-                          emp.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+                          emp.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
                         )}
                       </div>
                       <div className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-background ${cfg.color}`} />

@@ -65,7 +65,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
         return;
       }
 
-      const updates: Record<string, unknown> = {
+      const updates = {
         [deletedAtField]: new Date().toISOString(),
       };
 
@@ -102,7 +102,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
         return;
       }
 
-      const updates: Record<string, unknown> = {
+      const updates = {
         [deletedAtField]: new Date().toISOString(),
       };
 
@@ -138,7 +138,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
         return;
       }
 
-      const updates: Record<string, unknown> = {
+      const updates = {
         [deletedAtField]: null,
       };
 
@@ -175,7 +175,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
         return;
       }
 
-      const updates: Record<string, unknown> = {
+      const updates = {
         [deletedAtField]: null,
       };
 

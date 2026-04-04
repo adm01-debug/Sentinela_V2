@@ -17,7 +17,7 @@ export interface Attachment {
   duration?: number;
   hash: string;
   encoding?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   uploadedBy: string;
   isPublic: boolean;
   expiresAt?: string;

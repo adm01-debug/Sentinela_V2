@@ -8,7 +8,7 @@ export interface Recommendation {
   score: number;
   reason: string;
   action?: () => void;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface UseSmartRecommendationsOptions<T> {

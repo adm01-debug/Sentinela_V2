@@ -14,7 +14,7 @@ export interface SecurityViolation {
   severity: 'low' | 'medium' | 'high' | 'critical';
   status: 'pending' | 'reviewed' | 'resolved' | 'dismissed';
   description: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   screenshot_url?: string;
   created_at: string;
   updated_at: string;
@@ -171,7 +171,7 @@ export function useUpdateViolationStatus() {
       status: SecurityViolation['status'];
       notes?: string;
     }) => {
-      const updates: Record<string, unknown> = { status };
+      const updates: Record<string, string> = { status };
 
       if (status === 'resolved') {
         updates.resolved_at = new Date().toISOString();

@@ -46,18 +46,18 @@ async function fetchDeviceStats(): Promise<DeviceStats> {
   }
 
   // Calcular estatísticas
-  const desktops = devices?.filter(d => d.device_type === 'desktop' || d.device_type === 'laptop').length || 0;
-  const mobiles = (devices?.filter(d => d.device_type === 'mobile').length || 0) + (mobileDevices?.length || 0);
+  const desktops = devices?.filter((d) => d.device_type === 'desktop' || d.device_type === 'laptop').length || 0;
+  const mobiles = (devices?.filter((d) => d.device_type === 'mobile').length || 0) + (mobileDevices?.length || 0);
   const totalDevices = desktops + mobiles;
   
   // Considerar online se visto nos últimos 5 minutos
   const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
-  const onlineMobile = mobileDevices?.filter(d => 
+  const onlineMobile = mobileDevices?.filter((d) => 
     d.last_seen_at && new Date(d.last_seen_at) > fiveMinutesAgo
   ).length || 0;
   
   // Para desktops, considerar is_active
-  const onlineDesktop = devices?.filter(d => d.is_active).length || 0;
+  const onlineDesktop = devices?.filter((d) => d.is_active).length || 0;
   const online = onlineDesktop + onlineMobile;
 
   return {

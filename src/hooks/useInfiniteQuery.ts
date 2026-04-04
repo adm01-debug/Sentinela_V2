@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 
 interface UseInfiniteQueryOptions<T> {
-  fetchFn: (page: number) => Promise<T[]>;
+  fetchFn: (page) => Promise<T[]>;
   pageSize?: number;
 }
 

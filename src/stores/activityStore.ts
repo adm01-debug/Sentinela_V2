@@ -7,7 +7,7 @@ interface Activity {
   application: string;
   timestamp: string;
   duration: number;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 interface ActivityState {

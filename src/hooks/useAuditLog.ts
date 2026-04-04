@@ -10,8 +10,8 @@ export interface AuditLogEntry {
   entity_type: string;
   entity_id: string;
   entity_name: string;
-  old_value?: Record<string, unknown> | null;
-  new_value?: Record<string, unknown> | null;
+  old_value?: unknown | null;
+  new_value?: unknown | null;
   created_at: string;
 }
 

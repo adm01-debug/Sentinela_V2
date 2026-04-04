@@ -13,7 +13,7 @@ export interface ScheduledReport {
   schedule_time: string;
   schedule_day?: number;
   recipients: string[];
-  filters?: Record<string, unknown>;
+  filters?: unknown;
   is_active: boolean;
   last_sent?: string;
   next_run?: string;
@@ -73,7 +73,7 @@ export function useScheduledReportsPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map(r => ({
+      return (data || []).map((r) => ({
         id: r.id,
         name: `Relatório ${r.report_type}`,
         description: '',

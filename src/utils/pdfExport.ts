@@ -33,11 +33,11 @@ const chartColors: RGB[] = [
 // Helper para desenhar retângulo arredondado
 const drawRoundedRect = (
   doc: jsPDF, 
-  x: number, 
-  y: number, 
-  w: number, 
-  h: number, 
-  r: number, 
+  x, 
+  y, 
+  w, 
+  h, 
+  r, 
   style: 'F' | 'S' | 'FD' = 'F'
 ) => {
   doc.roundedRect(x, y, w, h, r, r, style);
@@ -47,11 +47,11 @@ const drawRoundedRect = (
 const drawHorizontalBarChart = (
   doc: jsPDF,
   data: { label: string; value: number; color: RGB }[],
-  x: number,
-  y: number,
-  width: number,
-  barHeight: number = 12,
-  gap: number = 8
+  x,
+  y,
+  width,
+  barHeight = 12,
+  gap = 8
 ) => {
   const maxValue = Math.max(...data.map(d => d.value));
   
@@ -87,9 +87,9 @@ const drawHorizontalBarChart = (
 const drawPieChart = (
   doc: jsPDF,
   data: { label: string; value: number; color: RGB }[],
-  centerX: number,
-  centerY: number,
-  radius: number
+  centerX,
+  centerY,
+  radius
 ) => {
   const total = data.reduce((sum, d) => sum + d.value, 0);
   let startAngle = -Math.PI / 2; // Começar do topo
@@ -135,9 +135,9 @@ const drawPieChart = (
 const drawLegend = (
   doc: jsPDF,
   data: { label: string; value: number; color: RGB }[],
-  x: number,
-  y: number,
-  columns: number = 1
+  x,
+  y,
+  columns = 1
 ) => {
   const itemsPerColumn = Math.ceil(data.length / columns);
   const columnWidth = 80;
@@ -166,10 +166,10 @@ const drawMetricCard = (
   doc: jsPDF,
   label: string,
   value: string,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
+  x,
+  y,
+  width,
+  height,
   color: RGB
 ) => {
   // Fundo do card
@@ -197,10 +197,10 @@ const drawMetricCard = (
 const drawAreaChart = (
   doc: jsPDF,
   data: { label: string; values: { name: string; value: number; color: RGB }[] }[],
-  x: number,
-  y: number,
-  width: number,
-  height: number
+  x,
+  y,
+  width,
+  height
 ) => {
   const padding = 25;
   const chartWidth = width - padding * 2;

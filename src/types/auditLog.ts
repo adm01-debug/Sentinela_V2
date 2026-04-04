@@ -78,8 +78,8 @@ export type AuditResource =
   | 'import';
 
 export interface AuditChanges {
-  before?: Record<string, unknown>;
-  after?: Record<string, unknown>;
+  before?: unknown;
+  after?: unknown;
   fields?: string[];
 }
 

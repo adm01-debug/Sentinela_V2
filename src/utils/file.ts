@@ -33,7 +33,7 @@ export function getFileNameWithoutExtension(filename: string): string {
   return lastDot > 0 ? name.substring(0, lastDot) : name;
 }
 
-export function formatFileSize(bytes: number, decimals: number = 2): string {
+export function formatFileSize(bytes, decimals = 2): string {
   if (bytes === 0) return '0 Bytes';
   const k = 1024;
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];

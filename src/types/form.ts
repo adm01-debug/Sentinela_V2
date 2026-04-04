@@ -58,7 +58,7 @@ export interface FieldValidation {
   patternMessage?: string;
   email?: boolean;
   url?: boolean;
-  custom?: (value: unknown) => string | undefined;
+  custom?: (value) => string | undefined;
 }
 
 export interface FieldOption {
@@ -132,7 +132,7 @@ export interface FormState<T = Record<string, unknown>> {
 }
 
 export interface FormActions<T = Record<string, unknown>> {
-  setValue: (name: keyof T, value: unknown) => void;
+  setValue: (name: keyof T, value) => void;
   setValues: (values: Partial<T>) => void;
   setError: (name: keyof T, error: string) => void;
   setErrors: (errors: Record<string, string>) => void;

@@ -5,7 +5,7 @@ import { devtools } from 'zustand/middleware';
 interface ModalConfig {
   id: string;
   component: string;
-  props?: Record<string, unknown>;
+  props?: unknown;
   options?: ModalOptions;
 }
 
@@ -39,7 +39,7 @@ interface ModalState {
   closeAll: () => void;
   confirm: (config: ConfirmConfig) => void;
   closeConfirm: () => void;
-  updateModal: (id: string, props: Record<string, unknown>) => void;
+  updateModal: (id: string, props) => void;
 }
 
 export const useModalStore = create<ModalState>()(
@@ -88,7 +88,7 @@ export const useModalStore = create<ModalState>()(
       updateModal: (id, props) =>
         set((state) => ({
           modals: state.modals.map((m) =>
-            m.id === id ? { ...m, props: { ...m.props, ...props } } : m
+            m.id === id ? { ...m, props: { ...(m.props as object), ...(props as object) } } : m
           ),
         })),
     }),
@@ -104,9 +104,9 @@ export const useModal = (id: string) => {
   return {
     isOpen: !!modal,
     props: modal?.props,
-    open: (props?: Record<string, unknown>) => open({ id, component: id, props }),
+    open: (props?: unknown) => open({ id, component: id, props }),
     close: () => close(id),
-    update: (props: Record<string, unknown>) => updateModal(id, props),
+    update: (props) => updateModal(id, props),
   };
 };
 

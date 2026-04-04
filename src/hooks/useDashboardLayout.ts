@@ -9,7 +9,7 @@ export interface DashboardWidget {
   type: 'stats' | 'chart' | 'alerts' | 'employees' | 'ranking' | 'security' | 'custom';
   title: string;
   position: { x: number; y: number; w: number; h: number };
-  config?: Record<string, unknown>;
+  config?: unknown;
   visible?: boolean;
   size?: 'small' | 'medium' | 'large' | 'full';
 }

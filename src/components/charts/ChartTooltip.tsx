@@ -8,10 +8,10 @@ interface ChartTooltipEntry {
 
 interface ChartTooltipProps {
   active?: boolean;
-  payload?: Array<{ name: string; value: number; color?: string; dataKey?: string; payload?: Record<string, unknown> }>;
+  payload?: Array<{ name: string; value: number; color?: string; dataKey?: string; payload?: unknown }>;
   label?: string;
   labelFormatter?: (label: string) => string;
-  valueFormatter?: (value: number) => string;
+  valueFormatter?: (value) => string;
 }
 
 export function ChartTooltipContent({

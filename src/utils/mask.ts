@@ -109,7 +109,7 @@ export function maskNumeric(value: string): string {
   return value.replace(/\D/g, '');
 }
 
-export function maskDecimal(value: string, decimals: number = 2): string {
+export function maskDecimal(value: string, decimals = 2): string {
   const num = parseFloat(value.replace(',', '.'));
   if (isNaN(num)) return '';
   return num.toFixed(decimals).replace('.', ',');

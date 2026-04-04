@@ -13,7 +13,7 @@ export interface ScheduledReport {
   report_type: string;
   schedule: string; // cron expression
   recipients: string[];
-  filters?: Record<string, unknown>;
+  filters?: unknown;
   format: 'pdf' | 'csv' | 'xlsx';
   is_active: boolean;
   last_run_at?: string;
@@ -27,7 +27,7 @@ export interface CreateScheduledReportInput {
   report_type: string;
   schedule: string;
   recipients: string[];
-  filters?: Record<string, unknown>;
+  filters?: unknown;
   format?: 'pdf' | 'csv' | 'xlsx';
   is_active?: boolean;
 }
@@ -37,7 +37,7 @@ export interface UpdateScheduledReportInput {
   name?: string;
   schedule?: string;
   recipients?: string[];
-  filters?: Record<string, unknown>;
+  filters?: unknown;
   format?: 'pdf' | 'csv' | 'xlsx';
   is_active?: boolean;
 }

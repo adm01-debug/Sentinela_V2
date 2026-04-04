@@ -53,9 +53,9 @@ interface SecurityScore {
 
 function calculateSecurityScore(
   mfaEnabled: boolean,
-  trustedDevices: number,
-  totalDevices: number,
-  unresolvedAlerts: number
+  trustedDevices,
+  totalDevices,
+  unresolvedAlerts
 ): SecurityScore {
   let mfa = mfaEnabled ? 25 : 0;
   let sessions = 25; // Base score for active session
@@ -71,14 +71,14 @@ function calculateSecurityScore(
   };
 }
 
-function getScoreColor(score: number): string {
+function getScoreColor(score): string {
   if (score >= 80) return 'text-green-500';
   if (score >= 60) return 'text-yellow-500';
   if (score >= 40) return 'text-orange-500';
   return 'text-red-500';
 }
 
-function getScoreBadge(score: number): { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' } {
+function getScoreBadge(score): { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' } {
   if (score >= 80) return { label: 'Excelente', variant: 'default' };
   if (score >= 60) return { label: 'Bom', variant: 'secondary' };
   if (score >= 40) return { label: 'Moderado', variant: 'outline' };

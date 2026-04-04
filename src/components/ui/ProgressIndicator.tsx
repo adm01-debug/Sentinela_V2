@@ -38,7 +38,7 @@ export function StepProgress({
 
   const config = sizeConfig[size];
 
-  const getStepStatus = (index: number, step: Step) => {
+  const getStepStatus = (index, step: Step) => {
     if (step.status) return step.status;
     if (index < currentStep) return 'completed';
     if (index === currentStep) return 'current';

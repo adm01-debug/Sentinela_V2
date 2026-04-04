@@ -10,7 +10,7 @@ interface LogEntry {
   message: string;
   timestamp: string;
   context?: string;
-  data?: Record<string, unknown>;
+  data?: unknown;
   error?: { message: string; stack?: string };
 }
 
@@ -50,7 +50,7 @@ function log(level: LogLevel, message: string, context?: string, ...args: unknow
   return entry;
 }
 
-function logError(message: string, err: unknown, context?: string) {
+function logError(message: string, err, context?: string) {
   const errorObj = err instanceof Error ? err : new Error(String(err));
   const entry: LogEntry = {
     level: 'error',

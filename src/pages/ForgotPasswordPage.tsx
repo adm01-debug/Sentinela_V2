@@ -32,7 +32,7 @@ export default function ForgotPasswordPage() {
       });
       if (error) throw error;
       toast({ title: 'Instruções enviadas', description: 'Verifique seu email para redefinir sua senha.' });
-    } catch (err: unknown) {
+    } catch (err) {
       const message = err instanceof Error ? err.message : 'Erro ao enviar email';
       toast({ title: 'Erro', description: message, variant: 'destructive' });
     } finally {

@@ -23,7 +23,7 @@ export interface SecurityScoreDashboardProps {
   className?: string;
 }
 
-const getScoreLevel = (score: number) => {
+const getScoreLevel = (score) => {
   if (score >= 80) return { level: 'Excellent', color: 'text-green-500', bg: 'bg-green-500', icon: ShieldCheck };
   if (score >= 60) return { level: 'Good', color: 'text-blue-500', bg: 'bg-blue-500', icon: Shield };
   if (score >= 40) return { level: 'Fair', color: 'text-yellow-500', bg: 'bg-yellow-500', icon: ShieldAlert };

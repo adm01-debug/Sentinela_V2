@@ -4,7 +4,7 @@
  * Format currency
  */
 export function formatCurrency(
-  value: number,
+  value,
   currency = 'BRL',
   locale = 'pt-BR'
 ): string {
@@ -18,7 +18,7 @@ export function formatCurrency(
  * Format number with options
  */
 export function formatNumber(
-  value: number,
+  value,
   options?: Intl.NumberFormatOptions,
   locale = 'pt-BR'
 ): string {
@@ -29,7 +29,7 @@ export function formatNumber(
  * Format percentage
  */
 export function formatPercent(
-  value: number,
+  value,
   decimals = 1,
   locale = 'pt-BR'
 ): string {
@@ -43,7 +43,7 @@ export function formatPercent(
 /**
  * Format bytes to human readable
  */
-export function formatBytes(bytes: number, decimals = 2): string {
+export function formatBytes(bytes, decimals = 2): string {
   if (bytes === 0) return '0 Bytes';
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
@@ -55,7 +55,7 @@ export function formatBytes(bytes: number, decimals = 2): string {
 /**
  * Format duration in seconds to human readable
  */
-export function formatDuration(seconds: number): string {
+export function formatDuration(seconds): string {
   if (seconds < 0) return '0s';
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -70,14 +70,14 @@ export function formatDuration(seconds: number): string {
 /**
  * Clamp a number between min and max
  */
-export function clamp(value: number, min: number, max: number): number {
+export function clamp(value, min, max): number {
   return Math.min(Math.max(value, min), max);
 }
 
 /**
  * Round to specific decimal places
  */
-export function round(value: number, decimals = 2): number {
+export function round(value, decimals = 2): number {
   const factor = Math.pow(10, decimals);
   return Math.round(value * factor) / factor;
 }

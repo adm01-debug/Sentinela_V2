@@ -15,7 +15,7 @@ export interface ApiKey {
   expiresAt?: string;
   lastUsedAt?: string;
   usageCount: number;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   createdAt: string;
   updatedAt: string;
   createdBy: string;
@@ -83,7 +83,7 @@ export interface ApiKeyCreateInput {
   rateLimit?: Partial<RateLimit>;
   ipWhitelist?: string[];
   expiresAt?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface ApiKeyUpdateInput {
@@ -92,7 +92,7 @@ export interface ApiKeyUpdateInput {
   rateLimit?: Partial<RateLimit>;
   ipWhitelist?: string[];
   expiresAt?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface ApiKeyFilters {

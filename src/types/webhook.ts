@@ -75,7 +75,7 @@ export interface WebhookPayload {
   id: string;
   event: WebhookEvent;
   timestamp: string;
-  data: Record<string, unknown>;
+  data: unknown;
   metadata: {
     webhookId: string;
     deliveryId: string;
@@ -137,5 +137,5 @@ export interface WebhookStats {
 export interface WebhookTest {
   webhookId: string;
   event: WebhookEvent;
-  payload?: Record<string, unknown>;
+  payload?: unknown;
 }
