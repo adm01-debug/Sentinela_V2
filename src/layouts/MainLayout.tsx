@@ -9,8 +9,10 @@ import { useUIStore } from '@/stores/uiStore';
 import { cn } from '@/utils/cn';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { CommandPalette } from '@/components/CommandPalette';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export const MainLayout = () => {
+  useDocumentTitle();
   const { sidebarCollapsed } = useUIStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
@@ -30,9 +32,9 @@ export const MainLayout = () => {
   return (
     <div className="flex h-screen bg-background">
       {/* Desktop Sidebar */}
-      <div className="hidden md:block">
+      <nav id="main-nav" aria-label="Navegação principal" className="hidden md:block">
         <AppSidebar />
-      </div>
+      </nav>
 
       {/* Mobile Sidebar Sheet */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
