@@ -59,7 +59,7 @@ function AuditLogItem({ entry }: { entry: AuditLogEntry }) {
                 </span>
               </div>
             </div>
-            {(entry.old_value || entry.new_value) && (
+            {((entry.old_value as string | null) || (entry.new_value as string | null)) && (
               <div className="shrink-0">
                 {expanded ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
               </div>
