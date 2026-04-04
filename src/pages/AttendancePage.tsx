@@ -64,7 +64,7 @@ function AttendancePage() {
   });
 
   // Combine sources
-  const allRecords = records.length > 0 ? records : timeEntries.map((te: any) => ({
+  const allRecords = records.length > 0 ? records : timeEntries.map((te) => ({
     id: `te-${te.employee_id}-${te.clock_in}`,
     employee_id: te.employee_id,
     date: format(new Date(te.clock_in), 'yyyy-MM-dd'),
