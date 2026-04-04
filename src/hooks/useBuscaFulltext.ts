@@ -6,6 +6,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -91,7 +92,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
       if (!shouldSearch) return [];
 
       if (!isSupabaseReady) {
-        console.log('[FulltextSearch] Supabase não configurado');
+        logger.info('[FulltextSearch] Supabase não configurado');
         return [];
       }
 
@@ -114,7 +115,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
       const { data, error } = await query;
 
       if (error) {
-        console.error('[FulltextSearch] Erro:', error);
+        logger.error('[FulltextSearch] Erro:', error);
         throw error;
       }
 

@@ -6,6 +6,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -59,7 +60,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
     queryKey,
     queryFn: async (): Promise<SavedFilter[]> => {
       if (!isSupabaseReady) {
-        console.log('[SavedFilters] Supabase não configurado, usando mock');
+        logger.info('[SavedFilters] Supabase não configurado, usando mock');
         return mockFilters.filter((f) => f.entity_type === entityType);
       }
 
@@ -72,7 +73,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
       if (error) {
         // Se a tabela não existe, retorna array vazio
         if (error.code === '42P01') {
-          console.warn('[SavedFilters] Tabela não existe ainda');
+          logger.warn('[SavedFilters] Tabela não existe ainda');
           return [];
         }
         throw error;
@@ -89,7 +90,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   const saveFilterMutation = useMutation({
     mutationFn: async (filter: { name: string; filters: Record<string, unknown>; is_default?: boolean }) => {
       if (!isSupabaseReady) {
-        console.log('[SavedFilters] Mock: salvando filtro', filter.name);
+        logger.info('[SavedFilters] Mock: salvando filtro', filter.name);
         return { id: `mock-${Date.now()}`, ...filter, entity_type: entityType, created_at: new Date().toISOString() };
       }
 
@@ -115,7 +116,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
       toast.success('Filtro salvo com sucesso!');
     },
     onError: (error: Error) => {
-      console.error('[SavedFilters] Erro ao salvar:', error);
+      logger.error('[SavedFilters] Erro ao salvar:', error);
       toast.error('Erro ao salvar filtro');
     },
   });
@@ -126,7 +127,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   const deleteFilterMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
-        console.log('[SavedFilters] Mock: deletando filtro', id);
+        logger.info('[SavedFilters] Mock: deletando filtro', id);
         return;
       }
 
@@ -142,7 +143,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
       toast.success('Filtro removido');
     },
     onError: (error: Error) => {
-      console.error('[SavedFilters] Erro ao deletar:', error);
+      logger.error('[SavedFilters] Erro ao deletar:', error);
       toast.error('Erro ao remover filtro');
     },
   });
@@ -153,7 +154,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   const setDefaultMutation = useMutation({
     mutationFn: async (id: string) => {
       if (!isSupabaseReady) {
-        console.log('[SavedFilters] Mock: definindo padrão', id);
+        logger.info('[SavedFilters] Mock: definindo padrão', id);
         return;
       }
 
@@ -176,7 +177,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
       toast.success('Filtro padrão definido');
     },
     onError: (error: Error) => {
-      console.error('[SavedFilters] Erro ao definir padrão:', error);
+      logger.error('[SavedFilters] Erro ao definir padrão:', error);
       toast.error('Erro ao definir filtro padrão');
     },
   });

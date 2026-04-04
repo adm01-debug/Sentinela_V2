@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Check, ChevronsUpDown, Loader2, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useDebounce } from '@/hooks/useDebounce';
+import { logger } from '@/lib/logger';
 
 export interface SearchAutocompleteOption {
   value: string;
@@ -72,7 +73,7 @@ export function SearchAutocomplete({
       const results = await onSearch(searchQuery);
       setOptions(results.slice(0, maxResults));
     } catch (error) {
-      console.error('Search error:', error);
+      logger.error('Search error:', error);
       setOptions([]);
     } finally {
       setInternalLoading(false);

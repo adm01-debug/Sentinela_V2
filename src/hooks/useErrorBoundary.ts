@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
+import { logger } from '@/lib/logger';
 
 export function useErrorBoundary() {
   const handleError = useCallback((error: Error, info?: { componentStack: string }) => {
     if (import.meta.env.DEV) {
-      console.error('[ErrorBoundary]', error, info?.componentStack);
+      logger.error('[ErrorBoundary]', error, info?.componentStack);
     }
   }, []);
   

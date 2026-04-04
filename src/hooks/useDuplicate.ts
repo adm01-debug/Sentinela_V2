@@ -6,6 +6,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -67,7 +68,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
   const duplicateMutation = useMutation({
     mutationFn: async (id: string): Promise<T> => {
       if (!isSupabaseReady) {
-        console.log('[Duplicate] Mock: duplicando', id);
+        logger.info('[Duplicate] Mock: duplicando', id);
         return { id: `mock-${Date.now()}` } as unknown as T;
       }
 
@@ -111,7 +112,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
       onSuccess?.(newRecord, originalId);
     },
     onError: (error: Error) => {
-      console.error('[Duplicate] Erro:', error);
+      logger.error('[Duplicate] Erro:', error);
       toast.error(error.message || 'Erro ao duplicar registro');
       onError?.(error);
     },
@@ -124,7 +125,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
   const duplicateManyMutation = useMutation({
     mutationFn: async (ids: string[]): Promise<T[]> => {
       if (!isSupabaseReady) {
-        console.log('[Duplicate] Mock: duplicando', ids.length, 'registros');
+        logger.info('[Duplicate] Mock: duplicando', ids.length, 'registros');
         return ids.map((id) => ({ id: `mock-${id}-copy` })) as unknown as T[];
       }
 
@@ -167,7 +168,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
       toast.success(`${newRecords.length} registros duplicados!`);
     },
     onError: (error: Error) => {
-      console.error('[Duplicate] Erro em lote:', error);
+      logger.error('[Duplicate] Erro em lote:', error);
       toast.error(error.message || 'Erro ao duplicar registros');
       onError?.(error);
     },

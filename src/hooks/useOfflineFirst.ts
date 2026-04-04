@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 
 export interface UseOfflineFirstOptions<T> {
   key: string;
@@ -31,7 +32,7 @@ export function useOfflineFirst<T>(options: UseOfflineFirstOptions<T>) {
         setLastFetched(timestamp);
         return { data: cachedData, timestamp };
       }
-    } catch (e) { console.error('Cache read error:', e); }
+    } catch (e) { logger.error('Cache read error:', e); }
     return null;
   }, [key]);
 
@@ -40,7 +41,7 @@ export function useOfflineFirst<T>(options: UseOfflineFirstOptions<T>) {
       const timestamp = Date.now();
       localStorage.setItem(key, JSON.stringify({ data: newData, timestamp }));
       setLastFetched(timestamp);
-    } catch (e) { console.error('Cache write error:', e); }
+    } catch (e) { logger.error('Cache write error:', e); }
   }, [key]);
 
   const refresh = useCallback(async (force = false) => {

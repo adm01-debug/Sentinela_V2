@@ -1,4 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // CONFIGURAÇÃO DE TEMPOS DE CACHE
@@ -530,7 +531,7 @@ export const queryClient = new QueryClient({
     mutations: {
       retry: 1,
       onError: (error) => {
-        console.error('[Mutation Error]', error);
+        logger.error('[Mutation Error]', error);
       },
     },
   },

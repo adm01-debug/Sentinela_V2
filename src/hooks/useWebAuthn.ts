@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { logger } from '@/lib/logger';
 
 // Utility functions for WebAuthn
 function bufferToBase64(buffer: ArrayBuffer): string {
@@ -293,7 +294,7 @@ export function useWebAuthn() {
 
       return { success: true, userId: credential.user_id };
     } catch (error: unknown) {
-      console.error('WebAuthn authentication error:', error);
+      logger.error('WebAuthn authentication error:', error);
       const err = error as Error & { name?: string; message?: string };
 
       let errorMessage = 'Falha na autenticação biométrica.';

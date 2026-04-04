@@ -1,13 +1,14 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { handleError } from './handler';
+import { logger } from '@/lib/logger';
 interface Props { children: ReactNode; fallback?: ReactNode; onError?: (error: Error, info: ErrorInfo) => void; }
 interface State { hasError: boolean; error: Error | null; }
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, error: null };
   static getDerivedStateFromError(error: Error): State { return { hasError: true, error }; }
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('[ErrorBoundary] Caught error:', error.message, error.stack);
-    console.error('[ErrorBoundary] Component stack:', info.componentStack);
+    logger.error('[ErrorBoundary] Caught error:', error.message, error.stack);
+    logger.error('[ErrorBoundary] Component stack:', info.componentStack);
     handleError(error);
     this.props.onError?.(error, info);
   }

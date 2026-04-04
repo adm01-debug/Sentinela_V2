@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // VALIDATION SCHEMAS
@@ -225,7 +226,7 @@ export function useAuthPage() {
       setPassword('');
     },
     onError: (e: Error) => { 
-      console.error('Registration error:', e);
+      logger.error('Registration error:', e);
       
       // Check for specific errors
       const errorMessage = e.message.toLowerCase();

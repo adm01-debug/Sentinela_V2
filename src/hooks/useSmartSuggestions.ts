@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface Suggestion {
   id: string;
@@ -49,7 +50,7 @@ export function useSmartSuggestions(options: UseSmartSuggestionsOptions = {}) {
         }));
       setSuggestions(filtered);
     } catch (e) {
-      console.error('Failed to fetch suggestions:', e);
+      logger.error('Failed to fetch suggestions:', e);
     } finally {
       setIsLoading(false);
     }

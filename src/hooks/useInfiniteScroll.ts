@@ -6,6 +6,7 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { useInfiniteQuery, UseInfiniteQueryOptions } from '@tanstack/react-query';
 import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -77,7 +78,7 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
 
   const fetchPage = async ({ pageParam = 0 }): Promise<PageData<T>> => {
     if (!isSupabaseReady) {
-      console.log('[InfiniteScroll] Supabase não configurado');
+      logger.info('[InfiniteScroll] Supabase não configurado');
       return { data: [], nextPage: null, totalCount: 0 };
     }
 
@@ -107,7 +108,7 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
     const { data, error, count } = await query;
 
     if (error) {
-      console.error('[InfiniteScroll] Error:', error);
+      logger.error('[InfiniteScroll] Error:', error);
       throw error;
     }
 

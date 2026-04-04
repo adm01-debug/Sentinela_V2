@@ -6,6 +6,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -75,7 +76,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
     queryKey,
     queryFn: async (): Promise<EntityVersion[]> => {
       if (!isSupabaseReady) {
-        console.log('[Versions] Supabase não configurado');
+        logger.info('[Versions] Supabase não configurado');
         return mockVersions;
       }
 
@@ -92,7 +93,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
       if (error) {
         // Tabela não existe
         if (error.code === '42P01') {
-          console.warn('[Versions] Tabela não existe');
+          logger.warn('[Versions] Tabela não existe');
           return [];
         }
         throw error;
@@ -110,7 +111,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   const createVersionMutation = useMutation({
     mutationFn: async (params: { data: Record<string, unknown>; summary?: string }) => {
       if (!isSupabaseReady) {
-        console.log('[Versions] Mock: criando versão');
+        logger.info('[Versions] Mock: criando versão');
         return { id: `mock-${Date.now()}`, version_number: versions.length + 1 };
       }
 
@@ -138,7 +139,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
       toast.success('Versão salva');
     },
     onError: (error: Error) => {
-      console.error('[Versions] Erro ao criar versão:', error);
+      logger.error('[Versions] Erro ao criar versão:', error);
       toast.error('Erro ao salvar versão');
     },
   });
@@ -152,7 +153,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
       if (!version) throw new Error('Versão não encontrada');
 
       if (!isSupabaseReady) {
-        console.log('[Versions] Mock: restaurando versão', versionId);
+        logger.info('[Versions] Mock: restaurando versão', versionId);
         return version.data;
       }
 
@@ -190,7 +191,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
       toast.success('Versão restaurada');
     },
     onError: (error: Error) => {
-      console.error('[Versions] Erro ao restaurar:', error);
+      logger.error('[Versions] Erro ao restaurar:', error);
       toast.error('Erro ao restaurar versão');
     },
   });

@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useBillingStore } from '@/stores/billingStore';
+import { logger } from '@/lib/logger';
 
 interface CompanyPlan {
   companyName: string;
@@ -60,7 +61,7 @@ export function useBilling() {
 
   const subscribeToPlan = useCallback(async (_planId: string) => {
     // Billing gateway integration placeholder - would integrate with Stripe/etc
-    console.log('[Billing] Subscribe to plan:', _planId);
+    logger.info('[Billing] Subscribe to plan:', _planId);
   }, []);
 
   return {

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 export interface PasswordResetRequest {
   id: string;
@@ -61,7 +62,7 @@ export function usePasswordResetRequests() {
       toast.success('Solicitação enviada! Aguarde aprovação do administrador.');
     },
     onError: (error) => {
-      console.error('Error creating request:', error);
+      logger.error('Error creating request:', error);
       toast.error('Erro ao enviar solicitação');
     },
   });
@@ -111,7 +112,7 @@ export function usePasswordResetRequests() {
       toast.success('Solicitação aprovada e email de reset enviado');
     },
     onError: (error) => {
-      console.error('Error approving request:', error);
+      logger.error('Error approving request:', error);
       toast.error('Erro ao aprovar solicitação');
     },
   });
@@ -144,7 +145,7 @@ export function usePasswordResetRequests() {
       toast.success('Solicitação rejeitada');
     },
     onError: (error) => {
-      console.error('Error rejecting request:', error);
+      logger.error('Error rejecting request:', error);
       toast.error('Erro ao rejeitar solicitação');
     },
   });
@@ -164,7 +165,7 @@ export function usePasswordResetRequests() {
       toast.success('Solicitação removida');
     },
     onError: (error) => {
-      console.error('Error deleting request:', error);
+      logger.error('Error deleting request:', error);
       toast.error('Erro ao remover solicitação');
     },
   });

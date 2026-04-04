@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 export interface Permission {
   id: string;
@@ -286,7 +287,7 @@ export function useHasPermission(permission: string) {
       });
 
       if (error) {
-        console.error('Permission check error:', error);
+        logger.error('Permission check error:', error);
         return false;
       }
       return data as boolean;
@@ -310,7 +311,7 @@ export function useCurrentUserPermissions() {
       });
 
       if (error) {
-        console.error('Get permissions error:', error);
+        logger.error('Get permissions error:', error);
         return [];
       }
       return data as string[];

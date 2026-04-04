@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface DeviceStats {
   totalDevices: number;
@@ -18,7 +19,7 @@ async function fetchDeviceStats(): Promise<DeviceStats> {
     .select('device_type, is_active');
 
   if (devicesError) {
-    console.error('Erro ao buscar devices:', devicesError);
+    logger.error('Erro ao buscar devices:', devicesError);
     throw devicesError;
   }
 
@@ -28,7 +29,7 @@ async function fetchDeviceStats(): Promise<DeviceStats> {
     .select('is_active, last_seen_at');
 
   if (mobileError) {
-    console.error('Erro ao buscar mobile devices:', mobileError);
+    logger.error('Erro ao buscar mobile devices:', mobileError);
   }
 
   // Buscar violações de hoje
@@ -41,7 +42,7 @@ async function fetchDeviceStats(): Promise<DeviceStats> {
     .gte('created_at', today.toISOString());
 
   if (alertsError) {
-    console.error('Erro ao buscar alertas:', alertsError);
+    logger.error('Erro ao buscar alertas:', alertsError);
   }
 
   // Calcular estatísticas
