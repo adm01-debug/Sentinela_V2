@@ -15,6 +15,8 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useNavigate } from 'react-router-dom';
+import { PageTransition } from '@/components/PageTransition';
+import { WelcomeBanner } from '@/components/WelcomeBanner';
 import {
   AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -132,8 +134,10 @@ export const DashboardPage = () => {
   const alertsCount = stats?.alertsCount || 3;
 
   return (
+    <PageTransition>
     <div className="space-y-6">
-      {/* Header */}
+      {/* Welcome Banner */}
+      <WelcomeBanner />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
@@ -388,6 +392,7 @@ export const DashboardPage = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 
