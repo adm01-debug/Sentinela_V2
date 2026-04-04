@@ -220,6 +220,7 @@ export const AppRoutes = () => (
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-  </Suspense>
+      </Routes>
+    </Suspense>
+  </RouteErrorBoundary>
 );
