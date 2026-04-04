@@ -18,5 +18,6 @@ ReactDOM.createRoot(rootEl).render(
   </React.StrictMode>
 );
 
-// Initialize performance monitoring
+// Initialize performance monitoring & error tracking
 initWebVitals();
+initErrorTracking();
