@@ -222,17 +222,20 @@ export function DashboardHome() {
             <ScrollArea className="h-[240px]">
               <div className="space-y-2.5">
                 {recentAlerts.map((alert) => (
-                  <div
+                  <button
                     key={alert.id}
-                    className={`flex items-start gap-3 p-3 rounded-lg border transition-colors hover:bg-muted/30 ${severityStyles[alert.severity]}`}
+                    type="button"
+                    onClick={() => navigate('/alerts')}
+                    className={`flex items-start gap-3 p-3 rounded-lg border transition-colors hover:bg-muted/30 w-full text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 ${severityStyles[alert.severity]}`}
+                    aria-label={`Alerta ${alert.severity}: ${alert.message} - ${alert.employee}`}
                   >
-                    <Shield className="h-4 w-4 mt-0.5 shrink-0" />
+                    <Shield className="h-4 w-4 mt-0.5 shrink-0" aria-hidden="true" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium leading-snug">{alert.message}</p>
                       <p className="text-xs opacity-70 mt-0.5">{alert.employee} · {alert.time}</p>
                     </div>
                     <Badge variant="outline" className="text-[10px] shrink-0 capitalize">{alert.severity}</Badge>
-                  </div>
+                  </button>
                 ))}
               </div>
             </ScrollArea>
