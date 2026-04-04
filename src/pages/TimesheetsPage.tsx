@@ -198,7 +198,7 @@ function TimesheetsPage() {
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Carregando...</TableCell></TableRow>
               ) : filtered.length === 0 ? (
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Nenhuma folha de ponto encontrada</TableCell></TableRow>
-              ) : filtered.map((ts: any) => {
+              ) : filtered.map((ts) => {
                 const stCfg = statusConfig[ts.status] || statusConfig.pending;
                 return (
                   <TableRow key={ts.id}>

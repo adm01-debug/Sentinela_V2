@@ -18,7 +18,7 @@ interface NavSection {
   id: string;
   title: string;
   defaultOpen?: boolean;
-  items: { icon: any; label: string; path: string }[];
+  items: { icon: React.ComponentType<{ className?: string }>; label: string; path: string }[];
 }
 
 const navSections: NavSection[] = [
