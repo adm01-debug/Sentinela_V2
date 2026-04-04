@@ -43,7 +43,6 @@ export function Breadcrumbs({ className }: { className?: string }) {
   const segments = pathname.split('/').filter(Boolean);
   if (pathname === '/dashboard' || pathname === '/' || segments.length <= 1) return null;
 
-  const segments = pathname.split('/').filter(Boolean);
   const crumbs: { label: string; path: string }[] = [];
 
   let currentPath = '';
