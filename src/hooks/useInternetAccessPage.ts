@@ -75,11 +75,11 @@ export function useInternetAccessPage() {
         description: item.notes || '',
         type: item.access_level === 'blocked' ? 'block' : 'allow' as 'block' | 'allow',
         target_type: 'domain' as const,
-        target_value: item.blocked_sites?.join(', ') || '',
+        target_value: (item.blocked_sites as string[] | null)?.join(', ') || '',
         applies_to: 'employees' as const,
         is_active: true,
         created_at: item.created_at,
-        blocked_count: item.blocked_sites?.length || 0,
+        blocked_count: (item.blocked_sites as string[] | null)?.length || 0,
       })) as InternetAccessRule[];
     },
   });
@@ -115,7 +115,7 @@ export function useInternetAccessPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('internet_access_rules').delete().eq('id', id);
       if (error) throw error;
     },

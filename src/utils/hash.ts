@@ -14,7 +14,7 @@ export async function sha512(message): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-export async function md5(message): Promise<string> {
+export async function md5(message: string): Promise<string> {
   // Simple MD5 implementation for non-cryptographic purposes
   function md5cycle(x: number[], k: number[]) {
     let a = x[0], b = x[1], c = x[2], d = x[3];
@@ -23,11 +23,11 @@ export async function md5(message): Promise<string> {
     // Simplified - in production use a proper library
     x[0] = add32(a, x[0]); x[1] = add32(b, x[1]); x[2] = add32(c, x[2]); x[3] = add32(d, x[3]);
   }
-  function ff(a: any, b: any, c: any, d: any, x: number, s: string, t: any) {
+  function ff(a: any, b: any, c: any, d: any, x: number, s: number, t: any) {
     return add32(rol32(add32(add32(a, (b & c) | (~b & d)), add32(x, t)), s), b);
   }
   function add32(a: any, b: any) { return (a + b) & 0xFFFFFFFF; }
-  function rol32(n: number, c: any) { return (n << c) | (n >>> (32 - c)); }
+  function rol32(n: number, c: number) { return (n << c) | (n >>> (32 - c)); }
   
   // For actual MD5, use a library - this is a placeholder
   return sha256(message).then(h => h.substring(0, 32));

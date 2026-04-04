@@ -170,7 +170,7 @@ export function useDeleteMessageTemplate() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('message_templates')
         .delete()
@@ -232,7 +232,7 @@ export function useDuplicateMessageTemplate() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       // First get the template
       const { data: template, error: fetchError } = await supabase
         .from('message_templates')

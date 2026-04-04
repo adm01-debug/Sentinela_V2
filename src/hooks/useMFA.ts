@@ -94,7 +94,7 @@ export function useUnenrollMFA() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (factorId) => {
+    mutationFn: async (factorId: string) => {
       const { error } = await supabase.auth.mfa.unenroll({ factorId });
       if (error) throw error;
     },

@@ -156,7 +156,7 @@ export function useDeleteScheduledReport() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('scheduled_reports')
         .delete()
@@ -185,7 +185,7 @@ export function useRunScheduledReport() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { data, error } = await supabase.functions.invoke('send-scheduled-report', {
         body: { report_id: id, manual: true },
       });

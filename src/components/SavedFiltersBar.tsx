@@ -59,7 +59,7 @@ function SavedFiltersBarBase({
   useEffect(() => {
     if (defaultFilter && !selectedFilter) {
       setSelectedFilter(defaultFilter.id);
-      onApplyFilter(defaultFilter.filters);
+      onApplyFilter(defaultFilter.filters as Record<string, unknown>);
     }
   }, [defaultFilter]);
 

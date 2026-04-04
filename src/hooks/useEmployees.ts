@@ -167,7 +167,7 @@ export const useUpdateEmployee = () => {
 export const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('employees').delete().eq('id', id);
       if (error) throw error;
     },

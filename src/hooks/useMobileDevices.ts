@@ -86,7 +86,7 @@ export function useMobileDeviceLocations() {
       
       return data?.map((d) => ({
         device_id: d.id,
-        ...d.last_location,
+        ...(d.last_location as object),
         employee: d.employee,
       })) as DeviceLocation[];
     },
@@ -159,7 +159,7 @@ export function useDeleteMobileDevice() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('mobile_devices')
         .delete()

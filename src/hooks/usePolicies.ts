@@ -23,7 +23,7 @@ export function usePolicies() {
         .order('created_at', { ascending: false });
       if (error) throw error;
 
-      return (data ?? []).map((row): Policy => ({
+      return (data ?? []).map((row: any): Policy => ({
         id: row.id,
         name: row.name,
         description: row.description,
@@ -36,7 +36,7 @@ export function usePolicies() {
   });
 
   const toggleMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const policy = (query.data ?? []).find(p => p.id === id);
       if (!policy) throw new Error('Policy not found');
       const { error } = await supabase

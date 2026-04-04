@@ -46,7 +46,7 @@ export const useReport = (id) => {
 export const useDeleteReport = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('ai_analysis_reports').delete().eq('id', id);
       if (error) throw error;
     },

@@ -126,7 +126,7 @@ export function useUserManagementPage() {
 
   // Delete user mutation
   const deleteMutation = useMutation({
-    mutationFn: async (userId) => {
+    mutationFn: async (userId: string) => {
       const { error } = await supabase.auth.admin.deleteUser(userId);
       if (error) throw error;
     },
@@ -142,7 +142,7 @@ export function useUserManagementPage() {
 
   // Reset password mutation
   const resetPasswordMutation = useMutation({
-    mutationFn: async (email) => {
+    mutationFn: async (email: string) => {
       const { error } = await supabase.auth.resetPasswordForEmail(email);
       if (error) throw error;
     },

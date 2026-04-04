@@ -144,7 +144,7 @@ export function useMessageTemplatesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('message_templates').delete().eq('id', id);
       if (error) throw error;
     },
@@ -253,13 +253,13 @@ export function useMessageTemplatesPage() {
     }));
   }, []);
 
-  const extractVariables = useCallback((content): string[] => {
+  const extractVariables = useCallback((content: string): string[] => {
     const regex = /\{\{[^}]+\}\}/g;
     const matches = content.match(regex);
     return matches ? [...new Set(matches)] : [];
   }, []);
 
-  const getPreviewContent = useCallback((content): string => {
+  const getPreviewContent = useCallback((content: string): string => {
     return content
       .replace(/\{\{employee_name\}\}/g, 'João Silva')
       .replace(/\{\{employee_email\}\}/g, 'joao@empresa.com')
