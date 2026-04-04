@@ -36,7 +36,7 @@ export function useDashboardPage() {
         .order('created_at', { ascending: false })
         .limit(5);
       if (error) throw error;
-      return (data || []).map(v => ({ 
+      return (data || []).map(v: Record<string, unknown> => ({ 
         id: v.id,
         employee_name: v.employee_name || 'N/A',
         type: v.violation_type,
@@ -56,7 +56,7 @@ export function useDashboardPage() {
         .order('recorded_date', { ascending: false })
         .limit(10);
       if (error) throw error;
-      return (data || []).map(item => ({
+      return (data || []).map(item: Record<string, unknown> => ({
         id: item.id,
         type: 'productivity',
         description: `${item.employee_name} - ${Math.round(item.productive_time_seconds / 60)}min produtivo`,

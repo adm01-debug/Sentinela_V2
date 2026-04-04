@@ -45,7 +45,7 @@ export function useMobileMonitoringPage() {
       
       if (error) throw error;
 
-      return data.map(d => ({
+      return data.map(d: Record<string, unknown> => ({
         id: d.id,
         device_id: d.device_id,
         employee_id: d.employee_name,
@@ -86,7 +86,7 @@ export function useMobileMonitoringPage() {
       const { data, error } = await query;
       if (error) throw error;
 
-      return (data || []).map(d => ({
+      return (data || []).map(d: Record<string, unknown> => ({
         id: d.id,
         device_id: d.device_id || '',
         latitude: d.latitude || 0,

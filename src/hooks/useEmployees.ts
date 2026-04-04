@@ -112,7 +112,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 
       // Count unique active days
       const activeDays = new Set(
-        logs.map(l => l.recorded_at?.split('T')[0]).filter(Boolean)
+        logs.map(l: Record<string, unknown> => l.recorded_at?.split('T')[0]).filter(Boolean)
       ).size;
 
       const violations = violationCount ?? 0;
@@ -130,7 +130,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
         violations,
         totalKeystrokes: logs.reduce((sum: number, l: Record<string, unknown>) => sum + (l.keystrokes_count || 0), 0),
         avgHoursPerDay,
-        presentDays: attendanceRecords.filter(r => r.status === 'present').length,
+        presentDays: attendanceRecords.filter(r: Record<string, unknown> => r.status === 'present').length,
       };
     },
     enabled: !!id && !!startDate && !!endDate,

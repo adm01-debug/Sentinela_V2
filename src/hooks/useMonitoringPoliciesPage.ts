@@ -89,7 +89,7 @@ export function useMonitoringPoliciesPage() {
         applies_to?: string;
         is_active?: boolean;
       }
-      return (data || []).map(setting => {
+      return (data || []).map(setting: Record<string, unknown> => {
         const val = (setting.setting_value || {}) as SettingValue;
         return {
           id: setting.id,

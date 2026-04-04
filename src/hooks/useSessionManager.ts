@@ -17,7 +17,7 @@ export function useSessionManager() {
       
       const { data } = await supabase.from('user_sessions').select('*').eq('user_id', session.user.id).order('last_activity', { ascending: false });
       
-      const mapped: Session[] = (data || []).map(s => ({
+      const mapped: Session[] = (data || []).map(s: Record<string, unknown> => ({
         id: s.id, userId: s.user_id, device: s.device || 'Unknown', browser: s.browser || 'Unknown',
         ip: s.ip_address || 'Unknown', location: s.location, createdAt: new Date(s.created_at),
         lastActivity: new Date(s.last_activity), current: s.id === currentSessionId

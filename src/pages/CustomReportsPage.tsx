@@ -51,7 +51,7 @@ export default function CustomReportsPage() {
         <Card><CardContent className="py-12 text-center text-muted-foreground"><FileText className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhum relatório encontrado.</p></CardContent></Card>
       ) : (
         <div className="space-y-3">
-          {reports?.map(r => (
+          {reports?.map(r: Record<string, unknown> => (
             <Card key={r.id}><CardContent className="p-4 flex items-center justify-between">
               <div><p className="font-medium">{r.report_type}</p><p className="text-sm text-muted-foreground">{r.summary?.slice(0, 100) || 'Sem resumo'}</p></div>
               <div className="flex items-center gap-2"><Badge variant="outline">{r.report_type}</Badge>{r.risk_score != null && <Badge variant={r.risk_score > 70 ? 'destructive' : 'default'}>Score: {r.risk_score}</Badge>}</div>
