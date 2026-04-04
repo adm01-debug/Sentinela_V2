@@ -55,12 +55,12 @@ export function formatBytes(bytes, decimals = 2): string {
 /**
  * Format duration in seconds to human readable
  */
-export function formatDuration(seconds): string {
+export function formatDuration(seconds: number): string {
   if (seconds < 0) return '0s';
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = Math.floor(seconds % 60);
-  const parts = [];
+  const parts: string[] = [];
   if (hours > 0) parts.push(`${hours}h`);
   if (minutes > 0) parts.push(`${minutes}m`);
   if (secs > 0 || parts.length === 0) parts.push(`${secs}s`);
@@ -70,7 +70,7 @@ export function formatDuration(seconds): string {
 /**
  * Clamp a number between min and max
  */
-export function clamp(value, min, max): number {
+export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 

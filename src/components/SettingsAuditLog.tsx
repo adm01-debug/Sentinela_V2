@@ -69,7 +69,7 @@ function AuditLogItem({ entry }: { entry: AuditLogEntry }) {
         
         <CollapsibleContent>
           <div className="mt-3 ml-11 space-y-2 text-sm">
-            {entry.old_value && (
+            {(entry.old_value as string | null) && (
               <div className="p-2 rounded bg-destructive/10 border border-destructive/20">
                 <p className="text-xs font-medium text-destructive mb-1">Valor anterior:</p>
                 <pre className="text-xs overflow-x-auto">
@@ -77,7 +77,7 @@ function AuditLogItem({ entry }: { entry: AuditLogEntry }) {
                 </pre>
               </div>
             )}
-            {entry.new_value && (
+            {(entry.new_value as string | null) && (
               <div className="p-2 rounded bg-success/10 border border-success/20">
                 <p className="text-xs font-medium text-success mb-1">Novo valor:</p>
                 <pre className="text-xs overflow-x-auto">

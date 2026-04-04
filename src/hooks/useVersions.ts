@@ -17,7 +17,7 @@ export interface EntityVersion {
   entity_type: string;
   entity_id: string;
   version_number: number;
-  data: unknown;
+  data: Record<string, unknown>;
   changed_by: string | null;
   changed_at: string;
   change_summary: string | null;

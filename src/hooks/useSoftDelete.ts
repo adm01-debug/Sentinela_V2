@@ -175,7 +175,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
         return;
       }
 
-      const updates = {
+      const updates: Record<string, string | null> = {
         [deletedAtField]: null,
       };
 

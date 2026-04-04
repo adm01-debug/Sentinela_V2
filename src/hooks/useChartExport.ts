@@ -41,12 +41,12 @@ export function useChartExport(options: UseChartExportOptions = {}) {
     } finally { setIsExporting(false); }
   }, [filename]);
 
-  const exportToCSV = useCallback((data: unknown[], customFilename?: string) => {
+  const exportToCSV = useCallback((data: Record<string, unknown>[], customFilename?: string) => {
     if (!data.length) return;
     setIsExporting(true);
     try {
       const headers = Object.keys(data[0]);
-      const csvContent = [headers.join(','), ...data.map(row => headers.map(h => JSON.stringify(row[h] ?? '')).join(','))].join('\n');
+      const csvContent = [headers.join(','), ...data.map((row: Record<string, unknown>) => headers.map(h => JSON.stringify(row[h] ?? '')).join(','))].join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const link = document.createElement('a');
       link.download = `${customFilename || filename}.csv`;

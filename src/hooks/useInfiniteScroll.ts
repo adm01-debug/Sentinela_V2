@@ -93,7 +93,7 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
       .order(orderBy.column, { ascending: orderBy.ascending ?? false });
 
     // Apply filters
-    Object.entries(filters).forEach(([key, value]) => {
+    Object.entries(filters as Record<string, unknown>).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
         if (typeof value === 'string' && value.includes('%')) {
           query = query.ilike(key, value);

@@ -82,7 +82,7 @@ export function useDevicesPage() {
     const mobile = devices.filter(d => d.device_type === 'mobile').length;
     const needsUpdate = devices.filter(d => {
       // Simplified version check
-      return d.agent_version < '2.0.0';
+      return (d.agent_version ?? '') < '2.0.0';
     }).length;
 
     return { total, active, desktop, mobile, needsUpdate };

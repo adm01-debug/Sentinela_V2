@@ -35,7 +35,7 @@ export const EmployeesPage = () => {
     handleUnassignDevice,
   } = useEmployeesPage();
 
-  const safeTeams = Array.isArray(teams) ? teams.map((t: { id?: string; name?: string }) => ({
+  const safeTeams = Array.isArray(teams) ? (teams as Array<{ id?: string; name?: string }>).map((t) => ({
     id: String(t.id || ''),
     name: String(t.name || ''),
   })) : [];

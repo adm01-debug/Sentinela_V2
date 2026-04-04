@@ -672,7 +672,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
                               {!alert.read && <Badge variant="default">Novo</Badge>}
                             </div>
                             <span className="text-sm text-muted-foreground whitespace-nowrap">
-                              {formatDistanceToNow(new Date(alert.created_at), { addSuffix: true, locale: ptBR })}
+                              {formatDistanceToNow(new Date(alert.created_at ?? new Date()), { addSuffix: true, locale: ptBR })}
                             </span>
                           </div>
                           <p className="text-sm text-muted-foreground mt-1">

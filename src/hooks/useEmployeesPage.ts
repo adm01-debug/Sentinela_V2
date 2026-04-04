@@ -89,7 +89,7 @@ export function useEmployeesPage() {
   };
   
   const teamsQuery = useTeams();
-  const teams = Array.isArray(teamsQuery.data) ? teamsQuery.data : (teamsQuery as { teams?: unknown[] }).teams || (teamsQuery.data as { data?: unknown[] })?.data || [];
+  const teams = Array.isArray(teamsQuery.data) ? teamsQuery.data : (teamsQuery as unknown as { teams?: unknown[] }).teams || ((teamsQuery.data as unknown as { data?: unknown[] })?.data) || [];
 
   // Filters
   const [filters, setFilters] = useState<EmployeeFilters>({

@@ -185,7 +185,7 @@ function SavedFiltersBarBase({
             <div className="p-3 rounded-lg bg-muted">
               <h4 className="text-sm font-medium mb-2">Filtros incluídos:</h4>
               <div className="flex flex-wrap gap-1">
-                {Object.entries(currentFilters)
+                {Object.entries(currentFilters as Record<string, unknown>)
                   .filter(([_, v]) => v !== '' && v !== null && v !== undefined)
                   .map(([key, value]) => (
                     <Badge key={key} variant="secondary" className="text-xs">
