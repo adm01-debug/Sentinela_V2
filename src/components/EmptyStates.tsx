@@ -224,6 +224,24 @@ export function EmptyState({
       {/* Illustration or Icon */}
       {illustration ? (
         <div className="mb-2">{illustration}</div>
+      ) : size === 'lg' ? (
+        <div className="mb-2">
+          <svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-44 h-32 mx-auto" aria-hidden="true">
+            <rect x="40" y="90" width="120" height="6" rx="3" className="fill-muted" />
+            <rect x="55" y="96" width="6" height="24" rx="2" className="fill-muted-foreground/20" />
+            <rect x="139" y="96" width="6" height="24" rx="2" className="fill-muted-foreground/20" />
+            <rect x="60" y="42" width="80" height="48" rx="6" className="fill-muted stroke-border" strokeWidth="1.5" />
+            <rect x="66" y="48" width="68" height="36" rx="3" className="fill-background" />
+            <rect x="92" y="90" width="16" height="5" rx="2" className="fill-muted-foreground/20" />
+            <rect x="76" y="58" width="48" height="3" rx="1.5" className="fill-primary/20" />
+            <rect x="82" y="65" width="36" height="2" rx="1" className="fill-muted-foreground/15" />
+            <rect x="86" y="71" width="28" height="2" rx="1" className="fill-muted-foreground/10" />
+            <circle cx="155" cy="38" r="12" className="stroke-primary/30" strokeWidth="2" fill="none" />
+            <line x1="164" y1="47" x2="172" y2="55" className="stroke-primary/30" strokeWidth="2" strokeLinecap="round" />
+            <circle cx="35" cy="60" r="3" className="fill-primary/15" />
+            <circle cx="170" cy="75" r="2" className="fill-warning/20" />
+          </svg>
+        </div>
       ) : (
         <div
           className={cn(
