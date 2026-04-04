@@ -107,7 +107,7 @@ const emptyStateConfigs: Record<Exclude<EmptyStateType, 'custom'>, EmptyStateCon
     icon: WifiOff,
     title: 'Sem conexão',
     description: 'Você está offline. Verifique sua conexão.',
-    color: 'text-yellow-500',
+    color: 'text-warning',
   },
   'no-permission': {
     icon: Lock,
@@ -119,7 +119,7 @@ const emptyStateConfigs: Record<Exclude<EmptyStateType, 'custom'>, EmptyStateCon
     icon: Clock,
     title: 'Em breve',
     description: 'Este recurso estará disponível em breve.',
-    color: 'text-blue-500',
+    color: 'text-primary',
   },
   'no-database': {
     icon: Database,
@@ -131,13 +131,13 @@ const emptyStateConfigs: Record<Exclude<EmptyStateType, 'custom'>, EmptyStateCon
     icon: Filter,
     title: 'Filtros muito restritivos',
     description: 'Tente ajustar os filtros para ver mais resultados.',
-    color: 'text-yellow-500',
+    color: 'text-warning',
   },
   'no-schedule': {
     icon: Calendar,
     title: 'Sem agendamentos',
     description: 'Nenhum agendamento configurado.',
-    color: 'text-blue-500',
+    color: 'text-primary',
   },
 };
 
