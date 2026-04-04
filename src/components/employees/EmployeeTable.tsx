@@ -1,4 +1,5 @@
 import { memo, useCallback } from 'react';
+import { CreateFirstEmptyState } from '@/components/EmptyStates';
 import { useTranslation } from 'react-i18next';
 import { Edit, Trash2, Monitor, Smartphone, Link2, Mail, Phone, Building2, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -249,9 +250,11 @@ function EmployeeTableComponent({
 
   if (employees.length === 0) {
     return (
-      <div className="text-center py-12 text-muted-foreground">
-        <p>{t('employees.noEmployees')}</p>
-      </div>
+      <CreateFirstEmptyState
+        itemName="funcionário"
+        onCreate={() => {/* handled by parent */}}
+        size="lg"
+      />
     );
   }
 
