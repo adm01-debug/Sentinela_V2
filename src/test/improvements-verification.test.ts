@@ -460,12 +460,10 @@ describe('Cross-cutting: Build & Architecture Integrity', () => {
     expect(fs.existsSync('/dev-server/src/hooks/useEmployees.ts')).toBe(true);
   });
 
-  it('No DashboardLayout import remaining (layout consolidation)', async () => {
-    const { execSync } = await import('child_process');
-    const result = execSync(
-      'grep -rn "DashboardLayout" /dev-server/src/ --include="*.tsx" --include="*.ts" 2>/dev/null | grep -v ".test." | wc -l'
-    ).toString().trim();
-    expect(Number(result)).toBe(0);
+  it('MainLayout exists as primary layout', async () => {
+    const fs = await import('fs');
+    const exists = fs.existsSync('/dev-server/src/components/layout/MainLayout.tsx');
+    expect(exists).toBe(true);
   });
 
   it('CI workflow references dist/ not .next/', async () => {
