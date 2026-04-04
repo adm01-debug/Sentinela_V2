@@ -107,7 +107,7 @@ export function useWorkSchedulesPage() {
     if (!searchTerm) return schedules;
     const term = searchTerm.toLowerCase();
     return schedules.filter(s => 
-      s.name.toLowerCase().includes(term) ||
+      (s.name ?? '').toLowerCase().includes(term) ||
       s.description?.toLowerCase().includes(term)
     );
   }, [schedules, searchTerm]);
