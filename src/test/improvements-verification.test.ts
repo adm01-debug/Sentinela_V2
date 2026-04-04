@@ -372,7 +372,7 @@ describe('Improvement 3: Reusable Form Components', () => {
   describe('FormRow', () => {
     it('renders children', async () => {
       const { FormRow } = await import('@/components/forms');
-      render(React.createElement(FormRow, { cols: 3 }, React.createElement('div', null, 'C1'), React.createElement('div', null, 'C2')));
+      render(React.createElement(FormRow, { cols: 3, children: [React.createElement('div', { key: '1' }, 'C1'), React.createElement('div', { key: '2' }, 'C2')] }));
       expect(screen.getByText('C1')).toBeInTheDocument();
       expect(screen.getByText('C2')).toBeInTheDocument();
     });
