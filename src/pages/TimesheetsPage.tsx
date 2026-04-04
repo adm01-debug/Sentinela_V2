@@ -123,7 +123,7 @@ function TimesheetsPage() {
     },
   });
 
-  const filtered = timesheets.filter((ts: any) => {
+  const filtered = timesheets.filter((ts) => {
     const matchSearch = ts.employees?.name?.toLowerCase().includes(search.toLowerCase());
     const matchPeriod = periodFilter === 'all' || ts.period_type === periodFilter;
     return matchSearch && matchPeriod;
@@ -131,9 +131,9 @@ function TimesheetsPage() {
 
   const stats = {
     total: timesheets.length,
-    pending: timesheets.filter((t: any) => t.status === 'pending').length,
-    approved: timesheets.filter((t: any) => t.status === 'approved').length,
-    totalHours: timesheets.reduce((sum: number, t: any) => sum + (t.total_hours || 0), 0),
+    pending: timesheets.filter((t) => t.status === 'pending').length,
+    approved: timesheets.filter((t) => t.status === 'approved').length,
+    totalHours: timesheets.reduce((sum: number, t) => sum + (t.total_hours || 0), 0),
   };
 
   return (
