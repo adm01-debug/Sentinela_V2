@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Search, Monitor, Wifi, WifiOff, Clock, Users, Grid, List, RefreshCw, Keyboard, MousePointer2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -10,8 +11,13 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMonitoringPage, type MonitoringEmployee } from '@/hooks/useMonitoringPage';
+import { useChartColors } from '@/hooks/useChartColors';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import {
+  PieChart, Pie, Cell, BarChart, Bar,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
 
 const statusColors: Record<string, string> = {
   online: 'bg-green-500',
@@ -38,6 +44,30 @@ export default function MonitoringPage() {
     stats, isLoadingEmployees,
     handleSelectEmployee,
   } = useMonitoringPage();
+  const colors = useChartColors();
+
+  // Status distribution pie
+  const statusPieData = useMemo(() => [
+    { name: 'Online', value: stats.online, color: colors.success },
+    { name: 'Ocioso', value: stats.idle, color: colors.warning },
+    { name: 'Ocupado', value: stats.busy, color: colors.destructive },
+    { name: 'Offline', value: stats.offline, color: colors.muted },
+  ].filter(d => d.value > 0), [stats, colors]);
+
+  // Productivity by department
+  const deptProductivity = useMemo(() => {
+    const deptMap: Record<string, { total: number; count: number }> = {};
+    employees.forEach(emp => {
+      const dept = emp.department || 'Outros';
+      if (!deptMap[dept]) deptMap[dept] = { total: 0, count: 0 };
+      deptMap[dept].total += emp.productivity_score;
+      deptMap[dept].count++;
+    });
+    return Object.entries(deptMap)
+      .map(([name, { total, count }]) => ({ name, produtividade: Math.round(total / count) }))
+      .sort((a, b) => b.produtividade - a.produtividade)
+      .slice(0, 8);
+  }, [employees]);
 
   if (isLoadingEmployees) {
     return (
@@ -75,10 +105,55 @@ export default function MonitoringPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <Card><CardContent className="pt-4 text-center"><Users className="h-5 w-5 mx-auto text-muted-foreground" /><p className="text-2xl font-bold mt-1">{stats.total}</p><p className="text-xs text-muted-foreground">Total</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><Wifi className="h-5 w-5 mx-auto text-green-500" /><p className="text-2xl font-bold mt-1">{stats.online}</p><p className="text-xs text-muted-foreground">Online</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><Clock className="h-5 w-5 mx-auto text-yellow-500" /><p className="text-2xl font-bold mt-1">{stats.idle}</p><p className="text-xs text-muted-foreground">Ociosos</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><Monitor className="h-5 w-5 mx-auto text-red-500" /><p className="text-2xl font-bold mt-1">{stats.busy}</p><p className="text-xs text-muted-foreground">Ocupados</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><WifiOff className="h-5 w-5 mx-auto text-gray-400" /><p className="text-2xl font-bold mt-1">{stats.offline}</p><p className="text-xs text-muted-foreground">Offline</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Wifi className="h-5 w-5 mx-auto text-success" /><p className="text-2xl font-bold mt-1">{stats.online}</p><p className="text-xs text-muted-foreground">Online</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Clock className="h-5 w-5 mx-auto text-warning" /><p className="text-2xl font-bold mt-1">{stats.idle}</p><p className="text-xs text-muted-foreground">Ociosos</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Monitor className="h-5 w-5 mx-auto text-destructive" /><p className="text-2xl font-bold mt-1">{stats.busy}</p><p className="text-xs text-muted-foreground">Ocupados</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><WifiOff className="h-5 w-5 mx-auto text-muted-foreground" /><p className="text-2xl font-bold mt-1">{stats.offline}</p><p className="text-xs text-muted-foreground">Offline</p></CardContent></Card>
+      </div>
+
+      {/* Charts */}
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Distribuição de Status</CardTitle></CardHeader>
+          <CardContent>
+            <div className="h-[180px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={statusPieData} cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} dataKey="value">
+                    {statusPieData.map((d, i) => <Cell key={i} fill={d.color} />)}
+                  </Pie>
+                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex justify-center gap-3 mt-1">
+              {statusPieData.map(d => (
+                <div key={d.name} className="flex items-center gap-1.5 text-xs">
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
+                  <span className="text-muted-foreground">{d.name}</span>
+                  <span className="font-medium">{d.value}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Produtividade por Departamento</CardTitle></CardHeader>
+          <CardContent>
+            <div className="h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={deptProductivity} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                  <XAxis dataKey="name" tick={{ fill: colors.muted, fontSize: 10 }} stroke={colors.border} />
+                  <YAxis domain={[0, 100]} tick={{ fill: colors.muted, fontSize: 11 }} stroke={colors.border} />
+                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+                  <Bar dataKey="produtividade" name="Produtividade %" fill={colors.primary} radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Filters */}
@@ -168,9 +243,7 @@ export default function MonitoringPage() {
       {/* Employee Detail Sheet */}
       <Sheet open={!!selectedEmployee} onOpenChange={() => handleSelectEmployee(null)}>
         <SheetContent className="w-[400px] sm:w-[540px]">
-          <SheetHeader>
-            <SheetTitle>{selectedEmployee?.name}</SheetTitle>
-          </SheetHeader>
+          <SheetHeader><SheetTitle>{selectedEmployee?.name}</SheetTitle></SheetHeader>
           {selectedEmployee && (
             <div className="mt-6 space-y-6">
               <div className="flex items-center gap-3">
@@ -188,15 +261,9 @@ export default function MonitoringPage() {
               <div>
                 <h4 className="font-medium mb-2">Tempo Ativo vs Ocioso</h4>
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Ativo</span>
-                    <span>{Math.round((activitySummary?.total_active_time || 0) / 60)}min</span>
-                  </div>
+                  <div className="flex justify-between text-sm"><span>Ativo</span><span>{Math.round((activitySummary?.total_active_time || 0) / 60)}min</span></div>
                   <Progress value={activitySummary ? (activitySummary.total_active_time / (activitySummary.total_active_time + activitySummary.total_idle_time || 1)) * 100 : 0} className="h-2" />
-                  <div className="flex justify-between text-sm">
-                    <span>Ocioso</span>
-                    <span>{Math.round((activitySummary?.total_idle_time || 0) / 60)}min</span>
-                  </div>
+                  <div className="flex justify-between text-sm"><span>Ocioso</span><span>{Math.round((activitySummary?.total_idle_time || 0) / 60)}min</span></div>
                 </div>
               </div>
             </div>

@@ -5,6 +5,7 @@ import { FeatureFlagsProvider } from '@/lib/feature-flags/provider';
 import { PermissionsProvider } from '@/lib/permissions/provider';
 import { ErrorBoundary } from '@/lib/error-handling';
 import { ThemeProvider } from '@/providers/ThemeProvider';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,11 +20,13 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <ThemeProvider defaultTheme="system">
-            <FeatureFlagsProvider>
-              <PermissionsProvider role="viewer">
-                {children}
-              </PermissionsProvider>
-            </FeatureFlagsProvider>
+            <TooltipProvider delayDuration={200}>
+              <FeatureFlagsProvider>
+                <PermissionsProvider role="viewer">
+                  {children}
+                </PermissionsProvider>
+              </FeatureFlagsProvider>
+            </TooltipProvider>
           </ThemeProvider>
         </BrowserRouter>
       </QueryClientProvider>

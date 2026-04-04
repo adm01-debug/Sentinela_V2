@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Search, Monitor, Smartphone, Tablet, RefreshCw, MoreVertical, Trash2, Power, PowerOff, Eye, HardDrive } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -8,8 +9,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDevicesPage } from '@/hooks/useDevicesPage';
+import { useChartColors } from '@/hooks/useChartColors';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import {
+  PieChart, Pie, Cell, BarChart, Bar,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
 
 const typeIcons: Record<string, React.ReactNode> = {
   desktop: <Monitor className="h-5 w-5" />,
@@ -25,6 +31,28 @@ export default function DevicesPage() {
     handleDeactivate, handleReactivate, handleDelete, handleRefresh,
     isDeactivating, isDeleting,
   } = useDevicesPage();
+  const colors = useChartColors();
+
+  const typeData = useMemo(() => [
+    { name: 'Desktop', value: stats.desktop, color: colors.primary },
+    { name: 'Mobile', value: stats.mobile, color: colors.accent },
+    { name: 'Tablet', value: Math.max(0, stats.total - stats.desktop - stats.mobile), color: colors.warning },
+  ].filter(d => d.value > 0), [stats, colors]);
+
+  const statusData = useMemo(() => [
+    { name: 'Ativos', value: stats.active, color: colors.success },
+    { name: 'Inativos', value: stats.total - stats.active, color: colors.muted },
+  ].filter(d => d.value > 0), [stats, colors]);
+
+  // OS distribution
+  const osData = useMemo(() => {
+    const osMap: Record<string, number> = {};
+    devices.forEach(d => {
+      const os = d.os_name || 'Desconhecido';
+      osMap[os] = (osMap[os] || 0) + 1;
+    });
+    return Object.entries(osMap).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 6);
+  }, [devices]);
 
   if (isLoading) {
     return (
@@ -54,9 +82,79 @@ export default function DevicesPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card><CardContent className="pt-4 text-center"><HardDrive className="h-5 w-5 mx-auto text-muted-foreground" /><p className="text-2xl font-bold mt-1">{stats.total}</p><p className="text-xs text-muted-foreground">Total</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><Power className="h-5 w-5 mx-auto text-green-500" /><p className="text-2xl font-bold mt-1">{stats.active}</p><p className="text-xs text-muted-foreground">Ativos</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><Monitor className="h-5 w-5 mx-auto text-blue-500" /><p className="text-2xl font-bold mt-1">{stats.desktop}</p><p className="text-xs text-muted-foreground">Desktop</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><Smartphone className="h-5 w-5 mx-auto text-purple-500" /><p className="text-2xl font-bold mt-1">{stats.mobile}</p><p className="text-xs text-muted-foreground">Mobile</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Power className="h-5 w-5 mx-auto text-success" /><p className="text-2xl font-bold mt-1">{stats.active}</p><p className="text-xs text-muted-foreground">Ativos</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Monitor className="h-5 w-5 mx-auto text-primary" /><p className="text-2xl font-bold mt-1">{stats.desktop}</p><p className="text-xs text-muted-foreground">Desktop</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Smartphone className="h-5 w-5 mx-auto text-accent-foreground" /><p className="text-2xl font-bold mt-1">{stats.mobile}</p><p className="text-xs text-muted-foreground">Mobile</p></CardContent></Card>
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Por Tipo</CardTitle></CardHeader>
+          <CardContent>
+            <div className="h-[180px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={typeData} cx="50%" cy="50%" innerRadius={40} outerRadius={65} paddingAngle={3} dataKey="value">
+                    {typeData.map((d, i) => <Cell key={i} fill={d.color} />)}
+                  </Pie>
+                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex justify-center gap-4">
+              {typeData.map(d => (
+                <div key={d.name} className="flex items-center gap-1.5 text-xs">
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
+                  <span className="text-muted-foreground">{d.name}</span>
+                  <span className="font-medium">{d.value}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Status</CardTitle></CardHeader>
+          <CardContent>
+            <div className="h-[180px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={statusData} cx="50%" cy="50%" innerRadius={40} outerRadius={65} paddingAngle={3} dataKey="value">
+                    {statusData.map((d, i) => <Cell key={i} fill={d.color} />)}
+                  </Pie>
+                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex justify-center gap-4">
+              {statusData.map(d => (
+                <div key={d.name} className="flex items-center gap-1.5 text-xs">
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
+                  <span className="text-muted-foreground">{d.name}</span>
+                  <span className="font-medium">{d.value}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Por Sistema Operacional</CardTitle></CardHeader>
+          <CardContent>
+            <div className="h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={osData} layout="vertical" margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                  <XAxis type="number" tick={{ fill: colors.muted, fontSize: 11 }} stroke={colors.border} allowDecimals={false} />
+                  <YAxis type="category" dataKey="name" tick={{ fill: colors.muted, fontSize: 11 }} stroke={colors.border} width={80} />
+                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+                  <Bar dataKey="value" name="Dispositivos" fill={colors.info} radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Filters */}
