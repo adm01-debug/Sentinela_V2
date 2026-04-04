@@ -122,7 +122,7 @@ function ProjectsPage() {
       setNewTask({ name: '', description: '', priority: 'medium', estimated_hours: '' });
       toast({ title: 'Tarefa criada com sucesso!' });
     },
-    onError: (err: any) => toast({ title: 'Erro', description: err.message, variant: 'destructive' }),
+    onError: (err: Error) => toast({ title: 'Erro', description: err.message, variant: 'destructive' }),
   });
 
   const updateTaskStatus = useMutation({
