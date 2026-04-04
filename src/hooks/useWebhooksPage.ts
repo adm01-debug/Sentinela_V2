@@ -167,7 +167,7 @@ export function useWebhooksPage() {
   }, [selectedWebhook, testWebhook]);
 
   const handleToggleActive = useCallback(async (webhook: Webhook) => {
-    await updateWebhook(webhook.id, { is_active: !webhook.is_active });
+    await updateWebhook({ id: webhook.id, is_active: !webhook.is_active });
   }, [updateWebhook]);
 
   // Event toggle
