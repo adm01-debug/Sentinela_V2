@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const schema = z.object({
   email: z.string().email('Email inválido'),
@@ -26,8 +27,14 @@ export default function ForgotPasswordPage() {
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     try {
-      // TODO: implement password reset
-      toast({ title: 'Instruções enviadas', description: 'Verifique seu email' });
+      const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+        redirectTo: `${window.location.origin}/auth?type=recovery`,
+      });
+      if (error) throw error;
+      toast({ title: 'Instruções enviadas', description: 'Verifique seu email para redefinir sua senha.' });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Erro ao enviar email';
+      toast({ title: 'Erro', description: message, variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }

@@ -72,8 +72,21 @@ export function useEmployeesPage() {
   const createEmployee = async (data: Record<string, unknown>) => createMutation.mutateAsync(data as unknown as EmployeeCreateInput);
   const updateEmployee = async (id: string, data: Record<string, unknown>) => updateMutation.mutateAsync({ id, data: data as unknown as EmployeeUpdateInput });
   const deleteEmployee = async (id: string) => deleteMutation.mutateAsync(id);
-  const assignDevice = async (_empId: string, _name: string, _type: string, _primary: boolean) => { /* stub */ };
-  const unassignDevice = async (_empId: string, _deviceId: string) => { /* stub */ };
+  const assignDevice = async (empId: string, name: string, type: string, primary: boolean) => {
+    const { error } = await supabase.from('employee_devices').insert({
+      employee_id: empId,
+      device_name: name,
+      device_type: type,
+      is_primary: primary,
+    });
+    if (error) throw error;
+    employeesQuery.refetch();
+  };
+  const unassignDevice = async (_empId: string, deviceId: string) => {
+    const { error } = await supabase.from('employee_devices').delete().eq('id', deviceId);
+    if (error) throw error;
+    employeesQuery.refetch();
+  };
   
   const teamsQuery = useTeams();
   const teams = Array.isArray(teamsQuery.data) ? teamsQuery.data : (teamsQuery as { teams?: unknown[] }).teams || (teamsQuery.data as { data?: unknown[] })?.data || [];

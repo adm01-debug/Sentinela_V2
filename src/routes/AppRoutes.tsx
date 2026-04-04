@@ -72,7 +72,7 @@ const AdminTelemetriaPage = lazy(() => import('@/pages/AdminTelemetriaPage'));
 // SESSION HOOK (single source)
 // ============================================================
 function useSupabaseSession() {
-  const [session, setSession] = useState<any>(undefined);
+  const [session, setSession] = useState<import('@supabase/supabase-js').Session | null | undefined>(undefined);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
