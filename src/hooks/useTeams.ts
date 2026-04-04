@@ -88,7 +88,7 @@ export function useCreateTeam() {
       const { data, error } = await supabase
         .from('teams')
         .insert(input)
-        .select(`*, leader:employees!teams_leader_id_fkey(id, full_name)`)
+        .select('*')
         .single();
 
       if (error) throw error;
