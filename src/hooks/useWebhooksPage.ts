@@ -157,8 +157,8 @@ export function useWebhooksPage() {
     setTestResult(null);
 
     try {
-      const result = await testWebhook(selectedWebhook.id);
-      setTestResult({ success: result.success, message: result.message || 'Teste realizado com sucesso' });
+      await testWebhook(selectedWebhook.id);
+      setTestResult({ success: true, message: 'Teste realizado com sucesso' });
     } catch (error) {
       setTestResult({ success: false, message: 'Erro ao testar webhook' });
     } finally {
