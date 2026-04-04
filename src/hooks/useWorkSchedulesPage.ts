@@ -73,7 +73,9 @@ export function useWorkSchedulesPage() {
   const addSchedule = async (_data: ScheduleFormData) => {};
   const updateSchedule = async (_id: string, _data: Partial<ScheduleFormData>) => {};
   const deleteSchedule = async (_id: string) => {};
-  const assignSchedule = async (_data: AssignFormData) => {};
+  const assignSchedule = async (data: AssignFormData | string, _scheduleId?: string, _effectiveDate?: string) => {
+    const _assignData = typeof data === 'string' ? { employee_id: data, schedule_id: _scheduleId || '', effective_date: _effectiveDate || '' } : data;
+  };
   const removeEmployeeSchedule = async (_id: string) => {};
   const updateOvertimeRequest = async (_id: string, _status: string) => {};
   
