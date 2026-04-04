@@ -74,7 +74,7 @@ export function usePagination<T>(
     return data.slice(startIndex, endIndex);
   }, [data, startIndex, endIndex]);
 
-  const goToPage = useCallback((newPage: unknown) => {
+  const goToPage = useCallback((newPage: any) => {
     setPage(Math.max(1, Math.min(newPage, totalPages)));
   }, [totalPages]);
 
@@ -131,7 +131,7 @@ export function useServerPagination(options: UsePaginationOptions = {}) {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const goToPage = useCallback((newPage: unknown) => {
+  const goToPage = useCallback((newPage: any) => {
     setPage(Math.max(1, Math.min(newPage, totalPages || 1)));
   }, [totalPages]);
 

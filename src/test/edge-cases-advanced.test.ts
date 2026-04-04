@@ -183,7 +183,7 @@ describe('Error Resilience', () => {
 
   it('should retry failed operations', async () => {
     let attempts = 0;
-    const retryFn = async (maxRetries: unknown) => {
+    const retryFn = async (maxRetries: any) => {
       attempts++;
       if (attempts < maxRetries) throw new Error('Fail');
       return 'success';
@@ -295,7 +295,7 @@ describe('Application Categorization', () => {
 // GAMIFICATION SCORING
 // ============================================================
 describe('Gamification Scoring', () => {
-  const calculateLevel = (points: unknown) => {
+  const calculateLevel = (points: any) => {
     if (points >= 1000) return 5;
     if (points >= 500) return 4;
     if (points >= 200) return 3;
@@ -354,7 +354,7 @@ describe('Gamification Scoring', () => {
 // RATE LIMITING
 // ============================================================
 describe('Rate Limiting Logic', () => {
-  const isRateLimited = (requests: number[], windowMs: unknown, maxRequests: unknown) => {
+  const isRateLimited = (requests: number[], windowMs: any, maxRequests: any) => {
     const now = Date.now();
     const recent = requests.filter(t => now - t < windowMs);
     return recent.length >= maxRequests;

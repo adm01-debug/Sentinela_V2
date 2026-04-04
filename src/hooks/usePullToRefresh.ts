@@ -13,7 +13,7 @@ export function usePullToRefresh(options: UsePullToRefreshOptions) {
   const [isPulling, setIsPulling] = useState(false);
   const startY = useRef(0);
 
-  const handleTouchStart = useCallback((e: TouchEvent, scrollTop: unknown) => {
+  const handleTouchStart = useCallback((e: TouchEvent, scrollTop: any) => {
     if (scrollTop === 0 && !isRefreshing) { startY.current = e.touches[0].clientY; setIsPulling(true); }
   }, [isRefreshing]);
 

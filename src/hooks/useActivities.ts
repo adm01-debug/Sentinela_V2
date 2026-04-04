@@ -63,7 +63,7 @@ export const useActivities = (filters?: ActivityFilters) => {
       const { data, error } = await query;
       if (error) throw error;
 
-      const mapped = (data || []).map((row: unknown) => mapKeystrokeToActivity(row as unknown as KeystrokeRow));
+      const mapped = (data || []).map((row: any) => mapKeystrokeToActivity(row as unknown as KeystrokeRow));
       return { data: mapped, total: mapped.length };
     },
   });

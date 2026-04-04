@@ -25,7 +25,7 @@ export function useActiveEmployees() {
 
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
       
-      return data.map((emp: Record<string, unknown>) => ({
+      return data.map((emp: any) => ({
         ...emp,
         is_online: emp.last_activity_at ? emp.last_activity_at > fiveMinutesAgo : false,
       })) as ActiveEmployee[];

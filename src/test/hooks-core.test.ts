@@ -629,7 +629,7 @@ describe('Data Transformations', () => {
   });
 
   describe('Productivity Score Calculation', () => {
-    const calcProductivity = (activeSeconds: unknown, totalSeconds: unknown) => {
+    const calcProductivity = (activeSeconds: any, totalSeconds: any) => {
       if (totalSeconds === 0) return 0;
       return Math.round((activeSeconds / totalSeconds) * 100);
     };

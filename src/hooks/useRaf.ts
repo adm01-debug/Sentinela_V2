@@ -1,6 +1,6 @@
 import { useRef, useCallback, useEffect } from "react";
 
-export function useRaf(callback: (deltaTime: unknown) => void, active = true) {
+export function useRaf(callback: (deltaTime: any) => void, active = true) {
   const rafRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
 

@@ -1,4 +1,4 @@
-export const truncate = (str: string, len: unknown) => str.length > len ? str.slice(0, len) + '...' : str;
+export const truncate = (str: string, len: any) => str.length > len ? str.slice(0, len) + '...' : str;
 export const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '');
 export const escapeHtml = (str: string) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 export const camelToKebab = (str: string) => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();

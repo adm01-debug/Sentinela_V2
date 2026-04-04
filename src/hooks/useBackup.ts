@@ -13,7 +13,7 @@ export function useBackup() {
     progress: 0
   });
 
-  const backup = useCallback(async (data: unknown) => {
+  const backup = useCallback(async (data: any) => {
     setState(s => ({ ...s, status: "backing-up", progress: 0 }));
     
     const blob = new Blob([JSON.stringify(data)], { type: "application/json" });

@@ -18,7 +18,7 @@ export function useDataRetention(policies: RetentionPolicy[]) {
     });
   }, [policies]);
 
-  const store = useCallback((key: string, data: unknown) => {
+  const store = useCallback((key: string, data: any) => {
     localStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }));
   }, []);
 

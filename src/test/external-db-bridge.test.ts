@@ -11,7 +11,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const SLOW_THRESHOLD_MS = 3000;
 const VERY_SLOW_THRESHOLD_MS = 8000;
 
-function classifySeverity(durationMs: unknown, hasError: boolean): string {
+function classifySeverity(durationMs: any, hasError: boolean): string {
   if (hasError) return 'error';
   if (durationMs >= VERY_SLOW_THRESHOLD_MS) return 'very_slow';
   if (durationMs >= SLOW_THRESHOLD_MS) return 'slow';
@@ -47,7 +47,7 @@ interface TelemetryPayload {
 
 function buildTelemetryPayload(
   req: BridgeRequest,
-  durationMs: unknown,
+  durationMs: any,
   recordCount: number | null,
   errorMessage: string | null,
   userId: string | null

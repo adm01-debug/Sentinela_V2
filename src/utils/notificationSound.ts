@@ -109,6 +109,6 @@ export const playSoundBySeverity = (
   }
 };
 
-export const testSound = (soundType: SoundType, volume: unknown) => {
+export const testSound = (soundType: SoundType, volume: any) => {
   playNotificationSound(soundType, volume / 100);
 };

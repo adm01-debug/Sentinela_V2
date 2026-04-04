@@ -220,10 +220,10 @@ export interface ChartElement {
 
 export interface ChartPlugin {
   id: string;
-  beforeInit?: (chart: unknown) => void;
-  afterInit?: (chart: unknown) => void;
-  beforeDraw?: (chart: unknown) => void;
-  afterDraw?: (chart: unknown) => void;
+  beforeInit?: (chart: any) => void;
+  afterInit?: (chart: any) => void;
+  beforeDraw?: (chart: any) => void;
+  afterDraw?: (chart: any) => void;
   [key: string]: unknown;
 }
 

@@ -1,7 +1,7 @@
 type Task<T> = () => Promise<T>;
 
 export class AsyncQueue {
-  private queue: Array<{ task: Task<unknown>; resolve: (v: number) => void; reject: (e: unknown) => void }> = [];
+  private queue: Array<{ task: Task<unknown>; resolve: (v: number) => void; reject: (e: any) => void }> = [];
   private running = 0;
   private concurrency: number;
 

@@ -59,7 +59,7 @@ export const slugify = (str: string): string =>
   str.toLowerCase().replace(/[^\w]+/g, '-').replace(/^-+|-+$/g, '');
 
 // File Size Formatter
-export const formatFileSize = (bytes: unknown): string => {
+export const formatFileSize = (bytes: any): string => {
   if (bytes === 0) return '0 B';
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];

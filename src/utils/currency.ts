@@ -47,7 +47,7 @@ export function formatCompactCurrency(amount: number, currency: string = 'BRL'):
 
 export function convertCurrency(
   amount: number,
-  fromRate: unknown,
+  fromRate: any,
   toRate
 ): number {
   return (amount / fromRate) * toRate;
@@ -90,7 +90,7 @@ export function formatPercentage(
   }).format(value / 100);
 }
 
-export function calculatePercentageChange(oldValue: unknown, newValue: unknown): number {
+export function calculatePercentageChange(oldValue: any, newValue: any): number {
   if (oldValue === 0) return newValue === 0 ? 0 : 100;
   return ((newValue - oldValue) / Math.abs(oldValue)) * 100;
 }

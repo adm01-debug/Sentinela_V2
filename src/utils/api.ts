@@ -1,5 +1,5 @@
 export class ApiError extends Error {
-  constructor(public status: unknown, message: string, public data?: unknown) {
+  constructor(public status: any, message: string, public data?: unknown) {
     super(message);
     this.name = 'ApiError';
   }

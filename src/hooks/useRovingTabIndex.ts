@@ -10,7 +10,7 @@ export interface UseRovingTabIndexReturn {
   activeIndex: number;
   setActiveIndex: (index: number) => void;
   getTabIndex: (index: number) => number;
-  handleKeyDown: (e: KeyboardEvent, index: number, totalItems: unknown) => void;
+  handleKeyDown: (e: KeyboardEvent, index: number, totalItems: any) => void;
   focusItem: (index: number) => void;
   itemRefs: React.MutableRefObject<(HTMLElement | null)[]>;
 }
@@ -28,13 +28,13 @@ export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRo
     }
   }, []);
 
-  const getNextIndex = useCallback((current: unknown, total: number, direction: 1 | -1): number => {
+  const getNextIndex = useCallback((current: any, total: number, direction: 1 | -1): number => {
     const next = current + direction;
     if (loop) return (next + total) % total;
     return Math.max(0, Math.min(total - 1, next));
   }, [loop]);
 
-  const handleKeyDown = useCallback((e: KeyboardEvent, index: number, totalItems: unknown) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent, index: number, totalItems: any) => {
     const isHorizontal = orientation === 'horizontal' || orientation === 'both';
     const isVertical = orientation === 'vertical' || orientation === 'both';
     let nextIndex: number | null = null;

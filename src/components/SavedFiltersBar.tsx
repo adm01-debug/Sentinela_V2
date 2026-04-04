@@ -30,7 +30,7 @@ import { cn } from '@/lib/utils';
 interface SavedFiltersBarProps {
   module: string;
   currentFilters: unknown;
-  onApplyFilter: (filters: Record<string, unknown>) => void;
+  onApplyFilter: (filters: any) => void;
   className?: string;
 }
 

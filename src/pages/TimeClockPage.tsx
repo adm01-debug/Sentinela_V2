@@ -112,7 +112,7 @@ function TimeClockPage() {
   // Clock out mutation
   const clockOut = useMutation({
     mutationFn: async (employeeId: string) => {
-      const activeEntry = activeEntries.find((e: Record<string, unknown>) => e.employee_id === employeeId);
+      const activeEntry = activeEntries.find((e: any) => e.employee_id === employeeId);
       if (activeEntry) {
         const duration = differenceInMinutes(new Date(), new Date(activeEntry.clock_in));
         const { error } = await supabase.from('time_entries').update({
@@ -152,7 +152,7 @@ function TimeClockPage() {
   }, [queryClient]);
 
   // Merge employees with status
-  const employeesWithStatus = allEmployees.map((emp: Record<string, unknown>) => {
+  const employeesWithStatus = allEmployees.map((emp: any) => {
     const statusRow = statuses.find(s => s.employee_id === emp.id);
     return {
       ...emp,
@@ -162,24 +162,24 @@ function TimeClockPage() {
       currentTask: statusRow?.current_task,
       currentProject: statusRow?.current_project,
       lastActivity: statusRow?.last_activity_at,
-      isClockedIn: activeEntries.some((e: Record<string, unknown>) => e.employee_id === emp.id),
+      isClockedIn: activeEntries.some((e: any) => e.employee_id === emp.id),
     };
   });
 
-  const filtered = employeesWithStatus.filter((e: Record<string, unknown>) => {
+  const filtered = employeesWithStatus.filter((e: any) => {
     const matchSearch = e.name.toLowerCase().includes(search.toLowerCase());
     const matchStatus = !filterStatus || e.currentStatus === filterStatus;
     return matchSearch && matchStatus;
   });
 
   const counts = {
-    online: employeesWithStatus.filter((e: Record<string, unknown>) => e.currentStatus === 'online').length,
-    idle: employeesWithStatus.filter((e: Record<string, unknown>) => e.currentStatus === 'idle').length,
-    break: employeesWithStatus.filter((e: Record<string, unknown>) => e.currentStatus === 'break').length,
-    offline: employeesWithStatus.filter((e: Record<string, unknown>) => e.currentStatus === 'offline').length,
+    online: employeesWithStatus.filter((e: any) => e.currentStatus === 'online').length,
+    idle: employeesWithStatus.filter((e: any) => e.currentStatus === 'idle').length,
+    break: employeesWithStatus.filter((e: any) => e.currentStatus === 'break').length,
+    offline: employeesWithStatus.filter((e: any) => e.currentStatus === 'offline').length,
   };
 
-  const formatMinutes = (mins: unknown) => {
+  const formatMinutes = (mins: any) => {
     const h = Math.floor(mins / 60);
     const m = Math.round(mins % 60);
     return `${h}h ${m}m`;
@@ -237,7 +237,7 @@ function TimeClockPage() {
             <p className="text-muted-foreground text-center py-8">Nenhum funcionário encontrado</p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((emp: Record<string, unknown>) => {
+              {filtered.map((emp: any) => {
                 const cfg = statusConfig[emp.currentStatus] || statusConfig.offline;
                 return (
                   <div key={emp.id} className="flex items-center gap-3 p-3 rounded-lg border bg-card hover:bg-muted/50 transition-colors">

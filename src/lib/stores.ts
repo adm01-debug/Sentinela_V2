@@ -162,7 +162,7 @@ interface UserPreferencesState {
   setLanguage: (language: string) => void;
   setCompactMode: (compact: boolean) => void;
   setAutoRefresh: (enabled: boolean) => void;
-  setRefreshInterval: (interval: unknown) => void;
+  setRefreshInterval: (interval: any) => void;
   setDefaultView: (view: 'grid' | 'list') => void;
 }
 

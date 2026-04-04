@@ -120,7 +120,7 @@ export const SessionPlayback = memo(() => {
     
     if (data) {
       // Parse events JSONB - handle unknown type from Supabase
-      const parsed = data.map((d: Record<string, unknown>) => ({
+      const parsed = data.map((d: any) => ({
         ...d,
         id: d.id as string,
         employee_name: d.employee_name as string,

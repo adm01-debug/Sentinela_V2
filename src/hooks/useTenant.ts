@@ -12,7 +12,7 @@ export function useTenant() {
     setLoading(false);
   }, []);
 
-  const updateSettings = useCallback((settings: Record<string, unknown>) => {
+  const updateSettings = useCallback((settings: any) => {
     setTenant(t => t ? { ...t, settings: { ...(t.settings as object), ...settings } } : null);
   }, []);
 

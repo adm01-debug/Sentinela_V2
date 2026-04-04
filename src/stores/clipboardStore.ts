@@ -19,7 +19,7 @@ interface ClipboardState {
   maxItems: number;
   isSupported: boolean;
 
-  copy: (type: ClipboardItemType, data: unknown, source?: string) => Promise<string>;
+  copy: (type: ClipboardItemType, data: any, source?: string) => Promise<string>;
   paste: () => ClipboardItem | null;
   clear: () => void;
   clearItem: (id: string) => void;

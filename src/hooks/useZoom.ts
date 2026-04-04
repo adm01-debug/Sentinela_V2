@@ -5,7 +5,7 @@ interface UseZoomOptions {
   maxZoom?: number;
   step?: number;
   initialZoom?: number;
-  onChange?: (zoom: unknown) => void;
+  onChange?: (zoom: any) => void;
 }
 
 interface UseZoomReturn {
@@ -19,7 +19,7 @@ interface UseZoomReturn {
   zoomPercentage: string;
   containerRef: React.RefObject<HTMLDivElement>;
   handleWheel: (e: WheelEvent) => void;
-  handlePinch: (scale: unknown) => void;
+  handlePinch: (scale: any) => void;
 }
 
 export function useZoom(options: UseZoomOptions = {}): UseZoomReturn {
@@ -65,7 +65,7 @@ export function useZoom(options: UseZoomOptions = {}): UseZoomReturn {
     }
   }, [zoom, step, setZoom]);
 
-  const handlePinch = useCallback((scale: unknown) => {
+  const handlePinch = useCallback((scale: any) => {
     const delta = scale - lastPinchScale.current;
     lastPinchScale.current = scale;
     setZoom(zoom + delta);

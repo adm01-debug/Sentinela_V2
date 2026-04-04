@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-function deepEqual(a: unknown, b: unknown): boolean {
+function deepEqual(a: any, b: any): boolean {
   if (a === b) return true;
   if (typeof a !== typeof b) return false;
   if (typeof a !== "object" || a === null || b === null) return false;
