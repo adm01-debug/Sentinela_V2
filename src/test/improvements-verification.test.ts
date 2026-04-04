@@ -460,9 +460,9 @@ describe('Cross-cutting: Build & Architecture Integrity', () => {
     expect(fs.existsSync('/dev-server/src/hooks/useEmployees.ts')).toBe(true);
   });
 
-  it('MainLayout exists as primary layout', async () => {
+  it('PageLayout exists as primary layout', async () => {
     const fs = await import('fs');
-    const exists = fs.existsSync('/dev-server/src/components/layout/MainLayout.tsx');
+    const exists = fs.existsSync('/dev-server/src/components/layout/PageLayout.tsx');
     expect(exists).toBe(true);
   });
 
