@@ -112,7 +112,7 @@ function TimeClockPage() {
   // Clock out mutation
   const clockOut = useMutation({
     mutationFn: async (employeeId: string) => {
-      const activeEntry = activeEntries.find((e: any) => e.employee_id === employeeId);
+      const activeEntry = activeEntries.find((e) => e.employee_id === employeeId);
       if (activeEntry) {
         const duration = differenceInMinutes(new Date(), new Date(activeEntry.clock_in));
         const { error } = await supabase.from('time_entries').update({
