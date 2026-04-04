@@ -43,8 +43,8 @@ const initialFormData: WebhookFormData = {
 // ============================================================
 
 export function useWebhooksPage() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const webhooksResult = useWebhooks() as Record<string, any>;
+  const webhooksResult = useWebhooks() as Record<string, unknown>;
+
   const webhooks = webhooksResult.webhooks || webhooksResult.data || [];
   const loading = webhooksResult.loading || webhooksResult.isLoading || false;
   const createWebhook = webhooksResult.createWebhook || (async () => {});

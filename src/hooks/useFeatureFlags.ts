@@ -6,7 +6,7 @@ interface FeatureFlag {
   name: string;
   enabled: boolean;
   description?: string;
-  conditions?: Record<string, any>;
+  conditions?: Record<string, unknown>;
 }
 
 interface UseFeatureFlagsReturn {
