@@ -46,7 +46,7 @@ export const queryKeys = {
   employees: {
     all: ['employees'] as const,
     lists: () => [...queryKeys.employees.all, 'list'] as const,
-    list: (filters?: Record<string, unknown>) => 
+    list: (filters?: unknown) => 
       [...queryKeys.employees.lists(), filters] as const,
     details: () => [...queryKeys.employees.all, 'detail'] as const,
     detail: (id: string) => [...queryKeys.employees.details(), id] as const,
@@ -59,7 +59,7 @@ export const queryKeys = {
   teams: {
     all: ['teams'] as const,
     lists: () => [...queryKeys.teams.all, 'list'] as const,
-    list: (filters?: Record<string, unknown>) => 
+    list: (filters?: unknown) => 
       [...queryKeys.teams.lists(), filters] as const,
     detail: (id: string) => [...queryKeys.teams.all, 'detail', id] as const,
     members: (id: string) => [...queryKeys.teams.all, 'members', id] as const,
@@ -78,7 +78,7 @@ export const queryKeys = {
   violations: {
     all: ['violations'] as const,
     lists: () => [...queryKeys.violations.all, 'list'] as const,
-    list: (filters?: Record<string, unknown>) => 
+    list: (filters?: unknown) => 
       [...queryKeys.violations.lists(), filters] as const,
     detail: (id: string) => [...queryKeys.violations.all, 'detail', id] as const,
     comments: (id: string) => [...queryKeys.violations.all, 'comments', id] as const,
@@ -186,7 +186,7 @@ export const queryKeys = {
   auditLogs: {
     all: ['audit-logs'] as const,
     lists: () => [...queryKeys.auditLogs.all, 'list'] as const,
-    list: (filters?: Record<string, unknown>) => 
+    list: (filters?: unknown) => 
       [...queryKeys.auditLogs.lists(), filters] as const,
     detail: (id: string) => [...queryKeys.auditLogs.all, 'detail', id] as const,
     user: (userId: string) => [...queryKeys.auditLogs.all, 'user', userId] as const,
@@ -291,7 +291,7 @@ export const queryKeys = {
   // Security
   security: {
     all: ['security'] as const,
-    events: (filters?: Record<string, unknown>) => [...queryKeys.security.all, 'events', filters] as const,
+    events: (filters?: unknown) => [...queryKeys.security.all, 'events', filters] as const,
     settings: ['security', 'settings'] as const,
     stats: () => [...queryKeys.security.all, 'stats'] as const,
   },
@@ -313,7 +313,7 @@ export const queryKeys = {
   // Productivity
   productivity: {
     all: ['productivity'] as const,
-    comparison: (filters?: Record<string, unknown>) => 
+    comparison: (filters?: unknown) => 
       [...queryKeys.productivity.all, 'comparison', filters] as const,
     trends: (period?: string) => [...queryKeys.productivity.all, 'trends', period] as const,
     employee: (employeeId: string) => [...queryKeys.productivity.all, 'employee', employeeId] as const,

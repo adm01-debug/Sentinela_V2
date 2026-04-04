@@ -65,7 +65,7 @@ export interface IntegrationConfig {
   syncOptions?: SyncOptions;
   mappings?: FieldMapping[];
   filters?: IntegrationFilter[];
-  customSettings?: Record<string, unknown>;
+  customSettings?: unknown;
 }
 
 export interface IntegrationCredentials {
@@ -117,7 +117,7 @@ export interface IntegrationEvent {
   integrationId: string;
   type: 'sync' | 'webhook' | 'error' | 'auth';
   status: 'success' | 'failure' | 'pending';
-  data?: Record<string, unknown>;
+  data?: unknown;
   error?: string;
   duration?: number;
   timestamp: string;

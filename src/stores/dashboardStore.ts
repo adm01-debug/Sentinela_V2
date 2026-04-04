@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-interface Widget { id: string; type: string; position: { x: number; y: number }; size: { w: number; h: number }; config: Record<string, unknown>; }
+interface Widget { id: string; type: string; position: { x: number; y: number }; size: { w: number; h: number }; config: unknown; }
 interface DashboardState {
   widgets: Widget[];
   layout: 'grid' | 'list';

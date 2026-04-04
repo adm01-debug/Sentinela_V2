@@ -116,6 +116,6 @@ export interface DeviceStats {
 export interface DeviceCommand {
   deviceId: string;
   command: 'restart' | 'shutdown' | 'lock' | 'wipe' | 'update' | 'screenshot' | 'sync';
-  parameters?: Record<string, unknown>;
+  parameters?: unknown;
   priority?: 'low' | 'normal' | 'high';
 }

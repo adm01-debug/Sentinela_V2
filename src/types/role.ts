@@ -18,7 +18,7 @@ export interface Role {
   isSystem: boolean;
   isDefault: boolean;
   isActive: boolean;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   createdAt: string;
   updatedAt: string;
 }
@@ -48,7 +48,7 @@ export interface RoleCreateInput {
   scope?: PermissionScope;
   parentRoleId?: string;
   isDefault?: boolean;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface RoleUpdateInput {
@@ -60,7 +60,7 @@ export interface RoleUpdateInput {
   parentRoleId?: string;
   isDefault?: boolean;
   isActive?: boolean;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface RoleFilters {

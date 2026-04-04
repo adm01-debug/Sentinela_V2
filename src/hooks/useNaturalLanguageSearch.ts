@@ -7,7 +7,7 @@ export interface SearchResult {
   title: string;
   description?: string;
   score: number;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface UseNaturalLanguageSearchOptions {

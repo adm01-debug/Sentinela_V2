@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 interface FormContextValue {
-  values: Record<string, unknown>;
+  values: unknown;
   errors: Record<string, string>;
   setValue: (name: string, value: unknown) => void;
   setError: (name: string, error: string) => void;

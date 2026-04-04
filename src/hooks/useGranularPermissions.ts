@@ -106,8 +106,8 @@ export function useRolesWithPermissions() {
       const rolesWithPerms: RoleWithPermissions[] = (roles as Role[]).map(role => ({
         ...role,
         permissions: rolePermissions
-          .filter(rp: Record<string, unknown> => rp.role_id === role.id)
-          .map(rp: Record<string, unknown> => rp.permission as unknown as Permission)
+          .filter(rp: unknown => rp.role_id === role.id)
+          .map(rp: unknown => rp.permission as unknown as Permission)
           .filter(Boolean),
       }));
 

@@ -24,9 +24,9 @@ export function useSecurityMetrics() {
 
       const metrics: SecurityMetrics = {
         total_violations: violations.length,
-        critical_violations: violations.filter(v: Record<string, unknown> => v.severity === 'critical').length,
-        resolved_violations: violations.filter(v: Record<string, unknown> => v.status === 'resolved').length,
-        pending_violations: violations.filter(v: Record<string, unknown> => v.status === 'pending').length,
+        critical_violations: violations.filter(v: unknown => v.severity === 'critical').length,
+        resolved_violations: violations.filter(v: unknown => v.status === 'resolved').length,
+        pending_violations: violations.filter(v: unknown => v.status === 'pending').length,
         violations_by_type: [],
         violations_trend: [],
         top_violators: [],
@@ -34,7 +34,7 @@ export function useSecurityMetrics() {
 
       // Calculate by type
       const byType: Record<string, number> = {};
-      violations.forEach(v: Record<string, unknown> => {
+      violations.forEach(v: unknown => {
         byType[v.violation_type] = (byType[v.violation_type] || 0) + 1;
       });
       metrics.violations_by_type = Object.entries(byType)
@@ -43,7 +43,7 @@ export function useSecurityMetrics() {
 
       // Calculate top violators
       const byEmployee: Record<string, { name: string; count: number }> = {};
-      violations.forEach(v: Record<string, unknown> => {
+      violations.forEach(v: unknown => {
         if (!byEmployee[v.employee_id]) {
           const emp = v.employee as { full_name?: string } | null;
           byEmployee[v.employee_id] = { 

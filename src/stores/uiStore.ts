@@ -3,7 +3,7 @@ import { create } from 'zustand';
 interface ModalConfig {
   id: string;
   component: string;
-  props?: Record<string, unknown>;
+  props?: unknown;
 }
 
 interface UIState {

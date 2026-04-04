@@ -23,7 +23,7 @@ export interface LineSeriesConfig {
 }
 
 interface BaseLineChartProps {
-  data: Record<string, unknown>[];
+  data: unknown[];
   series: LineSeriesConfig[];
   xAxisKey?: string;
   height?: number;

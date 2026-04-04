@@ -35,7 +35,7 @@ export type WidgetType =
 export interface WidgetConfig {
   metric?: string;
   dimensions?: string[];
-  filters?: Record<string, unknown>;
+  filters?: unknown;
   time_range?: TimeRange;
   comparison?: ComparisonConfig;
   visualization?: VisualizationConfig;
@@ -122,7 +122,7 @@ export interface TimeSeriesDataPoint {
   timestamp: string;
   value: number;
   dimensions?: Record<string, string>;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface TimeSeriesSummary {
@@ -260,7 +260,7 @@ export interface RealtimeMetric {
 export interface RealtimeEvent {
   event_type: string;
   user_id?: string;
-  properties: Record<string, unknown>;
+  properties: unknown;
   timestamp: string;
 }
 

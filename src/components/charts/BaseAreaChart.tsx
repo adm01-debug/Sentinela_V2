@@ -22,7 +22,7 @@ export interface AreaSeriesConfig {
 }
 
 interface BaseAreaChartProps {
-  data: Record<string, unknown>[];
+  data: unknown[];
   series: AreaSeriesConfig[];
   xAxisKey?: string;
   height?: number;

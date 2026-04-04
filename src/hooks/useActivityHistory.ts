@@ -33,7 +33,7 @@ export interface ActivityRecord {
   activity_type: ActivityType;
   description: string;
   changes?: Record<string, { old: unknown; new: unknown }>;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   user_id: string;
   user?: {
     full_name?: string;
@@ -145,7 +145,7 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
       activityType: ActivityType;
       description: string;
       changes?: Record<string, { old: unknown; new: unknown }>;
-      metadata?: Record<string, unknown>;
+      metadata?: unknown;
     }) => {
       if (!isSupabaseReady) {
         logger.info('[ActivityHistory] Mock: registrando atividade', params.activityType);

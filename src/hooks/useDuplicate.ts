@@ -140,7 +140,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
       }
 
       // Preparar dados para duplicação
-      const duplicatesData = originals.map((original: Record<string, unknown>) =>
+      const duplicatesData = originals.map((original: unknown) =>
         prepareDuplicateData(
           original as T,
           allExcludeFields,

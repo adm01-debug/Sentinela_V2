@@ -15,7 +15,7 @@ export interface AuditLogEntry {
   userId?: string;
   userEmail?: string;
   ip?: string;
-  details?: Record<string, unknown>;
+  details?: unknown;
   success: boolean;
 }
 

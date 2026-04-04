@@ -19,7 +19,7 @@ export interface TableColumn<T = unknown> {
   minWidth?: number;
   maxWidth?: number;
   align?: 'left' | 'center' | 'right';
-  meta?: Record<string, unknown>;
+  meta?: unknown;
 }
 
 export interface CellInfo<T = unknown> {

@@ -96,7 +96,7 @@ export function useWhatsAppIntegrationPage() {
 
       const { data, error } = await query;
       if (error) throw error;
-      return (data || []).map(m: Record<string, unknown> => ({
+      return (data || []).map(m: unknown => ({
         id: m.id,
         to: m.phone_number,
         from: '',

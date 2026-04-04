@@ -17,7 +17,7 @@ export interface InfiniteScrollConfig {
   select?: string;
   pageSize?: number;
   orderBy?: { column: string; ascending?: boolean };
-  filters?: Record<string, unknown>;
+  filters?: unknown;
   enabled?: boolean;
 }
 

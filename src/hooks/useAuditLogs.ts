@@ -8,7 +8,7 @@ export interface AuditLog {
   action: string;
   entity_type: string;
   entity_id?: string;
-  changes?: Record<string, unknown>;
+  changes?: unknown;
   created_at: string;
   user?: { email: string };
 }
@@ -28,7 +28,7 @@ export function useAuditLogs(entityType?: string, entityId?: string) {
 
       const { data, error } = await query;
       if (error) throw error;
-      return (data || []).map((row: Record<string, unknown>): AuditLog => ({
+      return (data || []).map((row: unknown): AuditLog => ({
         id: row.id,
         user_id: row.user_id,
         action: row.event_type,

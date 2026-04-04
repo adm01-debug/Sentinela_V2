@@ -8,7 +8,7 @@ export interface Anomaly {
   score: number;
   description: string;
   timestamp: Date;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 interface AnomalyPrediction {
@@ -18,7 +18,7 @@ interface AnomalyPrediction {
   score: number;
   description: string;
   timestamp: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface UseAnomalyDetectionOptions {

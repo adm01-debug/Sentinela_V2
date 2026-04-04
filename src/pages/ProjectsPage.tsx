@@ -141,12 +141,12 @@ function ProjectsPage() {
   });
 
   const getProjectHours = (projectId: string) => {
-    const entries = timeEntries.filter((e: Record<string, unknown>) => e.project_id === projectId);
-    const total = entries.reduce((sum: number, e: Record<string, unknown>) => sum + (e.duration_minutes || 0), 0);
+    const entries = timeEntries.filter((e: unknown) => e.project_id === projectId);
+    const total = entries.reduce((sum: number, e: unknown) => sum + (e.duration_minutes || 0), 0);
     return Math.round(total / 60 * 10) / 10;
   };
 
-  const filteredProjects = projects.filter((p: Record<string, unknown>) => p.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredProjects = projects.filter((p: unknown) => p.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="space-y-6">
@@ -186,7 +186,7 @@ function ProjectsPage() {
         {/* Projects list */}
         <div className="space-y-3">
           <h2 className="font-semibold text-lg">Projetos ({filteredProjects.length})</h2>
-          {isLoading ? <p className="text-muted-foreground">Carregando...</p> : filteredProjects.map((project: Record<string, unknown>) => {
+          {isLoading ? <p className="text-muted-foreground">Carregando...</p> : filteredProjects.map((project: unknown) => {
             const hours = getProjectHours(project.id);
             const isSelected = selectedProject === project.id;
             return (
@@ -266,7 +266,7 @@ function ProjectsPage() {
           ) : (
             <div className="space-y-2">
               {Object.entries(taskStatusConfig).map(([statusKey, cfg]) => {
-                const statusTasks = tasks.filter((t: Record<string, unknown>) => t.status === statusKey);
+                const statusTasks = tasks.filter((t: unknown) => t.status === statusKey);
                 if (statusTasks.length === 0) return null;
                 return (
                   <div key={statusKey}>
@@ -274,7 +274,7 @@ function ProjectsPage() {
                       <cfg.icon className="h-4 w-4" /> {cfg.label} ({statusTasks.length})
                     </h3>
                     <div className="space-y-2">
-                      {statusTasks.map((task: Record<string, unknown>) => (
+                      {statusTasks.map((task: unknown) => (
                         <Card key={task.id} className="hover:shadow-sm transition-shadow">
                           <CardContent className="p-3 flex items-center gap-3">
                             <button

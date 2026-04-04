@@ -19,7 +19,7 @@ export interface ApiError {
   code: string;
   message: string;
   field?: string;
-  details?: Record<string, unknown>;
+  details?: unknown;
 }
 
 export interface ApiMetadata {
@@ -141,7 +141,7 @@ export interface QueryParams extends
 export interface ApiRequestConfig {
   method: HttpMethod;
   url: string;
-  params?: Record<string, unknown>;
+  params?: unknown;
   data?: unknown;
   headers?: Record<string, string>;
   timeout?: number;
@@ -248,7 +248,7 @@ export interface FileUploadParams {
   file: File | Blob;
   filename?: string;
   content_type?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface FileUploadResponse {
@@ -264,7 +264,7 @@ export interface FileUploadResponse {
 export interface RealtimeSubscription {
   channel: string;
   event: string;
-  filter?: Record<string, unknown>;
+  filter?: unknown;
 }
 
 export interface RealtimeMessage<T = unknown> {

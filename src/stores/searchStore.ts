@@ -11,7 +11,7 @@ interface SearchResult {
   icon?: string;
   url?: string;
   score: number;
-  meta?: Record<string, unknown>;
+  meta?: unknown;
 }
 
 type SearchResultType = 'employee' | 'activity' | 'alert' | 'report' | 'team' | 'project' | 'setting' | 'page';

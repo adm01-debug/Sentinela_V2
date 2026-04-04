@@ -39,7 +39,7 @@ export interface Violation {
 export interface ViolationDetails {
   source?: string;
   evidence?: ViolationEvidence[];
-  context?: Record<string, unknown>;
+  context?: unknown;
   related_violations?: string[];
   auto_resolved?: boolean;
   escalated?: boolean;
@@ -49,7 +49,7 @@ export interface ViolationDetails {
 export interface ViolationEvidence {
   type: 'screenshot' | 'log' | 'activity' | 'location' | 'file';
   url?: string;
-  data?: Record<string, unknown>;
+  data?: unknown;
   timestamp: string;
   description?: string;
 }
@@ -78,7 +78,7 @@ export interface ViolationCondition {
   operator: ConditionOperator;
   value: string | number | boolean | string[];
   field?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export type ConditionType = 
@@ -109,7 +109,7 @@ export type ConditionOperator =
 
 export interface ViolationAction {
   type: ActionType;
-  config?: Record<string, unknown>;
+  config?: unknown;
   delay_minutes?: number;
 }
 
@@ -158,8 +158,8 @@ export interface ViolationHistory {
   violation_id: string;
   user_id: string;
   action: ViolationHistoryAction;
-  old_value?: Record<string, unknown>;
-  new_value?: Record<string, unknown>;
+  old_value?: unknown;
+  new_value?: unknown;
   notes?: string;
   created_at: string;
 }

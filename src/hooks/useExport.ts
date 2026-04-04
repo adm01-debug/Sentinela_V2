@@ -40,7 +40,7 @@ export interface UseExportResult<T> {
 // HELPERS
 // ============================================================
 
-function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
+function getNestedValue(obj: unknown, path: string): unknown {
   return path.split('.').reduce((acc, part) => {
     if (acc && typeof acc === 'object') {
       return (acc as Record<string, unknown>)[part];

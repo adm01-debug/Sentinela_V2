@@ -7,7 +7,7 @@ export interface Export {
   resourceType: ExportResourceType;
   format: ExportFormat;
   status: ExportStatus;
-  filters?: Record<string, unknown>;
+  filters?: unknown;
   fields?: string[];
   options: ExportOptions;
   fileUrl?: string;
@@ -57,7 +57,7 @@ export interface ExportCreateInput {
   name?: string;
   resourceType: ExportResourceType;
   format: ExportFormat;
-  filters?: Record<string, unknown>;
+  filters?: unknown;
   fields?: string[];
   options?: Partial<ExportOptions>;
 }

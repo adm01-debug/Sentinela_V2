@@ -15,7 +15,7 @@ export interface Category {
   itemCount: number;
   isSystem: boolean;
   isActive: boolean;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   createdAt: string;
   updatedAt: string;
 }
@@ -37,7 +37,7 @@ export interface CategoryCreateInput {
   icon?: string;
   parentId?: string;
   order?: number;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface CategoryUpdateInput {
@@ -48,7 +48,7 @@ export interface CategoryUpdateInput {
   parentId?: string;
   order?: number;
   isActive?: boolean;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface CategoryFilters {

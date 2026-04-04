@@ -14,7 +14,7 @@ export interface SecurityViolation {
   severity: 'low' | 'medium' | 'high' | 'critical';
   status: 'pending' | 'reviewed' | 'resolved' | 'dismissed';
   description: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   screenshot_url?: string;
   created_at: string;
   updated_at: string;
@@ -134,16 +134,16 @@ export function useViolationStats() {
       const stats = {
         total: data?.length || 0,
         bySeverity: {
-          critical: data?.filter((v: Record<string, unknown>) => v.severity === 'critical').length || 0,
-          high: data?.filter((v: Record<string, unknown>) => v.severity === 'high').length || 0,
-          medium: data?.filter((v: Record<string, unknown>) => v.severity === 'medium').length || 0,
-          low: data?.filter((v: Record<string, unknown>) => v.severity === 'low').length || 0,
+          critical: data?.filter((v: unknown) => v.severity === 'critical').length || 0,
+          high: data?.filter((v: unknown) => v.severity === 'high').length || 0,
+          medium: data?.filter((v: unknown) => v.severity === 'medium').length || 0,
+          low: data?.filter((v: unknown) => v.severity === 'low').length || 0,
         },
         byStatus: {
-          pending: data?.filter((v: Record<string, unknown>) => v.status === 'pending').length || 0,
-          reviewed: data?.filter((v: Record<string, unknown>) => v.status === 'reviewed').length || 0,
-          resolved: data?.filter((v: Record<string, unknown>) => v.status === 'resolved').length || 0,
-          dismissed: data?.filter((v: Record<string, unknown>) => v.status === 'dismissed').length || 0,
+          pending: data?.filter((v: unknown) => v.status === 'pending').length || 0,
+          reviewed: data?.filter((v: unknown) => v.status === 'reviewed').length || 0,
+          resolved: data?.filter((v: unknown) => v.status === 'resolved').length || 0,
+          dismissed: data?.filter((v: unknown) => v.status === 'dismissed').length || 0,
         },
       };
 
@@ -171,7 +171,7 @@ export function useUpdateViolationStatus() {
       status: SecurityViolation['status'];
       notes?: string;
     }) => {
-      const updates: Record<string, unknown> = { status };
+      const updates: unknown = { status };
 
       if (status === 'resolved') {
         updates.resolved_at = new Date().toISOString();

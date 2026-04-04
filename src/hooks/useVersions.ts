@@ -17,7 +17,7 @@ export interface EntityVersion {
   entity_type: string;
   entity_id: string;
   version_number: number;
-  data: Record<string, unknown>;
+  data: unknown;
   changed_by: string | null;
   changed_at: string;
   change_summary: string | null;
@@ -109,7 +109,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   // MUTATION - Criar versão manualmente
   // ============================================================
   const createVersionMutation = useMutation({
-    mutationFn: async (params: { data: Record<string, unknown>; summary?: string }) => {
+    mutationFn: async (params: { data: unknown; summary?: string }) => {
       if (!isSupabaseReady) {
         logger.info('[Versions] Mock: criando versão');
         return { id: `mock-${Date.now()}`, version_number: versions.length + 1 };

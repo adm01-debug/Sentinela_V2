@@ -66,7 +66,7 @@ export function verifyChecksum(data: string, checksum: string): boolean {
   return generateChecksum(data) === checksum;
 }
 
-export function createFingerprint(data: Record<string, unknown>): string {
+export function createFingerprint(data: unknown): string {
   const sorted = JSON.stringify(data, Object.keys(data).sort());
   return simpleHash(sorted);
 }

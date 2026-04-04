@@ -7,7 +7,7 @@ interface Integration {
   name: string;
   enabled: boolean;
   type: 'webhook' | 'whatsapp' | 'email' | 'slack' | 'push';
-  config?: Record<string, unknown>;
+  config?: unknown;
 }
 
 export function useIntegrations() {

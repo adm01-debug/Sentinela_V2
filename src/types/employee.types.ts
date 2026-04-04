@@ -29,7 +29,7 @@ export interface EmployeeMetadata {
   timezone?: string;
   locale?: string;
   work_schedule_id?: string;
-  custom_fields?: Record<string, unknown>;
+  custom_fields?: unknown;
 }
 
 export interface EmployeeLocation {
@@ -173,7 +173,7 @@ export interface EmployeeUpdateInput extends Partial<EmployeeCreateInput> {
 export interface EmployeeBulkAction {
   action: 'activate' | 'deactivate' | 'suspend' | 'delete' | 'assign_team' | 'assign_manager';
   employee_ids: string[];
-  params?: Record<string, unknown>;
+  params?: unknown;
 }
 
 // Response types

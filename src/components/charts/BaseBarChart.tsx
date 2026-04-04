@@ -23,7 +23,7 @@ export interface BarSeriesConfig {
 }
 
 interface BaseBarChartProps {
-  data: Record<string, unknown>[];
+  data: unknown[];
   series: BarSeriesConfig[];
   xAxisKey?: string;
   height?: number;

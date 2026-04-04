@@ -84,7 +84,7 @@ export function useMobileDeviceLocations() {
 
       if (error) throw error;
       
-      return data?.map(d: Record<string, unknown> => ({
+      return data?.map(d: unknown => ({
         device_id: d.id,
         ...d.last_location,
         employee: d.employee,

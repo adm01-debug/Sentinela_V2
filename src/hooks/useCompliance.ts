@@ -45,7 +45,7 @@ export function useCompliance() {
       const geoSettings = checks[2].status === 'fulfilled' ? (checks[2].value as { data: { enabled: boolean } | null }).data : null;
       const blockedIPs = checks[3].status === 'fulfilled' ? (checks[3].value as { count: number | null }).count : 0;
       const userRoles = checks[4].status === 'fulfilled' ? (checks[4].value as { count: number | null }).count : 0;
-      const monSettings = checks[5].status === 'fulfilled' ? (checks[5].value as { data: Record<string, unknown> | null }).data : null;
+      const monSettings = checks[5].status === 'fulfilled' ? (checks[5].value as { data: unknown | null }).data : null;
 
       const rules: Array<{ name: string; category: string; description: string; status: 'compliant' | 'non-compliant' | 'partial' }> = [
         { name: 'LGPD - Consentimento', category: 'Dados Pessoais', description: 'Coleta de consentimento para monitoramento', status: (policyAcks ?? 0) > 0 ? 'compliant' : 'partial' },

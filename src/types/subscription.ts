@@ -15,7 +15,7 @@ export interface Subscription {
   resumeAt?: string;
   quantity: number;
   discount?: SubscriptionDiscount;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   createdAt: string;
   updatedAt: string;
 }

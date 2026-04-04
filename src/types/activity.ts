@@ -11,7 +11,7 @@ export interface Activity {
   keystrokes?: number;
   mouseClicks?: number;
   timestamp: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 export interface ActivitySummary {

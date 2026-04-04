@@ -29,8 +29,8 @@ import { cn } from '@/lib/utils';
 
 interface SavedFiltersBarProps {
   module: string;
-  currentFilters: Record<string, unknown>;
-  onApplyFilter: (filters: Record<string, unknown>) => void;
+  currentFilters: unknown;
+  onApplyFilter: (filters: unknown) => void;
   className?: string;
 }
 

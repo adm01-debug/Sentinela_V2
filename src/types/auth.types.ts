@@ -78,7 +78,7 @@ export interface AuthResponse {
 export interface AuthError {
   code: AuthErrorCode;
   message: string;
-  details?: Record<string, unknown>;
+  details?: unknown;
 }
 
 export type AuthErrorCode =
@@ -259,7 +259,7 @@ export interface AuthAuditLog {
   ip_address?: string;
   user_agent?: string;
   location?: SessionLocation;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   success: boolean;
   failure_reason?: string;
   created_at: string;

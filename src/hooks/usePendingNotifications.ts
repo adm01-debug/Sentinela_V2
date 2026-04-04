@@ -8,7 +8,7 @@ export interface PendingNotification {
   type: string;
   title: string;
   message: string;
-  data?: Record<string, unknown>;
+  data?: unknown;
   read: boolean;
   created_at: string;
 }

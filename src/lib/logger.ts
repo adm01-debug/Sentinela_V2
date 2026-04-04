@@ -10,7 +10,7 @@ interface LogEntry {
   message: string;
   timestamp: string;
   context?: string;
-  data?: Record<string, unknown>;
+  data?: unknown;
   error?: { message: string; stack?: string };
 }
 

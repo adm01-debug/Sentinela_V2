@@ -7,7 +7,7 @@ export interface Alert {
   employeeId?: string;
   employeeName?: string;
   rule?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
   acknowledged: boolean;
   acknowledgedBy?: string;
   acknowledgedAt?: string;
@@ -32,5 +32,5 @@ export interface AlertCondition {
 
 export interface AlertAction {
   type: 'email' | 'slack' | 'webhook' | 'dashboard';
-  config: Record<string, unknown>;
+  config: unknown;
 }

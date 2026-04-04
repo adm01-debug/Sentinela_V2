@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 
-interface Tenant { id: string; name: string; slug: string; settings: Record<string, unknown>; }
+interface Tenant { id: string; name: string; slug: string; settings: unknown; }
 
 export function useTenant() {
   const [tenant, setTenant] = useState<Tenant | null>(null);
@@ -12,7 +12,7 @@ export function useTenant() {
     setLoading(false);
   }, []);
 
-  const updateSettings = useCallback((settings: Record<string, unknown>) => {
+  const updateSettings = useCallback((settings: unknown) => {
     setTenant(t => t ? { ...t, settings: { ...t.settings, ...settings } } : null);
   }, []);
 

@@ -58,7 +58,7 @@ export interface Notification {
   isRead: boolean;
   actionUrl?: string;
   actionLabel?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: unknown;
 }
 
 interface NotificationCenterProps {

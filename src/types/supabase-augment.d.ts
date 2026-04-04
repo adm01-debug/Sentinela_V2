@@ -14,7 +14,7 @@ declare module '@supabase/supabase-js' {
       : string & keyof DB,
     Schema extends Record<string, unknown> = DB[SchemaName] extends Record<string, unknown>
       ? DB[SchemaName]
-      : Record<string, unknown>
+      : unknown
   > {
     from(relation: string): PostgrestFilterBuilder<PublicSchema, Record<string, unknown>, Record<string, unknown>[]>;
   }

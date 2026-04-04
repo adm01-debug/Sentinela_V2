@@ -8,7 +8,7 @@ interface BreadcrumbItem {
   href?: string;
   icon?: string;
   isActive?: boolean;
-  meta?: Record<string, unknown>;
+  meta?: unknown;
 }
 
 interface BreadcrumbState {
