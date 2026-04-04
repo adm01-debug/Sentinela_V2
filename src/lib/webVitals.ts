@@ -41,9 +41,11 @@ function observe(type: string, name: string, cb: MetricCallback) {
       const last = entries[entries.length - 1];
       if (!last) return;
 
-      const value = name === 'CLS'
-        ? entries.reduce((sum, e) => sum + (e as PerformanceEntry & { value?: number }).value ?? 0, 0)
-        : last.startTime ?? (last as PerformanceEntry & { processingStart?: number }).processingStart ?? 0;
+      const rawValue = name === 'CLS'
+        ? entries.reduce((sum, e) => sum + ((e as PerformanceEntry & { value?: number }).value || 0), 0)
+        : ('processingStart' in last ? (last as PerformanceEntry & { processingStart: number }).processingStart : last.startTime);
+
+      const value = rawValue || 0;
 
       const metric: WebVitalMetric = {
         name,
