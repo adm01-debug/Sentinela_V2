@@ -32,7 +32,7 @@ export function useHeatmap(elementId?: string) {
       const rect = element === document ? { left: 0, top: 0 } : (element as HTMLElement).getBoundingClientRect();
       recordPoint(e.clientX - rect.left, e.clientY - rect.top);
     };
-    element.addEventListener('click', handleClick);
+    element.addEventListener('click', handleClick as EventListener);
     return () => element.removeEventListener('click', handleClick);
   }, [isTracking, elementId, recordPoint]);
 
