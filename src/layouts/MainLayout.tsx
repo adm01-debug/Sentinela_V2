@@ -48,8 +48,8 @@ export const MainLayout = () => {
       <div
         className={cn(
           'flex-1 flex flex-col overflow-hidden transition-all duration-300',
-          'md:ml-16',
-          !sidebarCollapsed && 'md:ml-64'
+          'md:ml-[60px]',
+          !sidebarCollapsed && 'md:ml-[252px]'
         )}
       >
         <Header
@@ -59,9 +59,9 @@ export const MainLayout = () => {
         <main
           id="main-content"
           role="main"
-          className="flex-1 overflow-auto p-4 sm:p-6 pb-20 md:pb-6"
+          className="flex-1 overflow-auto px-4 py-4 sm:px-5 sm:py-5 pb-20 md:pb-5"
         >
-          <Breadcrumbs className="mb-4" />
+          <Breadcrumbs className="mb-3" />
           <Outlet />
         </main>
 
