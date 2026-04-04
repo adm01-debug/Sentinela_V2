@@ -63,10 +63,7 @@ export function useTeam(id: string | undefined) {
       
       const { data, error } = await supabase
         .from('teams')
-        .select(`
-          *,
-          leader:employees!teams_leader_id_fkey(id, full_name)
-        `)
+        .select('*')
         .eq('id', id)
         .single();
 
