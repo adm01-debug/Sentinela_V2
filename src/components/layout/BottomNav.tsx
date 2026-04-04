@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
@@ -10,21 +11,22 @@ import {
 } from 'lucide-react';
 
 interface NavItem {
-  label: string;
+  labelKey: string;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const navItems: NavItem[] = [
-  { label: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { label: 'Funcionários', href: '/employees', icon: Users },
-  { label: 'Segurança', href: '/security', icon: Shield },
-  { label: 'Relatórios', href: '/reports', icon: FileText },
-  { label: 'Config', href: '/settings', icon: Settings },
+  { labelKey: 'nav.dashboard', href: '/', icon: LayoutDashboard },
+  { labelKey: 'nav.employees', href: '/employees', icon: Users },
+  { labelKey: 'sections.security', href: '/security', icon: Shield },
+  { labelKey: 'nav.reports', href: '/reports', icon: FileText },
+  { labelKey: 'nav.settings', href: '/settings', icon: Settings },
 ];
 
 function BottomNavComponent() {
   const location = useLocation();
+  const { t } = useTranslation();
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background md:hidden">
@@ -45,7 +47,7 @@ function BottomNavComponent() {
               )}
             >
               <Icon className={cn('h-5 w-5', isActive && 'text-primary')} />
-              <span className="text-[10px] font-medium">{item.label}</span>
+              <span className="text-[10px] font-medium">{t(item.labelKey)}</span>
             </NavLink>
           );
         })}

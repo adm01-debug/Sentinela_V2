@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEmployeesPage } from '@/hooks/useEmployeesPage';
 import { EmployeeStatsCards } from '@/components/employees/EmployeeStatsCards';
 import { EmployeeFilters } from '@/components/employees/EmployeeFilters';
@@ -9,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const EmployeesPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     filteredEmployees,
     teams,
@@ -33,24 +35,21 @@ export const EmployeesPage = () => {
   return (
     <PageTransition>
       <div className="space-y-6">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Funcionários</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">{t('employees.title')}</h1>
             <p className="text-sm text-muted-foreground">
-              Gerencie sua equipe e dispositivos vinculados
+              {t('employees.subtitle')}
             </p>
           </div>
           <Button onClick={() => navigate('/employees/new')} className="gap-2">
             <Plus className="h-4 w-4" />
-            Novo Funcionário
+            {t('employees.addEmployee')}
           </Button>
         </div>
 
-        {/* Stats */}
         <EmployeeStatsCards stats={stats} isLoading={loading} />
 
-        {/* Filters */}
         <EmployeeFilters
           filters={filters}
           teams={safeTeams}
@@ -60,7 +59,6 @@ export const EmployeesPage = () => {
           onClearFilters={clearFilters}
         />
 
-        {/* Table */}
         <EmployeeTable
           employees={filteredEmployees}
           teams={safeTeams}

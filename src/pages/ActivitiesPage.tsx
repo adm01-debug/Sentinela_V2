@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useActivities, useActivitySummary } from '@/hooks/useActivities';
 import { ActivityFilters } from '@/components/ActivityFilters';
 import { ActivityChart } from '@/components/ActivityChart';

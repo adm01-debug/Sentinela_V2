@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {
+import { useTranslation } from 'react-i18next';
   Users, Activity, TrendingUp, AlertTriangle, Shield, Clock,
   Filter, X, ArrowRight, Eye, Monitor, Globe, CheckCircle,
   Bell

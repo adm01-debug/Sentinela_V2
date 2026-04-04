@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAlerts, useAcknowledgeAlert, useAcknowledgeAllAlerts } from '@/hooks';
 import { AlertList } from '@/components/AlertList';
 import { AlertFilters } from '@/components/AlertFilters';
