@@ -117,6 +117,7 @@ export const DashboardPage = () => {
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const navigate = useNavigate();
   const colors = useChartColors();
+  const { t } = useTranslation();
 
   const departmentData = [
     { name: 'Engenharia', value: 35, color: colors.primary },
