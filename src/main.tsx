@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { initWebVitals } from './lib/webVitals';
+import { applySecurityHeaders } from './lib/securityHeaders';
+import { initErrorTracking } from './lib/errorTracker';
+
+// Apply security headers before rendering
+applySecurityHeaders();
 
 const rootEl = document.getElementById('root');
 if (!rootEl) throw new Error('Root element not found');
@@ -13,5 +18,6 @@ ReactDOM.createRoot(rootEl).render(
   </React.StrictMode>
 );
 
-// Initialize performance monitoring
+// Initialize performance monitoring & error tracking
 initWebVitals();
+initErrorTracking();

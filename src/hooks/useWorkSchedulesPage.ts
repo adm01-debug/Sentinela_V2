@@ -107,7 +107,7 @@ export function useWorkSchedulesPage() {
     if (!searchTerm) return schedules;
     const term = searchTerm.toLowerCase();
     return schedules.filter(s => 
-      s.name.toLowerCase().includes(term) ||
+      (s.name ?? '').toLowerCase().includes(term) ||
       s.description?.toLowerCase().includes(term)
     );
   }, [schedules, searchTerm]);
@@ -153,12 +153,12 @@ export function useWorkSchedulesPage() {
     
     await addSchedule({
       name: scheduleForm.name.trim(),
-      description: scheduleForm.description.trim() || null,
+      description: scheduleForm.description.trim(),
       work_days: scheduleForm.work_days,
       start_time: scheduleForm.start_time,
       end_time: scheduleForm.end_time,
-      break_start: scheduleForm.break_start || null,
-      break_end: scheduleForm.break_end || null,
+      break_start: scheduleForm.break_start,
+      break_end: scheduleForm.break_end,
       flexible_start: scheduleForm.flexible_start,
       flexible_minutes: scheduleForm.flexible_minutes,
       overtime_allowed: scheduleForm.overtime_allowed,
@@ -175,12 +175,12 @@ export function useWorkSchedulesPage() {
     
     await updateSchedule(selectedSchedule.id, {
       name: scheduleForm.name.trim(),
-      description: scheduleForm.description.trim() || null,
+      description: scheduleForm.description.trim() || undefined,
       work_days: scheduleForm.work_days,
       start_time: scheduleForm.start_time,
       end_time: scheduleForm.end_time,
-      break_start: scheduleForm.break_start || null,
-      break_end: scheduleForm.break_end || null,
+      break_start: scheduleForm.break_start || undefined,
+      break_end: scheduleForm.break_end || undefined,
       flexible_start: scheduleForm.flexible_start,
       flexible_minutes: scheduleForm.flexible_minutes,
       overtime_allowed: scheduleForm.overtime_allowed,
@@ -236,18 +236,18 @@ export function useWorkSchedulesPage() {
   const openEditScheduleDialog = useCallback((schedule: WorkSchedule) => {
     setSelectedSchedule(schedule);
     setScheduleForm({
-      name: schedule.name,
+      name: schedule.name ?? '',
       description: schedule.description || '',
-      work_days: schedule.work_days,
-      start_time: schedule.start_time,
-      end_time: schedule.end_time,
+      work_days: schedule.work_days ?? [1, 2, 3, 4, 5],
+      start_time: schedule.start_time ?? '09:00',
+      end_time: schedule.end_time ?? '18:00',
       break_start: schedule.break_start || '',
       break_end: schedule.break_end || '',
-      flexible_start: schedule.flexible_start,
-      flexible_minutes: schedule.flexible_minutes,
-      overtime_allowed: schedule.overtime_allowed,
-      overtime_requires_approval: schedule.overtime_requires_approval,
-      block_outside_hours: schedule.block_outside_hours,
+      flexible_start: schedule.flexible_start ?? false,
+      flexible_minutes: schedule.flexible_minutes ?? 15,
+      overtime_allowed: schedule.overtime_allowed ?? false,
+      overtime_requires_approval: schedule.overtime_requires_approval ?? false,
+      block_outside_hours: schedule.block_outside_hours ?? false,
     });
     setIsScheduleDialogOpen(true);
   }, []);
