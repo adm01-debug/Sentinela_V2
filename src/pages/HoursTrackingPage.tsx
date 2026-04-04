@@ -69,7 +69,7 @@ function HoursTrackingPage() {
   // Project hours
   const projectHours = useMemo(() => {
     const byProject: Record<string, { name: string; color: string; minutes: number }> = {};
-    timeEntries.forEach((e: any) => {
+    timeEntries.forEach((e) => {
       if (!e.project_id) return;
       if (!byProject[e.project_id]) byProject[e.project_id] = { name: e.projects?.name || 'Sem projeto', color: e.projects?.color || '#94a3b8', minutes: 0 };
       byProject[e.project_id].minutes += (e.duration_minutes || 0);
