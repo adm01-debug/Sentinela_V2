@@ -266,7 +266,7 @@ function ProjectsPage() {
           ) : (
             <div className="space-y-2">
               {Object.entries(taskStatusConfig).map(([statusKey, cfg]) => {
-                const statusTasks = tasks.filter((t: any) => t.status === statusKey);
+                const statusTasks = tasks.filter((t) => t.status === statusKey);
                 if (statusTasks.length === 0) return null;
                 return (
                   <div key={statusKey}>
