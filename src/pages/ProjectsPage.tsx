@@ -101,7 +101,7 @@ function ProjectsPage() {
       setNewProject({ name: '', description: '', client_name: '', budget_hours: '', color: '#3B82F6' });
       toast({ title: 'Projeto criado com sucesso!' });
     },
-    onError: (err: any) => toast({ title: 'Erro', description: err.message, variant: 'destructive' }),
+    onError: (err: Error) => toast({ title: 'Erro', description: err.message, variant: 'destructive' }),
   });
 
   const createTask = useMutation({
