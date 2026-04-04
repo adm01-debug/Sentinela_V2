@@ -9,6 +9,7 @@ import { initPerformanceMonitoring } from './lib/performanceBudget';
 
 // Apply security headers before rendering
 applySecurityHeaders();
+initPerformanceMonitoring();
 
 const rootEl = document.getElementById('root');
 if (!rootEl) throw new Error('Root element not found');
