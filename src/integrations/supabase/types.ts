@@ -1177,6 +1177,45 @@ export type Database = {
           },
         ]
       }
+      error_reports: {
+        Row: {
+          component: string | null
+          context: Json | null
+          created_at: string
+          id: string
+          message: string
+          occurred_at: string
+          severity: string
+          stack: string | null
+          url: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          component?: string | null
+          context?: Json | null
+          created_at?: string
+          id?: string
+          message: string
+          occurred_at?: string
+          severity?: string
+          stack?: string | null
+          url?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          component?: string | null
+          context?: Json | null
+          created_at?: string
+          id?: string
+          message?: string
+          occurred_at?: string
+          severity?: string
+          stack?: string | null
+          url?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       geo_blocking_settings: {
         Row: {
           block_proxy: boolean
