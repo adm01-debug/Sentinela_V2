@@ -53,7 +53,7 @@ async function fetchDeviceStats(): Promise<DeviceStats> {
   // Considerar online se visto nos últimos 5 minutos
   const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
   const onlineMobile = mobileDevices?.filter((d) => 
-    d.last_seen_at && new Date(d.last_seen_at) > fiveMinutesAgo
+    d.last_seen_at && new Date(d.last_seen_at as string) > fiveMinutesAgo
   ).length || 0;
   
   // Para desktops, considerar is_active

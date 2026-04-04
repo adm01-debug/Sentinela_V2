@@ -356,17 +356,17 @@ export function useAwardBadge() {
 // HELPER FUNCTIONS
 // ============================================================
 
-function calculateLevel(totalPoints): number {
+function calculateLevel(totalPoints: number): number {
   // Every 1000 points = 1 level
   return Math.floor(totalPoints / 1000) + 1;
 }
 
-export function getNextLevelPoints(currentPoints): number {
+export function getNextLevelPoints(currentPoints: number): number {
   const currentLevel = calculateLevel(currentPoints);
   return currentLevel * 1000;
 }
 
-export function getLevelProgress(currentPoints): number {
+export function getLevelProgress(currentPoints: number): number {
   const pointsInLevel = currentPoints % 1000;
   return (pointsInLevel / 1000) * 100;
 }

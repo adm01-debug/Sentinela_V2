@@ -70,13 +70,13 @@ function saveRateLimitState(state: RateLimitState): void {
   }
 }
 
-function calculateLockoutDuration(level): number {
+function calculateLockoutDuration(level: number): number {
   // Exponential backoff: 30s, 1min, 2min, 4min, 8min, 16min, 30min (capped)
   const duration = BASE_LOCKOUT_MS * Math.pow(2, level);
   return Math.min(duration, MAX_LOCKOUT_MS);
 }
 
-function formatTimeRemaining(ms): string {
+function formatTimeRemaining(ms: number): string {
   if (ms < 60000) {
     const seconds = Math.ceil(ms / 1000);
     return `${seconds} segundo${seconds !== 1 ? 's' : ''}`;

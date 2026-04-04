@@ -49,7 +49,7 @@ function getNestedValue(obj: any, path: string): unknown {
   }, obj as unknown);
 }
 
-function formatValue(value): string {
+function formatValue(value: any): string {
   if (value === null || value === undefined) return '';
   if (value instanceof Date) return value.toLocaleDateString('pt-BR');
   if (typeof value === 'boolean') return value ? 'Sim' : 'Não';
