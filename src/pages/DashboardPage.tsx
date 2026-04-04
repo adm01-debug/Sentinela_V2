@@ -188,28 +188,28 @@ export const DashboardPage = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Total de Funcionários"
+          title={t('dashboard.totalEmployees')}
           value={totalEmployees}
           icon={Users}
           iconColor="bg-primary/10 text-primary"
           trend={{ value: 5.2, label: 'desde o mês passado' }}
         />
         <StatCard
-          title="Ativos Agora"
+          title={t('dashboard.activeNow')}
           value={activeEmployees}
           icon={Activity}
           iconColor="bg-success/10 text-success"
           trend={{ value: 12, label: 'desde ontem' }}
         />
         <StatCard
-          title="Produtividade"
+          title={t('dashboard.productivity')}
           value={productivity + '%'}
           icon={TrendingUp}
           iconColor="bg-warning/10 text-warning"
           trend={{ value: 3.8, label: 'esta semana' }}
         />
         <StatCard
-          title="Alertas Abertos"
+          title={t('dashboard.alerts')}
           value={alertsCount}
           icon={AlertTriangle}
           iconColor="bg-destructive/10 text-destructive"
