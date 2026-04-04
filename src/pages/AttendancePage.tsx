@@ -78,7 +78,7 @@ function AttendancePage() {
     employees: te.employees,
   }));
 
-  const filtered = allRecords.filter((r: any) => {
+  const filtered = allRecords.filter((r) => {
     const matchSearch = r.employees?.name?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = statusFilter === 'all' || r.status === statusFilter;
     return matchSearch !== false && matchStatus;
