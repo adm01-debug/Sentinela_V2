@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,8 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Search, CalendarDays, UserCheck, UserX, Clock, AlertTriangle, TrendingUp } from 'lucide-react';
-import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
+import { format, subDays, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { useChartColors } from '@/hooks/useChartColors';
+import {
+  BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   present: { label: 'Presente', color: 'bg-green-100 text-green-700' },
@@ -23,6 +28,7 @@ function AttendancePage() {
   const [search, setSearch] = useState('');
   const [dateRange, setDateRange] = useState<string>('month');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const colors = useChartColors();
 
   const getDateRange = () => {
     const now = new Date();
@@ -47,7 +53,6 @@ function AttendancePage() {
     },
   });
 
-  // Derive attendance from time_entries if no attendance_records exist
   const { data: timeEntries = [] } = useQuery({
     queryKey: ['attendance-time-entries', dateRange],
     queryFn: async () => {
@@ -63,7 +68,6 @@ function AttendancePage() {
     },
   });
 
-  // Combine sources
   const allRecords = records.length > 0 ? records : timeEntries.map((te) => ({
     id: `te-${te.employee_id}-${te.clock_in}`,
     employee_id: te.employee_id,
@@ -97,6 +101,42 @@ function AttendancePage() {
 
   const presenceRate = stats.total > 0 ? Math.round((stats.present / stats.total) * 100) : 0;
 
+  // Daily attendance trend
+  const dailyData = useMemo(() => {
+    const days = eachDayOfInterval({ start, end });
+    return days.map(day => {
+      const dayStr = format(day, 'yyyy-MM-dd');
+      const dayRecords = allRecords.filter(r => r.date === dayStr);
+      return {
+        date: format(day, 'dd/MM', { locale: ptBR }),
+        presentes: dayRecords.filter(r => r.status === 'present').length,
+        ausentes: dayRecords.filter(r => r.status === 'absent').length,
+        atrasados: dayRecords.filter(r => r.status === 'late' || (r.late_minutes || 0) > 0).length,
+      };
+    }).slice(-14); // Last 14 days
+  }, [allRecords, start, end]);
+
+  // Status pie
+  const statusPieData = useMemo(() => [
+    { name: 'Presentes', value: stats.present, color: colors.success },
+    { name: 'Ausentes', value: stats.absent, color: colors.destructive },
+    { name: 'Atrasados', value: stats.late, color: colors.warning },
+  ].filter(d => d.value > 0), [stats, colors]);
+
+  // Hours distribution
+  const hoursData = useMemo(() => {
+    const buckets: Record<string, number> = { '< 4h': 0, '4-6h': 0, '6-8h': 0, '8-10h': 0, '> 10h': 0 };
+    allRecords.forEach(r => {
+      const h = (r.total_worked_minutes || 0) / 60;
+      if (h < 4) buckets['< 4h']++;
+      else if (h < 6) buckets['4-6h']++;
+      else if (h < 8) buckets['6-8h']++;
+      else if (h < 10) buckets['8-10h']++;
+      else buckets['> 10h']++;
+    });
+    return Object.entries(buckets).map(([name, value]) => ({ name, value }));
+  }, [allRecords]);
+
   return (
     <div className="space-y-6">
       <div>
@@ -106,12 +146,80 @@ function AttendancePage() {
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-        <Card><CardContent className="p-4 text-center"><UserCheck className="h-5 w-5 mx-auto text-green-600 mb-1" /><p className="text-2xl font-bold">{presenceRate}%</p><p className="text-xs text-muted-foreground">Taxa Presença</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><CalendarDays className="h-5 w-5 mx-auto text-blue-600 mb-1" /><p className="text-2xl font-bold">{stats.total}</p><p className="text-xs text-muted-foreground">Registros</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><UserCheck className="h-5 w-5 mx-auto text-green-600 mb-1" /><p className="text-2xl font-bold text-green-600">{stats.present}</p><p className="text-xs text-muted-foreground">Presentes</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><AlertTriangle className="h-5 w-5 mx-auto text-yellow-600 mb-1" /><p className="text-2xl font-bold text-yellow-600">{stats.late}</p><p className="text-xs text-muted-foreground">Atrasos</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><UserX className="h-5 w-5 mx-auto text-red-600 mb-1" /><p className="text-2xl font-bold text-red-600">{stats.absent}</p><p className="text-xs text-muted-foreground">Ausências</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><TrendingUp className="h-5 w-5 mx-auto text-orange-600 mb-1" /><p className="text-2xl font-bold text-orange-600">{stats.totalOvertime}h</p><p className="text-xs text-muted-foreground">Horas Extra</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><UserCheck className="h-5 w-5 mx-auto text-success mb-1" /><p className="text-2xl font-bold">{presenceRate}%</p><p className="text-xs text-muted-foreground">Taxa Presença</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><CalendarDays className="h-5 w-5 mx-auto text-primary mb-1" /><p className="text-2xl font-bold">{stats.total}</p><p className="text-xs text-muted-foreground">Registros</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><UserCheck className="h-5 w-5 mx-auto text-success mb-1" /><p className="text-2xl font-bold text-success">{stats.present}</p><p className="text-xs text-muted-foreground">Presentes</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><AlertTriangle className="h-5 w-5 mx-auto text-warning mb-1" /><p className="text-2xl font-bold text-warning">{stats.late}</p><p className="text-xs text-muted-foreground">Atrasos</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><UserX className="h-5 w-5 mx-auto text-destructive mb-1" /><p className="text-2xl font-bold text-destructive">{stats.absent}</p><p className="text-xs text-muted-foreground">Ausências</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><TrendingUp className="h-5 w-5 mx-auto text-info mb-1" /><p className="text-2xl font-bold text-info">{stats.totalOvertime}h</p><p className="text-xs text-muted-foreground">Horas Extra</p></CardContent></Card>
+      </div>
+
+      {/* Charts */}
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
+        <Card className="lg:col-span-1">
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Presença Diária</CardTitle></CardHeader>
+          <CardContent>
+            <div className="h-[220px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={dailyData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="attGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors.success} stopOpacity={0.3} />
+                      <stop offset="95%" stopColor={colors.success} stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                  <XAxis dataKey="date" tick={{ fill: colors.muted, fontSize: 10 }} stroke={colors.border} />
+                  <YAxis tick={{ fill: colors.muted, fontSize: 11 }} stroke={colors.border} allowDecimals={false} />
+                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+                  <Area type="monotone" dataKey="presentes" name="Presentes" stroke={colors.success} fill="url(#attGrad)" strokeWidth={2} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Distribuição de Status</CardTitle></CardHeader>
+          <CardContent>
+            <div className="h-[160px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={statusPieData} cx="50%" cy="50%" innerRadius={40} outerRadius={65} paddingAngle={3} dataKey="value">
+                    {statusPieData.map((d, i) => <Cell key={i} fill={d.color} />)}
+                  </Pie>
+                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex justify-center gap-3 mt-2">
+              {statusPieData.map(d => (
+                <div key={d.name} className="flex items-center gap-1.5 text-xs">
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
+                  <span className="text-muted-foreground">{d.name}</span>
+                  <span className="font-medium">{d.value}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Horas Trabalhadas</CardTitle></CardHeader>
+          <CardContent>
+            <div className="h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={hoursData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                  <XAxis dataKey="name" tick={{ fill: colors.muted, fontSize: 11 }} stroke={colors.border} />
+                  <YAxis tick={{ fill: colors.muted, fontSize: 11 }} stroke={colors.border} allowDecimals={false} />
+                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+                  <Bar dataKey="value" name="Registros" fill={colors.primary} radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Filters */}
@@ -171,14 +279,10 @@ function AttendancePage() {
                     <TableCell>{record.actual_end ? format(new Date(record.actual_end), 'HH:mm') : '—'}</TableCell>
                     <TableCell className="text-right">{workedHours}h</TableCell>
                     <TableCell className="text-right">
-                      {(record.late_minutes || 0) > 0 ? (
-                        <span className="text-yellow-600">{record.late_minutes}min</span>
-                      ) : '—'}
+                      {(record.late_minutes || 0) > 0 ? <span className="text-warning">{record.late_minutes}min</span> : '—'}
                     </TableCell>
                     <TableCell className="text-right">
-                      {(record.overtime_minutes || 0) > 0 ? (
-                        <span className="text-orange-600">{Math.round(record.overtime_minutes / 60 * 10) / 10}h</span>
-                      ) : '—'}
+                      {(record.overtime_minutes || 0) > 0 ? <span className="text-info">{Math.round(record.overtime_minutes / 60 * 10) / 10}h</span> : '—'}
                     </TableCell>
                     <TableCell><Badge className={`text-[10px] ${cfg.color}`}>{cfg.label}</Badge></TableCell>
                   </TableRow>
