@@ -73,5 +73,6 @@ export const MainLayout = () => {
         <BottomNav />
       </div>
     </div>
+    </KeyboardShortcutsProvider>
   );
 };
