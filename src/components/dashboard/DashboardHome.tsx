@@ -191,7 +191,11 @@ export function DashboardHome() {
                   <XAxis dataKey="day" tick={{ fill: 'hsl(220, 9%, 46%)' }} />
                   <YAxis domain={[0, 10]} tick={{ fill: 'hsl(220, 9%, 46%)' }} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="horas" name="Horas" fill="hsl(262, 83%, 58%)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="horas" name="Horas" radius={[6, 6, 0, 0]}>
+                    {productivityData.map((entry, index) => (
+                      <Cell key={index} fill={entry.fill} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
