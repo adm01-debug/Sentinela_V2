@@ -1,14 +1,23 @@
-import { memo } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { WifiOff, Wifi } from 'lucide-react';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { cn } from '@/lib/utils';
 
-/**
- * Banner that appears when the user goes offline and shows a
- * reconnection confirmation when they come back online.
- */
 export const NetworkStatusBanner = memo(function NetworkStatusBanner() {
-  const { isOnline, wasOffline } = useNetworkStatus();
+  const { isOnline } = useNetworkStatus();
+  const [wasOffline, setWasOffline] = useState(false);
+
+  useEffect(() => {
+    if (!isOnline) setWasOffline(true);
+  }, [isOnline]);
+
+  // Auto-dismiss reconnected banner after 5s
+  useEffect(() => {
+    if (wasOffline && isOnline) {
+      const timer = setTimeout(() => setWasOffline(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [wasOffline, isOnline]);
 
   if (isOnline && !wasOffline) return null;
 
