@@ -4,14 +4,14 @@
 
 import { describe, it, expect } from 'vitest';
 import { 
-  EmployeeCreateSchema, 
-  AuthLoginSchema, 
-  TeamCreateSchema 
+  employeeCreateSchema, 
+  loginSchema, 
+  teamCreateSchema 
 } from '@/validators/schemas';
 
-describe('EmployeeCreateSchema', () => {
+describe('employeeCreateSchema', () => {
   it('validates correct employee data', () => {
-    const result = EmployeeCreateSchema.safeParse({
+    const result = employeeCreateSchema.safeParse({
       name: 'João Silva',
       email: 'joao@empresa.com',
       department: 'TI',
@@ -21,7 +21,7 @@ describe('EmployeeCreateSchema', () => {
   });
 
   it('rejects empty name', () => {
-    const result = EmployeeCreateSchema.safeParse({
+    const result = employeeCreateSchema.safeParse({
       name: '',
       email: 'joao@empresa.com',
     });
@@ -29,7 +29,7 @@ describe('EmployeeCreateSchema', () => {
   });
 
   it('rejects invalid email', () => {
-    const result = EmployeeCreateSchema.safeParse({
+    const result = employeeCreateSchema.safeParse({
       name: 'João',
       email: 'not-an-email',
     });
@@ -37,16 +37,16 @@ describe('EmployeeCreateSchema', () => {
   });
 
   it('allows optional fields to be omitted', () => {
-    const result = EmployeeCreateSchema.safeParse({
+    const result = employeeCreateSchema.safeParse({
       name: 'João Silva',
     });
     expect(result.success).toBe(true);
   });
 });
 
-describe('AuthLoginSchema', () => {
+describe('loginSchema', () => {
   it('validates correct login', () => {
-    const result = AuthLoginSchema.safeParse({
+    const result = loginSchema.safeParse({
       email: 'user@test.com',
       password: 'strongpass123',
     });
@@ -54,7 +54,7 @@ describe('AuthLoginSchema', () => {
   });
 
   it('rejects short password', () => {
-    const result = AuthLoginSchema.safeParse({
+    const result = loginSchema.safeParse({
       email: 'user@test.com',
       password: '123',
     });
@@ -62,7 +62,7 @@ describe('AuthLoginSchema', () => {
   });
 
   it('rejects invalid email format', () => {
-    const result = AuthLoginSchema.safeParse({
+    const result = loginSchema.safeParse({
       email: 'not-email',
       password: 'strongpass123',
     });
@@ -70,9 +70,9 @@ describe('AuthLoginSchema', () => {
   });
 });
 
-describe('TeamCreateSchema', () => {
+describe('teamCreateSchema', () => {
   it('validates correct team', () => {
-    const result = TeamCreateSchema.safeParse({
+    const result = teamCreateSchema.safeParse({
       name: 'Dev Team',
       description: 'Engineering team',
     });
@@ -80,7 +80,7 @@ describe('TeamCreateSchema', () => {
   });
 
   it('rejects empty name', () => {
-    const result = TeamCreateSchema.safeParse({
+    const result = teamCreateSchema.safeParse({
       name: '',
     });
     expect(result.success).toBe(false);
