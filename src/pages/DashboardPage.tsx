@@ -392,6 +392,7 @@ export const DashboardPage = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 
