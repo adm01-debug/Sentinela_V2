@@ -17,7 +17,7 @@ interface LogEntry {
 const LOG_LEVELS: Record<LogLevel, number> = { debug: 0, info: 1, warn: 2, error: 3 };
 
 const getMinLevel = (): LogLevel => {
-  if (import.meta.env.PROD) return 'warn';
+  if (typeof import.meta !== 'undefined' && import.meta.env?.PROD) return 'warn';
   return 'debug';
 };
 
@@ -27,7 +27,7 @@ function formatEntry(entry: LogEntry): string {
   return `${prefix}${ctx} ${entry.message}`;
 }
 
-function log(level: LogLevel, message: string, context?: string, data?: Record<string, unknown>) {
+function log(level: LogLevel, message: string, context?: string, ...args: unknown[]) {
   if (LOG_LEVELS[level] < LOG_LEVELS[getMinLevel()]) return;
 
   const entry: LogEntry = {
@@ -35,18 +35,16 @@ function log(level: LogLevel, message: string, context?: string, data?: Record<s
     message,
     timestamp: new Date().toISOString(),
     context,
-    data,
   };
 
   const formatted = formatEntry(entry);
-  const args: unknown[] = [formatted];
-  if (data && Object.keys(data).length > 0) args.push(data);
+  const logArgs: unknown[] = [formatted, ...args];
 
   switch (level) {
-    case 'debug': console.debug(...args); break;
-    case 'info':  console.info(...args); break;
-    case 'warn':  console.warn(...args); break;
-    case 'error': console.error(...args); break;
+    case 'debug': console.debug(...logArgs); break;
+    case 'info':  console.info(...logArgs); break;
+    case 'warn':  console.warn(...logArgs); break;
+    case 'error': console.error(...logArgs); break;
   }
 
   return entry;
@@ -69,23 +67,23 @@ function logError(message: string, err: unknown, context?: string) {
 /** Create a scoped logger for a specific module/component */
 function createLogger(context: string) {
   return {
-    debug: (msg: string, data?: Record<string, unknown>) => log('debug', msg, context, data),
-    info:  (msg: string, data?: Record<string, unknown>) => log('info', msg, context, data),
-    warn:  (msg: string, data?: Record<string, unknown>) => log('warn', msg, context, data),
-    error: (msg: string, err?: unknown, data?: Record<string, unknown>) => {
-      if (err) return logError(msg, err, context);
-      return log('error', msg, context, data);
+    debug: (msg: string, ...args: unknown[]) => log('debug', msg, context, ...args),
+    info:  (msg: string, ...args: unknown[]) => log('info', msg, context, ...args),
+    warn:  (msg: string, ...args: unknown[]) => log('warn', msg, context, ...args),
+    error: (msg: string, ...args: unknown[]) => {
+      if (args.length === 1 && args[0] instanceof Error) return logError(msg, args[0], context);
+      return log('error', msg, context, ...args);
     },
   };
 }
 
 export const logger = {
-  debug: (msg: string, data?: Record<string, unknown>) => log('debug', msg, undefined, data),
-  info:  (msg: string, data?: Record<string, unknown>) => log('info', msg, undefined, data),
-  warn:  (msg: string, data?: Record<string, unknown>) => log('warn', msg, undefined, data),
-  error: (msg: string, err?: unknown, data?: Record<string, unknown>) => {
-    if (err) return logError(msg, err);
-    return log('error', msg, undefined, data);
+  debug: (msg: string, ...args: unknown[]) => log('debug', msg, undefined, ...args),
+  info:  (msg: string, ...args: unknown[]) => log('info', msg, undefined, ...args),
+  warn:  (msg: string, ...args: unknown[]) => log('warn', msg, undefined, ...args),
+  error: (msg: string, ...args: unknown[]) => {
+    if (args.length === 1 && args[0] instanceof Error) return logError(msg, args[0]);
+    return log('error', msg, undefined, ...args);
   },
   create: createLogger,
 };
