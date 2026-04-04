@@ -111,6 +111,8 @@ export function DashboardHome() {
           icon={Users}
           iconColor="bg-primary/10 text-primary"
           trend={{ value: 5.2, label: 'desde o mês passado' }}
+          sparklineData={[{ value: 110 }, { value: 112 }, { value: 118 }, { value: 120 }, { value: 123 }, { value: 125 }, { value: 128 }]}
+          sparklineColor="hsl(var(--primary))"
         />
         <StatsCard
           title="Ativos Agora"
@@ -118,6 +120,8 @@ export function DashboardHome() {
           icon={Activity}
           iconColor="bg-success/10 text-success"
           trend={{ value: 12, label: 'desde ontem' }}
+          sparklineData={[{ value: 30 }, { value: 35 }, { value: 28 }, { value: 42 }, { value: 38 }, { value: 40 }, { value: 45 }]}
+          sparklineColor="hsl(var(--success))"
         />
         <StatsCard
           title="Alertas de Segurança"
@@ -125,6 +129,8 @@ export function DashboardHome() {
           icon={Shield}
           iconColor="bg-destructive/10 text-destructive"
           trend={{ value: -25, label: 'desde a semana passada' }}
+          sparklineData={[{ value: 8 }, { value: 6 }, { value: 5 }, { value: 7 }, { value: 4 }, { value: 4 }, { value: 3 }]}
+          sparklineColor="hsl(var(--destructive))"
         />
         <StatsCard
           title="Horas Trabalhadas"
@@ -132,6 +138,8 @@ export function DashboardHome() {
           icon={Clock}
           iconColor="bg-warning/10 text-warning"
           description="Esta semana"
+          sparklineData={[{ value: 200 }, { value: 240 }, { value: 260 }, { value: 250 }, { value: 284 }]}
+          sparklineColor="hsl(var(--warning))"
         />
       </div>
 
