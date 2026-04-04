@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useAlerts } from '@/hooks';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +27,7 @@ const severityLabels: Record<string, string> = {
   critical: 'Crítica',
 };
 
-export const RecentAlerts = () => {
+const RecentAlertsBase = () => {
   const { data: alerts } = useAlerts({ acknowledged: false });
   const navigate = useNavigate();
   const recentAlerts = alerts?.data.slice(0, 5) || [];
@@ -76,3 +77,4 @@ export const RecentAlerts = () => {
     </Card>
   );
 };
+export const RecentAlerts = memo(RecentAlertsBase);
