@@ -9,6 +9,7 @@ import { useUIStore } from '@/stores/uiStore';
 import { cn } from '@/utils/cn';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { CommandPalette } from '@/components/CommandPalette';
+import { KeyboardShortcutsProvider } from '@/components/KeyboardShortcutsProvider';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export const MainLayout = () => {
