@@ -5,6 +5,7 @@ import './index.css';
 import { initWebVitals } from './lib/webVitals';
 import { applySecurityHeaders } from './lib/securityHeaders';
 import { initErrorTracking } from './lib/errorTracker';
+import { initPerformanceMonitoring } from './lib/performanceBudget';
 
 // Apply security headers before rendering
 applySecurityHeaders();
