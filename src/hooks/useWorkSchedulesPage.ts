@@ -64,23 +64,21 @@ const initialAssignForm: AssignFormData = {
 // ============================================================
 
 export function useWorkSchedulesPage() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const schedulesResult = useWorkSchedules() as Record<string, unknown>;
-  const schedules = (schedulesResult.schedules || schedulesResult.data || []) as WorkSchedule[];
-  const employeeSchedules = (schedulesResult.employeeSchedules || []) as Record<string, unknown>[];
-  const overtimeRequests = (schedulesResult.overtimeRequests || []) as Record<string, unknown>[];
-  const blockLogs = (schedulesResult.blockLogs || []) as Record<string, unknown>[];
-  const loading = (schedulesResult.loading || schedulesResult.isLoading || false) as boolean;
-  const addSchedule = (schedulesResult.addSchedule || (async () => {})) as (data: ScheduleFormData) => Promise<void>;
-  const updateSchedule = (schedulesResult.updateSchedule || (async () => {})) as (id: string, data: Partial<ScheduleFormData>) => Promise<void>;
-  const deleteSchedule = (schedulesResult.deleteSchedule || (async () => {})) as (id: string) => Promise<void>;
-  const assignSchedule = (schedulesResult.assignSchedule || (async () => {})) as (data: AssignFormData) => Promise<void>;
-  const removeEmployeeSchedule = (schedulesResult.removeEmployeeSchedule || (async () => {})) as (id: string) => Promise<void>;
-  const updateOvertimeRequest = (schedulesResult.updateOvertimeRequest || (async () => {})) as (id: string, status: string) => Promise<void>;
+  const schedulesQuery = useWorkSchedules();
+  const schedules = (schedulesQuery.data || []) as WorkSchedule[];
+  const employeeSchedules: Array<{ employee_id: string; schedule_id: string; id: string; effective_from: string; [key: string]: unknown }> = [];
+  const overtimeRequests: Array<{ id: string; status: string; [key: string]: unknown }> = [];
+  const blockLogs: Array<{ id: string; blocked_at: string; [key: string]: unknown }> = [];
+  const loading = schedulesQuery.isLoading;
+  const addSchedule = async (_data: ScheduleFormData) => {};
+  const updateSchedule = async (_id: string, _data: Partial<ScheduleFormData>) => {};
+  const deleteSchedule = async (_id: string) => {};
+  const assignSchedule = async (_data: AssignFormData) => {};
+  const removeEmployeeSchedule = async (_id: string) => {};
+  const updateOvertimeRequest = async (_id: string, _status: string) => {};
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const employeesResult = useEmployees() as Record<string, unknown>;
-  const employees = ((employeesResult.employees || (employeesResult.data as Record<string, unknown>)?.data || employeesResult.data || []) as Array<{ id: string; name: string }>);
+  const employeesQuery = useEmployees();
+  const employees = (employeesQuery.data || []) as Array<{ id: string; name: string }>;
   
   // Enable realtime notifications
   useOvertimeNotifications();
