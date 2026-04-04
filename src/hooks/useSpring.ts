@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 
-export function useSpring(initialValue: number, config = { stiffness: 100, damping: 10 }) {
+export function useSpring(initialValue, config = { stiffness: 100, damping: 10 }) {
   const [value, setValue] = useState(initialValue);
   const targetRef = useRef(initialValue);
   const velocityRef = useRef(0);
@@ -19,7 +19,7 @@ export function useSpring(initialValue: number, config = { stiffness: 100, dampi
     }
   }, [value, config]);
 
-  const set = useCallback((target: number) => {
+  const set = useCallback((target) => {
     targetRef.current = target;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     rafRef.current = requestAnimationFrame(animate);

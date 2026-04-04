@@ -27,7 +27,7 @@ export default function WhatsAppIntegrationPage() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card><CardContent className="pt-4 text-center"><MessageCircle className="h-5 w-5 mx-auto text-green-500" /><p className="text-2xl font-bold mt-1">{templates?.length || 0}</p><p className="text-xs text-muted-foreground">Templates</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><Send className="h-5 w-5 mx-auto text-blue-500" /><p className="text-2xl font-bold mt-1">{templates?.filter((t: unknown) => t.is_active).length || 0}</p><p className="text-xs text-muted-foreground">Ativos</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Send className="h-5 w-5 mx-auto text-blue-500" /><p className="text-2xl font-bold mt-1">{templates?.filter((t) => t.is_active).length || 0}</p><p className="text-xs text-muted-foreground">Ativos</p></CardContent></Card>
         <Card><CardContent className="pt-4 text-center"><Settings className="h-5 w-5 mx-auto text-muted-foreground" /><p className="text-2xl font-bold mt-1">API</p><p className="text-xs text-muted-foreground">WhatsApp Business</p></CardContent></Card>
       </div>
       <Card><CardHeader><CardTitle>Templates de Mensagem</CardTitle></CardHeader><CardContent>
@@ -35,7 +35,7 @@ export default function WhatsAppIntegrationPage() {
           <p className="text-center py-8 text-muted-foreground">Nenhum template WhatsApp configurado.</p>
         ) : (
           <div className="space-y-3">
-            {templates?.map((t: unknown) => (
+            {templates?.map((t) => (
               <div key={t.id} className="flex items-center justify-between p-3 border rounded-lg">
                 <div><p className="font-medium">{t.name}</p><p className="text-sm text-muted-foreground truncate max-w-md">{t.body.slice(0, 80)}...</p></div>
                 <div className="flex gap-2"><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Ativo' : 'Inativo'}</Badge><Badge variant="outline">{t.template_type}</Badge></div>

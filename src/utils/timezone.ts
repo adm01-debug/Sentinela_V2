@@ -18,7 +18,7 @@ export function getTimezoneOffset(timezone?: string): number {
   return (tzDate.getTime() - utcDate.getTime()) / (60 * 1000);
 }
 
-export function formatTimezoneOffset(offsetMinutes: number): string {
+export function formatTimezoneOffset(offsetMinutes): string {
   const sign = offsetMinutes >= 0 ? '+' : '-';
   const hours = Math.floor(Math.abs(offsetMinutes) / 60);
   const minutes = Math.abs(offsetMinutes) % 60;

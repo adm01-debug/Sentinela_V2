@@ -4,14 +4,14 @@ import { cn } from '@/lib/utils';
 
 export interface VirtualizedListProps<T> {
   items: T[];
-  itemHeight: number | ((index: number) => number);
-  renderItem: (item: T, index: number) => React.ReactNode;
+  itemHeight: number | ((index) => number);
+  renderItem: (item: T, index) => React.ReactNode;
   overscan?: number;
   className?: string;
   containerHeight?: number | string;
   onEndReached?: () => void;
   endReachedThreshold?: number;
-  keyExtractor?: (item: T, index: number) => string;
+  keyExtractor?: (item: T, index) => string;
   emptyComponent?: React.ReactNode;
   loadingComponent?: React.ReactNode;
   isLoading?: boolean;
@@ -34,7 +34,7 @@ export function VirtualizedList<T>({
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
 
-  const getItemHeight = useCallback((index: number) => {
+  const getItemHeight = useCallback((index) => {
     return typeof itemHeight === 'function' ? itemHeight(index) : itemHeight;
   }, [itemHeight]);
 

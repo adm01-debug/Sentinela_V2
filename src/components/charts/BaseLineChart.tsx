@@ -29,7 +29,7 @@ interface BaseLineChartProps {
   height?: number;
   showGrid?: boolean;
   showLegend?: boolean;
-  valueFormatter?: (value: number) => string;
+  valueFormatter?: (value) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }

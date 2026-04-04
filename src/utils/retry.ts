@@ -7,7 +7,7 @@ export interface RetryOptions {
   backoff?: 'linear' | 'exponential' | 'fixed';
   backoffFactor?: number;
   retryOn?: (error: Error) => boolean;
-  onRetry?: (error: Error, attempt: number) => void;
+  onRetry?: (error: Error, attempt) => void;
   signal?: AbortSignal;
 }
 
@@ -19,7 +19,7 @@ const defaultOptions: Required<Omit<RetryOptions, 'retryOn' | 'onRetry' | 'signa
   backoffFactor: 2,
 };
 
-function calculateDelay(attempt: number, options: Required<RetryOptions>): number {
+function calculateDelay(attempt, options: Required<RetryOptions>): number {
   let delay: number;
   switch (options.backoff) {
     case 'linear':
@@ -114,7 +114,7 @@ export async function retryUntil<T>(
 export class RetryError extends Error {
   constructor(
     message: string,
-    public readonly attempts: number,
+    public readonly attempts,
     public readonly lastError: Error
   ) {
     super(message);

@@ -5,7 +5,7 @@ export function useCurrencyFormat(locale = "en-US", currency = "USD") {
     return new Intl.NumberFormat(locale, { style: "currency", currency });
   }, [locale, currency]);
 
-  const format = useCallback((value: number) => formatter.format(value), [formatter]);
+  const format = useCallback((value) => formatter.format(value), [formatter]);
 
   const parse = useCallback((str: string) => {
     return parseFloat(str.replace(/[^0-9.-]+/g, ""));

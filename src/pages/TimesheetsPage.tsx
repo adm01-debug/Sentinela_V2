@@ -69,7 +69,7 @@ function TimesheetsPage() {
 
       // Group by employee
       const byEmployee: Record<string, { total: number; breaks: number }> = {};
-      (entries || []).forEach((e: unknown) => {
+      (entries || []).forEach((e) => {
         if (!byEmployee[e.employee_id]) byEmployee[e.employee_id] = { total: 0, breaks: 0 };
         byEmployee[e.employee_id].total += (e.duration_minutes || 0);
         byEmployee[e.employee_id].breaks += (e.break_minutes || 0);
@@ -123,7 +123,7 @@ function TimesheetsPage() {
     },
   });
 
-  const filtered = timesheets.filter((ts: unknown) => {
+  const filtered = timesheets.filter((ts) => {
     const matchSearch = ts.employees?.name?.toLowerCase().includes(search.toLowerCase());
     const matchPeriod = periodFilter === 'all' || ts.period_type === periodFilter;
     return matchSearch && matchPeriod;
@@ -131,9 +131,9 @@ function TimesheetsPage() {
 
   const stats = {
     total: timesheets.length,
-    pending: timesheets.filter((t: unknown) => t.status === 'pending').length,
-    approved: timesheets.filter((t: unknown) => t.status === 'approved').length,
-    totalHours: timesheets.reduce((sum: number, t: unknown) => sum + (t.total_hours || 0), 0),
+    pending: timesheets.filter((t) => t.status === 'pending').length,
+    approved: timesheets.filter((t) => t.status === 'approved').length,
+    totalHours: timesheets.reduce((sum, t) => sum + (t.total_hours || 0), 0),
   };
 
   return (
@@ -198,7 +198,7 @@ function TimesheetsPage() {
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Carregando...</TableCell></TableRow>
               ) : filtered.length === 0 ? (
                 <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Nenhuma folha de ponto encontrada</TableCell></TableRow>
-              ) : filtered.map((ts: unknown) => {
+              ) : filtered.map((ts) => {
                 const stCfg = statusConfig[ts.status] || statusConfig.pending;
                 return (
                   <TableRow key={ts.id}>

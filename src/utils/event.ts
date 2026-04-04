@@ -137,7 +137,7 @@ export function waitForEvent<T extends Event>(
 
 export function throttleEvent<T extends Event>(
   handler: EventHandler<T>,
-  limit: number
+  limit
 ): EventHandler<T> {
   let lastCall = 0;
   return (event: T) => {
@@ -151,7 +151,7 @@ export function throttleEvent<T extends Event>(
 
 export function debounceEvent<T extends Event>(
   handler: EventHandler<T>,
-  delay: number
+  delay
 ): EventHandler<T> {
   let timeoutId: NodeJS.Timeout;
   return (event: T) => {

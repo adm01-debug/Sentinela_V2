@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react';
 interface FormContextValue {
   values: unknown;
   errors: Record<string, string>;
-  setValue: (name: string, value: unknown) => void;
+  setValue: (name: string, value) => void;
   setError: (name: string, error: string) => void;
 }
 

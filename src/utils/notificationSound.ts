@@ -43,7 +43,7 @@ const soundConfigs: Record<Exclude<SoundType, 'none'>, {
   },
 };
 
-export const playNotificationSound = (soundType: SoundType = 'chime', volumeMultiplier: number = 1) => {
+export const playNotificationSound = (soundType: SoundType = 'chime', volumeMultiplier = 1) => {
   if (soundType === 'none') return;
 
   try {
@@ -109,6 +109,6 @@ export const playSoundBySeverity = (
   }
 };
 
-export const testSound = (soundType: SoundType, volume: number) => {
+export const testSound = (soundType: SoundType, volume) => {
   playNotificationSound(soundType, volume / 100);
 };

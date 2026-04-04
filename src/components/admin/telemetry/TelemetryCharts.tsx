@@ -20,7 +20,7 @@ interface Props {
   timeFilter: string;
 }
 
-function formatBucketTime(ts: number, timeFilter: string): string {
+function formatBucketTime(ts, timeFilter: string): string {
   const d = new Date(ts);
   if (timeFilter === "7d" || timeFilter === "custom") {
     return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
@@ -170,7 +170,7 @@ export function TelemetryCharts({ rows, timeFilter }: Props) {
               <AreaChart data={durationData}>
                 <XAxis dataKey="time" tick={{ fontSize: 10 }} />
                 <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip formatter={(value: number) => `${value}ms`} />
+                <Tooltip formatter={(value) => `${value}ms`} />
                 <Area type="monotone" dataKey="maxMs" fill="hsl(var(--destructive))" stroke="hsl(var(--destructive))" fillOpacity={0.2} name="Máxima" />
                 <Area type="monotone" dataKey="mediaMs" fill="hsl(var(--primary))" stroke="hsl(var(--primary))" fillOpacity={0.4} name="Média" />
               </AreaChart>

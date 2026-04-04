@@ -48,7 +48,7 @@ export default function AnalyticsApplicationsPage() {
                     nameKey="category"
                     label={({ category, percent }: PieLabelRenderProps) => `${category ?? ''} ${((percent ?? 0) * 100).toFixed(0)}%`}
                   >
-                    {data?.byCategory?.map((_: AppCategory, i: number) => (
+                    {data?.byCategory?.map((_: AppCategory, i) => (
                       <Cell key={i} fill={COLORS[i % COLORS.length]} />
                     ))}
                   </Pie>
@@ -63,7 +63,7 @@ export default function AnalyticsApplicationsPage() {
             <CardTitle>Top Aplicações</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {data?.topApps?.map((app: AppCategory, i: number) => (
+            {data?.topApps?.map((app: AppCategory, i) => (
               <div key={i} className="space-y-2">
                 <div className="flex justify-between">
                   <span className="font-medium">{app.category}</span>

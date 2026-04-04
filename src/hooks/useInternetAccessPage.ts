@@ -69,7 +69,7 @@ export function useInternetAccessPage() {
         .order('employee_name');
       if (error) throw error;
       // Map to expected interface
-      return (data || []).map((item: unknown) => ({
+      return (data || []).map((item) => ({
         id: item.id,
         name: `Regra - ${item.employee_name}`,
         description: item.notes || '',

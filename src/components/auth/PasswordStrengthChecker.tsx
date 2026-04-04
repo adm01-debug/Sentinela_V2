@@ -51,7 +51,7 @@ const REQUIREMENTS: PasswordRequirement[] = [
 
 interface PasswordStrengthCheckerProps {
   password: string;
-  onStrengthChange?: (isValid: boolean, score: number) => void;
+  onStrengthChange?: (isValid: boolean, score) => void;
   onLeakedCheck?: (isLeaked: boolean) => void;
   checkLeaked?: boolean;
   className?: string;

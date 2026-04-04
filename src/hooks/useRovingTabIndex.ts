@@ -8,10 +8,10 @@ export interface UseRovingTabIndexOptions {
 
 export interface UseRovingTabIndexReturn {
   activeIndex: number;
-  setActiveIndex: (index: number) => void;
-  getTabIndex: (index: number) => number;
-  handleKeyDown: (e: KeyboardEvent, index: number, totalItems: number) => void;
-  focusItem: (index: number) => void;
+  setActiveIndex: (index) => void;
+  getTabIndex: (index) => number;
+  handleKeyDown: (e: KeyboardEvent, index, totalItems) => void;
+  focusItem: (index) => void;
   itemRefs: React.MutableRefObject<(HTMLElement | null)[]>;
 }
 
@@ -20,7 +20,7 @@ export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRo
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
 
-  const focusItem = useCallback((index: number) => {
+  const focusItem = useCallback((index) => {
     const item = itemRefs.current[index];
     if (item) {
       item.focus();
@@ -28,13 +28,13 @@ export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRo
     }
   }, []);
 
-  const getNextIndex = useCallback((current: number, total: number, direction: 1 | -1): number => {
+  const getNextIndex = useCallback((current, total, direction: 1 | -1): number => {
     const next = current + direction;
     if (loop) return (next + total) % total;
     return Math.max(0, Math.min(total - 1, next));
   }, [loop]);
 
-  const handleKeyDown = useCallback((e: KeyboardEvent, index: number, totalItems: number) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent, index, totalItems) => {
     const isHorizontal = orientation === 'horizontal' || orientation === 'both';
     const isVertical = orientation === 'vertical' || orientation === 'both';
     let nextIndex: number | null = null;
@@ -51,7 +51,7 @@ export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRo
     if (nextIndex !== null) { e.preventDefault(); focusItem(nextIndex); }
   }, [orientation, getNextIndex, focusItem]);
 
-  const getTabIndex = useCallback((index: number) => index === activeIndex ? 0 : -1, [activeIndex]);
+  const getTabIndex = useCallback((index) => index === activeIndex ? 0 : -1, [activeIndex]);
 
   return { activeIndex, setActiveIndex, getTabIndex, handleKeyDown, focusItem, itemRefs };
 }

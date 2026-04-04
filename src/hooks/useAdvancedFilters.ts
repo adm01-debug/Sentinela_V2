@@ -234,7 +234,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   // ============================================================
 
   const toQueryParams = useMemo(() => {
-    const params: unknown = {};
+    const params = {};
 
     filterGroups.forEach((group, groupIndex) => {
       group.conditions.forEach((condition, condIndex) => {

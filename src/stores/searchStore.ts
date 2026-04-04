@@ -49,7 +49,7 @@ interface SearchState {
   clearRecentResults: () => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
-  setSelectedIndex: (index: number) => void;
+  setSelectedIndex: (index) => void;
   selectNext: () => void;
   selectPrevious: () => void;
   reset: () => void;

@@ -13,7 +13,7 @@ export function useWebhook(config: WebhookConfig) {
   const [lastResponse, setLastResponse] = useState<WebhookResponse | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
-  const send = useCallback(async (event: string, payload: unknown) => {
+  const send = useCallback(async (event: string, payload) => {
     if (!config.events.includes(event) && !config.events.includes('*')) return null;
     setIsLoading(true);
     setError(null);

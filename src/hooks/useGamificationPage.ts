@@ -17,7 +17,7 @@ export function useGamificationPage() {
     queryFn: async () => {
       const { data, error } = await supabase.from('gamification_leaderboard').select('*').order('points', { ascending: false }).limit(20);
       if (error) throw error;
-      return (data || []).map((e: unknown, i: number) => ({ ...e, rank: i + 1 })) as LeaderboardEntry[];
+      return (data || []).map((e, i) => ({ ...e, rank: i + 1 })) as LeaderboardEntry[];
     },
   });
 
@@ -58,6 +58,6 @@ export function useGamificationPage() {
     period,
     isLoading: leaderboardQuery.isLoading,
     handlePeriodChange: useCallback((p: 'week' | 'month' | 'all') => setPeriod(p), []),
-    handleAwardPoints: useCallback((employeeId: string, points: number) => awardPointsMutation.mutate({ employeeId, points }), [awardPointsMutation]),
+    handleAwardPoints: useCallback((employeeId: string, points) => awardPointsMutation.mutate({ employeeId, points }), [awardPointsMutation]),
   };
 }

@@ -34,7 +34,7 @@ export function deepClone<T>(obj: T): T {
   }
 
   if (obj instanceof Object) {
-    const clonedObj: unknown = {};
+    const clonedObj = {};
     Object.keys(obj).forEach((key) => {
       clonedObj[key] = deepClone((obj as Record<string, unknown>)[key]);
     });
@@ -72,11 +72,11 @@ export function deepMerge<T extends Record<string, unknown>>(
   return deepMerge(result, ...sources);
 }
 
-function isObject(item: unknown): item is Record<string, unknown> {
+function isObject(item): item is Record<string, unknown> {
   return item !== null && typeof item === 'object' && !Array.isArray(item);
 }
 
-export function deepEqual(a: unknown, b: unknown): boolean {
+export function deepEqual(a, b): boolean {
   if (a === b) return true;
   if (a === null || b === null) return false;
   if (typeof a !== typeof b) return false;

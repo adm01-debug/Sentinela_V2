@@ -50,7 +50,7 @@ function log(level: LogLevel, message: string, context?: string, ...args: unknow
   return entry;
 }
 
-function logError(message: string, err: unknown, context?: string) {
+function logError(message: string, err, context?: string) {
   const errorObj = err instanceof Error ? err : new Error(String(err));
   const entry: LogEntry = {
     level: 'error',

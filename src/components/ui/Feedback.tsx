@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 interface StarRatingProps {
   value: number;
   max?: number;
-  onChange?: (value: number) => void;
+  onChange?: (value) => void;
   readonly?: boolean;
   size?: 'sm' | 'md' | 'lg';
   showValue?: boolean;
@@ -140,7 +140,7 @@ export function ThumbsRating({
 
 interface EmojiRatingProps {
   value?: number;
-  onChange?: (value: number) => void;
+  onChange?: (value) => void;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }

@@ -88,15 +88,15 @@ export function useRateLimitStats() {
       // Calculate stats
       const stats: RateLimitStats = {
         total_requests: data.length,
-        blocked_requests: data.filter((d: unknown) => d.blocked).length,
-        unique_ips: new Set(data.map((d: unknown) => d.ip_address)).size,
+        blocked_requests: data.filter((d) => d.blocked).length,
+        unique_ips: new Set(data.map((d) => d.ip_address)).size,
         top_endpoints: [],
         top_ips: [],
       };
 
       // Calculate top endpoints
       const endpointCounts: Record<string, number> = {};
-      data.forEach((d: unknown) => {
+      data.forEach((d) => {
         endpointCounts[d.endpoint] = (endpointCounts[d.endpoint] || 0) + 1;
       });
       stats.top_endpoints = Object.entries(endpointCounts)
@@ -106,7 +106,7 @@ export function useRateLimitStats() {
 
       // Calculate top IPs
       const ipCounts: Record<string, number> = {};
-      data.forEach((d: unknown) => {
+      data.forEach((d) => {
         ipCounts[d.ip_address] = (ipCounts[d.ip_address] || 0) + 1;
       });
       stats.top_ips = Object.entries(ipCounts)
@@ -135,7 +135,7 @@ export function useBlockedIPs() {
 
       // Get unique IPs with their last block time
       const ipMap = new Map<string, string>();
-      data.forEach((d: unknown) => {
+      data.forEach((d) => {
         if (!ipMap.has(d.ip_address)) {
           ipMap.set(d.ip_address, d.blocked_at);
         }

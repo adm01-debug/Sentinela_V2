@@ -74,7 +74,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
   return (
     <div className="rounded-lg border bg-popover p-3 shadow-md">
       <p className="text-sm font-medium text-popover-foreground mb-1">{label}</p>
-      {payload.map((entry, i: number) => (
+      {payload.map((entry, i) => (
         <p key={i} className="text-xs text-muted-foreground">
           <span className="inline-block w-2 h-2 rounded-full mr-1.5" style={{ backgroundColor: entry.color }} />
           {entry.name}: <span className="font-medium text-popover-foreground">{entry.value}</span>

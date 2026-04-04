@@ -9,7 +9,7 @@ export function useVideo() {
   const play = useCallback(() => { videoRef.current?.play(); setPlaying(true); }, []);
   const pause = useCallback(() => { videoRef.current?.pause(); setPlaying(false); }, []);
   const toggle = useCallback(() => playing ? pause() : play(), [playing, play, pause]);
-  const seek = useCallback((time: number) => { if (videoRef.current) videoRef.current.currentTime = time; }, []);
+  const seek = useCallback((time) => { if (videoRef.current) videoRef.current.currentTime = time; }, []);
 
   const onTimeUpdate = useCallback(() => setCurrentTime(videoRef.current?.currentTime || 0), []);
   const onLoadedMetadata = useCallback(() => setDuration(videoRef.current?.duration || 0), []);

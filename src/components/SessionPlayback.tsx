@@ -69,7 +69,7 @@ export const SessionPlayback = memo(() => {
   const availableHours = new Set(Object.keys(hourlyDensity).map(Number));
 
   // Jump to specific hour
-  const jumpToHour = (hour: number) => {
+  const jumpToHour = (hour) => {
     setSelectedHour(hour);
     const targetIndex = recordings.findIndex(rec => {
       const recHour = new Date(rec.recorded_at).getHours();
@@ -120,7 +120,7 @@ export const SessionPlayback = memo(() => {
     
     if (data) {
       // Parse events JSONB - handle unknown type from Supabase
-      const parsed = data.map((d: unknown) => ({
+      const parsed = data.map((d) => ({
         ...d,
         id: d.id as string,
         employee_name: d.employee_name as string,

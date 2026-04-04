@@ -7,15 +7,15 @@ export function useTransform(initial: Partial<Transform> = {}) {
     x: 0, y: 0, scale: 1, rotation: 0, ...initial
   });
 
-  const translate = useCallback((x: number, y: number) => {
+  const translate = useCallback((x, y) => {
     setTransform(t => ({ ...t, x: t.x + x, y: t.y + y }));
   }, []);
 
-  const scale = useCallback((factor: number) => {
+  const scale = useCallback((factor) => {
     setTransform(t => ({ ...t, scale: t.scale * factor }));
   }, []);
 
-  const rotate = useCallback((degrees: number) => {
+  const rotate = useCallback((degrees) => {
     setTransform(t => ({ ...t, rotation: (t.rotation + degrees) % 360 }));
   }, []);
 

@@ -12,7 +12,7 @@ export function useTenant() {
     setLoading(false);
   }, []);
 
-  const updateSettings = useCallback((settings: unknown) => {
+  const updateSettings = useCallback((settings) => {
     setTenant(t => t ? { ...t, settings: { ...t.settings, ...settings } } : null);
   }, []);
 

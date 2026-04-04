@@ -208,7 +208,7 @@ export function useWebAuthn() {
       });
 
       return { success: true };
-    } catch (error: unknown) {
+    } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       const errWithName = err as Error & { name: string };
       let errorMessage = 'Falha ao registrar passkey.';
@@ -293,7 +293,7 @@ export function useWebAuthn() {
       });
 
       return { success: true, userId: credential.user_id };
-    } catch (error: unknown) {
+    } catch (error) {
       logger.error('WebAuthn authentication error:', error);
       const err = error as Error & { name?: string; message?: string };
 

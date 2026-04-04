@@ -116,7 +116,7 @@ async function fetchLeaderboard(
 
   // Add rank and badges count
   const withRanks = await Promise.all(
-    (data || []).map(async (entry: unknown, index: number) => {
+    (data || []).map(async (entry, index) => {
       const { count } = await supabase
         .from('employee_badges')
         .select('*', { count: 'exact', head: true })
@@ -356,17 +356,17 @@ export function useAwardBadge() {
 // HELPER FUNCTIONS
 // ============================================================
 
-function calculateLevel(totalPoints: number): number {
+function calculateLevel(totalPoints): number {
   // Every 1000 points = 1 level
   return Math.floor(totalPoints / 1000) + 1;
 }
 
-export function getNextLevelPoints(currentPoints: number): number {
+export function getNextLevelPoints(currentPoints): number {
   const currentLevel = calculateLevel(currentPoints);
   return currentLevel * 1000;
 }
 
-export function getLevelProgress(currentPoints: number): number {
+export function getLevelProgress(currentPoints): number {
   const pointsInLevel = currentPoints % 1000;
   return (pointsInLevel / 1000) * 100;
 }

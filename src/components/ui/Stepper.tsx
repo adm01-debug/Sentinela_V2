@@ -11,7 +11,7 @@ interface Step {
 interface StepperProps {
   steps: Step[];
   currentStep: number;
-  onStepClick?: (step: number) => void;
+  onStepClick?: (step) => void;
   className?: string;
   orientation?: 'horizontal' | 'vertical';
 }

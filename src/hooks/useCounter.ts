@@ -5,6 +5,6 @@ export function useCounter(initial = 0) {
   const increment = useCallback(() => setCount(c => c + 1), []);
   const decrement = useCallback(() => setCount(c => c - 1), []);
   const reset = useCallback(() => setCount(initial), [initial]);
-  const set = useCallback((n: number) => setCount(n), []);
+  const set = useCallback((n) => setCount(n), []);
   return { count, increment, decrement, reset, set };
 }

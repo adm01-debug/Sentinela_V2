@@ -26,7 +26,7 @@ export interface KanbanColumn {
 
 export interface KanbanBoardProps {
   columns: KanbanColumn[];
-  onCardMove?: (cardId: string, fromColumn: string, toColumn: string, position: number) => void;
+  onCardMove?: (cardId: string, fromColumn: string, toColumn: string, position) => void;
   onCardClick?: (card: KanbanCard, columnId: string) => void;
   onAddCard?: (columnId: string) => void;
   onColumnMenu?: (columnId: string) => void;

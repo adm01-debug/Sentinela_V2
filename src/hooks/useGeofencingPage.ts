@@ -79,18 +79,18 @@ export function useGeofencingPage() {
       if (error) throw error;
       
       // Count employees per geofence from employee_geofences table
-      const geofenceIds = data.map((g: unknown) => g.id);
+      const geofenceIds = data.map((g) => g.id);
       const { data: employeeCounts } = await supabase
         .from('employee_geofences')
         .select('geofence_id')
         .in('geofence_id', geofenceIds);
       
-      const countMap = (employeeCounts || []).reduce((acc: number, eg: unknown) => {
+      const countMap = (employeeCounts || []).reduce((acc, eg) => {
         acc[eg.geofence_id] = (acc[eg.geofence_id] || 0) + 1;
         return acc;
       }, {} as Record<string, number>);
       
-      return data.map((g: unknown) => ({
+      return data.map((g) => ({
         id: g.id,
         name: g.name,
         description: g.description,
@@ -242,7 +242,7 @@ export function useGeofencingPage() {
     }
   }, [selectedGeofence, deleteMutation]);
 
-  const handleMapClick = useCallback((lat: number, lng: number) => {
+  const handleMapClick = useCallback((lat, lng) => {
     if (isDrawing && formData.type === 'polygon') {
       setDrawnPoints(prev => [...prev, { lat, lng }]);
     } else if (formData.type === 'circle') {

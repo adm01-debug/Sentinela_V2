@@ -33,16 +33,16 @@ export const formatTimeAgo = (date: string | Date): string => {
 };
 
 // Number Formatters
-export const formatNumber = (num: number, options?: Intl.NumberFormatOptions): string => 
+export const formatNumber = (num, options?: Intl.NumberFormatOptions): string => 
   new Intl.NumberFormat(localStorage.getItem('i18nextLng') || 'en', options).format(num);
 
-export const formatCurrency = (amount: number, currency = 'BRL'): string =>
+export const formatCurrency = (amount, currency = 'BRL'): string =>
   formatNumber(amount, { style: 'currency', currency });
 
-export const formatPercent = (value: number, decimals = 1): string =>
+export const formatPercent = (value, decimals = 1): string =>
   formatNumber(value / 100, { style: 'percent', minimumFractionDigits: decimals });
 
-export const formatCompact = (num: number): string =>
+export const formatCompact = (num): string =>
   formatNumber(num, { notation: 'compact', maximumFractionDigits: 1 });
 
 // String Formatters
@@ -52,14 +52,14 @@ export const capitalize = (str: string): string =>
 export const titleCase = (str: string): string =>
   str.split(' ').map(capitalize).join(' ');
 
-export const truncate = (str: string, length: number, suffix = '...'): string =>
+export const truncate = (str: string, length, suffix = '...'): string =>
   str.length > length ? str.slice(0, length - suffix.length) + suffix : str;
 
 export const slugify = (str: string): string =>
   str.toLowerCase().replace(/[^\w]+/g, '-').replace(/^-+|-+$/g, '');
 
 // File Size Formatter
-export const formatFileSize = (bytes: number): string => {
+export const formatFileSize = (bytes): string => {
   if (bytes === 0) return '0 B';
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];

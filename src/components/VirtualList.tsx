@@ -4,8 +4,8 @@ interface VirtualListProps<T> {
   items: T[];
   itemHeight: number;
   containerHeight: number;
-  renderItem: (item: T, index: number) => ReactNode;
-  keyExtractor: (item: T, index: number) => string;
+  renderItem: (item: T, index) => ReactNode;
+  keyExtractor: (item: T, index) => string;
   loading?: boolean;
   loadingComponent?: ReactNode;
   emptyComponent?: ReactNode;

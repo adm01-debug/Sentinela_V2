@@ -79,15 +79,15 @@ export const isValidURL = (url: string): boolean => {
 };
 
 // Required validation
-export const isRequired = (value: unknown): boolean => 
+export const isRequired = (value): boolean => 
   value !== null && value !== undefined && value !== '';
 
 // Min length validation
-export const minLength = (value: string, min: number): boolean => value.length >= min;
+export const minLength = (value: string, min): boolean => value.length >= min;
 
 // Max length validation
-export const maxLength = (value: string, max: number): boolean => value.length <= max;
+export const maxLength = (value: string, max): boolean => value.length <= max;
 
 // Range validation
-export const inRange = (value: number, min: number, max: number): boolean => 
+export const inRange = (value, min, max): boolean => 
   value >= min && value <= max;

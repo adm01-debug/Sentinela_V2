@@ -6,11 +6,11 @@ export function useCohortAnalysis() {
   const [cohorts, setCohorts] = useState<CohortData[]>([]);
   const [retentionMatrix, setRetentionMatrix] = useState<number[][]>([]);
 
-  const addCohort = useCallback((cohortName: string, initialSize: number) => {
+  const addCohort = useCallback((cohortName: string, initialSize) => {
     setCohorts(prev => [...prev, { cohort: cohortName, periods: [initialSize] }]);
   }, []);
 
-  const updatePeriod = useCallback((cohortName: string, periodIndex: number, activeUsers: number) => {
+  const updatePeriod = useCallback((cohortName: string, periodIndex, activeUsers) => {
     setCohorts(prev => prev.map(c => {
       if (c.cohort !== cohortName) return c;
       const periods = [...c.periods];
@@ -24,7 +24,7 @@ export function useCohortAnalysis() {
     setRetentionMatrix(matrix);
   }, [cohorts]);
 
-  const getAverageRetention = useCallback((periodIndex: number) => {
+  const getAverageRetention = useCallback((periodIndex) => {
     const values = retentionMatrix.map(row => row[periodIndex]).filter(v => v !== undefined);
     return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0;
   }, [retentionMatrix]);

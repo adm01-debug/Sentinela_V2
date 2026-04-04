@@ -35,7 +35,7 @@ export const EmployeesPage = () => {
     handleUnassignDevice,
   } = useEmployeesPage();
 
-  const safeTeams = Array.isArray(teams) ? teams.map((t: unknown) => ({
+  const safeTeams = Array.isArray(teams) ? teams.map((t) => ({
     id: String(t.id || ''),
     name: String(t.name || ''),
   })) : [];
@@ -43,7 +43,7 @@ export const EmployeesPage = () => {
   // Department distribution chart data
   const departmentData = useMemo(() => {
     const deptMap: Record<string, number> = {};
-    filteredEmployees.forEach((emp: unknown) => {
+    filteredEmployees.forEach((emp) => {
       const dept = String(emp.department || 'Sem Departamento');
       deptMap[dept] = (deptMap[dept] || 0) + 1;
     });
@@ -56,7 +56,7 @@ export const EmployeesPage = () => {
   // Status distribution for pie chart
   const statusData = useMemo(() => {
     const statusMap: Record<string, number> = {};
-    filteredEmployees.forEach((emp: unknown) => {
+    filteredEmployees.forEach((emp) => {
       const status = String(emp.status || 'unknown');
       statusMap[status] = (statusMap[status] || 0) + 1;
     });

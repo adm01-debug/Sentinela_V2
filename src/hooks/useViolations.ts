@@ -31,7 +31,7 @@ export function useViolations(filters?: { severity?: string; status?: string; em
       const { data, error } = await q;
       if (error) throw error;
 
-      return (data ?? []).map((row: unknown): Violation => ({
+      return (data ?? []).map((row): Violation => ({
         id: row.id,
         type: row.violation_type ?? row.rule_id ?? 'unknown',
         severity: (row.severity as Violation['severity']) ?? 'medium',

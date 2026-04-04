@@ -37,7 +37,7 @@ interface ToastState {
   removeAll: () => void;
   update: (id: string, updates: Partial<Toast>) => void;
   setPosition: (position: ToastState['position']) => void;
-  setMaxToasts: (max: number) => void;
+  setMaxToasts: (max) => void;
 
   // Convenience methods
   success: (message: string, options?: ToastOptions) => string;
