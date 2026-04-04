@@ -22,7 +22,7 @@ const statusColors: Record<string, string> = {
   archived: 'bg-gray-100 text-gray-700',
 };
 
-const taskStatusConfig: Record<string, { label: string; icon: any }> = {
+const taskStatusConfig: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
   todo: { label: 'A Fazer', icon: Circle },
   in_progress: { label: 'Em Andamento', icon: Timer },
   done: { label: 'Concluído', icon: CheckCircle2 },
