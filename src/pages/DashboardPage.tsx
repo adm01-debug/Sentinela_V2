@@ -421,8 +421,7 @@ export const DashboardPage = () => {
                     );
                   })}
                 </div>
-              )}
-              </div>
+              )
             </ScrollArea>
           </CardContent>
         </Card>
