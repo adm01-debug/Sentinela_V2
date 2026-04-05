@@ -26,8 +26,8 @@ export async function loadImage(src): Promise<HTMLImageElement> {
 
 export async function resizeImage(
   file: File,
-  maxWidth: any,
-  maxHeight: any,
+  maxWidth: number,
+  maxHeight: number,
   quality = 0.8
 ): Promise<Blob> {
   const img = await loadImage(URL.createObjectURL(file));
