@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ROUTES } from '@/constants';
 import { MainLayout } from '@/layouts/MainLayout';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { BrandedSplash } from '@/components/ui/LoadingSpinner';
 import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
 import { supabase } from '@/integrations/supabase/client';
 
