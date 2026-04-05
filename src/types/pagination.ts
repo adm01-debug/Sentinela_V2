@@ -79,8 +79,8 @@ export interface PageInfo {
 
 export function calculatePagination(
   page: number,
-  pageSize: any,
-  total
+  pageSize: number,
+  total: number
 ): Pagination {
   const totalPages = Math.ceil(total / pageSize);
   return {
