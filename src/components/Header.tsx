@@ -206,26 +206,34 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
               )}
             </div>
             <ScrollArea className="h-[260px]">
-              <div className="divide-y divide-border">
-                {notifications.map((notif) => (
-                  <button
-                    key={notif.id}
-                    type="button"
-                    className="flex gap-2.5 p-3 w-full text-left hover:bg-muted/50 transition-colors cursor-pointer"
-                    onClick={() => navigate('/alerts')}
-                  >
-                    <span className={`mt-1.5 h-2 w-2 rounded-full shrink-0 ${severityDot[notif.severity]}`} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-medium text-foreground leading-snug">{notif.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{notif.description}</p>
-                      <p className="text-[11px] text-muted-foreground/60 mt-0.5">{notif.time}</p>
-                    </div>
-                    {!notif.read && (
-                      <Badge variant="secondary" className="text-[10px] h-5 shrink-0 self-start bg-primary/10 text-primary border-0">Novo</Badge>
-                    )}
-                  </button>
-                ))}
-              </div>
+              {notifications.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-10 text-center">
+                  <Inbox className="h-8 w-8 text-muted-foreground/40 mb-2" />
+                  <p className="text-sm font-medium text-muted-foreground">Nenhuma notificação</p>
+                  <p className="text-xs text-muted-foreground/60">Tudo tranquilo por aqui</p>
+                </div>
+              ) : (
+                <div className="divide-y divide-border">
+                  {notifications.map((notif) => (
+                    <button
+                      key={notif.id}
+                      type="button"
+                      className="flex gap-2.5 p-3 w-full text-left hover:bg-muted/50 transition-colors cursor-pointer"
+                      onClick={() => { markRead(notif.id); navigate('/alerts'); }}
+                    >
+                      <span className={`mt-1.5 h-2 w-2 rounded-full shrink-0 ${severityDot[notif.severity]}`} />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-medium text-foreground leading-snug">{notif.title}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{notif.description}</p>
+                        <p className="text-[11px] text-muted-foreground/60 mt-0.5">{notif.time}</p>
+                      </div>
+                      {!notif.read && (
+                        <Badge variant="secondary" className="text-[10px] h-5 shrink-0 self-start bg-primary/10 text-primary border-0">Novo</Badge>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
             </ScrollArea>
             <div className="border-t px-4 py-1.5">
               <Button variant="ghost" size="sm" className="w-full text-xs h-7" onClick={() => navigate('/alerts')}>
