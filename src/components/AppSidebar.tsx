@@ -1,4 +1,4 @@
-import { useState, useCallback, memo } from 'react';
+import { useState, useCallback, memo, useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,6 +9,7 @@ import {
   UserCheck, BarChart, ChevronDown
 } from 'lucide-react';
 import { useUIStore } from '@/stores';
+import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/utils/cn';
 import { ROUTES, APP_NAME } from '@/constants';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -121,8 +122,21 @@ const navSections: NavSection[] = [
 
 export const AppSidebar = memo(function AppSidebar() {
   const { sidebarCollapsed, toggleSidebarCollapse } = useUIStore();
+  const { user } = useAuth();
   const location = useLocation();
   const { t } = useTranslation();
+
+  const displayName = useMemo(() => {
+    if (!user) return 'Usuário';
+    return user.name || user.email?.split('@')[0] || 'Usuário';
+  }, [user]);
+
+  const displayEmail = user?.email || '';
+
+  const initials = useMemo(() => {
+    if (!displayName || displayName === 'Usuário') return 'U';
+    return displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  }, [displayName]);
 
   const [openSections, setOpenSections] = useState<Set<string>>(() => {
     const initial = new Set<string>();
@@ -290,21 +304,21 @@ export const AppSidebar = memo(function AppSidebar() {
           {!sidebarCollapsed ? (
             <div className="flex items-center gap-2 px-1 py-1">
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--sidebar-primary))] to-[hsl(var(--accent))] flex items-center justify-center text-[10px] font-bold text-white">
-                AD
+                {initials}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-[hsl(var(--sidebar-accent-foreground))] truncate">Admin</p>
-                <p className="text-[10px] text-[hsl(var(--sidebar-muted))] truncate">admin@sentinela.com</p>
+                <p className="text-xs font-medium text-[hsl(var(--sidebar-accent-foreground))] truncate">{displayName}</p>
+                <p className="text-[10px] text-[hsl(var(--sidebar-muted))] truncate">{displayEmail}</p>
               </div>
             </div>
           ) : (
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--sidebar-primary))] to-[hsl(var(--accent))] flex items-center justify-center text-[10px] font-bold text-white mx-auto cursor-pointer">
-                  AD
+                  {initials}
                 </div>
               </TooltipTrigger>
-              <TooltipContent side="right">Admin</TooltipContent>
+              <TooltipContent side="right">{displayName}</TooltipContent>
             </Tooltip>
           )}
         </div>
