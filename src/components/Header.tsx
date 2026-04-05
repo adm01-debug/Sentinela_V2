@@ -1,11 +1,12 @@
-import { memo, useEffect, useCallback, useState, useMemo } from 'react';
+import { memo, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bell, Search, Menu, Sun, Moon, Monitor, User, LogOut, Settings, HelpCircle, CheckCircle2 } from 'lucide-react';
+import { Bell, Search, Menu, Sun, Moon, Monitor, User, LogOut, Settings, HelpCircle, CheckCircle2, Inbox } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useUIStore } from '@/stores/uiStore';
 import { useTheme } from '@/providers/ThemeProvider';
 import { useAuth } from '@/hooks/useAuth';
+import { useHeaderNotifications } from '@/hooks/useNotifications';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -30,13 +31,7 @@ interface HeaderProps {
   onCommandPaletteOpen?: () => void;
 }
 
-const notifications = [
-  { id: '1', title: 'Acesso não autorizado detectado', description: 'Carlos Silva tentou acessar área restrita', time: '2 min atrás', severity: 'critical' as const, read: false },
-  { id: '2', title: 'Tentativa de exportação em massa', description: 'Ana Costa exportou 500+ registros', time: '15 min atrás', severity: 'high' as const, read: false },
-  { id: '3', title: 'Login fora do horário', description: 'Pedro Santos logou às 23:45', time: '1h atrás', severity: 'medium' as const, read: true },
-];
-
-const severityDot = {
+const severityDot: Record<string, string> = {
   critical: 'bg-destructive',
   high: 'bg-warning',
   medium: 'bg-info',
