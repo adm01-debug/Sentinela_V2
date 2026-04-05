@@ -95,9 +95,9 @@ const navSections: NavSection[] = [
     titleKey: 'sections.admin',
     items: [
       { icon: UserCog, labelKey: 'nav.users', path: ROUTES.ADMIN_USERS },
-      { icon: Shield, labelKey: 'nav.roles', path: ROUTES.ADMIN_ROLES },
+      { icon: ShieldCheck, labelKey: 'nav.roles', path: ROUTES.ADMIN_ROLES },
       { icon: ScrollText, labelKey: 'nav.audit', path: ROUTES.ADMIN_AUDIT },
-      { icon: Shield, labelKey: 'nav.compliance', path: '/compliance' },
+      { icon: FileCheck, labelKey: 'nav.compliance', path: '/compliance' },
       { icon: Download, labelKey: 'nav.exportData', path: '/export' },
     ],
   },
@@ -105,7 +105,7 @@ const navSections: NavSection[] = [
     id: 'integrations',
     titleKey: 'sections.integrations',
     items: [
-      { icon: Webhook, labelKey: 'nav.integrations', path: '/integrations' },
+      { icon: Link2, labelKey: 'nav.integrations', path: '/integrations' },
       { icon: Webhook, labelKey: 'nav.webhooks', path: '/integrations/webhooks' },
       { icon: MessageSquare, labelKey: 'nav.whatsapp', path: '/integrations/whatsapp' },
     ],
