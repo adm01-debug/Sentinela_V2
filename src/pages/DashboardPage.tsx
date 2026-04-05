@@ -193,6 +193,7 @@ export const DashboardPage = () => {
           icon={Users}
           iconColor="bg-primary/10 text-primary"
           trend={{ value: 5.2, label: 'desde o mês passado' }}
+          accentColor="primary"
         />
         <StatCard
           title={t('dashboard.activeNow')}
@@ -200,6 +201,8 @@ export const DashboardPage = () => {
           icon={Activity}
           iconColor="bg-success/10 text-success"
           trend={{ value: 12, label: 'desde ontem' }}
+          accentColor="success"
+          pulse
         />
         <StatCard
           title={t('dashboard.productivity')}
@@ -207,6 +210,7 @@ export const DashboardPage = () => {
           icon={TrendingUp}
           iconColor="bg-warning/10 text-warning"
           trend={{ value: 3.8, label: 'esta semana' }}
+          accentColor="warning"
         />
         <StatCard
           title={t('dashboard.alerts')}
@@ -214,6 +218,7 @@ export const DashboardPage = () => {
           icon={AlertTriangle}
           iconColor="bg-destructive/10 text-destructive"
           trend={{ value: -25, label: 'vs semana passada', isPositive: true }}
+          accentColor="destructive"
         />
       </div>
 
@@ -267,11 +272,17 @@ export const DashboardPage = () => {
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={fallbackProductivityData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorBars" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor={colors.accent} stopOpacity={1} />
+                      <stop offset="100%" stopColor={colors.accent} stopOpacity={0.4} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
                   <XAxis dataKey="day" tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <YAxis domain={[0, 10]} tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="horas" name="Horas" fill={colors.accent} radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="horas" name="Horas" fill="url(#colorBars)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -300,7 +311,11 @@ export const DashboardPage = () => {
                 {fallbackAlerts.map((alert) => (
                   <div
                     key={alert.id}
-                    className={`flex items-start gap-3 p-3 rounded-lg border transition-colors hover:bg-muted/30 cursor-pointer ${severityStyles[alert.severity]}`}
+                    className={`flex items-start gap-3 p-3 rounded-lg border transition-all duration-200 hover:shadow-sm hover:-translate-y-0.5 cursor-pointer ${severityStyles[alert.severity]}`}
+                    onClick={() => navigate(`/alerts/${alert.id}`)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && navigate(`/alerts/${alert.id}`)}
                   >
                     <Shield className="h-4 w-4 mt-0.5 shrink-0" />
                     <div className="flex-1 min-w-0">
@@ -333,20 +348,23 @@ export const DashboardPage = () => {
           <CardContent>
             <ScrollArea className="h-[240px]">
               <div className="space-y-1">
-                {fallbackActivities.map((item) => (
-                  <div key={item.id} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 shrink-0">
-                      <item.icon className="h-3.5 w-3.5 text-primary" />
+                {fallbackActivities.map((item) => {
+                  const initials = item.user.split(' ').map(n => n[0]).join('').slice(0, 2);
+                  return (
+                    <div key={item.id} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/50 transition-all duration-200 hover:-translate-y-0.5">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 shrink-0">
+                        <span className="text-[11px] font-semibold text-primary">{initials}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-card-foreground">
+                          <span className="font-medium">{item.user}</span>{' '}
+                          <span className="text-muted-foreground">{item.action}</span>
+                        </p>
+                        <p className="text-xs text-muted-foreground">{item.time}</p>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-card-foreground">
-                        <span className="font-medium">{item.user}</span>{' '}
-                        <span className="text-muted-foreground">{item.action}</span>
-                      </p>
-                      <p className="text-xs text-muted-foreground">{item.time}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </ScrollArea>
           </CardContent>
@@ -377,6 +395,13 @@ export const DashboardPage = () => {
                       <Cell key={index} fill={entry.color} />
                     ))}
                   </Pie>
+                  {/* Center total label */}
+                  <text x="50%" y="46%" textAnchor="middle" dominantBaseline="central" className="fill-card-foreground text-xl font-bold">
+                    {departmentData.reduce((sum, d) => sum + d.value, 0)}
+                  </text>
+                  <text x="50%" y="60%" textAnchor="middle" dominantBaseline="central" className="fill-muted-foreground text-[10px]">
+                    total
+                  </text>
                   <Tooltip content={<CustomTooltip />} />
                 </PieChart>
               </ResponsiveContainer>

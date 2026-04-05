@@ -29,7 +29,7 @@ const SettingsContent = memo(function SettingsContent() {
   const updatePolicy = (id: string, enabled: boolean) => {};
   const updateAppRule = (id: string, status: string) => {};
   const addAppRule = async (_name: string, _cat: string, _status: 'allowed' | 'blocked' | 'monitored') => true;
-  const deleteAppRule = async (_id) => true;
+  const deleteAppRule = async (_id: string) => true;
   const editAppRule = async (_id: string, _name: string, _cat: string) => true;
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -60,25 +60,13 @@ const SettingsContent = memo(function SettingsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center gap-4 px-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => navigate('/')}
-            className="shrink-0"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div>
-            <h1 className="text-lg font-semibold">{t('settings.title')}</h1>
-            <p className="text-sm text-muted-foreground">{t('settings.subtitle')}</p>
-          </div>
-        </div>
-      </header>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">{t('settings.title')}</h1>
+        <p className="text-sm text-muted-foreground">{t('settings.subtitle')}</p>
+      </div>
 
-      <main className="container px-4 py-6">
+      <div>
         <Tabs defaultValue="policies" className="space-y-6">
           <TabsList className="grid w-full max-w-2xl grid-cols-4">
             <TabsTrigger value="policies" className="gap-2">
@@ -248,7 +236,7 @@ const SettingsContent = memo(function SettingsContent() {
         <div className="mt-6">
           <SettingsAuditLog />
         </div>
-      </main>
+      </div>
     </div>
   );
 });

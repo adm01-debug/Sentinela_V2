@@ -2,8 +2,52 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
+// ============================================================
+// COUNT-UP HOOK
+// ============================================================
+function useCountUp(target: number, duration = 1200): number {
+  const [current, setCurrent] = useState(0);
+  const frameRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (target === 0) { setCurrent(0); return; }
+    const start = performance.now();
+    const animate = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCurrent(Math.round(eased * target));
+      if (progress < 1) {
+        frameRef.current = requestAnimationFrame(animate);
+      }
+    };
+    frameRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, [target, duration]);
+
+  return current;
+}
+
+// ============================================================
+// ACCENT COLOR MAP
+// ============================================================
+type AccentColor = 'primary' | 'success' | 'warning' | 'destructive' | 'info' | 'accent';
+
+const accentBorderMap: Record<AccentColor, string> = {
+  primary: 'border-l-primary',
+  success: 'border-l-success',
+  warning: 'border-l-warning',
+  destructive: 'border-l-destructive',
+  info: 'border-l-info',
+  accent: 'border-l-accent',
+};
+
+// ============================================================
+// STAT CARD
+// ============================================================
 interface StatCardProps {
   title: string;
   value: string | number;
@@ -14,6 +58,8 @@ interface StatCardProps {
   variant?: 'default' | 'gradient';
   valueClassName?: string;
   isLoading?: boolean;
+  accentColor?: AccentColor;
+  pulse?: boolean;
 }
 
 export function StatCard({ 
@@ -26,7 +72,16 @@ export function StatCard({
   variant = 'default',
   valueClassName,
   isLoading = false,
+  accentColor,
+  pulse = false,
 }: StatCardProps) {
+  // Parse numeric value for count-up
+  const numericValue = typeof value === 'number' ? value : parseFloat(String(value).replace(/[^0-9.]/g, ''));
+  const suffix = typeof value === 'string' ? String(value).replace(/[0-9.,]/g, '') : '';
+  const isNumeric = !isNaN(numericValue) && isFinite(numericValue);
+  const animatedValue = useCountUp(isNumeric ? numericValue : 0);
+  const displayValue = isNumeric ? `${animatedValue}${suffix}` : value;
+
   if (isLoading) {
     return (
       <Card>
@@ -45,13 +100,27 @@ export function StatCard({
   const isPositive = trend?.isPositive ?? (trend?.value !== undefined ? trend.value >= 0 : undefined);
 
   return (
-    <Card variant="interactive" className="group relative overflow-hidden">
+    <Card
+      variant="interactive"
+      className={cn(
+        'group relative overflow-hidden',
+        accentColor && `border-l-4 ${accentBorderMap[accentColor]}`
+      )}
+    >
       {/* Hover gradient accent */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
       <CardContent className="p-5 relative">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          <div className="flex items-center gap-2">
+            {pulse && (
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-success" />
+              </span>
+            )}
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          </div>
           {Icon && (
             <div className={cn(
               "flex items-center justify-center w-9 h-9 rounded-lg transition-colors",
@@ -61,7 +130,9 @@ export function StatCard({
             </div>
           )}
         </div>
-        <div className={cn('text-2xl font-bold text-card-foreground tracking-tight', valueClassName)}>{value}</div>
+        <div className={cn('text-2xl font-bold text-card-foreground tracking-tight', valueClassName)}>
+          {displayValue}
+        </div>
         {trend && (
           <div className={cn(
             'flex items-center text-xs mt-2 font-medium',
