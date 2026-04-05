@@ -6,6 +6,7 @@ import { PermissionsProvider } from '@/lib/permissions/provider';
 import { ErrorBoundary } from '@/lib/error-handling';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { ScrollToTop } from '@/components/ScrollToTop';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +20,7 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <ScrollToTop />
           <ThemeProvider defaultTheme="system">
             <TooltipProvider delayDuration={200}>
               <FeatureFlagsProvider>

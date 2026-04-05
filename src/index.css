@@ -903,3 +903,39 @@
   from { transform: translateY(0); }
   to { transform: translateY(100%); }
 }
+
+/* ============================================================
+ * SONNER TOAST — Premium branded styling
+ * ============================================================ */
+[data-sonner-toaster] [data-sonner-toast] {
+  --normal-bg: hsl(var(--card));
+  --normal-border: hsl(var(--border));
+  --normal-text: hsl(var(--foreground));
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 30px -10px hsl(var(--foreground) / 0.1);
+  font-family: 'Geist', sans-serif;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type="success"] {
+  --normal-bg: hsl(var(--success) / 0.1);
+  --normal-border: hsl(var(--success) / 0.3);
+  --normal-text: hsl(var(--success));
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type="error"] {
+  --normal-bg: hsl(var(--destructive) / 0.1);
+  --normal-border: hsl(var(--destructive) / 0.3);
+  --normal-text: hsl(var(--destructive));
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type="warning"] {
+  --normal-bg: hsl(var(--warning) / 0.1);
+  --normal-border: hsl(var(--warning) / 0.3);
+  --normal-text: hsl(var(--warning));
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type="info"] {
+  --normal-bg: hsl(var(--info) / 0.1);
+  --normal-border: hsl(var(--info) / 0.3);
+  --normal-text: hsl(var(--info));
+}
