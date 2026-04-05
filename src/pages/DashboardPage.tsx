@@ -318,7 +318,7 @@ export const DashboardPage = () => {
         </Card>
 
         {/* Recent Activity */}
-        <Card className="lg:col-span-4">
+        <Card className="lg:col-span-4 card-hover">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
