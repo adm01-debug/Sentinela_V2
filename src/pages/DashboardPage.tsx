@@ -241,11 +241,24 @@ export const DashboardPage = () => {
                       <stop offset="5%" stopColor={colors.primary} stopOpacity={0.3} />
                       <stop offset="95%" stopColor={colors.primary} stopOpacity={0} />
                     </linearGradient>
+                    <linearGradient id="colorInativos" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors.muted} stopOpacity={0.2} />
+                      <stop offset="95%" stopColor={colors.muted} stopOpacity={0} />
+                    </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
                   <XAxis dataKey="time" tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <YAxis tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <Tooltip content={<CustomTooltip />} />
+                  <Area
+                    type="monotone"
+                    dataKey="inativos"
+                    name="Inativos"
+                    stroke={colors.muted}
+                    strokeWidth={1.5}
+                    strokeDasharray="4 3"
+                    fill="url(#colorInativos)"
+                  />
                   <Area
                     type="monotone"
                     dataKey="ativos"
