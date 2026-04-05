@@ -237,6 +237,7 @@ const resources = {
         enabled: 'Enabled',
         disabled: 'Disabled',
         profile: 'Profile',
+        none: 'None',
       },
       nav: {
         dashboard: 'Dashboard',
