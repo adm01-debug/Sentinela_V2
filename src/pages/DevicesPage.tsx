@@ -184,7 +184,7 @@ export default function DevicesPage() {
 
       {/* Devices Table */}
       {devices.length === 0 ? (
-        <Card><CardContent className="py-12 text-center text-muted-foreground"><HardDrive className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhum dispositivo encontrado.</p></CardContent></Card>
+        <Card><CardContent className="py-0"><EmptyState icon={HardDrive} title="Nenhum dispositivo encontrado" description="Registre dispositivos para monitorar e gerenciar a frota da empresa." /></CardContent></Card>
       ) : (
         <Card>
           <CardContent className="p-0 divide-y">

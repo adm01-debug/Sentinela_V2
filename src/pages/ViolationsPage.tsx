@@ -213,7 +213,7 @@ export default function ViolationsPage() {
 
       {/* Violations List */}
       {violations.length === 0 ? (
-        <Card><CardContent className="py-12 text-center text-muted-foreground"><ShieldAlert className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma violação encontrada.</p></CardContent></Card>
+        <Card><CardContent className="py-0"><EmptyState icon={ShieldAlert} title="Nenhuma violação encontrada" description="Nenhuma violação de segurança registrada no período selecionado. Tudo sob controle!" /></CardContent></Card>
       ) : (
         <div className="space-y-3">
           {violations.map(violation => (

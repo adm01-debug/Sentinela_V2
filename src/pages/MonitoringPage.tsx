@@ -183,7 +183,7 @@ export default function MonitoringPage() {
 
       {/* Employee Grid/List */}
       {employees.length === 0 ? (
-        <Card><CardContent className="py-12 text-center text-muted-foreground"><Users className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhum funcionário encontrado.</p></CardContent></Card>
+        <Card><CardContent className="py-0"><EmptyState icon={Users} title="Nenhum funcionário encontrado" description="Adicione funcionários para começar a monitorar suas atividades em tempo real." /></CardContent></Card>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {employees.map((emp) => (
