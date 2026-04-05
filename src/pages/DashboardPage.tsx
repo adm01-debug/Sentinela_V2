@@ -395,6 +395,13 @@ export const DashboardPage = () => {
                       <Cell key={index} fill={entry.color} />
                     ))}
                   </Pie>
+                  {/* Center total label */}
+                  <text x="50%" y="46%" textAnchor="middle" dominantBaseline="central" className="fill-card-foreground text-xl font-bold">
+                    {departmentData.reduce((sum, d) => sum + d.value, 0)}
+                  </text>
+                  <text x="50%" y="60%" textAnchor="middle" dominantBaseline="central" className="fill-muted-foreground text-[10px]">
+                    total
+                  </text>
                   <Tooltip content={<CustomTooltip />} />
                 </PieChart>
               </ResponsiveContainer>
