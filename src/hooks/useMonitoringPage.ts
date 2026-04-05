@@ -82,10 +82,12 @@ export function useMonitoringPage() {
         .eq('employee_name', selectedEmployee.name)
         .gte('recorded_at', today);
 
-      const totalKeystrokes = (keystrokeLogs as any[])?.reduce((sum: number, a: any) => sum + (a.keystrokes_count || 0), 0) || 0;
-      const totalClicks = (clickLogs as any[])?.length || 0;
-      const totalIdle = (keystrokeLogs as any[])?.reduce((sum: number, a: any) => sum + (a.idle_time_seconds || 0), 0) || 0;
-      const totalActive = (keystrokeLogs as any[])?.reduce((sum: number, a: any) => sum + (a.active_time_seconds || 0), 0) || 0;
+      const keystrokeData = keystrokeLogs as Array<Record<string, unknown>> | null;
+      const clickData = clickLogs as Array<Record<string, unknown>> | null;
+      const totalKeystrokes = keystrokeData?.reduce((sum: number, a) => sum + (Number(a.keystrokes_count) || 0), 0) || 0;
+      const totalClicks = clickData?.length || 0;
+      const totalIdle = keystrokeData?.reduce((sum: number, a) => sum + (Number(a.idle_time_seconds) || 0), 0) || 0;
+      const totalActive = keystrokeData?.reduce((sum: number, a) => sum + (Number(a.active_time_seconds) || 0), 0) || 0;
 
       return {
         total_keystrokes: totalKeystrokes,
