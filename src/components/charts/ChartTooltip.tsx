@@ -1,17 +1,9 @@
-import { useChartColors } from '@/hooks/useChartColors';
-
-interface ChartTooltipEntry {
-  name: string;
-  value: number | string;
-  color?: string;
-}
-
 interface ChartTooltipProps {
   active?: boolean;
   payload?: Array<{ name: string; value: number; color?: string; dataKey?: string; payload?: unknown }>;
   label?: string;
-  labelFormatter?: (label) => string;
-  valueFormatter?: (value) => string;
+  labelFormatter?: (label: string) => string;
+  valueFormatter?: (value: number) => string;
 }
 
 export function ChartTooltipContent({
@@ -24,9 +16,9 @@ export function ChartTooltipContent({
   if (!active || !payload?.length) return null;
 
   return (
-    <div className="rounded-lg border border-border bg-popover p-3 shadow-xl">
+    <div className="rounded-lg border border-border/60 bg-popover/95 backdrop-blur-lg p-3 shadow-lg shadow-black/10 min-w-[140px] animate-in fade-in-0 zoom-in-95 duration-150">
       {label && (
-        <p className="text-sm font-medium text-popover-foreground mb-1">
+        <p className="text-xs font-semibold text-popover-foreground mb-1.5 pb-1.5 border-b border-border/40">
           {labelFormatter ? labelFormatter(label) : label}
         </p>
       )}
@@ -34,13 +26,13 @@ export function ChartTooltipContent({
         {payload.map((entry, i) => (
           <div key={i} className="flex items-center justify-between gap-4 text-xs">
             <div className="flex items-center gap-1.5">
-              <div
-                className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
+              <span
+                className="h-2 w-2 shrink-0 rounded-full ring-1 ring-white/10"
                 style={{ backgroundColor: entry.color }}
               />
-              <span className="text-muted-foreground">{entry.name}</span>
+              <span className="text-muted-foreground truncate">{entry.name}</span>
             </div>
-            <span className="font-mono font-medium tabular-nums text-popover-foreground">
+            <span className="font-semibold tabular-nums text-popover-foreground">
               {valueFormatter ? valueFormatter(Number(entry.value)) : entry.value?.toLocaleString('pt-BR')}
             </span>
           </div>
