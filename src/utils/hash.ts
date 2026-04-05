@@ -26,7 +26,7 @@ export async function md5(message: string): Promise<string> {
   function ff(a: number, b: number, c: number, d: number, x: number, s: number, t: number) {
     return add32(rol32(add32(add32(a, (b & c) | (~b & d)), add32(x, t)), s), b);
   }
-  function add32(a: any, b: any) { return (a + b) & 0xFFFFFFFF; }
+  function add32(a: number, b: number) { return (a + b) & 0xFFFFFFFF; }
   function rol32(n: number, c: number) { return (n << c) | (n >>> (32 - c)); }
   
   // For actual MD5, use a library - this is a placeholder

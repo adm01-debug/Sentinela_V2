@@ -108,8 +108,8 @@ export function getPageInfo(pagination: Pagination): PageInfo {
 }
 
 export function generatePageNumbers(
-  currentPage: any,
-  totalPages: any,
+  currentPage: number,
+  totalPages: number,
   siblingCount = 1
 ): (number | 'ellipsis')[] {
   const pages: (number | 'ellipsis')[] = [];

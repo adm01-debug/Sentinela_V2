@@ -75,7 +75,7 @@ function checkWebVitals(): void {
           }
         }
 
-        if (entry.entryType === 'layout-shift' && !(entry as any).hadRecentInput) {
+        if (entry.entryType === 'layout-shift' && !(entry as PerformanceEntry & { hadRecentInput?: boolean }).hadRecentInput) {
           // CLS tracking is cumulative - handled elsewhere
         }
 

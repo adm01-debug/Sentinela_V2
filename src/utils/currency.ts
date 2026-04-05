@@ -90,7 +90,7 @@ export function formatPercentage(
   }).format(value / 100);
 }
 
-export function calculatePercentageChange(oldValue: any, newValue: any): number {
+export function calculatePercentageChange(oldValue: number, newValue: number): number {
   if (oldValue === 0) return newValue === 0 ? 0 : 100;
   return ((newValue - oldValue) / Math.abs(oldValue)) * 100;
 }
