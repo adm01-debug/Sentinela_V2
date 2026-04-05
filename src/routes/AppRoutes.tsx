@@ -111,11 +111,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const session = useSupabaseSession();
   
   if (session === undefined) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <BrandedSplash />;
   }
   
   if (session) {
