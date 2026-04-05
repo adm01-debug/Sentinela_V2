@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-export function useVirtualList<T>(items: T[], itemHeight: any, containerHeight: any) {
+export function useVirtualList<T>(items: T[], itemHeight: number, containerHeight: number) {
   const [scrollTop, setScrollTop] = useState(0);
   const startIndex = Math.floor(scrollTop / itemHeight);
   const visibleCount = Math.ceil(containerHeight / itemHeight) + 1;

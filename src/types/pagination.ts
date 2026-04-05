@@ -79,8 +79,8 @@ export interface PageInfo {
 
 export function calculatePagination(
   page: number,
-  pageSize: any,
-  total
+  pageSize: number,
+  total: number
 ): Pagination {
   const totalPages = Math.ceil(total / pageSize);
   return {
@@ -108,8 +108,8 @@ export function getPageInfo(pagination: Pagination): PageInfo {
 }
 
 export function generatePageNumbers(
-  currentPage: any,
-  totalPages: any,
+  currentPage: number,
+  totalPages: number,
   siblingCount = 1
 ): (number | 'ellipsis')[] {
   const pages: (number | 'ellipsis')[] = [];

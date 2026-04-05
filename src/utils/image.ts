@@ -26,8 +26,8 @@ export async function loadImage(src): Promise<HTMLImageElement> {
 
 export async function resizeImage(
   file: File,
-  maxWidth: any,
-  maxHeight: any,
+  maxWidth: number,
+  maxHeight: number,
   quality = 0.8
 ): Promise<Blob> {
   const img = await loadImage(URL.createObjectURL(file));
@@ -75,7 +75,7 @@ export async function cropImage(
   });
 }
 
-export async function rotateImage(src: string, degrees: any): Promise<Blob> {
+export async function rotateImage(src: string, degrees: number): Promise<Blob> {
   const img = await loadImage(src);
   const canvas = document.createElement('canvas');
   const radians = (degrees * Math.PI) / 180;
@@ -125,7 +125,7 @@ export function createThumbnail(img: HTMLImageElement, size: number): string {
 }
 
 export function getAspectRatio(width: number, height: number): string {
-  const gcd = (a: any, b: any): number => (b === 0 ? a : gcd(b, a % b));
+  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
   const divisor = gcd(width, height);
   return `${width / divisor}:${height / divisor}`;
 }
