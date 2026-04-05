@@ -29,9 +29,10 @@ export const ScrollToTopButton = memo(function ScrollToTopButton() {
       onClick={scrollToTop}
       aria-label="Voltar ao topo"
       className={cn(
-        'fixed bottom-6 right-6 z-40 h-10 w-10 rounded-full shadow-lg',
+        'fixed bottom-20 sm:bottom-6 right-6 z-40 h-10 w-10 rounded-full shadow-lg',
         'bg-card/90 backdrop-blur-md border-border/60',
         'hover:bg-primary hover:text-primary-foreground hover:border-primary',
+        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         'transition-all duration-300',
         visible
           ? 'opacity-100 translate-y-0 pointer-events-auto'
