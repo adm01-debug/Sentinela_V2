@@ -335,9 +335,19 @@ const resources = {
         rememberMe: 'Remember me',
         noAccount: "Don't have an account?",
         hasAccount: 'Already have an account?',
+        mfaRequired: 'Two-factor authentication required',
+        sessionExpired: 'Session expired',
+      },
+      monitoring: {
+        title: 'Monitoring',
+        applications: 'Applications',
+      },
+      navigation: {
+        policies: 'Policies',
       },
       settings: {
         title: 'Settings',
+        subtitle: 'Manage system settings',
         general: 'General',
         notifications: 'Notifications',
         security: 'Security',
@@ -346,6 +356,8 @@ const resources = {
         timezone: 'Timezone',
         profile: 'Profile',
         billing: 'Billing',
+        alerts: 'Alerts',
+        emailNotifications: 'Email Notifications',
       },
       errors: {
         generic: 'An unexpected error occurred',
