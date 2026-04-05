@@ -282,7 +282,7 @@ export const DashboardPage = () => {
       {/* Bottom Row */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-12">
         {/* Alerts */}
-        <Card className="lg:col-span-5">
+        <Card className="lg:col-span-5 card-hover">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
