@@ -128,7 +128,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
         productivity,
         activeDays,
         violations,
-        totalKeystrokes: logs.reduce((sum: number, l: any) => sum + (l.keystrokes_count || 0), 0),
+        totalKeystrokes: logs.reduce((sum: number, l) => sum + (l.keystrokes_count || 0), 0),
         avgHoursPerDay,
         presentDays: attendanceRecords.filter((r) => r.status === 'present').length,
       };
