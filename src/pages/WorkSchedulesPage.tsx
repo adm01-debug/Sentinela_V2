@@ -44,9 +44,9 @@ export default function WorkSchedulesPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card><CardContent className="pt-4 text-center"><Calendar className="h-5 w-5 mx-auto text-primary" /><p className="text-2xl font-bold mt-1">{stats.totalSchedules}</p><p className="text-xs text-muted-foreground">Escalas</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><Users className="h-5 w-5 mx-auto text-blue-500" /><p className="text-2xl font-bold mt-1">{stats.totalAssignments}</p><p className="text-xs text-muted-foreground">Atribuições</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><Clock className="h-5 w-5 mx-auto text-orange-500" /><p className="text-2xl font-bold mt-1">{stats.pendingOvertimeRequests}</p><p className="text-xs text-muted-foreground">Horas Extra Pendentes</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><XCircle className="h-5 w-5 mx-auto text-red-500" /><p className="text-2xl font-bold mt-1">{stats.recentBlocks}</p><p className="text-xs text-muted-foreground">Bloqueios (24h)</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Users className="h-5 w-5 mx-auto text-info" /><p className="text-2xl font-bold mt-1">{stats.totalAssignments}</p><p className="text-xs text-muted-foreground">Atribuições</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><Clock className="h-5 w-5 mx-auto text-warning" /><p className="text-2xl font-bold mt-1">{stats.pendingOvertimeRequests}</p><p className="text-xs text-muted-foreground">Horas Extra Pendentes</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><XCircle className="h-5 w-5 mx-auto text-destructive" /><p className="text-2xl font-bold mt-1">{stats.recentBlocks}</p><p className="text-xs text-muted-foreground">Bloqueios (24h)</p></CardContent></Card>
       </div>
 
       <div className="relative max-w-md">
