@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { EmptyState } from '@/components/EmptyState';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Search, ShieldAlert, AlertTriangle, CheckCircle, Clock, Eye, XCircle } from 'lucide-react';

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { EmptyState } from '@/components/EmptyState';
 import { Search, Monitor, Wifi, WifiOff, Clock, Users, Grid, List, RefreshCw, Keyboard, MousePointer2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
