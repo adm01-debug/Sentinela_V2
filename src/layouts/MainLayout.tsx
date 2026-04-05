@@ -5,6 +5,7 @@ import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
 import { MobileSidebar } from '@/components/layout/MobileSidebar';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
+import { ScrollToTopButton } from '@/components/ScrollToTopButton';
 import { useUIStore } from '@/stores/uiStore';
 import { cn } from '@/utils/cn';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
@@ -85,6 +86,7 @@ export const MainLayout = () => {
 
         {/* Mobile Bottom Navigation */}
         <BottomNav />
+        <ScrollToTopButton />
       </div>
     </div>
     </KeyboardShortcutsProvider>

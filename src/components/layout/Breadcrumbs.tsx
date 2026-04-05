@@ -17,7 +17,11 @@ const routeLabels: Record<string, string> = {
   '/screenshots': 'Screenshots',
   '/internet-access': 'Acesso Internet',
   '/analytics': 'Analytics',
+  '/analytics/productivity': 'Produtividade',
+  '/analytics/applications': 'Aplicações',
+  '/analytics/trends': 'Tendências',
   '/reports': 'Relatórios',
+  '/reports/custom': 'Relatórios Customizados',
   '/ai-analysis': 'Análise IA',
   '/devices': 'Dispositivos',
   '/geofencing': 'Geofencing',
@@ -28,11 +32,16 @@ const routeLabels: Record<string, string> = {
   '/export': 'Exportação',
   '/integrations': 'Integrações',
   '/settings': 'Configurações',
+  '/settings/profile': 'Perfil',
+  '/settings/security': 'Segurança',
+  '/settings/billing': 'Faturamento',
+  '/settings/api-keys': 'Chaves API',
   '/admin/departments': 'Departamentos',
   '/admin/teams': 'Equipes',
   '/admin/users': 'Usuários',
   '/admin/roles': 'Papéis',
   '/admin/audit': 'Auditoria',
+  '/admin/telemetria': 'Telemetria',
 };
 
 export function Breadcrumbs({ className }: { className?: string }) {
