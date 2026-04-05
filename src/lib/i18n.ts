@@ -52,6 +52,7 @@ const resources = {
         enabled: 'Habilitado',
         disabled: 'Desabilitado',
         profile: 'Perfil',
+        none: 'Nenhum',
       },
       nav: {
         dashboard: 'Dashboard',
@@ -130,6 +131,10 @@ const resources = {
       employees: {
         title: 'Funcionários',
         subtitle: 'Gerencie os funcionários monitorados',
+        name: 'Nome',
+        email: 'E-mail',
+        department: 'Departamento',
+        status: 'Status',
         addEmployee: 'Adicionar Funcionário',
         editEmployee: 'Editar Funcionário',
         deleteEmployee: 'Excluir Funcionário',
@@ -232,6 +237,7 @@ const resources = {
         enabled: 'Enabled',
         disabled: 'Disabled',
         profile: 'Profile',
+        none: 'None',
       },
       nav: {
         dashboard: 'Dashboard',
@@ -310,6 +316,10 @@ const resources = {
       employees: {
         title: 'Employees',
         subtitle: 'Manage monitored employees',
+        name: 'Name',
+        email: 'Email',
+        department: 'Department',
+        status: 'Status',
         addEmployee: 'Add Employee',
         editEmployee: 'Edit Employee',
         deleteEmployee: 'Delete Employee',
@@ -412,6 +422,7 @@ const resources = {
         enabled: 'Habilitado',
         disabled: 'Deshabilitado',
         profile: 'Perfil',
+        none: 'Ninguno',
       },
       nav: {
         dashboard: 'Panel',
@@ -490,6 +501,10 @@ const resources = {
       employees: {
         title: 'Empleados',
         subtitle: 'Gestione los empleados monitoreados',
+        name: 'Nombre',
+        email: 'Correo',
+        department: 'Departamento',
+        status: 'Estado',
         addEmployee: 'Agregar Empleado',
         editEmployee: 'Editar Empleado',
         deleteEmployee: 'Eliminar Empleado',
