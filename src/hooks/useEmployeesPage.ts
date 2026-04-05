@@ -70,7 +70,7 @@ export function useEmployeesPage() {
   const deleteMutation = useDeleteEmployee();
   
   const createEmployee = async (data) => createMutation.mutateAsync(data as unknown as EmployeeCreateInput);
-  const updateEmployee = async (id: string, data: any) => updateMutation.mutateAsync({ id, data: data as unknown as EmployeeUpdateInput });
+  const updateEmployee = async (id: string, data: Partial<EmployeeUpdateInput>) => updateMutation.mutateAsync({ id, data: data as EmployeeUpdateInput });
   const deleteEmployee = async (id) => deleteMutation.mutateAsync(id);
   const assignDevice = async (empId: string, name: string, type: string, primary: boolean) => {
     const { error } = await supabase.from('employee_devices').insert({

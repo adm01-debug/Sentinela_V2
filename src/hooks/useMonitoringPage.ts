@@ -129,7 +129,7 @@ export function useMonitoringPage() {
     idle: employees.filter((e) => e.status === 'idle').length,
     offline: employees.filter((e) => e.status === 'offline').length,
     avgProductivity: employees.length > 0
-      ? Math.round(employees.reduce((sum: number, e: any) => sum + e.productivity_score, 0) / employees.length)
+      ? Math.round(employees.reduce((sum: number, e) => sum + e.productivity_score, 0) / employees.length)
       : 0,
   }), [employees]);
 

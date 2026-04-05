@@ -40,16 +40,16 @@ export interface UseExportResult<T> {
 // HELPERS
 // ============================================================
 
-function getNestedValue(obj: any, path: string): unknown {
-  return path.split('.').reduce((acc, part) => {
+function getNestedValue(obj: unknown, path: string): unknown {
+  return path.split('.').reduce((acc: unknown, part: string) => {
     if (acc && typeof acc === 'object') {
       return (acc as Record<string, unknown>)[part];
     }
     return undefined;
-  }, obj as unknown);
+  }, obj);
 }
 
-function formatValue(value: any): string {
+function formatValue(value: unknown): string {
   if (value === null || value === undefined) return '';
   if (value instanceof Date) return value.toLocaleDateString('pt-BR');
   if (typeof value === 'boolean') return value ? 'Sim' : 'Não';

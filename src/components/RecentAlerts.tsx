@@ -48,7 +48,7 @@ const RecentAlertsBase = () => {
       <CardContent>
         {recentAlerts.length > 0 ? (
           <div className="space-y-3">
-            {recentAlerts.map((alert: any) => {
+            {recentAlerts.map((alert: Record<string, unknown>) => {
               const Icon = severityIcons[alert.severity] || Info;
               return (
                 <div key={alert.id} className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-muted/50 transition-colors">
