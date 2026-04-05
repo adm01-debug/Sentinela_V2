@@ -41,6 +41,20 @@ vi.mock('@/providers/ThemeProvider', () => ({
   useTheme: () => ({ theme: 'light', setTheme: vi.fn() }),
 }));
 
+vi.mock('@/hooks/useAuth', () => ({
+  useAuth: () => ({
+    user: { id: '1', email: 'admin@demo.com', name: 'Admin Demo' },
+    isAuthenticated: true,
+    isLoading: false,
+    error: null,
+    login: vi.fn(),
+    logout: vi.fn(),
+    refresh: vi.fn(),
+    session: null,
+  }),
+  default: vi.fn(),
+}));
+
 describe('Header Enhanced Features', () => {
   beforeEach(() => {
     mockNavigate.mockClear();
