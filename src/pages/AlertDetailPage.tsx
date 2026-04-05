@@ -31,7 +31,7 @@ export default function AlertDetailPage() {
   if (!rawAlert) return <div className="p-6">Alerta não encontrado</div>;
 
   const alert = rawAlert as unknown as AlertData;
-  const severityColors: Record<string, string> = { low: 'bg-blue-100 text-blue-800', medium: 'bg-yellow-100 text-yellow-800', high: 'bg-orange-100 text-orange-800', critical: 'bg-red-100 text-red-800' };
+  const severityColors: Record<string, string> = { low: 'bg-primary/10 text-primary', medium: 'bg-warning/10 text-warning', high: 'bg-warning/15 text-warning', critical: 'bg-destructive/10 text-destructive' };
   const createdDate = new Date(alert.createdAt || alert.created_at || '');
 
   return (
