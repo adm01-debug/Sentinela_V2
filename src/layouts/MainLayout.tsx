@@ -50,6 +50,7 @@ export const MainLayout = () => {
 
       {/* Command Palette */}
       <CommandPalette open={isCommandPaletteOpen} onOpenChange={setIsCommandPaletteOpen} />
+      <KeyboardShortcutsDialog />
 
       {/* Main Content Area */}
       <div
