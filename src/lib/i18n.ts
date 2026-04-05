@@ -228,6 +228,10 @@ const resources = {
         success: 'Success',
         warning: 'Warning',
         info: 'Information',
+        noResults: 'No results found',
+        enabled: 'Enabled',
+        disabled: 'Disabled',
+        profile: 'Profile',
       },
       nav: {
         dashboard: 'Dashboard',
