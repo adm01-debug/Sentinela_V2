@@ -19,7 +19,7 @@ export function useSpring(initialValue: number, config = { stiffness: 100, dampi
     }
   }, [value, config]);
 
-  const set = useCallback((target) => {
+  const set = useCallback((target: number) => {
     targetRef.current = target;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     rafRef.current = requestAnimationFrame(animate);

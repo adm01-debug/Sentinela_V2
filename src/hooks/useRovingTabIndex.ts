@@ -51,7 +51,7 @@ export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRo
     if (nextIndex !== null) { e.preventDefault(); focusItem(nextIndex); }
   }, [orientation, getNextIndex, focusItem]);
 
-  const getTabIndex = useCallback((index) => index === activeIndex ? 0 : -1, [activeIndex]);
+  const getTabIndex = useCallback((index: number) => index === activeIndex ? 0 : -1, [activeIndex]);
 
   return { activeIndex, setActiveIndex, getTabIndex, handleKeyDown, focusItem, itemRefs };
 }
