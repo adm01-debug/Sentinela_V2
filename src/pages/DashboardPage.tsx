@@ -193,6 +193,7 @@ export const DashboardPage = () => {
           icon={Users}
           iconColor="bg-primary/10 text-primary"
           trend={{ value: 5.2, label: 'desde o mês passado' }}
+          accentColor="primary"
         />
         <StatCard
           title={t('dashboard.activeNow')}
@@ -200,6 +201,8 @@ export const DashboardPage = () => {
           icon={Activity}
           iconColor="bg-success/10 text-success"
           trend={{ value: 12, label: 'desde ontem' }}
+          accentColor="success"
+          pulse
         />
         <StatCard
           title={t('dashboard.productivity')}
@@ -207,6 +210,7 @@ export const DashboardPage = () => {
           icon={TrendingUp}
           iconColor="bg-warning/10 text-warning"
           trend={{ value: 3.8, label: 'esta semana' }}
+          accentColor="warning"
         />
         <StatCard
           title={t('dashboard.alerts')}
@@ -214,6 +218,7 @@ export const DashboardPage = () => {
           icon={AlertTriangle}
           iconColor="bg-destructive/10 text-destructive"
           trend={{ value: -25, label: 'vs semana passada', isPositive: true }}
+          accentColor="destructive"
         />
       </div>
 
