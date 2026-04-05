@@ -1,11 +1,12 @@
-import { memo, useEffect, useCallback, useState, useMemo } from 'react';
+import { memo, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bell, Search, Menu, Sun, Moon, Monitor, User, LogOut, Settings, HelpCircle, CheckCircle2 } from 'lucide-react';
+import { Bell, Search, Menu, Sun, Moon, Monitor, User, LogOut, Settings, HelpCircle, CheckCircle2, Inbox } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useUIStore } from '@/stores/uiStore';
 import { useTheme } from '@/providers/ThemeProvider';
 import { useAuth } from '@/hooks/useAuth';
+import { useHeaderNotifications } from '@/hooks/useNotifications';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -30,13 +31,7 @@ interface HeaderProps {
   onCommandPaletteOpen?: () => void;
 }
 
-const notifications = [
-  { id: '1', title: 'Acesso não autorizado detectado', description: 'Carlos Silva tentou acessar área restrita', time: '2 min atrás', severity: 'critical' as const, read: false },
-  { id: '2', title: 'Tentativa de exportação em massa', description: 'Ana Costa exportou 500+ registros', time: '15 min atrás', severity: 'high' as const, read: false },
-  { id: '3', title: 'Login fora do horário', description: 'Pedro Santos logou às 23:45', time: '1h atrás', severity: 'medium' as const, read: true },
-];
-
-const severityDot = {
+const severityDot: Record<string, string> = {
   critical: 'bg-destructive',
   high: 'bg-warning',
   medium: 'bg-info',
@@ -47,10 +42,9 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
   const { toggleSidebarCollapse } = useUIStore();
   const { theme, setTheme } = useTheme();
   const { user, logout } = useAuth();
+  const { notifications, unreadCount, markAllRead, markRead } = useHeaderNotifications();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [unreadCount, setUnreadCount] = useState(notifications.filter(n => !n.read).length);
 
   // Derive user display info
   const displayName = useMemo(() => {
@@ -69,11 +63,6 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
       .slice(0, 2)
       .toUpperCase();
   }, [displayName]);
-
-  useEffect(() => {
-    const interval = setInterval(() => setLastUpdate(new Date()), 30000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleMenuClick = () => {
     if (onMenuClick) {
@@ -101,7 +90,7 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
   }, [onCommandPaletteOpen]);
 
   const handleMarkAllRead = () => {
-    setUnreadCount(0);
+    markAllRead();
   };
 
   const handleLogout = useCallback(async () => {
@@ -111,8 +100,7 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
 
   const ThemeIcon = theme === 'dark' ? Moon : theme === 'light' ? Sun : Monitor;
 
-  const timeSince = Math.floor((Date.now() - lastUpdate.getTime()) / 1000);
-  const timeLabel = timeSince < 60 ? `${timeSince}s` : `${Math.floor(timeSince / 60)}m`;
+  const timeLabel = 'agora';
 
   return (
     <header className="sticky top-0 z-30 flex h-12 items-center gap-2 border-b border-border/60 bg-background/95 backdrop-blur-sm px-3 sm:px-4">
@@ -218,26 +206,34 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
               )}
             </div>
             <ScrollArea className="h-[260px]">
-              <div className="divide-y divide-border">
-                {notifications.map((notif) => (
-                  <button
-                    key={notif.id}
-                    type="button"
-                    className="flex gap-2.5 p-3 w-full text-left hover:bg-muted/50 transition-colors cursor-pointer"
-                    onClick={() => navigate('/alerts')}
-                  >
-                    <span className={`mt-1.5 h-2 w-2 rounded-full shrink-0 ${severityDot[notif.severity]}`} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-medium text-foreground leading-snug">{notif.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{notif.description}</p>
-                      <p className="text-[11px] text-muted-foreground/60 mt-0.5">{notif.time}</p>
-                    </div>
-                    {!notif.read && (
-                      <Badge variant="secondary" className="text-[10px] h-5 shrink-0 self-start bg-primary/10 text-primary border-0">Novo</Badge>
-                    )}
-                  </button>
-                ))}
-              </div>
+              {notifications.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-10 text-center">
+                  <Inbox className="h-8 w-8 text-muted-foreground/40 mb-2" />
+                  <p className="text-sm font-medium text-muted-foreground">Nenhuma notificação</p>
+                  <p className="text-xs text-muted-foreground/60">Tudo tranquilo por aqui</p>
+                </div>
+              ) : (
+                <div className="divide-y divide-border">
+                  {notifications.map((notif) => (
+                    <button
+                      key={notif.id}
+                      type="button"
+                      className="flex gap-2.5 p-3 w-full text-left hover:bg-muted/50 transition-colors cursor-pointer"
+                      onClick={() => { markRead(notif.id); navigate('/alerts'); }}
+                    >
+                      <span className={`mt-1.5 h-2 w-2 rounded-full shrink-0 ${severityDot[notif.severity]}`} />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-medium text-foreground leading-snug">{notif.title}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{notif.description}</p>
+                        <p className="text-[11px] text-muted-foreground/60 mt-0.5">{notif.time}</p>
+                      </div>
+                      {!notif.read && (
+                        <Badge variant="secondary" className="text-[10px] h-5 shrink-0 self-start bg-primary/10 text-primary border-0">Novo</Badge>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
             </ScrollArea>
             <div className="border-t px-4 py-1.5">
               <Button variant="ghost" size="sm" className="w-full text-xs h-7" onClick={() => navigate('/alerts')}>
