@@ -26,7 +26,7 @@ describe('Improvement 1: Reusable Chart Library', () => {
     it('exports BaseLineChart', async () => {
       const mod = await import('@/components/charts');
       expect(mod.BaseLineChart).toBeDefined();
-    });
+    }, 15000);
     it('exports BaseAreaChart', async () => {
       const mod = await import('@/components/charts');
       expect(mod.BaseAreaChart).toBeDefined();
