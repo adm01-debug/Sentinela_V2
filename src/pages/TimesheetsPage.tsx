@@ -133,7 +133,7 @@ function TimesheetsPage() {
     total: timesheets.length,
     pending: timesheets.filter((t) => t.status === 'pending').length,
     approved: timesheets.filter((t) => t.status === 'approved').length,
-    totalHours: timesheets.reduce((sum: number, t: any) => sum + (t.total_hours || 0), 0),
+    totalHours: timesheets.reduce((sum: number, t: Record<string, unknown>) => sum + (Number(t.total_hours) || 0), 0),
   };
 
   return (

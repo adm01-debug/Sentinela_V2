@@ -140,9 +140,9 @@ function ProjectsPage() {
     },
   });
 
-  const getProjectHours = (projectId) => {
+  const getProjectHours = (projectId: string) => {
     const entries = timeEntries.filter((e) => e.project_id === projectId);
-    const total = entries.reduce((sum: number, e: any) => sum + (e.duration_minutes || 0), 0);
+    const total = entries.reduce((sum: number, e: Record<string, unknown>) => sum + (Number(e.duration_minutes) || 0), 0);
     return Math.round(total / 60 * 10) / 10;
   };
 

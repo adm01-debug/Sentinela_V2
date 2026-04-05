@@ -48,6 +48,10 @@ const resources = {
         success: 'Sucesso',
         warning: 'Atenção',
         info: 'Informação',
+        noResults: 'Nenhum resultado encontrado',
+        enabled: 'Habilitado',
+        disabled: 'Desabilitado',
+        profile: 'Perfil',
       },
       nav: {
         dashboard: 'Dashboard',
@@ -151,9 +155,19 @@ const resources = {
         rememberMe: 'Lembrar de mim',
         noAccount: 'Não tem uma conta?',
         hasAccount: 'Já tem uma conta?',
+        mfaRequired: 'Autenticação de dois fatores obrigatória',
+        sessionExpired: 'Sessão expirada',
+      },
+      monitoring: {
+        title: 'Monitoramento',
+        applications: 'Aplicativos',
+      },
+      navigation: {
+        policies: 'Políticas',
       },
       settings: {
         title: 'Configurações',
+        subtitle: 'Gerencie as configurações do sistema',
         general: 'Geral',
         notifications: 'Notificações',
         security: 'Segurança',
@@ -162,6 +176,8 @@ const resources = {
         timezone: 'Fuso Horário',
         profile: 'Perfil',
         billing: 'Faturamento',
+        alerts: 'Alertas',
+        emailNotifications: 'Notificações por E-mail',
       },
       errors: {
         generic: 'Ocorreu um erro inesperado',
@@ -212,6 +228,10 @@ const resources = {
         success: 'Success',
         warning: 'Warning',
         info: 'Information',
+        noResults: 'No results found',
+        enabled: 'Enabled',
+        disabled: 'Disabled',
+        profile: 'Profile',
       },
       nav: {
         dashboard: 'Dashboard',
@@ -315,9 +335,19 @@ const resources = {
         rememberMe: 'Remember me',
         noAccount: "Don't have an account?",
         hasAccount: 'Already have an account?',
+        mfaRequired: 'Two-factor authentication required',
+        sessionExpired: 'Session expired',
+      },
+      monitoring: {
+        title: 'Monitoring',
+        applications: 'Applications',
+      },
+      navigation: {
+        policies: 'Policies',
       },
       settings: {
         title: 'Settings',
+        subtitle: 'Manage system settings',
         general: 'General',
         notifications: 'Notifications',
         security: 'Security',
@@ -326,6 +356,8 @@ const resources = {
         timezone: 'Timezone',
         profile: 'Profile',
         billing: 'Billing',
+        alerts: 'Alerts',
+        emailNotifications: 'Email Notifications',
       },
       errors: {
         generic: 'An unexpected error occurred',
@@ -376,6 +408,10 @@ const resources = {
         success: 'Éxito',
         warning: 'Advertencia',
         info: 'Información',
+        noResults: 'No se encontraron resultados',
+        enabled: 'Habilitado',
+        disabled: 'Deshabilitado',
+        profile: 'Perfil',
       },
       nav: {
         dashboard: 'Panel',
@@ -479,9 +515,19 @@ const resources = {
         rememberMe: 'Recordarme',
         noAccount: '¿No tiene una cuenta?',
         hasAccount: '¿Ya tiene una cuenta?',
+        mfaRequired: 'Autenticación de dos factores obligatoria',
+        sessionExpired: 'Sesión expirada',
+      },
+      monitoring: {
+        title: 'Monitoreo',
+        applications: 'Aplicaciones',
+      },
+      navigation: {
+        policies: 'Políticas',
       },
       settings: {
         title: 'Configuración',
+        subtitle: 'Gestione la configuración del sistema',
         general: 'General',
         notifications: 'Notificaciones',
         security: 'Seguridad',
@@ -490,6 +536,8 @@ const resources = {
         timezone: 'Zona Horaria',
         profile: 'Perfil',
         billing: 'Facturación',
+        alerts: 'Alertas',
+        emailNotifications: 'Notificaciones por Correo',
       },
       errors: {
         generic: 'Ocurrió un error inesperado',
