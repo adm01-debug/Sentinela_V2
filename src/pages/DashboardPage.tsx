@@ -348,20 +348,23 @@ export const DashboardPage = () => {
           <CardContent>
             <ScrollArea className="h-[240px]">
               <div className="space-y-1">
-                {fallbackActivities.map((item) => (
-                  <div key={item.id} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 shrink-0">
-                      <item.icon className="h-3.5 w-3.5 text-primary" />
+                {fallbackActivities.map((item) => {
+                  const initials = item.user.split(' ').map(n => n[0]).join('').slice(0, 2);
+                  return (
+                    <div key={item.id} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/50 transition-all duration-200 hover:-translate-y-0.5">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 shrink-0">
+                        <span className="text-[11px] font-semibold text-primary">{initials}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-card-foreground">
+                          <span className="font-medium">{item.user}</span>{' '}
+                          <span className="text-muted-foreground">{item.action}</span>
+                        </p>
+                        <p className="text-xs text-muted-foreground">{item.time}</p>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-card-foreground">
-                        <span className="font-medium">{item.user}</span>{' '}
-                        <span className="text-muted-foreground">{item.action}</span>
-                      </p>
-                      <p className="text-xs text-muted-foreground">{item.time}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </ScrollArea>
           </CardContent>
