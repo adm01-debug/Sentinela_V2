@@ -64,11 +64,6 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
       .toUpperCase();
   }, [displayName]);
 
-  useEffect(() => {
-    const interval = setInterval(() => setLastUpdate(new Date()), 30000);
-    return () => clearInterval(interval);
-  }, []);
-
   const handleMenuClick = () => {
     if (onMenuClick) {
       onMenuClick();
@@ -95,7 +90,7 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
   }, [onCommandPaletteOpen]);
 
   const handleMarkAllRead = () => {
-    setUnreadCount(0);
+    markAllRead();
   };
 
   const handleLogout = useCallback(async () => {
