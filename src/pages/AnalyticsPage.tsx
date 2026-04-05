@@ -1,3 +1,4 @@
+import { PageTransition } from '@/components/PageTransition';
 import { useState } from 'react';
 import { BarChart3, TrendingUp, Users, Clock } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -9,7 +10,7 @@ export default function AnalyticsPage() {
   const [period, setPeriod] = useState('7d');
   const { data } = useAnalytics({ period });
 
-  return (
+  return (<PageTransition>
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Analytics</h1>
@@ -23,5 +24,5 @@ export default function AnalyticsPage() {
       </div>
       <Card><CardHeader><CardTitle>Produtividade ao longo do tempo</CardTitle></CardHeader><CardContent><div className="h-80"><ResponsiveContainer><AreaChart data={data?.chartData || []}><CartesianGrid strokeDasharray="3 3" /><XAxis dataKey="date" /><YAxis /><Tooltip /><Area type="monotone" dataKey="productivity" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} /></AreaChart></ResponsiveContainer></div></CardContent></Card>
     </div>
-  );
+  </PageTransition>);
 }

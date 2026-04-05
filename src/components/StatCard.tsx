@@ -103,12 +103,14 @@ export function StatCard({
     <Card
       variant="interactive"
       className={cn(
-        'group relative overflow-hidden',
+        'group relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5',
         accentColor && `border-l-4 ${accentBorderMap[accentColor]}`
       )}
     >
       {/* Hover gradient accent */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      {/* Subtle shimmer on hover */}
+      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-foreground/[0.03] to-transparent pointer-events-none" />
       
       <CardContent className="p-5 relative">
         <div className="flex items-center justify-between mb-3">
@@ -119,11 +121,11 @@ export function StatCard({
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-success" />
               </span>
             )}
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+            <p className="text-sm font-medium text-muted-foreground group-hover:text-foreground/80 transition-colors duration-200">{title}</p>
           </div>
           {Icon && (
             <div className={cn(
-              "flex items-center justify-center w-9 h-9 rounded-lg transition-colors",
+              "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-md",
               iconColor.includes('bg-') ? iconColor : `bg-muted ${iconColor}`
             )}>
               <Icon className="w-4 h-4" />

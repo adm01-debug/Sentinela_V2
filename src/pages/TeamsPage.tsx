@@ -1,3 +1,4 @@
+import { PageTransition } from '@/components/PageTransition';
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Users, MoreVertical, Edit, Trash2 } from 'lucide-react';
@@ -32,7 +33,7 @@ export default function TeamsPage() {
     [filtered]
   );
 
-  return (
+  return (<PageTransition>
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Equipes</h1>
@@ -95,5 +96,5 @@ export default function TeamsPage() {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  </PageTransition>);
 }

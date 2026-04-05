@@ -1,3 +1,4 @@
+import { PageTransition } from '@/components/PageTransition';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Building, MoreVertical, Edit, Trash2 } from 'lucide-react';
@@ -23,7 +24,7 @@ export default function DepartmentsPage() {
     setName('');
   };
 
-  return (
+  return (<PageTransition>
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center"><h1 className="text-2xl font-bold">Departamentos</h1><Button onClick={() => setOpen(true)}><Plus className="mr-2 h-4 w-4" />Novo</Button></div>
       <div className="relative max-w-md"><Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar..." className="pl-9" value={search} onChange={e => setSearch(e.target.value)} /></div>
@@ -40,5 +41,5 @@ export default function DepartmentsPage() {
       </div>
       <Dialog open={open} onOpenChange={setOpen}><DialogContent><DialogHeader><DialogTitle>Novo Departamento</DialogTitle></DialogHeader><div className="space-y-2"><Label>Nome</Label><Input value={name} onChange={e => setName(e.target.value)} /></div><DialogFooter><Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button><Button onClick={handleCreate} disabled={createDepartment.isPending}>{createDepartment.isPending ? 'Criando...' : 'Criar'}</Button></DialogFooter></DialogContent></Dialog>
     </div>
-  );
+  </PageTransition>);
 }
