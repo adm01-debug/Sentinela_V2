@@ -28,7 +28,7 @@ export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRo
     }
   }, []);
 
-  const getNextIndex = useCallback((current: any, total: number, direction: 1 | -1): number => {
+  const getNextIndex = useCallback((current: number, total: number, direction: 1 | -1): number => {
     const next = current + direction;
     if (loop) return (next + total) % total;
     return Math.max(0, Math.min(total - 1, next));
