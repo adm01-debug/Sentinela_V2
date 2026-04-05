@@ -1,15 +1,13 @@
 import { memo } from 'react';
 import { Shield, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/hooks/useAuth';
 
-interface WelcomeBannerProps {
-  userName?: string;
-}
-
-export const WelcomeBanner = memo(function WelcomeBanner({ userName }: WelcomeBannerProps) {
+export const WelcomeBanner = memo(function WelcomeBanner() {
+  const { user } = useAuth();
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
-  const displayName = userName || 'Administrador';
+  const displayName = user?.name || user?.email?.split('@')[0] || 'Administrador';
 
   return (
     <motion.div
