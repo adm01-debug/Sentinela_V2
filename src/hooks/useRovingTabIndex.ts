@@ -8,10 +8,10 @@ export interface UseRovingTabIndexOptions {
 
 export interface UseRovingTabIndexReturn {
   activeIndex: number;
-  setActiveIndex: (index) => void;
-  getTabIndex: (index) => number;
-  handleKeyDown: (e: KeyboardEvent, index: number, totalItems: any) => void;
-  focusItem: (index) => void;
+  setActiveIndex: (index: number) => void;
+  getTabIndex: (index: number) => number;
+  handleKeyDown: (e: KeyboardEvent, index: number, totalItems: number) => void;
+  focusItem: (index: number) => void;
   itemRefs: React.MutableRefObject<(HTMLElement | null)[]>;
 }
 
