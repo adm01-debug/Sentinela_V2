@@ -1,3 +1,4 @@
+import { PageTransition } from '@/components/PageTransition';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -13,7 +14,7 @@ export default function CalendarPage() {
   const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
   const startDay = getDay(monthStart);
 
-  return (
+  return (<PageTransition>
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2"><CalendarIcon className="h-6 w-6 text-primary" />Calendário</h1>

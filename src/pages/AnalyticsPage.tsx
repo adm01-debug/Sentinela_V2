@@ -1,3 +1,4 @@
+import { PageTransition } from '@/components/PageTransition';
 import { useState } from 'react';
 import { BarChart3, TrendingUp, Users, Clock } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -9,7 +10,7 @@ export default function AnalyticsPage() {
   const [period, setPeriod] = useState('7d');
   const { data } = useAnalytics({ period });
 
-  return (
+  return (<PageTransition>
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Analytics</h1>
