@@ -148,7 +148,7 @@ export const AppSidebar = memo(function AppSidebar() {
     return initial;
   });
 
-  const toggleSection = useCallback((id) => {
+  const toggleSection = useCallback((id: string) => {
     setOpenSections(prev => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
