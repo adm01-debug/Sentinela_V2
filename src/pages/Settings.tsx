@@ -236,7 +236,7 @@ const SettingsContent = memo(function SettingsContent() {
         <div className="mt-6">
           <SettingsAuditLog />
         </div>
-      </main>
+      </div>
     </div>
   );
 });
