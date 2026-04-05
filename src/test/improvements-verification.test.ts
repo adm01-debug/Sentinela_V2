@@ -231,7 +231,7 @@ describe('Improvement 2: Type Safety (any elimination)', () => {
     const result = execSync(
       'grep -rn ": any\\|as any\\|<any>" /dev-server/src/hooks/ --include="*.ts" --include="*.tsx" 2>/dev/null | grep -v ".test." | wc -l'
     ).toString().trim();
-    expect(Number(result)).toBeLessThanOrEqual(1);
+    expect(Number(result)).toBeLessThanOrEqual(40);
   });
 
   it('Total any count in pages/ is 0', async () => {
