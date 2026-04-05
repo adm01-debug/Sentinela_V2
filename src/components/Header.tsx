@@ -42,10 +42,9 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
   const { toggleSidebarCollapse } = useUIStore();
   const { theme, setTheme } = useTheme();
   const { user, logout } = useAuth();
+  const { notifications, unreadCount, markAllRead, markRead } = useHeaderNotifications();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [unreadCount, setUnreadCount] = useState(notifications.filter(n => !n.read).length);
 
   // Derive user display info
   const displayName = useMemo(() => {
