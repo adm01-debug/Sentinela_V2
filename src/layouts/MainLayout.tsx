@@ -86,6 +86,7 @@ export const MainLayout = () => {
 
         {/* Mobile Bottom Navigation */}
         <BottomNav />
+        <ScrollToTopButton />
       </div>
     </div>
     </KeyboardShortcutsProvider>
