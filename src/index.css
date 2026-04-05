@@ -765,6 +765,92 @@
   }
 }
 
+/* ============================================================
+ * MICRO-INTERACTIONS & POLISH
+ * ============================================================ */
+
+/* Card hover lift effect */
+.card-hover {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -8px hsl(var(--primary) / 0.12);
+}
+
+/* Table row hover */
+.table-row-hover {
+  transition: background-color 150ms ease;
+}
+.table-row-hover:hover {
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+/* Focus visible ring for accessibility */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Smooth page transitions */
+.page-enter {
+  animation: page-fade-in 300ms ease forwards;
+}
+
+@keyframes page-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass morphism panel */
+.glass {
+  background: hsl(var(--card) / 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border) / 0.5);
+}
+
+/* Stat card number animation */
+.stat-number {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Active indicator pill */
+.nav-active-pill {
+  position: relative;
+}
+.nav-active-pill::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  border-radius: 9999px;
+  background-color: hsl(var(--primary));
+}
+
+/* Print styles for reports */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+  * { color-adjust: exact; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
 /* Keyframes */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
