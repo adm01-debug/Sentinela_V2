@@ -311,7 +311,11 @@ export const DashboardPage = () => {
                 {fallbackAlerts.map((alert) => (
                   <div
                     key={alert.id}
-                    className={`flex items-start gap-3 p-3 rounded-lg border transition-colors hover:bg-muted/30 cursor-pointer ${severityStyles[alert.severity]}`}
+                    className={`flex items-start gap-3 p-3 rounded-lg border transition-all duration-200 hover:shadow-sm hover:-translate-y-0.5 cursor-pointer ${severityStyles[alert.severity]}`}
+                    onClick={() => navigate(`/alerts/${alert.id}`)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && navigate(`/alerts/${alert.id}`)}
                   >
                     <Shield className="h-4 w-4 mt-0.5 shrink-0" />
                     <div className="flex-1 min-w-0">
