@@ -47,8 +47,8 @@ export function formatCompactCurrency(amount: number, currency: string = 'BRL'):
 
 export function convertCurrency(
   amount: number,
-  fromRate: any,
-  toRate
+  fromRate: number,
+  toRate: number
 ): number {
   return (amount / fromRate) * toRate;
 }
