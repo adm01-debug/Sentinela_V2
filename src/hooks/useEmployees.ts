@@ -119,7 +119,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 
       // Attendance stats
       const attendanceRecords = attendance || [];
-      const totalWorkedMinutes = attendanceRecords.reduce((sum: number, r: any) => sum + (r.total_worked_minutes || 0), 0);
+      const totalWorkedMinutes = attendanceRecords.reduce((sum: number, r) => sum + (r.total_worked_minutes || 0), 0);
       const avgHoursPerDay = attendanceRecords.length > 0 
         ? Math.round((totalWorkedMinutes / attendanceRecords.length / 60) * 10) / 10 
         : 0;
