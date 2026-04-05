@@ -43,7 +43,7 @@ export default function CalendarPage() {
         </CardContent>
       </Card>
     </div>
-  );
+  </PageTransition>);
 }
 
 export { CalendarPage };

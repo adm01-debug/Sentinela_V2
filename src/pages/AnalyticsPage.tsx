@@ -24,5 +24,5 @@ export default function AnalyticsPage() {
       </div>
       <Card><CardHeader><CardTitle>Produtividade ao longo do tempo</CardTitle></CardHeader><CardContent><div className="h-80"><ResponsiveContainer><AreaChart data={data?.chartData || []}><CartesianGrid strokeDasharray="3 3" /><XAxis dataKey="date" /><YAxis /><Tooltip /><Area type="monotone" dataKey="productivity" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} /></AreaChart></ResponsiveContainer></div></CardContent></Card>
     </div>
-  );
+  </PageTransition>);
 }

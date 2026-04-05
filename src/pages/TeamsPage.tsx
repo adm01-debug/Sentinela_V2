@@ -96,5 +96,5 @@ export default function TeamsPage() {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  </PageTransition>);
 }

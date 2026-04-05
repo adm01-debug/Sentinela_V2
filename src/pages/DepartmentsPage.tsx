@@ -41,5 +41,5 @@ export default function DepartmentsPage() {
       </div>
       <Dialog open={open} onOpenChange={setOpen}><DialogContent><DialogHeader><DialogTitle>Novo Departamento</DialogTitle></DialogHeader><div className="space-y-2"><Label>Nome</Label><Input value={name} onChange={e => setName(e.target.value)} /></div><DialogFooter><Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button><Button onClick={handleCreate} disabled={createDepartment.isPending}>{createDepartment.isPending ? 'Criando...' : 'Criar'}</Button></DialogFooter></DialogContent></Dialog>
     </div>
-  );
+  </PageTransition>);
 }
