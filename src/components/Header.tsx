@@ -1,10 +1,11 @@
-import { memo, useEffect, useCallback, useState } from 'react';
+import { memo, useEffect, useCallback, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Bell, Search, Menu, Sun, Moon, Monitor, User, LogOut, Settings, HelpCircle, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useUIStore } from '@/stores/uiStore';
 import { useTheme } from '@/providers/ThemeProvider';
+import { useAuth } from '@/hooks/useAuth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -45,10 +46,29 @@ const severityDot = {
 export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }: HeaderProps) {
   const { toggleSidebarCollapse } = useUIStore();
   const { theme, setTheme } = useTheme();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [lastUpdate, setLastUpdate] = useState(new Date());
   const [unreadCount, setUnreadCount] = useState(notifications.filter(n => !n.read).length);
+
+  // Derive user display info
+  const displayName = useMemo(() => {
+    if (!user) return 'Usuário';
+    return user.name || user.email?.split('@')[0] || 'Usuário';
+  }, [user]);
+
+  const displayEmail = user?.email || '';
+
+  const initials = useMemo(() => {
+    if (!displayName || displayName === 'Usuário') return 'U';
+    return displayName
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
+  }, [displayName]);
 
   useEffect(() => {
     const interval = setInterval(() => setLastUpdate(new Date()), 30000);
@@ -83,6 +103,11 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
   const handleMarkAllRead = () => {
     setUnreadCount(0);
   };
+
+  const handleLogout = useCallback(async () => {
+    await logout();
+    navigate('/auth');
+  }, [logout, navigate]);
 
   const ThemeIcon = theme === 'dark' ? Moon : theme === 'light' ? Sun : Monitor;
 
@@ -228,23 +253,31 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full p-0" aria-label={t('header.userMenu')}>
-              <Avatar className="h-7 w-7">
-                <AvatarImage src="" alt="Usuário" />
-                <AvatarFallback className="bg-primary/10 text-primary text-[11px] font-semibold">
-                  AD
+              <Avatar className="h-7 w-7 ring-2 ring-primary/10 transition-shadow hover:ring-primary/30">
+                <AvatarImage src={user?.avatar || ''} alt={displayName} />
+                <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary text-[11px] font-semibold">
+                  {initials}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52">
-            <DropdownMenuLabel className="font-normal py-1.5">
-              <div className="flex flex-col space-y-0.5">
-                <p className="text-sm font-medium leading-none">Admin</p>
-                <p className="text-xs text-muted-foreground">admin@sentinela.com</p>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel className="font-normal py-2">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src={user?.avatar || ''} alt={displayName} />
+                  <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary text-xs font-semibold">
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col space-y-0.5 min-w-0">
+                  <p className="text-sm font-medium leading-none truncate">{displayName}</p>
+                  <p className="text-xs text-muted-foreground truncate">{displayEmail}</p>
+                </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate('/settings')} className="gap-2 cursor-pointer text-xs">
+            <DropdownMenuItem onClick={() => navigate('/settings/profile')} className="gap-2 cursor-pointer text-xs">
               <User className="h-3.5 w-3.5" />
               {t('header.myProfile')}
             </DropdownMenuItem>
@@ -257,7 +290,7 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
               {t('header.help')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 cursor-pointer text-xs text-destructive focus:text-destructive">
+            <DropdownMenuItem onClick={handleLogout} className="gap-2 cursor-pointer text-xs text-destructive focus:text-destructive">
               <LogOut className="h-3.5 w-3.5" />
               {t('header.logout')}
             </DropdownMenuItem>
