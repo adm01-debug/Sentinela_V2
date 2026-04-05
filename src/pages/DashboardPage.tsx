@@ -307,6 +307,15 @@ export const DashboardPage = () => {
                   <Bar dataKey="horas" name="Horas" fill="url(#colorBars)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+              {/* sr-only accessible table */}
+              <table className="sr-only" aria-label="Horas médias por dia da semana">
+                <thead><tr><th>Dia</th><th>Horas</th></tr></thead>
+                <tbody>
+                  {fallbackProductivityData.map(d => (
+                    <tr key={d.day}><td>{d.day}</td><td>{d.horas}</td></tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>
