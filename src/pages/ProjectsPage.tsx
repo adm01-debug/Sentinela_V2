@@ -284,7 +284,7 @@ function ProjectsPage() {
                               }}
                               className="shrink-0"
                             >
-                              <cfg.icon className={`h-5 w-5 ${statusKey === 'done' ? 'text-green-600' : statusKey === 'in_progress' ? 'text-blue-600' : 'text-muted-foreground'}`} />
+                              <cfg.icon className={`h-5 w-5 ${statusKey === 'done' ? 'text-success' : statusKey === 'in_progress' ? 'text-info' : 'text-muted-foreground'}`} />
                             </button>
                             <div className="flex-1 min-w-0">
                               <p className={`text-sm font-medium ${statusKey === 'done' ? 'line-through text-muted-foreground' : ''}`}>{task.name}</p>
