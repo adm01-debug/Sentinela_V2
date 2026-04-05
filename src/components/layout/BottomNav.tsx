@@ -17,9 +17,9 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { labelKey: 'nav.dashboard', href: '/', icon: LayoutDashboard },
+  { labelKey: 'nav.dashboard', href: '/dashboard', icon: LayoutDashboard },
   { labelKey: 'nav.employees', href: '/employees', icon: Users },
-  { labelKey: 'sections.security', href: '/security', icon: Shield },
+  { labelKey: 'sections.security', href: '/violations', icon: Shield },
   { labelKey: 'nav.reports', href: '/reports', icon: FileText },
   { labelKey: 'nav.settings', href: '/settings', icon: Settings },
 ];
@@ -29,25 +29,42 @@ function BottomNavComponent() {
   const { t } = useTranslation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background md:hidden">
-      <div className="flex items-center justify-around h-16 px-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/60 bg-background/95 backdrop-blur-md md:hidden safe-area-bottom">
+      <div className="flex items-center justify-around h-16 px-1">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = location.pathname === item.href;
+          const isActive = location.pathname === item.href ||
+            (item.href !== '/dashboard' && location.pathname.startsWith(item.href));
 
           return (
             <NavLink
               key={item.href}
               to={item.href}
               className={cn(
-                'flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-colors',
+                'relative flex flex-col items-center justify-center gap-0.5 px-3 py-2 rounded-xl transition-all duration-200 min-w-[56px]',
                 isActive
                   ? 'text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
+                  : 'text-muted-foreground active:scale-95'
               )}
             >
-              <Icon className={cn('h-5 w-5', isActive && 'text-primary')} />
-              <span className="text-[10px] font-medium">{t(item.labelKey)}</span>
+              {/* Active background pill */}
+              {isActive && (
+                <div className="absolute inset-x-2 inset-y-1 rounded-xl bg-primary/10 -z-10" />
+              )}
+              <Icon className={cn(
+                'h-5 w-5 transition-transform duration-200',
+                isActive && 'scale-110'
+              )} />
+              <span className={cn(
+                'text-[10px] leading-tight',
+                isActive ? 'font-semibold' : 'font-medium'
+              )}>
+                {t(item.labelKey)}
+              </span>
+              {/* Active dot indicator */}
+              {isActive && (
+                <div className="absolute -bottom-0.5 w-5 h-[3px] rounded-full bg-primary" />
+              )}
             </NavLink>
           );
         })}
