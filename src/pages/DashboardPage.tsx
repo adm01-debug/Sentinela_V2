@@ -116,6 +116,8 @@ export const DashboardPage = () => {
   const [departmentFilter, setDepartmentFilter] = useState('all');
 
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
+  const { data: realAlerts } = useRecentAlerts();
+  const { data: realActivity } = useRecentActivity();
   const navigate = useNavigate();
   const colors = useChartColors();
   const { t } = useTranslation();
@@ -128,6 +130,10 @@ export const DashboardPage = () => {
     { name: 'Financeiro', value: 18, color: colors.warning },
     { name: 'Suporte', value: 10, color: colors.destructive },
   ];
+
+  // Use real data when available, fallback for demo
+  const alerts = realAlerts && realAlerts.length > 0 ? realAlerts : fallbackAlerts;
+  const activities = realActivity && realActivity.length > 0 ? realActivity : fallbackActivities;
 
   if (statsLoading) return <DashboardSkeleton />;
 
