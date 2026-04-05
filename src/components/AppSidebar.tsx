@@ -304,21 +304,21 @@ export const AppSidebar = memo(function AppSidebar() {
           {!sidebarCollapsed ? (
             <div className="flex items-center gap-2 px-1 py-1">
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--sidebar-primary))] to-[hsl(var(--accent))] flex items-center justify-center text-[10px] font-bold text-white">
-                AD
+                {initials}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-[hsl(var(--sidebar-accent-foreground))] truncate">Admin</p>
-                <p className="text-[10px] text-[hsl(var(--sidebar-muted))] truncate">admin@sentinela.com</p>
+                <p className="text-xs font-medium text-[hsl(var(--sidebar-accent-foreground))] truncate">{displayName}</p>
+                <p className="text-[10px] text-[hsl(var(--sidebar-muted))] truncate">{displayEmail}</p>
               </div>
             </div>
           ) : (
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--sidebar-primary))] to-[hsl(var(--accent))] flex items-center justify-center text-[10px] font-bold text-white mx-auto cursor-pointer">
-                  AD
+                  {initials}
                 </div>
               </TooltipTrigger>
-              <TooltipContent side="right">Admin</TooltipContent>
+              <TooltipContent side="right">{displayName}</TooltipContent>
             </Tooltip>
           )}
         </div>
