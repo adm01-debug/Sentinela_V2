@@ -20,7 +20,7 @@ export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRo
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
 
-  const focusItem = useCallback((index) => {
+  const focusItem = useCallback((index: number) => {
     const item = itemRefs.current[index];
     if (item) {
       item.focus();
