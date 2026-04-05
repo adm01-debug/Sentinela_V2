@@ -105,8 +105,8 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 
       // Calculate productivity from keystroke data
       const logs = keystrokeLogs || [];
-      const totalActive = logs.reduce((sum: number, l: any) => sum + (l.active_time_seconds || 0), 0);
-      const totalIdle = logs.reduce((sum: number, l: any) => sum + (l.idle_time_seconds || 0), 0);
+      const totalActive = logs.reduce((sum: number, l) => sum + (l.active_time_seconds || 0), 0);
+      const totalIdle = logs.reduce((sum: number, l) => sum + (l.idle_time_seconds || 0), 0);
       const totalTime = totalActive + totalIdle;
       const productivity = totalTime > 0 ? Math.round((totalActive / totalTime) * 100) : 0;
 
