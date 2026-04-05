@@ -121,11 +121,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-screen bg-background">
-    <LoadingSpinner size="lg" />
-  </div>
-);
+const PageLoader = () => <BrandedSplash />;
 
 // ============================================================
 // APP ROUTES
