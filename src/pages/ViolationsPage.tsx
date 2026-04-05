@@ -18,16 +18,16 @@ import {
 } from 'recharts';
 
 const severityColors: Record<string, string> = {
-  critical: 'bg-red-500/10 text-red-600 border-red-200',
-  high: 'bg-orange-500/10 text-orange-600 border-orange-200',
-  medium: 'bg-yellow-500/10 text-yellow-600 border-yellow-200',
-  low: 'bg-blue-500/10 text-blue-600 border-blue-200',
+  critical: 'bg-destructive/10 text-destructive border-destructive/20',
+  high: 'bg-warning/10 text-warning border-warning/20',
+  medium: 'bg-info/10 text-info border-info/20',
+  low: 'bg-primary/10 text-primary border-primary/20',
 };
 
 const statusIcons: Record<string, React.ReactNode> = {
-  open: <AlertTriangle className="h-4 w-4 text-red-500" />,
-  investigating: <Clock className="h-4 w-4 text-yellow-500" />,
-  resolved: <CheckCircle className="h-4 w-4 text-green-500" />,
+  open: <AlertTriangle className="h-4 w-4 text-destructive" />,
+  investigating: <Clock className="h-4 w-4 text-warning" />,
+  resolved: <CheckCircle className="h-4 w-4 text-success" />,
   dismissed: <XCircle className="h-4 w-4 text-muted-foreground" />,
 };
 

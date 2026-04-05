@@ -156,8 +156,8 @@ function TimesheetsPage() {
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card><CardContent className="p-4"><p className="text-sm text-muted-foreground">Total</p><p className="text-2xl font-bold">{stats.total}</p></CardContent></Card>
-        <Card><CardContent className="p-4"><p className="text-sm text-muted-foreground">Pendentes</p><p className="text-2xl font-bold text-yellow-600">{stats.pending}</p></CardContent></Card>
-        <Card><CardContent className="p-4"><p className="text-sm text-muted-foreground">Aprovadas</p><p className="text-2xl font-bold text-green-600">{stats.approved}</p></CardContent></Card>
+        <Card><CardContent className="p-4"><p className="text-sm text-muted-foreground">Pendentes</p><p className="text-2xl font-bold text-warning">{stats.pending}</p></CardContent></Card>
+        <Card><CardContent className="p-4"><p className="text-sm text-muted-foreground">Aprovadas</p><p className="text-2xl font-bold text-success">{stats.approved}</p></CardContent></Card>
         <Card><CardContent className="p-4"><p className="text-sm text-muted-foreground">Horas Totais</p><p className="text-2xl font-bold">{Math.round(stats.totalHours)}h</p></CardContent></Card>
       </div>
 
@@ -208,7 +208,7 @@ function TimesheetsPage() {
                     </TableCell>
                     <TableCell><Badge variant="outline">{ts.period_type === 'weekly' ? 'Semanal' : 'Mensal'}</Badge></TableCell>
                     <TableCell className="text-right">{ts.regular_hours}h</TableCell>
-                    <TableCell className="text-right">{ts.overtime_hours > 0 ? <span className="text-orange-600">{ts.overtime_hours}h</span> : '0h'}</TableCell>
+                    <TableCell className="text-right">{ts.overtime_hours > 0 ? <span className="text-warning">{ts.overtime_hours}h</span> : '0h'}</TableCell>
                     <TableCell className="text-right font-medium">{ts.total_hours}h</TableCell>
                     <TableCell><Badge variant={stCfg.variant}>{stCfg.label}</Badge></TableCell>
                     <TableCell className="text-right">

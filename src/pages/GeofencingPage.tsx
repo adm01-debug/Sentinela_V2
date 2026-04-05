@@ -37,9 +37,9 @@ export default function GeofencingPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold">{stats.total}</p><p className="text-xs text-muted-foreground">Total</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-green-600">{stats.active}</p><p className="text-xs text-muted-foreground">Ativas</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-red-600">{stats.restricted}</p><p className="text-xs text-muted-foreground">Restritas</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-blue-600">{stats.required}</p><p className="text-xs text-muted-foreground">Obrigatórias</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-success">{stats.active}</p><p className="text-xs text-muted-foreground">Ativas</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-destructive">{stats.restricted}</p><p className="text-xs text-muted-foreground">Restritas</p></CardContent></Card>
+        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-info">{stats.required}</p><p className="text-xs text-muted-foreground">Obrigatórias</p></CardContent></Card>
       </div>
 
       {/* Geofences Grid */}

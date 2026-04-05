@@ -20,10 +20,10 @@ import {
 } from 'recharts';
 
 const statusColors: Record<string, string> = {
-  online: 'bg-green-500',
-  idle: 'bg-yellow-500',
-  busy: 'bg-red-500',
-  offline: 'bg-gray-400',
+  online: 'bg-success',
+  idle: 'bg-warning',
+  busy: 'bg-destructive',
+  offline: 'bg-muted-foreground/50',
 };
 
 const statusLabels: Record<string, string> = {

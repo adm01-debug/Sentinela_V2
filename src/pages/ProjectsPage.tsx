@@ -16,10 +16,10 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 const statusColors: Record<string, string> = {
-  active: 'bg-green-100 text-green-700',
-  completed: 'bg-blue-100 text-blue-700',
-  paused: 'bg-yellow-100 text-yellow-700',
-  archived: 'bg-gray-100 text-gray-700',
+  active: 'bg-success/10 text-success',
+  completed: 'bg-info/10 text-info',
+  paused: 'bg-warning/10 text-warning',
+  archived: 'bg-muted text-muted-foreground',
 };
 
 const taskStatusConfig: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
@@ -29,10 +29,10 @@ const taskStatusConfig: Record<string, { label: string; icon: React.ComponentTyp
 };
 
 const priorityColors: Record<string, string> = {
-  low: 'bg-blue-100 text-blue-700',
-  medium: 'bg-yellow-100 text-yellow-700',
-  high: 'bg-orange-100 text-orange-700',
-  critical: 'bg-red-100 text-red-700',
+  low: 'bg-primary/10 text-primary',
+  medium: 'bg-warning/10 text-warning',
+  high: 'bg-warning/15 text-warning',
+  critical: 'bg-destructive/10 text-destructive',
 };
 
 function ProjectsPage() {
@@ -284,7 +284,7 @@ function ProjectsPage() {
                               }}
                               className="shrink-0"
                             >
-                              <cfg.icon className={`h-5 w-5 ${statusKey === 'done' ? 'text-green-600' : statusKey === 'in_progress' ? 'text-blue-600' : 'text-muted-foreground'}`} />
+                              <cfg.icon className={`h-5 w-5 ${statusKey === 'done' ? 'text-success' : statusKey === 'in_progress' ? 'text-info' : 'text-muted-foreground'}`} />
                             </button>
                             <div className="flex-1 min-w-0">
                               <p className={`text-sm font-medium ${statusKey === 'done' ? 'line-through text-muted-foreground' : ''}`}>{task.name}</p>
