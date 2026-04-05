@@ -36,7 +36,7 @@ export function useDashboardPage() {
         .order('created_at', { ascending: false })
         .limit(5);
       if (error) throw error;
-      return (data || []).map((v: any) => ({ 
+      return (data || []).map((v) => ({ 
         id: v.id,
         employee_name: v.employee_name || 'N/A',
         type: v.violation_type,
