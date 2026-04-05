@@ -16,10 +16,10 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 const statusColors: Record<string, string> = {
-  active: 'bg-green-100 text-green-700',
-  completed: 'bg-blue-100 text-blue-700',
-  paused: 'bg-yellow-100 text-yellow-700',
-  archived: 'bg-gray-100 text-gray-700',
+  active: 'bg-success/10 text-success',
+  completed: 'bg-info/10 text-info',
+  paused: 'bg-warning/10 text-warning',
+  archived: 'bg-muted text-muted-foreground',
 };
 
 const taskStatusConfig: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
