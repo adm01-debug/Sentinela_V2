@@ -52,6 +52,7 @@ const resources = {
         enabled: 'Habilitado',
         disabled: 'Desabilitado',
         profile: 'Perfil',
+        none: 'Nenhum',
       },
       nav: {
         dashboard: 'Dashboard',
