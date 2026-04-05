@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export const MainLayout = () => {
   useDocumentTitle();
   const { sidebarCollapsed } = useUIStore();
+  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
