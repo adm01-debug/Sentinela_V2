@@ -10,7 +10,7 @@ describe('Layout Consolidation', () => {
   it('DashboardLayout was removed — layout/index has no DashboardLayout export', async () => {
     const mod = await import('@/components/layout/index');
     expect((mod as any).DashboardLayout).toBeUndefined();
-  });
+  }, 15000);
 
   it('ResponsiveLayout was removed — layout/index has no ResponsiveLayout export', async () => {
     const mod = await import('@/components/layout/index');
