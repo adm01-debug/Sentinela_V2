@@ -48,6 +48,10 @@ const resources = {
         success: 'Sucesso',
         warning: 'Atenção',
         info: 'Informação',
+        noResults: 'Nenhum resultado encontrado',
+        enabled: 'Habilitado',
+        disabled: 'Desabilitado',
+        profile: 'Perfil',
       },
       nav: {
         dashboard: 'Dashboard',
