@@ -100,8 +100,7 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
 
   const ThemeIcon = theme === 'dark' ? Moon : theme === 'light' ? Sun : Monitor;
 
-  const timeSince = Math.floor((Date.now() - lastUpdate.getTime()) / 1000);
-  const timeLabel = timeSince < 60 ? `${timeSince}s` : `${Math.floor(timeSince / 60)}m`;
+  const timeLabel = 'agora';
 
   return (
     <header className="sticky top-0 z-30 flex h-12 items-center gap-2 border-b border-border/60 bg-background/95 backdrop-blur-sm px-3 sm:px-4">
