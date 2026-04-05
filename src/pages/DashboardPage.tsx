@@ -436,7 +436,7 @@ export const DashboardPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[150px]">
+            <div className="h-[120px] sm:h-[150px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
