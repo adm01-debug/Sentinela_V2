@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 import {
   Users, Activity, TrendingUp, AlertTriangle, Shield, Clock,
   Filter, X, ArrowRight, Eye, Monitor, Globe, CheckCircle,
-  Bell
+  Bell, ShieldOff, Inbox
 } from 'lucide-react';
-import { useDashboardStats } from '@/hooks/useDashboard';
+import { useDashboardStats, useRecentAlerts, useRecentActivity } from '@/hooks/useDashboard';
+import { EmptyState } from '@/components/EmptyState';
 import { useChartColors } from '@/hooks/useChartColors';
 import { StatCard } from '@/components/StatCard';
 import { DashboardCustomizer } from '@/components/DashboardCustomizer';
