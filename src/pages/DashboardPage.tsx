@@ -269,6 +269,15 @@ export const DashboardPage = () => {
                   />
                 </AreaChart>
               </ResponsiveContainer>
+              {/* sr-only accessible table */}
+              <table className="sr-only" aria-label="Dados de atividade ao longo do dia">
+                <thead><tr><th>Horário</th><th>Ativos</th><th>Inativos</th></tr></thead>
+                <tbody>
+                  {fallbackActivityData.map(d => (
+                    <tr key={d.time}><td>{d.time}</td><td>{d.ativos}</td><td>{d.inativos}</td></tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>
