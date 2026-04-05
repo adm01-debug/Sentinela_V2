@@ -272,11 +272,17 @@ export const DashboardPage = () => {
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={fallbackProductivityData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorBars" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor={colors.accent} stopOpacity={1} />
+                      <stop offset="100%" stopColor={colors.accent} stopOpacity={0.4} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
                   <XAxis dataKey="day" tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <YAxis domain={[0, 10]} tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="horas" name="Horas" fill={colors.accent} radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="horas" name="Horas" fill="url(#colorBars)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
