@@ -1,4 +1,4 @@
-import { useState, useCallback, memo } from 'react';
+import { useState, useCallback, memo, useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,6 +9,7 @@ import {
   UserCheck, BarChart, ChevronDown
 } from 'lucide-react';
 import { useUIStore } from '@/stores';
+import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/utils/cn';
 import { ROUTES, APP_NAME } from '@/constants';
 import { ScrollArea } from '@/components/ui/scroll-area';
