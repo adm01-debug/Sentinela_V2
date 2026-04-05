@@ -16,12 +16,12 @@ import {
 } from 'recharts';
 
 const statusConfig: Record<string, { label: string; color: string }> = {
-  present: { label: 'Presente', color: 'bg-green-100 text-green-700' },
-  absent: { label: 'Ausente', color: 'bg-red-100 text-red-700' },
-  late: { label: 'Atrasado', color: 'bg-yellow-100 text-yellow-700' },
-  early_departure: { label: 'Saída Antecipada', color: 'bg-orange-100 text-orange-700' },
-  half_day: { label: 'Meio Período', color: 'bg-blue-100 text-blue-700' },
-  holiday: { label: 'Feriado', color: 'bg-purple-100 text-purple-700' },
+  present: { label: 'Presente', color: 'bg-success/10 text-success' },
+  absent: { label: 'Ausente', color: 'bg-destructive/10 text-destructive' },
+  late: { label: 'Atrasado', color: 'bg-warning/10 text-warning' },
+  early_departure: { label: 'Saída Antecipada', color: 'bg-warning/10 text-warning' },
+  half_day: { label: 'Meio Período', color: 'bg-info/10 text-info' },
+  holiday: { label: 'Feriado', color: 'bg-accent text-accent-foreground' },
 };
 
 function AttendancePage() {

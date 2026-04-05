@@ -29,10 +29,10 @@ const taskStatusConfig: Record<string, { label: string; icon: React.ComponentTyp
 };
 
 const priorityColors: Record<string, string> = {
-  low: 'bg-blue-100 text-blue-700',
-  medium: 'bg-yellow-100 text-yellow-700',
-  high: 'bg-orange-100 text-orange-700',
-  critical: 'bg-red-100 text-red-700',
+  low: 'bg-primary/10 text-primary',
+  medium: 'bg-warning/10 text-warning',
+  high: 'bg-warning/15 text-warning',
+  critical: 'bg-destructive/10 text-destructive',
 };
 
 function ProjectsPage() {
