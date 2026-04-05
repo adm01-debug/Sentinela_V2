@@ -220,7 +220,7 @@ export const DashboardPage = () => {
       {/* Charts Row */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-7">
         {/* Activity Over Time */}
-        <Card className="lg:col-span-4">
+        <Card className="lg:col-span-4 card-hover">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold flex items-center gap-2">
               <Activity className="h-4 w-4 text-primary" />
@@ -256,7 +256,7 @@ export const DashboardPage = () => {
         </Card>
 
         {/* Productivity Bar Chart */}
-        <Card className="lg:col-span-3">
+        <Card className="lg:col-span-3 card-hover">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold flex items-center gap-2">
               <Clock className="h-4 w-4 text-warning" />
