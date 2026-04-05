@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Kbd } from '@/components/ui/kbd';
+
 
 interface Shortcut {
   keys: string[];
