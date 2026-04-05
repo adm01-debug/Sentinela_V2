@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export function useStep(maxStep: any, initialStep = 0) {
+export function useStep(maxStep: number, initialStep = 0) {
   const [step, setStep] = useState(initialStep);
 
   const next = useCallback(() => setStep(s => Math.min(s + 1, maxStep)), [maxStep]);
