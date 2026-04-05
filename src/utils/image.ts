@@ -75,7 +75,7 @@ export async function cropImage(
   });
 }
 
-export async function rotateImage(src: string, degrees: any): Promise<Blob> {
+export async function rotateImage(src: string, degrees: number): Promise<Blob> {
   const img = await loadImage(src);
   const canvas = document.createElement('canvas');
   const radians = (degrees * Math.PI) / 180;
