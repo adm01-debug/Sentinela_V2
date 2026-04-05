@@ -130,6 +130,10 @@ const resources = {
       employees: {
         title: 'Funcionários',
         subtitle: 'Gerencie os funcionários monitorados',
+        name: 'Nome',
+        email: 'E-mail',
+        department: 'Departamento',
+        status: 'Status',
         addEmployee: 'Adicionar Funcionário',
         editEmployee: 'Editar Funcionário',
         deleteEmployee: 'Excluir Funcionário',
