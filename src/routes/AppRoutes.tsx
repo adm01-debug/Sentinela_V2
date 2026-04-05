@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ROUTES } from '@/constants';
 import { MainLayout } from '@/layouts/MainLayout';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { BrandedSplash } from '@/components/ui/LoadingSpinner';
 import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -97,11 +97,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSupabaseSession();
   
   if (session === undefined) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <BrandedSplash />;
   }
   
   if (!session) {
@@ -115,11 +111,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const session = useSupabaseSession();
   
   if (session === undefined) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <BrandedSplash />;
   }
   
   if (session) {
@@ -129,11 +121,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-screen bg-background">
-    <LoadingSpinner size="lg" />
-  </div>
-);
+const PageLoader = () => <BrandedSplash />;
 
 // ============================================================
 // APP ROUTES
