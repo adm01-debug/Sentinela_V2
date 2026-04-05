@@ -155,9 +155,19 @@ const resources = {
         rememberMe: 'Lembrar de mim',
         noAccount: 'Não tem uma conta?',
         hasAccount: 'Já tem uma conta?',
+        mfaRequired: 'Autenticação de dois fatores obrigatória',
+        sessionExpired: 'Sessão expirada',
+      },
+      monitoring: {
+        title: 'Monitoramento',
+        applications: 'Aplicativos',
+      },
+      navigation: {
+        policies: 'Políticas',
       },
       settings: {
         title: 'Configurações',
+        subtitle: 'Gerencie as configurações do sistema',
         general: 'Geral',
         notifications: 'Notificações',
         security: 'Segurança',
@@ -166,6 +176,8 @@ const resources = {
         timezone: 'Fuso Horário',
         profile: 'Perfil',
         billing: 'Faturamento',
+        alerts: 'Alertas',
+        emailNotifications: 'Notificações por E-mail',
       },
       errors: {
         generic: 'Ocorreu um erro inesperado',
