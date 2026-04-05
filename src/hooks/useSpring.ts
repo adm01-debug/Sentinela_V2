@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 
-export function useSpring(initialValue: any, config = { stiffness: 100, damping: 10 }) {
+export function useSpring(initialValue: number, config = { stiffness: 100, damping: 10 }) {
   const [value, setValue] = useState(initialValue);
   const targetRef = useRef(initialValue);
   const velocityRef = useRef(0);
