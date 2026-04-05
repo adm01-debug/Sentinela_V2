@@ -241,11 +241,24 @@ export const DashboardPage = () => {
                       <stop offset="5%" stopColor={colors.primary} stopOpacity={0.3} />
                       <stop offset="95%" stopColor={colors.primary} stopOpacity={0} />
                     </linearGradient>
+                    <linearGradient id="colorInativos" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors.muted} stopOpacity={0.2} />
+                      <stop offset="95%" stopColor={colors.muted} stopOpacity={0} />
+                    </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
                   <XAxis dataKey="time" tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <YAxis tick={{ fill: colors.muted, fontSize: 12 }} stroke={colors.border} />
                   <Tooltip content={<CustomTooltip />} />
+                  <Area
+                    type="monotone"
+                    dataKey="inativos"
+                    name="Inativos"
+                    stroke={colors.muted}
+                    strokeWidth={1.5}
+                    strokeDasharray="4 3"
+                    fill="url(#colorInativos)"
+                  />
                   <Area
                     type="monotone"
                     dataKey="ativos"
@@ -256,6 +269,15 @@ export const DashboardPage = () => {
                   />
                 </AreaChart>
               </ResponsiveContainer>
+              {/* sr-only accessible table */}
+              <table className="sr-only" aria-label="Dados de atividade ao longo do dia">
+                <thead><tr><th>Horário</th><th>Ativos</th><th>Inativos</th></tr></thead>
+                <tbody>
+                  {fallbackActivityData.map(d => (
+                    <tr key={d.time}><td>{d.time}</td><td>{d.ativos}</td><td>{d.inativos}</td></tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>
@@ -285,6 +307,15 @@ export const DashboardPage = () => {
                   <Bar dataKey="horas" name="Horas" fill="url(#colorBars)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+              {/* sr-only accessible table */}
+              <table className="sr-only" aria-label="Horas médias por dia da semana">
+                <thead><tr><th>Dia</th><th>Horas</th></tr></thead>
+                <tbody>
+                  {fallbackProductivityData.map(d => (
+                    <tr key={d.day}><td>{d.day}</td><td>{d.horas}</td></tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>

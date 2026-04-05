@@ -7,7 +7,11 @@ export const WelcomeBanner = memo(function WelcomeBanner() {
   const { user } = useAuth();
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
-  const displayName = user?.name || user?.email?.split('@')[0] || 'Administrador';
+  
+  // Smart name: if the name looks like a slug (no spaces, short), use a friendly fallback
+  const rawName = user?.name || user?.email?.split('@')[0] || '';
+  const looksLikeSlug = rawName.length > 0 && rawName.length <= 12 && !/\s/.test(rawName) && /^[a-z0-9_.-]+$/i.test(rawName);
+  const displayName = looksLikeSlug && rawName.length < 4 ? 'Administrador' : rawName || 'Administrador';
 
   return (
     <motion.div

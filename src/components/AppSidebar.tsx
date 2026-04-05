@@ -6,7 +6,7 @@ import {
   BarChart3, Shield, Monitor, Camera, Globe, Calendar, Gamepad2,
   Building2, UserCog, ScrollText, Smartphone, MapPin, Clock, Download,
   Key, Webhook, MessageSquare, Brain, FolderKanban, Timer, ClipboardList,
-  UserCheck, BarChart, ChevronDown
+  UserCheck, BarChart, ChevronDown, LogOut, Link2, ShieldCheck, FileCheck
 } from 'lucide-react';
 import { useUIStore } from '@/stores';
 import { useAuth } from '@/hooks/useAuth';
@@ -95,9 +95,9 @@ const navSections: NavSection[] = [
     titleKey: 'sections.admin',
     items: [
       { icon: UserCog, labelKey: 'nav.users', path: ROUTES.ADMIN_USERS },
-      { icon: Shield, labelKey: 'nav.roles', path: ROUTES.ADMIN_ROLES },
+      { icon: ShieldCheck, labelKey: 'nav.roles', path: ROUTES.ADMIN_ROLES },
       { icon: ScrollText, labelKey: 'nav.audit', path: ROUTES.ADMIN_AUDIT },
-      { icon: Shield, labelKey: 'nav.compliance', path: '/compliance' },
+      { icon: FileCheck, labelKey: 'nav.compliance', path: '/compliance' },
       { icon: Download, labelKey: 'nav.exportData', path: '/export' },
     ],
   },
@@ -105,7 +105,7 @@ const navSections: NavSection[] = [
     id: 'integrations',
     titleKey: 'sections.integrations',
     items: [
-      { icon: Webhook, labelKey: 'nav.integrations', path: '/integrations' },
+      { icon: Link2, labelKey: 'nav.integrations', path: '/integrations' },
       { icon: Webhook, labelKey: 'nav.webhooks', path: '/integrations/webhooks' },
       { icon: MessageSquare, labelKey: 'nav.whatsapp', path: '/integrations/whatsapp' },
     ],
@@ -148,7 +148,7 @@ export const AppSidebar = memo(function AppSidebar() {
     return initial;
   });
 
-  const toggleSection = useCallback((id) => {
+  const toggleSection = useCallback((id: string) => {
     setOpenSections(prev => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
