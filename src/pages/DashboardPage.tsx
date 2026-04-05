@@ -403,17 +403,26 @@ export const DashboardPage = () => {
 // ============================================================
 
 const DashboardSkeleton = () => (
-  <div className="space-y-6">
-    <div>
+  <div className="space-y-6 page-enter">
+    <div className="space-y-2">
       <Skeleton width={200} height={32} />
-      <Skeleton width={300} height={16} className="mt-2" />
+      <Skeleton width={320} height={16} />
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {[1, 2, 3, 4].map(i => <Skeleton key={i} height={120} />)}
+      {[1, 2, 3, 4].map(i => (
+        <div key={i} className="rounded-xl border bg-card p-5 space-y-3">
+          <div className="flex items-center justify-between">
+            <Skeleton width={100} height={14} />
+            <Skeleton width={36} height={36} className="rounded-lg" />
+          </div>
+          <Skeleton width={80} height={28} />
+          <Skeleton width={140} height={12} />
+        </div>
+      ))}
     </div>
     <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
-      <Skeleton height={320} className="lg:col-span-4" />
-      <Skeleton height={320} className="lg:col-span-3" />
+      <Skeleton height={340} className="lg:col-span-4 rounded-xl" />
+      <Skeleton height={340} className="lg:col-span-3 rounded-xl" />
     </div>
   </div>
 );
