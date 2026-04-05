@@ -408,6 +408,10 @@ const resources = {
         success: 'Éxito',
         warning: 'Advertencia',
         info: 'Información',
+        noResults: 'No se encontraron resultados',
+        enabled: 'Habilitado',
+        disabled: 'Deshabilitado',
+        profile: 'Perfil',
       },
       nav: {
         dashboard: 'Panel',
