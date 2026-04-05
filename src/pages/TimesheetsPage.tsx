@@ -208,7 +208,7 @@ function TimesheetsPage() {
                     </TableCell>
                     <TableCell><Badge variant="outline">{ts.period_type === 'weekly' ? 'Semanal' : 'Mensal'}</Badge></TableCell>
                     <TableCell className="text-right">{ts.regular_hours}h</TableCell>
-                    <TableCell className="text-right">{ts.overtime_hours > 0 ? <span className="text-orange-600">{ts.overtime_hours}h</span> : '0h'}</TableCell>
+                    <TableCell className="text-right">{ts.overtime_hours > 0 ? <span className="text-warning">{ts.overtime_hours}h</span> : '0h'}</TableCell>
                     <TableCell className="text-right font-medium">{ts.total_hours}h</TableCell>
                     <TableCell><Badge variant={stCfg.variant}>{stCfg.label}</Badge></TableCell>
                     <TableCell className="text-right">
