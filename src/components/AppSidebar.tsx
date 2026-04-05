@@ -122,8 +122,21 @@ const navSections: NavSection[] = [
 
 export const AppSidebar = memo(function AppSidebar() {
   const { sidebarCollapsed, toggleSidebarCollapse } = useUIStore();
+  const { user } = useAuth();
   const location = useLocation();
   const { t } = useTranslation();
+
+  const displayName = useMemo(() => {
+    if (!user) return 'Usuário';
+    return user.name || user.email?.split('@')[0] || 'Usuário';
+  }, [user]);
+
+  const displayEmail = user?.email || '';
+
+  const initials = useMemo(() => {
+    if (!displayName || displayName === 'Usuário') return 'U';
+    return displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  }, [displayName]);
 
   const [openSections, setOpenSections] = useState<Set<string>>(() => {
     const initial = new Set<string>();
