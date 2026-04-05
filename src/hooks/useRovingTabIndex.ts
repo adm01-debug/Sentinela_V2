@@ -34,7 +34,7 @@ export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRo
     return Math.max(0, Math.min(total - 1, next));
   }, [loop]);
 
-  const handleKeyDown = useCallback((e: KeyboardEvent, index: number, totalItems: any) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent, index: number, totalItems: number) => {
     const isHorizontal = orientation === 'horizontal' || orientation === 'both';
     const isVertical = orientation === 'vertical' || orientation === 'both';
     let nextIndex: number | null = null;
