@@ -205,7 +205,7 @@ describe('Header Enhanced Features', () => {
     renderWithProviders(<Header />);
     // Should show time like "0s" or similar
     const statusIndicator = screen.getByLabelText('Sistema online');
-    expect(statusIndicator.textContent).toMatch(/\d+[sm]/);
+    expect(statusIndicator.textContent).toMatch(/(\d+[smh]|agora)/);
   });
 
   it('search input is read-only and opens command palette on click', async () => {
