@@ -86,7 +86,7 @@ describe('ChartTooltipContent', () => {
         payload={[{ name: 'Test', value: 5, color: 'rgb(255, 0, 0)' }]}
       />
     );
-    const dot = container.querySelector('.rounded-\\[2px\\]');
+    const dot = container.querySelector('.rounded-full.ring-1');
     expect(dot).toBeInTheDocument();
     expect(dot).toHaveStyle({ backgroundColor: 'rgb(255, 0, 0)' });
   });

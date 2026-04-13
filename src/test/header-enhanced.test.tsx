@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
 import { Header } from '@/components/Header';
 
 // Mock dependencies
@@ -8,6 +10,27 @@ const mockNavigate = vi.fn();
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
+
+const mockMarkAllRead = vi.fn();
+const mockMarkRead = vi.fn();
+vi.mock('@/hooks/useNotifications', () => ({
+  useHeaderNotifications: () => ({
+    notifications: [
+      { id: '1', title: 'Acesso não autorizado detectado', description: 'Tentativa de acesso', time: 'agora', severity: 'critical', read: false },
+      { id: '2', title: 'Tentativa de exportação em massa', description: 'Exportação detectada', time: '5 min atrás', severity: 'high', read: false },
+      { id: '3', title: 'Login fora do horário', description: 'Login às 3h', time: '1h atrás', severity: 'medium', read: true },
+    ],
+    unreadCount: 2,
+    markAllRead: mockMarkAllRead,
+    markRead: mockMarkRead,
+    isLoading: false,
+  }),
+}));
+
+function renderWithProviders(ui: React.ReactElement) {
+  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  return render(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>);
+}
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
