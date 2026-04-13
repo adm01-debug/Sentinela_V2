@@ -72,41 +72,41 @@ describe('Header Enhanced Features', () => {
   });
 
   it('renders the header element', () => {
-    render(<Header />);
+    renderWithProviders(<Header />);
     expect(screen.getByRole('banner')).toBeInTheDocument();
   });
 
   it('renders search input', () => {
-    render(<Header />);
+    renderWithProviders(<Header />);
     expect(screen.getByLabelText('Search')).toBeInTheDocument();
   });
 
   it('renders online status indicator', () => {
-    render(<Header />);
+    renderWithProviders(<Header />);
     expect(screen.getByLabelText('Sistema online')).toBeInTheDocument();
     expect(screen.getByText('Online')).toBeInTheDocument();
   });
 
   it('renders notification bell with unread count', () => {
-    render(<Header />);
+    renderWithProviders(<Header />);
     expect(screen.getByLabelText('Notifications')).toBeInTheDocument();
     // Should show badge with unread count (2 unread in mock data)
     expect(screen.getByText('2')).toBeInTheDocument();
   });
 
   it('renders user avatar with initials', () => {
-    render(<Header />);
+    renderWithProviders(<Header />);
     expect(screen.getByText('AD')).toBeInTheDocument();
   });
 
   it('renders theme toggle button', () => {
-    render(<Header />);
+    renderWithProviders(<Header />);
     expect(screen.getByLabelText('Change theme')).toBeInTheDocument();
   });
 
   it('calls onMenuClick when mobile menu clicked', async () => {
     const onMenuClick = vi.fn();
-    render(<Header onMenuClick={onMenuClick} />);
+    renderWithProviders(<Header onMenuClick={onMenuClick} />);
     // Find the mobile menu button (md:hidden)
     const buttons = screen.getAllByLabelText('Open navigation menu');
     fireEvent.click(buttons[0]);
@@ -115,7 +115,7 @@ describe('Header Enhanced Features', () => {
 
   it('opens notification popover on bell click', async () => {
     const user = userEvent.setup();
-    render(<Header />);
+    renderWithProviders(<Header />);
     await user.click(screen.getByLabelText('Notifications'));
     expect(screen.getByText('Notificações')).toBeInTheDocument();
     expect(screen.getByText('Acesso não autorizado detectado')).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe('Header Enhanced Features', () => {
 
   it('shows "Novo" badge on unread notifications', async () => {
     const user = userEvent.setup();
-    render(<Header />);
+    renderWithProviders(<Header />);
     await user.click(screen.getByLabelText('Notifications'));
     const badges = screen.getAllByText('Novo');
     expect(badges.length).toBe(2); // 2 unread notifications
@@ -133,7 +133,7 @@ describe('Header Enhanced Features', () => {
 
   it('shows severity dots for notifications', async () => {
     const user = userEvent.setup();
-    render(<Header />);
+    renderWithProviders(<Header />);
     await user.click(screen.getByLabelText('Notifications'));
     // Should have severity dots with different colors
     const popover = screen.getByText('Notificações').closest('[data-radix-popper-content-wrapper]') || document.body;
@@ -143,7 +143,7 @@ describe('Header Enhanced Features', () => {
 
   it('handles mark all as read', async () => {
     const user = userEvent.setup();
-    render(<Header />);
+    renderWithProviders(<Header />);
     await user.click(screen.getByLabelText('Notifications'));
     const markReadBtn = screen.getByText('Marcar lidas');
     await user.click(markReadBtn);
@@ -153,7 +153,7 @@ describe('Header Enhanced Features', () => {
 
   it('navigates to alerts when notification clicked', async () => {
     const user = userEvent.setup();
-    render(<Header />);
+    renderWithProviders(<Header />);
     await user.click(screen.getByLabelText('Notifications'));
     await user.click(screen.getByText('Acesso não autorizado detectado'));
     expect(mockNavigate).toHaveBeenCalledWith('/alerts');
@@ -161,7 +161,7 @@ describe('Header Enhanced Features', () => {
 
   it('navigates to alerts from "ver todas" button', async () => {
     const user = userEvent.setup();
-    render(<Header />);
+    renderWithProviders(<Header />);
     await user.click(screen.getByLabelText('Notifications'));
     await user.click(screen.getByText('Ver todas as notificações'));
     expect(mockNavigate).toHaveBeenCalledWith('/alerts');
@@ -169,27 +169,27 @@ describe('Header Enhanced Features', () => {
 
   it('handles keyboard shortcut for command palette', () => {
     const onCommandPaletteOpen = vi.fn();
-    render(<Header onCommandPaletteOpen={onCommandPaletteOpen} />);
+    renderWithProviders(<Header onCommandPaletteOpen={onCommandPaletteOpen} />);
     fireEvent.keyDown(document, { key: 'k', metaKey: true });
     expect(onCommandPaletteOpen).toHaveBeenCalledOnce();
   });
 
   it('handles Ctrl+K shortcut', () => {
     const onCommandPaletteOpen = vi.fn();
-    render(<Header onCommandPaletteOpen={onCommandPaletteOpen} />);
+    renderWithProviders(<Header onCommandPaletteOpen={onCommandPaletteOpen} />);
     fireEvent.keyDown(document, { key: 'k', ctrlKey: true });
     expect(onCommandPaletteOpen).toHaveBeenCalledOnce();
   });
 
   it('does not trigger command palette without modifier key', () => {
     const onCommandPaletteOpen = vi.fn();
-    render(<Header onCommandPaletteOpen={onCommandPaletteOpen} />);
+    renderWithProviders(<Header onCommandPaletteOpen={onCommandPaletteOpen} />);
     fireEvent.keyDown(document, { key: 'k' });
     expect(onCommandPaletteOpen).not.toHaveBeenCalled();
   });
 
   it('displays time since last update', () => {
-    render(<Header />);
+    renderWithProviders(<Header />);
     // Should show time like "0s" or similar
     const statusIndicator = screen.getByLabelText('Sistema online');
     expect(statusIndicator.textContent).toMatch(/\d+[sm]/);
@@ -197,7 +197,7 @@ describe('Header Enhanced Features', () => {
 
   it('search input is read-only and opens command palette on click', async () => {
     const onCommandPaletteOpen = vi.fn();
-    render(<Header onCommandPaletteOpen={onCommandPaletteOpen} />);
+    renderWithProviders(<Header onCommandPaletteOpen={onCommandPaletteOpen} />);
     const input = screen.getByLabelText('Search');
     expect(input).toHaveAttribute('readOnly');
     fireEvent.click(input);
