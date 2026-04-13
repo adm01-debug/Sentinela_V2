@@ -2,23 +2,35 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
 import { Header } from '@/components/Header';
-
-const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: false } },
-});
-
-function renderWithProviders(ui: React.ReactElement) {
-  return render(
-    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
-  );
-}
 
 // Mock dependencies
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
+
+const mockMarkAllRead = vi.fn();
+const mockMarkRead = vi.fn();
+vi.mock('@/hooks/useNotifications', () => ({
+  useHeaderNotifications: () => ({
+    notifications: [
+      { id: '1', title: 'Acesso não autorizado detectado', description: 'Tentativa de acesso', time: 'agora', severity: 'critical', read: false },
+      { id: '2', title: 'Tentativa de exportação em massa', description: 'Exportação detectada', time: '5 min atrás', severity: 'high', read: false },
+      { id: '3', title: 'Login fora do horário', description: 'Login às 3h', time: '1h atrás', severity: 'medium', read: true },
+    ],
+    unreadCount: 2,
+    markAllRead: mockMarkAllRead,
+    markRead: mockMarkRead,
+    isLoading: false,
+  }),
+}));
+
+function renderWithProviders(ui: React.ReactElement) {
+  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  return render(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>);
+}
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -41,35 +53,6 @@ vi.mock('react-i18next', () => ({
       };
       return translations[key] || key;
     },
-  }),
-}));
-
-vi.mock('@/integrations/supabase/client', () => ({
-  supabase: {
-    channel: () => ({
-      on: () => ({ subscribe: () => ({}) }),
-    }),
-    removeChannel: vi.fn(),
-    from: () => ({
-      select: () => ({ order: () => ({ limit: () => ({ data: [], error: null }) }) }),
-    }),
-  },
-}));
-
-const mockMarkAllRead = vi.fn();
-const mockMarkRead = vi.fn();
-
-vi.mock('@/hooks/useNotifications', () => ({
-  useHeaderNotifications: () => ({
-    notifications: [
-      { id: '1', title: 'Acesso não autorizado detectado', description: 'Admin tentou acessar área restrita', time: '2 min atrás', severity: 'critical', read: false },
-      { id: '2', title: 'Tentativa de exportação em massa', description: 'Exportação de dados sensíveis', time: '5 min atrás', severity: 'high', read: false },
-      { id: '3', title: 'Login fora do horário', description: 'Login detectado às 03:00', time: '1h atrás', severity: 'medium', read: true },
-    ],
-    unreadCount: 2,
-    isLoading: false,
-    markAllRead: mockMarkAllRead,
-    markRead: mockMarkRead,
   }),
 }));
 
@@ -98,6 +81,8 @@ vi.mock('@/hooks/useAuth', () => ({
 describe('Header Enhanced Features', () => {
   beforeEach(() => {
     mockNavigate.mockClear();
+    mockMarkAllRead.mockClear();
+    mockMarkRead.mockClear();
   });
 
   it('renders the header element', () => {
@@ -176,7 +161,6 @@ describe('Header Enhanced Features', () => {
     await user.click(screen.getByLabelText('Notifications'));
     const markReadBtn = screen.getByText('Marcar lidas');
     await user.click(markReadBtn);
-    // Should call markAllRead
     expect(mockMarkAllRead).toHaveBeenCalled();
   });
 
@@ -219,9 +203,9 @@ describe('Header Enhanced Features', () => {
 
   it('displays time since last update', () => {
     renderWithProviders(<Header />);
+    // Should show time like "0s" or similar
     const statusIndicator = screen.getByLabelText('Sistema online');
-    // Text contains "Online" and time info like "agora" or "Xs"
-    expect(statusIndicator.textContent).toMatch(/Online/);
+    expect(statusIndicator.textContent).toMatch(/(\d+[smh]|agora)/);
   });
 
   it('search input is read-only and opens command palette on click', async () => {
