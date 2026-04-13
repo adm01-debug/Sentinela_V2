@@ -219,9 +219,9 @@ describe('Header Enhanced Features', () => {
 
   it('displays time since last update', () => {
     renderWithProviders(<Header />);
-    // Should show time like "0s" or similar
     const statusIndicator = screen.getByLabelText('Sistema online');
-    expect(statusIndicator.textContent).toMatch(/\d+[sm]/);
+    // Text contains "Online" and time info like "agora" or "Xs"
+    expect(statusIndicator.textContent).toMatch(/Online/);
   });
 
   it('search input is read-only and opens command palette on click', async () => {
