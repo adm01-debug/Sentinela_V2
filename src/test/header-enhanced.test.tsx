@@ -44,6 +44,18 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    channel: () => ({
+      on: () => ({ subscribe: () => ({}) }),
+    }),
+    removeChannel: vi.fn(),
+    from: () => ({
+      select: () => ({ order: () => ({ limit: () => ({ data: [], error: null }) }) }),
+    }),
+  },
+}));
+
 vi.mock('@/stores/uiStore', () => ({
   useUIStore: () => ({ toggleSidebarCollapse: vi.fn() }),
 }));
