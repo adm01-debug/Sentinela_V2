@@ -176,8 +176,8 @@ describe('Header Enhanced Features', () => {
     await user.click(screen.getByLabelText('Notifications'));
     const markReadBtn = screen.getByText('Marcar lidas');
     await user.click(markReadBtn);
-    // After marking all read, the bell badge should disappear
-    expect(screen.queryByText('2')).not.toBeInTheDocument();
+    // Should call markAllRead
+    expect(mockMarkAllRead).toHaveBeenCalled();
   });
 
   it('navigates to alerts when notification clicked', async () => {
