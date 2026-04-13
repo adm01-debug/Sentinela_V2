@@ -56,6 +56,23 @@ vi.mock('@/integrations/supabase/client', () => ({
   },
 }));
 
+const mockMarkAllRead = vi.fn();
+const mockMarkRead = vi.fn();
+
+vi.mock('@/hooks/useNotifications', () => ({
+  useHeaderNotifications: () => ({
+    notifications: [
+      { id: '1', title: 'Acesso não autorizado detectado', description: 'Admin tentou acessar área restrita', time: '2 min atrás', severity: 'critical', read: false },
+      { id: '2', title: 'Tentativa de exportação em massa', description: 'Exportação de dados sensíveis', time: '5 min atrás', severity: 'high', read: false },
+      { id: '3', title: 'Login fora do horário', description: 'Login detectado às 03:00', time: '1h atrás', severity: 'medium', read: true },
+    ],
+    unreadCount: 2,
+    isLoading: false,
+    markAllRead: mockMarkAllRead,
+    markRead: mockMarkRead,
+  }),
+}));
+
 vi.mock('@/stores/uiStore', () => ({
   useUIStore: () => ({ toggleSidebarCollapse: vi.fn() }),
 }));
