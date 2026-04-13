@@ -81,6 +81,8 @@ vi.mock('@/hooks/useAuth', () => ({
 describe('Header Enhanced Features', () => {
   beforeEach(() => {
     mockNavigate.mockClear();
+    mockMarkAllRead.mockClear();
+    mockMarkRead.mockClear();
   });
 
   it('renders the header element', () => {
