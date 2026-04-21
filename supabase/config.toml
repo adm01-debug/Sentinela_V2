@@ -68,3 +68,9 @@ verify_jwt = false
 
 [functions.dlp-incident-report]
 verify_jwt = false
+
+[functions.behavioral-baseline-builder]
+verify_jwt = false
+
+[functions.risk-score-calculator]
+verify_jwt = false
