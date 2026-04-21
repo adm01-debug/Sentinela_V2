@@ -1,169 +1,134 @@
 
-# DLP com OCR + Bloqueio de Clipboard — Arquitetura Técnica
+# Roadmap Fásico 4 Trimestres — Gaps Enterprise P0→P2
 
-Implementação do gap **P0 #1** da análise enterprise: inspeção em tempo real de conteúdo sensível em screenshots e clipboard, com bloqueio/redação ativa antes do vazamento.
+Plano executivo cobrindo as prioridades **P0, P1 e P2** da análise de gaps enterprise (`docs/GAP_ANALYSIS_ENTERPRISE.md`), distribuídas em 4 trimestres com entregáveis, dependências e métricas de sucesso.
 
 ---
 
-## Visão Geral do Fluxo
+## Visão Geral
 
 ```text
-┌─────────────── DESKTOP AGENT (Electron) ───────────────┐
-│                                                          │
-│  [Clipboard Watcher]──┐    [Screenshot Service]──┐      │
-│         │             │            │             │      │
-│         ▼             │            ▼             │      │
-│  [Local DLP Engine]   │    [OCR Local Tesseract] │      │
-│   • Regex (PII/PCI)   │            │             │      │
-│   • Keywords          │            ▼             │      │
-│   • Doc fingerprints  │    [Local DLP Engine]    │      │
-│         │             │            │             │      │
-│         ▼             │            ▼             │      │
-│   ┌─ MATCH? ─┐        │      ┌─ MATCH? ─┐        │      │
-│   │  BLOCK   │        │      │  REDACT  │        │      │
-│   │  CLEAR   │        │      │  (blur)  │        │      │
-│   └────┬─────┘        │      └────┬─────┘        │      │
-│        │              │           │              │      │
-│        └──────────────┴───────────┘              │      │
-│                       │                          │      │
-│                       ▼                          │      │
-│              [DataSender (queue)]                │      │
-└───────────────────────┬──────────────────────────┘      
-                        │ HTTPS
-                        ▼
-┌──────────── SUPABASE EDGE FUNCTIONS ─────────────┐
-│  dlp-policy-sync   • dlp-incident   • ocr-deep   │
-│  (pull rules)      (log violation)  (cloud OCR)  │
-└──────────────────────┬───────────────────────────┘
-                       ▼
-               [Postgres + RLS]
-   dlp_policies • dlp_incidents • dlp_fingerprints
+Q1 2026          Q2 2026          Q3 2026          Q4 2026
+─────────        ─────────        ─────────        ─────────
+DLP+OCR (P0)  →  UEBA ML (P1)  →  Compliance (P2) → SCIM/SAML (P2)
+macOS Agent      SIEM Splunk      ISO/SOC2/HIPAA    Multi-region
+Linux Agent      SIEM Sentinel    DSAR LGPD         Hardening
 ```
 
 ---
 
-## 1. Schema do Banco (novas tabelas)
+## Q1 2026 — Foundation P0 (DLP + Endpoint Coverage)
 
-| Tabela | Propósito |
-|---|---|
-| `dlp_policies` | Regras (regex, keywords, severity, action: block/redact/alert) por empresa |
-| `dlp_classifiers` | Classificadores nomeados (CPF, CNPJ, cartão, AWS key, JWT, e-mail) |
-| `dlp_fingerprints` | Hashes SHA-256 de documentos sigilosos (Exact Data Match) |
-| `dlp_incidents` | Eventos: tipo (clipboard/screenshot), policy_id, evidência redacted, employee_id |
-| `dlp_redaction_log` | Auditoria de bloqueios/redações para compliance |
+**Tema:** Bloquear vazamentos de dados e cobrir endpoints heterogêneos.
 
-Todas com RLS por `company_id` e índices em `(company_id, created_at DESC)`.
-
----
-
-## 2. Desktop Agent — Novos Módulos
-
-`desktop-agent/src/services/dlp/`
-
-| Arquivo | Responsabilidade |
-|---|---|
-| `dlpEngine.ts` | Avalia texto contra políticas (regex compilados, Aho-Corasick para keywords) |
-| `clipboardDLP.ts` | Substitui `printScreenBlocker` clipboard watcher; intercepta TEXTO copiado a cada 500ms; se match → `clipboard.clear()` + log |
-| `ocrService.ts` | Wrapper sobre `tesseract.js` (worker pool); processa screenshot antes de enviar |
-| `screenshotRedactor.ts` | Recebe bounding boxes do OCR + matches DLP, aplica blur via `sharp` nos retângulos sensíveis |
-| `policySync.ts` | Pull periódico (15min) de `dlp_policies` via edge function; cache local em `electron-store` |
-| `fingerprintMatcher.ts` | SHA-256 rolling hash em arquivos abertos (via `chokidar` em pastas configuradas) |
-
-Integração no `main.ts`:
-- Substitui `PrintScreenBlocker.checkClipboard()` pelo novo `ClipboardDLP` (mantém bloqueio de PrintScreen).
-- `ScreenshotService` chama `ocrService.extract() → dlpEngine.scan() → screenshotRedactor.apply()` antes de enfileirar upload.
-
----
-
-## 3. OCR — Estratégia em 2 camadas
-
-**Camada 1 (local, rápida):** `tesseract.js` em Web Worker dentro do Electron
-- Português + Inglês, modo `LSTM_ONLY`
-- Latência alvo: <800ms para screenshot 1920×1080
-- Retorna texto + `bbox` por palavra → permite redação cirúrgica
-
-**Camada 2 (cloud, profunda):** edge function `ocr-deep` usando Lovable AI (`google/gemini-2.5-flash`) com vision
-- Acionada apenas quando local OCR tem `confidence < 60` ou screenshot >2MP
-- Resultado também alimenta busca full-text histórica
-
----
-
-## 4. Edge Functions (novas)
-
-| Função | Método | Função |
+| Épico | Entregável | Fase |
 |---|---|---|
-| `dlp-policy-sync` | GET | Retorna políticas ativas + classifiers para o agent (cached 15min) |
-| `dlp-incident-report` | POST | Recebe incidente do agent, valida `x-agent-key`, grava em `dlp_incidents`, dispara alerta |
-| `ocr-deep-scan` | POST | OCR avançado via Gemini Vision quando local falha |
-| `dlp-fingerprint-upload` | POST | Admin envia documento → gera hash chunks SHA-256 → grava em `dlp_fingerprints` |
+| **DLP F2** | OCR local Tesseract + redação automática em screenshots | continua F1 |
+| **DLP F3** | Document fingerprinting (Exact Data Match) + cloud OCR fallback (Gemini) | nova |
+| **DLP F4** | Dashboard analytics + integração motor de incidentes | nova |
+| **macOS Agent** | Build Electron universal (Intel + Apple Silicon), notarization, screen recording permissions | nova |
+| **Linux Agent** | Build .deb + .rpm + AppImage; Wayland + X11 capture | nova |
 
-Todas com CORS, validação Zod, JWT validation manual (verify_jwt=false).
-
----
-
-## 5. Classifiers Pré-Configurados
-
-Seed inicial em migration:
-- **CPF/CNPJ** — regex com validação de dígito verificador
-- **Cartão de crédito** — Luhn check (Visa/Master/Amex/Elo)
-- **E-mail / telefone BR** — regex
-- **Chaves de API** — AWS (`AKIA[0-9A-Z]{16}`), Google (`AIza[0-9A-Za-z_-]{35}`), GitHub PAT (`ghp_[A-Za-z0-9]{36}`), JWT, Slack token
-- **PIX key** — CPF/CNPJ/email/telefone/random UUID
-- **Senha em texto claro** — heurística contexto `(senha|password)\s*[:=]`
-
-Cada classifier com `severity` (low/medium/high/critical) e `default_action` (alert/redact/block).
+**Métricas de sucesso:**
+- 100% screenshots com OCR e DLP scan antes do upload
+- Latência OCR local <800ms (P95)
+- macOS + Linux instalados em ≥3 estações de teste
 
 ---
 
-## 6. UI Admin (novas rotas)
+## Q2 2026 — Threat Detection P1 (UEBA + SIEM)
 
-`src/pages/admin/dlp/`
-- `DLPPoliciesPage.tsx` — CRUD de políticas, toggle por classifier, preview de regex
-- `DLPIncidentsPage.tsx` — feed em tempo real (Supabase Realtime) com evidência blurred
-- `DLPFingerprintsPage.tsx` — upload de docs sigilosos → fingerprinting
-- `DLPDashboardWidget.tsx` — KPIs (top vazamentos bloqueados, classifiers mais acionados)
+**Tema:** Transformar SENTINELA de "monitoring" em "threat detection".
 
-Componente compartilhado: `<RedactedPreview />` que mostra screenshot com áreas borradas + lista dos matches.
-
----
-
-## 7. Configuração & Performance
-
-- `CONFIG.DLP_ENABLED`, `CONFIG.DLP_POLICY_REFRESH_MS`, `CONFIG.OCR_MAX_IMAGE_MP`
-- Worker pool de OCR (2 workers) para não travar capturas
-- Throttle clipboard watcher: skip se conteúdo idêntico ao anterior (hash xxhash)
-- Política "fail-open" configurável: se OCR/DLP falhar, screenshot vai sem redação mas com flag `dlp_unverified=true`
-
----
-
-## 8. Compliance & Privacidade
-
-- Texto extraído por OCR **nunca** é gravado em claro no banco; apenas hashes + bounding boxes + classifier name
-- Evidência (screenshot redacted) sobe para bucket `violation-screenshots` com áreas sensíveis já borradas no cliente
-- Log imutável em `dlp_redaction_log` (append-only via RLS)
-- LGPD: agent expõe modo "privacy-first" que registra apenas contagem de matches, sem evidência visual
-
----
-
-## 9. Entrega Faseada
-
-| Fase | Entregável |
+| Épico | Entregável |
 |---|---|
-| **F1 (MVP)** | Tabelas + classifiers BR (CPF/CNPJ/cartão) + clipboard blocker + UI políticas |
-| **F2** | OCR local Tesseract + redação automática em screenshots |
-| **F3** | Document fingerprinting + cloud OCR fallback (Gemini) |
-| **F4** | Dashboard analytics + integração com motor de incidentes existente |
+| **UEBA Baseline** | Tabela `behavioral_baselines` por usuário (apps, horários, sites, volume); job diário de cálculo |
+| **UEBA Risk Scoring** | Edge function `risk-score-calculator` com Isolation Forest (Python via Pyodide) ou heurística estatística |
+| **UEBA Alertas** | Trigger automático quando risk_score muda >2σ; integração com `alert-engine` existente |
+| **MITRE ATT&CK Mapping** | Tabela `mitre_techniques` + mapeamento de incidentes em técnicas (T1078, T1567, T1530) |
+| **SIEM Splunk HEC** | Edge function `siem-forwarder-splunk` com autenticação token + retry queue |
+| **SIEM Microsoft Sentinel** | Conector via Log Analytics Data Collector API |
+| **SIEM CEF/Syslog** | Output formatter padrão CEF + UDP/TCP forwarder configurável |
+
+**Métricas de sucesso:**
+- Risk score calculado para 100% dos usuários ativos
+- ≥5 técnicas MITRE mapeadas com detecção automática
+- 3 conectores SIEM operacionais (Splunk, Sentinel, Syslog genérico)
 
 ---
 
-## Dependências Novas
+## Q3 2026 — Compliance & Governança P2
 
-**Desktop agent**: `tesseract.js`, `sharp`, `chokidar`, `xxhash-wasm`, `aho-corasick`
-**Edge functions**: nenhuma nova (Lovable AI já disponível)
-**Frontend**: nenhuma nova (shadcn já cobre UI)
+**Tema:** Acelerar vendas reguladas com frameworks pré-configurados.
+
+| Épico | Entregável |
+|---|---|
+| **Frameworks Compliance** | Tabelas `compliance_frameworks`, `compliance_controls`, `compliance_evidence`; seed SOC 2, ISO 27001, HIPAA, PCI-DSS, LGPD |
+| **Evidence Collection** | Job automatizado coleta evidências (logs, configs, RLS policies, MFA status) por controle |
+| **Compliance Dashboard** | Página `/admin/compliance` com % cobertura por framework, gaps, próximas auditorias |
+| **DSAR Workflow LGPD** | Página self-service para titular solicitar export/deleção; workflow de aprovação admin; export em ZIP assinado |
+| **Retention Policies** | Tabela `retention_policies` por jurisdição + edge function cron `data-retention-enforcer` |
+| **Privacy-First Mode** | Toggle agente: blur de janelas pessoais (regex título) + opt-in pseudonimização |
+| **Audit Log Immutability** | Bucket WORM (append-only RLS) + hash chain SHA-256 entre registros consecutivos |
+
+**Métricas de sucesso:**
+- ≥4 frameworks com 100% controles mapeados
+- DSAR end-to-end <72h (requisito LGPD)
+- Audit log com integridade verificável (hash chain válido)
+
+---
+
+## Q4 2026 — Enterprise Platform P2
+
+**Tema:** Atender requisitos IT enterprise (SSO, provisioning, multi-region).
+
+| Épico | Entregável |
+|---|---|
+| **SCIM 2.0 Provisioning** | Edge function `scim-v2` (Users + Groups endpoints) compatível com Okta, Azure AD, Workday |
+| **SAML 2.0 SSO** | Integração via Supabase Auth SAML; metadata XML por empresa; JIT provisioning |
+| **OIDC Enterprise** | Suporte IdP-initiated com claims customizados (role mapping) |
+| **Multi-Region Routing** | Tabela `company_regions` (BR/US/EU); roteamento de uploads por região; documentação data residency |
+| **HA & Failover Docs** | Runbook RTO/RPO; testes de failover documentados |
+| **API Rate Limiting Tiered** | Middleware edge function com limites por plano (free/pro/enterprise) |
+| **FinOps Dashboard** | Página `/admin/finops` com custo por funcionário (storage + AI tokens + edge invocations) |
+
+**Métricas de sucesso:**
+- SCIM certificado em ≥2 IdPs (Okta + Azure AD)
+- SAML SSO ativo em ≥1 cliente piloto
+- Data residency documentada e auditável
+
+---
+
+## Dependências & Riscos
+
+| Risco | Mitigação |
+|---|---|
+| OCR local trava agente em hardware fraco | Worker pool + fail-open + telemetria de latência |
+| ML risk scoring com falsos positivos | Período shadow-mode 30 dias antes de alertar |
+| SCIM/SAML requer plano Supabase Pro | Validar custo no início do Q4 |
+| Multi-region exige replicação de banco | Spike técnico em Q3 para validar arquitetura |
+
+---
+
+## Governança do Roadmap
+
+- **Revisão mensal** de progresso vs. métricas
+- **Demo trimestral** com stakeholders ao final de cada Q
+- **Re-priorização** permitida apenas no início de cada Q
+- **Definition of Done** por épico: código + testes (≥80% cov) + docs + i18n (pt-BR/en-US/es)
+
+---
+
+## Entregáveis Documentais
+
+Ao aprovar, será criado:
+1. `docs/ROADMAP_2026.md` — versão completa com todos os épicos detalhados
+2. `docs/ROADMAP_Q1_2026.md` — breakdown de user stories do trimestre atual
+3. Atualização de `ROADMAP.md` (raiz) com sumário executivo
+4. Atualização de `docs/AUDITORIA_22_DIMENSOES.md` referenciando os épicos por dimensão impactada
 
 ---
 
 ## Próximo Passo
 
-Aprovar o plano para iniciar pela **Fase 1**: migration das tabelas DLP + classifiers BR seed + módulo `clipboardDLP.ts` no agente + página `DLPPoliciesPage`.
+Aprovar para gerar a documentação completa do roadmap e iniciar Q1 pelo épico **DLP F2 (OCR local Tesseract + redação automática)**, dando continuidade à Fase 1 já entregue.
