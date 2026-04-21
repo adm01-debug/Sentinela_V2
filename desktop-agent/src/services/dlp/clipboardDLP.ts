@@ -1,6 +1,6 @@
 import log from 'electron-log';
 import { clipboard } from 'electron';
-import { DataSender } from '../dataSender';
+import { CONFIG } from '../../config';
 import { dlpEngine, DLPScanResult } from './dlpEngine';
 
 // ============================================================
@@ -10,12 +10,12 @@ import { dlpEngine, DLPScanResult } from './dlpEngine';
 const POLL_INTERVAL_MS = 500;
 
 export class ClipboardDLP {
-  private dataSender: DataSender;
+  private agentKey: string;
   private timer: NodeJS.Timeout | null = null;
   private lastHash = '';
 
-  constructor(dataSender: DataSender) {
-    this.dataSender = dataSender;
+  constructor(agentKey: string) {
+    this.agentKey = agentKey;
   }
 
   start(): void {
@@ -84,16 +84,25 @@ export class ClipboardDLP {
       .map(([code, count]) => `${code}:${count}`)
       .join(', ');
 
-    this.dataSender.send('dlp_incident', {
+    const payload = {
       source_type: 'clipboard',
       action_taken: result.highestAction,
       severity: result.highestSeverity,
       match_count: result.matches.length,
       match_summary: summary,
-      text_length: text.length,
       classifiers: Array.from(byClassifier.keys()),
       policy_ids: Array.from(new Set(result.matches.map((m) => m.policy_id).filter(Boolean))),
+      metadata: { text_length: text.length },
       detected_at: new Date().toISOString(),
-    });
+    };
+
+    fetch(`${CONFIG.API_URL}/dlp-incident-report`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-agent-key': this.agentKey,
+      },
+      body: JSON.stringify(payload),
+    }).catch((err) => log.warn('DLP incident report failed', err));
   }
 }

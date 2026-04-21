@@ -13,6 +13,8 @@ import { PrintScreenBlocker } from './services/printScreenBlocker';
 import { DataSender } from './services/dataSender';
 import { AutoUpdaterService } from './services/autoUpdater';
 import { IdleDetector } from './services/idleDetector';
+import { ClipboardDLP } from './services/dlp/clipboardDLP';
+import { PolicySync } from './services/dlp/policySync';
 
 // ============================================================
 // GLOBALS
@@ -42,6 +44,8 @@ let printScreenBlocker: PrintScreenBlocker;
 let dataSender: DataSender;
 let autoUpdaterService: AutoUpdaterService;
 let idleDetector: IdleDetector;
+let clipboardDLP: ClipboardDLP;
+let policySync: PolicySync;
 
 // Auto-launch
 const autoLauncher = new AutoLaunch({
@@ -235,6 +239,12 @@ async function initializeServices(): Promise<void> {
   idleDetector = new IdleDetector(dataSender);
   idleDetector.start();
 
+  // DLP — policy sync + clipboard interceptor
+  policySync = new PolicySync(agentKey);
+  await policySync.start();
+  clipboardDLP = new ClipboardDLP(agentKey);
+  clipboardDLP.start();
+
   // Auto-updater
   autoUpdaterService = new AutoUpdaterService();
   autoUpdaterService.start();
@@ -252,6 +262,8 @@ function stopServices(): void {
   usbBlockerService?.stop();
   printScreenBlocker?.stop();
   idleDetector?.stop();
+  clipboardDLP?.stop();
+  policySync?.stop();
   
   if (isAuthenticated) {
     dataSender?.send('logout', { timestamp: new Date().toISOString() });
