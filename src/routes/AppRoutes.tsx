@@ -70,6 +70,9 @@ const HoursTrackingPage = lazy(() => import('@/pages/HoursTrackingPage'));
 const AdminTelemetriaPage = lazy(() => import('@/pages/AdminTelemetriaPage'));
 const DLPPoliciesPage = lazy(() => import('@/pages/admin/DLPPoliciesPage'));
 const DLPIncidentsPage = lazy(() => import('@/pages/admin/DLPIncidentsPage'));
+const UEBADashboardPage = lazy(() => import('@/pages/admin/ueba/UEBADashboardPage'));
+const EmployeeRiskProfilePage = lazy(() => import('@/pages/admin/ueba/EmployeeRiskProfilePage'));
+const UEBASettingsPage = lazy(() => import('@/pages/admin/ueba/UEBASettingsPage'));
 
 // ============================================================
 // SESSION HOOK (single source)
@@ -209,6 +212,9 @@ export const AppRoutes = () => (
         <Route path="/admin/telemetria" element={<AdminTelemetriaPage />} />
         <Route path="/admin/dlp/policies" element={<DLPPoliciesPage />} />
         <Route path="/admin/dlp/incidents" element={<DLPIncidentsPage />} />
+        <Route path="/admin/ueba" element={<UEBADashboardPage />} />
+        <Route path="/admin/ueba/settings" element={<UEBASettingsPage />} />
+        <Route path="/admin/ueba/:employeeId" element={<EmployeeRiskProfilePage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
