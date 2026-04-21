@@ -273,6 +273,81 @@ export type Database = {
         }
         Relationships: []
       }
+      behavioral_baselines: {
+        Row: {
+          company_id: string | null
+          computed_at: string
+          created_at: string
+          employee_id: string
+          feature_name: string
+          id: string
+          insufficient_data: boolean
+          max_value: number
+          mean: number
+          min_value: number
+          p25: number | null
+          p50: number | null
+          p75: number | null
+          period_days: number
+          sample_size: number
+          std_dev: number
+          updated_at: string
+        }
+        Insert: {
+          company_id?: string | null
+          computed_at?: string
+          created_at?: string
+          employee_id: string
+          feature_name: string
+          id?: string
+          insufficient_data?: boolean
+          max_value?: number
+          mean?: number
+          min_value?: number
+          p25?: number | null
+          p50?: number | null
+          p75?: number | null
+          period_days?: number
+          sample_size?: number
+          std_dev?: number
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string | null
+          computed_at?: string
+          created_at?: string
+          employee_id?: string
+          feature_name?: string
+          id?: string
+          insufficient_data?: boolean
+          max_value?: number
+          mean?: number
+          min_value?: number
+          p25?: number | null
+          p50?: number | null
+          p75?: number | null
+          period_days?: number
+          sample_size?: number
+          std_dev?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "behavioral_baselines_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "behavioral_baselines_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blocked_ips: {
         Row: {
           blocked_at: string
@@ -1697,6 +1772,54 @@ export type Database = {
           },
         ]
       }
+      incident_mitre_mapping: {
+        Row: {
+          company_id: string | null
+          confidence: number
+          created_at: string
+          id: string
+          incident_id: string | null
+          incident_type: string
+          metadata: Json | null
+          technique_id: string
+        }
+        Insert: {
+          company_id?: string | null
+          confidence?: number
+          created_at?: string
+          id?: string
+          incident_id?: string | null
+          incident_type: string
+          metadata?: Json | null
+          technique_id: string
+        }
+        Update: {
+          company_id?: string | null
+          confidence?: number
+          created_at?: string
+          id?: string
+          incident_id?: string | null
+          incident_type?: string
+          metadata?: Json | null
+          technique_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_mitre_mapping_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incident_mitre_mapping_technique_id_fkey"
+            columns: ["technique_id"]
+            isOneToOne: false
+            referencedRelation: "mitre_techniques"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       internet_access_settings: {
         Row: {
           access_level: string
@@ -2195,6 +2318,39 @@ export type Database = {
           template_type?: string
           updated_at?: string
           variables?: string[] | null
+        }
+        Relationships: []
+      }
+      mitre_techniques: {
+        Row: {
+          created_at: string
+          description: string | null
+          enabled: boolean
+          id: string
+          name: string
+          severity_default: string
+          tactic: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id: string
+          name: string
+          severity_default?: string
+          tactic: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id?: string
+          name?: string
+          severity_default?: string
+          tactic?: string
+          url?: string | null
         }
         Relationships: []
       }
@@ -3364,6 +3520,42 @@ export type Database = {
         }
         Relationships: []
       }
+      risk_score_factors: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          display_name: string
+          enabled: boolean
+          id: string
+          name: string
+          updated_at: string
+          weight: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_name: string
+          enabled?: boolean
+          id?: string
+          name: string
+          updated_at?: string
+          weight?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          enabled?: boolean
+          id?: string
+          name?: string
+          updated_at?: string
+          weight?: number
+        }
+        Relationships: []
+      }
       role_permissions: {
         Row: {
           created_at: string
@@ -4088,6 +4280,72 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_risk_scores: {
+        Row: {
+          alert_triggered: boolean
+          calculated_at: string
+          company_id: string | null
+          created_at: string
+          employee_id: string
+          factors: Json
+          hst_score: number | null
+          id: string
+          level: string
+          mitre_techniques: string[] | null
+          period: string
+          score: number
+          shadow_mode: boolean
+          z_score_max: number | null
+        }
+        Insert: {
+          alert_triggered?: boolean
+          calculated_at?: string
+          company_id?: string | null
+          created_at?: string
+          employee_id: string
+          factors?: Json
+          hst_score?: number | null
+          id?: string
+          level?: string
+          mitre_techniques?: string[] | null
+          period?: string
+          score?: number
+          shadow_mode?: boolean
+          z_score_max?: number | null
+        }
+        Update: {
+          alert_triggered?: boolean
+          calculated_at?: string
+          company_id?: string | null
+          created_at?: string
+          employee_id?: string
+          factors?: Json
+          hst_score?: number | null
+          id?: string
+          level?: string
+          mitre_techniques?: string[] | null
+          period?: string
+          score?: number
+          shadow_mode?: boolean
+          z_score_max?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_risk_scores_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_risk_scores_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
