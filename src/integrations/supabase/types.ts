@@ -849,6 +849,309 @@ export type Database = {
           },
         ]
       }
+      dlp_classifiers: {
+        Row: {
+          category: string
+          code: string
+          created_at: string
+          default_action: string
+          default_severity: string
+          description: string | null
+          id: string
+          is_active: boolean
+          is_builtin: boolean
+          name: string
+          pattern: string
+          updated_at: string
+          validator: string | null
+        }
+        Insert: {
+          category?: string
+          code: string
+          created_at?: string
+          default_action?: string
+          default_severity?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_builtin?: boolean
+          name: string
+          pattern: string
+          updated_at?: string
+          validator?: string | null
+        }
+        Update: {
+          category?: string
+          code?: string
+          created_at?: string
+          default_action?: string
+          default_severity?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_builtin?: boolean
+          name?: string
+          pattern?: string
+          updated_at?: string
+          validator?: string | null
+        }
+        Relationships: []
+      }
+      dlp_fingerprints: {
+        Row: {
+          action: string
+          chunk_hash: string
+          chunk_index: number
+          company_id: string
+          created_at: string
+          created_by: string | null
+          document_name: string
+          document_type: string | null
+          id: string
+          is_active: boolean
+          severity: string
+          total_chunks: number
+        }
+        Insert: {
+          action?: string
+          chunk_hash: string
+          chunk_index?: number
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          document_name: string
+          document_type?: string | null
+          id?: string
+          is_active?: boolean
+          severity?: string
+          total_chunks?: number
+        }
+        Update: {
+          action?: string
+          chunk_hash?: string
+          chunk_index?: number
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          document_name?: string
+          document_type?: string | null
+          id?: string
+          is_active?: boolean
+          severity?: string
+          total_chunks?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dlp_fingerprints_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dlp_incidents: {
+        Row: {
+          action_taken: string
+          agent_key_id: string | null
+          app_name: string | null
+          classifier_code: string | null
+          company_id: string | null
+          created_at: string
+          detected_at: string
+          device_name: string | null
+          employee_name: string | null
+          evidence_url: string | null
+          id: string
+          match_count: number
+          match_summary: string | null
+          metadata: Json | null
+          policy_id: string | null
+          severity: string
+          source_type: string
+          window_title: string | null
+        }
+        Insert: {
+          action_taken: string
+          agent_key_id?: string | null
+          app_name?: string | null
+          classifier_code?: string | null
+          company_id?: string | null
+          created_at?: string
+          detected_at?: string
+          device_name?: string | null
+          employee_name?: string | null
+          evidence_url?: string | null
+          id?: string
+          match_count?: number
+          match_summary?: string | null
+          metadata?: Json | null
+          policy_id?: string | null
+          severity?: string
+          source_type: string
+          window_title?: string | null
+        }
+        Update: {
+          action_taken?: string
+          agent_key_id?: string | null
+          app_name?: string | null
+          classifier_code?: string | null
+          company_id?: string | null
+          created_at?: string
+          detected_at?: string
+          device_name?: string | null
+          employee_name?: string | null
+          evidence_url?: string | null
+          id?: string
+          match_count?: number
+          match_summary?: string | null
+          metadata?: Json | null
+          policy_id?: string | null
+          severity?: string
+          source_type?: string
+          window_title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dlp_incidents_agent_key_id_fkey"
+            columns: ["agent_key_id"]
+            isOneToOne: false
+            referencedRelation: "agent_keys"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dlp_incidents_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dlp_incidents_policy_id_fkey"
+            columns: ["policy_id"]
+            isOneToOne: false
+            referencedRelation: "dlp_policies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dlp_policies: {
+        Row: {
+          action: string
+          classifier_id: string | null
+          company_id: string
+          created_at: string
+          created_by: string | null
+          custom_pattern: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          keywords: string[] | null
+          name: string
+          scope: string[]
+          severity: string
+          updated_at: string
+        }
+        Insert: {
+          action?: string
+          classifier_id?: string | null
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          custom_pattern?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          keywords?: string[] | null
+          name: string
+          scope?: string[]
+          severity?: string
+          updated_at?: string
+        }
+        Update: {
+          action?: string
+          classifier_id?: string | null
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          custom_pattern?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          keywords?: string[] | null
+          name?: string
+          scope?: string[]
+          severity?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dlp_policies_classifier_id_fkey"
+            columns: ["classifier_id"]
+            isOneToOne: false
+            referencedRelation: "dlp_classifiers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dlp_policies_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dlp_redaction_log: {
+        Row: {
+          action: string
+          bbox_count: number | null
+          classifier_code: string
+          company_id: string | null
+          created_at: string
+          evidence_hash: string | null
+          id: string
+          incident_id: string | null
+          occurred_at: string
+        }
+        Insert: {
+          action: string
+          bbox_count?: number | null
+          classifier_code: string
+          company_id?: string | null
+          created_at?: string
+          evidence_hash?: string | null
+          id?: string
+          incident_id?: string | null
+          occurred_at?: string
+        }
+        Update: {
+          action?: string
+          bbox_count?: number | null
+          classifier_code?: string
+          company_id?: string | null
+          created_at?: string
+          evidence_hash?: string | null
+          id?: string
+          incident_id?: string | null
+          occurred_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dlp_redaction_log_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dlp_redaction_log_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "dlp_incidents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employee_badges: {
         Row: {
           badge_id: string
