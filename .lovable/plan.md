@@ -1,134 +1,183 @@
 
-# Roadmap Fásico 4 Trimestres — Gaps Enterprise P0→P2
+# UEBA com Risk Scoring (Isolation Forest) — Plano de Implementação
 
-Plano executivo cobrindo as prioridades **P0, P1 e P2** da análise de gaps enterprise (`docs/GAP_ANALYSIS_ENTERPRISE.md`), distribuídas em 4 trimestres com entregáveis, dependências e métricas de sucesso.
+Implementação do épico **Q2 2026 — UEBA Baseline + Risk Scoring** do roadmap. Move SENTINELA de "monitoring" para "threat detection" via análise comportamental estatística.
 
 ---
 
-## Visão Geral
+## Arquitetura
 
 ```text
-Q1 2026          Q2 2026          Q3 2026          Q4 2026
-─────────        ─────────        ─────────        ─────────
-DLP+OCR (P0)  →  UEBA ML (P1)  →  Compliance (P2) → SCIM/SAML (P2)
-macOS Agent      SIEM Splunk      ISO/SOC2/HIPAA    Multi-region
-Linux Agent      SIEM Sentinel    DSAR LGPD         Hardening
+┌── activities / keystroke_logs / click_logs / productivity_logs ──┐
+│                            │                                       │
+│                            ▼                                       │
+│           [behavioral-baseline-builder] (cron diário 03:00 UTC)   │
+│                            │                                       │
+│                            ▼                                       │
+│              behavioral_baselines  (por employee × feature)        │
+│                            │                                       │
+│                            ▼                                       │
+│         [risk-score-calculator] (edge function on-demand + cron)   │
+│                  • Isolation Forest (heurística)                   │
+│                  • Z-score multi-feature                           │
+│                  • Peer group comparison                           │
+│                            │                                       │
+│                            ▼                                       │
+│              user_risk_scores (histórico) + alertas                │
+└────────────────────────────────────────────────────────────────────┘
 ```
 
----
-
-## Q1 2026 — Foundation P0 (DLP + Endpoint Coverage)
-
-**Tema:** Bloquear vazamentos de dados e cobrir endpoints heterogêneos.
-
-| Épico | Entregável | Fase |
-|---|---|---|
-| **DLP F2** | OCR local Tesseract + redação automática em screenshots | continua F1 |
-| **DLP F3** | Document fingerprinting (Exact Data Match) + cloud OCR fallback (Gemini) | nova |
-| **DLP F4** | Dashboard analytics + integração motor de incidentes | nova |
-| **macOS Agent** | Build Electron universal (Intel + Apple Silicon), notarization, screen recording permissions | nova |
-| **Linux Agent** | Build .deb + .rpm + AppImage; Wayland + X11 capture | nova |
-
-**Métricas de sucesso:**
-- 100% screenshots com OCR e DLP scan antes do upload
-- Latência OCR local <800ms (P95)
-- macOS + Linux instalados em ≥3 estações de teste
+**Por que heurística "Isolation Forest-like" e não ML real?** Edge functions Deno não suportam scikit-learn. Implementaremos **Half-Space Trees** (variante streaming do Isolation Forest) em TypeScript puro — algoritmo provado para detecção de anomalias em séries temporais, sem dependências externas.
 
 ---
 
-## Q2 2026 — Threat Detection P1 (UEBA + SIEM)
+## 1. Schema (migration)
 
-**Tema:** Transformar SENTINELA de "monitoring" em "threat detection".
-
-| Épico | Entregável |
+| Tabela | Colunas principais |
 |---|---|
-| **UEBA Baseline** | Tabela `behavioral_baselines` por usuário (apps, horários, sites, volume); job diário de cálculo |
-| **UEBA Risk Scoring** | Edge function `risk-score-calculator` com Isolation Forest (Python via Pyodide) ou heurística estatística |
-| **UEBA Alertas** | Trigger automático quando risk_score muda >2σ; integração com `alert-engine` existente |
-| **MITRE ATT&CK Mapping** | Tabela `mitre_techniques` + mapeamento de incidentes em técnicas (T1078, T1567, T1530) |
-| **SIEM Splunk HEC** | Edge function `siem-forwarder-splunk` com autenticação token + retry queue |
-| **SIEM Microsoft Sentinel** | Conector via Log Analytics Data Collector API |
-| **SIEM CEF/Syslog** | Output formatter padrão CEF + UDP/TCP forwarder configurável |
+| `behavioral_baselines` | employee_id, feature_name, mean, std_dev, min, max, sample_size, computed_at, period_days |
+| `user_risk_scores` | employee_id, score (0-100), level (low/medium/high/critical), factors jsonb, calculated_at, period |
+| `risk_score_factors` | (catálogo) name, weight, description, enabled |
+| `mitre_techniques` | id (T-code), tactic, name, description, severity_default |
+| `incident_mitre_mapping` | incident_id, technique_id, confidence |
 
-**Métricas de sucesso:**
-- Risk score calculado para 100% dos usuários ativos
-- ≥5 técnicas MITRE mapeadas com detecção automática
-- 3 conectores SIEM operacionais (Splunk, Sentinel, Syslog genérico)
+Features rastreadas no baseline (10 inicial):
+- `daily_keystrokes`, `daily_clicks`, `daily_apps_used`, `work_hours_start`, `work_hours_end`
+- `weekend_activity_ratio`, `night_activity_ratio`, `productivity_score_avg`
+- `screenshot_violations_per_day`, `clipboard_dlp_matches_per_day`
+
+RLS por `company_id` em todas; índices `(employee_id, calculated_at DESC)`.
+
+Seed `mitre_techniques`: T1078 (Valid Accounts), T1530 (Data from Cloud Storage), T1567 (Exfiltration Over Web), T1071 (Application Layer Protocol), T1119 (Automated Collection).
 
 ---
 
-## Q3 2026 — Compliance & Governança P2
+## 2. Edge Functions (3 novas)
 
-**Tema:** Acelerar vendas reguladas com frameworks pré-configurados.
+### `behavioral-baseline-builder` (cron diário)
+- `verify_jwt = false`, executada por pg_cron
+- Para cada employee ativo: agrega últimos 30 dias por feature → calcula mean, std_dev, percentis
+- Upsert em `behavioral_baselines`
+- Skip employees com <7 dias de dados (insufficient_data flag)
 
-| Épico | Entregável |
+### `risk-score-calculator` (on-demand + cron horário)
+- Input: `{ employeeId?, period?: '24h'|'7d' }`
+- Para cada feature: calcula z-score atual vs. baseline
+- **Half-Space Trees** (50 árvores, profundidade 8) sobre vetor multi-feature → anomaly_score [0,1]
+- Combina: `final_score = 0.6 * HST_score + 0.4 * max(z_scores normalizados)`
+- Aplica weights de `risk_score_factors`
+- Mapeia para level: 0-25 low / 26-50 medium / 51-75 high / 76-100 critical
+- Grava em `user_risk_scores`; se delta > 2σ vs. score anterior → invoca `process-violation-alert` com tipo `ueba_anomaly`
+- Mapeia anomalias detectadas para técnicas MITRE (regras: exfil clipboard → T1567, off-hours → T1078, etc.)
+
+### `ueba-shadow-mode` (toggle)
+- Flag `ueba_shadow_mode` em `app_config`: por 30 dias calcula scores mas não dispara alertas, apenas log
+- Permite calibração antes de ir live
+
+---
+
+## 3. Algoritmo Half-Space Trees (TS puro)
+
+`supabase/functions/_shared/halfSpaceTrees.ts`:
+- Constrói N árvores binárias com splits aleatórios em features normalizadas [0,1]
+- Score = profundidade média de isolamento; anomalia = score baixo
+- Streaming: aceita window deslizante sem retreino
+- ~200 linhas, sem deps; reutilizável por outras funções
+
+---
+
+## 4. Frontend — UI Admin
+
+`src/pages/admin/ueba/`
+- **`UEBADashboardPage.tsx`** (`/admin/ueba`) — heatmap de risk scores por funcionário, top 10 risky, distribuição por level
+- **`EmployeeRiskProfilePage.tsx`** (`/admin/ueba/:employeeId`) — timeline de scores 30d, breakdown por feature/factor, técnicas MITRE detectadas, ações sugeridas
+- **`UEBASettingsPage.tsx`** (`/admin/ueba/settings`) — toggle shadow mode, ajuste de weights por factor, threshold de alertas
+- **`<RiskScoreBadge />`** — componente reutilizável (cor semântica + sparkline) usado em listagens de funcionários
+
+Hooks novos:
+- `useRiskScores(employeeId?)` — query + realtime subscription em `user_risk_scores`
+- `useBehavioralBaseline(employeeId)` — fetch baseline + comparativo atual
+- `useMitreTechniques()` — catálogo
+
+i18n completo (pt-BR, en-US, es) para todas labels e MITRE descriptions.
+
+---
+
+## 5. Cron Jobs (pg_cron)
+
+Via insert tool (não migration — contém URLs/anon key):
+- `behavioral-baseline-builder`: diário 03:00 UTC
+- `risk-score-calculator` (todos employees): a cada hora
+- Cleanup `user_risk_scores` >90 dias: semanal
+
+---
+
+## 6. Integração com Sistemas Existentes
+
+- **Dashboard principal**: novo widget "Top Risky Users" usando `<RiskScoreBadge />`
+- **EmployeesPage**: coluna risk_score com badge + filtro por level (URL state)
+- **Alert engine**: novo tipo `ueba_anomaly` com template pt-BR/en-US/es
+- **Activity logs**: `risk_context` jsonb anexado a violações para investigação
+
+---
+
+## 7. Configuração & Performance
+
+- `CONFIG.UEBA_BASELINE_DAYS = 30`, `CONFIG.UEBA_MIN_SAMPLES = 7`
+- `CONFIG.UEBA_HST_TREES = 50`, `CONFIG.UEBA_HST_DEPTH = 8`
+- Cálculo por employee <500ms (P95); batch 100 employees por invocação
+- Circuit breaker para falhas de DB
+- Logs estruturados com `risk_score_calc` event type
+
+---
+
+## 8. Compliance & Privacidade
+
+- Risk scores **não** expõem PII; baseline armazena apenas estatísticas agregadas
+- LGPD: titular pode solicitar export de seu próprio risk profile via DSAR (futuro Q3)
+- Audit log de alterações em weights/thresholds (quem mudou, quando)
+
+---
+
+## 9. Entrega Faseada (dentro do épico)
+
+| Sub-fase | Entregável |
 |---|---|
-| **Frameworks Compliance** | Tabelas `compliance_frameworks`, `compliance_controls`, `compliance_evidence`; seed SOC 2, ISO 27001, HIPAA, PCI-DSS, LGPD |
-| **Evidence Collection** | Job automatizado coleta evidências (logs, configs, RLS policies, MFA status) por controle |
-| **Compliance Dashboard** | Página `/admin/compliance` com % cobertura por framework, gaps, próximas auditorias |
-| **DSAR Workflow LGPD** | Página self-service para titular solicitar export/deleção; workflow de aprovação admin; export em ZIP assinado |
-| **Retention Policies** | Tabela `retention_policies` por jurisdição + edge function cron `data-retention-enforcer` |
-| **Privacy-First Mode** | Toggle agente: blur de janelas pessoais (regex título) + opt-in pseudonimização |
-| **Audit Log Immutability** | Bucket WORM (append-only RLS) + hash chain SHA-256 entre registros consecutivos |
+| **A** | Schema + seed MITRE + `behavioral-baseline-builder` + cron |
+| **B** | `risk-score-calculator` com Half-Space Trees + grava scores |
+| **C** | UI Dashboard + EmployeeRiskProfile + RiskScoreBadge |
+| **D** | Settings page + shadow mode + integração alert engine |
+| **E** | Integração em EmployeesPage + Dashboard widget |
 
-**Métricas de sucesso:**
-- ≥4 frameworks com 100% controles mapeados
-- DSAR end-to-end <72h (requisito LGPD)
-- Audit log com integridade verificável (hash chain válido)
+Implementação será sequencial A→E em uma única passagem.
 
 ---
 
-## Q4 2026 — Enterprise Platform P2
+## 10. Arquivos Criados/Modificados
 
-**Tema:** Atender requisitos IT enterprise (SSO, provisioning, multi-region).
+**Novos (12):**
+- `supabase/migrations/<timestamp>_ueba_baseline.sql`
+- `supabase/functions/_shared/halfSpaceTrees.ts`
+- `supabase/functions/behavioral-baseline-builder/index.ts`
+- `supabase/functions/risk-score-calculator/index.ts`
+- `src/pages/admin/ueba/UEBADashboardPage.tsx`
+- `src/pages/admin/ueba/EmployeeRiskProfilePage.tsx`
+- `src/pages/admin/ueba/UEBASettingsPage.tsx`
+- `src/components/ueba/RiskScoreBadge.tsx`
+- `src/hooks/useRiskScores.ts`
+- `src/hooks/useBehavioralBaseline.ts`
+- `src/hooks/useMitreTechniques.ts`
+- `src/lib/uebaLevels.ts` (helpers de classificação + cores)
 
-| Épico | Entregável |
-|---|---|
-| **SCIM 2.0 Provisioning** | Edge function `scim-v2` (Users + Groups endpoints) compatível com Okta, Azure AD, Workday |
-| **SAML 2.0 SSO** | Integração via Supabase Auth SAML; metadata XML por empresa; JIT provisioning |
-| **OIDC Enterprise** | Suporte IdP-initiated com claims customizados (role mapping) |
-| **Multi-Region Routing** | Tabela `company_regions` (BR/US/EU); roteamento de uploads por região; documentação data residency |
-| **HA & Failover Docs** | Runbook RTO/RPO; testes de failover documentados |
-| **API Rate Limiting Tiered** | Middleware edge function com limites por plano (free/pro/enterprise) |
-| **FinOps Dashboard** | Página `/admin/finops` com custo por funcionário (storage + AI tokens + edge invocations) |
-
-**Métricas de sucesso:**
-- SCIM certificado em ≥2 IdPs (Okta + Azure AD)
-- SAML SSO ativo em ≥1 cliente piloto
-- Data residency documentada e auditável
-
----
-
-## Dependências & Riscos
-
-| Risco | Mitigação |
-|---|---|
-| OCR local trava agente em hardware fraco | Worker pool + fail-open + telemetria de latência |
-| ML risk scoring com falsos positivos | Período shadow-mode 30 dias antes de alertar |
-| SCIM/SAML requer plano Supabase Pro | Validar custo no início do Q4 |
-| Multi-region exige replicação de banco | Spike técnico em Q3 para validar arquitetura |
-
----
-
-## Governança do Roadmap
-
-- **Revisão mensal** de progresso vs. métricas
-- **Demo trimestral** com stakeholders ao final de cada Q
-- **Re-priorização** permitida apenas no início de cada Q
-- **Definition of Done** por épico: código + testes (≥80% cov) + docs + i18n (pt-BR/en-US/es)
-
----
-
-## Entregáveis Documentais
-
-Ao aprovar, será criado:
-1. `docs/ROADMAP_2026.md` — versão completa com todos os épicos detalhados
-2. `docs/ROADMAP_Q1_2026.md` — breakdown de user stories do trimestre atual
-3. Atualização de `ROADMAP.md` (raiz) com sumário executivo
-4. Atualização de `docs/AUDITORIA_22_DIMENSOES.md` referenciando os épicos por dimensão impactada
+**Modificados (5):**
+- `src/routes/AppRoutes.tsx` (3 rotas novas)
+- `src/pages/EmployeesPage.tsx` (coluna risk + filtro)
+- `src/pages/Dashboard.tsx` (widget)
+- `supabase/config.toml` (3 functions)
+- `src/lib/i18n.ts` (chaves UEBA + MITRE)
 
 ---
 
 ## Próximo Passo
 
-Aprovar para gerar a documentação completa do roadmap e iniciar Q1 pelo épico **DLP F2 (OCR local Tesseract + redação automática)**, dando continuidade à Fase 1 já entregue.
+Aprovar para iniciar pela sub-fase **A** (schema + baseline builder), seguindo sequencial até **E** sem interrupções, conforme preferência do usuário.
