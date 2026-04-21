@@ -3887,6 +3887,189 @@ export type Database = {
         }
         Relationships: []
       }
+      siem_connectors: {
+        Row: {
+          company_id: string | null
+          config: Json
+          connector_type: Database["public"]["Enums"]["siem_connector_type"]
+          consecutive_failures: number
+          created_at: string
+          created_by: string | null
+          description: string | null
+          encrypted_credentials: string | null
+          endpoint: string
+          event_filters: Database["public"]["Enums"]["siem_event_type"][]
+          id: string
+          is_active: boolean
+          last_error: string | null
+          last_error_at: string | null
+          last_success_at: string | null
+          min_severity: string
+          name: string
+          paused_until: string | null
+          timeout_ms: number
+          updated_at: string
+        }
+        Insert: {
+          company_id?: string | null
+          config?: Json
+          connector_type: Database["public"]["Enums"]["siem_connector_type"]
+          consecutive_failures?: number
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          encrypted_credentials?: string | null
+          endpoint: string
+          event_filters?: Database["public"]["Enums"]["siem_event_type"][]
+          id?: string
+          is_active?: boolean
+          last_error?: string | null
+          last_error_at?: string | null
+          last_success_at?: string | null
+          min_severity?: string
+          name: string
+          paused_until?: string | null
+          timeout_ms?: number
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string | null
+          config?: Json
+          connector_type?: Database["public"]["Enums"]["siem_connector_type"]
+          consecutive_failures?: number
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          encrypted_credentials?: string | null
+          endpoint?: string
+          event_filters?: Database["public"]["Enums"]["siem_event_type"][]
+          id?: string
+          is_active?: boolean
+          last_error?: string | null
+          last_error_at?: string | null
+          last_success_at?: string | null
+          min_severity?: string
+          name?: string
+          paused_until?: string | null
+          timeout_ms?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "siem_connectors_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      siem_delivery_log: {
+        Row: {
+          company_id: string | null
+          connector_id: string
+          delivered_at: string
+          error: string | null
+          event_type: Database["public"]["Enums"]["siem_event_type"] | null
+          http_code: number | null
+          id: string
+          latency_ms: number | null
+          outbox_id: string | null
+          response_excerpt: string | null
+          status: string
+        }
+        Insert: {
+          company_id?: string | null
+          connector_id: string
+          delivered_at?: string
+          error?: string | null
+          event_type?: Database["public"]["Enums"]["siem_event_type"] | null
+          http_code?: number | null
+          id?: string
+          latency_ms?: number | null
+          outbox_id?: string | null
+          response_excerpt?: string | null
+          status: string
+        }
+        Update: {
+          company_id?: string | null
+          connector_id?: string
+          delivered_at?: string
+          error?: string | null
+          event_type?: Database["public"]["Enums"]["siem_event_type"] | null
+          http_code?: number | null
+          id?: string
+          latency_ms?: number | null
+          outbox_id?: string | null
+          response_excerpt?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "siem_delivery_log_connector_id_fkey"
+            columns: ["connector_id"]
+            isOneToOne: false
+            referencedRelation: "siem_connectors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      siem_event_outbox: {
+        Row: {
+          attempts: number
+          company_id: string | null
+          connector_id: string
+          enqueued_at: string
+          event_type: Database["public"]["Enums"]["siem_event_type"]
+          id: string
+          last_error: string | null
+          next_retry_at: string
+          payload: Json
+          sent_at: string | null
+          source_id: string | null
+          source_table: string | null
+          status: Database["public"]["Enums"]["siem_outbox_status"]
+        }
+        Insert: {
+          attempts?: number
+          company_id?: string | null
+          connector_id: string
+          enqueued_at?: string
+          event_type: Database["public"]["Enums"]["siem_event_type"]
+          id?: string
+          last_error?: string | null
+          next_retry_at?: string
+          payload: Json
+          sent_at?: string | null
+          source_id?: string | null
+          source_table?: string | null
+          status?: Database["public"]["Enums"]["siem_outbox_status"]
+        }
+        Update: {
+          attempts?: number
+          company_id?: string | null
+          connector_id?: string
+          enqueued_at?: string
+          event_type?: Database["public"]["Enums"]["siem_event_type"]
+          id?: string
+          last_error?: string | null
+          next_retry_at?: string
+          payload?: Json
+          sent_at?: string | null
+          source_id?: string | null
+          source_table?: string | null
+          status?: Database["public"]["Enums"]["siem_outbox_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "siem_event_outbox_connector_id_fkey"
+            columns: ["connector_id"]
+            isOneToOne: false
+            referencedRelation: "siem_connectors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       station_block_logs: {
         Row: {
           block_type: string
@@ -4888,6 +5071,18 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      siem_connector_type:
+        | "splunk_hec"
+        | "microsoft_sentinel"
+        | "syslog_cef"
+        | "generic_webhook"
+      siem_event_type:
+        | "security_violation"
+        | "dlp_incident"
+        | "ueba_anomaly"
+        | "auth_event"
+        | "policy_change"
+      siem_outbox_status: "pending" | "sent" | "failed" | "dead_letter"
       violation_rule_type:
         | "blocked_site"
         | "blocked_keyword"
@@ -5022,6 +5217,20 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      siem_connector_type: [
+        "splunk_hec",
+        "microsoft_sentinel",
+        "syslog_cef",
+        "generic_webhook",
+      ],
+      siem_event_type: [
+        "security_violation",
+        "dlp_incident",
+        "ueba_anomaly",
+        "auth_event",
+        "policy_change",
+      ],
+      siem_outbox_status: ["pending", "sent", "failed", "dead_letter"],
       violation_rule_type: [
         "blocked_site",
         "blocked_keyword",
