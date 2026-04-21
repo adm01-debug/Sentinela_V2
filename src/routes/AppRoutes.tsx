@@ -68,6 +68,8 @@ const TimesheetsPage = lazy(() => import('@/pages/TimesheetsPage'));
 const AttendancePage = lazy(() => import('@/pages/AttendancePage'));
 const HoursTrackingPage = lazy(() => import('@/pages/HoursTrackingPage'));
 const AdminTelemetriaPage = lazy(() => import('@/pages/AdminTelemetriaPage'));
+const DLPPoliciesPage = lazy(() => import('@/pages/admin/DLPPoliciesPage'));
+const DLPIncidentsPage = lazy(() => import('@/pages/admin/DLPIncidentsPage'));
 
 // ============================================================
 // SESSION HOOK (single source)
@@ -205,6 +207,8 @@ export const AppRoutes = () => (
         <Route path="/attendance" element={<AttendancePage />} />
         <Route path="/hours-tracking" element={<HoursTrackingPage />} />
         <Route path="/admin/telemetria" element={<AdminTelemetriaPage />} />
+        <Route path="/admin/dlp/policies" element={<DLPPoliciesPage />} />
+        <Route path="/admin/dlp/incidents" element={<DLPIncidentsPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

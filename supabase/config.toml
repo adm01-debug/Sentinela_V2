@@ -62,3 +62,9 @@ verify_jwt = false
 
 [functions.send-password-reset]
 verify_jwt = true
+
+[functions.dlp-policy-sync]
+verify_jwt = false
+
+[functions.dlp-incident-report]
+verify_jwt = false
