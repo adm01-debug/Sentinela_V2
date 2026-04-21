@@ -1,183 +1,204 @@
 
-# UEBA com Risk Scoring (Isolation Forest) — Plano de Implementação
+# Conectores SIEM — Splunk HEC, Microsoft Sentinel, Syslog CEF
 
-Implementação do épico **Q2 2026 — UEBA Baseline + Risk Scoring** do roadmap. Move SENTINELA de "monitoring" para "threat detection" via análise comportamental estatística.
+Implementação do épico **Q2 2026 — SIEM Connectors** do roadmap. Permite forwarding em tempo real de eventos de violação (DLP, UEBA, security violations) para plataformas SIEM corporativas.
 
 ---
 
 ## Arquitetura
 
 ```text
-┌── activities / keystroke_logs / click_logs / productivity_logs ──┐
-│                            │                                       │
-│                            ▼                                       │
-│           [behavioral-baseline-builder] (cron diário 03:00 UTC)   │
-│                            │                                       │
-│                            ▼                                       │
-│              behavioral_baselines  (por employee × feature)        │
-│                            │                                       │
-│                            ▼                                       │
-│         [risk-score-calculator] (edge function on-demand + cron)   │
-│                  • Isolation Forest (heurística)                   │
-│                  • Z-score multi-feature                           │
-│                  • Peer group comparison                           │
-│                            │                                       │
-│                            ▼                                       │
-│              user_risk_scores (histórico) + alertas                │
-└────────────────────────────────────────────────────────────────────┘
+┌── Eventos Internos ──────────────────────────────────┐
+│  security_violations  •  dlp_incidents  •  ueba      │
+└────────────────────────┬─────────────────────────────┘
+                         │ trigger / realtime
+                         ▼
+            ┌──────────────────────────┐
+            │  siem-event-dispatcher   │  (edge function)
+            │  • lê siem_connectors    │
+            │  • formata por tipo      │
+            │  • enfileira em outbox   │
+            └────────────┬─────────────┘
+                         │
+         ┌───────────────┼────────────────┐
+         ▼               ▼                ▼
+   [Splunk HEC]    [MS Sentinel]    [Syslog CEF]
+   POST /services  Log Analytics    UDP/TCP/TLS
+   /collector      Data Collector   RFC 5424
 ```
-
-**Por que heurística "Isolation Forest-like" e não ML real?** Edge functions Deno não suportam scikit-learn. Implementaremos **Half-Space Trees** (variante streaming do Isolation Forest) em TypeScript puro — algoritmo provado para detecção de anomalias em séries temporais, sem dependências externas.
 
 ---
 
 ## 1. Schema (migration)
 
-| Tabela | Colunas principais |
+| Tabela | Propósito |
 |---|---|
-| `behavioral_baselines` | employee_id, feature_name, mean, std_dev, min, max, sample_size, computed_at, period_days |
-| `user_risk_scores` | employee_id, score (0-100), level (low/medium/high/critical), factors jsonb, calculated_at, period |
-| `risk_score_factors` | (catálogo) name, weight, description, enabled |
-| `mitre_techniques` | id (T-code), tactic, name, description, severity_default |
-| `incident_mitre_mapping` | incident_id, technique_id, confidence |
+| `siem_connectors` | Configuração de cada conector: tipo, endpoint, credenciais (cifradas), event_filters, is_active, company_id |
+| `siem_event_outbox` | Fila com retry: connector_id, event_type, payload jsonb, status (pending/sent/failed), attempts, next_retry_at |
+| `siem_delivery_log` | Histórico imutável de entregas: connector_id, event_id, status, latency_ms, http_code, error |
 
-Features rastreadas no baseline (10 inicial):
-- `daily_keystrokes`, `daily_clicks`, `daily_apps_used`, `work_hours_start`, `work_hours_end`
-- `weekend_activity_ratio`, `night_activity_ratio`, `productivity_score_avg`
-- `screenshot_violations_per_day`, `clipboard_dlp_matches_per_day`
+Tipos suportados (enum `siem_connector_type`): `splunk_hec`, `microsoft_sentinel`, `syslog_cef`, `generic_webhook`.
 
-RLS por `company_id` em todas; índices `(employee_id, calculated_at DESC)`.
+Eventos forwarded (enum `siem_event_type`): `security_violation`, `dlp_incident`, `ueba_anomaly`, `auth_event`, `policy_change`.
 
-Seed `mitre_techniques`: T1078 (Valid Accounts), T1530 (Data from Cloud Storage), T1567 (Exfiltration Over Web), T1071 (Application Layer Protocol), T1119 (Automated Collection).
+RLS por `company_id`; credenciais sempre acessadas via service_role em edge functions.
 
 ---
 
 ## 2. Edge Functions (3 novas)
 
-### `behavioral-baseline-builder` (cron diário)
-- `verify_jwt = false`, executada por pg_cron
-- Para cada employee ativo: agrega últimos 30 dias por feature → calcula mean, std_dev, percentis
-- Upsert em `behavioral_baselines`
-- Skip employees com <7 dias de dados (insufficient_data flag)
+### `siem-event-dispatcher` (cron a cada 30s + on-demand)
+- Lê outbox onde `status='pending' AND next_retry_at <= now()`
+- Para cada conector ativo do evento, chama o forwarder específico
+- Atualiza status, incrementa attempts, calcula `next_retry_at` com exponential backoff (30s → 5m → 30m, max 5 tentativas)
+- Grava em `siem_delivery_log`
 
-### `risk-score-calculator` (on-demand + cron horário)
-- Input: `{ employeeId?, period?: '24h'|'7d' }`
-- Para cada feature: calcula z-score atual vs. baseline
-- **Half-Space Trees** (50 árvores, profundidade 8) sobre vetor multi-feature → anomaly_score [0,1]
-- Combina: `final_score = 0.6 * HST_score + 0.4 * max(z_scores normalizados)`
-- Aplica weights de `risk_score_factors`
-- Mapeia para level: 0-25 low / 26-50 medium / 51-75 high / 76-100 critical
-- Grava em `user_risk_scores`; se delta > 2σ vs. score anterior → invoca `process-violation-alert` com tipo `ueba_anomaly`
-- Mapeia anomalias detectadas para técnicas MITRE (regras: exfil clipboard → T1567, off-hours → T1078, etc.)
+### `siem-test-connector` (on-demand, admin-only)
+- Recebe `connector_id`, envia evento sintético de teste
+- Retorna status, latência, resposta do SIEM
 
-### `ueba-shadow-mode` (toggle)
-- Flag `ueba_shadow_mode` em `app_config`: por 30 dias calcula scores mas não dispara alertas, apenas log
-- Permite calibração antes de ir live
+### `siem-connector-manager` (CRUD + criptografia)
+- POST/PUT criptografa `auth_token`/`api_key` via Web Crypto API antes de gravar
+- GET retorna config sem credenciais (apenas masked)
+
+### Trigger DB
+- `on_security_violation_insert` → enfileira em `siem_event_outbox` para todos os conectores ativos com `security_violation` em `event_filters`
+- Mesmo padrão para `dlp_incidents` e `user_risk_scores` (delta crítico)
 
 ---
 
-## 3. Algoritmo Half-Space Trees (TS puro)
+## 3. Formatadores (shared)
 
-`supabase/functions/_shared/halfSpaceTrees.ts`:
-- Constrói N árvores binárias com splits aleatórios em features normalizadas [0,1]
-- Score = profundidade média de isolamento; anomalia = score baixo
-- Streaming: aceita window deslizante sem retreino
-- ~200 linhas, sem deps; reutilizável por outras funções
+`supabase/functions/_shared/siem/`:
 
----
-
-## 4. Frontend — UI Admin
-
-`src/pages/admin/ueba/`
-- **`UEBADashboardPage.tsx`** (`/admin/ueba`) — heatmap de risk scores por funcionário, top 10 risky, distribuição por level
-- **`EmployeeRiskProfilePage.tsx`** (`/admin/ueba/:employeeId`) — timeline de scores 30d, breakdown por feature/factor, técnicas MITRE detectadas, ações sugeridas
-- **`UEBASettingsPage.tsx`** (`/admin/ueba/settings`) — toggle shadow mode, ajuste de weights por factor, threshold de alertas
-- **`<RiskScoreBadge />`** — componente reutilizável (cor semântica + sparkline) usado em listagens de funcionários
-
-Hooks novos:
-- `useRiskScores(employeeId?)` — query + realtime subscription em `user_risk_scores`
-- `useBehavioralBaseline(employeeId)` — fetch baseline + comparativo atual
-- `useMitreTechniques()` — catálogo
-
-i18n completo (pt-BR, en-US, es) para todas labels e MITRE descriptions.
+| Arquivo | Responsabilidade |
+|---|---|
+| `splunkHec.ts` | POST `https://<host>/services/collector/event` com header `Authorization: Splunk <token>`; payload `{event, sourcetype, source, host, time}` |
+| `msSentinel.ts` | POST `https://<workspaceId>.ods.opinsights.azure.com/api/logs?api-version=2016-04-01` com HMAC-SHA256 signature; custom log type `SentinelaViolations_CL` |
+| `syslogCef.ts` | Format CEF 0\|Sentinela\|SecureWatch\|1.0\|<eventId>\|<name>\|<severity>\|<extensions>; envio via UDP (Deno.DatagramConn) ou TCP/TLS |
+| `eventNormalizer.ts` | Converte evento interno → estrutura comum {timestamp, severity, employee, type, mitre_techniques, evidence_url} |
 
 ---
 
-## 5. Cron Jobs (pg_cron)
+## 4. UI Admin
 
-Via insert tool (não migration — contém URLs/anon key):
-- `behavioral-baseline-builder`: diário 03:00 UTC
-- `risk-score-calculator` (todos employees): a cada hora
-- Cleanup `user_risk_scores` >90 dias: semanal
+`src/pages/admin/siem/`
 
----
+- **`SIEMConnectorsPage.tsx`** (`/admin/siem`)
+  - Lista de conectores com status (last_success, queue_depth, error_rate 24h)
+  - Botão "Adicionar conector" → wizard
+  - Ações: editar, testar, pausar, ver logs
+- **`SIEMConnectorWizard.tsx`** (modal/sheet)
+  - Step 1: tipo (Splunk/Sentinel/Syslog/Webhook) com cards visuais
+  - Step 2: campos específicos por tipo (endpoint, token, workspace_id, syslog host:port)
+  - Step 3: filtros de eventos (checkboxes por tipo + severity mínima)
+  - Step 4: teste de conexão antes de salvar
+- **`SIEMDeliveryLogPage.tsx`** (`/admin/siem/:connectorId/logs`)
+  - Tabela de últimas 1000 entregas com filtro por status
+  - Realtime via Supabase channel
+  - Métricas: taxa de sucesso, latência P95, eventos/min
 
-## 6. Integração com Sistemas Existentes
-
-- **Dashboard principal**: novo widget "Top Risky Users" usando `<RiskScoreBadge />`
-- **EmployeesPage**: coluna risk_score com badge + filtro por level (URL state)
-- **Alert engine**: novo tipo `ueba_anomaly` com template pt-BR/en-US/es
-- **Activity logs**: `risk_context` jsonb anexado a violações para investigação
-
----
-
-## 7. Configuração & Performance
-
-- `CONFIG.UEBA_BASELINE_DAYS = 30`, `CONFIG.UEBA_MIN_SAMPLES = 7`
-- `CONFIG.UEBA_HST_TREES = 50`, `CONFIG.UEBA_HST_DEPTH = 8`
-- Cálculo por employee <500ms (P95); batch 100 employees por invocação
-- Circuit breaker para falhas de DB
-- Logs estruturados com `risk_score_calc` event type
+Componentes:
+- `<SIEMConnectorCard />` — card resumo com badge de status semântico
+- `<SIEMHealthIndicator />` — bolinha verde/amarelo/vermelho baseado em error_rate
 
 ---
 
-## 8. Compliance & Privacidade
+## 5. Hooks & i18n
 
-- Risk scores **não** expõem PII; baseline armazena apenas estatísticas agregadas
-- LGPD: titular pode solicitar export de seu próprio risk profile via DSAR (futuro Q3)
-- Audit log de alterações em weights/thresholds (quem mudou, quando)
+Hooks novos em `src/hooks/`:
+- `useSIEMConnectors()` — list + CRUD via `siem-connector-manager`
+- `useSIEMDeliveryLog(connectorId)` — query + realtime
+- `useSIEMTest()` — mutation para teste
+
+i18n completo (pt-BR, en-US, es) — labels, descrições de tipos, mensagens de erro, instruções de setup por SIEM.
 
 ---
 
-## 9. Entrega Faseada (dentro do épico)
+## 6. Configuração & Performance
+
+- Outbox processada em batches de 100 por invocação
+- Timeout HTTP por conector: 5s (configurável)
+- Circuit breaker: 5 falhas consecutivas → pausa conector 10min + alerta admin
+- Métricas estruturadas: `siem_dispatch_total`, `siem_dispatch_latency_ms`, `siem_dispatch_failures`
+- Cleanup `siem_delivery_log` >30 dias via cron semanal
+
+---
+
+## 7. Compliance & Segurança
+
+- Credenciais SIEM **sempre cifradas em repouso** via Web Crypto API (chave em secret `SIEM_ENCRYPTION_KEY`)
+- Audit log de mudanças em `siem_connectors` (settings_audit_log)
+- PII em payloads respeita modo privacy-first (pseudonimização opcional)
+- TLS obrigatório para Splunk/Sentinel; Syslog suporta TLS via opt-in
+
+---
+
+## 8. Cron Jobs (pg_cron)
+
+Via insert tool:
+- `siem-event-dispatcher`: a cada 30 segundos
+- `siem-delivery-log` cleanup >30d: semanal domingo 04:00 UTC
+
+---
+
+## 9. Triggers DB (na migration)
+
+```sql
+CREATE TRIGGER trg_siem_violation_dispatch
+AFTER INSERT ON security_violations
+FOR EACH ROW EXECUTE FUNCTION enqueue_siem_event('security_violation');
+
+-- Análogo para dlp_incidents e user_risk_scores (com WHEN level IN ('high','critical'))
+```
+
+Função `enqueue_siem_event(event_type)` consulta `siem_connectors` ativos da empresa e insere N rows em `siem_event_outbox`.
+
+---
+
+## 10. Sub-fases (sequencial em uma passagem)
 
 | Sub-fase | Entregável |
 |---|---|
-| **A** | Schema + seed MITRE + `behavioral-baseline-builder` + cron |
-| **B** | `risk-score-calculator` com Half-Space Trees + grava scores |
-| **C** | UI Dashboard + EmployeeRiskProfile + RiskScoreBadge |
-| **D** | Settings page + shadow mode + integração alert engine |
-| **E** | Integração em EmployeesPage + Dashboard widget |
-
-Implementação será sequencial A→E em uma única passagem.
+| **A** | Migration: tabelas + enums + triggers + função enqueue + RLS |
+| **B** | Shared formatters (splunkHec, msSentinel, syslogCef, eventNormalizer) |
+| **C** | Edge functions: dispatcher + connector-manager + test-connector + cron |
+| **D** | UI: SIEMConnectorsPage + Wizard + DeliveryLogPage + componentes |
+| **E** | Hooks + i18n + integração no menu admin + RouteGuard |
 
 ---
 
-## 10. Arquivos Criados/Modificados
+## 11. Arquivos Criados/Modificados
 
-**Novos (12):**
-- `supabase/migrations/<timestamp>_ueba_baseline.sql`
-- `supabase/functions/_shared/halfSpaceTrees.ts`
-- `supabase/functions/behavioral-baseline-builder/index.ts`
-- `supabase/functions/risk-score-calculator/index.ts`
-- `src/pages/admin/ueba/UEBADashboardPage.tsx`
-- `src/pages/admin/ueba/EmployeeRiskProfilePage.tsx`
-- `src/pages/admin/ueba/UEBASettingsPage.tsx`
-- `src/components/ueba/RiskScoreBadge.tsx`
-- `src/hooks/useRiskScores.ts`
-- `src/hooks/useBehavioralBaseline.ts`
-- `src/hooks/useMitreTechniques.ts`
-- `src/lib/uebaLevels.ts` (helpers de classificação + cores)
+**Novos (~15):**
+- `supabase/migrations/<ts>_siem_connectors.sql`
+- `supabase/functions/_shared/siem/splunkHec.ts`
+- `supabase/functions/_shared/siem/msSentinel.ts`
+- `supabase/functions/_shared/siem/syslogCef.ts`
+- `supabase/functions/_shared/siem/eventNormalizer.ts`
+- `supabase/functions/_shared/siem/encryption.ts`
+- `supabase/functions/siem-event-dispatcher/index.ts`
+- `supabase/functions/siem-connector-manager/index.ts`
+- `supabase/functions/siem-test-connector/index.ts`
+- `src/pages/admin/siem/SIEMConnectorsPage.tsx`
+- `src/pages/admin/siem/SIEMConnectorWizard.tsx`
+- `src/pages/admin/siem/SIEMDeliveryLogPage.tsx`
+- `src/components/siem/SIEMConnectorCard.tsx`
+- `src/components/siem/SIEMHealthIndicator.tsx`
+- `src/hooks/useSIEMConnectors.ts`
+- `src/hooks/useSIEMDeliveryLog.ts`
 
 **Modificados (5):**
-- `src/routes/AppRoutes.tsx` (3 rotas novas)
-- `src/pages/EmployeesPage.tsx` (coluna risk + filtro)
-- `src/pages/Dashboard.tsx` (widget)
+- `src/routes/AppRoutes.tsx` (3 rotas)
+- `src/integrations/supabase/types.ts` (auto)
 - `supabase/config.toml` (3 functions)
-- `src/lib/i18n.ts` (chaves UEBA + MITRE)
+- `src/lib/i18n.ts` (chaves SIEM)
+- `src/components/layout/MainLayout.tsx` ou nav admin (link "SIEM")
+
+**Secret novo:** `SIEM_ENCRYPTION_KEY` (será solicitado ao iniciar implementação).
 
 ---
 
 ## Próximo Passo
 
-Aprovar para iniciar pela sub-fase **A** (schema + baseline builder), seguindo sequencial até **E** sem interrupções, conforme preferência do usuário.
+Aprovar para iniciar pela sub-fase **A** (schema + triggers), seguindo sequencial até **E** sem interrupções, conforme preferência do usuário.
