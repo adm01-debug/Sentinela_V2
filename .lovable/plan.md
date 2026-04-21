@@ -1,107 +1,169 @@
 
-# Análise de Gaps — SENTINELA vs. Sistemas Enterprise de Classe Mundial
+# DLP com OCR + Bloqueio de Clipboard — Arquitetura Técnica
 
-Comparando o SENTINELA com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Purview, Forcepoint, Proofpoint ITM, DTEX InTERCEPT), identifiquei **8 categorias de gaps críticos** para alcançar paridade enterprise world-class.
-
----
-
-## 1. DLP (Data Loss Prevention) Avançado
-**O que falta:**
-- Inspeção de conteúdo em tempo real (regex, classificadores ML) em arquivos, e-mails, clipboard, uploads
-- Bloqueio de transferência de dados sensíveis (PII, PCI, PHI, segredos) via USB, e-mail, web upload, impressão
-- Fingerprinting de documentos confidenciais (Exact Data Match)
-- OCR em imagens/screenshots para detectar vazamento visual de dados
-- Política de "watermarking" dinâmico em telas com dados sensíveis
-
-## 2. UEBA (User & Entity Behavior Analytics) com ML
-**O que falta:**
-- Modelos de baseline comportamental por usuário (peer group analysis)
-- Risk scoring dinâmico com ML não-supervisionado (Isolation Forest, Autoencoders)
-- Detecção de "insider threat" preditiva (funcionário em saída, descontentamento)
-- Sentiment analysis em comunicações (e-mail, chat) para detecção precoce
-- Kill chain mapping (MITRE ATT&CK Insider Threat Matrix)
-
-## 3. Integração SIEM/SOAR Empresarial
-**O que falta:**
-- Conectores nativos: Splunk, QRadar, Sentinel, Chronicle, Elastic SIEM
-- Suporte CEF/LEEF/Syslog para forwarding de eventos
-- Playbooks SOAR (Cortex XSOAR, Phantom, Tines) para resposta automatizada
-- STIX/TAXII para threat intelligence sharing
-- Integração com EDR/XDR (CrowdStrike, SentinelOne, Defender)
-
-## 4. Forensics & Investigação Avançada
-**O que falta:**
-- Timeline forense unificada multi-fonte (atividade + rede + arquivo + comunicação)
-- Chain of custody com hash criptográfico (SHA-256) e assinatura digital
-- Export forense em formato padrão (E01, AFF4) para investigações legais
-- Case management com colaboração entre investigadores
-- Reconstrução de sessão completa com vídeo (não apenas screenshots)
-- Pesquisa OCR full-text em screenshots históricos
-
-## 5. Endpoint Coverage Universal
-**O que falta:**
-- Agente para **macOS** (apenas desktop genérico hoje)
-- Agente para **Linux** (Ubuntu, RHEL, Debian)
-- Agente para **Citrix/VDI** (sessions virtuais, RDP, VMware Horizon)
-- Agente para **terminal servers** (multi-user Windows Server)
-- Suporte a **BYOD containerizado** (Android Work Profile, iOS Managed)
-- Network DLP appliance (inline proxy/ICAP) para dispositivos não-gerenciados
-
-## 6. Compliance & Governança Avançada
-**O que falta:**
-- Frameworks pré-configurados: **SOC 2, ISO 27001, HIPAA, PCI-DSS, GDPR, NIST 800-53, FedRAMP**
-- Evidence collection automatizada para auditorias
-- Data Subject Access Request (DSAR) workflow completo (LGPD/GDPR Art. 15)
-- Retention policies por jurisdição (data residency)
-- Privacy-by-design: blur automático de janelas pessoais (banco, saúde)
-- Privileged Access Recording (PAM integration: CyberArk, BeyondTrust)
-- Modo "privacy-first" com pseudonimização opt-in
-
-## 7. Produtividade & Workforce Analytics
-**O que falta:**
-- Process mining (descoberta automática de fluxos de trabalho)
-- Benchmarking entre equipes/departamentos com normalização estatística
-- Burnout detection (padrões de overwork, weekend activity)
-- Focus time analytics (deep work blocks, fragmentação)
-- Coaching automatizado com nudges contextuais
-- Integration mining com ferramentas SaaS (Slack, Teams, Jira, Salesforce, Office 365)
-- ROI calculator de produtividade por aplicação/licença
-
-## 8. Plataforma & Operações Enterprise
-**O que falta:**
-- **Multi-region deployment** com data residency garantida (EU, US, BR, APAC)
-- **Air-gapped / on-premises** deployment (Kubernetes Helm chart)
-- **High Availability** com RTO/RPO documentados (multi-AZ failover)
-- **SCIM 2.0** para provisionamento automático de usuários (Okta, Azure AD, Workday)
-- **SAML 2.0 + OIDC** com IdP-initiated SSO e Just-in-Time provisioning
-- **Customer-managed encryption keys (CMEK/BYOK)** via AWS KMS, Azure Key Vault
-- **Audit log immutability** (WORM storage, blockchain anchoring)
-- **API rate limiting tiered** por plano + GraphQL API pública
-- **White-label / multi-brand** para MSPs revendedores
-- **FinOps dashboard** (custo por funcionário monitorado, storage, AI tokens)
+Implementação do gap **P0 #1** da análise enterprise: inspeção em tempo real de conteúdo sensível em screenshots e clipboard, com bloqueio/redação ativa antes do vazamento.
 
 ---
 
-## Priorização Sugerida (ROI vs. Esforço)
+## Visão Geral do Fluxo
 
-| Prioridade | Gap | Justificativa |
+```text
+┌─────────────── DESKTOP AGENT (Electron) ───────────────┐
+│                                                          │
+│  [Clipboard Watcher]──┐    [Screenshot Service]──┐      │
+│         │             │            │             │      │
+│         ▼             │            ▼             │      │
+│  [Local DLP Engine]   │    [OCR Local Tesseract] │      │
+│   • Regex (PII/PCI)   │            │             │      │
+│   • Keywords          │            ▼             │      │
+│   • Doc fingerprints  │    [Local DLP Engine]    │      │
+│         │             │            │             │      │
+│         ▼             │            ▼             │      │
+│   ┌─ MATCH? ─┐        │      ┌─ MATCH? ─┐        │      │
+│   │  BLOCK   │        │      │  REDACT  │        │      │
+│   │  CLEAR   │        │      │  (blur)  │        │      │
+│   └────┬─────┘        │      └────┬─────┘        │      │
+│        │              │           │              │      │
+│        └──────────────┴───────────┘              │      │
+│                       │                          │      │
+│                       ▼                          │      │
+│              [DataSender (queue)]                │      │
+└───────────────────────┬──────────────────────────┘      
+                        │ HTTPS
+                        ▼
+┌──────────── SUPABASE EDGE FUNCTIONS ─────────────┐
+│  dlp-policy-sync   • dlp-incident   • ocr-deep   │
+│  (pull rules)      (log violation)  (cloud OCR)  │
+└──────────────────────┬───────────────────────────┘
+                       ▼
+               [Postgres + RLS]
+   dlp_policies • dlp_incidents • dlp_fingerprints
+```
+
+---
+
+## 1. Schema do Banco (novas tabelas)
+
+| Tabela | Propósito |
+|---|---|
+| `dlp_policies` | Regras (regex, keywords, severity, action: block/redact/alert) por empresa |
+| `dlp_classifiers` | Classificadores nomeados (CPF, CNPJ, cartão, AWS key, JWT, e-mail) |
+| `dlp_fingerprints` | Hashes SHA-256 de documentos sigilosos (Exact Data Match) |
+| `dlp_incidents` | Eventos: tipo (clipboard/screenshot), policy_id, evidência redacted, employee_id |
+| `dlp_redaction_log` | Auditoria de bloqueios/redações para compliance |
+
+Todas com RLS por `company_id` e índices em `(company_id, created_at DESC)`.
+
+---
+
+## 2. Desktop Agent — Novos Módulos
+
+`desktop-agent/src/services/dlp/`
+
+| Arquivo | Responsabilidade |
+|---|---|
+| `dlpEngine.ts` | Avalia texto contra políticas (regex compilados, Aho-Corasick para keywords) |
+| `clipboardDLP.ts` | Substitui `printScreenBlocker` clipboard watcher; intercepta TEXTO copiado a cada 500ms; se match → `clipboard.clear()` + log |
+| `ocrService.ts` | Wrapper sobre `tesseract.js` (worker pool); processa screenshot antes de enviar |
+| `screenshotRedactor.ts` | Recebe bounding boxes do OCR + matches DLP, aplica blur via `sharp` nos retângulos sensíveis |
+| `policySync.ts` | Pull periódico (15min) de `dlp_policies` via edge function; cache local em `electron-store` |
+| `fingerprintMatcher.ts` | SHA-256 rolling hash em arquivos abertos (via `chokidar` em pastas configuradas) |
+
+Integração no `main.ts`:
+- Substitui `PrintScreenBlocker.checkClipboard()` pelo novo `ClipboardDLP` (mantém bloqueio de PrintScreen).
+- `ScreenshotService` chama `ocrService.extract() → dlpEngine.scan() → screenshotRedactor.apply()` antes de enfileirar upload.
+
+---
+
+## 3. OCR — Estratégia em 2 camadas
+
+**Camada 1 (local, rápida):** `tesseract.js` em Web Worker dentro do Electron
+- Português + Inglês, modo `LSTM_ONLY`
+- Latência alvo: <800ms para screenshot 1920×1080
+- Retorna texto + `bbox` por palavra → permite redação cirúrgica
+
+**Camada 2 (cloud, profunda):** edge function `ocr-deep` usando Lovable AI (`google/gemini-2.5-flash`) com vision
+- Acionada apenas quando local OCR tem `confidence < 60` ou screenshot >2MP
+- Resultado também alimenta busca full-text histórica
+
+---
+
+## 4. Edge Functions (novas)
+
+| Função | Método | Função |
 |---|---|---|
-| **P0** | DLP com OCR + clipboard | Diferenciador #1 vs. concorrência; bloqueia 80% dos vazamentos |
-| **P0** | Agente macOS + Linux | Bloqueador de venda enterprise (heterogeneidade) |
-| **P1** | UEBA com ML + risk scoring | Move de "monitoring" para "threat detection" |
-| **P1** | SIEM connectors (Splunk/Sentinel) | Requisito de RFP corporativo |
-| **P2** | Frameworks compliance pré-configurados | Acelera vendas reguladas |
-| **P2** | SCIM 2.0 + SAML enterprise | Requisito IT enterprise |
-| **P3** | Forensics chain of custody | Diferenciador para uso legal/HR |
-| **P3** | On-premises / air-gapped | Mercado governo/defesa |
+| `dlp-policy-sync` | GET | Retorna políticas ativas + classifiers para o agent (cached 15min) |
+| `dlp-incident-report` | POST | Recebe incidente do agent, valida `x-agent-key`, grava em `dlp_incidents`, dispara alerta |
+| `ocr-deep-scan` | POST | OCR avançado via Gemini Vision quando local falha |
+| `dlp-fingerprint-upload` | POST | Admin envia documento → gera hash chunks SHA-256 → grava em `dlp_fingerprints` |
+
+Todas com CORS, validação Zod, JWT validation manual (verify_jwt=false).
 
 ---
 
-## Próximos Passos Recomendados
+## 5. Classifiers Pré-Configurados
 
-1. **Validar prioridades** com stakeholders (cliente Promo Brindes + roadmap de produto)
-2. **Roadmap fásico** de 4 trimestres cobrindo P0→P2
-3. **Spike técnico** para os 2 maiores: DLP-OCR e UEBA-ML
-4. **Parcerias estratégicas** para acelerar (ex: integração com Hashicorp Vault para BYOK, Elastic para SIEM)
+Seed inicial em migration:
+- **CPF/CNPJ** — regex com validação de dígito verificador
+- **Cartão de crédito** — Luhn check (Visa/Master/Amex/Elo)
+- **E-mail / telefone BR** — regex
+- **Chaves de API** — AWS (`AKIA[0-9A-Z]{16}`), Google (`AIza[0-9A-Za-z_-]{35}`), GitHub PAT (`ghp_[A-Za-z0-9]{36}`), JWT, Slack token
+- **PIX key** — CPF/CNPJ/email/telefone/random UUID
+- **Senha em texto claro** — heurística contexto `(senha|password)\s*[:=]`
 
-Posso detalhar a arquitetura técnica de qualquer um desses gaps, criar épicos/user stories no roadmap, ou iniciar o spike de implementação do gap prioritário que você escolher.
+Cada classifier com `severity` (low/medium/high/critical) e `default_action` (alert/redact/block).
+
+---
+
+## 6. UI Admin (novas rotas)
+
+`src/pages/admin/dlp/`
+- `DLPPoliciesPage.tsx` — CRUD de políticas, toggle por classifier, preview de regex
+- `DLPIncidentsPage.tsx` — feed em tempo real (Supabase Realtime) com evidência blurred
+- `DLPFingerprintsPage.tsx` — upload de docs sigilosos → fingerprinting
+- `DLPDashboardWidget.tsx` — KPIs (top vazamentos bloqueados, classifiers mais acionados)
+
+Componente compartilhado: `<RedactedPreview />` que mostra screenshot com áreas borradas + lista dos matches.
+
+---
+
+## 7. Configuração & Performance
+
+- `CONFIG.DLP_ENABLED`, `CONFIG.DLP_POLICY_REFRESH_MS`, `CONFIG.OCR_MAX_IMAGE_MP`
+- Worker pool de OCR (2 workers) para não travar capturas
+- Throttle clipboard watcher: skip se conteúdo idêntico ao anterior (hash xxhash)
+- Política "fail-open" configurável: se OCR/DLP falhar, screenshot vai sem redação mas com flag `dlp_unverified=true`
+
+---
+
+## 8. Compliance & Privacidade
+
+- Texto extraído por OCR **nunca** é gravado em claro no banco; apenas hashes + bounding boxes + classifier name
+- Evidência (screenshot redacted) sobe para bucket `violation-screenshots` com áreas sensíveis já borradas no cliente
+- Log imutável em `dlp_redaction_log` (append-only via RLS)
+- LGPD: agent expõe modo "privacy-first" que registra apenas contagem de matches, sem evidência visual
+
+---
+
+## 9. Entrega Faseada
+
+| Fase | Entregável |
+|---|---|
+| **F1 (MVP)** | Tabelas + classifiers BR (CPF/CNPJ/cartão) + clipboard blocker + UI políticas |
+| **F2** | OCR local Tesseract + redação automática em screenshots |
+| **F3** | Document fingerprinting + cloud OCR fallback (Gemini) |
+| **F4** | Dashboard analytics + integração com motor de incidentes existente |
+
+---
+
+## Dependências Novas
+
+**Desktop agent**: `tesseract.js`, `sharp`, `chokidar`, `xxhash-wasm`, `aho-corasick`
+**Edge functions**: nenhuma nova (Lovable AI já disponível)
+**Frontend**: nenhuma nova (shadcn já cobre UI)
+
+---
+
+## Próximo Passo
+
+Aprovar o plano para iniciar pela **Fase 1**: migration das tabelas DLP + classifiers BR seed + módulo `clipboardDLP.ts` no agente + página `DLPPoliciesPage`.
