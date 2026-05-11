@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.1"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
@@ -748,6 +748,51 @@ export type Database = {
         Relationships: []
       }
       click_logs_partitioned_2026_06: {
+        Row: {
+          app_name: string | null
+          click_type: string
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          recorded_at: string
+          target_element: string | null
+          url: string | null
+          window_title: string | null
+          x_position: number | null
+          y_position: number | null
+        }
+        Insert: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Update: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Relationships: []
+      }
+      click_logs_partitioned_2026_07: {
         Row: {
           app_name: string | null
           click_type: string
@@ -2237,6 +2282,42 @@ export type Database = {
         }
         Relationships: []
       }
+      keystroke_logs_partitioned_2026_07: {
+        Row: {
+          active_time_seconds: number
+          app_name: string | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          idle_time_seconds: number
+          keystrokes_count: number
+          recorded_at: string
+        }
+        Insert: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Update: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Relationships: []
+      }
       login_security_events: {
         Row: {
           created_at: string
@@ -2699,6 +2780,48 @@ export type Database = {
         Relationships: []
       }
       mobile_activity_logs_partitioned_2026_06: {
+        Row: {
+          activity_type: string
+          app_name: string | null
+          created_at: string
+          device_id: string | null
+          duration_seconds: number | null
+          employee_name: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          recorded_at: string
+        }
+        Insert: {
+          activity_type: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Update: {
+          activity_type?: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      mobile_activity_logs_partitioned_2026_07: {
         Row: {
           activity_type: string
           app_name: string | null
@@ -3327,6 +3450,42 @@ export type Database = {
         Relationships: []
       }
       productivity_logs_partitioned_2026_06: {
+        Row: {
+          apps_used: Json | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          neutral_time_seconds: number
+          productive_time_seconds: number
+          recorded_date: string
+          unproductive_time_seconds: number
+        }
+        Insert: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Update: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Relationships: []
+      }
+      productivity_logs_partitioned_2026_07: {
         Row: {
           apps_used: Json | null
           created_at: string
