@@ -94,7 +94,7 @@ export function useAuth(): UseAuthReturn {
     return () => subscription.unsubscribe();
   }, [resolveUser]);
 
-  const login = useCallback(async (email) => {
+  const login = useCallback(async (email: string, password: string) => {
     setError(null);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
