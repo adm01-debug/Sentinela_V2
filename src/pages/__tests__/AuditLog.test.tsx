@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuditLogPage } from '../AuditLogPage';
 import { BrowserRouter } from 'react-router-dom';
@@ -11,10 +11,7 @@ vi.mock('@/integrations/supabase/client', () => ({
     from: vi.fn(() => ({
       select: vi.fn(() => ({
         order: vi.fn(() => ({
-          limit: vi.fn(() => ({
-            eq: vi.fn(() => Promise.resolve({ data: [], error: null })),
-            then: vi.fn((cb) => cb({ data: [], error: null }))
-          }))
+          limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
         }))
       }))
     }))
@@ -51,15 +48,21 @@ describe('AuditLogPage', () => {
     );
   };
 
-  it('renders correctly', async () => {
+  it('renders correctly after loading', async () => {
     renderAuditLog();
-    expect(screen.getByText('Logs de Auditoria')).toBeInTheDocument();
+    
+    // Wait for content to appear
+    await waitFor(() => {
+        expect(screen.queryByText('Logs de Auditoria')).toBeInTheDocument();
+    });
     expect(screen.getByPlaceholderText('Buscar por tipo, detalhe ou IP...')).toBeInTheDocument();
   });
 
   it('shows empty state when no events', async () => {
     renderAuditLog();
-    // Wait for loader to disappear (it starts as loading)
-    await screen.findByText('Nenhum evento encontrado.');
+    // Wait for content to appear
+    await waitFor(() => {
+        expect(screen.queryByText('Nenhum evento encontrado.')).toBeInTheDocument();
+    });
   });
 });
