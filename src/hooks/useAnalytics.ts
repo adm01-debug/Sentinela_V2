@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { trackEvent, trackPageView } from './google-analytics';
+import { analyticsService } from '@/services/analyticsService';
 
 interface ChartDataPoint {
   label: string;
