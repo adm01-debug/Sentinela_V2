@@ -3,12 +3,21 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2, Mail, Phone } from 'lucide-react';
+import { useState } from 'react';
+import { EmployeeEditDialog } from './EmployeeEditDialog';
+import { useDeleteEmployee } from '@/hooks/useEmployees';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   employee: Employee;
 }
 
 export const EmployeeHeader = ({ employee }: Props) => {
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const deleteEmployee = useDeleteEmployee();
+  const navigate = useNavigate();
+
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -18,10 +27,22 @@ export const EmployeeHeader = ({ employee }: Props) => {
       .slice(0, 2);
   };
 
-  const displayName = (employee as { full_name?: string; name?: string }).full_name ?? (employee as { name?: string }).name ?? 'Sem nome';
-  const avatarSrc = (employee as { avatar_url?: string; avatar?: string }).avatar_url ?? (employee as { avatar?: string }).avatar;
-  const roleLabel = (employee as { role?: string; position?: string }).role ?? (employee as { position?: string }).position ?? '-';
-  const departmentLabel = (employee as { department?: string }).department ?? '-';
+  const handleDelete = async () => {
+    if (confirm(`Tem certeza que deseja excluir ${displayName}?`)) {
+      try {
+        await deleteEmployee.mutateAsync(employee.id);
+        toast.success('Funcionário excluído com sucesso');
+        navigate('/employees');
+      } catch (error) {
+        toast.error('Erro ao excluir funcionário');
+      }
+    }
+  };
+
+  const displayName = employee.full_name ?? (employee as any).name ?? 'Sem nome';
+  const avatarSrc = employee.avatar_url ?? (employee as any).avatar;
+  const roleLabel = employee.role ?? (employee as any).position ?? '-';
+  const departmentLabel = employee.department ?? '-';
 
   return (
     <div className="flex items-start justify-between bg-card rounded-lg p-6">
@@ -53,13 +74,19 @@ export const EmployeeHeader = ({ employee }: Props) => {
         </div>
       </div>
       <div className="flex gap-2">
-        <Button variant="outline">
-          <Edit className="h-4 w-4 mr-2" /> Edit
+        <Button variant="outline" onClick={() => setIsEditOpen(true)}>
+          <Edit className="h-4 w-4 mr-2" /> Editar
         </Button>
-        <Button variant="destructive">
+        <Button variant="destructive" onClick={handleDelete} disabled={deleteEmployee.isPending}>
           <Trash2 className="h-4 w-4" />
         </Button>
       </div>
+
+      <EmployeeEditDialog 
+        employee={employee} 
+        isOpen={isEditOpen} 
+        onOpenChange={setIsEditOpen} 
+      />
     </div>
   );
 };
