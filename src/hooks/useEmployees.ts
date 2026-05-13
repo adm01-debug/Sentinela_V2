@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { employeeService } from '@/services/employeeService';
 
 // Extended type with device info
 export interface EmployeeDevice {
