@@ -13,7 +13,6 @@ export { BaseRadarChart } from './BaseRadarChart';
 export { BaseScatterChart } from './BaseScatterChart';
 export type { RadarSeriesConfig } from './BaseRadarChart';
 export type { ScatterSeriesConfig } from './BaseScatterChart';
-export type { RadarSeriesConfig } from './BaseRadarChart';
 
 export { Sparkline } from './Sparkline';
 
