@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { BarChart3, TrendingUp, Users, Clock } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BaseAreaChart } from '@/components/charts';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
 export default function AnalyticsPage() {
