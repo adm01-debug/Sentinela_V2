@@ -160,11 +160,11 @@ export function useAgentKeysPage() {
   });
 
   // Handlers
-  const handleSearchChange = useCallback((value) => {
+  const handleSearchChange = useCallback((value: string) => {
     setSearch(value);
   }, []);
 
-  const handleStatusFilterChange = useCallback((value) => {
+  const handleStatusFilterChange = useCallback((value: string) => {
     setStatusFilter(value);
   }, []);
 
@@ -190,19 +190,19 @@ export function useAgentKeysPage() {
     setSelectedKey(null);
   }, []);
 
-  const handleRevokeKey = useCallback((keyId) => {
+  const handleRevokeKey = useCallback((keyId: string) => {
     revokeMutation.mutate(keyId);
   }, [revokeMutation]);
 
-  const handleReactivateKey = useCallback((keyId) => {
+  const handleReactivateKey = useCallback((keyId: string) => {
     reactivateMutation.mutate(keyId);
   }, [reactivateMutation]);
 
-  const handleDeleteKey = useCallback((keyId) => {
+  const handleDeleteKey = useCallback((keyId: string) => {
     deleteMutation.mutate(keyId);
   }, [deleteMutation]);
 
-  const handleCopyKey = useCallback((agentKey) => {
+  const handleCopyKey = useCallback((agentKey: string) => {
     navigator.clipboard.writeText(agentKey);
     toast({ title: 'Chave copiada para a área de transferência' });
   }, [toast]);
