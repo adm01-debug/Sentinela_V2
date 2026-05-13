@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import DashboardPage from '../DashboardPage';
 import { BrowserRouter } from 'react-router-dom';
@@ -37,7 +37,6 @@ vi.mock('@/hooks/useChartColors', () => ({
   }),
 }));
 
-// Mock StatCard because it uses requestAnimationFrame and has count-up logic
 vi.mock('@/components/StatCard', () => ({
   StatCard: ({ title, value }: any) => (
     <div data-testid="stat-card">
@@ -120,11 +119,13 @@ describe('DashboardPage', () => {
 
     const filterButton = screen.getByRole('button', { name: /Filtros/i });
     
-    expect(screen.queryByPlaceholderText('Departamento')).not.toBeInTheDocument();
+    // Select component trigger text "Todos os departamentos" should not be present initially
+    expect(screen.queryByText('Todos os departamentos')).not.toBeInTheDocument();
 
     fireEvent.click(filterButton);
 
-    expect(screen.getByPlaceholderText('Departamento')).toBeInTheDocument();
+    // Now it should be visible
+    expect(screen.getByText('Todos os departamentos')).toBeInTheDocument();
   });
 
   it('changes period when buttons are clicked', () => {
