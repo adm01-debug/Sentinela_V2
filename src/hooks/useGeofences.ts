@@ -87,16 +87,7 @@ export function useCreateGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (input: CreateGeofenceInput) => {
-      const { data, error } = await supabase
-        .from('geofences')
-        .insert(input)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data as Geofence;
-    },
+    mutationFn: (input: CreateGeofenceInput) => geofenceService.createGeofence(input),
     onMutate: async (input) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
 
