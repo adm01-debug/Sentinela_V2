@@ -17,6 +17,38 @@ vi.mock('@/hooks/useSettings', () => ({
   useSettings: vi.fn(),
 }));
 
+// We must mock the actual implementation of tabs if Radix triggers are not working in the test environment
+vi.mock('@/components/ui/tabs', async () => {
+    const React = await import('react');
+    return {
+        Tabs: ({ children, defaultValue }: any) => {
+            const [value, setValue] = React.useState(defaultValue);
+            return (
+                <div data-testid="tabs-root">
+                    {React.Children.map(children, child => {
+                        if (React.isValidElement(child)) {
+                            return React.cloneElement(child as React.ReactElement<any>, { value, onValueChange: setValue });
+                        }
+                        return child;
+                    })}
+                </div>
+            );
+        },
+        TabsList: ({ children, value, onValueChange }: any) => (
+            <div>
+                {React.Children.map(children, child => {
+                    if (React.isValidElement(child)) {
+                        return React.cloneElement(child as React.ReactElement<any>, { active: value === child.props.value, onClick: () => onValueChange(child.props.value) });
+                    }
+                    return child;
+                })}
+            </div>
+        ),
+        TabsTrigger: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
+        TabsContent: ({ children, value, active }: any) => (value === active || active) ? <div>{children}</div> : null,
+    };
+});
+
 vi.mock('@/components/PolicyToggle', () => ({
   PolicyToggle: ({ policy }: any) => <div data-testid="policy-toggle">{policy.name}</div>,
 }));
@@ -120,17 +152,10 @@ describe('Settings Page', () => {
     const appsTab = screen.getByText('monitoring.applications');
     fireEvent.click(appsTab);
     
-    // Wait for content to be visible (Radix tabs)
-    await waitFor(() => {
-        expect(screen.queryByPlaceholderText('common.search')).toBeInTheDocument();
-    });
-
     const searchInput = screen.getByPlaceholderText('common.search');
     fireEvent.change(searchInput, { target: { value: 'Slack' } });
     
-    await waitFor(() => {
-      expect(screen.getByText('Slack')).toBeInTheDocument();
-    });
+    expect(screen.getByText('Slack')).toBeInTheDocument();
     expect(screen.queryByText('Discord')).not.toBeInTheDocument();
   });
 });
