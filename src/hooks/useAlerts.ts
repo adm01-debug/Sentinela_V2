@@ -14,7 +14,7 @@ export const useAlerts = (filters?: { severity?: string; acknowledged?: boolean 
   });
 };
 
-export const useAlert = (id) => {
+export const useAlert = (id: string) => {
   return useQuery({
     queryKey: ['alert', id],
     queryFn: async () => {
