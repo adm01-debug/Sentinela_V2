@@ -152,7 +152,7 @@ export function usePasswordResetRequests() {
 
   // Delete request (admin)
   const deleteRequestMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase
         .from('password_reset_requests')
         .delete()

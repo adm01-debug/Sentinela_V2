@@ -81,7 +81,7 @@ export function useUserManagementPage() {
 
   // Create user mutation
   const createMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: any) => {
       const { data: authData, error: authError } = await supabase.auth.admin.createUser({
         email: data.email,
         password: data.password,
@@ -107,7 +107,7 @@ export function useUserManagementPage() {
 
   // Update user mutation
   const updateMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: any) => {
       const { error } = await supabase
         .from('profiles')
         .update({ name: data.name, role: data.role, is_active: data.is_active })
@@ -142,7 +142,7 @@ export function useUserManagementPage() {
 
   // Reset password mutation
   const resetPasswordMutation = useMutation({
-    mutationFn: async (email) => {
+    mutationFn: async (email: any) => {
       const { error } = await supabase.auth.resetPasswordForEmail(email);
       if (error) throw error;
     },

@@ -236,7 +236,7 @@ export function useDeleteGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase
         .from('geofences')
         .delete()

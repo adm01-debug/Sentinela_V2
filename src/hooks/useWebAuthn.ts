@@ -316,7 +316,7 @@ export function useWebAuthn() {
 
   // Delete a passkey
   const deletePasskeyMutation = useMutation({
-    mutationFn: async (credentialId) => {
+    mutationFn: async (credentialId: any) => {
       const { error } = await supabase
         .from('webauthn_credentials')
         .delete()

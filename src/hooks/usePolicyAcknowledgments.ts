@@ -231,7 +231,7 @@ export function useDeletePolicy() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase.from('security_policies').delete().eq('id', id);
       if (error) throw error;
     },

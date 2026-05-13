@@ -87,7 +87,7 @@ export function useDeleteInternetAccessRule() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase.from('internet_access_rules').delete().eq('id', id);
       if (error) throw error;
     },

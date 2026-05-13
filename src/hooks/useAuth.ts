@@ -29,7 +29,7 @@ export interface UseAuthReturn {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (email) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 }
@@ -94,7 +94,7 @@ export function useAuth(): UseAuthReturn {
     return () => subscription.unsubscribe();
   }, [resolveUser]);
 
-  const login = useCallback(async (email) => {
+  const login = useCallback(async (email: string, password: string) => {
     setError(null);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {

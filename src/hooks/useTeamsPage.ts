@@ -103,7 +103,7 @@ export function useTeamsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: any) => {
       const { error } = await supabase.from('teams').insert(data);
       if (error) throw error;
     },
@@ -133,7 +133,7 @@ export function useTeamsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase.from('teams').delete().eq('id', id);
       if (error) throw error;
     },
