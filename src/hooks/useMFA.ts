@@ -145,7 +145,7 @@ export function useMFA() {
       }
     },
     
-    unenroll: async (factorId) => {
+    unenroll: async (factorId: string) => {
       try {
         await unenrollMutation.mutateAsync(factorId);
         return { error: null };

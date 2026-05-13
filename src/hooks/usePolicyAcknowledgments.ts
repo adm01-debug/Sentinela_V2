@@ -53,7 +53,7 @@ export function usePolicies() {
         .order('name', { ascending: true });
 
       if (error) throw error;
-      return data.map((p) => ({
+      return data.map((p: any) => ({
         id: p.id,
         name: p.name,
         description: p.description,
@@ -120,7 +120,7 @@ export function usePendingAcknowledgments() {
       if (acksError) throw acksError;
 
       // Calculate pending
-      const ackSet = new Set(acks?.map((a) => a.employee_name) || []);
+      const ackSet = new Set(acks?.map((a: any) => a.employee_name) || []);
       const pending: { employee: { id: string; name: string; email: string | null }; policyId: string }[] = [];
 
       for (const emp of employees || []) {
@@ -150,7 +150,7 @@ export function usePolicyStats() {
       const acks = acksRes.data || [];
       const employees = employeesRes.data || [];
 
-      const activePolicies = policies.filter((p) => p.enabled);
+      const activePolicies = policies.filter((p: any) => p.enabled);
       
       const expectedAcks = activePolicies.length * employees.length;
       const actualAcks = acks.length;

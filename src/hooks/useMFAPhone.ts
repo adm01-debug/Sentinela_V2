@@ -23,7 +23,7 @@ export function useMFAPhone() {
     error: null,
   });
 
-  const enrollPhone = useCallback(async (phoneNumber) => {
+  const enrollPhone = useCallback(async (phoneNumber: string) => {
     setState(prev => ({ ...prev, isEnrolling: true, error: null }));
 
     try {
@@ -64,7 +64,7 @@ export function useMFAPhone() {
     }
   }, [toast]);
 
-  const verifyPhone = useCallback(async (code) => {
+  const verifyPhone = useCallback(async (code: string) => {
     if (!state.factorId) {
       toast({
         title: 'Erro',

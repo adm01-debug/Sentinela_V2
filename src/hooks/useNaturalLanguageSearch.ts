@@ -23,7 +23,7 @@ export function useNaturalLanguageSearch(options: UseNaturalLanguageSearchOption
   const [error, setError] = useState<Error | null>(null);
   const [lastQuery, setLastQuery] = useState('');
 
-  const search = useCallback(async (query) => {
+  const search = useCallback(async (query: string) => {
     if (!query.trim()) { setResults([]); return; }
     setIsSearching(true);
     setError(null);

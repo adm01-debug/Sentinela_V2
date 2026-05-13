@@ -67,7 +67,7 @@ export function useReauthentication() {
     }));
   }, []);
 
-  const verifyPassword = useCallback(async (password): Promise<boolean> => {
+  const verifyPassword = useCallback(async (password: string): Promise<boolean> => {
     if (!user?.email) {
       toast({
         title: 'Erro',
@@ -120,7 +120,7 @@ export function useReauthentication() {
     }
   }, [user, toast]);
 
-  const verifyMFA = useCallback(async (code): Promise<boolean> => {
+  const verifyMFA = useCallback(async (code: string): Promise<boolean> => {
     setState(prev => ({ ...prev, isVerifying: true, error: null }));
 
     try {

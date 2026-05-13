@@ -18,7 +18,7 @@ export function useUser() {
     setLoading(false);
   }, []);
 
-  const updateUser = (data) => {
+  const updateUser = (data: any) => {
     if (user) {
       const updated = { ...user, ...data };
       setUser(updated);

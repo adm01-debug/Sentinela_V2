@@ -16,11 +16,11 @@ export function useSchedule() {
     return task;
   }, []);
 
-  const complete = useCallback((id) => {
+  const complete = useCallback((id: string) => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: true } : t));
   }, []);
 
-  const remove = useCallback((id) => {
+  const remove = useCallback((id: string) => {
     setTasks(prev => prev.filter(t => t.id !== id));
   }, []);
 

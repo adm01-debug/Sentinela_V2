@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 
-export function useRouteParams<T extends Record<string, string>>(pattern): T {
+export function useRouteParams<T extends Record<string, string>>(pattern: string): T {
   const [params, setParams] = useState<T>({} as T);
 
   useEffect(() => {
@@ -9,7 +9,7 @@ export function useRouteParams<T extends Record<string, string>>(pattern): T {
       const pathParts = window.location.pathname.split("/");
       const extracted: Record<string, string> = {};
 
-      patternParts.forEach((part, i) => {
+      patternParts.forEach((part: string, i: number) => {
         if (part.startsWith(":")) {
           extracted[part.slice(1)] = pathParts[i] || "";
         }

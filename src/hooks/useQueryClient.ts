@@ -8,7 +8,7 @@ interface CacheEntry<T> {
 export function useQueryClient() {
   const cache = useRef<Map<string, CacheEntry<unknown>>>(new Map());
 
-  const get = useCallback(<T>(key): T | undefined => {
+  const get = useCallback(<T>(key: string): T | undefined => {
     const entry = cache.current.get(key);
     return entry?.data as T;
   }, []);
@@ -17,7 +17,7 @@ export function useQueryClient() {
     cache.current.set(key, { data, timestamp: Date.now() });
   }, []);
 
-  const invalidate = useCallback((key) => {
+  const invalidate = useCallback((key: string) => {
     cache.current.delete(key);
   }, []);
 

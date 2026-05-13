@@ -59,7 +59,7 @@ export function useViolations(filters?: { severity?: string; status?: string; em
   const unresolved = useMemo(() => violations.filter(v => v.status !== 'resolved'), [violations]);
   const critical = useMemo(() => violations.filter(v => v.severity === 'critical' && v.status !== 'resolved'), [violations]);
 
-  const resolve = useCallback((id) => resolveMutation.mutate(id), [resolveMutation]);
+  const resolve = useCallback((id: any) => resolveMutation.mutate(id), [resolveMutation]);
 
   return {
     violations,

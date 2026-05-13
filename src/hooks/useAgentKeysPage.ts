@@ -89,7 +89,7 @@ export function useAgentKeysPage() {
       if (error) throw error;
       return agentKey;
     },
-    onSuccess: (key) => {
+    onSuccess: (key: any) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.agentKeys.all });
       toast({ 
         title: 'Chave criada com sucesso',

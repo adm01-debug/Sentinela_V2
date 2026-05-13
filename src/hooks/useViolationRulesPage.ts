@@ -80,7 +80,7 @@ export function useViolationRulesPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((r) => ({
+      return (data || []).map((r: any) => ({
         id: r.id,
         name: r.rule_value,
         description: r.description,

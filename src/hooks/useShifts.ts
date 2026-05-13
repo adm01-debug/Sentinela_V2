@@ -11,7 +11,7 @@ export function useShifts() {
     return shift;
   }, []);
 
-  const remove = useCallback((id) => {
+  const remove = useCallback((id: any) => {
     setShifts(prev => prev.filter(s => s.id !== id));
   }, []);
 

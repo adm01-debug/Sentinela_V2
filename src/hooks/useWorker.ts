@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
-export function useWorker<T, R>(workerFn: (data) => R) {
+export function useWorker<T, R>(workerFn: (data: any) => R) {
   const [result, setResult] = useState<R | null>(null);
   const [loading, setLoading] = useState(false);
   const workerRef = useRef<Worker | null>(null);
@@ -8,11 +8,11 @@ export function useWorker<T, R>(workerFn: (data) => R) {
   useEffect(() => {
     const blob = new Blob([`onmessage=e=>postMessage((${workerFn.toString()})(e.data))`], { type: "text/javascript" });
     workerRef.current = new Worker(URL.createObjectURL(blob));
-    workerRef.current.onmessage = (e) => { setResult(e.data); setLoading(false); };
+    workerRef.current.onmessage = (e: any) => { setResult(e.data); setLoading(false); };
     return () => workerRef.current?.terminate();
   }, [workerFn]);
 
-  const run = useCallback((data) => {
+  const run = useCallback((data: any) => {
     setLoading(true);
     workerRef.current?.postMessage(data);
   }, []);

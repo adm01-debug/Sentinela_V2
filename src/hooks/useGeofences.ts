@@ -85,7 +85,7 @@ export function useActiveGeofences() {
   });
 }
 
-export function useGeofence(id) {
+export function useGeofence(id: string | null | undefined) {
   return useQuery({
     queryKey: queryKeys.geofences.detail(id || ''),
     queryFn: async () => {
@@ -245,7 +245,7 @@ export function useDeleteGeofence() {
       if (error) throw error;
       return id;
     },
-    onMutate: async (id) => {
+    onMutate: async (id: any) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
 
       const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
@@ -315,7 +315,7 @@ export function useToggleGeofence() {
         variant: 'destructive',
       });
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       invalidateRelated.geofences(queryClient);
       toast({
         title: data.is_active ? 'Geofence ativada' : 'Geofence desativada',

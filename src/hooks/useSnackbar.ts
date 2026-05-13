@@ -12,9 +12,9 @@ export function useSnackbar(duration = 3000) {
     return id;
   }, [duration]);
 
-  const success = useCallback((msg) => show(msg, "success"), [show]);
-  const error = useCallback((msg) => show(msg, "error"), [show]);
-  const info = useCallback((msg) => show(msg, "info"), [show]);
+  const success = useCallback((msg: any) => show(msg, "success"), [show]);
+  const error = useCallback((msg: any) => show(msg, "error"), [show]);
+  const info = useCallback((msg: any) => show(msg, "info"), [show]);
 
   return { snackbars, show, success, error, info };
 }

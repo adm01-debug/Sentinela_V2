@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-export function useRealtime<T>(url) {
+export function useRealtime<T>(url: string) {
   const [data, setData] = useState<T | null>(null);
   const [connected, setConnected] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
@@ -11,12 +11,12 @@ export function useRealtime<T>(url) {
 
     ws.onopen = () => setConnected(true);
     ws.onclose = () => setConnected(false);
-    ws.onmessage = (e) => setData(JSON.parse(e.data));
+    ws.onmessage = (e: any) => setData(JSON.parse(e.data));
 
     return () => ws.close();
   }, [url]);
 
-  const send = useCallback((message) => {
+  const send = useCallback((message: any) => {
     wsRef.current?.send(JSON.stringify(message));
   }, []);
 

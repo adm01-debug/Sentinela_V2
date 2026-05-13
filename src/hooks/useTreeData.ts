@@ -5,7 +5,7 @@ interface TreeNode<T> { id: string; data: T; children: TreeNode<T>[]; expanded: 
 export function useTreeData<T>(initialData: TreeNode<T>[]) {
   const [tree, setTree] = useState(initialData);
 
-  const toggle = useCallback((id) => {
+  const toggle = useCallback((id: any) => {
     const toggleNode = (nodes: TreeNode<T>[]): TreeNode<T>[] => {
       return nodes.map(node => ({
         ...node,

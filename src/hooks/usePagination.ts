@@ -24,12 +24,12 @@ export interface UsePaginationReturn<T> {
   paginatedData: T[];
   
   // Navegação
-  goToPage: (page) => void;
+  goToPage: (page: number) => void;
   nextPage: () => void;
   prevPage: () => void;
   firstPage: () => void;
   lastPage: () => void;
-  setPageSize: (size) => void;
+  setPageSize: (size: number) => void;
   
   // Info
   startIndex: number;
@@ -148,7 +148,7 @@ export function useServerPagination(options: UsePaginationOptions = {}) {
     setPage(1);
   }, []);
 
-  const setTotalItems = useCallback((count) => {
+  const setTotalItems = useCallback((count: number) => {
     setTotal(count);
   }, []);
 

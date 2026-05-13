@@ -28,7 +28,7 @@ export const useDashboardStats = () => {
         supabase.from('security_violations').select('id', { count: 'exact' }),
       ]);
       const employees = employeesRes.data || [];
-      const activeEmployees = employees.filter((e) => e.status === 'active').length;
+      const activeEmployees = employees.filter((e: any) => e.status === 'active').length;
       return {
         totalEmployees: employeesRes.count || 0,
         activeEmployees,
@@ -54,7 +54,7 @@ export const useRecentAlerts = (limit = 4) => {
       if (!data || data.length === 0) return [];
 
       const now = Date.now();
-      return data.map((v) => {
+      return data.map((v: any) => {
         const diff = now - new Date(v.created_at).getTime();
         const mins = Math.floor(diff / 60000);
         const timeLabel = mins < 1 ? 'agora' : mins < 60 ? `${mins} min atrás` : `${Math.floor(mins / 60)}h atrás`;
@@ -83,7 +83,7 @@ export const useRecentActivity = (limit = 5) => {
       if (error) throw error;
       if (!data || data.length === 0) return [];
 
-      return data.map((item) => ({
+      return data.map((item: any) => ({
         id: item.id,
         user: item.employee_name || 'Desconhecido',
         action: `registrou ${Math.round((item.productive_time_seconds || 0) / 60)} min produtivo`,

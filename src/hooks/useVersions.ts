@@ -145,7 +145,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   // ============================================================
   const restoreVersionMutation = useMutation({
     mutationFn: async (versionId: string) => {
-      const version = versions.find((v) => v.id === versionId);
+      const version = versions.find((v: any) => v.id === versionId);
       if (!version) throw new Error('Versão não encontrada');
 
       // Proceed to restore
@@ -201,7 +201,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
     const diffs: VersionDiff[] = [];
     const allKeys = new Set([...Object.keys(v1.data), ...Object.keys(v2.data)]);
 
-    allKeys.forEach((key) => {
+    allKeys.forEach((key: any) => {
       const oldVal = v1.data[key];
       const newVal = v2.data[key];
 
@@ -221,7 +221,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
    * Obtém versão específica
    */
   const getVersion = (versionNumber): EntityVersion | undefined => {
-    return versions.find((v) => v.version_number === versionNumber);
+    return versions.find((v: any) => v.version_number === versionNumber);
   };
 
   /**

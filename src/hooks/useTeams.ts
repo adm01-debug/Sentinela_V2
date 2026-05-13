@@ -211,7 +211,7 @@ export function useDeleteTeam() {
       if (error) throw error;
       return id;
     },
-    onMutate: async (id) => {
+    onMutate: async (id: any) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.teams.lists() });
 
       const previousTeams = queryClient.getQueryData<Team[]>(queryKeys.teams.lists());

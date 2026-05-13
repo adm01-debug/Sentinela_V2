@@ -62,7 +62,7 @@ export function useScheduledReports() {
   });
 }
 
-export function useScheduledReport(id) {
+export function useScheduledReport(id: string | null | undefined) {
   return useQuery({
     queryKey: queryKeys.reports.detail(id || ''),
     queryFn: async () => {

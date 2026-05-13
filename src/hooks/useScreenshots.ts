@@ -27,7 +27,7 @@ export const useDeleteScreenshot = () => {
   });
 };
 
-export const useScreenshot = (id) => {
+export const useScreenshot = (id: string | null | undefined) => {
   return useQuery({
     queryKey: ['screenshot', id],
     queryFn: async () => null as Screenshot | null,

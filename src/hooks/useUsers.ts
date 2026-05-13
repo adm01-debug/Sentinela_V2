@@ -44,7 +44,7 @@ export const useUsers = () => {
   });
 };
 
-export const useUser = (id) => {
+export const useUser = (id: any) => {
   return useQuery({
     queryKey: ['user', id],
     queryFn: async () => {

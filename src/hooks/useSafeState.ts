@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 
-export function useSafeState<T>(initialValue: T): [T, (value) => void] {
+export function useSafeState<T>(initialValue: T): [T, (value: T) => void] {
   const [state, setState] = useState(initialValue);
   const mountedRef = useRef(true);
 
@@ -8,7 +8,7 @@ export function useSafeState<T>(initialValue: T): [T, (value) => void] {
     return () => { mountedRef.current = false; };
   }, []);
 
-  const setSafeState = useCallback((value) => {
+  const setSafeState = useCallback((value: T) => {
     if (mountedRef.current) setState(value);
   }, []);
 

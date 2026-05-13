@@ -106,8 +106,8 @@ export function useRolesWithPermissions() {
       const rolesWithPerms: RoleWithPermissions[] = (roles as Role[]).map(role => ({
         ...role,
         permissions: rolePermissions
-          .filter((rp) => rp.role_id === role.id)
-          .map((rp) => rp.permission as unknown as Permission)
+          .filter((rp: any) => rp.role_id === role.id)
+          .map((rp: any) => rp.permission as unknown as Permission)
           .filter(Boolean),
       }));
 
@@ -273,7 +273,7 @@ export function useBulkUpdateRolePermissions() {
 }
 
 // Check if current user has permission
-export function useHasPermission(permission) {
+export function useHasPermission(permission: string) {
   const { user } = useAuth();
 
   return useQuery({
@@ -328,7 +328,7 @@ export function useCheckPermissions(permissions: string[]) {
   return {
     hasAll: permissions.every(p => userPermissions.includes(p)),
     hasAny: permissions.some(p => userPermissions.includes(p)),
-    check: (permission) => userPermissions.includes(permission),
+    check: (permission: string) => userPermissions.includes(permission),
     permissions: userPermissions,
   };
 }

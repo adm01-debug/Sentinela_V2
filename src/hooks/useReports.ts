@@ -31,7 +31,7 @@ export const useReports = (filters?: ReportFilters) => {
   });
 };
 
-export const useReport = (id) => {
+export const useReport = (id: string | null | undefined) => {
   return useQuery({
     queryKey: ['report', id],
     queryFn: async () => {
