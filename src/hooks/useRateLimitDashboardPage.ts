@@ -123,7 +123,7 @@ export function useRateLimitDashboardPage() {
 
   // Unblock IP mutation
   const unblockIPMutation = useMutation({
-    mutationFn: async (ip) => {
+    mutationFn: async (ip: any) => {
       const { error } = await supabase
         .from('blocked_ips')
         .delete()

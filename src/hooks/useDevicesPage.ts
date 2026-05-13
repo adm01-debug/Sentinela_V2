@@ -90,7 +90,7 @@ export function useDevicesPage() {
 
   // Deactivate device mutation
   const deactivateMutation = useMutation({
-    mutationFn: async (deviceId) => {
+    mutationFn: async (deviceId: any) => {
       const { error } = await supabase
         .from('devices')
         .update({ is_active: false })
@@ -109,7 +109,7 @@ export function useDevicesPage() {
 
   // Reactivate device mutation
   const reactivateMutation = useMutation({
-    mutationFn: async (deviceId) => {
+    mutationFn: async (deviceId: any) => {
       const { error } = await supabase
         .from('devices')
         .update({ is_active: true })
@@ -127,7 +127,7 @@ export function useDevicesPage() {
 
   // Delete device mutation
   const deleteMutation = useMutation({
-    mutationFn: async (deviceId) => {
+    mutationFn: async (deviceId: any) => {
       const { error } = await supabase
         .from('devices')
         .delete()

@@ -125,7 +125,7 @@ export function useGeofencingPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: any) => {
       const geofenceData = {
         name: data.name,
         description: data.description,
@@ -171,7 +171,7 @@ export function useGeofencingPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase.from('geofences').delete().eq('id', id);
       if (error) throw error;
     },

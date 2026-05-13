@@ -48,7 +48,7 @@ export function useReportsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => { const { error } = await supabase.from('reports').delete().eq('id', id); if (error) throw error; },
+    mutationFn: async (id: any) => { const { error } = await supabase.from('reports').delete().eq('id', id); if (error) throw error; },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: queryKeys.reports.all }); toast({ title: 'Relatório removido' }); },
   });
 

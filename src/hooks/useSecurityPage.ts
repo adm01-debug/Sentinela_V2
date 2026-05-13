@@ -101,7 +101,7 @@ export function useSecurityPage() {
   });
 
   const resolveEventMutation = useMutation({
-    mutationFn: async (eventId) => {
+    mutationFn: async (eventId: any) => {
       const { error } = await supabase
         .from('security_violations')
         .update({ read: true })

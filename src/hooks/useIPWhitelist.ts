@@ -47,7 +47,7 @@ export function useCreateWhitelistIP() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: any) => {
       const { data: result, error } = await supabase
         .from('whitelisted_ips')
         .insert({
@@ -107,7 +107,7 @@ export function useDeleteWhitelistIP() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase
         .from('whitelisted_ips')
         .delete()

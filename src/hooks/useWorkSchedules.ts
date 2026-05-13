@@ -114,7 +114,7 @@ export function useDeleteWorkSchedule() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase.from('work_schedules').delete().eq('id', id);
       if (error) throw error;
     },

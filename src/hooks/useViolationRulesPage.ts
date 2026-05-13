@@ -105,7 +105,7 @@ export function useViolationRulesPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: any) => {
       const dbData = {
         rule_type: data.type,
         rule_value: data.name,
@@ -153,7 +153,7 @@ export function useViolationRulesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase.from('violation_rules').delete().eq('id', id);
       if (error) throw error;
     },

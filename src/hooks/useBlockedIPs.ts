@@ -86,7 +86,7 @@ export function useBlockedIPs() {
   });
 
   const unblockMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase
         .from('blocked_ips')
         .update({ is_active: false })
@@ -103,7 +103,7 @@ export function useBlockedIPs() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase.from('blocked_ips').delete().eq('id', id);
       if (error) throw error;
     },
@@ -166,7 +166,7 @@ export function useUnblockIP() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase.from('blocked_ips').delete().eq('id', id);
       if (error) throw error;
     },

@@ -99,7 +99,7 @@ export function useMessageTemplatesPage() {
 
   // Mutations
   const createMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: any) => {
       const dbData = {
         name: data.name,
         body: data.content,
@@ -144,7 +144,7 @@ export function useMessageTemplatesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: any) => {
       const { error } = await supabase.from('message_templates').delete().eq('id', id);
       if (error) throw error;
     },
