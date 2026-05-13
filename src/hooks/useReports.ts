@@ -30,11 +30,7 @@ export const useReports = (filters?: ReportFilters) => {
 export const useReport = (id: string | null | undefined) => {
   return useQuery({
     queryKey: ['report', id],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('ai_analysis_reports').select('*').eq('id', id).single();
-      if (error) throw error;
-      return data;
-    },
+    queryFn: () => reportService.getReportById(id as string),
     enabled: !!id,
   });
 };
