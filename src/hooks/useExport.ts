@@ -28,10 +28,10 @@ export interface ExportOptions<T> {
 }
 
 export interface UseExportResult<T> {
-  exportCSV: (data) => void;
-  exportExcel: (data) => Promise<void>;
-  exportPDF: (data) => Promise<void>;
-  exportJSON: (data) => void;
+  exportCSV: (data: T[], options?: ExportOptions<T>) => void;
+  exportExcel: (data: T[], options?: ExportOptions<T>) => Promise<void>;
+  exportPDF: (data: T[], options?: ExportOptions<T>) => Promise<void>;
+  exportJSON: (data: T[], options?: ExportOptions<T>) => void;
   isExporting: boolean;
   error: Error | null;
 }
@@ -89,7 +89,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
   // EXPORT CSV
   // ============================================================
 
-  const exportCSV = useCallback((data) => {
+  const exportCSV = useCallback((data: T[], options: ExportOptions<T> = {}) => {
     const { filename = 'export', columns, includeTimestamp = true } = options;
 
     try {
@@ -111,7 +111,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
           .map((col) => {
             const value = getNestedValue(row, col.key as string);
             const formatted = col.formatter
-              ? col.formatter(value, row)
+              ? col.formatter(value)
               : formatValue(value);
             return '"' + formatted.replace(/"/g, '""') + '"';
           })
@@ -141,7 +141,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
   // EXPORT EXCEL
   // ============================================================
 
-  const exportExcel = useCallback(async (data) => {
+  const exportExcel = useCallback(async (data: T[], options: ExportOptions<T> = {}) => {
     const { filename = 'export', columns, title, includeTimestamp = true } = options;
 
     try {
@@ -175,7 +175,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
         ...data.map((row) =>
           cols.map((col) => {
             const value = getNestedValue(row, col.key as string);
-            return col.formatter ? col.formatter(value, row) : formatValue(value);
+            return col.formatter ? col.formatter(value) : formatValue(value);
           })
         ),
       ];
@@ -206,7 +206,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
   // EXPORT PDF
   // ============================================================
 
-  const exportPDF = useCallback(async (data) => {
+  const exportPDF = useCallback(async (data: T[], options: ExportOptions<T> = {}) => {
     const { filename = 'export', columns, title, subtitle, includeTimestamp = true } = options;
 
     try {
@@ -253,7 +253,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
         body: data.map((row) =>
           cols.map((col) => {
             const value = getNestedValue(row, col.key as string);
-            return col.formatter ? col.formatter(value, row) : formatValue(value);
+            return col.formatter ? col.formatter(value) : formatValue(value);
           })
         ),
         styles: { fontSize: 8 },
@@ -288,7 +288,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
   // EXPORT JSON
   // ============================================================
 
-  const exportJSON = useCallback((data) => {
+  const exportJSON = useCallback((data: T[], options: ExportOptions<T> = {}) => {
     const { filename = 'export', includeTimestamp = true } = options;
 
     try {
