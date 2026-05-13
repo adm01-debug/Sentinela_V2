@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import DashboardPage from '../DashboardPage';
 import { BrowserRouter } from 'react-router-dom';
@@ -17,8 +17,8 @@ vi.mock('@/hooks/useDashboard', () => ({
     data: {
       totalEmployees: 100,
       activeEmployees: 50,
-      averageProductivity: 80,
-      alertsCount: 5,
+      averageProductivity: 87,
+      alertsCount: 3,
     },
     isLoading: false,
   }),
@@ -37,7 +37,17 @@ vi.mock('@/hooks/useChartColors', () => ({
   }),
 }));
 
-// Mock components that use internal hooks or cause side effects
+// Mock StatCard because it uses requestAnimationFrame and has count-up logic
+vi.mock('@/components/StatCard', () => ({
+  StatCard: ({ title, value }: any) => (
+    <div data-testid="stat-card">
+      <div data-testid="stat-title">{title}</div>
+      <div data-testid="stat-value">{value}</div>
+    </div>
+  ),
+  StatCardsGrid: ({ children }: any) => <div>{children}</div>,
+}));
+
 vi.mock('@/components/DashboardCustomizer', () => ({
   DashboardCustomizer: () => <div data-testid="dashboard-customizer" />,
 }));
@@ -50,13 +60,11 @@ vi.mock('@/components/WelcomeBanner', () => ({
   WelcomeBanner: () => <div data-testid="welcome-banner" />,
 }));
 
-// Mock DashboardCharts to avoid Recharts errors
 vi.mock('../dashboard/DashboardCharts', () => ({
   DashboardChartsRow: () => <div data-testid="charts-row" />,
   DepartmentPieChart: () => <div data-testid="pie-chart" />,
 }));
 
-// Mock DashboardCards
 vi.mock('../dashboard/DashboardCards', () => ({
   DashboardAlertsCard: () => <div data-testid="alerts-card" />,
   DashboardActivityCard: () => <div data-testid="activity-card" />,
@@ -96,10 +104,15 @@ describe('DashboardPage', () => {
     renderDashboard();
 
     expect(screen.getByText('dashboard.title')).toBeInTheDocument();
-    expect(screen.getByText('100')).toBeInTheDocument();
-    expect(screen.getByText('50')).toBeInTheDocument();
-    expect(screen.getByText('80%')).toBeInTheDocument();
-    expect(screen.getByText('5')).toBeInTheDocument();
+    
+    const titles = screen.getAllByTestId('stat-title');
+    expect(titles.some(t => t.textContent === 'dashboard.totalEmployees')).toBe(true);
+    
+    const values = screen.getAllByTestId('stat-value');
+    expect(values.some(v => v.textContent === '100')).toBe(true);
+    expect(values.some(v => v.textContent === '50')).toBe(true);
+    expect(values.some(v => v.textContent === '87%')).toBe(true);
+    expect(values.some(v => v.textContent === '3')).toBe(true);
   });
 
   it('toggles filters visibility', () => {
