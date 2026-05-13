@@ -164,6 +164,7 @@ export function useEmployeesPage() {
     
     await createEmployee({
       name: formData.name.trim(),
+      full_name: formData.name.trim(),
       email: formData.email.trim() || undefined,
       department: formData.department.trim() || undefined,
       position: formData.position.trim() || undefined,
