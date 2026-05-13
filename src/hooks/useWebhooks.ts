@@ -57,15 +57,7 @@ export interface UpdateWebhookInput {
 export function useWebhooks() {
   return useQuery({
     queryKey: queryKeys.webhooks.lists(),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('webhooks')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      return data as Webhook[];
-    },
+    queryFn: () => webhookService.getWebhooks(),
     ...queryPresets.list,
   });
 }
