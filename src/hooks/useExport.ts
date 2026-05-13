@@ -15,7 +15,7 @@ export type ExportFormat = 'csv' | 'excel' | 'pdf' | 'json';
 export interface ExportColumn<T> {
   key: keyof T | string;
   header: string;
-  formatter?: (value) => string;
+  formatter?: (value: unknown) => string;
   width?: number; // For PDF
 }
 
@@ -49,7 +49,7 @@ function getNestedValue(obj: unknown, path: string): unknown {
   }, obj);
 }
 
-function formatValue(value): string {
+function formatValue(value: unknown): string {
   if (value === null || value === undefined) return '';
   if (value instanceof Date) return value.toLocaleDateString('pt-BR');
   if (typeof value === 'boolean') return value ? 'Sim' : 'Não';
@@ -57,7 +57,7 @@ function formatValue(value): string {
   return String(value);
 }
 
-function downloadFile(content: string | Blob, filename: string, mimeType: string) {
+function downloadFile(content: string | Blob, filename: string, mimeType: string): void {
   const blob = content instanceof Blob ? content : new Blob([content], { type: mimeType });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
