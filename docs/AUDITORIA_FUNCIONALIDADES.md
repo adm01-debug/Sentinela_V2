@@ -45,7 +45,7 @@
 | 3.1.1 | Lista com filtros | ✅ | `EmployeesPage.tsx` |
 | 3.1.2 | Criação | ✅ | `EmployeeCreatePage.tsx` |
 | 3.1.3 | Detalhes | ✅ | `EmployeeDetailPage.tsx` |
-| 3.1.4 | Edição | 🔧 | Detalhe existe, edição inline parcial |
+| 3.1.4 | Edição | ✅ | Implementado diálogo de edição e exclusão no `EmployeeHeader.tsx` |
 | 3.2.1 | Atividades | ✅ | `ActivitiesPage.tsx` |
 | 3.2.2 | Detalhe atividade | ✅ | `ActivityDetailPage.tsx` |
 | 3.2.3 | Timeline | ✅ | `ActivityTimelinePage.tsx` |
