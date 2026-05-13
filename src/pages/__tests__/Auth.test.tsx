@@ -77,7 +77,7 @@ describe('Auth Page', () => {
     );
 
     const emailInput = screen.getByPlaceholderText('seu@email.com');
-    const submitButton = screen.getByRole('button', { name: /Entrar/i });
+    const submitButton = screen.getByRole('button', { name: /^Entrar$/ }); // Exact match for the primary button
 
     fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
     fireEvent.click(submitButton);
@@ -112,7 +112,7 @@ describe('Auth Page', () => {
       </BrowserRouter>
     );
 
-    const submitButton = screen.getByRole('button', { name: /Entrar/i });
+    const submitButton = screen.getByRole('button', { name: /^Entrar$/ });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
