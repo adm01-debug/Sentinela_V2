@@ -13,9 +13,9 @@ export function useDiff<T>(oldArray: T[], newArray: T[], key?: keyof T): DiffRes
     const newSet = new Set(newArray.map(getKey));
 
     return {
-      added: newArray.filter(item => !oldSet.has(getKey(item))),
-      removed: oldArray.filter(item => !newSet.has(getKey(item))),
-      unchanged: newArray.filter(item => oldSet.has(getKey(item)))
+      added: newArray.filter(item => !oldSet.has(getKey(item: any))),
+      removed: oldArray.filter(item => !newSet.has(getKey(item: any))),
+      unchanged: newArray.filter(item => oldSet.has(getKey(item: any)))
     };
   }, [oldArray, newArray, key]);
 }

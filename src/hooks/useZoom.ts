@@ -13,7 +13,7 @@ interface UseZoomReturn {
   zoomIn: () => void;
   zoomOut: () => void;
   resetZoom: () => void;
-  setZoom: (value) => void;
+  setZoom: (value: any) => void;
   isMinZoom: boolean;
   isMaxZoom: boolean;
   zoomPercentage: string;
@@ -35,12 +35,12 @@ export function useZoom(options: UseZoomOptions = {}): UseZoomReturn {
   const containerRef = useRef<HTMLDivElement>(null);
   const lastPinchScale = useRef(1);
 
-  const clampZoom = useCallback((value): number => {
+  const clampZoom = useCallback((value: any): number => {
     return Math.min(Math.max(value, minZoom), maxZoom);
   }, [minZoom, maxZoom]);
 
-  const setZoom = useCallback((value) => {
-    const clampedValue = clampZoom(value);
+  const setZoom = useCallback((value: any) => {
+    const clampedValue = clampZoom(value: any);
     setZoomState(clampedValue);
     onChange?.(clampedValue);
   }, [clampZoom, onChange]);

@@ -59,10 +59,10 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
   const toggleSelection = useCallback((id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
+      if (next.has(id: string)) {
+        next.delete(id: string);
       } else {
-        next.add(id);
+        next.add(id: string);
       }
       return next;
     });
@@ -71,7 +71,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
   const selectMany = useCallback((ids: string[]) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      ids.forEach((id) => next.add(id));
+      ids.forEach((id: string) => next.add(id: string));
       return next;
     });
   }, []);
@@ -79,7 +79,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
   const deselectMany = useCallback((ids: string[]) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      ids.forEach((id) => next.delete(id));
+      ids.forEach((id: string) => next.delete(id: string));
       return next;
     });
   }, []);
@@ -99,7 +99,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
     setSelectAll(false);
   }, []);
 
-  const isSelected = useCallback((id: string) => selectedIds.has(id), [selectedIds]);
+  const isSelected = useCallback((id: string) => selectedIds.has(id: string), [selectedIds]);
 
   // ============================================================
   // BULK DELETE MUTATION
@@ -127,7 +127,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
           .in('id', ids);
 
         if (hardError) {
-          ids.forEach((id) => result.failed.push({ id, error: hardError.message }));
+          ids.forEach((id: string) => result.failed.push({ id, error: hardError.message }));
         } else {
           result.success = ids;
         }
@@ -173,7 +173,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .select('id');
 
       if (error) {
-        ids.forEach((id) => result.failed.push({ id, error: error.message }));
+        ids.forEach((id: string) => result.failed.push({ id, error: error.message }));
       } else {
         result.success = (data ?? []).map((d: any) => d.id);
       }
@@ -208,7 +208,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .select('id');
 
       if (error) {
-        return { success: [], failed: ids.map((id) => ({ id, error: error.message })), total: ids.length };
+        return { success: [], failed: ids.map((id: string) => ({ id, error: error.message })), total: ids.length };
       }
 
       return { success: (data ?? []).map((d: any) => d.id), failed: [], total: ids.length };
@@ -241,7 +241,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .select('id');
 
       if (error) {
-        return { success: [], failed: ids.map((id) => ({ id, error: error.message })), total: ids.length };
+        return { success: [], failed: ids.map((id: string) => ({ id, error: error.message })), total: ids.length };
       }
 
       return { success: (data ?? []).map((d: any) => d.id), failed: [], total: ids.length };
@@ -274,7 +274,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .in('id', ids);
 
       if (fetchError || !originals) {
-        return { success: [], failed: ids.map((id) => ({ id, error: 'Não encontrado' })), total: ids.length };
+        return { success: [], failed: ids.map((id: string) => ({ id, error: 'Não encontrado' })), total: ids.length };
       }
 
       // Criar cópias (removendo id, created_at, updated_at)
@@ -293,7 +293,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .select('id');
 
       if (error) {
-        return { success: [], failed: ids.map((id) => ({ id, error: error.message })), total: ids.length };
+        return { success: [], failed: ids.map((id: string) => ({ id, error: error.message })), total: ids.length };
       }
 
       return { success: (data ?? []).map((d: any) => d.id), failed: [], total: ids.length };

@@ -53,8 +53,8 @@ function formatValue(value: unknown): string {
   if (value === null || value === undefined) return '';
   if (value instanceof Date) return value.toLocaleDateString('pt-BR');
   if (typeof value === 'boolean') return value ? 'Sim' : 'Não';
-  if (typeof value === 'object') return JSON.stringify(value);
-  return String(value);
+  if (typeof value === 'object') return JSON.stringify(value: any);
+  return String(value: any);
 }
 
 function downloadFile(content: string | Blob, filename: string, mimeType: string) {
@@ -66,7 +66,7 @@ function downloadFile(content: string | Blob, filename: string, mimeType: string
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  URL.revokeObjectURL(url: string);
 }
 
 function generateFilename(base: string, format: ExportFormat, includeTimestamp: boolean): string {
@@ -106,13 +106,13 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
 
       // Build CSV content
       const headers = cols.map((c) => '"' + c.header.replace(/"/g, '""') + '"').join(',');
-      const rows = data.map((row) =>
+      const rows = data.map((row: any) =>
         cols
           .map((col) => {
             const value = getNestedValue(row, col.key as string);
             const formatted = col.formatter
               ? col.formatter(value, row)
-              : formatValue(value);
+              : formatValue(value: any);
             return '"' + formatted.replace(/"/g, '""') + '"';
           })
           .join(',')
@@ -172,10 +172,10 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
       const wsData = [
         ...(title ? [[title]] : []),
         cols.map((c) => c.header),
-        ...data.map((row) =>
+        ...data.map((row: any) =>
           cols.map((col) => {
             const value = getNestedValue(row, col.key as string);
-            return col.formatter ? col.formatter(value, row) : formatValue(value);
+            return col.formatter ? col.formatter(value, row) : formatValue(value: any);
           })
         ),
       ];
@@ -250,10 +250,10 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
       autoTable(doc, {
         startY: yPosition,
         head: [cols.map((c) => c.header)],
-        body: data.map((row) =>
+        body: data.map((row: any) =>
           cols.map((col) => {
             const value = getNestedValue(row, col.key as string);
-            return col.formatter ? col.formatter(value, row) : formatValue(value);
+            return col.formatter ? col.formatter(value, row) : formatValue(value: any);
           })
         ),
         styles: { fontSize: 8 },

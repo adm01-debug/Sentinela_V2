@@ -19,13 +19,13 @@ export function useRecentValues<T>(options: UseRecentValuesOptions) {
 
   const addValue = useCallback((value: T) => {
     setRecentValues(prev => {
-      const filtered = prev.filter(v => JSON.stringify(v) !== JSON.stringify(value));
+      const filtered = prev.filter(v => JSON.stringify(v) !== JSON.stringify(value: any));
       return [value, ...filtered].slice(0, maxItems);
     });
   }, [maxItems]);
 
   const removeValue = useCallback((value: T) => {
-    setRecentValues(prev => prev.filter(v => JSON.stringify(v) !== JSON.stringify(value)));
+    setRecentValues(prev => prev.filter(v => JSON.stringify(v) !== JSON.stringify(value: any)));
   }, []);
 
   const clearValues = useCallback(() => setRecentValues([]), []);

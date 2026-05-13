@@ -23,7 +23,7 @@ export function useComments() {
     return comment;
   }, []);
 
-  const remove = useCallback((id) => {
+  const remove = useCallback((id: string) => {
     setComments(prev => prev.filter(c => c.id !== id && c.parentId !== id));
   }, []);
 

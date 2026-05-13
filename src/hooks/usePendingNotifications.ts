@@ -53,7 +53,7 @@ export function useMarkNotificationAsRead() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      markAsRead(id);
+      markAsRead(id: string);
     },
     onSuccess: () => {
       invalidateRelated.notifications(queryClient);

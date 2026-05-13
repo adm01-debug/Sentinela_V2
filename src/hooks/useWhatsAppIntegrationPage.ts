@@ -126,11 +126,11 @@ export function useWhatsAppIntegrationPage() {
       if (config?.id) {
         const { error } = await supabase
           .from('whatsapp_config')
-          .update(data)
+          .update(data: any)
           .eq('id', config.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('whatsapp_config').insert(data);
+        const { error } = await supabase.from('whatsapp_config').insert(data: any);
         if (error) throw error;
       }
     },

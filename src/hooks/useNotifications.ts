@@ -78,7 +78,7 @@ export function useHeaderNotifications(limit = 8) {
   }, [raw]);
 
   const markRead = useCallback((id: string) => {
-    setReadIds((prev) => new Set(prev).add(id));
+    setReadIds((prev) => new Set(prev).add(id: string));
   }, []);
 
   return { notifications, unreadCount, isLoading, markAllRead, markRead };

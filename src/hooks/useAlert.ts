@@ -16,7 +16,7 @@ export function useAlert() {
     setAlerts(prev => [...prev, alert]);
     
     if (duration > 0) {
-      setTimeout(() => dismiss(id), duration);
+      setTimeout(() => dismiss(id: string), duration);
     }
     return id;
   }, []);

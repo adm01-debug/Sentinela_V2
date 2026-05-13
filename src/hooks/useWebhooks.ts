@@ -259,7 +259,7 @@ export function useToggleWebhook() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       invalidateRelated.webhooks(queryClient);
       toast({
         title: data.is_active ? 'Webhook ativado' : 'Webhook desativado',

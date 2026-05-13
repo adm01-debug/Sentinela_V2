@@ -34,7 +34,7 @@ export function useNotificationCenter(options: UseNotificationCenterOptions = {}
     return newNotification.id;
   }, [maxNotifications]);
 
-  const markAsRead = useCallback((id) => {
+  const markAsRead = useCallback((id: string) => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
   }, []);
 
@@ -42,7 +42,7 @@ export function useNotificationCenter(options: UseNotificationCenterOptions = {}
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   }, []);
 
-  const removeNotification = useCallback((id) => {
+  const removeNotification = useCallback((id: string) => {
     setNotifications(prev => prev.filter(n => n.id !== id));
   }, []);
 

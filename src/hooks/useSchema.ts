@@ -31,7 +31,7 @@ export function useSchema<T extends Record<string, unknown>>(schema: Schema<T>) 
         errors[key] = `${key} must be a ${rules.type}`;
       }
       
-      if (rules?.pattern && typeof value === "string" && !rules.pattern.test(value)) {
+      if (rules?.pattern && typeof value === "string" && !rules.pattern.test(value: any)) {
         errors[key] = `${key} format is invalid`;
       }
     }

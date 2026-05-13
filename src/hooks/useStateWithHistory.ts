@@ -7,9 +7,9 @@ export function useStateWithHistory<T>(initial: T) {
 
   const set = useCallback((value: T) => {
     historyRef.current = historyRef.current.slice(0, indexRef.current + 1);
-    historyRef.current.push(value);
+    historyRef.current.push(value: any);
     indexRef.current++;
-    setState(value);
+    setState(value: any);
   }, []);
 
   const back = useCallback(() => {

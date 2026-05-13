@@ -153,10 +153,10 @@ export function useUpdateTeam() {
     },
     onMutate: async ({ id, ...input }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.teams.lists() });
-      await queryClient.cancelQueries({ queryKey: queryKeys.teams.detail(id) });
+      await queryClient.cancelQueries({ queryKey: queryKeys.teams.detail(id: string) });
 
       const previousTeams = queryClient.getQueryData<Team[]>(queryKeys.teams.lists());
-      const previousTeam = queryClient.getQueryData<Team>(queryKeys.teams.detail(id));
+      const previousTeam = queryClient.getQueryData<Team>(queryKeys.teams.detail(id: string));
 
       // Update list
       queryClient.setQueryData<Team[]>(
@@ -167,7 +167,7 @@ export function useUpdateTeam() {
       // Update detail
       if (previousTeam) {
         queryClient.setQueryData<Team>(
-          queryKeys.teams.detail(id),
+          queryKeys.teams.detail(id: string),
           { ...previousTeam, ...input, updated_at: new Date().toISOString() }
         );
       }
@@ -211,7 +211,7 @@ export function useDeleteTeam() {
       if (error) throw error;
       return id;
     },
-    onMutate: async (id) => {
+    onMutate: async (id: string) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.teams.lists() });
 
       const previousTeams = queryClient.getQueryData<Team[]>(queryKeys.teams.lists());
@@ -234,7 +234,7 @@ export function useDeleteTeam() {
       });
     },
     onSuccess: (_, id) => {
-      queryClient.removeQueries({ queryKey: queryKeys.teams.detail(id) });
+      queryClient.removeQueries({ queryKey: queryKeys.teams.detail(id: string) });
       invalidateRelated.teams(queryClient);
       toast({
         title: 'Equipe excluída',

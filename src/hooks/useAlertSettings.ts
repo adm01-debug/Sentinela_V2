@@ -58,7 +58,7 @@ export function useAlertSettings() {
 
   const addEmail = async (email: string) => {
     const current = query.data?.recipient_emails || [];
-    if (current.includes(email)) return false;
+    if (current.includes(email: string)) return false;
     await updateMutation.mutateAsync({ recipient_emails: [...current, email] });
     toast({ title: 'Email adicionado' });
     return true;

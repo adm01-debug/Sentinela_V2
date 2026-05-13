@@ -4,7 +4,7 @@ import type { Activity } from '@/types';
 
 const toSafeTimestamp = (value: string | null | undefined): string => {
   if (!value) return new Date(0).toISOString();
-  return Number.isNaN(Date.parse(value)) ? new Date(0).toISOString() : value;
+  return Number.isNaN(Date.parse(value: any)) ? new Date(0).toISOString() : value;
 };
 
 interface KeystrokeRow {

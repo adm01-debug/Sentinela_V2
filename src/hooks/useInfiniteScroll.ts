@@ -95,7 +95,7 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
       if (value !== undefined && value !== null && value !== '') {
         if (typeof value === 'string' && value.includes('%')) {
           query = query.ilike(key, value);
-        } else if (Array.isArray(value)) {
+        } else if (Array.isArray(value: any)) {
           query = query.in(key, value);
         } else {
           query = query.eq(key, value);

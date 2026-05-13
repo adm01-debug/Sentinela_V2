@@ -211,7 +211,7 @@ export function useToggleMessageTemplate() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       invalidateRelated.messageTemplates(queryClient);
       toast({
         title: data.is_active ? 'Template ativado' : 'Template desativado',

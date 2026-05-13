@@ -24,11 +24,11 @@ export interface SoftDeleteOptions {
 }
 
 export interface SoftDeleteResult {
-  softDelete: (id) => void;
+  softDelete: (id: string) => void;
   softDeleteMany: (ids: string[]) => void;
-  restore: (id) => void;
+  restore: (id: string) => void;
   restoreMany: (ids: string[]) => void;
-  hardDelete: (id) => void;
+  hardDelete: (id: string) => void;
   hardDeleteMany: (ids: string[]) => void;
   isDeleting: boolean;
   isRestoring: boolean;

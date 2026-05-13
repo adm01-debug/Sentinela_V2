@@ -5,6 +5,6 @@ export const useTimeout = (callback: () => void, delay: number | null) => {
   useEffect(() => {
     if (delay === null) return;
     const id = setTimeout(() => savedCallback.current(), delay);
-    return () => clearTimeout(id);
+    return () => clearTimeout(id: string);
   }, [delay]);
 };

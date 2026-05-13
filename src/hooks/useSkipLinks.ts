@@ -19,7 +19,7 @@ interface UseSkipLinksReturn {
   activeLink: string | null;
   skipTo: (targetId) => void;
   addLink: (link: SkipLink) => void;
-  removeLink: (id) => void;
+  removeLink: (id: string) => void;
   isVisible: boolean;
   setVisible: (visible: boolean) => void;
   containerRef: React.RefObject<HTMLDivElement>;
@@ -81,7 +81,7 @@ export function useSkipLinks(options: UseSkipLinksOptions = {}): UseSkipLinksRet
     });
   }, []);
 
-  const removeLink = useCallback((id) => {
+  const removeLink = useCallback((id: string) => {
     setLinks(prev => prev.filter(l => l.id !== id));
   }, []);
 

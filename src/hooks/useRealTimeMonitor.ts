@@ -11,7 +11,7 @@ export function useRealTimeMonitor(threshold = { warning: 70, critical: 90 }) {
   const [currentStatus, setCurrentStatus] = useState<MonitorData["status"]>("normal");
   const wsRef = useRef<WebSocket | null>(null);
 
-  const addData = useCallback((value) => {
+  const addData = useCallback((value: any) => {
     const status = value >= threshold.critical ? "critical" : value >= threshold.warning ? "warning" : "normal";
     const entry: MonitorData = { timestamp: new Date(), value, status };
     setData(prev => [...prev.slice(-99), entry]);

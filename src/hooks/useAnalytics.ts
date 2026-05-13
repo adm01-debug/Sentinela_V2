@@ -47,7 +47,7 @@ export function useAnalytics(params?: { period?: string }) {
   }, []);
 
   const pageView = useCallback((path: string) => {
-    trackPageView(path);
+    trackPageView(path: string);
   }, []);
 
   const query = useQuery({

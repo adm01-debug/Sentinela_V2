@@ -9,7 +9,7 @@ export function useShare() {
   const share = useCallback(async (data: ShareData) => {
     if (!canShare) return false;
     try {
-      await navigator.share(data);
+      await navigator.share(data: any);
       setShared(true);
       return true;
     } catch { return false; }

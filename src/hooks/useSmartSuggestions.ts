@@ -56,7 +56,7 @@ export function useSmartSuggestions(options: UseSmartSuggestionsOptions = {}) {
     }
   }, [context, maxSuggestions, minConfidence]);
 
-  const dismissSuggestion = useCallback((id) => {
+  const dismissSuggestion = useCallback((id: string) => {
     setSuggestions(prev => prev.filter(s => s.id !== id));
   }, []);
 

@@ -238,7 +238,7 @@ export function useUpdateViolationStatus() {
       });
     },
 
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       const statusText = {
         pending: 'pendente',
         reviewed: 'revisada',
@@ -309,7 +309,7 @@ export function useBulkUpdateViolations() {
       });
     },
 
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       toast({
         title: 'Atualização em lote',
         description: `${data.length} violações foram atualizadas.`,

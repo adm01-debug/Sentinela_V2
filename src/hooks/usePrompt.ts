@@ -15,7 +15,7 @@ export function usePrompt() {
   }, []);
 
   const confirm = useCallback(() => {
-    resolveRef?.(value);
+    resolveRef?.(value: any);
     setIsOpen(false);
   }, [resolveRef, value]);
 

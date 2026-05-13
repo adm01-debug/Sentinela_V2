@@ -7,10 +7,10 @@ export function useStateHistory<T>(initial: T, capacity = 10) {
 
   const set = useCallback((value: T) => {
     history.current = history.current.slice(0, position.current + 1);
-    history.current.push(value);
+    history.current.push(value: any);
     if (history.current.length > capacity) history.current.shift();
     else position.current++;
-    setState(value);
+    setState(value: any);
   }, [capacity]);
 
   const undo = useCallback(() => {

@@ -25,7 +25,7 @@ export function useProjects() {
     setProjects(prev => prev.map(p => p.id === id ? { ...p, status } : p));
   }, []);
 
-  const remove = useCallback((id) => {
+  const remove = useCallback((id: string) => {
     setProjects(prev => prev.filter(p => p.id !== id));
   }, []);
 

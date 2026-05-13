@@ -9,7 +9,7 @@ export function useStorage<T>(key: string, initial: T, type: "local" | "session"
   });
 
   useEffect(() => {
-    storage.setItem(key, JSON.stringify(value));
+    storage.setItem(key, JSON.stringify(value: any));
   }, [key, value, storage]);
 
   const remove = useCallback(() => {

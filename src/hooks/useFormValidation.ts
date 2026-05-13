@@ -6,7 +6,7 @@ export function useFormValidation<T extends Record<string, unknown>>(rules: Part
   const validateField = useCallback((field: keyof T, value: T[keyof T]) => {
     const fieldRules = rules[field] || [];
     for (const rule of fieldRules) {
-      if (!rule.validate(value)) { setErrors(prev => ({ ...prev, [field]: rule.message })); return false; }
+      if (!rule.validate(value: any)) { setErrors(prev => ({ ...prev, [field]: rule.message })); return false; }
     }
     setErrors(prev => { const { [field]: _, ...rest } = prev; return rest as Partial<Record<keyof T, string>>; });
     return true;

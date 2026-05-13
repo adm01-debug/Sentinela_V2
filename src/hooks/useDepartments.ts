@@ -98,7 +98,7 @@ export function useDepartments() {
   };
 }
 
-export function useDepartment(id) {
+export function useDepartment(id: string) {
   return useQuery({
     queryKey: ['departments', id],
     queryFn: async () => {

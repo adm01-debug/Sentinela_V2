@@ -23,7 +23,7 @@ export interface DuplicateOptions<T> {
 }
 
 export interface DuplicateResult<T> {
-  duplicate: (id) => void;
+  duplicate: (id: string) => void;
   duplicateMany: (ids: string[]) => void;
   isDuplicating: boolean;
   error: Error | null;

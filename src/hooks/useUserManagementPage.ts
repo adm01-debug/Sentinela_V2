@@ -143,7 +143,7 @@ export function useUserManagementPage() {
   // Reset password mutation
   const resetPasswordMutation = useMutation({
     mutationFn: async (email: string) => {
-      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      const { error } = await supabase.auth.resetPasswordForEmail(email: string);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -155,16 +155,16 @@ export function useUserManagementPage() {
   });
 
   // Handlers
-  const handleSearchChange = useCallback((value) => {
-    setSearch(value);
+  const handleSearchChange = useCallback((value: any) => {
+    setSearch(value: any);
   }, []);
 
-  const handleRoleFilterChange = useCallback((value) => {
-    setRoleFilter(value);
+  const handleRoleFilterChange = useCallback((value: any) => {
+    setRoleFilter(value: any);
   }, []);
 
-  const handleStatusFilterChange = useCallback((value) => {
-    setStatusFilter(value);
+  const handleStatusFilterChange = useCallback((value: any) => {
+    setStatusFilter(value: any);
   }, []);
 
   const handleOpenCreateDialog = useCallback(() => {
@@ -176,7 +176,7 @@ export function useUserManagementPage() {
   }, []);
 
   const handleCreateUser = useCallback((data: CreateUserData) => {
-    createMutation.mutate(data);
+    createMutation.mutate(data: any);
   }, [createMutation]);
 
   const handleEditUser = useCallback((user: User) => {
@@ -190,15 +190,15 @@ export function useUserManagementPage() {
   }, []);
 
   const handleUpdateUser = useCallback((data: UpdateUserData) => {
-    updateMutation.mutate(data);
+    updateMutation.mutate(data: any);
   }, [updateMutation]);
 
   const handleDeleteUser = useCallback((userId) => {
     deleteMutation.mutate(userId);
   }, [deleteMutation]);
 
-  const handleResetPassword = useCallback((email) => {
-    resetPasswordMutation.mutate(email);
+  const handleResetPassword = useCallback((email: string) => {
+    resetPasswordMutation.mutate(email: string);
   }, [resetPasswordMutation]);
 
   const handleToggleStatus = useCallback((userId: string, isActive: boolean) => {

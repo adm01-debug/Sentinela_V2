@@ -40,11 +40,11 @@ export interface SearchResult<T> {
 // ============================================================
 
 function useDebouncedValue<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  const [debouncedValue, setDebouncedValue] = useState<T>(value: any);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedValue(value);
+      setDebouncedValue(value: any);
     }, delay);
 
     return () => {

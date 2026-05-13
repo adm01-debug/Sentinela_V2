@@ -35,7 +35,7 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
       localStorage.setItem(key, JSON.stringify({ data, timestamp }));
       setLastSaved(new Date(timestamp));
       setHasDraft(true);
-      onSave?.(data);
+      onSave?.(data: any);
     }, delay);
     return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
   }, [key, data, delay, onSave]);

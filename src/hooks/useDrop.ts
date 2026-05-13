@@ -17,7 +17,7 @@ export function useDrop<T>(onDrop: (data: T) => void) {
     setIsOver(false);
     try {
       const data = JSON.parse(e.dataTransfer.getData("text/plain")) as T;
-      onDrop(data);
+      onDrop(data: any);
     } catch {}
   }, [onDrop]);
 

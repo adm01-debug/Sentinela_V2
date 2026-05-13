@@ -190,10 +190,10 @@ export function useUpdateGeofence() {
     },
     onMutate: async ({ id, ...input }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
-      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.detail(id) });
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.detail(id: string) });
 
       const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
-      const previousGeofence = queryClient.getQueryData<Geofence>(queryKeys.geofences.detail(id));
+      const previousGeofence = queryClient.getQueryData<Geofence>(queryKeys.geofences.detail(id: string));
 
       queryClient.setQueryData<Geofence[]>(
         queryKeys.geofences.lists(),
@@ -202,7 +202,7 @@ export function useUpdateGeofence() {
 
       if (previousGeofence) {
         queryClient.setQueryData<Geofence>(
-          queryKeys.geofences.detail(id),
+          queryKeys.geofences.detail(id: string),
           { ...previousGeofence, ...input, updated_at: new Date().toISOString() }
         );
       }
@@ -245,7 +245,7 @@ export function useDeleteGeofence() {
       if (error) throw error;
       return id;
     },
-    onMutate: async (id) => {
+    onMutate: async (id: string) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
 
       const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
@@ -268,7 +268,7 @@ export function useDeleteGeofence() {
       });
     },
     onSuccess: (_, id) => {
-      queryClient.removeQueries({ queryKey: queryKeys.geofences.detail(id) });
+      queryClient.removeQueries({ queryKey: queryKeys.geofences.detail(id: string) });
       invalidateRelated.geofences(queryClient);
       toast({
         title: 'Geofence excluída',
@@ -315,7 +315,7 @@ export function useToggleGeofence() {
         variant: 'destructive',
       });
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       invalidateRelated.geofences(queryClient);
       toast({
         title: data.is_active ? 'Geofence ativada' : 'Geofence desativada',

@@ -56,7 +56,7 @@ export function useDashboardPage() {
         .order('recorded_date', { ascending: false })
         .limit(10);
       if (error) throw error;
-      return (data || []).map((item) => ({
+      return (data || []).map((item: any) => ({
         id: item.id,
         type: 'productivity',
         description: `${item.employee_name} - ${Math.round(item.productive_time_seconds / 60)}min produtivo`,

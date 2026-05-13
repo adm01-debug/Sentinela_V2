@@ -49,7 +49,7 @@ export function useSessionManager() {
   useEffect(() => {
     const id = localStorage.getItem('session_id') || crypto.randomUUID();
     localStorage.setItem('session_id', id);
-    setCurrentSessionId(id);
+    setCurrentSessionId(id: string);
   }, []);
 
   useEffect(() => { fetchSessions(); }, [fetchSessions]);

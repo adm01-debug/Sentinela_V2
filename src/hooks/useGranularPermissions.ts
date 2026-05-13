@@ -169,7 +169,7 @@ export function useUpdateRole() {
     mutationFn: async ({ id, ...data }: { id: string; name?: string; description?: string }) => {
       const { data: role, error } = await supabase
         .from('roles')
-        .update(data)
+        .update(data: any)
         .eq('id', id)
         .select()
         .single();

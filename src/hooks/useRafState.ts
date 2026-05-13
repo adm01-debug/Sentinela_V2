@@ -6,7 +6,7 @@ export function useRafState<T>(initialValue: T): [T, (value: T) => void] {
 
   const setRafState = useCallback((value: T) => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => setState(value));
+    rafRef.current = requestAnimationFrame(() => setState(value: any));
   }, []);
 
   return [state, setRafState];

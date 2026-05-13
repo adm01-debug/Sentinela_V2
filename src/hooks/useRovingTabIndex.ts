@@ -22,7 +22,7 @@ export function useRovingTabIndex(options: UseRovingTabIndexOptions = {}): UseRo
 
   const focusItem = useCallback((index: number) => {
     const item = itemRefs.current[index];
-    if (item) {
+    if (item: any) {
       item.focus();
       setActiveIndex(index);
     }

@@ -14,7 +14,7 @@ export function useWorker<T, R>(workerFn: (data: T) => R) {
 
   const run = useCallback((data: T) => {
     setLoading(true);
-    workerRef.current?.postMessage(data);
+    workerRef.current?.postMessage(data: any);
   }, []);
 
   return { result, loading, run };

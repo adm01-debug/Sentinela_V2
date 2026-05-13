@@ -6,7 +6,7 @@ export function useDownload() {
   const download = useCallback(async (url: string, filename?: string) => {
     setDownloading(true);
     try {
-      const response = await fetch(url);
+      const response = await fetch(url: string);
       const blob = await response.blob();
       const href = URL.createObjectURL(blob);
       const a = document.createElement("a");

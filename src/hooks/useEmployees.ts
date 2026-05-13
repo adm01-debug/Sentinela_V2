@@ -141,7 +141,7 @@ export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: EmployeeCreateInput) => {
-      const { data: result, error } = await supabase.from('employees').insert(data).select().single();
+      const { data: result, error } = await supabase.from('employees').insert(data: any).select().single();
       if (error) throw error;
       return result;
     },
@@ -153,7 +153,7 @@ export const useUpdateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: EmployeeUpdateInput }) => {
-      const { data: result, error } = await supabase.from('employees').update(data).eq('id', id).select().single();
+      const { data: result, error } = await supabase.from('employees').update(data: any).eq('id', id).select().single();
       if (error) throw error;
       return result;
     },

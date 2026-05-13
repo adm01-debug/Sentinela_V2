@@ -57,8 +57,8 @@ export function useReportsPage() {
     stats, typeFilter, isGenerateOpen, selectedType, isLoading: reportsQuery.isLoading,
     setTypeFilter, setIsGenerateOpen, setSelectedType,
     handleGenerate: useCallback(() => generateMutation.mutate(selectedType), [generateMutation, selectedType]),
-    handleDelete: useCallback((id) => deleteMutation.mutate(id), [deleteMutation]),
-    handleDownload: useCallback((url) => window.open(url, '_blank'), []),
+    handleDelete: useCallback((id: string) => deleteMutation.mutate(id: string), [deleteMutation]),
+    handleDownload: useCallback((url: string) => window.open(url, '_blank'), []),
     isGenerating: generateMutation.isPending,
   };
 }

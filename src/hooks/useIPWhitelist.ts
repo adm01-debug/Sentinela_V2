@@ -85,7 +85,7 @@ export function useUpdateWhitelistIP() {
     mutationFn: async ({ id, ...data }: { id: string } & UpdateWhitelistData) => {
       const { data: result, error } = await supabase
         .from('whitelisted_ips')
-        .update(data)
+        .update(data: any)
         .eq('id', id)
         .select()
         .single();

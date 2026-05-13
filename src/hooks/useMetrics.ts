@@ -22,7 +22,7 @@ export function useMetrics(configs: MetricConfig[], dateRange?: { from: Date; to
         
         const { data, count } = await query;
         if (config.aggregation === 'count') results[config.name] = count || 0;
-        else if (data) {
+        else if (data: any) {
           const values = (data as Record<string, unknown>[]).map((d) => d[config.column]).filter((v): v is number => typeof v === 'number');
           switch (config.aggregation) {
             case 'sum': results[config.name] = values.reduce((a, b) => a + b, 0); break;

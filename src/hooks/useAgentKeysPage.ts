@@ -161,11 +161,11 @@ export function useAgentKeysPage() {
 
   // Handlers
   const handleSearchChange = useCallback((value: string) => {
-    setSearch(value);
+    setSearch(value: any);
   }, []);
 
   const handleStatusFilterChange = useCallback((value: string) => {
-    setStatusFilter(value);
+    setStatusFilter(value: any);
   }, []);
 
   const handleOpenCreateDialog = useCallback(() => {
@@ -177,7 +177,7 @@ export function useAgentKeysPage() {
   }, []);
 
   const handleCreateKey = useCallback((data: CreateKeyData) => {
-    return createMutation.mutateAsync(data);
+    return createMutation.mutateAsync(data: any);
   }, [createMutation]);
 
   const handleViewDetails = useCallback((key: AgentKey) => {

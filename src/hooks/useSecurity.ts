@@ -250,9 +250,9 @@ export function generateSecureRandom(length = 32): string {
 /**
  * Hash sensitive data (client-side, for non-critical operations)
  */
-export async function hashData(data): Promise<string> {
+export async function hashData(data: any): Promise<string> {
   const encoder = new TextEncoder();
-  const dataBuffer = encoder.encode(data);
+  const dataBuffer = encoder.encode(data: any);
   const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');

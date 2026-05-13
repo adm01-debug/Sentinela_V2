@@ -27,9 +27,9 @@ export function useSmartRecommendations<T>(options: UseSmartRecommendationsOptio
 
   const recommendations = useMemo(() => {
     const scored = items
-      .filter(item => !dismissedIds.has(getItemId(item)))
+      .filter(item => !dismissedIds.has(getItemId(item: any)))
       .map(item => {
-        const features = getItemFeatures(item);
+        const features = getItemFeatures(item: any);
         let score = 0;
         let reasons: string[] = [];
         
@@ -39,14 +39,14 @@ export function useSmartRecommendations<T>(options: UseSmartRecommendationsOptio
           if (prefWeight > 0 && value > 0.5) reasons.push(feature);
         });
 
-        const id = getItemId(item);
+        const id = getItemId(item: any);
         if (feedback[id] === 'positive') score *= 1.2;
         if (feedback[id] === 'negative') score *= 0.5;
 
         return {
           id,
           type: 'item',
-          title: getItemTitle(item),
+          title: getItemTitle(item: any),
           description: `Recommended based on your preferences`,
           score,
           reason: reasons.length > 0 ? `Matches: ${reasons.join(', ')}` : 'General recommendation',
@@ -59,7 +59,7 @@ export function useSmartRecommendations<T>(options: UseSmartRecommendationsOptio
     return scored;
   }, [items, userPreferences, getItemFeatures, getItemId, getItemTitle, dismissedIds, feedback, maxRecommendations]);
 
-  const dismiss = useCallback((id) => setDismissedIds(prev => new Set([...prev, id])), []);
+  const dismiss = useCallback((id: string) => setDismissedIds(prev => new Set([...prev, id])), []);
   const provideFeedback = useCallback((id: string, type: 'positive' | 'negative') => setFeedback(prev => ({ ...prev, [id]: type })), []);
   const reset = useCallback(() => { setDismissedIds(new Set()); setFeedback({}); }, []);
 

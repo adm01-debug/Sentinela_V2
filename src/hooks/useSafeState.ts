@@ -9,7 +9,7 @@ export function useSafeState<T>(initialValue: T): [T, (value: T) => void] {
   }, []);
 
   const setSafeState = useCallback((value: T) => {
-    if (mountedRef.current) setState(value);
+    if (mountedRef.current) setState(value: any);
   }, []);
 
   return [state, setSafeState];
