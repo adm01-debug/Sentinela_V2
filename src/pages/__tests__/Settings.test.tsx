@@ -22,30 +22,33 @@ vi.mock('@/components/ui/tabs', async () => {
     const React = await import('react');
     return {
         Tabs: ({ children, defaultValue }: any) => {
-            const [value, setValue] = React.useState(defaultValue);
+            const [activeTab, setActiveTab] = React.useState(defaultValue);
             return (
                 <div data-testid="tabs-root">
                     {React.Children.map(children, child => {
                         if (React.isValidElement(child)) {
-                            return React.cloneElement(child as React.ReactElement<any>, { value, onValueChange: setValue });
+                            return React.cloneElement(child as React.ReactElement<any>, { activeTab, onTabChange: setActiveTab });
                         }
                         return child;
                     })}
                 </div>
             );
         },
-        TabsList: ({ children, value, onValueChange }: any) => (
+        TabsList: ({ children, activeTab, onTabChange }: any) => (
             <div>
                 {React.Children.map(children, child => {
                     if (React.isValidElement(child)) {
-                        return React.cloneElement(child as React.ReactElement<any>, { active: value === child.props.value, onClick: () => onValueChange(child.props.value) });
+                        return React.cloneElement(child as React.ReactElement<any>, { 
+                            active: activeTab === (child.props as any).value, 
+                            onClick: () => onTabChange((child.props as any).value) 
+                        });
                     }
                     return child;
                 })}
             </div>
         ),
         TabsTrigger: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
-        TabsContent: ({ children, value, active }: any) => (value === active || active) ? <div>{children}</div> : null,
+        TabsContent: ({ children, value, activeTab }: any) => (value === activeTab) ? <div>{children}</div> : null,
     };
 });
 
