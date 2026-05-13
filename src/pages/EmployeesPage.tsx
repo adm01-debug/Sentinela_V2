@@ -10,10 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useChartColors } from '@/hooks/useChartColors';
-import {
-  BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
+import { BaseBarChart, BaseDonutChart } from '@/components/charts';
 
 export const EmployeesPage = () => {
   const navigate = useNavigate();
@@ -89,15 +86,12 @@ export const EmployeesPage = () => {
             </CardHeader>
             <CardContent>
               <div className="h-[220px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={departmentData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
-                    <XAxis dataKey="name" tick={{ fill: colors.muted, fontSize: 11 }} stroke={colors.border} />
-                    <YAxis tick={{ fill: colors.muted, fontSize: 11 }} stroke={colors.border} allowDecimals={false} />
-                    <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
-                    <Bar dataKey="value" name="Funcionários" fill={colors.primary} radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                <BaseBarChart
+                  data={departmentData}
+                  series={[{ dataKey: 'value', label: 'Funcionários', color: colors.primary }]}
+                  xAxisKey="name"
+                  height={220}
+                />
               </div>
             </CardContent>
           </Card>
@@ -108,14 +102,14 @@ export const EmployeesPage = () => {
             </CardHeader>
             <CardContent>
               <div className="h-[160px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie data={statusData} cx="50%" cy="50%" innerRadius={40} outerRadius={65} paddingAngle={3} dataKey="value">
-                      {statusData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-                    </Pie>
-                    <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
-                  </PieChart>
-                </ResponsiveContainer>
+                <BaseDonutChart
+                  data={statusData}
+                  height={160}
+                  innerRadius={40}
+                  outerRadius={65}
+                  colors={PIE_COLORS}
+                  showLabel={false}
+                />
               </div>
               <div className="flex justify-center gap-4 mt-2">
                 {statusData.map((s, i) => (
