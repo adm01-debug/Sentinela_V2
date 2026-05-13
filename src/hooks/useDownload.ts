@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 export function useDownload() {
   const [downloading, setDownloading] = useState(false);
 
-  const download = useCallback(async (url) => {
+  const download = useCallback(async (url: string, filename?: string) => {
     setDownloading(true);
     try {
       const response = await fetch(url);
