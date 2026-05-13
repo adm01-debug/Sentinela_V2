@@ -64,15 +64,7 @@ export function useGeofences() {
 export function useActiveGeofences() {
   return useQuery({
     queryKey: queryKeys.geofences.active(),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('geofences')
-        .select('*')
-        .eq('is_active', true);
-
-      if (error) throw error;
-      return data as Geofence[];
-    },
+    queryFn: () => geofenceService.getActiveGeofences(),
     ...queryPresets.config,
   });
 }
@@ -80,18 +72,7 @@ export function useActiveGeofences() {
 export function useGeofence(id: string | null | undefined) {
   return useQuery({
     queryKey: queryKeys.geofences.detail(id || ''),
-    queryFn: async () => {
-      if (!id) return null;
-      
-      const { data, error } = await supabase
-        .from('geofences')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (error) throw error;
-      return data as Geofence;
-    },
+    queryFn: () => geofenceService.getGeofenceById(id || ''),
     enabled: !!id,
     ...queryPresets.detail,
   });
