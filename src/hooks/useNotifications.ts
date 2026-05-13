@@ -49,18 +49,9 @@ export function useHeaderNotifications(limit = 8) {
 
   // Realtime: invalidate on INSERT
   useEffect(() => {
-    const channel = supabase
-      .channel('header-notifications-rt')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'security_violations' },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['header-notifications'] });
-        }
-      )
-      .subscribe();
-
-    return () => { supabase.removeChannel(channel); };
+    return notificationService.subscribeToViolations(() => {
+      queryClient.invalidateQueries({ queryKey: ['header-notifications'] });
+    });
   }, [queryClient]);
 
   const notifications = raw.map((n) => ({ ...n, read: readIds.has(n.id) }));
