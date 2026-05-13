@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import DashboardPage from '../DashboardPage';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
 
 // Mocks
 vi.mock('react-i18next', () => ({
@@ -36,26 +37,29 @@ vi.mock('@/hooks/useChartColors', () => ({
   }),
 }));
 
-// Mock components that use QueryClient internal hooks if needed, or just wrap in Provider
+// Mock components that use internal hooks or cause side effects
 vi.mock('@/components/DashboardCustomizer', () => ({
   DashboardCustomizer: () => <div data-testid="dashboard-customizer" />,
 }));
 
-// Mock Recharts or other chart components if they cause issues
-vi.mock('recharts', () => ({
-  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
-  BarChart: () => <div />,
-  Bar: () => <div />,
-  XAxis: () => <div />,
-  YAxis: () => <div />,
-  CartesianGrid: () => <div />,
-  Tooltip: () => <div />,
-  Legend: () => <div />,
-  LineChart: () => <div />,
-  Line: () => <div />,
-  PieChart: () => <div />,
-  Pie: () => <div />,
-  Cell: () => <div />,
+vi.mock('@/components/PageTransition', () => ({
+  PageTransition: ({ children }: any) => <div>{children}</div>,
+}));
+
+vi.mock('@/components/WelcomeBanner', () => ({
+  WelcomeBanner: () => <div data-testid="welcome-banner" />,
+}));
+
+// Mock DashboardCharts to avoid Recharts errors
+vi.mock('../dashboard/DashboardCharts', () => ({
+  DashboardChartsRow: () => <div data-testid="charts-row" />,
+  DepartmentPieChart: () => <div data-testid="pie-chart" />,
+}));
+
+// Mock DashboardCards
+vi.mock('../dashboard/DashboardCards', () => ({
+  DashboardAlertsCard: () => <div data-testid="alerts-card" />,
+  DashboardActivityCard: () => <div data-testid="activity-card" />,
 }));
 
 // Mock ResizeObserver
@@ -116,8 +120,6 @@ describe('DashboardPage', () => {
     const monthButton = screen.getByRole('button', { name: /Mês/i });
     
     fireEvent.click(monthButton);
-    // Checking if variant changes (this depends on your UI implementation details)
-    // usually checked via class or style
     expect(monthButton).toHaveClass('bg-primary');
   });
 });
