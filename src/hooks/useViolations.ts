@@ -34,13 +34,7 @@ export function useViolations(filters?: { severity?: string; status?: string; em
   });
 
   const resolveMutation = useMutation({
-    mutationFn: async (id: any) => {
-      const { error } = await supabase
-        .from('security_violations')
-        .update({ status: 'resolved' })
-        .eq('id', id);
-      if (error) throw error;
-    },
+    mutationFn: (id: any) => violationService.resolveViolation(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['violations'] }),
   });
 
