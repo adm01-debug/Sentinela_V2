@@ -30,7 +30,7 @@ export default function EmployeeCreatePage() {
   });
 
   const onSubmit = async (data: FormData) => {
-    await createEmployee.mutateAsync({ name: data.name, email: data.email, department: data.department, position: data.role, status: data.status, hire_date: new Date().toISOString() });
+    await createEmployee.mutateAsync({ name: data.name, full_name: data.name, email: data.email, department: data.department, position: data.role, status: data.status, hire_date: new Date().toISOString() });
     navigate('/employees');
   };
 
