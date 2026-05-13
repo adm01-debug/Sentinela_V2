@@ -12,6 +12,16 @@ export interface DeviceStats {
   alertsToday: number;
 }
 
+interface EmployeeDeviceStatsRow {
+  device_type: string | null;
+  is_active: boolean | null;
+}
+
+interface MobileDeviceStatsRow {
+  is_active: boolean | null;
+  last_seen_at: string | null;
+}
+
 async function fetchDeviceStats(): Promise<DeviceStats> {
   // Buscar dispositivos dos funcionários
   const { data: devices, error: devicesError } = await supabase
@@ -46,18 +56,20 @@ async function fetchDeviceStats(): Promise<DeviceStats> {
   }
 
   // Calcular estatísticas
-  const desktops = devices?.filter((d) => d.device_type === 'desktop' || d.device_type === 'laptop').length || 0;
-  const mobiles = (devices?.filter((d) => d.device_type === 'mobile').length || 0) + (mobileDevices?.length || 0);
+  const employeeDevices = (devices ?? []) as EmployeeDeviceStatsRow[];
+  const mobileDeviceRows = (mobileDevices ?? []) as MobileDeviceStatsRow[];
+  const desktops = employeeDevices.filter((d: EmployeeDeviceStatsRow) => d.device_type === 'desktop' || d.device_type === 'laptop').length;
+  const mobiles = employeeDevices.filter((d: EmployeeDeviceStatsRow) => d.device_type === 'mobile').length + mobileDeviceRows.length;
   const totalDevices = desktops + mobiles;
   
   // Considerar online se visto nos últimos 5 minutos
   const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
-  const onlineMobile = mobileDevices?.filter((d) => 
+  const onlineMobile = mobileDeviceRows.filter((d: MobileDeviceStatsRow) => 
     d.last_seen_at && new Date(d.last_seen_at as string) > fiveMinutesAgo
-  ).length || 0;
+  ).length;
   
   // Para desktops, considerar is_active
-  const onlineDesktop = devices?.filter((d) => d.is_active).length || 0;
+  const onlineDesktop = employeeDevices.filter((d: EmployeeDeviceStatsRow) => d.is_active).length;
   const online = onlineDesktop + onlineMobile;
 
   return {
