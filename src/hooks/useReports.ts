@@ -23,11 +23,7 @@ interface ReportTemplate {
 export const useReports = (filters?: ReportFilters) => {
   return useQuery({
     queryKey: ['reports', filters],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('ai_analysis_reports').select('*').order('created_at', { ascending: false });
-      if (error) throw error;
-      return { data: data || [], total: data?.length || 0 };
-    },
+    queryFn: () => reportService.getReports(),
   });
 };
 
