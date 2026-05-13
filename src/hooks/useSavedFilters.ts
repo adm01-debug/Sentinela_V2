@@ -23,7 +23,7 @@ export interface SavedFilter {
 
 interface UseSavedFiltersOptions {
   entityType: string;
-  onApply?: (filters) => void;
+  onApply?: (filters: any) => void;
 }
 
 // ============================================================
@@ -217,7 +217,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
 // HOOK SIMPLIFICADO (para uso rápido)
 // ============================================================
 
-export function useEntityFilters(entityType) {
+export function useEntityFilters(entityType: string) {
   return useSavedFilters({ entityType });
 }
 

@@ -73,7 +73,7 @@ export function useScheduledReportsPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((r) => ({
+      return (data || []).map((r: any) => ({
         id: r.id,
         name: `Relatório ${r.report_type}`,
         description: '',
@@ -215,7 +215,7 @@ export function useScheduledReportsPage() {
     }
   }, [newRecipient, formData]);
 
-  const handleRemoveRecipient = useCallback((email) => {
+  const handleRemoveRecipient = useCallback((email: string) => {
     setFormData({ ...formData, recipients: formData.recipients.filter(r => r !== email) });
   }, [formData]);
 
@@ -231,7 +231,7 @@ export function useScheduledReportsPage() {
     isRunning: runNowMutation.isPending,
     handleOpenCreate, handleOpenEdit, handleCloseDialog,
     handleSubmit, handleDelete, handleAddRecipient, handleRemoveRecipient,
-    handleRunNow: (id) => runNowMutation.mutate(id),
+    handleRunNow: (id: string) => runNowMutation.mutate(id),
     REPORT_TYPES,
   };
 }

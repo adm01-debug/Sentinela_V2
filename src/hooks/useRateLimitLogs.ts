@@ -137,7 +137,7 @@ export function useBlockedIPs() {
       const ipMap = new Map<string, string>();
       data.forEach((d: RateLimitLog) => {
         if (!ipMap.has(d.ip_address)) {
-          ipMap.set(d.ip_address, d.blocked_at);
+          ipMap.set(d.ip_address, d.blocked_at!);
         }
       });
 
