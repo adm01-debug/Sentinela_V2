@@ -18,6 +18,11 @@ interface TrustFactors {
   noVPN: boolean;
 }
 
+function readKnownDevices(): string[] {
+  const parsed: unknown = JSON.parse(localStorage.getItem("known_devices") || "[]");
+  return Array.isArray(parsed) ? parsed.filter((value): value is string => typeof value === "string") : [];
+}
+
 export function useDeviceTrust() {
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo | null>(null);
   const [trustScore, setTrustScore] = useState(0);
@@ -40,7 +45,7 @@ export function useDeviceTrust() {
     };
     setDeviceInfo(info);
 
-    const knownDevices = JSON.parse(localStorage.getItem("known_devices") || "[]");
+    const knownDevices = readKnownDevices();
     const fp = btoa(JSON.stringify([info.userAgent, info.platform, info.screenResolution, info.timezone]));
     setIsKnownDevice(knownDevices.includes(fp));
 
@@ -53,7 +58,7 @@ export function useDeviceTrust() {
 
   const trustDevice = () => {
     if (!fingerprint) return;
-    const known = JSON.parse(localStorage.getItem("known_devices") || "[]");
+    const known = readKnownDevices();
     if (!known.includes(fingerprint)) {
       known.push(fingerprint);
       localStorage.setItem("known_devices", JSON.stringify(known));
@@ -64,7 +69,7 @@ export function useDeviceTrust() {
 
   const revokeDevice = () => {
     if (!fingerprint) return;
-    const known = JSON.parse(localStorage.getItem("known_devices") || "[]").filter((d) => d !== fingerprint);
+    const known = readKnownDevices().filter((d: string) => d !== fingerprint);
     localStorage.setItem("known_devices", JSON.stringify(known));
     setIsKnownDevice(false);
     setTrustScore((prev) => Math.max(0, prev - 30));
