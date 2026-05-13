@@ -69,7 +69,7 @@ export const SessionPlayback = memo(() => {
   const availableHours = new Set(Object.keys(hourlyDensity).map(Number));
 
   // Jump to specific hour
-  const jumpToHour = (hour) => {
+  const jumpToHour = (hour: number) => {
     setSelectedHour(hour);
     const targetIndex = recordings.findIndex(rec => {
       const recHour = new Date(rec.recorded_at).getHours();

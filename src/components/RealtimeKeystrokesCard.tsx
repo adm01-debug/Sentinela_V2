@@ -21,7 +21,7 @@ interface RealtimeKeystrokesCardProps {
 }
 
 export const RealtimeKeystrokesCard = ({ keystrokes }: RealtimeKeystrokesCardProps) => {
-  const formatKey = (key) => {
+  const formatKey = (key: string) => {
     const specialKeys: Record<string, string> = {
       ' ': '␣',
       'Enter': '↵',

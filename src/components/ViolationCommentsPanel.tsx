@@ -80,7 +80,7 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
     );
   };
 
-  const handleEditComment = (commentId) => {
+  const handleEditComment = (commentId: string) => {
     if (!editContent.trim()) return;
     updateComment.mutate(
       { id: commentId, content: editContent },

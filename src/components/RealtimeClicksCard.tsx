@@ -23,7 +23,7 @@ interface RealtimeClicksCardProps {
 }
 
 export const RealtimeClicksCard = ({ clicks }: RealtimeClicksCardProps) => {
-  const getClickTypeLabel = (type) => {
+  const getClickTypeLabel = (type: string) => {
     const types: Record<string, { label: string; color: string }> = {
       left: { label: 'Esquerdo', color: 'bg-blue-500/20 text-blue-400' },
       right: { label: 'Direito', color: 'bg-orange-500/20 text-orange-400' },
