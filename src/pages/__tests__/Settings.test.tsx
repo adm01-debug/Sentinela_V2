@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Settings from '../Settings';
 import { BrowserRouter } from 'react-router-dom';
@@ -102,12 +102,15 @@ describe('Settings Page', () => {
     expect(screen.getByText('Screenshot')).toBeInTheDocument();
   });
 
-  it('switches to applications tab', () => {
+  it('switches to applications tab', async () => {
     renderSettings();
     const appsTab = screen.getByText('monitoring.applications');
     fireEvent.click(appsTab);
     
-    expect(screen.getByText('Slack')).toBeInTheDocument();
+    // Tabs content might be lazy or hidden with CSS
+    await waitFor(() => {
+      expect(screen.getByText('Slack')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('add-app-dialog')).toBeInTheDocument();
   });
 
@@ -129,7 +132,9 @@ describe('Settings Page', () => {
     const searchInput = screen.getByPlaceholderText('common.search');
     fireEvent.change(searchInput, { target: { value: 'Slack' } });
     
-    expect(screen.getByText('Slack')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Slack')).toBeInTheDocument();
+    });
     expect(screen.queryByText('Discord')).not.toBeInTheDocument();
   });
 });
