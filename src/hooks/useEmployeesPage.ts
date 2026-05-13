@@ -164,15 +164,15 @@ export function useEmployeesPage() {
     
     await createEmployee({
       name: formData.name.trim(),
-      email: formData.email.trim() || null,
-      department: formData.department.trim() || null,
-      position: formData.position.trim() || null,
-      team_id: formData.team_id || null,
+      email: formData.email.trim() || undefined,
+      department: formData.department.trim() || undefined,
+      position: formData.position.trim() || undefined,
+      team_id: formData.team_id || undefined,
       status: formData.status,
-      hire_date: formData.hire_date || null,
-      phone: formData.phone.trim() || null,
-      avatar_url: null,
-      notes: formData.notes.trim() || null
+      hire_date: formData.hire_date || undefined,
+      phone: formData.phone.trim() || undefined,
+      avatar_url: undefined,
+      notes: formData.notes.trim() || undefined
     });
     
     resetForm();
