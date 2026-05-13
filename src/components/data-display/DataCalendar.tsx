@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 export interface CalendarEvent { id: string; title: string; date: string; color?: string; }
-export interface DataCalendarProps { events?: CalendarEvent[]; onDateClick?: (date) => void; onEventClick?: (event: CalendarEvent) => void; className?: string; }
+export interface DataCalendarProps { events?: CalendarEvent[]; onDateClick?: (date: Date) => void; onEventClick?: (event: CalendarEvent) => void; className?: string; }
 const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
 const getFirstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
 export const DataCalendar: React.FC<DataCalendarProps> = ({ events = [], onDateClick, onEventClick, className }) => {

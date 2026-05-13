@@ -139,7 +139,7 @@ function MobileSidebarComponent({ onNavigate }: MobileSidebarProps) {
     onNavigate?.();
   }, [logout, onNavigate]);
 
-  const toggleGroup = useCallback((groupId) => {
+  const toggleGroup = useCallback((groupId: string) => {
     setOpenGroups(prev => {
       const next = new Set(prev);
       if (next.has(groupId)) {

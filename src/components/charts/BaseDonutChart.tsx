@@ -16,7 +16,7 @@ interface BaseDonutChartProps {
   outerRadius?: number;
   showLabel?: boolean;
   colors?: string[];
-  valueFormatter?: (value) => string;
+  valueFormatter?: (value: any) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }
