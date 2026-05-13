@@ -50,8 +50,8 @@ export default function ForgotPasswordPage() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent>
             <div className="space-y-2">
-              <Label>Email</Label>
-              <Input type="email" {...register('email')} />
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" {...register('email')} />
               {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
           </CardContent>
