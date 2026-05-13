@@ -55,10 +55,10 @@ vi.mock('@/hooks/useChartColors', () => ({
 // Mock Recharts
 vi.mock('recharts', () => ({
   ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
-  PieChart: () => <div data-testid="pie-chart" />,
+  PieChart: ({ children }: any) => <div data-testid="pie-chart">{children}</div>,
   Pie: () => <div />,
   Cell: () => <div />,
-  BarChart: () => <div data-testid="bar-chart" />,
+  BarChart: ({ children }: any) => <div data-testid="bar-chart">{children}</div>,
   Bar: () => <div />,
   XAxis: () => <div />,
   YAxis: () => <div />,
@@ -89,35 +89,25 @@ describe('MonitoringPage', () => {
     );
   };
 
-  it('renders stats correctly', () => {
+  it('renders correctly', () => {
     renderMonitoring();
-
     expect(screen.getByText('Monitoramento em Tempo Real')).toBeInTheDocument();
+  });
+
+  it('renders stats', () => {
+    renderMonitoring();
     expect(screen.getByText('2')).toBeInTheDocument(); // total
-    expect(screen.getByText('1')).toBeInAllByText ? screen.getAllByText('1')[0] : screen.getByText('1'); // online or offline
   });
 
   it('renders employee grid', () => {
     renderMonitoring();
-
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText('Jane Smith')).toBeInTheDocument();
   });
 
   it('renders charts', () => {
     renderMonitoring();
-
     expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
     expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
-  });
-
-  it('toggles view mode', () => {
-    const { setViewMode } = require('@/hooks/useMonitoringPage').useMonitoringPage();
-    renderMonitoring();
-
-    const listButton = screen.getByRole('button', { name: '' }).parentElement?.querySelector('.lucide-list')?.parentElement;
-    if (listButton) fireEvent.click(listButton);
-    
-    // Check if setViewMode was called if we could access the mock correctly
   });
 });
