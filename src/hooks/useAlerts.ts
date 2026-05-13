@@ -14,7 +14,7 @@ export const useAlerts = (filters?: { severity?: string; acknowledged?: boolean 
   });
 };
 
-export const useAlert = (id) => {
+export const useAlert = (id: string) => {
   return useQuery({
     queryKey: ['alert', id],
     queryFn: async () => {
@@ -29,7 +29,7 @@ export const useAlert = (id) => {
 export const useAcknowledgeAlert = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('security_violations').update({ status: 'acknowledged' }).eq('id', id);
       if (error) throw error;
     },

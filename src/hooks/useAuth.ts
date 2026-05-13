@@ -47,7 +47,7 @@ function mapSupabaseUser(supaUser: SupaUser | undefined | null): User | null {
   };
 }
 
-async function checkAdminRole(userId): Promise<boolean> {
+async function checkAdminRole(userId: string): Promise<boolean> {
   try {
     const { data, error } = await supabase
       .from('user_roles')
@@ -131,7 +131,7 @@ export function useAuth(): UseAuthReturn {
 export const useUpdateProfile = () => {
   const [isPending, setIsPending] = useState(false);
   return {
-    mutateAsync: async (data) => {
+    mutateAsync: async (data: Record<string, unknown>) => {
       setIsPending(true);
       try {
         const { error } = await supabase.auth.updateUser({ data });

@@ -15,7 +15,7 @@ export function useCategories(initialCategories: Category[] = []) {
     return category;
   }, []);
 
-  const remove = useCallback((id) => {
+  const remove = useCallback((id: string) => {
     setCategories(prev => prev.filter(c => c.id !== id && c.parentId !== id));
   }, []);
 

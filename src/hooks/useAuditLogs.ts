@@ -28,14 +28,14 @@ export function useAuditLogs(entityType?: string, entityId?: string) {
 
       const { data, error } = await query;
       if (error) throw error;
-      return (data || []).map((row): AuditLog => ({
-        id: row.id,
-        user_id: row.user_id,
-        action: row.event_type,
-        entity_type: row.event_type,
-        entity_id: row.user_id,
+      return ((data || []) as Array<Record<string, unknown>>).map((row: Record<string, unknown>): AuditLog => ({
+        id: String(row.id),
+        user_id: String(row.user_id),
+        action: String(row.event_type),
+        entity_type: String(row.event_type),
+        entity_id: String(row.user_id),
         changes: (row.metadata as Record<string, unknown>) || undefined,
-        created_at: row.created_at,
+        created_at: String(row.created_at),
       }));
     },
     ...queryPresets.list,

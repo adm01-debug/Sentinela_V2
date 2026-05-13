@@ -21,7 +21,7 @@ export function useAlert() {
     return id;
   }, []);
 
-  const dismiss = useCallback((id) => {
+  const dismiss = useCallback((id: string) => {
     setAlerts(prev => prev.filter(a => a.id !== id));
   }, []);
 

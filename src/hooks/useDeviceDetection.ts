@@ -147,7 +147,7 @@ export function useDeviceDetection() {
     }
   }, []);
   
-  const getKnownDevices = useCallback(async (userId) => {
+  const getKnownDevices = useCallback(async (userId: string) => {
     const { data, error } = await supabase
       .from('user_known_devices')
       .select('*')
@@ -162,7 +162,7 @@ export function useDeviceDetection() {
     return data || [];
   }, []);
   
-  const removeDevice = useCallback(async (deviceId) => {
+  const removeDevice = useCallback(async (deviceId: string) => {
     const { error } = await supabase
       .from('user_known_devices')
       .delete()
@@ -176,7 +176,7 @@ export function useDeviceDetection() {
     return true;
   }, []);
   
-  const trustDevice = useCallback(async (deviceId) => {
+  const trustDevice = useCallback(async (deviceId: string) => {
     const { error } = await supabase
       .from('user_known_devices')
       .update({ is_trusted: true })
