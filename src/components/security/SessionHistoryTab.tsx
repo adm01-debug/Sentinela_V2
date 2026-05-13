@@ -31,7 +31,7 @@ function EventIcon({ type }: { type: string }) {
   }
 }
 
-function eventLabel(type): string {
+function eventLabel(type: string): string {
   switch (type) {
     case 'login_success': return 'Login bem-sucedido';
     case 'login_failed': return 'Tentativa de login falhou';
@@ -41,7 +41,7 @@ function eventLabel(type): string {
   }
 }
 
-function eventBg(type): string {
+function eventBg(type: string): string {
   switch (type) {
     case 'login_success': return 'bg-green-100 text-green-600 dark:bg-green-900/30';
     case 'login_failed': return 'bg-red-100 text-red-600 dark:bg-red-900/30';

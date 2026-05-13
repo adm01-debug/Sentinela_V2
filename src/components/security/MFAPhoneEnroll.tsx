@@ -29,7 +29,7 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
   const [verifyCode, setVerifyCode] = useState('');
   const [step, setStep] = useState<'phone' | 'verify'>('phone');
 
-  const formatPhoneInput = (value) => {
+  const formatPhoneInput = (value: string) => {
     const digits = value.replace(/\D/g, '');
     if (digits.length <= 2) return digits;
     if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
