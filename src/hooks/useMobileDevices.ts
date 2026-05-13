@@ -84,7 +84,7 @@ export function useMobileDeviceLocations() {
 
       if (error) throw error;
       
-      return data?.map((d) => ({
+      return data?.map((d: any) => ({
         device_id: d.id,
         ...(d.last_location as object),
         employee: d.employee,
@@ -94,7 +94,7 @@ export function useMobileDeviceLocations() {
   });
 }
 
-export function useMobileDevice(id) {
+export function useMobileDevice(id: string | null | undefined) {
   return useQuery({
     queryKey: queryKeys.mobileDevices.detail(id || ''),
     queryFn: async () => {

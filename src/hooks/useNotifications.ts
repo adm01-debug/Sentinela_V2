@@ -40,7 +40,7 @@ export function useHeaderNotifications(limit = 8) {
       if (error) throw error;
       if (!data) return [];
 
-      return data.map((v) => ({
+      return data.map((v: any) => ({
         id: v.id,
         title: v.violation_type || 'Violação detectada',
         description: v.employee_name
@@ -77,7 +77,7 @@ export function useHeaderNotifications(limit = 8) {
     setReadIds(new Set(raw.map((n) => n.id)));
   }, [raw]);
 
-  const markRead = useCallback((id) => {
+  const markRead = useCallback((id: string) => {
     setReadIds((prev) => new Set(prev).add(id));
   }, []);
 
@@ -123,7 +123,7 @@ export function useNotifications() {
     return notification;
   }, [permission]);
 
-  const markAsRead = useCallback((id) => {
+  const markAsRead = useCallback((id: string) => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
   }, []);
 
