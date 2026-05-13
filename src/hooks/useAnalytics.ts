@@ -53,13 +53,7 @@ export function useAnalytics(params?: { period?: string }) {
 
   const query = useQuery({
     queryKey: ['analytics', params],
-    queryFn: async () => ({
-      productivity: 78,
-      activeHours: 6.5,
-      activeUsers: 42,
-      appsUsed: 15,
-      chartData: [] as ChartDataPoint[],
-    }),
+    queryFn: () => analyticsService.getDashboardMetrics(params),
     enabled: !!params,
   });
 
@@ -73,32 +67,20 @@ export function useAnalytics(params?: { period?: string }) {
 export function useApplicationAnalytics() {
   return useQuery({
     queryKey: ['analytics-applications'],
-    queryFn: async () => ({
-      byCategory: [] as AppCategory[],
-      topApps: [] as AppCategory[],
-      byHour: [] as ChartDataPoint[],
-    }),
+    queryFn: () => analyticsService.getApplicationAnalytics(),
   });
 }
 
 export function useProductivityAnalytics() {
   return useQuery({
     queryKey: ['analytics-productivity'],
-    queryFn: async () => ({
-      topPerformers: [] as Performer[],
-      byDepartment: [] as ChartDataPoint[],
-      metrics: [] as ChartDataPoint[],
-    }),
+    queryFn: () => analyticsService.getProductivityAnalytics(),
   });
 }
 
 export function useTrendsAnalytics() {
   return useQuery({
     queryKey: ['analytics-trends'],
-    queryFn: async () => ({
-      insights: [] as TrendInsight[],
-      monthlyData: [] as MonthlyTrendData[],
-      predictions: [] as TrendPrediction[],
-    }),
+    queryFn: () => analyticsService.getTrendsAnalytics(),
   });
 }
