@@ -19,13 +19,21 @@ export const employeeService = {
   },
 
   async createEmployee(data: EmployeeCreateInput) {
-    const { data: result, error } = await supabase.from('employees').insert(data).select().single();
+    const payload = { ...data };
+    if (payload.name && !payload.full_name) payload.full_name = payload.name;
+    if (payload.full_name && !payload.name) payload.name = payload.full_name;
+    
+    const { data: result, error } = await supabase.from('employees').insert(payload).select().single();
     if (error) throw error;
     return result;
   },
 
   async updateEmployee(id: string, data: EmployeeUpdateInput) {
-    const { data: result, error } = await supabase.from('employees').update(data).eq('id', id).select().single();
+    const payload = { ...data };
+    if (payload.name && !payload.full_name) payload.full_name = payload.name;
+    if (payload.full_name && !payload.name) payload.name = payload.full_name;
+
+    const { data: result, error } = await supabase.from('employees').update(payload).eq('id', id).select().single();
     if (error) throw error;
     return result;
   },
