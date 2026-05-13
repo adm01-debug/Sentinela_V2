@@ -98,6 +98,7 @@ export function BaseAreaChart({
             stroke={s.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length]}
             fill={`url(#color-${s.dataKey})`}
             strokeWidth={s.strokeWidth ?? 2}
+            strokeDasharray={s.dashed ? '5 5' : undefined}
             stackId={stacked ? "1" : undefined}
           />
         ))}
