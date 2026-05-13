@@ -136,7 +136,7 @@ export function useCreateRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { name: string; description?: string }) => {
+    mutationFn: async (data) => {
       const { data: role, error } = await supabase
         .from('roles')
         .insert({
@@ -193,7 +193,7 @@ export function useDeleteRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('roles').delete().eq('id', id);
       if (error) throw error;
     },

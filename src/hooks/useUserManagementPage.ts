@@ -81,7 +81,7 @@ export function useUserManagementPage() {
 
   // Create user mutation
   const createMutation = useMutation({
-    mutationFn: async (data: CreateUserData) => {
+    mutationFn: async (data) => {
       const { data: authData, error: authError } = await supabase.auth.admin.createUser({
         email: data.email,
         password: data.password,
@@ -107,7 +107,7 @@ export function useUserManagementPage() {
 
   // Update user mutation
   const updateMutation = useMutation({
-    mutationFn: async (data: UpdateUserData) => {
+    mutationFn: async (data) => {
       const { error } = await supabase
         .from('profiles')
         .update({ name: data.name, role: data.role, is_active: data.is_active })
@@ -142,7 +142,7 @@ export function useUserManagementPage() {
 
   // Reset password mutation
   const resetPasswordMutation = useMutation({
-    mutationFn: async (email: string) => {
+    mutationFn: async (email) => {
       const { error } = await supabase.auth.resetPasswordForEmail(email);
       if (error) throw error;
     },
@@ -175,7 +175,7 @@ export function useUserManagementPage() {
     setIsCreateDialogOpen(false);
   }, []);
 
-  const handleCreateUser = useCallback((data: CreateUserData) => {
+  const handleCreateUser = useCallback((data) => {
     createMutation.mutate(data);
   }, [createMutation]);
 
@@ -189,7 +189,7 @@ export function useUserManagementPage() {
     setSelectedUser(null);
   }, []);
 
-  const handleUpdateUser = useCallback((data: UpdateUserData) => {
+  const handleUpdateUser = useCallback((data) => {
     updateMutation.mutate(data);
   }, [updateMutation]);
 

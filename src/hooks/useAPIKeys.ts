@@ -27,7 +27,7 @@ export function useAPIKeys() {
     return newKey;
   }, []);
 
-  const revokeKey = useCallback((id: string) => {
+  const revokeKey = useCallback((id) => {
     setKeys(prev => prev.map(k => k.id === id ? { ...k, status: "revoked" as const } : k));
   }, []);
 

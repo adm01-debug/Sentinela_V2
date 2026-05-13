@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
-export function useWorker<T, R>(workerFn: (data: T) => R) {
+export function useWorker<T, R>(workerFn: (data) => R) {
   const [result, setResult] = useState<R | null>(null);
   const [loading, setLoading] = useState(false);
   const workerRef = useRef<Worker | null>(null);
@@ -12,7 +12,7 @@ export function useWorker<T, R>(workerFn: (data: T) => R) {
     return () => workerRef.current?.terminate();
   }, [workerFn]);
 
-  const run = useCallback((data: T) => {
+  const run = useCallback((data) => {
     setLoading(true);
     workerRef.current?.postMessage(data);
   }, []);

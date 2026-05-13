@@ -77,7 +77,7 @@ export function useHeaderNotifications(limit = 8) {
     setReadIds(new Set(raw.map((n) => n.id)));
   }, [raw]);
 
-  const markRead = useCallback((id: string) => {
+  const markRead = useCallback((id) => {
     setReadIds((prev) => new Set(prev).add(id));
   }, []);
 
@@ -123,7 +123,7 @@ export function useNotifications() {
     return notification;
   }, [permission]);
 
-  const markAsRead = useCallback((id: string) => {
+  const markAsRead = useCallback((id) => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
   }, []);
 

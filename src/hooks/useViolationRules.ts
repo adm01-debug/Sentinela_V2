@@ -78,7 +78,7 @@ export function useActiveViolationRules() {
   });
 }
 
-export function useViolationRule(id: string | undefined) {
+export function useViolationRule(id) {
   return useQuery({
     queryKey: queryKeys.violationRules.detail(id || ''),
     queryFn: async () => {
@@ -172,7 +172,7 @@ export function useDeleteViolationRule() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('violation_rules')
         .delete()

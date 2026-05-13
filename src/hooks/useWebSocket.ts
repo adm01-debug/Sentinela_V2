@@ -34,7 +34,7 @@ export function useWebSocket(config: WebSocketConfig) {
   }, [config]);
 
   const disconnect = useCallback(() => { wsRef.current?.close(); wsRef.current = null; setStatus('disconnected'); }, []);
-  const send = useCallback((data: string | Record<string, unknown>) => { if (wsRef.current?.readyState === WebSocket.OPEN) wsRef.current.send(typeof data === 'string' ? data : JSON.stringify(data)); }, []);
+  const send = useCallback((data) => { if (wsRef.current?.readyState === WebSocket.OPEN) wsRef.current.send(typeof data === 'string' ? data : JSON.stringify(data)); }, []);
 
   useEffect(() => { return () => { wsRef.current?.close(); }; }, []);
 

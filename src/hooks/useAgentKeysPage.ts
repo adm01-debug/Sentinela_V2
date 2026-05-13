@@ -105,7 +105,7 @@ export function useAgentKeysPage() {
 
   // Revoke key mutation
   const revokeMutation = useMutation({
-    mutationFn: async (keyId) => {
+    mutationFn: async (keyId: string) => {
       const { error } = await supabase
         .from('agent_keys')
         .update({ is_active: false })
@@ -124,7 +124,7 @@ export function useAgentKeysPage() {
 
   // Reactivate key mutation
   const reactivateMutation = useMutation({
-    mutationFn: async (keyId) => {
+    mutationFn: async (keyId: string) => {
       const { error } = await supabase
         .from('agent_keys')
         .update({ is_active: true })
@@ -142,7 +142,7 @@ export function useAgentKeysPage() {
 
   // Delete key mutation
   const deleteMutation = useMutation({
-    mutationFn: async (keyId) => {
+    mutationFn: async (keyId: string) => {
       const { error } = await supabase
         .from('agent_keys')
         .delete()
@@ -191,15 +191,15 @@ export function useAgentKeysPage() {
   }, []);
 
   const handleRevokeKey = useCallback((keyId: string) => {
-    (revokeMutation.mutate as any)(keyId);
+    revokeMutation.mutate(keyId);
   }, [revokeMutation]);
 
   const handleReactivateKey = useCallback((keyId: string) => {
-    (reactivateMutation.mutate as any)(keyId);
+    reactivateMutation.mutate(keyId);
   }, [reactivateMutation]);
 
   const handleDeleteKey = useCallback((keyId: string) => {
-    (deleteMutation.mutate as any)(keyId);
+    deleteMutation.mutate(keyId);
   }, [deleteMutation]);
 
   const handleCopyKey = useCallback((agentKey: string) => {

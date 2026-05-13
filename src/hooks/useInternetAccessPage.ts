@@ -85,7 +85,7 @@ export function useInternetAccessPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: RuleFormData) => {
+    mutationFn: async (data) => {
       const { error } = await supabase.from('internet_access_rules').insert(data);
       if (error) throw error;
     },
@@ -115,7 +115,7 @@ export function useInternetAccessPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('internet_access_rules').delete().eq('id', id);
       if (error) throw error;
     },

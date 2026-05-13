@@ -92,7 +92,7 @@ export function useSecurityViolations(filters?: ViolationFilters) {
   });
 }
 
-export function useViolation(id: string | undefined) {
+export function useViolation(id) {
   return useQuery({
     queryKey: queryKeys.violations.detail(id!),
     queryFn: async () => {
@@ -331,7 +331,7 @@ export function useDeleteViolation() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('security_violations')
         .delete()

@@ -59,7 +59,7 @@ export const useUser = (id) => {
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: { email: string; full_name?: string }) => {
+    mutationFn: async (data) => {
       const { data: result, error } = await supabase.from('profiles').insert(data).select().single();
       if (error) throw error;
       return result;
@@ -83,7 +83,7 @@ export const useUpdateUser = () => {
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('profiles').delete().eq('id', id);
       if (error) throw error;
     },

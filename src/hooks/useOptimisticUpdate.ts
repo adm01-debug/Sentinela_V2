@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
 
 export interface UseOptimisticUpdateOptions<T> {
-  onMutate: (data: T) => Promise<T>;
+  onMutate: (data) => Promise<T>;
   onError?: (error: Error, rollbackData: T) => void;
-  onSuccess?: (data: T) => void;
+  onSuccess?: (data) => void;
 }
 
 export function useOptimisticUpdate<T>(initialData: T, options: UseOptimisticUpdateOptions<T>) {

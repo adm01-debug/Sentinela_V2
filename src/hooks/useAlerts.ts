@@ -29,7 +29,7 @@ export const useAlert = (id) => {
 export const useAcknowledgeAlert = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('security_violations').update({ status: 'acknowledged' }).eq('id', id);
       if (error) throw error;
     },

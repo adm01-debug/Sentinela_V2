@@ -55,7 +55,7 @@ export function useTeams() {
   });
 }
 
-export function useTeam(id: string | undefined) {
+export function useTeam(id) {
   return useQuery({
     queryKey: queryKeys.teams.detail(id || ''),
     queryFn: async () => {
@@ -202,7 +202,7 @@ export function useDeleteTeam() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('teams')
         .delete()

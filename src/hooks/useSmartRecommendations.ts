@@ -14,9 +14,9 @@ export interface Recommendation {
 export interface UseSmartRecommendationsOptions<T> {
   items: T[];
   userPreferences?: Record<string, number>;
-  getItemFeatures: (item: T) => Record<string, number>;
-  getItemId: (item: T) => string;
-  getItemTitle: (item: T) => string;
+  getItemFeatures: (item) => Record<string, number>;
+  getItemId: (item) => string;
+  getItemTitle: (item) => string;
   maxRecommendations?: number;
 }
 
@@ -60,7 +60,7 @@ export function useSmartRecommendations<T>(options: UseSmartRecommendationsOptio
   }, [items, userPreferences, getItemFeatures, getItemId, getItemTitle, dismissedIds, feedback, maxRecommendations]);
 
   const dismiss = useCallback((id) => setDismissedIds(prev => new Set([...prev, id])), []);
-  const provideFeedback = useCallback((id: string, type: 'positive' | 'negative') => setFeedback(prev => ({ ...prev, [id]: type })), []);
+  const provideFeedback = useCallback((id) => setFeedback(prev => ({ ...prev, [id]: type })), []);
   const reset = useCallback(() => { setDismissedIds(new Set()); setFeedback({}); }, []);
 
   return { recommendations, dismiss, provideFeedback, reset, hasRecommendations: recommendations.length > 0 };

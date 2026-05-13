@@ -113,7 +113,7 @@ export function useMonitoringPoliciesPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: PolicyFormData) => {
+    mutationFn: async (data) => {
       const settingData = {
         setting_key: data.name,
         description: data.description,
@@ -177,7 +177,7 @@ export function useMonitoringPoliciesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('monitoring_settings').delete().eq('id', id);
       if (error) throw error;
     },

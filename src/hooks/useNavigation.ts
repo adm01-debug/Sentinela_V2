@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 export function useNavigation() {
-  const navigate = useCallback((path: string, options?: { replace?: boolean }) => {
+  const navigate = useCallback((path) => {
     if (options?.replace) {
       window.history.replaceState(null, "", path);
     } else {

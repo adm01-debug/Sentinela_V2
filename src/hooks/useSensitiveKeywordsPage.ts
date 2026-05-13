@@ -67,7 +67,7 @@ export function useSensitiveKeywordsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: KeywordFormData) => {
+    mutationFn: async (data) => {
       const newKeyword: SensitiveKeyword = {
         id: Date.now().toString(),
         ...data,
@@ -95,7 +95,7 @@ export function useSensitiveKeywordsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       setLocalKeywords(prev => prev.filter(k => k.id !== id));
     },
     onSuccess: () => {

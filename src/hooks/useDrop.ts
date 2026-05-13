@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-export function useDrop<T>(onDrop: (data: T) => void) {
+export function useDrop<T>(onDrop: (data) => void) {
   const [isOver, setIsOver] = useState(false);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {

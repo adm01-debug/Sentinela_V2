@@ -69,9 +69,9 @@ export function useEmployeesPage() {
   const updateMutation = useUpdateEmployee();
   const deleteMutation = useDeleteEmployee();
   
-  const createEmployee = async (data) => createMutation.mutateAsync(data as unknown as EmployeeCreateInput);
+  const createEmployee = async (data: EmployeeCreateInput) => createMutation.mutateAsync(data);
   const updateEmployee = async (id: string, data: Partial<EmployeeUpdateInput>) => updateMutation.mutateAsync({ id, data: data as EmployeeUpdateInput });
-  const deleteEmployee = async (id) => deleteMutation.mutateAsync(id);
+  const deleteEmployee = async (id: string) => deleteMutation.mutateAsync(id);
   const assignDevice = async (empId: string, name: string, type: string, primary: boolean) => {
     const { error } = await supabase.from('employee_devices').insert({
       employee_id: empId,
@@ -164,15 +164,15 @@ export function useEmployeesPage() {
     
     await createEmployee({
       name: formData.name.trim(),
-      email: formData.email.trim() || null,
-      department: formData.department.trim() || null,
-      position: formData.position.trim() || null,
-      team_id: formData.team_id || null,
+      email: formData.email.trim() || undefined,
+      department: formData.department.trim() || undefined,
+      position: formData.position.trim() || undefined,
+      team_id: formData.team_id || undefined,
       status: formData.status,
-      hire_date: formData.hire_date || null,
-      phone: formData.phone.trim() || null,
-      avatar_url: null,
-      notes: formData.notes.trim() || null
+      hire_date: formData.hire_date || undefined,
+      phone: formData.phone.trim() || undefined,
+      avatar_url: undefined,
+      notes: formData.notes.trim() || undefined
     });
     
     resetForm();
@@ -349,6 +349,6 @@ export const deviceTypeLabels = {
 // HELPERS
 // ============================================================
 
-export function getInitials(name): string {
+export function getInitials(name: string): string {
   return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 }

@@ -21,7 +21,7 @@ export function useProjects() {
     return project;
   }, []);
 
-  const updateStatus = useCallback((id: string, status: Project["status"]) => {
+  const updateStatus = useCallback((id) => {
     setProjects(prev => prev.map(p => p.id === id ? { ...p, status } : p));
   }, []);
 

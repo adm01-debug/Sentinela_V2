@@ -85,7 +85,7 @@ export function useActiveGeofences() {
   });
 }
 
-export function useGeofence(id: string | undefined) {
+export function useGeofence(id) {
   return useQuery({
     queryKey: queryKeys.geofences.detail(id || ''),
     queryFn: async () => {
@@ -236,7 +236,7 @@ export function useDeleteGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('geofences')
         .delete()

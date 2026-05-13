@@ -122,7 +122,7 @@ export function useWhatsAppIntegrationPage() {
   });
 
   const saveConfigMutation = useMutation({
-    mutationFn: async (data: WhatsAppConfigInput) => {
+    mutationFn: async (data) => {
       if (config?.id) {
         const { error } = await supabase
           .from('whatsapp_config')
