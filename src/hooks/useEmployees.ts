@@ -79,29 +79,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
   return useQuery({
     queryKey: ['employee-stats', id, startDate, endDate],
     queryFn: async () => {
-      // Get activity data (keystroke logs as proxy for active days)
-      const { data: keystrokeLogs, error: klError } = await supabase
-        .from('keystroke_logs')
-        .select('recorded_at, keystrokes_count, active_time_seconds, idle_time_seconds')
-        .eq('employee_name', id)
-        .gte('recorded_at', startDate)
-        .lte('recorded_at', endDate);
-
-      // Get violations
-      const { count: violationCount, error: vError } = await supabase
-        .from('security_violations')
-        .select('id', { count: 'exact', head: true })
-        .eq('employee_name', id)
-        .gte('created_at', startDate)
-        .lte('created_at', endDate);
-
-      // Get attendance records
-      const { data: attendance, error: aError } = await supabase
-        .from('attendance_records')
-        .select('total_worked_minutes, status')
-        .eq('employee_id', id)
-        .gte('date', startDate)
-        .lte('date', endDate);
+      const { keystrokeLogs, violationCount, attendance } = await employeeService.getEmployeeStats(id, startDate, endDate);
 
       // Calculate productivity from keystroke data
       const logs = (keystrokeLogs || []) as KeystrokeStatsRow[];
