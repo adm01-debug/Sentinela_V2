@@ -19,7 +19,7 @@ export interface SoftDeleteOptions {
   statusField?: string;
   deletedStatus?: string;
   activeStatus?: string;
-  onSuccess?: (id) => void;
+  onSuccess?: (id: string, action?: 'delete' | 'restore') => void;
   onError?: (error: Error) => void;
 }
 
