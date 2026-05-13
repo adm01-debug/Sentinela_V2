@@ -5,8 +5,8 @@ export interface UseAutoSaveDraftOptions<T> {
   key: string;
   data: T;
   delay?: number;
-  onSave?: (data) => void;
-  onRestore?: (data) => void;
+  onSave?: (data: T) => void;
+  onRestore?: (data: T) => void;
 }
 
 export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
