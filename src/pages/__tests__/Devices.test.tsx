@@ -91,7 +91,9 @@ describe('DevicesPage', () => {
   it('renders stats and charts', () => {
     renderDevices();
     expect(screen.getByText('Total')).toBeInTheDocument();
-    expect(screen.getByTestId('pie-chart')).toBeInAllByTestId ? screen.getAllByTestId('pie-chart')[0] : screen.getByTestId('pie-chart');
+    // We can have multiple pie charts, so getAllByTestId
+    const pieCharts = screen.getAllByTestId('pie-chart');
+    expect(pieCharts.length).toBeGreaterThan(0);
     expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
   });
 
