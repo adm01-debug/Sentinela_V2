@@ -63,15 +63,7 @@ interface AttendanceStatsRow {
 export const useEmployees = (filters?: EmployeeFilters) => {
   return useQuery({
     queryKey: ['employees', filters],
-    queryFn: async () => {
-      let query = supabase.from('employees').select('*').order('name');
-      if (filters?.department) query = query.eq('department', filters.department);
-      if (filters?.status) query = query.eq('status', filters.status);
-      if (filters?.search) query = query.ilike('name', `%${filters.search}%`);
-      const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
-    },
+    queryFn: () => employeeService.getEmployees(filters),
   });
 };
 
