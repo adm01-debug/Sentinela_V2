@@ -73,7 +73,7 @@ export function useDepartments() {
   });
 
   const deleteDepartment = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('departments')
         .delete()
@@ -98,7 +98,7 @@ export function useDepartments() {
   };
 }
 
-export function useDepartment(id) {
+export function useDepartment(id: string) {
   return useQuery({
     queryKey: ['departments', id],
     queryFn: async () => {

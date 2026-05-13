@@ -11,7 +11,7 @@ interface ComplianceRule {
   checkFn: () => Promise<boolean>;
 }
 
-async function checkTableExists(tableName): Promise<boolean> {
+async function checkTableExists(tableName: string): Promise<boolean> {
   const { count } = await supabase.from(tableName).select('id', { count: 'exact', head: true });
   return count !== null;
 }

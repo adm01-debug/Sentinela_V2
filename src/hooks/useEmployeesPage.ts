@@ -134,15 +134,15 @@ export function useEmployeesPage() {
   }), [employees]);
 
   // Filter handlers
-  const setSearchTerm = useCallback((value) => {
+  const setSearchTerm = useCallback((value: string) => {
     setFilters(prev => ({ ...prev, searchTerm: value }));
   }, []);
 
-  const setStatusFilter = useCallback((value) => {
+  const setStatusFilter = useCallback((value: string) => {
     setFilters(prev => ({ ...prev, statusFilter: value }));
   }, []);
 
-  const setTeamFilter = useCallback((value) => {
+  const setTeamFilter = useCallback((value: string) => {
     setFilters(prev => ({ ...prev, teamFilter: value }));
   }, []);
 

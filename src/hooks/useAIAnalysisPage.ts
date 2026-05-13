@@ -50,16 +50,16 @@ export function useAIAnalysisPage() {
       const { data, error } = await query;
       if (error) throw error;
 
-      return (data || []).map((a: any) => ({
-        id: a.id,
+      return (data || []).map((a: Record<string, unknown>) => ({
+        id: String(a.id),
         employee_id: '',
-        employee_name: a.employee_name || 'Desconhecido',
-        analysis_type: a.report_type as 'productivity' | 'behavior' | 'risk' | 'summary',
-        score: a.risk_score || 0,
+        employee_name: typeof a.employee_name === 'string' ? a.employee_name : 'Desconhecido',
+        analysis_type: (typeof a.report_type === 'string' ? a.report_type : 'summary') as 'productivity' | 'behavior' | 'risk' | 'summary',
+        score: typeof a.risk_score === 'number' ? a.risk_score : 0,
         insights: Array.isArray(a.insights) ? a.insights as string[] : [],
         recommendations: Array.isArray(a.recommendations) ? a.recommendations as string[] : [],
-        data: a.raw_data as Record<string, unknown> || {},
-        created_at: a.created_at,
+        data: (a.raw_data as Record<string, unknown>) || {},
+        created_at: String(a.created_at),
       })) as AIAnalysisResult[];
     },
   });

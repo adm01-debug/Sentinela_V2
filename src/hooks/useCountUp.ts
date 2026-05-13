@@ -45,7 +45,7 @@ export function useCountUp({
     function animate() {
       const startTime = performance.now();
 
-      function tick(now) {
+      function tick(now: number) {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         // ease-out cubic
