@@ -191,15 +191,15 @@ export function useAgentKeysPage() {
   }, []);
 
   const handleRevokeKey = useCallback((keyId: string) => {
-    revokeMutation.mutate(keyId);
+    (revokeMutation.mutate as any)(keyId);
   }, [revokeMutation]);
 
   const handleReactivateKey = useCallback((keyId: string) => {
-    reactivateMutation.mutate(keyId);
+    (reactivateMutation.mutate as any)(keyId);
   }, [reactivateMutation]);
 
   const handleDeleteKey = useCallback((keyId: string) => {
-    deleteMutation.mutate(keyId);
+    (deleteMutation.mutate as any)(keyId);
   }, [deleteMutation]);
 
   const handleCopyKey = useCallback((agentKey: string) => {
