@@ -12,7 +12,7 @@ export function useSpring(initialValue: number, config = { stiffness: 100, dampi
     const spring = stiffness * displacement;
     const damper = damping * velocityRef.current;
     velocityRef.current += (spring - damper) / 60;
-    setValue((v) => v + velocityRef.current / 60);
+    setValue((v: any) => v + velocityRef.current / 60);
     
     if (Math.abs(displacement) > 0.01 || Math.abs(velocityRef.current) > 0.01) {
       rafRef.current = requestAnimationFrame(animate);

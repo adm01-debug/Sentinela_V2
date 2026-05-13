@@ -144,7 +144,7 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
   // FLATTEN DATA
   // ============================================================
 
-  const flatData = queryData?.pages.flatMap((page) => page.data) ?? [];
+  const flatData = queryData?.pages.flatMap((page: any) => page.data) ?? [];
   const totalCount = queryData?.pages[0]?.totalCount ?? 0;
 
   // ============================================================

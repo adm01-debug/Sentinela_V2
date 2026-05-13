@@ -11,7 +11,7 @@ export function useRealtime<T>(url: string) {
 
     ws.onopen = () => setConnected(true);
     ws.onclose = () => setConnected(false);
-    ws.onmessage = (e) => setData(JSON.parse(e.data));
+    ws.onmessage = (e: any) => setData(JSON.parse(e.data));
 
     return () => ws.close();
   }, [url]);

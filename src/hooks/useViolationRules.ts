@@ -213,7 +213,7 @@ export function useToggleViolationRule() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       invalidateRelated.violationRules(queryClient);
       toast({
         title: data.is_active ? 'Regra ativada' : 'Regra desativada',

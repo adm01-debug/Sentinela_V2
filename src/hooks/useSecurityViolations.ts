@@ -202,7 +202,7 @@ export function useUpdateViolationStatus() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.map((v) =>
+          previousViolations.map((v: any) =>
             v.id === id
               ? {
                   ...v,
@@ -238,7 +238,7 @@ export function useUpdateViolationStatus() {
       });
     },
 
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       const statusText = {
         pending: 'pendente',
         reviewed: 'revisada',
@@ -289,7 +289,7 @@ export function useBulkUpdateViolations() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.map((v) =>
+          previousViolations.map((v: any) =>
             ids.includes(v.id) ? { ...v, status } : v
           )
         );
@@ -309,7 +309,7 @@ export function useBulkUpdateViolations() {
       });
     },
 
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       toast({
         title: 'Atualização em lote',
         description: `${data.length} violações foram atualizadas.`,
@@ -351,7 +351,7 @@ export function useDeleteViolation() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.filter((v) => v.id !== deletedId)
+          previousViolations.filter((v: any) => v.id !== deletedId)
         );
       }
 

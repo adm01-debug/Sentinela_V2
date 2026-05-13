@@ -15,7 +15,7 @@ export function useTransform(initial: Partial<Transform> = {}) {
     setTransform(t => ({ ...t, scale: t.scale * factor }));
   }, []);
 
-  const rotate = useCallback((degrees) => {
+  const rotate = useCallback((degrees: any) => {
     setTransform(t => ({ ...t, rotation: (t.rotation + degrees) % 360 }));
   }, []);
 

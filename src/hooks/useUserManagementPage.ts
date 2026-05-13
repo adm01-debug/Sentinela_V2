@@ -155,15 +155,15 @@ export function useUserManagementPage() {
   });
 
   // Handlers
-  const handleSearchChange = useCallback((value) => {
+  const handleSearchChange = useCallback((value: any) => {
     setSearch(value);
   }, []);
 
-  const handleRoleFilterChange = useCallback((value) => {
+  const handleRoleFilterChange = useCallback((value: any) => {
     setRoleFilter(value);
   }, []);
 
-  const handleStatusFilterChange = useCallback((value) => {
+  const handleStatusFilterChange = useCallback((value: any) => {
     setStatusFilter(value);
   }, []);
 
@@ -175,7 +175,7 @@ export function useUserManagementPage() {
     setIsCreateDialogOpen(false);
   }, []);
 
-  const handleCreateUser = useCallback((data) => {
+  const handleCreateUser = useCallback((data: any) => {
     createMutation.mutate(data);
   }, [createMutation]);
 
@@ -189,7 +189,7 @@ export function useUserManagementPage() {
     setSelectedUser(null);
   }, []);
 
-  const handleUpdateUser = useCallback((data) => {
+  const handleUpdateUser = useCallback((data: any) => {
     updateMutation.mutate(data);
   }, [updateMutation]);
 
@@ -197,7 +197,7 @@ export function useUserManagementPage() {
     deleteMutation.mutate(userId);
   }, [deleteMutation]);
 
-  const handleResetPassword = useCallback((email) => {
+  const handleResetPassword = useCallback((email: any) => {
     resetPasswordMutation.mutate(email);
   }, [resetPasswordMutation]);
 

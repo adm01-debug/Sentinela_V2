@@ -57,11 +57,11 @@ export function useWebhooksPage() {
     await updateWebhookMutation.mutateAsync(input);
   }, [updateWebhookMutation]);
 
-  const deleteWebhook = useCallback(async (id) => {
+  const deleteWebhook = useCallback(async (id: any) => {
     await deleteWebhookMutation.mutateAsync(id);
   }, [deleteWebhookMutation]);
 
-  const testWebhook = useCallback(async (id) => {
+  const testWebhook = useCallback(async (id: any) => {
     await testWebhookMutation.mutateAsync(id);
   }, [testWebhookMutation]);
 

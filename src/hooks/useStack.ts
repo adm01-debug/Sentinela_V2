@@ -3,7 +3,7 @@ import { useState, useCallback, useMemo } from "react";
 export function useStack<T>(initialItems: T[] = []) {
   const [items, setItems] = useState(initialItems);
 
-  const push = useCallback((item) => setItems(prev => [...prev, item]), []);
+  const push = useCallback((item: any) => setItems(prev => [...prev, item]), []);
   const pop = useCallback(() => {
     const popped = items[items.length - 1];
     setItems(prev => prev.slice(0, -1));
