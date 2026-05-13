@@ -15,7 +15,7 @@ export type ExportFormat = 'csv' | 'excel' | 'pdf' | 'json';
 export interface ExportColumn<T> {
   key: keyof T | string;
   header: string;
-  formatter?: (value: number, row: T) => string;
+  formatter?: (value: any, row: T) => string;
   width?: number; // For PDF
 }
 
@@ -97,7 +97,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
       setError(null);
 
       // Auto-detect columns if not provided
-      const cols = columns ?? (data.length > 0
+      const cols: ExportColumn<T>[] = columns ?? (data.length > 0
         ? Object.keys(data[0]).map((key) => ({
             key,
             header: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
@@ -161,7 +161,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
       });
 
       // Auto-detect columns
-      const cols = columns ?? (data.length > 0
+      const cols: ExportColumn<T>[] = columns ?? (data.length > 0
         ? Object.keys(data[0]).map((key) => ({
             key,
             header: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
@@ -220,7 +220,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
       ]);
 
       // Auto-detect columns
-      const cols = columns ?? (data.length > 0
+      const cols: ExportColumn<T>[] = columns ?? (data.length > 0
         ? Object.keys(data[0]).map((key) => ({
             key,
             header: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
