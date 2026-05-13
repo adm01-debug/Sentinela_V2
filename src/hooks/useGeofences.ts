@@ -142,9 +142,92 @@ export function useUpdateGeofence() {
 
   return useMutation({
     mutationFn: ({ id, ...input }: UpdateGeofenceInput) => geofenceService.updateGeofence(id, input),
-...
-    mutationFn: (id: any) => geofenceService.deleteGeofence(id),
-...
+    onMutate: async ({ id, ...input }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.detail(id) });
+
+      const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
+      const previousGeofence = queryClient.getQueryData<Geofence>(queryKeys.geofences.detail(id));
+
+      queryClient.setQueryData<Geofence[]>(
+        queryKeys.geofences.lists(),
+        (old) => old?.map(g => g.id === id ? { ...g, ...input, updated_at: new Date().toISOString() } : g) || []
+      );
+
+      if (previousGeofence) {
+        queryClient.setQueryData<Geofence>(
+          queryKeys.geofences.detail(id),
+          { ...previousGeofence, ...input, updated_at: new Date().toISOString() }
+        );
+      }
+
+      return { previousGeofences, previousGeofence, id };
+    },
+    onError: (err, _, context) => {
+      if (context?.previousGeofences) {
+        queryClient.setQueryData(queryKeys.geofences.lists(), context.previousGeofences);
+      }
+      if (context?.previousGeofence && context?.id) {
+        queryClient.setQueryData(queryKeys.geofences.detail(context.id), context.previousGeofence);
+      }
+      toast({
+        title: 'Erro ao atualizar geofence',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+    onSuccess: () => {
+      invalidateRelated.geofences(queryClient);
+      toast({
+        title: 'Geofence atualizada',
+      });
+    },
+  });
+}
+
+export function useDeleteGeofence() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (id: string) => geofenceService.deleteGeofence(id),
+    onMutate: async (id: string) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
+
+      const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
+
+      queryClient.setQueryData<Geofence[]>(
+        queryKeys.geofences.lists(),
+        (old) => old?.filter(g => g.id !== id) || []
+      );
+
+      return { previousGeofences, id };
+    },
+    onError: (err, _, context) => {
+      if (context?.previousGeofences) {
+        queryClient.setQueryData(queryKeys.geofences.lists(), context.previousGeofences);
+      }
+      toast({
+        title: 'Erro ao excluir geofence',
+        description: err.message,
+        variant: 'destructive',
+      });
+    },
+    onSuccess: (_, id) => {
+      queryClient.removeQueries({ queryKey: queryKeys.geofences.detail(id) });
+      invalidateRelated.geofences(queryClient);
+      toast({
+        title: 'Geofence excluída',
+      });
+    },
+  });
+}
+
+export function useToggleGeofence() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
     mutationFn: ({ id, is_active }: { id: string; is_active: boolean }) => geofenceService.toggleGeofence(id, is_active),
     onMutate: async ({ id, is_active }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
