@@ -33,11 +33,11 @@ export interface EmployeeFilters {
 }
 
 export interface EmployeeCreateInput {
-  name: string;
+  full_name: string;
   email?: string;
   phone?: string;
   department?: string;
-  position?: string;
+  role?: string;
   team_id?: string;
   status?: string;
   avatar_url?: string;
