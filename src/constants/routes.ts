@@ -79,13 +79,13 @@ export const ROUTES = {
 
 // Helper function to generate dynamic routes
 export const generateRoute = {
-  employee: (id) => `/employees/${id}`,
-  employeeEdit: (id) => `/employees/${id}/edit`,
-  activity: (id) => `/activities/${id}`,
-  alert: (id) => `/alerts/${id}`,
-  report: (id) => `/reports/${id}`,
-  team: (id) => `/teams/${id}`,
-  department: (id) => `/departments/${id}`,
+  employee: (id: string) => `/employees/${id}`,
+  employeeEdit: (id: string) => `/employees/${id}/edit`,
+  activity: (id: string) => `/activities/${id}`,
+  alert: (id: string) => `/alerts/${id}`,
+  report: (id: string) => `/reports/${id}`,
+  team: (id: string) => `/teams/${id}`,
+  department: (id: string) => `/departments/${id}`,
 };
 
 // Route groups for access control
