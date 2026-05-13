@@ -85,7 +85,7 @@ export function useActiveGeofences() {
   });
 }
 
-export function useGeofence(id) {
+export function useGeofence(id: string | null | undefined) {
   return useQuery({
     queryKey: queryKeys.geofences.detail(id || ''),
     queryFn: async () => {

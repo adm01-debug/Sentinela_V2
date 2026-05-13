@@ -125,7 +125,7 @@ export function useDeleteWhitelistIP() {
   });
 }
 
-export function useCheckIPWhitelist(ipAddress) {
+export function useCheckIPWhitelist(ipAddress: string | null | undefined) {
   return useQuery({
     queryKey: ['ip-whitelist-check', ipAddress],
     queryFn: async () => {
