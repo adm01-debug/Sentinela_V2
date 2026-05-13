@@ -63,7 +63,7 @@ export const useEmployees = (filters?: EmployeeFilters) => {
   });
 };
 
-export const useEmployee = (id) => {
+export const useEmployee = (id: string) => {
   return useQuery({
     queryKey: ['employee', id],
     queryFn: async () => {
@@ -75,7 +75,7 @@ export const useEmployee = (id) => {
   });
 };
 
-export const useEmployeeStats = (id) => {
+export const useEmployeeStats = (id: string, startDate: string, endDate: string) => {
   return useQuery({
     queryKey: ['employee-stats', id, startDate, endDate],
     queryFn: async () => {
@@ -140,7 +140,7 @@ export const useEmployeeStats = (id) => {
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: EmployeeCreateInput) => {
       const { data: result, error } = await supabase.from('employees').insert(data).select().single();
       if (error) throw error;
       return result;
@@ -167,7 +167,7 @@ export const useUpdateEmployee = () => {
 export const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('employees').delete().eq('id', id);
       if (error) throw error;
     },
