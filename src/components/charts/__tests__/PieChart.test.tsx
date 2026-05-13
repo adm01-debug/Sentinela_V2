@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { BasePieChart } from '../BasePieChart';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 
 // Mock ResponsiveContainer as it doesn't render well in JSDOM
 vi.mock('recharts', async () => {
