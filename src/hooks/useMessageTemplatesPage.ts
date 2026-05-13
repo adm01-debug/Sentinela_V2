@@ -81,7 +81,7 @@ export function useMessageTemplatesPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((t) => ({
+      return (data || []).map((t: any) => ({
         id: t.id,
         name: t.name,
         description: t.description,
@@ -245,7 +245,7 @@ export function useMessageTemplatesPage() {
     toggleStatusMutation.mutate({ id: template.id, is_active: !template.is_active });
   }, [toggleStatusMutation]);
 
-  const handleInsertVariable = useCallback((variable) => {
+  const handleInsertVariable = useCallback((variable: string) => {
     setFormData(prev => ({
       ...prev,
       content: prev.content + variable,

@@ -130,7 +130,7 @@ export function useCheckIPWhitelist(ipAddress: string | null | undefined) {
     queryKey: ['ip-whitelist-check', ipAddress],
     queryFn: async () => {
       const { data, error } = await supabase.rpc('get_ip_whitelist_info', {
-        p_ip_address: ipAddress,
+        p_ip_address: ipAddress!,
       });
 
       if (error) throw error;
