@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 
 interface TimePickerProps {
   value?: string;
-  onChange?: (time) => void;
+  onChange?: (time: string) => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
