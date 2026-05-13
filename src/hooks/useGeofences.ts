@@ -56,15 +56,7 @@ export interface UpdateGeofenceInput {
 export function useGeofences() {
   return useQuery({
     queryKey: queryKeys.geofences.lists(),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('geofences')
-        .select('*')
-        .order('name', { ascending: true });
-
-      if (error) throw error;
-      return data as Geofence[];
-    },
+    queryFn: () => geofenceService.getGeofences(),
     ...queryPresets.list,
   });
 }
