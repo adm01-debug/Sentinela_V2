@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { geofenceService } from '@/services/geofenceService';
 
 // ============================================================
 // TYPES
@@ -56,15 +56,7 @@ export interface UpdateGeofenceInput {
 export function useGeofences() {
   return useQuery({
     queryKey: queryKeys.geofences.lists(),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('geofences')
-        .select('*')
-        .order('name', { ascending: true });
-
-      if (error) throw error;
-      return data as Geofence[];
-    },
+    queryFn: () => geofenceService.getGeofences(),
     ...queryPresets.list,
   });
 }
@@ -72,15 +64,7 @@ export function useGeofences() {
 export function useActiveGeofences() {
   return useQuery({
     queryKey: queryKeys.geofences.active(),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('geofences')
-        .select('*')
-        .eq('is_active', true);
-
-      if (error) throw error;
-      return data as Geofence[];
-    },
+    queryFn: () => geofenceService.getActiveGeofences(),
     ...queryPresets.config,
   });
 }
@@ -88,18 +72,7 @@ export function useActiveGeofences() {
 export function useGeofence(id: string | null | undefined) {
   return useQuery({
     queryKey: queryKeys.geofences.detail(id || ''),
-    queryFn: async () => {
-      if (!id) return null;
-      
-      const { data, error } = await supabase
-        .from('geofences')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (error) throw error;
-      return data as Geofence;
-    },
+    queryFn: () => geofenceService.getGeofenceById(id || ''),
     enabled: !!id,
     ...queryPresets.detail,
   });
@@ -114,16 +87,7 @@ export function useCreateGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (input: CreateGeofenceInput) => {
-      const { data, error } = await supabase
-        .from('geofences')
-        .insert(input)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data as Geofence;
-    },
+    mutationFn: (input: CreateGeofenceInput) => geofenceService.createGeofence(input),
     onMutate: async (input) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
 
@@ -177,17 +141,7 @@ export function useUpdateGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ id, ...input }: UpdateGeofenceInput) => {
-      const { data, error } = await supabase
-        .from('geofences')
-        .update(input)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data as Geofence;
-    },
+    mutationFn: ({ id, ...input }: UpdateGeofenceInput) => geofenceService.updateGeofence(id, input),
     onMutate: async ({ id, ...input }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.detail(id) });
@@ -236,16 +190,8 @@ export function useDeleteGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: any) => {
-      const { error } = await supabase
-        .from('geofences')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-      return id;
-    },
-    onMutate: async (id: any) => {
+    mutationFn: (id: string) => geofenceService.deleteGeofence(id),
+    onMutate: async (id: string) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
 
       const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
@@ -282,17 +228,7 @@ export function useToggleGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
-      const { data, error } = await supabase
-        .from('geofences')
-        .update({ is_active })
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data as Geofence;
-    },
+    mutationFn: ({ id, is_active }: { id: string; is_active: boolean }) => geofenceService.toggleGeofence(id, is_active),
     onMutate: async ({ id, is_active }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
 

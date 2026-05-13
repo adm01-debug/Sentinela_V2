@@ -1,6 +1,6 @@
 // SecureWatch v2 — Sentinela
 import React from 'react';
-import './lib/i18n';
+import './i18n';
 import { AppProviders } from './providers/AppProviders';
 import { AppRoutes } from './routes/AppRoutes';
 import { BrandedSplash } from './components/ui/LoadingSpinner';

@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { notificationService } from '@/services/notificationService';
 
 export interface HeaderNotification {
   id: string;
@@ -31,15 +32,7 @@ export function useHeaderNotifications(limit = 8) {
   const { data: raw = [], isLoading } = useQuery<HeaderNotification[]>({
     queryKey: ['header-notifications', limit],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('security_violations')
-        .select('id, violation_type, severity, created_at, employee_name, description')
-        .order('created_at', { ascending: false })
-        .limit(limit);
-
-      if (error) throw error;
-      if (!data) return [];
-
+      const data = await notificationService.getHeaderNotifications(limit);
       return data.map((v: any) => ({
         id: v.id,
         title: v.violation_type || 'Violação detectada',
@@ -56,18 +49,9 @@ export function useHeaderNotifications(limit = 8) {
 
   // Realtime: invalidate on INSERT
   useEffect(() => {
-    const channel = supabase
-      .channel('header-notifications-rt')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'security_violations' },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['header-notifications'] });
-        }
-      )
-      .subscribe();
-
-    return () => { supabase.removeChannel(channel); };
+    return notificationService.subscribeToViolations(() => {
+      queryClient.invalidateQueries({ queryKey: ['header-notifications'] });
+    });
   }, [queryClient]);
 
   const notifications = raw.map((n) => ({ ...n, read: readIds.has(n.id) }));

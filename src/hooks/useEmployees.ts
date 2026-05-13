@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { employeeService } from '@/services/employeeService';
 
 // Extended type with device info
 export interface EmployeeDevice {
@@ -63,26 +63,14 @@ interface AttendanceStatsRow {
 export const useEmployees = (filters?: EmployeeFilters) => {
   return useQuery({
     queryKey: ['employees', filters],
-    queryFn: async () => {
-      let query = supabase.from('employees').select('*').order('name');
-      if (filters?.department) query = query.eq('department', filters.department);
-      if (filters?.status) query = query.eq('status', filters.status);
-      if (filters?.search) query = query.ilike('name', `%${filters.search}%`);
-      const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
-    },
+    queryFn: () => employeeService.getEmployees(filters),
   });
 };
 
 export const useEmployee = (id: string) => {
   return useQuery({
     queryKey: ['employee', id],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('employees').select('*').eq('id', id).maybeSingle();
-      if (error) throw error;
-      return data;
-    },
+    queryFn: () => employeeService.getEmployeeById(id),
     enabled: !!id,
   });
 };
@@ -91,29 +79,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
   return useQuery({
     queryKey: ['employee-stats', id, startDate, endDate],
     queryFn: async () => {
-      // Get activity data (keystroke logs as proxy for active days)
-      const { data: keystrokeLogs, error: klError } = await supabase
-        .from('keystroke_logs')
-        .select('recorded_at, keystrokes_count, active_time_seconds, idle_time_seconds')
-        .eq('employee_name', id)
-        .gte('recorded_at', startDate)
-        .lte('recorded_at', endDate);
-
-      // Get violations
-      const { count: violationCount, error: vError } = await supabase
-        .from('security_violations')
-        .select('id', { count: 'exact', head: true })
-        .eq('employee_name', id)
-        .gte('created_at', startDate)
-        .lte('created_at', endDate);
-
-      // Get attendance records
-      const { data: attendance, error: aError } = await supabase
-        .from('attendance_records')
-        .select('total_worked_minutes, status')
-        .eq('employee_id', id)
-        .gte('date', startDate)
-        .lte('date', endDate);
+      const { keystrokeLogs, violationCount, attendance } = await employeeService.getEmployeeStats(id, startDate, endDate);
 
       // Calculate productivity from keystroke data
       const logs = (keystrokeLogs || []) as KeystrokeStatsRow[];
@@ -152,11 +118,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: EmployeeCreateInput) => {
-      const { data: result, error } = await supabase.from('employees').insert(data).select().single();
-      if (error) throw error;
-      return result;
-    },
+    mutationFn: (data: EmployeeCreateInput) => employeeService.createEmployee(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['employees'] }); },
   });
 };
@@ -164,11 +126,7 @@ export const useCreateEmployee = () => {
 export const useUpdateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: EmployeeUpdateInput }) => {
-      const { data: result, error } = await supabase.from('employees').update(data).eq('id', id).select().single();
-      if (error) throw error;
-      return result;
-    },
+    mutationFn: ({ id, data }: { id: string; data: EmployeeUpdateInput }) => employeeService.updateEmployee(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['employees'] });
       queryClient.invalidateQueries({ queryKey: ['employee', id] });
@@ -179,10 +137,7 @@ export const useUpdateEmployee = () => {
 export const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('employees').delete().eq('id', id);
-      if (error) throw error;
-    },
+    mutationFn: (id: string) => employeeService.deleteEmployee(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['employees'] }); },
   });
 };
