@@ -30,6 +30,9 @@ jobs:
       - name: Security Audit
         run: npm audit --audit-level=high || true
 
+      - name: Bundle Size Check
+        run: npm run bundle-check
+
   build:
     needs: quality
     runs-on: ubuntu-latest
