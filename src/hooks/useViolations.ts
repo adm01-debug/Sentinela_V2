@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { violationService } from '@/services/violationService';
 import { useCallback, useMemo } from 'react';
 
 interface Violation {
