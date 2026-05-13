@@ -70,11 +70,7 @@ export const useEmployees = (filters?: EmployeeFilters) => {
 export const useEmployee = (id: string) => {
   return useQuery({
     queryKey: ['employee', id],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('employees').select('*').eq('id', id).maybeSingle();
-      if (error) throw error;
-      return data;
-    },
+    queryFn: () => employeeService.getEmployeeById(id),
     enabled: !!id,
   });
 };
