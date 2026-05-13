@@ -89,16 +89,7 @@ export function useCreateWebhook() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (input: CreateWebhookInput) => {
-      const { data, error } = await supabase
-        .from('webhooks')
-        .insert(input)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
+    mutationFn: (input: CreateWebhookInput) => webhookService.createWebhook(input),
     onSuccess: () => {
       invalidateRelated.webhooks(queryClient);
       toast({
