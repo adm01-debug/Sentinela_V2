@@ -118,11 +118,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: EmployeeCreateInput) => {
-      const { data: result, error } = await supabase.from('employees').insert(data).select().single();
-      if (error) throw error;
-      return result;
-    },
+    mutationFn: (data: EmployeeCreateInput) => employeeService.createEmployee(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['employees'] }); },
   });
 };
