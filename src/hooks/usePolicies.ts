@@ -48,9 +48,9 @@ export function usePolicies() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['security-policies'] }),
   });
 
-  const toggle = useCallback((id) => toggleMutation.mutate(id), [toggleMutation]);
+  const toggle = useCallback((id: string) => toggleMutation.mutate(id), [toggleMutation]);
 
-  const remove = useCallback(async (id) => {
+  const remove = useCallback(async (id: string) => {
     const { error } = await supabase.from('security_policies').delete().eq('id', id);
     if (error) throw error;
     queryClient.invalidateQueries({ queryKey: ['security-policies'] });

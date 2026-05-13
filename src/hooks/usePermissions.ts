@@ -23,7 +23,7 @@ export interface UsePermissionsReturn {
   permissions: string[];
   isLoading: boolean;
   error: string | null;
-  hasPermission: (permission) => boolean;
+  hasPermission: (permission: string) => boolean;
   hasAnyPermission: (permissions: string[]) => boolean;
   hasAllPermissions: (permissions: string[]) => boolean;
   refresh: () => Promise<void>;
@@ -56,7 +56,7 @@ export function usePermissions(): UsePermissionsReturn {
     ...queryPresets.config,
   });
 
-  const hasPermission = useCallback((permission): boolean => {
+  const hasPermission = useCallback((permission: string): boolean => {
     return permissions.includes(permission) || permissions.includes('admin') || permissions.includes('*');
   }, [permissions]);
 
@@ -90,7 +90,7 @@ export function useUserPermissions() {
   return { data: permissions, isLoading, error };
 }
 
-export function useHasPermission(permission) {
+export function useHasPermission(permission: string) {
   const { hasPermission } = usePermissions();
   return hasPermission(permission);
 }
