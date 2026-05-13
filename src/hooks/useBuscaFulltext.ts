@@ -28,9 +28,9 @@ export interface SearchResult<T> {
   isSearching: boolean;
   error: Error | null;
   searchTerm: string;
-  setSearchTerm: (term) => void;
+  setSearchTerm: (term: string) => void;
   clearSearch: () => void;
-  highlightMatch: (text) => string;
+  highlightMatch: (text: string) => string;
   hasResults: boolean;
   isEmpty: boolean;
 }
@@ -39,7 +39,7 @@ export interface SearchResult<T> {
 // DEBOUNCE HOOK
 // ============================================================
 
-function useDebouncedValue<T>(value): T {
+function useDebouncedValue<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
   } = config;
 
   const [searchTerm, setSearchTerm] = useState('');
-  const debouncedTerm = useDebouncedValue(searchTerm, debounceMs);
+  const debouncedTerm = useDebouncedValue<string>(searchTerm, debounceMs);
 
   // Só busca se tiver caracteres suficientes
   const shouldSearch = debouncedTerm.length >= minChars;
@@ -128,7 +128,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
   // HIGHLIGHT FUNCTION
   // ============================================================
   const highlightMatch = useCallback(
-    (text): string => {
+    (text: string): string => {
       if (!debouncedTerm || !text) return text;
 
       const regex = new RegExp(`(${debouncedTerm})`, 'gi');
@@ -171,7 +171,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
 // HOOK SIMPLIFICADO PARA TABELAS ESPECÍFICAS
 // ============================================================
 
-export function useSearchEmployees(searchTerm) {
+export function useSearchEmployees(_searchTerm: string) {
   return useBuscaFulltext({
     table: 'employees',
     columns: ['full_name', 'email', 'department', 'position'],
@@ -180,7 +180,7 @@ export function useSearchEmployees(searchTerm) {
   });
 }
 
-export function useSearchAlerts(searchTerm) {
+export function useSearchAlerts(_searchTerm: string) {
   return useBuscaFulltext({
     table: 'alerts',
     columns: ['title', 'description', 'alert_type'],
@@ -195,7 +195,7 @@ export function useSearchAlerts(searchTerm) {
 
 export function useFulltextSearch<T>(table: string, columns: string[]) {
   const [term, setTerm] = useState('');
-  const debouncedTerm = useDebouncedValue(term, 300);
+  const debouncedTerm = useDebouncedValue<string>(term, 300);
 
   const result = useBuscaFulltext<T>({
     table,
@@ -205,7 +205,7 @@ export function useFulltextSearch<T>(table: string, columns: string[]) {
 
   useEffect(() => {
     result.setSearchTerm(debouncedTerm);
-  }, [debouncedTerm]);
+  }, [debouncedTerm, result]);
 
   return {
     ...result,
