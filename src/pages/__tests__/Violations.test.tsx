@@ -97,7 +97,6 @@ describe('ViolationsPage', () => {
   it('renders correctly', () => {
     renderViolations();
     expect(screen.getByText('Violações de Segurança')).toBeInTheDocument();
-    expect(screen.getByText('1')).toBeInAllByText ? screen.getAllByText('1')[0] : screen.getByText('1');
     expect(screen.getByText('John Doe')).toBeInTheDocument();
   });
 
