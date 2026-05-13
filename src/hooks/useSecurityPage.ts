@@ -63,8 +63,8 @@ export function useSecurityPage() {
       if (error) throw error;
       
       const settings: SecuritySettings = {
-        mfa_required: data?.find((s) => s.setting_key === 'mfa_required')?.setting_value === true,
-        ip_whitelist_enabled: data?.find((s) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
+        mfa_required: data?.find((s: any) => s.setting_key === 'mfa_required')?.setting_value === true,
+        ip_whitelist_enabled: data?.find((s: any) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
       };
       return settings;
     },
@@ -121,10 +121,10 @@ export function useSecurityPage() {
     severityFilter,
     typeFilter,
     isLoading: eventsQuery.isLoading,
-    handleSeverityFilterChange: useCallback((v) => setSeverityFilter(v), []),
-    handleTypeFilterChange: useCallback((v) => setTypeFilter(v), []),
+    handleSeverityFilterChange: useCallback((v: any) => setSeverityFilter(v), []),
+    handleTypeFilterChange: useCallback((v: any) => setTypeFilter(v), []),
     handleUpdateSettings: useCallback((s: Partial<SecuritySettings>) => updateSettingsMutation.mutate(s), [updateSettingsMutation]),
-    handleResolveEvent: useCallback((id) => resolveEventMutation.mutate(id), [resolveEventMutation]),
+    handleResolveEvent: useCallback((id: string) => resolveEventMutation.mutate(id), [resolveEventMutation]),
     isUpdating: updateSettingsMutation.isPending,
   };
 }

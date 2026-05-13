@@ -74,12 +74,12 @@ export function useProductivityData(filters?: ProductivityFilters) {
 
       // Calculate productivity for each employee
       const productivityData: EmployeeProductivity[] = employees.map((emp: any) => {
-        const empLogs = prodLogs?.filter((l) => l.employee_name === emp.name) || [];
-        const empViolations = violations?.filter((v) => v.employee_name === emp.name) || [];
+        const empLogs = prodLogs?.filter((l: any) => l.employee_name === emp.name) || [];
+        const empViolations = violations?.filter((v: any) => v.employee_name === emp.name) || [];
 
-        const productiveTime = empLogs.reduce((sum: number, l) => sum + (Number(l.productive_time_seconds) || 0), 0) / 3600;
-        const unproductiveTime = empLogs.reduce((sum: number, l) => sum + (Number(l.unproductive_time_seconds) || 0), 0) / 3600;
-        const neutralTime = empLogs.reduce((sum: number, l) => sum + (Number(l.neutral_time_seconds) || 0), 0) / 3600;
+        const productiveTime = empLogs.reduce((sum: number, l: any) => sum + (Number(l.productive_time_seconds) || 0), 0) / 3600;
+        const unproductiveTime = empLogs.reduce((sum: number, l: any) => sum + (Number(l.unproductive_time_seconds) || 0), 0) / 3600;
+        const neutralTime = empLogs.reduce((sum: number, l: any) => sum + (Number(l.neutral_time_seconds) || 0), 0) / 3600;
 
         const totalTime = productiveTime + unproductiveTime + neutralTime;
         const activityRatio = totalTime > 0 ? productiveTime / totalTime : 0;
