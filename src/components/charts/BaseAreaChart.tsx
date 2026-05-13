@@ -19,6 +19,7 @@ export interface AreaSeriesConfig {
   color?: string;
   fillOpacity?: number;
   strokeWidth?: number;
+  dashed?: boolean;
 }
 
 interface BaseAreaChartProps {
