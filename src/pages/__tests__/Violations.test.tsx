@@ -16,6 +16,8 @@ const mockViolations = [
   { id: '1', employee_name: 'John Doe', severity: 'critical', violation_type: 'usb_blocked', status: 'open', created_at: new Date().toISOString(), description: 'USB access attempted' },
 ];
 
+const mockHandleOpenResolve = vi.fn();
+
 vi.mock('@/hooks/useViolationsPage', () => ({
   useViolationsPage: () => ({
     searchTerm: '',
@@ -38,7 +40,7 @@ vi.mock('@/hooks/useViolationsPage', () => ({
     isLoading: false,
     isResolving: false,
     handleViewDetails: vi.fn(),
-    handleOpenResolve: vi.fn(),
+    handleOpenResolve: mockHandleOpenResolve,
     handleResolve: vi.fn(),
     VIOLATION_TYPES: [{ value: 'usb_blocked', label: 'USB Bloqueado' }],
   }),
@@ -108,10 +110,9 @@ describe('ViolationsPage', () => {
   });
 
   it('opens resolve dialog on button click', () => {
-    const { handleOpenResolve } = require('@/hooks/useViolationsPage').useViolationsPage();
     renderViolations();
     const resolveButton = screen.getByText('Resolver');
     fireEvent.click(resolveButton);
-    expect(handleOpenResolve).toHaveBeenCalled();
+    expect(mockHandleOpenResolve).toHaveBeenCalled();
   });
 });
