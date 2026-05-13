@@ -7,7 +7,7 @@ import { Bold, Italic, Underline, Strikethrough, List, ListOrdered, AlignLeft, A
 
 export interface RichTextEditorProps {
   value?: string;
-  onChange?: (value) => void;
+  onChange?: (value: string) => void;
   placeholder?: string;
   className?: string;
   disabled?: boolean;
