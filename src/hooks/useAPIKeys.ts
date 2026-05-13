@@ -13,7 +13,7 @@ export function useAPIKeys() {
   const [keys, setKeys] = useState<APIKey[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const generateKey = useCallback(async (name) => {
+  const generateKey = useCallback(async (name: string) => {
     setLoading(true);
     const newKey: APIKey = {
       id: crypto.randomUUID(),
@@ -27,7 +27,7 @@ export function useAPIKeys() {
     return newKey;
   }, []);
 
-  const revokeKey = useCallback((id) => {
+  const revokeKey = useCallback((id: string) => {
     setKeys(prev => prev.map(k => k.id === id ? { ...k, status: "revoked" as const } : k));
   }, []);
 

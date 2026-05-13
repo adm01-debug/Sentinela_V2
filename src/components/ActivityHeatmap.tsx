@@ -25,7 +25,7 @@ export const ActivityHeatmap = ({ keystrokes, clicks }: ActivityHeatmapProps) =>
 
   const maxActivity = Math.max(...hourlyActivity.map((h) => h.total), 1);
 
-  const getIntensityClass = (value) => {
+  const getIntensityClass = (value: number) => {
     const intensity = value / maxActivity;
     if (intensity === 0) return 'bg-muted';
     if (intensity < 0.25) return 'bg-primary/20';

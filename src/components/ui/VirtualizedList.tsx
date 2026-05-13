@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 export interface VirtualizedListProps<T> {
   items: T[];
-  itemHeight: number | ((index) => number);
+  itemHeight: number | ((index: number) => number);
   renderItem: (item: T, index: number) => React.ReactNode;
   overscan?: number;
   className?: string;
@@ -34,7 +34,7 @@ export function VirtualizedList<T>({
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
 
-  const getItemHeight = useCallback((index) => {
+  const getItemHeight = useCallback((index: number) => {
     return typeof itemHeight === 'function' ? itemHeight(index) : itemHeight;
   }, [itemHeight]);
 

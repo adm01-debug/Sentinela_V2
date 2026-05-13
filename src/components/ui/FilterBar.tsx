@@ -21,12 +21,12 @@ interface FilterConfig {
   placeholder: string;
   options: FilterOption[];
   value: string;
-  onChange: (value) => void;
+  onChange: (value: string) => void;
 }
 
 interface FilterBarProps {
   searchValue?: string;
-  onSearchChange?: (value) => void;
+  onSearchChange?: (value: string) => void;
   searchPlaceholder?: string;
   filters?: FilterConfig[];
   onClearFilters?: () => void;

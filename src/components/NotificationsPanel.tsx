@@ -49,7 +49,7 @@ function ViolationItem({
   onMarkAsRead 
 }: { 
   violation: SecurityViolation; 
-  onMarkAsRead: (id) => void;
+  onMarkAsRead: (id: string) => void;
 }) {
   const config = severityConfig[violation.severity] || severityConfig.medium;
   const Icon = config.icon;
@@ -113,7 +113,7 @@ export function NotificationsPanel() {
 
   const unreadCount = violations.filter(v => v.status === 'pending').length;
 
-  const handleMarkAsRead = (id) => {
+  const handleMarkAsRead = (id: string) => {
     updateStatus.mutate({ id, status: 'reviewed' });
   };
 

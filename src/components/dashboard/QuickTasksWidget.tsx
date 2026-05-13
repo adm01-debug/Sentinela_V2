@@ -13,8 +13,8 @@ export function QuickTasksWidget({ initialTasks = [], onTasksChange, className }
   const [newTask, setNewTask] = useState('');
 
   const addTask = () => { if (!newTask.trim()) return; const updated = [...tasks, { id: crypto.randomUUID(), text: newTask, completed: false }]; setTasks(updated); onTasksChange?.(updated); setNewTask(''); };
-  const toggleTask = (id) => { const updated = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t); setTasks(updated); onTasksChange?.(updated); };
-  const deleteTask = (id) => { const updated = tasks.filter(t => t.id !== id); setTasks(updated); onTasksChange?.(updated); };
+  const toggleTask = (id: string) => { const updated = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t); setTasks(updated); onTasksChange?.(updated); };
+  const deleteTask = (id: string) => { const updated = tasks.filter(t => t.id !== id); setTasks(updated); onTasksChange?.(updated); };
 
   return (
     <Card className={className}>

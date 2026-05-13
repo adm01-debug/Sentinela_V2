@@ -28,7 +28,7 @@ interface BaseAreaChartProps {
   height?: number;
   showGrid?: boolean;
   showLegend?: boolean;
-  valueFormatter?: (value) => string;
+  valueFormatter?: (value: any) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }

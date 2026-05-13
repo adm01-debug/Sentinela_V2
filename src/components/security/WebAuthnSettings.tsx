@@ -59,7 +59,7 @@ function DeviceIcon({ type }: { type: string | null }) {
 
 interface PasskeyItemProps {
   credential: WebAuthnCredential;
-  onDelete: (id) => void;
+  onDelete: (id: string) => void;
   onRename: (params: { id: string; name: string }) => void;
 }
 
@@ -262,7 +262,7 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
                 <PasskeyItem
                   key={credential.id}
                   credential={credential}
-                  onDelete={deletePasskey}
+                  onDelete={(id: string) => (deletePasskey as any)(id)}
                   onRename={renamePasskey}
                 />
               ))}

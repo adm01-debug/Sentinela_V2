@@ -55,7 +55,7 @@ export function KnownDevicesPanel() {
     },
   });
 
-  const getDeviceIcon = (deviceType) => {
+  const getDeviceIcon = (deviceType: string) => {
     switch (deviceType.toLowerCase()) {
       case 'mobile':
         return <Smartphone className="h-5 w-5" />;

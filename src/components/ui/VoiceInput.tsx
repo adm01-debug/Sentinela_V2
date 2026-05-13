@@ -26,7 +26,7 @@ interface WindowWithSpeech extends Window {
 
 export interface VoiceInputProps {
   value?: string;
-  onChange?: (value) => void;
+  onChange?: (value: string) => void;
   placeholder?: string;
   className?: string;
   disabled?: boolean;

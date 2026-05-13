@@ -132,7 +132,7 @@ interface FormSelectProps {
   label: string;
   options: FormSelectOption[];
   value: string;
-  onChange: (value) => void;
+  onChange: (value: string) => void;
   required?: boolean;
   placeholder?: string;
   disabled?: boolean;

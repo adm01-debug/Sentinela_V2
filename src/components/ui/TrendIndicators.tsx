@@ -66,7 +66,7 @@ export function TrendIndicator({
 interface ComparisonIndicatorProps {
   current: number;
   previous: number;
-  format?: (value) => string;
+  format?: (value: number) => string;
   label?: string;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
@@ -150,7 +150,7 @@ interface MetricComparisonProps {
   label: string;
   current: number;
   previous: number;
-  format?: (value) => string;
+  format?: (value: number) => string;
   className?: string;
 }
 

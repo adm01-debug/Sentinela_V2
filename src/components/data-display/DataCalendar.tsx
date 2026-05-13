@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 export interface CalendarEvent { id: string; title: string; date: string; color?: string; }
-export interface DataCalendarProps { events?: CalendarEvent[]; onDateClick?: (date) => void; onEventClick?: (event: CalendarEvent) => void; className?: string; }
+export interface DataCalendarProps { events?: CalendarEvent[]; onDateClick?: (date: Date) => void; onEventClick?: (event: CalendarEvent) => void; className?: string; }
 const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
 const getFirstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
 export const DataCalendar: React.FC<DataCalendarProps> = ({ events = [], onDateClick, onEventClick, className }) => {
@@ -22,7 +22,7 @@ export const DataCalendar: React.FC<DataCalendarProps> = ({ events = [], onDateC
         {Array(days).fill(null).map((_, i) => {
           const d = `${year}-${String(month+1).padStart(2,'0')}-${String(i+1).padStart(2,'0')}`;
           const dayEvents = events.filter(e => e.date === d);
-          return <div key={i} onClick={() => onDateClick?.(d)} style={{ padding: 4, minHeight: 60, border: '1px solid #f0f0f0', cursor: 'pointer' }}>
+          return <div key={i} onClick={() => onDateClick?.(new Date(d))} style={{ padding: 4, minHeight: 60, border: '1px solid #f0f0f0', cursor: 'pointer' }}>
             <div style={{ fontSize: 12 }}>{i+1}</div>
             {dayEvents.slice(0,2).map(e => <div key={e.id} onClick={ev => { ev.stopPropagation(); onEventClick?.(e); }} style={{ fontSize: 10, padding: 2, backgroundColor: e.color || '#1890ff', color: '#fff', borderRadius: 2, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.title}</div>)}
           </div>;

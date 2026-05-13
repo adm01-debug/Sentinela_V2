@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Smartphone, Key, Shield, CheckCircle, Copy, Loader2 } from 'lucide-react';
 
 export interface TwoFactorWizardProps {
-  onComplete: (code) => Promise<void>;
+  onComplete: (code: string) => Promise<void>;
   onCancel?: () => void;
   qrCodeUrl?: string;
   secretKey?: string;
