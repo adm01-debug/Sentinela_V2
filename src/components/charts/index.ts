@@ -11,6 +11,7 @@ export { BaseDonutChart } from './BaseDonutChart';
 export { BasePieChart } from './BasePieChart';
 export { BaseRadarChart } from './BaseRadarChart';
 export { BaseScatterChart } from './BaseScatterChart';
+export { BaseHeatmap } from './BaseHeatmap';
 export type { RadarSeriesConfig } from './BaseRadarChart';
 export type { ScatterSeriesConfig } from './BaseScatterChart';
 
