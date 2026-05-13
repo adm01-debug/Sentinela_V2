@@ -4,7 +4,7 @@
 // ============================================================
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
 
@@ -60,10 +60,8 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
 
   const softDeleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      if (!isSupabaseReady) {
-        logger.info('[SoftDelete] Mock: deletando', id);
-        return;
-      }
+      // Proceed to delete
+
 
       const updates = {
         [deletedAtField]: new Date().toISOString(),
@@ -97,10 +95,8 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
 
   const softDeleteManyMutation = useMutation({
     mutationFn: async (ids: string[]) => {
-      if (!isSupabaseReady) {
-        logger.info('[SoftDelete] Mock: deletando', ids.length, 'registros');
-        return;
-      }
+      // Proceed to delete many
+
 
       const updates = {
         [deletedAtField]: new Date().toISOString(),
@@ -133,10 +129,8 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
 
   const restoreMutation = useMutation({
     mutationFn: async (id: string) => {
-      if (!isSupabaseReady) {
-        logger.info('[SoftDelete] Mock: restaurando', id);
-        return;
-      }
+      // Proceed to restore
+
 
       const updates: Record<string, string | null> = {
         [deletedAtField]: null,
@@ -170,10 +164,8 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
 
   const restoreManyMutation = useMutation({
     mutationFn: async (ids: string[]) => {
-      if (!isSupabaseReady) {
-        logger.info('[SoftDelete] Mock: restaurando', ids.length, 'registros');
-        return;
-      }
+      // Proceed to restore many
+
 
       const updates: Record<string, string | null> = {
         [deletedAtField]: null,
@@ -206,10 +198,8 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
 
   const hardDeleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      if (!isSupabaseReady) {
-        logger.info('[SoftDelete] Mock: deletando permanentemente', id);
-        return;
-      }
+      // Proceed to hard delete
+
 
       const { error } = await supabase
         .from(table)
@@ -234,10 +224,8 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
 
   const hardDeleteManyMutation = useMutation({
     mutationFn: async (ids: string[]) => {
-      if (!isSupabaseReady) {
-        logger.info('[SoftDelete] Mock: deletando permanentemente', ids.length, 'registros');
-        return;
-      }
+      // Proceed to hard delete many
+
 
       const { error } = await supabase
         .from(table)

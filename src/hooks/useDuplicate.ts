@@ -4,7 +4,7 @@
 // ============================================================
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
 
@@ -67,10 +67,8 @@ export function useDuplicate<T extends Record<string, unknown>>(
 
   const duplicateMutation = useMutation({
     mutationFn: async (id: string): Promise<T> => {
-      if (!isSupabaseReady) {
-        logger.info('[Duplicate] Mock: duplicando', id);
-        return { id: `mock-${Date.now()}` } as unknown as T;
-      }
+      // Proceed to duplicate
+
 
       // Buscar registro original
       const { data: original, error: fetchError } = await supabase
@@ -124,10 +122,8 @@ export function useDuplicate<T extends Record<string, unknown>>(
 
   const duplicateManyMutation = useMutation({
     mutationFn: async (ids: string[]): Promise<T[]> => {
-      if (!isSupabaseReady) {
-        logger.info('[Duplicate] Mock: duplicando', ids.length, 'registros');
-        return ids.map((id) => ({ id: `mock-${id}-copy` })) as unknown as T[];
-      }
+      // Proceed to duplicate many
+
 
       // Buscar registros originais
       const { data: originals, error: fetchError } = await supabase

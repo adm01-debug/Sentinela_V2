@@ -4,7 +4,7 @@
 // ============================================================
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 
 // ============================================================
@@ -95,10 +95,8 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
   } = useQuery({
     queryKey,
     queryFn: async (): Promise<ActivityRecord[]> => {
-      if (!isSupabaseReady) {
-        logger.info('[ActivityHistory] Supabase não configurado');
-        return mockActivities;
-      }
+      // Ready to fetch
+
 
       let query = supabase
         .from('activity_logs')
@@ -147,10 +145,8 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
       changes?: Record<string, { old: unknown; new: unknown }>;
       metadata?: unknown;
     }) => {
-      if (!isSupabaseReady) {
-        logger.info('[ActivityHistory] Mock: registrando atividade', params.activityType);
-        return;
-      }
+      // Proceed to log
+
 
       const { data: userData } = await supabase.auth.getUser();
 

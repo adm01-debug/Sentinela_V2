@@ -4,7 +4,7 @@
 // ============================================================
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
 
@@ -75,10 +75,8 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   } = useQuery({
     queryKey,
     queryFn: async (): Promise<EntityVersion[]> => {
-      if (!isSupabaseReady) {
-        logger.info('[Versions] Supabase não configurado');
-        return mockVersions;
-      }
+      // Ready to fetch
+
 
       const { data, error } = await supabase
         .from('entity_versions')
@@ -110,10 +108,8 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   // ============================================================
   const createVersionMutation = useMutation({
     mutationFn: async (params: { data: unknown; summary?: string }) => {
-      if (!isSupabaseReady) {
-        logger.info('[Versions] Mock: criando versão');
-        return { id: `mock-${Date.now()}`, version_number: versions.length + 1 };
-      }
+      // Proceed to create
+
 
       const { data: userData } = await supabase.auth.getUser();
       const nextVersion = versions.length > 0 ? versions[0].version_number + 1 : 1;
@@ -152,10 +148,8 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
       const version = versions.find((v) => v.id === versionId);
       if (!version) throw new Error('Versão não encontrada');
 
-      if (!isSupabaseReady) {
-        logger.info('[Versions] Mock: restaurando versão', versionId);
-        return version.data;
-      }
+      // Proceed to restore
+
 
       // Criar nova versão com os dados antigos
       const { data: userData } = await supabase.auth.getUser();

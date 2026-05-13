@@ -11,7 +11,7 @@ vi.mock('@/integrations/supabase/client', () => ({
       insert: vi.fn().mockResolvedValue({ error: null }),
     })),
   },
-  isSupabaseReady: false,
+  
 }));
 
 import { captureError } from '@/lib/errorTracker';

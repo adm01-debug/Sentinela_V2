@@ -4,7 +4,7 @@
 // ============================================================
 
 import { logger } from '@/lib/logger';
-import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 // ============================================================
 // TYPES
@@ -137,10 +137,8 @@ class ErrorTracker {
 
     const batch = this.queue.splice(0, this.config.maxQueueSize);
 
-    if (!isSupabaseReady) {
-      logger.warn(`[ErrorTracker] Supabase not ready, discarding ${batch.length} errors`);
-      return;
-    }
+    // Supabase will handle errors if not configured or network down
+
 
     try {
       const { error } = await supabase.from('error_reports').insert(

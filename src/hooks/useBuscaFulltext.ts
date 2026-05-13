@@ -5,7 +5,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 
 // ============================================================
@@ -91,10 +91,8 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
     queryFn: async (): Promise<T[]> => {
       if (!shouldSearch) return [];
 
-      if (!isSupabaseReady) {
-        logger.info('[FulltextSearch] Supabase não configurado');
-        return [];
-      }
+      // Ready to search
+
 
       // Construir query com OR para múltiplas colunas
       const searchConditions = columns
