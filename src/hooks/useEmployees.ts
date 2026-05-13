@@ -126,11 +126,7 @@ export const useCreateEmployee = () => {
 export const useUpdateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: EmployeeUpdateInput }) => {
-      const { data: result, error } = await supabase.from('employees').update(data).eq('id', id).select().single();
-      if (error) throw error;
-      return result;
-    },
+    mutationFn: ({ id, data }: { id: string; data: EmployeeUpdateInput }) => employeeService.updateEmployee(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['employees'] });
       queryClient.invalidateQueries({ queryKey: ['employee', id] });
@@ -141,10 +137,7 @@ export const useUpdateEmployee = () => {
 export const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('employees').delete().eq('id', id);
-      if (error) throw error;
-    },
+    mutationFn: (id: string) => employeeService.deleteEmployee(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['employees'] }); },
   });
 };
