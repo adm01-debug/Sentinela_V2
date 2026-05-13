@@ -71,7 +71,7 @@ export function useAgentKeysPage() {
 
   // Create key mutation
   const createMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: CreateKeyData) => {
       // Generate a secure key
       const agentKey = 'sk_' + Array.from(crypto.getRandomValues(new Uint8Array(32)))
         .map(b => b.toString(16).padStart(2, '0'))
@@ -160,11 +160,11 @@ export function useAgentKeysPage() {
   });
 
   // Handlers
-  const handleSearchChange = useCallback((value) => {
+  const handleSearchChange = useCallback((value: string) => {
     setSearch(value);
   }, []);
 
-  const handleStatusFilterChange = useCallback((value) => {
+  const handleStatusFilterChange = useCallback((value: string) => {
     setStatusFilter(value);
   }, []);
 
@@ -176,7 +176,7 @@ export function useAgentKeysPage() {
     setIsCreateDialogOpen(false);
   }, []);
 
-  const handleCreateKey = useCallback((data) => {
+  const handleCreateKey = useCallback((data: CreateKeyData) => {
     return createMutation.mutateAsync(data);
   }, [createMutation]);
 
