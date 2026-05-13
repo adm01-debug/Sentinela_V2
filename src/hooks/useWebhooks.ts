@@ -65,18 +65,7 @@ export function useWebhooks() {
 export function useWebhook(id) {
   return useQuery({
     queryKey: queryKeys.webhooks.detail(id || ''),
-    queryFn: async () => {
-      if (!id) return null;
-      
-      const { data, error } = await supabase
-        .from('webhooks')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (error) throw error;
-      return data as Webhook;
-    },
+    queryFn: () => webhookService.getWebhookById(id),
     enabled: !!id,
     ...queryPresets.detail,
   });
@@ -85,19 +74,7 @@ export function useWebhook(id) {
 export function useWebhookLogs(webhookId: string | undefined) {
   return useQuery({
     queryKey: queryKeys.webhooks.logs(webhookId || ''),
-    queryFn: async () => {
-      if (!webhookId) return [];
-      
-      const { data, error } = await supabase
-        .from('webhook_logs')
-        .select('*')
-        .eq('webhook_id', webhookId)
-        .order('created_at', { ascending: false })
-        .limit(100);
-
-      if (error) throw error;
-      return data as WebhookLog[];
-    },
+    queryFn: () => webhookService.getWebhookLogs(webhookId || ''),
     enabled: !!webhookId,
     ...queryPresets.list,
   });
