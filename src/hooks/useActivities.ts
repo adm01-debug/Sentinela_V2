@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { Activity } from '@/types';
 
-const toSafeTimestamp = (value: string | null | undefined): string => {
+const toSafeTimestamp = (value): string => {
   if (!value) return new Date(0).toISOString();
-  return Number.isNaN(Date.parse(value: any)) ? new Date(0).toISOString() : value;
+  return Number.isNaN(Date.parse(value)) ? new Date(0).toISOString() : value;
 };
 
 interface KeystrokeRow {
@@ -19,7 +19,7 @@ interface KeystrokeRow {
   device: string | null;
 }
 
-const mapKeystrokeToActivity = (row: KeystrokeRow): Activity => {
+const mapKeystrokeToActivity = (row): Activity => {
   const activeSeconds = Number(row?.active_time_seconds ?? 0);
   const idleSeconds = Number(row?.idle_time_seconds ?? 0);
 
@@ -63,13 +63,13 @@ export const useActivities = (filters?: ActivityFilters) => {
       const { data, error } = await query;
       if (error) throw error;
 
-      const mapped = (data || []).map((row: any) => mapKeystrokeToActivity(row as unknown as KeystrokeRow));
+      const mapped = (data || []).map((row) => mapKeystrokeToActivity(row as unknown as KeystrokeRow));
       return { data: mapped, total: mapped.length };
     },
   });
 };
 
-export const useActivity = (id: string) => {
+export const useActivity = (id) => {
   return useQuery({
     queryKey: ['activity', id],
     queryFn: async () => {

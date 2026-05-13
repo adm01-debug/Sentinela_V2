@@ -13,16 +13,16 @@ export function useBackup() {
     progress: 0
   });
 
-  const backup = useCallback(async (data: any) => {
+  const backup = useCallback(async (data) => {
     setState(s => ({ ...s, status: "backing-up", progress: 0 }));
     
-    const blob = new Blob([JSON.stringify(data: any)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = `backup-${Date.now()}.json`;
     a.click();
-    URL.revokeObjectURL(url: string);
+    URL.revokeObjectURL(url);
     
     setState({ lastBackup: new Date(), status: "idle", progress: 100 });
   }, []);

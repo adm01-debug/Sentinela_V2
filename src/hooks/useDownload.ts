@@ -3,10 +3,10 @@ import { useCallback, useState } from "react";
 export function useDownload() {
   const [downloading, setDownloading] = useState(false);
 
-  const download = useCallback(async (url: string, filename?: string) => {
+  const download = useCallback(async (url) => {
     setDownloading(true);
     try {
-      const response = await fetch(url: string);
+      const response = await fetch(url);
       const blob = await response.blob();
       const href = URL.createObjectURL(blob);
       const a = document.createElement("a");

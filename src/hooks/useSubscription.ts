@@ -46,7 +46,7 @@ export function useSubscription(): UseSubscriptionReturn {
         .single();
       
       if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
-      setSubscription(data: any);
+      setSubscription(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch subscription');
     } finally {

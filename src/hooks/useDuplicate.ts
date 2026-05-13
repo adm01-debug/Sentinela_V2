@@ -23,7 +23,7 @@ export interface DuplicateOptions<T> {
 }
 
 export interface DuplicateResult<T> {
-  duplicate: (id: string) => void;
+  duplicate: (id) => void;
   duplicateMany: (ids: string[]) => void;
   isDuplicating: boolean;
   error: Error | null;
@@ -66,7 +66,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
   // ============================================================
 
   const duplicateMutation = useMutation({
-    mutationFn: async (id: string): Promise<T> => {
+    mutationFn: async (id): Promise<T> => {
       // Proceed to duplicate
 
 

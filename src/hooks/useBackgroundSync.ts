@@ -4,7 +4,7 @@ export interface SyncItem<T> { id: string; data: T; timestamp: number; retries: 
 
 export interface UseBackgroundSyncOptions<T> {
   storageKey: string;
-  syncFn: (item: T) => Promise<void>;
+  syncFn: (item) => Promise<void>;
   maxRetries?: number;
   retryDelay?: number;
 }
@@ -28,7 +28,7 @@ export function useBackgroundSync<T>(options: UseBackgroundSyncOptions<T>) {
 
   useEffect(() => { localStorage.setItem(storageKey, JSON.stringify(queue)); }, [queue, storageKey]);
 
-  const addToQueue = useCallback((data: T) => {
+  const addToQueue = useCallback((data) => {
     const item: SyncItem<T> = { id: crypto.randomUUID(), data, timestamp: Date.now(), retries: 0 };
     setQueue(prev => [...prev, item]);
     return item.id;

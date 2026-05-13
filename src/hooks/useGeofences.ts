@@ -85,7 +85,7 @@ export function useActiveGeofences() {
   });
 }
 
-export function useGeofence(id: string | undefined) {
+export function useGeofence(id) {
   return useQuery({
     queryKey: queryKeys.geofences.detail(id || ''),
     queryFn: async () => {
@@ -190,10 +190,10 @@ export function useUpdateGeofence() {
     },
     onMutate: async ({ id, ...input }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
-      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.detail(id: string) });
+      await queryClient.cancelQueries({ queryKey: queryKeys.geofences.detail(id) });
 
       const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
-      const previousGeofence = queryClient.getQueryData<Geofence>(queryKeys.geofences.detail(id: string));
+      const previousGeofence = queryClient.getQueryData<Geofence>(queryKeys.geofences.detail(id));
 
       queryClient.setQueryData<Geofence[]>(
         queryKeys.geofences.lists(),
@@ -202,7 +202,7 @@ export function useUpdateGeofence() {
 
       if (previousGeofence) {
         queryClient.setQueryData<Geofence>(
-          queryKeys.geofences.detail(id: string),
+          queryKeys.geofences.detail(id),
           { ...previousGeofence, ...input, updated_at: new Date().toISOString() }
         );
       }
@@ -236,7 +236,7 @@ export function useDeleteGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('geofences')
         .delete()
@@ -245,7 +245,7 @@ export function useDeleteGeofence() {
       if (error) throw error;
       return id;
     },
-    onMutate: async (id: string) => {
+    onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
 
       const previousGeofences = queryClient.getQueryData<Geofence[]>(queryKeys.geofences.lists());
@@ -268,7 +268,7 @@ export function useDeleteGeofence() {
       });
     },
     onSuccess: (_, id) => {
-      queryClient.removeQueries({ queryKey: queryKeys.geofences.detail(id: string) });
+      queryClient.removeQueries({ queryKey: queryKeys.geofences.detail(id) });
       invalidateRelated.geofences(queryClient);
       toast({
         title: 'Geofence excluída',
@@ -315,7 +315,7 @@ export function useToggleGeofence() {
         variant: 'destructive',
       });
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       invalidateRelated.geofences(queryClient);
       toast({
         title: data.is_active ? 'Geofence ativada' : 'Geofence desativada',

@@ -17,7 +17,7 @@ export function useOptimistic<T>(
       setValue(result);
       setOptimisticValue(result);
     } catch {
-      setOptimisticValue(value: any);
+      setOptimisticValue(value);
     } finally {
       setIsPending(false);
     }

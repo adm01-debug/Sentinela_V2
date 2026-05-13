@@ -19,16 +19,16 @@ export interface SoftDeleteOptions {
   statusField?: string;
   deletedStatus?: string;
   activeStatus?: string;
-  onSuccess?: (id: string, action: 'delete' | 'restore') => void;
+  onSuccess?: (id) => void;
   onError?: (error: Error) => void;
 }
 
 export interface SoftDeleteResult {
-  softDelete: (id: string) => void;
+  softDelete: (id) => void;
   softDeleteMany: (ids: string[]) => void;
-  restore: (id: string) => void;
+  restore: (id) => void;
   restoreMany: (ids: string[]) => void;
-  hardDelete: (id: string) => void;
+  hardDelete: (id) => void;
   hardDeleteMany: (ids: string[]) => void;
   isDeleting: boolean;
   isRestoring: boolean;
@@ -59,7 +59,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const softDeleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       // Proceed to delete
 
 
@@ -128,7 +128,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const restoreMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       // Proceed to restore
 
 
@@ -197,7 +197,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const hardDeleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       // Proceed to hard delete
 
 

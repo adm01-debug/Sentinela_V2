@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 export function useWatch<T>(
   value: T,
-  callback: (value: T, prevValue: T | undefined) => void
+  callback: (value) => void
 ) {
   const prevRef = useRef<T>();
 

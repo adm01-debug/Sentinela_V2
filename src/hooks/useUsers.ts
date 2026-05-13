@@ -44,7 +44,7 @@ export const useUsers = () => {
   });
 };
 
-export const useUser = (id: string) => {
+export const useUser = (id) => {
   return useQuery({
     queryKey: ['user', id],
     queryFn: async () => {
@@ -59,8 +59,8 @@ export const useUser = (id: string) => {
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: { email: string; full_name?: string }) => {
-      const { data: result, error } = await supabase.from('profiles').insert(data: any).select().single();
+    mutationFn: async (data) => {
+      const { data: result, error } = await supabase.from('profiles').insert(data).select().single();
       if (error) throw error;
       return result;
     },
@@ -72,7 +72,7 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: UpdateUserData }) => {
-      const { data: result, error } = await supabase.from('profiles').update(data: any).eq('id', id).select().single();
+      const { data: result, error } = await supabase.from('profiles').update(data).eq('id', id).select().single();
       if (error) throw error;
       return result;
     },
@@ -83,7 +83,7 @@ export const useUpdateUser = () => {
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('profiles').delete().eq('id', id);
       if (error) throw error;
     },

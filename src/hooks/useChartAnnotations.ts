@@ -23,11 +23,11 @@ export function useChartAnnotations(initialAnnotations: ChartAnnotation[] = []) 
     return newAnnotation.id;
   }, []);
 
-  const removeAnnotation = useCallback((id: string) => {
+  const removeAnnotation = useCallback((id) => {
     setAnnotations(prev => prev.filter(a => a.id !== id));
   }, []);
 
-  const updateAnnotation = useCallback((id: string, updates: Partial<ChartAnnotation>) => {
+  const updateAnnotation = useCallback((id) => {
     setAnnotations(prev => prev.map(a => a.id === id ? { ...a, ...updates } : a));
   }, []);
 

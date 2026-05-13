@@ -160,7 +160,7 @@ export function useUpdateViolationComment() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ 
         queryKey: queryKeys.violations.comments(data.violation_id) 
       });

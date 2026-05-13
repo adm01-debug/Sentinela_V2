@@ -168,7 +168,7 @@ export function useAuthPage() {
   const loginMutation = useMutation({
     mutationFn: async () => {
       // Validate email
-      const validatedEmail = emailSchema.parse(email: string);
+      const validatedEmail = emailSchema.parse(email);
       
       const { data, error } = await supabase.auth.signInWithPassword({ 
         email: validatedEmail, 
@@ -197,7 +197,7 @@ export function useAuthPage() {
   const registerMutation = useMutation({
     mutationFn: async () => {
       // Validate inputs
-      const validatedEmail = emailSchema.parse(email: string);
+      const validatedEmail = emailSchema.parse(email);
       passwordSchema.parse(password);
       const validatedName = nameSchema.parse(name);
       
@@ -274,7 +274,7 @@ export function useAuthPage() {
 
   const forgotMutation = useMutation({
     mutationFn: async () => {
-      const validatedEmail = emailSchema.parse(email: string);
+      const validatedEmail = emailSchema.parse(email);
       const { error } = await supabase.auth.resetPasswordForEmail(validatedEmail, {
         redirectTo: `${window.location.origin}/auth?mode=reset`
       });

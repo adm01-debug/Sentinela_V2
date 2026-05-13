@@ -62,7 +62,7 @@ export function useScheduledReports() {
   });
 }
 
-export function useScheduledReport(id: string | undefined) {
+export function useScheduledReport(id) {
   return useQuery({
     queryKey: queryKeys.reports.detail(id || ''),
     queryFn: async () => {
@@ -156,7 +156,7 @@ export function useDeleteScheduledReport() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('scheduled_reports')
         .delete()
@@ -185,7 +185,7 @@ export function useRunScheduledReport() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { data, error } = await supabase.functions.invoke('send-scheduled-report', {
         body: { report_id: id, manual: true },
       });

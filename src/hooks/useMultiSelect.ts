@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
 
-export function useMultiSelect<T>(items: T[], keyFn: (item: T) => string) {
+export function useMultiSelect<T>(items: T[], keyFn: (item) => string) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
-  const toggle = useCallback((item: T) => {
-    const key = keyFn(item: any);
+  const toggle = useCallback((item) => {
+    const key = keyFn(item);
     setSelected(prev => {
       const next = new Set(prev);
       next.has(key) ? next.delete(key) : next.add(key);
@@ -18,7 +18,7 @@ export function useMultiSelect<T>(items: T[], keyFn: (item: T) => string) {
 
   const deselectAll = useCallback(() => setSelected(new Set()), []);
 
-  const isSelected = useCallback((item: T) => selected.has(keyFn(item: any)), [selected, keyFn]);
+  const isSelected = useCallback((item) => selected.has(keyFn(item)), [selected, keyFn]);
 
   const selectedItems = items.filter(i => selected.has(keyFn(i)));
 

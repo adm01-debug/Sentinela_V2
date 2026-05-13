@@ -17,11 +17,11 @@ export function useRules() {
     return rule;
   }, []);
 
-  const toggle = useCallback((id: string) => {
+  const toggle = useCallback((id) => {
     setRules(prev => prev.map(r => r.id === id ? { ...r, enabled: !r.enabled } : r));
   }, []);
 
-  const remove = useCallback((id: string) => {
+  const remove = useCallback((id) => {
     setRules(prev => prev.filter(r => r.id !== id));
   }, []);
 

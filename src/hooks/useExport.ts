@@ -15,7 +15,7 @@ export type ExportFormat = 'csv' | 'excel' | 'pdf' | 'json';
 export interface ExportColumn<T> {
   key: keyof T | string;
   header: string;
-  formatter?: (value: any, row: T) => string;
+  formatter?: (value) => string;
   width?: number; // For PDF
 }
 
@@ -28,10 +28,10 @@ export interface ExportOptions<T> {
 }
 
 export interface UseExportResult<T> {
-  exportCSV: (data: T[], options?: ExportOptions<T>) => void;
-  exportExcel: (data: T[], options?: ExportOptions<T>) => Promise<void>;
-  exportPDF: (data: T[], options?: ExportOptions<T>) => Promise<void>;
-  exportJSON: (data: T[], options?: ExportOptions<T>) => void;
+  exportCSV: (data) => void;
+  exportExcel: (data) => Promise<void>;
+  exportPDF: (data) => Promise<void>;
+  exportJSON: (data) => void;
   isExporting: boolean;
   error: Error | null;
 }
@@ -49,12 +49,12 @@ function getNestedValue(obj: unknown, path: string): unknown {
   }, obj);
 }
 
-function formatValue(value: unknown): string {
+function formatValue(value): string {
   if (value === null || value === undefined) return '';
   if (value instanceof Date) return value.toLocaleDateString('pt-BR');
   if (typeof value === 'boolean') return value ? 'Sim' : 'Não';
-  if (typeof value === 'object') return JSON.stringify(value: any);
-  return String(value: any);
+  if (typeof value === 'object') return JSON.stringify(value);
+  return String(value);
 }
 
 function downloadFile(content: string | Blob, filename: string, mimeType: string) {
@@ -66,7 +66,7 @@ function downloadFile(content: string | Blob, filename: string, mimeType: string
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  URL.revokeObjectURL(url: string);
+  URL.revokeObjectURL(url);
 }
 
 function generateFilename(base: string, format: ExportFormat, includeTimestamp: boolean): string {
@@ -89,7 +89,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
   // EXPORT CSV
   // ============================================================
 
-  const exportCSV = useCallback((data: T[], options: ExportOptions<T> = {}) => {
+  const exportCSV = useCallback((data) => {
     const { filename = 'export', columns, includeTimestamp = true } = options;
 
     try {
@@ -106,13 +106,13 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
 
       // Build CSV content
       const headers = cols.map((c) => '"' + c.header.replace(/"/g, '""') + '"').join(',');
-      const rows = data.map((row: any) =>
+      const rows = data.map((row) =>
         cols
           .map((col) => {
             const value = getNestedValue(row, col.key as string);
             const formatted = col.formatter
               ? col.formatter(value, row)
-              : formatValue(value: any);
+              : formatValue(value);
             return '"' + formatted.replace(/"/g, '""') + '"';
           })
           .join(',')
@@ -141,7 +141,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
   // EXPORT EXCEL
   // ============================================================
 
-  const exportExcel = useCallback(async (data: T[], options: ExportOptions<T> = {}) => {
+  const exportExcel = useCallback(async (data) => {
     const { filename = 'export', columns, title, includeTimestamp = true } = options;
 
     try {
@@ -172,10 +172,10 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
       const wsData = [
         ...(title ? [[title]] : []),
         cols.map((c) => c.header),
-        ...data.map((row: any) =>
+        ...data.map((row) =>
           cols.map((col) => {
             const value = getNestedValue(row, col.key as string);
-            return col.formatter ? col.formatter(value, row) : formatValue(value: any);
+            return col.formatter ? col.formatter(value, row) : formatValue(value);
           })
         ),
       ];
@@ -206,7 +206,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
   // EXPORT PDF
   // ============================================================
 
-  const exportPDF = useCallback(async (data: T[], options: ExportOptions<T> = {}) => {
+  const exportPDF = useCallback(async (data) => {
     const { filename = 'export', columns, title, subtitle, includeTimestamp = true } = options;
 
     try {
@@ -250,10 +250,10 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
       autoTable(doc, {
         startY: yPosition,
         head: [cols.map((c) => c.header)],
-        body: data.map((row: any) =>
+        body: data.map((row) =>
           cols.map((col) => {
             const value = getNestedValue(row, col.key as string);
-            return col.formatter ? col.formatter(value, row) : formatValue(value: any);
+            return col.formatter ? col.formatter(value, row) : formatValue(value);
           })
         ),
         styles: { fontSize: 8 },
@@ -288,7 +288,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
   // EXPORT JSON
   // ============================================================
 
-  const exportJSON = useCallback((data: T[], options: ExportOptions<T> = {}) => {
+  const exportJSON = useCallback((data) => {
     const { filename = 'export', includeTimestamp = true } = options;
 
     try {

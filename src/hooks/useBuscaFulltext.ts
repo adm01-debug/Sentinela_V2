@@ -39,12 +39,12 @@ export interface SearchResult<T> {
 // DEBOUNCE HOOK
 // ============================================================
 
-function useDebouncedValue<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value: any);
+function useDebouncedValue<T>(value): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedValue(value: any);
+      setDebouncedValue(value);
     }, delay);
 
     return () => {

@@ -69,7 +69,7 @@ export function useInternetAccessPage() {
         .order('employee_name');
       if (error) throw error;
       // Map to expected interface
-      return (data || []).map((item: any) => ({
+      return (data || []).map((item) => ({
         id: item.id,
         name: `Regra - ${item.employee_name}`,
         description: item.notes || '',
@@ -85,8 +85,8 @@ export function useInternetAccessPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: RuleFormData) => {
-      const { error } = await supabase.from('internet_access_rules').insert(data: any);
+    mutationFn: async (data) => {
+      const { error } = await supabase.from('internet_access_rules').insert(data);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -101,7 +101,7 @@ export function useInternetAccessPage() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: RuleFormData }) => {
-      const { error } = await supabase.from('internet_access_rules').update(data: any).eq('id', id);
+      const { error } = await supabase.from('internet_access_rules').update(data).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -115,7 +115,7 @@ export function useInternetAccessPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('internet_access_rules').delete().eq('id', id);
       if (error) throw error;
     },

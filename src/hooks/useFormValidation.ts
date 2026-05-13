@@ -1,17 +1,17 @@
 import { useState, useCallback } from 'react';
-type ValidationRule<T> = { validate: (value: T) => boolean; message: string };
+type ValidationRule<T> = { validate: (value) => boolean; message: string };
 type FieldRules<T> = Record<keyof T, ValidationRule<T[keyof T]>[]>;
 export function useFormValidation<T extends Record<string, unknown>>(rules: Partial<FieldRules<T>>) {
   const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
   const validateField = useCallback((field: keyof T, value: T[keyof T]) => {
     const fieldRules = rules[field] || [];
     for (const rule of fieldRules) {
-      if (!rule.validate(value: any)) { setErrors(prev => ({ ...prev, [field]: rule.message })); return false; }
+      if (!rule.validate(value)) { setErrors(prev => ({ ...prev, [field]: rule.message })); return false; }
     }
     setErrors(prev => { const { [field]: _, ...rest } = prev; return rest as Partial<Record<keyof T, string>>; });
     return true;
   }, [rules]);
-  const validateAll = useCallback((data: T) => {
+  const validateAll = useCallback((data) => {
     let isValid = true;
     const newErrors: Partial<Record<keyof T, string>> = {};
     Object.keys(rules).forEach(field => {

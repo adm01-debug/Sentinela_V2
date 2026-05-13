@@ -57,7 +57,7 @@ export function useMessageTemplates() {
   });
 }
 
-export function useMessageTemplate(id: string | undefined) {
+export function useMessageTemplate(id) {
   return useQuery({
     queryKey: queryKeys.messageTemplates.detail(id || ''),
     queryFn: async () => {
@@ -170,7 +170,7 @@ export function useDeleteMessageTemplate() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('message_templates')
         .delete()
@@ -211,7 +211,7 @@ export function useToggleMessageTemplate() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       invalidateRelated.messageTemplates(queryClient);
       toast({
         title: data.is_active ? 'Template ativado' : 'Template desativado',
@@ -232,7 +232,7 @@ export function useDuplicateMessageTemplate() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       // First get the template
       const { data: template, error: fetchError } = await supabase
         .from('message_templates')

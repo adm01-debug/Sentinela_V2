@@ -23,11 +23,11 @@ export function useComments() {
     return comment;
   }, []);
 
-  const remove = useCallback((id: string) => {
+  const remove = useCallback((id) => {
     setComments(prev => prev.filter(c => c.id !== id && c.parentId !== id));
   }, []);
 
-  const edit = useCallback((id: string, content: string) => {
+  const edit = useCallback((id) => {
     setComments(prev => prev.map(c => c.id === id ? { ...c, content } : c));
   }, []);
 

@@ -70,7 +70,7 @@ export function useWebhooks() {
   });
 }
 
-export function useWebhook(id: string | undefined) {
+export function useWebhook(id) {
   return useQuery({
     queryKey: queryKeys.webhooks.detail(id || ''),
     queryFn: async () => {
@@ -185,7 +185,7 @@ export function useDeleteWebhook() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('webhooks')
         .delete()
@@ -214,7 +214,7 @@ export function useTestWebhook() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { data, error } = await supabase.functions.invoke('send-webhook', {
         body: { 
           webhook_id: id, 
@@ -259,7 +259,7 @@ export function useToggleWebhook() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       invalidateRelated.webhooks(queryClient);
       toast({
         title: data.is_active ? 'Webhook ativado' : 'Webhook desativado',

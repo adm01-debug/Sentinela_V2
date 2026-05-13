@@ -56,15 +56,15 @@ export function useAlertSettings() {
     },
   });
 
-  const addEmail = async (email: string) => {
+  const addEmail = async (email) => {
     const current = query.data?.recipient_emails || [];
-    if (current.includes(email: string)) return false;
+    if (current.includes(email)) return false;
     await updateMutation.mutateAsync({ recipient_emails: [...current, email] });
     toast({ title: 'Email adicionado' });
     return true;
   };
 
-  const removeEmail = async (email: string) => {
+  const removeEmail = async (email) => {
     const current = query.data?.recipient_emails || [];
     await updateMutation.mutateAsync({ recipient_emails: current.filter(e => e !== email) });
     toast({ title: 'Email removido' });

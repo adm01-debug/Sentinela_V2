@@ -99,7 +99,7 @@ export function useToggleRateLimitSetting() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       invalidateRelated.rateLimiting(queryClient);
       toast({
         title: data.is_active ? 'Rate limit ativado' : 'Rate limit desativado',

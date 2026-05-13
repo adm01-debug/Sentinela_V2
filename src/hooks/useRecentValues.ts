@@ -17,15 +17,15 @@ export function useRecentValues<T>(options: UseRecentValuesOptions) {
     localStorage.setItem(`recent-${key}`, JSON.stringify(recentValues));
   }, [key, recentValues]);
 
-  const addValue = useCallback((value: T) => {
+  const addValue = useCallback((value) => {
     setRecentValues(prev => {
-      const filtered = prev.filter(v => JSON.stringify(v) !== JSON.stringify(value: any));
+      const filtered = prev.filter(v => JSON.stringify(v) !== JSON.stringify(value));
       return [value, ...filtered].slice(0, maxItems);
     });
   }, [maxItems]);
 
-  const removeValue = useCallback((value: T) => {
-    setRecentValues(prev => prev.filter(v => JSON.stringify(v) !== JSON.stringify(value: any)));
+  const removeValue = useCallback((value) => {
+    setRecentValues(prev => prev.filter(v => JSON.stringify(v) !== JSON.stringify(value)));
   }, []);
 
   const clearValues = useCallback(() => setRecentValues([]), []);

@@ -63,7 +63,7 @@ export const useEmployees = (filters?: EmployeeFilters) => {
   });
 };
 
-export const useEmployee = (id: string) => {
+export const useEmployee = (id) => {
   return useQuery({
     queryKey: ['employee', id],
     queryFn: async () => {
@@ -75,7 +75,7 @@ export const useEmployee = (id: string) => {
   });
 };
 
-export const useEmployeeStats = (id: string, startDate: string, endDate: string) => {
+export const useEmployeeStats = (id) => {
   return useQuery({
     queryKey: ['employee-stats', id, startDate, endDate],
     queryFn: async () => {
@@ -140,8 +140,8 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: EmployeeCreateInput) => {
-      const { data: result, error } = await supabase.from('employees').insert(data: any).select().single();
+    mutationFn: async (data) => {
+      const { data: result, error } = await supabase.from('employees').insert(data).select().single();
       if (error) throw error;
       return result;
     },
@@ -153,7 +153,7 @@ export const useUpdateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: EmployeeUpdateInput }) => {
-      const { data: result, error } = await supabase.from('employees').update(data: any).eq('id', id).select().single();
+      const { data: result, error } = await supabase.from('employees').update(data).eq('id', id).select().single();
       if (error) throw error;
       return result;
     },
@@ -167,7 +167,7 @@ export const useUpdateEmployee = () => {
 export const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase.from('employees').delete().eq('id', id);
       if (error) throw error;
     },

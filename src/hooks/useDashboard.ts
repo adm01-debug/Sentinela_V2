@@ -83,7 +83,7 @@ export const useRecentActivity = (limit = 5) => {
       if (error) throw error;
       if (!data || data.length === 0) return [];
 
-      return data.map((item: any) => ({
+      return data.map((item) => ({
         id: item.id,
         user: item.employee_name || 'Desconhecido',
         action: `registrou ${Math.round((item.productive_time_seconds || 0) / 60)} min produtivo`,

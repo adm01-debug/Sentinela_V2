@@ -124,7 +124,7 @@ export function useSecurityPage() {
     handleSeverityFilterChange: useCallback((v) => setSeverityFilter(v), []),
     handleTypeFilterChange: useCallback((v) => setTypeFilter(v), []),
     handleUpdateSettings: useCallback((s: Partial<SecuritySettings>) => updateSettingsMutation.mutate(s), [updateSettingsMutation]),
-    handleResolveEvent: useCallback((id: string) => resolveEventMutation.mutate(id: string), [resolveEventMutation]),
+    handleResolveEvent: useCallback((id) => resolveEventMutation.mutate(id), [resolveEventMutation]),
     isUpdating: updateSettingsMutation.isPending,
   };
 }

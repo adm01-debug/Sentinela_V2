@@ -29,7 +29,7 @@ export interface UseAuthReturn {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 }
@@ -94,7 +94,7 @@ export function useAuth(): UseAuthReturn {
     return () => subscription.unsubscribe();
   }, [resolveUser]);
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (email) => {
     setError(null);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
@@ -131,7 +131,7 @@ export function useAuth(): UseAuthReturn {
 export const useUpdateProfile = () => {
   const [isPending, setIsPending] = useState(false);
   return {
-    mutateAsync: async (data: Partial<User>) => {
+    mutateAsync: async (data) => {
       setIsPending(true);
       try {
         const { error } = await supabase.auth.updateUser({ data });

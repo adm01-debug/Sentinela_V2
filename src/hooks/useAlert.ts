@@ -16,12 +16,12 @@ export function useAlert() {
     setAlerts(prev => [...prev, alert]);
     
     if (duration > 0) {
-      setTimeout(() => dismiss(id: string), duration);
+      setTimeout(() => dismiss(id), duration);
     }
     return id;
   }, []);
 
-  const dismiss = useCallback((id: string) => {
+  const dismiss = useCallback((id) => {
     setAlerts(prev => prev.filter(a => a.id !== id));
   }, []);
 

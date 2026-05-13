@@ -57,12 +57,12 @@ export function useWebhooksPage() {
     await updateWebhookMutation.mutateAsync(input);
   }, [updateWebhookMutation]);
 
-  const deleteWebhook = useCallback(async (id: string) => {
-    await deleteWebhookMutation.mutateAsync(id: string);
+  const deleteWebhook = useCallback(async (id) => {
+    await deleteWebhookMutation.mutateAsync(id);
   }, [deleteWebhookMutation]);
 
-  const testWebhook = useCallback(async (id: string) => {
-    await testWebhookMutation.mutateAsync(id: string);
+  const testWebhook = useCallback(async (id) => {
+    await testWebhookMutation.mutateAsync(id);
   }, [testWebhookMutation]);
 
   // Search & Filters

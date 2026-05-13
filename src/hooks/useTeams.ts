@@ -55,7 +55,7 @@ export function useTeams() {
   });
 }
 
-export function useTeam(id: string | undefined) {
+export function useTeam(id) {
   return useQuery({
     queryKey: queryKeys.teams.detail(id || ''),
     queryFn: async () => {
@@ -153,10 +153,10 @@ export function useUpdateTeam() {
     },
     onMutate: async ({ id, ...input }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.teams.lists() });
-      await queryClient.cancelQueries({ queryKey: queryKeys.teams.detail(id: string) });
+      await queryClient.cancelQueries({ queryKey: queryKeys.teams.detail(id) });
 
       const previousTeams = queryClient.getQueryData<Team[]>(queryKeys.teams.lists());
-      const previousTeam = queryClient.getQueryData<Team>(queryKeys.teams.detail(id: string));
+      const previousTeam = queryClient.getQueryData<Team>(queryKeys.teams.detail(id));
 
       // Update list
       queryClient.setQueryData<Team[]>(
@@ -167,7 +167,7 @@ export function useUpdateTeam() {
       // Update detail
       if (previousTeam) {
         queryClient.setQueryData<Team>(
-          queryKeys.teams.detail(id: string),
+          queryKeys.teams.detail(id),
           { ...previousTeam, ...input, updated_at: new Date().toISOString() }
         );
       }
@@ -202,7 +202,7 @@ export function useDeleteTeam() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('teams')
         .delete()
@@ -211,7 +211,7 @@ export function useDeleteTeam() {
       if (error) throw error;
       return id;
     },
-    onMutate: async (id: string) => {
+    onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.teams.lists() });
 
       const previousTeams = queryClient.getQueryData<Team[]>(queryKeys.teams.lists());
@@ -234,7 +234,7 @@ export function useDeleteTeam() {
       });
     },
     onSuccess: (_, id) => {
-      queryClient.removeQueries({ queryKey: queryKeys.teams.detail(id: string) });
+      queryClient.removeQueries({ queryKey: queryKeys.teams.detail(id) });
       invalidateRelated.teams(queryClient);
       toast({
         title: 'Equipe excluída',

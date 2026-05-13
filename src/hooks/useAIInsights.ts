@@ -43,7 +43,7 @@ export function useAIInsights(options: UseAIInsightsOptions = {}) {
     }
   }, [entityType, entityId]);
 
-  const dismissInsight = useCallback((id: string) => {
+  const dismissInsight = useCallback((id) => {
     setInsights(prev => prev.filter(i => i.id !== id));
   }, []);
 

@@ -94,7 +94,7 @@ export function useMobileDeviceLocations() {
   });
 }
 
-export function useMobileDevice(id: string | undefined) {
+export function useMobileDevice(id) {
   return useQuery({
     queryKey: queryKeys.mobileDevices.detail(id || ''),
     queryFn: async () => {
@@ -159,7 +159,7 @@ export function useDeleteMobileDevice() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id) => {
       const { error } = await supabase
         .from('mobile_devices')
         .delete()

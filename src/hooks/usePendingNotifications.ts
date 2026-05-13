@@ -52,8 +52,8 @@ export function useMarkNotificationAsRead() {
   const { markAsRead } = useNotificationsStore();
 
   return useMutation({
-    mutationFn: async (id: string) => {
-      markAsRead(id: string);
+    mutationFn: async (id) => {
+      markAsRead(id);
     },
     onSuccess: () => {
       invalidateRelated.notifications(queryClient);

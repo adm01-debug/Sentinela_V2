@@ -143,7 +143,7 @@ export function useDataExportPage() {
     handleDeleteExportInternal(jobId);
   }, [handleDeleteExportInternal]);
 
-  const handleDownload = useCallback((url: string) => {
+  const handleDownload = useCallback((url) => {
     window.open(url, '_blank');
   }, []);
 

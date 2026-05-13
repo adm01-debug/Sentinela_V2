@@ -16,7 +16,7 @@ type Schema<T> = {
 };
 
 export function useSchema<T extends Record<string, unknown>>(schema: Schema<T>) {
-  const validate = useCallback((data: T): ValidationResult => {
+  const validate = useCallback((data): ValidationResult => {
     const errors: Record<string, string> = {};
     
     for (const [key, rules] of Object.entries(schema)) {
@@ -31,7 +31,7 @@ export function useSchema<T extends Record<string, unknown>>(schema: Schema<T>) 
         errors[key] = `${key} must be a ${rules.type}`;
       }
       
-      if (rules?.pattern && typeof value === "string" && !rules.pattern.test(value: any)) {
+      if (rules?.pattern && typeof value === "string" && !rules.pattern.test(value)) {
         errors[key] = `${key} format is invalid`;
       }
     }

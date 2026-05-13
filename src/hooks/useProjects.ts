@@ -21,11 +21,11 @@ export function useProjects() {
     return project;
   }, []);
 
-  const updateStatus = useCallback((id: string, status: Project["status"]) => {
+  const updateStatus = useCallback((id) => {
     setProjects(prev => prev.map(p => p.id === id ? { ...p, status } : p));
   }, []);
 
-  const remove = useCallback((id: string) => {
+  const remove = useCallback((id) => {
     setProjects(prev => prev.filter(p => p.id !== id));
   }, []);
 

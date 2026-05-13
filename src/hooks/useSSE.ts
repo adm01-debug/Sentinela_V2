@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-export function useSSE<T>(url: string) {
+export function useSSE<T>(url) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [connected, setConnected] = useState(false);
   const sourceRef = useRef<EventSource | null>(null);
 
   const connect = useCallback(() => {
-    sourceRef.current = new EventSource(url: string);
+    sourceRef.current = new EventSource(url);
     
     sourceRef.current.onopen = () => setConnected(true);
     sourceRef.current.onerror = () => {

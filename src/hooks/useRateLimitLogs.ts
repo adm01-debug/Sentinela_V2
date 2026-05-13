@@ -45,7 +45,7 @@ export function useRateLimitLogs(filters?: {
         .from('rate_limit_logs')
         .select(`
           *,
-          user:users(email: string)
+          user:users(email)
         `)
         .order('created_at', { ascending: false })
         .limit(500);

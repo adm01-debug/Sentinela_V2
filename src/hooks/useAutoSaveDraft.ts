@@ -5,8 +5,8 @@ export interface UseAutoSaveDraftOptions<T> {
   key: string;
   data: T;
   delay?: number;
-  onSave?: (data: T) => void;
-  onRestore?: (data: T) => void;
+  onSave?: (data) => void;
+  onRestore?: (data) => void;
 }
 
 export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
@@ -35,7 +35,7 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
       localStorage.setItem(key, JSON.stringify({ data, timestamp }));
       setLastSaved(new Date(timestamp));
       setHasDraft(true);
-      onSave?.(data: any);
+      onSave?.(data);
     }, delay);
     return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
   }, [key, data, delay, onSave]);
