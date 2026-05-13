@@ -69,9 +69,9 @@ export function useEmployeesPage() {
   const updateMutation = useUpdateEmployee();
   const deleteMutation = useDeleteEmployee();
   
-  const createEmployee = async (data) => createMutation.mutateAsync(data as unknown as EmployeeCreateInput);
+  const createEmployee = async (data: any) => createMutation.mutateAsync(data as unknown as EmployeeCreateInput);
   const updateEmployee = async (id: string, data: Partial<EmployeeUpdateInput>) => updateMutation.mutateAsync({ id, data: data as EmployeeUpdateInput });
-  const deleteEmployee = async (id) => deleteMutation.mutateAsync(id);
+  const deleteEmployee = async (id: string) => deleteMutation.mutateAsync(id);
   const assignDevice = async (empId: string, name: string, type: string, primary: boolean) => {
     const { error } = await supabase.from('employee_devices').insert({
       employee_id: empId,
@@ -134,15 +134,15 @@ export function useEmployeesPage() {
   }), [employees]);
 
   // Filter handlers
-  const setSearchTerm = useCallback((value) => {
+  const setSearchTerm = useCallback((value: string) => {
     setFilters(prev => ({ ...prev, searchTerm: value }));
   }, []);
 
-  const setStatusFilter = useCallback((value) => {
+  const setStatusFilter = useCallback((value: string) => {
     setFilters(prev => ({ ...prev, statusFilter: value }));
   }, []);
 
-  const setTeamFilter = useCallback((value) => {
+  const setTeamFilter = useCallback((value: string) => {
     setFilters(prev => ({ ...prev, teamFilter: value }));
   }, []);
 
@@ -349,6 +349,6 @@ export const deviceTypeLabels = {
 // HELPERS
 // ============================================================
 
-export function getInitials(name): string {
+export function getInitials(name: string): string {
   return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 }
