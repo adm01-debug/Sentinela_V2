@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import DashboardPage from '../DashboardPage';
 import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Mocks
 vi.mock('react-i18next', () => ({
@@ -35,62 +36,88 @@ vi.mock('@/hooks/useChartColors', () => ({
   }),
 }));
 
-// Mock ResizeObserver which might be used by charts
+// Mock components that use QueryClient internal hooks if needed, or just wrap in Provider
+vi.mock('@/components/DashboardCustomizer', () => ({
+  DashboardCustomizer: () => <div data-testid="dashboard-customizer" />,
+}));
+
+// Mock Recharts or other chart components if they cause issues
+vi.mock('recharts', () => ({
+  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
+  BarChart: () => <div />,
+  Bar: () => <div />,
+  XAxis: () => <div />,
+  YAxis: () => <div />,
+  CartesianGrid: () => <div />,
+  Tooltip: () => <div />,
+  Legend: () => <div />,
+  LineChart: () => <div />,
+  Line: () => <div />,
+  PieChart: () => <div />,
+  Pie: () => <div />,
+  Cell: () => <div />,
+}));
+
+// Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
     observe: vi.fn(),
     unobserve: vi.fn(),
     disconnect: vi.fn(),
 }));
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
+
 describe('DashboardPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('renders stats cards correctly', () => {
-    render(
-      <BrowserRouter>
-        <DashboardPage />
-      </BrowserRouter>
+  const renderDashboard = () => {
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <DashboardPage />
+        </BrowserRouter>
+      </QueryClientProvider>
     );
+  };
+
+  it('renders stats cards correctly', () => {
+    renderDashboard();
 
     expect(screen.getByText('dashboard.title')).toBeInTheDocument();
-    expect(screen.getByText('100')).toBeInTheDocument(); // totalEmployees
-    expect(screen.getByText('50')).toBeInTheDocument(); // activeEmployees
-    expect(screen.getByText('80%')).toBeInTheDocument(); // averageProductivity
-    expect(screen.getByText('5')).toBeInTheDocument(); // alertsCount
+    expect(screen.getByText('100')).toBeInTheDocument();
+    expect(screen.getByText('50')).toBeInTheDocument();
+    expect(screen.getByText('80%')).toBeInTheDocument();
+    expect(screen.getByText('5')).toBeInTheDocument();
   });
 
   it('toggles filters visibility', () => {
-    render(
-      <BrowserRouter>
-        <DashboardPage />
-      </BrowserRouter>
-    );
+    renderDashboard();
 
     const filterButton = screen.getByRole('button', { name: /Filtros/i });
     
-    // Initially filters should not be visible
     expect(screen.queryByPlaceholderText('Departamento')).not.toBeInTheDocument();
 
     fireEvent.click(filterButton);
 
-    // Now filters should be visible
     expect(screen.getByPlaceholderText('Departamento')).toBeInTheDocument();
   });
 
   it('changes period when buttons are clicked', () => {
-    render(
-      <BrowserRouter>
-        <DashboardPage />
-      </BrowserRouter>
-    );
+    renderDashboard();
 
-    const weekButton = screen.getByRole('button', { name: /Semana/i });
     const monthButton = screen.getByRole('button', { name: /Mês/i });
-
-    // Week is default (primary button has different classes usually, but we check if it responds to clicks)
+    
     fireEvent.click(monthButton);
-    expect(monthButton).toHaveClass('bg-primary'); // Default variant for selected period
+    // Checking if variant changes (this depends on your UI implementation details)
+    // usually checked via class or style
+    expect(monthButton).toHaveClass('bg-primary');
   });
 });
