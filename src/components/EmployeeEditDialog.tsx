@@ -62,7 +62,8 @@ export const EmployeeEditDialog = ({ employee, isOpen, onOpenChange }: Props) =>
 
   const onSubmit = async (data: EmployeeUpdateInput) => {
     try {
-      await updateEmployee.mutateAsync({ id: employee.id, data });
+      const updateData = { ...data, full_name: data.full_name || employee.full_name };
+      await updateEmployee.mutateAsync({ id: employee.id, data: updateData });
       toast.success("Funcionário atualizado com sucesso");
       onOpenChange(false);
     } catch (error) {

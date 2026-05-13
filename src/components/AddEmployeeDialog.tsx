@@ -46,7 +46,7 @@ export const AddEmployeeDialog = ({ open, onClose }: Props) => {
 
   const handleSubmit = () => {
     createEmployee.mutate(
-      { name: form.name, email: form.email, department: form.department } as EmployeeCreateInput,
+      { name: form.name, full_name: form.name, email: form.email, department: form.department } as EmployeeCreateInput,
       {
         onSuccess: () => {
           onClose();
