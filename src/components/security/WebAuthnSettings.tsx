@@ -262,7 +262,7 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
                 <PasskeyItem
                   key={credential.id}
                   credential={credential}
-                  onDelete={deletePasskey}
+                  onDelete={(id: string) => deletePasskey.mutate(id)}
                   onRename={renamePasskey}
                 />
               ))}

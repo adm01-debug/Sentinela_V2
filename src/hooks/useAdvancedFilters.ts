@@ -139,7 +139,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   }, [fields, onChange]);
 
   const removeGroup = useCallback(
-    (groupId) => {
+    (groupId: string) => {
       setFilterGroups((prev) => {
         const newGroups = prev.filter((g) => g.id !== groupId);
         // Garantir pelo menos um grupo
@@ -167,7 +167,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   // ============================================================
 
   const addCondition = useCallback(
-    (groupId) => {
+    (groupId: string) => {
       setFilterGroups((prev) => {
         const newGroups = prev.map((g) => {
           if (g.id !== groupId) return g;
@@ -243,7 +243,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
         }
 
         const key = `filter_${groupIndex}_${condIndex}`;
-        params[key] = {
+        (params as any)[key] = {
           field: condition.field,
           operator: condition.operator,
           value: condition.value,
@@ -261,7 +261,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   // ============================================================
 
   const getOperatorsForField = useCallback(
-    (fieldKey): FilterOperator[] => {
+    (fieldKey: string): FilterOperator[] => {
       const field = fields.find((f) => f.key === fieldKey);
       return field?.operators ?? DEFAULT_OPERATORS_BY_TYPE[field?.type ?? 'string'];
     },
