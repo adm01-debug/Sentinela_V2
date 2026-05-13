@@ -27,7 +27,7 @@ interface NotificationItemProps {
     message: string;
     created_at: string;
   };
-  onMarkAsRead: (id) => void;
+  onMarkAsRead: (id: string) => void;
 }
 
 const NotificationItem = memo(function NotificationItem({
@@ -67,7 +67,7 @@ function NotificationsDropdownComponent() {
   const markAsRead = useMarkNotificationAsRead();
   const markAllAsRead = useMarkAllNotificationsAsRead();
 
-  const handleMarkAsRead = useCallback((id) => {
+  const handleMarkAsRead = useCallback((id: string) => {
     markAsRead.mutate(id);
   }, [markAsRead]);
 

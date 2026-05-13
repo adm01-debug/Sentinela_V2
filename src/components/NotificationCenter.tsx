@@ -63,9 +63,9 @@ export interface Notification {
 
 interface NotificationCenterProps {
   notifications: Notification[];
-  onMarkAsRead?: (id) => void;
+  onMarkAsRead?: (id: string) => void;
   onMarkAllAsRead?: () => void;
-  onDelete?: (id) => void;
+  onDelete?: (id: string) => void;
   onDeleteAll?: () => void;
   onAction?: (notification: Notification) => void;
   onSettingsClick?: () => void;
@@ -96,8 +96,8 @@ function NotificationItem({
   onAction,
 }: {
   notification: Notification;
-  onMarkAsRead?: (id) => void;
-  onDelete?: (id) => void;
+  onMarkAsRead?: (id: string) => void;
+  onDelete?: (id: string) => void;
   onAction?: (notification: Notification) => void;
 }) {
   const config = typeConfig[notification.type];
@@ -368,7 +368,7 @@ export function NotificationPopover({
   limit = 5,
 }: {
   notifications: Notification[];
-  onMarkAsRead?: (id) => void;
+  onMarkAsRead?: (id: string) => void;
   onViewAll?: () => void;
   limit?: number;
 }) {
