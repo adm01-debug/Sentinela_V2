@@ -8,6 +8,7 @@ export { BaseBarChart } from './BaseBarChart';
 export type { BarSeriesConfig } from './BaseBarChart';
 
 export { BaseDonutChart } from './BaseDonutChart';
+export { BasePieChart } from './BasePieChart';
 
 export { Sparkline } from './Sparkline';
 
