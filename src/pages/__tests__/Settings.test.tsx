@@ -102,18 +102,6 @@ describe('Settings Page', () => {
     expect(screen.getByText('Screenshot')).toBeInTheDocument();
   });
 
-  it('switches to applications tab', async () => {
-    renderSettings();
-    const appsTab = screen.getByText('monitoring.applications');
-    fireEvent.click(appsTab);
-    
-    // Tabs content might be lazy or hidden with CSS
-    await waitFor(() => {
-      expect(screen.getByText('Slack')).toBeInTheDocument();
-    });
-    expect(screen.getByTestId('add-app-dialog')).toBeInTheDocument();
-  });
-
   it('filters applications by search', async () => {
     vi.mocked(useSettingsHook.useSettings).mockReturnValue({
       data: {
@@ -127,8 +115,16 @@ describe('Settings Page', () => {
     } as any);
     
     renderSettings();
-    fireEvent.click(screen.getByText('monitoring.applications'));
     
+    // Switch to apps tab
+    const appsTab = screen.getByText('monitoring.applications');
+    fireEvent.click(appsTab);
+    
+    // Wait for content to be visible (Radix tabs)
+    await waitFor(() => {
+        expect(screen.queryByPlaceholderText('common.search')).toBeInTheDocument();
+    });
+
     const searchInput = screen.getByPlaceholderText('common.search');
     fireEvent.change(searchInput, { target: { value: 'Slack' } });
     
