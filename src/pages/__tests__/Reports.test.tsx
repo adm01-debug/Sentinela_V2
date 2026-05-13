@@ -4,22 +4,12 @@ import ReportsPage from '../ReportsPage';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+import * as useReportsHook from '@/hooks/useReports';
 
 // Mocks
 vi.mock('@/hooks/useReports', () => ({
-  useReports: () => ({
-    data: {
-      data: [
-        { id: '1', name: 'Annual Sales', status: 'completed' },
-        { id: '2', name: 'Monthly Performance', status: 'pending' },
-      ],
-    },
-    isLoading: false,
-  }),
-  useReportTemplates: () => ({
-    data: [],
-    isLoading: false,
-  }),
+  useReports: vi.fn(),
+  useReportTemplates: vi.fn(),
 }));
 
 const queryClient = new QueryClient({
@@ -33,6 +23,22 @@ const queryClient = new QueryClient({
 describe('ReportsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    
+    // Default mock implementation
+    vi.mocked(useReportsHook.useReports).mockReturnValue({
+      data: {
+        data: [
+          { id: '1', name: 'Annual Sales', status: 'completed' },
+          { id: '2', name: 'Monthly Performance', status: 'pending' },
+        ],
+      },
+      isLoading: false,
+    } as any);
+
+    vi.mocked(useReportsHook.useReportTemplates).mockReturnValue({
+      data: [],
+      isLoading: false,
+    } as any);
   });
 
   const renderReports = () => {
@@ -53,10 +59,10 @@ describe('ReportsPage', () => {
   });
 
   it('shows empty state when no reports', () => {
-    vi.mocked(require('@/hooks/useReports').useReports).mockReturnValue({
+    vi.mocked(useReportsHook.useReports).mockReturnValue({
       data: { data: [] },
       isLoading: false,
-    });
+    } as any);
     renderReports();
     expect(screen.queryByText('Annual Sales')).not.toBeInTheDocument();
   });
