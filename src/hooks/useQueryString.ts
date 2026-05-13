@@ -11,7 +11,7 @@ export function useQueryString() {
     return () => window.removeEventListener("popstate", handler);
   }, []);
 
-  const get = useCallback((key) => params.get(key), [params]);
+  const get = useCallback((key: string) => params.get(key), [params]);
   
   const set = useCallback((key: string, value: string) => {
     const newParams = new URLSearchParams(params);
@@ -20,7 +20,7 @@ export function useQueryString() {
     setParams(newParams);
   }, [params]);
 
-  const remove = useCallback((key) => {
+  const remove = useCallback((key: string) => {
     const newParams = new URLSearchParams(params);
     newParams.delete(key);
     window.history.pushState(null, "", `?${newParams}`);

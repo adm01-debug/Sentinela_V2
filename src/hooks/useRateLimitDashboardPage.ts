@@ -163,7 +163,7 @@ export function useRateLimitDashboardPage() {
     setFilters(prev => ({ ...prev, [key]: value }));
   }, []);
 
-  const handleUnblockIP = useCallback((ip) => {
+  const handleUnblockIP = useCallback((ip: string) => {
     unblockIPMutation.mutate(ip);
   }, [unblockIPMutation]);
 
