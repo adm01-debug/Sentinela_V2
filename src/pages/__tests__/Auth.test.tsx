@@ -20,6 +20,14 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
+// Mock framer-motion to avoid animation issues in tests
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  },
+  AnimatePresence: ({ children }: any) => <>{children}</>,
+}));
+
 const mockUseAuthPage = {
   mode: 'login',
   email: '',
@@ -27,8 +35,8 @@ const mockUseAuthPage = {
   name: '',
   company: '',
   setMode: vi.fn(),
-  setEmail: vi.fn(),
-  setPassword: vi.fn(),
+  setEmail: (val: string) => { mockUseAuthPage.email = val; },
+  setPassword: (val: string) => { mockUseAuthPage.password = val; },
   setName: vi.fn(),
   setCompany: vi.fn(),
   handleLogin: vi.fn(),
@@ -55,6 +63,10 @@ vi.mock('@/hooks/useAuth', () => ({
 describe('Auth Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockUseAuthPage.mode = 'login';
+    mockUseAuthPage.email = '';
+    mockUseAuthPage.password = '';
+    mockUseAuth.isAuthenticated = false;
   });
 
   it('renders login mode by default', () => {
@@ -70,20 +82,22 @@ describe('Auth Page', () => {
   });
 
   it('validates email correctly', async () => {
-    render(
+    const { rerender } = render(
       <BrowserRouter>
         <Auth />
       </BrowserRouter>
     );
 
     const emailInput = screen.getByPlaceholderText('seu@email.com');
-    const submitButton = screen.getByRole('button', { name: /^Entrar$/ }); // Exact match for the primary button
+    const submitButton = screen.getByRole('button', { name: /^Entrar$/ });
 
     fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
+    
+    // We need to trigger the submit
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Email inválido')).toBeInTheDocument();
+      expect(screen.getByText(/Email inválido/i)).toBeInTheDocument();
     });
   });
 
