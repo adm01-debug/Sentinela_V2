@@ -11,13 +11,13 @@ import {
 import { useChartColors } from '@/hooks/useChartColors';
 import { ChartTooltipContent } from './ChartTooltip';
 import { ChartEmptyState } from './ChartEmptyState';
-import { Activity } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
 export interface AreaSeriesConfig {
   dataKey: string;
   label: string;
   color?: string;
-  gradientOpacity?: [number, number];
+  fillOpacity?: number;
   strokeWidth?: number;
 }
 
@@ -31,6 +31,7 @@ interface BaseAreaChartProps {
   valueFormatter?: (value: any) => string;
   emptyTitle?: string;
   emptyDescription?: string;
+  stacked?: boolean;
 }
 
 const DEFAULT_COLORS = [
@@ -39,6 +40,7 @@ const DEFAULT_COLORS = [
   'hsl(38, 92%, 50%)',
   'hsl(0, 84%, 60%)',
   'hsl(262, 83%, 58%)',
+  'hsl(330, 81%, 60%)',
 ];
 
 export function BaseAreaChart({
@@ -51,11 +53,12 @@ export function BaseAreaChart({
   valueFormatter,
   emptyTitle,
   emptyDescription,
+  stacked = false,
 }: BaseAreaChartProps) {
   const colors = useChartColors();
 
   if (!data.length) {
-    return <ChartEmptyState icon={Activity} title={emptyTitle} description={emptyDescription} height={height} />;
+    return <ChartEmptyState icon={TrendingUp} title={emptyTitle} description={emptyDescription} height={height} />;
   }
 
   return (
@@ -64,11 +67,10 @@ export function BaseAreaChart({
         <defs>
           {series.map((s, i) => {
             const color = s.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
-            const [startOp, endOp] = s.gradientOpacity ?? [0.3, 0];
             return (
-              <linearGradient key={s.dataKey} id={`grad-${s.dataKey}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={color} stopOpacity={startOp} />
-                <stop offset="95%" stopColor={color} stopOpacity={endOp} />
+              <linearGradient key={`gradient-${s.dataKey}`} id={`color-${s.dataKey}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor={color} stopOpacity={0.3} />
+                <stop offset="95%" stopColor={color} stopOpacity={0} />
               </linearGradient>
             );
           })}
@@ -86,21 +88,18 @@ export function BaseAreaChart({
         />
         <Tooltip content={<ChartTooltipContent valueFormatter={valueFormatter} />} />
         {showLegend && <Legend wrapperStyle={{ paddingTop: 16 }} />}
-        {series.map((s, i) => {
-          const color = s.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
-          return (
-            <Area
-              key={s.dataKey}
-              type="monotone"
-              dataKey={s.dataKey}
-              name={s.label}
-              stroke={color}
-              strokeWidth={s.strokeWidth ?? 2}
-              fillOpacity={1}
-              fill={`url(#grad-${s.dataKey})`}
-            />
-          );
-        })}
+        {series.map((s, i) => (
+          <Area
+            key={s.dataKey}
+            type="monotone"
+            dataKey={s.dataKey}
+            name={s.label}
+            stroke={s.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length]}
+            fill={`url(#color-${s.dataKey})`}
+            strokeWidth={s.strokeWidth ?? 2}
+            stackId={stacked ? "1" : undefined}
+          />
+        ))}
       </AreaChart>
     </ResponsiveContainer>
   );
