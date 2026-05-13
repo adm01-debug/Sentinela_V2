@@ -4,7 +4,7 @@
 // ============================================================
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
 
@@ -59,10 +59,8 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   } = useQuery({
     queryKey,
     queryFn: async (): Promise<SavedFilter[]> => {
-      if (!isSupabaseReady) {
-        logger.info('[SavedFilters] Supabase não configurado, usando mock');
-        return mockFilters.filter((f) => f.entity_type === entityType);
-      }
+      // Ready to fetch
+
 
       const { data, error } = await supabase
         .from('saved_filters')
@@ -89,10 +87,8 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   // ============================================================
   const saveFilterMutation = useMutation({
     mutationFn: async (filter: { name: string; filters: unknown; is_default?: boolean }) => {
-      if (!isSupabaseReady) {
-        logger.info('[SavedFilters] Mock: salvando filtro', filter.name);
-        return { id: `mock-${Date.now()}`, ...filter, entity_type: entityType, created_at: new Date().toISOString() };
-      }
+      // Proceed to save
+
 
       const { data: userData } = await supabase.auth.getUser();
 
@@ -126,10 +122,8 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   // ============================================================
   const deleteFilterMutation = useMutation({
     mutationFn: async (id: string) => {
-      if (!isSupabaseReady) {
-        logger.info('[SavedFilters] Mock: deletando filtro', id);
-        return;
-      }
+      // Proceed to delete
+
 
       const { error } = await supabase
         .from('saved_filters')
@@ -153,10 +147,8 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   // ============================================================
   const setDefaultMutation = useMutation({
     mutationFn: async (id: string) => {
-      if (!isSupabaseReady) {
-        logger.info('[SavedFilters] Mock: definindo padrão', id);
-        return;
-      }
+      // Proceed to set default
+
 
       // Remove default de todos os filtros do mesmo tipo
       await supabase

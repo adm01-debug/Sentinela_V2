@@ -4,7 +4,8 @@
 // ============================================================
 
 import { logger } from '@/lib/logger';
-import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
+import * as Sentry from '@sentry/react';
 
 // ============================================================
 // TYPES
@@ -52,7 +53,26 @@ class ErrorTracker {
     if (this.initialized) return;
     this.initialized = true;
 
-    // Global error handler
+    // Initialize Sentry
+    const sentryDsn = import.meta.env.VITE_SENTRY_DSN;
+    if (sentryDsn) {
+      Sentry.init({
+        dsn: sentryDsn,
+        integrations: [
+          Sentry.browserTracingIntegration(),
+          Sentry.replayIntegration(),
+        ],
+        // Performance Monitoring
+        tracesSampleRate: 1.0,
+        // Session Replay
+        replaysSessionSampleRate: 0.1,
+        replaysOnErrorSampleRate: 1.0,
+        environment: import.meta.env.MODE,
+      });
+      logger.info('[ErrorTracker] Sentry Initialized');
+    }
+
+    // Global error handler (Native fallback)
     window.addEventListener('error', (event) => {
       this.captureError(event.error ?? new Error(event.message), {
         component: 'window.onerror',
@@ -64,7 +84,7 @@ class ErrorTracker {
       });
     });
 
-    // Unhandled promise rejections
+    // Unhandled promise rejections (Native fallback)
     window.addEventListener('unhandledrejection', (event) => {
       const error =
         event.reason instanceof Error
@@ -76,10 +96,10 @@ class ErrorTracker {
       });
     });
 
-    // Periodic flush
+    // Periodic flush (to internal logs)
     this.flushTimer = setInterval(() => this.flush(), this.config.flushIntervalMs);
 
-    logger.info('[ErrorTracker] Initialized');
+    logger.info('[ErrorTracker] Native collection initialized');
   }
 
   captureError(
@@ -115,6 +135,15 @@ class ErrorTracker {
       timestamp: new Date().toISOString(),
     };
 
+    // Forward to Sentry
+    Sentry.captureException(error, {
+      extra: options.context,
+      tags: {
+        component: options.component,
+        severity: report.severity,
+      },
+    });
+
     this.queue.push(report);
     logger.error(`[ErrorTracker] Captured: ${report.message}`, report.component ?? '');
 
@@ -137,10 +166,8 @@ class ErrorTracker {
 
     const batch = this.queue.splice(0, this.config.maxQueueSize);
 
-    if (!isSupabaseReady) {
-      logger.warn(`[ErrorTracker] Supabase not ready, discarding ${batch.length} errors`);
-      return;
-    }
+    // Supabase will handle errors if not configured or network down
+
 
     try {
       const { error } = await supabase.from('error_reports').insert(

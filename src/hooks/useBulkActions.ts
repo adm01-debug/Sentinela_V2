@@ -5,7 +5,7 @@
 
 import { useState, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, isSupabaseReady } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
 
@@ -107,10 +107,8 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
 
   const bulkDeleteMutation = useMutation({
     mutationFn: async (ids: string[]): Promise<BulkActionResult> => {
-      if (!isSupabaseReady) {
-        logger.info('[BulkActions] Mock: deletando', ids.length, 'itens');
-        return { success: ids, failed: [], total: ids.length };
-      }
+      // Proceed to delete
+
 
       const result: BulkActionResult = { success: [], failed: [], total: ids.length };
 
@@ -163,10 +161,8 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
     mutationFn: async (params: { ids: string[]; updates: Partial<T> }): Promise<BulkActionResult> => {
       const { ids, updates } = params;
 
-      if (!isSupabaseReady) {
-        logger.info('[BulkActions] Mock: atualizando', ids.length, 'itens');
-        return { success: ids, failed: [], total: ids.length };
-      }
+      // Proceed to update
+
 
       const result: BulkActionResult = { success: [], failed: [], total: ids.length };
 
@@ -202,9 +198,8 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
 
   const bulkArchiveMutation = useMutation({
     mutationFn: async (ids: string[]): Promise<BulkActionResult> => {
-      if (!isSupabaseReady) {
-        return { success: ids, failed: [], total: ids.length };
-      }
+      // Proceed to archive
+
 
       const { data, error } = await supabase
         .from(table)
@@ -236,9 +231,8 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
 
   const bulkRestoreMutation = useMutation({
     mutationFn: async (ids: string[]): Promise<BulkActionResult> => {
-      if (!isSupabaseReady) {
-        return { success: ids, failed: [], total: ids.length };
-      }
+      // Proceed to restore
+
 
       const { data, error } = await supabase
         .from(table)
@@ -270,9 +264,8 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
 
   const bulkDuplicateMutation = useMutation({
     mutationFn: async (ids: string[]): Promise<BulkActionResult> => {
-      if (!isSupabaseReady) {
-        return { success: ids, failed: [], total: ids.length };
-      }
+      // Proceed to duplicate
+
 
       // Buscar dados originais
       const { data: originals, error: fetchError } = await supabase

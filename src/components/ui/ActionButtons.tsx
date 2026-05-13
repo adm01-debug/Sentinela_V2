@@ -28,7 +28,7 @@ import {
 
 interface CopyButtonProps {
   value: string;
-  onCopy?: (value) => void;
+  onCopy?: (value: string) => void;
   size?: 'sm' | 'md' | 'lg';
   variant?: 'ghost' | 'outline' | 'default';
   className?: string;
