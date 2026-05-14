@@ -30,6 +30,7 @@ See `/docs` folder for complete documentation.
 
 ### 🔗 Links
 
+- [Audit Report (Enterprise)](./audit_report.md)
 - [API Reference](./docs/API.md)
 - [Architecture](./docs/ARCHITECTURE.md)
 - [Contributing](./CONTRIBUTING.md)
