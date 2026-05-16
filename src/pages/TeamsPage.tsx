@@ -1,4 +1,5 @@
 import { PageTransition } from '@/components/PageTransition';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Users, MoreVertical, Edit, Trash2 } from 'lucide-react';
@@ -34,11 +35,17 @@ export default function TeamsPage() {
   );
 
   return (<PageTransition>
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Equipes</h1>
-        <Button onClick={() => setOpen(true)}><Plus className="mr-2 h-4 w-4" />Nova Equipe</Button>
-      </div>
+    <div className="space-y-6">
+      <PageHeader 
+        title="Equipes" 
+        actions={
+          <Button onClick={() => setOpen(true)} className="gap-2 h-9">
+            <Plus className="h-4 w-4" />
+            Nova Equipe
+          </Button>
+        }
+      />
+
 
       <div className="relative max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />

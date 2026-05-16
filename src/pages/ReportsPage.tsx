@@ -26,6 +26,8 @@ export const ReportsPage = () => {
       <PageHeader
         title="Relatórios"
         description="Gere e visualize relatórios detalhados de atividades e produtividade."
+        showBackButton={false}
+
         actions={
           <Button onClick={() => navigate('/reports/custom')} className="gap-2 h-9">
             <Plus className="h-4 w-4" />
