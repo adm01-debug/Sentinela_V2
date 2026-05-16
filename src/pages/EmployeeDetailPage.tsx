@@ -4,6 +4,7 @@ import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { format, subDays } from 'date-fns';
 
 export default function EmployeeDetailPage() {
@@ -16,19 +17,29 @@ export default function EmployeeDetailPage() {
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
   if (!employee) return <div className="p-6">Funcionário não encontrado</div>;
 
+  const displayName = employee.full_name ?? (employee as any).name ?? 'Sem nome';
+
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
+      <PageHeader 
+        title={displayName} 
+        description={`Detalhes e histórico de atividades de ${displayName}.`}
+      />
+      
       <EmployeeHeader employee={employee} />
-      <Tabs defaultValue="timeline">
-        <TabsList>
+      
+      <Tabs defaultValue="timeline" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
           <TabsTrigger value="timeline">Timeline</TabsTrigger>
           <TabsTrigger value="stats">Estatísticas</TabsTrigger>
         </TabsList>
-        <TabsContent value="timeline">
+        <TabsContent value="timeline" className="mt-6">
           <ActivityTimeline employeeId={id!} />
         </TabsContent>
-        <TabsContent value="stats">
-          <div className="text-muted-foreground">Dados de estatísticas</div>
+        <TabsContent value="stats" className="mt-6">
+          <div className="bg-card border rounded-lg p-12 text-center text-muted-foreground">
+            Funcionalidade de estatísticas detalhadas em desenvolvimento.
+          </div>
         </TabsContent>
       </Tabs>
     </div>
