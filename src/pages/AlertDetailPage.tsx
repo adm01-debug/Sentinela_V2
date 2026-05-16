@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, AlertTriangle, Clock, User, CheckCircle } from 'lucide-react';
+import { AlertTriangle, Clock, User, CheckCircle } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -35,16 +36,22 @@ export default function AlertDetailPage() {
   const createdDate = new Date(alert.createdAt || alert.created_at || '');
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => navigate(-1)}><ArrowLeft className="mr-2 h-4 w-4" />Voltar</Button>
-          <AlertTriangle className={`h-6 w-6 ${alert.severity === 'critical' ? 'text-destructive' : 'text-warning'}`} />
-          <h1 className="text-2xl font-bold">{alert.title}</h1>
-          <Badge className={severityColors[alert.severity || 'medium']}>{alert.severity}</Badge>
-        </div>
-        {!alert.acknowledged && <Button onClick={() => acknowledge.mutate(id!)}><CheckCircle className="mr-2 h-4 w-4" />Reconhecer</Button>}
-      </div>
+    <div className="space-y-6">
+      <PageHeader 
+        title={alert.title || 'Alerta'} 
+        showBackButton={true}
+        actions={
+          <div className="flex items-center gap-2">
+            <Badge className={severityColors[alert.severity || 'medium']}>{alert.severity}</Badge>
+            {!alert.acknowledged && (
+              <Button onClick={() => acknowledge.mutate(id!)} className="h-9 gap-2">
+                <CheckCircle className="h-4 w-4" />Reconhecer
+              </Button>
+            )}
+          </div>
+        }
+      />
+
 
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
