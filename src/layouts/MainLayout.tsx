@@ -52,60 +52,61 @@ export const MainLayout = () => {
 
   return (
     <KeyboardShortcutsProvider>
-    <div className="flex h-screen bg-background">
-      {/* Desktop Sidebar */}
-      <nav id="main-nav" aria-label="Navegação principal" className="hidden md:block">
-        <AppSidebar />
-      </nav>
+      <div className="flex h-screen bg-background">
+        {/* Desktop Sidebar */}
+        <nav id="main-nav" aria-label="Navegação principal" className="hidden md:block">
+          <AppSidebar />
+        </nav>
 
-      {/* Mobile Sidebar Sheet */}
-      <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-        <SheetContent side="left" className="w-72 p-0">
-          <MobileSidebar onNavigate={handleMobileMenuClose} />
-        </SheetContent>
-      </Sheet>
+        {/* Mobile Sidebar Sheet */}
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetContent side="left" className="w-72 p-0">
+            <MobileSidebar onNavigate={handleMobileMenuClose} />
+          </SheetContent>
+        </Sheet>
 
-      {/* Command Palette */}
-      <CommandPalette open={isCommandPaletteOpen} onOpenChange={setIsCommandPaletteOpen} />
-      <KeyboardShortcutsDialog />
+        {/* Command Palette */}
+        <CommandPalette open={isCommandPaletteOpen} onOpenChange={setIsCommandPaletteOpen} />
+        <KeyboardShortcutsDialog />
 
-      {/* Main Content Area */}
-      <div
-        className={cn(
-          'flex-1 flex flex-col overflow-hidden transition-all duration-300',
-          'md:ml-[60px]',
-          !sidebarCollapsed && 'md:ml-[252px]'
-        )}
-      >
-        <Header
-          onMenuClick={handleMobileMenuToggle}
-          onCommandPaletteOpen={handleCommandPaletteOpen}
-        />
-        <main
-          id="main-content"
-          role="main"
-          className="flex-1 overflow-auto px-4 py-4 sm:px-5 sm:py-5 pb-20 md:pb-5"
+        {/* Main Content Area */}
+        <div
+          className={cn(
+            'flex-1 flex flex-col overflow-hidden transition-all duration-300',
+            'md:ml-[60px]',
+            !sidebarCollapsed && 'md:ml-[252px]'
+          )}
         >
-          <Breadcrumbs className="mb-3" />
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={location.pathname}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-            >
-              <Outlet />
-            </motion.div>
-          </AnimatePresence>
-          </div>
-        </main>
+          <Header
+            onMenuClick={handleMobileMenuToggle}
+            onCommandPaletteOpen={handleCommandPaletteOpen}
+          />
+          <main
+            id="main-content"
+            role="main"
+            className="flex-1 overflow-auto px-4 py-4 sm:px-5 sm:py-5 pb-20 md:pb-5 scroll-smooth"
+          >
+            <div className="max-w-[1600px] mx-auto w-full">
+              <Breadcrumbs className="mb-4" />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={location.pathname}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                >
+                  <Outlet />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </main>
 
-        {/* Mobile Bottom Navigation */}
-        <BottomNav />
-        <ScrollToTopButton />
+          {/* Mobile Bottom Navigation */}
+          <BottomNav />
+          <ScrollToTopButton />
+        </div>
       </div>
-    </div>
     </KeyboardShortcutsProvider>
   );
 };
