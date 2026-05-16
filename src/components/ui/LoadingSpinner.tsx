@@ -31,19 +31,43 @@ export const LoadingSpinner = memo(LoadingSpinnerComponent);
  */
 export function BrandedSplash() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-8 overflow-hidden">
       <div className="relative">
-        {/* Glow ring */}
-        <div className="absolute inset-0 rounded-2xl bg-primary/20 blur-xl animate-pulse" />
-        <div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent shadow-lg">
-          <Shield className="h-8 w-8 text-white" />
+        {/* Glow rings */}
+        <div className="absolute inset-0 rounded-2xl bg-primary/25 blur-2xl animate-pulse scale-150" />
+        <div className="absolute inset-0 rounded-2xl bg-accent/20 blur-xl animate-pulse delay-700" />
+        
+        <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-accent shadow-2xl border border-white/10 overflow-hidden group">
+          <Shield className="h-10 w-10 text-white animate-in zoom-in-50 duration-500" />
+          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       </div>
-      <div className="text-center space-y-1">
-        <h1 className="text-xl font-bold text-foreground tracking-tight">Sentinela</h1>
-        <p className="text-sm text-muted-foreground">Carregando...</p>
+      
+      <div className="text-center space-y-2 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
+        <h1 className="text-2xl font-black text-foreground tracking-tighter uppercase italic">
+          Sentinela<span className="text-primary not-italic">v2</span>
+        </h1>
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-sm font-medium text-muted-foreground/80 tracking-widest uppercase">
+            Autenticando acesso seguro
+          </p>
+          <div className="w-48 h-1 bg-muted rounded-full overflow-hidden">
+            <div className="h-full bg-primary animate-[shimmer_2s_infinite_linear]" 
+                 style={{ 
+                   width: '40%',
+                   backgroundImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+                 }} 
+            />
+          </div>
+        </div>
       </div>
-      <Loader2 className="h-5 w-5 animate-spin text-primary" />
+      
+      <style>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(250%); }
+        }
+      `}</style>
     </div>
   );
 }
