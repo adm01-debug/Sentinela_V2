@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Download, FileDown, FileSpreadsheet, FileText, Loader2 } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -42,8 +43,13 @@ export default function DataExportPage() {
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <div><h1 className="text-2xl font-bold flex items-center gap-2"><Download className="h-6 w-6 text-primary" />Exportação de Dados</h1><p className="text-muted-foreground mt-1">Exporte relatórios e dados do sistema</p></div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Exportação de Dados"
+        description="Exporte relatórios e dados do sistema"
+        showBackButton={false}
+      />
+
       <Card>
         <CardHeader><CardTitle>Configurar Exportação</CardTitle></CardHeader>
         <CardContent className="space-y-4">
