@@ -4,7 +4,7 @@ import { useEmployeesPage } from '@/hooks/useEmployeesPage';
 import { EmployeeStatsCards } from '@/components/employees/EmployeeStatsCards';
 import { EmployeeFilters } from '@/components/employees/EmployeeFilters';
 import { EmployeeTable } from '@/components/employees/EmployeeTable';
-import { PageTransition } from '@/components/PageTransition';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
@@ -63,18 +63,17 @@ export const EmployeesPage = () => {
   const PIE_COLORS = [colors.success, colors.muted, colors.warning, colors.destructive];
 
   return (
-    <PageTransition>
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">{t('employees.title')}</h1>
-            <p className="text-sm text-muted-foreground">{t('employees.subtitle')}</p>
-          </div>
-          <Button onClick={() => navigate('/employees/new')} className="gap-2">
+    <div className="space-y-6">
+      <PageHeader
+        title={t('employees.title')}
+        description={t('employees.subtitle')}
+        actions={
+          <Button onClick={() => navigate('/employees/new')} className="gap-2 h-9">
             <Plus className="h-4 w-4" />
             {t('employees.addEmployee')}
           </Button>
-        </div>
+        }
+      />
 
         <EmployeeStatsCards stats={stats} isLoading={loading} />
 
@@ -142,7 +141,7 @@ export const EmployeesPage = () => {
           onUnassignDevice={handleUnassignDevice}
         />
       </div>
-    </PageTransition>
+    </div>
   );
 };
 
