@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './AuthProvider';
 import { FeatureFlagsProvider } from '@/lib/feature-flags/provider';
 import { PermissionsProvider } from '@/lib/permissions/provider';
 import { ErrorBoundary } from '@/lib/error-handling';
@@ -22,13 +23,15 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <ScrollToTop />
           <ThemeProvider defaultTheme="system">
-            <TooltipProvider delayDuration={200}>
-              <FeatureFlagsProvider>
-                <PermissionsProvider role="viewer">
-                  {children}
-                </PermissionsProvider>
-              </FeatureFlagsProvider>
-            </TooltipProvider>
+            <AuthProvider>
+              <TooltipProvider delayDuration={200}>
+                <FeatureFlagsProvider>
+                  <PermissionsProvider role="viewer">
+                    {children}
+                  </PermissionsProvider>
+                </FeatureFlagsProvider>
+              </TooltipProvider>
+            </AuthProvider>
           </ThemeProvider>
         </BrowserRouter>
       </QueryClientProvider>

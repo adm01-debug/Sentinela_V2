@@ -11,6 +11,8 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useRef } from 'react';
 
 interface AuditEvent {
   id: string;
@@ -73,6 +75,15 @@ export default function AuditLogPage() {
     .filter(e => tab === 'all' || e.source === tab)
     .filter(e => !search || e.type.includes(search) || e.detail.toLowerCase().includes(search.toLowerCase()) || e.ip?.includes(search));
 
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const rowVirtualizer = useVirtualizer({
+    count: filtered.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 80,
+    overscan: 5,
+  });
+
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
 
   return (
@@ -115,21 +126,52 @@ export default function AuditLogPage() {
       {filtered.length === 0 ? (
         <Card><CardContent className="py-12 text-center text-muted-foreground"><FileText className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhum evento encontrado.</p></CardContent></Card>
       ) : (
-        <Card><CardContent className="p-0 divide-y">
-          {filtered.map(event => (
-            <div key={`${event.source}-${event.id}`} className="flex items-center justify-between p-4 hover:bg-accent/50">
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <Badge variant={event.source === 'security' ? 'destructive' : 'outline'}>{event.type}</Badge>
-                  {event.ip && <span className="text-xs text-muted-foreground">IP: {event.ip}</span>}
-                  <Badge variant="secondary" className="text-[10px]">{event.source === 'security' ? 'Segurança' : 'Config'}</Badge>
-                </div>
-                <p className="text-sm text-muted-foreground mt-1">{event.detail}</p>
+        <Card>
+          <CardContent className="p-0">
+            <div
+              ref={parentRef}
+              className="h-[600px] overflow-auto"
+            >
+              <div
+                style={{
+                  height: `${rowVirtualizer.getTotalSize()}px`,
+                  width: '100%',
+                  position: 'relative',
+                }}
+              >
+                {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                  const event = filtered[virtualRow.index];
+                  return (
+                    <div
+                      key={`${event.source}-${event.id}`}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: `${virtualRow.size}px`,
+                        transform: `translateY(${virtualRow.start}px)`,
+                      }}
+                      className="flex items-center justify-between p-4 border-b hover:bg-accent/50 transition-colors"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge variant={event.source === 'security' ? 'destructive' : 'outline'}>{event.type}</Badge>
+                          {event.ip && <span className="text-xs text-muted-foreground">IP: {event.ip}</span>}
+                          <Badge variant="secondary" className="text-[10px]">{event.source === 'security' ? 'Segurança' : 'Config'}</Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1 truncate">{event.detail}</p>
+                      </div>
+                      <span className="text-xs text-muted-foreground whitespace-nowrap ml-4">
+                        {format(new Date(event.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
-              <span className="text-xs text-muted-foreground whitespace-nowrap ml-4">{format(new Date(event.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}</span>
             </div>
-          ))}
-        </CardContent></Card>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

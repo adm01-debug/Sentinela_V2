@@ -33,7 +33,11 @@ let injected = false;
  * Safe to call multiple times - only injects once.
  */
 export function injectStructuredData(): void {
-  if (injected || typeof document === 'undefined') return;
+  // Security improvement: Don't inject SEO metadata in sensitive/admin environments if configured
+  const shouldSkipSEO = window.location.pathname.startsWith('/admin') || 
+                        window.location.pathname.startsWith('/settings');
+  
+  if (injected || typeof document === 'undefined' || shouldSkipSEO) return;
 
   const script = document.createElement('script');
   script.type = 'application/ld+json';

@@ -164,10 +164,12 @@ class ErrorTracker {
   async flush(): Promise<void> {
     if (this.queue.length === 0) return;
 
-    const batch = this.queue.splice(0, this.config.maxQueueSize);
-
-    // Supabase will handle errors if not configured or network down
-
+    // Load pending from storage
+    const stored = localStorage.getItem('sentinela_pending_errors');
+    const pending: ErrorReport[] = stored ? JSON.parse(stored) : [];
+    
+    const batch = [...pending, ...this.queue.splice(0, this.config.maxQueueSize)];
+    if (batch.length === 0) return;
 
     try {
       const { error } = await supabase.from('error_reports').insert(
@@ -182,12 +184,16 @@ class ErrorTracker {
           occurred_at: r.timestamp,
         }))
       );
+
       if (error) {
-        logger.warn('[ErrorTracker] Failed to persist errors:', error.message);
-        // Silently fail - don't re-queue to avoid loops
+        logger.warn('[ErrorTracker] Failed to persist errors, saving locally:', error.message);
+        localStorage.setItem('sentinela_pending_errors', JSON.stringify(batch.slice(-50)));
+      } else {
+        localStorage.removeItem('sentinela_pending_errors');
       }
     } catch {
-      logger.warn('[ErrorTracker] Flush failed');
+      logger.warn('[ErrorTracker] Flush failed, saving locally');
+      localStorage.setItem('sentinela_pending_errors', JSON.stringify(batch.slice(-50)));
     }
   }
 

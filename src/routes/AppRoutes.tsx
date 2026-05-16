@@ -1,10 +1,10 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ROUTES } from '@/constants';
 import { MainLayout } from '@/layouts/MainLayout';
 import { BrandedSplash } from '@/components/ui/LoadingSpinner';
 import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
-import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 
 // ============================================================
 // LAZY LOADED PAGES
@@ -75,37 +75,16 @@ const EmployeeRiskProfilePage = lazy(() => import('@/pages/admin/ueba/EmployeeRi
 const UEBASettingsPage = lazy(() => import('@/pages/admin/ueba/UEBASettingsPage'));
 
 // ============================================================
-// SESSION HOOK (single source)
-// ============================================================
-function useSupabaseSession() {
-  const [session, setSession] = useState<import('@supabase/supabase-js').Session | null | undefined>(undefined);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  return session;
-}
-
-// ============================================================
 // ROUTE GUARDS
 // ============================================================
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const session = useSupabaseSession();
+  const { isAuthenticated, isLoading } = useAuth();
   
-  if (session === undefined) {
+  if (isLoading) {
     return <BrandedSplash />;
   }
   
-  if (!session) {
+  if (!isAuthenticated) {
     return <Navigate to="/auth" replace />;
   }
   
@@ -113,13 +92,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  const session = useSupabaseSession();
+  const { isAuthenticated, isLoading } = useAuth();
   
-  if (session === undefined) {
+  if (isLoading) {
     return <BrandedSplash />;
   }
   
-  if (session) {
+  if (isAuthenticated) {
     return <Navigate to={ROUTES.DASHBOARD} replace />;
   }
   
