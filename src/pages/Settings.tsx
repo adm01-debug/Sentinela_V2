@@ -13,10 +13,11 @@ import { EditApplicationDialog } from '@/components/EditApplicationDialog';
 import { SettingsAuditLog } from '@/components/SettingsAuditLog';
 import { MFASettings } from '@/components/MFASettings';
 import { AlertSettingsPanel } from '@/components/AlertSettingsPanel';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useSettings as useSettingsHook, type ApplicationRule } from '@/hooks/useSettings';
 import { type SecurityPolicy, categoryLabels } from '@/data/settingsData';
 import { SettingsSkeleton } from '@/components/PageSkeletons';
-import { ArrowLeft, Shield, AppWindow, Bell, UserCog, Search, Loader2 } from 'lucide-react';
+import { Shield, AppWindow, Bell, UserCog, Search, Loader2 } from 'lucide-react';
 
 const SettingsContent = memo(function SettingsContent() {
   const { t } = useTranslation();
@@ -61,10 +62,10 @@ const SettingsContent = memo(function SettingsContent() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">{t('settings.title')}</h1>
-        <p className="text-sm text-muted-foreground">{t('settings.subtitle')}</p>
-      </div>
+      <PageHeader
+        title={t('settings.title')}
+        description={t('settings.subtitle')}
+      />
 
       <div>
         <Tabs defaultValue="policies" className="space-y-6">
