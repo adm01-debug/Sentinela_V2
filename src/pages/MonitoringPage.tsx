@@ -90,6 +90,8 @@ export default function MonitoringPage() {
       <PageHeader
         title="Monitoramento em Tempo Real"
         description="Acompanhe a atividade dos funcionários e status de produtividade ao vivo."
+        showBackButton={false}
+
         actions={
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 mr-2">

@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 import { BackButton } from '@/components/navigation/BackButton';
+import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 
 interface PageHeaderProps {
   title: string;
@@ -20,7 +21,9 @@ export function PageHeader({
   showBackButton = true
 }: PageHeaderProps) {
   return (
-    <div className={cn('flex flex-col gap-4 mb-6 animate-in fade-in slide-in-from-top-2 duration-500', className)}>
+    <div className={cn('flex flex-col gap-2 mb-6 animate-in fade-in slide-in-from-top-2 duration-500', className)}>
+      <Breadcrumbs className="mb-2" />
+
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex flex-col gap-1">
           {showBackButton && (
