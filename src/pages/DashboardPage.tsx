@@ -8,8 +8,8 @@ import { DashboardCustomizer } from '@/components/DashboardCustomizer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PageTransition } from '@/components/PageTransition';
 import { WelcomeBanner } from '@/components/WelcomeBanner';
+import { PageHeader } from '@/components/layout/PageHeader';
 
 import { type Period, fallbackAlerts, fallbackActivities } from './dashboard/dashboardData';
 import { DashboardChartsRow, DepartmentPieChart } from './dashboard/DashboardCharts';
@@ -47,32 +47,37 @@ export const DashboardPage = () => {
   const alertsCount = stats?.alertsCount || 3;
 
   return (
-    <PageTransition>
     <div className="space-y-6">
       <WelcomeBanner />
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">{t('dashboard.title')}</h1>
-          <p className="text-sm text-muted-foreground">
-            {t('dashboard.subtitle')} — {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1">
-            {(['day', 'week', 'month'] as Period[]).map(p => (
-              <Button key={p} variant={period === p ? 'default' : 'outline'} size="sm" onClick={() => setPeriod(p)}>
-                {p === 'day' ? 'Dia' : p === 'week' ? 'Semana' : 'Mês'}
-              </Button>
-            ))}
+      
+      <PageHeader
+        title={t('dashboard.title')}
+        description={`${t('dashboard.subtitle')} — ${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}`}
+        showBackButton={false}
+        actions={
+          <div className="flex items-center gap-2">
+            <div className="hidden md:flex gap-1 mr-2">
+              {(['day', 'week', 'month'] as Period[]).map(p => (
+                <Button 
+                  key={p} 
+                  variant={period === p ? 'default' : 'outline'} 
+                  size="sm" 
+                  onClick={() => setPeriod(p)}
+                  className="h-8"
+                >
+                  {p === 'day' ? 'Dia' : p === 'week' ? 'Semana' : 'Mês'}
+                </Button>
+              ))}
+            </div>
+            <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)} className="h-8">
+              <Filter className="h-4 w-4 mr-1.5" />
+              Filtros
+              {departmentFilter !== 'all' && <Badge variant="secondary" className="ml-1.5 h-4 w-4 p-0 flex items-center justify-center">1</Badge>}
+            </Button>
+            <DashboardCustomizer />
           </div>
-          <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)}>
-            <Filter className="h-4 w-4 mr-1" />
-            Filtros
-            {departmentFilter !== 'all' && <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 flex items-center justify-center">1</Badge>}
-          </Button>
-          <DashboardCustomizer />
-        </div>
-      </div>
+        }
+      />
 
       {showFilters && (
         <div className="flex items-center gap-4 p-3 rounded-lg border bg-muted/30">
@@ -117,7 +122,6 @@ export const DashboardPage = () => {
         <DepartmentPieChart departmentData={departmentData} />
       </div>
     </div>
-    </PageTransition>
   );
 };
 
