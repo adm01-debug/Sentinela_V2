@@ -11,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useMonitoringPage, type MonitoringEmployee } from '@/hooks/useMonitoringPage';
 import { useChartColors } from '@/hooks/useChartColors';
 import { formatDistanceToNow } from 'date-fns';
