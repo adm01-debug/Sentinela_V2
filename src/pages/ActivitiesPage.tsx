@@ -5,6 +5,7 @@ import { ActivityFilters } from '@/components/ActivityFilters';
 import { ActivityChart } from '@/components/ActivityChart';
 import { ActivityTable } from '@/components/ActivityTable';
 import { ApplicationBreakdown } from '@/components/ApplicationBreakdown';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { format, subDays } from 'date-fns';
 
 interface HourlyItem { date: string; value: number; }
@@ -24,7 +25,10 @@ export const ActivitiesPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">{t('nav.activities')}</h1>
+      <PageHeader 
+        title={t('nav.activities')} 
+        description="Visualize e analise todas as atividades registradas no sistema."
+      />
       <ActivityFilters filters={filters} onChange={setFilters} />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2"><ActivityChart data={summaryObj?.hourlyDistribution || []} /></div>

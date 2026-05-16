@@ -62,22 +62,28 @@ export function Breadcrumbs({ className }: { className?: string }) {
   }
 
   return (
-    <nav aria-label="Breadcrumb" className={cn('flex items-center gap-1 text-sm', className)}>
+    <nav 
+      aria-label="Breadcrumb" 
+      className={cn(
+        'flex items-center gap-1 text-[11px] uppercase tracking-wider text-muted-foreground/60 transition-opacity duration-300 hover:opacity-100', 
+        className
+      )}
+    >
       <Link
         to="/dashboard"
-        className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
+        className="flex items-center hover:text-primary transition-colors p-1 -m-1"
       >
-        <Home className="h-3.5 w-3.5" />
+        <Home className="h-3 w-3" />
       </Link>
       {crumbs.map((crumb, i) => (
         <div key={crumb.path} className="flex items-center gap-1">
-          <ChevronRight className="h-3 w-3 text-muted-foreground/50" />
+          <ChevronRight className="h-2.5 w-2.5 opacity-40" />
           {i === crumbs.length - 1 ? (
-            <span className="font-medium text-foreground">{crumb.label}</span>
+            <span className="font-semibold text-primary/80">{crumb.label}</span>
           ) : (
             <Link
               to={crumb.path}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="hover:text-primary transition-colors p-1 -m-1"
             >
               {crumb.label}
             </Link>
