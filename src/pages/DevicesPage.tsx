@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useDevicesPage } from '@/hooks/useDevicesPage';
 import { useChartColors } from '@/hooks/useChartColors';
 import { formatDistanceToNow } from 'date-fns';
@@ -68,17 +69,19 @@ export default function DevicesPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Dispositivos</h1>
-          <p className="text-muted-foreground mt-1">Gerencie dispositivos monitorados</p>
-        </div>
-        <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
-          <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-          Atualizar
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Dispositivos"
+        description="Gerencie dispositivos monitorados"
+        showBackButton={false}
+        actions={
+          <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing} className="h-9">
+            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            Atualizar
+          </Button>
+        }
+      />
+
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
