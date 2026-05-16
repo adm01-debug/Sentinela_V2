@@ -1,6 +1,7 @@
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth, type User } from '@/providers/AuthProvider';
 
 export { useAuth };
+export type { User };
 
 // Re-export convenience hooks that use Supabase
 import { useState } from 'react';

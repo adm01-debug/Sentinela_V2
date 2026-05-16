@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupaUser, Session as SupaSession } from '@supabase/supabase-js';
-import type { User, Session } from '@/hooks/useAuth';
+import type { User } from '@/providers/AuthProvider';
 
 export const authService = {
   async getSession() {
