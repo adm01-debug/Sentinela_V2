@@ -13,6 +13,7 @@ interface ReportItem {
 }
 
 export const ReportsPage = () => {
+  const navigate = useNavigate();
   const { data: reportsData, isLoading } = useReports();
   const { data: templates } = useReportTemplates();
 
@@ -22,9 +23,16 @@ export const ReportsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Reports</h1>
-      </div>
+      <PageHeader
+        title="Relatórios"
+        description="Gere e visualize relatórios detalhados de atividades e produtividade."
+        actions={
+          <Button onClick={() => navigate('/reports/custom')} className="gap-2 h-9">
+            <Plus className="h-4 w-4" />
+            Novo Relatório
+          </Button>
+        }
+      />
       {isLoading ? (
         <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin" /></div>
       ) : (
