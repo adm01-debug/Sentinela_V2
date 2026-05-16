@@ -1,4 +1,5 @@
 import { Plug, Webhook, MessageCircle, Mail, Bell } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

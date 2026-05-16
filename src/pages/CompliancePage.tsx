@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Shield, CheckCircle, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
