@@ -75,72 +75,71 @@ export const EmployeesPage = () => {
         }
       />
 
-        <EmployeeStatsCards stats={stats} isLoading={loading} />
+      <EmployeeStatsCards stats={stats} isLoading={loading} />
 
-        {/* Charts Row */}
-        <div className="grid gap-4 grid-cols-1 lg:grid-cols-5">
-          <Card className="lg:col-span-3">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Distribuição por Departamento</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[220px]">
-                <BaseBarChart
-                  data={departmentData}
-                  series={[{ dataKey: 'value', label: 'Funcionários', color: colors.primary }]}
-                  xAxisKey="name"
-                  height={220}
-                />
-              </div>
-            </CardContent>
-          </Card>
+      {/* Charts Row */}
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-5">
+        <Card className="lg:col-span-3">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Distribuição por Departamento</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[220px]">
+              <BaseBarChart
+                data={departmentData}
+                series={[{ dataKey: 'value', label: 'Funcionários', color: colors.primary }]}
+                xAxisKey="name"
+                height={220}
+              />
+            </div>
+          </CardContent>
+        </Card>
 
-          <Card className="lg:col-span-2">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Status dos Funcionários</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[160px]">
-                <BaseDonutChart
-                  data={statusData}
-                  height={160}
-                  innerRadius={40}
-                  outerRadius={65}
-                  colors={PIE_COLORS}
-                  showLabel={false}
-                />
-              </div>
-              <div className="flex justify-center gap-4 mt-2">
-                {statusData.map((s, i) => (
-                  <div key={s.name} className="flex items-center gap-1.5 text-xs">
-                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }} />
-                    <span className="text-muted-foreground">{s.name}</span>
-                    <span className="font-medium">{s.value}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <EmployeeFilters
-          filters={filters}
-          teams={safeTeams}
-          onSearchChange={setSearchTerm}
-          onStatusChange={setStatusFilter}
-          onTeamChange={setTeamFilter}
-          onClearFilters={clearFilters}
-        />
-
-        <EmployeeTable
-          employees={filteredEmployees}
-          teams={safeTeams}
-          onEdit={openEditDialog}
-          onDelete={openDeleteDialog}
-          onAssignDevice={openDeviceDialog}
-          onUnassignDevice={handleUnassignDevice}
-        />
+        <Card className="lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Status dos Funcionários</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[160px]">
+              <BaseDonutChart
+                data={statusData}
+                height={160}
+                innerRadius={40}
+                outerRadius={65}
+                colors={PIE_COLORS}
+                showLabel={false}
+              />
+            </div>
+            <div className="flex justify-center gap-4 mt-2">
+              {statusData.map((s, i) => (
+                <div key={s.name} className="flex items-center gap-1.5 text-xs">
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }} />
+                  <span className="text-muted-foreground">{s.name}</span>
+                  <span className="font-medium">{s.value}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
+      <EmployeeFilters
+        filters={filters}
+        teams={safeTeams}
+        onSearchChange={setSearchTerm}
+        onStatusChange={setStatusFilter}
+        onTeamChange={setTeamFilter}
+        onClearFilters={clearFilters}
+      />
+
+      <EmployeeTable
+        employees={filteredEmployees}
+        teams={safeTeams}
+        onEdit={openEditDialog}
+        onDelete={openDeleteDialog}
+        onAssignDevice={openDeviceDialog}
+        onUnassignDevice={handleUnassignDevice}
+      />
     </div>
   );
 };
