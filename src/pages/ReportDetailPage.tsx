@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download, Calendar, User, FileText } from 'lucide-react';
+import { Download, Calendar, User, FileText } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -41,15 +42,18 @@ export default function ReportDetailPage() {
   const r = report as ReportData;
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => navigate(-1)}><ArrowLeft className="mr-2 h-4 w-4" />Voltar</Button>
-          <h1 className="text-2xl font-bold">{r.name || r.report_type || 'Relatório'}</h1>
-          <Badge variant={r.status === 'completed' ? 'default' : 'secondary'}>{r.status || 'pending'}</Badge>
-        </div>
-        <Button><Download className="mr-2 h-4 w-4" />Baixar</Button>
-      </div>
+    <div className="space-y-6">
+      <PageHeader 
+        title={r.name || r.report_type || 'Relatório'} 
+        showBackButton={true}
+        actions={
+          <div className="flex items-center gap-2">
+            <Badge variant={r.status === 'completed' ? 'default' : 'secondary'}>{r.status || 'pending'}</Badge>
+            <Button className="h-9 gap-2"><Download className="h-4 w-4" />Baixar</Button>
+          </div>
+        }
+      />
+
 
       <div className="grid gap-6 md:grid-cols-3">
         <Card>

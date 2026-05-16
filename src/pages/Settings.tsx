@@ -65,6 +65,8 @@ const SettingsContent = memo(function SettingsContent() {
       <PageHeader
         title={t('settings.title')}
         description={t('settings.subtitle')}
+        showBackButton={false}
+
       />
 
       <div>

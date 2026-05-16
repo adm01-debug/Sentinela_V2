@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Users, Plus } from 'lucide-react';
+import { Users, Plus } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -16,16 +17,18 @@ export default function TeamDetailPage() {
   if (!team) return <div className="p-6">Equipe não encontrada</div>;
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => navigate(-1)}><ArrowLeft className="mr-2 h-4 w-4" />Voltar</Button>
-          <Users className="h-6 w-6" />
-          <h1 className="text-2xl font-bold">{team.name}</h1>
-          <Badge>{team.member_count || 0} membros</Badge>
-        </div>
-        <Button><Plus className="mr-2 h-4 w-4" />Adicionar Membro</Button>
-      </div>
+    <div className="space-y-6">
+      <PageHeader 
+        title={team.name} 
+        showBackButton={true}
+        actions={
+          <div className="flex items-center gap-2">
+            <Badge className="mr-2">{team.member_count || 0} membros</Badge>
+            <Button className="h-9 gap-2"><Plus className="h-4 w-4" />Adicionar Membro</Button>
+          </div>
+        }
+      />
+
       <Card>
         <CardHeader><CardTitle>Membros</CardTitle></CardHeader>
         <CardContent>

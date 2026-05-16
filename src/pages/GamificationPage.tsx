@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useGamificationPage } from '@/hooks/useGamificationPage';
 import { useChartColors } from '@/hooks/useChartColors';
 import {
@@ -40,20 +41,22 @@ export default function GamificationPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2"><Trophy className="h-6 w-6 text-warning" />Gamificação</h1>
-          <p className="text-muted-foreground mt-1">Rankings, badges e recompensas</p>
-        </div>
-        <div className="flex gap-2">
-          {(['week', 'month', 'all'] as const).map(p => (
-            <Button key={p} variant={period === p ? 'default' : 'outline'} size="sm" onClick={() => handlePeriodChange(p)}>
-              {p === 'week' ? 'Semana' : p === 'month' ? 'Mês' : 'Geral'}
-            </Button>
-          ))}
-        </div>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Gamificação"
+        description="Rankings, badges e recompensas"
+        showBackButton={false}
+        actions={
+          <div className="flex gap-2">
+            {(['week', 'month', 'all'] as const).map(p => (
+              <Button key={p} variant={period === p ? 'default' : 'outline'} size="sm" onClick={() => handlePeriodChange(p)} className="h-9">
+                {p === 'week' ? 'Semana' : p === 'month' ? 'Mês' : 'Geral'}
+              </Button>
+            ))}
+          </div>
+        }
+      />
+
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

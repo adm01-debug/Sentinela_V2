@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search, MoreVertical, Mail, Shield, Trash2 } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,11 +16,20 @@ export default function UsersPage() {
   const filtered = (users || []).filter((u) => !search || u.name?.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Usuários</h1>
-        <Link to="/users/invite"><Button><Plus className="mr-2 h-4 w-4" />Convidar</Button></Link>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Usuários"
+        showBackButton={false}
+        actions={
+          <Link to="/users/invite">
+            <Button className="h-9 gap-2">
+              <Plus className="h-4 w-4" />
+              Convidar
+            </Button>
+          </Link>
+        }
+      />
+
       <div className="relative max-w-md"><Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" /><Input placeholder="Buscar usuários..." className="pl-9" value={search} onChange={e => setSearch(e.target.value)} /></div>
       <Card>
         <CardContent className="p-0 divide-y">

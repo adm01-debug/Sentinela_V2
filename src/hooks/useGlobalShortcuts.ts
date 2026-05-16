@@ -29,6 +29,13 @@ export function useGlobalShortcuts(onToggleHelp: () => void) {
     { key: 'r', alt: true, description: 'Ir para Relatórios', category: 'Navegação', action: () => navigate(ROUTES.REPORTS) },
     { key: 's', alt: true, description: 'Ir para Configurações', category: 'Navegação', action: () => navigate(ROUTES.SETTINGS) },
     // Actions
+    { key: 'Escape', description: 'Voltar para página anterior', category: 'Geral', action: () => {
+      if (window.history.length > 1) {
+        navigate(-1);
+      } else {
+        navigate(ROUTES.DASHBOARD);
+      }
+    } },
     { key: '?', shift: true, description: 'Mostrar atalhos', category: 'Geral', action: () => helpToggle.current() },
   ];
 

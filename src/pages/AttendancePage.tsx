@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -139,10 +140,12 @@ function AttendancePage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Controle de Assiduidade</h1>
-        <p className="text-muted-foreground">Atrasos, faltas, presença e horas extras</p>
-      </div>
+      <PageHeader
+        title="Controle de Assiduidade"
+        description="Atrasos, faltas, presença e horas extras"
+        showBackButton={false}
+      />
+
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">

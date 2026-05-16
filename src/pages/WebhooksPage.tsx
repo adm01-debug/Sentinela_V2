@@ -1,4 +1,5 @@
 import { Webhook, Plus, ExternalLink, Trash2 } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -30,11 +31,19 @@ export default function WebhooksPage() {
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="text-2xl font-bold flex items-center gap-2"><Webhook className="h-6 w-6 text-primary" />Webhooks</h1><p className="text-muted-foreground mt-1">Configure webhooks para notificações automáticas</p></div>
-        <Button onClick={() => setIsOpen(true)}><Plus className="mr-2 h-4 w-4" />Novo Webhook</Button>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Webhooks"
+        description="Configure webhooks para notificações automáticas"
+        showBackButton={false}
+        actions={
+          <Button onClick={() => setIsOpen(true)} className="h-9 gap-2">
+            <Plus className="h-4 w-4" />
+            Novo Webhook
+          </Button>
+        }
+      />
+
       {(webhooks || []).length === 0 ? (
         <Card><CardContent className="py-12 text-center text-muted-foreground"><Webhook className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhum webhook configurado.</p><p className="text-sm mt-1">Webhooks permitem notificar sistemas externos automaticamente.</p></CardContent></Card>
       ) : (

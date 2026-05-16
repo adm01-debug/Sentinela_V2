@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Shield, CheckCircle, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -40,8 +41,13 @@ export default function CompliancePage() {
   if (checking) return <div className="p-6 space-y-4">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-20 w-full" />)}</div>;
 
   return (
-    <div className="p-6 space-y-6">
-      <div><h1 className="text-2xl font-bold flex items-center gap-2"><Shield className="h-6 w-6 text-primary" />Compliance</h1><p className="text-muted-foreground mt-1">Status de conformidade e políticas</p></div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Compliance"
+        description="Status de conformidade e políticas"
+        showBackButton={false}
+      />
+
 
       <Card>
         <CardContent className="pt-6">

@@ -58,6 +58,8 @@ export const AlertsPage = () => {
       <PageHeader
         title={t('nav.alerts')}
         description="Visualize e gerencie todos os alertas de segurança e violações de política."
+        showBackButton={false}
+
         actions={
           unacknowledgedCount > 0 && (
             <Button variant="outline" size="sm" onClick={() => acknowledgeAll.mutate()} className="h-9">

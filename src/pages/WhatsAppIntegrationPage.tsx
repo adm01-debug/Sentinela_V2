@@ -1,4 +1,5 @@
 import { MessageCircle, Settings, Send } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -20,11 +21,19 @@ export default function WhatsAppIntegrationPage() {
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="text-2xl font-bold flex items-center gap-2"><MessageCircle className="h-6 w-6 text-success" />Integração WhatsApp</h1><p className="text-muted-foreground mt-1">Configure mensagens e alertas via WhatsApp</p></div>
-        <Button><Settings className="mr-2 h-4 w-4" />Configurar</Button>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Integração WhatsApp"
+        description="Configure mensagens e alertas via WhatsApp"
+        showBackButton={false}
+        actions={
+          <Button className="h-9 gap-2">
+            <Settings className="h-4 w-4" />
+            Configurar
+          </Button>
+        }
+      />
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card><CardContent className="pt-4 text-center"><MessageCircle className="h-5 w-5 mx-auto text-success" /><p className="text-2xl font-bold mt-1">{templates?.length || 0}</p><p className="text-xs text-muted-foreground">Templates</p></CardContent></Card>
         <Card><CardContent className="pt-4 text-center"><Send className="h-5 w-5 mx-auto text-info" /><p className="text-2xl font-bold mt-1">{templates?.filter((t) => t.is_active).length || 0}</p><p className="text-xs text-muted-foreground">Ativos</p></CardContent></Card>

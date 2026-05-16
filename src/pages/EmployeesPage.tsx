@@ -67,6 +67,8 @@ export const EmployeesPage = () => {
       <PageHeader
         title={t('employees.title')}
         description={t('employees.subtitle')}
+        showBackButton={false}
+
         actions={
           <Button onClick={() => navigate('/employees/new')} className="gap-2 h-9">
             <Plus className="h-4 w-4" />

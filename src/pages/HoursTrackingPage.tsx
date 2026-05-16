@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -87,20 +88,22 @@ function HoursTrackingPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Tracking de Horas</h1>
-          <p className="text-muted-foreground">Visualização detalhada de horas trabalhadas</p>
-        </div>
-        <Select value={period} onValueChange={setPeriod}>
-          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="week">Esta Semana</SelectItem>
-            <SelectItem value="month">Este Mês</SelectItem>
-            <SelectItem value="30days">30 Dias</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <PageHeader
+        title="Tracking de Horas"
+        description="Visualização detalhada de horas trabalhadas"
+        showBackButton={false}
+        actions={
+          <Select value={period} onValueChange={setPeriod}>
+            <SelectTrigger className="w-40 h-9"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="week">Esta Semana</SelectItem>
+              <SelectItem value="month">Este Mês</SelectItem>
+              <SelectItem value="30days">30 Dias</SelectItem>
+            </SelectContent>
+          </Select>
+        }
+      />
+
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-4">

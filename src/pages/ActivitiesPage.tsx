@@ -28,6 +28,8 @@ export const ActivitiesPage = () => {
       <PageHeader 
         title={t('nav.activities')} 
         description="Visualize e analise todas as atividades registradas no sistema."
+        showBackButton={false}
+
       />
       <ActivityFilters filters={filters} onChange={setFilters} />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

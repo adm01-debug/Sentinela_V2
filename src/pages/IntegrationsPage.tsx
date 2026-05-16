@@ -1,4 +1,5 @@
 import { Plug, Webhook, MessageCircle, Mail, Bell } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -26,13 +27,13 @@ export default function IntegrationsPage() {
   const getCountForType = (type) => integrations.filter(i => i.type === type).length;
 
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><Plug className="h-6 w-6 text-primary" />Integrações</h1>
-        <p className="text-muted-foreground mt-1">
-          {isLoading ? 'Carregando...' : `${activeCount} de ${totalCount} integrações ativas`}
-        </p>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Integrações"
+        description={isLoading ? 'Carregando...' : `${activeCount} de ${totalCount} integrações ativas`}
+        showBackButton={false}
+      />
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {INTEGRATION_ROUTES.map(integration => {
           const status = getStatusForType(integration.type);

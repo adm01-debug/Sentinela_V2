@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -75,11 +76,13 @@ export default function AuditLogPage() {
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
 
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><FileText className="h-6 w-6 text-primary" />Logs de Auditoria</h1>
-        <p className="text-muted-foreground mt-1">Histórico completo de ações e eventos do sistema</p>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Logs de Auditoria"
+        description="Histórico completo de ações e eventos do sistema"
+        showBackButton={false}
+      />
+
 
       <div className="flex gap-4 flex-wrap">
         <div className="relative flex-1 min-w-[200px]">

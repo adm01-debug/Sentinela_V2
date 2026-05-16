@@ -1,4 +1,5 @@
 import { PageTransition } from '@/components/PageTransition';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useState } from 'react';
 import { BarChart3, TrendingUp, Users, Clock } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -11,11 +12,22 @@ export default function AnalyticsPage() {
   const { data } = useAnalytics({ period });
 
   return (<PageTransition>
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Analytics</h1>
-        <Select value={period} onValueChange={setPeriod}><SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="7d">Últimos 7 dias</SelectItem><SelectItem value="30d">Últimos 30 dias</SelectItem><SelectItem value="90d">Últimos 90 dias</SelectItem></SelectContent></Select>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Analytics"
+        showBackButton={false}
+        actions={
+          <Select value={period} onValueChange={setPeriod}>
+            <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7d">Últimos 7 dias</SelectItem>
+              <SelectItem value="30d">Últimos 30 dias</SelectItem>
+              <SelectItem value="90d">Últimos 90 dias</SelectItem>
+            </SelectContent>
+          </Select>
+        }
+      />
+
       <div className="grid gap-4 md:grid-cols-4">
         <Card><CardContent className="pt-6"><div className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-success" /><span className="text-sm text-muted-foreground">Produtividade</span></div><p className="text-2xl font-bold mt-2">{data?.productivity || 0}%</p></CardContent></Card>
         <Card><CardContent className="pt-6"><div className="flex items-center gap-2"><Clock className="h-4 w-4 text-info" /><span className="text-sm text-muted-foreground">Horas Ativas</span></div><p className="text-2xl font-bold mt-2">{data?.activeHours || 0}h</p></CardContent></Card>
