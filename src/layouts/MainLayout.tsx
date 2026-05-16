@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { useState, useCallback, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AppSidebar } from '@/components/AppSidebar';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
@@ -19,8 +19,24 @@ export const MainLayout = () => {
   useDocumentTitle();
   const { sidebarCollapsed } = useUIStore();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+
+  // Global "Back" keyboard shortcut
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isMobileMenuOpen && !isCommandPaletteOpen) {
+        // Only navigate back if no modals are open
+        const isDialogVisible = document.querySelector('[role="dialog"]');
+        if (!isDialogVisible && location.pathname !== '/dashboard') {
+          navigate(-1);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [location.pathname, navigate, isMobileMenuOpen, isCommandPaletteOpen]);
 
   const handleMobileMenuToggle = useCallback(() => {
     setIsMobileMenuOpen(prev => !prev);
@@ -82,6 +98,7 @@ export const MainLayout = () => {
               <Outlet />
             </motion.div>
           </AnimatePresence>
+          </div>
         </main>
 
         {/* Mobile Bottom Navigation */}
