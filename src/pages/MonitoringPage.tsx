@@ -11,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useMonitoringPage, type MonitoringEmployee } from '@/hooks/useMonitoringPage';
 import { useChartColors } from '@/hooks/useChartColors';
 import { formatDistanceToNow } from 'date-fns';
@@ -85,23 +86,37 @@ export default function MonitoringPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Monitoramento em Tempo Real</h1>
-          <p className="text-muted-foreground mt-1">Acompanhe a atividade dos funcionários</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <Switch checked={autoRefresh} onCheckedChange={setAutoRefresh} />
-            <span className="text-sm text-muted-foreground">Auto-refresh</span>
+    <div className="space-y-6">
+      <PageHeader
+        title="Monitoramento em Tempo Real"
+        description="Acompanhe a atividade dos funcionários e status de produtividade ao vivo."
+        actions={
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 mr-2">
+              <Switch checked={autoRefresh} onCheckedChange={setAutoRefresh} className="scale-90" />
+              <span className="text-xs text-muted-foreground whitespace-nowrap">Auto-refresh</span>
+            </div>
+            <div className="flex gap-1 bg-muted/50 p-1 rounded-md">
+              <Button 
+                variant={viewMode === 'grid' ? 'secondary' : 'ghost'} 
+                size="icon" 
+                className="h-7 w-7" 
+                onClick={() => setViewMode('grid')}
+              >
+                <Grid className="h-3.5 w-3.5" />
+              </Button>
+              <Button 
+                variant={viewMode === 'list' ? 'secondary' : 'ghost'} 
+                size="icon" 
+                className="h-7 w-7" 
+                onClick={() => setViewMode('list')}
+              >
+                <List className="h-3.5 w-3.5" />
+              </Button>
+            </div>
           </div>
-          <div className="flex gap-1">
-            <Button variant={viewMode === 'grid' ? 'default' : 'outline'} size="icon" onClick={() => setViewMode('grid')}><Grid className="h-4 w-4" /></Button>
-            <Button variant={viewMode === 'list' ? 'default' : 'outline'} size="icon" onClick={() => setViewMode('list')}><List className="h-4 w-4" /></Button>
-          </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">

@@ -5,6 +5,7 @@ import { AlertList } from '@/components/AlertList';
 import { AlertFilters } from '@/components/AlertFilters';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useChartColors } from '@/hooks/useChartColors';
 import {
   BarChart, Bar, PieChart, Pie, Cell,
@@ -54,14 +55,17 @@ export const AlertsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{t('nav.alerts')}</h1>
-        {unacknowledgedCount > 0 && (
-          <Button variant="outline" onClick={() => acknowledgeAll.mutate()}>
-            Reconhecer Todos ({unacknowledgedCount})
-          </Button>
-        )}
-      </div>
+      <PageHeader
+        title={t('nav.alerts')}
+        description="Visualize e gerencie todos os alertas de segurança e violações de política."
+        actions={
+          unacknowledgedCount > 0 && (
+            <Button variant="outline" size="sm" onClick={() => acknowledgeAll.mutate()} className="h-9">
+              Reconhecer Todos ({unacknowledgedCount})
+            </Button>
+          )
+        }
+      />
 
       {/* Charts */}
       {alertsList.length > 0 && (
