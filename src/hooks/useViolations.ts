@@ -1,46 +1,55 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { violationService } from '@/services/violationService';
-import { useCallback, useMemo } from 'react';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCallback, useMemo } from "react";
+import { violationService } from "@/services/violationService";
 
 interface Violation {
   id: string;
   type: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   status: string;
-  employee_id: string | null;
+  employee_name: string | null;
   description: string | null;
   created_at: string;
 }
 
-export function useViolations(filters?: { severity?: string; status?: string; employeeId?: string }) {
+export function useViolations(filters?: {
+  severity?: string;
+  status?: string;
+  employeeName?: string;
+}) {
   const queryClient = useQueryClient();
 
   const query = useQuery({
-    queryKey: ['violations', filters],
+    queryKey: ["violations", filters],
     queryFn: async (): Promise<Violation[]> => {
       const data = await violationService.getViolations(filters);
 
-      return (data ?? []).map((row): Violation => ({
-        id: row.id,
-        type: row.violation_type ?? row.rule_id ?? 'unknown',
-        severity: (row.severity as Violation['severity']) ?? 'medium',
-        status: row.status ?? 'open',
-        employee_id: row.employee_id,
-        description: row.description,
-        created_at: row.created_at,
-      }));
+      return (data ?? []).map(
+        (row): Violation => ({
+          id: row.id,
+          type: row.violation_type ?? "unknown",
+          severity: (row.severity as Violation["severity"]) ?? "medium",
+          status: row.status ?? "open",
+          employee_name: row.employee_name ?? null,
+          description: row.description,
+          created_at: row.created_at,
+        })
+      );
     },
     staleTime: 30_000,
   });
 
   const resolveMutation = useMutation({
     mutationFn: (id: any) => violationService.resolveViolation(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['violations'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["violations"] }),
   });
 
   const violations = query.data ?? [];
-  const unresolved = useMemo(() => violations.filter(v => v.status !== 'resolved'), [violations]);
-  const critical = useMemo(() => violations.filter(v => v.severity === 'critical' && v.status !== 'resolved'), [violations]);
+  const unresolved = useMemo(() => violations.filter((v) => v.status !== "resolved"), [violations]);
+  const critical = useMemo(
+    () => violations.filter((v) => v.severity === "critical" && v.status !== "resolved"),
+    [violations]
+  );
 
   const resolve = useCallback((id: any) => resolveMutation.mutate(id), [resolveMutation]);
 
