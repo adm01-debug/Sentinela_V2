@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Activity, Clock, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BaseAreaChart, BaseBarChart, BaseDonutChart } from '@/components/charts';
@@ -18,7 +19,7 @@ interface DashboardChartsRowProps {
   colors: ChartColors;
 }
 
-export const DashboardChartsRow = ({ colors }: DashboardChartsRowProps) => (
+export const DashboardChartsRow = memo(({ colors }: DashboardChartsRowProps) => (
   <div className="grid gap-4 grid-cols-1 lg:grid-cols-7">
     <Card className="lg:col-span-4 card-hover">
       <CardHeader className="pb-2">
@@ -61,13 +62,15 @@ export const DashboardChartsRow = ({ colors }: DashboardChartsRowProps) => (
       </CardContent>
     </Card>
   </div>
-);
+));
+
+DashboardChartsRow.displayName = 'DashboardChartsRow';
 
 interface DepartmentPieChartProps {
   departmentData: { name: string; value: number; color: string }[];
 }
 
-export const DepartmentPieChart = ({ departmentData }: DepartmentPieChartProps) => {
+export const DepartmentPieChart = memo(({ departmentData }: DepartmentPieChartProps) => {
   const total = departmentData.reduce((sum, d) => sum + d.value, 0);
   
   return (
@@ -105,4 +108,6 @@ export const DepartmentPieChart = ({ departmentData }: DepartmentPieChartProps) 
       </CardContent>
     </Card>
   );
-};
+});
+
+DepartmentPieChart.displayName = 'DepartmentPieChart';

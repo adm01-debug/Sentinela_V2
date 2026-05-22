@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, Shield, ArrowRight, ShieldOff, Inbox } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,7 +28,7 @@ interface DashboardAlertsCardProps {
   alerts: Alert[];
 }
 
-export const DashboardAlertsCard = ({ alerts }: DashboardAlertsCardProps) => {
+export const DashboardAlertsCard = memo(({ alerts }: DashboardAlertsCardProps) => {
   const navigate = useNavigate();
   return (
     <Card className="lg:col-span-5 card-hover">
@@ -73,13 +74,15 @@ export const DashboardAlertsCard = ({ alerts }: DashboardAlertsCardProps) => {
       </CardContent>
     </Card>
   );
-};
+});
+
+DashboardAlertsCard.displayName = 'DashboardAlertsCard';
 
 interface DashboardActivityCardProps {
   activities: ActivityItem[];
 }
 
-export const DashboardActivityCard = ({ activities }: DashboardActivityCardProps) => {
+export const DashboardActivityCard = memo(({ activities }: DashboardActivityCardProps) => {
   const navigate = useNavigate();
   return (
     <Card className="lg:col-span-4 card-hover">
@@ -123,4 +126,6 @@ export const DashboardActivityCard = ({ activities }: DashboardActivityCardProps
       </CardContent>
     </Card>
   );
-};
+});
+
+DashboardActivityCard.displayName = 'DashboardActivityCard';

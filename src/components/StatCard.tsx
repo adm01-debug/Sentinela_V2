@@ -106,6 +106,7 @@ export function StatCard({
         'group relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5',
         accentColor && `border-l-4 ${accentBorderMap[accentColor]}`
       )}
+      aria-label={`${title}: ${value}`}
     >
       {/* Hover gradient accent */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -116,7 +117,7 @@ export function StatCard({
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             {pulse && (
-              <span className="relative flex h-2.5 w-2.5">
+              <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-success" />
               </span>
@@ -124,15 +125,21 @@ export function StatCard({
             <p className="text-sm font-medium text-muted-foreground group-hover:text-foreground/80 transition-colors duration-200">{title}</p>
           </div>
           {Icon && (
-            <div className={cn(
-              "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-md",
-              iconColor.includes('bg-') ? iconColor : `bg-muted ${iconColor}`
-            )}>
+            <div 
+              className={cn(
+                "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-md",
+                iconColor.includes('bg-') ? iconColor : `bg-muted ${iconColor}`
+              )}
+              aria-hidden="true"
+            >
               <Icon className="w-4 h-4" />
             </div>
           )}
         </div>
-        <div className={cn('text-2xl font-bold text-card-foreground tracking-tight', valueClassName)}>
+        <div 
+          className={cn('text-2xl font-bold text-card-foreground tracking-tight', valueClassName)}
+          aria-live="polite"
+        >
           {displayValue}
         </div>
         {trend && (
@@ -140,7 +147,12 @@ export function StatCard({
             'flex items-center text-xs mt-2 font-medium',
             isPositive ? 'text-success' : 'text-destructive'
           )}>
-            {isPositive ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
+            {isPositive ? (
+              <TrendingUp className="w-3 h-3 mr-1" aria-hidden="true" />
+            ) : (
+              <TrendingDown className="w-3 h-3 mr-1" aria-hidden="true" />
+            )}
+            <span className="sr-only">{isPositive ? 'Aumento de' : 'Redução de'}</span>
             <span>{Math.abs(trend.value)}%</span>
             <span className="text-muted-foreground ml-1 font-normal">{trend.label || 'desde o último período'}</span>
           </div>

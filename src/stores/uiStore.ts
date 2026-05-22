@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface ModalConfig {
   id: string;
@@ -24,7 +25,9 @@ interface UIState {
   removeToast: (id) => void;
 }
 
-export const useUIStore = create<UIState>()((set) => ({
+export const useUIStore = create<UIState>()(
+  persist(
+    (set) => ({
   sidebarOpen: true,
   sidebarCollapsed: false,
   activeModal: null,
@@ -45,4 +48,14 @@ export const useUIStore = create<UIState>()((set) => ({
     }));
   },
   removeToast: (id) => set((state) => ({ toasts: state.toasts.filter((t) => t.id !== id) })),
-}));
+    }),
+    {
+      name: 'sentinela-ui-storage',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ 
+        sidebarCollapsed: state.sidebarCollapsed,
+        sidebarOpen: state.sidebarOpen 
+      }),
+    }
+  )
+);

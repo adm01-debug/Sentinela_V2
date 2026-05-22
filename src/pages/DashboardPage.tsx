@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Users, Activity, TrendingUp, AlertTriangle, Filter, X } from 'lucide-react';
 import { useDashboardStats, useRecentAlerts, useRecentActivity } from '@/hooks/useDashboard';
@@ -27,17 +27,24 @@ export const DashboardPage = () => {
   const colors = useChartColors();
   const { t } = useTranslation();
 
-  const departmentData = [
+  const departmentData = useMemo(() => [
     { name: 'Engenharia', value: 35, color: colors.primary },
     { name: 'Marketing', value: 22, color: colors.accent },
     { name: 'Vendas', value: 28, color: colors.success },
     { name: 'RH', value: 15, color: colors.info },
     { name: 'Financeiro', value: 18, color: colors.warning },
     { name: 'Suporte', value: 10, color: colors.destructive },
-  ];
+  ], [colors]);
 
-  const alerts = realAlerts && realAlerts.length > 0 ? realAlerts : fallbackAlerts;
-  const activities = realActivity && realActivity.length > 0 ? realActivity : fallbackActivities;
+  const statsCards = useMemo(() => [
+    { title: t('dashboard.totalEmployees'), value: stats?.totalEmployees || 128, icon: Users, iconColor: 'bg-primary/10 text-primary', trend: { value: 5.2, label: 'desde o mês passado' }, accentColor: 'primary' as const },
+    { title: t('dashboard.activeNow'), value: stats?.activeEmployees || 45, icon: Activity, iconColor: 'bg-success/10 text-success', trend: { value: 12, label: 'desde ontem' }, accentColor: 'success' as const, pulse: true },
+    { title: t('dashboard.productivity'), value: (stats?.averageProductivity || 87) + '%', icon: TrendingUp, iconColor: 'bg-warning/10 text-warning', trend: { value: 3.8, label: 'esta semana' }, accentColor: 'warning' as const },
+    { title: t('dashboard.alerts'), value: stats?.alertsCount || 3, icon: AlertTriangle, iconColor: 'bg-destructive/10 text-destructive', trend: { value: -25, label: 'vs semana passada', isPositive: true }, accentColor: 'destructive' as const },
+  ], [stats, t]);
+
+  const alerts = useMemo(() => realAlerts && realAlerts.length > 0 ? realAlerts : fallbackAlerts, [realAlerts]);
+  const activities = useMemo(() => realActivity && realActivity.length > 0 ? realActivity : fallbackActivities, [realActivity]);
 
   if (statsLoading) return <DashboardSkeleton />;
 
@@ -101,12 +108,7 @@ export const DashboardPage = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { title: t('dashboard.totalEmployees'), value: totalEmployees, icon: Users, iconColor: 'bg-primary/10 text-primary', trend: { value: 5.2, label: 'desde o mês passado' }, accentColor: 'primary' as const },
-          { title: t('dashboard.activeNow'), value: activeEmployees, icon: Activity, iconColor: 'bg-success/10 text-success', trend: { value: 12, label: 'desde ontem' }, accentColor: 'success' as const, pulse: true },
-          { title: t('dashboard.productivity'), value: productivity + '%', icon: TrendingUp, iconColor: 'bg-warning/10 text-warning', trend: { value: 3.8, label: 'esta semana' }, accentColor: 'warning' as const },
-          { title: t('dashboard.alerts'), value: alertsCount, icon: AlertTriangle, iconColor: 'bg-destructive/10 text-destructive', trend: { value: -25, label: 'vs semana passada', isPositive: true }, accentColor: 'destructive' as const },
-        ].map((card, i) => (
+        {statsCards.map((card, i) => (
           <div key={card.accentColor} className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both" style={{ animationDelay: `${i * 80}ms`, animationDuration: '400ms' }}>
             <StatCard {...card} />
           </div>

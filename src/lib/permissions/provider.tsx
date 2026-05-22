@@ -1,6 +1,10 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { Role, Resource, Permission, hasPermission, getPermissions } from './index';
-interface PermissionsContextType { role: Role; can: (resource: Resource, permission: Permission) => boolean; permissions: Record<Resource, Permission[]>; }
+interface PermissionsContextType { 
+  role: Role; 
+  can: (resource: Resource, permission: Permission) => boolean; 
+  permissions: Partial<Record<Resource, Permission[]>>; 
+}
 const PermissionsContext = createContext<PermissionsContextType | null>(null);
 export const PermissionsProvider = ({ role, children }: { role: Role; children: ReactNode }) => {
   const can = (resource: Resource, permission: Permission) => hasPermission(role, resource, permission);
