@@ -78,33 +78,7 @@ const EdgeFunctionDashboard = lazy(() => import('@/pages/admin/EdgeFunctionDashb
 // ============================================================
 // ROUTE GUARDS
 // ============================================================
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  
-  if (isLoading) {
-    return <BrandedSplash />;
-  }
-  
-  if (!isAuthenticated) {
-    return <Navigate to="/auth" replace />;
-  }
-  
-  return <>{children}</>;
-};
-
-const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  
-  if (isLoading) {
-    return <BrandedSplash />;
-  }
-  
-  if (isAuthenticated) {
-    return <Navigate to={ROUTES.DASHBOARD} replace />;
-  }
-  
-  return <>{children}</>;
-};
+import { AuthGuard, GuestGuard, AdminGuard } from '@/guards';
 
 const PageLoader = () => <BrandedSplash />;
 
@@ -122,7 +96,7 @@ export const AppRoutes = () => (
       <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
 
       {/* Protected */}
-      <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
+      <Route element={<AuthGuard><MainLayout /></AuthGuard>}>
         <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
         <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
 
