@@ -1,14 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { format, startOfWeek, endOfWeek, eachDayOfInterval, startOfMonth, endOfMonth, subMonths } from 'date-fns';
+import { format, startOfWeek, endOfWeek, eachDayOfInterval, subMonths } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export function useGeofenceDashboardStats() {
   return useQuery({
     queryKey: ['geofence-dashboard-stats'],
     queryFn: async () => {
       const now = new Date();
-      const weekStart = startOfWeek(now);
-      const weekEnd = endOfWeek(now);
+      const weekStart = startOfWeek(now, { weekStartsOn: 0 });
+      const weekEnd = endOfWeek(now, { weekStartsOn: 0 });
 
       const { data: violations, error } = await supabase
         .from('geofence_violations')
@@ -22,7 +23,7 @@ export function useGeofenceDashboardStats() {
       const violationsByDay = days.map(day => {
         const dayStr = format(day, 'yyyy-MM-dd');
         return {
-          date: format(day, 'EEE', { locale: (await import('date-fns/locale/pt-BR')).default }),
+          date: format(day, 'EEE', { locale: ptBR }),
           fullDate: dayStr,
           count: (violations || []).filter(v => v.created_at.startsWith(dayStr)).length
         };
