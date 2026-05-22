@@ -24,19 +24,41 @@ describe('Edge Functions', () => {
   });
 
   describe('check-geofence', () => {
-    it('should check location within geofence', async () => {
-      mockInvoke.mockResolvedValueOnce({ data: { inside: true, geofence_name: 'Office' }, error: null });
-      const { data } = await supabase.functions.invoke('check-geofence', { body: { latitude: -23.5, longitude: -46.6 } });
-      expect(data.inside).toBe(true);
+    it('should check location within geofence (v2)', async () => {
+      mockInvoke.mockResolvedValueOnce({ 
+        data: { success: true, results: [{ geofence_id: '1', geofence_name: 'Office', is_inside: true }], violations_count: 0 }, 
+        error: null 
+      });
+      const { data } = await supabase.functions.invoke('check-geofence', { 
+        body: { 
+          employee_id: '550e8400-e29b-41d4-a716-446655440000',
+          device_id: 'device-123',
+          location: { latitude: -23.5, longitude: -46.6 }
+        },
+        headers: { 'x-api-version': 'v2' }
+      });
+      expect(data.success).toBe(true);
+      expect(data.results[0].is_inside).toBe(true);
     });
 
-    it('should detect violation outside geofence', async () => {
-      mockInvoke.mockResolvedValueOnce({ data: { inside: false, distance_meters: 500 }, error: null });
-      const { data } = await supabase.functions.invoke('check-geofence', { body: { latitude: -22.0, longitude: -45.0 } });
-      expect(data.inside).toBe(false);
-      expect(data.distance_meters).toBe(500);
+    it('should detect violation outside geofence (v1)', async () => {
+      mockInvoke.mockResolvedValueOnce({ 
+        data: { success: true, results: [{ geofence_id: '2', geofence_name: 'Client A', is_inside: false }], violations_count: 1 }, 
+        error: null 
+      });
+      const { data } = await supabase.functions.invoke('check-geofence', { 
+        body: { 
+          employee_id: '550e8400-e29b-41d4-a716-446655440000',
+          latitude: -22.0, 
+          longitude: -45.0 
+        },
+        headers: { 'x-api-version': 'v1' }
+      });
+      expect(data.success).toBe(true);
+      expect(data.violations_count).toBe(1);
     });
   });
+
 
   describe('validate-agent-key', () => {
     it('should validate a valid key', async () => {
