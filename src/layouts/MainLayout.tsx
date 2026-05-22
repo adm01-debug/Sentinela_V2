@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AppSidebar } from '@/components/AppSidebar';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
-
+import { SkipLinks } from '@/components/ui/SkipLinks';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton';
 import { useUIStore } from '@/stores/uiStore';
@@ -52,6 +52,7 @@ export const MainLayout = () => {
 
   return (
     <KeyboardShortcutsProvider>
+      <SkipLinks />
       <div className="flex h-screen bg-background">
         {/* Desktop Sidebar */}
         <nav id="main-nav" aria-label="Navegação principal" className="hidden md:block">
