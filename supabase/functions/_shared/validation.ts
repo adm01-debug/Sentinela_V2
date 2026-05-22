@@ -235,16 +235,30 @@ export function createValidationErrorResponse(
 ): Response {
   return new Response(
     JSON.stringify({
-      error,
-      validation_errors: details.map(issue => ({
-        field: issue.path.join('.'),
-        message: issue.message,
-        code: issue.code,
-      })),
+      error: {
+        code: 'VALIDATION_ERROR',
+        message: error,
+        details: details.map(issue => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+          code: issue.code,
+        })),
+      }
     }),
     {
-      status: 400,
+      status: 422,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     }
   );
+}
+
+export const versionSchema = z.enum(['v1', 'v2']).default('v1');
+
+export function getApiVersion(req: Request): 'v1' | 'v2' {
+  const url = new URL(req.url);
+  const versionParam = url.searchParams.get('v');
+  const versionHeader = req.headers.get('x-api-version');
+  
+  const version = versionParam || versionHeader || 'v1';
+  return versionSchema.parse(version);
 }
