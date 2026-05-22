@@ -34,7 +34,7 @@ export const generateGeofencePDFReport = (violations: any[], periodName: string)
       ['Dispositivos Monitorados com Alertas', uniqueDevices.toString()],
     ],
     theme: 'striped',
-    headStyles: { fillStyle: 'F', fillColor: [52, 152, 219] }
+    headStyles: { fillColor: [52, 152, 219] }
   });
 
   // Detailed Table
@@ -53,7 +53,7 @@ export const generateGeofencePDFReport = (violations: any[], periodName: string)
       v.action_taken === 'blocked' ? 'Bloqueado' : 'Notificado'
     ]),
     styles: { fontSize: 8 },
-    headStyles: { fillStyle: 'F', fillColor: [52, 152, 219] }
+    headStyles: { fillColor: [52, 152, 219] }
   });
 
   doc.save(`relatorio-geofence-${periodName.replace(/\s/g, '-')}.pdf`);
