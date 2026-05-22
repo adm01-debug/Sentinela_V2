@@ -1,4 +1,4 @@
-import { MapPin, Plus, Edit, Trash2, Users, Search, Bell } from 'lucide-react';
+import { MapPin, Plus, Edit, Trash2, Users, Search, Bell, LayoutDashboard } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGeofencingPage } from '@/hooks/useGeofencingPage';
+import { GeofenceDashboard } from '@/components/geofence/GeofenceDashboard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function GeofencingPage() {
   const {
@@ -46,46 +48,65 @@ export default function GeofencingPage() {
       />
 
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold">{stats.total}</p><p className="text-xs text-muted-foreground">Total</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-success">{stats.active}</p><p className="text-xs text-muted-foreground">Ativas</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-destructive">{stats.restricted}</p><p className="text-xs text-muted-foreground">Restritas</p></CardContent></Card>
-        <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-info">{stats.required}</p><p className="text-xs text-muted-foreground">Obrigatórias</p></CardContent></Card>
-      </div>
+      <Tabs defaultValue="list" className="w-full">
+        <TabsList className="mb-4">
+          <TabsTrigger value="list" className="gap-2">
+            <MapPin className="h-4 w-4" />
+            Geofences
+          </TabsTrigger>
+          <TabsTrigger value="dashboard" className="gap-2">
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Geofences Grid */}
-      {geofences.length === 0 ? (
-        <Card><CardContent className="py-12 text-center text-muted-foreground"><MapPin className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma geofence configurada.</p></CardContent></Card>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {geofences.map(geo => (
-            <Card key={geo.id} className={`cursor-pointer transition-shadow hover:shadow-md ${selectedGeofence?.id === geo.id ? 'ring-2 ring-primary' : ''}`} onClick={() => setSelectedGeofence(geo)}>
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: geo.color }} />
-                    {geo.name}
-                  </CardTitle>
-                  <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={e => { e.stopPropagation(); handleOpenEdit(geo); }}><Edit className="h-3 w-3" /></Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={e => { e.stopPropagation(); setSelectedGeofence(geo); setIsDeleteDialogOpen(true); }}><Trash2 className="h-3 w-3" /></Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-2">{geo.description || 'Sem descrição'}</p>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <Badge variant={geo.is_active ? 'default' : 'secondary'}>{geo.is_active ? 'Ativa' : 'Inativa'}</Badge>
-                  <Badge variant="outline"><Users className="h-3 w-3 mr-1" />{geo.employees_count || 0}</Badge>
-                  <Badge variant="outline">{geo.radius}m</Badge>
-                </div>
-                <p className="text-xs text-muted-foreground mt-2">📍 {geo.center_lat?.toFixed(4)}, {geo.center_lng?.toFixed(4)}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+        <TabsContent value="list" className="space-y-6">
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold">{stats.total}</p><p className="text-xs text-muted-foreground">Total</p></CardContent></Card>
+            <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-success">{stats.active}</p><p className="text-xs text-muted-foreground">Ativas</p></CardContent></Card>
+            <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-destructive">{stats.restricted}</p><p className="text-xs text-muted-foreground">Restritas</p></CardContent></Card>
+            <Card><CardContent className="pt-4 text-center"><p className="text-2xl font-bold text-info">{stats.required}</p><p className="text-xs text-muted-foreground">Obrigatórias</p></CardContent></Card>
+          </div>
+
+          {/* Geofences Grid */}
+          {geofences.length === 0 ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground"><MapPin className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma geofence configurada.</p></CardContent></Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {geofences.map(geo => (
+                <Card key={geo.id} className={`cursor-pointer transition-shadow hover:shadow-md ${selectedGeofence?.id === geo.id ? 'ring-2 ring-primary' : ''}`} onClick={() => setSelectedGeofence(geo)}>
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-base flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: geo.color }} />
+                        {geo.name}
+                      </CardTitle>
+                      <div className="flex gap-1">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={e => { e.stopPropagation(); handleOpenEdit(geo); }}><Edit className="h-3 w-3" /></Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={e => { e.stopPropagation(); setSelectedGeofence(geo); setIsDeleteDialogOpen(true); }}><Trash2 className="h-3 w-3" /></Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-2">{geo.description || 'Sem descrição'}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Badge variant={geo.is_active ? 'default' : 'secondary'}>{geo.is_active ? 'Ativa' : 'Inativa'}</Badge>
+                      <Badge variant="outline"><Users className="h-3 w-3 mr-1" />{geo.employees_count || 0}</Badge>
+                      <Badge variant="outline">{geo.radius}m</Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">📍 {geo.center_lat?.toFixed(4)}, {geo.center_lng?.toFixed(4)}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="dashboard">
+          <GeofenceDashboard />
+        </TabsContent>
+      </Tabs>
 
       {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>

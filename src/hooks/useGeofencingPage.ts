@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useRealtime } from '@/hooks/useRealtime';
 
 export interface Geofence {
   id: string;
@@ -107,6 +108,8 @@ export function useGeofencingPage() {
       })) as Geofence[];
     },
   });
+
+  useRealtime('security_violations', ['geofence-violations']);
 
   const { data: events = [] } = useQuery({
     queryKey: ['geofence-violations', selectedGeofence?.id],
