@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { employeeService } from '@/services/employeeService';
 import { useToast } from '@/hooks/use-toast';
 import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useRealtime } from '@/hooks/useRealtime';
 
 // ============================================================
 // TYPES
