@@ -129,3 +129,30 @@ class ApiResponseMonitor {
 }
 
 export const apiMonitor = new ApiResponseMonitor();
+
+/**
+ * Periodically check connectivity to Supabase and essential services.
+ */
+export async function runHealthCheck(): Promise<{ ok: boolean; latency: number; error?: string }> {
+  const start = performance.now();
+  try {
+    const { error } = await (await import('@/integrations/supabase/client')).supabase
+      .from('geofences')
+      .select('id', { count: 'estimated', head: true })
+      .limit(1);
+    
+    const latency = Math.round(performance.now() - start);
+    
+    if (error) {
+      logger.error('[HealthCheck] Failed:', error.message);
+      return { ok: false, latency, error: error.message };
+    }
+    
+    return { ok: true, latency };
+  } catch (err) {
+    const latency = Math.round(performance.now() - start);
+    const msg = err instanceof Error ? err.message : 'Unknown network error';
+    logger.error('[HealthCheck] Exception:', msg);
+    return { ok: false, latency, error: msg };
+  }
+}
