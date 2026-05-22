@@ -1,70 +1,84 @@
 import { assertEquals } from "https://deno.land/std@0.168.0/testing/asserts.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { 
+  checkGeofenceSchemaV1, 
+  checkGeofenceSchemaV2 
+} from "../_shared/schemas.ts";
 
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL') || 'http://localhost:54321';
-const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') || 'mock-key';
-
-Deno.test("check-geofence v1 validation failure", async () => {
-  const req = new Request(`${SUPABASE_URL}/functions/v1/check-geofence`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-version': 'v1'
-    },
-    body: JSON.stringify({
-      employee_id: 'invalid-uuid',
-      latitude: 100 // Out of range
-    })
-  });
-
-  // In a real test environment we would call the actual function handler
-  // For this exercise we are verifying the schema and response logic
-  // mock response for validation error
-  const response = {
-    status: 422,
-    body: {
-      error: {
-        code: 'VALIDATION_ERROR',
-        message: 'Validation failed',
-        details: [
-          { field: 'employee_id', message: 'Invalid uuid' },
-          { field: 'latitude', message: 'Number must be less than or equal to 90' }
-        ]
-      }
-    }
+Deno.test("check-geofence v1 schema validation success", () => {
+  const payload = {
+    employee_id: "550e8400-e29b-41d4-a716-446655440000",
+    latitude: -23.5505,
+    longitude: -46.6333,
+    accuracy: 10,
+    timestamp: new Date().toISOString()
   };
-
-  assertEquals(response.status, 422);
-  assertEquals(response.body.error.code, 'VALIDATION_ERROR');
+  
+  const result = checkGeofenceSchemaV1.safeParse(payload);
+  assertEquals(result.success, true);
 });
 
-Deno.test("check-geofence v2 validation failure", async () => {
-  const req = new Request(`${SUPABASE_URL}/functions/v1/check-geofence`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-version': 'v2'
-    },
-    body: JSON.stringify({
-      employee_id: '550e8400-e29b-41d4-a716-446655440000',
-      // missing device_id and location
-    })
-  });
-
-  const response = {
-    status: 422,
-    body: {
-      error: {
-        code: 'VALIDATION_ERROR',
-        message: 'Validation failed',
-        details: [
-          { field: 'device_id', message: 'Required' },
-          { field: 'location', message: 'Required' }
-        ]
-      }
-    }
+Deno.test("check-geofence v1 schema validation failure - invalid coordinates", () => {
+  const payload = {
+    employee_id: "550e8400-e29b-41d4-a716-446655440000",
+    latitude: 100, // Invalid
+    longitude: 200, // Invalid
   };
+  
+  const result = checkGeofenceSchemaV1.safeParse(payload);
+  assertEquals(result.success, false);
+  if (!result.success) {
+    const issues = result.error.issues;
+    assertEquals(issues.some(i => i.path.includes("latitude")), true);
+    assertEquals(issues.some(i => i.path.includes("longitude")), true);
+  }
+});
 
-  assertEquals(response.status, 422);
-  assertEquals(response.body.error.details.length, 2);
+Deno.test("check-geofence v2 schema validation success", () => {
+  const payload = {
+    employee_id: "550e8400-e29b-41d4-a716-446655440000",
+    device_id: "device-123",
+    location: {
+      latitude: -23.5505,
+      longitude: -46.6333,
+      accuracy: 5
+    },
+    check_all: true
+  };
+  
+  const result = checkGeofenceSchemaV2.safeParse(payload);
+  assertEquals(result.success, true);
+});
+
+Deno.test("check-geofence v2 schema validation failure - missing required fields", () => {
+  const payload = {
+    employee_id: "550e8400-e29b-41d4-a716-446655440000",
+    // device_id and location missing
+  };
+  
+  const result = checkGeofenceSchemaV2.safeParse(payload);
+  assertEquals(result.success, false);
+  if (!result.success) {
+    const issues = result.error.issues;
+    assertEquals(issues.some(i => i.path.includes("device_id")), true);
+    assertEquals(issues.some(i => i.path.includes("location")), true);
+  }
+});
+
+Deno.test("check-geofence v2 schema validation failure - invalid geofence_ids", () => {
+  const payload = {
+    employee_id: "550e8400-e29b-41d4-a716-446655440000",
+    device_id: "device-123",
+    location: {
+      latitude: -23.5505,
+      longitude: -46.6333
+    },
+    geofence_ids: ["not-a-uuid"]
+  };
+  
+  const result = checkGeofenceSchemaV2.safeParse(payload);
+  assertEquals(result.success, false);
+  if (!result.success) {
+    const issues = result.error.issues;
+    assertEquals(issues.some(i => i.path.includes("geofence_ids")), true);
+  }
 });

@@ -1,5 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Geofence, CreateGeofenceInput, UpdateGeofenceInput } from '@/hooks/useGeofences';
+import { handleApiError } from '@/utils/api-errors';
+
 
 export const geofenceService = {
   async getGeofences() {
@@ -98,9 +100,13 @@ export const geofenceService = {
       }
     });
 
-    if (error) throw error;
+    if (error) {
+      handleApiError(error, 'checkGeofence');
+      throw error;
+    }
     return data;
   }
 };
+
 
 export default geofenceService;
