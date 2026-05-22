@@ -1,4 +1,4 @@
-import { MapPin, Plus, Edit, Trash2, Users, Search } from 'lucide-react';
+import { MapPin, Plus, Edit, Trash2, Users, Search, Bell } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,10 +32,16 @@ export default function GeofencingPage() {
         description="Configure cercas geográficas e áreas monitoradas"
         showBackButton={false}
         actions={
-          <Button onClick={handleOpenCreate} className="h-9 gap-2">
-            <Plus className="h-4 w-4" />
-            Nova Geofence
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => window.location.href = '/geofencing/alerts'} className="h-9 gap-2">
+              <Bell className="h-4 w-4" />
+              Ver Alertas
+            </Button>
+            <Button onClick={handleOpenCreate} className="h-9 gap-2">
+              <Plus className="h-4 w-4" />
+              Nova Geofence
+            </Button>
+          </div>
         }
       />
 
