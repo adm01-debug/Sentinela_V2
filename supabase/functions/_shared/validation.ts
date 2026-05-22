@@ -115,12 +115,19 @@ export type OcrScreenshotInput = z.infer<typeof ocrScreenshotSchema>;
 // WEBHOOK SCHEMAS
 // ============================================================
 
-export const sendWebhookSchema = z.object({
+export const sendWebhookSchemaV1 = z.object({
   webhook_id: uuidSchema,
   event_type: z.string().min(1).optional(),
   payload: z.record(z.unknown()).optional(),
   test: z.boolean().optional(),
 });
+
+export const sendWebhookSchemaV2 = sendWebhookSchemaV1.extend({
+  event_type: z.string().min(1), // Mandatory in v2
+  metadata: z.record(z.unknown()).optional(),
+});
+
+export const sendWebhookSchema = z.union([sendWebhookSchemaV1, sendWebhookSchemaV2]);
 
 export type SendWebhookInput = z.infer<typeof sendWebhookSchema>;
 
