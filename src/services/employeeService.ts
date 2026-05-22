@@ -3,10 +3,15 @@ import type { EmployeeCreateInput, EmployeeUpdateInput, EmployeeFilters } from '
 
 export const employeeService = {
   async getEmployees(filters?: EmployeeFilters) {
-    let query = supabase.from('employees').select('*').order('name');
+    let query = supabase
+      .from('employees')
+      .select('*, devices:employee_devices(*)')
+      .order('name');
+    
     if (filters?.department) query = query.eq('department', filters.department);
     if (filters?.status) query = query.eq('status', filters.status);
     if (filters?.search) query = query.ilike('name', `%${filters.search}%`);
+    
     const { data, error } = await query;
     if (error) throw error;
     return data || [];
