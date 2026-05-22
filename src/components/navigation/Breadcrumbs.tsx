@@ -23,6 +23,7 @@ interface RouteConfig {
 
 const routeLabels: Record<string, RouteConfig> = {
   '/': { label: 'Dashboard' },
+  '/dashboard': { label: 'Dashboard' },
   '/employees': { label: 'Colaboradores', parent: '/' },
   '/teams': { label: 'Equipes', parent: '/employees' },
   '/devices': { label: 'Dispositivos', parent: '/' },
@@ -50,6 +51,9 @@ const routeLabels: Record<string, RouteConfig> = {
   '/user-management': { label: 'Usuários', parent: '/' },
   '/rate-limit-dashboard': { label: 'Rate Limit', parent: '/' },
   '/settings': { label: 'Configurações', parent: '/' },
+  '/settings/profile': { label: 'Perfil', parent: '/settings' },
+  '/settings/security': { label: 'Segurança', parent: '/settings' },
+  '/settings/billing': { label: 'Faturamento', parent: '/settings' },
 };
 
 // ============================================================
@@ -69,9 +73,12 @@ function BreadcrumbsBase({ className, showHome = true }: BreadcrumbsProps) {
   const breadcrumbTrail = useMemo(() => {
     const trail: { path: string; label: string; isCurrent: boolean }[] = [];
     
-    // Handle dynamic routes (e.g., /employees/:id)
-    const basePath = currentPath.replace(/\/[a-f0-9-]{36}$/, '');
-    const hasDynamicSegment = basePath !== currentPath;
+    // Normalize path (remove trailing slash)
+    let normalizedPath = currentPath.endsWith('/') && currentPath !== '/' ? currentPath.slice(0, -1) : currentPath;
+    
+    // Handle dynamic routes (UUID check)
+    const basePath = normalizedPath.replace(/\/[a-f0-9-]{36}$/, '');
+    const hasDynamicSegment = basePath !== normalizedPath;
     
     let path = basePath;
     const visited = new Set<string>();
@@ -84,28 +91,41 @@ function BreadcrumbsBase({ className, showHome = true }: BreadcrumbsProps) {
         trail.unshift({
           path,
           label: config.label,
-          isCurrent: path === basePath && !hasDynamicSegment,
+          isCurrent: path === normalizedPath && !hasDynamicSegment,
         });
         path = config.parent || '';
       } else {
-        break;
+        // Fallback for paths not in labels
+        const segments = path.split('/');
+        const lastSegment = segments[segments.length - 1];
+        if (lastSegment) {
+          trail.unshift({
+            path,
+            label: lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).replace(/-/g, ' '),
+            isCurrent: path === normalizedPath && !hasDynamicSegment,
+          });
+        }
+        
+        // Try to go up one level
+        path = segments.slice(0, -1).join('/') || (segments.length > 1 ? '/' : '');
       }
     }
     
     // Add dynamic segment label if present
     if (hasDynamicSegment) {
       trail.push({
-        path: currentPath,
+        path: normalizedPath,
         label: 'Detalhes',
         isCurrent: true,
       });
     }
     
-    return trail;
+    // Remove dashboard if it's already shown via Home icon
+    return trail.filter(item => item.path !== '/' && item.path !== '/dashboard');
   }, [currentPath]);
 
   // Don't show breadcrumbs on root
-  if (currentPath === '/' || breadcrumbTrail.length <= 1) {
+  if (currentPath === '/' || currentPath === '/dashboard') {
     return null;
   }
 
@@ -131,26 +151,19 @@ function BreadcrumbsBase({ className, showHome = true }: BreadcrumbsProps) {
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator>
-                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
-              </BreadcrumbSeparator>
+              {breadcrumbTrail.length > 0 && (
+                <BreadcrumbSeparator>
+                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
+                </BreadcrumbSeparator>
+              )}
             </>
           )}
           
           {breadcrumbTrail.map((item, index) => {
-            // Skip home in trail since we show it separately
-            if (item.path === '/' && showHome) return null;
-            
             const isLast = index === breadcrumbTrail.length - 1;
             
             return (
               <BreadcrumbItem key={item.path}>
-                {!isLast && index > 0 && (
-                  <BreadcrumbSeparator>
-                    <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
-                  </BreadcrumbSeparator>
-                )}
-                
                 {item.isCurrent ? (
                   <BreadcrumbPage className="font-medium">
                     {item.label}
