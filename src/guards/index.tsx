@@ -43,7 +43,7 @@ export function AdminGuard({ children }: GuardProps) {
     return <BrandedSplash />;
   }
 
-  const isAdmin = user?.user_metadata?.role === 'admin' || user?.email?.endsWith('@securitywatch.com');
+  const isAdmin = (user as any)?.user_metadata?.role === 'admin' || user?.email?.endsWith('@securitywatch.com');
 
   if (!isAdmin) {
     return <Navigate to="/dashboard" replace />;
