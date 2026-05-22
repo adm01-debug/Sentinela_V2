@@ -11,6 +11,8 @@ import {
   getApiVersion 
 } from '../_shared/validation.ts';
 import { corsHeaders } from '../_shared/cors.ts';
+import { Logger } from '../_shared/logger.ts';
+
 
 // Point in polygon check using ray casting algorithm
 function isPointInPolygon(
@@ -55,15 +57,26 @@ function isPointInRadius(
 }
 
 serve(async (req) => {
+  const logger = new Logger('check-geofence');
+  
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
+
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
     const rateLimitResult = await checkRateLimit(clientIP, 'check-geofence', 120, 60);
     
     if (!rateLimitResult.allowed) {
+      await logger.log(supabase, {
+        method: req.method,
+        status: 429,
+        error_message: 'Rate limit exceeded'
+      });
       return new Response(
         JSON.stringify({ error: 'Rate limit exceeded' }),
         { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -77,12 +90,25 @@ serve(async (req) => {
     if (version === 'v2') {
       const validation = validateInput(checkGeofenceSchemaV2, body);
       if (!validation.success) {
+        await logger.log(supabase, {
+          method: req.method,
+          status: 422,
+          error_message: validation.error,
+          payload_summary: { version, body_keys: Object.keys(body) }
+        });
         return createValidationErrorResponse(validation.error, validation.details, corsHeaders);
       }
       validatedData = validation.data;
+
     } else {
       const validation = validateInput(checkGeofenceSchemaV1, body);
       if (!validation.success) {
+        await logger.log(supabase, {
+          method: req.method,
+          status: 422,
+          error_message: validation.error,
+          payload_summary: { version, body_keys: Object.keys(body) }
+        });
         return createValidationErrorResponse(validation.error, validation.details, corsHeaders);
       }
       // Map v1 to v2 structure for internal processing
@@ -100,13 +126,11 @@ serve(async (req) => {
       };
     }
 
+
     const { employee_id, device_id, location, timestamp, check_all, geofence_ids } = validatedData;
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
     const now = timestamp || new Date().toISOString();
+
 
     // Get geofences to check
     let query = supabase.from('geofences').select('*').eq('is_active', true);
@@ -234,6 +258,13 @@ serve(async (req) => {
       recorded_at: now,
     }, { onConflict: 'employee_id,device_id' });
 
+    await logger.log(supabase, {
+      method: req.method,
+      status: 200,
+      employee_id,
+      payload_summary: { results_count: results.length, violations_count: violations.length }
+    });
+
     return new Response(
       JSON.stringify({
         success: true,
@@ -247,6 +278,13 @@ serve(async (req) => {
   } catch (error) {
     console.error('Geofence check error:', error);
     const message = error instanceof Error ? error.message : 'Unknown error';
+    
+    await logger.log(supabase, {
+      method: req.method,
+      status: 500,
+      error_message: message
+    });
+
     return new Response(
       JSON.stringify({ error: message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
