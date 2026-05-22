@@ -62,7 +62,9 @@ export const DashboardChartsRow = memo(({ colors }: DashboardChartsRowProps) => 
       </CardContent>
     </Card>
   </div>
-);
+));
+
+DashboardChartsRow.displayName = 'DashboardChartsRow';
 
 interface DepartmentPieChartProps {
   departmentData: { name: string; value: number; color: string }[];
@@ -106,4 +108,6 @@ export const DepartmentPieChart = memo(({ departmentData }: DepartmentPieChartPr
       </CardContent>
     </Card>
   );
-};
+});
+
+DepartmentPieChart.displayName = 'DepartmentPieChart';
