@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGeofencingPage } from '@/hooks/useGeofencingPage';
@@ -110,17 +111,87 @@ export default function GeofencingPage() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>{editingGeofence ? 'Editar Geofence' : 'Nova Geofence'}</DialogTitle></DialogHeader>
-          <div className="space-y-4">
-            <div><Label>Nome</Label><Input value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))} placeholder="Ex: Escritório Central" /></div>
-            <div><Label>Descrição</Label><Input value={formData.description} onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))} placeholder="Descrição opcional" /></div>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle>{editingGeofence ? 'Editar Geofence' : 'Nova Geofence'}</DialogTitle>
+            <DialogDescription>
+              Configure os detalhes da área monitorada. Para polígonos, você pode desenhar ou importar coordenadas.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
             <div className="grid grid-cols-2 gap-4">
-              <div><Label>Latitude</Label><Input type="number" step="0.0001" value={formData.center_lat} onChange={e => setFormData(prev => ({ ...prev, center_lat: parseFloat(e.target.value) }))} /></div>
-              <div><Label>Longitude</Label><Input type="number" step="0.0001" value={formData.center_lng} onChange={e => setFormData(prev => ({ ...prev, center_lng: parseFloat(e.target.value) }))} /></div>
+              <div className="space-y-2">
+                <Label>Nome</Label>
+                <Input value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))} placeholder="Ex: Escritório Central" />
+              </div>
+              <div className="space-y-2">
+                <Label>Tipo de Área</Label>
+                <Select value={formData.type} onValueChange={(v: any) => setFormData(prev => ({ ...prev, type: v }))}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="circle">Circular (Raio)</SelectItem>
+                    <SelectItem value="polygon">Polígono (Livre)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div><Label>Raio (metros)</Label><Input type="number" value={formData.radius} onChange={e => setFormData(prev => ({ ...prev, radius: parseInt(e.target.value) }))} /></div>
-            <div className="flex items-center justify-between"><Label>Ativa</Label><Switch checked={formData.is_active} onCheckedChange={v => setFormData(prev => ({ ...prev, is_active: v }))} /></div>
+
+            <div className="space-y-2">
+              <Label>Descrição</Label>
+              <Input value={formData.description} onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))} placeholder="Descrição opcional" />
+            </div>
+
+            {formData.type === 'circle' ? (
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label>Latitude</Label>
+                  <Input type="number" step="0.0001" value={formData.center_lat} onChange={e => setFormData(prev => ({ ...prev, center_lat: parseFloat(e.target.value) }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Longitude</Label>
+                  <Input type="number" step="0.0001" value={formData.center_lng} onChange={e => setFormData(prev => ({ ...prev, center_lng: parseFloat(e.target.value) }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Raio (m)</Label>
+                  <Input type="number" value={formData.radius} onChange={e => setFormData(prev => ({ ...prev, radius: parseInt(e.target.value) }))} />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label>Coordenadas do Polígono</Label>
+                  <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => {
+                    const input = prompt('Cole aqui o JSON das coordenadas (Ex: [[lat,lng],[lat,lng],...])');
+                    if (input) {
+                      try {
+                        const coords = JSON.parse(input);
+                        if (Array.isArray(coords)) {
+                          setFormData(prev => ({ ...prev, coordinates: coords }));
+                          toast({ title: 'Coordenadas importadas!' });
+                        }
+                      } catch (e) {
+                        toast({ title: 'Erro no formato', variant: 'destructive' });
+                      }
+                    }
+                  }}>Importar JSON</Button>
+                </div>
+                <div className="bg-muted p-3 rounded-md max-h-32 overflow-auto text-xs font-mono">
+                  {formData.coordinates && formData.coordinates.length > 0 
+                    ? JSON.stringify(formData.coordinates)
+                    : 'Nenhuma coordenada definida. Use o mapa ou importe um arquivo.'}
+                </div>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between bg-muted/30 p-3 rounded-md">
+              <div className="space-y-0.5">
+                <Label>Status da Geofence</Label>
+                <p className="text-xs text-muted-foreground">Áreas inativas não geram alertas</p>
+              </div>
+              <Switch checked={formData.is_active} onCheckedChange={v => setFormData(prev => ({ ...prev, is_active: v }))} />
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={handleCloseDialog}>Cancelar</Button>
