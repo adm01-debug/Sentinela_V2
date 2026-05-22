@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 import { BackButton } from '@/components/navigation/BackButton';
-import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 
 interface PageHeaderProps {
   title: string;
@@ -22,6 +22,7 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <div className={cn('flex flex-col gap-2 mb-6 animate-in fade-in slide-in-from-top-2 duration-500', className)}>
+      {/* Centralized Breadcrumbs */}
       <Breadcrumbs className="mb-2" />
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

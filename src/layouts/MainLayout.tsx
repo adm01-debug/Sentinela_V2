@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AppSidebar } from '@/components/AppSidebar';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
-import { MobileSidebar } from '@/components/layout/MobileSidebar';
+
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton';
 import { useUIStore } from '@/stores/uiStore';
@@ -58,12 +58,10 @@ export const MainLayout = () => {
           <AppSidebar />
         </nav>
 
-        {/* Mobile Sidebar Sheet */}
-        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-          <SheetContent side="left" className="w-72 p-0">
-            <MobileSidebar onNavigate={handleMobileMenuClose} />
-          </SheetContent>
-        </Sheet>
+        {/* Mobile Sidebar Removed (using AppSidebar or separate component if needed) */}
+        <div className="hidden">
+           {/* Placeholder if mobile specific sidebar is required */}
+        </div>
 
         {/* Command Palette */}
         <CommandPalette open={isCommandPaletteOpen} onOpenChange={setIsCommandPaletteOpen} />

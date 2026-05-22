@@ -24,7 +24,8 @@ const getMinLevel = (): LogLevel => {
 function formatEntry(entry: LogEntry): string {
   const prefix = `[${entry.level.toUpperCase()}]`;
   const ctx = entry.context ? ` (${entry.context})` : '';
-  return `${prefix}${ctx} ${entry.message}`;
+  const timestamp = new Date(entry.timestamp).toLocaleTimeString();
+  return `${timestamp} ${prefix}${ctx} ${entry.message}`;
 }
 
 function log(level: LogLevel, message: string, context?: string, ...args: unknown[]) {
@@ -65,7 +66,7 @@ function logError(message: string, err: unknown, context?: string) {
 }
 
 /** Create a scoped logger for a specific module/component */
-function createLogger(context) {
+function createLogger(context: string) {
   return {
     debug: (msg: string, ...args: unknown[]) => log('debug', msg, context, ...args),
     info:  (msg: string, ...args: unknown[]) => log('info', msg, context, ...args),

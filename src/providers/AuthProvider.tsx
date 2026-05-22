@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Session as SupaSession, User as SupaUser } from '@supabase/supabase-js';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -60,9 +61,16 @@ async function checkAdminRole(userId: string): Promise<boolean> {
       .eq('user_id', userId)
       .eq('role', 'admin')
       .maybeSingle();
-    if (error) return false;
+    
+    if (error) {
+      if (error.code !== 'PGRST116') { // maybeSingle empty result is not an error we care about here
+         logger.warn('[AuthProvider] Role check warning:', error.message);
+      }
+      return false;
+    }
     return !!data;
-  } catch {
+  } catch (err) {
+    logger.error('[AuthProvider] Failed to check admin role:', err);
     return false;
   }
 }
@@ -78,6 +86,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
 
   const resolveUser = useCallback(async (supaUser: SupaUser | undefined | null) => {
+    if (!supaUser) {
+      setUser(null);
+      return;
+    }
+
     const mapped = mapSupabaseUser(supaUser);
     if (mapped) {
       const isAdmin = await checkAdminRole(mapped.id);
@@ -88,27 +101,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    let mounted = true;
+
     // Initial session check
-    supabase.auth.getSession().then(async ({ data }) => {
-      setSession(data.session);
-      if (data.session?.user) {
-        await resolveUser(data.session.user);
+    const initSession = async () => {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        
+        if (mounted) {
+          setSession(data.session);
+          if (data.session?.user) {
+            await resolveUser(data.session.user);
+          }
+        }
+      } catch (err) {
+        logger.error('[AuthProvider] Initial session error:', err);
+      } finally {
+        if (mounted) setIsLoading(false);
       }
-      setIsLoading(false);
-    });
+    };
+
+    initSession();
 
     // Listen for changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
-      setSession(newSession);
-      if (newSession?.user) {
-        await resolveUser(newSession.user);
-      } else {
-        setUser(null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      logger.info(`[AuthProvider] Auth event: ${event}`);
+      
+      if (mounted) {
+        setSession(newSession);
+        if (newSession?.user) {
+          await resolveUser(newSession.user);
+        } else {
+          setUser(null);
+        }
+        setIsLoading(false);
       }
-      setIsLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, [resolveUser]);
 
   const login = useCallback(async (email: string, password: string) => {
@@ -121,15 +155,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const logout = useCallback(async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setSession(null);
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      logger.error('[AuthProvider] Logout error:', err);
+    } finally {
+      setUser(null);
+      setSession(null);
+    }
   }, []);
 
   const refresh = useCallback(async () => {
-    const { data } = await supabase.auth.getSession();
-    setSession(data.session);
-    await resolveUser(data.session?.user);
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) throw error;
+      setSession(data.session);
+      await resolveUser(data.session?.user);
+    } catch (err) {
+      logger.error('[AuthProvider] Session refresh error:', err);
+    }
   }, [resolveUser]);
 
   const value = {

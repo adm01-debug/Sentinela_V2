@@ -1,1 +1,2 @@
-export { Breadcrumbs } from './Breadcrumbs';
+export {};
+// Breadcrumbs moved to layout
