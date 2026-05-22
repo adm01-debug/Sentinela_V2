@@ -3,29 +3,8 @@ import { useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { z } from 'zod';
 import { logger } from '@/lib/logger';
-
-// ============================================================
-// VALIDATION SCHEMAS
-// ============================================================
-
-const emailSchema = z.string()
-  .email('Email inválido')
-  .max(255, 'Email muito longo')
-  .transform(val => val.toLowerCase().trim());
-
-const passwordSchema = z.string()
-  .min(8, 'Senha deve ter no mínimo 8 caracteres')
-  .max(128, 'Senha muito longa')
-  .regex(/[A-Z]/, 'Senha deve conter letra maiúscula')
-  .regex(/[a-z]/, 'Senha deve conter letra minúscula')
-  .regex(/[0-9]/, 'Senha deve conter número');
-
-const nameSchema = z.string()
-  .min(1, 'Nome é obrigatório')
-  .max(100, 'Nome muito longo')
-  .transform(val => val.trim());
+import { loginSchema, registerSchema, forgotPasswordSchema } from '@/validators/schemas';
 
 // ============================================================
 // RATE LIMITING WITH EXPONENTIAL BACKOFF
@@ -167,11 +146,11 @@ export function useAuthPage() {
 
   const loginMutation = useMutation({
     mutationFn: async () => {
-      // Validate email
-      const validatedEmail = emailSchema.parse(email);
+      // Validate with central schema
+      loginSchema.parse({ email, password });
       
       const { data, error } = await supabase.auth.signInWithPassword({ 
-        email: validatedEmail, 
+        email: email.toLowerCase().trim(), 
         password 
       });
       
@@ -274,8 +253,8 @@ export function useAuthPage() {
 
   const forgotMutation = useMutation({
     mutationFn: async () => {
-      const validatedEmail = emailSchema.parse(email);
-      const { error } = await supabase.auth.resetPasswordForEmail(validatedEmail, {
+      forgotPasswordSchema.parse({ email });
+      const { error } = await supabase.auth.resetPasswordForEmail(email.toLowerCase().trim(), {
         redirectTo: `${window.location.origin}/auth?mode=reset`
       });
       if (error) throw error;
