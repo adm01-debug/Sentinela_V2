@@ -1272,6 +1272,66 @@ export type Database = {
           },
         ]
       }
+      edge_function_logs: {
+        Row: {
+          agent_key_id: string | null
+          company_id: string | null
+          created_at: string | null
+          duration_ms: number | null
+          employee_id: string | null
+          error_message: string | null
+          function_name: string
+          id: string
+          method: string | null
+          payload_summary: Json | null
+          request_id: string
+          status: number | null
+        }
+        Insert: {
+          agent_key_id?: string | null
+          company_id?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          employee_id?: string | null
+          error_message?: string | null
+          function_name: string
+          id?: string
+          method?: string | null
+          payload_summary?: Json | null
+          request_id: string
+          status?: number | null
+        }
+        Update: {
+          agent_key_id?: string | null
+          company_id?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          employee_id?: string | null
+          error_message?: string | null
+          function_name?: string
+          id?: string
+          method?: string | null
+          payload_summary?: Json | null
+          request_id?: string
+          status?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "edge_function_logs_agent_key_id_fkey"
+            columns: ["agent_key_id"]
+            isOneToOne: false
+            referencedRelation: "agent_keys"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "edge_function_logs_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employee_badges: {
         Row: {
           badge_id: string
