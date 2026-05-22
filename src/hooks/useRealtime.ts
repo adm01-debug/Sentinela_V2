@@ -1,24 +1,35 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
-export function useRealtime<T>(url: string) {
-  const [data, setData] = useState<T | null>(null);
-  const [connected, setConnected] = useState(false);
-  const wsRef = useRef<WebSocket | null>(null);
+export type RealtimeEntity = 'employees' | 'teams' | 'security_violations' | 'attendance_records';
+
+export function useRealtime(entity: RealtimeEntity, queryKey: any[]) {
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    const ws = new WebSocket(url);
-    wsRef.current = ws;
+    logger.info(`[Realtime] Subscribing to ${entity}`);
+    
+    const channel = supabase
+      .channel(`public:${entity}-changes`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: entity },
+        (payload) => {
+          logger.info(`[Realtime] ${entity} changed`, payload);
+          queryClient.invalidateQueries({ queryKey });
+        }
+      )
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          logger.info(`[Realtime] Successfully subscribed to ${entity}`);
+        }
+      });
 
-    ws.onopen = () => setConnected(true);
-    ws.onclose = () => setConnected(false);
-    ws.onmessage = (e: any) => setData(JSON.parse(e.data));
-
-    return () => ws.close();
-  }, [url]);
-
-  const send = useCallback((message: any) => {
-    wsRef.current?.send(JSON.stringify(message));
-  }, []);
-
-  return { data, connected, send };
+    return () => {
+      logger.info(`[Realtime] Unsubscribing from ${entity}`);
+      supabase.removeChannel(channel);
+    };
+  }, [entity, queryKey, queryClient]);
 }

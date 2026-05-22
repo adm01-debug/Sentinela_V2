@@ -1,6 +1,6 @@
 import { memo, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bell, Search, Menu, Sun, Moon, Monitor, User, LogOut, Settings, HelpCircle, CheckCircle2, Inbox } from 'lucide-react';
+import { Bell, Search, Menu, Sun, Moon, Monitor, User, LogOut, Settings, HelpCircle, CheckCircle2, Inbox, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useUIStore } from '@/stores/uiStore';
@@ -24,7 +24,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -44,6 +44,7 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
   const { user, logout } = useAuth();
   const { notifications, unreadCount, markAllRead, markRead } = useHeaderNotifications();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
 
   // Derive user display info
@@ -102,18 +103,35 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
 
   const timeLabel = 'agora';
 
+  const isDashboard = location.pathname === '/dashboard' || location.pathname === '/';
+
   return (
     <header className="sticky top-0 z-30 flex h-12 items-center gap-2 border-b border-border/60 bg-background/95 backdrop-blur-sm px-3 sm:px-4">
+      {/* Mobile back button */}
+      {!isDashboard && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden shrink-0 h-8 w-8"
+          onClick={() => navigate(-1)}
+          aria-label={t('common.back')}
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+      )}
+
       {/* Mobile menu */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="md:hidden shrink-0 h-8 w-8"
-        onClick={handleMenuClick}
-        aria-label={t('header.openNavMenu')}
-      >
-        <Menu className="h-4 w-4" />
-      </Button>
+      {isDashboard && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden shrink-0 h-8 w-8"
+          onClick={handleMenuClick}
+          aria-label={t('header.openNavMenu')}
+        >
+          <Menu className="h-4 w-4" />
+        </Button>
+      )}
 
       {/* Desktop sidebar toggle */}
       <Button

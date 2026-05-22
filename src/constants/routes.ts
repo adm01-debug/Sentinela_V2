@@ -57,12 +57,13 @@ export const ROUTES = {
   ADMIN_DEPARTMENTS: '/admin/departments',
   ADMIN_TEAMS: '/admin/teams',
   ADMIN_AUDIT: '/admin/audit',
+  ADMIN_TELEMETRY: '/admin/telemetry',
   
   // Organization routes
-  TEAMS: '/teams',
-  TEAM_DETAIL: '/teams/:id',
-  DEPARTMENTS: '/departments',
-  DEPARTMENT_DETAIL: '/departments/:id',
+  TEAMS: '/admin/teams',
+  TEAM_DETAIL: '/admin/teams/:id',
+  DEPARTMENTS: '/admin/departments',
+  DEPARTMENT_DETAIL: '/admin/departments/:id',
   
   // Time & Projects routes
   TIME_CLOCK: '/time-clock',

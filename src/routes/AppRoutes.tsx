@@ -161,9 +161,9 @@ export const AppRoutes = () => (
         <Route path={ROUTES.ADMIN_USERS} element={<UsersPage />} />
         <Route path={ROUTES.ADMIN_ROLES} element={<RolesPage />} />
         <Route path={ROUTES.ADMIN_TEAMS} element={<TeamsPage />} />
-        <Route path="/teams/:id" element={<TeamDetailPage />} />
+        <Route path={ROUTES.TEAM_DETAIL} element={<TeamDetailPage />} />
         <Route path={ROUTES.ADMIN_DEPARTMENTS} element={<DepartmentsPage />} />
-        <Route path="/departments/:id" element={<DepartmentDetailPage />} />
+        <Route path={ROUTES.DEPARTMENT_DETAIL} element={<DepartmentDetailPage />} />
         <Route path={ROUTES.ADMIN_AUDIT} element={<AuditLogPage />} />
 
         <Route path="/devices" element={<DevicesPage />} />

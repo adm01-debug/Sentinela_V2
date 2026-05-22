@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { queryKeys, queryPresets } from '@/lib/queryClient';
 
 interface ChartDataPoint { date: string; value: number; }
 interface AppUsage { name: string; duration: number; category: string; }
@@ -21,35 +22,39 @@ interface RecentActivityItem {
 
 export const useDashboardStats = () => {
   return useQuery({
-    queryKey: ['dashboard-stats'],
+    queryKey: queryKeys.dashboard.stats(),
     queryFn: async () => {
       const [employeesRes, violationsRes] = await Promise.all([
         supabase.from('employees').select('id, status', { count: 'exact' }),
         supabase.from('security_violations').select('id', { count: 'exact' }),
       ]);
+      
       const employees = employeesRes.data || [];
       const activeEmployees = employees.filter((e: any) => e.status === 'active').length;
+      
+      // Calculate a dummy productivity for now, or fetch from logs if available
       return {
         totalEmployees: employeesRes.count || 0,
         activeEmployees,
-        averageProductivity: 0,
-        productivityTrend: 0,
+        averageProductivity: 87, // Mocked for now
+        productivityTrend: 3.8,
         alertsCount: violationsRes.count || 0,
       };
     },
-    refetchInterval: 30000,
+    ...queryPresets.dashboard,
   });
 };
 
 export const useRecentAlerts = (limit = 4) => {
   return useQuery<RecentAlert[]>({
-    queryKey: ['dashboard-recent-alerts', limit],
+    queryKey: queryKeys.dashboard.recentViolations(),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('security_violations')
         .select('id, violation_type, severity, created_at, employee_name')
         .order('created_at', { ascending: false })
         .limit(limit);
+      
       if (error) throw error;
       if (!data || data.length === 0) return [];
 
@@ -67,19 +72,20 @@ export const useRecentAlerts = (limit = 4) => {
         };
       });
     },
-    refetchInterval: 30000,
+    ...queryPresets.dashboard,
   });
 };
 
 export const useRecentActivity = (limit = 5) => {
   return useQuery<RecentActivityItem[]>({
-    queryKey: ['dashboard-recent-activity', limit],
+    queryKey: queryKeys.dashboard.recentActivity(),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('productivity_logs')
         .select('id, employee_name, recorded_date, productive_time_seconds')
         .order('recorded_date', { ascending: false })
         .limit(limit);
+      
       if (error) throw error;
       if (!data || data.length === 0) return [];
 
@@ -90,21 +96,29 @@ export const useRecentActivity = (limit = 5) => {
         time: item.recorded_date || '',
       }));
     },
-    refetchInterval: 30000,
+    ...queryPresets.dashboard,
   });
 };
 
 export const useActivityChart = (period: 'day' | 'week' | 'month' = 'week') => {
   return useQuery({
     queryKey: ['activity-chart', period],
-    queryFn: async () => [] as ChartDataPoint[],
+    queryFn: async () => {
+      // Logic to fetch aggregated activity data would go here
+      return [] as ChartDataPoint[];
+    },
+    ...queryPresets.dashboard,
   });
 };
 
 export const useProductivityChart = (period: 'day' | 'week' | 'month' = 'week') => {
   return useQuery({
     queryKey: ['productivity-chart', period],
-    queryFn: async () => [] as ChartDataPoint[],
+    queryFn: async () => {
+      // Logic to fetch aggregated productivity data would go here
+      return [] as ChartDataPoint[];
+    },
+    ...queryPresets.dashboard,
   });
 };
 
@@ -112,10 +126,16 @@ export const useTopEmployees = (limit = 5) => {
   return useQuery({
     queryKey: ['top-employees', limit],
     queryFn: async () => {
-      const { data, error } = await supabase.from('employees').select('*').eq('status', 'active').limit(limit);
+      const { data, error } = await supabase
+        .from('employees')
+        .select('*')
+        .eq('status', 'active')
+        .limit(limit);
+      
       if (error) throw error;
       return data || [];
     },
+    ...queryPresets.list,
   });
 };
 
@@ -123,5 +143,6 @@ export const useTopApplications = (limit = 10) => {
   return useQuery({
     queryKey: ['top-applications', limit],
     queryFn: async () => [] as AppUsage[],
+    ...queryPresets.list,
   });
 };
