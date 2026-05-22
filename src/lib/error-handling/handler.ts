@@ -8,7 +8,22 @@ export interface AppError {
   severity?: 'low' | 'medium' | 'high' | 'critical';
 }
 
-export const handleError = (error: unknown): AppError => {
+export const handleError = (error: any): AppError => {
+  if (error?.error?.code === 'VALIDATION_ERROR') {
+    const details = error.error.details || [];
+    const fields = details.reduce((acc: any, curr: any) => {
+      acc[curr.field] = curr.message;
+      return acc;
+    }, {});
+    
+    return {
+      code: 'VALIDATION_ERROR',
+      message: error.error.message || 'Erro de validação nos campos informados.',
+      details: fields,
+      severity: 'medium'
+    };
+  }
+
   if (error instanceof Error) {
     const severity = error.message.includes('auth') || error.message.includes('security') ? 'critical' : 'high';
     logger.error(`[AppError] ${error.message}`, { stack: error.stack, severity });
