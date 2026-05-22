@@ -76,7 +76,8 @@ export const geofenceService = {
 
     if (error) throw error;
     return data as Geofence;
-  }
+  },
+
   async checkGeofence(input: {
     employee_id: string;
     device_id?: string;
