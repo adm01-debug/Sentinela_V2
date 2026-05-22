@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
+import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 
 function renderBreadcrumbs(path) {
   return render(
