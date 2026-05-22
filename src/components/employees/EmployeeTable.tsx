@@ -7,6 +7,14 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { VirtualizedTable, type Column } from '@/components/VirtualizedTable';
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
