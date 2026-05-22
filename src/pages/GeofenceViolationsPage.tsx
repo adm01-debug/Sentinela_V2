@@ -135,10 +135,7 @@ export default function GeofenceViolationsPage() {
             <div className="space-y-2">
               <label className="text-xs font-medium text-muted-foreground">Período</label>
               <DateRangePicker
-                value={{
-                  from: dateRange.from,
-                  to: dateRange.to
-                }}
+                value={dateRange.from && dateRange.to ? { from: dateRange.from, to: dateRange.to } : undefined}
                 onChange={(range) => setDateRange({ from: range?.from, to: range?.to })}
               />
             </div>
