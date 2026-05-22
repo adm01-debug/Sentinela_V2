@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ROUTES } from '@/constants';
 import { MainLayout } from '@/layouts/MainLayout';
 import { BrandedSplash } from '@/components/ui/LoadingSpinner';
-import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
+import { RouteErrorBoundary } from '@/components/layout/RouteErrorBoundary';
 import { useAuth } from '@/hooks/useAuth';
 
 // ============================================================
