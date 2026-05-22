@@ -1,31 +1,16 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-// Validation Schemas
-const LocationSchema = z.object({
-  latitude: z.number().min(-90).max(90),
-  longitude: z.number().min(-180).max(180),
-  accuracy: z.number().min(0).optional(),
-  altitude: z.number().optional(),
-  speed: z.number().min(0).optional(),
-  heading: z.number().min(0).max(360).optional(),
-});
-
-const GeofenceCheckSchema = z.object({
-  employee_id: z.string().uuid(),
-  device_id: z.string().min(1).max(255),
-  location: LocationSchema,
-  timestamp: z.string().datetime().optional(),
-  check_all: z.boolean().default(false),
-  geofence_ids: z.array(z.string().uuid()).optional(),
-});
+import { 
+  checkGeofenceSchemaV1, 
+  checkGeofenceSchemaV2,
+} from '../_shared/schemas.ts';
+import { 
+  validateInput, 
+  createValidationErrorResponse, 
+  getApiVersion 
+} from '../_shared/validation.ts';
+import { corsHeaders } from '../_shared/cors.ts';
 
 // Point in polygon check using ray casting algorithm
 function isPointInPolygon(
@@ -86,16 +71,36 @@ serve(async (req) => {
     }
 
     const body = await req.json();
-    const validation = GeofenceCheckSchema.safeParse(body);
+    const version = getApiVersion(req);
     
-    if (!validation.success) {
-      return new Response(
-        JSON.stringify({ error: 'Validation failed', details: validation.error.flatten() }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    let validatedData;
+    if (version === 'v2') {
+      const validation = validateInput(checkGeofenceSchemaV2, body);
+      if (!validation.success) {
+        return createValidationErrorResponse(validation.error, validation.details, corsHeaders);
+      }
+      validatedData = validation.data;
+    } else {
+      const validation = validateInput(checkGeofenceSchemaV1, body);
+      if (!validation.success) {
+        return createValidationErrorResponse(validation.error, validation.details, corsHeaders);
+      }
+      // Map v1 to v2 structure for internal processing
+      const v1 = validation.data;
+      validatedData = {
+        employee_id: v1.employee_id,
+        device_id: 'v1-legacy',
+        location: {
+          latitude: v1.latitude,
+          longitude: v1.longitude,
+          accuracy: v1.accuracy,
+        },
+        timestamp: v1.timestamp,
+        check_all: true,
+      };
     }
 
-    const { employee_id, device_id, location, timestamp, check_all, geofence_ids } = validation.data;
+    const { employee_id, device_id, location, timestamp, check_all, geofence_ids } = validatedData;
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
