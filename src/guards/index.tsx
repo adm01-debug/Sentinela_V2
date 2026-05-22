@@ -7,37 +7,42 @@ interface GuardProps {
   children: React.ReactNode;
 }
 
-export const AuthGuard = ({ children }: GuardProps) => {
+export function AuthGuard({ children }: GuardProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
 
-  if (isLoading) return <BrandedSplash />;
+  if (isLoading) {
+    return <BrandedSplash />;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;
-};
+}
 
-export const GuestGuard = ({ children }: GuardProps) => {
+export function GuestGuard({ children }: GuardProps) {
   const { isAuthenticated, isLoading } = useAuth();
 
-  if (isLoading) return <BrandedSplash />;
+  if (isLoading) {
+    return <BrandedSplash />;
+  }
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;
-};
+}
 
-export const AdminGuard = ({ children }: GuardProps) => {
+export function AdminGuard({ children }: GuardProps) {
   const { user, isLoading } = useAuth();
 
-  if (isLoading) return <BrandedSplash />;
+  if (isLoading) {
+    return <BrandedSplash />;
+  }
 
-  // Assuming roles are in user metadata or a specific field
   const isAdmin = user?.user_metadata?.role === 'admin' || user?.email?.endsWith('@securitywatch.com');
 
   if (!isAdmin) {
@@ -45,4 +50,4 @@ export const AdminGuard = ({ children }: GuardProps) => {
   }
 
   return <>{children}</>;
-};
+}
