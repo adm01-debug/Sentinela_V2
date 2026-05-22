@@ -44,6 +44,7 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
   const { user, logout } = useAuth();
   const { notifications, unreadCount, markAllRead, markRead } = useHeaderNotifications();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
 
   // Derive user display info
