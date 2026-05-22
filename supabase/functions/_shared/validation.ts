@@ -115,12 +115,19 @@ export type OcrScreenshotInput = z.infer<typeof ocrScreenshotSchema>;
 // WEBHOOK SCHEMAS
 // ============================================================
 
-export const sendWebhookSchema = z.object({
+export const sendWebhookSchemaV1 = z.object({
   webhook_id: uuidSchema,
   event_type: z.string().min(1).optional(),
   payload: z.record(z.unknown()).optional(),
   test: z.boolean().optional(),
 });
+
+export const sendWebhookSchemaV2 = sendWebhookSchemaV1.extend({
+  event_type: z.string().min(1), // Mandatory in v2
+  metadata: z.record(z.unknown()).optional(),
+});
+
+export const sendWebhookSchema = z.union([sendWebhookSchemaV1, sendWebhookSchemaV2]);
 
 export type SendWebhookInput = z.infer<typeof sendWebhookSchema>;
 
@@ -235,16 +242,30 @@ export function createValidationErrorResponse(
 ): Response {
   return new Response(
     JSON.stringify({
-      error,
-      validation_errors: details.map(issue => ({
-        field: issue.path.join('.'),
-        message: issue.message,
-        code: issue.code,
-      })),
+      error: {
+        code: 'VALIDATION_ERROR',
+        message: error,
+        details: details.map(issue => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+          code: issue.code,
+        })),
+      }
     }),
     {
-      status: 400,
+      status: 422,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     }
   );
+}
+
+export const versionSchema = z.enum(['v1', 'v2']).default('v1');
+
+export function getApiVersion(req: Request): 'v1' | 'v2' {
+  const url = new URL(req.url);
+  const versionParam = url.searchParams.get('v');
+  const versionHeader = req.headers.get('x-api-version');
+  
+  const version = versionParam || versionHeader || 'v1';
+  return versionSchema.parse(version);
 }

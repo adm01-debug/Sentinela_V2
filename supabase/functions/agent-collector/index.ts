@@ -3,7 +3,7 @@ import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
 import { Logger } from '../_shared/logger.ts';
-import { validateInput, createValidationErrorResponse } from '../_shared/validation.ts';
+import { validateInput, createValidationErrorResponse, getApiVersion } from '../_shared/validation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -152,18 +152,19 @@ serve(async (req) => {
       );
     }
 
-    // 4. Validate Input
+    // 4. Validate Input & Version
+    const apiVersion = getApiVersion(req);
     const body = await req.json();
     const validation = validateInput(AgentDataSchema, body);
     
     if (!validation.success) {
       await logger.log(supabase, { 
-        status: 400, 
+        status: 422, 
         method: req.method, 
         agent_key_id: agentKeyId, 
         company_id: companyId,
         error_message: validation.error,
-        payload_summary: { issues: validation.details }
+        payload_summary: { issues: validation.details, version: apiVersion }
       });
       return createValidationErrorResponse(validation.error, validation.details, corsHeaders);
     }

@@ -2,6 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
+import { validateInput, createValidationErrorResponse, getApiVersion } from '../_shared/validation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -127,14 +128,12 @@ serve(async (req) => {
       );
     }
 
+    const apiVersion = getApiVersion(req);
     const body = await req.json();
     
-    const validationResult = MobileDataSchema.safeParse(body);
+    const validationResult = validateInput(MobileDataSchema, body);
     if (!validationResult.success) {
-      return new Response(
-        JSON.stringify({ error: 'Validation failed', details: validationResult.error.flatten() }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createValidationErrorResponse(validationResult.error, validationResult.details, corsHeaders);
     }
 
     const { location, battery, apps, network, timestamp } = validationResult.data;
