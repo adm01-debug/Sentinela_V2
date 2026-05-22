@@ -2,12 +2,14 @@ import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useRealtime } from '@/hooks/useRealtime';
 
 export interface Geofence {
   id: string;
   name: string;
   description?: string;
   type: 'polygon' | 'circle';
+  coordinates: number[][]; // Added for consistency with service
   center_lat?: number;
   center_lng?: number;
   radius?: number;
@@ -24,6 +26,7 @@ export interface GeofenceFormData {
   name: string;
   description: string;
   type: 'polygon' | 'circle';
+  coordinates?: number[][];
   center_lat: number;
   center_lng: number;
   radius: number;
@@ -94,10 +97,11 @@ export function useGeofencingPage() {
         id: g.id,
         name: g.name,
         description: g.description,
-        type: 'circle' as const,
+        type: g.geometry?.type === 'Polygon' ? 'polygon' : 'circle',
         center_lat: g.latitude,
         center_lng: g.longitude,
         radius: g.radius_meters,
+        coordinates: g.geometry?.coordinates?.[0] || [],
         color: '#3b82f6',
         is_active: g.is_active,
         restricted: false,
@@ -107,6 +111,8 @@ export function useGeofencingPage() {
       })) as Geofence[];
     },
   });
+
+  useRealtime('security_violations', ['geofence-violations']);
 
   const { data: events = [] } = useQuery({
     queryKey: ['geofence-violations', selectedGeofence?.id],
@@ -133,6 +139,7 @@ export function useGeofencingPage() {
         longitude: data.center_lng,
         radius_meters: data.radius,
         is_active: data.is_active,
+        geometry: data.type === 'polygon' ? { type: 'Polygon', coordinates: [data.coordinates] } : null,
       };
       const { error } = await supabase.from('geofences').insert(geofenceData);
       if (error) throw error;
@@ -156,6 +163,7 @@ export function useGeofencingPage() {
         longitude: data.center_lng,
         radius_meters: data.radius,
         is_active: data.is_active,
+        geometry: data.type === 'polygon' ? { type: 'Polygon', coordinates: [data.coordinates] } : null,
       };
       const { error } = await supabase.from('geofences').update(geofenceData).eq('id', id);
       if (error) throw error;

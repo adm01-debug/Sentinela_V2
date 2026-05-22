@@ -79,7 +79,7 @@ const EdgeFunctionDashboard = lazy(() => import('@/pages/admin/EdgeFunctionDashb
 // ============================================================
 // ROUTE GUARDS
 // ============================================================
-import { AuthGuard, GuestGuard, AdminGuard } from '@/guards';
+import { AuthGuard, GuestGuard, AdminGuard, SupervisorGuard } from '@/guards';
 
 const PageLoader = () => <BrandedSplash />;
 
@@ -151,8 +151,8 @@ export const AppRoutes = () => (
         <Route path="/integrations/whatsapp" element={<WhatsAppIntegrationPage />} />
 
         <Route path="/calendar" element={<CalendarPage />} />
-        <Route path="/geofencing" element={<GeofencingPage />} />
-        <Route path="/geofencing/alerts" element={<GeofenceViolationsPage />} />
+        <Route path="/geofencing" element={<SupervisorGuard><GeofencingPage /></SupervisorGuard>} />
+        <Route path="/geofencing/alerts" element={<SupervisorGuard><GeofenceViolationsPage /></SupervisorGuard>} />
         <Route path="/work-schedules" element={<WorkSchedulesPage />} />
         <Route path="/export" element={<DataExportPage />} />
         <Route path="/compliance" element={<CompliancePage />} />
