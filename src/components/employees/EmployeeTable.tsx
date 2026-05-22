@@ -282,36 +282,37 @@ function EmployeeTableComponent({
 
   // Regular table for small lists (better for accessibility)
   return (
-    <div className="rounded-md border">
-      <div className="flex items-center bg-muted/50 border-b border-border font-medium text-sm h-14">
-        {columns.map((column) => (
-          <div
-            key={column.key}
-            className={cn('px-4 py-2', column.className)}
-            style={{ width: column.width || 'auto', flex: column.width ? 'none' : 1 }}
-          >
-            {column.header}
-          </div>
-        ))}
-      </div>
-      <div>
-        {employees.map((employee, index) => (
-          <div
-            key={employee.id}
-            className="flex items-center border-b border-border hover:bg-muted/50 transition-colors h-16"
-          >
+    <div className="rounded-md border bg-card">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
             {columns.map((column) => (
-              <div
+              <TableHead 
                 key={column.key}
-                className={cn('px-4 py-2 flex items-center', column.className)}
-                style={{ width: column.width || 'auto', flex: column.width ? 'none' : 1 }}
+                className={cn('h-12', column.className)}
+                style={{ width: column.width || 'auto' }}
               >
-                {column.render(employee, index)}
-              </div>
+                {column.header}
+              </TableHead>
             ))}
-          </div>
-        ))}
-      </div>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {employees.map((employee, index) => (
+            <TableRow key={employee.id} className="h-16">
+              {columns.map((column) => (
+                <TableCell 
+                  key={column.key}
+                  className={cn(column.className)}
+                  style={{ width: column.width || 'auto' }}
+                >
+                  {column.render(employee, index)}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }
