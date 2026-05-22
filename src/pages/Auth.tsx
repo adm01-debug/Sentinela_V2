@@ -36,7 +36,7 @@ const AuthContent = React.memo(function AuthContent() {
 
   useEffect(() => {
     if (isAuthenticated && !authLoading) {
-      navigate('/', { replace: true });
+      navigate('/dashboard', { replace: true });
     }
   }, [isAuthenticated, authLoading, navigate]);
 
