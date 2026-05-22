@@ -102,18 +102,35 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
 
   const timeLabel = 'agora';
 
+  const isDashboard = location.pathname === '/dashboard' || location.pathname === '/';
+
   return (
     <header className="sticky top-0 z-30 flex h-12 items-center gap-2 border-b border-border/60 bg-background/95 backdrop-blur-sm px-3 sm:px-4">
+      {/* Mobile back button */}
+      {!isDashboard && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden shrink-0 h-8 w-8"
+          onClick={() => navigate(-1)}
+          aria-label={t('common.back')}
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+      )}
+
       {/* Mobile menu */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="md:hidden shrink-0 h-8 w-8"
-        onClick={handleMenuClick}
-        aria-label={t('header.openNavMenu')}
-      >
-        <Menu className="h-4 w-4" />
-      </Button>
+      {isDashboard && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden shrink-0 h-8 w-8"
+          onClick={handleMenuClick}
+          aria-label={t('header.openNavMenu')}
+        >
+          <Menu className="h-4 w-4" />
+        </Button>
+      )}
 
       {/* Desktop sidebar toggle */}
       <Button
