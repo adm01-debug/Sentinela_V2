@@ -69,4 +69,6 @@ jobs:
         with:
           deno-version: v1.x
       - name: Run Contract Tests
-        run: deno test --allow-env --allow-net supabase/functions/check-geofence/contract_test.ts
+        run: |
+          find supabase/functions -name "*_test.ts" -o -name "*.test.ts" | xargs -I {} deno test --allow-env --allow-net {}
+
