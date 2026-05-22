@@ -79,6 +79,23 @@ export const employeeService = {
       violationCount: violations.count || 0,
       attendance: attendance.data || []
     };
+  },
+
+  async assignDevice(employeeId: string, name: string, type: string, primary: boolean) {
+    const { data, error } = await supabase.from('employee_devices').insert({
+      employee_id: employeeId,
+      device_name: name,
+      device_type: type,
+      is_primary: primary,
+    }).select().single();
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async unassignDevice(deviceId: string) {
+    const { error } = await supabase.from('employee_devices').delete().eq('id', deviceId);
+    if (error) throw error;
   }
 };
 
