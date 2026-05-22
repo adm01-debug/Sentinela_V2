@@ -176,16 +176,19 @@ export function useAuthPage() {
   const registerMutation = useMutation({
     mutationFn: async () => {
       // Validate inputs
-      const validatedEmail = emailSchema.parse(email);
-      passwordSchema.parse(password);
-      const validatedName = nameSchema.parse(name);
+      registerSchema.parse({ 
+        email, 
+        password, 
+        confirmPassword: password, // For simplification since we don't have separate confirm field in UI yet
+        fullName: name 
+      });
       
       const { data, error } = await supabase.auth.signUp({ 
-        email: validatedEmail, 
+        email: email.toLowerCase().trim(), 
         password, 
         options: { 
           data: { 
-            name: validatedName, 
+            name: name.trim(), 
             company: company.trim().slice(0, 100) 
           },
           emailRedirectTo: `${window.location.origin}/`
@@ -279,7 +282,6 @@ export function useAuthPage() {
 
   const resetMutation = useMutation({
     mutationFn: async () => {
-      passwordSchema.parse(password);
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
     },
