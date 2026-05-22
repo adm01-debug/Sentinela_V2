@@ -22,14 +22,8 @@ const EdgeFunctionDashboard = () => {
     refetchInterval: 10000,
   });
 
-  const { data: stats } = useQuery({
-    queryKey: ["edge-function-stats"],
-    queryFn: async () => {
-      const { data, error } = await supabase.rpc('get_edge_function_metrics');
-      if (error) throw error;
-      return data;
-    },
-  });
+  // Remove specific RPC for now and use logs data
+  const stats = null;
 
   if (isLoading) {
     return (
