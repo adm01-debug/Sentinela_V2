@@ -76,6 +76,30 @@ export const geofenceService = {
 
     if (error) throw error;
     return data as Geofence;
+  },
+
+  async checkGeofence(input: {
+    employee_id: string;
+    device_id?: string;
+    latitude?: number;
+    longitude?: number;
+    location?: {
+      latitude: number;
+      longitude: number;
+      accuracy?: number;
+    };
+    accuracy?: number;
+    timestamp?: string;
+  }, version: 'v1' | 'v2' = 'v2') {
+    const { data, error } = await supabase.functions.invoke('check-geofence', {
+      body: input,
+      headers: {
+        'x-api-version': version
+      }
+    });
+
+    if (error) throw error;
+    return data;
   }
 };
 
