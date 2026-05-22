@@ -1,7 +1,17 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useEmployees, useCreateEmployee, useUpdateEmployee, useDeleteEmployee, type EmployeeWithDetails, type EmployeeCreateInput, type EmployeeUpdateInput } from '@/hooks/useEmployees';
+import { 
+  useEmployees, 
+  useCreateEmployee, 
+  useUpdateEmployee, 
+  useDeleteEmployee, 
+  useAssignDevice,
+  useUnassignDevice,
+  type EmployeeWithDetails, 
+  type EmployeeCreateInput, 
+  type EmployeeUpdateInput 
+} from '@/hooks/useEmployees';
 import { useTeams } from '@/hooks/useTeams';
-import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from 'react-i18next';
 
 // ============================================================
 // TYPES
@@ -61,35 +71,23 @@ const initialDeviceData: DeviceFormData = {
 // ============================================================
 
 export function useEmployeesPage() {
+  const { t } = useTranslation();
   const employeesQuery = useEmployees();
-  const employees = Array.isArray(employeesQuery.data) ? employeesQuery.data : (employeesQuery.data as { data?: unknown[] })?.data || [];
+  const employees = (employeesQuery.data as EmployeeWithDetails[]) || [];
   const loading = employeesQuery.isLoading;
   
   const createMutation = useCreateEmployee();
   const updateMutation = useUpdateEmployee();
   const deleteMutation = useDeleteEmployee();
+  const assignDeviceMutation = useAssignDevice();
+  const unassignDeviceMutation = useUnassignDevice();
   
   const createEmployee = async (data: EmployeeCreateInput) => createMutation.mutateAsync(data);
   const updateEmployee = async (id: string, data: Partial<EmployeeUpdateInput>) => updateMutation.mutateAsync({ id, data: data as EmployeeUpdateInput });
   const deleteEmployee = async (id: string) => deleteMutation.mutateAsync(id);
-  const assignDevice = async (empId: string, name: string, type: string, primary: boolean) => {
-    const { error } = await supabase.from('employee_devices').insert({
-      employee_id: empId,
-      device_name: name,
-      device_type: type,
-      is_primary: primary,
-    });
-    if (error) throw error;
-    employeesQuery.refetch();
-  };
-  const unassignDevice = async (_empId: string, deviceId: string) => {
-    const { error } = await supabase.from('employee_devices').delete().eq('id', deviceId);
-    if (error) throw error;
-    employeesQuery.refetch();
-  };
   
   const teamsQuery = useTeams();
-  const teams = Array.isArray(teamsQuery.data) ? teamsQuery.data : (teamsQuery as unknown as { teams?: unknown[] }).teams || ((teamsQuery.data as unknown as { data?: unknown[] })?.data) || [];
+  const teams = teamsQuery.data || [];
 
   // Filters
   const [filters, setFilters] = useState<EmployeeFilters>({
@@ -162,70 +160,90 @@ export function useEmployeesPage() {
   const handleCreate = useCallback(async () => {
     if (!formData.name.trim()) return;
     
-    await createEmployee({
-      name: formData.name.trim(),
-      full_name: formData.name.trim(),
-      email: formData.email.trim() || undefined,
-      department: formData.department.trim() || undefined,
-      position: formData.position.trim() || undefined,
-      team_id: formData.team_id || undefined,
-      status: formData.status,
-      hire_date: formData.hire_date || undefined,
-      phone: formData.phone.trim() || undefined,
-      avatar_url: undefined,
-      notes: formData.notes.trim() || undefined
-    });
-    
-    resetForm();
-    setIsCreateOpen(false);
+    try {
+      await createEmployee({
+        name: formData.name.trim(),
+        full_name: formData.name.trim(),
+        email: formData.email.trim() || undefined,
+        department: formData.department.trim() || undefined,
+        position: formData.position.trim() || undefined,
+        team_id: formData.team_id || undefined,
+        status: formData.status,
+        hire_date: formData.hire_date || undefined,
+        phone: formData.phone.trim() || undefined,
+        avatar_url: undefined,
+        notes: formData.notes.trim() || undefined
+      });
+      
+      resetForm();
+      setIsCreateOpen(false);
+    } catch (err) {
+      // Error handled by mutation toast
+    }
   }, [formData, createEmployee, resetForm]);
 
   const handleUpdate = useCallback(async () => {
     if (!selectedEmployee || !formData.name.trim()) return;
     
-    await updateEmployee(selectedEmployee.id, {
-      name: formData.name.trim(),
-      full_name: formData.name.trim(),
-      email: formData.email.trim() || undefined,
-      department: formData.department.trim() || undefined,
-      position: formData.position.trim() || undefined,
-      team_id: formData.team_id || undefined,
-      status: formData.status,
-      hire_date: formData.hire_date || undefined,
-      phone: formData.phone.trim() || undefined,
-      notes: formData.notes.trim() || undefined
-    });
-    
-    resetForm();
-    setSelectedEmployee(null);
-    setIsEditOpen(false);
+    try {
+      await updateEmployee(selectedEmployee.id, {
+        name: formData.name.trim(),
+        full_name: formData.name.trim(),
+        email: formData.email.trim() || undefined,
+        department: formData.department.trim() || undefined,
+        position: formData.position.trim() || undefined,
+        team_id: formData.team_id || undefined,
+        status: formData.status,
+        hire_date: formData.hire_date || undefined,
+        phone: formData.phone.trim() || undefined,
+        notes: formData.notes.trim() || undefined
+      });
+      
+      resetForm();
+      setSelectedEmployee(null);
+      setIsEditOpen(false);
+    } catch (err) {
+      // Error handled by mutation toast
+    }
   }, [selectedEmployee, formData, updateEmployee, resetForm]);
 
   const handleDelete = useCallback(async () => {
     if (!selectedEmployee) return;
     
-    await deleteEmployee(selectedEmployee.id);
-    setSelectedEmployee(null);
-    setIsDeleteOpen(false);
+    try {
+      await deleteEmployee(selectedEmployee.id);
+      setSelectedEmployee(null);
+      setIsDeleteOpen(false);
+    } catch (err) {
+      // Error handled by mutation toast
+    }
   }, [selectedEmployee, deleteEmployee]);
 
   const handleAssignDevice = useCallback(async () => {
     if (!selectedEmployee || !deviceData.device_name.trim()) return;
     
-    await assignDevice(
-      selectedEmployee.id, 
-      deviceData.device_name.trim(), 
-      deviceData.device_type, 
-      deviceData.is_primary
-    );
-    
-    resetDeviceForm();
-    setIsDeviceOpen(false);
-  }, [selectedEmployee, deviceData, assignDevice, resetDeviceForm]);
+    try {
+      await assignDeviceMutation.mutateAsync({
+        employeeId: selectedEmployee.id,
+        name: deviceData.device_name.trim(),
+        type: deviceData.device_type,
+        primary: deviceData.is_primary
+      });
+      
+      resetDeviceForm();
+      setIsDeviceOpen(false);
+    } catch (err) {
+      // Error handled by mutation toast
+    }
+  }, [selectedEmployee, deviceData, assignDeviceMutation, resetDeviceForm]);
 
   const handleUnassignDevice = useCallback(async (employeeId: string, deviceId: string) => {
-    await unassignDevice(employeeId, deviceId);
-  }, [unassignDevice]);
+    try {
+      await unassignDeviceMutation.mutateAsync({ employeeId, deviceId });
+    } catch (err) {
+      // Error handled by mutation toast
+    }
+  }, [unassignDeviceMutation]);
 
   // Dialog openers
   const openCreateDialog = useCallback(() => {
@@ -352,5 +370,6 @@ export const deviceTypeLabels = {
 // ============================================================
 
 export function getInitials(name: string): string {
-  return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  if (!name) return '??';
+  return name.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase();
 }
