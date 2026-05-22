@@ -1,7 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { employeeService } from '@/services/employeeService';
+import { useToast } from '@/hooks/use-toast';
+import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
-// Extended type with device info
+// ============================================================
+// TYPES
+// ============================================================
+
 export interface EmployeeDevice {
   id: string;
   device_name: string;
@@ -62,24 +67,30 @@ interface AttendanceStatsRow {
   status: string | null;
 }
 
+// ============================================================
+// QUERIES
+// ============================================================
+
 export const useEmployees = (filters?: EmployeeFilters) => {
   return useQuery({
-    queryKey: ['employees', filters],
+    queryKey: queryKeys.employees.list(filters),
     queryFn: () => employeeService.getEmployees(filters),
+    ...queryPresets.list,
   });
 };
 
 export const useEmployee = (id: string) => {
   return useQuery({
-    queryKey: ['employee', id],
+    queryKey: queryKeys.employees.detail(id),
     queryFn: () => employeeService.getEmployeeById(id),
     enabled: !!id,
+    ...queryPresets.detail,
   });
 };
 
 export const useEmployeeStats = (id: string, startDate: string, endDate: string) => {
   return useQuery({
-    queryKey: ['employee-stats', id, startDate, endDate],
+    queryKey: queryKeys.employees.stats(id),
     queryFn: async () => {
       const { keystrokeLogs, violationCount, attendance } = await employeeService.getEmployeeStats(id, startDate, endDate);
 
@@ -114,32 +125,129 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
       };
     },
     enabled: !!id && !!startDate && !!endDate,
+    ...queryPresets.dashboard,
   });
 };
 
+// ============================================================
+// MUTATIONS
+// ============================================================
+
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
+
   return useMutation({
     mutationFn: (data: EmployeeCreateInput) => employeeService.createEmployee(data),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['employees'] }); },
+    onSuccess: () => {
+      invalidateRelated.employees(queryClient);
+      toast({
+        title: 'Funcionário criado',
+        description: 'O funcionário foi cadastrado com sucesso.',
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Erro ao criar funcionário',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 };
 
 export const useUpdateEmployee = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
+
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: EmployeeUpdateInput }) => employeeService.updateEmployee(id, data),
     onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ['employees'] });
-      queryClient.invalidateQueries({ queryKey: ['employee', id] });
+      invalidateRelated.employee(queryClient, id);
+      toast({
+        title: 'Funcionário atualizado',
+        description: 'Os dados do funcionário foram salvos com sucesso.',
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Erro ao atualizar funcionário',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
 };
 
 export const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
+
   return useMutation({
     mutationFn: (id: string) => employeeService.deleteEmployee(id),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['employees'] }); },
+    onSuccess: () => {
+      invalidateRelated.employees(queryClient);
+      toast({
+        title: 'Funcionário excluído',
+        description: 'O registro foi removido com sucesso.',
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Erro ao excluir funcionário',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 };
+
+export const useAssignDevice = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: ({ employeeId, name, type, primary }: { employeeId: string, name: string, type: string, primary: boolean }) => 
+      employeeService.assignDevice(employeeId, name, type, primary),
+    onSuccess: (_, { employeeId }) => {
+      invalidateRelated.employee(queryClient, employeeId);
+      toast({
+        title: 'Dispositivo vinculado',
+        description: 'O dispositivo foi associado ao funcionário.',
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Erro ao vincular dispositivo',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUnassignDevice = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: ({ employeeId, deviceId }: { employeeId: string, deviceId: string }) => 
+      employeeService.unassignDevice(deviceId),
+    onSuccess: (_, { employeeId }) => {
+      invalidateRelated.employee(queryClient, employeeId);
+      toast({
+        title: 'Dispositivo removido',
+        description: 'O vínculo do dispositivo foi removido.',
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Erro ao remover dispositivo',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export default useEmployees;
