@@ -9,7 +9,7 @@ export interface Geofence {
   name: string;
   description?: string;
   type: 'polygon' | 'circle';
-  coordinates: number[][]; // Added for consistency with service
+  coordinates?: number[][]; // Changed to optional for circle types
   center_lat?: number;
   center_lng?: number;
   radius?: number;

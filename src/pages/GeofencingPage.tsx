@@ -15,8 +15,11 @@ import { GeofenceDashboard } from '@/components/geofence/GeofenceDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 
+import { PolygonUpload } from '@/components/geofence/PolygonUpload';
+
 export default function GeofencingPage() {
   const { toast } = useToast();
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
   const {
     selectedGeofence, setSelectedGeofence,
     isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
@@ -164,28 +167,39 @@ export default function GeofencingPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label>Coordenadas do Polígono</Label>
-                  <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => {
-                    const input = prompt('Cole aqui o JSON das coordenadas (Ex: [[lat,lng],[lat,lng],...])');
-                    if (input) {
-                      try {
-                        const coords = JSON.parse(input);
-                        if (Array.isArray(coords)) {
-                          setFormData(prev => ({ ...prev, coordinates: coords }));
-                          toast({ title: 'Coordenadas importadas!' });
-                        }
-                      } catch (e) {
-                        toast({ title: 'Erro no formato', variant: 'destructive' });
-                      }
-                    }
-                  }}>Importar JSON</Button>
+                  <Button variant="outline" size="sm" className="h-7 text-xs gap-1" onClick={() => setIsUploadOpen(true)}>
+                    <Upload className="h-3 w-3" />
+                    Importar / Upload
+                  </Button>
                 </div>
-                <div className="bg-muted p-3 rounded-md max-h-32 overflow-auto text-xs font-mono">
+                <div className="bg-muted p-3 rounded-md max-h-32 overflow-auto text-xs font-mono border">
                   {formData.coordinates && formData.coordinates.length > 0 
-                    ? JSON.stringify(formData.coordinates)
-                    : 'Nenhuma coordenada definida. Use o mapa ou importe um arquivo.'}
+                    ? (
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1 text-success font-semibold">
+                          <CheckCircle2 className="h-3 w-3" />
+                          {formData.coordinates.length} pontos validados
+                        </div>
+                        <div className="opacity-70">
+                          {JSON.stringify(formData.coordinates.slice(0, 3))}...
+                        </div>
+                      </div>
+                    )
+                    : (
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <AlertCircle className="h-3 w-3" />
+                        Nenhuma coordenada definida.
+                      </div>
+                    )}
                 </div>
               </div>
             )}
+
+            <PolygonUpload 
+              isOpen={isUploadOpen} 
+              onClose={() => setIsUploadOpen(false)} 
+              onUpload={(coords) => setFormData(prev => ({ ...prev, coordinates: coords }))}
+            />
 
             <div className="flex items-center justify-between bg-muted/30 p-3 rounded-md">
               <div className="space-y-0.5">
