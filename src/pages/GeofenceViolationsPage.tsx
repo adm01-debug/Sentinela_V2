@@ -28,8 +28,11 @@ import { ptBR } from 'date-fns/locale';
 import { DateRangePicker } from '@/components/DateRangePicker';
 import { Skeleton } from '@/components/ui/skeleton';
 import { EmptyState } from '@/components/EmptyState';
+import { generateGeofencePDFReport } from '@/utils/geofenceReport';
+import { useToast } from '@/hooks/use-toast';
 
 export default function GeofenceViolationsPage() {
+  const { toast } = useToast();
   const [employeeFilter, setEmployeeFilter] = useState('');
   const [deviceFilter, setDeviceFilter] = useState('');
   const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
@@ -45,8 +48,17 @@ export default function GeofenceViolationsPage() {
   });
 
   const handleExport = () => {
-    // In a real app, this would generate a CSV/PDF
-    console.log('Exporting violations...');
+    if (violations.length === 0) {
+      toast({ title: 'Sem dados para exportar', variant: 'destructive' });
+      return;
+    }
+    
+    const period = dateRange.from ? 
+      `${format(dateRange.from, 'MMMM yyyy', { locale: ptBR })}` : 
+      'Geral';
+      
+    generateGeofencePDFReport(violations, period);
+    toast({ title: 'Relatório PDF gerado com sucesso!' });
   };
 
   return (

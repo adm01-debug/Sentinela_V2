@@ -13,8 +13,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useGeofencingPage } from '@/hooks/useGeofencingPage';
 import { GeofenceDashboard } from '@/components/geofence/GeofenceDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
 
 export default function GeofencingPage() {
+  const { toast } = useToast();
   const {
     selectedGeofence, setSelectedGeofence,
     isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
