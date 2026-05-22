@@ -1,7 +1,18 @@
-export interface ValidationRule { type: ValidationType; message?: string; value?: string | number | boolean | RegExp; }
-export type ValidationType = 'required' | 'min' | 'max' | 'minLength' | 'maxLength' | 'pattern' | 'email' | 'url' | 'phone' | 'cpf' | 'cnpj' | 'custom';
-export interface ValidationResult { isValid: boolean; errors: ValidationFieldError[]; }
-export interface ValidationFieldError { field: string; type: ValidationType; message: string; }
-export interface ValidationSchema { [field: string]: ValidationRule[]; }
-export type Validator<T> = (value: T) => ValidationResult;
-export interface AsyncValidationResult { isValid: boolean; errors: ValidationFieldError[]; pending: boolean; }
+import { z } from 'zod';
+
+export const EmployeeSchema = z.object({
+  id: z.string().uuid().optional(),
+  first_name: z.string().min(2, 'Nome muito curto'),
+  last_name: z.string().min(2, 'Sobrenome muito curto'),
+  email: z.string().email('Email inválido'),
+  company_id: z.string().uuid(),
+  role: z.enum(['admin', 'manager', 'employee']),
+  status: z.enum(['active', 'inactive', 'suspended']).default('active'),
+});
+
+export type EmployeeInput = z.infer<typeof EmployeeSchema>;
+
+export const LoginSchema = z.object({
+  email: z.string().email('Email inválido'),
+  password: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres'),
+});

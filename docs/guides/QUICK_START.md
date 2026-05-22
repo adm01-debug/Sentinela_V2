@@ -1,44 +1,26 @@
-# Quick Start Guide
+# Sentinela Quick Start Guide
 
-Get Sentinela up and running in 5 minutes.
+Welcome to **Sentinela v20**. This guide will help you get up and running in minutes.
 
-## Prerequisites
+## 1. Prerequisites
 - Node.js 18+
-- npm or yarn
-- Supabase account
+- Supabase Account
+- Docker (optional for agents)
 
-## Installation
-
+## 2. Installation
 ```bash
-git clone https://github.com/adm01-debug/sentinela.git
-cd sentinela
-npm install
-cp .env.example .env.local
+bun install
 ```
 
-## Configuration
-
-Edit `.env.local` with your Supabase credentials:
-```
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_anon_key
-```
-
-## Run Development Server
-
+## 3. Configuration
+Copy `.env.example` to `.env` and fill in your Supabase credentials:
 ```bash
-npm run dev
+cp .env.example .env
 ```
 
-Visit `http://localhost:5173`
+## 4. Running the App
+```bash
+bun dev
+```
 
-## First Steps
-1. Create admin account
-2. Add your first employee
-3. Configure monitoring rules
-4. View dashboard
-
-## Next Steps
-- [Full Installation Guide](./INSTALLATION.md)
-- [Configuration Options](./CONFIGURATION.md)
-- [First Employee Tutorial](../tutorials/FIRST_EMPLOYEE.md)
+The app will be available at `http://localhost:8080`.

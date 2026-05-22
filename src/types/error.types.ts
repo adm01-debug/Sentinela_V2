@@ -1,6 +1,40 @@
-export interface AppError { code: ErrorCode; message: string; details?: Record<string, any>; stack?: string; timestamp: string; }
-export type ErrorCode = 'AUTH_ERROR' | 'VALIDATION_ERROR' | 'NOT_FOUND' | 'FORBIDDEN' | 'RATE_LIMITED' | 'SERVER_ERROR' | 'NETWORK_ERROR' | 'TIMEOUT';
-export interface ValidationError { field: string; message: string; code: string; }
-export interface ApiError { status: number; code: ErrorCode; message: string; errors?: ValidationError[]; requestId?: string; }
-export interface ErrorBoundaryState { hasError: boolean; error?: Error; errorInfo?: React.ErrorInfo; }
-export interface ErrorLogEntry { id: string; error: AppError; userId?: string; url: string; userAgent: string; createdAt: string; }
+export type ErrorCode = 
+  | 'AUTH_INVALID_CREDENTIALS'
+  | 'AUTH_EXPIRED_TOKEN'
+  | 'AUTH_UNAUTHORIZED'
+  | 'FORBIDDEN'
+  | 'NOT_FOUND'
+  | 'VALIDATION_ERROR'
+  | 'SERVER_ERROR'
+  | 'NETWORK_ERROR';
+
+export interface AppError {
+  code: ErrorCode;
+  message: string;
+  details?: Record<string, any>;
+  status?: number;
+}
+
+export interface ApiError extends AppError {
+  status: number;
+}
+
+export interface ValidationError extends ApiError {
+  fields: Record<string, string[]>;
+}
+
+export interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export interface ErrorLogEntry {
+  id: string;
+  timestamp: string;
+  message: string;
+  stack?: string;
+  context?: Record<string, any>;
+  userId?: string;
+}
+
+export type Severity = 'low' | 'medium' | 'high' | 'critical';
