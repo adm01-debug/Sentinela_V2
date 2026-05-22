@@ -62,6 +62,7 @@ const CompliancePage = lazy(() => import('@/pages/CompliancePage'));
 const AIAnalysisPage = lazy(() => import('@/pages/AIAnalysisPage'));
 const GamificationPage = lazy(() => import('@/pages/GamificationPage'));
 const InternetAccessPage = lazy(() => import('@/pages/InternetAccessPage'));
+const GeofenceViolationsPage = lazy(() => import('@/pages/GeofenceViolationsPage'));
 const TimeClockPage = lazy(() => import('@/pages/TimeClockPage'));
 const ProjectsPage = lazy(() => import('@/pages/ProjectsPage'));
 const TimesheetsPage = lazy(() => import('@/pages/TimesheetsPage'));
@@ -151,6 +152,7 @@ export const AppRoutes = () => (
 
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/geofencing" element={<GeofencingPage />} />
+        <Route path="/geofencing/alerts" element={<GeofenceViolationsPage />} />
         <Route path="/work-schedules" element={<WorkSchedulesPage />} />
         <Route path="/export" element={<DataExportPage />} />
         <Route path="/compliance" element={<CompliancePage />} />

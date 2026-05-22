@@ -77,6 +77,7 @@ const navSections: NavSection[] = [
     items: [
       { icon: Smartphone, labelKey: 'nav.devices', path: '/devices' },
       { icon: MapPin, labelKey: 'nav.geofencing', path: '/geofencing' },
+      { icon: Bell, labelKey: 'Alertas de Geofence', path: '/geofencing/alerts' },
     ],
   },
   {
