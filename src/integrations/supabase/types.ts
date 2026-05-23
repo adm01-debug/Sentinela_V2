@@ -1827,44 +1827,62 @@ export type Database = {
       geofences: {
         Row: {
           address: string | null
+          color: string | null
           company_id: string | null
           created_at: string
           created_by: string | null
           description: string | null
+          geometry: Json | null
           id: string
           is_active: boolean
           latitude: number
           longitude: number
           name: string
+          points_count: number | null
           radius_meters: number
+          required: boolean | null
+          restricted: boolean | null
+          type: string | null
           updated_at: string
         }
         Insert: {
           address?: string | null
+          color?: string | null
           company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
+          geometry?: Json | null
           id?: string
           is_active?: boolean
           latitude: number
           longitude: number
           name: string
+          points_count?: number | null
           radius_meters?: number
+          required?: boolean | null
+          restricted?: boolean | null
+          type?: string | null
           updated_at?: string
         }
         Update: {
           address?: string | null
+          color?: string | null
           company_id?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
+          geometry?: Json | null
           id?: string
           is_active?: boolean
           latitude?: number
           longitude?: number
           name?: string
+          points_count?: number | null
           radius_meters?: number
+          required?: boolean | null
+          restricted?: boolean | null
+          type?: string | null
           updated_at?: string
         }
         Relationships: [
