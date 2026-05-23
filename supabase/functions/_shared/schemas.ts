@@ -80,6 +80,10 @@ export const checkGeofenceSchemaV2 = z.object({
   timestamp: dateTimeSchema.optional(),
   check_all: z.boolean().default(false),
   geofence_ids: z.array(uuidSchema).optional(),
+  geometry: z.object({
+    type: z.literal('Polygon'),
+    coordinates: z.array(z.array(z.array(z.number()))).min(1),
+  }).nullable().optional(),
 });
 
 export const checkGeofenceSchema = z.union([checkGeofenceSchemaV1, checkGeofenceSchemaV2]);
