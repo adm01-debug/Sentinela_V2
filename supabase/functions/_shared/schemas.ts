@@ -1,4 +1,4 @@
-import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { z } from 'https://deno.land/x/zod@v3.23.8/mod.ts';
 
 // ============================================================
 // COMMON SCHEMAS
@@ -82,7 +82,16 @@ export const checkGeofenceSchemaV2 = z.object({
   geofence_ids: z.array(uuidSchema).optional(),
   geometry: z.object({
     type: z.literal('Polygon'),
-    coordinates: z.array(z.array(z.array(z.number()))).min(1),
+    coordinates: z.array(z.array(z.array(z.number()))).min(1).refine(
+      (coords) => {
+        const ring = coords[0];
+        if (ring.length < 4) return false;
+        const first = ring[0];
+        const last = ring[ring.length - 1];
+        return first[0] === last[0] && first[1] === last[1];
+      },
+      { message: "Polygon must be closed and have at least 4 points (including closure)" }
+    ),
   }).nullable().optional(),
 });
 
