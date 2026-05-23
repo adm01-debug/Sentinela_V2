@@ -219,7 +219,7 @@ export function useGeofencingPage() {
 
   const handleOpenEdit = useCallback((geofence: Geofence) => {
     setEditingGeofence(geofence);
-    const geometryPoints = geofence.geometry?.coordinates?.[0] || geofence.coordinates || [];
+    const geometryPoints = (geofence.geometry?.coordinates?.[0] || geofence.coordinates || []) as number[][];
     setFormData({
       name: geofence.name,
       description: geofence.description || '',
