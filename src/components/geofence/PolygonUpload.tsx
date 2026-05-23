@@ -43,14 +43,26 @@ export function PolygonUpload({ isOpen, onClose, onUpload }: PolygonUploadProps)
       }
 
       // Basic coordinate validation
+      if (!coordinates || !Array.isArray(coordinates) || coordinates.length < 3) {
+        throw new Error('O polígono deve ter pelo menos 3 pontos.');
+      }
+
       if (!coordinates.every(coord => Array.isArray(coord) && coord.length >= 2)) {
         throw new Error('Cada ponto deve ter pelo menos [longitude, latitude].');
       }
 
+      // Closure validation
+      const first = coordinates[0];
+      const last = coordinates[coordinates.length - 1];
+      if (first[0] !== last[0] || first[1] !== last[1]) {
+        // Automatically close it if it's missing the closure point
+        coordinates = [...coordinates, [first[0], first[1]]];
+      }
+
       // Validate lat/lng ranges
       coordinates.forEach(([lng, lat]) => {
-        if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
-          throw new Error(`Coordenadas fora do intervalo válido: [${lng}, ${lat}]`);
+        if (typeof lat !== 'number' || typeof lng !== 'number' || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+          throw new Error(`Coordenadas inválidas detectadas. Latitude deve estar entre -90 e 90, e Longitude entre -180 e 180.`);
         }
       });
 

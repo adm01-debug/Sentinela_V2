@@ -168,7 +168,7 @@ serve(async (req) => {
 
       // Check based on geofence type
       if (geofence.geometry?.type === 'polygon' && geofence.geometry?.coordinates) {
-        const polygon = geofence.geometry.coordinates.map((c: number[]) => ({
+        const polygon = geofence.geometry.coordinates[0].map((c: number[]) => ({
           latitude: c[1],
           longitude: c[0],
         }));

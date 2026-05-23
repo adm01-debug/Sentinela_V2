@@ -102,10 +102,10 @@ export function useGeofencingPage() {
         center_lng: g.longitude,
         radius: g.radius_meters,
         coordinates: g.geometry?.coordinates?.[0] || [],
-        color: '#3b82f6',
+        color: g.color || '#3b82f6',
         is_active: g.is_active,
-        restricted: false,
-        required: false,
+        restricted: g.restricted || false,
+        required: g.required || false,
         created_at: g.created_at,
         employees_count: countMap[g.id] || 0,
       })) as Geofence[];
@@ -139,6 +139,10 @@ export function useGeofencingPage() {
         longitude: data.center_lng,
         radius_meters: data.radius,
         is_active: data.is_active,
+        color: data.color,
+        restricted: data.restricted,
+        required: data.required,
+        type: data.type,
         geometry: data.type === 'polygon' ? { type: 'Polygon', coordinates: [data.coordinates] } : null,
       };
       const { error } = await supabase.from('geofences').insert(geofenceData);
@@ -163,6 +167,10 @@ export function useGeofencingPage() {
         longitude: data.center_lng,
         radius_meters: data.radius,
         is_active: data.is_active,
+        color: data.color,
+        restricted: data.restricted,
+        required: data.required,
+        type: data.type,
         geometry: data.type === 'polygon' ? { type: 'Polygon', coordinates: [data.coordinates] } : null,
       };
       const { error } = await supabase.from('geofences').update(geofenceData).eq('id', id);
