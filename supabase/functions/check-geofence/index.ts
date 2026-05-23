@@ -167,7 +167,7 @@ serve(async (req) => {
       let isInside = false;
 
       // Check based on geofence type
-      if (geofence.geometry?.type === 'polygon' && geofence.geometry?.coordinates) {
+      if ((geofence.geometry?.type === 'Polygon' || geofence.geometry?.type === 'polygon') && geofence.geometry?.coordinates) {
         const polygon = geofence.geometry.coordinates[0].map((c: number[]) => ({
           latitude: c[1],
           longitude: c[0],

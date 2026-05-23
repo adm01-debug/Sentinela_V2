@@ -35,11 +35,13 @@ export function PolygonUpload({ isOpen, onClose, onUpload }: PolygonUploadProps)
         coordinates = data.geometry.coordinates[0];
       } else if (data.type === 'Polygon' && Array.isArray(data.coordinates)) {
         coordinates = data.coordinates[0];
+      } else if (data.type === 'FeatureCollection' && data.features?.[0]?.geometry?.type === 'Polygon') {
+        coordinates = data.features[0].geometry.coordinates[0];
       } else if (Array.isArray(data)) {
         // Direct array of arrays [[lng, lat], ...]
         coordinates = data;
       } else {
-        throw new Error('Formato de coordenadas inválido. Use um array de [longitude, latitude] ou GeoJSON.');
+        throw new Error('Formato de coordenadas inválido. Use um array de [longitude, latitude] ou GeoJSON (Polygon).');
       }
 
       // Basic coordinate validation

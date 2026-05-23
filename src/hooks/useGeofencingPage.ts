@@ -47,6 +47,7 @@ const initialFormData: GeofenceFormData = {
   is_active: true,
   restricted: false,
   required: false,
+  coordinates: [],
 };
 
 export const GEOFENCE_COLORS = [
@@ -218,6 +219,7 @@ export function useGeofencingPage() {
 
   const handleOpenEdit = useCallback((geofence: Geofence) => {
     setEditingGeofence(geofence);
+    const geometryPoints = geofence.geometry?.coordinates?.[0] || geofence.coordinates || [];
     setFormData({
       name: geofence.name,
       description: geofence.description || '',
@@ -229,10 +231,9 @@ export function useGeofencingPage() {
       is_active: geofence.is_active,
       restricted: geofence.restricted,
       required: geofence.required,
+      coordinates: geometryPoints,
     });
-    if (geofence.geometry?.coordinates) {
-      setDrawnPoints(geofence.geometry.coordinates.map(c => ({ lat: c[1], lng: c[0] })));
-    }
+    setDrawnPoints(geometryPoints.map(c => ({ lat: c[1], lng: c[0] })));
     setIsDialogOpen(true);
   }, []);
 
