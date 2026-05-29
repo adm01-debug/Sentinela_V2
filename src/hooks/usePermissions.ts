@@ -32,7 +32,7 @@ export interface UsePermissionsReturn {
 export function usePermissions(): UsePermissionsReturn {
   const { user } = useAuth();
   
-  const { data: permissions = [], isLoading, error, refetch } = useQuery({
+  const { data: permissionsRaw = [], isLoading, error, refetch } = useQuery({
     queryKey: queryKeys.permissions.user(user?.id || ''),
     queryFn: async () => {
       if (!user?.id) return [];
@@ -54,7 +54,7 @@ export function usePermissions(): UsePermissionsReturn {
     },
     enabled: !!user?.id,
     ...queryPresets.config,
-  });
+  const permissions = Array.isArray(permissionsRaw) ? permissionsRaw : [];
 
   const hasPermission = useCallback((permission: string): boolean => {
     return permissions.includes(permission) || permissions.includes('admin') || permissions.includes('*');

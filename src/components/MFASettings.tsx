@@ -21,7 +21,7 @@ export function MFASettings() {
   };
 
   const handleDisable2FA = async () => {
-    const verifiedFactor = factors.find(f => f.status === 'verified');
+    const verifiedFactor = Array.isArray(factors) ? factors.find(f => f.status === 'verified') : null;
     if (!verifiedFactor) return;
 
     setDisabling(true);
@@ -79,7 +79,7 @@ export function MFASettings() {
               </AlertDescription>
             </Alert>
 
-            {factors.filter(f => f.status === 'verified').map((factor) => (
+            {(Array.isArray(factors) ? factors.filter(f => f.status === 'verified') : []).map((factor) => (
               <div key={factor.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                 <div className="flex items-center gap-3">
                   <Smartphone className="h-5 w-5 text-muted-foreground" />

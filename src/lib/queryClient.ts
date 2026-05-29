@@ -30,6 +30,12 @@ export const queryKeys = {
     all: ['auth'] as const,
     session: () => [...queryKeys.auth.all, 'session'] as const,
     user: () => [...queryKeys.auth.all, 'user'] as const,
+    mfa: () => [...queryKeys.auth.all, 'mfa'] as const,
+  },
+  mfa: {
+    all: ['mfa'] as const,
+    factors: () => [...queryKeys.mfa.all, 'factors'] as const,
+    status: () => [...queryKeys.mfa.all, 'status'] as const,
   },
   employees: {
     all: ['employees'] as const,
@@ -57,9 +63,22 @@ export const queryKeys = {
     recentViolations: () => [...queryKeys.dashboard.all, 'recent-violations'] as const,
     security: () => [...queryKeys.dashboard.all, 'security'] as const,
     activity: () => [...queryKeys.dashboard.all, 'activity'] as const,
+    layout: () => [...queryKeys.dashboard.all, 'layout'] as const,
+    widgets: () => [...queryKeys.dashboard.all, 'widgets'] as const,
   },
   settings: {
     all: ['settings'] as const,
+    alerts: () => [...queryKeys.settings.all, 'alerts'] as const,
+  },
+  security: {
+    all: ['security'] as const,
+    events: (filters?: unknown) => [...queryKeys.security.all, 'events', filters] as const,
+    settings: ['security', 'settings'] as const,
+  },
+  permissions: {
+    all: ['permissions'] as const,
+    user: (id: string) => [...queryKeys.permissions.all, 'user', id] as const,
+    roles: () => [...queryKeys.permissions.all, 'roles'] as const,
   },
   notifications: {
     all: ['notifications'] as const,
@@ -73,7 +92,11 @@ export const queryKeys = {
   activity: {
     all: ['activity'] as const,
   },
-} as any; // Using any to allow the rest of the file logic to work if I missed something
+  mapbox: {
+    all: ['mapbox'] as const,
+    token: () => [...queryKeys.mapbox.all, 'token'] as const,
+  }
+} as any;
 
 // ============================================================
 // QUERY CLIENT INSTANCE
@@ -112,6 +135,9 @@ export const queryPresets = {
   list: { staleTime: CACHE_TIMES.FREQUENT, gcTime: CACHE_TIMES.STABLE },
   detail: { staleTime: CACHE_TIMES.STABLE, gcTime: CACHE_TIMES.STATIC },
   dashboard: { staleTime: CACHE_TIMES.FREQUENT, gcTime: CACHE_TIMES.STABLE, refetchInterval: REFETCH_INTERVALS.NORMAL },
+  config: { staleTime: CACHE_TIMES.STATIC, gcTime: CACHE_TIMES.IMMUTABLE },
+  realtime: { staleTime: CACHE_TIMES.REALTIME, gcTime: CACHE_TIMES.FREQUENT, refetchInterval: REFETCH_INTERVALS.REALTIME },
+  immutable: { staleTime: CACHE_TIMES.IMMUTABLE, gcTime: CACHE_TIMES.IMMUTABLE },
 };
 
 export const invalidateRelated = {
@@ -128,4 +154,7 @@ export const invalidateRelated = {
     client.invalidateQueries({ queryKey: queryKeys.violations.all });
     client.invalidateQueries({ queryKey: queryKeys.dashboard.security() });
   },
+  settings: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.settings.all });
+  }
 } as any;

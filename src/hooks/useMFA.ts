@@ -117,8 +117,8 @@ export function useMFA() {
   const verifyMutation = useVerifyMFA();
   const unenrollMutation = useUnenrollMFA();
 
-  const factors = factorsQuery.data || [];
-  const isEnrolled = factors.some(f => f.status === 'verified');
+  const factors = Array.isArray(factorsQuery.data) ? factorsQuery.data : [];
+  const isEnrolled = factors.some((f: any) => f.status === 'verified');
 
   return {
     isEnrolled,

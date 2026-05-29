@@ -30,7 +30,7 @@ export function useAlertSettings() {
         .maybeSingle();
 
       if (error) throw error;
-      return data as AlertNotificationSettings | null;
+      return (data || {}) as AlertNotificationSettings;
     },
     ...queryPresets.config,
   });
