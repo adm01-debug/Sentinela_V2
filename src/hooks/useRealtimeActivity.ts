@@ -30,8 +30,7 @@ export function useRealtimeActivity(limit = 50) {
     },
     ...(queryPresets as any).realtime,
     refetchInterval: REFETCH_INTERVALS.REALTIME,
-    staleTime: 5000,
-  } as any);
+  });
 }
 
 export function useEmployeeActivity(employeeId: string | undefined) {
@@ -51,6 +50,6 @@ export function useEmployeeActivity(employeeId: string | undefined) {
       return data as RealtimeActivity[];
     },
     enabled: !!employeeId,
-    ...queryPresets.list,
+    ...(queryPresets as any).list,
   });
 }

@@ -79,7 +79,7 @@ export const useEmployees = (filters?: EmployeeFilters) => {
   return useQuery({
     queryKey,
     queryFn: () => employeeService.getEmployees(filters),
-    ...queryPresets.list,
+    ...(queryPresets as any).list,
   });
 };
 
@@ -88,7 +88,7 @@ export const useEmployee = (id: string) => {
     queryKey: queryKeys.employees.detail(id),
     queryFn: () => employeeService.getEmployeeById(id),
     enabled: !!id,
-    ...queryPresets.detail,
+    ...(queryPresets as any).detail,
   });
 };
 
@@ -129,7 +129,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
       };
     },
     enabled: !!id && !!startDate && !!endDate,
-    ...queryPresets.dashboard,
+    ...(queryPresets as any).dashboard,
   });
 };
 

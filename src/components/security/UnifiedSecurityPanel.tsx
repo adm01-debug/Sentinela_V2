@@ -112,7 +112,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
         session_timeout: (data?.find((s: MonitoringSetting) => s.setting_key === 'session_timeout_hours')?.setting_value as number) || 24,
       };
     },
-  });
+  } as any);
 
   const trustedDevices = Array.isArray(devices) ? devices.filter((d: KnownDevice) => d.is_trusted).length : 0;
   const unresolvedAlerts = Array.isArray(alerts) ? alerts.filter((a: SecurityAlert) => !a.read).length : 0;
