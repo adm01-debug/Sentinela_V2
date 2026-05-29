@@ -55,7 +55,8 @@ export function useDashboardLayout() {
 
   const widgets = useMemo(() => {
     if (localWidgets) return localWidgets;
-    if (Array.isArray(query.data?.widgets)) return query.data.widgets;
+    const data = query.data as any;
+    if (data && Array.isArray(data.widgets)) return data.widgets;
     return DEFAULT_WIDGETS;
   }, [localWidgets, query.data]);
 

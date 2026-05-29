@@ -79,7 +79,7 @@ function NotificationsDropdownComponent() {
   }, [markAllAsRead]);
 
   const displayedNotifications = useMemo(() => {
-    return notifications.slice(0, 10);
+    return Array.isArray(notifications) ? notifications.slice(0, 10) : [];
   }, [notifications]);
 
   return (

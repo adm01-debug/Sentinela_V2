@@ -74,14 +74,14 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
     queryKey: ['security', 'devices', userId],
     queryFn: () => userId ? getKnownDevices(userId) : Promise.resolve([]),
     enabled: !!userId,
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 
   const { data: loginEvents = [], isLoading: eventsLoading, refetch: refetchEvents } = useQuery({
     queryKey: ['security', 'loginEvents', userId],
     queryFn: () => userId ? getLoginEvents(userId, 20) : Promise.resolve([]),
     enabled: !!userId,
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 
   const { data: alerts = [], isLoading: alertsLoading, refetch: refetchAlerts } = useQuery({
@@ -95,7 +95,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
       if (error) throw error;
       return data || [];
     },
-    ...queryPresets.list,
+    ...(queryPresets as any).list,
   });
 
   const { data: settings } = useQuery({
@@ -114,8 +114,8 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
     },
   });
 
-  const trustedDevices = devices.filter((d: KnownDevice) => d.is_trusted).length;
-  const unresolvedAlerts = alerts.filter((a: SecurityAlert) => !a.read).length;
+  const trustedDevices = Array.isArray(devices) ? devices.filter((d: KnownDevice) => d.is_trusted).length : 0;
+  const unresolvedAlerts = Array.isArray(alerts) ? alerts.filter((a: SecurityAlert) => !a.read).length : 0;
   const score = calculateSecurityScore(isEnrolled, trustedDevices, devices.length, unresolvedAlerts);
   const isLoading = mfaLoading || devicesLoading || eventsLoading || alertsLoading;
 
@@ -131,9 +131,9 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
       <SecurityScoreCard
         score={score}
         isEnrolled={isEnrolled}
-        devicesCount={devices.length}
+        devicesCount={Array.isArray(devices) ? devices.length : 0}
         trustedDevices={trustedDevices}
-        loginEventsCount={loginEvents.length}
+        loginEventsCount={Array.isArray(loginEvents) ? loginEvents.length : 0}
         unresolvedAlerts={unresolvedAlerts}
         isLoading={isLoading}
         onRefresh={handleRefresh}
@@ -159,11 +159,11 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
             <OverviewActivityCard loginEvents={loginEvents as LoginEvent[]} />
           </div>
           {score.total < 100 && (
-            <SecurityRecommendations isEnrolled={isEnrolled} trustedDevices={trustedDevices} totalDevices={devices.length} unresolvedAlerts={unresolvedAlerts} />
+            <SecurityRecommendations isEnrolled={isEnrolled} trustedDevices={trustedDevices} totalDevices={Array.isArray(devices) ? devices.length : 0} unresolvedAlerts={unresolvedAlerts} />
           )}
         </TabsContent>
 
-        <TabsContent value="mfa"><MFAStatusTab isEnrolled={isEnrolled} factors={factors} /></TabsContent>
+        <TabsContent value="mfa"><MFAStatusTab isEnrolled={isEnrolled} factors={Array.isArray(factors) ? factors : []} /></TabsContent>
         <TabsContent value="passkeys"><WebAuthnSettings /></TabsContent>
         <TabsContent value="devices">{userId && <KnownDevicesPanel />}</TabsContent>
         <TabsContent value="sessions"><SessionHistoryTab loginEvents={loginEvents as LoginEvent[]} /></TabsContent>

@@ -20,7 +20,7 @@ export function useMFAFactors() {
       if (error) throw error;
       return data.totp as MFAFactor[];
     },
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 }
 
@@ -36,7 +36,7 @@ export function useMFAStatus() {
         currentAuthenticationMethods: data.currentAuthenticationMethods,
       };
     },
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 }
 
