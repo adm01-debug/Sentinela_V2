@@ -53,7 +53,7 @@ export const employeeService = {
       supabase
         .from('keystroke_logs')
         .select('recorded_at, keystrokes_count, active_time_seconds, idle_time_seconds')
-        .eq('employee_name', id)
+        .eq('employee_id', id)
         .gte('recorded_at', startDate)
         .lte('recorded_at', endDate),
       supabase

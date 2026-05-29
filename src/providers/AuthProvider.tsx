@@ -63,8 +63,9 @@ async function checkAdminRole(userId: string): Promise<boolean> {
       .maybeSingle();
     
     if (error) {
-      if (error.code !== 'PGRST116') { // maybeSingle empty result is not an error we care about here
-         logger.warn('[AuthProvider] Role check warning:', error.message);
+      // Ignorar erro de "não encontrado" (PGRST116)
+      if (error.code !== 'PGRST116') { 
+         logger.warn(`[AuthProvider] Role check warning for ${userId}:`, error.message);
       }
       return false;
     }
