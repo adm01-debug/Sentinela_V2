@@ -155,7 +155,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
-            <OverviewSettingsCard settings={settings} blockedIPsCount={blockedIPs?.length ?? 0} />
+            <OverviewSettingsCard settings={settings as any} blockedIPsCount={blockedIPs?.length ?? 0} />
             <OverviewActivityCard loginEvents={loginEvents as LoginEvent[]} />
           </div>
           {score.total < 100 && (
