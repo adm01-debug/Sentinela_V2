@@ -7,7 +7,6 @@ export type RealtimeEntity = 'employees' | 'teams' | 'security_violations' | 'at
 
 export function useRealtime(entity: RealtimeEntity, queryKey: any[]) {
   const queryClient = useQueryClient();
-
   const lastPayloadRef = useRef<string | null>(null);
 
   useEffect(() => {

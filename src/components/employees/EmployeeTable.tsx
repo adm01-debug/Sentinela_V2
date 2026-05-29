@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { CreateFirstEmptyState } from '@/components/EmptyStates';
 import { useTranslation } from 'react-i18next';
 import { Edit, Trash2, Monitor, Smartphone, Link2, Mail, Phone, Building2, Briefcase } from 'lucide-react';
@@ -63,7 +63,7 @@ function EmployeeTableComponent({
     return team?.name || null;
   }, [teams]);
 
-  const columns: Column<EmployeeWithDetails>[] = [
+  const columns: Column<EmployeeWithDetails>[] = useMemo(() => [
     {
       key: 'employee',
       header: t('employees.name'),
@@ -254,7 +254,7 @@ function EmployeeTableComponent({
         </div>
       ),
     },
-  ];
+  ], [t, getInitials, getTeamName, onAssignDevice, onEdit, onDelete, onUnassignDevice]);
 
   if (employees.length === 0) {
     return (
