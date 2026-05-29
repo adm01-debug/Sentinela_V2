@@ -17,7 +17,7 @@ export default function EmployeeDetailPage() {
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
   if (!employee) return <div className="p-6">Funcionário não encontrado</div>;
 
-  const displayName = employee.full_name ?? (employee as any).name ?? 'Sem nome';
+  const displayName = (employee as any).full_name ?? (employee as any).name ?? 'Sem nome';
 
   return (
     <div className="space-y-6">
@@ -26,7 +26,7 @@ export default function EmployeeDetailPage() {
         description={`Detalhes e histórico de atividades de ${displayName}.`}
       />
       
-      <EmployeeHeader employee={employee} />
+      <EmployeeHeader employee={employee as any} />
       
       <Tabs defaultValue="timeline" className="w-full">
         <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
