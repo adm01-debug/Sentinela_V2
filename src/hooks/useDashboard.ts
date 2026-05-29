@@ -26,7 +26,7 @@ export const useDashboardStats = () => {
     queryFn: async () => {
       const [employeesRes, violationsRes] = await Promise.all([
         supabase.from('employees').select('id, status', { count: 'exact' }),
-        supabase.from('security_violations').select('id', { count: 'exact' }),
+        supabase.from('security_violations').select('id', { count: 'exact' }).eq('read', false),
       ]);
       
       const employees = employeesRes.data || [];

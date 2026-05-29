@@ -57,11 +57,11 @@ export function useViolationsPage() {
       if (error) throw error;
       return data.map((v: any) => ({
         id: v.id,
-        employee_id: '',
-        employee_name: v.employee_name,
+        employee_id: v.employee_id || '',
+        employee_name: v.employee_name || 'Desconhecido',
         violation_type: v.violation_type,
         severity: v.severity as ViolationSeverity,
-        status: v.read ? 'resolved' : 'open' as ViolationStatus,
+        status: (v.read ? 'resolved' : 'open') as ViolationStatus,
         description: v.description || undefined,
         created_at: v.created_at,
       })) as Violation[];

@@ -23,8 +23,8 @@ export const CACHE_TIMES = {
 } as const;
 
 export const REFETCH_INTERVALS = {
-  REALTIME: 1000 * 10,    // 10 segundos
-  FREQUENT: 1000 * 30,    // 30 segundos
+  REALTIME: 1000 * 30,    // 30 segundos (reduzido para economizar recursos)
+  FREQUENT: 1000 * 60,    // 1 minuto
   NORMAL: 1000 * 60,      // 1 minuto
   SLOW: 1000 * 60 * 5,    // 5 minutos
 } as const;

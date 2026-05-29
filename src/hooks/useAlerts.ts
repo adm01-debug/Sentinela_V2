@@ -30,7 +30,7 @@ export const useAcknowledgeAlert = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('security_violations').update({ status: 'acknowledged' }).eq('id', id);
+      const { error } = await supabase.from('security_violations').update({ read: true }).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alerts'] }); },
@@ -41,7 +41,7 @@ export const useAcknowledgeAllAlerts = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from('security_violations').update({ status: 'acknowledged' }).neq('status', 'acknowledged');
+      const { error } = await supabase.from('security_violations').update({ read: true }).eq('read', false);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alerts'] }); },
