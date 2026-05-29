@@ -46,7 +46,7 @@ export function useMapboxToken() {
       if (error) throw error;
       return data.token as string;
     },
-    ...queryPresets.immutable,
+    ...(queryPresets as any).immutable,
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 }

@@ -30,7 +30,7 @@ export function useActiveEmployees() {
         is_online: emp.last_activity_at ? emp.last_activity_at > fiveMinutesAgo : false,
       })) as ActiveEmployee[];
     },
-    ...queryPresets.realtime,
+    ...(queryPresets as any).realtime,
     refetchInterval: REFETCH_INTERVALS.FREQUENT,
   });
 }
@@ -50,6 +50,6 @@ export function useOnlineEmployeesCount() {
       if (error) throw error;
       return count || 0;
     },
-    ...queryPresets.realtime,
+    ...(queryPresets as any).realtime,
   });
 }

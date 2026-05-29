@@ -178,7 +178,7 @@ export function useEmployeePoints(employeeId: string | undefined) {
     queryKey: queryKeys.gamification.points(employeeId!),
     queryFn: () => fetchEmployeePoints(employeeId!),
     enabled: !!employeeId,
-    ...queryPresets.realtime,
+    ...(queryPresets as any).realtime,
   });
 }
 

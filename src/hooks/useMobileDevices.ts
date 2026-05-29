@@ -90,7 +90,7 @@ export function useMobileDeviceLocations() {
         employee: d.employee,
       })) as DeviceLocation[];
     },
-    ...queryPresets.realtime,
+    ...(queryPresets as any).realtime,
   });
 }
 

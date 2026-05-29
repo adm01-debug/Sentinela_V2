@@ -42,7 +42,7 @@ export function useRateLimitSettings() {
       if (error) throw error;
       return data as RateLimitSettings[];
     },
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 }
 

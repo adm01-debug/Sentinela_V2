@@ -116,7 +116,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
 
   const trustedDevices = Array.isArray(devices) ? devices.filter((d: KnownDevice) => d.is_trusted).length : 0;
   const unresolvedAlerts = Array.isArray(alerts) ? alerts.filter((a: SecurityAlert) => !a.read).length : 0;
-  const score = calculateSecurityScore(isEnrolled, trustedDevices, devices.length, unresolvedAlerts);
+  const score = calculateSecurityScore(isEnrolled, trustedDevices, Array.isArray(devices) ? devices.length : 0, unresolvedAlerts);
   const isLoading = mfaLoading || devicesLoading || eventsLoading || alertsLoading;
 
   const handleRefresh = () => {
@@ -167,7 +167,7 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
         <TabsContent value="passkeys"><WebAuthnSettings /></TabsContent>
         <TabsContent value="devices">{userId && <KnownDevicesPanel />}</TabsContent>
         <TabsContent value="sessions"><SessionHistoryTab loginEvents={loginEvents as LoginEvent[]} /></TabsContent>
-        <TabsContent value="alerts"><SecurityAlertsTab alerts={alerts} /></TabsContent>
+        <TabsContent value="alerts"><SecurityAlertsTab alerts={Array.isArray(alerts) ? alerts : []} /></TabsContent>
         <TabsContent value="whitelist"><IPWhitelistManager /></TabsContent>
         <TabsContent value="geo"><GeoBlockingManager /></TabsContent>
         <TabsContent value="notifications"><NotificationSettings /></TabsContent>
