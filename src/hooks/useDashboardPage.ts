@@ -15,7 +15,7 @@ export function useDashboardPage() {
         supabase.from('employees').select('id', { count: 'exact' }).eq('status', 'active'),
         supabase.from('security_violations').select('id', { count: 'exact' }).eq('read', false).gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
         supabase.from('devices').select('id', { count: 'exact' }).eq('is_active', true),
-        supabase.from('devices').select('id', { count: 'exact' }).eq('is_active', true),
+        supabase.from('devices').select('id', { count: 'exact', head: true }).eq('is_active', true),
       ]);
       return {
         employees: employees.count || 0,
