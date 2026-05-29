@@ -43,7 +43,7 @@ export function AdminGuard({ children }: GuardProps) {
     return <BrandedSplash />;
   }
 
-  const isAdmin = user?.role === 'admin' || user?.email?.endsWith('@securitywatch.com');
+  const isAdmin = user?.role === 'admin' || user?.isAdmin === true || user?.email?.endsWith('@securitywatch.com');
 
   if (!isAdmin) {
     return <Navigate to="/dashboard" replace />;
@@ -59,7 +59,7 @@ export function SupervisorGuard({ children }: GuardProps) {
     return <BrandedSplash />;
   }
 
-  const hasAccess = user?.role === 'admin' || user?.role === 'supervisor' || user?.email?.endsWith('@securitywatch.com');
+  const hasAccess = user?.role === 'admin' || user?.isAdmin === true || user?.role === 'supervisor' || user?.email?.endsWith('@securitywatch.com');
 
   if (!hasAccess) {
     return <Navigate to="/dashboard" replace />;

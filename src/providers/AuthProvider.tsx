@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (mapped) {
       const isAdmin = await checkAdminRole(mapped.id);
       mapped.isAdmin = isAdmin;
-      mapped.role = isAdmin ? 'admin' : (mapped.role || 'user');
+      mapped.role = isAdmin ? 'admin' : (mapped.role === 'admin' ? 'user' : mapped.role || 'user');
     }
     setUser(mapped);
   }, []);
