@@ -83,7 +83,7 @@ export const EmployeeHeader = ({ employee }: Props) => {
       </div>
 
       <EmployeeEditDialog 
-        employee={employee} 
+        employee={employee as any} 
         isOpen={isEditOpen} 
         onOpenChange={setIsEditOpen} 
       />
