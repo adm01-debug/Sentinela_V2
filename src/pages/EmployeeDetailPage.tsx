@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEmployee, useEmployeeStats, type EmployeeWithDetails } from '@/hooks/useEmployees';
-import { EmployeeHeader } from '@/components/employees/EmployeeHeader';
+import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';

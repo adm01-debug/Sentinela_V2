@@ -1,4 +1,4 @@
-import { Employee } from '@/types';
+import { EmployeeWithDetails } from '@/hooks/useEmployees';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  employee: Employee;
+  employee: EmployeeWithDetails;
 }
 
 export const EmployeeHeader = ({ employee }: Props) => {
@@ -40,8 +40,8 @@ export const EmployeeHeader = ({ employee }: Props) => {
   };
 
   const displayName = employee.full_name ?? (employee as any).name ?? 'Sem nome';
-  const avatarSrc = employee.avatar_url ?? (employee as any).avatar;
-  const roleLabel = employee.role ?? (employee as any).position ?? '-';
+  const avatarSrc = employee.avatar_url || (employee as any).avatar;
+  const roleLabel = employee.role || (employee as any).position || '-';
   const departmentLabel = employee.department ?? '-';
 
   return (

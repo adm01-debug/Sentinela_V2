@@ -20,8 +20,6 @@ export interface EmployeeWithDetails {
   name: string;
   full_name?: string | null;
   role?: string | null;
-  id: string;
-  name: string;
   email: string | null;
   phone: string | null;
   department: string | null;
