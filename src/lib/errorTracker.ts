@@ -166,7 +166,12 @@ class ErrorTracker {
 
     // Load pending from storage
     const stored = localStorage.getItem('sentinela_pending_errors');
-    const pending: ErrorReport[] = stored ? JSON.parse(stored) : [];
+    let pending: ErrorReport[] = [];
+    try {
+      if (stored) pending = JSON.parse(stored);
+    } catch (e) {
+      logger.warn('[ErrorTracker] Failed to parse pending errors from localStorage');
+    }
     
     const batch = [...pending, ...this.queue.splice(0, this.config.maxQueueSize)];
     if (batch.length === 0) return;

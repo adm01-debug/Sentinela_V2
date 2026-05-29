@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
-import { useEmployee, useEmployeeStats } from '@/hooks/useEmployees';
-import { EmployeeHeader } from '@/components/EmployeeHeader';
+import { useEmployee, useEmployeeStats, type EmployeeWithDetails } from '@/hooks/useEmployees';
+import { EmployeeHeader } from '@/components/employees/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
@@ -9,7 +9,8 @@ import { format, subDays } from 'date-fns';
 
 export default function EmployeeDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { data: employee, isLoading } = useEmployee(id!);
+  const { data: employeeRaw, isLoading } = useEmployee(id!);
+  const employee = employeeRaw as EmployeeWithDetails | undefined;
   const startDate = format(subDays(new Date(), 7), 'yyyy-MM-dd');
   const endDate = format(new Date(), 'yyyy-MM-dd');
   const { data: stats } = useEmployeeStats(id!, startDate, endDate);
@@ -17,7 +18,7 @@ export default function EmployeeDetailPage() {
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
   if (!employee) return <div className="p-6">Funcionário não encontrado</div>;
 
-  const displayName = (employee as any).full_name ?? (employee as any).name ?? 'Sem nome';
+  const displayName = employee.full_name ?? employee.name ?? 'Sem nome';
 
   return (
     <div className="space-y-6">
@@ -26,7 +27,7 @@ export default function EmployeeDetailPage() {
         description={`Detalhes e histórico de atividades de ${displayName}.`}
       />
       
-      <EmployeeHeader employee={employee as any} />
+      <EmployeeHeader employee={employee} />
       
       <Tabs defaultValue="timeline" className="w-full">
         <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
