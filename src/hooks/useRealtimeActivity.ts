@@ -30,7 +30,8 @@ export function useRealtimeActivity(limit = 50) {
     },
     ...(queryPresets as any).realtime,
     refetchInterval: REFETCH_INTERVALS.REALTIME,
-  });
+    staleTime: 5000,
+  } as any);
 }
 
 export function useEmployeeActivity(employeeId: string | undefined) {
