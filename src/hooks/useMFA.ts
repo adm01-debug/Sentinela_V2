@@ -20,7 +20,7 @@ export function useMFAFactors() {
       if (error) throw error;
       return data.totp as MFAFactor[];
     },
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 }
 
@@ -36,7 +36,7 @@ export function useMFAStatus() {
         currentAuthenticationMethods: data.currentAuthenticationMethods,
       };
     },
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 }
 
@@ -117,8 +117,8 @@ export function useMFA() {
   const verifyMutation = useVerifyMFA();
   const unenrollMutation = useUnenrollMFA();
 
-  const factors = factorsQuery.data || [];
-  const isEnrolled = factors.some(f => f.status === 'verified');
+  const factors = Array.isArray(factorsQuery.data) ? factorsQuery.data : [];
+  const isEnrolled = factors.some((f: any) => f.status === 'verified');
 
   return {
     isEnrolled,

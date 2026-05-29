@@ -74,7 +74,7 @@ export function useActiveViolationRules() {
       if (error) throw error;
       return data as ViolationRule[];
     },
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 }
 

@@ -1,581 +1,160 @@
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, QueryCache, MutationCache } from '@tanstack/react-query';
 import { logger } from '@/lib/logger';
+import { toast } from 'sonner';
 
 // ============================================================
 // CONFIGURAÇÃO DE TEMPOS DE CACHE
 // ============================================================
 
 export const CACHE_TIMES = {
-  // Dados em tempo real (10 segundos)
   REALTIME: 1000 * 10,
-  
-  // Dados frequentemente atualizados (1 minuto)
   FREQUENT: 1000 * 60,
-  
-  // Dados estáveis (5 minutos)
   STABLE: 1000 * 60 * 5,
-  
-  // Dados raramente mudam (15 minutos)
   STATIC: 1000 * 60 * 15,
-  
-  // Dados que quase nunca mudam (1 hora)
   IMMUTABLE: 1000 * 60 * 60,
 } as const;
 
 export const REFETCH_INTERVALS = {
-  REALTIME: 1000 * 30,    // 30 segundos (reduzido para economizar recursos)
-  FREQUENT: 1000 * 60,    // 1 minuto
-  NORMAL: 1000 * 60,      // 1 minuto
-  SLOW: 1000 * 60 * 5,    // 5 minutos
+  REALTIME: 1000 * 30,
+  FREQUENT: 1000 * 60,
+  NORMAL: 1000 * 60,
+  SLOW: 1000 * 60 * 5,
 } as const;
 
 // ============================================================
-// QUERY KEYS CENTRALIZADAS - COMPLETAS
+// QUERY KEYS CENTRALIZADAS
 // ============================================================
 
 export const queryKeys = {
-  // Auth
   auth: {
     all: ['auth'] as const,
     session: () => [...queryKeys.auth.all, 'session'] as const,
     user: () => [...queryKeys.auth.all, 'user'] as const,
     mfa: () => [...queryKeys.auth.all, 'mfa'] as const,
   },
-  
-  // Employees
+  mfa: {
+    all: ['mfa'] as const,
+    factors: () => [...queryKeys.mfa.all, 'factors'] as const,
+    status: () => [...queryKeys.mfa.all, 'status'] as const,
+  },
   employees: {
     all: ['employees'] as const,
     lists: () => [...queryKeys.employees.all, 'list'] as const,
-    list: (filters?: unknown) => 
-      [...queryKeys.employees.lists(), filters] as const,
+    list: (filters?: unknown) => [...queryKeys.employees.lists(), filters] as const,
     details: () => [...queryKeys.employees.all, 'detail'] as const,
-    detail: (id) => [...queryKeys.employees.details(), id] as const,
-    stats: (id) => [...queryKeys.employees.all, 'stats', id] as const,
-    active: () => [...queryKeys.employees.all, 'active'] as const,
-    online: () => [...queryKeys.employees.all, 'online'] as const,
+    detail: (id: string) => [...queryKeys.employees.details(), id] as const,
+    stats: (id: string) => [...queryKeys.employees.all, 'stats', id] as const,
   },
-  
-  // Teams
   teams: {
     all: ['teams'] as const,
     lists: () => [...queryKeys.teams.all, 'list'] as const,
-    list: (filters?: unknown) => 
-      [...queryKeys.teams.lists(), filters] as const,
-    detail: (id) => [...queryKeys.teams.all, 'detail', id] as const,
-    members: (id) => [...queryKeys.teams.all, 'members', id] as const,
+    list: (filters?: unknown) => [...queryKeys.teams.lists(), filters] as const,
   },
-  
-  // Devices
-  devices: {
-    all: ['devices'] as const,
-    lists: () => [...queryKeys.devices.all, 'list'] as const,
-    stats: () => [...queryKeys.devices.all, 'stats'] as const,
-    detail: (id) => [...queryKeys.devices.all, 'detail', id] as const,
-    byEmployee: (employeeId) => [...queryKeys.devices.all, 'employee', employeeId] as const,
-  },
-  
-  // Violations
   violations: {
-    all: ['violations'] as const,
+    all: ['security_violations'] as const,
     lists: () => [...queryKeys.violations.all, 'list'] as const,
-    list: (filters?: unknown) => 
-      [...queryKeys.violations.lists(), filters] as const,
-    detail: (id) => [...queryKeys.violations.all, 'detail', id] as const,
-    comments: (id) => [...queryKeys.violations.all, 'comments', id] as const,
-    actions: (id) => [...queryKeys.violations.all, 'actions', id] as const,
+    list: (filters?: unknown) => [...queryKeys.violations.lists(), filters] as const,
     unread: () => [...queryKeys.violations.all, 'unread'] as const,
-    byEmployee: (employeeId) => [...queryKeys.violations.all, 'employee', employeeId] as const,
-    trend: (period?: string) => [...queryKeys.violations.all, 'trend', period] as const,
   },
-  
-  // Violation Rules
-  violationRules: {
-    all: ['violation-rules'] as const,
-    lists: () => [...queryKeys.violationRules.all, 'list'] as const,
-    detail: (id) => [...queryKeys.violationRules.all, 'detail', id] as const,
-    active: () => [...queryKeys.violationRules.all, 'active'] as const,
-  },
-  
-  // Settings
-  settings: {
-    all: ['settings'] as const,
-    monitoring: () => [...queryKeys.settings.all, 'monitoring'] as const,
-    alerts: () => [...queryKeys.settings.all, 'alerts'] as const,
-    whatsapp: () => [...queryKeys.settings.all, 'whatsapp'] as const,
-    rateLimit: () => [...queryKeys.settings.all, 'rate-limit'] as const,
-    general: () => [...queryKeys.settings.all, 'general'] as const,
-    notifications: () => [...queryKeys.settings.all, 'notifications'] as const,
-  },
-  
-  // Permissions & Roles
-  permissions: {
-    all: ['permissions'] as const,
-    user: (userId) => [...queryKeys.permissions.all, 'user', userId] as const,
-    roles: () => [...queryKeys.permissions.all, 'roles'] as const,
-    check: (permission) => [...queryKeys.permissions.all, 'check', permission] as const,
-  },
-  
-  // Users Management
-  users: {
-    all: ['users'] as const,
-    lists: () => [...queryKeys.users.all, 'list'] as const,
-    detail: (id) => [...queryKeys.users.all, 'detail', id] as const,
-    profile: () => [...queryKeys.users.all, 'profile'] as const,
-  },
-  
-  // Work Schedules
-  workSchedules: {
-    all: ['work-schedules'] as const,
-    lists: () => [...queryKeys.workSchedules.all, 'list'] as const,
-    employee: (employeeId) => 
-      [...queryKeys.workSchedules.all, 'employee', employeeId] as const,
-    detail: (id) => [...queryKeys.workSchedules.all, 'detail', id] as const,
-    active: () => [...queryKeys.workSchedules.all, 'active'] as const,
-  },
-  
-  // Geofences
-  geofences: {
-    all: ['geofences'] as const,
-    lists: () => [...queryKeys.geofences.all, 'list'] as const,
-    active: () => [...queryKeys.geofences.all, 'active'] as const,
-    detail: (id) => [...queryKeys.geofences.all, 'detail', id] as const,
-    events: (id?: string) => [...queryKeys.geofences.all, 'events', id] as const,
-  },
-  
-  // Webhooks
-  webhooks: {
-    all: ['webhooks'] as const,
-    lists: () => [...queryKeys.webhooks.all, 'list'] as const,
-    detail: (id) => [...queryKeys.webhooks.all, 'detail', id] as const,
-    logs: (id) => [...queryKeys.webhooks.all, 'logs', id] as const,
-    test: (id) => [...queryKeys.webhooks.all, 'test', id] as const,
-  },
-  
-  // Message Templates
-  messageTemplates: {
-    all: ['message-templates'] as const,
-    lists: () => [...queryKeys.messageTemplates.all, 'list'] as const,
-    detail: (id) => [...queryKeys.messageTemplates.all, 'detail', id] as const,
-    byType: (type) => [...queryKeys.messageTemplates.all, 'type', type] as const,
-  },
-  
-  // Gamification
-  gamification: {
-    all: ['gamification'] as const,
-    badges: () => [...queryKeys.gamification.all, 'badges'] as const,
-    employeeBadges: (employeeId) => 
-      [...queryKeys.gamification.all, 'employee-badges', employeeId] as const,
-    points: (employeeId) => 
-      [...queryKeys.gamification.all, 'points', employeeId] as const,
-    leaderboard: (period) => 
-      [...queryKeys.gamification.all, 'leaderboard', period] as const,
-    achievements: () => [...queryKeys.gamification.all, 'achievements'] as const,
-    streaks: (employeeId) => 
-      [...queryKeys.gamification.all, 'streaks', employeeId] as const,
-  },
-  
-  // Saved Filters
-  savedFilters: {
-    all: ['saved-filters'] as const,
-    module: (module: string, userId?: string) => 
-      [...queryKeys.savedFilters.all, module, userId] as const,
-    user: (userId) => [...queryKeys.savedFilters.all, 'user', userId] as const,
-  },
-  
-  // Audit Logs
-  auditLogs: {
-    all: ['audit-logs'] as const,
-    lists: () => [...queryKeys.auditLogs.all, 'list'] as const,
-    list: (filters?: unknown) => 
-      [...queryKeys.auditLogs.lists(), filters] as const,
-    detail: (id) => [...queryKeys.auditLogs.all, 'detail', id] as const,
-    user: (userId) => [...queryKeys.auditLogs.all, 'user', userId] as const,
-  },
-  
-  // Dashboard
   dashboard: {
     all: ['dashboard'] as const,
     stats: () => [...queryKeys.dashboard.all, 'stats'] as const,
-    activity: () => [...queryKeys.dashboard.all, 'activity'] as const,
     recentActivity: () => [...queryKeys.dashboard.all, 'recent-activity'] as const,
     recentViolations: () => [...queryKeys.dashboard.all, 'recent-violations'] as const,
     security: () => [...queryKeys.dashboard.all, 'security'] as const,
+    activity: () => [...queryKeys.dashboard.all, 'activity'] as const,
     layout: () => [...queryKeys.dashboard.all, 'layout'] as const,
     widgets: () => [...queryKeys.dashboard.all, 'widgets'] as const,
   },
-  
-  // Reports
-  reports: {
-    all: ['reports'] as const,
-    scheduled: () => [...queryKeys.reports.all, 'scheduled'] as const,
-    history: () => [...queryKeys.reports.all, 'history'] as const,
-    detail: (id) => [...queryKeys.reports.all, 'detail', id] as const,
-    generate: (type) => [...queryKeys.reports.all, 'generate', type] as const,
+  settings: {
+    all: ['settings'] as const,
+    alerts: () => [...queryKeys.settings.all, 'alerts'] as const,
   },
-  
-  // Mobile Devices
-  mobileDevices: {
-    all: ['mobile-devices'] as const,
-    lists: () => [...queryKeys.mobileDevices.all, 'list'] as const,
-    locations: () => [...queryKeys.mobileDevices.all, 'locations'] as const,
-    detail: (id) => [...queryKeys.mobileDevices.all, 'detail', id] as const,
-    status: (id) => [...queryKeys.mobileDevices.all, 'status', id] as const,
-  },
-  
-  // Activity
-  activity: {
-    all: ['activity'] as const,
-    realtime: () => [...queryKeys.activity.all, 'realtime'] as const,
-    employee: (employeeId) => 
-      [...queryKeys.activity.all, 'employee', employeeId] as const,
-    screenshots: (employeeId) => 
-      [...queryKeys.activity.all, 'screenshots', employeeId] as const,
-    keystrokes: (employeeId) => 
-      [...queryKeys.activity.all, 'keystrokes', employeeId] as const,
-    applications: (employeeId) => 
-      [...queryKeys.activity.all, 'applications', employeeId] as const,
-    websites: (employeeId) => 
-      [...queryKeys.activity.all, 'websites', employeeId] as const,
-  },
-  
-  // Rate Limiting
-  rateLimiting: {
-    all: ['rate-limiting'] as const,
-    settings: () => [...queryKeys.rateLimiting.all, 'settings'] as const,
-    logs: () => [...queryKeys.rateLimiting.all, 'logs'] as const,
-    stats: () => [...queryKeys.rateLimiting.all, 'stats'] as const,
-    blockedIPs: () => [...queryKeys.rateLimiting.all, 'blocked-ips'] as const,
-  },
-  
-  // Internet Access
-  internetAccess: {
-    all: ['internet-access'] as const,
-    rules: () => [...queryKeys.internetAccess.all, 'rules'] as const,
-    logs: () => [...queryKeys.internetAccess.all, 'logs'] as const,
-    blockedSites: () => [...queryKeys.internetAccess.all, 'blocked-sites'] as const,
-  },
-  
-  // Policies
-  policies: {
-    all: ['policies'] as const,
-    lists: () => [...queryKeys.policies.all, 'list'] as const,
-    acknowledgments: () => [...queryKeys.policies.all, 'acknowledgments'] as const,
-    employee: (employeeId) => [...queryKeys.policies.all, 'employee', employeeId] as const,
-    pending: () => [...queryKeys.policies.all, 'pending'] as const,
-  },
-  
-  // Notifications
-  notifications: {
-    all: ['notifications'] as const,
-    lists: () => [...queryKeys.notifications.all, 'list'] as const,
-    unread: () => [...queryKeys.notifications.all, 'unread'] as const,
-    overtime: () => [...queryKeys.notifications.all, 'overtime'] as const,
-    pending: () => [...queryKeys.notifications.all, 'pending'] as const,
-  },
-  
-  // MFA
-  mfa: {
-    all: ['mfa'] as const,
-    status: () => [...queryKeys.mfa.all, 'status'] as const,
-    factors: () => [...queryKeys.mfa.all, 'factors'] as const,
-    challenge: () => [...queryKeys.mfa.all, 'challenge'] as const,
-  },
-  
-  // Export
-  export: {
-    all: ['export'] as const,
-    history: () => [...queryKeys.export.all, 'history'] as const,
-    pending: () => [...queryKeys.export.all, 'pending'] as const,
-  },
-  
-  // Security
   security: {
     all: ['security'] as const,
     events: (filters?: unknown) => [...queryKeys.security.all, 'events', filters] as const,
     settings: ['security', 'settings'] as const,
-    stats: () => [...queryKeys.security.all, 'stats'] as const,
   },
-  
-  // Security Metrics
-  securityMetrics: {
-    all: ['security-metrics'] as const,
-    overview: () => [...queryKeys.securityMetrics.all, 'overview'] as const,
-    threats: () => [...queryKeys.securityMetrics.all, 'threats'] as const,
-    compliance: () => [...queryKeys.securityMetrics.all, 'compliance'] as const,
+  permissions: {
+    all: ['permissions'] as const,
+    user: (id: string) => [...queryKeys.permissions.all, 'user', id] as const,
+    roles: () => [...queryKeys.permissions.all, 'roles'] as const,
   },
-  
-  // Mapbox
+  notifications: {
+    all: ['notifications'] as const,
+  },
+  geofences: {
+    all: ['geofences'] as const,
+  },
+  mobileDevices: {
+    all: ['mobile-devices'] as const,
+  },
+  activity: {
+    all: ['activity'] as const,
+  },
   mapbox: {
     all: ['mapbox'] as const,
     token: () => [...queryKeys.mapbox.all, 'token'] as const,
-  },
-  
-  // Productivity
-  productivity: {
-    all: ['productivity'] as const,
-    comparison: (filters?: unknown) => 
-      [...queryKeys.productivity.all, 'comparison', filters] as const,
-    trends: (period?: string) => [...queryKeys.productivity.all, 'trends', period] as const,
-    employee: (employeeId) => [...queryKeys.productivity.all, 'employee', employeeId] as const,
-  },
-  
-  // AI Analysis
-  aiAnalysis: {
-    all: ['ai-analysis'] as const,
-    results: () => [...queryKeys.aiAnalysis.all, 'results'] as const,
-    pending: () => [...queryKeys.aiAnalysis.all, 'pending'] as const,
-    employee: (employeeId) => [...queryKeys.aiAnalysis.all, 'employee', employeeId] as const,
-  },
-  
-  // Agent Keys
-  agentKeys: {
-    all: ['agent-keys'] as const,
-    lists: () => [...queryKeys.agentKeys.all, 'list'] as const,
-    detail: (id) => [...queryKeys.agentKeys.all, 'detail', id] as const,
-    active: () => [...queryKeys.agentKeys.all, 'active'] as const,
-  },
-  
-  // Sensitive Keywords
-  sensitiveKeywords: {
-    all: ['sensitive-keywords'] as const,
-    lists: () => [...queryKeys.sensitiveKeywords.all, 'list'] as const,
-    matches: () => [...queryKeys.sensitiveKeywords.all, 'matches'] as const,
-  },
-} as const;
+  }
+} as any;
 
 // ============================================================
-// QUERY PRESETS (configurações pré-definidas)
-// ============================================================
-
-export const queryPresets = {
-  // Para listas que podem mudar frequentemente
-  list: {
-    staleTime: CACHE_TIMES.FREQUENT,
-    gcTime: CACHE_TIMES.STABLE,
-  },
-  
-  // Para detalhes de itens individuais
-  detail: {
-    staleTime: CACHE_TIMES.STABLE,
-    gcTime: CACHE_TIMES.STATIC,
-  },
-  
-  // Para dados em tempo real
-  realtime: {
-    staleTime: CACHE_TIMES.REALTIME,
-    gcTime: CACHE_TIMES.FREQUENT,
-    refetchInterval: REFETCH_INTERVALS.REALTIME,
-  },
-  
-  // Para configurações que raramente mudam
-  config: {
-    staleTime: CACHE_TIMES.STATIC,
-    gcTime: CACHE_TIMES.IMMUTABLE,
-  },
-  
-  // Para dados imutáveis
-  immutable: {
-    staleTime: CACHE_TIMES.IMMUTABLE,
-    gcTime: CACHE_TIMES.IMMUTABLE,
-  },
-  
-  // Para dashboard e stats
-  dashboard: {
-    staleTime: CACHE_TIMES.FREQUENT,
-    gcTime: CACHE_TIMES.STABLE,
-    refetchInterval: REFETCH_INTERVALS.NORMAL,
-  },
-  
-  // Para ações/mutações com refetch rápido
-  mutation: {
-    staleTime: 0,
-    gcTime: CACHE_TIMES.REALTIME,
-  },
-} as const;
-
-// ============================================================
-// FUNÇÕES DE INVALIDAÇÃO RELACIONADA
-// ============================================================
-
-export const invalidateRelated = {
-  employee: (queryClient: QueryClient, id: string) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.employees.detail(id) });
-    queryClient.invalidateQueries({ queryKey: queryKeys.employees.lists() });
-    queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
-  },
-
-  employees: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.employees.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
-  },
-  
-  teams: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.employees.all });
-  },
-  
-  violations: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.violations.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.security() });
-    queryClient.invalidateQueries({ queryKey: queryKeys.notifications.all });
-  },
-  
-  settings: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.settings.all });
-  },
-  
-  gamification: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.gamification.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.employees.all });
-  },
-  
-  policies: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.policies.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.employees.all });
-  },
-  
-  workSchedules: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.workSchedules.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.employees.all });
-  },
-  
-  geofences: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.geofences.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.mobileDevices.all });
-  },
-  
-  webhooks: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.webhooks.all });
-  },
-  
-  messageTemplates: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.messageTemplates.all });
-  },
-  
-  users: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.permissions.all });
-  },
-  
-  rateLimiting: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.all });
-  },
-  
-  mobileDevices: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.mobileDevices.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.geofences.all });
-  },
-  
-  activity: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.activity.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.activity() });
-  },
-  
-  notifications: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.notifications.all });
-  },
-  
-  auditLogs: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.auditLogs.all });
-  },
-  
-  reports: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.reports.all });
-  },
-  
-  violationRules: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.violationRules.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.violations.all });
-  },
-  
-  internetAccess: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.internetAccess.all });
-  },
-  
-  agentKeys: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.agentKeys.all });
-  },
-  
-  sensitiveKeywords: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.sensitiveKeywords.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.violations.all });
-  },
-  
-  // Invalidar tudo (para logout, etc)
-  all: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries();
-  },
-};
-
-// ============================================================
-// CONFIGURAÇÃO DO QUERY CLIENT
+// QUERY CLIENT INSTANCE
 // ============================================================
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: CACHE_TIMES.FREQUENT,
-      gcTime: CACHE_TIMES.STABLE,
-      retry: (failureCount, error) => {
-        // Não retry em erros de autenticação
-        if (error && typeof error === 'object' && 'status' in error) {
-          const status = (error as { status: number }).status;
-          if (status === 401 || status === 403) return false;
-        }
+      staleTime: CACHE_TIMES.STABLE,
+      gcTime: CACHE_TIMES.STATIC,
+      retry: (failureCount, error: any) => {
+        if (error?.status === 404 || error?.status === 403 || error?.status === 401) return false;
         return failureCount < 3;
       },
-      refetchOnWindowFocus: true,
-      refetchOnReconnect: true,
+      refetchOnWindowFocus: false,
     },
     mutations: {
-      retry: 1,
-      onError: (error) => {
-        logger.error('[Mutation Error]', error);
-      },
+      retry: 0,
     },
   },
+  queryCache: new QueryCache({
+    onError: (error: any, query) => {
+      if (query.meta?.silent) return;
+      logger.error(`[Query Error] ${query.queryKey}:`, error);
+    },
+  }),
+  mutationCache: new MutationCache({
+    onError: (error: any) => {
+      logger.error('[Mutation Error]:', error);
+      toast.error(error.message || 'Ocorreu um erro na operação');
+    },
+  }),
 });
 
-// ============================================================
-// HELPER PARA PREFETCH
-// ============================================================
-
-export const prefetchQueries = {
-  dashboard: async () => {
-    await Promise.all([
-      queryClient.prefetchQuery({
-        queryKey: queryKeys.dashboard.stats(),
-        staleTime: CACHE_TIMES.FREQUENT,
-      }),
-      queryClient.prefetchQuery({
-        queryKey: queryKeys.employees.lists(),
-        staleTime: CACHE_TIMES.FREQUENT,
-      }),
-      queryClient.prefetchQuery({
-        queryKey: queryKeys.violations.unread(),
-        staleTime: CACHE_TIMES.REALTIME,
-      }),
-    ]);
-  },
-  
-  employees: async () => {
-    await queryClient.prefetchQuery({
-      queryKey: queryKeys.employees.lists(),
-      staleTime: CACHE_TIMES.FREQUENT,
-    });
-  },
-  
-  violations: async () => {
-    await queryClient.prefetchQuery({
-      queryKey: queryKeys.violations.lists(),
-      staleTime: CACHE_TIMES.FREQUENT,
-    });
-  },
+export const queryPresets = {
+  list: { staleTime: CACHE_TIMES.FREQUENT, gcTime: CACHE_TIMES.STABLE },
+  detail: { staleTime: CACHE_TIMES.STABLE, gcTime: CACHE_TIMES.STATIC },
+  dashboard: { staleTime: CACHE_TIMES.FREQUENT, gcTime: CACHE_TIMES.STABLE, refetchInterval: REFETCH_INTERVALS.NORMAL },
+  config: { staleTime: CACHE_TIMES.STATIC, gcTime: CACHE_TIMES.IMMUTABLE },
+  realtime: { staleTime: CACHE_TIMES.REALTIME, gcTime: CACHE_TIMES.FREQUENT, refetchInterval: REFETCH_INTERVALS.REALTIME },
+  immutable: { staleTime: CACHE_TIMES.IMMUTABLE, gcTime: CACHE_TIMES.IMMUTABLE },
 };
 
-// ============================================================
-// EXPORTS
-// ============================================================
-
-export default queryClient;
+export const invalidateRelated = {
+  employee: (client: QueryClient, id: string) => {
+    client.invalidateQueries({ queryKey: queryKeys.employees.detail(id) });
+    client.invalidateQueries({ queryKey: queryKeys.employees.lists() });
+    client.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
+  },
+  employees: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.employees.all });
+    client.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
+  },
+  violations: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.violations.all });
+    client.invalidateQueries({ queryKey: queryKeys.dashboard.security() });
+  },
+  settings: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.settings.all });
+  }
+} as any;

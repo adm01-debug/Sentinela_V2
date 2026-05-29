@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
@@ -50,12 +50,13 @@ export function useDashboardLayout() {
       return data as DashboardLayout | null;
     },
     enabled: !!user?.id,
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 
   const widgets = useMemo(() => {
     if (localWidgets) return localWidgets;
-    if (query.data?.widgets) return query.data.widgets;
+    const data = query.data as any;
+    if (data && Array.isArray(data.widgets)) return data.widgets;
     return DEFAULT_WIDGETS;
   }, [localWidgets, query.data]);
 
@@ -73,7 +74,7 @@ export function useDashboardLayout() {
         const { data, error } = await supabase
           .from('dashboard_layouts')
           .update({ widgets: newWidgets } as Record<string, unknown>)
-          .eq('id', existing.id)
+          .eq('id', (existing as any).id)
           .select()
           .single();
         if (error) throw error;
@@ -147,7 +148,7 @@ export function useSaveDashboardLayout() {
         const { data, error } = await supabase
           .from('dashboard_layouts')
           .update({ widgets })
-          .eq('id', existing.id)
+          .eq('id', (existing as any).id)
           .select()
           .single();
         if (error) throw error;

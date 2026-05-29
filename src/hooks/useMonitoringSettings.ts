@@ -31,7 +31,7 @@ export function useMonitoringSettings() {
       if (error) throw error;
       return data as MonitoringSettings | null;
     },
-    ...queryPresets.config,
+    ...(queryPresets as any).config,
   });
 }
 

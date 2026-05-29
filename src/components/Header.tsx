@@ -103,7 +103,7 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
 
   const timeLabel = 'agora';
 
-  const isDashboard = location.pathname === '/dashboard' || location.pathname === '/';
+  const isDashboard = location.pathname === '/dashboard' || location.pathname === '/' || location.pathname === '';
 
   return (
     <header className="sticky top-0 z-30 flex h-12 items-center gap-2 border-b border-border/60 bg-background/95 backdrop-blur-sm px-3 sm:px-4">

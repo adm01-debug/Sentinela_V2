@@ -12,6 +12,7 @@ import {
 } from '@/hooks/useEmployees';
 import { useTeams } from '@/hooks/useTeams';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 // ============================================================
 // TYPES
@@ -111,13 +112,19 @@ export function useEmployeesPage() {
 
   // Filtered employees
   const filteredEmployees = useMemo(() => {
+    if (!Array.isArray(employees)) return [];
     return employees.filter(emp => {
+      const name = emp.name || '';
+      const email = emp.email || '';
+      const department = emp.department || '';
+      const searchTerm = (filters.searchTerm || '').toLowerCase();
+
       const matchesSearch = 
-        emp.name.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-        emp.email?.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-        emp.department?.toLowerCase().includes(filters.searchTerm.toLowerCase());
-      const matchesStatus = filters.statusFilter === 'all' || emp.status === filters.statusFilter;
-      const matchesTeam = filters.teamFilter === 'all' || emp.team_id === filters.teamFilter || 
+        name.toLowerCase().includes(searchTerm) ||
+        email.toLowerCase().includes(searchTerm) ||
+        department.toLowerCase().includes(searchTerm);
+      const matchesStatus = !filters.statusFilter || filters.statusFilter === 'all' || emp.status === filters.statusFilter;
+      const matchesTeam = !filters.teamFilter || filters.teamFilter === 'all' || emp.team_id === filters.teamFilter || 
         (!emp.team_id && filters.teamFilter === 'none');
       return matchesSearch && matchesStatus && matchesTeam;
     });
@@ -158,7 +165,10 @@ export function useEmployeesPage() {
   }, []);
 
   const handleCreate = useCallback(async () => {
-    if (!formData.name.trim()) return;
+    if (!formData.name.trim()) {
+      toast.error('O nome do funcionário é obrigatório');
+      return;
+    }
     
     try {
       await createEmployee({
@@ -177,13 +187,17 @@ export function useEmployeesPage() {
       
       resetForm();
       setIsCreateOpen(false);
-    } catch (err) {
-      // Error handled by mutation toast
+      toast.success('Funcionário criado com sucesso');
+    } catch (err: any) {
+      toast.error(err.message || 'Erro ao criar funcionário');
     }
   }, [formData, createEmployee, resetForm]);
 
   const handleUpdate = useCallback(async () => {
-    if (!selectedEmployee || !formData.name.trim()) return;
+    if (!selectedEmployee || !formData.name.trim()) {
+      toast.error('O nome do funcionário é obrigatório');
+      return;
+    }
     
     try {
       await updateEmployee(selectedEmployee.id, {
@@ -202,8 +216,9 @@ export function useEmployeesPage() {
       resetForm();
       setSelectedEmployee(null);
       setIsEditOpen(false);
-    } catch (err) {
-      // Error handled by mutation toast
+      toast.success('Funcionário atualizado com sucesso');
+    } catch (err: any) {
+      toast.error(err.message || 'Erro ao atualizar funcionário');
     }
   }, [selectedEmployee, formData, updateEmployee, resetForm]);
 
@@ -214,8 +229,9 @@ export function useEmployeesPage() {
       await deleteEmployee(selectedEmployee.id);
       setSelectedEmployee(null);
       setIsDeleteOpen(false);
-    } catch (err) {
-      // Error handled by mutation toast
+      toast.success('Funcionário removido com sucesso');
+    } catch (err: any) {
+      toast.error(err.message || 'Erro ao remover funcionário');
     }
   }, [selectedEmployee, deleteEmployee]);
 

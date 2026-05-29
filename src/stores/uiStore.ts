@@ -44,8 +44,12 @@ export const useUIStore = create<UIState>()(
   addToast: (message, type) => {
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
     set((state) => ({
-      toasts: [...state.toasts, { id, message, type }],
+      toasts: [...state.toasts, { id, message, type }].slice(-5), // Keep only last 5
     }));
+    // Auto remove after 5s
+    setTimeout(() => {
+      set((state) => ({ toasts: state.toasts.filter((t) => t.id !== id) }));
+    }, 5000);
   },
   removeToast: (id) => set((state) => ({ toasts: state.toasts.filter((t) => t.id !== id) })),
     }),

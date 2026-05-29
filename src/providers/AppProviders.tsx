@@ -2,19 +2,11 @@ import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './AuthProvider';
-import { FeatureFlagsProvider } from '@/lib/feature-flags/provider';
-import { PermissionsProvider } from '@/lib/permissions/provider';
+import { AuthDependentProviders } from './AuthDependentProviders';
 import { ErrorBoundary } from '@/lib/error-handling';
 import { ThemeProvider } from '@/providers/ThemeProvider';
-import { TooltipProvider } from '@/components/ui/tooltip';
 import { ScrollToTop } from '@/components/ScrollToTop';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: { staleTime: 5 * 60 * 1000, retry: 1 },
-    mutations: { retry: 0 },
-  },
-});
+import { queryClient } from '@/lib/queryClient';
 
 export const AppProviders = ({ children }: { children: ReactNode }) => {
   return (
@@ -24,13 +16,9 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
           <ScrollToTop />
           <ThemeProvider defaultTheme="system">
             <AuthProvider>
-              <TooltipProvider delayDuration={200}>
-                <FeatureFlagsProvider>
-                  <PermissionsProvider role="viewer">
-                    {children}
-                  </PermissionsProvider>
-                </FeatureFlagsProvider>
-              </TooltipProvider>
+              <AuthDependentProviders>
+                {children}
+              </AuthDependentProviders>
             </AuthProvider>
           </ThemeProvider>
         </BrowserRouter>

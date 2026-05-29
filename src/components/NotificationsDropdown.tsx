@@ -62,10 +62,13 @@ const NotificationItem = memo(function NotificationItem({
 });
 
 function NotificationsDropdownComponent() {
-  const { data: notifications = [], isLoading } = usePendingNotifications();
-  const { data: unreadCount = 0 } = useUnreadNotificationsCount();
+  const { data: notificationsRaw = [], isLoading } = usePendingNotifications();
+  const { data: unreadCountRaw = 0 } = useUnreadNotificationsCount();
   const markAsRead = useMarkNotificationAsRead();
   const markAllAsRead = useMarkAllNotificationsAsRead();
+
+  const notifications = Array.isArray(notificationsRaw) ? notificationsRaw : [];
+  const unreadCount = Number(unreadCountRaw) || 0;
 
   const handleMarkAsRead = useCallback((id: string) => {
     markAsRead.mutate(id);
@@ -76,7 +79,7 @@ function NotificationsDropdownComponent() {
   }, [markAllAsRead]);
 
   const displayedNotifications = useMemo(() => {
-    return notifications.slice(0, 10);
+    return Array.isArray(notifications) ? notifications.slice(0, 10) : [];
   }, [notifications]);
 
   return (

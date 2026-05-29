@@ -3,6 +3,7 @@ import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { captureError } from '@/lib/errorTracker';
+import { queryClient } from '@/lib/queryClient';
 
 interface Props {
   children: ReactNode;
@@ -32,6 +33,7 @@ export class RouteErrorBoundary extends Component<Props, State> {
   }
 
   handleRetry = () => {
+    queryClient.clear();
     this.setState({ hasError: false, error: null, errorInfo: null });
   };
 
