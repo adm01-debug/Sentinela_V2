@@ -1,7 +1,7 @@
-import { memo, useMemo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Home, ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { memo, useMemo } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Home, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -9,28 +9,72 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from "@/components/ui/breadcrumb";
 
-interface RouteConfig {
-  label: string;
-  parent?: string;
-}
-
-const routeLabels: Record<string, RouteConfig> = {
-  '/': { label: 'Dashboard' },
-  '/dashboard': { label: 'Dashboard' },
-  '/employees': { label: 'Colaboradores', parent: '/' },
-  '/teams': { label: 'Equipes', parent: '/employees' },
-  '/devices': { label: 'Dispositivos', parent: '/' },
-  '/gamification': { label: 'Gamificação', parent: '/' },
-  '/monitoring': { label: 'Monitoramento', parent: '/' },
-  '/violations': { label: 'Violações', parent: '/monitoring' },
-  '/violation-rules': { label: 'Regras', parent: '/violations' },
-  '/settings': { label: 'Configurações', parent: '/' },
-  '/settings/profile': { label: 'Perfil', parent: '/settings' },
-  '/settings/security': { label: 'Segurança', parent: '/settings' },
-  '/settings/billing': { label: 'Faturamento', parent: '/settings' },
+// Human-readable labels for each known path segment.
+const segmentLabels: Record<string, string> = {
+  dashboard: "Dashboard",
+  employees: "Colaboradores",
+  activities: "Atividades",
+  timeline: "Linha do tempo",
+  analytics: "Analytics",
+  productivity: "Produtividade",
+  applications: "Aplicações",
+  trends: "Tendências",
+  reports: "Relatórios",
+  custom: "Personalizados",
+  scheduled: "Agendados",
+  alerts: "Alertas",
+  rules: "Regras",
+  monitoring: "Monitoramento",
+  violations: "Violações",
+  settings: "Configurações",
+  profile: "Perfil",
+  security: "Segurança",
+  notifications: "Notificações",
+  integrations: "Integrações",
+  webhooks: "Webhooks",
+  whatsapp: "WhatsApp",
+  billing: "Faturamento",
+  api: "API",
+  admin: "Admin",
+  users: "Usuários",
+  roles: "Funções",
+  teams: "Equipes",
+  departments: "Departamentos",
+  audit: "Auditoria",
+  telemetria: "Telemetria",
+  ueba: "UEBA",
+  dlp: "DLP",
+  policies: "Políticas",
+  incidents: "Incidentes",
+  "edge-functions": "Edge Functions",
+  devices: "Dispositivos",
+  screenshots: "Capturas",
+  calendar: "Calendário",
+  geofencing: "Geofencing",
+  "work-schedules": "Jornadas",
+  export: "Exportar",
+  compliance: "Compliance",
+  "ai-analysis": "Análise IA",
+  gamification: "Gamificação",
+  "internet-access": "Acesso à Internet",
+  "time-clock": "Ponto",
+  projects: "Projetos",
+  timesheets: "Folhas de Ponto",
+  attendance: "Presença",
+  "hours-tracking": "Horas",
+  new: "Novo",
+  edit: "Editar",
 };
+
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function labelForSegment(segment: string): string {
+  if (segmentLabels[segment]) return segmentLabels[segment];
+  if (UUID_REGEX.test(segment) || /^\d+$/.test(segment)) return "Detalhes";
+  return segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, " ");
+}
 
 interface BreadcrumbsProps {
   className?: string;
@@ -41,72 +85,64 @@ function BreadcrumbsBase({ className, showHome = true }: BreadcrumbsProps) {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const breadcrumbTrail = useMemo(() => {
-    const trail: { path: string; label: string; isCurrent: boolean }[] = [];
-    let normalizedPath = currentPath.endsWith('/') && currentPath !== '/' ? currentPath.slice(0, -1) : currentPath;
-    const basePath = normalizedPath.replace(/\/[a-f0-9-]{36}$/, '');
-    const hasDynamicSegment = basePath !== normalizedPath;
-    
-    let path = basePath;
-    const visited = new Set<string>();
-    
-    while (path && !visited.has(path)) {
-      visited.add(path);
-      const config = routeLabels[path];
-      
-      if (config) {
-        trail.unshift({
-          path,
-          label: config.label,
-          isCurrent: path === normalizedPath && !hasDynamicSegment,
-        });
-        path = config.parent || '';
-      } else {
-        const segments = path.split('/');
-        const lastSegment = segments[segments.length - 1];
-        if (lastSegment) {
-          trail.unshift({
-            path,
-            label: lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).replace(/-/g, ' '),
-            isCurrent: path === normalizedPath && !hasDynamicSegment,
-          });
-        }
-        path = segments.slice(0, -1).join('/') || (segments.length > 1 ? '/' : '');
-      }
-    }
-    
-    if (hasDynamicSegment) {
-      trail.push({ path: normalizedPath, label: 'Detalhes', isCurrent: true });
-    }
-    
-    return trail.filter(item => item.path !== '/' && item.path !== '/dashboard');
+  const trail = useMemo(() => {
+    const segments = currentPath.split("/").filter(Boolean);
+    return segments.map((segment, index) => {
+      const path = "/" + segments.slice(0, index + 1).join("/");
+      return {
+        path,
+        label: labelForSegment(segment),
+        isCurrent: index === segments.length - 1,
+      };
+    });
   }, [currentPath]);
 
-  if (currentPath === '/' || currentPath === '/dashboard') return null;
+  // Breadcrumbs only add value for nested routes (2+ segments). Single-segment
+  // routes (e.g. /employees, /alerts) and the dashboard/root are hidden.
+  if (trail.length < 2) return null;
 
   return (
-    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className={className}>
-      <Breadcrumb>
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={className}
+    >
+      <Breadcrumb aria-label="Breadcrumb">
         <BreadcrumbList>
           {showHome && (
             <>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/" className="flex items-center gap-1 hover:text-primary transition-colors">
+                  <Link
+                    to="/dashboard"
+                    className="flex items-center gap-1 transition-colors hover:text-primary"
+                  >
                     <Home className="h-4 w-4" />
                     <span className="sr-only">Dashboard</span>
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              {breadcrumbTrail.length > 0 && <BreadcrumbSeparator><ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" /></BreadcrumbSeparator>}
+              <BreadcrumbSeparator>
+                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
+              </BreadcrumbSeparator>
             </>
           )}
-          {breadcrumbTrail.map((item, index) => (
+          {trail.map((item, index) => (
             <BreadcrumbItem key={item.path}>
-              {item.isCurrent ? <BreadcrumbPage className="font-medium">{item.label}</BreadcrumbPage> : (
+              {item.isCurrent ? (
+                <BreadcrumbPage className="font-medium">{item.label}</BreadcrumbPage>
+              ) : (
                 <>
-                  <BreadcrumbLink asChild><Link to={item.path} className="hover:text-primary transition-colors">{item.label}</Link></BreadcrumbLink>
-                  {index < breadcrumbTrail.length - 1 && <BreadcrumbSeparator><ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" /></BreadcrumbSeparator>}
+                  <BreadcrumbLink asChild>
+                    <Link to={item.path} className="transition-colors hover:text-primary">
+                      {item.label}
+                    </Link>
+                  </BreadcrumbLink>
+                  {index < trail.length - 1 && (
+                    <BreadcrumbSeparator>
+                      <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" />
+                    </BreadcrumbSeparator>
+                  )}
                 </>
               )}
             </BreadcrumbItem>

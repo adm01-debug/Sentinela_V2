@@ -1,5 +1,12 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useWebhooks, useCreateWebhook, useUpdateWebhook, useDeleteWebhook, useTestWebhook, type Webhook } from '@/hooks/useWebhooks';
+import { useState, useMemo, useCallback } from "react";
+import {
+  useWebhooks,
+  useCreateWebhook,
+  useUpdateWebhook,
+  useDeleteWebhook,
+  useTestWebhook,
+  type Webhook,
+} from "@/hooks/useWebhooks";
 
 // ============================================================
 // TYPES
@@ -16,22 +23,22 @@ export interface WebhookFormData {
 }
 
 export const WEBHOOK_EVENTS = [
-  { value: 'violation.created', label: 'Violação Criada' },
-  { value: 'violation.resolved', label: 'Violação Resolvida' },
-  { value: 'employee.created', label: 'Funcionário Criado' },
-  { value: 'employee.updated', label: 'Funcionário Atualizado' },
-  { value: 'employee.deleted', label: 'Funcionário Excluído' },
-  { value: 'geofence.entered', label: 'Entrada em Geofence' },
-  { value: 'geofence.exited', label: 'Saída de Geofence' },
-  { value: 'overtime.requested', label: 'Hora Extra Solicitada' },
-  { value: 'overtime.approved', label: 'Hora Extra Aprovada' },
-  { value: 'overtime.rejected', label: 'Hora Extra Rejeitada' },
+  { value: "violation.created", label: "Violação Criada" },
+  { value: "violation.resolved", label: "Violação Resolvida" },
+  { value: "employee.created", label: "Funcionário Criado" },
+  { value: "employee.updated", label: "Funcionário Atualizado" },
+  { value: "employee.deleted", label: "Funcionário Excluído" },
+  { value: "geofence.entered", label: "Entrada em Geofence" },
+  { value: "geofence.exited", label: "Saída de Geofence" },
+  { value: "overtime.requested", label: "Hora Extra Solicitada" },
+  { value: "overtime.approved", label: "Hora Extra Aprovada" },
+  { value: "overtime.rejected", label: "Hora Extra Rejeitada" },
 ] as const;
 
 const initialFormData: WebhookFormData = {
-  name: '',
-  url: '',
-  secret: '',
+  name: "",
+  url: "",
+  secret: "",
   events: [],
   is_active: true,
   retry_count: 3,
@@ -49,25 +56,50 @@ export function useWebhooksPage() {
   const deleteWebhookMutation = useDeleteWebhook();
   const testWebhookMutation = useTestWebhook();
 
-  const createWebhook = useCallback(async (input: { name: string; url: string; secret?: string; events: string[]; is_active?: boolean }) => {
-    await createWebhookMutation.mutateAsync(input);
-  }, [createWebhookMutation]);
+  const createWebhook = useCallback(
+    async (input: {
+      name: string;
+      url: string;
+      secret?: string;
+      events: string[];
+      is_active?: boolean;
+    }) => {
+      await createWebhookMutation.mutateAsync(input);
+    },
+    [createWebhookMutation]
+  );
 
-  const updateWebhook = useCallback(async (input: { id: string; name?: string; url?: string; secret?: string; events?: string[]; is_active?: boolean }) => {
-    await updateWebhookMutation.mutateAsync(input);
-  }, [updateWebhookMutation]);
+  const updateWebhook = useCallback(
+    async (input: {
+      id: string;
+      name?: string;
+      url?: string;
+      secret?: string;
+      events?: string[];
+      is_active?: boolean;
+    }) => {
+      await updateWebhookMutation.mutateAsync(input);
+    },
+    [updateWebhookMutation]
+  );
 
-  const deleteWebhook = useCallback(async (id: any) => {
-    await deleteWebhookMutation.mutateAsync(id);
-  }, [deleteWebhookMutation]);
+  const deleteWebhook = useCallback(
+    async (id: string) => {
+      await deleteWebhookMutation.mutateAsync(id);
+    },
+    [deleteWebhookMutation]
+  );
 
-  const testWebhook = useCallback(async (id: any) => {
-    await testWebhookMutation.mutateAsync(id);
-  }, [testWebhookMutation]);
+  const testWebhook = useCallback(
+    async (id: string) => {
+      await testWebhookMutation.mutateAsync(id);
+    },
+    [testWebhookMutation]
+  );
 
   // Search & Filters
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
 
   // Dialog states
   const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
@@ -86,24 +118,27 @@ export function useWebhooksPage() {
 
   // Filtered webhooks
   const filteredWebhooks = useMemo(() => {
-    return webhooks.filter(webhook => {
-      const matchesSearch = 
+    return webhooks.filter((webhook) => {
+      const matchesSearch =
         webhook.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         webhook.url.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = 
-        statusFilter === 'all' ||
-        (statusFilter === 'active' && webhook.is_active) ||
-        (statusFilter === 'inactive' && !webhook.is_active);
+      const matchesStatus =
+        statusFilter === "all" ||
+        (statusFilter === "active" && webhook.is_active) ||
+        (statusFilter === "inactive" && !webhook.is_active);
       return matchesSearch && matchesStatus;
     });
   }, [webhooks, searchTerm, statusFilter]);
 
   // Stats
-  const stats = useMemo(() => ({
-    total: webhooks.length,
-    active: webhooks.filter(w => w.is_active).length,
-    inactive: webhooks.filter(w => !w.is_active).length,
-  }), [webhooks]);
+  const stats = useMemo(
+    () => ({
+      total: webhooks.length,
+      active: webhooks.filter((w) => w.is_active).length,
+      inactive: webhooks.filter((w) => !w.is_active).length,
+    }),
+    [webhooks]
+  );
 
   // Form handlers
   const resetForm = useCallback(() => {
@@ -158,25 +193,28 @@ export function useWebhooksPage() {
 
     try {
       await testWebhook(selectedWebhook.id);
-      setTestResult({ success: true, message: 'Teste realizado com sucesso' });
+      setTestResult({ success: true, message: "Teste realizado com sucesso" });
     } catch (error) {
-      setTestResult({ success: false, message: 'Erro ao testar webhook' });
+      setTestResult({ success: false, message: "Erro ao testar webhook" });
     } finally {
       setIsTesting(false);
     }
   }, [selectedWebhook, testWebhook]);
 
-  const handleToggleActive = useCallback(async (webhook: Webhook) => {
-    await updateWebhook({ id: webhook.id, is_active: !webhook.is_active });
-  }, [updateWebhook]);
+  const handleToggleActive = useCallback(
+    async (webhook: Webhook) => {
+      await updateWebhook({ id: webhook.id, is_active: !webhook.is_active });
+    },
+    [updateWebhook]
+  );
 
   // Event toggle
   const toggleEvent = useCallback((event) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       events: prev.events.includes(event)
-        ? prev.events.filter(e => e !== event)
-        : [...prev.events, event]
+        ? prev.events.filter((e) => e !== event)
+        : [...prev.events, event],
     }));
   }, []);
 
@@ -191,7 +229,7 @@ export function useWebhooksPage() {
     setFormData({
       name: webhook.name,
       url: webhook.url,
-      secret: webhook.secret || '',
+      secret: webhook.secret || "",
       events: webhook.events || [],
       is_active: webhook.is_active,
       retry_count: webhook.retry_count || 3,
