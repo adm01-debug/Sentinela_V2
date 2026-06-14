@@ -70,5 +70,7 @@ jobs:
           deno-version: v1.x
       - name: Run Contract Tests
         run: |
-          find supabase/functions -name "*_test.ts" -o -name "*.test.ts" | xargs -I {} deno test --allow-env --allow-net {}
+          # Only run API contract tests here. Integration tests (e.g.
+          # agent-collector_test.ts) require a live Supabase stack and run elsewhere.
+          find supabase/functions -name "contract_test.ts" | xargs -I {} deno test --allow-env --allow-net {}
 
