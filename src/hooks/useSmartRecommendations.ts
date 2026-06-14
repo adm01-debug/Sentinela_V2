@@ -31,7 +31,7 @@ export function useSmartRecommendations<T>(options: UseSmartRecommendationsOptio
       .map(item => {
         const features = getItemFeatures(item);
         let score = 0;
-        let reasons: string[] = [];
+        const reasons: string[] = [];
         
         Object.entries(features).forEach(([feature, value]) => {
           const prefWeight = userPreferences[feature] || 0;

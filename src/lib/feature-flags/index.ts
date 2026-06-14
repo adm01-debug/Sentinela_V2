@@ -1,6 +1,6 @@
 interface FeatureFlags { newDashboard: boolean; darkMode: boolean; exportPDF: boolean; realTimeUpdates: boolean; advancedReports: boolean; mobileApp: boolean; }
 const defaultFlags: FeatureFlags = { newDashboard: true, darkMode: true, exportPDF: true, realTimeUpdates: true, advancedReports: false, mobileApp: false };
-let flags: FeatureFlags = { ...defaultFlags };
+const flags: FeatureFlags = { ...defaultFlags };
 export const initFeatureFlags = async (): Promise<void> => {
   // Feature flags are managed locally; no remote fetch needed
 };

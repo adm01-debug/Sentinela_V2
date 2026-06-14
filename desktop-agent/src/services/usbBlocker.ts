@@ -1,5 +1,5 @@
-import log from 'electron-log';
 import { exec } from 'child_process';
+import log from 'electron-log';
 import { DataSender } from './dataSender';
 
 export class UsbBlockerService {

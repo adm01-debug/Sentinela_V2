@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { cn } from '@/lib/utils';
 import { ChevronDown, ChevronUp, MoreHorizontal, GripVertical, Pin, Archive, Trash2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';

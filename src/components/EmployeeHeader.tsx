@@ -1,13 +1,13 @@
+import { Edit, Trash2, Mail, Phone } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { EmployeeEditDialog } from './EmployeeEditDialog';
 import { EmployeeWithDetails } from '@/hooks/useEmployees';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, Mail, Phone } from 'lucide-react';
-import { useState } from 'react';
-import { EmployeeEditDialog } from './EmployeeEditDialog';
 import { useDeleteEmployee } from '@/hooks/useEmployees';
-import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
 
 interface Props {
   employee: EmployeeWithDetails;

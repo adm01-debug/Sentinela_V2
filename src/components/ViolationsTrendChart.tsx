@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import { format, subDays, startOfDay, startOfWeek, startOfMonth, eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { 
   Select,
   SelectContent,
@@ -20,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 interface Violation {
   id: string;

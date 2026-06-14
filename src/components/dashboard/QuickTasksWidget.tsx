@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { ListTodo, Plus, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ListTodo, Plus, Trash2 } from 'lucide-react';
 
 interface Task { id: string; text: string; completed: boolean; }
 

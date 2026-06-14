@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { cn } from '@/utils/cn';
 import { Lightbox } from './Lightbox';
+import { cn } from '@/utils/cn';
 
 interface GalleryImage { src: string; alt?: string; title?: string; thumbnail?: string; }
 

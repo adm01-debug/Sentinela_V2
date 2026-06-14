@@ -1,4 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft, ExternalLink, Activity, Target } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { format } from 'date-fns';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -7,10 +10,7 @@ import { RiskScoreBadge } from '@/components/ueba/RiskScoreBadge';
 import { useRiskScores } from '@/hooks/useRiskScores';
 import { useBehavioralBaseline } from '@/hooks/useBehavioralBaseline';
 import { useMitreTechniques } from '@/hooks/useMitreTechniques';
-import { ArrowLeft, ExternalLink, Activity, Target } from 'lucide-react';
 import { useChartColors } from '@/hooks/useChartColors';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
-import { format } from 'date-fns';
 
 export const EmployeeRiskProfilePage = () => {
   const { employeeId } = useParams<{ employeeId: string }>();

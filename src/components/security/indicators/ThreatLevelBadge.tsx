@@ -1,6 +1,6 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 import { ShieldCheck, ShieldAlert, ShieldX, AlertTriangle, Info } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
 export type ThreatLevel = 'critical' | 'high' | 'medium' | 'low' | 'none';

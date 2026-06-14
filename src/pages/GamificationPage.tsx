@@ -1,5 +1,9 @@
 import { useMemo } from 'react';
 import { Trophy, Medal, Star, Award, TrendingUp } from 'lucide-react';
+import {
+  BarChart, Bar, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -9,10 +13,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { useGamificationPage } from '@/hooks/useGamificationPage';
 import { useChartColors } from '@/hooks/useChartColors';
-import {
-  BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
 
 export default function GamificationPage() {
   const { leaderboard, achievements, stats, period, isLoading, handlePeriodChange } = useGamificationPage();

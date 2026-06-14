@@ -1,8 +1,8 @@
 import { useState, useCallback, useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useNavigate } from 'react-router-dom';
 import { logger } from '@/lib/logger';
 import { loginSchema, registerSchema, forgotPasswordSchema } from '@/validators/schemas';
 

@@ -8,10 +8,10 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
-import { useChartColors } from '@/hooks/useChartColors';
+import { Activity } from 'lucide-react';
 import { ChartTooltipContent } from './ChartTooltip';
 import { ChartEmptyState } from './ChartEmptyState';
-import { Activity } from 'lucide-react';
+import { useChartColors } from '@/hooks/useChartColors';
 
 export interface RadarSeriesConfig {
   dataKey: string;

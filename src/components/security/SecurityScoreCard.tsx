@@ -3,14 +3,14 @@
 // ============================================================
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import {
   Shield, ShieldCheck, ShieldAlert, Monitor, Key, Lock,
   AlertTriangle, CheckCircle2, Activity, Bell, RefreshCw,
 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 
 export interface SecurityScore {
   total: number;

@@ -8,13 +8,13 @@ import {
   Key, Webhook, MessageSquare, Brain, FolderKanban, Timer, ClipboardList,
   UserCheck, BarChart, ChevronDown, LogOut, Link2, ShieldCheck, FileCheck
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '@/stores';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/utils/cn';
 import { ROUTES, APP_NAME } from '@/constants';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { motion, AnimatePresence } from 'framer-motion';
 
 interface NavItem {
   icon: React.ComponentType<{ className?: string }>;

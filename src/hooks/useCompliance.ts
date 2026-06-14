@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { useMemo } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ComplianceRule {
   id: string;

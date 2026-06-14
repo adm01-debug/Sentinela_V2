@@ -1,7 +1,7 @@
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { useProductivityAnalytics } from '@/hooks/useAnalytics';
 
 interface PerformerItem {

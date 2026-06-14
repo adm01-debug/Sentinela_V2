@@ -1,6 +1,6 @@
 import { GripVertical } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { HTMLAttributes, ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 interface PanelGroupProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;

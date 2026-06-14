@@ -1,4 +1,12 @@
 import { useState } from 'react';
+import { 
+  Settings2, 
+  GripVertical, 
+  RotateCcw,
+  LayoutDashboard,
+  Eye,
+  EyeOff
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
@@ -18,14 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { 
-  Settings2, 
-  GripVertical, 
-  RotateCcw,
-  LayoutDashboard,
-  Eye,
-  EyeOff
-} from 'lucide-react';
 import { useDashboardLayout, DashboardWidget } from '@/hooks/useDashboardLayout';
 import { cn } from '@/lib/utils';
 

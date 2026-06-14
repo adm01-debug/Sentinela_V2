@@ -1,7 +1,7 @@
 import { memo, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
 import { Info } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export interface WidgetCardProps {

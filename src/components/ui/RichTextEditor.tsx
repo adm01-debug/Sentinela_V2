@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useState, useCallback, useRef } from 'react';
+import { Bold, Italic, Underline, Strikethrough, List, ListOrdered, AlignLeft, AlignCenter, AlignRight, Link, Image, Undo, Redo, Code, Quote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Bold, Italic, Underline, Strikethrough, List, ListOrdered, AlignLeft, AlignCenter, AlignRight, Link, Image, Undo, Redo, Code, Quote } from 'lucide-react';
 
 export interface RichTextEditorProps {
   value?: string;

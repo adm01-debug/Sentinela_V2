@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
+import { format, subDays } from 'date-fns';
 import { useEmployee, useEmployeeStats, type EmployeeWithDetails } from '@/hooks/useEmployees';
 import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
-import { format, subDays } from 'date-fns';
 
 export default function EmployeeDetailPage() {
   const { id } = useParams<{ id: string }>();

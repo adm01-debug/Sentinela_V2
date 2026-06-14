@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ReactNode, useEffect, useRef, useState } from 'react';
 
 // ============================================================
 // COUNT-UP HOOK

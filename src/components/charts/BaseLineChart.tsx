@@ -8,10 +8,10 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import { useChartColors } from '@/hooks/useChartColors';
+import { TrendingUp } from 'lucide-react';
 import { ChartTooltipContent } from './ChartTooltip';
 import { ChartEmptyState } from './ChartEmptyState';
-import { TrendingUp } from 'lucide-react';
+import { useChartColors } from '@/hooks/useChartColors';
 
 export interface LineSeriesConfig {
   dataKey: string;

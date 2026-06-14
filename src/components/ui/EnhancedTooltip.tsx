@@ -1,6 +1,6 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 import { Info, HelpCircle, AlertCircle, CheckCircle, AlertTriangle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import {
   Tooltip,
   TooltipContent,

@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { SecurityViolation } from '@/hooks/useSecurityViolations';
 import { useMemo } from 'react';
+import { SecurityViolation } from '@/hooks/useSecurityViolations';
 
 interface ViolationsBySeverityChartProps {
   violations: SecurityViolation[];

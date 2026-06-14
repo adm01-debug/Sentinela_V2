@@ -1,6 +1,6 @@
 import { QueryClient, QueryCache, MutationCache } from '@tanstack/react-query';
-import { logger } from '@/lib/logger';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 // ============================================================
 // CONFIGURAÇÃO DE TEMPOS DE CACHE

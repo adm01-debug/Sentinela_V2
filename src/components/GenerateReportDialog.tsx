@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { format, subDays } from 'date-fns';
 import {
   Dialog,
   DialogContent,
@@ -17,7 +18,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { ReportTemplate, Report, ReportFilters } from '@/types';
-import { format, subDays } from 'date-fns';
 
 interface Props {
   open: boolean;

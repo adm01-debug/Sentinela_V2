@@ -1,8 +1,8 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Shield, AlertTriangle, Lock } from 'lucide-react';
+import { PolicyAcknowledgmentDialog } from './PolicyAcknowledgmentDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { PolicyAcknowledgmentDialog } from './PolicyAcknowledgmentDialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { logger } from '@/lib/logger';
 

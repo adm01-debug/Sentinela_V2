@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { format } from "date-fns";
+import { useQuery } from "@tanstack/react-query";
+import { Activity, RefreshCw, Trash2, Download, FileText, CalendarIcon } from "lucide-react";
+import { toast } from "sonner";
+import { TelemetryStatsCards, TopOffendersCard } from "./admin/TelemetryComponents";
+import { TelemetryTable } from "./admin/TelemetryTable";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Activity, RefreshCw, Trash2, Download, FileText, CalendarIcon } from "lucide-react";
 import { TelemetryCharts } from "@/components/admin/telemetry/TelemetryCharts";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { logger } from '@/lib/logger';
-import { TelemetryStatsCards, TopOffendersCard } from "./admin/TelemetryComponents";
-import { TelemetryTable } from "./admin/TelemetryTable";
 
 interface TelemetryRow {
   id: string;

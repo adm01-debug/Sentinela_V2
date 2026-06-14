@@ -1,5 +1,5 @@
-import { supabase } from '@/integrations/supabase/client';
 import type { User as SupaUser, Session as SupaSession } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 import type { User } from '@/providers/AuthProvider';
 
 export const authService = {

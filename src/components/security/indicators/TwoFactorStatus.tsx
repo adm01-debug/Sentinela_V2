@@ -1,6 +1,6 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 import { Key } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
 interface TwoFactorStatusProps {

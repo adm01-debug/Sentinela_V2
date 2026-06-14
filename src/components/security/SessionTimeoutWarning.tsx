@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { Clock } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useSecurity } from '@/hooks/useSecurity';
-import { Clock } from 'lucide-react';
 
 interface SessionTimeoutWarningProps {
   onExtend: () => void;

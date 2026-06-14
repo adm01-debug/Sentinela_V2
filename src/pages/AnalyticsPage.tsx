@@ -1,7 +1,7 @@
-import { PageTransition } from '@/components/PageTransition';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { useState } from 'react';
 import { BarChart3, TrendingUp, Users, Clock } from 'lucide-react';
+import { PageTransition } from '@/components/PageTransition';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { BaseAreaChart } from '@/components/charts';

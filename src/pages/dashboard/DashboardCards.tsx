@@ -1,12 +1,12 @@
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, Shield, ArrowRight, ShieldOff, Inbox } from 'lucide-react';
+import { severityStyles, severityLabels } from './dashboardData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { EmptyState } from '@/components/EmptyState';
-import { severityStyles, severityLabels } from './dashboardData';
 
 interface Alert {
   id: string;

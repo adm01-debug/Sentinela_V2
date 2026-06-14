@@ -1,6 +1,6 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { SecurityViolation } from '@/hooks/useSecurityViolations';
 import { useMemo } from 'react';
+import { SecurityViolation } from '@/hooks/useSecurityViolations';
 
 interface ViolationsByTypeChartProps {
   violations: SecurityViolation[];

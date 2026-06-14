@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { cn } from '@/lib/utils';
 import { Check, X, AlertTriangle, Shield, ShieldCheck, ShieldAlert } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface PasswordStrengthMeterProps {
   password: string;

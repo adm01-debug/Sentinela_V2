@@ -1,14 +1,14 @@
 import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Smartphone, Monitor, Tablet, Trash2, Shield, ShieldCheck, Loader2 } from 'lucide-react';
-import { useDeviceDetection } from '@/hooks/useDeviceDetection';
-import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useDeviceDetection } from '@/hooks/useDeviceDetection';
+import { useAuth } from '@/hooks/useAuth';
 
 interface KnownDevice {
   id: string;

@@ -1,5 +1,9 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  BarChart, Bar, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
 import { useAlerts, useAcknowledgeAlert, useAcknowledgeAllAlerts } from '@/hooks';
 import { AlertList } from '@/components/AlertList';
 import { AlertFilters } from '@/components/AlertFilters';
@@ -7,10 +11,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { useChartColors } from '@/hooks/useChartColors';
-import {
-  BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
 
 export const AlertsPage = () => {
   const { t } = useTranslation();

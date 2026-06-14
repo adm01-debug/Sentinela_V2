@@ -1,6 +1,6 @@
+import { Shield, ShieldAlert, ShieldX, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getLevelMeta, levelFromScore, type RiskLevel } from '@/lib/uebaLevels';
-import { Shield, ShieldAlert, ShieldX, ShieldCheck } from 'lucide-react';
 
 interface RiskScoreBadgeProps {
   score: number;

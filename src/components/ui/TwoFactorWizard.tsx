@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useState, useCallback } from 'react';
+import { Smartphone, Key, Shield, CheckCircle, Copy, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Smartphone, Key, Shield, CheckCircle, Copy, Loader2 } from 'lucide-react';
 
 export interface TwoFactorWizardProps {
   onComplete: (code: string) => Promise<void>;

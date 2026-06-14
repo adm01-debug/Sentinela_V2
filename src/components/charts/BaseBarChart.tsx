@@ -9,10 +9,10 @@ import {
   Legend,
   Cell,
 } from 'recharts';
-import { useChartColors } from '@/hooks/useChartColors';
+import { BarChart3 } from 'lucide-react';
 import { ChartTooltipContent } from './ChartTooltip';
 import { ChartEmptyState } from './ChartEmptyState';
-import { BarChart3 } from 'lucide-react';
+import { useChartColors } from '@/hooks/useChartColors';
 
 export interface BarSeriesConfig {
   dataKey: string;

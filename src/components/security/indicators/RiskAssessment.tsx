@@ -1,6 +1,6 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 import { ThreatLevelBadge, type ThreatLevel } from './ThreatLevelBadge';
+import { cn } from '@/lib/utils';
 
 interface RiskItem {
   id: string;

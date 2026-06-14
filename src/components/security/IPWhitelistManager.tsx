@@ -1,4 +1,20 @@
 import React, { useState } from 'react';
+import {
+  Shield,
+  Plus,
+  Edit2,
+  Trash2,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Globe,
+  Zap,
+  Lock,
+  Search,
+  Loader2,
+} from 'lucide-react';
+import { format, formatDistanceToNow, isPast } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -36,22 +52,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  Shield,
-  Plus,
-  Edit2,
-  Trash2,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Globe,
-  Zap,
-  Lock,
-  Search,
-  Loader2,
-} from 'lucide-react';
-import { format, formatDistanceToNow, isPast } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import {
   useWhitelistedIPs,
   useCreateWhitelistIP,

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { Shield, Loader2, Eye, EyeOff, AlertTriangle, Lock, Mail, User, Building2, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthPage } from '@/hooks/useAuthPage';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Shield, Loader2, Eye, EyeOff, AlertTriangle, Lock, Mail, User, Building2, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { PasswordStrengthChecker } from '@/components/auth/PasswordStrengthChecker';
-import { motion, AnimatePresence } from 'framer-motion';
 import { lovable } from '@/integrations/lovable/index';
 
 const features = [

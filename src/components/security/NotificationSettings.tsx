@@ -1,10 +1,4 @@
 import React from 'react';
-import { useSecurityNotifications } from '@/hooks/useSecurityNotifications';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { 
   Bell, 
   BellOff, 
@@ -14,6 +8,12 @@ import {
   AlertTriangle,
   Smartphone
 } from 'lucide-react';
+import { useSecurityNotifications } from '@/hooks/useSecurityNotifications';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 export const NotificationSettings = React.memo(function NotificationSettings() {
   const { 

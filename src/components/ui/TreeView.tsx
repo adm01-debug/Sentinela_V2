@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useCallback } from 'react';
-import { cn } from '@/lib/utils';
 import { ChevronRight, ChevronDown, Folder, FolderOpen, File } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface TreeNode {
   id: string;

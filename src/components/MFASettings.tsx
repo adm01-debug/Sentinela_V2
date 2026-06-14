@@ -1,14 +1,14 @@
 import { useState } from 'react';
+import { Shield, ShieldCheck, ShieldOff, Loader2, Smartphone, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Shield, ShieldCheck, ShieldOff, Loader2, Smartphone, Trash2 } from 'lucide-react';
 import { useMFA } from '@/hooks/useMFA';
 import { MFAEnroll } from '@/components/MFAEnroll';
-import { toast } from 'sonner';
 
 export function MFASettings() {
   const { isEnrolled, factors, loading, unenroll, checkMFAStatus } = useMFA();

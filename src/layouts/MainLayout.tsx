@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AppSidebar } from '@/components/AppSidebar';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
@@ -14,7 +15,6 @@ import { CommandPalette } from '@/components/CommandPalette';
 import { KeyboardShortcutsDialog } from '@/components/KeyboardShortcutsDialog';
 import { KeyboardShortcutsProvider } from '@/components/KeyboardShortcutsProvider';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export const MainLayout = () => {
   useDocumentTitle();

@@ -1,8 +1,8 @@
+import { User, Settings, LogOut, HelpCircle } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { UserAvatar } from '@/components/user/UserAvatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { User, Settings, LogOut, HelpCircle } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
 export function UserMenu() {

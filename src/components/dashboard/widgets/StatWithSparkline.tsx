@@ -1,6 +1,6 @@
 import { memo, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
 import { Sparkline } from './Sparkline';
+import { cn } from '@/lib/utils';
 
 export interface StatWithSparklineProps {
   title: string;

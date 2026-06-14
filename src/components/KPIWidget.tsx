@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react';
+import { TrendingUp, TrendingDown, Minus, LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
-import { TrendingUp, TrendingDown, Minus, LucideIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Tooltip,

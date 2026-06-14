@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Employee, EmployeeUpdateInput } from "@/types";
 import {
   Dialog,
@@ -26,7 +27,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUpdateEmployee } from "@/hooks/useEmployees";
-import { toast } from "sonner";
 
 interface Props {
   employee: Employee;

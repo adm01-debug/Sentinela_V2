@@ -1,4 +1,11 @@
 import { memo, useState, useEffect } from 'react';
+import { 
+  Star, 
+  Plus, 
+  MoreHorizontal, 
+  Trash2, 
+  Loader2
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -17,13 +24,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { 
-  Star, 
-  Plus, 
-  MoreHorizontal, 
-  Trash2, 
-  Loader2
-} from 'lucide-react';
 import { useSavedFilters, SavedFilter } from '@/hooks/useSavedFilters';
 import { cn } from '@/lib/utils';
 

@@ -1,4 +1,22 @@
 import React, { useState } from 'react';
+import {
+  KeyRound,
+  Check,
+  X,
+  Trash2,
+  Search,
+  Clock,
+  CheckCircle2,
+  XCircle,
+  Loader2,
+  Mail,
+  User,
+  MessageSquare,
+  RefreshCw,
+  Shield,
+} from 'lucide-react';
+import { formatDistanceToNow, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { usePasswordResetRequests, PasswordResetRequest } from '@/hooks/usePasswordResetRequests';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,24 +43,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import {
-  KeyRound,
-  Check,
-  X,
-  Trash2,
-  Search,
-  Clock,
-  CheckCircle2,
-  XCircle,
-  Loader2,
-  Mail,
-  User,
-  MessageSquare,
-  RefreshCw,
-  Shield,
-} from 'lucide-react';
-import { formatDistanceToNow, format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 function getStatusBadge(status: string) {
   switch (status) {

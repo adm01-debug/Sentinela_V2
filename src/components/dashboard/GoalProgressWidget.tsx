@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { Target, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Target, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 
 interface Goal { id: string; name: string; current: number; target: number; unit?: string; dueDate?: Date; status?: 'on-track' | 'at-risk' | 'completed'; }
 

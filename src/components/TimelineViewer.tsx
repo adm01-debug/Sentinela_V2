@@ -1,8 +1,8 @@
 import { memo, useMemo } from 'react';
-import { cn } from '@/lib/utils';
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { LucideIcon, Circle, CheckCircle2, XCircle, AlertCircle, Clock, MoreHorizontal } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

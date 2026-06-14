@@ -1,4 +1,16 @@
 import { useState } from 'react';
+import { 
+  Search, 
+  MapPin, 
+  Smartphone, 
+  Calendar as CalendarIcon, 
+  Filter, 
+  Download,
+  AlertTriangle,
+  ExternalLink
+} from 'lucide-react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,19 +24,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { 
-  Search, 
-  MapPin, 
-  Smartphone, 
-  Calendar as CalendarIcon, 
-  Filter, 
-  Download,
-  AlertTriangle,
-  ExternalLink
-} from 'lucide-react';
 import { useGeofenceViolations } from '@/hooks/useGeofenceViolations';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { DateRangePicker } from '@/components/DateRangePicker';
 import { Skeleton } from '@/components/ui/skeleton';
 import { EmptyState } from '@/components/EmptyState';

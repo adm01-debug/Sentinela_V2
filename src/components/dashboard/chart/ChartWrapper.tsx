@@ -1,8 +1,8 @@
 import { memo, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { ChartTypeSwitcher, type ChartType } from './ChartTypeSwitcher';
 import { ChartLegend, type ChartLegendItem } from './ChartLegend';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 export interface ChartWrapperProps {
   title: string;

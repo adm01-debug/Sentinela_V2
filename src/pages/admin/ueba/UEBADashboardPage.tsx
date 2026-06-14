@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { Brain, RefreshCw, Settings, TrendingUp, Users, AlertTriangle } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PageTransition } from '@/components/PageTransition';
 import { RiskScoreBadge } from '@/components/ueba/RiskScoreBadge';
 import { useTopRiskyUsers } from '@/hooks/useRiskScores';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { Brain, RefreshCw, Settings, TrendingUp, Users, AlertTriangle } from 'lucide-react';
 import { useChartColors } from '@/hooks/useChartColors';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { getLevelMeta, RISK_LEVEL_ORDER, type RiskLevel } from '@/lib/uebaLevels';
 
 export const UEBADashboardPage = () => {

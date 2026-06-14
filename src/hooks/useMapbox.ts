@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
-import { useState, useEffect, useCallback } from 'react';
 
 export interface MapMarker {
   id: string;

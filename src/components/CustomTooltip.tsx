@@ -1,4 +1,5 @@
 import { memo, ReactNode, useRef, useState, useEffect, useCallback } from 'react';
+import { Info, HelpCircle, AlertCircle, Copy, Check } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -6,7 +7,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import { Info, HelpCircle, AlertCircle, Copy, Check } from 'lucide-react';
 import { useClipboard } from '@/hooks/useClipboard';
 
 // ============================================================

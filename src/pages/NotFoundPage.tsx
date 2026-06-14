@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ROUTES } from '@/constants';
-import { Button } from '@/components/ui/button';
 import { Home, Shield, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ROUTES } from '@/constants';
+import { Button } from '@/components/ui/button';
 
 export const NotFoundPage = () => {
   const { t } = useTranslation();

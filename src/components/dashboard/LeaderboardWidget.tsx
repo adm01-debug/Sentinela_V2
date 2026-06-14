@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { Trophy, Medal, Award, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Medal, Award, Star } from 'lucide-react';
 
 interface LeaderboardItem { id: string; name: string; avatar?: string; score: number; change?: number; badge?: string; }
 

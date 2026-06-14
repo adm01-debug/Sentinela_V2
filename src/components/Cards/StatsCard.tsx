@@ -1,9 +1,9 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { LucideIcon, TrendingUp, TrendingDown } from "lucide-react";
-import { cn } from "@/helpers";
-import { useCountUp } from "@/hooks/useCountUp";
 import { ResponsiveContainer, AreaChart, Area } from "recharts";
 import { useMemo } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/helpers";
+import { useCountUp } from "@/hooks/useCountUp";
 
 interface SparklineData {
   value: number;

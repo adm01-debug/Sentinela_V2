@@ -1,6 +1,6 @@
+import { Usb, HardDrive, Camera, Video, Clipboard, Globe, Download, ShieldOff } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { Usb, HardDrive, Camera, Video, Clipboard, Globe, Download, ShieldOff } from 'lucide-react';
 import type { SecurityPolicy } from '@/data/settingsData';
 
 const policyIcons: Record<string, React.ComponentType<{ className?: string }>> = {

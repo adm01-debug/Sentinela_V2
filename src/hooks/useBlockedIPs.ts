@@ -1,8 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
-import { useMemo } from 'react';
 
 export interface BlockedIP {
   id: string;

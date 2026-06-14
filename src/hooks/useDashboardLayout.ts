@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState, useCallback, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
-import { useState, useCallback, useMemo } from 'react';
 
 export interface DashboardWidget {
   id: string;

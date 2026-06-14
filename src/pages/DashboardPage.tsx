@@ -1,6 +1,10 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Users, Activity, TrendingUp, AlertTriangle, Filter, X } from 'lucide-react';
+import { type Period, fallbackAlerts, fallbackActivities } from './dashboard/dashboardData';
+import { DashboardChartsRow, DepartmentPieChart } from './dashboard/DashboardCharts';
+import { DashboardAlertsCard, DashboardActivityCard } from './dashboard/DashboardCards';
+import { DashboardSkeleton } from './dashboard/DashboardSkeleton';
 import { useDashboardStats, useRecentAlerts, useRecentActivity } from '@/hooks/useDashboard';
 import { useChartColors } from '@/hooks/useChartColors';
 import { StatCard } from '@/components/StatCard';
@@ -11,10 +15,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { WelcomeBanner } from '@/components/WelcomeBanner';
 import { PageHeader } from '@/components/layout/PageHeader';
 
-import { type Period, fallbackAlerts, fallbackActivities } from './dashboard/dashboardData';
-import { DashboardChartsRow, DepartmentPieChart } from './dashboard/DashboardCharts';
-import { DashboardAlertsCard, DashboardActivityCard } from './dashboard/DashboardCards';
-import { DashboardSkeleton } from './dashboard/DashboardSkeleton';
 
 export const DashboardPage = () => {
   const [period, setPeriod] = useState<Period>('week');

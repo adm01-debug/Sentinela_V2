@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { violationService } from '@/services/violationService';
 import { useCallback, useMemo } from 'react';
+import { violationService } from '@/services/violationService';
 
 interface Violation {
   id: string;

@@ -1,4 +1,7 @@
 import { memo, useState } from "react";
+import { Ban, Plus, Unlock, Trash2, Clock, Shield, RefreshCw } from "lucide-react";
+import { format, addHours, addDays } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Ban, Plus, Unlock, Trash2, Clock, Shield, RefreshCw } from "lucide-react";
 import { useBlockedIPs, BlockIPInput } from "@/hooks/useBlockedIPs";
-import { format, addHours, addDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
 interface BlockIPDialogProps {
   open: boolean;

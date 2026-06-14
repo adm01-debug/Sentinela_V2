@@ -170,7 +170,7 @@ async function executeQuery(
     return { data, count: null, error: error?.message || null };
   }
 
-  let query = supabase.from(req.table!);
+  const query = supabase.from(req.table!);
 
   if (req.action === 'query') {
     let selectQuery = query.select(req.select || '*', {

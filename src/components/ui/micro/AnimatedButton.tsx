@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
 import { Check, X, Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type ButtonState = 'idle' | 'loading' | 'success' | 'error';
 

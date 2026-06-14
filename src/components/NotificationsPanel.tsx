@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Bell, Check, CheckCheck, AlertTriangle, AlertCircle, Info } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -10,8 +12,6 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { useSecurityViolations, SecurityViolation, useUpdateViolationStatus } from '@/hooks/useSecurityViolations';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 const severityConfig = {
   low: {

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { Clock, User, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Clock, User, Activity } from 'lucide-react';
 
 interface ActivityItem { id: string; user: string; action: string; target?: string; timestamp: Date; type?: 'info' | 'warning' | 'success' | 'error'; }
 

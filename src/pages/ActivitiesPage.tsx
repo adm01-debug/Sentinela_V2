@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { format, subDays } from 'date-fns';
 import { useActivities, useActivitySummary } from '@/hooks/useActivities';
 import { ActivityFilters } from '@/components/ActivityFilters';
 import { ActivityChart } from '@/components/ActivityChart';
 import { ActivityTable } from '@/components/ActivityTable';
 import { ApplicationBreakdown } from '@/components/ApplicationBreakdown';
 import { PageHeader } from '@/components/layout/PageHeader';
-import { format, subDays } from 'date-fns';
 
 interface HourlyItem { date: string; value: number; }
 interface AppBreakdown { app: string; duration: number; percentage: number; }

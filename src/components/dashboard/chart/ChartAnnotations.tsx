@@ -1,6 +1,6 @@
 import { memo, useState } from 'react';
-import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 export interface ChartAnnotation {
   x: number | string;

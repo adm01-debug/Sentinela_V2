@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { cn } from '@/lib/utils';
 import { BarChart3, LineChart, AreaChart, PieChart } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export type ChartType = 'line' | 'bar' | 'area' | 'pie';
 

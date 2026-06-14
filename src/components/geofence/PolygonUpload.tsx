@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Upload, FileCode, CheckCircle2, AlertCircle } from 'lucide-react';
 import { 
   Dialog, 
   DialogContent, 
@@ -10,7 +11,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Upload, FileCode, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface PolygonUploadProps {

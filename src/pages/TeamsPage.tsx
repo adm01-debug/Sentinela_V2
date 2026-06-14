@@ -1,8 +1,9 @@
-import { PageTransition } from '@/components/PageTransition';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Users, MoreVertical, Edit, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { PageTransition } from '@/components/PageTransition';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -10,7 +11,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useTeams, useCreateTeam, useDeleteTeam } from '@/hooks/useTeams';
 import { useChartColors } from '@/hooks/useChartColors';
-import { useTranslation } from 'react-i18next';
 import { BaseBarChart } from '@/components/charts';
 import { NoDataEmptyState, NoResultsEmptyState } from '@/components/EmptyStates';
 import { ROUTES, generateRoute } from '@/constants/routes';

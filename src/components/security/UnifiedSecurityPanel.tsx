@@ -4,22 +4,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useMFA } from '@/hooks/useMFA';
-import { useDeviceDetection } from '@/hooks/useDeviceDetection';
-import { useBlockedIPs } from '@/hooks/useBlockedIPs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import {
   Lock, AlertTriangle, XCircle, CheckCircle2, Activity,
   Eye, Bell, Key, Monitor, MapPin, Globe, Fingerprint,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
 
 // Sub-components
 import { SecurityScoreCard, calculateSecurityScore } from './SecurityScoreCard';
@@ -31,6 +21,16 @@ import { NotificationSettings } from './NotificationSettings';
 import { WebAuthnSettings } from './WebAuthnSettings';
 import { IPWhitelistManager } from './IPWhitelistManager';
 import { GeoBlockingManager } from './GeoBlockingManager';
+import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useBlockedIPs } from '@/hooks/useBlockedIPs';
+import { useDeviceDetection } from '@/hooks/useDeviceDetection';
+import { useMFA } from '@/hooks/useMFA';
+import { supabase } from '@/integrations/supabase/client';
 
 // ============================================================
 // TYPES

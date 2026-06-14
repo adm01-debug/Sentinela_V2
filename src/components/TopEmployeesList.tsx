@@ -1,6 +1,6 @@
+import { Trophy, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Trophy, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Employee { 

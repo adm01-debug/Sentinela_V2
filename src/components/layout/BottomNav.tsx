@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
   Users,
@@ -9,6 +8,7 @@ import {
   FileText,
   Settings,
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface NavItem {
   labelKey: string;

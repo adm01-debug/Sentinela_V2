@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '@/hooks/useAuth';
 import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 import { BrandedSplash } from '@/components/ui/LoadingSpinner';
 
 interface GuardProps {

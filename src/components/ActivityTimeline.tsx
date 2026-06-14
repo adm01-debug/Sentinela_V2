@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
-import { useActivityTimeline } from '@/hooks';
 import { Skeleton } from './Skeleton';
+import { useActivityTimeline } from '@/hooks';
 
 type TimelineActivity = {
   id: string;

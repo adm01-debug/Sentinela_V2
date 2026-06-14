@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { Activity, Clock, Users } from 'lucide-react';
+import { fallbackActivityData, fallbackProductivityData } from './dashboardData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BaseAreaChart, BaseBarChart, BaseDonutChart } from '@/components/charts';
-import { fallbackActivityData, fallbackProductivityData } from './dashboardData';
 
 interface ChartColors {
   primary: string;

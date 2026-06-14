@@ -1,6 +1,5 @@
 import { memo, useState, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { cn } from '@/lib/utils';
 import {
   Search,
   Command,
@@ -16,6 +15,7 @@ import {
   Clock,
   Star,
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import {
   Dialog,
   DialogContent,

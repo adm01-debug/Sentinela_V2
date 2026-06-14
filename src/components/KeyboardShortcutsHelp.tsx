@@ -1,4 +1,5 @@
 import { memo, useState, useEffect } from 'react';
+import { Keyboard } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -7,7 +8,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Keyboard } from 'lucide-react';
 
 // ============================================================
 // KEYBOARD SHORTCUTS HELP MODAL

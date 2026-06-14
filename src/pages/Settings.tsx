@@ -1,8 +1,9 @@
 import React, { Suspense, memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { Shield, AppWindow, Bell, UserCog, Search, Loader2 } from 'lucide-react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -17,7 +18,6 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { useSettings as useSettingsHook, type ApplicationRule } from '@/hooks/useSettings';
 import { type SecurityPolicy, categoryLabels } from '@/data/settingsData';
 import { SettingsSkeleton } from '@/components/PageSkeletons';
-import { Shield, AppWindow, Bell, UserCog, Search, Loader2 } from 'lucide-react';
 
 const SettingsContent = memo(function SettingsContent() {
   const { t } = useTranslation();

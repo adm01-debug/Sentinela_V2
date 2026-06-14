@@ -1,11 +1,11 @@
 import { memo, useState, useCallback } from 'react';
+import { Keyboard } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Keyboard } from 'lucide-react';
 import { useGlobalShortcuts, groupShortcuts, formatShortcutKey } from '@/hooks/useGlobalShortcuts';
 import { cn } from '@/lib/utils';
 

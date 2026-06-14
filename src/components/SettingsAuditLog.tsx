@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { History, ChevronDown, ChevronUp, User, Clock, Pencil, Plus, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
+import { formatDistanceToNow, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -10,8 +12,6 @@ import {
 } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
 import { useAuditLog, type AuditLogEntry } from '@/hooks/useAuditLog';
-import { formatDistanceToNow, format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 const actionConfig: Record<string, { icon: React.ComponentType<{ className?: string }>; color: string; label: string }> = {
   CRIAR: { icon: Plus, color: 'text-success', label: 'Criou' },

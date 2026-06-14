@@ -1,7 +1,7 @@
 import { memo } from 'react';
+import { SkeletonPageLayout } from './SkeletonPageLayout';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { SkeletonPageLayout } from './SkeletonPageLayout';
 
 export const ReportsSkeleton = memo(function ReportsSkeleton() {
   return (

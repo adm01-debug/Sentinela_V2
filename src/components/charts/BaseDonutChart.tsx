@@ -1,8 +1,8 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { useChartColors } from '@/hooks/useChartColors';
+import { PieChart as PieIcon } from 'lucide-react';
 import { ChartTooltipContent } from './ChartTooltip';
 import { ChartEmptyState } from './ChartEmptyState';
-import { PieChart as PieIcon } from 'lucide-react';
+import { useChartColors } from '@/hooks/useChartColors';
 
 interface DonutDataItem {
   name: string;

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useState, useCallback, useMemo } from 'react';
+import { Pipette, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Pipette, Check } from 'lucide-react';
 
 export interface ColorPickerProps {
   value?: string;

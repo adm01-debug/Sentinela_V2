@@ -43,7 +43,7 @@ serve(async (req) => {
     if (error) throw error;
 
     // Check acknowledgments if employee_name provided
-    let acknowledgments: Record<string, boolean> = {};
+    const acknowledgments: Record<string, boolean> = {};
     if (employeeName && policies) {
       const { data: acks } = await supabase
         .from('policy_acknowledgments')

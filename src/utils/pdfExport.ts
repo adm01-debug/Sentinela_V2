@@ -3,8 +3,8 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { format, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import type { ReportData } from '@/data/reportData';
 import { colors, chartColors, drawRoundedRect, drawMetricCard, drawHorizontalBarChart, drawPieChart, drawLegend, drawAreaChart, type RGB } from './pdf/pdfHelpers';
+import type { ReportData } from '@/data/reportData';
 
 export const generatePDF = (reportData: ReportData) => {
   const doc = new jsPDF();

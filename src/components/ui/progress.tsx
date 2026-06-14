@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
-import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { CheckCircle, Circle, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const progressVariants = cva("relative w-full overflow-hidden rounded-full bg-secondary", {
   variants: {

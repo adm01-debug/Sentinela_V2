@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
+import { Trophy, Medal, Award, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Trophy, Medal, Award, AlertTriangle } from 'lucide-react';
 import { useSecurityViolations, SecurityViolation } from '@/hooks/useSecurityViolations';
 
 interface EmployeeRanking {

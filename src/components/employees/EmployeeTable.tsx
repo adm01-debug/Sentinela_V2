@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
-import { CreateFirstEmptyState } from '@/components/EmptyStates';
 import { useTranslation } from 'react-i18next';
 import { Edit, Trash2, Monitor, Smartphone, Link2, Mail, Phone, Building2, Briefcase } from 'lucide-react';
+import { CreateFirstEmptyState } from '@/components/EmptyStates';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';

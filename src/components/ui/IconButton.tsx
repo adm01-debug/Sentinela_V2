@@ -1,7 +1,7 @@
 import { memo, forwardRef } from 'react';
+import { LucideIcon } from 'lucide-react';
 import { Button, ButtonProps } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface IconButtonProps extends Omit<ButtonProps, 'children'> {

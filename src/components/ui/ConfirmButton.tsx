@@ -1,4 +1,5 @@
 import { memo, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 import { Button, ButtonProps } from '@/components/ui/button';
 import {
   AlertDialog,
@@ -10,7 +11,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Loader2 } from 'lucide-react';
 
 interface ConfirmButtonProps extends Omit<ButtonProps, 'onClick'> {
   onConfirm: () => void | Promise<void>;

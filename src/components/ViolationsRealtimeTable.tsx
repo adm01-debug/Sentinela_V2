@@ -1,13 +1,13 @@
 import { memo, useState } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { AlertTriangle, ShieldAlert, AlertCircle, Info, Eye, CheckCircle, Search, Filter } from 'lucide-react';
 import { SecurityViolation } from '@/hooks/useSecurityViolations';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { AlertTriangle, ShieldAlert, AlertCircle, Info, Eye, CheckCircle, Search, Filter } from 'lucide-react';
 
 // Extended type for realtime table that includes UI-specific fields
 interface RealtimeViolation extends SecurityViolation {

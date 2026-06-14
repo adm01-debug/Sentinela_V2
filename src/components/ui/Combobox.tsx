@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/utils/cn';
-import { Button } from './button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from 'cmdk';
+import { Button } from './button';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import { cn } from '@/utils/cn';
 
 interface ComboboxOption { value: string; label: string; }
 

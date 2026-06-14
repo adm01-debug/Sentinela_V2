@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { StatsCard } from '@/components/Cards/StatsCard';
 import { Users, Shield, Activity, AlertTriangle } from 'lucide-react';
+import { StatsCard } from '@/components/Cards/StatsCard';
 
 // Mock recharts to avoid canvas issues
 vi.mock('recharts', () => ({

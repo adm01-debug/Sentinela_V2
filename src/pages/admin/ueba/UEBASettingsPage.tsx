@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { ArrowLeft, Save, Eye } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -8,8 +10,6 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { PageTransition } from '@/components/PageTransition';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { ArrowLeft, Save, Eye } from 'lucide-react';
 
 interface Factor {
   id: string;

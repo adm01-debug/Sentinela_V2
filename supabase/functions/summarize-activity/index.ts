@@ -39,7 +39,7 @@ serve(async (req) => {
     const { data: activities } = await activityQuery;
 
     // Fetch violations
-    let violationQuery = supabase.from("violations").select("*").gte("created_at", since);
+    const violationQuery = supabase.from("violations").select("*").gte("created_at", since);
     const { data: violations } = await violationQuery;
 
     // Calculate metrics

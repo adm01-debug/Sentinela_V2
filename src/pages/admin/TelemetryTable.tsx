@@ -1,8 +1,8 @@
+import { Activity } from "lucide-react";
+import { getSeverityBadge } from "./TelemetryComponents";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Activity } from "lucide-react";
-import { getSeverityBadge } from "./TelemetryComponents";
 
 interface TelemetryRow {
   id: string;

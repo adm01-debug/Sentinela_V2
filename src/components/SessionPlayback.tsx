@@ -1,4 +1,10 @@
 import { useState, memo, useEffect, useRef } from 'react';
+import { 
+  Play, Pause, SkipBack, SkipForward, Video, User, 
+  CalendarIcon, Mouse, Keyboard, Clock, Maximize2, BarChart3 
+} from 'lucide-react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -6,14 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { 
-  Play, Pause, SkipBack, SkipForward, Video, User, 
-  CalendarIcon, Mouse, Keyboard, Clock, Maximize2, BarChart3 
-} from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { supabase } from '@/integrations/supabase/client';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import {
   Dialog,
   DialogContent,

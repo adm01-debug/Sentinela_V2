@@ -1,9 +1,9 @@
 import { memo } from 'react';
+import { format } from 'date-fns';
 import { Alert } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { format } from 'date-fns';
 
 interface Props {
   alerts: Alert[];

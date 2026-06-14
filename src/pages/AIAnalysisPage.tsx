@@ -1,12 +1,12 @@
 import { Brain, Play, TrendingUp, AlertTriangle, BarChart3, Lightbulb, Loader2 } from 'lucide-react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAIAnalysisPage } from '@/hooks/useAIAnalysisPage';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 const typeLabels: Record<string, string> = {
   productivity: 'Produtividade',

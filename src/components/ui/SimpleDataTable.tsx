@@ -1,5 +1,6 @@
 // Simple DataTable for basic use cases
 import { memo } from 'react';
+import { FileText } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -10,7 +11,6 @@ import {
 } from '@/components/ui/table';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { FileText } from 'lucide-react';
 
 interface Column<T> {
   key: string;

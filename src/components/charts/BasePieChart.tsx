@@ -1,8 +1,8 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { useChartColors } from '@/hooks/useChartColors';
+import { PieChart as PieIcon } from 'lucide-react';
 import { ChartTooltipContent } from './ChartTooltip';
 import { ChartEmptyState } from './ChartEmptyState';
-import { PieChart as PieIcon } from 'lucide-react';
+import { useChartColors } from '@/hooks/useChartColors';
 
 interface PieDataItem {
   name: string;

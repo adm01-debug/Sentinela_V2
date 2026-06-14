@@ -10,10 +10,10 @@ import {
   Legend,
   Cell,
 } from 'recharts';
-import { useChartColors } from '@/hooks/useChartColors';
+import { Target } from 'lucide-react';
 import { ChartTooltipContent } from './ChartTooltip';
 import { ChartEmptyState } from './ChartEmptyState';
-import { Target } from 'lucide-react';
+import { useChartColors } from '@/hooks/useChartColors';
 
 export interface ScatterSeriesConfig {
   dataKey: string;

@@ -1,4 +1,20 @@
 import React, { useState } from 'react';
+import {
+  Globe,
+  Plus,
+  Trash2,
+  Search,
+  Shield,
+  ShieldCheck,
+  MapPin,
+  Loader2,
+  CheckCircle2,
+  XCircle,
+  AlertTriangle,
+  Flag,
+} from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { useGeoBlocking, COUNTRIES } from '@/hooks/useGeoBlocking';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,22 +41,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import {
-  Globe,
-  Plus,
-  Trash2,
-  Search,
-  Shield,
-  ShieldCheck,
-  MapPin,
-  Loader2,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  Flag,
-} from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 // Bandeiras usando emoji
 const getCountryFlag = (code: string) => {

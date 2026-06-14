@@ -1,4 +1,20 @@
 import React, { useState } from 'react';
+import { 
+  Fingerprint, 
+  Plus, 
+  Trash2, 
+  Smartphone, 
+  Laptop, 
+  Monitor,
+  ShieldCheck,
+  ShieldAlert,
+  Pencil,
+  Loader2,
+  CheckCircle2,
+  XCircle
+} from 'lucide-react';
+import { formatDistanceToNow, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { useWebAuthn, WebAuthnCredential } from '@/hooks/useWebAuthn';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,22 +42,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { 
-  Fingerprint, 
-  Plus, 
-  Trash2, 
-  Smartphone, 
-  Laptop, 
-  Monitor,
-  ShieldCheck,
-  ShieldAlert,
-  Pencil,
-  Loader2,
-  CheckCircle2,
-  XCircle
-} from 'lucide-react';
-import { formatDistanceToNow, format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 function DeviceIcon({ type }: { type: string | null }) {
   switch (type?.toLowerCase()) {

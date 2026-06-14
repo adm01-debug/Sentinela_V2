@@ -3,9 +3,9 @@
 // Captures unhandled errors, promise rejections, and manual reports
 // ============================================================
 
+import * as Sentry from '@sentry/react';
 import { logger } from '@/lib/logger';
 import { supabase } from '@/integrations/supabase/client';
-import * as Sentry from '@sentry/react';
 
 // ============================================================
 // TYPES

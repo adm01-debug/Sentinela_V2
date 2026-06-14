@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Loader2, Lock, Smartphone, AlertTriangle } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +12,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Lock, Smartphone, AlertTriangle } from 'lucide-react';
 import { useMFA } from '@/hooks/useMFA';
 import { SensitiveAction } from '@/hooks/useReauthentication';
 

@@ -1,9 +1,9 @@
+import { Loader2, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useReports, useReportTemplates } from '@/hooks/useReports';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, Plus } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 
 interface ReportItem {
   id: string;

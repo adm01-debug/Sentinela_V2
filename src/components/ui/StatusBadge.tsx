@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { cn } from '@/lib/utils';
 import {
   CheckCircle,
   XCircle,
@@ -20,6 +19,7 @@ import {
   Zap,
   Moon,
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
 // ============================================

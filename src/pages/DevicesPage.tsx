@@ -1,6 +1,12 @@
 import { useMemo } from 'react';
-import { EmptyState } from '@/components/EmptyState';
 import { Search, Monitor, Smartphone, Tablet, RefreshCw, MoreVertical, Trash2, Power, PowerOff, Eye, HardDrive } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import {
+  PieChart, Pie, Cell, BarChart, Bar,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
+import { EmptyState } from '@/components/EmptyState';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,12 +18,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { useDevicesPage } from '@/hooks/useDevicesPage';
 import { useChartColors } from '@/hooks/useChartColors';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import {
-  PieChart, Pie, Cell, BarChart, Bar,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
 
 const typeIcons: Record<string, React.ReactNode> = {
   desktop: <Monitor className="h-5 w-5" />,

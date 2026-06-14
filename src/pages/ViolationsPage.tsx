@@ -1,8 +1,12 @@
 import { useMemo } from 'react';
-import { EmptyState } from '@/components/EmptyState';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Search, ShieldAlert, AlertTriangle, CheckCircle, Clock, Eye, XCircle } from 'lucide-react';
+import {
+  BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
+import { EmptyState } from '@/components/EmptyState';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,10 +17,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useViolationsPage, type Violation, type ViolationStatus } from '@/hooks/useViolationsPage';
 import { useChartColors } from '@/hooks/useChartColors';
-import {
-  BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
 
 const severityColors: Record<string, string> = {
   critical: 'bg-destructive/10 text-destructive border-destructive/20',

@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Clock, Play, Square, Users, Search, UserX } from 'lucide-react';
+import { format, differenceInMinutes } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Clock, Play, Square, Users, Search, UserX } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { format, differenceInMinutes } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 interface EmployeeStatusRow {
   id: string;

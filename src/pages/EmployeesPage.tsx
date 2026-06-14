@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useEmployeesPage } from '@/hooks/useEmployeesPage';
 import { EmployeeStatsCards } from '@/components/employees/EmployeeStatsCards';
 import { EmployeeFilters } from '@/components/employees/EmployeeFilters';
@@ -7,8 +9,6 @@ import { EmployeeTable } from '@/components/employees/EmployeeTable';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useChartColors } from '@/hooks/useChartColors';
 import { BaseBarChart, BaseDonutChart } from '@/components/charts';
 

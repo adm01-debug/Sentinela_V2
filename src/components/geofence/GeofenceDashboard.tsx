@@ -1,8 +1,8 @@
+import { AlertTriangle, TrendingUp, Smartphone, Users } from 'lucide-react';
 import { useGeofenceDashboardStats } from '@/hooks/useGeofenceDashboardStats';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BaseBarChart, BaseLineChart } from '@/components/charts';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertTriangle, TrendingUp, Smartphone, Users } from 'lucide-react';
 
 export function GeofenceDashboard() {
   const { data, isLoading } = useGeofenceDashboardStats();

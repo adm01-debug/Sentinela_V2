@@ -1,7 +1,7 @@
 import { MessageCircle, Settings, Send } from 'lucide-react';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

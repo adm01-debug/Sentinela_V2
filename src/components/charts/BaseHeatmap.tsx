@@ -9,10 +9,10 @@ import {
   ZAxis,
   Cell,
 } from 'recharts';
-import { useChartColors } from '@/hooks/useChartColors';
+import { Grid } from 'lucide-react';
 import { ChartTooltipContent } from './ChartTooltip';
 import { ChartEmptyState } from './ChartEmptyState';
-import { Grid } from 'lucide-react';
+import { useChartColors } from '@/hooks/useChartColors';
 
 interface HeatmapDataItem {
   x: string | number;

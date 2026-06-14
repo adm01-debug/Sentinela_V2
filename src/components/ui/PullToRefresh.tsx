@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useRef, useCallback } from 'react';
-import { cn } from '@/lib/utils';
 import { Loader2, ArrowDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface PullToRefreshProps {
   onRefresh: () => Promise<void>;
