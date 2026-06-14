@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,7 +13,7 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('@/hooks/useAnalytics', () => ({
-  useAnalytics: ({ period }: any) => ({
+  useAnalytics: () => ({
     data: {
       productivity: 85,
       activeHours: 42,
@@ -27,7 +27,7 @@ vi.mock('@/hooks/useAnalytics', () => ({
 
 // Mock Recharts
 vi.mock('recharts', () => ({
-  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
+  ResponsiveContainer: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   AreaChart: () => <div data-testid="area-chart" />,
   Area: () => <div />,
   XAxis: () => <div />,
@@ -37,7 +37,7 @@ vi.mock('recharts', () => ({
 }));
 
 vi.mock('@/components/PageTransition', () => ({
-  PageTransition: ({ children }: any) => <div>{children}</div>,
+  PageTransition: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
 }));
 
 const queryClient = new QueryClient({

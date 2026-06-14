@@ -17,7 +17,6 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
     isEnrolling,
     isVerifying,
     phoneNumber,
-    factorId,
     error,
     enrollPhone,
     verifyPhone,

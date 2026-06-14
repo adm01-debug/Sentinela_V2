@@ -6,7 +6,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
 
 // ============================================================
 // TYPES
@@ -24,11 +23,11 @@ export interface SoftDeleteOptions {
 }
 
 export interface SoftDeleteResult {
-  softDelete: (id: any) => void;
+  softDelete: (id: string) => void;
   softDeleteMany: (ids: string[]) => void;
-  restore: (id: any) => void;
+  restore: (id: string) => void;
   restoreMany: (ids: string[]) => void;
-  hardDelete: (id: any) => void;
+  hardDelete: (id: string) => void;
   hardDeleteMany: (ids: string[]) => void;
   isDeleting: boolean;
   isRestoring: boolean;
@@ -59,11 +58,11 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const softDeleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       // Proceed to delete
 
 
-      const updates = {
+      const updates: Record<string, string> = {
         [deletedAtField]: new Date().toISOString(),
       };
 
@@ -98,7 +97,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
       // Proceed to delete many
 
 
-      const updates = {
+      const updates: Record<string, string> = {
         [deletedAtField]: new Date().toISOString(),
       };
 
@@ -128,7 +127,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const restoreMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       // Proceed to restore
 
 
@@ -197,7 +196,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const hardDeleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       // Proceed to hard delete
 
 

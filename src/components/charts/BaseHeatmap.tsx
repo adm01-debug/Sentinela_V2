@@ -47,10 +47,6 @@ export function BaseHeatmap({
     return <ChartEmptyState icon={Grid} title={emptyTitle} description={emptyDescription} height={height} />;
   }
 
-  // Get unique X and Y values for scales
-  const xValues = Array.from(new Set(data.map(d => d.x)));
-  const yValues = Array.from(new Set(data.map(d => d.y)));
-
   const maxValue = Math.max(...data.map(d => d.value));
 
   return (

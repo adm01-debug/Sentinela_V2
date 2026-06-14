@@ -49,8 +49,6 @@ const sizeLabels: Record<NonNullable<DashboardWidget['size']>, string> = {
 export function DashboardCustomizer() {
   const {
     widgets,
-    isEditMode,
-    setIsEditMode,
     toggleWidget,
     resizeWidget,
     resetLayout,

@@ -247,14 +247,14 @@ export default function DevicesPage() {
           {selectedDevice && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div><label className="text-sm text-muted-foreground">Nome</label><p className="font-medium">{selectedDevice.name}</p></div>
-                <div><label className="text-sm text-muted-foreground">Tipo</label><p className="capitalize">{selectedDevice.device_type}</p></div>
-                <div><label className="text-sm text-muted-foreground">Sistema</label><p>{selectedDevice.os_name} {selectedDevice.os_version}</p></div>
-                <div><label className="text-sm text-muted-foreground">Status</label><Badge variant={selectedDevice.is_active ? 'default' : 'secondary'}>{selectedDevice.is_active ? 'Ativo' : 'Inativo'}</Badge></div>
-                <div><label className="text-sm text-muted-foreground">IP</label><p>{selectedDevice.ip_address || 'N/A'}</p></div>
-                <div><label className="text-sm text-muted-foreground">MAC</label><p>{selectedDevice.mac_address || 'N/A'}</p></div>
-                <div><label className="text-sm text-muted-foreground">Agent</label><p>{selectedDevice.agent_version || 'N/A'}</p></div>
-                <div><label className="text-sm text-muted-foreground">Última Atividade</label><p>{selectedDevice.last_seen ? formatDistanceToNow(new Date(selectedDevice.last_seen), { addSuffix: true, locale: ptBR }) : 'N/A'}</p></div>
+                <div><span className="text-sm text-muted-foreground">Nome</span><p className="font-medium">{selectedDevice.name}</p></div>
+                <div><span className="text-sm text-muted-foreground">Tipo</span><p className="capitalize">{selectedDevice.device_type}</p></div>
+                <div><span className="text-sm text-muted-foreground">Sistema</span><p>{selectedDevice.os_name} {selectedDevice.os_version}</p></div>
+                <div><span className="text-sm text-muted-foreground">Status</span><Badge variant={selectedDevice.is_active ? 'default' : 'secondary'}>{selectedDevice.is_active ? 'Ativo' : 'Inativo'}</Badge></div>
+                <div><span className="text-sm text-muted-foreground">IP</span><p>{selectedDevice.ip_address || 'N/A'}</p></div>
+                <div><span className="text-sm text-muted-foreground">MAC</span><p>{selectedDevice.mac_address || 'N/A'}</p></div>
+                <div><span className="text-sm text-muted-foreground">Agent</span><p>{selectedDevice.agent_version || 'N/A'}</p></div>
+                <div><span className="text-sm text-muted-foreground">Última Atividade</span><p>{selectedDevice.last_seen ? formatDistanceToNow(new Date(selectedDevice.last_seen), { addSuffix: true, locale: ptBR }) : 'N/A'}</p></div>
               </div>
               <DialogFooter className="gap-2">
                 {selectedDevice.is_active ? (

@@ -30,7 +30,7 @@ export function usePendingNotifications() {
         created_at: n.createdAt.toISOString(),
       }));
     },
-    ...(queryPresets as any).realtime,
+    ...queryPresets.realtime,
     refetchInterval: REFETCH_INTERVALS.FREQUENT,
   });
 }
@@ -43,7 +43,7 @@ export function useUnreadNotificationsCount() {
     queryFn: async (): Promise<number> => {
       return unreadCount;
     },
-    ...(queryPresets as any).realtime,
+    ...queryPresets.realtime,
   });
 }
 
@@ -52,7 +52,7 @@ export function useMarkNotificationAsRead() {
   const { markAsRead } = useNotificationsStore();
 
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       markAsRead(id);
     },
     onSuccess: () => {

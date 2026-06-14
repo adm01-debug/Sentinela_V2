@@ -91,6 +91,8 @@ export function PolicyGate({ children }: PolicyGateProps) {
 
   useEffect(() => {
     checkAcknowledgment();
+    // checkAcknowledgment is recreated each render; re-running only on employeeName change is intended
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [employeeName]);
 
   const handleAcknowledged = () => {

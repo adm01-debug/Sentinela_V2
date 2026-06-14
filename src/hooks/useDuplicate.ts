@@ -22,7 +22,7 @@ export interface DuplicateOptions<T> {
   customSuffix?: string;
 }
 
-export interface DuplicateResult<T> {
+export interface DuplicateResult {
   duplicate: (id: string) => void;
   duplicateMany: (ids: string[]) => void;
   isDuplicating: boolean;
@@ -47,7 +47,7 @@ const DEFAULT_EXCLUDE_FIELDS = [
 
 export function useDuplicate<T extends Record<string, unknown>>(
   options: DuplicateOptions<T>
-): DuplicateResult<T> {
+): DuplicateResult {
   const {
     table,
     queryKey,
@@ -136,7 +136,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
       }
 
       // Preparar dados para duplicação
-      const duplicatesData = originals.map((original: any) =>
+      const duplicatesData = originals.map((original) =>
         prepareDuplicateData(
           original as T,
           allExcludeFields,

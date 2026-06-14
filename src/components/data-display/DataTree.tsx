@@ -6,7 +6,7 @@ const TreeItem: React.FC<{ node: TreeNode; level: number; onSelect?: (node: Tree
   const hasChildren = node.children && node.children.length > 0;
   return (
     <div>
-      <div onClick={() => { setOpen(!open); onSelect?.(node); }} style={{ padding: '8px 12px', paddingLeft: 12 + level * 20, display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+      <div role="button" tabIndex={0} onClick={() => { setOpen(!open); onSelect?.(node); }} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!open); onSelect?.(node); } }} style={{ padding: '8px 12px', paddingLeft: 12 + level * 20, display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
         {hasChildren && <span>{open ? '▼' : '▶'}</span>}
         {node.icon}{node.label}
       </div>

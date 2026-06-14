@@ -28,7 +28,7 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { period = "day", employeeId, teamId } = await req.json();
+    const { period = "day", employeeId } = await req.json();
     
     const periodHours = period === "day" ? 24 : period === "week" ? 168 : 720;
     const since = new Date(Date.now() - periodHours * 60 * 60 * 1000).toISOString();

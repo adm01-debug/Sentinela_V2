@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
 import { Button  } from '@/components/ui/button';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 export default function ApiKeysPage() {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   if (isLoading) {
     return (

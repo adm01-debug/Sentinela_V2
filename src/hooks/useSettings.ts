@@ -1,5 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
+
+type AlertNotificationSettingsInsert =
+  Database['public']['Tables']['alert_notification_settings']['Insert'];
 
 export interface ApplicationRule {
   id: string;
@@ -26,7 +30,7 @@ export const useSettings = () => {
 export const useUpdateSettings = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (settings: any) => {
+    mutationFn: async (settings: AlertNotificationSettingsInsert) => {
       const { data, error } = await supabase.from('alert_notification_settings').upsert(settings).select().maybeSingle();
       if (error) throw error;
       return data;

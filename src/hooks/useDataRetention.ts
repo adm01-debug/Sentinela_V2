@@ -14,7 +14,9 @@ export function useDataRetention(policies: RetentionPolicy[]) {
       try {
         const { timestamp } = JSON.parse(stored);
         if (now - timestamp > maxAge) localStorage.removeItem(key);
-      } catch {}
+      } catch {
+        // Ignore malformed entries; skip cleanup for this key.
+      }
     });
   }, [policies]);
 

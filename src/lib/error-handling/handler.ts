@@ -8,17 +8,26 @@ export interface AppError {
   severity?: "low" | "medium" | "high" | "critical";
 }
 
-export const handleError = (error: any): AppError => {
-  if (error?.error?.code === "VALIDATION_ERROR") {
-    const details = error.error.details || [];
-    const fields = details.reduce((acc: any, curr: any) => {
+interface ValidationErrorShape {
+  error?: {
+    code?: string;
+    message?: string;
+    details?: Array<{ field: string; message: string }>;
+  };
+}
+
+export const handleError = (error: unknown): AppError => {
+  const validationError = error as ValidationErrorShape | null | undefined;
+  if (validationError?.error?.code === "VALIDATION_ERROR") {
+    const details = validationError.error.details || [];
+    const fields = details.reduce<Record<string, string>>((acc, curr) => {
       acc[curr.field] = curr.message;
       return acc;
     }, {});
 
     return {
       code: "VALIDATION_ERROR",
-      message: error.error.message || "Erro de validação nos campos informados.",
+      message: validationError.error.message || "Erro de validação nos campos informados.",
       details: fields,
       severity: "medium",
     };

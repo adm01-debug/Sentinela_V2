@@ -29,7 +29,7 @@ export function useToast() {
       if (duration > 0) {
         setTimeout(() => {
           setState((prev) => ({
-            toasts: prev.toasts.filter((t: any) => t.id !== id),
+            toasts: prev.toasts.filter((t: Toast) => t.id !== id),
           }));
         }, duration);
       }
@@ -39,9 +39,9 @@ export function useToast() {
     []
   );
 
-  const dismiss = useCallback((id: any) => {
+  const dismiss = useCallback((id: string) => {
     setState((prev) => ({
-      toasts: prev.toasts.filter((t: any) => t.id !== id),
+      toasts: prev.toasts.filter((t: Toast) => t.id !== id),
     }));
   }, []);
 

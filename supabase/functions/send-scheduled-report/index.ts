@@ -70,20 +70,22 @@ serve(async (req) => {
     // Generate report data based on type
     let reportData;
     switch (report.report_type) {
-      case 'violations':
+      case 'violations': {
         const { data: violations } = await supabase
           .from('security_violations')
           .select('*')
           .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
         reportData = violations;
         break;
-      case 'productivity':
+      }
+      case 'productivity': {
         const { data: productivity } = await supabase
           .from('productivity_metrics')
           .select('*')
           .gte('date', new Date().toISOString().split('T')[0]);
         reportData = productivity;
         break;
+      }
       default:
         reportData = { message: 'Report generated' };
     }

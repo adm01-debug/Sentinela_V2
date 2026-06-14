@@ -44,7 +44,7 @@ const initialState = {
 
 export const useScreenshotStore = create<ScreenshotState>()(
   devtools(
-    (set, get) => ({
+    (set, _get) => ({
       ...initialState,
 
       setScreenshots: (screenshots) => set({ screenshots }),

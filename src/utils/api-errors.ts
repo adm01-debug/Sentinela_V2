@@ -14,12 +14,17 @@ export interface ApiErrorResponse {
   };
 }
 
-export const handleApiError = (error: any, context?: string) => {
+export const handleApiError = (error: unknown, context?: string) => {
   console.error(`API Error [${context || 'Unknown'}]:`, error);
 
+  const err = error as
+    | { error?: { code?: string; message?: string; details?: ValidationErrorDetail[] }; message?: string }
+    | null
+    | undefined;
+
   // Handle Supabase function 422 errors
-  if (error && typeof error === 'object' && error.error && error.error.code === 'VALIDATION_ERROR') {
-    const details = error.error.details as ValidationErrorDetail[];
+  if (err && typeof err === 'object' && err.error && err.error.code === 'VALIDATION_ERROR') {
+    const details = err.error.details as ValidationErrorDetail[];
     if (details && details.length > 0) {
       const fieldErrors = details.map(d => `${d.field}: ${d.message}`).join(', ');
       toast.error(`Erro de validação: ${fieldErrors}`, {
@@ -30,15 +35,16 @@ export const handleApiError = (error: any, context?: string) => {
   }
 
   // Handle generic error message
-  const message = error?.message || error?.error?.message || 'Ocorreu um erro inesperado. Tente novamente.';
+  const message = err?.message || err?.error?.message || 'Ocorreu um erro inesperado. Tente novamente.';
   toast.error(message);
 };
 
-export const isValidationError = (error: any): error is ApiErrorResponse => {
-  return (
-    error &&
-    typeof error === 'object' &&
-    error.error &&
-    error.error.code === 'VALIDATION_ERROR'
+export const isValidationError = (error: unknown): error is ApiErrorResponse => {
+  const err = error as { error?: { code?: string } } | null | undefined;
+  return Boolean(
+    err &&
+    typeof err === 'object' &&
+    err.error &&
+    err.error.code === 'VALIDATION_ERROR'
   );
 };

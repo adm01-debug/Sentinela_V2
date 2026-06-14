@@ -31,9 +31,19 @@ export function MonitoringNotice({
     }
   };
 
+  const isInteractive = clickable && !isAdmin;
+
   return (
     <div
       onClick={handleClick}
+      role={isInteractive ? 'button' : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+      onKeyDown={isInteractive ? (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      } : undefined}
       className={cn(
         'flex items-center gap-3 px-4 py-3 rounded-lg border transition-all',
         isAdmin 
@@ -99,8 +109,16 @@ export function EmployeeMonitoringWidget({
   };
 
   return (
-    <div 
+    <div
       onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
       className="fixed bottom-4 right-4 z-50 max-w-sm animate-in slide-in-from-bottom-4 cursor-pointer"
     >
       <div className="flex items-center gap-3 px-4 py-3 rounded-lg border bg-background/95 backdrop-blur border-amber-500/30 shadow-lg hover:bg-amber-500/10 transition-colors">

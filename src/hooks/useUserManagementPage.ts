@@ -81,7 +81,7 @@ export function useUserManagementPage() {
 
   // Create user mutation
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: CreateUserData) => {
       const { data: authData, error: authError } = await supabase.auth.admin.createUser({
         email: data.email,
         password: data.password,
@@ -107,7 +107,7 @@ export function useUserManagementPage() {
 
   // Update user mutation
   const updateMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: UpdateUserData) => {
       const { error } = await supabase
         .from('profiles')
         .update({ name: data.name, role: data.role, is_active: data.is_active })
@@ -142,7 +142,7 @@ export function useUserManagementPage() {
 
   // Reset password mutation
   const resetPasswordMutation = useMutation({
-    mutationFn: async (email: any) => {
+    mutationFn: async (email: string) => {
       const { error } = await supabase.auth.resetPasswordForEmail(email);
       if (error) throw error;
     },
@@ -155,15 +155,15 @@ export function useUserManagementPage() {
   });
 
   // Handlers
-  const handleSearchChange = useCallback((value: any) => {
+  const handleSearchChange = useCallback((value: string) => {
     setSearch(value);
   }, []);
 
-  const handleRoleFilterChange = useCallback((value: any) => {
+  const handleRoleFilterChange = useCallback((value: string) => {
     setRoleFilter(value);
   }, []);
 
-  const handleStatusFilterChange = useCallback((value: any) => {
+  const handleStatusFilterChange = useCallback((value: string) => {
     setStatusFilter(value);
   }, []);
 
@@ -175,7 +175,7 @@ export function useUserManagementPage() {
     setIsCreateDialogOpen(false);
   }, []);
 
-  const handleCreateUser = useCallback((data: any) => {
+  const handleCreateUser = useCallback((data: CreateUserData) => {
     createMutation.mutate(data);
   }, [createMutation]);
 
@@ -189,15 +189,15 @@ export function useUserManagementPage() {
     setSelectedUser(null);
   }, []);
 
-  const handleUpdateUser = useCallback((data: any) => {
+  const handleUpdateUser = useCallback((data: UpdateUserData) => {
     updateMutation.mutate(data);
   }, [updateMutation]);
 
-  const handleDeleteUser = useCallback((userId) => {
+  const handleDeleteUser = useCallback((userId: string) => {
     deleteMutation.mutate(userId);
   }, [deleteMutation]);
 
-  const handleResetPassword = useCallback((email: any) => {
+  const handleResetPassword = useCallback((email: string) => {
     resetPasswordMutation.mutate(email);
   }, [resetPasswordMutation]);
 

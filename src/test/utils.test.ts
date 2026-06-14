@@ -108,7 +108,7 @@ describe('Date Utilities', () => {
 // ============================================================
 
 describe('Geofence Calculations', () => {
-  const haversineDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
+  const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371000;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -127,13 +127,13 @@ describe('Geofence Calculations', () => {
   });
 
   it('should detect point inside geofence', () => {
-    const isInside = (lat: any, lon: any, cLat: any, cLon: any, radius: any) =>
+    const isInside = (lat: number, lon: number, cLat: number, cLon: number, radius: number) =>
       haversineDistance(lat, lon, cLat, cLon) <= radius;
     expect(isInside(-23.550, -46.630, -23.550, -46.631, 500)).toBe(true);
   });
 
   it('should detect point outside geofence', () => {
-    const isInside = (lat: any, lon: any, cLat: any, cLon: any, radius: any) =>
+    const isInside = (lat: number, lon: number, cLat: number, cLon: number, radius: number) =>
       haversineDistance(lat, lon, cLat, cLon) <= radius;
     expect(isInside(-23.550, -46.630, -22.910, -43.170, 500)).toBe(false);
   });
@@ -144,7 +144,7 @@ describe('Geofence Calculations', () => {
 // ============================================================
 
 describe('Productivity Calculations', () => {
-  const calculateProductivity = (active: any, idle: any) => {
+  const calculateProductivity = (active: number, idle: number) => {
     const total = active + idle;
     return total > 0 ? Math.round((active / total) * 100) : 0;
   };
@@ -172,7 +172,7 @@ describe('Productivity Calculations', () => {
 // ============================================================
 
 describe('Security Score', () => {
-  const calcSecurityScore = (violations: any, totalDays: any) => {
+  const calcSecurityScore = (violations: number, totalDays: number) => {
     if (totalDays === 0) return 100;
     const violationsPerDay = violations / totalDays;
     return Math.max(0, Math.round(100 - violationsPerDay * 20));

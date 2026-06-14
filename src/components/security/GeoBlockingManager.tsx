@@ -54,7 +54,6 @@ const getCountryFlag = (code: string) => {
 export function GeoBlockingManager() {
   const {
     settings,
-    geoBlocks,
     whitelistedCountries,
     availableCountries,
     isLoading,

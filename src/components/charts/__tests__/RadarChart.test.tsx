@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { BaseRadarChart } from '../BaseRadarChart';
@@ -7,7 +8,7 @@ vi.mock('recharts', async () => {
   const actual = await vi.importActual('recharts');
   return {
     ...actual,
-    ResponsiveContainer: ({ children }: any) => <div data-testid="responsive-container">{children}</div>,
+    ResponsiveContainer: ({ children }: { children: ReactNode }) => <div data-testid="responsive-container">{children}</div>,
   };
 });
 

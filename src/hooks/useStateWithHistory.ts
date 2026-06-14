@@ -5,7 +5,7 @@ export function useStateWithHistory<T>(initial: T) {
   const historyRef = useRef<T[]>([initial]);
   const indexRef = useRef(0);
 
-  const set = useCallback((value: any) => {
+  const set = useCallback((value: T) => {
     historyRef.current = historyRef.current.slice(0, indexRef.current + 1);
     historyRef.current.push(value);
     indexRef.current++;

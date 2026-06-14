@@ -98,7 +98,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
 
       // Auto-detect columns if not provided
       const cols: ExportColumn<T>[] = columns ?? (data.length > 0
-        ? Object.keys(data[0]).map((key: any) => ({
+        ? Object.keys(data[0]).map((key) => ({
             key,
             header: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
           }))
@@ -162,7 +162,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
 
       // Auto-detect columns
       const cols: ExportColumn<T>[] = columns ?? (data.length > 0
-        ? Object.keys(data[0]).map((key: any) => ({
+        ? Object.keys(data[0]).map((key) => ({
             key,
             header: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
           }))
@@ -221,7 +221,7 @@ export function useExport<T extends Record<string, unknown>>(): UseExportResult<
 
       // Auto-detect columns
       const cols: ExportColumn<T>[] = columns ?? (data.length > 0
-        ? Object.keys(data[0]).map((key: any) => ({
+        ? Object.keys(data[0]).map((key) => ({
             key,
             header: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
           }))

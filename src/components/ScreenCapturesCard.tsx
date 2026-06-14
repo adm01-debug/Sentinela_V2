@@ -258,7 +258,7 @@ function ScreenCapturesCardBase() {
           </div>
           {searchQuery && (
             <p className="text-xs text-muted-foreground mt-2">
-              {filteredCaptures.length} resultado(s) para "{searchQuery}"
+              {filteredCaptures.length} resultado(s) para &quot;{searchQuery}&quot;
             </p>
           )}
         </CardHeader>
@@ -269,15 +269,23 @@ function ScreenCapturesCardBase() {
             </p>
           ) : filteredCaptures.length === 0 ? (
             <p className="text-center text-muted-foreground py-8">
-              Nenhum resultado encontrado para "{searchQuery}"
+              Nenhum resultado encontrado para &quot;{searchQuery}&quot;
             </p>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {filteredCaptures.map((capture) => (
                 <div
                   key={capture.id}
+                  role="button"
+                  tabIndex={0}
                   className="relative group cursor-pointer rounded-lg overflow-hidden border border-border/50 bg-muted/30"
                   onClick={() => setSelectedCapture(capture)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedCapture(capture);
+                    }
+                  }}
                 >
                     <div className="aspect-video relative">
                     <img
@@ -342,7 +350,7 @@ function ScreenCapturesCardBase() {
                     {searchQuery && capture.extracted_text?.toLowerCase().includes(searchQuery.toLowerCase()) && (
                       <p className="text-xs text-green-600 dark:text-green-400 mt-1 truncate">
                         <FileText className="h-3 w-3 inline mr-1" />
-                        Texto OCR contém "{searchQuery}"
+                        Texto OCR contém &quot;{searchQuery}&quot;
                       </p>
                     )}
                   </div>

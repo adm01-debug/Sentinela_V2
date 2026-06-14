@@ -71,6 +71,8 @@ export const LiveViewCard = memo(() => {
 
   useEffect(() => {
     fetchLatestScreenshot();
+    // fetchLatestScreenshot only depends on selectedEmployee; re-running on that change is the intended behavior
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEmployee]);
 
   // Subscribe to real-time updates
@@ -145,6 +147,9 @@ export const LiveViewCard = memo(() => {
           ) : (
             <div className="space-y-3">
               <div className="relative group">
+                {/* An <img> is non-interactive; the fullscreen Button below provides the keyboard-accessible
+                    equivalent action, so click-only on the image is acceptable here. */}
+                {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                 <img
                   src={latestScreenshot.screenshot_url}
                   alt="Live screenshot"
@@ -211,3 +216,5 @@ export const LiveViewCard = memo(() => {
     </>
   );
 });
+
+LiveViewCard.displayName = "LiveViewCard";

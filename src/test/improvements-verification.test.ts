@@ -519,8 +519,8 @@ describe("Improvement 3: Reusable Form Components", () => {
     it("renders title and children", async () => {
       const { FormSection } = await import("@/components/forms");
       // FormSection types `children` as a required prop, so pass it via props here.
-      // eslint-disable-next-line react/no-children-prop
       render(
+        // eslint-disable-next-line react/no-children-prop
         React.createElement(FormSection, {
           title: "Seção",
           description: "Desc",
@@ -537,8 +537,8 @@ describe("Improvement 3: Reusable Form Components", () => {
     it("renders children", async () => {
       const { FormRow } = await import("@/components/forms");
       // FormRow types `children` as a required prop, so pass it via props here.
-      // eslint-disable-next-line react/no-children-prop
       render(
+        // eslint-disable-next-line react/no-children-prop
         React.createElement(FormRow, {
           cols: 3,
           children: [

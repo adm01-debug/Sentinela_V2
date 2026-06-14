@@ -143,13 +143,13 @@ export function usePrefersReducedMotion(): boolean {
     if (!mediaQuery) return;
 
     const handler = (e: MediaQueryListEvent) => {
-      // @ts-ignore - setState might not exist in SSR
+      // @ts-expect-error - setState might not exist in SSR
       setPrefersReducedMotion?.(e.matches);
     };
 
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
-  }, [mediaQuery]);
+  }, [mediaQuery, setPrefersReducedMotion]);
 
   return prefersReducedMotion;
 }

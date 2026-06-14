@@ -18,6 +18,9 @@ export function useHotkeys(keyMap: HotkeyMap, deps: unknown[] = []) {
       e.preventDefault();
       handler(e);
     }
+    // `deps` is a caller-supplied dependency list spread intentionally so the
+    // handler tracks the consumer's own dependencies.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyMap, ...deps]);
 
   useEffect(() => {

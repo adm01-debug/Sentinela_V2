@@ -220,6 +220,9 @@ export function DraggableCard({
     >
       <div className="flex">
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Drag handle"
           className="flex items-center justify-center px-2 cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity border-r"
           onMouseDown={onDragStart}
           onMouseUp={onDragEnd}
@@ -257,6 +260,9 @@ export function SelectionCard({
 }: SelectionCardProps) {
   return (
     <div
+      role="button"
+      tabIndex={disabled ? -1 : 0}
+      aria-disabled={disabled}
       className={cn(
         'rounded-lg border-2 p-4 transition-all cursor-pointer',
         selected
@@ -266,6 +272,12 @@ export function SelectionCard({
         className
       )}
       onClick={disabled ? undefined : onSelect}
+      onKeyDown={(e) => {
+        if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          onSelect?.();
+        }
+      }}
     >
       <div className="flex items-start gap-3">
         {Icon && (

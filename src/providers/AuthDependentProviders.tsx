@@ -10,7 +10,7 @@ export const AuthDependentProviders = ({ children }: { children: ReactNode }) =>
   return (
     <TooltipProvider delayDuration={200}>
       <FeatureFlagsProvider>
-        <PermissionsProvider role={(user?.role as any) || 'viewer'}>
+        <PermissionsProvider role={user?.role || 'viewer'}>
           {children}
         </PermissionsProvider>
       </FeatureFlagsProvider>

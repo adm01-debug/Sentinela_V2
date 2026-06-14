@@ -16,19 +16,10 @@ interface BaseDonutChartProps {
   outerRadius?: number;
   showLabel?: boolean;
   colors?: string[];
-  valueFormatter?: (value: any) => string;
+  valueFormatter?: (value: number) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }
-
-const DEFAULT_COLORS = [
-  'hsl(0, 84%, 60%)',
-  'hsl(38, 92%, 50%)',
-  'hsl(217, 91%, 60%)',
-  'hsl(142, 76%, 36%)',
-  'hsl(262, 83%, 58%)',
-  'hsl(330, 81%, 60%)',
-];
 
 export function BaseDonutChart({
   data,
@@ -36,12 +27,22 @@ export function BaseDonutChart({
   innerRadius = 60,
   outerRadius = 90,
   showLabel = true,
-  colors = DEFAULT_COLORS,
+  colors,
   valueFormatter,
   emptyTitle,
   emptyDescription,
 }: BaseDonutChartProps) {
-  const chartColors = useChartColors();
+  const theme = useChartColors();
+  // Build the default palette from the active theme so the donut respects
+  // light/dark mode and design tokens; an explicit `colors` prop still wins.
+  const palette = colors ?? [
+    theme.destructive,
+    theme.warning,
+    theme.primary,
+    theme.success,
+    theme.accent,
+    theme.info,
+  ];
 
   if (!data.length) {
     return <ChartEmptyState icon={PieIcon} title={emptyTitle} description={emptyDescription} height={height} />;
@@ -66,7 +67,7 @@ export function BaseDonutChart({
           labelLine={false}
         >
           {data.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+            <Cell key={`cell-${index}`} fill={palette[index % palette.length]} />
           ))}
         </Pie>
         <Tooltip content={<ChartTooltipContent valueFormatter={valueFormatter} />} />

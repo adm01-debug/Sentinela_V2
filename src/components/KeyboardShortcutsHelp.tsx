@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
 
 // ============================================================
 // KEYBOARD SHORTCUTS HELP MODAL

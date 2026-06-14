@@ -25,12 +25,12 @@ export function useActiveEmployees() {
 
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
       
-      return data.map((emp: any) => ({
+      return data.map((emp: Record<string, unknown>) => ({
         ...emp,
-        is_online: emp.last_activity_at ? emp.last_activity_at > fiveMinutesAgo : false,
-      })) as ActiveEmployee[];
+        is_online: emp.last_activity_at ? (emp.last_activity_at as string) > fiveMinutesAgo : false,
+      })) as unknown as ActiveEmployee[];
     },
-    ...(queryPresets as any).realtime,
+    ...queryPresets.realtime,
     refetchInterval: REFETCH_INTERVALS.FREQUENT,
   });
 }
@@ -50,6 +50,6 @@ export function useOnlineEmployeesCount() {
       if (error) throw error;
       return count || 0;
     },
-    ...(queryPresets as any).realtime,
+    ...queryPresets.realtime,
   });
 }

@@ -50,12 +50,12 @@ export function useDashboardLayout() {
       return data as DashboardLayout | null;
     },
     enabled: !!user?.id,
-    ...(queryPresets as any).config,
+    ...queryPresets.config,
   });
 
   const widgets = useMemo(() => {
     if (localWidgets) return localWidgets;
-    const data = query.data as any;
+    const data = query.data;
     if (data && Array.isArray(data.widgets)) return data.widgets;
     return DEFAULT_WIDGETS;
   }, [localWidgets, query.data]);
@@ -74,7 +74,7 @@ export function useDashboardLayout() {
         const { data, error } = await supabase
           .from('dashboard_layouts')
           .update({ widgets: newWidgets } as Record<string, unknown>)
-          .eq('id', (existing as any).id)
+          .eq('id', (existing as { id: string }).id)
           .select()
           .single();
         if (error) throw error;
@@ -148,7 +148,7 @@ export function useSaveDashboardLayout() {
         const { data, error } = await supabase
           .from('dashboard_layouts')
           .update({ widgets })
-          .eq('id', (existing as any).id)
+          .eq('id', (existing as { id: string }).id)
           .select()
           .single();
         if (error) throw error;

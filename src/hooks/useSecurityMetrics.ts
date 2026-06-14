@@ -2,6 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
 
+interface ViolationRow {
+  id: string;
+  severity: string | null;
+  status: string | null;
+  violation_type: string;
+  employee_id: string;
+  created_at: string;
+  employee: { full_name?: string } | null;
+}
+
 export interface SecurityMetrics {
   total_violations: number;
   critical_violations: number;
@@ -16,17 +26,19 @@ export function useSecurityMetrics() {
   return useQuery({
     queryKey: queryKeys.securityMetrics.overview(),
     queryFn: async () => {
-      const { data: violations, error } = await supabase
+      const { data, error } = await supabase
         .from('security_violations')
         .select('id, severity, status, violation_type, employee_id, created_at, employee:employees(full_name)');
 
       if (error) throw error;
 
+      const violations = (data ?? []) as unknown as ViolationRow[];
+
       const metrics: SecurityMetrics = {
         total_violations: violations.length,
-        critical_violations: violations.filter((v: any) => v.severity === 'critical').length,
-        resolved_violations: violations.filter((v: any) => v.status === 'resolved').length,
-        pending_violations: violations.filter((v: any) => v.status === 'pending').length,
+        critical_violations: violations.filter((v) => v.severity === 'critical').length,
+        resolved_violations: violations.filter((v) => v.status === 'resolved').length,
+        pending_violations: violations.filter((v) => v.status === 'pending').length,
         violations_by_type: [],
         violations_trend: [],
         top_violators: [],
@@ -34,7 +46,7 @@ export function useSecurityMetrics() {
 
       // Calculate by type
       const byType: Record<string, number> = {};
-      violations.forEach((v: any) => {
+      violations.forEach((v) => {
         byType[v.violation_type] = (byType[v.violation_type] || 0) + 1;
       });
       metrics.violations_by_type = Object.entries(byType)
@@ -43,10 +55,10 @@ export function useSecurityMetrics() {
 
       // Calculate top violators
       const byEmployee: Record<string, { name: string; count: number }> = {};
-      violations.forEach((v: any) => {
+      violations.forEach((v) => {
         if (!byEmployee[v.employee_id]) {
-          const emp = v.employee as { full_name?: string } | null;
-          byEmployee[v.employee_id] = { 
+          const emp = v.employee;
+          byEmployee[v.employee_id] = {
             name: emp?.full_name || 'Unknown', 
             count: 0 
           };

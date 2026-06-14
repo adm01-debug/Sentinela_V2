@@ -18,7 +18,7 @@ export function useUser() {
     setLoading(false);
   }, []);
 
-  const updateUser = (data: any) => {
+  const updateUser = (data: Partial<User>) => {
     if (user) {
       const updated = { ...user, ...data };
       setUser(updated);

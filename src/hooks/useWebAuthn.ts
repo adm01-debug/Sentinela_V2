@@ -210,7 +210,6 @@ export function useWebAuthn() {
       return { success: true };
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
-      const errWithName = err as Error & { name: string };
       let errorMessage = 'Falha ao registrar passkey.';
       if (err.name === 'NotAllowedError') {
         errorMessage = 'Operação cancelada ou não permitida.';
@@ -316,7 +315,7 @@ export function useWebAuthn() {
 
   // Delete a passkey
   const deletePasskeyMutation = useMutation({
-    mutationFn: async (credentialId: any) => {
+    mutationFn: async (credentialId: string) => {
       const { error } = await supabase
         .from('webauthn_credentials')
         .delete()

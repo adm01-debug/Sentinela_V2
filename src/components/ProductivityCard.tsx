@@ -1,7 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, Clock, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { TrendingUp, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';

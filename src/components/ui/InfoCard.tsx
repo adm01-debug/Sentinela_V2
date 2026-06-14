@@ -181,12 +181,20 @@ export function FeatureCard({
 }: FeatureCardProps) {
   return (
     <div
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
       className={cn(
         'p-4 rounded-lg border bg-card transition-all duration-200',
         onClick && 'cursor-pointer hover:border-primary/50 hover:shadow-md',
         className
       )}
       onClick={onClick}
+      onKeyDown={onClick ? (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      } : undefined}
     >
       <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
         <Icon className="h-5 w-5 text-primary" />

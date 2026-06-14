@@ -2,20 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-interface ComplianceRule {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  status: 'compliant' | 'non-compliant' | 'partial';
-  checkFn: () => Promise<boolean>;
-}
-
-async function checkTableExists(tableName: string): Promise<boolean> {
-  const { count } = await supabase.from(tableName).select('id', { count: 'exact', head: true });
-  return count !== null;
-}
-
 export function useCompliance() {
   const query = useQuery({
     queryKey: ['compliance-status'],
@@ -43,7 +29,6 @@ export function useCompliance() {
       const policyAcks = checks[0].status === 'fulfilled' ? (checks[0].value as { count: number | null }).count : 0;
       const auditLogs = checks[1].status === 'fulfilled' ? (checks[1].value as { count: number | null }).count : 0;
       const geoSettings = checks[2].status === 'fulfilled' ? (checks[2].value as { data: { enabled: boolean } | null }).data : null;
-      const blockedIPs = checks[3].status === 'fulfilled' ? (checks[3].value as { count: number | null }).count : 0;
       const userRoles = checks[4].status === 'fulfilled' ? (checks[4].value as { count: number | null }).count : 0;
       const monSettings = checks[5].status === 'fulfilled' ? (checks[5].value as { data: unknown | null }).data : null;
 
@@ -65,7 +50,8 @@ export function useCompliance() {
     staleTime: 120_000,
   });
 
-  const rules = query.data ?? [];
+  const queryData = query.data;
+  const rules = useMemo(() => queryData ?? [], [queryData]);
   const checking = query.isLoading;
   const isCompliant = useMemo(() => rules.length > 0 && rules.every(r => r.status === 'compliant'), [rules]);
   const compliancePercentage = useMemo(() => {

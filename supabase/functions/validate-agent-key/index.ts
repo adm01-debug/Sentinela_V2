@@ -36,7 +36,7 @@ serve(async (req) => {
       });
     }
 
-    const { agentKey, deviceInfo } = validation.data;
+    const { agentKey } = validation.data;
 
     // Use agent_key column based on agent-collector usage
     const { data: key, error } = await supabase

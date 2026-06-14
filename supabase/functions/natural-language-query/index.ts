@@ -15,15 +15,6 @@ interface SearchResult {
   metadata?: Record<string, any>;
 }
 
-const QUERY_PATTERNS = [
-  { pattern: /employees?\s+(who|that)\s+had?\s+violations?/i, table: "employees", join: "violations" },
-  { pattern: /violations?\s+(from|by|of)\s+(\w+)/i, table: "violations", filter: "employee" },
-  { pattern: /activity\s+(on|at|during)\s+(.+)/i, table: "activities", filter: "time" },
-  { pattern: /show\s+(me\s+)?(all\s+)?(\w+)/i, table: "dynamic" },
-  { pattern: /who\s+is\s+(\w+)/i, table: "employees", filter: "name" },
-  { pattern: /how\s+many\s+(\w+)/i, table: "count" },
-];
-
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });

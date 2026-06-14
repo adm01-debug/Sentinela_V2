@@ -56,7 +56,7 @@ export function useIntegrations() {
     staleTime: 60_000,
   });
 
-  const integrations = query.data ?? [];
+  const integrations = useMemo(() => query.data ?? [], [query.data]);
   const activeCount = useMemo(() => integrations.filter(i => i.enabled).length, [integrations]);
 
   return {

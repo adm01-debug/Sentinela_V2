@@ -98,7 +98,7 @@ async function fetchEmployeePoints(employeeId: string): Promise<EmployeePoints |
 }
 
 async function fetchLeaderboard(
-  period: 'week' | 'month' | 'all' = 'month',
+  _period: 'week' | 'month' | 'all' = 'month',
   limit = 10
 ): Promise<LeaderboardEntry[]> {
   const { data, error } = await supabase
@@ -115,8 +115,14 @@ async function fetchLeaderboard(
   if (error) throw error;
 
   // Add rank and badges count
+  interface LeaderboardRow {
+    employee_id: string;
+    total_points: number;
+    level: number;
+    employee: unknown;
+  }
   const withRanks = await Promise.all(
-    (data || []).map(async (entry: any, index: number) => {
+    ((data || []) as LeaderboardRow[]).map(async (entry, index: number) => {
       const { count } = await supabase
         .from('employee_badges')
         .select('*', { count: 'exact', head: true })
@@ -178,7 +184,7 @@ export function useEmployeePoints(employeeId: string | undefined) {
     queryKey: queryKeys.gamification.points(employeeId!),
     queryFn: () => fetchEmployeePoints(employeeId!),
     enabled: !!employeeId,
-    ...(queryPresets as any).realtime,
+    ...queryPresets.realtime,
   });
 }
 

@@ -116,7 +116,7 @@ export function ApplicationRuleRow({ rule, onStatusChange, onDelete, onEdit }: A
               <AlertDialogHeader>
                 <AlertDialogTitle>Excluir aplicativo</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Tem certeza que deseja excluir "{rule.name}" da lista de regras? Esta ação não pode ser desfeita.
+                  Tem certeza que deseja excluir &quot;{rule.name}&quot; da lista de regras? Esta ação não pode ser desfeita.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

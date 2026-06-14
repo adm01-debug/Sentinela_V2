@@ -22,9 +22,6 @@ const EdgeFunctionDashboard = () => {
     refetchInterval: 10000,
   });
 
-  // Remove specific RPC for now and use logs data
-  const stats = null;
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">

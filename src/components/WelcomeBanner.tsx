@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Shield, Sparkles, AlertTriangle, Users, Activity } from 'lucide-react';
+import { Shield, Sparkles, AlertTriangle, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
 import { useDashboardStats } from '@/hooks/useDashboard';

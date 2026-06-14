@@ -1,5 +1,5 @@
 // Subscription types for Sentinela v17
-import { BillingPlan, PaymentMethod } from './billing';
+import { BillingPlan } from './billing';
 
 export interface Subscription {
   id: string;

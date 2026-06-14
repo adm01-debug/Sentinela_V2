@@ -122,7 +122,7 @@ export function createCustomMask(pattern): (value) => string {
 // Validation helpers
 export function isValidCPF(cpf): boolean {
   const digits = removeMask(cpf);
-  if (digits.length !== 11 || /^(\d)+$/.test(digits)) return false;
+  if (digits.length !== 11 || /^(\d)\1+$/.test(digits)) return false;
   
   let sum = 0;
   for (let i = 0; i < 9; i++) sum += parseInt(digits[i]) * (10 - i);
@@ -139,7 +139,7 @@ export function isValidCPF(cpf): boolean {
 
 export function isValidCNPJ(cnpj): boolean {
   const digits = removeMask(cnpj);
-  if (digits.length !== 14 || /^(\d)+$/.test(digits)) return false;
+  if (digits.length !== 14 || /^(\d)\1+$/.test(digits)) return false;
   
   const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
   const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];

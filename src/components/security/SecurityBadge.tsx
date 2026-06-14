@@ -12,7 +12,7 @@ interface SecurityBadgeProps {
 
 export function SecurityBadge({ showDetails = false }: SecurityBadgeProps) {
   const { isSecure, securityState } = useSecurity();
-  const { isAuthenticated, session } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const getSecurityLevel = (): SecurityLevel => {
     if (!isAuthenticated) return 'critical';

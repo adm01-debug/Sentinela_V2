@@ -28,7 +28,7 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { entityType, entityId, timeRange = "24h", threshold = 0.7 } = await req.json();
+    const { timeRange = "24h", threshold = 0.7 } = await req.json();
 
     // Fetch recent activity data
     const hoursAgo = timeRange === "24h" ? 24 : timeRange === "7d" ? 168 : 720;

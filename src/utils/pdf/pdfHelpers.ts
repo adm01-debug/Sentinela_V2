@@ -1,4 +1,3 @@
-// @ts-nocheck
 import jsPDF from 'jspdf';
 
 export type RGB = [number, number, number];
@@ -19,11 +18,11 @@ export const chartColors: RGB[] = [
   [168, 85, 247], [236, 72, 153], [20, 184, 166],
 ];
 
-export const drawRoundedRect = (doc: jsPDF, x, y, w, h, r, style: 'F' | 'S' | 'FD' = 'F') => {
+export const drawRoundedRect = (doc: jsPDF, x: number, y: number, w: number, h: number, r: number, style: 'F' | 'S' | 'FD' = 'F') => {
   doc.roundedRect(x, y, w, h, r, r, style);
 };
 
-export const drawMetricCard = (doc: jsPDF, label: string, value: string, x, y, width, height, color: RGB) => {
+export const drawMetricCard = (doc: jsPDF, label: string, value: string, x: number, y: number, width: number, height: number, color: RGB) => {
   doc.setFillColor(colors.light[0], colors.light[1], colors.light[2]);
   drawRoundedRect(doc, x, y, width, height, 3, 'F');
   doc.setFillColor(color[0], color[1], color[2]);
@@ -36,7 +35,7 @@ export const drawMetricCard = (doc: jsPDF, label: string, value: string, x, y, w
   doc.text(label, x + 10, y + height / 2 + 8);
 };
 
-export const drawHorizontalBarChart = (doc: jsPDF, data: { label: string; value: number; color: RGB }[], x, y, width, barHeight = 12, gap = 8) => {
+export const drawHorizontalBarChart = (doc: jsPDF, data: { label: string; value: number; color: RGB }[], x: number, y: number, width: number, barHeight = 12, gap = 8) => {
   const maxValue = Math.max(...data.map(d => d.value));
   data.forEach((item, index) => {
     const yPos = y + index * (barHeight + gap);
@@ -55,7 +54,7 @@ export const drawHorizontalBarChart = (doc: jsPDF, data: { label: string; value:
   return y + data.length * (barHeight + gap);
 };
 
-export const drawPieChart = (doc: jsPDF, data: { label: string; value: number; color: RGB }[], centerX, centerY, radius) => {
+export const drawPieChart = (doc: jsPDF, data: { label: string; value: number; color: RGB }[], centerX: number, centerY: number, radius: number) => {
   const total = data.reduce((sum, d) => sum + d.value, 0);
   let startAngle = -Math.PI / 2;
   data.forEach((item) => {
@@ -77,7 +76,7 @@ export const drawPieChart = (doc: jsPDF, data: { label: string; value: number; c
   doc.circle(centerX, centerY, radius * 0.5, 'F');
 };
 
-export const drawLegend = (doc: jsPDF, data: { label: string; value: number; color: RGB }[], x, y, columns = 1) => {
+export const drawLegend = (doc: jsPDF, data: { label: string; value: number; color: RGB }[], x: number, y: number, columns = 1) => {
   const itemsPerColumn = Math.ceil(data.length / columns);
   const columnWidth = 80;
   data.forEach((item, index) => {
@@ -93,7 +92,7 @@ export const drawLegend = (doc: jsPDF, data: { label: string; value: number; col
   return y + Math.ceil(data.length / columns) * 12;
 };
 
-export const drawAreaChart = (doc: jsPDF, data: { label: string; values: { name: string; value: number; color: RGB }[] }[], x, y, width, height) => {
+export const drawAreaChart = (doc: jsPDF, data: { label: string; values: { name: string; value: number; color: RGB }[] }[], x: number, y: number, width: number, height: number) => {
   const padding = 25;
   const chartWidth = width - padding * 2;
   const chartHeight = height - padding - 15;

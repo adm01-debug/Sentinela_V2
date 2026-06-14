@@ -2,8 +2,7 @@
  * SENTINELA - Advanced Edge Cases & Gap Analysis (100+ scenarios)
  * Multi-tenancy, LGPD, concurrency, i18n, date handling, error resilience
  */
-import { describe, it, expect, vi } from 'vitest';
-import { supabase } from '@/integrations/supabase/client';
+import { describe, it, expect } from 'vitest';
 
 // ============================================================
 // MULTI-TENANCY ISOLATION
@@ -210,15 +209,15 @@ describe('Error Resilience', () => {
     const hasCircular = (obj) => {
       try { JSON.stringify(obj); return false; } catch { return true; }
     };
-    const a: any = {};
+    const a: Record<string, unknown> = {};
     a.self = a;
     expect(hasCircular(a)).toBe(true);
     expect(hasCircular({ simple: 'object' })).toBe(false);
   });
 
   it('should handle null/undefined propagation', () => {
-    const getNestedValue = (obj: any, path: string) =>
-      path.split('.').reduce((o, k) => o?.[k], obj);
+    const getNestedValue = (obj: unknown, path: string) =>
+      path.split('.').reduce<unknown>((o, k) => (o as Record<string, unknown> | null | undefined)?.[k], obj);
     expect(getNestedValue({ a: { b: { c: 42 } } }, 'a.b.c')).toBe(42);
     expect(getNestedValue(null, 'a.b')).toBeUndefined();
     expect(getNestedValue({ a: null }, 'a.b.c')).toBeUndefined();
@@ -354,7 +353,7 @@ describe('Gamification Scoring', () => {
 // RATE LIMITING
 // ============================================================
 describe('Rate Limiting Logic', () => {
-  const isRateLimited = (requests: number[], windowMs: any, maxRequests: any) => {
+  const isRateLimited = (requests: number[], windowMs: number, maxRequests: number) => {
     const now = Date.now();
     const recent = requests.filter(t => now - t < windowMs);
     return recent.length >= maxRequests;

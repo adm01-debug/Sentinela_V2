@@ -38,7 +38,11 @@ export function useContextAwareDefaults<T extends Record<string, unknown>>(optio
   }, []);
 
   const clearOverride = useCallback(<K extends keyof T>(key: K) => {
-    setUserOverrides(prev => { const { [key]: _, ...rest } = prev; return rest as Partial<T>; });
+    setUserOverrides(prev => {
+      const rest = { ...prev };
+      delete rest[key];
+      return rest as Partial<T>;
+    });
   }, []);
 
   const clearAllOverrides = useCallback(() => setUserOverrides({}), []);

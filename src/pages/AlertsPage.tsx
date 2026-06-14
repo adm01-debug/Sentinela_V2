@@ -20,7 +20,7 @@ export const AlertsPage = () => {
   const acknowledgeAll = useAcknowledgeAllAlerts();
   const colors = useChartColors();
 
-  const alertsList = alerts?.data || [];
+  const alertsList = useMemo(() => alerts?.data || [], [alerts]);
   const unacknowledgedCount = alertsList.filter((a: { acknowledged?: boolean }) => !a.acknowledged).length || 0;
 
   // Severity distribution

@@ -7,7 +7,7 @@ interface MetricConfig { name: string; table: string; column: string; aggregatio
 
 export function useMetrics(configs: MetricConfig[], dateRange?: { from: Date; to: Date }) {
   const [metrics, setMetrics] = useState<Record<string, number>>({});
-  const [trends, setTrends] = useState<Record<string, MetricData[]>>({});
+  const [trends] = useState<Record<string, MetricData[]>>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchMetrics = useCallback(async () => {

@@ -1,7 +1,7 @@
 // Project Store for Sentinela v17
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { Project, ProjectFilters, ProjectStats, ProjectCreateInput, ProjectUpdateInput } from '@/types';
+import { Project, ProjectFilters, ProjectStats } from '@/types';
 
 interface ProjectState {
   projects: Project[];
@@ -37,7 +37,7 @@ const initialState = {
 export const useProjectStore = create<ProjectState>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set, _get) => ({
         ...initialState,
 
         setProjects: (projects) => set({ projects }),

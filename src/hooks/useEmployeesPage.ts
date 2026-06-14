@@ -1,5 +1,4 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { 
   useEmployees, 
@@ -72,20 +71,31 @@ const initialDeviceData: DeviceFormData = {
 // ============================================================
 
 export function useEmployeesPage() {
-  const { t } = useTranslation();
   const employeesQuery = useEmployees();
-  const employees = (employeesQuery.data as EmployeeWithDetails[]) || [];
+  const employees = useMemo<EmployeeWithDetails[]>(
+    () => (employeesQuery.data as EmployeeWithDetails[]) || [],
+    [employeesQuery.data]
+  );
   const loading = employeesQuery.isLoading;
-  
+
   const createMutation = useCreateEmployee();
   const updateMutation = useUpdateEmployee();
   const deleteMutation = useDeleteEmployee();
   const assignDeviceMutation = useAssignDevice();
   const unassignDeviceMutation = useUnassignDevice();
-  
-  const createEmployee = async (data: EmployeeCreateInput) => createMutation.mutateAsync(data);
-  const updateEmployee = async (id: string, data: Partial<EmployeeUpdateInput>) => updateMutation.mutateAsync({ id, data: data as EmployeeUpdateInput });
-  const deleteEmployee = async (id: string) => deleteMutation.mutateAsync(id);
+
+  const createEmployee = useCallback(
+    (data: EmployeeCreateInput) => createMutation.mutateAsync(data),
+    [createMutation]
+  );
+  const updateEmployee = useCallback(
+    (id: string, data: Partial<EmployeeUpdateInput>) => updateMutation.mutateAsync({ id, data: data as EmployeeUpdateInput }),
+    [updateMutation]
+  );
+  const deleteEmployee = useCallback(
+    (id: string) => deleteMutation.mutateAsync(id),
+    [deleteMutation]
+  );
   
   const teamsQuery = useTeams();
   const teams = teamsQuery.data || [];
@@ -188,8 +198,8 @@ export function useEmployeesPage() {
       resetForm();
       setIsCreateOpen(false);
       toast.success('Funcionário criado com sucesso');
-    } catch (err: any) {
-      toast.error(err.message || 'Erro ao criar funcionário');
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao criar funcionário');
     }
   }, [formData, createEmployee, resetForm]);
 
@@ -217,8 +227,8 @@ export function useEmployeesPage() {
       setSelectedEmployee(null);
       setIsEditOpen(false);
       toast.success('Funcionário atualizado com sucesso');
-    } catch (err: any) {
-      toast.error(err.message || 'Erro ao atualizar funcionário');
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao atualizar funcionário');
     }
   }, [selectedEmployee, formData, updateEmployee, resetForm]);
 
@@ -230,8 +240,8 @@ export function useEmployeesPage() {
       setSelectedEmployee(null);
       setIsDeleteOpen(false);
       toast.success('Funcionário removido com sucesso');
-    } catch (err: any) {
-      toast.error(err.message || 'Erro ao remover funcionário');
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao remover funcionário');
     }
   }, [selectedEmployee, deleteEmployee]);
 

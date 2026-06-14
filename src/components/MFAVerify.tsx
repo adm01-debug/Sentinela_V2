@@ -113,7 +113,6 @@ export function MFAVerify({ onVerified, onBack }: MFAVerifyProps) {
             onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
             onKeyDown={handleKeyDown}
             className="text-center text-2xl tracking-widest font-mono"
-            autoFocus
           />
           <p className="text-xs text-muted-foreground text-center">
             Abra seu app autenticador (Google Authenticator, Microsoft Authenticator, etc.) e digite o código exibido

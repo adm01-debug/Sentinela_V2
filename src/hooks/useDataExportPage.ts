@@ -1,5 +1,4 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 
 type ExportType = 'employees' | 'violations' | 'activities' | 'reports';
@@ -28,8 +27,7 @@ interface ExportConfig {
 
 export function useDataExportPage() {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
-  
+
   const [selectedType, setSelectedType] = useState<ExportType>('employees');
   const [selectedFormat, setSelectedFormat] = useState<ExportFormat>('csv');
   const [dateRange, setDateRange] = useState<{ from: Date | null; to: Date | null }>({

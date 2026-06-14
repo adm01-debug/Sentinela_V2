@@ -22,9 +22,9 @@ export const DataCalendar: React.FC<DataCalendarProps> = ({ events = [], onDateC
         {Array(days).fill(null).map((_, i) => {
           const d = `${year}-${String(month+1).padStart(2,'0')}-${String(i+1).padStart(2,'0')}`;
           const dayEvents = events.filter(e => e.date === d);
-          return <div key={i} onClick={() => onDateClick?.(new Date(d))} style={{ padding: 4, minHeight: 60, border: '1px solid #f0f0f0', cursor: 'pointer' }}>
+          return <div key={i} role="button" tabIndex={0} onClick={() => onDateClick?.(new Date(d))} onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); onDateClick?.(new Date(d)); } }} style={{ padding: 4, minHeight: 60, border: '1px solid #f0f0f0', cursor: 'pointer' }}>
             <div style={{ fontSize: 12 }}>{i+1}</div>
-            {dayEvents.slice(0,2).map(e => <div key={e.id} onClick={ev => { ev.stopPropagation(); onEventClick?.(e); }} style={{ fontSize: 10, padding: 2, backgroundColor: e.color || '#1890ff', color: '#fff', borderRadius: 2, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.title}</div>)}
+            {dayEvents.slice(0,2).map(e => <div key={e.id} role="button" tabIndex={0} onClick={ev => { ev.stopPropagation(); onEventClick?.(e); }} onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); ev.stopPropagation(); onEventClick?.(e); } }} style={{ fontSize: 10, padding: 2, backgroundColor: e.color || '#1890ff', color: '#fff', borderRadius: 2, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.title}</div>)}
           </div>;
         })}
       </div>

@@ -46,14 +46,14 @@ export function useMapboxToken() {
       if (error) throw error;
       return data.token as string;
     },
-    ...(queryPresets as any).immutable,
+    ...queryPresets.immutable,
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 
 export function useMapbox(options: UseMapboxOptions) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   const fitBounds = useCallback(() => {
     // Placeholder for fitBounds logic

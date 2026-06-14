@@ -35,7 +35,7 @@ export function useMediaRecorder(options: UseMediaRecorderOptions = { audio: tru
       const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
       chunksRef.current = [];
 
-      recorder.ondataavailable = (e: any) => {
+      recorder.ondataavailable = (e: BlobEvent) => {
         if (e.data.size > 0) chunksRef.current.push(e.data);
       };
 

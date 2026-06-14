@@ -22,6 +22,21 @@ export interface Geofence {
   employees_count?: number;
 }
 
+interface GeofenceRow {
+  id: string;
+  name: string;
+  description?: string;
+  geometry?: { type: string; coordinates: number[][][] } | null;
+  latitude?: number;
+  longitude?: number;
+  radius_meters?: number;
+  color?: string;
+  is_active: boolean;
+  restricted?: boolean;
+  required?: boolean;
+  created_at: string;
+}
+
 export interface GeofenceFormData {
   name: string;
   description: string;
@@ -83,7 +98,7 @@ export function useGeofencingPage() {
       if (error) throw error;
       
       // Count employees per geofence from employee_geofences table
-      const geofenceIds = data.map((g: any) => g.id);
+      const geofenceIds = (data as GeofenceRow[]).map((g) => g.id);
       const { data: employeeCounts } = await supabase
         .from('employee_geofences')
         .select('geofence_id')
@@ -94,7 +109,7 @@ export function useGeofencingPage() {
         return acc;
       }, {} as Record<string, number>);
       
-      return data.map((g: any) => ({
+      return (data as GeofenceRow[]).map((g) => ({
         id: g.id,
         name: g.name,
         description: g.description,
@@ -132,7 +147,7 @@ export function useGeofencingPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: GeofenceFormData) => {
       const geofenceData = {
         name: data.name,
         description: data.description,
@@ -188,7 +203,7 @@ export function useGeofencingPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('geofences').delete().eq('id', id);
       if (error) throw error;
     },

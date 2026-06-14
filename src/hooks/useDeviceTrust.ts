@@ -10,14 +10,6 @@ interface DeviceInfo {
   doNotTrack: boolean;
 }
 
-interface TrustFactors {
-  knownDevice: boolean;
-  consistentLocation: boolean;
-  normalAccessTime: boolean;
-  trustedBrowser: boolean;
-  noVPN: boolean;
-}
-
 function readKnownDevices(): string[] {
   const parsed: unknown = JSON.parse(localStorage.getItem("known_devices") || "[]");
   return Array.isArray(parsed) ? parsed.filter((value): value is string => typeof value === "string") : [];

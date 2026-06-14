@@ -40,6 +40,17 @@ export const REPORT_TYPES = [
   { value: 'custom', label: 'Personalizado' },
 ];
 
+interface ScheduledReportSettingRow {
+  id: string;
+  report_type: string | null;
+  send_time: string;
+  send_day_of_week?: number | null;
+  recipient_emails?: string[] | null;
+  enabled: boolean;
+  last_sent_at?: string | null;
+  created_at: string;
+}
+
 const initialFormData: ReportFormData = {
   name: '',
   description: '',
@@ -73,7 +84,7 @@ export function useScheduledReportsPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((r: any) => ({
+      return ((data || []) as ScheduledReportSettingRow[]).map((r) => ({
         id: r.id,
         name: `Relatório ${r.report_type}`,
         description: '',
@@ -92,7 +103,7 @@ export function useScheduledReportsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: ReportFormData) => {
       const { error } = await supabase.from('scheduled_reports').insert(data);
       if (error) throw error;
     },
@@ -122,7 +133,7 @@ export function useScheduledReportsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('scheduled_reports').delete().eq('id', id);
       if (error) throw error;
     },
@@ -137,7 +148,7 @@ export function useScheduledReportsPage() {
   });
 
   const runNowMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.functions.invoke('generate-report', { body: { report_id: id } });
       if (error) throw error;
     },

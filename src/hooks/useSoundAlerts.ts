@@ -25,13 +25,17 @@ export function useSoundAlerts(options: UseSoundAlertsOptions = {}) {
   const allSounds = { ...DEFAULT_SOUNDS, ...sounds };
 
   useEffect(() => {
+    const refs = audioRefs.current;
     Object.entries(allSounds).forEach(([type, src]) => {
       const audio = new Audio(src);
       audio.preload = 'auto';
       audio.volume = volume;
-      audioRefs.current.set(type as SoundType, audio);
+      refs.set(type as SoundType, audio);
     });
-    return () => { audioRefs.current.forEach(audio => { audio.pause(); audio.src = ''; }); audioRefs.current.clear(); };
+    return () => { refs.forEach(audio => { audio.pause(); audio.src = ''; }); refs.clear(); };
+    // Initialize audio elements once on mount; allSounds/volume changes are handled
+    // by the volume effect below, re-running here would recreate all Audio objects.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

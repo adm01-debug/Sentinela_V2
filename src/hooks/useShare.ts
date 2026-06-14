@@ -6,7 +6,7 @@ export function useShare() {
   const [shared, setShared] = useState(false);
   const canShare = typeof navigator !== "undefined" && !!navigator.share;
 
-  const share = useCallback(async (data: any) => {
+  const share = useCallback(async (data: ShareData) => {
     if (!canShare) return false;
     try {
       await navigator.share(data);

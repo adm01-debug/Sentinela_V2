@@ -1,11 +1,11 @@
 /**
  * SENTINELA - Edge Functions Test Suite
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { supabase } from '@/integrations/supabase/client';
 
 describe('Edge Functions', () => {
-  let mockInvoke: any;
+  let mockInvoke: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockInvoke = vi.mocked(supabase.functions.invoke); });
 
   describe('analyze-activity', () => {

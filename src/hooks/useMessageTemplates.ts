@@ -170,7 +170,7 @@ export function useDeleteMessageTemplate() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('message_templates')
         .delete()
@@ -211,7 +211,7 @@ export function useToggleMessageTemplate() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data: { is_active: boolean }) => {
       invalidateRelated.messageTemplates(queryClient);
       toast({
         title: data.is_active ? 'Template ativado' : 'Template desativado',
@@ -232,7 +232,7 @@ export function useDuplicateMessageTemplate() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       // First get the template
       const { data: template, error: fetchError } = await supabase
         .from('message_templates')

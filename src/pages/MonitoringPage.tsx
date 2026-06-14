@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Search, Monitor, Wifi, WifiOff, Clock, Users, Grid, List, RefreshCw, Keyboard, MousePointer2 } from 'lucide-react';
+import { Search, Monitor, Wifi, WifiOff, Clock, Users, Grid, List, Keyboard, MousePointer2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
@@ -18,7 +18,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
-import { useMonitoringPage, type MonitoringEmployee } from '@/hooks/useMonitoringPage';
+import { useMonitoringPage } from '@/hooks/useMonitoringPage';
 import { useChartColors } from '@/hooks/useChartColors';
 
 const statusColors: Record<string, string> = {
@@ -236,7 +236,7 @@ export default function MonitoringPage() {
         <Card>
           <CardContent className="p-0 divide-y">
             {employees.map((emp) => (
-              <div key={emp.id} className="flex items-center justify-between p-4 hover:bg-accent/50 cursor-pointer" onClick={() => handleSelectEmployee(emp)}>
+              <div key={emp.id} className="flex items-center justify-between p-4 hover:bg-accent/50 cursor-pointer" role="button" tabIndex={0} onClick={() => handleSelectEmployee(emp)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { handleSelectEmployee(emp); } }}>
                 <div className="flex items-center gap-3 flex-1">
                   <div className="relative">
                     <Avatar><AvatarFallback>{emp.name.charAt(0)}</AvatarFallback></Avatar>

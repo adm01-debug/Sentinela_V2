@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Smartphone, Key, Shield, CheckCircle, Copy, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -23,6 +23,13 @@ export function TwoFactorWizard({ onComplete, onCancel, qrCodeUrl, secretKey, cl
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const codeInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (step === 'verify') {
+      codeInputRef.current?.focus();
+    }
+  }, [step]);
 
   const handleCopySecret = useCallback(async () => {
     if (secretKey) {
@@ -111,8 +118,8 @@ export function TwoFactorWizard({ onComplete, onCancel, qrCodeUrl, secretKey, cl
         {step === 'verify' && (
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Verification Code</label>
-              <Input type="text" inputMode="numeric" pattern="[0-9]*" maxLength={6} value={code} onChange={e => setCode(e.target.value.replace(/\D/g, ''))} placeholder="000000" className="text-center text-2xl tracking-widest" autoFocus />
+              <label htmlFor="2fa-verification-code" className="text-sm font-medium">Verification Code</label>
+              <Input ref={codeInputRef} id="2fa-verification-code" type="text" inputMode="numeric" pattern="[0-9]*" maxLength={6} value={code} onChange={e => setCode(e.target.value.replace(/\D/g, ''))} placeholder="000000" className="text-center text-2xl tracking-widest" />
               {error && <p className="text-sm text-red-500">{error}</p>}
             </div>
           </div>

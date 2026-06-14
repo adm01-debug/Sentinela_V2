@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys } from '@/lib/queryClient';
 
-interface DashboardStats { employees: number; violations: number; activeDevices: number; productivity: number; }
 interface RecentViolation { id: string; employee_name: string; type: string; severity: string; created_at: string; }
 interface ActivityItem { id: string; type: string; description: string; created_at: string; }
+
+interface ViolationRow { id: string; violation_type: string; severity: string; created_at: string; employee_name: string | null; }
+interface ProductivityLogRow { id: string; employee_name: string; recorded_date: string; productive_time_seconds: number; }
 
 export function useDashboardPage() {
   const statsQuery = useQuery({
@@ -35,7 +37,7 @@ export function useDashboardPage() {
         .order('created_at', { ascending: false })
         .limit(5);
       if (error) throw error;
-      return (data || []).map((v: any) => ({ 
+      return (data || []).map((v: ViolationRow) => ({
         id: v.id,
         employee_name: v.employee_name || 'N/A',
         type: v.violation_type,
@@ -55,7 +57,7 @@ export function useDashboardPage() {
         .order('recorded_date', { ascending: false })
         .limit(10);
       if (error) throw error;
-      return (data || []).map((item: any) => ({
+      return (data || []).map((item: ProductivityLogRow) => ({
         id: item.id,
         type: 'productivity',
         description: `${item.employee_name} - ${Math.round(item.productive_time_seconds / 60)}min produtivo`,
@@ -67,7 +69,7 @@ export function useDashboardPage() {
   const chartData = useMemo(() => {
     // Generate sample chart data for the week
     const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-    return days.map((day, i) => ({
+    return days.map((day) => ({
       day,
       violations: Math.floor(Math.random() * 10) + 1,
       productivity: Math.floor(Math.random() * 20) + 80,

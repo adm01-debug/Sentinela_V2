@@ -45,7 +45,7 @@ describe('GeofencingPage', () => {
       isCreating: false,
       isUpdating: false,
       isDeleting: false,
-    } as any);
+    } as unknown as ReturnType<typeof useGeofencingPageHook.useGeofencingPage>);
   });
 
   const renderGeofencing = () => {

@@ -1,15 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Users, 
-  Activity, 
-  Shield, 
-  TrendingUp, 
-  TrendingDown,
+  Users,
+  Activity,
+  Shield,
   ArrowUpRight,
   ArrowDownRight,
-  Zap,
-  Clock
+  Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';

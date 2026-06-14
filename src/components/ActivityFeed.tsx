@@ -127,7 +127,15 @@ function ActivityItemCard({
         !activity.isRead && 'bg-primary/5',
         activity.severity && severityStyles[activity.severity]
       )}
+      role="button"
+      tabIndex={0}
       onClick={() => onClick?.(activity)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.(activity);
+        }
+      }}
     >
       {/* Icon */}
       <div className={cn('p-2 rounded-full shrink-0', config.bgColor)}>
@@ -199,25 +207,6 @@ function ActivityItemCard({
       {!activity.isRead && (
         <div className="h-2 w-2 rounded-full bg-primary shrink-0 mt-2" />
       )}
-    </div>
-  );
-}
-
-// Date group header
-function DateGroupHeader({ date }: { date: Date }) {
-  let label = format(date, "d 'de' MMMM", { locale: ptBR });
-  
-  if (isToday(date)) {
-    label = 'Hoje';
-  } else if (isYesterday(date)) {
-    label = 'Ontem';
-  }
-
-  return (
-    <div className="sticky top-0 z-10 px-3 py-2 bg-background/95 backdrop-blur-sm border-b">
-      <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-        {label}
-      </span>
     </div>
   );
 }

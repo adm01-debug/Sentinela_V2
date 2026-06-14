@@ -1,6 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export interface SensitiveKeyword {
@@ -67,7 +66,7 @@ export function useSensitiveKeywordsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: KeywordFormData) => {
       const newKeyword: SensitiveKeyword = {
         id: Date.now().toString(),
         ...data,
@@ -95,7 +94,7 @@ export function useSensitiveKeywordsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       setLocalKeywords(prev => prev.filter(k => k.id !== id));
     },
     onSuccess: () => {

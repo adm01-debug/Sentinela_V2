@@ -84,13 +84,13 @@ export function useMobileDeviceLocations() {
 
       if (error) throw error;
       
-      return data?.map((d: any) => ({
+      return data?.map((d: Record<string, unknown>) => ({
         device_id: d.id,
         ...(d.last_location as object),
         employee: d.employee,
       })) as DeviceLocation[];
     },
-    ...(queryPresets as any).realtime,
+    ...queryPresets.realtime,
   });
 }
 
@@ -159,7 +159,7 @@ export function useDeleteMobileDevice() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('mobile_devices')
         .delete()
@@ -221,7 +221,7 @@ export function useRequestDeviceLocation() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (deviceId: any) => {
+    mutationFn: async (deviceId: string) => {
       const { data, error } = await supabase.functions.invoke('send-push-notification', {
         body: { 
           device_id: deviceId, 

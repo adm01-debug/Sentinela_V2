@@ -10,13 +10,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useScreenshots } from '@/hooks/useScreenshots';
 import { useEmployees } from '@/hooks/useEmployees';
 
-interface ScreenshotItem {
-  url: string;
-  employeeId: string;
-  capturedAt: string;
-  metadata?: { activeApplication?: string };
-}
-
 interface EmployeeItem {
   id: string;
   name: string;

@@ -1,25 +1,25 @@
 /**
  * SENTINELA - Dashboard, Alerts & Data Operations Test Suite
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { supabase } from '@/integrations/supabase/client';
 
 describe('Dashboard Stats', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch employee counts', async () => {
     mockFrom.mockReturnValue({
       select: vi.fn().mockResolvedValue({ data: [{ id: '1', status: 'active' }, { id: '2', status: 'active' }, { id: '3', status: 'inactive' }], count: 3, error: null }),
     });
-    const { data, count } = await supabase.from('employees').select('id, status', { count: 'exact' } as any);
+    const { data, count } = await supabase.from('employees').select('id, status', { count: 'exact' } as never);
     expect(count).toBe(3);
     expect(data!.filter((e) => e.status === 'active')).toHaveLength(2);
   });
 });
 
 describe('Alerts System', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch alerts ordered by date', async () => {
@@ -64,7 +64,7 @@ describe('Alerts System', () => {
 });
 
 describe('Geofence Operations', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch geofences', async () => {
@@ -97,7 +97,7 @@ describe('Geofence Operations', () => {
 });
 
 describe('Device Management', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should list devices', async () => {
@@ -122,13 +122,13 @@ describe('Device Management', () => {
         }),
       }),
     });
-    const { data, error } = await supabase.from('devices').insert({ name: 'NEW-PC', device_type: 'desktop' }).select().single();
+    const { error } = await supabase.from('devices').insert({ name: 'NEW-PC', device_type: 'desktop' }).select().single();
     expect(error).toBeNull();
   });
 });
 
 describe('Keystroke Logs', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch keystroke logs', async () => {
@@ -146,7 +146,7 @@ describe('Keystroke Logs', () => {
 });
 
 describe('Application Rules', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch application rules', async () => {
@@ -166,7 +166,7 @@ describe('Application Rules', () => {
 });
 
 describe('Internet Access Settings', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch access settings', async () => {
@@ -183,7 +183,7 @@ describe('Internet Access Settings', () => {
 });
 
 describe('Work Schedules', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch work schedules', async () => {
@@ -198,7 +198,7 @@ describe('Work Schedules', () => {
 });
 
 describe('Gamification', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch badges', async () => {
@@ -229,7 +229,7 @@ describe('Gamification', () => {
 });
 
 describe('Teams & Departments', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch teams', async () => {
@@ -244,7 +244,7 @@ describe('Teams & Departments', () => {
 });
 
 describe('Multi-Tenant Company', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
   beforeEach(() => { vi.clearAllMocks(); mockFrom = vi.mocked(supabase.from); });
 
   it('should fetch company by slug', async () => {

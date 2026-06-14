@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 interface GeoState { latitude: number | null; longitude: number | null; accuracy: number | null; error: string | null; loading: boolean; }
 export function useGeolocation(options?: PositionOptions) {
   const [state, setState] = useState<GeoState>({ latitude: null, longitude: null, accuracy: null, error: null, loading: false });

@@ -53,22 +53,6 @@ interface UseActivityHistoryOptions {
 }
 
 // ============================================================
-// MOCK DATA
-// ============================================================
-
-const mockActivities: ActivityRecord[] = [
-  {
-    id: 'mock-1',
-    entity_type: 'default',
-    entity_id: 'mock-entity',
-    activity_type: 'create',
-    description: 'Registro criado',
-    user_id: 'mock-user',
-    created_at: new Date().toISOString(),
-  },
-];
-
-// ============================================================
 // MAIN HOOK
 // ============================================================
 

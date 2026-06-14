@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { X, AlertCircle, CheckCircle, Info, AlertTriangle, Wifi, WifiOff } from 'lucide-react';
+import { X, AlertCircle, CheckCircle, Info, AlertTriangle, WifiOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 

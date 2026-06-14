@@ -27,6 +27,28 @@ export interface LocationHistory {
   recorded_at: string;
 }
 
+interface MobileDeviceRow {
+  id: string;
+  device_id: string;
+  employee_name?: string | null;
+  device_model?: string | null;
+  os_type?: string | null;
+  os_version?: string | null;
+  app_version?: string | null;
+  last_location_lat?: number | null;
+  last_location_lng?: number | null;
+  last_seen_at?: string | null;
+  is_active?: boolean | null;
+}
+
+interface LocationHistoryRow {
+  id: string;
+  device_id?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  recorded_at: string;
+}
+
 export function useMobileMonitoringPage() {
   const [selectedDevice, setSelectedDevice] = useState<MobileDevice | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
@@ -45,7 +67,7 @@ export function useMobileMonitoringPage() {
       
       if (error) throw error;
 
-      return data.map((d: any) => ({
+      return (data as MobileDeviceRow[]).map((d) => ({
         id: d.id,
         device_id: d.device_id,
         employee_id: d.employee_name,
@@ -86,7 +108,7 @@ export function useMobileMonitoringPage() {
       const { data, error } = await query;
       if (error) throw error;
 
-      return (data || []).map((d: any) => ({
+      return ((data || []) as LocationHistoryRow[]).map((d) => ({
         id: d.id,
         device_id: d.device_id || '',
         latitude: d.latitude || 0,

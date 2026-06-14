@@ -28,7 +28,20 @@ export function Chip({ className, selected, removable, onRemove, variant = 'defa
       {selected && <Check className="h-3.5 w-3.5" />}
       {children}
       {removable && (
-        <span onClick={(e) => { e.stopPropagation(); onRemove?.(); }} className="ml-1 rounded-full p-0.5 hover:bg-black/10">
+        <span
+          role="button"
+          tabIndex={0}
+          aria-label="Remove"
+          onClick={(e) => { e.stopPropagation(); onRemove?.(); }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              e.stopPropagation();
+              onRemove?.();
+            }
+          }}
+          className="ml-1 rounded-full p-0.5 hover:bg-black/10"
+        >
           <X className="h-3 w-3" />
         </span>
       )}

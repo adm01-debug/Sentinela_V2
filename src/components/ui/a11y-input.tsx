@@ -10,7 +10,8 @@ interface A11yInputProps extends InputProps {
 
 export const A11yInput = React.forwardRef<HTMLInputElement, A11yInputProps>(
   ({ label, error, hint, id, ...props }, ref) => {
-    const inputId = id || `input-${React.useId()}`;
+    const generatedId = React.useId();
+    const inputId = id || `input-${generatedId}`;
     const errorId = `${inputId}-error`;
     const hintId = `${inputId}-hint`;
 

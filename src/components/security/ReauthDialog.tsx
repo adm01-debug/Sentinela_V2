@@ -119,7 +119,6 @@ export function ReauthDialog({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Digite sua senha"
-                  autoFocus
                   disabled={isVerifying}
                 />
               </div>
@@ -161,7 +160,6 @@ export function ReauthDialog({
                   onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, ''))}
                   placeholder="000000"
                   className="text-center text-xl tracking-widest font-mono"
-                  autoFocus
                   disabled={isVerifying}
                 />
                 <p className="text-xs text-muted-foreground">

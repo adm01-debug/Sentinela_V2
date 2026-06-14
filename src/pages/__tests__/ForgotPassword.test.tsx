@@ -55,7 +55,7 @@ describe('ForgotPasswordPage', () => {
   });
 
   it('calls supabase resetPasswordForEmail on valid submit', async () => {
-    vi.mocked(supabase.auth.resetPasswordForEmail).mockResolvedValue({ data: {}, error: null } as any);
+    vi.mocked(supabase.auth.resetPasswordForEmail).mockResolvedValue({ data: {}, error: null } as unknown as Awaited<ReturnType<typeof supabase.auth.resetPasswordForEmail>>);
 
     render(
       <BrowserRouter>

@@ -1,6 +1,6 @@
 // Table types for Sentinela v17
 import { Sort, SortDirection } from './sort';
-import { Filter, FilterGroup } from './filter';
+import { FilterGroup } from './filter';
 import { Pagination } from './pagination';
 
 export interface TableColumn<T = unknown> {
@@ -93,7 +93,7 @@ export interface TableOptions<T = unknown> {
   onSelectionChange?: (selection: string[]) => void;
 }
 
-export interface TableActions<T = unknown> {
+export interface TableActions {
   setSorting: (sorting: Sort[]) => void;
   toggleSort: (columnId: string, direction?: SortDirection) => void;
   setFilters: (filters: FilterGroup) => void;
@@ -113,7 +113,7 @@ export interface TableActions<T = unknown> {
 
 export interface TableRef<T = unknown> {
   instance: TableInstance<T>;
-  actions: TableActions<T>;
+  actions: TableActions;
   getSelectedRows: () => T[];
   exportData: (format: 'csv' | 'xlsx' | 'json') => void;
   scrollToRow: (rowId) => void;

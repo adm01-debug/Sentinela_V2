@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 
@@ -56,7 +56,7 @@ export function useSmartSuggestions(options: UseSmartSuggestionsOptions = {}) {
     }
   }, [context, maxSuggestions, minConfidence]);
 
-  const dismissSuggestion = useCallback((id: any) => {
+  const dismissSuggestion = useCallback((id: string) => {
     setSuggestions(prev => prev.filter(s => s.id !== id));
   }, []);
 

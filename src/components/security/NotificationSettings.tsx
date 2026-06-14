@@ -13,14 +13,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 
 export const NotificationSettings = React.memo(function NotificationSettings() {
-  const { 
-    isSupported, 
-    permission, 
-    isSubscribed, 
-    requestPermission 
+  const {
+    isSupported,
+    permission,
+    requestPermission
   } = useSecurityNotifications();
 
   const getStatusIcon = () => {
@@ -28,13 +26,6 @@ export const NotificationSettings = React.memo(function NotificationSettings() {
     if (permission === 'granted') return <BellRing className="h-8 w-8 text-green-500" />;
     if (permission === 'denied') return <XCircle className="h-8 w-8 text-red-500" />;
     return <Bell className="h-8 w-8 text-yellow-500" />;
-  };
-
-  const getStatusText = () => {
-    if (!isSupported) return 'Não suportado';
-    if (permission === 'granted') return 'Ativado';
-    if (permission === 'denied') return 'Bloqueado';
-    return 'Não configurado';
   };
 
   const getStatusBadge = () => {
@@ -92,8 +83,8 @@ export const NotificationSettings = React.memo(function NotificationSettings() {
                   </p>
                   <ol className="text-sm text-yellow-600 dark:text-yellow-500 list-decimal list-inside space-y-1">
                     <li>Clique no ícone de cadeado na barra de endereço</li>
-                    <li>Encontre a opção "Notificações"</li>
-                    <li>Altere de "Bloquear" para "Permitir"</li>
+                    <li>Encontre a opção &quot;Notificações&quot;</li>
+                    <li>Altere de &quot;Bloquear&quot; para &quot;Permitir&quot;</li>
                     <li>Recarregue a página</li>
                   </ol>
                 </div>

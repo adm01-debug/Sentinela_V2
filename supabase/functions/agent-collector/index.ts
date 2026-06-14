@@ -1,5 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
 import { Logger } from '../_shared/logger.ts';
@@ -45,14 +45,6 @@ const UrlDataSchema = z.object({
   visit_time: z.string().datetime().optional(),
   duration_seconds: z.number().int().min(0).optional(),
   is_productive: z.boolean().optional(),
-});
-
-const KeystrokeDataSchema = z.object({
-  total_keystrokes: z.number().int().min(0),
-  words_typed: z.number().int().min(0).optional(),
-  special_keys: z.number().int().min(0).optional(),
-  window_title: z.string().optional(),
-  app_name: z.string().optional(),
 });
 
 const AgentDataSchema = z.object({

@@ -37,6 +37,19 @@ export interface TeamFormData {
   is_active: boolean;
 }
 
+// Row shape returned from the teams query (joined with employees)
+interface TeamRow {
+  id: string;
+  name: string;
+  description?: string;
+  manager_id?: string;
+  parent_team_id?: string;
+  is_active: boolean;
+  created_at: string;
+  members_count?: number;
+  employees?: { name?: string } | null;
+}
+
 const initialFormData: TeamFormData = {
   name: '',
   description: '',
@@ -67,7 +80,7 @@ export function useTeamsPage() {
         .select('*, employees!teams_manager_id_fkey(name)')
         .order('name');
       if (error) throw error;
-      return data.map((t: any) => ({
+      return (data as TeamRow[]).map((t) => ({
         ...t,
         manager_name: t.employees?.name,
         members_count: t.members_count || 0,
@@ -103,7 +116,7 @@ export function useTeamsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: TeamFormData) => {
       const { error } = await supabase.from('teams').insert(data);
       if (error) throw error;
     },
@@ -133,7 +146,7 @@ export function useTeamsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('teams').delete().eq('id', id);
       if (error) throw error;
     },

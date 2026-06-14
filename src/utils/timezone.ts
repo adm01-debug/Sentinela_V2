@@ -46,10 +46,8 @@ export function getTimezoneAbbreviation(timezone: string, date?: Date): string {
   return parts.find((p) => p.type === 'timeZoneName')?.value || '';
 }
 
-export function isDST(date: Date, timezone?: string): boolean {
+export function isDST(_date: Date, timezone?: string): boolean {
   const tz = timezone || getLocalTimezone();
-  const jan = new Date(date.getFullYear(), 0, 1);
-  const jul = new Date(date.getFullYear(), 6, 1);
   const janOffset = getTimezoneOffset(tz);
   const julOffset = getTimezoneOffset(tz);
   const currentOffset = getTimezoneOffset(tz);

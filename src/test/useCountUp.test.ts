@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { useCountUp } from '@/hooks/useCountUp';
 
 describe('useCountUp Hook', () => {
@@ -82,7 +82,6 @@ describe('useCountUp Hook', () => {
       ({ end }) => useCountUp({ end, duration: 0 }),
       { initialProps: { end: 50 } }
     );
-    const initial = result.current.value;
     rerender({ end: 100 });
     // Value should update (may be instant since hasAnimated is true)
     expect(typeof result.current.value).toBe('number');

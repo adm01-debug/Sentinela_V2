@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { runHealthCheck } from '@/lib/apiMonitor';
-import { logger } from '@/lib/logger';
 
 export function HealthMonitor() {
-  const [status, setStatus] = useState<'stable' | 'slow' | 'offline'>('stable');
+  const [, setStatus] = useState<'stable' | 'slow' | 'offline'>('stable');
 
   useEffect(() => {
     const interval = setInterval(async () => {

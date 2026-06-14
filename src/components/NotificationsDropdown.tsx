@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from 'react';
-import { Bell, Check, Trash2 } from 'lucide-react';
+import { Bell, Check } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
@@ -67,7 +67,6 @@ function NotificationsDropdownComponent() {
   const markAsRead = useMarkNotificationAsRead();
   const markAllAsRead = useMarkAllNotificationsAsRead();
 
-  const notifications = Array.isArray(notificationsRaw) ? notificationsRaw : [];
   const unreadCount = Number(unreadCountRaw) || 0;
 
   const handleMarkAsRead = useCallback((id: string) => {
@@ -79,8 +78,8 @@ function NotificationsDropdownComponent() {
   }, [markAllAsRead]);
 
   const displayedNotifications = useMemo(() => {
-    return Array.isArray(notifications) ? notifications.slice(0, 10) : [];
-  }, [notifications]);
+    return Array.isArray(notificationsRaw) ? notificationsRaw.slice(0, 10) : [];
+  }, [notificationsRaw]);
 
   return (
     <DropdownMenu>

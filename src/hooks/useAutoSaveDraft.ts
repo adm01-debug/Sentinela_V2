@@ -21,7 +21,7 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
       const stored = localStorage.getItem(key);
       if (stored) {
         try {
-          const { data: draftData, timestamp } = JSON.parse(stored);
+          const { timestamp } = JSON.parse(stored);
           setHasDraft(true);
           setLastSaved(new Date(timestamp));
         } catch (e) { logger.error('Failed to parse draft:', e); }

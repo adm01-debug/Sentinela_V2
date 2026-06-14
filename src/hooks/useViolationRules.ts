@@ -74,7 +74,7 @@ export function useActiveViolationRules() {
       if (error) throw error;
       return data as ViolationRule[];
     },
-    ...(queryPresets as any).config,
+    ...queryPresets.config,
   });
 }
 
@@ -172,7 +172,7 @@ export function useDeleteViolationRule() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('violation_rules')
         .delete()
@@ -213,7 +213,7 @@ export function useToggleViolationRule() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       invalidateRelated.violationRules(queryClient);
       toast({
         title: data.is_active ? 'Regra ativada' : 'Regra desativada',

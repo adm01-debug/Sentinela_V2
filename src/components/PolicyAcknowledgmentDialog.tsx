@@ -142,7 +142,7 @@ function PolicyAcknowledgmentDialogBase({ employeeName, onAcknowledged }: Policy
       
       // Upload photo to storage
       const fileName = `${employeeName.replace(/\s+/g, '-')}-${Date.now()}.jpg`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('acknowledgment-photos')
         .upload(fileName, blob, { contentType: 'image/jpeg' });
 

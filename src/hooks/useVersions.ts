@@ -41,23 +41,6 @@ interface UseVersionsOptions {
 }
 
 // ============================================================
-// MOCK DATA
-// ============================================================
-
-const mockVersions: EntityVersion[] = [
-  {
-    id: 'mock-v1',
-    entity_type: 'default',
-    entity_id: 'mock-entity',
-    version_number: 1,
-    data: { name: 'Versão Inicial', status: 'active' },
-    changed_by: null,
-    changed_at: new Date().toISOString(),
-    change_summary: 'Criação inicial',
-  },
-];
-
-// ============================================================
 // MAIN HOOK
 // ============================================================
 
@@ -145,7 +128,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   // ============================================================
   const restoreVersionMutation = useMutation({
     mutationFn: async (versionId: string) => {
-      const version = versions.find((v: any) => v.id === versionId);
+      const version = versions.find((v: EntityVersion) => v.id === versionId);
       if (!version) throw new Error('Versão não encontrada');
 
       // Proceed to restore
@@ -201,7 +184,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
     const diffs: VersionDiff[] = [];
     const allKeys = new Set([...Object.keys(v1.data), ...Object.keys(v2.data)]);
 
-    allKeys.forEach((key: any) => {
+    allKeys.forEach((key: string) => {
       const oldVal = v1.data[key];
       const newVal = v2.data[key];
 
@@ -220,8 +203,8 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   /**
    * Obtém versão específica
    */
-  const getVersion = (versionNumber): EntityVersion | undefined => {
-    return versions.find((v: any) => v.version_number === versionNumber);
+  const getVersion = (versionNumber: number): EntityVersion | undefined => {
+    return versions.find((v: EntityVersion) => v.version_number === versionNumber);
   };
 
   /**

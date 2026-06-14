@@ -44,7 +44,7 @@ interface ModalState {
 
 export const useModalStore = create<ModalState>()(
   devtools(
-    (set, get) => ({
+    (set, _get) => ({
       modals: [],
       confirmDialog: null,
       isAnyOpen: false,

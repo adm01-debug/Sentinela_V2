@@ -65,9 +65,6 @@ export const SessionPlayback = memo(() => {
 
   const maxDensity = Math.max(...Object.values(hourlyDensity), 1);
 
-  // Get available hours from recordings
-  const availableHours = new Set(Object.keys(hourlyDensity).map(Number));
-
   // Jump to specific hour
   const jumpToHour = (hour: number) => {
     setSelectedHour(hour);
@@ -98,6 +95,8 @@ export const SessionPlayback = memo(() => {
       }
     };
     fetchEmployees();
+    // Fetch the employee list once on mount; selectedEmployee is only used to seed the initial value
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Fetch recordings for selected employee and date
@@ -120,7 +119,7 @@ export const SessionPlayback = memo(() => {
     
     if (data) {
       // Parse events JSONB - handle unknown type from Supabase
-      const parsed = data.map((d: any) => ({
+      const parsed = data.map((d: Record<string, unknown>) => ({
         ...d,
         id: d.id as string,
         employee_name: d.employee_name as string,
@@ -140,6 +139,8 @@ export const SessionPlayback = memo(() => {
   useEffect(() => {
     fetchRecordings();
     setIsPlaying(false);
+    // fetchRecordings is recreated each render; re-running only on employee/date change is intended
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEmployee, selectedDate]);
 
   // Playback controls
@@ -242,6 +243,10 @@ export const SessionPlayback = memo(() => {
             <>
               {/* Screenshot with event overlays */}
               <div className="relative group">
+                {/* The screenshot is a non-interactive <img>; converting it to a button or
+                    adding an interactive role would change markup/visuals. A fullscreen
+                    Dialog trigger is intentionally bound to the image click. */}
+                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events */}
                 <img
                   src={currentRecording?.screenshot_url}
                   alt="Session screenshot"
@@ -451,3 +456,5 @@ export const SessionPlayback = memo(() => {
     </>
   );
 });
+
+SessionPlayback.displayName = 'SessionPlayback';

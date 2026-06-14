@@ -65,7 +65,7 @@ export function useActiveGeofences() {
   return useQuery({
     queryKey: queryKeys.geofences.active(),
     queryFn: () => geofenceService.getActiveGeofences(),
-    ...(queryPresets as any).config,
+    ...queryPresets.config,
   });
 }
 
@@ -251,7 +251,7 @@ export function useToggleGeofence() {
         variant: 'destructive',
       });
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data: Geofence) => {
       invalidateRelated.geofences(queryClient);
       toast({
         title: data.is_active ? 'Geofence ativada' : 'Geofence desativada',

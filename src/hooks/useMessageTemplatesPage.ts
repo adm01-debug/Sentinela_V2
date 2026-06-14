@@ -26,6 +26,21 @@ export interface TemplateFormData {
   is_active: boolean;
 }
 
+// Row shape returned from the message_templates table
+interface MessageTemplateRow {
+  id: string;
+  name: string;
+  description?: string;
+  body: string;
+  template_type: string;
+  variables?: string[];
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  subject?: string;
+  channel: string;
+}
+
 // Constants
 export const TEMPLATE_CATEGORIES = [
   { value: 'notification', label: 'Notificação', icon: 'Bell' },
@@ -81,7 +96,7 @@ export function useMessageTemplatesPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((t: any) => ({
+      return ((data || []) as MessageTemplateRow[]).map((t) => ({
         id: t.id,
         name: t.name,
         description: t.description,
@@ -99,7 +114,7 @@ export function useMessageTemplatesPage() {
 
   // Mutations
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: TemplateFormData) => {
       const dbData = {
         name: data.name,
         body: data.content,
@@ -144,7 +159,7 @@ export function useMessageTemplatesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('message_templates').delete().eq('id', id);
       if (error) throw error;
     },

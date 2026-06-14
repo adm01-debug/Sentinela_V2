@@ -26,7 +26,7 @@ interface BaseRadarChartProps {
   angleKey?: string;
   height?: number;
   showLegend?: boolean;
-  valueFormatter?: (value: any) => string;
+  valueFormatter?: (value: number) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }

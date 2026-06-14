@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Server, Database, Globe, Wifi, WifiOff, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { Server, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 interface Service { id: string; name: string; status: 'operational' | 'degraded' | 'down'; latency?: number; uptime?: number; }
 
 export function SystemStatusWidget({ services, className }: { services: Service[]; className?: string }) {
-  const icons = { server: Server, database: Database, api: Globe, network: Wifi };
   const statusColors = { operational: 'text-green-500', degraded: 'text-yellow-500', down: 'text-red-500' };
   const statusIcons = { operational: CheckCircle, degraded: AlertTriangle, down: XCircle };
   const overallStatus = services.some(s => s.status === 'down') ? 'down' : services.some(s => s.status === 'degraded') ? 'degraded' : 'operational';

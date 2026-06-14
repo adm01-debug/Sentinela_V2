@@ -161,7 +161,7 @@ export function useSecurity() {
   // SANITIZATION
   // ============================================================
 
-  const sanitizeInput = useCallback((input: any): string => {
+  const sanitizeInput = useCallback((input: string): string => {
     return input
       .replace(/[<>]/g, '') // Remove HTML brackets
       .replace(/javascript:/gi, '') // Remove javascript protocol
@@ -250,7 +250,7 @@ export function generateSecureRandom(length = 32): string {
 /**
  * Hash sensitive data (client-side, for non-critical operations)
  */
-export async function hashData(data: any): Promise<string> {
+export async function hashData(data: string): Promise<string> {
   const encoder = new TextEncoder();
   const dataBuffer = encoder.encode(data);
   const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);

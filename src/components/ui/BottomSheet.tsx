@@ -31,7 +31,19 @@ export function BottomSheet({ open, onClose, children, title, description, class
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 z-40 animate-in fade-in" onClick={onClose} />
+      <div
+        role="button"
+        tabIndex={0}
+        aria-label="Close"
+        className="fixed inset-0 bg-black/50 z-40 animate-in fade-in"
+        onClick={onClose}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClose();
+          }
+        }}
+      />
       <div className={cn("fixed bottom-0 left-0 right-0 z-50 bg-background rounded-t-2xl shadow-2xl animate-in slide-in-from-bottom duration-300", heightClass, className)} style={{ transform: `translateY(${dragY}px)` }}>
         <div className="flex justify-center pt-3 pb-2 cursor-grab" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
           <div className="w-12 h-1.5 rounded-full bg-muted-foreground/30" />

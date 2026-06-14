@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-export function useCarousel<T>(items: T[], autoPlay = false, interval = 3000) {
+export function useCarousel<T>(items: T[], _autoPlay = false, _interval = 3000) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const next = useCallback(() => {

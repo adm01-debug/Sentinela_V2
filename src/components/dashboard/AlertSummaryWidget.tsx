@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { AlertTriangle, Shield, CheckCircle, XCircle, TrendingUp } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 
 interface Alert { id: string; title: string; severity: 'low' | 'medium' | 'high' | 'critical'; timestamp: Date; acknowledged?: boolean; }
 

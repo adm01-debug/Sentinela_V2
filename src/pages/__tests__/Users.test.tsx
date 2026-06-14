@@ -29,7 +29,7 @@ describe('UsersPage', () => {
         { id: '2', name: 'Regular User', email: 'user@example.com', role: 'user' },
       ],
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useUsersHook.useUsers>);
   });
 
   const renderUsers = () => {

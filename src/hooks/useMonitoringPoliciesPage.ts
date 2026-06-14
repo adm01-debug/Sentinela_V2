@@ -89,7 +89,14 @@ export function useMonitoringPoliciesPage() {
         applies_to?: string;
         is_active?: boolean;
       }
-      return (data || []).map((setting: any) => {
+      interface SettingRow {
+        id: string;
+        setting_key: string;
+        description?: string;
+        setting_value?: SettingValue;
+        created_at: string;
+      }
+      return ((data || []) as SettingRow[]).map((setting) => {
         const val = (setting.setting_value || {}) as SettingValue;
         return {
           id: setting.id,
@@ -113,7 +120,7 @@ export function useMonitoringPoliciesPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: PolicyFormData) => {
       const settingData = {
         setting_key: data.name,
         description: data.description,
@@ -177,7 +184,7 @@ export function useMonitoringPoliciesPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('monitoring_settings').delete().eq('id', id);
       if (error) throw error;
     },

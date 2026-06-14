@@ -256,20 +256,20 @@ export default function DLPPoliciesPage() {
               </div>
 
               <div className="flex items-center gap-6">
-                <label className="flex items-center gap-2 text-sm">
+                <span className="flex items-center gap-2 text-sm">
                   <Switch
                     checked={form.scope_clipboard}
                     onCheckedChange={(v) => setForm({ ...form, scope_clipboard: v })}
                   />
                   Clipboard
-                </label>
-                <label className="flex items-center gap-2 text-sm">
+                </span>
+                <span className="flex items-center gap-2 text-sm">
                   <Switch
                     checked={form.scope_screenshot}
                     onCheckedChange={(v) => setForm({ ...form, scope_screenshot: v })}
                   />
                   Screenshot
-                </label>
+                </span>
               </div>
 
               <div>
@@ -345,7 +345,7 @@ export default function DLPPoliciesPage() {
             </div>
           ) : policies.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
-              Nenhuma política criada. Clique em "Nova política" para começar.
+              Nenhuma política criada. Clique em &quot;Nova política&quot; para começar.
             </p>
           ) : (
             <Table>

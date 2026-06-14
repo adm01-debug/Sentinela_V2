@@ -2,11 +2,11 @@
  * SENTINELA - Employee CRUD Test Suite
  * Tests for employee management operations
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { supabase } from '@/integrations/supabase/client';
 
 describe('Employee Management', () => {
-  let mockFrom: any;
+  let mockFrom: Mock;
 
   beforeEach(() => {
     vi.clearAllMocks();

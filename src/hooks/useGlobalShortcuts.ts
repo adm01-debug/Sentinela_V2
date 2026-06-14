@@ -55,6 +55,7 @@ export function useGlobalShortcuts(onToggleHelp: () => void) {
         return;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 'shortcuts' is rebuilt each render but its action closures only depend on navigate/helpToggle ref
   }, [navigate]);
 
   useEffect(() => {

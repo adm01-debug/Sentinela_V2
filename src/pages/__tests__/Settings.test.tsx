@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -21,43 +21,43 @@ vi.mock('@/hooks/useSettings', () => ({
 vi.mock('@/components/ui/tabs', async () => {
     const React = await import('react');
     return {
-        Tabs: ({ children, defaultValue }: any) => {
+        Tabs: ({ children, defaultValue }: { children?: React.ReactNode; defaultValue?: string }) => {
             const [activeTab, setActiveTab] = React.useState(defaultValue);
             return (
                 <div data-testid="tabs-root">
                     {React.Children.map(children, child => {
                         if (React.isValidElement(child)) {
-                            return React.cloneElement(child as React.ReactElement<any>, { activeTab, onTabChange: setActiveTab });
+                            return React.cloneElement(child as React.ReactElement<Record<string, unknown>>, { activeTab, onTabChange: setActiveTab });
                         }
                         return child;
                     })}
                 </div>
             );
         },
-        TabsList: ({ children, activeTab, onTabChange }: any) => (
+        TabsList: ({ children, activeTab, onTabChange }: { children?: React.ReactNode; activeTab?: string; onTabChange?: (value: string) => void }) => (
             <div>
                 {React.Children.map(children, child => {
                     if (React.isValidElement(child)) {
-                        return React.cloneElement(child as React.ReactElement<any>, { 
-                            active: activeTab === (child.props as any).value, 
-                            onClick: () => onTabChange((child.props as any).value) 
+                        return React.cloneElement(child as React.ReactElement<Record<string, unknown>>, {
+                            active: activeTab === (child.props as { value?: string }).value,
+                            onClick: () => onTabChange?.((child.props as { value?: string }).value as string)
                         });
                     }
                     return child;
                 })}
             </div>
         ),
-        TabsTrigger: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
-        TabsContent: ({ children, value, activeTab }: any) => (value === activeTab) ? <div>{children}</div> : null,
+        TabsTrigger: ({ children, onClick }: { children?: React.ReactNode; onClick?: () => void }) => <button onClick={onClick}>{children}</button>,
+        TabsContent: ({ children, value, activeTab }: { children?: React.ReactNode; value?: string; activeTab?: string }) => (value === activeTab) ? <div>{children}</div> : null,
     };
 });
 
 vi.mock('@/components/PolicyToggle', () => ({
-  PolicyToggle: ({ policy }: any) => <div data-testid="policy-toggle">{policy.name}</div>,
+  PolicyToggle: ({ policy }: { policy: { name: string } }) => <div data-testid="policy-toggle">{policy.name}</div>,
 }));
 
 vi.mock('@/components/ApplicationRuleRow', () => ({
-  ApplicationRuleRow: ({ rule }: any) => <div data-testid="app-rule">{rule.name}</div>,
+  ApplicationRuleRow: ({ rule }: { rule: { name: string } }) => <div data-testid="app-rule">{rule.name}</div>,
 }));
 
 vi.mock('@/components/AddApplicationDialog', () => ({
@@ -110,7 +110,7 @@ describe('Settings Page', () => {
         ],
       },
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useSettingsHook.useSettings>);
   });
 
   const renderSettings = () => {
@@ -147,7 +147,7 @@ describe('Settings Page', () => {
         ],
       },
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useSettingsHook.useSettings>);
     
     renderSettings();
     

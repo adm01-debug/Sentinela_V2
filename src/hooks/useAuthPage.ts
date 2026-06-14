@@ -83,9 +83,8 @@ export function useAuthPage() {
     
     if (state.lockoutUntil && now < state.lockoutUntil) {
       const remainingMs = state.lockoutUntil - now;
-      const lockoutDuration = calculateLockoutDuration(state.lockoutLevel);
-      
-      toast({ 
+
+      toast({
         title: '⏳ Conta bloqueada temporariamente', 
         description: `Muitas tentativas falhas. Aguarde ${formatTimeRemaining(remainingMs)} antes de tentar novamente.`, 
         variant: 'destructive' 
@@ -162,7 +161,7 @@ export function useAuthPage() {
       toast({ title: 'Login realizado!' }); 
       navigate('/'); 
     },
-    onError: (e: Error) => { 
+    onError: (_e: Error) => {
       recordFailedAttempt();
       // Generic error message to prevent user enumeration
       toast({ 

@@ -4,6 +4,17 @@ import { logger } from '@/lib/logger';
 
 interface Session { id: string; userId: string; device: string; browser: string; ip: string; location?: string; createdAt: Date; lastActivity: Date; current: boolean; }
 
+interface UserSessionRow {
+  id: string;
+  user_id: string;
+  device?: string | null;
+  browser?: string | null;
+  ip_address?: string | null;
+  location?: string | null;
+  created_at: string;
+  last_activity: string;
+}
+
 export function useSessionManager() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
@@ -17,9 +28,9 @@ export function useSessionManager() {
       
       const { data } = await supabase.from('user_sessions').select('*').eq('user_id', session.user.id).order('last_activity', { ascending: false });
       
-      const mapped: Session[] = (data || []).map((s: any) => ({
+      const mapped: Session[] = ((data || []) as UserSessionRow[]).map((s) => ({
         id: s.id, userId: s.user_id, device: s.device || 'Unknown', browser: s.browser || 'Unknown',
-        ip: s.ip_address || 'Unknown', location: s.location, createdAt: new Date(s.created_at),
+        ip: s.ip_address || 'Unknown', location: s.location ?? undefined, createdAt: new Date(s.created_at),
         lastActivity: new Date(s.last_activity), current: s.id === currentSessionId
       }));
       setSessions(mapped);

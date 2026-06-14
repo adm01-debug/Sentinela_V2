@@ -11,7 +11,7 @@ export type ErrorCode =
 export interface AppError {
   code: ErrorCode;
   message: string;
-  details?: Record<string, any>;
+  details?: Record<string, unknown>;
   status?: number;
 }
 
@@ -33,7 +33,7 @@ export interface ErrorLogEntry {
   timestamp: string;
   message: string;
   stack?: string;
-  context?: Record<string, any>;
+  context?: Record<string, unknown>;
   userId?: string;
 }
 

@@ -15,7 +15,7 @@ import {
   RefreshCw,
   Shield,
 } from 'lucide-react';
-import { formatDistanceToNow, format } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { usePasswordResetRequests, PasswordResetRequest } from '@/hooks/usePasswordResetRequests';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -59,7 +59,6 @@ function getStatusBadge(status: string) {
 
 export function PasswordResetApprovalPanel() {
   const {
-    requests,
     pendingRequests,
     approvedRequests,
     rejectedRequests,
@@ -355,8 +354,9 @@ export function PasswordResetApprovalPanel() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Notas (opcional)</label>
+                <label htmlFor="reset-decision-notes" className="text-sm font-medium">Notas (opcional)</label>
                 <Textarea
+                  id="reset-decision-notes"
                   placeholder="Adicione observações sobre esta decisão..."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}

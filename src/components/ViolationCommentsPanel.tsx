@@ -32,21 +32,10 @@ import {
   useCreateViolationComment,
   useUpdateViolationComment,
   useDeleteViolationComment,
-  ViolationComment,
 } from '@/hooks/useViolationComments';
 import { useAuth } from '@/hooks/useAuth';
-import { cn } from '@/lib/utils';
 
-// Action and status configs
-const actionConfig = {
-  acknowledge: { label: 'Reconhecido', icon: '👁️' },
-  investigate: { label: 'Em investigação', icon: '🔍' },
-  escalate: { label: 'Escalado', icon: '⚠️' },
-  resolve: { label: 'Resolvido', icon: '✅' },
-  dismiss: { label: 'Dispensado', icon: '❌' },
-  reopen: { label: 'Reaberto', icon: '🔄' },
-};
-
+// Status config
 const statusConfig: Record<string, { label: string; color: string }> = {
   open: { label: 'Aberto', color: 'bg-yellow-500 text-white' },
   acknowledged: { label: 'Reconhecido', color: 'bg-blue-500 text-white' },

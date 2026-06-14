@@ -1,11 +1,10 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 interface HeatmapPoint { x: number; y: number; value: number; }
 
 export function useHeatmap(elementId?: string) {
   const [points, setPoints] = useState<HeatmapPoint[]>([]);
   const [isTracking, setIsTracking] = useState(false);
-  const containerRef = useRef<HTMLElement | null>(null);
 
   const startTracking = useCallback(() => {
     setIsTracking(true);

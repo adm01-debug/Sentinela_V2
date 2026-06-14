@@ -13,7 +13,7 @@ export default function EmployeeDetailPage() {
   const employee = employeeRaw as EmployeeWithDetails | undefined;
   const startDate = format(subDays(new Date(), 7), 'yyyy-MM-dd');
   const endDate = format(new Date(), 'yyyy-MM-dd');
-  const { data: stats } = useEmployeeStats(id!, startDate, endDate);
+  useEmployeeStats(id!, startDate, endDate);
 
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
   if (!employee) return <div className="p-6">Funcionário não encontrado</div>;

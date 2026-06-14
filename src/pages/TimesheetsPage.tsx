@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { FileText, Download, CheckCircle, Clock, Search, Filter, Calendar } from 'lucide-react';
+import { CheckCircle, Search, Calendar } from 'lucide-react';
 import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subWeeks } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -31,15 +31,6 @@ function TimesheetsPage() {
         .from('timesheets')
         .select('*, employees(name, department)')
         .order('period_start', { ascending: false });
-      if (error) throw error;
-      return data || [];
-    },
-  });
-
-  const { data: employees = [] } = useQuery({
-    queryKey: ['employees-for-timesheets'],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('employees').select('id, name').eq('status', 'active').order('name');
       if (error) throw error;
       return data || [];
     },

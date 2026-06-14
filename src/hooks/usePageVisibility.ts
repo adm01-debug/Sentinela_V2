@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 export function usePageVisibility() {
-  const [state, setState] = useState(null);
+  const [state] = useState(null);
   useEffect(() => { /* implementation */ }, []);
   return state;
 }

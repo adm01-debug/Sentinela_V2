@@ -13,7 +13,7 @@ import { useTeams, useCreateTeam, useDeleteTeam } from '@/hooks/useTeams';
 import { useChartColors } from '@/hooks/useChartColors';
 import { BaseBarChart } from '@/components/charts';
 import { NoDataEmptyState, NoResultsEmptyState } from '@/components/EmptyStates';
-import { ROUTES, generateRoute } from '@/constants/routes';
+import { generateRoute } from '@/constants/routes';
 
 export default function TeamsPage() {
   const { t } = useTranslation();
@@ -179,8 +179,7 @@ export default function TeamsPage() {
               <Input 
                 value={teamName} 
                 onChange={e => setTeamName(e.target.value)} 
-                placeholder="Ex: Desenvolvimento, Vendas, RH" 
-                autoFocus
+                placeholder="Ex: Desenvolvimento, Vendas, RH"
                 onKeyDown={e => e.key === 'Enter' && handleCreate()}
               />
             </div>

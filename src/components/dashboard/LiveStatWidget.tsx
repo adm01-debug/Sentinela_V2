@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Activity, Users, Shield, AlertTriangle, TrendingUp, Clock } from 'lucide-react';
+import { Activity, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 

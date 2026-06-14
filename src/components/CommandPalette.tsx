@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import {
   Home, Users, Activity, Monitor, Timer, FolderKanban, ClipboardList,
   UserCheck, BarChart, Shield, Bell, Camera, Globe, BarChart3, FileText,
-  Brain, Smartphone, MapPin, Building2, Calendar, Clock, Gamepad2,
-  UserCog, ScrollText, Download, Webhook, MessageSquare, Settings, Key
+  Brain, Building2, Calendar, Clock, Gamepad2,
+  UserCog, ScrollText, Download, Webhook, Settings, Key
 } from 'lucide-react';
 import {
   CommandDialog,

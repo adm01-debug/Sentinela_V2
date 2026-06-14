@@ -50,7 +50,7 @@ function TreeItem({ node, level, selectedId, expandedIds, onSelect, onToggle, sh
 
   return (
     <div>
-      <div className={cn('flex items-center gap-1 py-1 px-2 rounded cursor-pointer hover:bg-muted/50', isSelected && 'bg-primary/10 text-primary', node.disabled && 'opacity-50 cursor-not-allowed')} style={{ paddingLeft: level * 16 + 8 }} onClick={handleClick}>
+      <div role="button" tabIndex={node.disabled ? -1 : 0} className={cn('flex items-center gap-1 py-1 px-2 rounded cursor-pointer hover:bg-muted/50', isSelected && 'bg-primary/10 text-primary', node.disabled && 'opacity-50 cursor-not-allowed')} style={{ paddingLeft: level * 16 + 8 }} onClick={handleClick} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}>
         {hasChildren ? (
           <span className="w-4 h-4 flex items-center justify-center">{isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}</span>
         ) : <span className="w-4" />}

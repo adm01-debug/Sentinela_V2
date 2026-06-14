@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Download, Calendar, User, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -33,7 +33,6 @@ interface ReportData {
 
 export default function ReportDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const { data: report, isLoading } = useReport(id!);
 
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;

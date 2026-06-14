@@ -1,11 +1,11 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 
 interface TreeNode<T> { id: string; data: T; children: TreeNode<T>[]; expanded: boolean; }
 
 export function useTreeData<T>(initialData: TreeNode<T>[]) {
   const [tree, setTree] = useState(initialData);
 
-  const toggle = useCallback((id: any) => {
+  const toggle = useCallback((id: string) => {
     const toggleNode = (nodes: TreeNode<T>[]): TreeNode<T>[] => {
       return nodes.map(node => ({
         ...node,

@@ -21,5 +21,6 @@ export function useDeepCompareEffect(effect: () => void | (() => void), deps: un
     ref.current = deps;
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally re-run only when deps deep-change, not on every effect identity change
   useEffect(effect, [ref.current]);
 }

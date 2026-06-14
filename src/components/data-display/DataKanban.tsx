@@ -12,7 +12,7 @@ export const DataKanban: React.FC<DataKanbanProps> = ({ columns, onCardClick, cl
           <span style={{ fontSize: 12, color: '#999' }}>({col.cards.length})</span>
         </div>
         {col.cards.map(card => (
-          <div key={card.id} onClick={() => onCardClick?.(card)} style={{ padding: 12, backgroundColor: '#fff', borderRadius: 6, marginBottom: 8, boxShadow: '0 1px 2px rgba(0,0,0,0.1)', cursor: 'pointer' }}>
+          <div key={card.id} role="button" tabIndex={0} onClick={() => onCardClick?.(card)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onCardClick?.(card); } }} style={{ padding: 12, backgroundColor: '#fff', borderRadius: 6, marginBottom: 8, boxShadow: '0 1px 2px rgba(0,0,0,0.1)', cursor: 'pointer' }}>
             <h5 style={{ margin: 0, fontSize: 14 }}>{card.title}</h5>
             {card.description && <p style={{ margin: '8px 0 0', fontSize: 12, color: '#666' }}>{card.description}</p>}
             {card.tags && <div style={{ display: 'flex', gap: 4, marginTop: 8 }}>{card.tags.map(t => <span key={t} style={{ padding: '2px 6px', backgroundColor: '#e6f7ff', borderRadius: 4, fontSize: 10 }}>{t}</span>)}</div>}

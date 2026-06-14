@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
@@ -8,12 +8,10 @@ import {
   CheckCheck,
   Trash2,
   Settings,
-  Filter,
   AlertTriangle,
   Info,
   AlertCircle,
   CheckCircle,
-  X,
   ChevronRight,
   Volume2,
   VolumeX,
@@ -22,7 +20,6 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Sheet,
@@ -417,6 +414,14 @@ export function NotificationPopover({
                     !notification.isRead && 'bg-primary/5'
                   )}
                   onClick={() => onMarkAsRead?.(notification.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      onMarkAsRead?.(notification.id);
+                    }
+                  }}
                 >
                   <Icon className={cn('h-4 w-4 shrink-0 mt-0.5', config.color)} />
                   <div className="flex-1 min-w-0">

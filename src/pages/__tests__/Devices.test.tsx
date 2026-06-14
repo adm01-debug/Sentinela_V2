@@ -32,11 +32,11 @@ vi.mock('@/hooks/useChartColors', () => ({
 
 // Mock Recharts
 vi.mock('recharts', () => ({
-  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
-  PieChart: ({ children }: any) => <div data-testid="pie-chart">{children}</div>,
+  ResponsiveContainer: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
+  PieChart: ({ children }: { children?: React.ReactNode }) => <div data-testid="pie-chart">{children}</div>,
   Pie: () => <div />,
   Cell: () => <div />,
-  BarChart: ({ children }: any) => <div data-testid="bar-chart">{children}</div>,
+  BarChart: ({ children }: { children?: React.ReactNode }) => <div data-testid="bar-chart">{children}</div>,
   Bar: () => <div />,
   XAxis: () => <div />,
   YAxis: () => <div />,
@@ -69,7 +69,7 @@ describe('DevicesPage', () => {
       handleViewDetails: vi.fn(),
       isDetailsOpen: false,
       selectedDevice: null,
-    } as any);
+    } as unknown as ReturnType<typeof useDevicesPageHook.useDevicesPage>);
   });
 
   const renderDevices = () => {

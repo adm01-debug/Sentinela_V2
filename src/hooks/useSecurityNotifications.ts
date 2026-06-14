@@ -34,57 +34,6 @@ export function useSecurityNotifications() {
     }
   }, []);
 
-  // Request notification permission
-  const requestPermission = useCallback(async () => {
-    if (!isSupported) {
-      toast({
-        title: 'Notificações não suportadas',
-        description: 'Seu navegador não suporta notificações push.',
-        variant: 'destructive',
-      });
-      return false;
-    }
-
-    try {
-      const result = await Notification.requestPermission();
-      setPermission(result as NotificationPermission);
-      setIsSubscribed(result === 'granted');
-
-      if (result === 'granted') {
-        toast({
-          title: 'Notificações ativadas',
-          description: 'Você receberá alertas de segurança em tempo real.',
-        });
-        
-        // Send test notification
-        showNotification('Notificações ativadas', {
-          body: 'Você receberá alertas de segurança em tempo real.',
-          icon: '/favicon.ico',
-          tag: 'test-notification',
-        });
-        
-        return true;
-      } else if (result === 'denied') {
-        toast({
-          title: 'Notificações bloqueadas',
-          description: 'Você bloqueou as notificações. Ative-as nas configurações do navegador.',
-          variant: 'destructive',
-        });
-        return false;
-      }
-      
-      return false;
-    } catch (error) {
-      logger.error('Error requesting notification permission:', error);
-      toast({
-        title: 'Erro ao solicitar permissão',
-        description: 'Não foi possível solicitar permissão para notificações.',
-        variant: 'destructive',
-      });
-      return false;
-    }
-  }, [isSupported, toast]);
-
   // Show a notification
   const showNotification = useCallback((title: string, options?: NotificationOptions) => {
     if (!isSupported || permission !== 'granted') {
@@ -111,6 +60,57 @@ export function useSecurityNotifications() {
       return null;
     }
   }, [isSupported, permission]);
+
+  // Request notification permission
+  const requestPermission = useCallback(async () => {
+    if (!isSupported) {
+      toast({
+        title: 'Notificações não suportadas',
+        description: 'Seu navegador não suporta notificações push.',
+        variant: 'destructive',
+      });
+      return false;
+    }
+
+    try {
+      const result = await Notification.requestPermission();
+      setPermission(result as NotificationPermission);
+      setIsSubscribed(result === 'granted');
+
+      if (result === 'granted') {
+        toast({
+          title: 'Notificações ativadas',
+          description: 'Você receberá alertas de segurança em tempo real.',
+        });
+
+        // Send test notification
+        showNotification('Notificações ativadas', {
+          body: 'Você receberá alertas de segurança em tempo real.',
+          icon: '/favicon.ico',
+          tag: 'test-notification',
+        });
+
+        return true;
+      } else if (result === 'denied') {
+        toast({
+          title: 'Notificações bloqueadas',
+          description: 'Você bloqueou as notificações. Ative-as nas configurações do navegador.',
+          variant: 'destructive',
+        });
+        return false;
+      }
+
+      return false;
+    } catch (error) {
+      logger.error('Error requesting notification permission:', error);
+      toast({
+        title: 'Erro ao solicitar permissão',
+        description: 'Não foi possível solicitar permissão para notificações.',
+        variant: 'destructive',
+      });
+      return false;
+    }
+  }, [isSupported, toast, showNotification]);
 
   // Show security alert notification
   const showSecurityAlert = useCallback((violation: SecurityViolation) => {

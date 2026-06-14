@@ -25,8 +25,16 @@ export function Stepper({ steps, currentStep, onStepClick, className, orientatio
         return (
           <React.Fragment key={step.id}>
             <div
+              role={onStepClick ? 'button' : undefined}
+              tabIndex={onStepClick ? 0 : undefined}
               className={cn('flex items-center', orientation === 'vertical' && 'flex-row', onStepClick && 'cursor-pointer')}
               onClick={() => onStepClick?.(index)}
+              onKeyDown={onStepClick ? (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onStepClick(index);
+                }
+              } : undefined}
             >
               <div className={cn(
                 'flex h-10 w-10 items-center justify-center rounded-full border-2 transition-colors',

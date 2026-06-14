@@ -48,11 +48,6 @@ export const DashboardPage = () => {
 
   if (statsLoading) return <DashboardSkeleton />;
 
-  const totalEmployees = stats?.totalEmployees || 128;
-  const activeEmployees = stats?.activeEmployees || 45;
-  const productivity = stats?.averageProductivity || 87;
-  const alertsCount = stats?.alertsCount || 3;
-
   return (
     <div className="space-y-6">
       <WelcomeBanner />

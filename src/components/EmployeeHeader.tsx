@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { EmployeeEditDialog } from './EmployeeEditDialog';
 import { EmployeeWithDetails } from '@/hooks/useEmployees';
+import { Employee } from '@/types';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -39,9 +40,10 @@ export const EmployeeHeader = ({ employee }: Props) => {
     }
   };
 
-  const displayName = employee.full_name ?? (employee as any).name ?? 'Sem nome';
-  const avatarSrc = employee.avatar_url || (employee as any).avatar;
-  const roleLabel = employee.role || (employee as any).position || '-';
+  const legacy = employee as { name?: string | null; avatar?: string | null };
+  const displayName = employee.full_name ?? legacy.name ?? 'Sem nome';
+  const avatarSrc = employee.avatar_url || legacy.avatar || undefined;
+  const roleLabel = employee.role || employee.position || '-';
   const departmentLabel = employee.department ?? '-';
 
   return (
@@ -83,7 +85,7 @@ export const EmployeeHeader = ({ employee }: Props) => {
       </div>
 
       <EmployeeEditDialog 
-        employee={employee as any} 
+        employee={employee as unknown as Employee}
         isOpen={isEditOpen} 
         onOpenChange={setIsEditOpen} 
       />

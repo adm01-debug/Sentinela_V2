@@ -10,7 +10,6 @@ import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton';
 import { useUIStore } from '@/stores/uiStore';
 import { cn } from '@/utils/cn';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { CommandPalette } from '@/components/CommandPalette';
 import { KeyboardShortcutsDialog } from '@/components/KeyboardShortcutsDialog';
 import { KeyboardShortcutsProvider } from '@/components/KeyboardShortcutsProvider';
@@ -41,10 +40,6 @@ export const MainLayout = () => {
 
   const handleMobileMenuToggle = useCallback(() => {
     setIsMobileMenuOpen(prev => !prev);
-  }, []);
-
-  const handleMobileMenuClose = useCallback(() => {
-    setIsMobileMenuOpen(false);
   }, []);
 
   const handleCommandPaletteOpen = useCallback(() => {

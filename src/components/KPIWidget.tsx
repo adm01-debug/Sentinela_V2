@@ -54,7 +54,7 @@ const Sparkline = memo(function Sparkline({
   showArea = true,
   className,
 }: SparklineProps) {
-  const { path, areaPath, points } = useMemo(() => {
+  const { path, areaPath } = useMemo(() => {
     if (!data || data.length < 2) return { path: '', areaPath: '', points: [] };
 
     const values = data.map((d) => d.value);
@@ -243,10 +243,11 @@ function KPIWidgetComponent({
         }).format(value);
       case 'percent':
         return `${value.toFixed(1)}%`;
-      case 'duration':
+      case 'duration': {
         const hours = Math.floor(value / 60);
         const mins = value % 60;
         return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+      }
       default:
         return value.toLocaleString('pt-BR');
     }

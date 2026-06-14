@@ -221,7 +221,6 @@ interface PageLoadingProps {
 }
 
 export const PageLoading = memo(function PageLoading({
-  title,
   className,
 }: PageLoadingProps) {
   return (

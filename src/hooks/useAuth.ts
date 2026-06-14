@@ -1,11 +1,11 @@
+import { useState } from 'react';
 import { useAuth, type User } from '@/providers/AuthProvider';
+import { supabase } from '@/integrations/supabase/client';
 
 export { useAuth };
 export type { User };
 
 // Re-export convenience hooks that use Supabase
-import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 export const useUpdateProfile = () => {
   const [isPending, setIsPending] = useState(false);

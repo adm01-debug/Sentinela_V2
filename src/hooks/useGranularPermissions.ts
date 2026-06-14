@@ -103,11 +103,12 @@ export function useRolesWithPermissions() {
 
       if (rpError) throw rpError;
 
+      const rolePermissionRows = rolePermissions as Array<{ role_id: string; permission: Permission | null }>;
       const rolesWithPerms: RoleWithPermissions[] = (roles as Role[]).map(role => ({
         ...role,
-        permissions: rolePermissions
-          .filter((rp: any) => rp.role_id === role.id)
-          .map((rp: any) => rp.permission as unknown as Permission)
+        permissions: rolePermissionRows
+          .filter(rp => rp.role_id === role.id)
+          .map(rp => rp.permission as Permission)
           .filter(Boolean),
       }));
 
@@ -136,7 +137,7 @@ export function useCreateRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: { name: string; description?: string | null }) => {
       const { data: role, error } = await supabase
         .from('roles')
         .insert({
@@ -193,7 +194,7 @@ export function useDeleteRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('roles').delete().eq('id', id);
       if (error) throw error;
     },

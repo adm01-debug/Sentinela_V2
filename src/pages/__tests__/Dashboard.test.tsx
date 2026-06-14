@@ -38,13 +38,13 @@ vi.mock('@/hooks/useChartColors', () => ({
 }));
 
 vi.mock('@/components/StatCard', () => ({
-  StatCard: ({ title, value }: any) => (
+  StatCard: ({ title, value }: { title?: React.ReactNode; value?: React.ReactNode }) => (
     <div data-testid="stat-card">
       <div data-testid="stat-title">{title}</div>
       <div data-testid="stat-value">{value}</div>
     </div>
   ),
-  StatCardsGrid: ({ children }: any) => <div>{children}</div>,
+  StatCardsGrid: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
 }));
 
 vi.mock('@/components/DashboardCustomizer', () => ({
@@ -52,7 +52,7 @@ vi.mock('@/components/DashboardCustomizer', () => ({
 }));
 
 vi.mock('@/components/PageTransition', () => ({
-  PageTransition: ({ children }: any) => <div>{children}</div>,
+  PageTransition: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
 }));
 
 vi.mock('@/components/WelcomeBanner', () => ({

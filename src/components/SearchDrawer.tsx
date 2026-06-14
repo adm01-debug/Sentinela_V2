@@ -2,7 +2,6 @@ import { memo, useState, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Search,
-  Command,
   LayoutDashboard,
   Users,
   Monitor,
@@ -40,12 +39,6 @@ interface SearchResult {
   favorite?: boolean;
 }
 
-interface SearchCategory {
-  id: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-}
-
 interface SearchDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -70,13 +63,6 @@ const defaultNavigationItems: SearchResult[] = [
   { id: 'geofencing', title: 'Geofencing', category: 'Navegação', icon: Map, href: '/geofencing', keywords: ['localização', 'cercas'] },
   { id: 'schedules', title: 'Horários', category: 'Navegação', icon: Calendar, href: '/work-schedules', keywords: ['jornada', 'expediente'] },
   { id: 'settings', title: 'Configurações', category: 'Navegação', icon: Settings, href: '/settings', keywords: ['preferências', 'conta'] },
-];
-
-const categories: SearchCategory[] = [
-  { id: 'navigation', label: 'Navegação', icon: LayoutDashboard },
-  { id: 'employees', label: 'Funcionários', icon: Users },
-  { id: 'reports', label: 'Relatórios', icon: FileText },
-  { id: 'settings', label: 'Configurações', icon: Settings },
 ];
 
 // ============================================================
@@ -251,6 +237,15 @@ function SearchDrawerComponent({
     }
   }, [open]);
 
+  const handleSelect = useCallback((result: SearchResult) => {
+    if (result.action) {
+      result.action();
+    } else if (result.href) {
+      navigate(result.href);
+    }
+    onOpenChange(false);
+  }, [navigate, onOpenChange]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -276,16 +271,7 @@ function SearchDrawerComponent({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [open, allResults, selectedIndex]);
-
-  const handleSelect = useCallback((result: SearchResult) => {
-    if (result.action) {
-      result.action();
-    } else if (result.href) {
-      navigate(result.href);
-    }
-    onOpenChange(false);
-  }, [navigate, onOpenChange]);
+  }, [open, allResults, selectedIndex, handleSelect]);
 
   const handleQueryChange = useCallback((value: string) => {
     setQuery(value);
@@ -322,7 +308,6 @@ function SearchDrawerComponent({
             value={query}
             onChange={(e) => handleQueryChange(e.target.value)}
             className="border-0 focus-visible:ring-0 px-0 text-base"
-            autoFocus
           />
           <kbd className="hidden sm:inline-flex px-2 py-0.5 text-xs bg-muted rounded border font-mono">
             Esc
@@ -376,7 +361,7 @@ function SearchDrawerComponent({
               <div className="text-center py-8">
                 <Search className="h-12 w-12 mx-auto text-muted-foreground/30 mb-4" />
                 <p className="text-muted-foreground">
-                  Nenhum resultado para "{query}"
+                  Nenhum resultado para &quot;{query}&quot;
                 </p>
               </div>
             )}

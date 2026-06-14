@@ -21,6 +21,17 @@ export interface Violation {
   resolution_notes?: string;
 }
 
+interface ViolationRow {
+  id: string;
+  employee_id: string | null;
+  employee_name: string | null;
+  violation_type: string;
+  severity: string;
+  read: boolean | null;
+  description: string | null;
+  created_at: string;
+}
+
 export const VIOLATION_TYPES = [
   { value: 'unauthorized_access', label: 'Acesso Nao Autorizado' },
   { value: 'data_leak', label: 'Vazamento de Dados' },
@@ -55,7 +66,7 @@ export function useViolationsPage() {
         .order('created_at', { ascending: false })
         .limit(200);
       if (error) throw error;
-      return data.map((v: any) => ({
+      return (data as ViolationRow[]).map((v) => ({
         id: v.id,
         employee_id: v.employee_id || '',
         employee_name: v.employee_name || 'Desconhecido',

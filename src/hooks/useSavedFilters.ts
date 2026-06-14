@@ -23,23 +23,8 @@ export interface SavedFilter {
 
 interface UseSavedFiltersOptions {
   entityType: string;
-  onApply?: (filters: any) => void;
+  onApply?: (filters: unknown) => void;
 }
-
-// ============================================================
-// MOCK DATA (quando Supabase não está configurado)
-// ============================================================
-
-const mockFilters: SavedFilter[] = [
-  {
-    id: 'mock-1',
-    name: 'Filtro Padrão',
-    filters: { status: 'active' },
-    is_default: true,
-    created_at: new Date().toISOString(),
-    entity_type: 'default',
-  },
-];
 
 // ============================================================
 // HOOK PRINCIPAL
@@ -121,7 +106,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   // MUTATION - Deletar filtro
   // ============================================================
   const deleteFilterMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       // Proceed to delete
 
 
@@ -146,7 +131,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
   // MUTATION - Definir filtro padrão
   // ============================================================
   const setDefaultMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       // Proceed to set default
 
 

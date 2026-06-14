@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { AlertCircle, Inbox, Loader2, RefreshCw, ServerCrash } from 'lucide-react';
+import { Inbox, Loader2, RefreshCw, ServerCrash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 

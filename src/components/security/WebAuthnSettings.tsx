@@ -262,7 +262,7 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
                 <PasskeyItem
                   key={credential.id}
                   credential={credential}
-                  onDelete={(id: string) => (deletePasskey as any)(id)}
+                  onDelete={(id: string) => deletePasskey(id)}
                   onRename={renamePasskey}
                 />
               ))}
@@ -321,7 +321,7 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
                   </div>
                   <div className="p-4 bg-muted rounded-lg">
                     <p className="text-sm text-muted-foreground">
-                      Ao clicar em "Registrar", você será solicitado a usar sua impressão digital, 
+                      Ao clicar em &quot;Registrar&quot;, você será solicitado a usar sua impressão digital,
                       reconhecimento facial ou PIN do dispositivo.
                     </p>
                   </div>

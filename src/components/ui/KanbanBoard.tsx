@@ -36,6 +36,51 @@ export interface KanbanBoardProps {
 
 const priorityColors = { low: 'bg-blue-100 text-blue-800', medium: 'bg-yellow-100 text-yellow-800', high: 'bg-red-100 text-red-800' };
 
+interface DefaultCardProps {
+  card: KanbanCard;
+}
+
+function DefaultCard({ card }: DefaultCardProps) {
+  return (
+    <div className="space-y-2">
+      <h4 className="font-medium text-sm">{card.title}</h4>
+      {card.description && <p className="text-xs text-muted-foreground line-clamp-2">{card.description}</p>}
+      <div className="flex flex-wrap gap-1">
+        {card.labels?.map((label, i) => <Badge key={i} style={{ backgroundColor: label.color }} className="text-white text-xs">{label.text}</Badge>)}
+        {card.priority && <Badge className={priorityColors[card.priority]}>{card.priority}</Badge>}
+      </div>
+      {(card.assignee || card.dueDate) && (
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
+          {card.assignee && <span>{card.assignee.name}</span>}
+          {card.dueDate && <span>{card.dueDate.toLocaleDateString()}</span>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface KanbanCardItemProps {
+  card: KanbanCard;
+  columnId: string;
+  onDragStart: (cardId: string, columnId: string) => void;
+  onDragEnd: () => void;
+  onCardClick?: (card: KanbanCard, columnId: string) => void;
+  renderCard?: (card: KanbanCard) => React.ReactNode;
+}
+
+function KanbanCardItem({ card, columnId, onDragStart, onDragEnd, onCardClick, renderCard }: KanbanCardItemProps) {
+  return (
+    <Card className="cursor-pointer hover:shadow-md transition-shadow" draggable onDragStart={() => onDragStart(card.id, columnId)} onDragEnd={onDragEnd} onClick={() => onCardClick?.(card, columnId)}>
+      <CardContent className="p-3">
+        <div className="flex gap-2">
+          <GripVertical className="h-4 w-4 text-muted-foreground flex-shrink-0 cursor-grab" />
+          <div className="flex-1">{renderCard ? renderCard(card) : <DefaultCard card={card} />}</div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export function KanbanBoard({ columns, onCardMove, onCardClick, onAddCard, onColumnMenu, className, renderCard }: KanbanBoardProps) {
   const [draggedCard, setDraggedCard] = useState<{ cardId: string; columnId: string } | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
@@ -63,23 +108,6 @@ export function KanbanBoard({ columns, onCardMove, onCardClick, onAddCard, onCol
     setDragOverColumn(null);
   }, []);
 
-  const DefaultCard = ({ card }: { card: KanbanCard }) => (
-    <div className="space-y-2">
-      <h4 className="font-medium text-sm">{card.title}</h4>
-      {card.description && <p className="text-xs text-muted-foreground line-clamp-2">{card.description}</p>}
-      <div className="flex flex-wrap gap-1">
-        {card.labels?.map((label, i) => <Badge key={i} style={{ backgroundColor: label.color }} className="text-white text-xs">{label.text}</Badge>)}
-        {card.priority && <Badge className={priorityColors[card.priority]}>{card.priority}</Badge>}
-      </div>
-      {(card.assignee || card.dueDate) && (
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          {card.assignee && <span>{card.assignee.name}</span>}
-          {card.dueDate && <span>{card.dueDate.toLocaleDateString()}</span>}
-        </div>
-      )}
-    </div>
-  );
-
   return (
     <div className={cn('flex gap-4 overflow-x-auto pb-4', className)}>
       {columns.map(column => (
@@ -95,15 +123,16 @@ export function KanbanBoard({ columns, onCardMove, onCardClick, onAddCard, onCol
               </div>
             </CardHeader>
             <CardContent className="p-2 space-y-2 min-h-[200px]">
-              {column.cards.map(card => (
-                <Card key={card.id} className="cursor-pointer hover:shadow-md transition-shadow" draggable onDragStart={() => handleDragStart(card.id, column.id)} onDragEnd={handleDragEnd} onClick={() => onCardClick?.(card, column.id)}>
-                  <CardContent className="p-3">
-                    <div className="flex gap-2">
-                      <GripVertical className="h-4 w-4 text-muted-foreground flex-shrink-0 cursor-grab" />
-                      <div className="flex-1">{renderCard ? renderCard(card) : <DefaultCard card={card} />}</div>
-                    </div>
-                  </CardContent>
-                </Card>
+              {column.cards.map((card: KanbanCard) => (
+                <KanbanCardItem
+                  key={card.id}
+                  card={card}
+                  columnId={column.id}
+                  onDragStart={handleDragStart}
+                  onDragEnd={handleDragEnd}
+                  onCardClick={onCardClick}
+                  renderCard={renderCard}
+                />
               ))}
             </CardContent>
           </Card>

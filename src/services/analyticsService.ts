@@ -1,7 +1,5 @@
-import { supabase } from '@/integrations/supabase/client';
-
 export const analyticsService = {
-  async getDashboardMetrics(params?: { period?: string }) {
+  async getDashboardMetrics(_params?: { period?: string }) {
     // This could involve multiple queries to different tables
     // For now, providing a centralized place for this logic
     return {

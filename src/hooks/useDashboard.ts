@@ -29,8 +29,8 @@ export const useDashboardStats = () => {
         supabase.from('security_violations').select('id', { count: 'exact' }).eq('read', false),
       ]);
       
-      const employees = employeesRes.data || [];
-      const activeEmployees = employees.filter((e: any) => e.status === 'active').length;
+      const employees = (employeesRes.data || []) as Array<{ id: string; status: string | null }>;
+      const activeEmployees = employees.filter((e) => e.status === 'active').length;
       
       // Calculate a dummy productivity for now, or fetch from logs if available
       return {
@@ -59,7 +59,14 @@ export const useRecentAlerts = (limit = 4) => {
       if (!data || data.length === 0) return [];
 
       const now = Date.now();
-      return data.map((v: any) => {
+      const rows = data as Array<{
+        id: string;
+        violation_type: string | null;
+        severity: string | null;
+        created_at: string;
+        employee_name: string | null;
+      }>;
+      return rows.map((v) => {
         const diff = now - new Date(v.created_at).getTime();
         const mins = Math.floor(diff / 60000);
         const timeLabel = mins < 1 ? 'agora' : mins < 60 ? `${mins} min atrás` : `${Math.floor(mins / 60)}h atrás`;
@@ -89,7 +96,13 @@ export const useRecentActivity = (limit = 5) => {
       if (error) throw error;
       if (!data || data.length === 0) return [];
 
-      return data.map((item: any) => ({
+      const rows = data as Array<{
+        id: string;
+        employee_name: string | null;
+        recorded_date: string | null;
+        productive_time_seconds: number | null;
+      }>;
+      return rows.map((item) => ({
         id: item.id,
         user: item.employee_name || 'Desconhecido',
         action: `registrou ${Math.round((item.productive_time_seconds || 0) / 60)} min produtivo`,

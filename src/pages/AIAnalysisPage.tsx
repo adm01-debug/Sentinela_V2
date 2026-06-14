@@ -89,7 +89,7 @@ export default function AIAnalysisPage() {
 
       {/* Analyses List */}
       {analyses.length === 0 ? (
-        <Card><CardContent className="py-12 text-center text-muted-foreground"><Brain className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma análise encontrada. Clique "Nova Análise" para começar.</p></CardContent></Card>
+        <Card><CardContent className="py-12 text-center text-muted-foreground"><Brain className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma análise encontrada. Clique &quot;Nova Análise&quot; para começar.</p></CardContent></Card>
       ) : (
         <div className="space-y-4">
           {analyses.map(analysis => (

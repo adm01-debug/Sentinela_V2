@@ -8,7 +8,7 @@ interface UploadProgress {
 
 export function useFileUpload(url: string) {
   const [uploading, setUploading] = useState(false);
-  const [progress, setProgress] = useState<UploadProgress>({ loaded: 0, total: 0, percentage: 0 });
+  const [progress] = useState<UploadProgress>({ loaded: 0, total: 0, percentage: 0 });
   const [error, setError] = useState<Error | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 

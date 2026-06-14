@@ -29,7 +29,7 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { entityType, entityId, insightTypes = ["trend", "anomaly", "recommendation"] } = await req.json();
+    const { insightTypes = ["trend", "anomaly", "recommendation"] } = await req.json();
     const insights: Insight[] = [];
 
     // Fetch data for analysis

@@ -188,12 +188,20 @@ export function UserCard({
   if (variant === 'inline') {
     return (
       <div
+        role={onClick ? 'button' : undefined}
+        tabIndex={onClick ? 0 : undefined}
         className={cn(
           'flex items-center gap-2',
           onClick && 'cursor-pointer hover:opacity-80',
           className
         )}
         onClick={onClick}
+        onKeyDown={onClick ? (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick();
+          }
+        } : undefined}
       >
         <UserAvatar user={user} status={status} size="sm" showStatus={showStatus} />
         <span className="text-sm font-medium truncate">{user.name}</span>
@@ -204,12 +212,20 @@ export function UserCard({
   if (variant === 'compact') {
     return (
       <div
+        role={onClick ? 'button' : undefined}
+        tabIndex={onClick ? 0 : undefined}
         className={cn(
           'flex items-center gap-3 p-2 rounded-lg',
           onClick && 'cursor-pointer hover:bg-muted/50 transition-colors',
           className
         )}
         onClick={onClick}
+        onKeyDown={onClick ? (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick();
+          }
+        } : undefined}
       >
         <UserAvatar user={user} status={status} size="md" showStatus={showStatus} />
         <div className="flex-1 min-w-0">
@@ -224,12 +240,20 @@ export function UserCard({
 
   return (
     <div
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
       className={cn(
         'flex items-start gap-4 p-4 rounded-lg border bg-card',
         onClick && 'cursor-pointer hover:border-primary/50 transition-colors',
         className
       )}
       onClick={onClick}
+      onKeyDown={onClick ? (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      } : undefined}
     >
       <UserAvatar user={user} status={status} size="lg" showStatus={showStatus} />
       <div className="flex-1 min-w-0 space-y-1">
@@ -283,6 +307,8 @@ export function UserListItem({
 }: UserListItemProps) {
   return (
     <div
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
       className={cn(
         'flex items-center gap-3 p-3 rounded-lg transition-colors',
         onClick && 'cursor-pointer hover:bg-muted/50',
@@ -290,6 +316,12 @@ export function UserListItem({
         className
       )}
       onClick={onClick}
+      onKeyDown={onClick ? (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      } : undefined}
     >
       <UserAvatar user={user} status={status} size="md" />
       <div className="flex-1 min-w-0">

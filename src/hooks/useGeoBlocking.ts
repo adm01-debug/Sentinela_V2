@@ -159,7 +159,7 @@ export function useGeoBlocking() {
 
   // Remove country from whitelist
   const removeCountryMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('geo_blocks')
         .delete()

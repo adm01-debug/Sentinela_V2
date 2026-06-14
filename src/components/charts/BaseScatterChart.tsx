@@ -8,7 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  Cell,
 } from 'recharts';
 import { Target } from 'lucide-react';
 import { ChartTooltipContent } from './ChartTooltip';
@@ -22,7 +21,7 @@ export interface ScatterSeriesConfig {
 }
 
 interface BaseScatterChartProps {
-  data: any[];
+  data: Record<string, unknown>[];
   series: ScatterSeriesConfig[];
   xAxisKey?: string;
   yAxisKey?: string;
@@ -30,7 +29,7 @@ interface BaseScatterChartProps {
   height?: number;
   showGrid?: boolean;
   showLegend?: boolean;
-  valueFormatter?: (value: any) => string;
+  valueFormatter?: (value: number) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }

@@ -1,8 +1,6 @@
 import { Shield, Key, Lock, Smartphone } from 'lucide-react';
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -11,7 +9,6 @@ import { BlockedIPsPanel } from '@/components/BlockedIPsPanel';
 
 export default function SecuritySettingsPage() {
   const { toast } = useToast();
-  const [twoFactor, setTwoFactor] = useState(false);
 
   return (
     <div className="p-6 space-y-6">

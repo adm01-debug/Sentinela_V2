@@ -1,5 +1,4 @@
 import log from 'electron-log';
-import { globalShortcut } from 'electron';
 import { CONFIG } from '../config';
 import { DataSender } from './dataSender';
 
@@ -20,9 +19,10 @@ export class KeystrokeService {
     // Use a polling approach for keystroke counting
     // iohook provides low-level keyboard hooks on Windows
     try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires -- optional native module, may be absent at runtime
       const ioHook = require('iohook');
-      
-      ioHook.on('keydown', (event: { keycode: number; rawcode: number }) => {
+
+      ioHook.on('keydown', (_event: { keycode: number; rawcode: number }) => {
         this.keystrokeCount++;
         this.updateActiveWindow();
       });
@@ -44,6 +44,7 @@ export class KeystrokeService {
     }
     
     try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires -- optional native module, may be absent at runtime
       const ioHook = require('iohook');
       ioHook.stop();
     } catch {

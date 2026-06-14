@@ -32,7 +32,7 @@ interface BaseBarChartProps {
   showLegend?: boolean;
   colorByIndex?: boolean;
   colors?: string[];
-  valueFormatter?: (value: any) => string;
+  valueFormatter?: (value: number) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }

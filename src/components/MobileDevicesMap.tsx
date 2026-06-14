@@ -17,7 +17,7 @@ interface MobileDevicesMapProps {
   onDeviceClick?: (device: MobileDevice) => void;
 }
 
-export function MobileDevicesMap({ devices = [], selectedDeviceId, onDeviceClick }: MobileDevicesMapProps) {
+export function MobileDevicesMap({ devices = [], selectedDeviceId: _selectedDeviceId, onDeviceClick: _onDeviceClick }: MobileDevicesMapProps) {
   return (
     <div className="h-full bg-muted rounded-lg flex items-center justify-center">
       <div className="text-center text-muted-foreground">

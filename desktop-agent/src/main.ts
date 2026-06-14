@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { app, BrowserWindow, Tray, Menu, globalShortcut, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain } from 'electron';
 import log from 'electron-log';
 import Store from 'electron-store';
 import AutoLaunch from 'auto-launch';

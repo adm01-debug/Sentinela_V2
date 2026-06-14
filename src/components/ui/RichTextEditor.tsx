@@ -85,7 +85,7 @@ export function RichTextEditor({ value = '', onChange, placeholder = 'Start typi
         <ToolbarButton icon={<Undo className="h-4 w-4" />} onClick={() => execCommand('undo')} title="Undo (Ctrl+Z)" disabled={disabled} />
         <ToolbarButton icon={<Redo className="h-4 w-4" />} onClick={() => execCommand('redo')} title="Redo (Ctrl+Shift+Z)" disabled={disabled} />
       </div>
-      <div ref={editorRef} contentEditable={!disabled} className={cn('p-4 outline-none overflow-auto prose prose-sm max-w-none', 'focus:outline-none')} style={{ minHeight, maxHeight }} onInput={handleInput} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} onKeyDown={handleKeyDown} dangerouslySetInnerHTML={{ __html: value }} data-placeholder={placeholder} />
+      <div ref={editorRef} role="textbox" aria-multiline="true" tabIndex={disabled ? -1 : 0} contentEditable={!disabled} className={cn('p-4 outline-none overflow-auto prose prose-sm max-w-none', 'focus:outline-none')} style={{ minHeight, maxHeight }} onInput={handleInput} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} onKeyDown={handleKeyDown} dangerouslySetInnerHTML={{ __html: value }} data-placeholder={placeholder} />
       <style>{`[data-placeholder]:empty:before { content: attr(data-placeholder); color: #9ca3af; pointer-events: none; }`}</style>
     </div>
   );

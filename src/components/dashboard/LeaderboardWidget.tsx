@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 interface LeaderboardItem { id: string; name: string; avatar?: string; score: number; change?: number; badge?: string; }
 
 export function LeaderboardWidget({ items, title = 'Leaderboard', className }: { items: LeaderboardItem[]; title?: string; className?: string }) {
-  const rankIcons = [<Trophy className="h-5 w-5 text-yellow-500" />, <Medal className="h-5 w-5 text-gray-400" />, <Award className="h-5 w-5 text-amber-600" />];
+  const rankIcons = [<Trophy key="trophy" className="h-5 w-5 text-yellow-500" />, <Medal key="medal" className="h-5 w-5 text-gray-400" />, <Award key="award" className="h-5 w-5 text-amber-600" />];
   const sorted = [...items].sort((a, b) => b.score - a.score);
 
   return (

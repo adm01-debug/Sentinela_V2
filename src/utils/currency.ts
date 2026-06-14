@@ -31,8 +31,7 @@ export function formatCurrency(
 
 export function parseCurrency(value: string, locale: string = 'pt-BR'): number {
   const decimalSeparator = locale.startsWith('pt') ? ',' : '.';
-  const thousandsSeparator = locale.startsWith('pt') ? '.' : ',';
-  
+
   const cleaned = value
     .replace(/[^\d,.-]/g, '')
     .replace(new RegExp(`\${thousandsSeparator}`, 'g'), '')

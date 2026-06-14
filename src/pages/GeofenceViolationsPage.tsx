@@ -121,10 +121,11 @@ export default function GeofenceViolationsPage() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <label className="text-xs font-medium text-muted-foreground">Colaborador</label>
+              <label htmlFor="geofence-employee-filter" className="text-xs font-medium text-muted-foreground">Colaborador</label>
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
+                  id="geofence-employee-filter"
                   placeholder="Nome do colaborador..."
                   className="pl-8"
                   value={employeeFilter}
@@ -133,10 +134,11 @@ export default function GeofenceViolationsPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-medium text-muted-foreground">Dispositivo</label>
+              <label htmlFor="geofence-device-filter" className="text-xs font-medium text-muted-foreground">Dispositivo</label>
               <div className="relative">
                 <Smartphone className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
+                  id="geofence-device-filter"
                   placeholder="Modelo ou ID do dispositivo..."
                   className="pl-8"
                   value={deviceFilter}
@@ -145,7 +147,7 @@ export default function GeofenceViolationsPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-medium text-muted-foreground">Período</label>
+              <span className="text-xs font-medium text-muted-foreground">Período</span>
               <DateRangePicker
                 value={dateRange.from && dateRange.to ? { from: dateRange.from, to: dateRange.to } : undefined}
                 onChange={(range) => setDateRange({ from: range?.from, to: range?.to })}

@@ -14,8 +14,8 @@ export function useSSE<T>(url: string) {
       setError(new Error("SSE connection error"));
       setConnected(false);
     };
-    sourceRef.current.onmessage = (e: any) => {
-      setData(JSON.parse(e.data));
+    sourceRef.current.onmessage = (e: MessageEvent<string>) => {
+      setData(JSON.parse(e.data) as T);
     };
   }, [url]);
 

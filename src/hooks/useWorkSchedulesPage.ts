@@ -65,22 +65,36 @@ const initialAssignForm: AssignFormData = {
 
 export function useWorkSchedulesPage() {
   const schedulesQuery = useWorkSchedules();
-  const schedules = (schedulesQuery.data || []) as WorkSchedule[];
-  const employeeSchedules: Array<{ employee_id: string; schedule_id: string; id: string; effective_from: string; [key: string]: unknown }> = [];
-  const overtimeRequests: Array<{ id: string; status: string; employee_name?: string; reason?: string; hours?: number; [key: string]: unknown }> = [];
-  const blockLogs: Array<{ id: string; blocked_at: string; [key: string]: unknown }> = [];
+  const schedules = useMemo(
+    () => (schedulesQuery.data || []) as WorkSchedule[],
+    [schedulesQuery.data]
+  );
+  const employeeSchedules = useMemo<
+    Array<{ employee_id: string; schedule_id: string; id: string; effective_from: string; [key: string]: unknown }>
+  >(() => [], []);
+  const overtimeRequests = useMemo<
+    Array<{ id: string; status: string; employee_name?: string; reason?: string; hours?: number; [key: string]: unknown }>
+  >(() => [], []);
+  const blockLogs = useMemo<Array<{ id: string; blocked_at: string; [key: string]: unknown }>>(
+    () => [],
+    []
+  );
   const loading = schedulesQuery.isLoading;
-  const addSchedule = async (_data: ScheduleFormData) => {};
-  const updateSchedule = async (_id: string, _data: Partial<ScheduleFormData>) => {};
-  const deleteSchedule = async (_id) => {};
-  const assignSchedule = async (employeeId: string, scheduleId?: string, effectiveDate?: string) => {
-    const _assignData = { employee_id: employeeId, schedule_id: scheduleId || '', effective_date: effectiveDate || '' };
-  };
-  const removeEmployeeSchedule = async (_id) => {};
-  const updateOvertimeRequest = async (_id: string, _status: string) => {};
-  
+  const addSchedule = useCallback(async (_data: ScheduleFormData) => {}, []);
+  const updateSchedule = useCallback(async (_id: string, _data: Partial<ScheduleFormData>) => {}, []);
+  const deleteSchedule = useCallback(async (_id: string) => {}, []);
+  const assignSchedule = useCallback(
+    async (_employeeId: string, _scheduleId?: string, _effectiveDate?: string) => {},
+    []
+  );
+  const removeEmployeeSchedule = useCallback(async (_id: string) => {}, []);
+  const updateOvertimeRequest = useCallback(async (_id: string, _status: string) => {}, []);
+
   const employeesQuery = useEmployees();
-  const employees = (employeesQuery.data || []) as Array<{ id: string; name: string }>;
+  const employees = useMemo(
+    () => (employeesQuery.data || []) as Array<{ id: string; name: string }>,
+    [employeesQuery.data]
+  );
   
   // Enable realtime notifications
   useOvertimeNotifications();
@@ -214,16 +228,16 @@ export function useWorkSchedulesPage() {
     setIsAssignDialogOpen(false);
   }, [assignForm, assignSchedule, resetAssignForm]);
 
-  const handleRemoveAssignment = useCallback(async (assignmentId) => {
+  const handleRemoveAssignment = useCallback(async (assignmentId: string) => {
     await removeEmployeeSchedule(assignmentId);
   }, [removeEmployeeSchedule]);
 
   // Overtime handlers
-  const handleApproveOvertime = useCallback(async (requestId) => {
+  const handleApproveOvertime = useCallback(async (requestId: string) => {
     await updateOvertimeRequest(requestId, 'approved');
   }, [updateOvertimeRequest]);
 
-  const handleRejectOvertime = useCallback(async (requestId) => {
+  const handleRejectOvertime = useCallback(async (requestId: string) => {
     await updateOvertimeRequest(requestId, 'rejected');
   }, [updateOvertimeRequest]);
 
@@ -263,7 +277,7 @@ export function useWorkSchedulesPage() {
   }, [resetAssignForm]);
 
   // Toggle work day
-  const toggleWorkDay = useCallback((day) => {
+  const toggleWorkDay = useCallback((day: number) => {
     setScheduleForm(prev => ({
       ...prev,
       work_days: prev.work_days.includes(day)

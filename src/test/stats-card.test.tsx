@@ -1,18 +1,19 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Users, Shield, Activity, AlertTriangle } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { Users, AlertTriangle } from 'lucide-react';
 import { StatsCard } from '@/components/Cards/StatsCard';
 
 // Mock recharts to avoid canvas issues
 vi.mock('recharts', () => ({
-  ResponsiveContainer: ({ children }: any) => <div data-testid="responsive-container">{children}</div>,
-  AreaChart: ({ children }: any) => <div data-testid="area-chart">{children}</div>,
+  ResponsiveContainer: ({ children }: { children?: ReactNode }) => <div data-testid="responsive-container">{children}</div>,
+  AreaChart: ({ children }: { children?: ReactNode }) => <div data-testid="area-chart">{children}</div>,
   Area: () => <div data-testid="area" />,
 }));
 
 // Mock useCountUp to return instant values
 vi.mock('@/hooks/useCountUp', () => ({
-  useCountUp: ({ end, prefix = '', suffix = '', decimals = 0, separator = '' }: any) => ({
+  useCountUp: ({ end, prefix = '', suffix = '', decimals = 0 }: { end: number; prefix?: string; suffix?: string; decimals?: number; separator?: string }) => ({
     ref: { current: null },
     value: end,
     formatted: `${prefix}${end.toFixed(decimals)}${suffix}`,

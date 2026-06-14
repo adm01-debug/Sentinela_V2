@@ -19,7 +19,7 @@ export function LocationMap({
   latitude,
   longitude,
   locations = [],
-  onLocationSelect,
+  onLocationSelect: _onLocationSelect,
   className,
 }: LocationMapProps) {
   return (

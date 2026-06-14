@@ -1,5 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Role {
@@ -13,8 +13,6 @@ interface Role {
 }
 
 export function useRoles(userRoles: string[] = []) {
-  const queryClient = useQueryClient();
-
   const rolesQuery = useQuery({
     queryKey: ['roles'],
     queryFn: async (): Promise<Role[]> => {
@@ -40,7 +38,7 @@ export function useRoles(userRoles: string[] = []) {
             .from('permissions')
             .select('name')
             .in('id', permissionIds);
-          permissionNames = (perms ?? []).map((p: any) => p.name);
+          permissionNames = (perms ?? []).map((p: { name: string }) => p.name);
         }
 
         // Count users with this role

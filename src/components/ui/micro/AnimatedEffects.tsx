@@ -41,6 +41,7 @@ export function AnimatedCounter({ value, duration = 1000, formatValue = (v) => v
       if (progress < 1) requestAnimationFrame(animate);
     };
     requestAnimationFrame(animate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- displayValue is read only as the animation's starting point; including it would restart the tween every frame
   }, [value, duration]);
   return <span className={className}>{formatValue(displayValue)}</span>;
 }

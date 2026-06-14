@@ -39,6 +39,27 @@ export interface ProductivityFilters {
   sortOrder?: 'asc' | 'desc';
 }
 
+interface EmployeeRow {
+  id: string;
+  name: string;
+  department: string | null;
+}
+
+interface ProductivityLogRow {
+  employee_name: string | null;
+  productive_time_seconds: number | null;
+  unproductive_time_seconds: number | null;
+  neutral_time_seconds: number | null;
+}
+
+interface ViolationRow {
+  employee_name: string | null;
+}
+
+interface DepartmentRow {
+  department: string | null;
+}
+
 // ============================================================
 // QUERIES
 // ============================================================
@@ -73,13 +94,15 @@ export function useProductivityData(filters?: ProductivityFilters) {
         .lte('created_at', until);
 
       // Calculate productivity for each employee
-      const productivityData: EmployeeProductivity[] = employees.map((emp: any) => {
-        const empLogs = prodLogs?.filter((l: any) => l.employee_name === emp.name) || [];
-        const empViolations = violations?.filter((v: any) => v.employee_name === emp.name) || [];
+      const logRows = (prodLogs ?? []) as ProductivityLogRow[];
+      const violationRows = (violations ?? []) as ViolationRow[];
+      const productivityData: EmployeeProductivity[] = (employees as EmployeeRow[]).map((emp) => {
+        const empLogs = logRows.filter((l) => l.employee_name === emp.name);
+        const empViolations = violationRows.filter((v) => v.employee_name === emp.name);
 
-        const productiveTime = empLogs.reduce((sum: number, l: any) => sum + (Number(l.productive_time_seconds) || 0), 0) / 3600;
-        const unproductiveTime = empLogs.reduce((sum: number, l: any) => sum + (Number(l.unproductive_time_seconds) || 0), 0) / 3600;
-        const neutralTime = empLogs.reduce((sum: number, l: any) => sum + (Number(l.neutral_time_seconds) || 0), 0) / 3600;
+        const productiveTime = empLogs.reduce((sum: number, l) => sum + (Number(l.productive_time_seconds) || 0), 0) / 3600;
+        const unproductiveTime = empLogs.reduce((sum: number, l) => sum + (Number(l.unproductive_time_seconds) || 0), 0) / 3600;
+        const neutralTime = empLogs.reduce((sum: number, l) => sum + (Number(l.neutral_time_seconds) || 0), 0) / 3600;
 
         const totalTime = productiveTime + unproductiveTime + neutralTime;
         const activityRatio = totalTime > 0 ? productiveTime / totalTime : 0;
@@ -89,7 +112,7 @@ export function useProductivityData(filters?: ProductivityFilters) {
         return {
           id: emp.id,
           full_name: emp.name,
-          department: emp.department,
+          department: emp.department ?? undefined,
           team: undefined,
           productivity_score: Math.round(score),
           active_time_hours: Math.round(productiveTime * 10) / 10,
@@ -181,7 +204,7 @@ export function useDepartments() {
         .not('department', 'is', null);
 
       if (error) throw error;
-      return [...new Set(data.map((e: any) => e.department))].filter(Boolean) as string[];
+      return [...new Set((data as DepartmentRow[]).map((e) => e.department))].filter(Boolean) as string[];
     },
   });
 }

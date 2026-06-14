@@ -18,7 +18,9 @@ export function useDrop<T>(onDrop: (data: T) => void) {
     try {
       const data = JSON.parse(e.dataTransfer.getData("text/plain")) as T;
       onDrop(data);
-    } catch {}
+    } catch {
+      // Ignore invalid drop payloads that aren't valid JSON
+    }
   }, [onDrop]);
 
   return {

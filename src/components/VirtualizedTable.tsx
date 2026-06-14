@@ -61,7 +61,19 @@ function VirtualizedTableInner<T>({
             onRowClick && 'cursor-pointer',
             rowClass
           )}
+          role={onRowClick ? 'button' : undefined}
+          tabIndex={onRowClick ? 0 : undefined}
           onClick={() => onRowClick?.(item, index)}
+          onKeyDown={
+            onRowClick
+              ? (e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onRowClick(item, index);
+                  }
+                }
+              : undefined
+          }
           style={{ height: rowHeight }}
         >
           {columns.map((column) => (

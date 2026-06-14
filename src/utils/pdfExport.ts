@@ -1,10 +1,25 @@
-// @ts-nocheck
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { format, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { colors, chartColors, drawRoundedRect, drawMetricCard, drawHorizontalBarChart, drawPieChart, drawLegend, drawAreaChart, type RGB } from './pdf/pdfHelpers';
-import type { ReportData } from '@/data/reportData';
+
+// Shape consumed by the PDF generator (distinct from the lightweight
+// '@/data/reportData' summary type used elsewhere in the UI).
+export interface ReportData {
+  period: { start: Date; end: Date };
+  department: string;
+  summary: {
+    totalEmployees: number;
+    avgProductivity: number;
+    totalAlerts: number;
+    blockedAttempts: number;
+  };
+  alertsByType: Array<{ type: string; count: number }>;
+  productivityByDepartment: Array<{ department: string; score: number; employees: number }>;
+  topAlertEmployees: Array<{ name: string; department: string; alerts: number }>;
+  dailyActivity: Array<{ date: string; productive: number; neutral: number; unproductive: number }>;
+}
 
 export const generatePDF = (reportData: ReportData) => {
   const doc = new jsPDF();

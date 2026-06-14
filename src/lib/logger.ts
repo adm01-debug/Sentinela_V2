@@ -42,7 +42,9 @@ function log(level: LogLevel, message: string, context?: string, ...args: unknow
   const logArgs: unknown[] = [formatted, ...args];
 
   switch (level) {
+    // eslint-disable-next-line no-console -- central logger intentionally writes to console
     case 'debug': console.debug(...logArgs); break;
+    // eslint-disable-next-line no-console -- central logger intentionally writes to console
     case 'info':  console.info(...logArgs); break;
     case 'warn':  console.warn(...logArgs); break;
     case 'error': console.error(...logArgs); break;

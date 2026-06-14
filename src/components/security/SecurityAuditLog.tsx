@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { Shield, AlertTriangle, CheckCircle, XCircle, Clock, User, Lock, Key, Globe } from 'lucide-react';
+import { useState } from 'react';
+import { Shield, CheckCircle, XCircle, Clock, User, Lock, Key, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

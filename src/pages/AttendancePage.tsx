@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Search, CalendarDays, UserCheck, UserX, Clock, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Search, CalendarDays, UserCheck, UserX, AlertTriangle, TrendingUp } from 'lucide-react';
 import { format, subDays, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
@@ -89,7 +89,7 @@ function AttendancePage() {
     return matchSearch !== false && matchStatus;
   });
 
-  const stats = {
+  const stats = useMemo(() => ({
     total: allRecords.length,
     present: allRecords.filter((r) => r.status === 'present').length,
     late: allRecords.filter((r) => r.status === 'late' || (r.late_minutes || 0) > 0).length,
@@ -98,7 +98,7 @@ function AttendancePage() {
       ? Math.round(allRecords.reduce((sum: number, r) => sum + (r.total_worked_minutes || 0), 0) / allRecords.length / 60 * 10) / 10
       : 0,
     totalOvertime: Math.round(allRecords.reduce((sum: number, r) => sum + (r.overtime_minutes || 0), 0) / 60),
-  };
+  }), [allRecords]);
 
   const presenceRate = stats.total > 0 ? Math.round((stats.present / stats.total) * 100) : 0;
 

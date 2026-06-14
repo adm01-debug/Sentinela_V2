@@ -254,7 +254,7 @@ function EmployeeTableComponent({
         </div>
       ),
     },
-  ], [t, getInitials, getTeamName, onAssignDevice, onEdit, onDelete, onUnassignDevice]);
+  ], [t, getTeamName, onAssignDevice, onEdit, onDelete, onUnassignDevice]);
 
   if (employees.length === 0) {
     return (

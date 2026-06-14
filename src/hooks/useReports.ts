@@ -38,7 +38,7 @@ export const useReport = (id: string | null | undefined) => {
 export const useDeleteReport = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: any) => reportService.deleteReport(id),
+    mutationFn: (id: string) => reportService.deleteReport(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['reports'] }); },
   });
 };

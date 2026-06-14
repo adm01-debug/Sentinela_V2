@@ -30,7 +30,7 @@ import { cn } from '@/lib/utils';
 interface SavedFiltersBarProps {
   module: string;
   currentFilters: unknown;
-  onApplyFilter: (filters: any) => void;
+  onApplyFilter: (filters: unknown) => void;
   className?: string;
 }
 
@@ -61,6 +61,9 @@ function SavedFiltersBarBase({
       setSelectedFilter(defaultFilter.id);
       onApplyFilter(defaultFilter.filters as Record<string, unknown>);
     }
+    // Intentionally apply the default filter only when it becomes available; including
+    // selectedFilter/onApplyFilter would re-trigger and break the apply-once-on-mount behavior
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultFilter]);
 
   const handleSaveFilter = () => {
@@ -174,8 +177,9 @@ function SavedFiltersBarBase({
           
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Nome do filtro</label>
+              <label htmlFor="saved-filter-name" className="text-sm font-medium">Nome do filtro</label>
               <Input
+                id="saved-filter-name"
                 placeholder="Ex: Funcionários ativos do RH"
                 value={newFilterName}
                 onChange={(e) => setNewFilterName(e.target.value)}

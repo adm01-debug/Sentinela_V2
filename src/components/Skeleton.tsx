@@ -6,6 +6,7 @@ import { Skeleton as UISkeleton } from "@/components/ui/skeleton";
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   height?: number;
   width?: number;
+  style?: React.CSSProperties;
 };
 
 /**

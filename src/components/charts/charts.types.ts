@@ -1,7 +1,5 @@
-import { ReactNode } from 'react';
-
 export interface BaseChartProps {
-  data: any[];
+  data: Record<string, unknown>[];
   height?: number | string;
   width?: number | string;
   title?: string;

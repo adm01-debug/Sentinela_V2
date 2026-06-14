@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import { useRef, useState, useCallback, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface VirtualizedListProps<T> {

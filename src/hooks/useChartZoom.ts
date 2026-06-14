@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 
 export interface ZoomState {
   domain: { x: [number, number]; y: [number, number] } | null;

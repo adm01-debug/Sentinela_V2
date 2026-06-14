@@ -24,13 +24,13 @@ vi.mock("react-router-dom", async () => {
 // Mock framer-motion to avoid animation issues in tests
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
-    h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
-    h3: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
-    p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
+    div: ({ children, ...props }: React.ComponentProps<"div">) => <div {...props}>{children}</div>,
+    h1: ({ children, ...props }: React.ComponentProps<"h1">) => <h1 {...props}>{children}</h1>,
+    h2: ({ children, ...props }: React.ComponentProps<"h2">) => <h2 {...props}>{children}</h2>,
+    h3: ({ children, ...props }: React.ComponentProps<"h3">) => <h3 {...props}>{children}</h3>,
+    p: ({ children, ...props }: React.ComponentProps<"p">) => <p {...props}>{children}</p>,
   },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
+  AnimatePresence: ({ children }: { children?: React.ReactNode }) => <>{children}</>,
 }));
 
 // Mock useAuthPage

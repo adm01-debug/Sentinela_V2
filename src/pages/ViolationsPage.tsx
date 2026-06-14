@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useViolationsPage, type Violation, type ViolationStatus } from '@/hooks/useViolationsPage';
+import { useViolationsPage, type ViolationStatus } from '@/hooks/useViolationsPage';
 import { useChartColors } from '@/hooks/useChartColors';
 
 const severityColors: Record<string, string> = {
@@ -249,12 +249,12 @@ export default function ViolationsPage() {
           {selectedViolation && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div><label className="text-sm text-muted-foreground">Funcionário</label><p className="font-medium">{selectedViolation.employee_name}</p></div>
-                <div><label className="text-sm text-muted-foreground">Severidade</label><Badge className={severityColors[selectedViolation.severity]}>{selectedViolation.severity}</Badge></div>
-                <div><label className="text-sm text-muted-foreground">Tipo</label><p>{VIOLATION_TYPES.find(t => t.value === selectedViolation.violation_type)?.label}</p></div>
-                <div><label className="text-sm text-muted-foreground">Status</label><div className="flex items-center gap-1">{statusIcons[selectedViolation.status]} <span className="capitalize">{selectedViolation.status}</span></div></div>
-                <div className="col-span-2"><label className="text-sm text-muted-foreground">Data</label><p>{format(new Date(selectedViolation.created_at), "dd/MM/yyyy 'às' HH:mm:ss", { locale: ptBR })}</p></div>
-                <div className="col-span-2"><label className="text-sm text-muted-foreground">Descrição</label><p>{selectedViolation.description || 'Sem descrição'}</p></div>
+                <div><span className="text-sm text-muted-foreground">Funcionário</span><p className="font-medium">{selectedViolation.employee_name}</p></div>
+                <div><span className="text-sm text-muted-foreground">Severidade</span><Badge className={severityColors[selectedViolation.severity]}>{selectedViolation.severity}</Badge></div>
+                <div><span className="text-sm text-muted-foreground">Tipo</span><p>{VIOLATION_TYPES.find(t => t.value === selectedViolation.violation_type)?.label}</p></div>
+                <div><span className="text-sm text-muted-foreground">Status</span><div className="flex items-center gap-1">{statusIcons[selectedViolation.status]} <span className="capitalize">{selectedViolation.status}</span></div></div>
+                <div className="col-span-2"><span className="text-sm text-muted-foreground">Data</span><p>{format(new Date(selectedViolation.created_at), "dd/MM/yyyy 'às' HH:mm:ss", { locale: ptBR })}</p></div>
+                <div className="col-span-2"><span className="text-sm text-muted-foreground">Descrição</span><p>{selectedViolation.description || 'Sem descrição'}</p></div>
               </div>
               {selectedViolation.status === 'open' && <Button className="w-full" onClick={() => { setIsDetailsOpen(false); handleOpenResolve(selectedViolation); }}>Resolver Violação</Button>}
             </div>
@@ -267,7 +267,7 @@ export default function ViolationsPage() {
         <DialogContent>
           <DialogHeader><DialogTitle>Resolver Violação</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            <div><label className="text-sm font-medium">Notas de Resolução</label><Textarea placeholder="Descreva as ações tomadas..." value={resolutionNotes} onChange={e => setResolutionNotes(e.target.value)} rows={4} /></div>
+            <div><label htmlFor="resolution-notes" className="text-sm font-medium">Notas de Resolução</label><Textarea id="resolution-notes" placeholder="Descreva as ações tomadas..." value={resolutionNotes} onChange={e => setResolutionNotes(e.target.value)} rows={4} /></div>
           </div>
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={() => handleResolve('dismissed' as ViolationStatus)} disabled={isResolving}>Descartar</Button>

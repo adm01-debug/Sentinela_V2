@@ -20,7 +20,7 @@ const statusVariants: Record<string, 'default' | 'secondary' | 'destructive'> = 
 const ReportListBase = ({ reports, isLoading }: Props) => {
   if (isLoading) return <div className="space-y-2">{[1, 2, 3].map(i => <Skeleton key={i} className="h-12" />)}</div>;
 
-  const handleDownload = (id: string) => {
+  const handleDownload = (_id: string) => {
     toast.info('Download de relatórios será implementado em breve');
   };
 

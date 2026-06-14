@@ -28,6 +28,15 @@ export interface RuleFormData {
   is_active: boolean;
 }
 
+interface InternetAccessSettingsRow {
+  id: string;
+  employee_name: string;
+  notes: string | null;
+  access_level: string | null;
+  blocked_sites: string[] | null;
+  created_at: string;
+}
+
 export const URL_CATEGORIES = [
   { value: 'social', label: 'Redes Sociais' },
   { value: 'streaming', label: 'Streaming' },
@@ -69,23 +78,23 @@ export function useInternetAccessPage() {
         .order('employee_name');
       if (error) throw error;
       // Map to expected interface
-      return (data || []).map((item: any) => ({
+      return ((data || []) as InternetAccessSettingsRow[]).map((item) => ({
         id: item.id,
         name: `Regra - ${item.employee_name}`,
         description: item.notes || '',
         type: item.access_level === 'blocked' ? 'block' : 'allow' as 'block' | 'allow',
         target_type: 'domain' as const,
-        target_value: (item.blocked_sites as string[] | null)?.join(', ') || '',
+        target_value: item.blocked_sites?.join(', ') || '',
         applies_to: 'employees' as const,
         is_active: true,
         created_at: item.created_at,
-        blocked_count: (item.blocked_sites as string[] | null)?.length || 0,
+        blocked_count: item.blocked_sites?.length || 0,
       })) as InternetAccessRule[];
     },
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: RuleFormData) => {
       const { error } = await supabase.from('internet_access_rules').insert(data);
       if (error) throw error;
     },
@@ -115,7 +124,7 @@ export function useInternetAccessPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('internet_access_rules').delete().eq('id', id);
       if (error) throw error;
     },

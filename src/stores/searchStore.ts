@@ -61,7 +61,7 @@ const MAX_RECENT_RESULTS = 5;
 export const useSearchStore = create<SearchState>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set, _get) => ({
         isOpen: false,
         query: '',
         results: [],

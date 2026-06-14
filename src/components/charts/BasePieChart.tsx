@@ -2,7 +2,6 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recha
 import { PieChart as PieIcon } from 'lucide-react';
 import { ChartTooltipContent } from './ChartTooltip';
 import { ChartEmptyState } from './ChartEmptyState';
-import { useChartColors } from '@/hooks/useChartColors';
 
 interface PieDataItem {
   name: string;
@@ -16,7 +15,7 @@ interface BasePieChartProps {
   showLabel?: boolean;
   showLegend?: boolean;
   colors?: string[];
-  valueFormatter?: (value: any) => string;
+  valueFormatter?: (value: number) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }
@@ -41,8 +40,6 @@ export function BasePieChart({
   emptyTitle,
   emptyDescription,
 }: BasePieChartProps) {
-  const chartColors = useChartColors();
-
   if (!data.length) {
     return <ChartEmptyState icon={PieIcon} title={emptyTitle} description={emptyDescription} height={height} />;
   }

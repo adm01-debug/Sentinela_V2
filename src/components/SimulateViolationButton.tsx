@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bug, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';

@@ -1,7 +1,6 @@
 import React, { Suspense, memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { Shield, AppWindow, Bell, UserCog, Search, Loader2 } from 'lucide-react';
+import { Shield, AppWindow, Bell, UserCog, Search } from 'lucide-react';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -21,14 +20,13 @@ import { SettingsSkeleton } from '@/components/PageSkeletons';
 
 const SettingsContent = memo(function SettingsContent() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const settingsQuery = useSettingsHook();
   const settingsData = settingsQuery.data as Record<string, unknown> | null;
   const loading = settingsQuery.isLoading;
   const policies = (settingsData?.policies || []) as SecurityPolicy[];
   const appRules = ((settingsData?.appRules || settingsData?.applicationRules || []) as ApplicationRule[]);
-  const updatePolicy = (id: string, enabled: boolean) => {};
-  const updateAppRule = (id: string, status: string) => {};
+  const updatePolicy = (_id: string, _enabled: boolean) => {};
+  const updateAppRule = (_id: string, _status: string) => {};
   const addAppRule = async (_name: string, _cat: string, _status: 'allowed' | 'blocked' | 'monitored') => true;
   const deleteAppRule = async (_id: string) => true;
   const editAppRule = async (_id: string, _name: string, _cat: string) => true;

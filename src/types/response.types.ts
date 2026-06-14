@@ -1,4 +1,4 @@
-export interface ApiResponse<T = any> { data: T; success: boolean; message?: string; meta?: ResponseMeta; }
+export interface ApiResponse<T = unknown> { data: T; success: boolean; message?: string; meta?: ResponseMeta; }
 export interface ResponseMeta { requestId: string; timestamp: string; duration: number; }
 export interface PaginatedResponse<T> { data: T[]; pagination: PaginationMeta; }
 export interface PaginationMeta { page: number; pageSize: number; total: number; totalPages: number; hasNext: boolean; hasPrev: boolean; }

@@ -1,4 +1,4 @@
-import { AlertTriangle, Printer, Usb, HardDrive, Eye, AppWindow } from 'lucide-react';
+import { Printer, Usb, HardDrive, Eye, AppWindow } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Alert } from '@/data/mockData';
 

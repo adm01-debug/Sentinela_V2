@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { PieChart, BarChart3, TrendingUp, Percent } from 'lucide-react';
+import { PieChart, BarChart3 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
 
 interface Distribution { label: string; value: number; color: string; }
 

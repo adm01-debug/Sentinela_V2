@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface Screenshot { 
   id: string; 
@@ -20,10 +20,18 @@ export const ScreenshotGallery = ({ screenshots }: Props) => {
     <>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {screenshots.map(ss => (
-          <div 
-            key={ss.id} 
-            className="cursor-pointer rounded-lg overflow-hidden bg-muted" 
+          <div
+            key={ss.id}
+            role="button"
+            tabIndex={0}
+            className="cursor-pointer rounded-lg overflow-hidden bg-muted"
             onClick={() => setSelected(ss)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelected(ss);
+              }
+            }}
           >
             <img src={ss.thumbnailUrl} alt="" className="w-full h-32 object-cover" />
             <div className="p-2 text-sm text-muted-foreground">

@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { queryKeys, queryPresets } from '@/lib/queryClient';
 
 // ============================================================
 // TYPES
@@ -160,9 +160,9 @@ export function useUpdateViolationComment() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.violations.comments(data.violation_id) 
+    onSuccess: (data: { violation_id: string }) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.violations.comments(data.violation_id)
       });
       toast({
         title: 'Comentário atualizado',

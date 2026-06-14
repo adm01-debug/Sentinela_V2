@@ -2,7 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
-import { validateInput, createValidationErrorResponse, getApiVersion } from '../_shared/validation.ts';
+import { validateInput, createValidationErrorResponse } from '../_shared/validation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -128,7 +128,6 @@ serve(async (req) => {
       );
     }
 
-    const apiVersion = getApiVersion(req);
     const body = await req.json();
     
     const validationResult = validateInput(MobileDataSchema, body);
@@ -136,26 +135,12 @@ serve(async (req) => {
       return createValidationErrorResponse(validationResult.error, validationResult.details, corsHeaders);
     }
 
-    const { location, battery, apps, network, timestamp } = validationResult.data;
+    const { location, apps, timestamp } = validationResult.data;
     
     // Use authenticated values - IGNORE client-provided employee_id/device_id
     const device_id = authenticatedAgent.device_name || authenticatedAgent.key_name;
     const employee_name = authenticatedAgent.employee_name || 'Unknown';
     
-    // Get employee_id from employees table
-    let employee_id: string | null = null;
-    if (authenticatedAgent.employee_name) {
-      const { data: employee } = await supabase
-        .from('employees')
-        .select('id')
-        .eq('name', authenticatedAgent.employee_name)
-        .single();
-      
-      if (employee) {
-        employee_id = employee.id;
-      }
-    }
-
     const now = timestamp || new Date().toISOString();
 
     // Update device status in mobile_devices table

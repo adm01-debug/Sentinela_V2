@@ -18,8 +18,17 @@ export function Ripple({ color = 'rgba(255,255,255,0.3)', duration = 600, childr
     setTimeout(() => setRipples(prev => prev.filter(r => r.id !== ripple.id)), duration);
   }, [duration]);
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const ripple = { x: rect.width / 2, y: rect.height / 2, id: Date.now() };
+      setRipples(prev => [...prev, ripple]);
+      setTimeout(() => setRipples(prev => prev.filter(r => r.id !== ripple.id)), duration);
+    }
+  }, [duration]);
+
   return (
-    <div className={cn('relative overflow-hidden', className)} onClick={handleClick}>
+    <div role="button" tabIndex={0} className={cn('relative overflow-hidden', className)} onClick={handleClick} onKeyDown={handleKeyDown}>
       {children}
       {ripples.map(ripple => (
         <span

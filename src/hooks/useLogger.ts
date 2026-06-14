@@ -10,6 +10,8 @@ export function useLogger(prefix = "App") {
     const timestamp = new Date().toISOString();
     const formatted = `[${timestamp}] [${prefix}] [${level.toUpperCase()}] ${message}`;
     
+    // Logger intentionally writes to the console for all levels.
+    // eslint-disable-next-line no-console
     const fn = console[level] || console.log;
     data ? fn(formatted, data) : fn(formatted);
   }, [prefix]);

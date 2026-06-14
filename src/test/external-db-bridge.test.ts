@@ -2,7 +2,7 @@
  * SENTINELA - External DB Bridge - Suite de Testes Completa
  * Cobertura: classifySeverity, buildTelemetryPayload, emitTelemetry, validateRequest, edge cases
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 // ============================================================
 // EXTRACTED LOGIC (mirrors edge function exports)
@@ -11,7 +11,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const SLOW_THRESHOLD_MS = 3000;
 const VERY_SLOW_THRESHOLD_MS = 8000;
 
-function classifySeverity(durationMs: any, hasError: boolean): string {
+function classifySeverity(durationMs: number, hasError: boolean): string {
   if (hasError) return 'error';
   if (durationMs >= VERY_SLOW_THRESHOLD_MS) return 'very_slow';
   if (durationMs >= SLOW_THRESHOLD_MS) return 'slow';
@@ -47,7 +47,7 @@ interface TelemetryPayload {
 
 function buildTelemetryPayload(
   req: BridgeRequest,
-  durationMs: any,
+  durationMs: number,
   recordCount: number | null,
   errorMessage: string | null,
   userId: string | null
@@ -505,7 +505,7 @@ describe('External DB Bridge - Suite Completa', () => {
     });
 
     it('4.07 - invalid action', () => {
-      expect(validateRequest({ action: 'drop' as any })).toContain('Invalid action');
+      expect(validateRequest({ action: 'drop' as never })).toContain('Invalid action');
     });
 
     it('4.08 - missing table for query', () => {
@@ -758,7 +758,7 @@ describe('External DB Bridge - Suite Completa', () => {
     });
 
     it('8.05 - empty string action', () => {
-      expect(validateRequest({ action: '' as any })).not.toBeNull();
+      expect(validateRequest({ action: '' as never })).not.toBeNull();
     });
 
     it('8.06 - very long table name', () => {

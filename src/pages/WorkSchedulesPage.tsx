@@ -174,7 +174,7 @@ export default function WorkSchedulesPage() {
       {/* Delete Dialog */}
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <AlertDialogContent>
-          <AlertDialogHeader><AlertDialogTitle>Excluir Escala?</AlertDialogTitle><AlertDialogDescription>Esta ação é irreversível. A escala "{scheduleToDelete?.name}" será removida.</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogHeader><AlertDialogTitle>Excluir Escala?</AlertDialogTitle><AlertDialogDescription>Esta ação é irreversível. A escala &quot;{scheduleToDelete?.name}&quot; será removida.</AlertDialogDescription></AlertDialogHeader>
           <AlertDialogFooter><AlertDialogCancel>Cancelar</AlertDialogCancel><AlertDialogAction onClick={handleDeleteSchedule}>Excluir</AlertDialogAction></AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

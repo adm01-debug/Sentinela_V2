@@ -82,7 +82,7 @@ describe('Boundary Conditions', () => {
       { lat: -91, lon: 0, valid: false },
       { lat: -23.5505, lon: -46.6333, valid: true }, // São Paulo
     ];
-    const isValidCoord = (lat: any, lon: any) => lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
+    const isValidCoord = (lat: number, lon: number) => lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
     coords.forEach(({ lat, lon, valid }) => {
       it(`(${lat}, ${lon}) should be ${valid ? 'valid' : 'invalid'}`, () => {
         expect(isValidCoord(lat, lon)).toBe(valid);
@@ -316,7 +316,7 @@ describe('Data Integrity', () => {
 // ============================================================
 
 describe('Pagination Logic', () => {
-  const paginate = <T>(items: T[], page: number, pageSize: any) => {
+  const paginate = <T>(items: T[], page: number, pageSize: number) => {
     const start = (page - 1) * pageSize;
     return { data: items.slice(start, start + pageSize), total: items.length, totalPages: Math.ceil(items.length / pageSize), page };
   };

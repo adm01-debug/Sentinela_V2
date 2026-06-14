@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback } from "react";
 
 interface MonitorData {
   timestamp: Date;
@@ -9,7 +9,6 @@ interface MonitorData {
 export function useRealTimeMonitor(threshold = { warning: 70, critical: 90 }) {
   const [data, setData] = useState<MonitorData[]>([]);
   const [currentStatus, setCurrentStatus] = useState<MonitorData["status"]>("normal");
-  const wsRef = useRef<WebSocket | null>(null);
 
   const addData = useCallback((value: number) => {
     const status = value >= threshold.critical ? "critical" : value >= threshold.warning ? "warning" : "normal";

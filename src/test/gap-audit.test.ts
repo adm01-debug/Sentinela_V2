@@ -28,7 +28,7 @@ describe("Gap Audit: Employee Device Operations", () => {
       update: vi.fn().mockReturnThis(),
       delete: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
-    } as any);
+    } as never);
 
     await supabase.from("employee_devices").insert({
       employee_id: "emp-1",
@@ -50,7 +50,7 @@ describe("Gap Audit: Employee Device Operations", () => {
       insert: vi.fn().mockReturnThis(),
       update: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
-    } as any);
+    } as never);
 
     await supabase.from("employee_devices").delete().eq("id", "device-1");
     expect(mockDelete).toHaveBeenCalled();

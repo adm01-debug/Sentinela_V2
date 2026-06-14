@@ -1,10 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Filter, X, Calendar, User, AppWindow } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,

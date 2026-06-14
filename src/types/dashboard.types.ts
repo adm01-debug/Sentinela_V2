@@ -10,7 +10,7 @@ export interface DashboardStats {
 export interface DashboardLayout {
   id: string;
   name: string;
-  widgets: any[];
+  widgets: unknown[];
   isDefault: boolean;
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Check, X, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

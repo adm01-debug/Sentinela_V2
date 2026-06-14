@@ -1,7 +1,7 @@
 import { Globe, Plus, Edit, Trash2, Search, Shield, ShieldOff, ShieldCheck } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -152,7 +152,7 @@ export default function InternetAccessPage() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir Regra?</AlertDialogTitle>
-            <AlertDialogDescription>A regra "{deletingRule?.name}" será removida permanentemente.</AlertDialogDescription>
+            <AlertDialogDescription>A regra &quot;{deletingRule?.name}&quot; será removida permanentemente.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>

@@ -35,7 +35,7 @@ export function useSecurityScore() {
     staleTime: 120_000,
   });
 
-  const checks = query.data ?? [];
+  const checks = useMemo(() => query.data ?? [], [query.data]);
 
   const { score, level } = useMemo(() => {
     const totalWeight = checks.reduce((sum, c) => sum + c.weight, 0);

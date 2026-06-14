@@ -25,7 +25,7 @@ describe('Internationalization (i18n)', () => {
     const enUS = i18n.getResourceBundle('en-US', 'translation');
     const es = i18n.getResourceBundle('es', 'translation');
 
-    function getKeys(obj: any, prefix = ''): string[] {
+    function getKeys(obj: Record<string, unknown>, prefix = ''): string[] {
       const keys: string[] = [];
       for (const [key, value] of Object.entries(obj)) {
         const fullKey = prefix ? `${prefix}.${key}` : key;

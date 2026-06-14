@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 export function useIdle(timeout = 60000) {
   const [isIdle, setIsIdle] = useState(false);
   const [lastActive, setLastActive] = useState(Date.now());

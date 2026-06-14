@@ -1,6 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
 import { validateInput, createValidationErrorResponse, getApiVersion, sendWebhookSchemaV1, sendWebhookSchemaV2 } from '../_shared/validation.ts';
 
@@ -8,13 +7,6 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
-
-const WebhookPayloadSchema = z.object({
-  webhook_id: z.string().uuid(),
-  event_type: z.string().min(1).max(100),
-  payload: z.record(z.unknown()),
-  retry_count: z.number().int().min(0).max(10).default(0),
-});
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {

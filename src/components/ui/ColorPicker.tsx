@@ -61,13 +61,13 @@ export function ColorPicker({ value = '#3b82f6', onChange, presetColors = DEFAUL
             </div>
           </div>
           <div className="grid grid-cols-3 gap-2 text-xs">
-            <div><label className="text-muted-foreground">R</label><Input type="number" min={0} max={255} value={rgb.r} onChange={e => handleChange(`#${parseInt(e.target.value).toString(16).padStart(2,'0')}${rgb.g.toString(16).padStart(2,'0')}${rgb.b.toString(16).padStart(2,'0')}`)} className="h-7" /></div>
-            <div><label className="text-muted-foreground">G</label><Input type="number" min={0} max={255} value={rgb.g} onChange={e => handleChange(`#${rgb.r.toString(16).padStart(2,'0')}${parseInt(e.target.value).toString(16).padStart(2,'0')}${rgb.b.toString(16).padStart(2,'0')}`)} className="h-7" /></div>
-            <div><label className="text-muted-foreground">B</label><Input type="number" min={0} max={255} value={rgb.b} onChange={e => handleChange(`#${rgb.r.toString(16).padStart(2,'0')}${rgb.g.toString(16).padStart(2,'0')}${parseInt(e.target.value).toString(16).padStart(2,'0')}`)} className="h-7" /></div>
+            <div><label htmlFor="color-picker-r" className="text-muted-foreground">R</label><Input id="color-picker-r" type="number" min={0} max={255} value={rgb.r} onChange={e => handleChange(`#${parseInt(e.target.value).toString(16).padStart(2,'0')}${rgb.g.toString(16).padStart(2,'0')}${rgb.b.toString(16).padStart(2,'0')}`)} className="h-7" /></div>
+            <div><label htmlFor="color-picker-g" className="text-muted-foreground">G</label><Input id="color-picker-g" type="number" min={0} max={255} value={rgb.g} onChange={e => handleChange(`#${rgb.r.toString(16).padStart(2,'0')}${parseInt(e.target.value).toString(16).padStart(2,'0')}${rgb.b.toString(16).padStart(2,'0')}`)} className="h-7" /></div>
+            <div><label htmlFor="color-picker-b" className="text-muted-foreground">B</label><Input id="color-picker-b" type="number" min={0} max={255} value={rgb.b} onChange={e => handleChange(`#${rgb.r.toString(16).padStart(2,'0')}${rgb.g.toString(16).padStart(2,'0')}${parseInt(e.target.value).toString(16).padStart(2,'0')}`)} className="h-7" /></div>
           </div>
           {showPresets && (
             <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Presets</label>
+              <span className="text-xs text-muted-foreground mb-1 block">Presets</span>
               <div className="grid grid-cols-8 gap-1">
                 {presetColors.map(color => (
                   <button key={color} className={cn('w-6 h-6 rounded border-2 hover:scale-110 transition-transform', localValue === color ? 'border-primary' : 'border-transparent')} style={{ backgroundColor: color }} onClick={() => handleChange(color)}>

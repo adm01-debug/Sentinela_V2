@@ -32,6 +32,9 @@ export function useCamera() {
     return canvas.toDataURL("image/png");
   }, []);
 
+  // Cleanup on unmount only; including `stop` would re-run teardown on every
+  // stream change and stop the active camera mid-session.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => () => stop(), []);
 
   return { videoRef, stream, error, start, stop, capture };

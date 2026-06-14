@@ -105,7 +105,7 @@ export const UEBADashboardPage = () => {
               ) : users.length === 0 ? (
                 <div className="text-sm text-muted-foreground py-8 text-center">
                   <Users className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  Nenhum risk score calculado ainda. Clique em "Recalcular" para começar.
+                  Nenhum risk score calculado ainda. Clique em &quot;Recalcular&quot; para começar.
                 </div>
               ) : (
                 <div className="space-y-2">

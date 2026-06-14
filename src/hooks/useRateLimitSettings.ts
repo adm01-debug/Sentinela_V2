@@ -42,7 +42,7 @@ export function useRateLimitSettings() {
       if (error) throw error;
       return data as RateLimitSettings[];
     },
-    ...(queryPresets as any).config,
+    ...queryPresets.config,
   });
 }
 
@@ -99,7 +99,7 @@ export function useToggleRateLimitSetting() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data: { is_active: boolean }) => {
       invalidateRelated.rateLimiting(queryClient);
       toast({
         title: data.is_active ? 'Rate limit ativado' : 'Rate limit desativado',

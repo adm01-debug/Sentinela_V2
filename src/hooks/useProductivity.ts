@@ -67,7 +67,7 @@ export function useProductivity(employeeName?: string, days = 30) {
     staleTime: 60_000,
   });
 
-  const metrics = query.data ?? [];
+  const metrics = useMemo(() => query.data ?? [], [query.data]);
 
   const averageScore = useMemo(() => {
     if (metrics.length === 0) return 0;

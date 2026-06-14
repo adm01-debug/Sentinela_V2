@@ -1,7 +1,15 @@
 import { useState, useCallback, useEffect } from "react";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { notificationService } from '@/services/notificationService';
+
+interface SecurityViolationRow {
+  id: string;
+  violation_type: string | null;
+  severity: string | null;
+  created_at: string;
+  employee_name: string | null;
+  description: string | null;
+}
 
 export interface HeaderNotification {
   id: string;
@@ -33,7 +41,7 @@ export function useHeaderNotifications(limit = 8) {
     queryKey: ['header-notifications', limit],
     queryFn: async () => {
       const data = await notificationService.getHeaderNotifications(limit);
-      return data.map((v: any) => ({
+      return (data as SecurityViolationRow[]).map((v) => ({
         id: v.id,
         title: v.violation_type || 'Violação detectada',
         description: v.employee_name

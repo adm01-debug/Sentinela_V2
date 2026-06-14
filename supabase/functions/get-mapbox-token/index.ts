@@ -62,7 +62,7 @@ serve(async (req) => {
       case 'public':
         token = Deno.env.get('MAPBOX_PUBLIC_TOKEN');
         break;
-      case 'temporary':
+      case 'temporary': {
         // Generate temporary token using Mapbox Tokens API if secret key available
         const secretKey = Deno.env.get('MAPBOX_SECRET_TOKEN');
         if (secretKey) {
@@ -70,6 +70,7 @@ serve(async (req) => {
           token = Deno.env.get('MAPBOX_PUBLIC_TOKEN');
         }
         break;
+      }
       case 'restricted':
         // Only for server-side use
         token = Deno.env.get('MAPBOX_PUBLIC_TOKEN');

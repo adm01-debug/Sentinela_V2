@@ -181,10 +181,10 @@ describe("Permissions System", () => {
         "users",
       ] as const;
       resources.forEach((resource) => {
-        expect(mod.hasPermission("admin", resource as any, "read")).toBe(true);
-        expect(mod.hasPermission("admin", resource as any, "write")).toBe(true);
-        expect(mod.hasPermission("admin", resource as any, "delete")).toBe(true);
-        expect(mod.hasPermission("admin", resource as any, "admin")).toBe(true);
+        expect(mod.hasPermission("admin", resource as never, "read")).toBe(true);
+        expect(mod.hasPermission("admin", resource as never, "write")).toBe(true);
+        expect(mod.hasPermission("admin", resource as never, "delete")).toBe(true);
+        expect(mod.hasPermission("admin", resource as never, "admin")).toBe(true);
       });
     });
   });
@@ -298,11 +298,13 @@ describe("Logger", () => {
 
   it("info logs with [INFO] prefix", () => {
     logger.info("test info");
+    // eslint-disable-next-line no-console -- asserting on the console spy
     expect(console.info).toHaveBeenCalledWith("[INFO] test info", undefined);
   });
 
   it("debug logs with [DEBUG] prefix", () => {
     logger.debug("test debug");
+    // eslint-disable-next-line no-console -- asserting on the console spy
     expect(console.debug).toHaveBeenCalledWith("[DEBUG] test debug", undefined);
   });
 
@@ -314,6 +316,7 @@ describe("Logger", () => {
 
   it("passes metadata to info", () => {
     logger.info("ok", { count: 5 });
+    // eslint-disable-next-line no-console -- asserting on the console spy
     expect(console.info).toHaveBeenCalledWith("[INFO] ok", { count: 5 });
   });
 });

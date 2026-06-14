@@ -33,12 +33,12 @@ describe("ReportsPage", () => {
         ],
       },
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useReportsHook.useReports>);
 
     vi.mocked(useReportsHook.useReportTemplates).mockReturnValue({
       data: [],
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useReportsHook.useReportTemplates>);
   });
 
   const renderReports = () => {
@@ -62,7 +62,7 @@ describe("ReportsPage", () => {
     vi.mocked(useReportsHook.useReports).mockReturnValue({
       data: { data: [] },
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useReportsHook.useReports>);
     renderReports();
     expect(screen.queryByText("Annual Sales")).not.toBeInTheDocument();
   });

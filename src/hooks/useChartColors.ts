@@ -30,6 +30,9 @@ export function useChartColors() {
       border: resolve('--border'),
       card: resolve('--card'),
     };
-    // Re-compute when theme changes
+    // theme is intentionally a dependency: it triggers recomputation of the
+    // resolved CSS variables when the active theme changes, even though it is
+    // not referenced directly inside the callback.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]);
 }

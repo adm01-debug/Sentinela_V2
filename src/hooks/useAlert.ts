@@ -10,20 +10,20 @@ interface Alert {
 export function useAlert() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
 
+  const dismiss = useCallback((id: string) => {
+    setAlerts(prev => prev.filter(a => a.id !== id));
+  }, []);
+
   const show = useCallback((type: Alert["type"], message: string, duration = 5000) => {
     const id = crypto.randomUUID();
     const alert: Alert = { id, type, message, duration };
     setAlerts(prev => [...prev, alert]);
-    
+
     if (duration > 0) {
       setTimeout(() => dismiss(id), duration);
     }
     return id;
-  }, []);
-
-  const dismiss = useCallback((id: string) => {
-    setAlerts(prev => prev.filter(a => a.id !== id));
-  }, []);
+  }, [dismiss]);
 
   const success = useCallback((msg: string, d?: number) => show("success", msg, d), [show]);
   const error = useCallback((msg: string, d?: number) => show("error", msg, d), [show]);

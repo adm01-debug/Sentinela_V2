@@ -44,7 +44,7 @@ export const useUsers = () => {
   });
 };
 
-export const useUser = (id: any) => {
+export const useUser = (id: string | null | undefined) => {
   return useQuery({
     queryKey: ['user', id],
     queryFn: async () => {
@@ -59,7 +59,7 @@ export const useUser = (id: any) => {
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: UpdateUserData) => {
       const { data: result, error } = await supabase.from('profiles').insert(data).select().single();
       if (error) throw error;
       return result;
@@ -83,7 +83,7 @@ export const useUpdateUser = () => {
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('profiles').delete().eq('id', id);
       if (error) throw error;
     },

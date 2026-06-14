@@ -11,6 +11,15 @@ interface Policy {
   created_at: string;
 }
 
+interface PolicyRow {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean | null;
+  category: string;
+  created_at: string;
+}
+
 export function usePolicies() {
   const queryClient = useQueryClient();
 
@@ -23,7 +32,7 @@ export function usePolicies() {
         .order('created_at', { ascending: false });
       if (error) throw error;
 
-      return (data ?? []).map((row: any): Policy => ({
+      return ((data ?? []) as PolicyRow[]).map((row): Policy => ({
         id: row.id,
         name: row.name,
         description: row.description,
@@ -36,7 +45,7 @@ export function usePolicies() {
   });
 
   const toggleMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const policy = (query.data ?? []).find(p => p.id === id);
       if (!policy) throw new Error('Policy not found');
       const { error } = await supabase

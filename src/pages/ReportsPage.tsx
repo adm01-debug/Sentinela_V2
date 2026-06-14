@@ -15,7 +15,7 @@ interface ReportItem {
 export const ReportsPage = () => {
   const navigate = useNavigate();
   const { data: reportsData, isLoading } = useReports();
-  const { data: templates } = useReportTemplates();
+  useReportTemplates();
 
   const reports: ReportItem[] = Array.isArray(reportsData)
     ? reportsData

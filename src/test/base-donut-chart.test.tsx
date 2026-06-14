@@ -1,17 +1,18 @@
+import type { ReactNode } from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BaseDonutChart } from '@/components/charts/BaseDonutChart';
 
 vi.mock('recharts', () => ({
-  PieChart: ({ children }: any) => <div data-testid="pie-chart">{children}</div>,
-  Pie: ({ children, data, label }: any) => (
+  PieChart: ({ children }: { children?: ReactNode }) => <div data-testid="pie-chart">{children}</div>,
+  Pie: ({ children, data, label }: { children?: ReactNode; data?: unknown[]; label?: unknown }) => (
     <div data-testid="pie" data-has-label={!!label}>
       {children}
-      {data?.map((_: any, i: number) => <div key={i} data-testid={`pie-entry-${i}`} />)}
+      {data?.map((_: unknown, i: number) => <div key={i} data-testid={`pie-entry-${i}`} />)}
     </div>
   ),
-  Cell: ({ fill }: any) => <div data-testid="cell" data-fill={fill} />,
-  ResponsiveContainer: ({ children }: any) => <div data-testid="responsive">{children}</div>,
+  Cell: ({ fill }: { fill?: string }) => <div data-testid="cell" data-fill={fill} />,
+  ResponsiveContainer: ({ children }: { children?: ReactNode }) => <div data-testid="responsive">{children}</div>,
   Tooltip: () => <div data-testid="tooltip" />,
 }));
 
@@ -20,7 +21,7 @@ vi.mock('@/hooks/useChartColors', () => ({
 }));
 
 vi.mock('./ChartEmptyState', () => ({
-  ChartEmptyState: ({ title }: any) => <div data-testid="empty">{title}</div>,
+  ChartEmptyState: ({ title }: { title?: ReactNode }) => <div data-testid="empty">{title}</div>,
 }));
 
 describe('BaseDonutChart', () => {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 export interface SkipLink {
   id: string;
@@ -21,9 +21,12 @@ export function useSkipLinks(options: UseSkipLinksOptions = {}) {
   const { links = [], defaultLinks = true } = options;
   const skipLinksRef = useRef<HTMLDivElement | null>(null);
 
-  const allLinks = defaultLinks ? [...DEFAULT_LINKS, ...links] : links;
+  const allLinks = useMemo(
+    () => (defaultLinks ? [...DEFAULT_LINKS, ...links] : links),
+    [defaultLinks, links]
+  );
 
-  const skipTo = useCallback((targetId) => {
+  const skipTo = useCallback((targetId: string) => {
     const element = document.getElementById(targetId);
     if (element) {
       element.setAttribute('tabindex', '-1');

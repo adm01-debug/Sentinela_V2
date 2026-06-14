@@ -3,8 +3,8 @@
 // Paginação infinita com React Query e Intersection Observer
 // ============================================================
 
-import { useRef, useEffect, useCallback } from 'react';
-import { useInfiniteQuery, UseInfiniteQueryOptions } from '@tanstack/react-query';
+import { useRef, useEffect } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 
@@ -144,7 +144,7 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
   // FLATTEN DATA
   // ============================================================
 
-  const flatData = queryData?.pages.flatMap((page: any) => page.data) ?? [];
+  const flatData = queryData?.pages.flatMap((page: PageData<T>) => page.data) ?? [];
   const totalCount = queryData?.pages[0]?.totalCount ?? 0;
 
   // ============================================================

@@ -38,11 +38,11 @@ export function useAlertSettings() {
   const updateMutation = useMutation({
     mutationFn: async (updates: Partial<AlertNotificationSettings>) => {
       const existing = query.data;
-      if ((existing as any)?.id) {
+      if (existing?.id) {
         const { error } = await supabase
           .from('alert_notification_settings')
           .update(updates)
-          .eq('id', (existing as any).id);
+          .eq('id', existing.id);
         if (error) throw error;
       } else {
         const { error } = await supabase
@@ -57,7 +57,7 @@ export function useAlertSettings() {
   });
 
   const addEmail = async (email: string) => {
-    const current = (query.data as any)?.recipient_emails || [];
+    const current = query.data?.recipient_emails || [];
     if (current.includes(email)) return false;
     await updateMutation.mutateAsync({ recipient_emails: [...current, email] });
     toast({ title: 'Email adicionado' });
@@ -65,8 +65,8 @@ export function useAlertSettings() {
   };
 
   const removeEmail = async (email: string) => {
-    const current = (query.data as any)?.recipient_emails || [];
-    await updateMutation.mutateAsync({ recipient_emails: current.filter(e => e !== email) });
+    const current = query.data?.recipient_emails || [];
+    await updateMutation.mutateAsync({ recipient_emails: current.filter((e) => e !== email) });
     toast({ title: 'Email removido' });
   };
 

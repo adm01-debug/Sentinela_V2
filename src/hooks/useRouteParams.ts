@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 export function useRouteParams<T extends Record<string, string>>(pattern: string): T {
   const [params, setParams] = useState<T>({} as T);
