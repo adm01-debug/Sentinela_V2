@@ -1,4 +1,4 @@
-import { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 export interface LogEntry {
   function_name: string;
@@ -33,28 +33,28 @@ export class Logger {
     const fullEntry: LogEntry = {
       function_name: this.functionName,
       request_id: this.requestId,
-      method: entry.method || "UNKNOWN",
+      method: entry.method || 'UNKNOWN',
       status: entry.status || 200,
       duration_ms: duration,
       ...entry,
     };
 
-    console.log(
-      `[${this.functionName}] [${this.requestId}] ${fullEntry.method} ${fullEntry.status} ${duration}ms`
-    );
-
+    console.log(`[${this.functionName}] [${this.requestId}] ${fullEntry.method} ${fullEntry.status} ${duration}ms`);
+    
     if (fullEntry.error_message) {
       console.error(`[${this.functionName}] [${this.requestId}] Error: ${fullEntry.error_message}`);
     }
 
     try {
-      const { error } = await supabase.from("edge_function_logs").insert(fullEntry);
-
+      const { error } = await supabase
+        .from('edge_function_logs')
+        .insert(fullEntry);
+      
       if (error) {
-        console.error("Failed to save log to database:", error);
+        console.error('Failed to save log to database:', error);
       }
     } catch (err) {
-      console.error("Logger error:", err);
+      console.error('Logger error:', err);
     }
   }
 }

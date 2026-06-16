@@ -13,79 +13,25 @@ interface CategoryResult {
   tags: string[];
 }
 
-const CATEGORY_RULES: Record<
-  string,
-  { keywords: string[]; category: string; subcategory?: string }[]
-> = {
+const CATEGORY_RULES: Record<string, { keywords: string[]; category: string; subcategory?: string }[]> = {
   applications: [
-    {
-      keywords: ["chrome", "firefox", "safari", "edge", "browser"],
-      category: "browsing",
-      subcategory: "web_browser",
-    },
-    {
-      keywords: ["slack", "teams", "discord", "zoom"],
-      category: "communication",
-      subcategory: "messaging",
-    },
-    {
-      keywords: ["outlook", "gmail", "mail", "thunderbird"],
-      category: "communication",
-      subcategory: "email",
-    },
-    {
-      keywords: ["vscode", "visual studio", "intellij", "pycharm", "sublime"],
-      category: "development",
-      subcategory: "ide",
-    },
-    {
-      keywords: ["word", "docs", "pages", "writer"],
-      category: "productivity",
-      subcategory: "documents",
-    },
-    {
-      keywords: ["excel", "sheets", "numbers", "calc"],
-      category: "productivity",
-      subcategory: "spreadsheets",
-    },
-    {
-      keywords: ["powerpoint", "slides", "keynote"],
-      category: "productivity",
-      subcategory: "presentations",
-    },
-    {
-      keywords: ["photoshop", "figma", "sketch", "illustrator", "canva"],
-      category: "design",
-      subcategory: "graphics",
-    },
-    {
-      keywords: ["spotify", "youtube", "netflix", "twitch"],
-      category: "entertainment",
-      subcategory: "media",
-    },
-    {
-      keywords: ["facebook", "twitter", "instagram", "linkedin", "tiktok"],
-      category: "social_media",
-    },
-    {
-      keywords: ["terminal", "cmd", "powershell", "bash"],
-      category: "development",
-      subcategory: "terminal",
-    },
-    {
-      keywords: ["git", "github", "gitlab", "bitbucket"],
-      category: "development",
-      subcategory: "version_control",
-    },
+    { keywords: ["chrome", "firefox", "safari", "edge", "browser"], category: "browsing", subcategory: "web_browser" },
+    { keywords: ["slack", "teams", "discord", "zoom"], category: "communication", subcategory: "messaging" },
+    { keywords: ["outlook", "gmail", "mail", "thunderbird"], category: "communication", subcategory: "email" },
+    { keywords: ["vscode", "visual studio", "intellij", "pycharm", "sublime"], category: "development", subcategory: "ide" },
+    { keywords: ["word", "docs", "pages", "writer"], category: "productivity", subcategory: "documents" },
+    { keywords: ["excel", "sheets", "numbers", "calc"], category: "productivity", subcategory: "spreadsheets" },
+    { keywords: ["powerpoint", "slides", "keynote"], category: "productivity", subcategory: "presentations" },
+    { keywords: ["photoshop", "figma", "sketch", "illustrator", "canva"], category: "design", subcategory: "graphics" },
+    { keywords: ["spotify", "youtube", "netflix", "twitch"], category: "entertainment", subcategory: "media" },
+    { keywords: ["facebook", "twitter", "instagram", "linkedin", "tiktok"], category: "social_media" },
+    { keywords: ["terminal", "cmd", "powershell", "bash"], category: "development", subcategory: "terminal" },
+    { keywords: ["git", "github", "gitlab", "bitbucket"], category: "development", subcategory: "version_control" },
   ],
   activities: [
     { keywords: ["typing", "keystroke", "input"], category: "active_work" },
     { keywords: ["idle", "away", "inactive"], category: "idle" },
-    {
-      keywords: ["meeting", "call", "conference"],
-      category: "communication",
-      subcategory: "meetings",
-    },
+    { keywords: ["meeting", "call", "conference"], category: "communication", subcategory: "meetings" },
     { keywords: ["screenshot", "capture"], category: "monitoring" },
   ],
 };
@@ -101,18 +47,11 @@ serve(async (req) => {
     const results: CategoryResult[] = [];
 
     for (const item of items) {
-      const itemLower = (
-        typeof item === "string" ? item : item.name || item.application || ""
-      ).toLowerCase();
-      let bestMatch: {
-        category: string;
-        subcategory?: string;
-        confidence: number;
-        tags: string[];
-      } | null = null;
+      const itemLower = (typeof item === "string" ? item : item.name || item.application || "").toLowerCase();
+      let bestMatch: { category: string; subcategory?: string; confidence: number; tags: string[] } | null = null;
 
       for (const rule of rules) {
-        const matchedKeywords = rule.keywords.filter((k) => itemLower.includes(k));
+        const matchedKeywords = rule.keywords.filter(k => itemLower.includes(k));
         if (matchedKeywords.length > 0) {
           const confidence = Math.min(0.95, 0.5 + matchedKeywords.length * 0.15);
           if (!bestMatch || confidence > bestMatch.confidence) {
@@ -120,7 +59,7 @@ serve(async (req) => {
               category: rule.category,
               subcategory: rule.subcategory,
               confidence,
-              tags: matchedKeywords,
+              tags: matchedKeywords
             };
           }
         }
@@ -131,13 +70,13 @@ serve(async (req) => {
         category: bestMatch?.category || "uncategorized",
         subcategory: bestMatch?.subcategory,
         confidence: bestMatch?.confidence || 0.1,
-        tags: bestMatch?.tags || [],
+        tags: bestMatch?.tags || []
       });
     }
 
     // Calculate category distribution
     const distribution: Record<string, number> = {};
-    results.forEach((r) => {
+    results.forEach(r => {
       distribution[r.category] = (distribution[r.category] || 0) + 1;
     });
 
@@ -148,17 +87,17 @@ serve(async (req) => {
         metadata: {
           itemsProcessed: items.length,
           itemType,
-          categorized: results.filter((r) => r.category !== "uncategorized").length,
-          generatedAt: new Date().toISOString(),
-        },
+          categorized: results.filter(r => r.category !== "uncategorized").length,
+          generatedAt: new Date().toISOString()
+        }
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: message }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 });

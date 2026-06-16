@@ -1,17 +1,17 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
-import { checkRateLimit } from "../_shared/rateLimiting.ts";
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
 const ViolationAlertSchema = z.object({
   employee_name: z.string().min(1),
   violation_type: z.string().min(1),
-  severity: z.enum(["low", "medium", "high", "critical"]),
+  severity: z.enum(['low', 'medium', 'high', 'critical']),
   policy_name: z.string().min(1),
   description: z.string().max(2000).optional(),
   device: z.string().optional(),
@@ -22,50 +22,40 @@ const ViolationAlertSchema = z.object({
 });
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
+  if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const clientIP = req.headers.get("x-forwarded-for") || "unknown";
-    const rateLimitResult = await checkRateLimit(clientIP, "process-violation", 50, 60);
+    const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await checkRateLimit(clientIP, 'process-violation', 50, 60);
     if (!rateLimitResult.allowed) {
-      return new Response(JSON.stringify({ error: "Rate limit exceeded" }), {
-        status: 429,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: 'Rate limit exceeded' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const body = await req.json();
     const validation = ViolationAlertSchema.safeParse(body);
     if (!validation.success) {
       return new Response(
-        JSON.stringify({ error: "Validation failed", details: validation.error.flatten() }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ error: 'Validation failed', details: validation.error.flatten() }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     const {
-      employee_name,
-      violation_type,
-      severity,
-      policy_name,
-      description,
-      device,
-      ip_address,
-      location,
-      screenshot_url,
+      employee_name, violation_type, severity, policy_name,
+      description, device, ip_address, location, screenshot_url,
       notify_managers,
     } = validation.data;
 
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
+    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
     // Insert into security_violations (real table)
     const { data: violation, error: violationError } = await supabase
-      .from("security_violations")
+      .from('security_violations')
       .insert({
         employee_name,
         violation_type,
@@ -91,23 +81,23 @@ serve(async (req) => {
     if (notify_managers) {
       // Check alert_notification_settings (real table)
       const { data: alertSettings } = await supabase
-        .from("alert_notification_settings")
-        .select("*")
-        .eq("enabled", true)
+        .from('alert_notification_settings')
+        .select('*')
+        .eq('enabled', true)
         .limit(1)
         .maybeSingle();
 
       if (alertSettings) {
         const shouldNotify =
-          (severity === "critical" && alertSettings.notify_critical) ||
-          (severity === "high" && alertSettings.notify_high) ||
-          (severity === "medium" && alertSettings.notify_medium) ||
-          (severity === "low" && alertSettings.notify_low);
+          (severity === 'critical' && alertSettings.notify_critical) ||
+          (severity === 'high' && alertSettings.notify_high) ||
+          (severity === 'medium' && alertSettings.notify_medium) ||
+          (severity === 'low' && alertSettings.notify_low);
 
         if (shouldNotify && alertSettings.recipient_emails?.length) {
           // Send email notification
           try {
-            await supabase.functions.invoke("send-email-notification", {
+            await supabase.functions.invoke('send-email-notification', {
               body: {
                 to: alertSettings.recipient_emails,
                 subject: `🚨 Violação ${severity.toUpperCase()}: ${violation_type}`,
@@ -115,47 +105,46 @@ serve(async (req) => {
                        <p><strong>Tipo:</strong> ${violation_type}</p>
                        <p><strong>Severidade:</strong> ${severity}</p>
                        <p><strong>Política:</strong> ${policy_name}</p>
-                       <p>${description || ""}</p>`,
+                       <p>${description || ''}</p>`,
               },
             });
             notificationsSent++;
           } catch (e) {
-            console.error("Email notification error:", e);
+            console.error('Email notification error:', e);
           }
         }
       }
 
       // Mark as notified
-      await supabase
-        .from("security_violations")
+      await supabase.from('security_violations')
         .update({ notified_admin: true })
-        .eq("id", violation.id);
+        .eq('id', violation.id);
     }
 
     // Log to settings_audit_log (real table)
-    await supabase.from("settings_audit_log").insert({
-      action: "violation_processed",
-      entity_type: "security_violation",
+    await supabase.from('settings_audit_log').insert({
+      action: 'violation_processed',
+      entity_type: 'security_violation',
       entity_id: violation.id,
       entity_name: `${violation_type} - ${employee_name}`,
-      user_id: "00000000-0000-0000-0000-000000000000",
-      user_email: "system@sentinela.app",
+      user_id: '00000000-0000-0000-0000-000000000000',
+      user_email: 'system@sentinela.app',
       new_value: { severity, violation_type, notify_managers },
     });
 
     // Trigger webhooks for violation events
     const { data: webhooks } = await supabase
-      .from("webhooks")
-      .select("id")
-      .eq("is_active", true)
-      .contains("events", ["violation.created"]);
+      .from('webhooks')
+      .select('id')
+      .eq('is_active', true)
+      .contains('events', ['violation.created']);
 
     for (const wh of webhooks || []) {
       try {
-        await supabase.functions.invoke("send-webhook", {
+        await supabase.functions.invoke('send-webhook', {
           body: {
             webhook_id: wh.id,
-            event_type: "violation.created",
+            event_type: 'violation.created',
             payload: {
               violation,
               timestamp: new Date().toISOString(),
@@ -164,7 +153,7 @@ serve(async (req) => {
         });
         notificationsSent++;
       } catch (e) {
-        console.error("Webhook error:", e);
+        console.error('Webhook error:', e);
       }
     }
 
@@ -174,14 +163,14 @@ serve(async (req) => {
         violation_id: violation.id,
         notifications_sent: notificationsSent,
       }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error("Process violation error:", error);
-    const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    console.error('Process violation error:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(
+      JSON.stringify({ error: message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   }
 });

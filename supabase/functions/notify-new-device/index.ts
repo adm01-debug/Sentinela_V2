@@ -111,16 +111,12 @@ const handler = async (req: Request): Promise<Response> => {
                 <span class="info-label">📍 Tipo:</span>
                 <span class="info-value">${deviceInfo.deviceType}</span>
               </div>
-              ${
-                deviceInfo.location
-                  ? `
+              ${deviceInfo.location ? `
               <div class="info-row">
                 <span class="info-label">📍 Local:</span>
                 <span class="info-value">${deviceInfo.location}</span>
               </div>
-              `
-                  : ""
-              }
+              ` : ""}
             </div>
             
             <div class="warning">
@@ -159,16 +155,22 @@ const handler = async (req: Request): Promise<Response> => {
     const emailResult = await emailResponse.json();
     console.log("Email notification sent:", emailResult);
 
-    return new Response(JSON.stringify({ success: true, emailResult }), {
-      status: 200,
-      headers: { "Content-Type": "application/json", ...corsHeaders },
-    });
+    return new Response(
+      JSON.stringify({ success: true, emailResult }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      }
+    );
   } catch (error: any) {
     console.error("Error in notify-new-device:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json", ...corsHeaders },
-    });
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      }
+    );
   }
 };
 

@@ -5,14 +5,12 @@ Complete configuration options for Sentinela.
 ## Environment Variables
 
 ### Required
-
 ```env
 VITE_SUPABASE_URL=https://xxx.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 ### Optional
-
 ```env
 VITE_APP_NAME=Sentinela
 VITE_APP_URL=https://app.sentinela.com
@@ -21,7 +19,6 @@ VITE_SENTRY_DSN=https://xxx@sentry.io/xxx
 ```
 
 ## Feature Flags
-
 ```env
 VITE_FEATURE_SCREENSHOTS=true
 VITE_FEATURE_GEOFENCING=true
@@ -29,7 +26,6 @@ VITE_FEATURE_AI_ANALYSIS=false
 ```
 
 ## Monitoring Settings
-
 ```javascript
 // config/monitoring.ts
 export const monitoringConfig = {
@@ -40,7 +36,6 @@ export const monitoringConfig = {
 ```
 
 ## Security Settings
-
 ```javascript
 // config/security.ts
 export const securityConfig = {
@@ -52,7 +47,6 @@ export const securityConfig = {
 ```
 
 ## Customization
-
 - Themes: `src/themes/`
 - Locales: `src/i18n/locales/`
 - Branding: `public/`

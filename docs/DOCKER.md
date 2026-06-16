@@ -1,15 +1,11 @@
 # Docker Deployment Guide
-
 ## Quick Start
-
 ```bash
 docker-compose up -d
 ```
-
 ## docker-compose.yml
-
 ```yaml
-version: "3.8"
+version: '3.8'
 services:
   app:
     build: .
@@ -23,13 +19,9 @@ services:
 volumes:
   pgdata:
 ```
-
 ## Building
-
 ```bash
 docker build -t sentinela:latest .
 ```
-
 ## Environment Variables
-
 Pass via `-e` or `--env-file`.

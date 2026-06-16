@@ -32,7 +32,6 @@
 ## 3. MONITORAMENTO DE FUNCIONÁRIOS
 
 ### 3.1 Gestão de Funcionários
-
 - [x] Lista de funcionários com filtros (departamento, status)
 - [x] Criação de funcionários
 - [x] Detalhes do funcionário
@@ -43,19 +42,16 @@
 - [x] Vinculação a empresas (`company_id`)
 
 ### 3.2 Monitoramento de Atividades
-
 - [x] Página de atividades com lista/timeline
 - [x] Detalhes de atividade individual
 - [x] Timeline de atividades (`ActivityTimelinePage`)
 
 ### 3.3 Capturas de Tela (Screenshots)
-
 - [x] Galeria de screenshots (`ScreenshotsPage`)
 - [x] Detalhe de screenshot (`ScreenshotDetailPage`)
 - [x] Captura periódica pelo Desktop Agent
 
 ### 3.4 Live View & Session Playback
-
 - [x] **Live View**: Screenshots periódicos (5-10s) para supervisão em tempo real
 - [x] **Session Playback**: Replay histórico de sessões com screenshots + eventos de ação (cliques, teclas)
 - [x] Retenção de dados por 30 dias com limpeza automática
@@ -74,7 +70,6 @@
 ## 5. REGISTRO DE TECLAS & CLIQUES
 
 ### 5.1 Keystroke Logs
-
 - [x] Contagem de teclas por período (`keystroke_logs`)
 - [x] Detalhes de teclas pressionadas (`keystroke_details`)
 - [x] Tempo ativo vs ocioso
@@ -82,7 +77,6 @@
 - [x] Tabelas particionadas por mês para performance
 
 ### 5.2 Click Logs
-
 - [x] Registro de cliques com tipo, posição X/Y
 - [x] Elemento alvo, URL, app, janela
 - [x] Tabelas particionadas por mês
@@ -92,7 +86,6 @@
 ## 6. DISPOSITIVOS
 
 ### 6.1 Desktop Agent (Electron)
-
 - [x] Instalação para Windows (.exe), macOS (.dmg), Linux (.deb/.rpm)
 - [x] Instalação silenciosa (Enterprise)
 - [x] Rastreamento de atividade
@@ -103,13 +96,11 @@
 - [x] Gestão de Agent Keys (`agent_keys`)
 
 ### 6.2 Dispositivos Desktop
-
 - [x] Lista de dispositivos (`DevicesPage`)
 - [x] Cadastro com tipo, OS, versão, IP, MAC address
 - [x] Vinculação a funcionários (`devices`, `employee_devices`)
 
 ### 6.3 Dispositivos Móveis
-
 - [x] Registro de dispositivos móveis (`mobile_devices`)
 - [x] OS type, model, app version, push token
 - [x] Última localização (lat/lng)
@@ -120,7 +111,6 @@
 ## 7. ALERTAS & VIOLAÇÕES
 
 ### 7.1 Alertas
-
 - [x] Página de alertas (`AlertsPage`)
 - [x] Detalhe de alerta (`AlertDetailPage`)
 - [x] Regras de alerta configuráveis (`AlertRulesPage`)
@@ -128,13 +118,11 @@
 - [x] Configurações de notificação de alertas (`alert_notification_settings`)
 
 ### 7.2 Violações
-
 - [x] Página de violações (`ViolationsPage`)
 - [x] Detalhe de violação (`ViolationDetailPage`)
 - [x] Violações de geofence (`geofence_violations`)
 
 ### 7.3 Monitoramento
-
 - [x] Página de monitoramento geral (`MonitoringPage`)
 - [x] Configurações de monitoramento (`monitoring_settings`)
 
@@ -290,27 +278,27 @@
 
 ## RESUMO
 
-| Categoria         | Funcionalidades          |
-| ----------------- | ------------------------ |
-| Autenticação      | 7                        |
-| Dashboard         | 5                        |
-| Monitoramento     | 12                       |
-| Segurança         | 4                        |
-| Keystroke/Click   | 6                        |
-| Dispositivos      | 9                        |
-| Alertas/Violações | 7                        |
-| Analytics         | 4                        |
-| Relatórios        | 5                        |
-| IA                | 5                        |
-| Geofencing        | 5                        |
-| Equipes/Deps      | 4                        |
-| Gamificação       | 5                        |
-| Agendamento       | 3                        |
-| Internet          | 5                        |
-| Integrações       | 5                        |
-| Configurações     | 7                        |
-| Admin             | 5                        |
-| Multi-Tenant      | 3                        |
-| Export/Compliance | 2                        |
-| Ponto & Horas     | 6                        |
-| **TOTAL**         | **~112 funcionalidades** |
+| Categoria | Funcionalidades |
+|---|---|
+| Autenticação | 7 |
+| Dashboard | 5 |
+| Monitoramento | 12 |
+| Segurança | 4 |
+| Keystroke/Click | 6 |
+| Dispositivos | 9 |
+| Alertas/Violações | 7 |
+| Analytics | 4 |
+| Relatórios | 5 |
+| IA | 5 |
+| Geofencing | 5 |
+| Equipes/Deps | 4 |
+| Gamificação | 5 |
+| Agendamento | 3 |
+| Internet | 5 |
+| Integrações | 5 |
+| Configurações | 7 |
+| Admin | 5 |
+| Multi-Tenant | 3 |
+| Export/Compliance | 2 |
+| Ponto & Horas | 6 |
+| **TOTAL** | **~112 funcionalidades** |

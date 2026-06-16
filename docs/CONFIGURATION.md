@@ -1,6 +1,5 @@
 # Configuration
 
 ## Environment Variables
-
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_KEY`

@@ -8,24 +8,22 @@
 
 ## SLA de Review
 
-| Tipo           | SLA   |
-| -------------- | ----- |
-| Hotfix (P1/P2) | < 1h  |
-| Feature        | < 24h |
-| Refatoração    | < 48h |
-| Documentação   | < 48h |
+| Tipo | SLA |
+|------|-----|
+| Hotfix (P1/P2) | < 1h |
+| Feature | < 24h |
+| Refatoração | < 48h |
+| Documentação | < 48h |
 
 ## Checklist do Reviewer
 
 ### Segurança
-
 - [ ] Sem secrets/API keys no código
 - [ ] RLS atualizado para novas tabelas
 - [ ] Input validation no backend (Edge Functions)
 - [ ] Sem SQL injection (queries parametrizadas)
 
 ### Qualidade
-
 - [ ] TypeScript strict (sem `any`, sem `as` injustificado)
 - [ ] Logger estruturado (sem `console.log`)
 - [ ] Design tokens semânticos (sem cores hardcoded)
@@ -33,19 +31,16 @@
 - [ ] Funções < 50 linhas
 
 ### Performance
-
 - [ ] Sem queries N+1
 - [ ] Lazy loading para componentes pesados
 - [ ] Paginação server-side em listagens
 
 ### Acessibilidade
-
 - [ ] `aria-label` em botões com ícone
 - [ ] Navegação por teclado funcional
 - [ ] Contraste adequado
 
 ### Testes
-
 - [ ] Testes unitários para lógica de negócio
 - [ ] Testes de integração para fluxos críticos
 - [ ] Sem flaky tests

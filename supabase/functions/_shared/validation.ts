@@ -1,4 +1,4 @@
-import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 
 // ============================================================
 // COMMON SCHEMAS
@@ -16,16 +16,14 @@ export const ipAddressSchema = z.string().ip().optional();
 export const agentCollectorSchema = z.object({
   employee_id: uuidSchema,
   device_id: z.string().min(1),
-  data_type: z.enum(["screenshot", "activity", "keystroke", "application", "website"]),
+  data_type: z.enum(['screenshot', 'activity', 'keystroke', 'application', 'website']),
   data: z.record(z.unknown()),
   timestamp: dateTimeSchema.optional(),
-  metadata: z
-    .object({
-      os: z.string().optional(),
-      app_version: z.string().optional(),
-      screen_resolution: z.string().optional(),
-    })
-    .optional(),
+  metadata: z.object({
+    os: z.string().optional(),
+    app_version: z.string().optional(),
+    screen_resolution: z.string().optional(),
+  }).optional(),
 });
 
 export type AgentCollectorInput = z.infer<typeof agentCollectorSchema>;
@@ -37,24 +35,18 @@ export type AgentCollectorInput = z.infer<typeof agentCollectorSchema>;
 export const mobileCollectorSchema = z.object({
   employee_id: uuidSchema,
   device_id: z.string().min(1),
-  location: z
-    .object({
-      latitude: z.number().min(-90).max(90),
-      longitude: z.number().min(-180).max(180),
-      accuracy: z.number().positive().optional(),
-      altitude: z.number().optional(),
-      speed: z.number().optional(),
-    })
-    .optional(),
+  location: z.object({
+    latitude: z.number().min(-90).max(90),
+    longitude: z.number().min(-180).max(180),
+    accuracy: z.number().positive().optional(),
+    altitude: z.number().optional(),
+    speed: z.number().optional(),
+  }).optional(),
   battery_level: z.number().min(0).max(100).optional(),
-  app_usage: z
-    .array(
-      z.object({
-        app_name: z.string(),
-        duration_seconds: z.number().positive(),
-      })
-    )
-    .optional(),
+  app_usage: z.array(z.object({
+    app_name: z.string(),
+    duration_seconds: z.number().positive(),
+  })).optional(),
   timestamp: dateTimeSchema.optional(),
 });
 
@@ -82,9 +74,9 @@ export const processViolationAlertSchema = z.object({
   violation_id: uuidSchema,
   employee_id: uuidSchema,
   violation_type: z.string().min(1),
-  severity: z.enum(["low", "medium", "high", "critical"]),
+  severity: z.enum(['low', 'medium', 'high', 'critical']),
   details: z.record(z.unknown()).optional(),
-  notify_channels: z.array(z.enum(["email", "whatsapp", "push", "webhook"])).optional(),
+  notify_channels: z.array(z.enum(['email', 'whatsapp', 'push', 'webhook'])).optional(),
 });
 
 export type ProcessViolationAlertInput = z.infer<typeof processViolationAlertSchema>;
@@ -93,17 +85,16 @@ export type ProcessViolationAlertInput = z.infer<typeof processViolationAlertSch
 // WHATSAPP SCHEMAS
 // ============================================================
 
-export const sendWhatsAppSchema = z
-  .object({
-    to: z.string().min(10).max(15),
-    message: z.string().min(1).max(4096).optional(),
-    template_name: z.string().optional(),
-    template_params: z.record(z.string()).optional(),
-    test: z.boolean().optional(),
-  })
-  .refine((data) => data.message || data.template_name, {
-    message: "Either message or template_name is required",
-  });
+export const sendWhatsAppSchema = z.object({
+  to: z.string().min(10).max(15),
+  message: z.string().min(1).max(4096).optional(),
+  template_name: z.string().optional(),
+  template_params: z.record(z.string()).optional(),
+  test: z.boolean().optional(),
+}).refine(
+  (data) => data.message || data.template_name,
+  { message: 'Either message or template_name is required' }
+);
 
 export type SendWhatsAppInput = z.infer<typeof sendWhatsAppSchema>;
 
@@ -210,7 +201,7 @@ export type SendRateLimitAlertInput = z.infer<typeof sendRateLimitAlertSchema>;
 
 export const analyzeActivitySchema = z.object({
   employee_id: uuidSchema,
-  period: z.enum(["day", "week", "month"]).optional(),
+  period: z.enum(['day', 'week', 'month']).optional(),
   start_date: dateTimeSchema.optional(),
   end_date: dateTimeSchema.optional(),
   include_screenshots: z.boolean().optional(),
@@ -223,28 +214,23 @@ export type AnalyzeActivityInput = z.infer<typeof analyzeActivitySchema>;
 // VALIDATION HELPER
 // ============================================================
 
-export function validateInput<T>(
-  schema: z.ZodSchema<T>,
-  data: unknown
-):
-  | {
-      success: true;
-      data: T;
-    }
-  | {
-      success: false;
-      error: string;
-      details: z.ZodIssue[];
-    } {
+export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): { 
+  success: true; 
+  data: T 
+} | { 
+  success: false; 
+  error: string;
+  details: z.ZodIssue[];
+} {
   const result = schema.safeParse(data);
-
+  
   if (result.success) {
     return { success: true, data: result.data };
   }
-
+  
   return {
     success: false,
-    error: "Validation failed",
+    error: 'Validation failed',
     details: result.error.issues,
   };
 }
@@ -257,29 +243,29 @@ export function createValidationErrorResponse(
   return new Response(
     JSON.stringify({
       error: {
-        code: "VALIDATION_ERROR",
+        code: 'VALIDATION_ERROR',
         message: error,
-        details: details.map((issue) => ({
-          field: issue.path.join("."),
+        details: details.map(issue => ({
+          field: issue.path.join('.'),
           message: issue.message,
           code: issue.code,
         })),
-      },
+      }
     }),
     {
       status: 422,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     }
   );
 }
 
-export const versionSchema = z.enum(["v1", "v2"]).default("v1");
+export const versionSchema = z.enum(['v1', 'v2']).default('v1');
 
-export function getApiVersion(req: Request): "v1" | "v2" {
+export function getApiVersion(req: Request): 'v1' | 'v2' {
   const url = new URL(req.url);
-  const versionParam = url.searchParams.get("v");
-  const versionHeader = req.headers.get("x-api-version");
-
-  const version = versionParam || versionHeader || "v1";
+  const versionParam = url.searchParams.get('v');
+  const versionHeader = req.headers.get('x-api-version');
+  
+  const version = versionParam || versionHeader || 'v1';
   return versionSchema.parse(version);
 }

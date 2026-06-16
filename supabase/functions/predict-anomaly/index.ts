@@ -45,7 +45,7 @@ serve(async (req) => {
 
     // Analyze patterns and detect anomalies
     const predictions: AnomalyPrediction[] = [];
-
+    
     // Group activities by hour
     const hourlyGroups: Record<number, number> = {};
     activities?.forEach((a: any) => {
@@ -56,8 +56,7 @@ serve(async (req) => {
     // Calculate statistics
     const values = Object.values(hourlyGroups);
     const mean = values.reduce((a, b) => a + b, 0) / values.length || 0;
-    const stdDev =
-      Math.sqrt(values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length) || 1;
+    const stdDev = Math.sqrt(values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length) || 1;
 
     // Detect anomalies using Z-score
     Object.entries(hourlyGroups).forEach(([hour, count]) => {
@@ -75,9 +74,9 @@ serve(async (req) => {
             suggestedActions: [
               "Review activity logs for this time period",
               "Check if scheduled tasks were running",
-              "Verify user behavior patterns",
+              "Verify user behavior patterns"
             ],
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString()
           });
         }
       }
@@ -91,10 +90,7 @@ serve(async (req) => {
 
     const userValues = Object.values(userGroups);
     const userMean = userValues.reduce((a, b) => a + b, 0) / userValues.length || 0;
-    const userStdDev =
-      Math.sqrt(
-        userValues.reduce((sum, v) => sum + Math.pow(v - userMean, 2), 0) / userValues.length
-      ) || 1;
+    const userStdDev = Math.sqrt(userValues.reduce((sum, v) => sum + Math.pow(v - userMean, 2), 0) / userValues.length) || 1;
 
     Object.entries(userGroups).forEach(([userId, count]) => {
       const zScore = (count - userMean) / userStdDev;
@@ -109,9 +105,9 @@ serve(async (req) => {
           suggestedActions: [
             "Review user's recent activities",
             "Check for automated or scripted behavior",
-            "Verify account security",
+            "Verify account security"
           ],
-          timestamp: new Date().toISOString(),
+          timestamp: new Date().toISOString()
         });
       }
     });
@@ -123,16 +119,16 @@ serve(async (req) => {
           analyzedRecords: activities?.length || 0,
           timeRange,
           threshold,
-          generatedAt: new Date().toISOString(),
-        },
+          generatedAt: new Date().toISOString()
+        }
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: message }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 });

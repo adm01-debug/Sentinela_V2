@@ -1,5 +1,4 @@
 # Example: Basic Dashboard Setup
-
 ```typescript
 import { DashboardLayout, StatCard, ActivityChart } from '@/components';
 export const BasicDashboard = () => (

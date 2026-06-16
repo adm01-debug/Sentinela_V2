@@ -1,23 +1,21 @@
 # Logging Guide
 
 ## Overview
-
 Structured logging standards and practices for the Sentinela application.
 
 ## Log Levels
 
-| Level | Usage                              | Example                    |
-| ----- | ---------------------------------- | -------------------------- |
-| ERROR | Application errors, exceptions     | Database connection failed |
-| WARN  | Potential issues, deprecated usage | Rate limit approaching     |
-| INFO  | Significant events, state changes  | User logged in             |
-| DEBUG | Detailed diagnostic information    | Query parameters           |
-| TRACE | Very detailed tracing              | Function entry/exit        |
+| Level | Usage | Example |
+|-------|-------|---------|
+| ERROR | Application errors, exceptions | Database connection failed |
+| WARN | Potential issues, deprecated usage | Rate limit approaching |
+| INFO | Significant events, state changes | User logged in |
+| DEBUG | Detailed diagnostic information | Query parameters |
+| TRACE | Very detailed tracing | Function entry/exit |
 
 ## Log Format
 
 ### Structured JSON Logging
-
 ```typescript
 import pino from "pino";
 
@@ -44,7 +42,6 @@ logger.info({
 ```
 
 ### Log Entry Structure
-
 ```json
 {
   "level": "info",
@@ -63,14 +60,13 @@ logger.info({
 ## Logging Patterns
 
 ### Request Logging
-
 ```typescript
 const requestLogger = (req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
   const requestId = uuidv4();
-
+  
   req.requestId = requestId;
-
+  
   res.on("finish", () => {
     logger.info({
       event: "http_request",
@@ -82,13 +78,12 @@ const requestLogger = (req: Request, res: Response, next: NextFunction) => {
       userId: req.user?.id,
     });
   });
-
+  
   next();
 };
 ```
 
 ### Error Logging
-
 ```typescript
 logger.error({
   event: "error",
@@ -107,7 +102,6 @@ logger.error({
 ```
 
 ### Audit Logging
-
 ```typescript
 const auditLog = async (action: string, resource: string, userId: string, details: object) => {
   await db.auditLogs.create({
@@ -120,7 +114,7 @@ const auditLog = async (action: string, resource: string, userId: string, detail
       timestamp: new Date(),
     },
   });
-
+  
   logger.info({
     event: "audit",
     action,
@@ -134,13 +128,12 @@ const auditLog = async (action: string, resource: string, userId: string, detail
 ## Sensitive Data
 
 ### Data Redaction
-
 ```typescript
 const sensitiveFields = ["password", "token", "secret", "apiKey", "ssn", "creditCard"];
 
 function redactSensitive(obj: object): object {
   return Object.entries(obj).reduce((acc, [key, value]) => {
-    if (sensitiveFields.some((f) => key.toLowerCase().includes(f))) {
+    if (sensitiveFields.some(f => key.toLowerCase().includes(f))) {
       acc[key] = "[REDACTED]";
     } else if (typeof value === "object" && value !== null) {
       acc[key] = redactSensitive(value);
@@ -155,13 +148,11 @@ function redactSensitive(obj: object): object {
 ## Log Aggregation
 
 ### ELK Stack Configuration
-
 - Filebeat → Logstash → Elasticsearch → Kibana
 - Retention: 30 days (production), 7 days (development)
 - Index pattern: `logs-sentinela-{env}-{date}`
 
 ### Queries
-
 ```
 # Error rate by endpoint
 level: "error" | stats count() by path
@@ -174,7 +165,7 @@ userId: "usr_123" | sort time desc
 ```
 
 ## Related Documentation
-
 - [ERROR_HANDLING.md](./ERROR_HANDLING.md)
 - [MONITORING.md](./MONITORING.md)
 - [AUDIT_TRAIL.md](./AUDIT_TRAIL.md)
+

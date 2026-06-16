@@ -2,7 +2,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-agent-key",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-agent-key",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
@@ -22,7 +23,7 @@ Deno.serve(async (req) => {
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
     const { data: keyRow } = await supabase
@@ -49,8 +50,8 @@ Deno.serve(async (req) => {
       source_type: i.source_type || "clipboard",
       action_taken: i.action_taken || "alert",
       severity: i.severity || "medium",
-      classifier_code: Array.isArray(i.classifiers) ? i.classifiers[0] : i.classifier_code || null,
-      policy_id: Array.isArray(i.policy_ids) ? i.policy_ids[0] : i.policy_id || null,
+      classifier_code: Array.isArray(i.classifiers) ? i.classifiers[0] : (i.classifier_code || null),
+      policy_id: Array.isArray(i.policy_ids) ? i.policy_ids[0] : (i.policy_id || null),
       app_name: i.app_name || null,
       window_title: i.window_title || null,
       match_count: i.match_count || 1,
@@ -79,14 +80,20 @@ Deno.serve(async (req) => {
       await supabase.from("dlp_redaction_log").insert(logRows);
     }
 
-    return new Response(JSON.stringify({ ok: true, inserted: inserted?.length || 0 }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ ok: true, inserted: inserted?.length || 0 }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   } catch (err) {
     console.error("dlp-incident-report error", err);
-    return new Response(JSON.stringify({ error: err instanceof Error ? err.message : "Unknown" }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: err instanceof Error ? err.message : "Unknown" }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
 });

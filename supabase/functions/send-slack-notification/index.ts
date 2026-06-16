@@ -1,22 +1,22 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
+  if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { channel, message, blocks, webhookUrl } = await req.json();
 
-    const slackWebhook = webhookUrl || Deno.env.get("SLACK_WEBHOOK_URL");
-
+    const slackWebhook = webhookUrl || Deno.env.get('SLACK_WEBHOOK_URL');
+    
     if (!slackWebhook) {
-      throw new Error("Slack webhook URL not configured");
+      throw new Error('Slack webhook URL not configured');
     }
 
     const payload: Record<string, unknown> = { text: message };
@@ -24,8 +24,8 @@ serve(async (req) => {
     if (blocks) payload.blocks = blocks;
 
     const response = await fetch(slackWebhook, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
@@ -33,14 +33,15 @@ serve(async (req) => {
       throw new Error(`Slack API error: ${response.statusText}`);
     }
 
-    return new Response(JSON.stringify({ success: true }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ success: true }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(
+      JSON.stringify({ error: message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   }
 });

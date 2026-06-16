@@ -15,14 +15,12 @@ Please report security vulnerabilities to security@sentinela.app
 **Do NOT create public GitHub issues for security vulnerabilities.**
 
 ### What to include:
-
 - Description of the vulnerability
 - Steps to reproduce
 - Potential impact
 - Suggested fix (if any)
 
 ### Response Timeline:
-
 - Initial response: 24 hours
 - Status update: 72 hours
 - Resolution target: 7-30 days (depending on severity)

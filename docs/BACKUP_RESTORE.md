@@ -1,33 +1,29 @@
 # Backup & Restore Guide
 
 ## Overview
-
 Comprehensive backup strategy and disaster recovery procedures.
 
 ## Backup Types
 
 ### Database Backups
-
-| Type          | Frequency        | Retention | Location          |
-| ------------- | ---------------- | --------- | ----------------- |
-| Full Backup   | Daily (2 AM UTC) | 30 days   | S3 + Cross-region |
-| Incremental   | Hourly           | 7 days    | S3                |
-| WAL Archives  | Continuous       | 7 days    | S3                |
-| Point-in-Time | On-demand        | 90 days   | S3 Glacier        |
+| Type | Frequency | Retention | Location |
+|------|-----------|-----------|----------|
+| Full Backup | Daily (2 AM UTC) | 30 days | S3 + Cross-region |
+| Incremental | Hourly | 7 days | S3 |
+| WAL Archives | Continuous | 7 days | S3 |
+| Point-in-Time | On-demand | 90 days | S3 Glacier |
 
 ### Application Data Backups
-
-| Data Type     | Frequency      | Retention  |
-| ------------- | -------------- | ---------- |
-| User uploads  | Real-time sync | 1 year     |
-| Screenshots   | Daily          | 90 days    |
-| Logs          | Daily          | 30 days    |
-| Configuration | On change      | Indefinite |
+| Data Type | Frequency | Retention |
+|-----------|-----------|-----------|
+| User uploads | Real-time sync | 1 year |
+| Screenshots | Daily | 90 days |
+| Logs | Daily | 30 days |
+| Configuration | On change | Indefinite |
 
 ## Backup Procedures
 
 ### Automated Database Backup
-
 ```bash
 #!/bin/bash
 # scripts/backup.sh
@@ -54,7 +50,6 @@ echo "Backup completed: sentinela_${DATE}.dump.gpg"
 ```
 
 ### Manual Backup
-
 ```bash
 # Full database backup
 ./scripts/backup.sh --full
@@ -69,7 +64,6 @@ pg_dump --schema-only sentinela > schema_backup.sql
 ## Restore Procedures
 
 ### Database Restore
-
 ```bash
 #!/bin/bash
 # scripts/restore.sh
@@ -103,7 +97,6 @@ npm run db:verify
 ```
 
 ### Point-in-Time Recovery
-
 ```bash
 # Restore to specific timestamp
 pg_restore \
@@ -115,7 +108,6 @@ pg_restore \
 ## Verification
 
 ### Backup Verification Script
-
 ```bash
 # Daily verification
 ./scripts/verify-backup.sh
@@ -125,20 +117,19 @@ pg_restore \
 ```
 
 ### Monitoring
-
 - Daily backup success alerts
 - Weekly restore test reports
 - Storage utilization monitoring
 
 ## Recovery Time Objectives
 
-| Scenario            | RTO      | RPO        |
-| ------------------- | -------- | ---------- |
-| Database corruption | 1 hour   | 1 hour     |
-| Regional outage     | 4 hours  | 15 minutes |
-| Complete data loss  | 24 hours | 1 hour     |
+| Scenario | RTO | RPO |
+|----------|-----|-----|
+| Database corruption | 1 hour | 1 hour |
+| Regional outage | 4 hours | 15 minutes |
+| Complete data loss | 24 hours | 1 hour |
 
 ## Related Documentation
-
 - [DISASTER_RECOVERY.md](./DISASTER_RECOVERY.md)
 - [INCIDENT_RESPONSE.md](./INCIDENT_RESPONSE.md)
+

@@ -51,9 +51,7 @@ serve(async (req) => {
       hourDistribution[hour] = (hourDistribution[hour] || 0) + 1;
     });
 
-    const workHours = Object.entries(hourDistribution).filter(
-      ([_, count]) => count > activities.length * 0.01
-    );
+    const workHours = Object.entries(hourDistribution).filter(([_, count]) => count > activities.length * 0.01);
     const startHour = Math.min(...workHours.map(([h]) => parseInt(h)));
     const endHour = Math.max(...workHours.map(([h]) => parseInt(h)));
 
@@ -121,14 +119,11 @@ serve(async (req) => {
           confidence: 0.75,
           frequency: "weekly",
           affectedMetrics: ["productivity"],
-          recommendations:
-            trend < 0
-              ? [
-                  "Review workload distribution",
-                  "Check for blocking issues",
-                  "Consider schedule optimization",
-                ]
-              : undefined,
+          recommendations: trend < 0 ? [
+            "Review workload distribution",
+            "Check for blocking issues",
+            "Consider schedule optimization",
+          ] : undefined,
         });
       }
     }
@@ -173,9 +168,9 @@ serve(async (req) => {
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: message }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 });

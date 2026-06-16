@@ -36,7 +36,7 @@ serve(async (req) => {
     const [activitiesRes, violationsRes, employeesRes] = await Promise.all([
       supabase.from("activities").select("*").order("created_at", { ascending: false }).limit(500),
       supabase.from("violations").select("*").order("created_at", { ascending: false }).limit(100),
-      supabase.from("employees").select("*").eq("status", "active"),
+      supabase.from("employees").select("*").eq("status", "active")
     ]);
 
     const activities = activitiesRes.data || [];
@@ -46,17 +46,12 @@ serve(async (req) => {
     // Generate trend insights
     if (insightTypes.includes("trend")) {
       // Activity trend
-      const today = activities.filter(
-        (a: any) => new Date(a.created_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)
-      ).length;
+      const today = activities.filter((a: any) => new Date(a.created_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)).length;
       const yesterday = activities.filter((a: any) => {
         const d = new Date(a.created_at);
-        return (
-          d > new Date(Date.now() - 48 * 60 * 60 * 1000) &&
-          d < new Date(Date.now() - 24 * 60 * 60 * 1000)
-        );
+        return d > new Date(Date.now() - 48 * 60 * 60 * 1000) && d < new Date(Date.now() - 24 * 60 * 60 * 1000);
       }).length;
-
+      
       if (yesterday > 0) {
         const change = ((today - yesterday) / yesterday) * 100;
         if (Math.abs(change) > 20) {
@@ -68,7 +63,7 @@ serve(async (req) => {
             confidence: 0.85,
             severity: Math.abs(change) > 50 ? "high" : "medium",
             data: { today, yesterday, changePercent: change },
-            createdAt: new Date().toISOString(),
+            createdAt: new Date().toISOString()
           });
         }
       }
@@ -86,12 +81,8 @@ serve(async (req) => {
           confidence: 0.95,
           severity: "high",
           data: { count: criticalViolations },
-          actions: [
-            "Review critical violations immediately",
-            "Check security policies",
-            "Contact affected users",
-          ],
-          createdAt: new Date().toISOString(),
+          actions: ["Review critical violations immediately", "Check security policies", "Contact affected users"],
+          createdAt: new Date().toISOString()
         });
       }
     }
@@ -100,10 +91,7 @@ serve(async (req) => {
     if (insightTypes.includes("recommendation")) {
       const inactiveEmployees = employees.filter((e: any) => {
         const lastActivity = activities.find((a: any) => a.employee_id === e.id);
-        return (
-          !lastActivity ||
-          new Date(lastActivity.created_at) < new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-        );
+        return !lastActivity || new Date(lastActivity.created_at) < new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
       });
 
       if (inactiveEmployees.length > employees.length * 0.1) {
@@ -114,19 +102,13 @@ serve(async (req) => {
           description: `${inactiveEmployees.length} employees (${((inactiveEmployees.length / employees.length) * 100).toFixed(1)}%) have no recent activity`,
           confidence: 0.8,
           data: { inactiveCount: inactiveEmployees.length, totalEmployees: employees.length },
-          actions: [
-            "Verify employee status",
-            "Check agent installation",
-            "Review monitoring policies",
-          ],
-          createdAt: new Date().toISOString(),
+          actions: ["Verify employee status", "Check agent installation", "Review monitoring policies"],
+          createdAt: new Date().toISOString()
         });
       }
 
       // Productivity recommendation
-      const avgProductivity =
-        activities.reduce((sum: number, a: any) => sum + (a.productivity_score || 0), 0) /
-        activities.length;
+      const avgProductivity = activities.reduce((sum: number, a: any) => sum + (a.productivity_score || 0), 0) / activities.length;
       if (avgProductivity < 60) {
         insights.push({
           id: crypto.randomUUID(),
@@ -135,12 +117,8 @@ serve(async (req) => {
           description: `Average productivity score is ${avgProductivity.toFixed(1)}%. Consider reviewing workflows.`,
           confidence: 0.75,
           data: { avgProductivity },
-          actions: [
-            "Analyze low-productivity periods",
-            "Review application usage",
-            "Identify bottlenecks",
-          ],
-          createdAt: new Date().toISOString(),
+          actions: ["Analyze low-productivity periods", "Review application usage", "Identify bottlenecks"],
+          createdAt: new Date().toISOString()
         });
       }
     }
@@ -152,16 +130,16 @@ serve(async (req) => {
           analyzedActivities: activities.length,
           analyzedViolations: violations.length,
           analyzedEmployees: employees.length,
-          generatedAt: new Date().toISOString(),
-        },
+          generatedAt: new Date().toISOString()
+        }
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: message }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 });

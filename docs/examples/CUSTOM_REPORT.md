@@ -1,5 +1,4 @@
 # Example: Custom Report
-
 ```typescript
 import { ReportBuilder, useReportData } from '@/lib/reports';
 export const CustomReport = ({ dateRange, employees }) => {

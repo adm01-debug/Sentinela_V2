@@ -29,7 +29,6 @@ As APIs suportam versionamento via query string `?v=v1` ou header `X-API-Version
 ---
 
 ## 1. Agent Collector (`/agent-collector`)
-
 Coleta dados de atividade dos agentes desktop.
 
 **Contrato (v1/v2):**
@@ -41,7 +40,6 @@ Coleta dados de atividade dos agentes desktop.
 | `session_id` | UUID | Não | ID da sessão do agente |
 
 **Exemplo de Payload:**
-
 ```json
 {
   "data_type": "activity",
@@ -57,7 +55,6 @@ Coleta dados de atividade dos agentes desktop.
 ---
 
 ## 2. Mobile Collector (`/mobile-collector`)
-
 Coleta dados de geolocalização e uso de apps em dispositivos móveis.
 
 **Contrato (v1/v2):**
@@ -69,7 +66,6 @@ Coleta dados de geolocalização e uso de apps em dispositivos móveis.
 | `battery_level` | number | Não | Nível da bateria (0-100) |
 
 **Exemplo de Payload:**
-
 ```json
 {
   "employee_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -85,7 +81,6 @@ Coleta dados de geolocalização e uso de apps em dispositivos móveis.
 ---
 
 ## 3. Webhook Sender (`/send-webhook`)
-
 Envia notificações para sistemas externos.
 
 **Contrato (v1/v2):**
@@ -96,7 +91,6 @@ Envia notificações para sistemas externos.
 | `payload` | object | Sim | Dados do evento |
 
 **Exemplo de Payload:**
-
 ```json
 {
   "webhook_id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
@@ -112,9 +106,9 @@ Envia notificações para sistemas externos.
 
 ## Tabelas e Relacionamentos
 
-| Função             | Tabelas Afetadas                                         | Operações              |
-| ------------------ | -------------------------------------------------------- | ---------------------- |
-| `agent-collector`  | `keystroke_logs`, `screen_captures`, `productivity_logs` | INSERT                 |
-| `mobile-collector` | `mobile_devices`, `mobile_activity_logs`                 | UPSERT, INSERT         |
-| `send-webhook`     | `webhooks`, `webhook_logs`                               | SELECT, INSERT, UPDATE |
-| `check-geofence`   | `geofences`, `geofence_violations`                       | SELECT, INSERT         |
+| Função | Tabelas Afetadas | Operações |
+|--------|------------------|-----------|
+| `agent-collector` | `keystroke_logs`, `screen_captures`, `productivity_logs` | INSERT |
+| `mobile-collector` | `mobile_devices`, `mobile_activity_logs` | UPSERT, INSERT |
+| `send-webhook` | `webhooks`, `webhook_logs` | SELECT, INSERT, UPDATE |
+| `check-geofence` | `geofences`, `geofence_violations` | SELECT, INSERT |

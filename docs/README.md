@@ -1,7 +1,6 @@
 # Sentinela Documentation
 
 ## Overview
-
 Sentinela is a comprehensive employee monitoring and productivity platform.
 
 ## Table of Contents
