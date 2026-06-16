@@ -40,11 +40,11 @@ export class AuthService {
       });
 
       if (!response.ok) {
-        const error = await response.json();
+        const error = (await response.json()) as { error?: string };
         return { valid: false, error: error.error || "Authentication failed" };
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as AuthResult;
       return data;
     } catch (error) {
       log.error("Auth validation error:", error);
