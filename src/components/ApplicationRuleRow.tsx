@@ -1,9 +1,15 @@
-import { useState } from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { Pencil, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,42 +20,47 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import type { ApplicationRule } from '@/hooks/useSettings';
-import { categoryLabels, statusLabels } from '@/data/settingsData';
+} from "@/components/ui/alert-dialog";
+import type { ApplicationRule } from "@/hooks/useSettings";
+import { categoryLabels, statusLabels } from "@/data/settingsData";
 
 const statusStyles = {
-  allowed: 'bg-success/20 text-success border-success/30',
-  blocked: 'bg-destructive/20 text-destructive border-destructive/30',
-  monitored: 'bg-warning/20 text-warning border-warning/30',
+  allowed: "bg-success/20 text-success border-success/30",
+  blocked: "bg-destructive/20 text-destructive border-destructive/30",
+  monitored: "bg-warning/20 text-warning border-warning/30",
 };
 
 const appIcons: Record<string, string> = {
-  'VS Code': '💻',
-  'Chrome': '🌐',
-  'Slack': '💬',
-  'Discord': '🎮',
-  'Spotify': '🎵',
-  'Netflix': '📺',
-  'WhatsApp': '📱',
-  'Telegram': '✈️',
-  'Excel': '📊',
-  'Word': '📝',
-  'Figma': '🎨',
-  'YouTube': '▶️',
-  'Steam': '🎮',
-  'Zoom': '📹',
-  'Teams': '👥',
+  "VS Code": "💻",
+  Chrome: "🌐",
+  Slack: "💬",
+  Discord: "🎮",
+  Spotify: "🎵",
+  Netflix: "📺",
+  WhatsApp: "📱",
+  Telegram: "✈️",
+  Excel: "📊",
+  Word: "📝",
+  Figma: "🎨",
+  YouTube: "▶️",
+  Steam: "🎮",
+  Zoom: "📹",
+  Teams: "👥",
 };
 
 interface ApplicationRuleRowProps {
   rule: ApplicationRule;
-  onStatusChange: (id: string, status: 'allowed' | 'blocked' | 'monitored') => void;
+  onStatusChange: (id: string, status: "allowed" | "blocked" | "monitored") => void;
   onDelete?: (id: string) => Promise<boolean>;
   onEdit?: (rule: ApplicationRule) => void;
 }
 
-export function ApplicationRuleRow({ rule, onStatusChange, onDelete, onEdit }: ApplicationRuleRowProps) {
+export function ApplicationRuleRow({
+  rule,
+  onStatusChange,
+  onDelete,
+  onEdit,
+}: ApplicationRuleRowProps) {
   const [deleting, setDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -63,7 +74,7 @@ export function ApplicationRuleRow({ rule, onStatusChange, onDelete, onEdit }: A
     <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-card p-4">
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-xl">
-          {appIcons[rule.name] || '📦'}
+          {appIcons[rule.name] || "📦"}
         </div>
         <div>
           <p className="font-medium">{rule.name}</p>
@@ -72,16 +83,18 @@ export function ApplicationRuleRow({ rule, onStatusChange, onDelete, onEdit }: A
           </Badge>
         </div>
       </div>
-      
+
       <div className="flex items-center gap-2">
         <Select
           value={rule.status}
-          onValueChange={(value) => onStatusChange(rule.id, value as 'allowed' | 'blocked' | 'monitored')}
+          onValueChange={(value) =>
+            onStatusChange(rule.id, value as "allowed" | "blocked" | "monitored")
+          }
         >
-          <SelectTrigger className={cn('w-36', statusStyles[rule.status])}>
+          <SelectTrigger className={cn("w-36", statusStyles[rule.status])}>
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-popover border-border">
+          <SelectContent className="border-border bg-popover">
             <SelectItem value="allowed" className="text-success">
               {statusLabels.allowed}
             </SelectItem>
@@ -95,9 +108,9 @@ export function ApplicationRuleRow({ rule, onStatusChange, onDelete, onEdit }: A
         </Select>
 
         {onEdit && (
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             className="text-muted-foreground hover:text-primary"
             onClick={() => onEdit(rule)}
           >
@@ -108,7 +121,11 @@ export function ApplicationRuleRow({ rule, onStatusChange, onDelete, onEdit }: A
         {onDelete && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-destructive"
+              >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </AlertDialogTrigger>
@@ -116,17 +133,18 @@ export function ApplicationRuleRow({ rule, onStatusChange, onDelete, onEdit }: A
               <AlertDialogHeader>
                 <AlertDialogTitle>Excluir aplicativo</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Tem certeza que deseja excluir &quot;{rule.name}&quot; da lista de regras? Esta ação não pode ser desfeita.
+                  Tem certeza que deseja excluir &quot;{rule.name}&quot; da lista de regras? Esta
+                  ação não pode ser desfeita.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction 
+                <AlertDialogAction
                   onClick={handleDelete}
                   disabled={deleting}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 >
-                  {deleting ? 'Excluindo...' : 'Excluir'}
+                  {deleting ? "Excluindo..." : "Excluir"}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

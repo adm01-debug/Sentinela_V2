@@ -1,9 +1,9 @@
-import { memo } from 'react';
-import { Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { memo } from "react";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -11,15 +11,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import type { EmployeeFormData } from '@/hooks/useEmployeesPage';
+} from "@/components/ui/select";
+import type { EmployeeFormData } from "@/hooks/useEmployeesPage";
 
 interface Team {
   id: string;
@@ -55,13 +55,11 @@ function EmployeeFormDialogComponent({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>
-            {isEditing ? 'Editar Funcionário' : 'Novo Funcionário'}
-          </DialogTitle>
+          <DialogTitle>{isEditing ? "Editar Funcionário" : "Novo Funcionário"}</DialogTitle>
           <DialogDescription>
             {isEditing
-              ? 'Atualize as informações do funcionário'
-              : 'Preencha as informações do novo funcionário'}
+              ? "Atualize as informações do funcionário"
+              : "Preencha as informações do novo funcionário"}
           </DialogDescription>
         </DialogHeader>
 
@@ -72,7 +70,7 @@ function EmployeeFormDialogComponent({
               <Input
                 id="name"
                 value={formData.name}
-                onChange={(e) => handleChange('name', e.target.value)}
+                onChange={(e) => handleChange("name", e.target.value)}
                 placeholder="Nome completo"
               />
             </div>
@@ -82,7 +80,7 @@ function EmployeeFormDialogComponent({
                 id="email"
                 type="email"
                 value={formData.email}
-                onChange={(e) => handleChange('email', e.target.value)}
+                onChange={(e) => handleChange("email", e.target.value)}
                 placeholder="email@empresa.com"
               />
             </div>
@@ -94,7 +92,7 @@ function EmployeeFormDialogComponent({
               <Input
                 id="department"
                 value={formData.department}
-                onChange={(e) => handleChange('department', e.target.value)}
+                onChange={(e) => handleChange("department", e.target.value)}
                 placeholder="Ex: TI, RH, Comercial"
               />
             </div>
@@ -103,7 +101,7 @@ function EmployeeFormDialogComponent({
               <Input
                 id="position"
                 value={formData.position}
-                onChange={(e) => handleChange('position', e.target.value)}
+                onChange={(e) => handleChange("position", e.target.value)}
                 placeholder="Ex: Analista, Gerente"
               />
             </div>
@@ -114,7 +112,7 @@ function EmployeeFormDialogComponent({
               <Label htmlFor="team">Equipe</Label>
               <Select
                 value={formData.team_id}
-                onValueChange={(value) => handleChange('team_id', value)}
+                onValueChange={(value) => handleChange("team_id", value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione uma equipe" />
@@ -133,7 +131,7 @@ function EmployeeFormDialogComponent({
               <Label htmlFor="status">Status</Label>
               <Select
                 value={formData.status}
-                onValueChange={(value) => handleChange('status', value)}
+                onValueChange={(value) => handleChange("status", value)}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -154,7 +152,7 @@ function EmployeeFormDialogComponent({
               <Input
                 id="phone"
                 value={formData.phone}
-                onChange={(e) => handleChange('phone', e.target.value)}
+                onChange={(e) => handleChange("phone", e.target.value)}
                 placeholder="(00) 00000-0000"
               />
             </div>
@@ -164,7 +162,7 @@ function EmployeeFormDialogComponent({
                 id="hire_date"
                 type="date"
                 value={formData.hire_date}
-                onChange={(e) => handleChange('hire_date', e.target.value)}
+                onChange={(e) => handleChange("hire_date", e.target.value)}
               />
             </div>
           </div>
@@ -174,7 +172,7 @@ function EmployeeFormDialogComponent({
             <Textarea
               id="notes"
               value={formData.notes}
-              onChange={(e) => handleChange('notes', e.target.value)}
+              onChange={(e) => handleChange("notes", e.target.value)}
               placeholder="Informações adicionais..."
               rows={3}
             />
@@ -187,7 +185,7 @@ function EmployeeFormDialogComponent({
           </Button>
           <Button onClick={onSubmit} disabled={!formData.name.trim() || isSubmitting}>
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isEditing ? 'Salvar' : 'Criar'}
+            {isEditing ? "Salvar" : "Criar"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { MapPin } from 'lucide-react';
+import React from "react";
+import { MapPin } from "lucide-react";
 
 interface MobileDevice {
   id: string;
@@ -17,15 +17,17 @@ interface MobileDevicesMapProps {
   onDeviceClick?: (device: MobileDevice) => void;
 }
 
-export function MobileDevicesMap({ devices = [], selectedDeviceId: _selectedDeviceId, onDeviceClick: _onDeviceClick }: MobileDevicesMapProps) {
+export function MobileDevicesMap({
+  devices = [],
+  selectedDeviceId: _selectedDeviceId,
+  onDeviceClick: _onDeviceClick,
+}: MobileDevicesMapProps) {
   return (
-    <div className="h-full bg-muted rounded-lg flex items-center justify-center">
+    <div className="flex h-full items-center justify-center rounded-lg bg-muted">
       <div className="text-center text-muted-foreground">
-        <MapPin className="h-12 w-12 mx-auto mb-2" />
+        <MapPin className="mx-auto mb-2 h-12 w-12" />
         <p>Mobile devices map placeholder</p>
-        {devices.length > 0 && (
-          <p className="text-sm mt-2">{devices.length} devices</p>
-        )}
+        {devices.length > 0 && <p className="mt-2 text-sm">{devices.length} devices</p>}
       </div>
     </div>
   );

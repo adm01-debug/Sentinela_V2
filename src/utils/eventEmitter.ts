@@ -14,11 +14,14 @@ class EventEmitter {
   }
 
   emit<T>(event: string, data?: T): void {
-    this.events.get(event)?.forEach(cb => cb(data));
+    this.events.get(event)?.forEach((cb) => cb(data));
   }
 
   once<T>(event: string, callback: EventCallback<T>): () => void {
-    const wrapper: EventCallback<T> = (data) => { callback(data); this.off(event, wrapper); };
+    const wrapper: EventCallback<T> = (data) => {
+      callback(data);
+      this.off(event, wrapper);
+    };
     return this.on(event, wrapper);
   }
 

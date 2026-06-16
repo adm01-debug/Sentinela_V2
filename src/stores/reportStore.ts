@@ -1,10 +1,10 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface Report {
   id: string;
   title: string;
   type: string;
-  status: 'pending' | 'generating' | 'completed' | 'failed';
+  status: "pending" | "generating" | "completed" | "failed";
   createdAt: string;
   downloadUrl?: string;
 }

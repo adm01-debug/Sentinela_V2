@@ -1,17 +1,17 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState, useCallback, useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState, useCallback, useMemo } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
 export interface DashboardWidget {
   id: string;
-  type: 'stats' | 'chart' | 'alerts' | 'employees' | 'ranking' | 'security' | 'custom';
+  type: "stats" | "chart" | "alerts" | "employees" | "ranking" | "security" | "custom";
   title: string;
   position: { x: number; y: number; w: number; h: number };
   config?: unknown;
   visible?: boolean;
-  size?: 'small' | 'medium' | 'large' | 'full';
+  size?: "small" | "medium" | "large" | "full";
 }
 
 export interface DashboardLayout {
@@ -23,10 +23,38 @@ export interface DashboardLayout {
 }
 
 const DEFAULT_WIDGETS: DashboardWidget[] = [
-  { id: 'employees', type: 'employees', title: 'Funcionários', position: { x: 0, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
-  { id: 'alerts', type: 'alerts', title: 'Alertas', position: { x: 1, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
-  { id: 'stats', type: 'stats', title: 'Produtividade', position: { x: 2, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
-  { id: 'activity', type: 'chart', title: 'Atividade', position: { x: 0, y: 1, w: 2, h: 1 }, visible: true, size: 'large' },
+  {
+    id: "employees",
+    type: "employees",
+    title: "Funcionários",
+    position: { x: 0, y: 0, w: 1, h: 1 },
+    visible: true,
+    size: "medium",
+  },
+  {
+    id: "alerts",
+    type: "alerts",
+    title: "Alertas",
+    position: { x: 1, y: 0, w: 1, h: 1 },
+    visible: true,
+    size: "medium",
+  },
+  {
+    id: "stats",
+    type: "stats",
+    title: "Produtividade",
+    position: { x: 2, y: 0, w: 1, h: 1 },
+    visible: true,
+    size: "medium",
+  },
+  {
+    id: "activity",
+    type: "chart",
+    title: "Atividade",
+    position: { x: 0, y: 1, w: 2, h: 1 },
+    visible: true,
+    size: "large",
+  },
 ];
 
 export function useDashboardLayout() {
@@ -39,11 +67,11 @@ export function useDashboardLayout() {
     queryKey: queryKeys.dashboard.layout(),
     queryFn: async () => {
       if (!user?.id) return null;
-      
+
       const { data, error } = await supabase
-        .from('dashboard_layouts')
-        .select('*')
-        .eq('user_id', user.id)
+        .from("dashboard_layouts")
+        .select("*")
+        .eq("user_id", user.id)
         .maybeSingle();
 
       if (error) throw error;
@@ -62,26 +90,26 @@ export function useDashboardLayout() {
 
   const saveMutation = useMutation({
     mutationFn: async (newWidgets: DashboardWidget[]) => {
-      if (!user?.id) throw new Error('User not authenticated');
+      if (!user?.id) throw new Error("User not authenticated");
 
       const { data: existing } = await supabase
-        .from('dashboard_layouts')
-        .select('id')
-        .eq('user_id', user.id)
+        .from("dashboard_layouts")
+        .select("id")
+        .eq("user_id", user.id)
         .maybeSingle();
 
       if (existing) {
         const { data, error } = await supabase
-          .from('dashboard_layouts')
+          .from("dashboard_layouts")
           .update({ widgets: newWidgets } as Record<string, unknown>)
-          .eq('id', (existing as { id: string }).id)
+          .eq("id", (existing as { id: string }).id)
           .select()
           .single();
         if (error) throw error;
         return data;
       } else {
         const { data, error } = await supabase
-          .from('dashboard_layouts')
+          .from("dashboard_layouts")
           .insert({ user_id: user.id, widgets: newWidgets })
           .select()
           .single();
@@ -95,23 +123,27 @@ export function useDashboardLayout() {
     },
   });
 
-  const toggleWidget = useCallback((widgetId: string) => {
-    const currentWidgets = localWidgets || widgets;
-    const newWidgets = currentWidgets.map(w =>
-      w.id === widgetId ? { ...w, visible: !w.visible } : w
-    );
-    setLocalWidgets(newWidgets);
-    saveMutation.mutate(newWidgets);
-  }, [widgets, localWidgets, saveMutation]);
+  const toggleWidget = useCallback(
+    (widgetId: string) => {
+      const currentWidgets = localWidgets || widgets;
+      const newWidgets = currentWidgets.map((w) =>
+        w.id === widgetId ? { ...w, visible: !w.visible } : w
+      );
+      setLocalWidgets(newWidgets);
+      saveMutation.mutate(newWidgets);
+    },
+    [widgets, localWidgets, saveMutation]
+  );
 
-  const resizeWidget = useCallback((widgetId: string, size: DashboardWidget['size']) => {
-    const currentWidgets = localWidgets || widgets;
-    const newWidgets = currentWidgets.map(w =>
-      w.id === widgetId ? { ...w, size } : w
-    );
-    setLocalWidgets(newWidgets);
-    saveMutation.mutate(newWidgets);
-  }, [widgets, localWidgets, saveMutation]);
+  const resizeWidget = useCallback(
+    (widgetId: string, size: DashboardWidget["size"]) => {
+      const currentWidgets = localWidgets || widgets;
+      const newWidgets = currentWidgets.map((w) => (w.id === widgetId ? { ...w, size } : w));
+      setLocalWidgets(newWidgets);
+      saveMutation.mutate(newWidgets);
+    },
+    [widgets, localWidgets, saveMutation]
+  );
 
   const resetLayout = useCallback(() => {
     setLocalWidgets(DEFAULT_WIDGETS);
@@ -136,26 +168,26 @@ export function useSaveDashboardLayout() {
 
   return useMutation({
     mutationFn: async (widgets: DashboardWidget[]) => {
-      if (!user?.id) throw new Error('User not authenticated');
+      if (!user?.id) throw new Error("User not authenticated");
 
       const { data: existing } = await supabase
-        .from('dashboard_layouts')
-        .select('id')
-        .eq('user_id', user.id)
+        .from("dashboard_layouts")
+        .select("id")
+        .eq("user_id", user.id)
         .maybeSingle();
 
       if (existing) {
         const { data, error } = await supabase
-          .from('dashboard_layouts')
+          .from("dashboard_layouts")
           .update({ widgets })
-          .eq('id', (existing as { id: string }).id)
+          .eq("id", (existing as { id: string }).id)
           .select()
           .single();
         if (error) throw error;
         return data;
       } else {
         const { data, error } = await supabase
-          .from('dashboard_layouts')
+          .from("dashboard_layouts")
           .insert({ user_id: user.id, widgets })
           .select()
           .single();

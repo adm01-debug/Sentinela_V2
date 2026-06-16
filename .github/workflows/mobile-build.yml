@@ -1,7 +1,7 @@
 name: Mobile Build
 on:
   push:
-    paths: ['mobile-app/**']
+    paths: ["mobile-app/**"]
 jobs:
   build:
     runs-on: ubuntu-latest

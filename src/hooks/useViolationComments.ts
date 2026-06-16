@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
 // ============================================================
 // TYPES
@@ -39,18 +39,20 @@ export interface UpdateViolationCommentInput {
 
 export function useViolationComments(violationId: string | undefined) {
   return useQuery({
-    queryKey: queryKeys.violations.comments(violationId || ''),
+    queryKey: queryKeys.violations.comments(violationId || ""),
     queryFn: async () => {
       if (!violationId) return [];
-      
+
       const { data, error } = await supabase
-        .from('violation_comments')
-        .select(`
+        .from("violation_comments")
+        .select(
+          `
           *,
           user:users(id, email, full_name)
-        `)
-        .eq('violation_id', violationId)
-        .order('created_at', { ascending: true });
+        `
+        )
+        .eq("violation_id", violationId)
+        .order("created_at", { ascending: true });
 
       if (error) throw error;
       return data as ViolationComment[];
@@ -70,19 +72,23 @@ export function useCreateViolationComment() {
 
   return useMutation({
     mutationFn: async (input: CreateViolationCommentInput) => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Usuário não autenticado');
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("Usuário não autenticado");
 
       const { data, error } = await supabase
-        .from('violation_comments')
+        .from("violation_comments")
         .insert({
           ...input,
           user_id: user.id,
         })
-        .select(`
+        .select(
+          `
           *,
           user:users(id, email, full_name)
-        `)
+        `
+        )
         .single();
 
       if (error) throw error;
@@ -90,8 +96,8 @@ export function useCreateViolationComment() {
     },
     onMutate: async (input) => {
       // Cancel outgoing refetches
-      await queryClient.cancelQueries({ 
-        queryKey: queryKeys.violations.comments(input.violation_id) 
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.violations.comments(input.violation_id),
       });
 
       // Snapshot previous value
@@ -103,7 +109,7 @@ export function useCreateViolationComment() {
       const optimisticComment: ViolationComment = {
         id: `temp-${Date.now()}`,
         violation_id: input.violation_id,
-        user_id: 'current-user',
+        user_id: "current-user",
         content: input.content,
         is_internal: input.is_internal || false,
         created_at: new Date().toISOString(),
@@ -126,19 +132,19 @@ export function useCreateViolationComment() {
         );
       }
       toast({
-        title: 'Erro ao adicionar comentário',
+        title: "Erro ao adicionar comentário",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
     onSuccess: (data, input) => {
       // Replace optimistic with real data
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.violations.comments(input.violation_id) 
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.violations.comments(input.violation_id),
       });
       toast({
-        title: 'Comentário adicionado',
-        description: 'O comentário foi adicionado com sucesso.',
+        title: "Comentário adicionado",
+        description: "O comentário foi adicionado com sucesso.",
       });
     },
   });
@@ -151,9 +157,9 @@ export function useUpdateViolationComment() {
   return useMutation({
     mutationFn: async ({ id, content }: UpdateViolationCommentInput) => {
       const { data, error } = await supabase
-        .from('violation_comments')
+        .from("violation_comments")
         .update({ content, updated_at: new Date().toISOString() })
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
 
@@ -162,18 +168,18 @@ export function useUpdateViolationComment() {
     },
     onSuccess: (data: { violation_id: string }) => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.violations.comments(data.violation_id)
+        queryKey: queryKeys.violations.comments(data.violation_id),
       });
       toast({
-        title: 'Comentário atualizado',
-        description: 'O comentário foi atualizado com sucesso.',
+        title: "Comentário atualizado",
+        description: "O comentário foi atualizado com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao atualizar comentário',
+        title: "Erro ao atualizar comentário",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -185,17 +191,14 @@ export function useDeleteViolationComment() {
 
   return useMutation({
     mutationFn: async ({ id, violationId }: { id: string; violationId: string }) => {
-      const { error } = await supabase
-        .from('violation_comments')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from("violation_comments").delete().eq("id", id);
 
       if (error) throw error;
       return { violationId };
     },
     onMutate: async ({ id, violationId }) => {
-      await queryClient.cancelQueries({ 
-        queryKey: queryKeys.violations.comments(violationId) 
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.violations.comments(violationId),
       });
 
       const previousComments = queryClient.getQueryData<ViolationComment[]>(
@@ -204,7 +207,7 @@ export function useDeleteViolationComment() {
 
       queryClient.setQueryData<ViolationComment[]>(
         queryKeys.violations.comments(violationId),
-        (old) => old?.filter(c => c.id !== id) || []
+        (old) => old?.filter((c) => c.id !== id) || []
       );
 
       return { previousComments, violationId };
@@ -217,18 +220,18 @@ export function useDeleteViolationComment() {
         );
       }
       toast({
-        title: 'Erro ao excluir comentário',
+        title: "Erro ao excluir comentário",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
     onSuccess: (_, { violationId }) => {
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.violations.comments(violationId) 
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.violations.comments(violationId),
       });
       toast({
-        title: 'Comentário excluído',
-        description: 'O comentário foi excluído com sucesso.',
+        title: "Comentário excluído",
+        description: "O comentário foi excluído com sucesso.",
       });
     },
   });

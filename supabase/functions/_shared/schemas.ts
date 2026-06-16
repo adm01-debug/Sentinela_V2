@@ -1,4 +1,4 @@
-import { z } from 'https://deno.land/x/zod@v3.23.8/mod.ts';
+import { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
 
 // ============================================================
 // COMMON SCHEMAS
@@ -16,14 +16,16 @@ export const ipAddressSchema = z.string().ip().optional();
 export const agentCollectorSchema = z.object({
   employee_id: uuidSchema,
   device_id: z.string().min(1),
-  data_type: z.enum(['screenshot', 'activity', 'keystroke', 'application', 'website']),
+  data_type: z.enum(["screenshot", "activity", "keystroke", "application", "website"]),
   data: z.record(z.unknown()),
   timestamp: dateTimeSchema.optional(),
-  metadata: z.object({
-    os: z.string().optional(),
-    app_version: z.string().optional(),
-    screen_resolution: z.string().optional(),
-  }).optional(),
+  metadata: z
+    .object({
+      os: z.string().optional(),
+      app_version: z.string().optional(),
+      screen_resolution: z.string().optional(),
+    })
+    .optional(),
 });
 
 export type AgentCollectorInput = z.infer<typeof agentCollectorSchema>;
@@ -35,18 +37,24 @@ export type AgentCollectorInput = z.infer<typeof agentCollectorSchema>;
 export const mobileCollectorSchema = z.object({
   employee_id: uuidSchema,
   device_id: z.string().min(1),
-  location: z.object({
-    latitude: z.number().min(-90).max(90),
-    longitude: z.number().min(-180).max(180),
-    accuracy: z.number().positive().optional(),
-    altitude: z.number().optional(),
-    speed: z.number().optional(),
-  }).optional(),
+  location: z
+    .object({
+      latitude: z.number().min(-90).max(90),
+      longitude: z.number().min(-180).max(180),
+      accuracy: z.number().positive().optional(),
+      altitude: z.number().optional(),
+      speed: z.number().optional(),
+    })
+    .optional(),
   battery_level: z.number().min(0).max(100).optional(),
-  app_usage: z.array(z.object({
-    app_name: z.string(),
-    duration_seconds: z.number().positive(),
-  })).optional(),
+  app_usage: z
+    .array(
+      z.object({
+        app_name: z.string(),
+        duration_seconds: z.number().positive(),
+      })
+    )
+    .optional(),
   timestamp: dateTimeSchema.optional(),
 });
 
@@ -80,19 +88,25 @@ export const checkGeofenceSchemaV2 = z.object({
   timestamp: dateTimeSchema.optional(),
   check_all: z.boolean().default(false),
   geofence_ids: z.array(uuidSchema).optional(),
-  geometry: z.object({
-    type: z.literal('Polygon'),
-    coordinates: z.array(z.array(z.array(z.number()))).min(1).refine(
-      (coords) => {
-        const ring = coords[0];
-        if (ring.length < 4) return false;
-        const first = ring[0];
-        const last = ring[ring.length - 1];
-        return first[0] === last[0] && first[1] === last[1];
-      },
-      { message: "Polygon must be closed and have at least 4 points (including closure)" }
-    ),
-  }).nullable().optional(),
+  geometry: z
+    .object({
+      type: z.literal("Polygon"),
+      coordinates: z
+        .array(z.array(z.array(z.number())))
+        .min(1)
+        .refine(
+          (coords) => {
+            const ring = coords[0];
+            if (ring.length < 4) return false;
+            const first = ring[0];
+            const last = ring[ring.length - 1];
+            return first[0] === last[0] && first[1] === last[1];
+          },
+          { message: "Polygon must be closed and have at least 4 points (including closure)" }
+        ),
+    })
+    .nullable()
+    .optional(),
 });
 
 export const checkGeofenceSchema = z.union([checkGeofenceSchemaV1, checkGeofenceSchemaV2]);
@@ -109,9 +123,9 @@ export const processViolationAlertSchema = z.object({
   violation_id: uuidSchema,
   employee_id: uuidSchema,
   violation_type: z.string().min(1),
-  severity: z.enum(['low', 'medium', 'high', 'critical']),
+  severity: z.enum(["low", "medium", "high", "critical"]),
   details: z.record(z.unknown()).optional(),
-  notify_channels: z.array(z.enum(['email', 'whatsapp', 'push', 'webhook'])).optional(),
+  notify_channels: z.array(z.enum(["email", "whatsapp", "push", "webhook"])).optional(),
 });
 
 export type ProcessViolationAlertInput = z.infer<typeof processViolationAlertSchema>;
@@ -120,16 +134,17 @@ export type ProcessViolationAlertInput = z.infer<typeof processViolationAlertSch
 // WHATSAPP SCHEMAS
 // ============================================================
 
-export const sendWhatsAppSchema = z.object({
-  to: z.string().min(10).max(15),
-  message: z.string().min(1).max(4096).optional(),
-  template_name: z.string().optional(),
-  template_params: z.record(z.string()).optional(),
-  test: z.boolean().optional(),
-}).refine(
-  (data) => data.message || data.template_name,
-  { message: 'Either message or template_name is required' }
-);
+export const sendWhatsAppSchema = z
+  .object({
+    to: z.string().min(10).max(15),
+    message: z.string().min(1).max(4096).optional(),
+    template_name: z.string().optional(),
+    template_params: z.record(z.string()).optional(),
+    test: z.boolean().optional(),
+  })
+  .refine((data) => data.message || data.template_name, {
+    message: "Either message or template_name is required",
+  });
 
 export type SendWhatsAppInput = z.infer<typeof sendWhatsAppSchema>;
 
@@ -236,7 +251,7 @@ export type SendRateLimitAlertInput = z.infer<typeof sendRateLimitAlertSchema>;
 
 export const analyzeActivitySchema = z.object({
   employee_id: uuidSchema,
-  period: z.enum(['day', 'week', 'month']).optional(),
+  period: z.enum(["day", "week", "month"]).optional(),
   start_date: dateTimeSchema.optional(),
   end_date: dateTimeSchema.optional(),
   include_screenshots: z.boolean().optional(),

@@ -1,6 +1,6 @@
-import * as os from 'os';
-import log from 'electron-log';
-import { CONFIG } from '../config';
+import * as os from "os";
+import log from "electron-log";
+import { CONFIG } from "../config";
 
 export interface AuthResult {
   valid: boolean;
@@ -25,9 +25,9 @@ export class AuthService {
   async validate(): Promise<AuthResult> {
     try {
       const response = await fetch(`${CONFIG.API_URL}/validate-agent-key`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           agentKey: this.agentKey,
@@ -41,14 +41,14 @@ export class AuthService {
 
       if (!response.ok) {
         const error = await response.json();
-        return { valid: false, error: error.error || 'Authentication failed' };
+        return { valid: false, error: error.error || "Authentication failed" };
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
-      log.error('Auth validation error:', error);
-      return { valid: false, error: 'Connection failed. Check your internet.' };
+      log.error("Auth validation error:", error);
+      return { valid: false, error: "Connection failed. Check your internet." };
     }
   }
 }

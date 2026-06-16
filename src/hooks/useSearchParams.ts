@@ -10,20 +10,26 @@ export function useSearchParams() {
   }, []);
 
   const get = useCallback((key: string) => params.get(key), [params]);
-  
-  const set = useCallback((key: string, value: string) => {
-    const newParams = new URLSearchParams(params);
-    newParams.set(key, value);
-    window.history.pushState(null, "", `?${newParams}`);
-    setParams(newParams);
-  }, [params]);
 
-  const remove = useCallback((key: string) => {
-    const newParams = new URLSearchParams(params);
-    newParams.delete(key);
-    window.history.pushState(null, "", `?${newParams}`);
-    setParams(newParams);
-  }, [params]);
+  const set = useCallback(
+    (key: string, value: string) => {
+      const newParams = new URLSearchParams(params);
+      newParams.set(key, value);
+      window.history.pushState(null, "", `?${newParams}`);
+      setParams(newParams);
+    },
+    [params]
+  );
+
+  const remove = useCallback(
+    (key: string) => {
+      const newParams = new URLSearchParams(params);
+      newParams.delete(key);
+      window.history.pushState(null, "", `?${newParams}`);
+      setParams(newParams);
+    },
+    [params]
+  );
 
   const getAll = useCallback(() => Object.fromEntries(params.entries()), [params]);
 

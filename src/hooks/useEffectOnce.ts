@@ -1,4 +1,4 @@
-import { useEffect, EffectCallback } from 'react';
+import { useEffect, EffectCallback } from "react";
 
 export function useEffectOnce(effect: EffectCallback): void {
   // Intentionally run only once on mount; `effect` is deliberately excluded.

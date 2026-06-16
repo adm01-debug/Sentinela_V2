@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { useRef, useState, useCallback, useMemo } from 'react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { useRef, useState, useCallback, useMemo } from "react";
+import { cn } from "@/lib/utils";
 
 export interface VirtualizedListProps<T> {
   items: T[];
@@ -34,9 +34,12 @@ export function VirtualizedList<T>({
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
 
-  const getItemHeight = useCallback((index: number) => {
-    return typeof itemHeight === 'function' ? itemHeight(index) : itemHeight;
-  }, [itemHeight]);
+  const getItemHeight = useCallback(
+    (index: number) => {
+      return typeof itemHeight === "function" ? itemHeight(index) : itemHeight;
+    },
+    [itemHeight]
+  );
 
   const { totalHeight, itemPositions } = useMemo(() => {
     const positions: number[] = [];
@@ -49,36 +52,61 @@ export function VirtualizedList<T>({
   }, [items.length, getItemHeight]);
 
   const visibleRange = useMemo(() => {
-    const height = typeof containerHeight === 'number' ? containerHeight : 400;
+    const height = typeof containerHeight === "number" ? containerHeight : 400;
     let start = 0;
     let end = items.length;
-    
+
     for (let i = 0; i < items.length; i++) {
-      if (itemPositions[i] + getItemHeight(i) >= scrollTop) { start = Math.max(0, i - overscan); break; }
+      if (itemPositions[i] + getItemHeight(i) >= scrollTop) {
+        start = Math.max(0, i - overscan);
+        break;
+      }
     }
     for (let i = start; i < items.length; i++) {
-      if (itemPositions[i] > scrollTop + height) { end = Math.min(items.length, i + overscan); break; }
+      if (itemPositions[i] > scrollTop + height) {
+        end = Math.min(items.length, i + overscan);
+        break;
+      }
     }
     return { start, end };
   }, [scrollTop, itemPositions, getItemHeight, containerHeight, overscan, items.length]);
 
-  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.currentTarget;
-    setScrollTop(target.scrollTop);
-    if (onEndReached && target.scrollHeight - target.scrollTop - target.clientHeight < endReachedThreshold) {
-      onEndReached();
-    }
-  }, [onEndReached, endReachedThreshold]);
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      const target = e.currentTarget;
+      setScrollTop(target.scrollTop);
+      if (
+        onEndReached &&
+        target.scrollHeight - target.scrollTop - target.clientHeight < endReachedThreshold
+      ) {
+        onEndReached();
+      }
+    },
+    [onEndReached, endReachedThreshold]
+  );
 
   if (items.length === 0 && !isLoading) return <>{emptyComponent}</>;
 
   return (
-    <div ref={containerRef} className={cn('overflow-auto', className)} style={{ height: containerHeight }} onScroll={handleScroll}>
-      <div style={{ height: totalHeight, position: 'relative' }}>
+    <div
+      ref={containerRef}
+      className={cn("overflow-auto", className)}
+      style={{ height: containerHeight }}
+      onScroll={handleScroll}
+    >
+      <div style={{ height: totalHeight, position: "relative" }}>
         {items.slice(visibleRange.start, visibleRange.end).map((item, i) => {
           const actualIndex = visibleRange.start + i;
           return (
-            <div key={keyExtractor(item, actualIndex)} style={{ position: 'absolute', top: itemPositions[actualIndex], width: '100%', height: getItemHeight(actualIndex) }}>
+            <div
+              key={keyExtractor(item, actualIndex)}
+              style={{
+                position: "absolute",
+                top: itemPositions[actualIndex],
+                width: "100%",
+                height: getItemHeight(actualIndex),
+              }}
+            >
               {renderItem(item, actualIndex)}
             </div>
           );

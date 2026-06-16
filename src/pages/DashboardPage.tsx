@@ -1,25 +1,30 @@
-import { useState, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Users, Activity, TrendingUp, AlertTriangle, Filter, X } from 'lucide-react';
-import { type Period, fallbackAlerts, fallbackActivities } from './dashboard/dashboardData';
-import { DashboardChartsRow, DepartmentPieChart } from './dashboard/DashboardCharts';
-import { DashboardAlertsCard, DashboardActivityCard } from './dashboard/DashboardCards';
-import { DashboardSkeleton } from './dashboard/DashboardSkeleton';
-import { useDashboardStats, useRecentAlerts, useRecentActivity } from '@/hooks/useDashboard';
-import { useChartColors } from '@/hooks/useChartColors';
-import { StatCard } from '@/components/StatCard';
-import { DashboardCustomizer } from '@/components/DashboardCustomizer';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { WelcomeBanner } from '@/components/WelcomeBanner';
-import { PageHeader } from '@/components/layout/PageHeader';
-
+import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { Users, Activity, TrendingUp, AlertTriangle, Filter, X } from "lucide-react";
+import { type Period, fallbackAlerts, fallbackActivities } from "./dashboard/dashboardData";
+import { DashboardChartsRow, DepartmentPieChart } from "./dashboard/DashboardCharts";
+import { DashboardAlertsCard, DashboardActivityCard } from "./dashboard/DashboardCards";
+import { DashboardSkeleton } from "./dashboard/DashboardSkeleton";
+import { useDashboardStats, useRecentAlerts, useRecentActivity } from "@/hooks/useDashboard";
+import { useChartColors } from "@/hooks/useChartColors";
+import { StatCard } from "@/components/StatCard";
+import { DashboardCustomizer } from "@/components/DashboardCustomizer";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { WelcomeBanner } from "@/components/WelcomeBanner";
+import { PageHeader } from "@/components/layout/PageHeader";
 
 export const DashboardPage = () => {
-  const [period, setPeriod] = useState<Period>('week');
+  const [period, setPeriod] = useState<Period>("week");
   const [showFilters, setShowFilters] = useState(false);
-  const [departmentFilter, setDepartmentFilter] = useState('all');
+  const [departmentFilter, setDepartmentFilter] = useState("all");
 
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const { data: realAlerts } = useRecentAlerts();
@@ -27,54 +32,107 @@ export const DashboardPage = () => {
   const colors = useChartColors();
   const { t } = useTranslation();
 
-  const departmentData = useMemo(() => [
-    { name: 'Engenharia', value: 35, color: colors.primary },
-    { name: 'Marketing', value: 22, color: colors.accent },
-    { name: 'Vendas', value: 28, color: colors.success },
-    { name: 'RH', value: 15, color: colors.info },
-    { name: 'Financeiro', value: 18, color: colors.warning },
-    { name: 'Suporte', value: 10, color: colors.destructive },
-  ], [colors]);
+  const departmentData = useMemo(
+    () => [
+      { name: "Engenharia", value: 35, color: colors.primary },
+      { name: "Marketing", value: 22, color: colors.accent },
+      { name: "Vendas", value: 28, color: colors.success },
+      { name: "RH", value: 15, color: colors.info },
+      { name: "Financeiro", value: 18, color: colors.warning },
+      { name: "Suporte", value: 10, color: colors.destructive },
+    ],
+    [colors]
+  );
 
-  const statsCards = useMemo(() => [
-    { title: t('dashboard.totalEmployees'), value: stats?.totalEmployees || 128, icon: Users, iconColor: 'bg-primary/10 text-primary', trend: { value: 5.2, label: 'desde o mês passado' }, accentColor: 'primary' as const },
-    { title: t('dashboard.activeNow'), value: stats?.activeEmployees || 45, icon: Activity, iconColor: 'bg-success/10 text-success', trend: { value: 12, label: 'desde ontem' }, accentColor: 'success' as const, pulse: true },
-    { title: t('dashboard.productivity'), value: (stats?.averageProductivity || 87) + '%', icon: TrendingUp, iconColor: 'bg-warning/10 text-warning', trend: { value: 3.8, label: 'esta semana' }, accentColor: 'warning' as const },
-    { title: t('dashboard.alerts'), value: stats?.alertsCount || 3, icon: AlertTriangle, iconColor: 'bg-destructive/10 text-destructive', trend: { value: -25, label: 'vs semana passada', isPositive: true }, accentColor: 'destructive' as const },
-  ], [stats, t]);
+  const statsCards = useMemo(
+    () => [
+      {
+        title: t("dashboard.totalEmployees"),
+        value: stats?.totalEmployees || 128,
+        icon: Users,
+        iconColor: "bg-primary/10 text-primary",
+        trend: { value: 5.2, label: "desde o mês passado" },
+        accentColor: "primary" as const,
+      },
+      {
+        title: t("dashboard.activeNow"),
+        value: stats?.activeEmployees || 45,
+        icon: Activity,
+        iconColor: "bg-success/10 text-success",
+        trend: { value: 12, label: "desde ontem" },
+        accentColor: "success" as const,
+        pulse: true,
+      },
+      {
+        title: t("dashboard.productivity"),
+        value: (stats?.averageProductivity || 87) + "%",
+        icon: TrendingUp,
+        iconColor: "bg-warning/10 text-warning",
+        trend: { value: 3.8, label: "esta semana" },
+        accentColor: "warning" as const,
+      },
+      {
+        title: t("dashboard.alerts"),
+        value: stats?.alertsCount || 3,
+        icon: AlertTriangle,
+        iconColor: "bg-destructive/10 text-destructive",
+        trend: { value: -25, label: "vs semana passada", isPositive: true },
+        accentColor: "destructive" as const,
+      },
+    ],
+    [stats, t]
+  );
 
-  const alerts = useMemo(() => realAlerts && realAlerts.length > 0 ? realAlerts : fallbackAlerts, [realAlerts]);
-  const activities = useMemo(() => realActivity && realActivity.length > 0 ? realActivity : fallbackActivities, [realActivity]);
+  const alerts = useMemo(
+    () => (realAlerts && realAlerts.length > 0 ? realAlerts : fallbackAlerts),
+    [realAlerts]
+  );
+  const activities = useMemo(
+    () => (realActivity && realActivity.length > 0 ? realActivity : fallbackActivities),
+    [realActivity]
+  );
 
   if (statsLoading) return <DashboardSkeleton />;
 
   return (
     <div className="space-y-6">
       <WelcomeBanner />
-      
+
       <PageHeader
-        title={t('dashboard.title')}
-        description={`${t('dashboard.subtitle')} — ${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}`}
+        title={t("dashboard.title")}
+        description={`${t("dashboard.subtitle")} — ${new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })}`}
         showBackButton={false}
         actions={
           <div className="flex items-center gap-2">
-            <div className="hidden md:flex gap-1 mr-2">
-              {(['day', 'week', 'month'] as Period[]).map(p => (
-                <Button 
-                  key={p} 
-                  variant={period === p ? 'default' : 'outline'} 
-                  size="sm" 
+            <div className="mr-2 hidden gap-1 md:flex">
+              {(["day", "week", "month"] as Period[]).map((p) => (
+                <Button
+                  key={p}
+                  variant={period === p ? "default" : "outline"}
+                  size="sm"
                   onClick={() => setPeriod(p)}
                   className="h-8"
                 >
-                  {p === 'day' ? 'Dia' : p === 'week' ? 'Semana' : 'Mês'}
+                  {p === "day" ? "Dia" : p === "week" ? "Semana" : "Mês"}
                 </Button>
               ))}
             </div>
-            <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)} className="h-8">
-              <Filter className="h-4 w-4 mr-1.5" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+              className="h-8"
+            >
+              <Filter className="mr-1.5 h-4 w-4" />
               Filtros
-              {departmentFilter !== 'all' && <Badge variant="secondary" className="ml-1.5 h-4 w-4 p-0 flex items-center justify-center">1</Badge>}
+              {departmentFilter !== "all" && (
+                <Badge
+                  variant="secondary"
+                  className="ml-1.5 flex h-4 w-4 items-center justify-center p-0"
+                >
+                  1
+                </Badge>
+              )}
             </Button>
             <DashboardCustomizer />
           </div>
@@ -82,9 +140,11 @@ export const DashboardPage = () => {
       />
 
       {showFilters && (
-        <div className="flex items-center gap-4 p-3 rounded-lg border bg-muted/30">
+        <div className="flex items-center gap-4 rounded-lg border bg-muted/30 p-3">
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-            <SelectTrigger className="w-[180px]"><SelectValue placeholder="Departamento" /></SelectTrigger>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Departamento" />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos os departamentos</SelectItem>
               <SelectItem value="engineering">Engenharia</SelectItem>
@@ -93,18 +153,23 @@ export const DashboardPage = () => {
               <SelectItem value="hr">RH</SelectItem>
             </SelectContent>
           </Select>
-          {departmentFilter !== 'all' && (
-            <Button variant="ghost" size="sm" onClick={() => setDepartmentFilter('all')}>
-              <X className="h-4 w-4 mr-1" />Limpar
+          {departmentFilter !== "all" && (
+            <Button variant="ghost" size="sm" onClick={() => setDepartmentFilter("all")}>
+              <X className="mr-1 h-4 w-4" />
+              Limpar
             </Button>
           )}
         </div>
       )}
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((card, i) => (
-          <div key={card.accentColor} className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both" style={{ animationDelay: `${i * 80}ms`, animationDuration: '400ms' }}>
+          <div
+            key={card.accentColor}
+            className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both"
+            style={{ animationDelay: `${i * 80}ms`, animationDuration: "400ms" }}
+          >
             <StatCard {...card} />
           </div>
         ))}
@@ -113,7 +178,7 @@ export const DashboardPage = () => {
       <DashboardChartsRow colors={colors} />
 
       {/* Bottom Row */}
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         <DashboardAlertsCard alerts={alerts} />
         <DashboardActivityCard activities={activities} />
         <DepartmentPieChart departmentData={departmentData} />

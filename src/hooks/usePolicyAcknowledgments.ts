@@ -1,6 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 // ============================================================
 // TYPES
@@ -45,20 +45,20 @@ export interface PolicyStats {
 
 export function usePolicies() {
   return useQuery({
-    queryKey: ['policies'],
+    queryKey: ["policies"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('security_policies')
-        .select('*')
-        .order('name', { ascending: true });
+        .from("security_policies")
+        .select("*")
+        .order("name", { ascending: true });
 
       if (error) throw error;
       return data.map((p) => ({
         id: p.id,
         name: p.name,
         description: p.description,
-        content: p.description || '',
-        version: '1.0',
+        content: p.description || "",
+        version: "1.0",
         is_active: p.enabled,
         requires_acknowledgment: true,
         created_at: p.created_at,
@@ -75,15 +75,15 @@ export function usePolicyAcknowledgments(filters?: {
   endDate?: string;
 }) {
   return useQuery({
-    queryKey: ['policy-acknowledgments', filters],
+    queryKey: ["policy-acknowledgments", filters],
     queryFn: async () => {
       let query = supabase
-        .from('policy_acknowledgments')
-        .select('*')
-        .order('acknowledged_at', { ascending: false });
+        .from("policy_acknowledgments")
+        .select("*")
+        .order("acknowledged_at", { ascending: false });
 
-      if (filters?.startDate) query = query.gte('acknowledged_at', filters.startDate);
-      if (filters?.endDate) query = query.lte('acknowledged_at', filters.endDate);
+      if (filters?.startDate) query = query.gte("acknowledged_at", filters.startDate);
+      if (filters?.endDate) query = query.lte("acknowledged_at", filters.endDate);
 
       const { data, error } = await query;
       if (error) throw error;
@@ -94,39 +94,45 @@ export function usePolicyAcknowledgments(filters?: {
 
 export function usePendingAcknowledgments() {
   return useQuery({
-    queryKey: ['pending-acknowledgments'],
+    queryKey: ["pending-acknowledgments"],
     queryFn: async () => {
       // Get active policies that require acknowledgment
       const { data: policies, error: policiesError } = await supabase
-        .from('security_policies')
-        .select('id')
-        .eq('enabled', true);
+        .from("security_policies")
+        .select("id")
+        .eq("enabled", true);
 
       if (policiesError) throw policiesError;
 
       // Get all employees
       const { data: employees, error: employeesError } = await supabase
-        .from('employees')
-        .select('id, name, email')
-        .eq('status', 'active');
+        .from("employees")
+        .select("id, name, email")
+        .eq("status", "active");
 
       if (employeesError) throw employeesError;
 
       // Get acknowledgments
       const { data: acks, error: acksError } = await supabase
-        .from('policy_acknowledgments')
-        .select('employee_name');
+        .from("policy_acknowledgments")
+        .select("employee_name");
 
       if (acksError) throw acksError;
 
       // Calculate pending
       const ackSet = new Set(acks?.map((a) => a.employee_name) || []);
-      const pending: { employee: { id: string; name: string; email: string | null }; policyId: string }[] = [];
+      const pending: {
+        employee: { id: string; name: string; email: string | null };
+        policyId: string;
+      }[] = [];
 
       for (const emp of employees || []) {
         if (!ackSet.has(emp.name)) {
           for (const pol of policies || []) {
-            pending.push({ employee: { id: emp.id, name: emp.name, email: emp.email }, policyId: pol.id });
+            pending.push({
+              employee: { id: emp.id, name: emp.name, email: emp.email },
+              policyId: pol.id,
+            });
           }
         }
       }
@@ -138,12 +144,12 @@ export function usePendingAcknowledgments() {
 
 export function usePolicyStats() {
   return useQuery({
-    queryKey: ['policy-stats'],
+    queryKey: ["policy-stats"],
     queryFn: async () => {
       const [policiesRes, acksRes, employeesRes] = await Promise.all([
-        supabase.from('security_policies').select('id, enabled'),
-        supabase.from('policy_acknowledgments').select('id'),
-        supabase.from('employees').select('id').eq('status', 'active'),
+        supabase.from("security_policies").select("id, enabled"),
+        supabase.from("policy_acknowledgments").select("id"),
+        supabase.from("employees").select("id").eq("status", "active"),
       ]);
 
       const policies = policiesRes.data || [];
@@ -151,7 +157,7 @@ export function usePolicyStats() {
       const employees = employeesRes.data || [];
 
       const activePolicies = policies.filter((p) => p.enabled);
-      
+
       const expectedAcks = activePolicies.length * employees.length;
       const actualAcks = acks.length;
 
@@ -177,7 +183,7 @@ export function useCreatePolicy() {
   return useMutation({
     mutationFn: async (input: { name: string; description: string; category: string }) => {
       const { data, error } = await supabase
-        .from('security_policies')
+        .from("security_policies")
         .insert({
           name: input.name,
           description: input.description,
@@ -191,11 +197,15 @@ export function useCreatePolicy() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['policies'] });
-      toast({ title: 'Política criada com sucesso' });
+      queryClient.invalidateQueries({ queryKey: ["policies"] });
+      toast({ title: "Política criada com sucesso" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao criar política', description: error.message, variant: 'destructive' });
+      toast({
+        title: "Erro ao criar política",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 }
@@ -205,11 +215,19 @@ export function useUpdatePolicy() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ id, ...input }: { id: string; name?: string; description?: string; enabled?: boolean }) => {
+    mutationFn: async ({
+      id,
+      ...input
+    }: {
+      id: string;
+      name?: string;
+      description?: string;
+      enabled?: boolean;
+    }) => {
       const { data, error } = await supabase
-        .from('security_policies')
+        .from("security_policies")
         .update(input)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
 
@@ -217,11 +235,11 @@ export function useUpdatePolicy() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['policies'] });
-      toast({ title: 'Política atualizada' });
+      queryClient.invalidateQueries({ queryKey: ["policies"] });
+      toast({ title: "Política atualizada" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao atualizar', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao atualizar", description: error.message, variant: "destructive" });
     },
   });
 }
@@ -232,15 +250,15 @@ export function useDeletePolicy() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('security_policies').delete().eq('id', id);
+      const { error } = await supabase.from("security_policies").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['policies'] });
-      toast({ title: 'Política excluída' });
+      queryClient.invalidateQueries({ queryKey: ["policies"] });
+      toast({ title: "Política excluída" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao excluir', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao excluir", description: error.message, variant: "destructive" });
     },
   });
 }
@@ -250,10 +268,10 @@ export function useRequestAcknowledgment() {
 
   return useMutation({
     mutationFn: async ({ policyId, employeeIds }: { policyId: string; employeeIds: string[] }) => {
-      const { data, error } = await supabase.functions.invoke('send-push-notification', {
+      const { data, error } = await supabase.functions.invoke("send-push-notification", {
         body: {
           employee_ids: employeeIds,
-          type: 'policy_acknowledgment',
+          type: "policy_acknowledgment",
           data: { policy_id: policyId },
         },
       });
@@ -262,10 +280,10 @@ export function useRequestAcknowledgment() {
       return data;
     },
     onSuccess: () => {
-      toast({ title: 'Solicitação enviada' });
+      toast({ title: "Solicitação enviada" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao enviar', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao enviar", description: error.message, variant: "destructive" });
     },
   });
 }

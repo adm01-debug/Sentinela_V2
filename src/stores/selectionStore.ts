@@ -1,6 +1,6 @@
 // Selection Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface SelectionState<T = string> {
   selectedIds: Set<T>;
@@ -90,7 +90,8 @@ export const createSelectionStore = <T = string>() =>
           const endIndex = allIds.indexOf(endId);
           if (startIndex === -1 || endIndex === -1) return;
 
-          const [from, to] = startIndex < endIndex ? [startIndex, endIndex] : [endIndex, startIndex];
+          const [from, to] =
+            startIndex < endIndex ? [startIndex, endIndex] : [endIndex, startIndex];
           const rangeIds = allIds.slice(from, to + 1);
 
           set((state) => ({
@@ -124,7 +125,7 @@ export const createSelectionStore = <T = string>() =>
             isSelectMode: false,
           }),
       }),
-      { name: 'SelectionStore' }
+      { name: "SelectionStore" }
     )
   );
 
@@ -132,7 +133,9 @@ export const createSelectionStore = <T = string>() =>
 export const useSelectionStore = createSelectionStore<string>();
 
 // Helper hook for table/list selection
-export function useSelection<T = string>(store = useSelectionStore as unknown as ReturnType<typeof createSelectionStore<T>>) {
+export function useSelection<T = string>(
+  store = useSelectionStore as unknown as ReturnType<typeof createSelectionStore<T>>
+) {
   const selectedIds = store((state) => state.selectedIds);
   const toggle = store((state) => state.toggle);
   const selectAll = store((state) => state.selectAll);

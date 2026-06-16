@@ -27,7 +27,8 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { metrics = ["activity", "violations", "productivity"], forecastDays = 7 } = await req.json();
+    const { metrics = ["activity", "violations", "productivity"], forecastDays = 7 } =
+      await req.json();
     const forecasts: TrendForecast[] = [];
 
     // Get historical data (last 30 days)
@@ -69,9 +70,9 @@ serve(async (req) => {
           currentValue,
           predictedValue,
           trend: slope > 1 ? "increasing" : slope < -1 ? "decreasing" : "stable",
-          confidence: Math.min(0.9, 0.5 + (n / 60)),
+          confidence: Math.min(0.9, 0.5 + n / 60),
           timeframe: `${forecastDays} days`,
-          dataPoints: dataPoints.slice(-14)
+          dataPoints: dataPoints.slice(-14),
         });
       }
     }
@@ -110,9 +111,9 @@ serve(async (req) => {
           currentValue,
           predictedValue,
           trend: slope > 0.5 ? "increasing" : slope < -0.5 ? "decreasing" : "stable",
-          confidence: Math.min(0.85, 0.4 + (n / 60)),
+          confidence: Math.min(0.85, 0.4 + n / 60),
           timeframe: `${forecastDays} days`,
-          dataPoints: dataPoints.slice(-14)
+          dataPoints: dataPoints.slice(-14),
         });
       }
     }
@@ -147,16 +148,19 @@ serve(async (req) => {
         const intercept = (sumY - slope * sumX) / n;
 
         const currentValue = dataPoints[dataPoints.length - 1].value;
-        const predictedValue = Math.min(100, Math.max(0, Math.round(intercept + slope * (n + forecastDays))));
+        const predictedValue = Math.min(
+          100,
+          Math.max(0, Math.round(intercept + slope * (n + forecastDays)))
+        );
 
         forecasts.push({
           metric: "productivity_score",
           currentValue,
           predictedValue,
           trend: slope > 0.5 ? "increasing" : slope < -0.5 ? "decreasing" : "stable",
-          confidence: Math.min(0.8, 0.45 + (n / 60)),
+          confidence: Math.min(0.8, 0.45 + n / 60),
           timeframe: `${forecastDays} days`,
-          dataPoints: dataPoints.slice(-14)
+          dataPoints: dataPoints.slice(-14),
         });
       }
     }
@@ -166,16 +170,16 @@ serve(async (req) => {
         forecasts,
         metadata: {
           forecastDays,
-          generatedAt: new Date().toISOString()
-        }
+          generatedAt: new Date().toISOString(),
+        },
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

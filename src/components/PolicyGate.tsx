@@ -1,10 +1,10 @@
-import { useState, useEffect, ReactNode } from 'react';
-import { Shield, AlertTriangle, Lock } from 'lucide-react';
-import { PolicyAcknowledgmentDialog } from './PolicyAcknowledgmentDialog';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
-import { Card, CardContent } from '@/components/ui/card';
-import { logger } from '@/lib/logger';
+import { useState, useEffect, ReactNode } from "react";
+import { Shield, AlertTriangle, Lock } from "lucide-react";
+import { PolicyAcknowledgmentDialog } from "./PolicyAcknowledgmentDialog";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { Card, CardContent } from "@/components/ui/card";
+import { logger } from "@/lib/logger";
 
 interface PolicyGateProps {
   children: ReactNode;
@@ -17,13 +17,15 @@ export function PolicyGate({ children }: PolicyGateProps) {
   const { user } = useAuth();
 
   // Get employee name from user data - handle different possible structures
-  const employeeName = user?.name || user?.email || 'Funcionário';
+  const employeeName = user?.name || user?.email || "Funcionário";
 
   const isToday = (date: Date) => {
     const today = new Date();
-    return date.getDate() === today.getDate() &&
+    return (
+      date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
+      date.getFullYear() === today.getFullYear()
+    );
   };
 
   const checkExemption = async () => {
@@ -31,8 +33,8 @@ export function PolicyGate({ children }: PolicyGateProps) {
 
     try {
       const { data, error } = await supabase
-        .from('policy_exemptions')
-        .select('id, expires_at')
+        .from("policy_exemptions")
+        .select("id, expires_at")
         .or(`employee_name.eq.${employeeName},employee_name.eq.${user.email}`)
         .limit(1);
 
@@ -48,7 +50,7 @@ export function PolicyGate({ children }: PolicyGateProps) {
       }
       return false;
     } catch (err) {
-      logger.error('Failed to check exemption:', err);
+      logger.error("Failed to check exemption:", err);
       return false;
     }
   };
@@ -69,10 +71,10 @@ export function PolicyGate({ children }: PolicyGateProps) {
       }
 
       const { data, error } = await supabase
-        .from('policy_acknowledgments')
-        .select('id, acknowledged_at')
-        .eq('employee_name', employeeName)
-        .order('acknowledged_at', { ascending: false })
+        .from("policy_acknowledgments")
+        .select("id, acknowledged_at")
+        .eq("employee_name", employeeName)
+        .order("acknowledged_at", { ascending: false })
         .limit(1);
 
       if (!error && data && data.length > 0) {
@@ -82,7 +84,7 @@ export function PolicyGate({ children }: PolicyGateProps) {
         setHasAcknowledgedToday(false);
       }
     } catch (err) {
-      logger.error('Failed to check acknowledgment:', err);
+      logger.error("Failed to check acknowledgment:", err);
       setHasAcknowledgedToday(false);
     } finally {
       setLoading(false);
@@ -101,9 +103,9 @@ export function PolicyGate({ children }: PolicyGateProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+          <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-primary" />
           <p className="text-muted-foreground">Verificando confirmação de políticas...</p>
         </div>
       </div>
@@ -116,43 +118,45 @@ export function PolicyGate({ children }: PolicyGateProps) {
 
   if (hasAcknowledgedToday === false) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="max-w-lg w-full">
+      <div className="flex min-h-screen items-center justify-center bg-background p-4">
+        <div className="w-full max-w-lg">
           <Card className="border-destructive/50 bg-destructive/5">
-            <CardContent className="pt-8 pb-8">
-              <div className="text-center mb-6">
-                <div className="mx-auto w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mb-4">
+            <CardContent className="pb-8 pt-8">
+              <div className="mb-6 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
                   <Lock className="h-8 w-8 text-destructive" />
                 </div>
-                <h1 className="text-2xl font-bold mb-2">Acesso Bloqueado</h1>
+                <h1 className="mb-2 text-2xl font-bold">Acesso Bloqueado</h1>
                 <p className="text-muted-foreground">
-                  Você precisa confirmar as políticas de monitoramento diariamente para acessar o sistema.
+                  Você precisa confirmar as políticas de monitoramento diariamente para acessar o
+                  sistema.
                 </p>
               </div>
 
-              <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 mb-6">
+              <div className="mb-6 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4">
                 <div className="flex items-start gap-3">
-                  <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 shrink-0" />
+                  <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-500" />
                   <div className="text-sm">
-                    <p className="font-medium text-amber-400 mb-1">Confirmação Obrigatória</p>
+                    <p className="mb-1 font-medium text-amber-400">Confirmação Obrigatória</p>
                     <p className="text-muted-foreground">
-                      Esta confirmação inclui captura de foto em tempo real e sua localização atual. 
-                      Esses dados são necessários para validar sua identidade e registrar o aceite das políticas.
+                      Esta confirmação inclui captura de foto em tempo real e sua localização atual.
+                      Esses dados são necessários para validar sua identidade e registrar o aceite
+                      das políticas.
                     </p>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col items-center gap-4">
-                <PolicyAcknowledgmentDialog 
-                  employeeName={employeeName} 
+                <PolicyAcknowledgmentDialog
+                  employeeName={employeeName}
                   onAcknowledged={handleAcknowledged}
                 />
-                
-                <a 
-                  href="/monitoring-policies" 
+
+                <a
+                  href="/monitoring-policies"
                   target="_blank"
-                  className="text-sm text-primary hover:underline flex items-center gap-1"
+                  className="flex items-center gap-1 text-sm text-primary hover:underline"
                 >
                   <Shield className="h-4 w-4" />
                   Ver Políticas de Monitoramento
@@ -161,7 +165,7 @@ export function PolicyGate({ children }: PolicyGateProps) {
             </CardContent>
           </Card>
 
-          <p className="text-center text-xs text-muted-foreground mt-4">
+          <p className="mt-4 text-center text-xs text-muted-foreground">
             Em caso de dúvidas, entre em contato com o departamento de TI.
           </p>
         </div>

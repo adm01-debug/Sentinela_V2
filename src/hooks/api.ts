@@ -1,9 +1,9 @@
 // API hooks - typed interfaces for Supabase operations
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/integrations/supabase/types';
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
-type EmployeeInsert = Database['public']['Tables']['employees']['Insert'];
+type EmployeeInsert = Database["public"]["Tables"]["employees"]["Insert"];
 
 interface EmployeeQueryParams {
   status?: string;
@@ -25,9 +25,11 @@ export function useLogin() {
 
 export function useEmployees(params?: EmployeeQueryParams) {
   return useQuery({
-    queryKey: ['employees', params],
+    queryKey: ["employees", params],
     queryFn: async () => {
-      const { data, error, count } = await supabase.from('employees').select('*', { count: 'exact' });
+      const { data, error, count } = await supabase
+        .from("employees")
+        .select("*", { count: "exact" });
       if (error) throw error;
       return { data: data || [], total: count || 0 };
     },
@@ -37,7 +39,7 @@ export function useEmployees(params?: EmployeeQueryParams) {
 export function useCreateEmployee() {
   return useMutation({
     mutationFn: async (employee: EmployeeInsert) => {
-      const { data, error } = await supabase.from('employees').insert(employee).select().single();
+      const { data, error } = await supabase.from("employees").insert(employee).select().single();
       if (error) throw error;
       return data;
     },

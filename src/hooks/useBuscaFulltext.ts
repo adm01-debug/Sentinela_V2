@@ -3,10 +3,10 @@
 // Busca em múltiplas colunas com debounce e highlight
 // ============================================================
 
-import { useQuery } from '@tanstack/react-query';
-import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 // ============================================================
 // TYPES
@@ -65,14 +65,14 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
   const {
     table,
     columns,
-    selectColumns = '*',
+    selectColumns = "*",
     minChars = 2,
     debounceMs = 300,
     limit = 50,
     orderBy,
   } = config;
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const debouncedTerm = useDebouncedValue<string>(searchTerm, debounceMs);
 
   // Só busca se tiver caracteres suficientes
@@ -87,23 +87,16 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
     isFetching,
     error,
   } = useQuery({
-    queryKey: ['fulltext-search', table, debouncedTerm, columns.join(',')],
+    queryKey: ["fulltext-search", table, debouncedTerm, columns.join(",")],
     queryFn: async (): Promise<T[]> => {
       if (!shouldSearch) return [];
 
       // Ready to search
 
-
       // Construir query com OR para múltiplas colunas
-      const searchConditions = columns
-        .map((col) => `${col}.ilike.%${debouncedTerm}%`)
-        .join(',');
+      const searchConditions = columns.map((col) => `${col}.ilike.%${debouncedTerm}%`).join(",");
 
-      let query = supabase
-        .from(table)
-        .select(selectColumns)
-        .or(searchConditions)
-        .limit(limit);
+      let query = supabase.from(table).select(selectColumns).or(searchConditions).limit(limit);
 
       // Ordenação opcional
       if (orderBy) {
@@ -113,7 +106,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
       const { data, error } = await query;
 
       if (error) {
-        logger.error('[FulltextSearch] Erro:', error);
+        logger.error("[FulltextSearch] Erro:", error);
         throw error;
       }
 
@@ -131,7 +124,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
     (text: string): string => {
       if (!debouncedTerm || !text) return text;
 
-      const regex = new RegExp(`(${debouncedTerm})`, 'gi');
+      const regex = new RegExp(`(${debouncedTerm})`, "gi");
       return text.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800">$1</mark>');
     },
     [debouncedTerm]
@@ -141,7 +134,7 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
   // CLEAR SEARCH
   // ============================================================
   const clearSearch = useCallback(() => {
-    setSearchTerm('');
+    setSearchTerm("");
   }, []);
 
   // ============================================================
@@ -173,18 +166,18 @@ export function useBuscaFulltext<T = Record<string, unknown>>(
 
 export function useSearchEmployees(_searchTerm: string) {
   return useBuscaFulltext({
-    table: 'employees',
-    columns: ['full_name', 'email', 'department', 'position'],
-    selectColumns: 'id, full_name, email, department, position, avatar_url',
+    table: "employees",
+    columns: ["full_name", "email", "department", "position"],
+    selectColumns: "id, full_name, email, department, position, avatar_url",
     minChars: 2,
   });
 }
 
 export function useSearchAlerts(_searchTerm: string) {
   return useBuscaFulltext({
-    table: 'alerts',
-    columns: ['title', 'description', 'alert_type'],
-    selectColumns: '*',
+    table: "alerts",
+    columns: ["title", "description", "alert_type"],
+    selectColumns: "*",
     minChars: 2,
   });
 }
@@ -194,7 +187,7 @@ export function useSearchAlerts(_searchTerm: string) {
 // ============================================================
 
 export function useFulltextSearch<T>(table: string, columns: string[]) {
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useState("");
   const debouncedTerm = useDebouncedValue<string>(term, 300);
 
   const result = useBuscaFulltext<T>({

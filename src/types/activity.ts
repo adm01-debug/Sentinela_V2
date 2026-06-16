@@ -1,7 +1,7 @@
 export interface Activity {
   id: string;
   employeeId: string;
-  type: 'application' | 'website' | 'idle' | 'system';
+  type: "application" | "website" | "idle" | "system";
   application: string;
   title: string;
   url?: string;
@@ -27,6 +27,6 @@ export interface ActivityFilters {
   employeeId?: string;
   startDate: string;
   endDate: string;
-  type?: Activity['type'];
+  type?: Activity["type"];
   productive?: boolean;
 }

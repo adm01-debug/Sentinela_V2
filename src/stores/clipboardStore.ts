@@ -1,6 +1,6 @@
 // Clipboard Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface ClipboardItem {
   id: string;
@@ -11,7 +11,15 @@ interface ClipboardItem {
   expiresAt?: number;
 }
 
-type ClipboardItemType = 'text' | 'employee' | 'activity' | 'alert' | 'report' | 'row' | 'rows' | 'custom';
+type ClipboardItemType =
+  | "text"
+  | "employee"
+  | "activity"
+  | "alert"
+  | "report"
+  | "row"
+  | "rows"
+  | "custom";
 
 interface ClipboardState {
   items: ClipboardItem[];
@@ -38,9 +46,9 @@ export const useClipboardStore = create<ClipboardState>()(
       items: [],
       currentItem: null,
       maxItems: 10,
-      isSupported: typeof navigator !== 'undefined' && !!navigator.clipboard,
+      isSupported: typeof navigator !== "undefined" && !!navigator.clipboard,
 
-      copy: async (type, data, source = 'unknown') => {
+      copy: async (type, data, source = "unknown") => {
         const id = generateId();
         const item: ClipboardItem = {
           id,
@@ -56,7 +64,7 @@ export const useClipboardStore = create<ClipboardState>()(
         }));
 
         // Also copy to system clipboard if text
-        if (type === 'text' && typeof data === 'string') {
+        if (type === "text" && typeof data === "string") {
           await get().copyToSystemClipboard(data);
         }
 
@@ -96,13 +104,13 @@ export const useClipboardStore = create<ClipboardState>()(
             return true;
           }
           // Fallback for older browsers
-          const textarea = document.createElement('textarea');
+          const textarea = document.createElement("textarea");
           textarea.value = text;
-          textarea.style.position = 'fixed';
-          textarea.style.opacity = '0';
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
           document.body.appendChild(textarea);
           textarea.select();
-          const success = document.execCommand('copy');
+          const success = document.execCommand("copy");
           document.body.removeChild(textarea);
           return success;
         } catch {
@@ -123,7 +131,7 @@ export const useClipboardStore = create<ClipboardState>()(
 
       setMaxItems: (maxItems) => set({ maxItems }),
     }),
-    { name: 'ClipboardStore' }
+    { name: "ClipboardStore" }
   )
 );
 

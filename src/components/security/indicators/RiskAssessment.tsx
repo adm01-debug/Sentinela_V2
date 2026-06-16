@@ -1,6 +1,6 @@
-import React from 'react';
-import { ThreatLevelBadge, type ThreatLevel } from './ThreatLevelBadge';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { ThreatLevelBadge, type ThreatLevel } from "./ThreatLevelBadge";
+import { cn } from "@/lib/utils";
 
 interface RiskItem {
   id: string;
@@ -14,21 +14,18 @@ interface RiskAssessmentProps {
   className?: string;
 }
 
-export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
-  risks,
-  className,
-}) => {
+export const RiskAssessment: React.FC<RiskAssessmentProps> = ({ risks, className }) => {
   const sortedRisks = [...risks].sort((a, b) => {
     const order: Record<ThreatLevel, number> = { critical: 0, high: 1, medium: 2, low: 3, none: 4 };
     return order[a.level] - order[b.level];
   });
 
   return (
-    <div className={cn('space-y-3', className)}>
+    <div className={cn("space-y-3", className)}>
       {sortedRisks.map((risk) => (
-        <div key={risk.id} className="flex items-start gap-3 p-3 rounded-lg border bg-card">
+        <div key={risk.id} className="flex items-start gap-3 rounded-lg border bg-card p-3">
           <ThreatLevelBadge level={risk.level} />
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <p className="font-medium">{risk.label}</p>
             <p className="text-sm text-muted-foreground">{risk.description}</p>
           </div>

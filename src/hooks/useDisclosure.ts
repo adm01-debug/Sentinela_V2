@@ -5,7 +5,7 @@ export function useDisclosure(initialOpen = false) {
 
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
-  const toggle = useCallback(() => setIsOpen(o => !o), []);
+  const toggle = useCallback(() => setIsOpen((o) => !o), []);
 
   return { isOpen, open, close, toggle, setIsOpen };
 }

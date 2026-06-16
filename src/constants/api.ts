@@ -1,5 +1,5 @@
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_URL || '/api',
+  BASE_URL: import.meta.env.VITE_API_URL || "/api",
   TIMEOUT: 30000,
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000,
@@ -7,23 +7,23 @@ export const API_CONFIG = {
 
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: '/auth/login',
-    LOGOUT: '/auth/logout',
-    REFRESH: '/auth/refresh',
-    REGISTER: '/auth/register',
-    FORGOT_PASSWORD: '/auth/forgot-password',
-    RESET_PASSWORD: '/auth/reset-password',
+    LOGIN: "/auth/login",
+    LOGOUT: "/auth/logout",
+    REFRESH: "/auth/refresh",
+    REGISTER: "/auth/register",
+    FORGOT_PASSWORD: "/auth/forgot-password",
+    RESET_PASSWORD: "/auth/reset-password",
   },
-  EMPLOYEES: '/employees',
-  SCREENSHOTS: '/screenshots',
-  ANALYTICS: '/analytics',
-  REPORTS: '/reports',
-  NOTIFICATIONS: '/notifications',
-  SETTINGS: '/settings',
-  BILLING: '/billing',
-  WEBHOOKS: '/webhooks',
-  API_KEYS: '/api-keys',
-  AUDIT: '/audit',
+  EMPLOYEES: "/employees",
+  SCREENSHOTS: "/screenshots",
+  ANALYTICS: "/analytics",
+  REPORTS: "/reports",
+  NOTIFICATIONS: "/notifications",
+  SETTINGS: "/settings",
+  BILLING: "/billing",
+  WEBHOOKS: "/webhooks",
+  API_KEYS: "/api-keys",
+  AUDIT: "/audit",
 } as const;
 
 export const HTTP_STATUS = {

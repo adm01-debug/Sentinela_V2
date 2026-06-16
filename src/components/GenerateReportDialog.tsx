@@ -1,52 +1,47 @@
-import { useState } from 'react';
-import { format, subDays } from 'date-fns';
+import { useState } from "react";
+import { format, subDays } from "date-fns";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { ReportTemplate, Report, ReportFilters } from '@/types';
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { ReportTemplate, Report, ReportFilters } from "@/types";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   templates: ReportTemplate[];
   onGenerate: (data: {
-    type: Report['type'];
+    type: Report["type"];
     filters: ReportFilters;
-    format: Report['format'];
+    format: Report["format"];
   }) => void;
 }
 
 const formats = [
-  { value: 'pdf', label: 'PDF' },
-  { value: 'csv', label: 'CSV' },
-  { value: 'excel', label: 'Excel' },
+  { value: "pdf", label: "PDF" },
+  { value: "csv", label: "CSV" },
+  { value: "excel", label: "Excel" },
 ];
 
-export const GenerateReportDialog = ({
-  open,
-  onClose,
-  templates,
-  onGenerate,
-}: Props) => {
+export const GenerateReportDialog = ({ open, onClose, templates, onGenerate }: Props) => {
   const [form, setForm] = useState({
-    type: 'activity' as Report['type'],
-    format: 'pdf' as Report['format'],
-    startDate: format(subDays(new Date(), 30), 'yyyy-MM-dd'),
-    endDate: format(new Date(), 'yyyy-MM-dd'),
+    type: "activity" as Report["type"],
+    format: "pdf" as Report["format"],
+    startDate: format(subDays(new Date(), 30), "yyyy-MM-dd"),
+    endDate: format(new Date(), "yyyy-MM-dd"),
   });
 
   const handleSubmit = () => {
@@ -68,9 +63,7 @@ export const GenerateReportDialog = ({
             <Label>Report Type</Label>
             <Select
               value={form.type}
-              onValueChange={(value) =>
-                setForm({ ...form, type: value as Report['type'] })
-              }
+              onValueChange={(value) => setForm({ ...form, type: value as Report["type"] })}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select report type" />
@@ -90,9 +83,7 @@ export const GenerateReportDialog = ({
               <Input
                 type="date"
                 value={form.startDate}
-                onChange={(e) =>
-                  setForm({ ...form, startDate: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, startDate: e.target.value })}
               />
             </div>
             <div className="space-y-2">
@@ -108,9 +99,7 @@ export const GenerateReportDialog = ({
             <Label>Format</Label>
             <Select
               value={form.format}
-              onValueChange={(value) =>
-                setForm({ ...form, format: value as Report['format'] })
-              }
+              onValueChange={(value) => setForm({ ...form, format: value as Report["format"] })}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select format" />

@@ -1,11 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 import { cn } from "@/lib/utils";
 
 // Stats Card for KPIs
@@ -22,18 +17,11 @@ interface StatsCardProps {
   className?: string;
 }
 
-const StatsCard = ({
-  title,
-  value,
-  description,
-  icon,
-  trend,
-  className,
-}: StatsCardProps) => {
+const StatsCard = ({ title, value, description, icon, trend, className }: StatsCardProps) => {
   return (
     <div
       className={cn(
-        "rounded-xl border bg-card p-6 shadow-sm transition-all duration-200 hover:shadow-elevation-2",
+        "hover:shadow-elevation-2 rounded-xl border bg-card p-6 shadow-sm transition-all duration-200",
         className
       )}
     >
@@ -41,13 +29,9 @@ const StatsCard = ({
         <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">{title}</p>
           <p className="text-3xl font-bold tracking-tight">{value}</p>
-          {description && (
-            <p className="text-xs text-muted-foreground">{description}</p>
-          )}
+          {description && <p className="text-xs text-muted-foreground">{description}</p>}
         </div>
-        {icon && (
-          <div className="rounded-lg bg-primary/10 p-3 text-primary">{icon}</div>
-        )}
+        {icon && <div className="rounded-lg bg-primary/10 p-3 text-primary">{icon}</div>}
       </div>
       {trend && (
         <div className="mt-4 flex items-center gap-2">
@@ -61,9 +45,7 @@ const StatsCard = ({
           >
             {trend.isPositive !== false ? "↑" : "↓"} {Math.abs(trend.value)}%
           </span>
-          {trend.label && (
-            <span className="text-xs text-muted-foreground">{trend.label}</span>
-          )}
+          {trend.label && <span className="text-xs text-muted-foreground">{trend.label}</span>}
         </div>
       )}
     </div>
@@ -79,13 +61,7 @@ interface EmptyStateProps {
   className?: string;
 }
 
-const EmptyState = ({
-  icon,
-  title,
-  description,
-  action,
-  className,
-}: EmptyStateProps) => {
+const EmptyState = ({ icon, title, description, action, className }: EmptyStateProps) => {
   return (
     <div
       className={cn(
@@ -93,17 +69,9 @@ const EmptyState = ({
         className
       )}
     >
-      {icon && (
-        <div className="mb-4 rounded-full bg-muted p-4 text-muted-foreground">
-          {icon}
-        </div>
-      )}
+      {icon && <div className="mb-4 rounded-full bg-muted p-4 text-muted-foreground">{icon}</div>}
       <h3 className="text-lg font-semibold">{title}</h3>
-      {description && (
-        <p className="mt-2 max-w-md text-sm text-muted-foreground">
-          {description}
-        </p>
-      )}
+      {description && <p className="mt-2 max-w-md text-sm text-muted-foreground">{description}</p>}
       {action && <div className="mt-6">{action}</div>}
     </div>
   );
@@ -121,7 +89,7 @@ const DataListItem = ({ label, value, tooltip, className }: DataListItemProps) =
   const content = (
     <div
       className={cn(
-        "flex items-center justify-between py-3 border-b border-border/50 last:border-0",
+        "flex items-center justify-between border-b border-border/50 py-3 last:border-0",
         className
       )}
     >
@@ -169,12 +137,7 @@ interface StatusIndicatorProps extends VariantProps<typeof statusIndicatorVarian
   className?: string;
 }
 
-const StatusIndicator = ({
-  label,
-  status,
-  showDot = true,
-  className,
-}: StatusIndicatorProps) => {
+const StatusIndicator = ({ label, status, showDot = true, className }: StatusIndicatorProps) => {
   const dotColors = {
     active: "bg-success",
     inactive: "bg-muted-foreground",
@@ -186,9 +149,7 @@ const StatusIndicator = ({
   return (
     <span className={cn(statusIndicatorVariants({ status }), className)}>
       {showDot && (
-        <span
-          className={cn("h-1.5 w-1.5 rounded-full", dotColors[status || "active"])}
-        />
+        <span className={cn("h-1.5 w-1.5 rounded-full", dotColors[status || "active"])} />
       )}
       {label}
     </span>
@@ -203,19 +164,12 @@ interface SectionHeaderProps {
   className?: string;
 }
 
-const SectionHeader = ({
-  title,
-  description,
-  action,
-  className,
-}: SectionHeaderProps) => {
+const SectionHeader = ({ title, description, action, className }: SectionHeaderProps) => {
   return (
-    <div className={cn("flex items-center justify-between mb-6", className)}>
+    <div className={cn("mb-6 flex items-center justify-between", className)}>
       <div>
         <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
-        {description && (
-          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-        )}
+        {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
       </div>
       {action && <div>{action}</div>}
     </div>
@@ -230,12 +184,7 @@ interface MetricBadgeProps {
   className?: string;
 }
 
-const MetricBadge = ({
-  value,
-  label,
-  color = "primary",
-  className,
-}: MetricBadgeProps) => {
+const MetricBadge = ({ value, label, color = "primary", className }: MetricBadgeProps) => {
   const colorStyles = {
     primary: "bg-primary/10 text-primary border-primary/20",
     success: "bg-success/10 text-success border-success/20",

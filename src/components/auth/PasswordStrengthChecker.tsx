@@ -1,51 +1,51 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Check, X, Loader2, ShieldAlert, ShieldCheck } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { logger } from '@/lib/logger';
+import React, { useState, useEffect, useCallback } from "react";
+import { Check, X, Loader2, ShieldAlert, ShieldCheck } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 
 interface PasswordRequirement {
   id: string;
   label: string;
   validator: (password: string) => boolean;
-  priority: 'required' | 'recommended';
+  priority: "required" | "recommended";
 }
 
 const REQUIREMENTS: PasswordRequirement[] = [
   {
-    id: 'length',
-    label: 'Mínimo 8 caracteres',
+    id: "length",
+    label: "Mínimo 8 caracteres",
     validator: (p) => p.length >= 8,
-    priority: 'required',
+    priority: "required",
   },
   {
-    id: 'uppercase',
-    label: 'Letra maiúscula (A-Z)',
+    id: "uppercase",
+    label: "Letra maiúscula (A-Z)",
     validator: (p) => /[A-Z]/.test(p),
-    priority: 'required',
+    priority: "required",
   },
   {
-    id: 'lowercase',
-    label: 'Letra minúscula (a-z)',
+    id: "lowercase",
+    label: "Letra minúscula (a-z)",
     validator: (p) => /[a-z]/.test(p),
-    priority: 'required',
+    priority: "required",
   },
   {
-    id: 'number',
-    label: 'Número (0-9)',
+    id: "number",
+    label: "Número (0-9)",
     validator: (p) => /[0-9]/.test(p),
-    priority: 'required',
+    priority: "required",
   },
   {
-    id: 'special',
-    label: 'Caractere especial (!@#$%...)',
+    id: "special",
+    label: "Caractere especial (!@#$%...)",
     validator: (p) => /[^a-zA-Z0-9]/.test(p),
-    priority: 'required',
+    priority: "required",
   },
   {
-    id: 'length12',
-    label: '12+ caracteres (recomendado)',
+    id: "length12",
+    label: "12+ caracteres (recomendado)",
     validator: (p) => p.length >= 12,
-    priority: 'recommended',
+    priority: "recommended",
   },
 ];
 
@@ -60,9 +60,12 @@ interface PasswordStrengthCheckerProps {
 // SHA-1 hash function using Web Crypto API
 async function sha1Hash(message: string): Promise<string> {
   const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
+  const hashBuffer = await crypto.subtle.digest("SHA-1", msgBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+  return hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
 }
 
 // Check if password has been leaked using Have I Been Pwned API (k-anonymity)
@@ -71,31 +74,31 @@ async function checkPasswordLeaked(password: string): Promise<{ leaked: boolean;
     const hash = await sha1Hash(password);
     const prefix = hash.substring(0, 5);
     const suffix = hash.substring(5);
-    
+
     const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`, {
       headers: {
-        'Add-Padding': 'true', // Adds padding to prevent timing attacks
+        "Add-Padding": "true", // Adds padding to prevent timing attacks
       },
     });
-    
+
     if (!response.ok) {
-      logger.warn('HIBP API request failed');
+      logger.warn("HIBP API request failed");
       return { leaked: false, count: 0 };
     }
-    
+
     const text = await response.text();
-    const lines = text.split('\n');
-    
+    const lines = text.split("\n");
+
     for (const line of lines) {
-      const [hashSuffix, countStr] = line.split(':');
+      const [hashSuffix, countStr] = line.split(":");
       if (hashSuffix.trim() === suffix) {
         return { leaked: true, count: parseInt(countStr.trim(), 10) };
       }
     }
-    
+
     return { leaked: false, count: 0 };
   } catch (error) {
-    logger.warn('Error checking leaked password:', error);
+    logger.warn("Error checking leaked password:", error);
     return { leaked: false, count: 0 };
   }
 }
@@ -121,42 +124,42 @@ export const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = (
 
   // Calculate password strength
   const getStrength = useCallback(() => {
-    const requiredMet = REQUIREMENTS
-      .filter(r => r.priority === 'required')
-      .filter(r => r.validator(password)).length;
-    
-    const totalRequired = REQUIREMENTS.filter(r => r.priority === 'required').length;
+    const requiredMet = REQUIREMENTS.filter((r) => r.priority === "required").filter((r) =>
+      r.validator(password)
+    ).length;
+
+    const totalRequired = REQUIREMENTS.filter((r) => r.priority === "required").length;
     const allRequiredMet = requiredMet === totalRequired;
-    
-    const recommendedMet = REQUIREMENTS
-      .filter(r => r.priority === 'recommended')
-      .filter(r => r.validator(password)).length;
-    
+
+    const recommendedMet = REQUIREMENTS.filter((r) => r.priority === "recommended").filter((r) =>
+      r.validator(password)
+    ).length;
+
     // Score calculation (0-100)
     const baseScore = (requiredMet / totalRequired) * 80;
     const bonusScore = recommendedMet * 10;
     const score = Math.min(100, baseScore + bonusScore);
-    
+
     let label: string;
     let colorClass: string;
-    
+
     if (score < 40) {
-      label = 'Muito fraca';
-      colorClass = 'text-destructive';
+      label = "Muito fraca";
+      colorClass = "text-destructive";
     } else if (score < 60) {
-      label = 'Fraca';
-      colorClass = 'text-orange-500';
+      label = "Fraca";
+      colorClass = "text-orange-500";
     } else if (score < 80) {
-      label = 'Média';
-      colorClass = 'text-yellow-500';
+      label = "Média";
+      colorClass = "text-yellow-500";
     } else if (score < 100) {
-      label = 'Forte';
-      colorClass = 'text-green-500';
+      label = "Forte";
+      colorClass = "text-green-500";
     } else {
-      label = 'Muito forte';
-      colorClass = 'text-emerald-500';
+      label = "Muito forte";
+      colorClass = "text-emerald-500";
     }
-    
+
     return { score, label, colorClass, allRequiredMet };
   }, [password]);
 
@@ -170,17 +173,17 @@ export const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = (
     }
 
     const timeoutId = setTimeout(async () => {
-      setLeakStatus(prev => ({ ...prev, loading: true }));
-      
+      setLeakStatus((prev) => ({ ...prev, loading: true }));
+
       const result = await checkPasswordLeaked(password);
-      
+
       setLeakStatus({
         checked: true,
         loading: false,
         leaked: result.leaked,
         count: result.count,
       });
-      
+
       onLeakedCheck?.(result.leaked);
     }, 500); // Debounce 500ms
 
@@ -196,24 +199,24 @@ export const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = (
   if (!password) return null;
 
   const getProgressColor = () => {
-    if (strength.score < 40) return 'bg-destructive';
-    if (strength.score < 60) return 'bg-orange-500';
-    if (strength.score < 80) return 'bg-yellow-500';
-    if (strength.score < 100) return 'bg-green-500';
-    return 'bg-emerald-500';
+    if (strength.score < 40) return "bg-destructive";
+    if (strength.score < 60) return "bg-orange-500";
+    if (strength.score < 80) return "bg-yellow-500";
+    if (strength.score < 100) return "bg-green-500";
+    return "bg-emerald-500";
   };
 
   return (
-    <div className={cn('space-y-3', className)}>
+    <div className={cn("space-y-3", className)}>
       {/* Strength bar */}
       <div className="space-y-1.5">
-        <div className="flex justify-between items-center text-xs">
+        <div className="flex items-center justify-between text-xs">
           <span className="text-muted-foreground">Força da senha</span>
-          <span className={cn('font-medium', strength.colorClass)}>{strength.label}</span>
+          <span className={cn("font-medium", strength.colorClass)}>{strength.label}</span>
         </div>
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
+        <div className="h-2 overflow-hidden rounded-full bg-muted">
           <div
-            className={cn('h-full transition-all duration-300 rounded-full', getProgressColor())}
+            className={cn("h-full rounded-full transition-all duration-300", getProgressColor())}
             style={{ width: `${strength.score}%` }}
           />
         </div>
@@ -227,8 +230,8 @@ export const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = (
             <div
               key={req.id}
               className={cn(
-                'flex items-center gap-2 text-xs transition-colors',
-                met ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground'
+                "flex items-center gap-2 text-xs transition-colors",
+                met ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
               )}
             >
               {met ? (
@@ -236,9 +239,7 @@ export const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = (
               ) : (
                 <X className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground/50" />
               )}
-              <span className={cn(req.priority === 'recommended' && 'italic')}>
-                {req.label}
-              </span>
+              <span className={cn(req.priority === "recommended" && "italic")}>{req.label}</span>
             </div>
           );
         })}
@@ -246,7 +247,7 @@ export const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = (
 
       {/* Leaked password check */}
       {checkLeaked && password.length >= 8 && (
-        <div className="pt-2 border-t border-border">
+        <div className="border-t border-border pt-2">
           {leakStatus.loading ? (
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -254,13 +255,13 @@ export const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = (
             </div>
           ) : leakStatus.checked ? (
             leakStatus.leaked ? (
-              <div className="flex items-start gap-2 text-xs text-destructive bg-destructive/10 p-2 rounded-md">
-                <ShieldAlert className="h-4 w-4 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-2 rounded-md bg-destructive/10 p-2 text-xs text-destructive">
+                <ShieldAlert className="mt-0.5 h-4 w-4 flex-shrink-0" />
                 <div>
                   <p className="font-medium">Senha comprometida!</p>
                   <p className="text-destructive/80">
-                    Esta senha apareceu em {leakStatus.count.toLocaleString('pt-BR')} vazamentos de dados. 
-                    Escolha outra senha.
+                    Esta senha apareceu em {leakStatus.count.toLocaleString("pt-BR")} vazamentos de
+                    dados. Escolha outra senha.
                   </p>
                 </div>
               </div>

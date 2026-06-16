@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface ActivitySummary {
   totalActivities: number;
@@ -11,12 +11,12 @@ export interface ActivitySummary {
 }
 
 export interface UseActivitySummaryOptions {
-  period?: 'day' | 'week' | 'month';
+  period?: "day" | "week" | "month";
   employeeId?: string;
 }
 
 export function useActivitySummary(options: UseActivitySummaryOptions = {}) {
-  const { period = 'day', employeeId } = options;
+  const { period = "day", employeeId } = options;
   const [summary, setSummary] = useState<ActivitySummary | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -25,13 +25,13 @@ export function useActivitySummary(options: UseActivitySummaryOptions = {}) {
     setIsLoading(true);
     setError(null);
     try {
-      const { data, error: fnError } = await supabase.functions.invoke('summarize-activity', {
-        body: { period, employeeId }
+      const { data, error: fnError } = await supabase.functions.invoke("summarize-activity", {
+        body: { period, employeeId },
       });
       if (fnError) throw fnError;
       setSummary(data?.summary || null);
     } catch (e) {
-      setError(e instanceof Error ? e : new Error('Failed to fetch summary'));
+      setError(e instanceof Error ? e : new Error("Failed to fetch summary"));
     } finally {
       setIsLoading(false);
     }

@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
 // ============================================================
 // TYPES
@@ -42,25 +42,27 @@ export function useRateLimitLogs(filters?: {
     queryKey: queryKeys.rateLimiting.logs(),
     queryFn: async () => {
       let query = supabase
-        .from('rate_limit_logs')
-        .select(`
+        .from("rate_limit_logs")
+        .select(
+          `
           *,
           user:users(email)
-        `)
-        .order('created_at', { ascending: false })
+        `
+        )
+        .order("created_at", { ascending: false })
         .limit(500);
 
       if (filters?.endpoint) {
-        query = query.eq('endpoint', filters.endpoint);
+        query = query.eq("endpoint", filters.endpoint);
       }
       if (filters?.blocked !== undefined) {
-        query = query.eq('blocked', filters.blocked);
+        query = query.eq("blocked", filters.blocked);
       }
       if (filters?.startDate) {
-        query = query.gte('created_at', filters.startDate);
+        query = query.gte("created_at", filters.startDate);
       }
       if (filters?.endDate) {
-        query = query.lte('created_at', filters.endDate);
+        query = query.lte("created_at", filters.endDate);
       }
 
       const { data, error } = await query;
@@ -79,9 +81,9 @@ export function useRateLimitStats() {
       const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
       const { data, error } = await supabase
-        .from('rate_limit_logs')
-        .select('endpoint, ip_address, blocked')
-        .gte('created_at', since);
+        .from("rate_limit_logs")
+        .select("endpoint, ip_address, blocked")
+        .gte("created_at", since);
 
       if (error) throw error;
 
@@ -125,11 +127,11 @@ export function useBlockedIPs() {
     queryKey: queryKeys.rateLimiting.blockedIPs(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('rate_limit_logs')
-        .select('ip_address, blocked_at')
-        .eq('blocked', true)
-        .not('blocked_at', 'is', null)
-        .order('blocked_at', { ascending: false });
+        .from("rate_limit_logs")
+        .select("ip_address, blocked_at")
+        .eq("blocked", true)
+        .not("blocked_at", "is", null)
+        .order("blocked_at", { ascending: false });
 
       if (error) throw error;
 

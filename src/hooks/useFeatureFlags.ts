@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { useState, useCallback, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface FeatureFlag {
   id: string;
@@ -28,16 +28,16 @@ export function useFeatureFlags(): UseFeatureFlagsReturn {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const { data, error: fetchError } = await supabase
-        .from('feature_flags')
-        .select('*')
-        .order('name');
-      
+        .from("feature_flags")
+        .select("*")
+        .order("name");
+
       if (fetchError) throw fetchError;
       setFlags(data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch feature flags');
+      setError(err instanceof Error ? err.message : "Failed to fetch feature flags");
     } finally {
       setIsLoading(false);
     }
@@ -47,30 +47,39 @@ export function useFeatureFlags(): UseFeatureFlagsReturn {
     fetchFlags();
   }, [fetchFlags]);
 
-  const isEnabled = useCallback((flagName: string): boolean => {
-    const flag = flags.find(f => f.name === flagName);
-    return flag?.enabled ?? false;
-  }, [flags]);
+  const isEnabled = useCallback(
+    (flagName: string): boolean => {
+      const flag = flags.find((f) => f.name === flagName);
+      return flag?.enabled ?? false;
+    },
+    [flags]
+  );
 
-  const enableFlag = useCallback(async (flagName: string) => {
-    const { error } = await supabase
-      .from('feature_flags')
-      .update({ enabled: true })
-      .eq('name', flagName);
-    
-    if (error) throw error;
-    await fetchFlags();
-  }, [fetchFlags]);
+  const enableFlag = useCallback(
+    async (flagName: string) => {
+      const { error } = await supabase
+        .from("feature_flags")
+        .update({ enabled: true })
+        .eq("name", flagName);
 
-  const disableFlag = useCallback(async (flagName: string) => {
-    const { error } = await supabase
-      .from('feature_flags')
-      .update({ enabled: false })
-      .eq('name', flagName);
-    
-    if (error) throw error;
-    await fetchFlags();
-  }, [fetchFlags]);
+      if (error) throw error;
+      await fetchFlags();
+    },
+    [fetchFlags]
+  );
+
+  const disableFlag = useCallback(
+    async (flagName: string) => {
+      const { error } = await supabase
+        .from("feature_flags")
+        .update({ enabled: false })
+        .eq("name", flagName);
+
+      if (error) throw error;
+      await fetchFlags();
+    },
+    [fetchFlags]
+  );
 
   return {
     flags,

@@ -1,28 +1,39 @@
-import { useState, memo, useEffect, useRef } from 'react';
-import { 
-  Play, Pause, SkipBack, SkipForward, Video, User, 
-  CalendarIcon, Mouse, Keyboard, Clock, Maximize2, BarChart3 
-} from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, memo, useEffect, useRef } from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Video,
+  User,
+  CalendarIcon,
+  Mouse,
+  Keyboard,
+  Clock,
+  Maximize2,
+  BarChart3,
+} from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { supabase } from "@/integrations/supabase/client";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface SessionEvent {
-  type: 'click' | 'keystroke';
+  type: "click" | "keystroke";
   timestamp: string;
   data: {
     x?: number;
@@ -45,7 +56,7 @@ interface SessionRecording {
 
 export const SessionPlayback = memo(() => {
   const [employees, setEmployees] = useState<string[]>([]);
-  const [selectedEmployee, setSelectedEmployee] = useState<string>('');
+  const [selectedEmployee, setSelectedEmployee] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [recordings, setRecordings] = useState<SessionRecording[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -68,7 +79,7 @@ export const SessionPlayback = memo(() => {
   // Jump to specific hour
   const jumpToHour = (hour: number) => {
     setSelectedHour(hour);
-    const targetIndex = recordings.findIndex(rec => {
+    const targetIndex = recordings.findIndex((rec) => {
       const recHour = new Date(rec.recorded_at).getHours();
       return recHour >= hour;
     });
@@ -82,12 +93,14 @@ export const SessionPlayback = memo(() => {
   useEffect(() => {
     const fetchEmployees = async () => {
       const { data } = await supabase
-        .from('session_recordings')
-        .select('employee_name')
-        .order('recorded_at', { ascending: false });
-      
+        .from("session_recordings")
+        .select("employee_name")
+        .order("recorded_at", { ascending: false });
+
       if (data) {
-        const unique = [...new Set(data.map((d: { employee_name: string }) => d.employee_name))] as string[];
+        const unique = [
+          ...new Set(data.map((d: { employee_name: string }) => d.employee_name)),
+        ] as string[];
         setEmployees(unique);
         if (unique.length > 0 && !selectedEmployee) {
           setSelectedEmployee(unique[0]);
@@ -102,7 +115,7 @@ export const SessionPlayback = memo(() => {
   // Fetch recordings for selected employee and date
   const fetchRecordings = async () => {
     if (!selectedEmployee || !selectedDate) return;
-    
+
     setLoading(true);
     const startOfDay = new Date(selectedDate);
     startOfDay.setHours(0, 0, 0, 0);
@@ -110,13 +123,13 @@ export const SessionPlayback = memo(() => {
     endOfDay.setHours(23, 59, 59, 999);
 
     const { data } = await supabase
-      .from('session_recordings')
-      .select('*')
-      .eq('employee_name', selectedEmployee)
-      .gte('recorded_at', startOfDay.toISOString())
-      .lte('recorded_at', endOfDay.toISOString())
-      .order('recorded_at', { ascending: true });
-    
+      .from("session_recordings")
+      .select("*")
+      .eq("employee_name", selectedEmployee)
+      .gte("recorded_at", startOfDay.toISOString())
+      .lte("recorded_at", endOfDay.toISOString())
+      .order("recorded_at", { ascending: true });
+
     if (data) {
       // Parse events JSONB - handle unknown type from Supabase
       const parsed = data.map((d: Record<string, unknown>) => ({
@@ -128,7 +141,7 @@ export const SessionPlayback = memo(() => {
         app_name: d.app_name as string | null,
         window_title: d.window_title as string | null,
         recorded_at: d.recorded_at as string,
-        events: Array.isArray(d.events) ? (d.events as SessionEvent[]) : []
+        events: Array.isArray(d.events) ? (d.events as SessionEvent[]) : [],
       })) as SessionRecording[];
       setRecordings(parsed);
       setCurrentIndex(0);
@@ -147,7 +160,7 @@ export const SessionPlayback = memo(() => {
   useEffect(() => {
     if (isPlaying && recordings.length > 0) {
       playIntervalRef.current = setInterval(() => {
-        setCurrentIndex(prev => {
+        setCurrentIndex((prev) => {
           if (prev >= recordings.length - 1) {
             setIsPlaying(false);
             return prev;
@@ -175,16 +188,16 @@ export const SessionPlayback = memo(() => {
   };
 
   const skipBack = () => {
-    setCurrentIndex(prev => Math.max(0, prev - 10));
+    setCurrentIndex((prev) => Math.max(0, prev - 10));
   };
 
   const skipForward = () => {
-    setCurrentIndex(prev => Math.min(recordings.length - 1, prev + 10));
+    setCurrentIndex((prev) => Math.min(recordings.length - 1, prev + 10));
   };
 
   const countEvents = (events: SessionEvent[]) => {
-    const clicks = events.filter(e => e.type === 'click').length;
-    const keystrokes = events.filter(e => e.type === 'keystroke').length;
+    const clicks = events.filter((e) => e.type === "click").length;
+    const keystrokes = events.filter((e) => e.type === "keystroke").length;
     return { clicks, keystrokes };
   };
 
@@ -232,17 +245,17 @@ export const SessionPlayback = memo(() => {
         </CardHeader>
         <CardContent className="space-y-4">
           {loading ? (
-            <div className="flex items-center justify-center h-[400px] bg-muted/50 rounded-lg">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <div className="flex h-[400px] items-center justify-center rounded-lg bg-muted/50">
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
             </div>
           ) : recordings.length === 0 ? (
-            <div className="flex items-center justify-center h-[400px] bg-muted/50 rounded-lg">
+            <div className="flex h-[400px] items-center justify-center rounded-lg bg-muted/50">
               <p className="text-muted-foreground">Nenhuma gravação encontrada para esta data</p>
             </div>
           ) : (
             <>
               {/* Screenshot with event overlays */}
-              <div className="relative group">
+              <div className="group relative">
                 {/* The screenshot is a non-interactive <img>; converting it to a button or
                     adding an interactive role would change markup/visuals. A fullscreen
                     Dialog trigger is intentionally bound to the image click. */}
@@ -250,28 +263,31 @@ export const SessionPlayback = memo(() => {
                 <img
                   src={currentRecording?.screenshot_url}
                   alt="Session screenshot"
-                  className="w-full h-auto rounded-lg border cursor-pointer"
+                  className="h-auto w-full cursor-pointer rounded-lg border"
                   onClick={() => setFullscreenOpen(true)}
                 />
-                
+
                 {/* Event overlays */}
-                {currentRecording?.events.map((event, idx) => (
-                  event.type === 'click' && event.data.x && event.data.y && (
-                    <div
-                      key={idx}
-                      className="absolute w-6 h-6 -ml-3 -mt-3 rounded-full bg-primary/50 border-2 border-primary animate-ping"
-                      style={{
-                        left: `${(event.data.x / 1920) * 100}%`,
-                        top: `${(event.data.y / 1080) * 100}%`,
-                      }}
-                    />
-                  )
-                ))}
+                {currentRecording?.events.map(
+                  (event, idx) =>
+                    event.type === "click" &&
+                    event.data.x &&
+                    event.data.y && (
+                      <div
+                        key={idx}
+                        className="absolute -ml-3 -mt-3 h-6 w-6 animate-ping rounded-full border-2 border-primary bg-primary/50"
+                        style={{
+                          left: `${(event.data.x / 1920) * 100}%`,
+                          top: `${(event.data.y / 1080) * 100}%`,
+                        }}
+                      />
+                    )
+                )}
 
                 <Button
                   variant="secondary"
                   size="icon"
-                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100"
                   onClick={() => setFullscreenOpen(true)}
                 >
                   <Maximize2 className="h-4 w-4" />
@@ -282,13 +298,13 @@ export const SessionPlayback = memo(() => {
                   <div className="absolute bottom-2 left-2 flex gap-2">
                     {countEvents(currentRecording.events).clicks > 0 && (
                       <Badge variant="secondary" className="bg-background/80">
-                        <Mouse className="h-3 w-3 mr-1" />
+                        <Mouse className="mr-1 h-3 w-3" />
                         {countEvents(currentRecording.events).clicks}
                       </Badge>
                     )}
                     {countEvents(currentRecording.events).keystrokes > 0 && (
                       <Badge variant="secondary" className="bg-background/80">
-                        <Keyboard className="h-3 w-3 mr-1" />
+                        <Keyboard className="mr-1 h-3 w-3" />
                         {countEvents(currentRecording.events).keystrokes}
                       </Badge>
                     )}
@@ -303,48 +319,56 @@ export const SessionPlayback = memo(() => {
                   <span>Densidade de gravações por hora:</span>
                   <span className="text-xs">({recordings.length} total)</span>
                 </div>
-                
+
                 <TooltipProvider>
-                  <div className="flex gap-0.5 h-16 items-end bg-muted/30 rounded-lg p-2">
+                  <div className="flex h-16 items-end gap-0.5 rounded-lg bg-muted/30 p-2">
                     {Array.from({ length: 24 }, (_, hour) => {
                       const count = hourlyDensity[hour] || 0;
-                      const heightPercent = count > 0 ? Math.max((count / maxDensity) * 100, 10) : 0;
+                      const heightPercent =
+                        count > 0 ? Math.max((count / maxDensity) * 100, 10) : 0;
                       const hasRecordings = count > 0;
                       const isSelected = selectedHour === hour;
-                      const currentHour = currentRecording ? new Date(currentRecording.recorded_at).getHours() : null;
+                      const currentHour = currentRecording
+                        ? new Date(currentRecording.recorded_at).getHours()
+                        : null;
                       const isCurrent = currentHour === hour;
-                      
+
                       return (
                         <Tooltip key={hour}>
                           <TooltipTrigger asChild>
                             <button
-                              className={`flex-1 flex flex-col items-center justify-end gap-1 transition-all ${
-                                hasRecordings ? 'cursor-pointer hover:opacity-80' : 'cursor-default'
+                              className={`flex flex-1 flex-col items-center justify-end gap-1 transition-all ${
+                                hasRecordings ? "cursor-pointer hover:opacity-80" : "cursor-default"
                               }`}
                               onClick={() => hasRecordings && jumpToHour(hour)}
                               disabled={!hasRecordings}
                             >
                               <div
                                 className={`w-full rounded-t transition-all ${
-                                  isSelected 
-                                    ? 'bg-primary' 
-                                    : isCurrent 
-                                      ? 'bg-primary/70' 
-                                      : hasRecordings 
-                                        ? 'bg-primary/40 hover:bg-primary/60' 
-                                        : 'bg-muted/50'
+                                  isSelected
+                                    ? "bg-primary"
+                                    : isCurrent
+                                      ? "bg-primary/70"
+                                      : hasRecordings
+                                        ? "bg-primary/40 hover:bg-primary/60"
+                                        : "bg-muted/50"
                                 }`}
-                                style={{ height: `${heightPercent}%`, minHeight: hasRecordings ? '4px' : '2px' }}
+                                style={{
+                                  height: `${heightPercent}%`,
+                                  minHeight: hasRecordings ? "4px" : "2px",
+                                }}
                               />
-                              <span className={`text-[9px] ${
-                                isCurrent ? 'text-primary font-bold' : 'text-muted-foreground'
-                              }`}>
-                                {hour.toString().padStart(2, '0')}
+                              <span
+                                className={`text-[9px] ${
+                                  isCurrent ? "font-bold text-primary" : "text-muted-foreground"
+                                }`}
+                              >
+                                {hour.toString().padStart(2, "0")}
                               </span>
                             </button>
                           </TooltipTrigger>
                           <TooltipContent side="top" className="text-xs">
-                            <p className="font-medium">{hour.toString().padStart(2, '0')}:00</p>
+                            <p className="font-medium">{hour.toString().padStart(2, "0")}:00</p>
                             <p>{count} gravações</p>
                           </TooltipContent>
                         </Tooltip>
@@ -357,7 +381,7 @@ export const SessionPlayback = memo(() => {
               {/* Playback controls */}
               <div className="space-y-3">
                 <div className="flex items-center gap-4">
-                  <span className="text-sm text-muted-foreground w-16">
+                  <span className="w-16 text-sm text-muted-foreground">
                     {currentRecording && format(new Date(currentRecording.recorded_at), "HH:mm:ss")}
                   </span>
                   <Slider
@@ -367,8 +391,9 @@ export const SessionPlayback = memo(() => {
                     step={0.1}
                     className="flex-1"
                   />
-                  <span className="text-sm text-muted-foreground w-16 text-right">
-                    {recordings.length > 0 && format(new Date(recordings[recordings.length - 1].recorded_at), "HH:mm:ss")}
+                  <span className="w-16 text-right text-sm text-muted-foreground">
+                    {recordings.length > 0 &&
+                      format(new Date(recordings[recordings.length - 1].recorded_at), "HH:mm:ss")}
                   </span>
                 </div>
 
@@ -376,8 +401,8 @@ export const SessionPlayback = memo(() => {
                   <Button variant="outline" size="icon" onClick={skipBack}>
                     <SkipBack className="h-4 w-4" />
                   </Button>
-                  <Button 
-                    size="icon" 
+                  <Button
+                    size="icon"
                     onClick={() => setIsPlaying(!isPlaying)}
                     disabled={recordings.length === 0}
                   >
@@ -386,7 +411,10 @@ export const SessionPlayback = memo(() => {
                   <Button variant="outline" size="icon" onClick={skipForward}>
                     <SkipForward className="h-4 w-4" />
                   </Button>
-                  <Select value={String(playbackSpeed)} onValueChange={(v) => setPlaybackSpeed(Number(v))}>
+                  <Select
+                    value={String(playbackSpeed)}
+                    onValueChange={(v) => setPlaybackSpeed(Number(v))}
+                  >
                     <SelectTrigger className="w-[80px]">
                       <SelectValue />
                     </SelectTrigger>
@@ -402,8 +430,13 @@ export const SessionPlayback = memo(() => {
                 {/* Info bar */}
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center gap-4">
-                    <span><strong>App:</strong> {currentRecording?.app_name || 'N/A'}</span>
-                    <span><strong>Janela:</strong> {currentRecording?.window_title?.substring(0, 40) || 'N/A'}</span>
+                    <span>
+                      <strong>App:</strong> {currentRecording?.app_name || "N/A"}
+                    </span>
+                    <span>
+                      <strong>Janela:</strong>{" "}
+                      {currentRecording?.window_title?.substring(0, 40) || "N/A"}
+                    </span>
                   </div>
                   <span className="flex items-center gap-1">
                     <Clock className="h-4 w-4" />
@@ -417,7 +450,7 @@ export const SessionPlayback = memo(() => {
       </Card>
 
       <Dialog open={fullscreenOpen} onOpenChange={setFullscreenOpen}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh]">
+        <DialogContent className="max-h-[95vh] max-w-[95vw]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Video className="h-5 w-5" />
@@ -430,24 +463,33 @@ export const SessionPlayback = memo(() => {
                 <img
                   src={currentRecording.screenshot_url}
                   alt="Full screen screenshot"
-                  className="w-full h-auto rounded-lg"
+                  className="h-auto w-full rounded-lg"
                 />
-                {currentRecording.events.map((event, idx) => (
-                  event.type === 'click' && event.data.x && event.data.y && (
-                    <div
-                      key={idx}
-                      className="absolute w-8 h-8 -ml-4 -mt-4 rounded-full bg-primary/50 border-2 border-primary"
-                      style={{
-                        left: `${(event.data.x / 1920) * 100}%`,
-                        top: `${(event.data.y / 1080) * 100}%`,
-                      }}
-                    />
-                  )
-                ))}
+                {currentRecording.events.map(
+                  (event, idx) =>
+                    event.type === "click" &&
+                    event.data.x &&
+                    event.data.y && (
+                      <div
+                        key={idx}
+                        className="absolute -ml-4 -mt-4 h-8 w-8 rounded-full border-2 border-primary bg-primary/50"
+                        style={{
+                          left: `${(event.data.x / 1920) * 100}%`,
+                          top: `${(event.data.y / 1080) * 100}%`,
+                        }}
+                      />
+                    )
+                )}
               </div>
               <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>{currentRecording.app_name} - {currentRecording.window_title}</span>
-                <span>{format(new Date(currentRecording.recorded_at), "dd/MM/yyyy HH:mm:ss", { locale: ptBR })}</span>
+                <span>
+                  {currentRecording.app_name} - {currentRecording.window_title}
+                </span>
+                <span>
+                  {format(new Date(currentRecording.recorded_at), "dd/MM/yyyy HH:mm:ss", {
+                    locale: ptBR,
+                  })}
+                </span>
               </div>
             </div>
           )}
@@ -457,4 +499,4 @@ export const SessionPlayback = memo(() => {
   );
 });
 
-SessionPlayback.displayName = 'SessionPlayback';
+SessionPlayback.displayName = "SessionPlayback";

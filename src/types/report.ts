@@ -1,9 +1,9 @@
 export interface Report {
   id: string;
   title: string;
-  type: 'activity' | 'productivity' | 'attendance' | 'application' | 'custom';
-  status: 'pending' | 'generating' | 'completed' | 'failed';
-  format: 'pdf' | 'csv' | 'excel';
+  type: "activity" | "productivity" | "attendance" | "application" | "custom";
+  status: "pending" | "generating" | "completed" | "failed";
+  format: "pdf" | "csv" | "excel";
   filters: ReportFilters;
   downloadUrl?: string;
   error?: string;
@@ -24,7 +24,7 @@ export interface ReportFilters {
 export interface ReportTemplate {
   id: string;
   name: string;
-  type: Report['type'];
+  type: Report["type"];
   description: string;
   defaultFilters: Partial<ReportFilters>;
   sections: string[];

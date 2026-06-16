@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   ResponsiveContainer,
   Tooltip,
@@ -8,11 +8,11 @@ import {
   Scatter,
   ZAxis,
   Cell,
-} from 'recharts';
-import { Grid } from 'lucide-react';
-import { ChartTooltipContent } from './ChartTooltip';
-import { ChartEmptyState } from './ChartEmptyState';
-import { useChartColors } from '@/hooks/useChartColors';
+} from "recharts";
+import { Grid } from "lucide-react";
+import { ChartTooltipContent } from "./ChartTooltip";
+import { ChartEmptyState } from "./ChartEmptyState";
+import { useChartColors } from "@/hooks/useChartColors";
 
 interface HeatmapDataItem {
   x: string | number;
@@ -30,12 +30,12 @@ interface BaseHeatmapProps {
   emptyDescription?: string;
 }
 
-const DEFAULT_COLOR_RANGE: [string, string] = ['#eff6ff', '#1e40af'];
+const DEFAULT_COLOR_RANGE: [string, string] = ["#eff6ff", "#1e40af"];
 
 export function BaseHeatmap({
   data,
-  xAxisKey = 'x',
-  yAxisKey = 'y',
+  xAxisKey = "x",
+  yAxisKey = "y",
   height = 400,
   colorRange = DEFAULT_COLOR_RANGE,
   emptyTitle,
@@ -44,10 +44,17 @@ export function BaseHeatmap({
   const colors = useChartColors();
 
   if (!data.length) {
-    return <ChartEmptyState icon={Grid} title={emptyTitle} description={emptyDescription} height={height} />;
+    return (
+      <ChartEmptyState
+        icon={Grid}
+        title={emptyTitle}
+        description={emptyDescription}
+        height={height}
+      />
+    );
   }
 
-  const maxValue = Math.max(...data.map(d => d.value));
+  const maxValue = Math.max(...data.map((d) => d.value));
 
   return (
     <ResponsiveContainer width="100%" height={height}>
@@ -75,11 +82,7 @@ export function BaseHeatmap({
             // Simple interpolation between colorRange[0] and colorRange[1]
             // In a real project we might use d3-color or similar
             return (
-              <Cell 
-                key={`cell-${index}`} 
-                fill={colorRange[1]} 
-                fillOpacity={0.1 + ratio * 0.9} 
-              />
+              <Cell key={`cell-${index}`} fill={colorRange[1]} fillOpacity={0.1 + ratio * 0.9} />
             );
           })}
         </Scatter>

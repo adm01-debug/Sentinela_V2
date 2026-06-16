@@ -6,16 +6,19 @@ export function useSortable<T>(items: T[]) {
 
   const onDragStart = useCallback((index) => setDragIndex(index), []);
 
-  const onDragOver = useCallback((index) => {
-    if (dragIndex === null || dragIndex === index) return;
-    setSorted(prev => {
-      const next = [...prev];
-      const [item] = next.splice(dragIndex, 1);
-      next.splice(index, 0, item);
-      return next;
-    });
-    setDragIndex(index);
-  }, [dragIndex]);
+  const onDragOver = useCallback(
+    (index) => {
+      if (dragIndex === null || dragIndex === index) return;
+      setSorted((prev) => {
+        const next = [...prev];
+        const [item] = next.splice(dragIndex, 1);
+        next.splice(index, 0, item);
+        return next;
+      });
+      setDragIndex(index);
+    },
+    [dragIndex]
+  );
 
   const onDragEnd = useCallback(() => setDragIndex(null), []);
 

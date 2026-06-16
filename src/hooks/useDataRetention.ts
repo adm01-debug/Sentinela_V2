@@ -29,10 +29,14 @@ export function useDataRetention(policies: RetentionPolicy[]) {
     if (!stored) return null;
     try {
       return JSON.parse(stored).data;
-    } catch { return null; }
+    } catch {
+      return null;
+    }
   }, []);
 
-  useEffect(() => { cleanup(); }, [cleanup]);
+  useEffect(() => {
+    cleanup();
+  }, [cleanup]);
 
   return { store, retrieve, cleanup };
 }

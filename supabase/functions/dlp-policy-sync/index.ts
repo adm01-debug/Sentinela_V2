@@ -2,8 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-agent-key",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-agent-key",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
 };
 
@@ -23,7 +22,7 @@ Deno.serve(async (req) => {
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
     // Resolve agent key -> company
@@ -58,16 +57,14 @@ Deno.serve(async (req) => {
       const { data: policyRows } = await supabase
         .from("dlp_policies")
         .select(
-          "id, name, classifier_id, custom_pattern, keywords, severity, action, scope, is_active",
+          "id, name, classifier_id, custom_pattern, keywords, severity, action, scope, is_active"
         )
         .eq("company_id", keyRow.company_id)
         .eq("is_active", true);
 
       if (policyRows && policyRows.length > 0) {
         // Resolve classifier codes
-        const classifierIds = policyRows
-          .map((p) => p.classifier_id)
-          .filter(Boolean);
+        const classifierIds = policyRows.map((p) => p.classifier_id).filter(Boolean);
         const codeMap = new Map<string, string>();
         if (classifierIds.length > 0) {
           const { data: cls } = await supabase
@@ -102,16 +99,13 @@ Deno.serve(async (req) => {
           "Content-Type": "application/json",
           "Cache-Control": "private, max-age=300",
         },
-      },
+      }
     );
   } catch (err) {
     console.error("dlp-policy-sync error", err);
-    return new Response(
-      JSON.stringify({ error: err instanceof Error ? err.message : "Unknown" }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      },
-    );
+    return new Response(JSON.stringify({ error: err instanceof Error ? err.message : "Unknown" }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

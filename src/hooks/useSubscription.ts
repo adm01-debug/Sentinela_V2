@@ -1,11 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useAuth } from './useAuth';
-import { supabase } from '@/lib/supabase';
+import { useState, useCallback, useEffect } from "react";
+import { useAuth } from "./useAuth";
+import { supabase } from "@/lib/supabase";
 
 interface Subscription {
   id: string;
-  plan: 'free' | 'starter' | 'professional' | 'enterprise';
-  status: 'active' | 'inactive' | 'cancelled' | 'past_due';
+  plan: "free" | "starter" | "professional" | "enterprise";
+  status: "active" | "inactive" | "cancelled" | "past_due";
   currentPeriodStart: string;
   currentPeriodEnd: string;
   cancelAtPeriodEnd: boolean;
@@ -38,17 +38,17 @@ export function useSubscription(): UseSubscriptionReturn {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const { data, error: fetchError } = await supabase
-        .from('subscriptions')
-        .select('*')
-        .eq('user_id', user.id)
+        .from("subscriptions")
+        .select("*")
+        .eq("user_id", user.id)
         .single();
-      
-      if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
+
+      if (fetchError && fetchError.code !== "PGRST116") throw fetchError;
       setSubscription(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch subscription');
+      setError(err instanceof Error ? err.message : "Failed to fetch subscription");
     } finally {
       setIsLoading(false);
     }
@@ -58,15 +58,21 @@ export function useSubscription(): UseSubscriptionReturn {
     fetchSubscription();
   }, [fetchSubscription]);
 
-  const isPlan = useCallback((plan): boolean => {
-    return subscription?.plan === plan;
-  }, [subscription]);
+  const isPlan = useCallback(
+    (plan): boolean => {
+      return subscription?.plan === plan;
+    },
+    [subscription]
+  );
 
-  const hasFeature = useCallback((feature): boolean => {
-    return subscription?.features?.includes(feature) ?? false;
-  }, [subscription]);
+  const hasFeature = useCallback(
+    (feature): boolean => {
+      return subscription?.features?.includes(feature) ?? false;
+    },
+    [subscription]
+  );
 
-  const isActive = subscription?.status === 'active';
+  const isActive = subscription?.status === "active";
 
   return {
     subscription,

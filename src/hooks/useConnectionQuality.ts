@@ -24,7 +24,7 @@ export function useConnectionQuality() {
     const update = () => {
       setDownlink(conn.downlink || 0);
       setRtt(conn.rtt || 0);
-      
+
       if (!navigator.onLine) setQuality("offline");
       else if (conn.downlink >= 10) setQuality("excellent");
       else if (conn.downlink >= 5) setQuality("good");

@@ -1,10 +1,10 @@
-import { memo, forwardRef } from 'react';
-import { LucideIcon } from 'lucide-react';
-import { Button, ButtonProps } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
+import { memo, forwardRef } from "react";
+import { LucideIcon } from "lucide-react";
+import { Button, ButtonProps } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
-interface IconButtonProps extends Omit<ButtonProps, 'children'> {
+interface IconButtonProps extends Omit<ButtonProps, "children"> {
   icon: LucideIcon;
   tooltip?: string;
   iconClassName?: string;
@@ -13,13 +13,7 @@ interface IconButtonProps extends Omit<ButtonProps, 'children'> {
 const IconButtonComponent = forwardRef<HTMLButtonElement, IconButtonProps>(
   ({ icon: Icon, tooltip, iconClassName, className, ...props }, ref) => {
     const button = (
-      <Button
-        ref={ref}
-        variant="ghost"
-        size="icon"
-        className={className}
-        {...props}
-      >
+      <Button ref={ref} variant="ghost" size="icon" className={className} {...props}>
         <Icon className={cn("h-4 w-4", iconClassName)} />
       </Button>
     );
@@ -39,6 +33,6 @@ const IconButtonComponent = forwardRef<HTMLButtonElement, IconButtonProps>(
   }
 );
 
-IconButtonComponent.displayName = 'IconButton';
+IconButtonComponent.displayName = "IconButton";
 
 export const IconButton = memo(IconButtonComponent);

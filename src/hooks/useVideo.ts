@@ -6,13 +6,31 @@ export function useVideo() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const play = useCallback(() => { videoRef.current?.play(); setPlaying(true); }, []);
-  const pause = useCallback(() => { videoRef.current?.pause(); setPlaying(false); }, []);
-  const toggle = useCallback(() => playing ? pause() : play(), [playing, play, pause]);
-  const seek = useCallback((time) => { if (videoRef.current) videoRef.current.currentTime = time; }, []);
+  const play = useCallback(() => {
+    videoRef.current?.play();
+    setPlaying(true);
+  }, []);
+  const pause = useCallback(() => {
+    videoRef.current?.pause();
+    setPlaying(false);
+  }, []);
+  const toggle = useCallback(() => (playing ? pause() : play()), [playing, play, pause]);
+  const seek = useCallback((time) => {
+    if (videoRef.current) videoRef.current.currentTime = time;
+  }, []);
 
   const onTimeUpdate = useCallback(() => setCurrentTime(videoRef.current?.currentTime || 0), []);
   const onLoadedMetadata = useCallback(() => setDuration(videoRef.current?.duration || 0), []);
 
-  return { videoRef, playing, currentTime, duration, play, pause, toggle, seek, handlers: { onTimeUpdate, onLoadedMetadata } };
+  return {
+    videoRef,
+    playing,
+    currentTime,
+    duration,
+    play,
+    pause,
+    toggle,
+    seek,
+    handlers: { onTimeUpdate, onLoadedMetadata },
+  };
 }

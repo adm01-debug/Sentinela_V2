@@ -27,18 +27,18 @@ export interface Device {
   updatedAt: string;
 }
 
-export type DeviceType = 'desktop' | 'laptop' | 'mobile' | 'tablet' | 'workstation' | 'server';
+export type DeviceType = "desktop" | "laptop" | "mobile" | "tablet" | "workstation" | "server";
 
-export type DevicePlatform = 'windows' | 'macos' | 'linux' | 'ios' | 'android' | 'chromeos';
+export type DevicePlatform = "windows" | "macos" | "linux" | "ios" | "android" | "chromeos";
 
-export type DeviceStatus = 
-  | 'online'
-  | 'offline'
-  | 'idle'
-  | 'busy'
-  | 'maintenance'
-  | 'suspended'
-  | 'retired';
+export type DeviceStatus =
+  | "online"
+  | "offline"
+  | "idle"
+  | "busy"
+  | "maintenance"
+  | "suspended"
+  | "retired";
 
 export interface DeviceSpecs {
   cpu?: string;
@@ -115,7 +115,7 @@ export interface DeviceStats {
 
 export interface DeviceCommand {
   deviceId: string;
-  command: 'restart' | 'shutdown' | 'lock' | 'wipe' | 'update' | 'screenshot' | 'sync';
+  command: "restart" | "shutdown" | "lock" | "wipe" | "update" | "screenshot" | "sync";
   parameters?: unknown;
-  priority?: 'low' | 'normal' | 'high';
+  priority?: "low" | "normal" | "high";
 }

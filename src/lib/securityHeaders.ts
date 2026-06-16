@@ -12,17 +12,16 @@ export function applySecurityHeaders(): void {
 
   const metas: Record<string, string> = {
     // Prevent MIME-type sniffing
-    'X-Content-Type-Options': 'nosniff',
+    "X-Content-Type-Options": "nosniff",
     // Referrer policy - only send origin on cross-origin
-    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    "Referrer-Policy": "strict-origin-when-cross-origin",
     // Permissions policy - restrict powerful features
-    'Permissions-Policy':
-      'camera=(), microphone=(), geolocation=(self), payment=(), usb=()',
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(self), payment=(), usb=()",
   };
 
   for (const [name, content] of Object.entries(metas)) {
     if (!head.querySelector(`meta[http-equiv="${name}"]`)) {
-      const meta = document.createElement('meta');
+      const meta = document.createElement("meta");
       meta.httpEquiv = name;
       meta.content = content;
       head.appendChild(meta);
@@ -31,8 +30,8 @@ export function applySecurityHeaders(): void {
 
   // Content Security Policy via meta tag
   if (!head.querySelector('meta[http-equiv="Content-Security-Policy"]')) {
-    const csp = document.createElement('meta');
-    csp.httpEquiv = 'Content-Security-Policy';
+    const csp = document.createElement("meta");
+    csp.httpEquiv = "Content-Security-Policy";
     csp.content = [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.gpteng.co",
@@ -44,7 +43,7 @@ export function applySecurityHeaders(): void {
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
-    ].join('; ');
+    ].join("; ");
     head.appendChild(csp);
   }
 }

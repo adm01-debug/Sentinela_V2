@@ -1,6 +1,6 @@
-import { memo } from 'react';
-import { RefreshCw } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { memo } from "react";
+import { RefreshCw } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface StaleDataIndicatorProps {
   isStale: boolean;
@@ -22,10 +22,7 @@ export const StaleDataIndicator = memo(function StaleDataIndicator({
 
   return (
     <div
-      className={cn(
-        'inline-flex items-center gap-1.5 text-xs text-muted-foreground',
-        className
-      )}
+      className={cn("inline-flex items-center gap-1.5 text-xs text-muted-foreground", className)}
       role="status"
       aria-live="polite"
     >
@@ -36,11 +33,15 @@ export const StaleDataIndicator = memo(function StaleDataIndicator({
         </>
       ) : isStale ? (
         <>
-          <span className="h-1.5 w-1.5 rounded-full bg-warning inline-block" />
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-warning" />
           <span>
             Dados desatualizados
             {lastUpdated && (
-              <> · Última atualização: {lastUpdated.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</>
+              <>
+                {" "}
+                · Última atualização:{" "}
+                {lastUpdated.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+              </>
             )}
           </span>
         </>

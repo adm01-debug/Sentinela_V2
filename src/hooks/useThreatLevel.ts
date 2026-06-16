@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
-export type ThreatLevel = 'low' | 'medium' | 'high' | 'critical';
+export type ThreatLevel = "low" | "medium" | "high" | "critical";
 
 export interface ThreatIndicator {
   id: string;
@@ -21,18 +21,18 @@ export function useThreatLevel(options: UseThreatLevelOptions) {
   const { level, score, recentThreats, criticalCount } = useMemo(() => {
     const now = Date.now();
     const hourAgo = now - 60 * 60 * 1000;
-    const recentThreats = indicators.filter(i => i.timestamp.getTime() > hourAgo);
+    const recentThreats = indicators.filter((i) => i.timestamp.getTime() > hourAgo);
     const score = recentThreats.reduce((sum, i) => sum + i.severity, 0);
-    const criticalCount = recentThreats.filter(i => i.severity >= 80).length;
-    let level: ThreatLevel = 'low';
-    if (score >= thresholds.critical || criticalCount > 0) level = 'critical';
-    else if (score >= thresholds.high) level = 'high';
-    else if (score >= thresholds.medium) level = 'medium';
+    const criticalCount = recentThreats.filter((i) => i.severity >= 80).length;
+    let level: ThreatLevel = "low";
+    if (score >= thresholds.critical || criticalCount > 0) level = "critical";
+    else if (score >= thresholds.high) level = "high";
+    else if (score >= thresholds.medium) level = "medium";
     return { level, score, recentThreats, criticalCount };
   }, [indicators, thresholds]);
 
   const color = useMemo(() => {
-    const colors = { low: 'green', medium: 'yellow', high: 'orange', critical: 'red' };
+    const colors = { low: "green", medium: "yellow", high: "orange", critical: "red" };
     return colors[level];
   }, [level]);
 

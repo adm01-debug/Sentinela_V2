@@ -14,10 +14,10 @@ export function usePerformanceObserver() {
     const observer = new PerformanceObserver((list) => {
       list.getEntries().forEach((entry) => {
         if (entry.entryType === "paint" && entry.name === "first-contentful-paint") {
-          setMetrics(m => ({ ...m, fcp: entry.startTime }));
+          setMetrics((m) => ({ ...m, fcp: entry.startTime }));
         }
         if (entry.entryType === "largest-contentful-paint") {
-          setMetrics(m => ({ ...m, lcp: entry.startTime }));
+          setMetrics((m) => ({ ...m, lcp: entry.startTime }));
         }
       });
     });

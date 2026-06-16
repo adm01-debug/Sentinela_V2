@@ -8,17 +8,20 @@ export function useDragAndDrop<T>(initialItems: T[]) {
     setDragIndex(index);
   }, []);
 
-  const handleDragOver = useCallback((index: number) => {
-    if (dragIndex === null || dragIndex === index) return;
-    
-    setItems(prev => {
-      const newItems = [...prev];
-      const [removed] = newItems.splice(dragIndex, 1);
-      newItems.splice(index, 0, removed);
-      return newItems;
-    });
-    setDragIndex(index);
-  }, [dragIndex]);
+  const handleDragOver = useCallback(
+    (index: number) => {
+      if (dragIndex === null || dragIndex === index) return;
+
+      setItems((prev) => {
+        const newItems = [...prev];
+        const [removed] = newItems.splice(dragIndex, 1);
+        newItems.splice(index, 0, removed);
+        return newItems;
+      });
+      setDragIndex(index);
+    },
+    [dragIndex]
+  );
 
   const handleDragEnd = useCallback(() => {
     setDragIndex(null);

@@ -1,7 +1,7 @@
-import { memo, type ReactNode } from 'react';
-import { LucideIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { memo, type ReactNode } from "react";
+import { LucideIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface EmptyStateProps {
   icon: LucideIcon;
@@ -27,20 +27,19 @@ export const EmptyState = memo(function EmptyState({
   const ActionIcon = action?.icon;
 
   return (
-    <div className={cn(
-      'flex flex-col items-center justify-center py-16 px-6 text-center',
-      className
-    )}>
+    <div
+      className={cn("flex flex-col items-center justify-center px-6 py-16 text-center", className)}
+    >
       {/* Branded icon container */}
       <div className="relative mb-6">
-        <div className="absolute inset-0 rounded-full bg-primary/10 blur-xl scale-150" />
-        <div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/15 to-accent/15 border border-primary/10">
+        <div className="absolute inset-0 scale-150 rounded-full bg-primary/10 blur-xl" />
+        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/15 to-accent/15">
           <Icon className="h-7 w-7 text-primary" />
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-foreground mb-1.5">{title}</h3>
-      <p className="text-sm text-muted-foreground max-w-sm mb-6">{description}</p>
+      <h3 className="mb-1.5 text-lg font-semibold text-foreground">{title}</h3>
+      <p className="mb-6 max-w-sm text-sm text-muted-foreground">{description}</p>
 
       {action && (
         <Button onClick={action.onClick} className="gap-2">

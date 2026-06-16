@@ -1,28 +1,28 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
-import { AuditLogPage } from '../AuditLogPage';
+import { render, screen, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import { AuditLogPage } from "../AuditLogPage";
 
 // Mocks
-vi.mock('@/integrations/supabase/client', () => ({
+vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: vi.fn(() => ({
       select: vi.fn(() => ({
         order: vi.fn(() => ({
-          limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
-        }))
-      }))
-    }))
-  }
+          limit: vi.fn(() => Promise.resolve({ data: [], error: null })),
+        })),
+      })),
+    })),
+  },
 }));
 
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-    disconnect: vi.fn(),
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
 }));
 
 const queryClient = new QueryClient({
@@ -33,7 +33,7 @@ const queryClient = new QueryClient({
   },
 });
 
-describe('AuditLogPage', () => {
+describe("AuditLogPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -48,21 +48,21 @@ describe('AuditLogPage', () => {
     );
   };
 
-  it('renders correctly after loading', async () => {
+  it("renders correctly after loading", async () => {
     renderAuditLog();
-    
+
     // Wait for content to appear
     await waitFor(() => {
-        expect(screen.queryByText('Logs de Auditoria')).toBeInTheDocument();
+      expect(screen.queryByText("Logs de Auditoria")).toBeInTheDocument();
     });
-    expect(screen.getByPlaceholderText('Buscar por tipo, detalhe ou IP...')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Buscar por tipo, detalhe ou IP...")).toBeInTheDocument();
   });
 
-  it('shows empty state when no events', async () => {
+  it("shows empty state when no events", async () => {
     renderAuditLog();
     // Wait for content to appear
     await waitFor(() => {
-        expect(screen.queryByText('Nenhum evento encontrado.')).toBeInTheDocument();
+      expect(screen.queryByText("Nenhum evento encontrado.")).toBeInTheDocument();
     });
   });
 });

@@ -1,10 +1,10 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from "react";
 
 // ============================================================
 // TYPES
 // ============================================================
 
-type AsyncStatus = 'idle' | 'pending' | 'success' | 'error';
+type AsyncStatus = "idle" | "pending" | "success" | "error";
 
 interface AsyncState<T> {
   status: AsyncStatus;
@@ -35,7 +35,7 @@ export function useAsync<T>(
   immediate = false
 ): UseAsyncReturn<T> {
   const [state, setState] = useState<AsyncState<T>>({
-    status: 'idle',
+    status: "idle",
     data: null,
     error: null,
     isIdle: true,
@@ -49,7 +49,7 @@ export function useAsync<T>(
   const execute = useCallback(
     async (...args: unknown[]): Promise<T> => {
       setState({
-        status: 'pending',
+        status: "pending",
         data: null,
         error: null,
         isIdle: false,
@@ -60,10 +60,10 @@ export function useAsync<T>(
 
       try {
         const result = await asyncFunction(...args);
-        
+
         if (isMounted.current) {
           setState({
-            status: 'success',
+            status: "success",
             data: result,
             error: null,
             isIdle: false,
@@ -72,14 +72,14 @@ export function useAsync<T>(
             isError: false,
           });
         }
-        
+
         return result;
       } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error));
-        
+
         if (isMounted.current) {
           setState({
-            status: 'error',
+            status: "error",
             data: null,
             error: err,
             isIdle: false,
@@ -88,7 +88,7 @@ export function useAsync<T>(
             isError: true,
           });
         }
-        
+
         throw err;
       }
     },
@@ -97,7 +97,7 @@ export function useAsync<T>(
 
   const reset = useCallback(() => {
     setState({
-      status: 'idle',
+      status: "idle",
       data: null,
       error: null,
       isIdle: true,
@@ -109,7 +109,7 @@ export function useAsync<T>(
 
   useEffect(() => {
     isMounted.current = true;
-    
+
     if (immediate) {
       execute();
     }
@@ -133,7 +133,7 @@ export function useAsyncCallback<T, Args extends unknown[]>(
   asyncFunction: (...args: Args) => Promise<T>
 ): [(...args: Args) => Promise<T>, AsyncState<T>] {
   const [state, setState] = useState<AsyncState<T>>({
-    status: 'idle',
+    status: "idle",
     data: null,
     error: null,
     isIdle: true,
@@ -145,7 +145,7 @@ export function useAsyncCallback<T, Args extends unknown[]>(
   const execute = useCallback(
     async (...args: Args): Promise<T> => {
       setState({
-        status: 'pending',
+        status: "pending",
         data: null,
         error: null,
         isIdle: false,
@@ -156,9 +156,9 @@ export function useAsyncCallback<T, Args extends unknown[]>(
 
       try {
         const result = await asyncFunction(...args);
-        
+
         setState({
-          status: 'success',
+          status: "success",
           data: result,
           error: null,
           isIdle: false,
@@ -166,13 +166,13 @@ export function useAsyncCallback<T, Args extends unknown[]>(
           isSuccess: true,
           isError: false,
         });
-        
+
         return result;
       } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error));
-        
+
         setState({
-          status: 'error',
+          status: "error",
           data: null,
           error: err,
           isIdle: false,
@@ -180,7 +180,7 @@ export function useAsyncCallback<T, Args extends unknown[]>(
           isSuccess: false,
           isError: true,
         });
-        
+
         throw err;
       }
     },
@@ -212,7 +212,7 @@ export function useAsyncRetry<T>(
 
   const retry = useCallback(async (): Promise<T> => {
     if (retryCount >= maxRetries) {
-      throw new Error('Max retries exceeded');
+      throw new Error("Max retries exceeded");
     }
 
     setRetryCount((prev) => prev + 1);

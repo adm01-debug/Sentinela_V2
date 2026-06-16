@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from "react";
 
 interface UseZoomOptions {
   minZoom?: number;
@@ -23,27 +23,27 @@ interface UseZoomReturn {
 }
 
 export function useZoom(options: UseZoomOptions = {}): UseZoomReturn {
-  const {
-    minZoom = 0.5,
-    maxZoom = 3,
-    step = 0.1,
-    initialZoom = 1,
-    onChange,
-  } = options;
+  const { minZoom = 0.5, maxZoom = 3, step = 0.1, initialZoom = 1, onChange } = options;
 
   const [zoom, setZoomState] = useState(initialZoom);
   const containerRef = useRef<HTMLDivElement>(null);
   const lastPinchScale = useRef(1);
 
-  const clampZoom = useCallback((value): number => {
-    return Math.min(Math.max(value, minZoom), maxZoom);
-  }, [minZoom, maxZoom]);
+  const clampZoom = useCallback(
+    (value): number => {
+      return Math.min(Math.max(value, minZoom), maxZoom);
+    },
+    [minZoom, maxZoom]
+  );
 
-  const setZoom = useCallback((value: number) => {
-    const clampedValue = clampZoom(value);
-    setZoomState(clampedValue);
-    onChange?.(clampedValue);
-  }, [clampZoom, onChange]);
+  const setZoom = useCallback(
+    (value: number) => {
+      const clampedValue = clampZoom(value);
+      setZoomState(clampedValue);
+      onChange?.(clampedValue);
+    },
+    [clampZoom, onChange]
+  );
 
   const zoomIn = useCallback(() => {
     setZoom(zoom + step);
@@ -57,29 +57,35 @@ export function useZoom(options: UseZoomOptions = {}): UseZoomReturn {
     setZoom(initialZoom);
   }, [initialZoom, setZoom]);
 
-  const handleWheel = useCallback((e: WheelEvent) => {
-    if (e.ctrlKey || e.metaKey) {
-      e.preventDefault();
-      const delta = e.deltaY > 0 ? -step : step;
-      setZoom(zoom + delta);
-    }
-  }, [zoom, step, setZoom]);
+  const handleWheel = useCallback(
+    (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -step : step;
+        setZoom(zoom + delta);
+      }
+    },
+    [zoom, step, setZoom]
+  );
 
-  const handlePinch = useCallback((scale) => {
-    const delta = scale - lastPinchScale.current;
-    lastPinchScale.current = scale;
-    setZoom(zoom + delta);
-  }, [zoom, setZoom]);
+  const handlePinch = useCallback(
+    (scale) => {
+      const delta = scale - lastPinchScale.current;
+      lastPinchScale.current = scale;
+      setZoom(zoom + delta);
+    },
+    [zoom, setZoom]
+  );
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const wheelHandler = (e: WheelEvent) => handleWheel(e);
-    container.addEventListener('wheel', wheelHandler, { passive: false });
+    container.addEventListener("wheel", wheelHandler, { passive: false });
 
     return () => {
-      container.removeEventListener('wheel', wheelHandler);
+      container.removeEventListener("wheel", wheelHandler);
     };
   }, [handleWheel]);
 

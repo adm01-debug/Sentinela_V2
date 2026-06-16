@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated, CACHE_TIMES } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated, CACHE_TIMES } from "@/lib/queryClient";
 
 // ============================================================
 // TYPES
@@ -43,9 +43,9 @@ export function useTeams() {
     queryKey: queryKeys.teams.lists(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('teams')
-        .select('*')
-        .order('name', { ascending: true });
+        .from("teams")
+        .select("*")
+        .order("name", { ascending: true });
 
       if (error) throw error;
       return data as Team[];
@@ -57,15 +57,11 @@ export function useTeams() {
 
 export function useTeam(id) {
   return useQuery({
-    queryKey: queryKeys.teams.detail(id || ''),
+    queryKey: queryKeys.teams.detail(id || ""),
     queryFn: async () => {
       if (!id) return null;
-      
-      const { data, error } = await supabase
-        .from('teams')
-        .select('*')
-        .eq('id', id)
-        .single();
+
+      const { data, error } = await supabase.from("teams").select("*").eq("id", id).single();
 
       if (error) throw error;
       return data as Team;
@@ -85,11 +81,7 @@ export function useCreateTeam() {
 
   return useMutation({
     mutationFn: async (input: CreateTeamInput) => {
-      const { data, error } = await supabase
-        .from('teams')
-        .insert(input)
-        .select('*')
-        .single();
+      const { data, error } = await supabase.from("teams").insert(input).select("*").single();
 
       if (error) throw error;
       return data as Team;
@@ -108,10 +100,10 @@ export function useCreateTeam() {
         updated_at: new Date().toISOString(),
       };
 
-      queryClient.setQueryData<Team[]>(
-        queryKeys.teams.lists(),
-        (old) => [...(old || []), optimisticTeam]
-      );
+      queryClient.setQueryData<Team[]>(queryKeys.teams.lists(), (old) => [
+        ...(old || []),
+        optimisticTeam,
+      ]);
 
       return { previousTeams };
     },
@@ -120,16 +112,16 @@ export function useCreateTeam() {
         queryClient.setQueryData(queryKeys.teams.lists(), context.previousTeams);
       }
       toast({
-        title: 'Erro ao criar equipe',
+        title: "Erro ao criar equipe",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
     onSuccess: () => {
       invalidateRelated.teams(queryClient);
       toast({
-        title: 'Equipe criada',
-        description: 'A equipe foi criada com sucesso.',
+        title: "Equipe criada",
+        description: "A equipe foi criada com sucesso.",
       });
     },
   });
@@ -142,10 +134,10 @@ export function useUpdateTeam() {
   return useMutation({
     mutationFn: async ({ id, ...input }: UpdateTeamInput) => {
       const { data, error } = await supabase
-        .from('teams')
+        .from("teams")
         .update(input)
-        .eq('id', id)
-        .select('*')
+        .eq("id", id)
+        .select("*")
         .single();
 
       if (error) throw error;
@@ -161,15 +153,19 @@ export function useUpdateTeam() {
       // Update list
       queryClient.setQueryData<Team[]>(
         queryKeys.teams.lists(),
-        (old) => old?.map(t => t.id === id ? { ...t, ...input, updated_at: new Date().toISOString() } : t) || []
+        (old) =>
+          old?.map((t) =>
+            t.id === id ? { ...t, ...input, updated_at: new Date().toISOString() } : t
+          ) || []
       );
 
       // Update detail
       if (previousTeam) {
-        queryClient.setQueryData<Team>(
-          queryKeys.teams.detail(id),
-          { ...previousTeam, ...input, updated_at: new Date().toISOString() }
-        );
+        queryClient.setQueryData<Team>(queryKeys.teams.detail(id), {
+          ...previousTeam,
+          ...input,
+          updated_at: new Date().toISOString(),
+        });
       }
 
       return { previousTeams, previousTeam, id };
@@ -182,16 +178,16 @@ export function useUpdateTeam() {
         queryClient.setQueryData(queryKeys.teams.detail(context.id), context.previousTeam);
       }
       toast({
-        title: 'Erro ao atualizar equipe',
+        title: "Erro ao atualizar equipe",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
     onSuccess: () => {
       invalidateRelated.teams(queryClient);
       toast({
-        title: 'Equipe atualizada',
-        description: 'A equipe foi atualizada com sucesso.',
+        title: "Equipe atualizada",
+        description: "A equipe foi atualizada com sucesso.",
       });
     },
   });
@@ -203,10 +199,7 @@ export function useDeleteTeam() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('teams')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from("teams").delete().eq("id", id);
 
       if (error) throw error;
       return id;
@@ -218,7 +211,7 @@ export function useDeleteTeam() {
 
       queryClient.setQueryData<Team[]>(
         queryKeys.teams.lists(),
-        (old) => old?.filter(t => t.id !== id) || []
+        (old) => old?.filter((t) => t.id !== id) || []
       );
 
       return { previousTeams, id };
@@ -228,17 +221,17 @@ export function useDeleteTeam() {
         queryClient.setQueryData(queryKeys.teams.lists(), context.previousTeams);
       }
       toast({
-        title: 'Erro ao excluir equipe',
+        title: "Erro ao excluir equipe",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
     onSuccess: (_, id) => {
       queryClient.removeQueries({ queryKey: queryKeys.teams.detail(id) });
       invalidateRelated.teams(queryClient);
       toast({
-        title: 'Equipe excluída',
-        description: 'A equipe foi excluída com sucesso.',
+        title: "Equipe excluída",
+        description: "A equipe foi excluída com sucesso.",
       });
     },
   });
@@ -251,9 +244,9 @@ export function useAddTeamMember() {
   return useMutation({
     mutationFn: async ({ teamId, employeeId }: { teamId: string; employeeId: string }) => {
       const { error } = await supabase
-        .from('employees')
+        .from("employees")
         .update({ team_id: teamId })
-        .eq('id', employeeId);
+        .eq("id", employeeId);
 
       if (error) throw error;
     },
@@ -261,15 +254,15 @@ export function useAddTeamMember() {
       invalidateRelated.teams(queryClient);
       invalidateRelated.employees(queryClient);
       toast({
-        title: 'Membro adicionado',
-        description: 'O membro foi adicionado à equipe.',
+        title: "Membro adicionado",
+        description: "O membro foi adicionado à equipe.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao adicionar membro',
+        title: "Erro ao adicionar membro",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -282,9 +275,9 @@ export function useRemoveTeamMember() {
   return useMutation({
     mutationFn: async (employeeId: string) => {
       const { error } = await supabase
-        .from('employees')
+        .from("employees")
         .update({ team_id: null })
-        .eq('id', employeeId);
+        .eq("id", employeeId);
 
       if (error) throw error;
     },
@@ -292,15 +285,15 @@ export function useRemoveTeamMember() {
       invalidateRelated.teams(queryClient);
       invalidateRelated.employees(queryClient);
       toast({
-        title: 'Membro removido',
-        description: 'O membro foi removido da equipe.',
+        title: "Membro removido",
+        description: "O membro foi removido da equipe.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao remover membro',
+        title: "Erro ao remover membro",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });

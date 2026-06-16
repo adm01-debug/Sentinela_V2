@@ -8,14 +8,14 @@ interface DiffResult<T> {
 
 export function useDiff<T>(oldArray: T[], newArray: T[], key?: keyof T): DiffResult<T> {
   return useMemo(() => {
-    const getKey = (item: T) => key ? item[key] : item;
+    const getKey = (item: T) => (key ? item[key] : item);
     const oldSet = new Set(oldArray.map(getKey));
     const newSet = new Set(newArray.map(getKey));
 
     return {
-      added: newArray.filter(item => !oldSet.has(getKey(item))),
-      removed: oldArray.filter(item => !newSet.has(getKey(item))),
-      unchanged: newArray.filter(item => oldSet.has(getKey(item)))
+      added: newArray.filter((item) => !oldSet.has(getKey(item))),
+      removed: oldArray.filter((item) => !newSet.has(getKey(item))),
+      unchanged: newArray.filter((item) => oldSet.has(getKey(item))),
     };
   }, [oldArray, newArray, key]);
 }

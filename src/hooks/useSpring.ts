@@ -13,19 +13,27 @@ export function useSpring(initialValue: number, config = { stiffness: 100, dampi
     const damper = damping * velocityRef.current;
     velocityRef.current += (spring - damper) / 60;
     setValue((v: number) => v + velocityRef.current / 60);
-    
+
     if (Math.abs(displacement) > 0.01 || Math.abs(velocityRef.current) > 0.01) {
       rafRef.current = requestAnimationFrame(animate);
     }
   }, [value, config]);
 
-  const set = useCallback((target: number) => {
-    targetRef.current = target;
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(animate);
-  }, [animate]);
+  const set = useCallback(
+    (target: number) => {
+      targetRef.current = target;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(animate);
+    },
+    [animate]
+  );
 
-  useEffect(() => () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); }, []);
+  useEffect(
+    () => () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    },
+    []
+  );
 
   return [value, set] as const;
 }

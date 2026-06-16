@@ -16,66 +16,66 @@ export interface AuditLog {
   ipAddress?: string;
   userAgent?: string;
   geoLocation?: GeoLocation;
-  status: 'success' | 'failure' | 'pending';
+  status: "success" | "failure" | "pending";
   errorMessage?: string;
   duration?: number;
   timestamp: string;
   expiresAt?: string;
 }
 
-export type AuditAction = 
-  | 'create'
-  | 'read'
-  | 'update'
-  | 'delete'
-  | 'login'
-  | 'logout'
-  | 'export'
-  | 'import'
-  | 'enable'
-  | 'disable'
-  | 'approve'
-  | 'reject'
-  | 'invite'
-  | 'revoke'
-  | 'download'
-  | 'upload'
-  | 'archive'
-  | 'restore';
+export type AuditAction =
+  | "create"
+  | "read"
+  | "update"
+  | "delete"
+  | "login"
+  | "logout"
+  | "export"
+  | "import"
+  | "enable"
+  | "disable"
+  | "approve"
+  | "reject"
+  | "invite"
+  | "revoke"
+  | "download"
+  | "upload"
+  | "archive"
+  | "restore";
 
-export type AuditCategory = 
-  | 'authentication'
-  | 'authorization'
-  | 'user_management'
-  | 'team_management'
-  | 'settings'
-  | 'data_access'
-  | 'report'
-  | 'alert'
-  | 'integration'
-  | 'billing'
-  | 'system'
-  | 'security';
+export type AuditCategory =
+  | "authentication"
+  | "authorization"
+  | "user_management"
+  | "team_management"
+  | "settings"
+  | "data_access"
+  | "report"
+  | "alert"
+  | "integration"
+  | "billing"
+  | "system"
+  | "security";
 
-export type AuditResource = 
-  | 'user'
-  | 'team'
-  | 'department'
-  | 'project'
-  | 'employee'
-  | 'activity'
-  | 'screenshot'
-  | 'alert'
-  | 'report'
-  | 'setting'
-  | 'integration'
-  | 'api_key'
-  | 'webhook'
-  | 'role'
-  | 'permission'
-  | 'session'
-  | 'export'
-  | 'import';
+export type AuditResource =
+  | "user"
+  | "team"
+  | "department"
+  | "project"
+  | "employee"
+  | "activity"
+  | "screenshot"
+  | "alert"
+  | "report"
+  | "setting"
+  | "integration"
+  | "api_key"
+  | "webhook"
+  | "role"
+  | "permission"
+  | "session"
+  | "export"
+  | "import";
 
 export interface AuditChanges {
   before?: unknown;
@@ -87,7 +87,7 @@ export interface AuditMetadata {
   sessionId?: string;
   requestId?: string;
   apiKeyId?: string;
-  source: 'web' | 'api' | 'mobile' | 'desktop' | 'system' | 'scheduled';
+  source: "web" | "api" | "mobile" | "desktop" | "system" | "scheduled";
   version?: string;
   correlationId?: string;
   tags?: string[];
@@ -108,7 +108,7 @@ export interface AuditLogFilters {
   category?: AuditCategory;
   resource?: AuditResource;
   resourceId?: string;
-  status?: 'success' | 'failure';
+  status?: "success" | "failure";
   ipAddress?: string;
   startDate?: string;
   endDate?: string;
@@ -125,7 +125,7 @@ export interface AuditLogStats {
 }
 
 export interface AuditLogExport {
-  format: 'csv' | 'json' | 'xlsx';
+  format: "csv" | "json" | "xlsx";
   filters?: AuditLogFilters;
   fields?: string[];
   dateRange: { start: string; end: string };

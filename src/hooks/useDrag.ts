@@ -10,7 +10,11 @@ interface DragState {
 
 export function useDrag() {
   const [state, setState] = useState<DragState>({
-    isDragging: false, startX: 0, startY: 0, currentX: 0, currentY: 0
+    isDragging: false,
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    currentY: 0,
   });
 
   const onDragStart = useCallback((e: React.DragEvent | React.MouseEvent) => {
@@ -19,17 +23,20 @@ export function useDrag() {
       startX: e.clientX,
       startY: e.clientY,
       currentX: e.clientX,
-      currentY: e.clientY
+      currentY: e.clientY,
     });
   }, []);
 
-  const onDrag = useCallback((e: React.DragEvent | React.MouseEvent) => {
-    if (!state.isDragging) return;
-    setState(s => ({ ...s, currentX: e.clientX, currentY: e.clientY }));
-  }, [state.isDragging]);
+  const onDrag = useCallback(
+    (e: React.DragEvent | React.MouseEvent) => {
+      if (!state.isDragging) return;
+      setState((s) => ({ ...s, currentX: e.clientX, currentY: e.clientY }));
+    },
+    [state.isDragging]
+  );
 
   const onDragEnd = useCallback(() => {
-    setState(s => ({ ...s, isDragging: false }));
+    setState((s) => ({ ...s, isDragging: false }));
   }, []);
 
   const deltaX = state.currentX - state.startX;

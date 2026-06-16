@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { useTheme } from '@/providers/ThemeProvider';
+import { useMemo } from "react";
+import { useTheme } from "@/providers/ThemeProvider";
 
 /**
  * Returns resolved chart colors that work in SVG attributes.
@@ -15,20 +15,20 @@ export function useChartColors() {
 
     const resolve = (varName: string): string => {
       const val = style.getPropertyValue(varName).trim();
-      return val ? `hsl(${val})` : '#6366f1';
+      return val ? `hsl(${val})` : "#6366f1";
     };
 
     return {
-      primary: resolve('--primary'),
-      accent: resolve('--accent'),
-      success: resolve('--success'),
-      warning: resolve('--warning'),
-      info: resolve('--info'),
-      destructive: resolve('--destructive'),
-      muted: resolve('--muted-foreground'),
-      foreground: resolve('--foreground'),
-      border: resolve('--border'),
-      card: resolve('--card'),
+      primary: resolve("--primary"),
+      accent: resolve("--accent"),
+      success: resolve("--success"),
+      warning: resolve("--warning"),
+      info: resolve("--info"),
+      destructive: resolve("--destructive"),
+      muted: resolve("--muted-foreground"),
+      foreground: resolve("--foreground"),
+      border: resolve("--border"),
+      card: resolve("--card"),
     };
     // theme is intentionally a dependency: it triggers recomputation of the
     // resolved CSS variables when the active theme changes, even though it is

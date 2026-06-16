@@ -23,33 +23,33 @@ export interface ApiKey {
   revokedBy?: string;
 }
 
-export type ApiKeyType = 'live' | 'test' | 'restricted';
+export type ApiKeyType = "live" | "test" | "restricted";
 
-export type ApiKeyStatus = 'active' | 'expired' | 'revoked' | 'suspended';
+export type ApiKeyStatus = "active" | "expired" | "revoked" | "suspended";
 
-export type ApiScope = 
-  | 'employees:read'
-  | 'employees:write'
-  | 'activities:read'
-  | 'activities:write'
-  | 'screenshots:read'
-  | 'screenshots:write'
-  | 'alerts:read'
-  | 'alerts:write'
-  | 'reports:read'
-  | 'reports:write'
-  | 'users:read'
-  | 'users:write'
-  | 'teams:read'
-  | 'teams:write'
-  | 'settings:read'
-  | 'settings:write'
-  | 'webhooks:read'
-  | 'webhooks:write'
-  | 'analytics:read'
-  | 'billing:read'
-  | 'billing:write'
-  | '*';
+export type ApiScope =
+  | "employees:read"
+  | "employees:write"
+  | "activities:read"
+  | "activities:write"
+  | "screenshots:read"
+  | "screenshots:write"
+  | "alerts:read"
+  | "alerts:write"
+  | "reports:read"
+  | "reports:write"
+  | "users:read"
+  | "users:write"
+  | "teams:read"
+  | "teams:write"
+  | "settings:read"
+  | "settings:write"
+  | "webhooks:read"
+  | "webhooks:write"
+  | "analytics:read"
+  | "billing:read"
+  | "billing:write"
+  | "*";
 
 export interface RateLimit {
   requestsPerMinute: number;

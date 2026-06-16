@@ -9,16 +9,28 @@ export function useFileReader() {
     setLoading(true);
     setError(null);
     const reader = new FileReader();
-    reader.onload = () => { setContent(reader.result); setLoading(false); };
-    reader.onerror = () => { setError(reader.error); setLoading(false); };
+    reader.onload = () => {
+      setContent(reader.result);
+      setLoading(false);
+    };
+    reader.onerror = () => {
+      setError(reader.error);
+      setLoading(false);
+    };
     reader.readAsText(file);
   }, []);
 
   const readAsDataURL = useCallback((file: File) => {
     setLoading(true);
     const reader = new FileReader();
-    reader.onload = () => { setContent(reader.result); setLoading(false); };
-    reader.onerror = () => { setError(reader.error); setLoading(false); };
+    reader.onload = () => {
+      setContent(reader.result);
+      setLoading(false);
+    };
+    reader.onerror = () => {
+      setError(reader.error);
+      setLoading(false);
+    };
     reader.readAsDataURL(file);
   }, []);
 

@@ -11,20 +11,23 @@ export function useReducerWithMiddleware<S, A>(
   const stateRef = useRef(state);
   stateRef.current = state;
 
-  const dispatchWithMiddleware = useCallback((action: A) => {
-    let index = 0;
-    
-    const next: Dispatch<A> = (nextAction: A) => {
-      if (index < middlewares.length) {
-        const middleware = middlewares[index++];
-        middleware(stateRef.current, nextAction, next);
-      } else {
-        dispatch(nextAction);
-      }
-    };
+  const dispatchWithMiddleware = useCallback(
+    (action: A) => {
+      let index = 0;
 
-    next(action);
-  }, [middlewares]);
+      const next: Dispatch<A> = (nextAction: A) => {
+        if (index < middlewares.length) {
+          const middleware = middlewares[index++];
+          middleware(stateRef.current, nextAction, next);
+        } else {
+          dispatch(nextAction);
+        }
+      };
+
+      next(action);
+    },
+    [middlewares]
+  );
 
   return [state, dispatchWithMiddleware] as const;
 }

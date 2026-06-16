@@ -1,11 +1,5 @@
-import { memo, useEffect, useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-
+import { memo, useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface Shortcut {
   keys: string[];
@@ -14,17 +8,17 @@ interface Shortcut {
 
 const shortcutGroups: { title: string; shortcuts: Shortcut[] }[] = [
   {
-    title: 'Navegação',
+    title: "Navegação",
     shortcuts: [
-      { keys: ['⌘', 'K'], description: 'Abrir paleta de comandos' },
-      { keys: ['Shift', '?'], description: 'Mostrar atalhos do teclado' },
+      { keys: ["⌘", "K"], description: "Abrir paleta de comandos" },
+      { keys: ["Shift", "?"], description: "Mostrar atalhos do teclado" },
     ],
   },
   {
-    title: 'Ações',
+    title: "Ações",
     shortcuts: [
-      { keys: ['⌘', 'B'], description: 'Expandir/recolher sidebar' },
-      { keys: ['Esc'], description: 'Fechar diálogo/modal' },
+      { keys: ["⌘", "B"], description: "Expandir/recolher sidebar" },
+      { keys: ["Esc"], description: "Fechar diálogo/modal" },
     ],
   },
 ];
@@ -34,15 +28,16 @@ export const KeyboardShortcutsDialog = memo(function KeyboardShortcutsDialog() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '?' && e.shiftKey && !e.ctrlKey && !e.metaKey) {
+      if (e.key === "?" && e.shiftKey && !e.ctrlKey && !e.metaKey) {
         const target = e.target as HTMLElement;
-        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return;
+        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)
+          return;
         e.preventDefault();
-        setOpen(prev => !prev);
+        setOpen((prev) => !prev);
       }
     };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return (
@@ -54,7 +49,7 @@ export const KeyboardShortcutsDialog = memo(function KeyboardShortcutsDialog() {
         <div className="space-y-5 py-2">
           {shortcutGroups.map((group) => (
             <div key={group.title}>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
+              <h4 className="mb-2.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 {group.title}
               </h4>
               <div className="space-y-2">
@@ -77,9 +72,14 @@ export const KeyboardShortcutsDialog = memo(function KeyboardShortcutsDialog() {
             </div>
           ))}
         </div>
-        <p className="text-xs text-muted-foreground text-center pt-2 border-t">
-          Pressione <kbd className="inline-flex h-5 items-center rounded border bg-muted px-1 text-[10px] font-medium text-muted-foreground mx-0.5">Shift</kbd>
-          <kbd className="inline-flex h-5 items-center rounded border bg-muted px-1 text-[10px] font-medium text-muted-foreground mx-0.5">?</kbd>
+        <p className="border-t pt-2 text-center text-xs text-muted-foreground">
+          Pressione{" "}
+          <kbd className="mx-0.5 inline-flex h-5 items-center rounded border bg-muted px-1 text-[10px] font-medium text-muted-foreground">
+            Shift
+          </kbd>
+          <kbd className="mx-0.5 inline-flex h-5 items-center rounded border bg-muted px-1 text-[10px] font-medium text-muted-foreground">
+            ?
+          </kbd>
           para abrir/fechar
         </p>
       </DialogContent>

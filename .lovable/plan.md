@@ -1,4 +1,3 @@
-
 # Conectores SIEM — Splunk HEC, Microsoft Sentinel, Syslog CEF
 
 Implementação do épico **Q2 2026 — SIEM Connectors** do roadmap. Permite forwarding em tempo real de eventos de violação (DLP, UEBA, security violations) para plataformas SIEM corporativas.
@@ -31,11 +30,11 @@ Implementação do épico **Q2 2026 — SIEM Connectors** do roadmap. Permite fo
 
 ## 1. Schema (migration)
 
-| Tabela | Propósito |
-|---|---|
-| `siem_connectors` | Configuração de cada conector: tipo, endpoint, credenciais (cifradas), event_filters, is_active, company_id |
+| Tabela              | Propósito                                                                                                      |
+| ------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `siem_connectors`   | Configuração de cada conector: tipo, endpoint, credenciais (cifradas), event_filters, is_active, company_id    |
 | `siem_event_outbox` | Fila com retry: connector_id, event_type, payload jsonb, status (pending/sent/failed), attempts, next_retry_at |
-| `siem_delivery_log` | Histórico imutável de entregas: connector_id, event_id, status, latency_ms, http_code, error |
+| `siem_delivery_log` | Histórico imutável de entregas: connector_id, event_id, status, latency_ms, http_code, error                   |
 
 Tipos suportados (enum `siem_connector_type`): `splunk_hec`, `microsoft_sentinel`, `syslog_cef`, `generic_webhook`.
 
@@ -48,20 +47,24 @@ RLS por `company_id`; credenciais sempre acessadas via service_role em edge func
 ## 2. Edge Functions (3 novas)
 
 ### `siem-event-dispatcher` (cron a cada 30s + on-demand)
+
 - Lê outbox onde `status='pending' AND next_retry_at <= now()`
 - Para cada conector ativo do evento, chama o forwarder específico
 - Atualiza status, incrementa attempts, calcula `next_retry_at` com exponential backoff (30s → 5m → 30m, max 5 tentativas)
 - Grava em `siem_delivery_log`
 
 ### `siem-test-connector` (on-demand, admin-only)
+
 - Recebe `connector_id`, envia evento sintético de teste
 - Retorna status, latência, resposta do SIEM
 
 ### `siem-connector-manager` (CRUD + criptografia)
+
 - POST/PUT criptografa `auth_token`/`api_key` via Web Crypto API antes de gravar
 - GET retorna config sem credenciais (apenas masked)
 
 ### Trigger DB
+
 - `on_security_violation_insert` → enfileira em `siem_event_outbox` para todos os conectores ativos com `security_violation` em `event_filters`
 - Mesmo padrão para `dlp_incidents` e `user_risk_scores` (delta crítico)
 
@@ -71,12 +74,12 @@ RLS por `company_id`; credenciais sempre acessadas via service_role em edge func
 
 `supabase/functions/_shared/siem/`:
 
-| Arquivo | Responsabilidade |
-|---|---|
-| `splunkHec.ts` | POST `https://<host>/services/collector/event` com header `Authorization: Splunk <token>`; payload `{event, sourcetype, source, host, time}` |
-| `msSentinel.ts` | POST `https://<workspaceId>.ods.opinsights.azure.com/api/logs?api-version=2016-04-01` com HMAC-SHA256 signature; custom log type `SentinelaViolations_CL` |
-| `syslogCef.ts` | Format CEF 0\|Sentinela\|SecureWatch\|1.0\|<eventId>\|<name>\|<severity>\|<extensions>; envio via UDP (Deno.DatagramConn) ou TCP/TLS |
-| `eventNormalizer.ts` | Converte evento interno → estrutura comum {timestamp, severity, employee, type, mitre_techniques, evidence_url} |
+| Arquivo              | Responsabilidade                                                                                                                                          |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `splunkHec.ts`       | POST `https://<host>/services/collector/event` com header `Authorization: Splunk <token>`; payload `{event, sourcetype, source, host, time}`              |
+| `msSentinel.ts`      | POST `https://<workspaceId>.ods.opinsights.azure.com/api/logs?api-version=2016-04-01` com HMAC-SHA256 signature; custom log type `SentinelaViolations_CL` |
+| `syslogCef.ts`       | Format CEF 0\|Sentinela\|SecureWatch\|1.0\|<eventId>\|<name>\|<severity>\|<extensions>; envio via UDP (Deno.DatagramConn) ou TCP/TLS                      |
+| `eventNormalizer.ts` | Converte evento interno → estrutura comum {timestamp, severity, employee, type, mitre_techniques, evidence_url}                                           |
 
 ---
 
@@ -99,6 +102,7 @@ RLS por `company_id`; credenciais sempre acessadas via service_role em edge func
   - Métricas: taxa de sucesso, latência P95, eventos/min
 
 Componentes:
+
 - `<SIEMConnectorCard />` — card resumo com badge de status semântico
 - `<SIEMHealthIndicator />` — bolinha verde/amarelo/vermelho baseado em error_rate
 
@@ -107,6 +111,7 @@ Componentes:
 ## 5. Hooks & i18n
 
 Hooks novos em `src/hooks/`:
+
 - `useSIEMConnectors()` — list + CRUD via `siem-connector-manager`
 - `useSIEMDeliveryLog(connectorId)` — query + realtime
 - `useSIEMTest()` — mutation para teste
@@ -137,6 +142,7 @@ i18n completo (pt-BR, en-US, es) — labels, descrições de tipos, mensagens de
 ## 8. Cron Jobs (pg_cron)
 
 Via insert tool:
+
 - `siem-event-dispatcher`: a cada 30 segundos
 - `siem-delivery-log` cleanup >30d: semanal domingo 04:00 UTC
 
@@ -158,19 +164,20 @@ Função `enqueue_siem_event(event_type)` consulta `siem_connectors` ativos da e
 
 ## 10. Sub-fases (sequencial em uma passagem)
 
-| Sub-fase | Entregável |
-|---|---|
-| **A** | Migration: tabelas + enums + triggers + função enqueue + RLS |
-| **B** | Shared formatters (splunkHec, msSentinel, syslogCef, eventNormalizer) |
-| **C** | Edge functions: dispatcher + connector-manager + test-connector + cron |
-| **D** | UI: SIEMConnectorsPage + Wizard + DeliveryLogPage + componentes |
-| **E** | Hooks + i18n + integração no menu admin + RouteGuard |
+| Sub-fase | Entregável                                                             |
+| -------- | ---------------------------------------------------------------------- |
+| **A**    | Migration: tabelas + enums + triggers + função enqueue + RLS           |
+| **B**    | Shared formatters (splunkHec, msSentinel, syslogCef, eventNormalizer)  |
+| **C**    | Edge functions: dispatcher + connector-manager + test-connector + cron |
+| **D**    | UI: SIEMConnectorsPage + Wizard + DeliveryLogPage + componentes        |
+| **E**    | Hooks + i18n + integração no menu admin + RouteGuard                   |
 
 ---
 
 ## 11. Arquivos Criados/Modificados
 
 **Novos (~15):**
+
 - `supabase/migrations/<ts>_siem_connectors.sql`
 - `supabase/functions/_shared/siem/splunkHec.ts`
 - `supabase/functions/_shared/siem/msSentinel.ts`
@@ -189,6 +196,7 @@ Função `enqueue_siem_event(event_type)` consulta `siem_connectors` ativos da e
 - `src/hooks/useSIEMDeliveryLog.ts`
 
 **Modificados (5):**
+
 - `src/routes/AppRoutes.tsx` (3 rotas)
 - `src/integrations/supabase/types.ts` (auto)
 - `supabase/config.toml` (3 functions)

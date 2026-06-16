@@ -7,17 +7,20 @@ This document describes the design system used throughout the Sentinela applicat
 ## Colors
 
 ### Brand Colors
+
 - **Primary:** `#3B82F6` (Blue 500)
 - **Primary Dark:** `#1D4ED8` (Blue 700)
 - **Primary Light:** `#93C5FD` (Blue 300)
 
 ### Semantic Colors
+
 - **Success:** `#10B981` (Emerald 500)
 - **Warning:** `#F59E0B` (Amber 500)
 - **Error:** `#EF4444` (Red 500)
 - **Info:** `#3B82F6` (Blue 500)
 
 ### Neutral Colors
+
 - **Gray 50:** `#F9FAFB`
 - **Gray 100:** `#F3F4F6`
 - **Gray 200:** `#E5E7EB`
@@ -32,22 +35,25 @@ This document describes the design system used throughout the Sentinela applicat
 ## Typography
 
 ### Font Family
+
 - **Sans:** Inter, system-ui, sans-serif
 - **Mono:** JetBrains Mono, monospace
 
 ### Font Sizes
+
 | Name | Size | Line Height |
-|------|------|-------------|
-| xs | 12px | 16px |
-| sm | 14px | 20px |
-| base | 16px | 24px |
-| lg | 18px | 28px |
-| xl | 20px | 28px |
-| 2xl | 24px | 32px |
-| 3xl | 30px | 36px |
-| 4xl | 36px | 40px |
+| ---- | ---- | ----------- |
+| xs   | 12px | 16px        |
+| sm   | 14px | 20px        |
+| base | 16px | 24px        |
+| lg   | 18px | 28px        |
+| xl   | 20px | 28px        |
+| 2xl  | 24px | 32px        |
+| 3xl  | 30px | 36px        |
+| 4xl  | 36px | 40px        |
 
 ### Font Weights
+
 - **Normal:** 400
 - **Medium:** 500
 - **Semibold:** 600
@@ -58,33 +64,33 @@ This document describes the design system used throughout the Sentinela applicat
 Based on 4px grid system:
 
 | Token | Value |
-|-------|-------|
-| 0 | 0px |
-| 1 | 4px |
-| 2 | 8px |
-| 3 | 12px |
-| 4 | 16px |
-| 5 | 20px |
-| 6 | 24px |
-| 8 | 32px |
-| 10 | 40px |
-| 12 | 48px |
-| 16 | 64px |
-| 20 | 80px |
-| 24 | 96px |
+| ----- | ----- |
+| 0     | 0px   |
+| 1     | 4px   |
+| 2     | 8px   |
+| 3     | 12px  |
+| 4     | 16px  |
+| 5     | 20px  |
+| 6     | 24px  |
+| 8     | 32px  |
+| 10    | 40px  |
+| 12    | 48px  |
+| 16    | 64px  |
+| 20    | 80px  |
+| 24    | 96px  |
 
 ## Border Radius
 
-| Token | Value |
-|-------|-------|
-| none | 0px |
-| sm | 2px |
-| default | 4px |
-| md | 6px |
-| lg | 8px |
-| xl | 12px |
-| 2xl | 16px |
-| full | 9999px |
+| Token   | Value  |
+| ------- | ------ |
+| none    | 0px    |
+| sm      | 2px    |
+| default | 4px    |
+| md      | 6px    |
+| lg      | 8px    |
+| xl      | 12px   |
+| 2xl     | 16px   |
+| full    | 9999px |
 
 ## Shadows
 
@@ -99,33 +105,35 @@ Based on 4px grid system:
 ## Breakpoints
 
 | Name | Min Width |
-|------|-----------|
-| sm | 640px |
-| md | 768px |
-| lg | 1024px |
-| xl | 1280px |
-| 2xl | 1536px |
+| ---- | --------- |
+| sm   | 640px     |
+| md   | 768px     |
+| lg   | 1024px    |
+| xl   | 1280px    |
+| 2xl  | 1536px    |
 
 ## Z-Index Scale
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| dropdown | 1000 | Dropdowns, selects |
-| sticky | 1020 | Sticky headers |
-| fixed | 1030 | Fixed elements |
-| modal-backdrop | 1040 | Modal backdrops |
-| modal | 1050 | Modals |
-| popover | 1060 | Popovers, tooltips |
-| toast | 1070 | Toast notifications |
+| Token          | Value | Usage               |
+| -------------- | ----- | ------------------- |
+| dropdown       | 1000  | Dropdowns, selects  |
+| sticky         | 1020  | Sticky headers      |
+| fixed          | 1030  | Fixed elements      |
+| modal-backdrop | 1040  | Modal backdrops     |
+| modal          | 1050  | Modals              |
+| popover        | 1060  | Popovers, tooltips  |
+| toast          | 1070  | Toast notifications |
 
 ## Animation
 
 ### Durations
+
 - **Fast:** 150ms
 - **Normal:** 300ms
 - **Slow:** 500ms
 
 ### Easing
+
 - **Default:** cubic-bezier(0.4, 0, 0.2, 1)
 - **In:** cubic-bezier(0.4, 0, 1, 1)
 - **Out:** cubic-bezier(0, 0, 0.2, 1)

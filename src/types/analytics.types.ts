@@ -3,9 +3,9 @@
  * Core type definitions for analytics and metrics
  */
 
-export type TimeGranularity = 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year';
-export type MetricType = 'count' | 'sum' | 'average' | 'min' | 'max' | 'percentile' | 'rate';
-export type TrendDirection = 'up' | 'down' | 'stable';
+export type TimeGranularity = "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year";
+export type MetricType = "count" | "sum" | "average" | "min" | "max" | "percentile" | "rate";
+export type TrendDirection = "up" | "down" | "stable";
 
 // Dashboard Types
 export interface DashboardWidget {
@@ -19,18 +19,18 @@ export interface DashboardWidget {
 }
 
 export type WidgetType =
-  | 'metric_card'
-  | 'line_chart'
-  | 'bar_chart'
-  | 'pie_chart'
-  | 'area_chart'
-  | 'heatmap'
-  | 'table'
-  | 'list'
-  | 'map'
-  | 'gauge'
-  | 'sparkline'
-  | 'custom';
+  | "metric_card"
+  | "line_chart"
+  | "bar_chart"
+  | "pie_chart"
+  | "area_chart"
+  | "heatmap"
+  | "table"
+  | "list"
+  | "map"
+  | "gauge"
+  | "sparkline"
+  | "custom";
 
 export interface WidgetConfig {
   metric?: string;
@@ -49,7 +49,7 @@ export interface WidgetPosition {
 }
 
 export interface TimeRange {
-  type: 'relative' | 'absolute';
+  type: "relative" | "absolute";
   value?: string; // e.g., 'last_7_days', 'this_month'
   start?: string;
   end?: string;
@@ -58,7 +58,7 @@ export interface TimeRange {
 
 export interface ComparisonConfig {
   enabled: boolean;
-  type: 'previous_period' | 'same_period_last_year' | 'custom';
+  type: "previous_period" | "same_period_last_year" | "custom";
   custom_range?: TimeRange;
 }
 
@@ -67,7 +67,7 @@ export interface VisualizationConfig {
   show_legend?: boolean;
   show_labels?: boolean;
   stacked?: boolean;
-  line_style?: 'solid' | 'dashed' | 'dotted';
+  line_style?: "solid" | "dashed" | "dotted";
   fill_area?: boolean;
   smooth_curve?: boolean;
 }
@@ -84,7 +84,7 @@ export interface Metric {
 }
 
 export interface MetricFormat {
-  type: 'number' | 'currency' | 'percentage' | 'duration' | 'bytes';
+  type: "number" | "currency" | "percentage" | "duration" | "bytes";
   decimals?: number;
   prefix?: string;
   suffix?: string;
@@ -152,17 +152,24 @@ export interface AggregationFilter {
   value: unknown;
 }
 
-export type FilterOperator = 
-  | 'eq' | 'neq' 
-  | 'gt' | 'gte' | 'lt' | 'lte'
-  | 'in' | 'not_in'
-  | 'like' | 'not_like'
-  | 'between'
-  | 'is_null' | 'is_not_null';
+export type FilterOperator =
+  | "eq"
+  | "neq"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "in"
+  | "not_in"
+  | "like"
+  | "not_like"
+  | "between"
+  | "is_null"
+  | "is_not_null";
 
 export interface AggregationOrderBy {
   field: string;
-  direction: 'asc' | 'desc';
+  direction: "asc" | "desc";
 }
 
 export interface AggregationResult {
@@ -285,20 +292,20 @@ export interface WhereClause {
   field: string;
   operator: FilterOperator;
   value: unknown;
-  conjunction?: 'AND' | 'OR';
+  conjunction?: "AND" | "OR";
 }
 
 export interface OrderByClause {
   field: string;
-  direction: 'asc' | 'desc';
+  direction: "asc" | "desc";
 }
 
 // Export Types
 export interface AnalyticsExport {
   id: string;
   query: AnalyticsQuery | AggregationQuery;
-  format: 'csv' | 'json' | 'parquet';
-  status: 'pending' | 'processing' | 'completed' | 'failed';
+  format: "csv" | "json" | "parquet";
+  status: "pending" | "processing" | "completed" | "failed";
   file_url?: string;
   error?: string;
   created_at: string;

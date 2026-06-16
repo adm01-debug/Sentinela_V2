@@ -1,5 +1,5 @@
-import { AppSidebar as Sidebar } from '@/components/AppSidebar';
-import { Header } from '@/components/Header';
+import { AppSidebar as Sidebar } from "@/components/AppSidebar";
+import { Header } from "@/components/Header";
 
 export function SkeletonPageLayout({ children }: { children: React.ReactNode }) {
   return (

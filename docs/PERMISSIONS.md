@@ -4,11 +4,11 @@ Role-based access control in Sentinela.
 
 ## Roles
 
-| Role | Description |
-|------|-------------|
-| `admin` | Full system access |
+| Role      | Description                    |
+| --------- | ------------------------------ |
+| `admin`   | Full system access             |
 | `manager` | Manage employees, view reports |
-| `viewer` | Read-only access |
+| `viewer`  | Read-only access               |
 
 ## Permissions
 
@@ -19,12 +19,12 @@ See `src/constants/permissions.ts` for all permissions.
 ### Hook
 
 ```tsx
-import { usePermissions } from '@/hooks/usePermissions';
+import { usePermissions } from "@/hooks/usePermissions";
 
 function MyComponent() {
   const { hasPermission, isAdmin } = usePermissions();
-  
-  if (!hasPermission('employees:edit')) {
+
+  if (!hasPermission("employees:edit")) {
     return <AccessDenied />;
   }
 }
@@ -33,20 +33,17 @@ function MyComponent() {
 ### Component
 
 ```tsx
-import { PermissionGate } from '@/components/auth/PermissionGate';
+import { PermissionGate } from "@/components/auth/PermissionGate";
 
 <PermissionGate permission="employees:delete">
   <DeleteButton />
-</PermissionGate>
+</PermissionGate>;
 ```
 
 ### Multiple Permissions
 
 ```tsx
-<PermissionGate 
-  permissions={['reports:view', 'reports:export']}
-  requireAll={false}
->
+<PermissionGate permissions={["reports:view", "reports:export"]} requireAll={false}>
   <ReportActions />
 </PermissionGate>
 ```

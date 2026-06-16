@@ -8,14 +8,16 @@ export function useTheme(defaultTheme: Theme = "system") {
   });
 
   useEffect(() => {
-    const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const isDark =
+      theme === "dark" ||
+      (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
     document.documentElement.classList.toggle("dark", isDark);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   const setTheme = useCallback((t: Theme) => setThemeState(t), []);
   const toggle = useCallback(() => {
-    setThemeState(t => t === "dark" ? "light" : "dark");
+    setThemeState((t) => (t === "dark" ? "light" : "dark"));
   }, []);
 
   return { theme, setTheme, toggle };

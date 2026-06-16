@@ -1,18 +1,19 @@
-import { memo, useState, useEffect } from 'react';
-import { Monitor, RefreshCw, Maximize2, User, Clock } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { supabase } from '@/integrations/supabase/client';
+import { memo, useState, useEffect } from "react";
+import { Monitor, RefreshCw, Maximize2, User, Clock } from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { supabase } from "@/integrations/supabase/client";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface SessionRecording {
   id: string;
@@ -26,7 +27,7 @@ interface SessionRecording {
 
 export const LiveViewCard = memo(() => {
   const [employees, setEmployees] = useState<string[]>([]);
-  const [selectedEmployee, setSelectedEmployee] = useState<string>('');
+  const [selectedEmployee, setSelectedEmployee] = useState<string>("");
   const [latestScreenshot, setLatestScreenshot] = useState<SessionRecording | null>(null);
   const [loading, setLoading] = useState(false);
   const [fullscreenOpen, setFullscreenOpen] = useState(false);
@@ -35,12 +36,14 @@ export const LiveViewCard = memo(() => {
   useEffect(() => {
     const fetchEmployees = async () => {
       const { data } = await supabase
-        .from('session_recordings')
-        .select('employee_name')
-        .order('recorded_at', { ascending: false });
-      
+        .from("session_recordings")
+        .select("employee_name")
+        .order("recorded_at", { ascending: false });
+
       if (data) {
-        const unique = [...new Set(data.map((d: { employee_name: string }) => d.employee_name))] as string[];
+        const unique = [
+          ...new Set(data.map((d: { employee_name: string }) => d.employee_name)),
+        ] as string[];
         setEmployees(unique);
         if (unique.length > 0 && !selectedEmployee) {
           setSelectedEmployee(unique[0]);
@@ -53,16 +56,16 @@ export const LiveViewCard = memo(() => {
   // Fetch latest screenshot for selected employee
   const fetchLatestScreenshot = async () => {
     if (!selectedEmployee) return;
-    
+
     setLoading(true);
     const { data } = await supabase
-      .from('session_recordings')
-      .select('*')
-      .eq('employee_name', selectedEmployee)
-      .order('recorded_at', { ascending: false })
+      .from("session_recordings")
+      .select("*")
+      .eq("employee_name", selectedEmployee)
+      .order("recorded_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    
+
     if (data) {
       setLatestScreenshot(data as SessionRecording);
     }
@@ -80,17 +83,17 @@ export const LiveViewCard = memo(() => {
     if (!selectedEmployee) return;
 
     const channel = supabase
-      .channel('live-view-updates')
+      .channel("live-view-updates")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'session_recordings',
+          event: "INSERT",
+          schema: "public",
+          table: "session_recordings",
           filter: `employee_name=eq.${selectedEmployee}`,
         },
         (payload: { new: unknown }) => {
-          if (payload.new && typeof payload.new === 'object') {
+          if (payload.new && typeof payload.new === "object") {
             setLatestScreenshot(payload.new as unknown as SessionRecording);
           }
         }
@@ -102,7 +105,7 @@ export const LiveViewCard = memo(() => {
     };
   }, [selectedEmployee]);
 
-  const timeSinceUpdate = latestScreenshot 
+  const timeSinceUpdate = latestScreenshot
     ? Math.round((Date.now() - new Date(latestScreenshot.recorded_at).getTime()) / 1000)
     : null;
 
@@ -130,56 +133,66 @@ export const LiveViewCard = memo(() => {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="icon" onClick={fetchLatestScreenshot} disabled={loading}>
-              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={fetchLatestScreenshot}
+              disabled={loading}
+            >
+              <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
             </Button>
           </div>
         </CardHeader>
         <CardContent>
           {!selectedEmployee ? (
-            <div className="flex items-center justify-center h-[400px] bg-muted/50 rounded-lg">
+            <div className="flex h-[400px] items-center justify-center rounded-lg bg-muted/50">
               <p className="text-muted-foreground">Selecione um funcionário para visualizar</p>
             </div>
           ) : !latestScreenshot ? (
-            <div className="flex items-center justify-center h-[400px] bg-muted/50 rounded-lg">
+            <div className="flex h-[400px] items-center justify-center rounded-lg bg-muted/50">
               <p className="text-muted-foreground">Nenhuma captura disponível</p>
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="relative group">
+              <div className="group relative">
                 {/* An <img> is non-interactive; the fullscreen Button below provides the keyboard-accessible
                     equivalent action, so click-only on the image is acceptable here. */}
                 {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                 <img
                   src={latestScreenshot.screenshot_url}
                   alt="Live screenshot"
-                  className="w-full h-auto rounded-lg border cursor-pointer"
+                  className="h-auto w-full cursor-pointer rounded-lg border"
                   onClick={() => setFullscreenOpen(true)}
                 />
                 <Button
                   variant="secondary"
                   size="icon"
-                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100"
                   onClick={() => setFullscreenOpen(true)}
                 >
                   <Maximize2 className="h-4 w-4" />
                 </Button>
-                <Badge 
+                <Badge
                   variant={timeSinceUpdate && timeSinceUpdate < 30 ? "default" : "secondary"}
-                  className="absolute top-2 left-2"
+                  className="absolute left-2 top-2"
                 >
-                  <Clock className="h-3 w-3 mr-1" />
-                  {timeSinceUpdate !== null ? (
-                    timeSinceUpdate < 60 
-                      ? `${timeSinceUpdate}s atrás` 
+                  <Clock className="mr-1 h-3 w-3" />
+                  {timeSinceUpdate !== null
+                    ? timeSinceUpdate < 60
+                      ? `${timeSinceUpdate}s atrás`
                       : `${Math.round(timeSinceUpdate / 60)}min atrás`
-                  ) : 'N/A'}
+                    : "N/A"}
                 </Badge>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-4 text-muted-foreground">
-                  <span><strong>App:</strong> {latestScreenshot.app_name || 'N/A'}</span>
-                  <span><strong>Janela:</strong> {latestScreenshot.window_title?.substring(0, 50) || 'N/A'}</span>
+                  <span>
+                    <strong>App:</strong> {latestScreenshot.app_name || "N/A"}
+                  </span>
+                  <span>
+                    <strong>Janela:</strong>{" "}
+                    {latestScreenshot.window_title?.substring(0, 50) || "N/A"}
+                  </span>
                 </div>
                 <span className="text-muted-foreground">
                   {format(new Date(latestScreenshot.recorded_at), "HH:mm:ss", { locale: ptBR })}
@@ -191,7 +204,7 @@ export const LiveViewCard = memo(() => {
       </Card>
 
       <Dialog open={fullscreenOpen} onOpenChange={setFullscreenOpen}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh]">
+        <DialogContent className="max-h-[95vh] max-w-[95vw]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Monitor className="h-5 w-5" />
@@ -203,11 +216,17 @@ export const LiveViewCard = memo(() => {
               <img
                 src={latestScreenshot.screenshot_url}
                 alt="Full screen screenshot"
-                className="w-full h-auto rounded-lg"
+                className="h-auto w-full rounded-lg"
               />
               <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>{latestScreenshot.app_name} - {latestScreenshot.window_title}</span>
-                <span>{format(new Date(latestScreenshot.recorded_at), "dd/MM/yyyy HH:mm:ss", { locale: ptBR })}</span>
+                <span>
+                  {latestScreenshot.app_name} - {latestScreenshot.window_title}
+                </span>
+                <span>
+                  {format(new Date(latestScreenshot.recorded_at), "dd/MM/yyyy HH:mm:ss", {
+                    locale: ptBR,
+                  })}
+                </span>
               </div>
             </div>
           )}

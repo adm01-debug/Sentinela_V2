@@ -3,13 +3,9 @@
 /**
  * Format currency
  */
-export function formatCurrency(
-  value: number,
-  currency = 'BRL',
-  locale = 'pt-BR'
-): string {
+export function formatCurrency(value: number, currency = "BRL", locale = "pt-BR"): string {
   return new Intl.NumberFormat(locale, {
-    style: 'currency',
+    style: "currency",
     currency,
   }).format(value);
 }
@@ -20,7 +16,7 @@ export function formatCurrency(
 export function formatNumber(
   value: number,
   options?: Intl.NumberFormatOptions,
-  locale = 'pt-BR'
+  locale = "pt-BR"
 ): string {
   return new Intl.NumberFormat(locale, options).format(value);
 }
@@ -28,13 +24,9 @@ export function formatNumber(
 /**
  * Format percentage
  */
-export function formatPercent(
-  value: number,
-  decimals = 1,
-  locale = 'pt-BR'
-): string {
+export function formatPercent(value: number, decimals = 1, locale = "pt-BR"): string {
   return new Intl.NumberFormat(locale, {
-    style: 'percent',
+    style: "percent",
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   }).format(value / 100);
@@ -44,19 +36,19 @@ export function formatPercent(
  * Format bytes to human readable
  */
 export function formatBytes(bytes: number, decimals = 2): string {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) return "0 Bytes";
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
 
 /**
  * Format duration in seconds to human readable
  */
 export function formatDuration(seconds): string {
-  if (seconds < 0) return '0s';
+  if (seconds < 0) return "0s";
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = Math.floor(seconds % 60);
@@ -64,7 +56,7 @@ export function formatDuration(seconds): string {
   if (hours > 0) parts.push(`${hours}h`);
   if (minutes > 0) parts.push(`${minutes}m`);
   if (secs > 0 || parts.length === 0) parts.push(`${secs}s`);
-  return parts.join(' ');
+  return parts.join(" ");
 }
 
 /**

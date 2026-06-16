@@ -1,9 +1,13 @@
-import { useState, useRef, useEffect, ReactNode } from 'react';
-import { cn } from '@/utils/cn';
+import { useState, useRef, useEffect, ReactNode } from "react";
+import { cn } from "@/utils/cn";
 
-interface DropdownProps { trigger: ReactNode; children: ReactNode; align?: 'left' | 'right'; }
+interface DropdownProps {
+  trigger: ReactNode;
+  children: ReactNode;
+  align?: "left" | "right";
+}
 
-export const Dropdown = ({ trigger, children, align = 'left' }: DropdownProps) => {
+export const Dropdown = ({ trigger, children, align = "left" }: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -11,8 +15,8 @@ export const Dropdown = ({ trigger, children, align = 'left' }: DropdownProps) =
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -22,14 +26,21 @@ export const Dropdown = ({ trigger, children, align = 'left' }: DropdownProps) =
         tabIndex={0}
         onClick={() => setOpen(!open)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             setOpen(!open);
           }
         }}
-      >{trigger}</div>
+      >
+        {trigger}
+      </div>
       {open && (
-        <div className={cn('absolute z-50 mt-2 min-w-[160px] rounded-md border bg-popover p-1 shadow-md', align === 'right' ? 'right-0' : 'left-0')}>
+        <div
+          className={cn(
+            "absolute z-50 mt-2 min-w-[160px] rounded-md border bg-popover p-1 shadow-md",
+            align === "right" ? "right-0" : "left-0"
+          )}
+        >
           {children}
         </div>
       )}
@@ -37,8 +48,17 @@ export const Dropdown = ({ trigger, children, align = 'left' }: DropdownProps) =
   );
 };
 
-export const DropdownItem = ({ children, onClick }: { children: ReactNode; onClick?: () => void }) => (
-  <button onClick={onClick} className="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground">
+export const DropdownItem = ({
+  children,
+  onClick,
+}: {
+  children: ReactNode;
+  onClick?: () => void;
+}) => (
+  <button
+    onClick={onClick}
+    className="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground"
+  >
     {children}
   </button>
 );

@@ -9,7 +9,10 @@ interface LoadingState {
 
 export function useLoadingState() {
   const [state, setState] = useState<LoadingState>({
-    isLoading: false, isSuccess: false, isError: false, error: null
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    error: null,
   });
 
   const startLoading = useCallback(() => {

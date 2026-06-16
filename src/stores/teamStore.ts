@@ -1,8 +1,8 @@
 // Team Store for Sentinela - Supabase integrated
-import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
-import { supabase } from '@/integrations/supabase/client';
-import type { Team, TeamFilters, TeamStats } from '@/types/team';
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
+import { supabase } from "@/integrations/supabase/client";
+import type { Team, TeamFilters, TeamStats } from "@/types/team";
 
 interface TeamState {
   teams: Team[];
@@ -48,7 +48,7 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         fetchTeams: async (_filters, _page = 1) => {
           set({ isLoading: true, error: null });
           try {
-            const { data, error } = await supabase.from('teams').select('*').order('name');
+            const { data, error } = await supabase.from("teams").select("*").order("name");
             if (error) throw error;
             set({ teams: (data || []) as Team[], isLoading: false });
           } catch (error) {
@@ -59,7 +59,11 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         fetchTeam: async (id) => {
           set({ isLoading: true, error: null });
           try {
-            const { data, error } = await supabase.from('teams').select('*').eq('id', id).maybeSingle();
+            const { data, error } = await supabase
+              .from("teams")
+              .select("*")
+              .eq("id", id)
+              .maybeSingle();
             if (error) throw error;
             set({ currentTeam: data as Team, isLoading: false });
           } catch (error) {
@@ -69,8 +73,18 @@ export const useTeamStore = create<TeamState & TeamActions>()(
 
         fetchStats: async () => {
           try {
-            const { count } = await supabase.from('teams').select('*', { count: 'exact', head: true });
-            set({ stats: { total: count || 0, active: count || 0, withMembers: 0, averageSize: 0, totalMembers: 0 } as TeamStats });
+            const { count } = await supabase
+              .from("teams")
+              .select("*", { count: "exact", head: true });
+            set({
+              stats: {
+                total: count || 0,
+                active: count || 0,
+                withMembers: 0,
+                averageSize: 0,
+                totalMembers: 0,
+              } as TeamStats,
+            });
           } catch (error) {
             set({ error: (error as Error).message });
           }
@@ -79,7 +93,11 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         createTeam: async (data) => {
           set({ isLoading: true, error: null });
           try {
-            const { data: team, error } = await supabase.from('teams').insert(data).select().single();
+            const { data: team, error } = await supabase
+              .from("teams")
+              .insert(data)
+              .select()
+              .single();
             if (error) throw error;
             const typed = team as Team;
             set({ teams: [...get().teams, typed], isLoading: false });
@@ -93,10 +111,19 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         updateTeam: async (id, data) => {
           set({ isLoading: true, error: null });
           try {
-            const { data: team, error } = await supabase.from('teams').update(data as Record<string, unknown>).eq('id', id).select().single();
+            const { data: team, error } = await supabase
+              .from("teams")
+              .update(data as Record<string, unknown>)
+              .eq("id", id)
+              .select()
+              .single();
             if (error) throw error;
             const typed = team as Team;
-            set({ teams: get().teams.map(t => t.id === id ? typed : t), currentTeam: get().currentTeam?.id === id ? typed : get().currentTeam, isLoading: false });
+            set({
+              teams: get().teams.map((t) => (t.id === id ? typed : t)),
+              currentTeam: get().currentTeam?.id === id ? typed : get().currentTeam,
+              isLoading: false,
+            });
             return typed;
           } catch (error) {
             set({ error: (error as Error).message, isLoading: false });
@@ -107,9 +134,13 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         deleteTeam: async (id) => {
           set({ isLoading: true, error: null });
           try {
-            const { error } = await supabase.from('teams').delete().eq('id', id);
+            const { error } = await supabase.from("teams").delete().eq("id", id);
             if (error) throw error;
-            set({ teams: get().teams.filter(t => t.id !== id), currentTeam: get().currentTeam?.id === id ? null : get().currentTeam, isLoading: false });
+            set({
+              teams: get().teams.filter((t) => t.id !== id),
+              currentTeam: get().currentTeam?.id === id ? null : get().currentTeam,
+              isLoading: false,
+            });
           } catch (error) {
             set({ error: (error as Error).message, isLoading: false });
             throw error;
@@ -129,9 +160,9 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         clearError: () => set({ error: null }),
         reset: () => set(initialState),
       }),
-      { name: 'team-store', partialize: (state) => ({ filters: state.filters }) }
+      { name: "team-store", partialize: (state) => ({ filters: state.filters }) }
     ),
-    { name: 'TeamStore' }
+    { name: "TeamStore" }
   )
 );
 

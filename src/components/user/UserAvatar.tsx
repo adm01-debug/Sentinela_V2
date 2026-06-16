@@ -1,5 +1,5 @@
 // UserAvatar component
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface UserAvatarProps {
   name?: string;
@@ -8,7 +8,14 @@ interface UserAvatarProps {
 }
 
 export function UserAvatar({ name, avatarUrl, className }: UserAvatarProps) {
-  const initials = name ? name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : '?';
+  const initials = name
+    ? name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : "?";
   return (
     <Avatar className={className}>
       {avatarUrl && <AvatarImage src={avatarUrl} alt={name} />}

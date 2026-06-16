@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Shield,
   Plus,
@@ -12,18 +12,18 @@ import {
   Lock,
   Search,
   Loader2,
-} from 'lucide-react';
-import { formatDistanceToNow, isPast } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Textarea } from '@/components/ui/textarea';
-import { ScrollArea } from '@/components/ui/scroll-area';
+} from "lucide-react";
+import { formatDistanceToNow, isPast } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,7 +43,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 import {
   Table,
   TableBody,
@@ -51,7 +51,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   useWhitelistedIPs,
   useCreateWhitelistIP,
@@ -59,17 +59,18 @@ import {
   useDeleteWhitelistIP,
   WhitelistedIP,
   CreateWhitelistData,
-} from '@/hooks/useIPWhitelist';
+} from "@/hooks/useIPWhitelist";
 
-const IP_REGEX = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?:\/(?:3[0-2]|[12]?[0-9]))?$/;
+const IP_REGEX =
+  /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?:\/(?:3[0-2]|[12]?[0-9]))?$/;
 
 export function IPWhitelistManager() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingIP, setEditingIP] = useState<WhitelistedIP | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [formData, setFormData] = useState<CreateWhitelistData>({
-    ip_address: '',
-    description: '',
+    ip_address: "",
+    description: "",
     expires_at: null,
     bypass_rate_limit: true,
     bypass_auth: false,
@@ -82,18 +83,19 @@ export function IPWhitelistManager() {
   const updateIP = useUpdateWhitelistIP();
   const deleteIP = useDeleteWhitelistIP();
 
-  const filteredIPs = whitelistedIPs.filter(ip =>
-    ip.ip_address.includes(searchTerm) ||
-    ip.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredIPs = whitelistedIPs.filter(
+    (ip) =>
+      ip.ip_address.includes(searchTerm) ||
+      ip.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
-    
+
     if (!formData.ip_address) {
-      errors.ip_address = 'IP é obrigatório';
+      errors.ip_address = "IP é obrigatório";
     } else if (!IP_REGEX.test(formData.ip_address)) {
-      errors.ip_address = 'IP inválido (formato: xxx.xxx.xxx.xxx ou CIDR)';
+      errors.ip_address = "IP inválido (formato: xxx.xxx.xxx.xxx ou CIDR)";
     }
 
     setFormErrors(errors);
@@ -102,8 +104,8 @@ export function IPWhitelistManager() {
 
   const resetForm = () => {
     setFormData({
-      ip_address: '',
-      description: '',
+      ip_address: "",
+      description: "",
       expires_at: null,
       bypass_rate_limit: true,
       bypass_auth: false,
@@ -149,7 +151,7 @@ export function IPWhitelistManager() {
     setEditingIP(ip);
     setFormData({
       ip_address: ip.ip_address,
-      description: ip.description || '',
+      description: ip.description || "",
       expires_at: ip.expires_at,
       bypass_rate_limit: ip.bypass_rate_limit,
       bypass_auth: ip.bypass_auth,
@@ -172,7 +174,9 @@ export function IPWhitelistManager() {
     return <Badge className="bg-green-500">Ativo</Badge>;
   };
 
-  const activeCount = whitelistedIPs.filter(ip => ip.is_active && !isExpired(ip.expires_at)).length;
+  const activeCount = whitelistedIPs.filter(
+    (ip) => ip.is_active && !isExpired(ip.expires_at)
+  ).length;
 
   if (isLoading) {
     return (
@@ -200,9 +204,9 @@ export function IPWhitelistManager() {
         <Input
           id="ip_address"
           value={formData.ip_address}
-          onChange={e => setFormData({ ...formData, ip_address: e.target.value })}
+          onChange={(e) => setFormData({ ...formData, ip_address: e.target.value })}
           placeholder="192.168.1.1 ou 192.168.1.0/24"
-          className={formErrors.ip_address ? 'border-destructive' : ''}
+          className={formErrors.ip_address ? "border-destructive" : ""}
         />
         {formErrors.ip_address && (
           <p className="text-xs text-destructive">{formErrors.ip_address}</p>
@@ -213,8 +217,8 @@ export function IPWhitelistManager() {
         <Label htmlFor="description">Descrição</Label>
         <Textarea
           id="description"
-          value={formData.description || ''}
-          onChange={e => setFormData({ ...formData, description: e.target.value })}
+          value={formData.description || ""}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           placeholder="Ex: Servidor de produção, Office principal"
         />
       </div>
@@ -224,27 +228,27 @@ export function IPWhitelistManager() {
         <Input
           id="expires_at"
           type="datetime-local"
-          value={formData.expires_at ? formData.expires_at.slice(0, 16) : ''}
-          onChange={e => setFormData({ 
-            ...formData, 
-            expires_at: e.target.value ? new Date(e.target.value).toISOString() : null 
-          })}
+          value={formData.expires_at ? formData.expires_at.slice(0, 16) : ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              expires_at: e.target.value ? new Date(e.target.value).toISOString() : null,
+            })
+          }
         />
       </div>
 
-      <div className="space-y-4 pt-4 border-t">
-        <h4 className="font-medium text-sm">Permissões</h4>
-        
+      <div className="space-y-4 border-t pt-4">
+        <h4 className="text-sm font-medium">Permissões</h4>
+
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <Label>Bypass Rate Limit</Label>
-            <p className="text-xs text-muted-foreground">
-              Ignora limites de requisições
-            </p>
+            <p className="text-xs text-muted-foreground">Ignora limites de requisições</p>
           </div>
           <Switch
             checked={formData.bypass_rate_limit}
-            onCheckedChange={checked => setFormData({ ...formData, bypass_rate_limit: checked })}
+            onCheckedChange={(checked) => setFormData({ ...formData, bypass_rate_limit: checked })}
           />
         </div>
 
@@ -257,7 +261,7 @@ export function IPWhitelistManager() {
           </div>
           <Switch
             checked={formData.bypass_auth}
-            onCheckedChange={checked => setFormData({ ...formData, bypass_auth: checked })}
+            onCheckedChange={(checked) => setFormData({ ...formData, bypass_auth: checked })}
           />
         </div>
       </div>
@@ -273,19 +277,20 @@ export function IPWhitelistManager() {
               <Shield className="h-5 w-5" />
               Whitelist de IP
             </CardTitle>
-            <CardDescription>
-              Gerencie IPs confiáveis que podem acessar o sistema
-            </CardDescription>
+            <CardDescription>Gerencie IPs confiáveis que podem acessar o sistema</CardDescription>
           </div>
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="gap-1">
               <CheckCircle className="h-3 w-3 text-green-500" />
               {activeCount} ativos
             </Badge>
-            <Dialog open={isCreateOpen} onOpenChange={(open) => {
-              setIsCreateOpen(open);
-              if (!open) resetForm();
-            }}>
+            <Dialog
+              open={isCreateOpen}
+              onOpenChange={(open) => {
+                setIsCreateOpen(open);
+                if (!open) resetForm();
+              }}
+            >
               <DialogTrigger asChild>
                 <Button className="gap-2">
                   <Plus className="h-4 w-4" />
@@ -305,9 +310,7 @@ export function IPWhitelistManager() {
                     Cancelar
                   </Button>
                   <Button onClick={handleCreate} disabled={createIP.isPending}>
-                    {createIP.isPending ? (
-                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                    ) : null}
+                    {createIP.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                     Adicionar
                   </Button>
                 </DialogFooter>
@@ -319,11 +322,11 @@ export function IPWhitelistManager() {
       <CardContent className="space-y-4">
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Buscar por IP ou descrição..."
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
           />
         </div>
@@ -342,7 +345,7 @@ export function IPWhitelistManager() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredIPs.map(ip => (
+              {filteredIPs.map((ip) => (
                 <TableRow key={ip.id}>
                   <TableCell className="font-mono font-medium">
                     <div className="flex items-center gap-2">
@@ -350,9 +353,7 @@ export function IPWhitelistManager() {
                       {ip.ip_address}
                     </div>
                   </TableCell>
-                  <TableCell className="max-w-[200px] truncate">
-                    {ip.description || '-'}
-                  </TableCell>
+                  <TableCell className="max-w-[200px] truncate">{ip.description || "-"}</TableCell>
                   <TableCell>{getStatusBadge(ip)}</TableCell>
                   <TableCell>
                     <div className="flex gap-1">
@@ -374,9 +375,9 @@ export function IPWhitelistManager() {
                     {ip.expires_at ? (
                       <div className="flex items-center gap-1 text-sm">
                         <Clock className="h-3 w-3" />
-                        {formatDistanceToNow(new Date(ip.expires_at), { 
-                          addSuffix: true, 
-                          locale: ptBR 
+                        {formatDistanceToNow(new Date(ip.expires_at), {
+                          addSuffix: true,
+                          locale: ptBR,
                         })}
                       </div>
                     ) : (
@@ -400,14 +401,10 @@ export function IPWhitelistManager() {
 
                       <Dialog
                         open={editingIP?.id === ip.id}
-                        onOpenChange={open => !open && setEditingIP(null)}
+                        onOpenChange={(open) => !open && setEditingIP(null)}
                       >
                         <DialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => openEditDialog(ip)}
-                          >
+                          <Button variant="ghost" size="icon" onClick={() => openEditDialog(ip)}>
                             <Edit2 className="h-4 w-4" />
                           </Button>
                         </DialogTrigger>
@@ -425,7 +422,7 @@ export function IPWhitelistManager() {
                             </Button>
                             <Button onClick={handleUpdate} disabled={updateIP.isPending}>
                               {updateIP.isPending ? (
-                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                               ) : null}
                               Salvar
                             </Button>
@@ -471,19 +468,19 @@ export function IPWhitelistManager() {
 
         {filteredIPs.length === 0 && (
           <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
-            <Shield className="h-8 w-8 mb-2 opacity-50" />
+            <Shield className="mb-2 h-8 w-8 opacity-50" />
             <p>Nenhum IP na whitelist</p>
           </div>
         )}
 
         {/* Info */}
-        <div className="flex items-start gap-2 p-4 rounded-lg bg-muted/50 border text-sm">
-          <Shield className="h-4 w-4 mt-0.5 text-primary" />
+        <div className="flex items-start gap-2 rounded-lg border bg-muted/50 p-4 text-sm">
+          <Shield className="mt-0.5 h-4 w-4 text-primary" />
           <div>
             <p className="font-medium">Sobre a Whitelist</p>
             <p className="text-muted-foreground">
-              IPs na whitelist podem ter acesso privilegiado, incluindo bypass de rate limiting.
-              Use CIDR para intervalos (ex: 192.168.1.0/24).
+              IPs na whitelist podem ter acesso privilegiado, incluindo bypass de rate limiting. Use
+              CIDR para intervalos (ex: 192.168.1.0/24).
             </p>
           </div>
         </div>

@@ -4,25 +4,25 @@
  */
 
 const STRUCTURED_DATA = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: 'Sentinela - SecureWatch',
-  description: 'Plataforma de monitoramento de atividades de funcionários e segurança corporativa.',
-  url: typeof window !== 'undefined' ? window.location.origin : '',
-  applicationCategory: 'SecurityApplication',
-  operatingSystem: 'Web',
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Sentinela - SecureWatch",
+  description: "Plataforma de monitoramento de atividades de funcionários e segurança corporativa.",
+  url: typeof window !== "undefined" ? window.location.origin : "",
+  applicationCategory: "SecurityApplication",
+  operatingSystem: "Web",
   offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'BRL',
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "BRL",
   },
   featureList: [
-    'Monitoramento de atividades em tempo real',
-    'Rastreamento de produtividade',
-    'Detecção de violações de segurança',
-    'Geofencing e controle de localização',
-    'Relatórios e análises detalhadas',
-    'Gamificação e engajamento',
+    "Monitoramento de atividades em tempo real",
+    "Rastreamento de produtividade",
+    "Detecção de violações de segurança",
+    "Geofencing e controle de localização",
+    "Relatórios e análises detalhadas",
+    "Gamificação e engajamento",
   ],
 };
 
@@ -34,29 +34,30 @@ let injected = false;
  */
 export function injectStructuredData(): void {
   // Security improvement: Don't inject SEO metadata in sensitive/admin environments if configured
-  const shouldSkipSEO = window.location.pathname.startsWith('/admin') || 
-                        window.location.pathname.startsWith('/settings');
-  
-  if (injected || typeof document === 'undefined' || shouldSkipSEO) return;
+  const shouldSkipSEO =
+    window.location.pathname.startsWith("/admin") ||
+    window.location.pathname.startsWith("/settings");
 
-  const script = document.createElement('script');
-  script.type = 'application/ld+json';
+  if (injected || typeof document === "undefined" || shouldSkipSEO) return;
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
   script.textContent = JSON.stringify(STRUCTURED_DATA);
   document.head.appendChild(script);
 
   // Also ensure essential OG tags exist
   const ogTags: Record<string, string> = {
-    'og:type': 'website',
-    'og:title': 'Sentinela - SecureWatch',
-    'og:description': 'Plataforma de monitoramento de atividades e segurança corporativa.',
-    'og:site_name': 'Sentinela',
+    "og:type": "website",
+    "og:title": "Sentinela - SecureWatch",
+    "og:description": "Plataforma de monitoramento de atividades e segurança corporativa.",
+    "og:site_name": "Sentinela",
   };
 
   Object.entries(ogTags).forEach(([property, content]) => {
     if (!document.querySelector(`meta[property="${property}"]`)) {
-      const meta = document.createElement('meta');
-      meta.setAttribute('property', property);
-      meta.setAttribute('content', content);
+      const meta = document.createElement("meta");
+      meta.setAttribute("property", property);
+      meta.setAttribute("content", content);
       document.head.appendChild(meta);
     }
   });

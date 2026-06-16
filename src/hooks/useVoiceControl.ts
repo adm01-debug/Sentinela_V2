@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface SpeechRecognitionResultItem {
   transcript: string;
@@ -44,10 +44,10 @@ export interface UseVoiceControlOptions {
 }
 
 export function useVoiceControl(options: UseVoiceControlOptions = {}) {
-  const { commands = [], continuous = false, language = 'en-US', onResult, onError } = options;
+  const { commands = [], continuous = false, language = "en-US", onResult, onError } = options;
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
-  const [transcript, setTranscript] = useState('');
+  const [transcript, setTranscript] = useState("");
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
         onResult?.(text);
 
         commands.forEach((cmd) => {
-          if (typeof cmd.command === 'string') {
+          if (typeof cmd.command === "string") {
             if (text.includes(cmd.command.toLowerCase())) cmd.callback(text);
             return;
           }
@@ -97,7 +97,7 @@ export function useVoiceControl(options: UseVoiceControlOptions = {}) {
     if (recognitionRef.current && !isListening) {
       recognitionRef.current.start();
       setIsListening(true);
-      setTranscript('');
+      setTranscript("");
     }
   }, [isListening]);
 

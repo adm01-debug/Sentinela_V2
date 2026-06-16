@@ -8,11 +8,11 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-} from 'recharts';
-import { Target } from 'lucide-react';
-import { ChartTooltipContent } from './ChartTooltip';
-import { ChartEmptyState } from './ChartEmptyState';
-import { useChartColors } from '@/hooks/useChartColors';
+} from "recharts";
+import { Target } from "lucide-react";
+import { ChartTooltipContent } from "./ChartTooltip";
+import { ChartEmptyState } from "./ChartEmptyState";
+import { useChartColors } from "@/hooks/useChartColors";
 
 export interface ScatterSeriesConfig {
   dataKey: string;
@@ -35,17 +35,17 @@ interface BaseScatterChartProps {
 }
 
 const DEFAULT_COLORS = [
-  'hsl(243, 75%, 59%)',
-  'hsl(142, 76%, 36%)',
-  'hsl(38, 92%, 50%)',
-  'hsl(0, 84%, 60%)',
+  "hsl(243, 75%, 59%)",
+  "hsl(142, 76%, 36%)",
+  "hsl(38, 92%, 50%)",
+  "hsl(0, 84%, 60%)",
 ];
 
 export function BaseScatterChart({
   data,
   series,
-  xAxisKey = 'x',
-  yAxisKey = 'y',
+  xAxisKey = "x",
+  yAxisKey = "y",
   zAxisKey,
   height = 300,
   showGrid = true,
@@ -57,7 +57,14 @@ export function BaseScatterChart({
   const colors = useChartColors();
 
   if (!data.length) {
-    return <ChartEmptyState icon={Target} title={emptyTitle} description={emptyDescription} height={height} />;
+    return (
+      <ChartEmptyState
+        icon={Target}
+        title={emptyTitle}
+        description={emptyDescription}
+        height={height}
+      />
+    );
   }
 
   return (
@@ -85,7 +92,7 @@ export function BaseScatterChart({
           <Scatter
             key={s.dataKey}
             name={s.name}
-            data={data.filter(item => item.category === s.dataKey || !item.category)}
+            data={data.filter((item) => item.category === s.dataKey || !item.category)}
             fill={s.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length]}
           />
         ))}

@@ -65,12 +65,14 @@ src/
 ## Comunicação com Backend
 
 O agente se comunica com o backend via duas Edge Functions:
+
 - `validate-agent-key` - Validação inicial da chave
 - `agent-collector` - Envio de dados coletados (autenticado via header `x-agent-key`)
 
 ## Modo Stealth
 
 Atalho secreto: `Ctrl+Shift+Alt+S`
+
 - Oculta ícone da bandeja do sistema
 - Remove do gerenciador de tarefas
 - Protegido por senha para desativar

@@ -11,17 +11,20 @@ export function useSwipe(threshold = 50) {
     setDirection(null);
   }, []);
 
-  const onTouchEnd = useCallback((e: React.TouchEvent) => {
-    const end = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
-    const dx = end.x - start.x;
-    const dy = end.y - start.y;
+  const onTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const end = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+      const dx = end.x - start.x;
+      const dy = end.y - start.y;
 
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
-      setDirection(dx > 0 ? "right" : "left");
-    } else if (Math.abs(dy) > threshold) {
-      setDirection(dy > 0 ? "down" : "up");
-    }
-  }, [start, threshold]);
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
+        setDirection(dx > 0 ? "right" : "left");
+      } else if (Math.abs(dy) > threshold) {
+        setDirection(dy > 0 ? "down" : "up");
+      }
+    },
+    [start, threshold]
+  );
 
   return { direction, onTouchStart, onTouchEnd };
 }

@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, MoreHorizontal, GripVertical, Pin, Archive, Trash2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import React, { useState } from "react";
+import {
+  ChevronDown,
+  ChevronUp,
+  MoreHorizontal,
+  GripVertical,
+  Pin,
+  Archive,
+  Trash2,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 // ============================================
 // EXPANDABLE CARD
@@ -20,7 +28,7 @@ interface ExpandableCardProps {
   title: string;
   subtitle?: string;
   badge?: string;
-  badgeVariant?: 'default' | 'secondary' | 'destructive' | 'outline';
+  badgeVariant?: "default" | "secondary" | "destructive" | "outline";
   defaultOpen?: boolean;
   children: React.ReactNode;
   headerAction?: React.ReactNode;
@@ -31,7 +39,7 @@ export function ExpandableCard({
   title,
   subtitle,
   badge,
-  badgeVariant = 'secondary',
+  badgeVariant = "secondary",
   defaultOpen = false,
   children,
   headerAction,
@@ -41,9 +49,9 @@ export function ExpandableCard({
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <div className={cn('rounded-lg border bg-card', className)}>
+      <div className={cn("rounded-lg border bg-card", className)}>
         <CollapsibleTrigger asChild>
-          <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 transition-colors">
+          <div className="flex cursor-pointer items-center justify-between p-4 transition-colors hover:bg-muted/50">
             <div className="flex items-center gap-3">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
@@ -54,27 +62,19 @@ export function ExpandableCard({
                     </Badge>
                   )}
                 </div>
-                {subtitle && (
-                  <p className="text-sm text-muted-foreground mt-0.5">{subtitle}</p>
-                )}
+                {subtitle && <p className="mt-0.5 text-sm text-muted-foreground">{subtitle}</p>}
               </div>
             </div>
             <div className="flex items-center gap-2">
               {headerAction}
               <Button variant="ghost" size="icon" className="h-8 w-8">
-                {isOpen ? (
-                  <ChevronUp className="h-4 w-4" />
-                ) : (
-                  <ChevronDown className="h-4 w-4" />
-                )}
+                {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               </Button>
             </div>
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <div className="px-4 pb-4 pt-0 border-t">
-            {children}
-          </div>
+          <div className="border-t px-4 pb-4 pt-0">{children}</div>
         </CollapsibleContent>
       </div>
     </Collapsible>
@@ -118,23 +118,26 @@ export function ActionCard({
   const hasQuickActions = onPin || onArchive || onDelete;
 
   return (
-    <div className={cn('group rounded-lg border bg-card p-4 transition-all hover:shadow-md', className)}>
+    <div
+      className={cn(
+        "group rounded-lg border bg-card p-4 transition-all hover:shadow-md",
+        className
+      )}
+    >
       <div className="flex items-start gap-3">
         {Icon && (
-          <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
             <Icon className="h-5 w-5 text-primary" />
           </div>
         )}
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-medium">{title}</h3>
                 {isPinned && <Pin className="h-3 w-3 text-primary" />}
               </div>
-              {description && (
-                <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
-              )}
+              {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
             </div>
             {(actions.length > 0 || hasQuickActions) && (
               <DropdownMenu>
@@ -142,7 +145,7 @@ export function ActionCard({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
                   >
                     <MoreHorizontal className="h-4 w-4" />
                   </Button>
@@ -152,22 +155,22 @@ export function ActionCard({
                     <DropdownMenuItem
                       key={i}
                       onClick={action.onClick}
-                      className={action.destructive ? 'text-destructive' : ''}
+                      className={action.destructive ? "text-destructive" : ""}
                     >
-                      {action.icon && <action.icon className="h-4 w-4 mr-2" />}
+                      {action.icon && <action.icon className="mr-2 h-4 w-4" />}
                       {action.label}
                     </DropdownMenuItem>
                   ))}
                   {actions.length > 0 && hasQuickActions && <DropdownMenuSeparator />}
                   {onPin && (
                     <DropdownMenuItem onClick={onPin}>
-                      <Pin className="h-4 w-4 mr-2" />
-                      {isPinned ? 'Desafixar' : 'Fixar'}
+                      <Pin className="mr-2 h-4 w-4" />
+                      {isPinned ? "Desafixar" : "Fixar"}
                     </DropdownMenuItem>
                   )}
                   {onArchive && (
                     <DropdownMenuItem onClick={onArchive}>
-                      <Archive className="h-4 w-4 mr-2" />
+                      <Archive className="mr-2 h-4 w-4" />
                       Arquivar
                     </DropdownMenuItem>
                   )}
@@ -175,7 +178,7 @@ export function ActionCard({
                     <>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={onDelete} className="text-destructive">
-                        <Trash2 className="h-4 w-4 mr-2" />
+                        <Trash2 className="mr-2 h-4 w-4" />
                         Excluir
                       </DropdownMenuItem>
                     </>
@@ -213,8 +216,8 @@ export function DraggableCard({
   return (
     <div
       className={cn(
-        'group rounded-lg border bg-card transition-all',
-        isDragging && 'shadow-lg border-primary/50 opacity-90',
+        "group rounded-lg border bg-card transition-all",
+        isDragging && "border-primary/50 opacity-90 shadow-lg",
         className
       )}
     >
@@ -223,7 +226,7 @@ export function DraggableCard({
           role="button"
           tabIndex={0}
           aria-label="Drag handle"
-          className="flex items-center justify-center px-2 cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity border-r"
+          className="flex cursor-grab items-center justify-center border-r px-2 opacity-0 transition-opacity active:cursor-grabbing group-hover:opacity-100"
           onMouseDown={onDragStart}
           onMouseUp={onDragEnd}
         >
@@ -264,16 +267,14 @@ export function SelectionCard({
       tabIndex={disabled ? -1 : 0}
       aria-disabled={disabled}
       className={cn(
-        'rounded-lg border-2 p-4 transition-all cursor-pointer',
-        selected
-          ? 'border-primary bg-primary/5'
-          : 'border-border hover:border-primary/50',
-        disabled && 'opacity-50 cursor-not-allowed',
+        "cursor-pointer rounded-lg border-2 p-4 transition-all",
+        selected ? "border-primary bg-primary/5" : "border-border hover:border-primary/50",
+        disabled && "cursor-not-allowed opacity-50",
         className
       )}
       onClick={disabled ? undefined : onSelect}
       onKeyDown={(e) => {
-        if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
+        if (!disabled && (e.key === "Enter" || e.key === " ")) {
           e.preventDefault();
           onSelect?.();
         }
@@ -281,23 +282,28 @@ export function SelectionCard({
     >
       <div className="flex items-start gap-3">
         {Icon && (
-          <div className={cn(
-            'h-10 w-10 rounded-lg flex items-center justify-center shrink-0',
-            selected ? 'bg-primary text-primary-foreground' : 'bg-muted'
-          )}>
+          <div
+            className={cn(
+              "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
+              selected ? "bg-primary text-primary-foreground" : "bg-muted"
+            )}
+          >
             <Icon className="h-5 w-5" />
           </div>
         )}
         <div>
           <h3 className="font-medium">{title}</h3>
-          {description && (
-            <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
-          )}
+          {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
         </div>
       </div>
       {selected && (
-        <div className="absolute top-2 right-2 h-5 w-5 rounded-full bg-primary flex items-center justify-center">
-          <svg className="h-3 w-3 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary">
+          <svg
+            className="h-3 w-3 text-primary-foreground"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -318,7 +324,7 @@ interface MetricCardProps {
     label?: string;
   };
   icon?: React.ElementType;
-  trend?: 'up' | 'down' | 'neutral';
+  trend?: "up" | "down" | "neutral";
   footer?: React.ReactNode;
   className?: string;
 }
@@ -333,30 +339,28 @@ export function MetricCard({
   className,
 }: MetricCardProps) {
   const trendColors = {
-    up: 'text-green-600',
-    down: 'text-red-600',
-    neutral: 'text-muted-foreground',
+    up: "text-green-600",
+    down: "text-red-600",
+    neutral: "text-muted-foreground",
   };
 
   return (
-    <div className={cn('rounded-lg border bg-card p-4', className)}>
-      <div className="flex items-start justify-between mb-2">
+    <div className={cn("rounded-lg border bg-card p-4", className)}>
+      <div className="mb-2 flex items-start justify-between">
         <p className="text-sm text-muted-foreground">{title}</p>
         {Icon && <Icon className="h-4 w-4 text-muted-foreground" />}
       </div>
       <div className="flex items-baseline gap-2">
         <span className="text-2xl font-bold">{value}</span>
         {change && trend && (
-          <span className={cn('text-sm font-medium', trendColors[trend])}>
-            {trend === 'up' ? '+' : trend === 'down' ? '-' : ''}
+          <span className={cn("text-sm font-medium", trendColors[trend])}>
+            {trend === "up" ? "+" : trend === "down" ? "-" : ""}
             {Math.abs(change.value)}%
           </span>
         )}
       </div>
-      {change?.label && (
-        <p className="text-xs text-muted-foreground mt-1">{change.label}</p>
-      )}
-      {footer && <div className="mt-3 pt-3 border-t">{footer}</div>}
+      {change?.label && <p className="mt-1 text-xs text-muted-foreground">{change.label}</p>}
+      {footer && <div className="mt-3 border-t pt-3">{footer}</div>}
     </div>
   );
 }

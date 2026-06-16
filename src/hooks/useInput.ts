@@ -16,6 +16,6 @@ export function useInput(initialValue = "") {
     onChange,
     reset,
     clear,
-    bind: { value, onChange }
+    bind: { value, onChange },
   };
 }

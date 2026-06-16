@@ -1,26 +1,29 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { useMemo } from 'react';
-import { SecurityViolation } from '@/hooks/useSecurityViolations';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { useMemo } from "react";
+import { SecurityViolation } from "@/hooks/useSecurityViolations";
 
 interface ViolationsByTypeChartProps {
   violations: SecurityViolation[];
 }
 
 const COLORS = [
-  'hsl(0, 84%, 60%)',
-  'hsl(38, 92%, 50%)',
-  'hsl(217, 91%, 60%)',
-  'hsl(142, 76%, 36%)',
-  'hsl(262, 83%, 58%)',
-  'hsl(330, 81%, 60%)',
+  "hsl(0, 84%, 60%)",
+  "hsl(38, 92%, 50%)",
+  "hsl(217, 91%, 60%)",
+  "hsl(142, 76%, 36%)",
+  "hsl(262, 83%, 58%)",
+  "hsl(330, 81%, 60%)",
 ];
 
 export function ViolationsByTypeChart({ violations }: ViolationsByTypeChartProps) {
   const data = useMemo(() => {
-    const typeCounts = violations.reduce((acc, v) => {
-      acc[v.violation_type] = (acc[v.violation_type] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const typeCounts = violations.reduce(
+      (acc, v) => {
+        acc[v.violation_type] = (acc[v.violation_type] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return Object.entries(typeCounts)
       .map(([name, value]) => ({ name, value }))
@@ -29,7 +32,7 @@ export function ViolationsByTypeChart({ violations }: ViolationsByTypeChartProps
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-[250px] text-muted-foreground">
+      <div className="flex h-[250px] items-center justify-center text-muted-foreground">
         Nenhuma violação registrada
       </div>
     );
@@ -55,9 +58,9 @@ export function ViolationsByTypeChart({ violations }: ViolationsByTypeChartProps
         </Pie>
         <Tooltip
           contentStyle={{
-            backgroundColor: 'hsl(var(--card))',
-            border: '1px solid hsl(var(--border))',
-            borderRadius: '8px',
+            backgroundColor: "hsl(var(--card))",
+            border: "1px solid hsl(var(--border))",
+            borderRadius: "8px",
           }}
         />
       </PieChart>

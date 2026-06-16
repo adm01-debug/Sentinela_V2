@@ -10,19 +10,23 @@ interface TableState<T> {
 
 export function useTable<T>(initialData: T[], pageSize = 10) {
   const [state, setState] = useState<TableState<T>>({
-    data: initialData, sortKey: null, sortDir: "asc", page: 0, pageSize
+    data: initialData,
+    sortKey: null,
+    sortDir: "asc",
+    page: 0,
+    pageSize,
   });
 
   const sort = useCallback((key: keyof T) => {
-    setState(s => ({
+    setState((s) => ({
       ...s,
       sortKey: key,
       sortDir: s.sortKey === key && s.sortDir === "asc" ? "desc" : "asc",
-      page: 0
+      page: 0,
     }));
   }, []);
 
-  const setPage = useCallback((page: number) => setState(s => ({ ...s, page })), []);
+  const setPage = useCallback((page: number) => setState((s) => ({ ...s, page })), []);
 
   const sortedData = useMemo(() => {
     if (!state.sortKey) return state.data;

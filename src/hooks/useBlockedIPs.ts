@@ -1,8 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 export interface BlockedIP {
   id: string;
@@ -32,9 +32,9 @@ export function useBlockedIPs() {
     queryKey: queryKeys.rateLimiting.blockedIPs(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('blocked_ips')
-        .select('*')
-        .order('blocked_at', { ascending: false });
+        .from("blocked_ips")
+        .select("*")
+        .order("blocked_at", { ascending: false });
 
       if (error) throw error;
       return data as BlockedIP[];
@@ -45,23 +45,21 @@ export function useBlockedIPs() {
   const activeBlocks = useMemo(() => {
     if (!query.data) return [];
     const now = new Date();
-    return query.data.filter(b => 
-      b.is_active && (!b.expires_at || new Date(b.expires_at) > now)
-    );
+    return query.data.filter((b) => b.is_active && (!b.expires_at || new Date(b.expires_at) > now));
   }, [query.data]);
 
   const inactiveBlocks = useMemo(() => {
     if (!query.data) return [];
     const now = new Date();
-    return query.data.filter(b => 
-      !b.is_active || (b.expires_at && new Date(b.expires_at) <= now)
+    return query.data.filter(
+      (b) => !b.is_active || (b.expires_at && new Date(b.expires_at) <= now)
     );
   }, [query.data]);
 
   const blockMutation = useMutation({
     mutationFn: async (input: BlockIPInput) => {
       const { data, error } = await supabase
-        .from('blocked_ips')
+        .from("blocked_ips")
         .insert({
           ip_address: input.ip_address,
           reason: input.reason || null,
@@ -78,41 +76,45 @@ export function useBlockedIPs() {
     },
     onSuccess: () => {
       invalidateRelated.rateLimiting(queryClient);
-      toast({ title: 'IP bloqueado com sucesso' });
+      toast({ title: "IP bloqueado com sucesso" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao bloquear IP', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao bloquear IP", description: error.message, variant: "destructive" });
     },
   });
 
   const unblockMutation = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
-        .from('blocked_ips')
+        .from("blocked_ips")
         .update({ is_active: false })
-        .eq('id', id);
+        .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
       invalidateRelated.rateLimiting(queryClient);
-      toast({ title: 'IP desbloqueado' });
+      toast({ title: "IP desbloqueado" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao desbloquear IP', description: error.message, variant: 'destructive' });
+      toast({
+        title: "Erro ao desbloquear IP",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('blocked_ips').delete().eq('id', id);
+      const { error } = await supabase.from("blocked_ips").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
       invalidateRelated.rateLimiting(queryClient);
-      toast({ title: 'Registro removido' });
+      toast({ title: "Registro removido" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao remover', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao remover", description: error.message, variant: "destructive" });
     },
   });
 
@@ -138,9 +140,9 @@ export function useBlockIP() {
         : undefined;
 
       const { data, error } = await supabase
-        .from('blocked_ips')
-        .insert({ 
-          ip_address: input.ip_address, 
+        .from("blocked_ips")
+        .insert({
+          ip_address: input.ip_address,
           reason: input.reason,
           expires_at: blocked_until,
           is_active: true,
@@ -153,10 +155,10 @@ export function useBlockIP() {
     },
     onSuccess: () => {
       invalidateRelated.rateLimiting(queryClient);
-      toast({ title: 'IP bloqueado' });
+      toast({ title: "IP bloqueado" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao bloquear IP', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao bloquear IP", description: error.message, variant: "destructive" });
     },
   });
 }
@@ -167,15 +169,19 @@ export function useUnblockIP() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('blocked_ips').delete().eq('id', id);
+      const { error } = await supabase.from("blocked_ips").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
       invalidateRelated.rateLimiting(queryClient);
-      toast({ title: 'IP desbloqueado' });
+      toast({ title: "IP desbloqueado" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao desbloquear IP', description: error.message, variant: 'destructive' });
+      toast({
+        title: "Erro ao desbloquear IP",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 }

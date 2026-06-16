@@ -1,13 +1,13 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, useCallback, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface MonitoringEmployee {
   id: string;
   name: string;
   email: string;
   department: string;
-  status: 'online' | 'offline' | 'idle' | 'busy';
+  status: "online" | "offline" | "idle" | "busy";
   last_activity: string;
   current_app?: string;
   current_url?: string;
@@ -26,33 +26,33 @@ export interface ActivitySummary {
 
 export function useMonitoringPage() {
   const [selectedEmployee, setSelectedEmployee] = useState<MonitoringEmployee | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [departmentFilter, setDepartmentFilter] = useState<string>('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [departmentFilter, setDepartmentFilter] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState("");
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [refreshInterval, setRefreshInterval] = useState(30000);
 
   // Real-time employees status
   const { data: employees = [], isLoading: isLoadingEmployees } = useQuery({
-    queryKey: ['monitoring-employees'],
+    queryKey: ["monitoring-employees"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('employees')
-        .select('*')
-        .eq('status', 'active')
-        .order('name');
-      
+        .from("employees")
+        .select("*")
+        .eq("status", "active")
+        .order("name");
+
       if (error) throw error;
 
       return data.map((emp) => {
-        const status: 'online' | 'offline' | 'idle' | 'busy' = 'offline';
+        const status: "online" | "offline" | "idle" | "busy" = "offline";
 
         return {
           id: emp.id,
           name: emp.name,
-          email: emp.email || '',
-          department: emp.department || 'Sem departamento',
+          email: emp.email || "",
+          department: emp.department || "Sem departamento",
           status,
           last_activity: emp.updated_at,
           productivity_score: 0,
@@ -64,30 +64,34 @@ export function useMonitoringPage() {
 
   // Activity summary for selected employee
   const { data: activitySummary, isLoading: isLoadingSummary } = useQuery({
-    queryKey: ['employee-activity-summary', selectedEmployee?.id],
+    queryKey: ["employee-activity-summary", selectedEmployee?.id],
     queryFn: async () => {
       if (!selectedEmployee) return null;
 
-      const today = new Date().toISOString().split('T')[0];
-      
+      const today = new Date().toISOString().split("T")[0];
+
       const { data: keystrokeLogs } = await supabase
-        .from('keystroke_logs')
-        .select('*')
-        .eq('employee_name', selectedEmployee.name)
-        .gte('recorded_at', today);
+        .from("keystroke_logs")
+        .select("*")
+        .eq("employee_name", selectedEmployee.name)
+        .gte("recorded_at", today);
 
       const { data: clickLogs } = await supabase
-        .from('click_logs')
-        .select('*')
-        .eq('employee_name', selectedEmployee.name)
-        .gte('recorded_at', today);
+        .from("click_logs")
+        .select("*")
+        .eq("employee_name", selectedEmployee.name)
+        .gte("recorded_at", today);
 
       const keystrokeData = keystrokeLogs as Array<Record<string, unknown>> | null;
       const clickData = clickLogs as Array<Record<string, unknown>> | null;
-      const totalKeystrokes = keystrokeData?.reduce((sum: number, a) => sum + (Number(a.keystrokes_count) || 0), 0) || 0;
+      const totalKeystrokes =
+        keystrokeData?.reduce((sum: number, a) => sum + (Number(a.keystrokes_count) || 0), 0) || 0;
       const totalClicks = clickData?.length || 0;
-      const totalIdle = keystrokeData?.reduce((sum: number, a) => sum + (Number(a.idle_time_seconds) || 0), 0) || 0;
-      const totalActive = keystrokeData?.reduce((sum: number, a) => sum + (Number(a.active_time_seconds) || 0), 0) || 0;
+      const totalIdle =
+        keystrokeData?.reduce((sum: number, a) => sum + (Number(a.idle_time_seconds) || 0), 0) || 0;
+      const totalActive =
+        keystrokeData?.reduce((sum: number, a) => sum + (Number(a.active_time_seconds) || 0), 0) ||
+        0;
 
       return {
         total_keystrokes: totalKeystrokes,
@@ -110,28 +114,38 @@ export function useMonitoringPage() {
   // Filtered employees
   const filteredEmployees = useMemo(() => {
     return employees.filter((emp: MonitoringEmployee) => {
-      const matchesSearch = !searchTerm || 
+      const matchesSearch =
+        !searchTerm ||
         emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         emp.email.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesStatus = statusFilter === 'all' || emp.status === statusFilter;
-      const matchesDepartment = departmentFilter === 'all' || emp.department === departmentFilter;
-      
+
+      const matchesStatus = statusFilter === "all" || emp.status === statusFilter;
+      const matchesDepartment = departmentFilter === "all" || emp.department === departmentFilter;
+
       return matchesSearch && matchesStatus && matchesDepartment;
     });
   }, [employees, searchTerm, statusFilter, departmentFilter]);
 
   // Stats
-  const stats = useMemo(() => ({
-    total: employees.length,
-    online: employees.filter((e: MonitoringEmployee) => e.status === 'online').length,
-    busy: employees.filter((e: MonitoringEmployee) => e.status === 'busy').length,
-    idle: employees.filter((e: MonitoringEmployee) => e.status === 'idle').length,
-    offline: employees.filter((e: MonitoringEmployee) => e.status === 'offline').length,
-    avgProductivity: employees.length > 0
-      ? Math.round(employees.reduce((sum: number, e: MonitoringEmployee) => sum + e.productivity_score, 0) / employees.length)
-      : 0,
-  }), [employees]);
+  const stats = useMemo(
+    () => ({
+      total: employees.length,
+      online: employees.filter((e: MonitoringEmployee) => e.status === "online").length,
+      busy: employees.filter((e: MonitoringEmployee) => e.status === "busy").length,
+      idle: employees.filter((e: MonitoringEmployee) => e.status === "idle").length,
+      offline: employees.filter((e: MonitoringEmployee) => e.status === "offline").length,
+      avgProductivity:
+        employees.length > 0
+          ? Math.round(
+              employees.reduce(
+                (sum: number, e: MonitoringEmployee) => sum + e.productivity_score,
+                0
+              ) / employees.length
+            )
+          : 0,
+    }),
+    [employees]
+  );
 
   const handleSelectEmployee = useCallback((employee: MonitoringEmployee | null) => {
     setSelectedEmployee(employee);

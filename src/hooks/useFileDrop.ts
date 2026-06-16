@@ -1,10 +1,13 @@
-import { useState, useCallback, DragEvent } from 'react';
+import { useState, useCallback, DragEvent } from "react";
 
 export function useFileDrop() {
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
 
-  const onDragOver = useCallback((e: DragEvent) => { e.preventDefault(); setIsDragging(true); }, []);
+  const onDragOver = useCallback((e: DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
   const onDragLeave = useCallback(() => setIsDragging(false), []);
   const onDrop = useCallback((e: DragEvent) => {
     e.preventDefault();

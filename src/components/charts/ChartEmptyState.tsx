@@ -1,5 +1,5 @@
-import { BarChart3 } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { BarChart3 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 interface ChartEmptyStateProps {
   icon?: LucideIcon;
@@ -10,8 +10,8 @@ interface ChartEmptyStateProps {
 
 export function ChartEmptyState({
   icon: Icon = BarChart3,
-  title = 'Sem dados disponíveis',
-  description = 'Os dados aparecerão quando houver informações para exibir',
+  title = "Sem dados disponíveis",
+  description = "Os dados aparecerão quando houver informações para exibir",
   height = 250,
 }: ChartEmptyStateProps) {
   return (
@@ -19,9 +19,9 @@ export function ChartEmptyState({
       className="flex flex-col items-center justify-center text-muted-foreground"
       style={{ height }}
     >
-      <Icon className="h-10 w-10 mb-3 opacity-30" />
+      <Icon className="mb-3 h-10 w-10 opacity-30" />
       <p className="text-sm font-medium">{title}</p>
-      <p className="text-xs mt-1">{description}</p>
+      <p className="mt-1 text-xs">{description}</p>
     </div>
   );
 }

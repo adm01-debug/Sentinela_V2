@@ -1,6 +1,6 @@
-import { memo } from 'react';
-import { Users, UserCheck, UserX, Clock } from 'lucide-react';
-import { StatCard } from '@/components/StatCard';
+import { memo } from "react";
+import { Users, UserCheck, UserX, Clock } from "lucide-react";
+import { StatCard } from "@/components/StatCard";
 
 // ============================================================
 // TYPES
@@ -27,32 +27,32 @@ export const EmployeeStats = memo(function EmployeeStats({
 }: EmployeeStatsProps) {
   const stats = [
     {
-      title: 'Total de Funcionários',
+      title: "Total de Funcionários",
       value: totalEmployees,
       icon: Users,
-      description: 'Cadastrados no sistema',
-      color: 'default' as const,
+      description: "Cadastrados no sistema",
+      color: "default" as const,
     },
     {
-      title: 'Ativos',
+      title: "Ativos",
       value: activeEmployees,
       icon: UserCheck,
       description: `${Math.round((activeEmployees / totalEmployees) * 100) || 0}% do total`,
-      color: 'success' as const,
+      color: "success" as const,
     },
     {
-      title: 'Inativos',
+      title: "Inativos",
       value: inactiveEmployees,
       icon: UserX,
-      description: 'Contas desativadas',
-      color: 'warning' as const,
+      description: "Contas desativadas",
+      color: "warning" as const,
     },
     {
-      title: 'Online Agora',
+      title: "Online Agora",
       value: onlineNow,
       icon: Clock,
-      description: 'Ativos nos últimos 5 min',
-      color: 'default' as const,
+      description: "Ativos nos últimos 5 min",
+      color: "default" as const,
     },
   ];
 

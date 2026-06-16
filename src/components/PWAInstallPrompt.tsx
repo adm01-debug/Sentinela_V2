@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Download, X, Smartphone, WifiOff } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useEffect } from "react";
+import { Download, X, Smartphone, WifiOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
 export function PWAInstallPrompt() {
@@ -15,7 +15,7 @@ export function PWAInstallPrompt() {
 
   useEffect(() => {
     // Verificar se já está instalado
-    if (window.matchMedia('(display-mode: standalone)').matches) {
+    if (window.matchMedia("(display-mode: standalone)").matches) {
       setIsInstalled(true);
       return;
     }
@@ -24,23 +24,23 @@ export function PWAInstallPrompt() {
     const handler = (e: Event) => {
       e.preventDefault();
       setInstallPrompt(e as BeforeInstallPromptEvent);
-      
+
       // Mostrar prompt após 30 segundos de uso
       setTimeout(() => {
         setShowPrompt(true);
       }, 30000);
     };
 
-    window.addEventListener('beforeinstallprompt', handler);
-    
+    window.addEventListener("beforeinstallprompt", handler);
+
     // Detectar instalação
-    window.addEventListener('appinstalled', () => {
+    window.addEventListener("appinstalled", () => {
       setIsInstalled(true);
       setShowPrompt(false);
     });
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handler);
+      window.removeEventListener("beforeinstallprompt", handler);
     };
   }, []);
 
@@ -49,11 +49,11 @@ export function PWAInstallPrompt() {
 
     await installPrompt.prompt();
     const { outcome } = await installPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
+
+    if (outcome === "accepted") {
       setIsInstalled(true);
     }
-    
+
     setInstallPrompt(null);
     setShowPrompt(false);
   };
@@ -62,7 +62,7 @@ export function PWAInstallPrompt() {
 
   return (
     <div className="fixed bottom-4 right-4 z-50 animate-in slide-in-from-bottom-4">
-      <Card className="w-80 shadow-lg border-primary/20">
+      <Card className="w-80 border-primary/20 shadow-lg">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -78,12 +78,10 @@ export function PWAInstallPrompt() {
               <X className="h-4 w-4" />
             </Button>
           </div>
-          <CardDescription>
-            Instale o app para acesso rápido e offline
-          </CardDescription>
+          <CardDescription>Instale o app para acesso rápido e offline</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <ul className="text-sm text-muted-foreground space-y-1">
+          <ul className="space-y-1 text-sm text-muted-foreground">
             <li className="flex items-center gap-2">
               <Download className="h-3 w-3" /> Acesso direto da área de trabalho
             </li>
@@ -93,7 +91,7 @@ export function PWAInstallPrompt() {
           </ul>
           <div className="flex gap-2">
             <Button size="sm" onClick={handleInstall} className="flex-1">
-              <Download className="h-4 w-4 mr-2" />
+              <Download className="mr-2 h-4 w-4" />
               Instalar
             </Button>
             <Button size="sm" variant="outline" onClick={() => setShowPrompt(false)}>
@@ -114,19 +112,19 @@ export function ConnectionStatus() {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
   if (isOnline) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-destructive text-destructive-foreground px-4 py-2 text-center text-sm flex items-center justify-center gap-2">
+    <div className="fixed left-0 right-0 top-0 z-50 flex items-center justify-center gap-2 bg-destructive px-4 py-2 text-center text-sm text-destructive-foreground">
       <WifiOff className="h-4 w-4" />
       Você está offline. Algumas funcionalidades podem estar limitadas.
     </div>

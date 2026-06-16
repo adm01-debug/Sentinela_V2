@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger';
+import { logger } from "@/lib/logger";
 // Performance utilities for Sentinela v17
 
 export interface PerformanceMetrics {
@@ -13,8 +13,8 @@ export interface PerformanceMetrics {
 
 export function getPerformanceMetrics(): Partial<PerformanceMetrics> {
   const metrics: Partial<PerformanceMetrics> = {};
-  
-  if (typeof performance === 'undefined') return metrics;
+
+  if (typeof performance === "undefined") return metrics;
 
   const timing = performance.timing;
   if (timing) {
@@ -23,10 +23,10 @@ export function getPerformanceMetrics(): Partial<PerformanceMetrics> {
     metrics.loadComplete = timing.loadEventEnd - timing.navigationStart;
   }
 
-  const paintEntries = performance.getEntriesByType('paint');
+  const paintEntries = performance.getEntriesByType("paint");
   paintEntries.forEach((entry) => {
-    if (entry.name === 'first-paint') metrics.firstPaint = entry.startTime;
-    if (entry.name === 'first-contentful-paint') metrics.firstContentfulPaint = entry.startTime;
+    if (entry.name === "first-paint") metrics.firstPaint = entry.startTime;
+    if (entry.name === "first-contentful-paint") metrics.firstContentfulPaint = entry.startTime;
   });
 
   return metrics;
@@ -63,16 +63,16 @@ export class PerformanceTracker {
   measure(name: string, startMark: string, endMark?: string): number {
     const start = this.marks.get(startMark);
     const end = endMark ? this.marks.get(endMark) : performance.now();
-    
+
     if (start === undefined) return 0;
-    
+
     const duration = (end ?? performance.now()) - start;
-    
+
     if (!this.measures.has(name)) {
       this.measures.set(name, []);
     }
     this.measures.get(name)!.push(duration);
-    
+
     return duration;
   }
 
@@ -122,11 +122,11 @@ export function throttle<T extends (...args: never[]) => unknown>(
 ): (...args: Parameters<T>) => void {
   let lastCall = 0;
   let timeoutId: NodeJS.Timeout | null = null;
-  
+
   return (...args: Parameters<T>) => {
     const now = Date.now();
     const remaining = limit - (now - lastCall);
-    
+
     if (remaining <= 0) {
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -158,7 +158,7 @@ export function rafThrottle<T extends (...args: never[]) => unknown>(
 }
 
 export function idleCallback(callback: () => void, timeout = 1000): void {
-  if ('requestIdleCallback' in window) {
+  if ("requestIdleCallback" in window) {
     requestIdleCallback(callback, { timeout });
   } else {
     setTimeout(callback, 1);

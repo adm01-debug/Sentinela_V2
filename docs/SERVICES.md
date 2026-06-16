@@ -1,9 +1,11 @@
 # API Services
 
 ## Overview
+
 Service layer for API calls.
 
 ## Available Services
+
 - `authService` - Authentication
 - `employeeService` - Employee CRUD
 - `violationService` - Violations

@@ -1,15 +1,8 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Users,
-  Activity,
-  Shield,
-  ArrowUpRight,
-  ArrowDownRight,
-  Zap
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Card } from '@/components/ui/card';
+import React from "react";
+import { motion } from "framer-motion";
+import { Users, Activity, Shield, ArrowUpRight, ArrowDownRight, Zap } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
 
 interface MetricCardProps {
   title: string;
@@ -17,41 +10,41 @@ interface MetricCardProps {
   change?: number;
   changeLabel?: string;
   icon: React.ElementType;
-  color: 'primary' | 'success' | 'warning' | 'destructive' | 'info';
+  color: "primary" | "success" | "warning" | "destructive" | "info";
   sparklineData?: number[];
   delay?: number;
 }
 
 const colorVariants = {
   primary: {
-    bg: 'bg-primary/10',
-    icon: 'text-primary',
-    glow: 'shadow-primary/20',
-    trend: 'text-primary',
+    bg: "bg-primary/10",
+    icon: "text-primary",
+    glow: "shadow-primary/20",
+    trend: "text-primary",
   },
   success: {
-    bg: 'bg-success/10',
-    icon: 'text-success',
-    glow: 'shadow-success/20',
-    trend: 'text-success',
+    bg: "bg-success/10",
+    icon: "text-success",
+    glow: "shadow-success/20",
+    trend: "text-success",
   },
   warning: {
-    bg: 'bg-warning/10',
-    icon: 'text-warning',
-    glow: 'shadow-warning/20',
-    trend: 'text-warning',
+    bg: "bg-warning/10",
+    icon: "text-warning",
+    glow: "shadow-warning/20",
+    trend: "text-warning",
   },
   destructive: {
-    bg: 'bg-destructive/10',
-    icon: 'text-destructive',
-    glow: 'shadow-destructive/20',
-    trend: 'text-destructive',
+    bg: "bg-destructive/10",
+    icon: "text-destructive",
+    glow: "shadow-destructive/20",
+    trend: "text-destructive",
   },
   info: {
-    bg: 'bg-info/10',
-    icon: 'text-info',
-    glow: 'shadow-info/20',
-    trend: 'text-info',
+    bg: "bg-info/10",
+    icon: "text-info",
+    glow: "shadow-info/20",
+    trend: "text-info",
   },
 };
 
@@ -66,11 +59,9 @@ const Sparkline = ({ data, color }: { data: number[]; color: string }) => {
     x: (i / (data.length - 1)) * width,
     y: height - ((val - min) / range) * height,
   }));
-  
-  const pathD = points
-    .map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`)
-    .join(' ');
-  
+
+  const pathD = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+
   return (
     <svg width={width} height={height} className="overflow-visible">
       <defs>
@@ -80,10 +71,7 @@ const Sparkline = ({ data, color }: { data: number[]; color: string }) => {
         </linearGradient>
       </defs>
       {/* Area fill */}
-      <path
-        d={`${pathD} L ${width} ${height} L 0 ${height} Z`}
-        fill={`url(#gradient-${color})`}
-      />
+      <path d={`${pathD} L ${width} ${height} L 0 ${height} Z`} fill={`url(#gradient-${color})`} />
       {/* Line */}
       <motion.path
         d={pathD}
@@ -109,53 +97,52 @@ const Sparkline = ({ data, color }: { data: number[]; color: string }) => {
   );
 };
 
-const HeroMetricCard = ({ 
-  title, 
-  value, 
-  change, 
+const HeroMetricCard = ({
+  title,
+  value,
+  change,
   changeLabel,
-  icon: Icon, 
+  icon: Icon,
   color,
   sparklineData,
-  delay = 0 
+  delay = 0,
 }: MetricCardProps) => {
   const colors = colorVariants[color];
   const isPositive = change !== undefined && change >= 0;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
     >
-      <Card className={cn(
-        'relative overflow-hidden p-6 hover:shadow-lg transition-all duration-300',
-        'border-0 bg-card/80 backdrop-blur-sm'
-      )}>
+      <Card
+        className={cn(
+          "relative overflow-hidden p-6 transition-all duration-300 hover:shadow-lg",
+          "border-0 bg-card/80 backdrop-blur-sm"
+        )}
+      >
         {/* Glow effect */}
-        <div className={cn(
-          'absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-20',
-          colors.bg
-        )} />
-        
+        <div
+          className={cn(
+            "absolute -right-20 -top-20 h-40 w-40 rounded-full opacity-20 blur-3xl",
+            colors.bg
+          )}
+        />
+
         <div className="relative z-10">
           {/* Header */}
-          <div className="flex items-start justify-between mb-4">
-            <div className={cn(
-              'p-3 rounded-xl',
-              colors.bg
-            )}>
-              <Icon className={cn('h-5 w-5', colors.icon)} />
+          <div className="mb-4 flex items-start justify-between">
+            <div className={cn("rounded-xl p-3", colors.bg)}>
+              <Icon className={cn("h-5 w-5", colors.icon)} />
             </div>
-            
-            {sparklineData && (
-              <Sparkline data={sparklineData} color={color} />
-            )}
+
+            {sparklineData && <Sparkline data={sparklineData} color={color} />}
           </div>
-          
+
           {/* Value */}
           <div className="space-y-1">
-            <motion.p 
+            <motion.p
               className="text-3xl font-bold tracking-tight"
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -163,21 +150,23 @@ const HeroMetricCard = ({
             >
               {value}
             </motion.p>
-            <p className="text-sm text-muted-foreground font-medium">{title}</p>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
           </div>
-          
+
           {/* Change indicator */}
           {change !== undefined && (
-            <motion.div 
-              className="flex items-center gap-1.5 mt-3"
+            <motion.div
+              className="mt-3 flex items-center gap-1.5"
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: delay + 0.4 }}
             >
-              <div className={cn(
-                'flex items-center gap-0.5 text-xs font-medium px-2 py-1 rounded-full',
-                isPositive ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive'
-              )}>
+              <div
+                className={cn(
+                  "flex items-center gap-0.5 rounded-full px-2 py-1 text-xs font-medium",
+                  isPositive ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
+                )}
+              >
                 {isPositive ? (
                   <ArrowUpRight className="h-3 w-3" />
                 ) : (
@@ -185,9 +174,7 @@ const HeroMetricCard = ({
                 )}
                 {Math.abs(change)}%
               </div>
-              {changeLabel && (
-                <span className="text-xs text-muted-foreground">{changeLabel}</span>
-              )}
+              {changeLabel && <span className="text-xs text-muted-foreground">{changeLabel}</span>}
             </motion.div>
           )}
         </div>
@@ -218,11 +205,11 @@ export const HeroMetrics = ({
   productivityChange,
 }: HeroMetricsProps) => {
   // Generate sample sparkline data
-  const generateSparkline = (trend: 'up' | 'down' | 'stable') => {
+  const generateSparkline = (trend: "up" | "down" | "stable") => {
     const base = Array.from({ length: 7 }, () => Math.random() * 20 + 40);
-    if (trend === 'up') {
+    if (trend === "up") {
       return base.map((v, i) => v + i * 5);
-    } else if (trend === 'down') {
+    } else if (trend === "down") {
       return base.map((v, i) => v - i * 3);
     }
     return base;
@@ -232,37 +219,37 @@ export const HeroMetrics = ({
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <HeroMetricCard
         title="Total de Funcionários"
-        value={totalEmployees.toLocaleString('pt-BR')}
+        value={totalEmployees.toLocaleString("pt-BR")}
         change={employeeChange}
         changeLabel="vs. mês anterior"
         icon={Users}
         color="primary"
-        sparklineData={generateSparkline('up')}
+        sparklineData={generateSparkline("up")}
         delay={0}
       />
-      
+
       <HeroMetricCard
         title="Ativos Agora"
-        value={activeNow.toLocaleString('pt-BR')}
+        value={activeNow.toLocaleString("pt-BR")}
         change={activeChange}
         changeLabel="última hora"
         icon={Activity}
         color="success"
-        sparklineData={generateSparkline('stable')}
+        sparklineData={generateSparkline("stable")}
         delay={0.1}
       />
-      
+
       <HeroMetricCard
         title="Violações Hoje"
         value={violationsToday.toString()}
         change={violationsChange}
         changeLabel="vs. ontem"
         icon={Shield}
-        color={violationsToday > 10 ? 'destructive' : 'warning'}
-        sparklineData={generateSparkline('down')}
+        color={violationsToday > 10 ? "destructive" : "warning"}
+        sparklineData={generateSparkline("down")}
         delay={0.2}
       />
-      
+
       <HeroMetricCard
         title="Produtividade"
         value={`${productivity}%`}
@@ -270,7 +257,7 @@ export const HeroMetrics = ({
         changeLabel="média semanal"
         icon={Zap}
         color="info"
-        sparklineData={generateSparkline('up')}
+        sparklineData={generateSparkline("up")}
         delay={0.3}
       />
     </div>

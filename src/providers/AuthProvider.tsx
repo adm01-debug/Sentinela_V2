@@ -1,7 +1,14 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import type { Session as SupaSession, User as SupaUser } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from "react";
+import type { Session as SupaSession, User as SupaUser } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 // ============================================================
 // TYPES
@@ -44,10 +51,13 @@ function mapSupabaseUser(supaUser: SupaUser | undefined | null): User | null {
   if (!supaUser) return null;
   return {
     id: supaUser.id,
-    email: supaUser.email || '',
-    name: supaUser.user_metadata?.full_name || supaUser.user_metadata?.name || supaUser.email?.split('@')[0],
+    email: supaUser.email || "",
+    name:
+      supaUser.user_metadata?.full_name ||
+      supaUser.user_metadata?.name ||
+      supaUser.email?.split("@")[0],
     avatar: supaUser.user_metadata?.avatar_url,
-    role: supaUser.user_metadata?.role || 'user',
+    role: supaUser.user_metadata?.role || "user",
     isAdmin: false,
     createdAt: supaUser.created_at,
   };
@@ -56,22 +66,22 @@ function mapSupabaseUser(supaUser: SupaUser | undefined | null): User | null {
 async function checkAdminRole(userId: string): Promise<boolean> {
   try {
     const { data, error } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId)
-      .eq('role', 'admin')
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
       .maybeSingle();
-    
+
     if (error) {
       // Ignorar erro de "não encontrado" (PGRST116)
-      if (error.code !== 'PGRST116') { 
-         logger.warn(`[AuthProvider] Role check warning for ${userId}:`, error.message);
+      if (error.code !== "PGRST116") {
+        logger.warn(`[AuthProvider] Role check warning for ${userId}:`, error.message);
       }
       return false;
     }
     return !!data;
   } catch (err) {
-    logger.error('[AuthProvider] Failed to check admin role:', err);
+    logger.error("[AuthProvider] Failed to check admin role:", err);
     return false;
   }
 }
@@ -96,7 +106,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (mapped) {
       const isAdmin = await checkAdminRole(mapped.id);
       mapped.isAdmin = isAdmin;
-      mapped.role = isAdmin ? 'admin' : (mapped.role === 'admin' ? 'user' : mapped.role || 'user');
+      mapped.role = isAdmin ? "admin" : mapped.role === "admin" ? "user" : mapped.role || "user";
     }
     setUser(mapped);
   }, []);
@@ -109,7 +119,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         const { data, error } = await supabase.auth.getSession();
         if (error) throw error;
-        
+
         if (mounted) {
           setSession(data.session);
           if (data.session?.user) {
@@ -117,7 +127,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         }
       } catch (err) {
-        logger.error('[AuthProvider] Initial session error:', err);
+        logger.error("[AuthProvider] Initial session error:", err);
       } finally {
         if (mounted) setIsLoading(false);
       }
@@ -126,9 +136,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     initSession();
 
     // Listen for changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, newSession) => {
       logger.info(`[AuthProvider] Auth event: ${event}`);
-      
+
       if (mounted) {
         setSession(newSession);
         if (newSession?.user) {
@@ -159,7 +171,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await supabase.auth.signOut();
     } catch (err) {
-      logger.error('[AuthProvider] Logout error:', err);
+      logger.error("[AuthProvider] Logout error:", err);
     } finally {
       setUser(null);
       setSession(null);
@@ -173,7 +185,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(data.session);
       await resolveUser(data.session?.user);
     } catch (err) {
-      logger.error('[AuthProvider] Session refresh error:', err);
+      logger.error("[AuthProvider] Session refresh error:", err);
     }
   }, [resolveUser]);
 
@@ -198,7 +210,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

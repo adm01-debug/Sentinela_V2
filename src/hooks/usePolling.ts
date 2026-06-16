@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
-export function usePolling<T>(
-  fetchFn: () => Promise<T>,
-  interval: number,
-  enabled = true
-) {
+export function usePolling<T>(fetchFn: () => Promise<T>, interval: number, enabled = true) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
@@ -25,10 +21,10 @@ export function usePolling<T>(
 
   useEffect(() => {
     if (!enabled) return;
-    
+
     poll();
     timerRef.current = setInterval(poll, interval);
-    
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };

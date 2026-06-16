@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef } from "react";
 
 export interface UseVirtualScrollOptions<T> {
   items: T[];
@@ -20,7 +20,12 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     const virtualItems = items.slice(startIndex, endIndex).map((item, i) => ({
       item,
       index: startIndex + i,
-      style: { position: 'absolute' as const, top: (startIndex + i) * itemHeight, height: itemHeight, width: '100%' }
+      style: {
+        position: "absolute" as const,
+        top: (startIndex + i) * itemHeight,
+        height: itemHeight,
+        width: "100%",
+      },
     }));
     return { startIndex, endIndex, virtualItems, totalHeight };
   }, [items, itemHeight, containerHeight, scrollTop, overscan]);
@@ -29,11 +34,22 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     setScrollTop(e.currentTarget.scrollTop);
   }, []);
 
-  const scrollToIndex = useCallback((index: number, behavior: ScrollBehavior = 'auto') => {
-    containerRef.current?.scrollTo({ top: index * itemHeight, behavior });
-  }, [itemHeight]);
+  const scrollToIndex = useCallback(
+    (index: number, behavior: ScrollBehavior = "auto") => {
+      containerRef.current?.scrollTo({ top: index * itemHeight, behavior });
+    },
+    [itemHeight]
+  );
 
-  return { containerRef, virtualItems, totalHeight, handleScroll, scrollToIndex, startIndex, endIndex };
+  return {
+    containerRef,
+    virtualItems,
+    totalHeight,
+    handleScroll,
+    scrollToIndex,
+    startIndex,
+    endIndex,
+  };
 }
 
 export default useVirtualScroll;

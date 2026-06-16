@@ -1,13 +1,13 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect } from "react";
 
-export type SoundType = 'notification' | 'success' | 'error' | 'warning' | 'message';
+export type SoundType = "notification" | "success" | "error" | "warning" | "message";
 
 const DEFAULT_SOUNDS: Record<SoundType, string> = {
-  notification: '/sounds/notification.mp3',
-  success: '/sounds/success.mp3',
-  error: '/sounds/error.mp3',
-  warning: '/sounds/warning.mp3',
-  message: '/sounds/message.mp3',
+  notification: "/sounds/notification.mp3",
+  success: "/sounds/success.mp3",
+  error: "/sounds/error.mp3",
+  warning: "/sounds/warning.mp3",
+  message: "/sounds/message.mp3",
 };
 
 export interface UseSoundAlertsOptions {
@@ -28,34 +28,56 @@ export function useSoundAlerts(options: UseSoundAlertsOptions = {}) {
     const refs = audioRefs.current;
     Object.entries(allSounds).forEach(([type, src]) => {
       const audio = new Audio(src);
-      audio.preload = 'auto';
+      audio.preload = "auto";
       audio.volume = volume;
       refs.set(type as SoundType, audio);
     });
-    return () => { refs.forEach(audio => { audio.pause(); audio.src = ''; }); refs.clear(); };
+    return () => {
+      refs.forEach((audio) => {
+        audio.pause();
+        audio.src = "";
+      });
+      refs.clear();
+    };
     // Initialize audio elements once on mount; allSounds/volume changes are handled
     // by the volume effect below, re-running here would recreate all Audio objects.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    audioRefs.current.forEach(audio => { audio.volume = volume; });
+    audioRefs.current.forEach((audio) => {
+      audio.volume = volume;
+    });
   }, [volume]);
 
-  const play = useCallback((type: SoundType) => {
-    if (!enabled) return;
-    const audio = audioRefs.current.get(type);
-    if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
-  }, [enabled]);
+  const play = useCallback(
+    (type: SoundType) => {
+      if (!enabled) return;
+      const audio = audioRefs.current.get(type);
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      }
+    },
+    [enabled]
+  );
 
   const stop = useCallback((type: SoundType) => {
     const audio = audioRefs.current.get(type);
-    if (audio) { audio.pause(); audio.currentTime = 0; }
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
   }, []);
 
-  const stopAll = useCallback(() => { audioRefs.current.forEach(audio => { audio.pause(); audio.currentTime = 0; }); }, []);
+  const stopAll = useCallback(() => {
+    audioRefs.current.forEach((audio) => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
+  }, []);
 
-  const toggle = useCallback(() => setEnabled(prev => !prev), []);
+  const toggle = useCallback(() => setEnabled((prev) => !prev), []);
 
   return { enabled, volume, setEnabled, setVolume, toggle, play, stop, stopAll };
 }

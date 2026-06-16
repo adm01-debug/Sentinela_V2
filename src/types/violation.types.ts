@@ -3,17 +3,23 @@
  * Core type definitions for violation-related entities
  */
 
-export type ViolationSeverity = 'low' | 'medium' | 'high' | 'critical';
-export type ViolationStatus = 'open' | 'acknowledged' | 'investigating' | 'resolved' | 'dismissed' | 'false_positive';
-export type ViolationCategory = 
-  | 'security'
-  | 'productivity'
-  | 'policy'
-  | 'compliance'
-  | 'geofence'
-  | 'time'
-  | 'data'
-  | 'behavior';
+export type ViolationSeverity = "low" | "medium" | "high" | "critical";
+export type ViolationStatus =
+  | "open"
+  | "acknowledged"
+  | "investigating"
+  | "resolved"
+  | "dismissed"
+  | "false_positive";
+export type ViolationCategory =
+  | "security"
+  | "productivity"
+  | "policy"
+  | "compliance"
+  | "geofence"
+  | "time"
+  | "data"
+  | "behavior";
 
 export interface Violation {
   id: string;
@@ -47,7 +53,7 @@ export interface ViolationDetails {
 }
 
 export interface ViolationEvidence {
-  type: 'screenshot' | 'log' | 'activity' | 'location' | 'file';
+  type: "screenshot" | "log" | "activity" | "location" | "file";
   url?: string;
   data?: unknown;
   timestamp: string;
@@ -81,31 +87,31 @@ export interface ViolationCondition {
   metadata?: unknown;
 }
 
-export type ConditionType = 
-  | 'application'
-  | 'website'
-  | 'keyword'
-  | 'time'
-  | 'duration'
-  | 'location'
-  | 'productivity'
-  | 'pattern'
-  | 'file'
-  | 'custom';
+export type ConditionType =
+  | "application"
+  | "website"
+  | "keyword"
+  | "time"
+  | "duration"
+  | "location"
+  | "productivity"
+  | "pattern"
+  | "file"
+  | "custom";
 
-export type ConditionOperator = 
-  | 'equals'
-  | 'not_equals'
-  | 'contains'
-  | 'not_contains'
-  | 'starts_with'
-  | 'ends_with'
-  | 'matches_regex'
-  | 'greater_than'
-  | 'less_than'
-  | 'between'
-  | 'in_list'
-  | 'not_in_list';
+export type ConditionOperator =
+  | "equals"
+  | "not_equals"
+  | "contains"
+  | "not_contains"
+  | "starts_with"
+  | "ends_with"
+  | "matches_regex"
+  | "greater_than"
+  | "less_than"
+  | "between"
+  | "in_list"
+  | "not_in_list";
 
 export interface ViolationAction {
   type: ActionType;
@@ -113,17 +119,17 @@ export interface ViolationAction {
   delay_minutes?: number;
 }
 
-export type ActionType = 
-  | 'notify_manager'
-  | 'notify_admin'
-  | 'send_email'
-  | 'send_slack'
-  | 'send_webhook'
-  | 'block_access'
-  | 'log_only'
-  | 'escalate'
-  | 'take_screenshot'
-  | 'custom';
+export type ActionType =
+  | "notify_manager"
+  | "notify_admin"
+  | "send_email"
+  | "send_slack"
+  | "send_webhook"
+  | "block_access"
+  | "log_only"
+  | "escalate"
+  | "take_screenshot"
+  | "custom";
 
 export interface RuleSchedule {
   enabled: boolean;
@@ -164,16 +170,16 @@ export interface ViolationHistory {
   created_at: string;
 }
 
-export type ViolationHistoryAction = 
-  | 'created'
-  | 'status_changed'
-  | 'severity_changed'
-  | 'assigned'
-  | 'escalated'
-  | 'comment_added'
-  | 'evidence_added'
-  | 'resolved'
-  | 'reopened';
+export type ViolationHistoryAction =
+  | "created"
+  | "status_changed"
+  | "severity_changed"
+  | "assigned"
+  | "escalated"
+  | "comment_added"
+  | "evidence_added"
+  | "resolved"
+  | "reopened";
 
 // Filter and query types
 export interface ViolationFilters {
@@ -189,8 +195,8 @@ export interface ViolationFilters {
 }
 
 export interface ViolationSort {
-  field: 'detected_at' | 'severity' | 'status' | 'category';
-  direction: 'asc' | 'desc';
+  field: "detected_at" | "severity" | "status" | "category";
+  direction: "asc" | "desc";
 }
 
 export interface ViolationQueryOptions {
@@ -200,7 +206,7 @@ export interface ViolationQueryOptions {
     page: number;
     limit: number;
   };
-  include?: ('employee' | 'rule' | 'comments' | 'history')[];
+  include?: ("employee" | "rule" | "comments" | "history")[];
 }
 
 // Statistics types

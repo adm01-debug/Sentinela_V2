@@ -23,21 +23,21 @@ export interface Application {
   updatedAt: string;
 }
 
-export type ApplicationCategory = 
-  | 'productivity'
-  | 'communication'
-  | 'development'
-  | 'design'
-  | 'entertainment'
-  | 'social'
-  | 'utilities'
-  | 'browser'
-  | 'office'
-  | 'finance'
-  | 'education'
-  | 'other';
+export type ApplicationCategory =
+  | "productivity"
+  | "communication"
+  | "development"
+  | "design"
+  | "entertainment"
+  | "social"
+  | "utilities"
+  | "browser"
+  | "office"
+  | "finance"
+  | "education"
+  | "other";
 
-export type ProductivityType = 'productive' | 'neutral' | 'unproductive' | 'custom';
+export type ProductivityType = "productive" | "neutral" | "unproductive" | "custom";
 
 export interface ApplicationSettings {
   trackTime: boolean;
@@ -107,15 +107,15 @@ export interface ApplicationRule {
   id: string;
   name: string;
   applicationIds: string[];
-  action: 'allow' | 'block' | 'alert' | 'limit';
+  action: "allow" | "block" | "alert" | "limit";
   conditions?: ApplicationCondition[];
   schedule?: RuleSchedule;
   isActive: boolean;
 }
 
 export interface ApplicationCondition {
-  type: 'time' | 'duration' | 'user' | 'team' | 'department';
-  operator: 'eq' | 'ne' | 'gt' | 'lt' | 'in';
+  type: "time" | "duration" | "user" | "team" | "department";
+  operator: "eq" | "ne" | "gt" | "lt" | "in";
   value: unknown;
 }
 

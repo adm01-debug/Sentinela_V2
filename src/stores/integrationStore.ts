@@ -1,7 +1,7 @@
 // Integration Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { Integration, IntegrationFilters, IntegrationStats, IntegrationEvent } from '@/types';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { Integration, IntegrationFilters, IntegrationStats, IntegrationEvent } from "@/types";
 
 interface IntegrationState {
   integrations: Integration[];
@@ -51,9 +51,7 @@ export const useIntegrationStore = create<IntegrationState>()(
 
       updateIntegration: (id, data) =>
         set((state) => ({
-          integrations: state.integrations.map((i) =>
-            i.id === id ? { ...i, ...data } : i
-          ),
+          integrations: state.integrations.map((i) => (i.id === id ? { ...i, ...data } : i)),
         })),
 
       removeIntegration: (id) =>
@@ -70,8 +68,7 @@ export const useIntegrationStore = create<IntegrationState>()(
           events: [event, ...state.events].slice(0, 100),
         })),
 
-      setFilters: (filters) =>
-        set((state) => ({ filters: { ...state.filters, ...filters } })),
+      setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters } })),
 
       clearFilters: () => set({ filters: {} }),
 
@@ -83,13 +80,13 @@ export const useIntegrationStore = create<IntegrationState>()(
 
       reset: () => set(initialState),
     }),
-    { name: 'IntegrationStore' }
+    { name: "IntegrationStore" }
   )
 );
 
 // Selectors
 export const selectActiveIntegrations = (state: IntegrationState) =>
-  state.integrations.filter((i) => i.isActive && i.status === 'connected');
+  state.integrations.filter((i) => i.isActive && i.status === "connected");
 
 export const selectIntegrationsByType = (type) => (state: IntegrationState) =>
   state.integrations.filter((i) => i.type === type);

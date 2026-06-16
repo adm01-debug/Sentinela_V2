@@ -7,7 +7,9 @@ export function useMounted() {
   useEffect(() => {
     mountedRef.current = true;
     setMounted(true);
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const isMounted = useCallback(() => mountedRef.current, []);

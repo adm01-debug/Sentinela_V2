@@ -9,7 +9,10 @@ interface PointerState {
 
 export function usePointer() {
   const [state, setState] = useState<PointerState>({
-    x: 0, y: 0, pressure: 0, pointerType: "mouse"
+    x: 0,
+    y: 0,
+    pressure: 0,
+    pointerType: "mouse",
   });
 
   useEffect(() => {
@@ -18,7 +21,7 @@ export function usePointer() {
         x: e.clientX,
         y: e.clientY,
         pressure: e.pressure,
-        pointerType: e.pointerType
+        pointerType: e.pointerType,
       });
     };
 

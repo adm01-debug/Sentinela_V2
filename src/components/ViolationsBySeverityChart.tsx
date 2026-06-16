@@ -1,28 +1,40 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { useMemo } from 'react';
-import { SecurityViolation } from '@/hooks/useSecurityViolations';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
+import { useMemo } from "react";
+import { SecurityViolation } from "@/hooks/useSecurityViolations";
 
 interface ViolationsBySeverityChartProps {
   violations: SecurityViolation[];
 }
 
 const SEVERITY_COLORS: Record<string, string> = {
-  critical: 'hsl(0, 84%, 60%)',
-  high: 'hsl(25, 95%, 53%)',
-  medium: 'hsl(38, 92%, 50%)',
-  low: 'hsl(142, 76%, 36%)',
+  critical: "hsl(0, 84%, 60%)",
+  high: "hsl(25, 95%, 53%)",
+  medium: "hsl(38, 92%, 50%)",
+  low: "hsl(142, 76%, 36%)",
 };
 
-const SEVERITY_ORDER = ['critical', 'high', 'medium', 'low'];
+const SEVERITY_ORDER = ["critical", "high", "medium", "low"];
 
 export function ViolationsBySeverityChart({ violations }: ViolationsBySeverityChartProps) {
   const data = useMemo(() => {
-    const severityCounts = violations.reduce((acc, v) => {
-      acc[v.severity] = (acc[v.severity] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const severityCounts = violations.reduce(
+      (acc, v) => {
+        acc[v.severity] = (acc[v.severity] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
-    return SEVERITY_ORDER.map(severity => ({
+    return SEVERITY_ORDER.map((severity) => ({
       severity: severity.charAt(0).toUpperCase() + severity.slice(1),
       count: severityCounts[severity] || 0,
       color: SEVERITY_COLORS[severity],
@@ -38,13 +50,13 @@ export function ViolationsBySeverityChart({ violations }: ViolationsBySeverityCh
           type="category"
           dataKey="severity"
           stroke="hsl(var(--muted-foreground))"
-          tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+          tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
         />
         <Tooltip
           contentStyle={{
-            backgroundColor: 'hsl(var(--card))',
-            border: '1px solid hsl(var(--border))',
-            borderRadius: '8px',
+            backgroundColor: "hsl(var(--card))",
+            border: "1px solid hsl(var(--border))",
+            borderRadius: "8px",
           }}
         />
         <Bar dataKey="count" radius={[0, 4, 4, 0]}>

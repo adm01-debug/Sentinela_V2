@@ -2,41 +2,40 @@
 // ERROR TRACKER TESTS
 // ============================================================
 
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi } from "vitest";
 
 // Mock supabase before importing
-vi.mock('@/integrations/supabase/client', () => ({
+vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: vi.fn(() => ({
       insert: vi.fn().mockResolvedValue({ error: null }),
     })),
   },
-  
 }));
 
-import { captureError } from '@/lib/errorTracker';
+import { captureError } from "@/lib/errorTracker";
 
-describe('captureError', () => {
-  it('captures error without throwing', () => {
+describe("captureError", () => {
+  it("captures error without throwing", () => {
     expect(() => {
-      captureError(new Error('test error'), { component: 'TestComponent' });
+      captureError(new Error("test error"), { component: "TestComponent" });
     }).not.toThrow();
   });
 
-  it('accepts severity levels', () => {
+  it("accepts severity levels", () => {
     expect(() => {
-      captureError(new Error('critical'), { severity: 'critical' });
-      captureError(new Error('high'), { severity: 'high' });
-      captureError(new Error('medium'), { severity: 'medium' });
-      captureError(new Error('low'), { severity: 'low' });
+      captureError(new Error("critical"), { severity: "critical" });
+      captureError(new Error("high"), { severity: "high" });
+      captureError(new Error("medium"), { severity: "medium" });
+      captureError(new Error("low"), { severity: "low" });
     }).not.toThrow();
   });
 
-  it('accepts context metadata', () => {
+  it("accepts context metadata", () => {
     expect(() => {
-      captureError(new Error('with context'), {
-        component: 'Dashboard',
-        context: { userId: '123', action: 'load' },
+      captureError(new Error("with context"), {
+        component: "Dashboard",
+        context: { userId: "123", action: "load" },
       });
     }).not.toThrow();
   });

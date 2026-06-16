@@ -29,14 +29,14 @@ export interface TeamMember {
   isActive: boolean;
 }
 
-export type TeamRole = 'leader' | 'manager' | 'member' | 'viewer';
+export type TeamRole = "leader" | "manager" | "member" | "viewer";
 
 export interface TeamSettings {
   allowSelfJoin: boolean;
   requireApproval: boolean;
   maxMembers?: number;
   defaultRole: TeamRole;
-  visibility: 'public' | 'private' | 'hidden';
+  visibility: "public" | "private" | "hidden";
   notifications: TeamNotificationSettings;
 }
 

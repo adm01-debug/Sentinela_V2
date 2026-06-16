@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { Loader2, Lock, Smartphone, AlertTriangle } from 'lucide-react';
+import { useState } from "react";
+import { Loader2, Lock, Smartphone, AlertTriangle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useMFA } from '@/hooks/useMFA';
-import { SensitiveAction } from '@/hooks/useReauthentication';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useMFA } from "@/hooks/useMFA";
+import { SensitiveAction } from "@/hooks/useReauthentication";
 
 interface ReauthDialogProps {
   open: boolean;
@@ -26,13 +26,13 @@ interface ReauthDialogProps {
 }
 
 const ACTION_LABELS: Record<SensitiveAction, string> = {
-  change_password: 'Alterar Senha',
-  change_email: 'Alterar Email',
-  configure_mfa: 'Configurar MFA',
-  disable_mfa: 'Desativar MFA',
-  admin_action: 'Ação Administrativa',
-  delete_account: 'Excluir Conta',
-  update_security_settings: 'Atualizar Configurações de Segurança',
+  change_password: "Alterar Senha",
+  change_email: "Alterar Email",
+  configure_mfa: "Configurar MFA",
+  disable_mfa: "Desativar MFA",
+  admin_action: "Ação Administrativa",
+  delete_account: "Excluir Conta",
+  update_security_settings: "Atualizar Configurações de Segurança",
 };
 
 export function ReauthDialog({
@@ -45,15 +45,15 @@ export function ReauthDialog({
   error,
 }: ReauthDialogProps) {
   const { isEnrolled } = useMFA();
-  const [password, setPassword] = useState('');
-  const [mfaCode, setMfaCode] = useState('');
-  const [activeTab, setActiveTab] = useState<'password' | 'mfa'>('password');
+  const [password, setPassword] = useState("");
+  const [mfaCode, setMfaCode] = useState("");
+  const [activeTab, setActiveTab] = useState<"password" | "mfa">("password");
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const success = await onVerifyPassword(password);
     if (success) {
-      setPassword('');
+      setPassword("");
       onOpenChange(false);
     }
   };
@@ -62,14 +62,14 @@ export function ReauthDialog({
     e.preventDefault();
     const success = await onVerifyMFA(mfaCode);
     if (success) {
-      setMfaCode('');
+      setMfaCode("");
       onOpenChange(false);
     }
   };
 
   const handleClose = () => {
-    setPassword('');
-    setMfaCode('');
+    setPassword("");
+    setMfaCode("");
     onOpenChange(false);
   };
 
@@ -97,7 +97,7 @@ export function ReauthDialog({
           </Alert>
         )}
 
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'password' | 'mfa')}>
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "password" | "mfa")}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="password" className="flex items-center gap-2">
               <Lock className="h-4 w-4" />
@@ -132,14 +132,8 @@ export function ReauthDialog({
                 >
                   Cancelar
                 </Button>
-                <Button
-                  type="submit"
-                  className="flex-1"
-                  disabled={!password || isVerifying}
-                >
-                  {isVerifying ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  ) : null}
+                <Button type="submit" className="flex-1" disabled={!password || isVerifying}>
+                  {isVerifying ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                   Verificar
                 </Button>
               </div>
@@ -157,9 +151,9 @@ export function ReauthDialog({
                   pattern="[0-9]*"
                   maxLength={6}
                   value={mfaCode}
-                  onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, ''))}
+                  onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, ""))}
                   placeholder="000000"
-                  className="text-center text-xl tracking-widest font-mono"
+                  className="text-center font-mono text-xl tracking-widest"
                   disabled={isVerifying}
                 />
                 <p className="text-xs text-muted-foreground">
@@ -181,9 +175,7 @@ export function ReauthDialog({
                   className="flex-1"
                   disabled={mfaCode.length !== 6 || isVerifying}
                 >
-                  {isVerifying ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  ) : null}
+                  {isVerifying ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                   Verificar
                 </Button>
               </div>

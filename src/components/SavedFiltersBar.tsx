@@ -1,31 +1,25 @@
-import { memo, useState, useEffect } from 'react';
-import { 
-  Star, 
-  Plus, 
-  MoreHorizontal, 
-  Trash2, 
-  Loader2
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle 
-} from '@/components/ui/dialog';
+import { memo, useState, useEffect } from "react";
+import { Star, Plus, MoreHorizontal, Trash2, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useSavedFilters, SavedFilter } from '@/hooks/useSavedFilters';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/dropdown-menu";
+import { useSavedFilters, SavedFilter } from "@/hooks/useSavedFilters";
+import { cn } from "@/lib/utils";
 
 interface SavedFiltersBarProps {
   module: string;
@@ -52,7 +46,7 @@ function SavedFiltersBarBase({
   } = useSavedFilters({ entityType: module, onApply: onApplyFilter });
 
   const [showSaveDialog, setShowSaveDialog] = useState(false);
-  const [newFilterName, setNewFilterName] = useState('');
+  const [newFilterName, setNewFilterName] = useState("");
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   // Apply default filter on mount
@@ -68,16 +62,19 @@ function SavedFiltersBarBase({
 
   const handleSaveFilter = () => {
     if (!newFilterName.trim()) return;
-    
-    saveFilter({
-      name: newFilterName,
-      filters: currentFilters,
-    }, {
-      onSuccess: () => {
-        setShowSaveDialog(false);
-        setNewFilterName('');
+
+    saveFilter(
+      {
+        name: newFilterName,
+        filters: currentFilters,
       },
-    });
+      {
+        onSuccess: () => {
+          setShowSaveDialog(false);
+          setNewFilterName("");
+        },
+      }
+    );
   };
 
   const handleApplyFilter = (filter: SavedFilter) => {
@@ -85,35 +82,37 @@ function SavedFiltersBarBase({
     applyFilter(filter);
   };
 
-  const hasActiveFilters = Object.values(currentFilters as Record<string, unknown>).some(v => v !== '' && v !== null && v !== undefined);
+  const hasActiveFilters = Object.values(currentFilters as Record<string, unknown>).some(
+    (v) => v !== "" && v !== null && v !== undefined
+  );
 
   if (isLoading) {
     return (
-      <div className={cn('flex items-center gap-2', className)}>
+      <div className={cn("flex items-center gap-2", className)}>
         <Loader2 className="h-4 w-4 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className={cn('flex items-center gap-2 flex-wrap', className)}>
+    <div className={cn("flex flex-wrap items-center gap-2", className)}>
       {/* Saved filters */}
       {filters.map((filter) => (
         <div key={filter.id} className="flex items-center">
           <Button
-            variant={selectedFilter === filter.id ? 'default' : 'outline'}
+            variant={selectedFilter === filter.id ? "default" : "outline"}
             size="sm"
             className="rounded-r-none"
             onClick={() => handleApplyFilter(filter)}
           >
-            {filter.is_default && <Star className="h-3 w-3 mr-1 fill-current" />}
+            {filter.is_default && <Star className="mr-1 h-3 w-3 fill-current" />}
             {filter.name}
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button 
-                variant={selectedFilter === filter.id ? 'default' : 'outline'} 
-                size="sm" 
+              <Button
+                variant={selectedFilter === filter.id ? "default" : "outline"}
+                size="sm"
                 className="rounded-l-none border-l-0 px-2"
               >
                 <MoreHorizontal className="h-3 w-3" />
@@ -122,16 +121,16 @@ function SavedFiltersBarBase({
             <DropdownMenuContent align="end">
               {!filter.is_default && (
                 <DropdownMenuItem onClick={() => setDefault(filter.id)}>
-                  <Star className="h-4 w-4 mr-2" />
+                  <Star className="mr-2 h-4 w-4" />
                   Definir como padrão
                 </DropdownMenuItem>
               )}
               <DropdownMenuSeparator />
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 className="text-destructive"
                 onClick={() => deleteFilter(filter.id)}
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="mr-2 h-4 w-4" />
                 Excluir
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -141,12 +140,8 @@ function SavedFiltersBarBase({
 
       {/* Save current filter button */}
       {hasActiveFilters && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setShowSaveDialog(true)}
-        >
-          <Plus className="h-4 w-4 mr-1" />
+        <Button variant="ghost" size="sm" onClick={() => setShowSaveDialog(true)}>
+          <Plus className="mr-1 h-4 w-4" />
           Salvar filtro
         </Button>
       )}
@@ -174,10 +169,12 @@ function SavedFiltersBarBase({
               Salve a combinação atual de filtros para uso rápido.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <label htmlFor="saved-filter-name" className="text-sm font-medium">Nome do filtro</label>
+              <label htmlFor="saved-filter-name" className="text-sm font-medium">
+                Nome do filtro
+              </label>
               <Input
                 id="saved-filter-name"
                 placeholder="Ex: Funcionários ativos do RH"
@@ -186,11 +183,11 @@ function SavedFiltersBarBase({
               />
             </div>
 
-            <div className="p-3 rounded-lg bg-muted">
-              <h4 className="text-sm font-medium mb-2">Filtros incluídos:</h4>
+            <div className="rounded-lg bg-muted p-3">
+              <h4 className="mb-2 text-sm font-medium">Filtros incluídos:</h4>
               <div className="flex flex-wrap gap-1">
                 {Object.entries(currentFilters as Record<string, unknown>)
-                  .filter(([_, v]) => v !== '' && v !== null && v !== undefined)
+                  .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
                   .map(([key, value]) => (
                     <Badge key={key} variant="secondary" className="text-xs">
                       {key}: {String(value)}
@@ -204,11 +201,8 @@ function SavedFiltersBarBase({
             <Button variant="outline" onClick={() => setShowSaveDialog(false)}>
               Cancelar
             </Button>
-            <Button 
-              onClick={handleSaveFilter}
-              disabled={!newFilterName.trim() || isSaving}
-            >
-              {isSaving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+            <Button onClick={handleSaveFilter} disabled={!newFilterName.trim() || isSaving}>
+              {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Salvar
             </Button>
           </DialogFooter>

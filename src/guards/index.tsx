@@ -1,7 +1,7 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { BrandedSplash } from '@/components/ui/LoadingSpinner';
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { BrandedSplash } from "@/components/ui/LoadingSpinner";
 
 interface GuardProps {
   children: React.ReactNode;
@@ -43,7 +43,8 @@ export function AdminGuard({ children }: GuardProps) {
     return <BrandedSplash />;
   }
 
-  const isAdmin = user?.role === 'admin' || user?.isAdmin === true || user?.email?.endsWith('@securitywatch.com');
+  const isAdmin =
+    user?.role === "admin" || user?.isAdmin === true || user?.email?.endsWith("@securitywatch.com");
 
   if (!isAdmin) {
     return <Navigate to="/dashboard" replace />;
@@ -59,7 +60,11 @@ export function SupervisorGuard({ children }: GuardProps) {
     return <BrandedSplash />;
   }
 
-  const hasAccess = user?.role === 'admin' || user?.isAdmin === true || user?.role === 'supervisor' || user?.email?.endsWith('@securitywatch.com');
+  const hasAccess =
+    user?.role === "admin" ||
+    user?.isAdmin === true ||
+    user?.role === "supervisor" ||
+    user?.email?.endsWith("@securitywatch.com");
 
   if (!hasAccess) {
     return <Navigate to="/dashboard" replace />;

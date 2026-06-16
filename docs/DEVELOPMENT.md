@@ -11,12 +11,14 @@ Before starting development, ensure you have the following installed:
 ## Quick Start
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/adm01-debug/sentinela.git
    cd sentinela
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -24,11 +26,13 @@ Before starting development, ensure you have the following installed:
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env.local
    ```
-   
+
    Edit `.env.local` with your configuration:
+
    ```env
    VITE_SUPABASE_URL=your_supabase_url
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
@@ -36,10 +40,11 @@ Before starting development, ensure you have the following installed:
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
-   
+
    The app will be available at `http://localhost:5173`
 
 ## Project Structure
@@ -71,20 +76,20 @@ sentinela/
 
 ## Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Fix ESLint errors |
-| `npm run format` | Format code with Prettier |
-| `npm run test` | Run unit tests |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:coverage` | Run tests with coverage |
-| `npm run test:e2e` | Run E2E tests |
-| `npm run storybook` | Start Storybook |
-| `npm run build-storybook` | Build Storybook |
+| Command                   | Description               |
+| ------------------------- | ------------------------- |
+| `npm run dev`             | Start development server  |
+| `npm run build`           | Build for production      |
+| `npm run preview`         | Preview production build  |
+| `npm run lint`            | Run ESLint                |
+| `npm run lint:fix`        | Fix ESLint errors         |
+| `npm run format`          | Format code with Prettier |
+| `npm run test`            | Run unit tests            |
+| `npm run test:watch`      | Run tests in watch mode   |
+| `npm run test:coverage`   | Run tests with coverage   |
+| `npm run test:e2e`        | Run E2E tests             |
+| `npm run storybook`       | Start Storybook           |
+| `npm run build-storybook` | Build Storybook           |
 
 ## Development Workflow
 
@@ -196,6 +201,7 @@ npx supabase db push
 ### Common Issues
 
 **Port already in use**
+
 ```bash
 # Find and kill process on port 5173
 lsof -i :5173
@@ -203,6 +209,7 @@ kill -9 <PID>
 ```
 
 **Node modules issues**
+
 ```bash
 rm -rf node_modules
 rm package-lock.json
@@ -210,6 +217,7 @@ npm install
 ```
 
 **TypeScript errors after update**
+
 ```bash
 npm run typecheck
 ```

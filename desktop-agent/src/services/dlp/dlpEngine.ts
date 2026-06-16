@@ -1,4 +1,4 @@
-import log from 'electron-log';
+import log from "electron-log";
 
 // ============================================================
 // DLP Engine — avalia texto contra políticas e classifiers
@@ -9,8 +9,8 @@ export interface DLPClassifier {
   name: string;
   pattern: string;
   validator?: string | null;
-  default_severity: 'low' | 'medium' | 'high' | 'critical';
-  default_action: 'alert' | 'redact' | 'block';
+  default_severity: "low" | "medium" | "high" | "critical";
+  default_action: "alert" | "redact" | "block";
 }
 
 export interface DLPPolicy {
@@ -19,8 +19,8 @@ export interface DLPPolicy {
   classifier_code?: string | null;
   custom_pattern?: string | null;
   keywords?: string[] | null;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  action: 'alert' | 'redact' | 'block';
+  severity: "low" | "medium" | "high" | "critical";
+  action: "alert" | "redact" | "block";
   scope: string[];
   is_active: boolean;
 }
@@ -29,8 +29,8 @@ export interface DLPMatch {
   classifier_code: string;
   classifier_name: string;
   policy_id?: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  action: 'alert' | 'redact' | 'block';
+  severity: "low" | "medium" | "high" | "critical";
+  action: "alert" | "redact" | "block";
   start: number;
   end: number;
   preview: string; // partially masked
@@ -39,8 +39,8 @@ export interface DLPMatch {
 export interface DLPScanResult {
   matched: boolean;
   matches: DLPMatch[];
-  highestAction: 'none' | 'alert' | 'redact' | 'block';
-  highestSeverity: 'low' | 'medium' | 'high' | 'critical' | 'none';
+  highestAction: "none" | "alert" | "redact" | "block";
+  highestSeverity: "low" | "medium" | "high" | "critical" | "none";
 }
 
 const ACTION_RANK: Record<string, number> = { none: 0, alert: 1, redact: 2, block: 3 };
@@ -48,7 +48,7 @@ const SEVERITY_RANK: Record<string, number> = { none: 0, low: 1, medium: 2, high
 
 // ----- Validators -----
 function validateCPF(value: string): boolean {
-  const cpf = value.replace(/\D/g, '');
+  const cpf = value.replace(/\D/g, "");
   if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
   let sum = 0;
   for (let i = 0; i < 9; i++) sum += parseInt(cpf[i]) * (10 - i);
@@ -63,21 +63,23 @@ function validateCPF(value: string): boolean {
 }
 
 function validateCNPJ(value: string): boolean {
-  const cnpj = value.replace(/\D/g, '');
+  const cnpj = value.replace(/\D/g, "");
   if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) return false;
   const calc = (slice: string, weights: number[]) => {
-    const sum = slice.split('').reduce((acc, d, i) => acc + parseInt(d) * weights[i], 0);
+    const sum = slice.split("").reduce((acc, d, i) => acc + parseInt(d) * weights[i], 0);
     const r = sum % 11;
     return r < 2 ? 0 : 11 - r;
   };
   const w1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
   const w2 = [6, ...w1];
-  return calc(cnpj.slice(0, 12), w1) === parseInt(cnpj[12]) &&
-         calc(cnpj.slice(0, 13), w2) === parseInt(cnpj[13]);
+  return (
+    calc(cnpj.slice(0, 12), w1) === parseInt(cnpj[12]) &&
+    calc(cnpj.slice(0, 13), w2) === parseInt(cnpj[13])
+  );
 }
 
 function validateLuhn(value: string): boolean {
-  const digits = value.replace(/\D/g, '');
+  const digits = value.replace(/\D/g, "");
   if (digits.length < 13 || digits.length > 19) return false;
   let sum = 0;
   let alt = false;
@@ -96,16 +98,20 @@ function validateLuhn(value: string): boolean {
 function runValidator(name: string | null | undefined, value: string): boolean {
   if (!name) return true;
   switch (name) {
-    case 'cpf': return validateCPF(value);
-    case 'cnpj': return validateCNPJ(value);
-    case 'luhn': return validateLuhn(value);
-    default: return true;
+    case "cpf":
+      return validateCPF(value);
+    case "cnpj":
+      return validateCNPJ(value);
+    case "luhn":
+      return validateLuhn(value);
+    default:
+      return true;
   }
 }
 
 function maskPreview(value: string): string {
-  if (value.length <= 4) return '****';
-  return value.slice(0, 2) + '*'.repeat(Math.max(0, value.length - 4)) + value.slice(-2);
+  if (value.length <= 4) return "****";
+  return value.slice(0, 2) + "*".repeat(Math.max(0, value.length - 4)) + value.slice(-2);
 }
 
 // ----- Engine -----
@@ -120,7 +126,7 @@ export class DLPEngine {
     for (const c of list) {
       this.classifiers.set(c.code, c);
       try {
-        this.compiled.set(c.code, new RegExp(c.pattern, 'gi'));
+        this.compiled.set(c.code, new RegExp(c.pattern, "gi"));
       } catch (err) {
         log.warn(`DLP: invalid regex for classifier ${c.code}`, err);
       }
@@ -133,7 +139,7 @@ export class DLPEngine {
       if (p.custom_pattern) {
         const key = `policy:${p.id}`;
         try {
-          this.compiled.set(key, new RegExp(p.custom_pattern, 'gi'));
+          this.compiled.set(key, new RegExp(p.custom_pattern, "gi"));
         } catch (err) {
           log.warn(`DLP: invalid custom regex on policy ${p.id}`, err);
         }
@@ -141,10 +147,10 @@ export class DLPEngine {
     }
   }
 
-  scan(text: string, scope: 'clipboard' | 'screenshot' | 'file' = 'clipboard'): DLPScanResult {
+  scan(text: string, scope: "clipboard" | "screenshot" | "file" = "clipboard"): DLPScanResult {
     const matches: DLPMatch[] = [];
     if (!text || text.length === 0) {
-      return { matched: false, matches, highestAction: 'none', highestSeverity: 'none' };
+      return { matched: false, matches, highestAction: "none", highestSeverity: "none" };
     }
 
     for (const policy of this.policies) {
@@ -181,7 +187,7 @@ export class DLPEngine {
         let m: RegExpExecArray | null;
         while ((m = customRe.exec(text)) !== null) {
           matches.push({
-            classifier_code: 'CUSTOM',
+            classifier_code: "CUSTOM",
             classifier_name: policy.name,
             policy_id: policy.id,
             severity: policy.severity,
@@ -202,7 +208,7 @@ export class DLPEngine {
           let idx = lower.indexOf(k);
           while (idx !== -1) {
             matches.push({
-              classifier_code: 'KEYWORD',
+              classifier_code: "KEYWORD",
               classifier_name: policy.name,
               policy_id: policy.id,
               severity: policy.severity,
@@ -217,8 +223,8 @@ export class DLPEngine {
       }
     }
 
-    let highestAction: DLPScanResult['highestAction'] = 'none';
-    let highestSeverity: DLPScanResult['highestSeverity'] = 'none';
+    let highestAction: DLPScanResult["highestAction"] = "none";
+    let highestSeverity: DLPScanResult["highestSeverity"] = "none";
     for (const m of matches) {
       if (ACTION_RANK[m.action] > ACTION_RANK[highestAction]) highestAction = m.action;
       if (SEVERITY_RANK[m.severity] > SEVERITY_RANK[highestSeverity]) highestSeverity = m.severity;

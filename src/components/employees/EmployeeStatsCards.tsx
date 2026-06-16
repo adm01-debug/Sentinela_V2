@@ -1,8 +1,8 @@
-import { memo } from 'react';
-import { Users, UserCheck, Building2, Monitor } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import type { EmployeeStats } from '@/hooks/useEmployeesPage';
+import { memo } from "react";
+import { Users, UserCheck, Building2, Monitor } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { EmployeeStats } from "@/hooks/useEmployeesPage";
 
 interface EmployeeStatsCardsProps {
   stats: EmployeeStats;
@@ -30,29 +30,29 @@ function EmployeeStatsCardsComponent({ stats, isLoading }: EmployeeStatsCardsPro
 
   const cards = [
     {
-      title: 'Total de Funcionários',
+      title: "Total de Funcionários",
       value: stats.total,
       icon: Users,
-      description: 'Cadastrados no sistema'
+      description: "Cadastrados no sistema",
     },
     {
-      title: 'Funcionários Ativos',
+      title: "Funcionários Ativos",
       value: stats.active,
       icon: UserCheck,
-      description: `${stats.total > 0 ? Math.round((stats.active / stats.total) * 100) : 0}% do total`
+      description: `${stats.total > 0 ? Math.round((stats.active / stats.total) * 100) : 0}% do total`,
     },
     {
-      title: 'Com Equipe',
+      title: "Com Equipe",
       value: stats.withTeam,
       icon: Building2,
-      description: 'Associados a equipes'
+      description: "Associados a equipes",
     },
     {
-      title: 'Com Dispositivos',
+      title: "Com Dispositivos",
       value: stats.withDevices,
       icon: Monitor,
-      description: 'Dispositivos vinculados'
-    }
+      description: "Dispositivos vinculados",
+    },
   ];
 
   return (

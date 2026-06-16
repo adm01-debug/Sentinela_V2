@@ -19,7 +19,8 @@ function computeStats(values: number[]) {
   const mean = values.reduce((a, b) => a + b, 0) / values.length;
   const variance = values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length;
   const std_dev = Math.sqrt(variance);
-  const pct = (p: number) => sorted[Math.min(sorted.length - 1, Math.floor((p / 100) * sorted.length))];
+  const pct = (p: number) =>
+    sorted[Math.min(sorted.length - 1, Math.floor((p / 100) * sorted.length))];
   return {
     mean,
     std_dev,
@@ -81,14 +82,16 @@ serve(async (req) => {
       const appsByDay: Record<string, Set<string>> = {};
       for (const k of keys || []) {
         const day = dayKey(k.recorded_at);
-        featureMap.daily_keystrokes[day] = (featureMap.daily_keystrokes[day] || 0) + (k.keystrokes_count || 0);
+        featureMap.daily_keystrokes[day] =
+          (featureMap.daily_keystrokes[day] || 0) + (k.keystrokes_count || 0);
         const hour = new Date(k.recorded_at).getUTCHours();
         const dow = new Date(k.recorded_at).getUTCDay();
         if (hour < 6 || hour > 22) {
           featureMap.night_activity_ratio[day] = (featureMap.night_activity_ratio[day] || 0) + 1;
         }
         if (dow === 0 || dow === 6) {
-          featureMap.weekend_activity_ratio[day] = (featureMap.weekend_activity_ratio[day] || 0) + 1;
+          featureMap.weekend_activity_ratio[day] =
+            (featureMap.weekend_activity_ratio[day] || 0) + 1;
         }
         workStartHours.push(hour);
       }
@@ -124,7 +127,8 @@ serve(async (req) => {
 
       for (const d of dlp || []) {
         const day = dayKey(d.detected_at);
-        featureMap.clipboard_dlp_matches_per_day[day] = (featureMap.clipboard_dlp_matches_per_day[day] || 0) + 1;
+        featureMap.clipboard_dlp_matches_per_day[day] =
+          (featureMap.clipboard_dlp_matches_per_day[day] || 0) + 1;
       }
 
       // Compute & upsert

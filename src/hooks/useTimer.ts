@@ -9,8 +9,12 @@ export function useTimer(initialTime = 0) {
     if (running || time <= 0) return;
     setRunning(true);
     intervalRef.current = setInterval(() => {
-      setTime(t => {
-        if (t <= 0) { clearInterval(intervalRef.current); setRunning(false); return 0; }
+      setTime((t) => {
+        if (t <= 0) {
+          clearInterval(intervalRef.current);
+          setRunning(false);
+          return 0;
+        }
         return t - 1000;
       });
     }, 1000);
@@ -21,10 +25,13 @@ export function useTimer(initialTime = 0) {
     setRunning(false);
   }, []);
 
-  const reset = useCallback((newTime = initialTime) => {
-    stop();
-    setTime(newTime);
-  }, [stop, initialTime]);
+  const reset = useCallback(
+    (newTime = initialTime) => {
+      stop();
+      setTime(newTime);
+    },
+    [stop, initialTime]
+  );
 
   return { time, running, start, stop, reset };
 }

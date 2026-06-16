@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface Baseline {
   id: string;
@@ -32,13 +32,13 @@ export function useBehavioralBaseline(employeeId?: string) {
     (async () => {
       try {
         const { data, error: e } = await supabase
-          .from('behavioral_baselines')
-          .select('*')
-          .eq('employee_id', employeeId);
+          .from("behavioral_baselines")
+          .select("*")
+          .eq("employee_id", employeeId);
         if (e) throw e;
         if (mounted) setBaselines((data as unknown as Baseline[]) || []);
       } catch (e) {
-        if (mounted) setError(e instanceof Error ? e : new Error('Failed to load baseline'));
+        if (mounted) setError(e instanceof Error ? e : new Error("Failed to load baseline"));
       } finally {
         if (mounted) setLoading(false);
       }

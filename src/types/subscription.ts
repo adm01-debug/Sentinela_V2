@@ -1,5 +1,5 @@
 // Subscription types for Sentinela v17
-import { BillingPlan } from './billing';
+import { BillingPlan } from "./billing";
 
 export interface Subscription {
   id: string;
@@ -20,25 +20,25 @@ export interface Subscription {
   updatedAt: string;
 }
 
-export type SubscriptionStatus = 
-  | 'trialing'
-  | 'active'
-  | 'past_due'
-  | 'paused'
-  | 'cancelled'
-  | 'expired'
-  | 'incomplete';
+export type SubscriptionStatus =
+  | "trialing"
+  | "active"
+  | "past_due"
+  | "paused"
+  | "cancelled"
+  | "expired"
+  | "incomplete";
 
 export interface SubscriptionPeriod {
   start: string;
   end: string;
-  billingCycle: 'monthly' | 'yearly';
+  billingCycle: "monthly" | "yearly";
 }
 
 export interface SubscriptionDiscount {
   id: string;
   code: string;
-  type: 'percentage' | 'fixed';
+  type: "percentage" | "fixed";
   value: number;
   validUntil?: string;
   maxRedemptions?: number;
@@ -53,11 +53,11 @@ export interface SubscriptionChange {
   toPlanId?: string;
   effectiveDate: string;
   prorationAmount?: number;
-  status: 'pending' | 'completed' | 'cancelled';
+  status: "pending" | "completed" | "cancelled";
   createdAt: string;
 }
 
-export type ChangeType = 'upgrade' | 'downgrade' | 'cancel' | 'pause' | 'resume' | 'renew';
+export type ChangeType = "upgrade" | "downgrade" | "cancel" | "pause" | "resume" | "renew";
 
 export interface SubscriptionCreateInput {
   planId: string;
@@ -103,5 +103,5 @@ export interface FeatureChange {
   feature: string;
   current: boolean | number;
   new: boolean | number;
-  type: 'added' | 'removed' | 'upgraded' | 'downgraded';
+  type: "added" | "removed" | "upgraded" | "downgraded";
 }

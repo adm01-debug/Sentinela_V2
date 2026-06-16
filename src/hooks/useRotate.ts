@@ -4,7 +4,7 @@ export function useRotate(initialAngle = 0) {
   const [angle, setAngle] = useState(initialAngle);
 
   const rotate = useCallback((degrees: number) => {
-    setAngle(a => (a + degrees) % 360);
+    setAngle((a) => (a + degrees) % 360);
   }, []);
 
   const rotateLeft = useCallback(() => rotate(-90), [rotate]);

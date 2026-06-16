@@ -6,9 +6,14 @@ export function useWorker<T, R>(workerFn: (data: T) => R) {
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
-    const blob = new Blob([`onmessage=e=>postMessage((${workerFn.toString()})(e.data))`], { type: "text/javascript" });
+    const blob = new Blob([`onmessage=e=>postMessage((${workerFn.toString()})(e.data))`], {
+      type: "text/javascript",
+    });
     workerRef.current = new Worker(URL.createObjectURL(blob));
-    workerRef.current.onmessage = (e: MessageEvent<R>) => { setResult(e.data); setLoading(false); };
+    workerRef.current.onmessage = (e: MessageEvent<R>) => {
+      setResult(e.data);
+      setLoading(false);
+    };
     return () => workerRef.current?.terminate();
   }, [workerFn]);
 

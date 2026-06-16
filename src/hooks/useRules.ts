@@ -13,19 +13,19 @@ export function useRules() {
 
   const add = useCallback((name: string, condition: string, action: string) => {
     const rule: Rule = { id: crypto.randomUUID(), name, condition, action, enabled: true };
-    setRules(prev => [...prev, rule]);
+    setRules((prev) => [...prev, rule]);
     return rule;
   }, []);
 
   const toggle = useCallback((id: string) => {
-    setRules(prev => prev.map(r => r.id === id ? { ...r, enabled: !r.enabled } : r));
+    setRules((prev) => prev.map((r) => (r.id === id ? { ...r, enabled: !r.enabled } : r)));
   }, []);
 
   const remove = useCallback((id: string) => {
-    setRules(prev => prev.filter(r => r.id !== id));
+    setRules((prev) => prev.filter((r) => r.id !== id));
   }, []);
 
-  const enabledRules = useMemo(() => rules.filter(r => r.enabled), [rules]);
+  const enabledRules = useMemo(() => rules.filter((r) => r.enabled), [rules]);
 
   return { rules, enabledRules, add, toggle, remove };
 }

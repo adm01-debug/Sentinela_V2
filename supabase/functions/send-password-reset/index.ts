@@ -22,13 +22,13 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const { email }: PasswordResetRequest = await req.json();
-    
+
     if (!email) {
       console.error("Email is required");
-      return new Response(
-        JSON.stringify({ error: "Email is required" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: "Email is required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
     }
 
     console.log("Processing password reset for:", email);
@@ -58,13 +58,13 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const resetLink = linkData?.properties?.action_link;
-    
+
     if (!resetLink) {
       console.error("No reset link generated");
-      return new Response(
-        JSON.stringify({ error: "Failed to generate reset link" }),
-        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: "Failed to generate reset link" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
     }
 
     console.log("Reset link generated successfully");
@@ -120,7 +120,7 @@ const handler = async (req: Request): Promise<Response> => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
         from: "Sistema <onboarding@resend.dev>",
@@ -140,16 +140,16 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Email sent successfully:", emailResult);
 
-    return new Response(
-      JSON.stringify({ success: true, message: "Password reset email sent" }),
-      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
-    );
+    return new Response(JSON.stringify({ success: true, message: "Password reset email sent" }), {
+      status: 200,
+      headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
   } catch (error: any) {
     console.error("Error in send-password-reset function:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
   }
 };
 

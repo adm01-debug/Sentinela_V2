@@ -1,4 +1,4 @@
-const useTheme = () => ({ theme: 'system' as string });
+const useTheme = () => ({ theme: "system" as string });
 import { Toaster as Sonner, toast } from "sonner";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;

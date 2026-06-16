@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { notificationService } from '@/services/notificationService';
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { notificationService } from "@/services/notificationService";
 
 interface SecurityViolationRow {
   id: string;
@@ -16,14 +16,14 @@ export interface HeaderNotification {
   title: string;
   description: string;
   time: string;
-  severity: 'critical' | 'high' | 'medium' | 'low';
+  severity: "critical" | "high" | "medium" | "low";
   read: boolean;
 }
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'agora';
+  if (mins < 1) return "agora";
   if (mins < 60) return `${mins} min atrás`;
   const hours = Math.floor(mins / 60);
   if (hours < 24) return `${hours}h atrás`;
@@ -38,17 +38,17 @@ export function useHeaderNotifications(limit = 8) {
   const [readIds, setReadIds] = useState<Set<string>>(new Set());
 
   const { data: raw = [], isLoading } = useQuery<HeaderNotification[]>({
-    queryKey: ['header-notifications', limit],
+    queryKey: ["header-notifications", limit],
     queryFn: async () => {
       const data = await notificationService.getHeaderNotifications(limit);
       return (data as SecurityViolationRow[]).map((v) => ({
         id: v.id,
-        title: v.violation_type || 'Violação detectada',
+        title: v.violation_type || "Violação detectada",
         description: v.employee_name
-          ? `${v.employee_name} — ${v.description || v.violation_type || ''}`
-          : v.description || 'Detalhes indisponíveis',
+          ? `${v.employee_name} — ${v.description || v.violation_type || ""}`
+          : v.description || "Detalhes indisponíveis",
         time: timeAgo(v.created_at),
-        severity: (v.severity as HeaderNotification['severity']) || 'medium',
+        severity: (v.severity as HeaderNotification["severity"]) || "medium",
         read: false,
       }));
     },
@@ -58,7 +58,7 @@ export function useHeaderNotifications(limit = 8) {
   // Realtime: invalidate on INSERT
   useEffect(() => {
     return notificationService.subscribeToViolations(() => {
-      queryClient.invalidateQueries({ queryKey: ['header-notifications'] });
+      queryClient.invalidateQueries({ queryKey: ["header-notifications"] });
     });
   }, [queryClient]);
 
@@ -91,35 +91,43 @@ export function useNotifications() {
   const [permission, setPermission] = useState<NotificationPermission>("default");
 
   useEffect(() => {
-    if (typeof globalThis.Notification !== 'undefined') {
+    if (typeof globalThis.Notification !== "undefined") {
       setPermission(globalThis.Notification.permission);
     }
   }, []);
 
   const requestPermission = useCallback(async () => {
-    if (typeof globalThis.Notification === 'undefined') return 'denied' as NotificationPermission;
+    if (typeof globalThis.Notification === "undefined") return "denied" as NotificationPermission;
     const perm = await globalThis.Notification.requestPermission();
     setPermission(perm);
     return perm;
   }, []);
 
-  const add = useCallback((title: string, message: string, type: Notification["type"] = "info") => {
-    const notification: Notification = {
-      id: crypto.randomUUID(), title, message, type, read: false, createdAt: new Date()
-    };
-    setNotifications(prev => [notification, ...prev]);
-    
-    if (permission === "granted" && typeof globalThis.Notification !== 'undefined') {
-      new globalThis.Notification(title, { body: message });
-    }
-    return notification;
-  }, [permission]);
+  const add = useCallback(
+    (title: string, message: string, type: Notification["type"] = "info") => {
+      const notification: Notification = {
+        id: crypto.randomUUID(),
+        title,
+        message,
+        type,
+        read: false,
+        createdAt: new Date(),
+      };
+      setNotifications((prev) => [notification, ...prev]);
+
+      if (permission === "granted" && typeof globalThis.Notification !== "undefined") {
+        new globalThis.Notification(title, { body: message });
+      }
+      return notification;
+    },
+    [permission]
+  );
 
   const markAsRead = useCallback((id: string) => {
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
   }, []);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return { notifications, unreadCount, permission, requestPermission, add, markAsRead };
 }

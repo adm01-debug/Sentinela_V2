@@ -26,14 +26,14 @@ export interface Attachment {
   deletedAt?: string;
 }
 
-export type AttachmentResourceType = 
-  | 'comment'
-  | 'report'
-  | 'alert'
-  | 'employee'
-  | 'project'
-  | 'message'
-  | 'document';
+export type AttachmentResourceType =
+  | "comment"
+  | "report"
+  | "alert"
+  | "employee"
+  | "project"
+  | "message"
+  | "document";
 
 export interface AttachmentUpload {
   file: File;
@@ -65,20 +65,20 @@ export interface AttachmentStats {
 export interface UploadProgress {
   attachmentId: string;
   progress: number;
-  status: 'pending' | 'uploading' | 'processing' | 'complete' | 'failed';
+  status: "pending" | "uploading" | "processing" | "complete" | "failed";
   error?: string;
 }
 
 export interface AttachmentPreview {
   url: string;
-  type: 'image' | 'video' | 'audio' | 'document' | 'other';
+  type: "image" | "video" | "audio" | "document" | "other";
   thumbnailUrl?: string;
   previewable: boolean;
 }
 
 export interface BulkAttachmentAction {
   attachmentIds: string[];
-  action: 'delete' | 'move' | 'archive' | 'makePublic' | 'makePrivate';
+  action: "delete" | "move" | "archive" | "makePublic" | "makePrivate";
   targetResourceType?: AttachmentResourceType;
   targetResourceId?: string;
 }

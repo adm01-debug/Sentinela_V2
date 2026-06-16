@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { useState, useCallback } from 'react';
-import { Plus, MoreHorizontal, GripVertical } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import * as React from "react";
+import { useState, useCallback } from "react";
+import { Plus, MoreHorizontal, GripVertical } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export interface KanbanCard {
   id: string;
@@ -13,7 +13,7 @@ export interface KanbanCard {
   labels?: { text: string; color: string }[];
   assignee?: { name: string; avatar?: string };
   dueDate?: Date;
-  priority?: 'low' | 'medium' | 'high';
+  priority?: "low" | "medium" | "high";
 }
 
 export interface KanbanColumn {
@@ -34,7 +34,11 @@ export interface KanbanBoardProps {
   renderCard?: (card: KanbanCard) => React.ReactNode;
 }
 
-const priorityColors = { low: 'bg-blue-100 text-blue-800', medium: 'bg-yellow-100 text-yellow-800', high: 'bg-red-100 text-red-800' };
+const priorityColors = {
+  low: "bg-blue-100 text-blue-800",
+  medium: "bg-yellow-100 text-yellow-800",
+  high: "bg-red-100 text-red-800",
+};
 
 interface DefaultCardProps {
   card: KanbanCard;
@@ -43,10 +47,16 @@ interface DefaultCardProps {
 function DefaultCard({ card }: DefaultCardProps) {
   return (
     <div className="space-y-2">
-      <h4 className="font-medium text-sm">{card.title}</h4>
-      {card.description && <p className="text-xs text-muted-foreground line-clamp-2">{card.description}</p>}
+      <h4 className="text-sm font-medium">{card.title}</h4>
+      {card.description && (
+        <p className="line-clamp-2 text-xs text-muted-foreground">{card.description}</p>
+      )}
       <div className="flex flex-wrap gap-1">
-        {card.labels?.map((label, i) => <Badge key={i} style={{ backgroundColor: label.color }} className="text-white text-xs">{label.text}</Badge>)}
+        {card.labels?.map((label, i) => (
+          <Badge key={i} style={{ backgroundColor: label.color }} className="text-xs text-white">
+            {label.text}
+          </Badge>
+        ))}
         {card.priority && <Badge className={priorityColors[card.priority]}>{card.priority}</Badge>}
       </div>
       {(card.assignee || card.dueDate) && (
@@ -68,20 +78,43 @@ interface KanbanCardItemProps {
   renderCard?: (card: KanbanCard) => React.ReactNode;
 }
 
-function KanbanCardItem({ card, columnId, onDragStart, onDragEnd, onCardClick, renderCard }: KanbanCardItemProps) {
+function KanbanCardItem({
+  card,
+  columnId,
+  onDragStart,
+  onDragEnd,
+  onCardClick,
+  renderCard,
+}: KanbanCardItemProps) {
   return (
-    <Card className="cursor-pointer hover:shadow-md transition-shadow" draggable onDragStart={() => onDragStart(card.id, columnId)} onDragEnd={onDragEnd} onClick={() => onCardClick?.(card, columnId)}>
+    <Card
+      className="cursor-pointer transition-shadow hover:shadow-md"
+      draggable
+      onDragStart={() => onDragStart(card.id, columnId)}
+      onDragEnd={onDragEnd}
+      onClick={() => onCardClick?.(card, columnId)}
+    >
       <CardContent className="p-3">
         <div className="flex gap-2">
-          <GripVertical className="h-4 w-4 text-muted-foreground flex-shrink-0 cursor-grab" />
-          <div className="flex-1">{renderCard ? renderCard(card) : <DefaultCard card={card} />}</div>
+          <GripVertical className="h-4 w-4 flex-shrink-0 cursor-grab text-muted-foreground" />
+          <div className="flex-1">
+            {renderCard ? renderCard(card) : <DefaultCard card={card} />}
+          </div>
         </div>
       </CardContent>
     </Card>
   );
 }
 
-export function KanbanBoard({ columns, onCardMove, onCardClick, onAddCard, onColumnMenu, className, renderCard }: KanbanBoardProps) {
+export function KanbanBoard({
+  columns,
+  onCardMove,
+  onCardClick,
+  onAddCard,
+  onColumnMenu,
+  className,
+  renderCard,
+}: KanbanBoardProps) {
   const [draggedCard, setDraggedCard] = useState<{ cardId: string; columnId: string } | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
 
@@ -94,14 +127,17 @@ export function KanbanBoard({ columns, onCardMove, onCardClick, onAddCard, onCol
     setDragOverColumn(columnId);
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent, toColumnId: string) => {
-    e.preventDefault();
-    if (draggedCard && draggedCard.columnId !== toColumnId) {
-      onCardMove?.(draggedCard.cardId, draggedCard.columnId, toColumnId, 0);
-    }
-    setDraggedCard(null);
-    setDragOverColumn(null);
-  }, [draggedCard, onCardMove]);
+  const handleDrop = useCallback(
+    (e: React.DragEvent, toColumnId: string) => {
+      e.preventDefault();
+      if (draggedCard && draggedCard.columnId !== toColumnId) {
+        onCardMove?.(draggedCard.cardId, draggedCard.columnId, toColumnId, 0);
+      }
+      setDraggedCard(null);
+      setDragOverColumn(null);
+    },
+    [draggedCard, onCardMove]
+  );
 
   const handleDragEnd = useCallback(() => {
     setDraggedCard(null);
@@ -109,20 +145,52 @@ export function KanbanBoard({ columns, onCardMove, onCardClick, onAddCard, onCol
   }, []);
 
   return (
-    <div className={cn('flex gap-4 overflow-x-auto pb-4', className)}>
-      {columns.map(column => (
-        <div key={column.id} className="flex-shrink-0 w-72" onDragOver={e => handleDragOver(e, column.id)} onDrop={e => handleDrop(e, column.id)}>
-          <Card className={cn('h-full', dragOverColumn === column.id && 'ring-2 ring-primary')}>
-            <CardHeader className="py-3 px-4" style={{ borderTop: `3px solid ${column.color || '#6366f1'}` }}>
+    <div className={cn("flex gap-4 overflow-x-auto pb-4", className)}>
+      {columns.map((column) => (
+        <div
+          key={column.id}
+          className="w-72 flex-shrink-0"
+          onDragOver={(e) => handleDragOver(e, column.id)}
+          onDrop={(e) => handleDrop(e, column.id)}
+        >
+          <Card className={cn("h-full", dragOverColumn === column.id && "ring-2 ring-primary")}>
+            <CardHeader
+              className="px-4 py-3"
+              style={{ borderTop: `3px solid ${column.color || "#6366f1"}` }}
+            >
               <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium flex items-center gap-2">{column.title}<Badge variant="secondary" className="text-xs">{column.cards.length}{column.limit && `/${column.limit}`}</Badge></CardTitle>
+                <CardTitle className="flex items-center gap-2 text-sm font-medium">
+                  {column.title}
+                  <Badge variant="secondary" className="text-xs">
+                    {column.cards.length}
+                    {column.limit && `/${column.limit}`}
+                  </Badge>
+                </CardTitle>
                 <div className="flex gap-1">
-                  {onAddCard && <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => onAddCard(column.id)}><Plus className="h-4 w-4" /></Button>}
-                  {onColumnMenu && <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => onColumnMenu(column.id)}><MoreHorizontal className="h-4 w-4" /></Button>}
+                  {onAddCard && (
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6"
+                      onClick={() => onAddCard(column.id)}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  )}
+                  {onColumnMenu && (
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6"
+                      onClick={() => onColumnMenu(column.id)}
+                    >
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  )}
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="p-2 space-y-2 min-h-[200px]">
+            <CardContent className="min-h-[200px] space-y-2 p-2">
               {column.cards.map((card: KanbanCard) => (
                 <KanbanCardItem
                   key={card.id}

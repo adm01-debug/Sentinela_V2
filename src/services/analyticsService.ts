@@ -33,7 +33,7 @@ export const analyticsService = {
       monthlyData: [],
       predictions: [],
     };
-  }
+  },
 };
 
 export default analyticsService;

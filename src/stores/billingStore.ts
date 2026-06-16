@@ -1,7 +1,7 @@
 // Billing Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { BillingAccount, BillingPlan, Invoice, Subscription, UsageMetrics } from '@/types';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { BillingAccount, BillingPlan, Invoice, Subscription, UsageMetrics } from "@/types";
 
 interface BillingState {
   account: BillingAccount | null;
@@ -59,7 +59,7 @@ export const useBillingStore = create<BillingState>()(
 
       reset: () => set(initialState),
     }),
-    { name: 'BillingStore' }
+    { name: "BillingStore" }
   )
 );
 
@@ -68,13 +68,14 @@ export const selectCurrentPlan = (state: BillingState) =>
   state.plans.find((p) => p.id === state.subscription?.planId);
 
 export const selectUnpaidInvoices = (state: BillingState) =>
-  state.invoices.filter((i) => i.status === 'pending' || i.status === 'overdue');
+  state.invoices.filter((i) => i.status === "pending" || i.status === "overdue");
 
-export const selectUsagePercentage = (metric: keyof UsageMetrics['users']) => (state: BillingState) => {
-  if (!state.usage) return 0;
-  const data = state.usage[metric as keyof UsageMetrics];
-  if (typeof data === 'object' && 'current' in data && 'limit' in data) {
-    return Math.round((data.current / data.limit) * 100);
-  }
-  return 0;
-};
+export const selectUsagePercentage =
+  (metric: keyof UsageMetrics["users"]) => (state: BillingState) => {
+    if (!state.usage) return 0;
+    const data = state.usage[metric as keyof UsageMetrics];
+    if (typeof data === "object" && "current" in data && "limit" in data) {
+      return Math.round((data.current / data.limit) * 100);
+    }
+    return 0;
+  };

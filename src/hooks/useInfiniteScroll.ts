@@ -3,10 +3,10 @@
 // Paginação infinita com React Query e Intersection Observer
 // ============================================================
 
-import { useRef, useEffect } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
+import { useRef, useEffect } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 // ============================================================
 // TYPES
@@ -49,9 +49,9 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
 ): UseInfiniteScrollResult<T> {
   const {
     table,
-    select = '*',
+    select = "*",
     pageSize = 20,
-    orderBy = { column: 'created_at', ascending: false },
+    orderBy = { column: "created_at", ascending: false },
     filters = {},
     enabled = true,
   } = config;
@@ -63,7 +63,7 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
   // ============================================================
 
   const queryKey = [
-    'infinite',
+    "infinite",
     table,
     select,
     pageSize,
@@ -79,21 +79,20 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
   const fetchPage = async ({ pageParam = 0 }): Promise<PageData<T>> => {
     // Proceed to fetch
 
-
     const from = pageParam * pageSize;
     const to = from + pageSize - 1;
 
     // Build query
     let query = supabase
       .from(table)
-      .select(select, { count: 'exact' })
+      .select(select, { count: "exact" })
       .range(from, to)
       .order(orderBy.column, { ascending: orderBy.ascending ?? false });
 
     // Apply filters
     Object.entries(filters as Record<string, unknown>).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        if (typeof value === 'string' && value.includes('%')) {
+      if (value !== undefined && value !== null && value !== "") {
+        if (typeof value === "string" && value.includes("%")) {
           query = query.ilike(key, value);
         } else if (Array.isArray(value)) {
           query = query.in(key, value);
@@ -106,7 +105,7 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
     const { data, error, count } = await query;
 
     if (error) {
-      logger.error('[InfiniteScroll] Error:', error);
+      logger.error("[InfiniteScroll] Error:", error);
       throw error;
     }
 
@@ -164,7 +163,7 @@ export function useInfiniteScroll<T = Record<string, unknown>>(
       },
       {
         root: null,
-        rootMargin: '100px',
+        rootMargin: "100px",
         threshold: 0.1,
       }
     );

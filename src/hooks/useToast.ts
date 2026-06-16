@@ -1,10 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 export interface Toast {
   id: string;
   title?: string;
   description?: string;
-  variant?: 'default' | 'destructive' | 'success' | 'warning';
+  variant?: "default" | "destructive" | "success" | "warning";
   duration?: number;
 }
 
@@ -18,7 +18,7 @@ export function useToast() {
   const [state, setState] = useState<ToastState>({ toasts: [] });
 
   const toast = useCallback(
-    ({ title, description, variant = 'default', duration = 5000 }: Omit<Toast, 'id'>) => {
+    ({ title, description, variant = "default", duration = 5000 }: Omit<Toast, "id">) => {
       const id = String(++toastCounter);
       const newToast: Toast = { id, title, description, variant, duration };
 

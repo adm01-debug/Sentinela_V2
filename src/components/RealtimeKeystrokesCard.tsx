@@ -1,9 +1,9 @@
-import { Keyboard, Clock, User } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Keyboard, Clock, User } from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface KeystrokeDetail {
   id: string;
@@ -23,15 +23,15 @@ interface RealtimeKeystrokesCardProps {
 export const RealtimeKeystrokesCard = ({ keystrokes }: RealtimeKeystrokesCardProps) => {
   const formatKey = (key: string) => {
     const specialKeys: Record<string, string> = {
-      ' ': '␣',
-      'Enter': '↵',
-      'Backspace': '⌫',
-      'Tab': '⇥',
-      'Escape': 'Esc',
-      'ArrowUp': '↑',
-      'ArrowDown': '↓',
-      'ArrowLeft': '←',
-      'ArrowRight': '→',
+      " ": "␣",
+      Enter: "↵",
+      Backspace: "⌫",
+      Tab: "⇥",
+      Escape: "Esc",
+      ArrowUp: "↑",
+      ArrowDown: "↓",
+      ArrowLeft: "←",
+      ArrowRight: "→",
     };
     return specialKeys[key] || key;
   };
@@ -47,8 +47,8 @@ export const RealtimeKeystrokesCard = ({ keystrokes }: RealtimeKeystrokesCardPro
       <CardContent>
         <ScrollArea className="h-[400px] pr-4">
           {keystrokes.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-              <Keyboard className="h-12 w-12 mb-2 opacity-50" />
+            <div className="flex h-full flex-col items-center justify-center text-muted-foreground">
+              <Keyboard className="mb-2 h-12 w-12 opacity-50" />
               <p>Nenhuma tecla registrada</p>
             </div>
           ) : (
@@ -56,28 +56,28 @@ export const RealtimeKeystrokesCard = ({ keystrokes }: RealtimeKeystrokesCardPro
               {keystrokes.map((keystroke) => (
                 <div
                   key={keystroke.id}
-                  className="flex items-center gap-3 p-2 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+                  className="flex items-center gap-3 rounded-lg bg-muted/50 p-2 transition-colors hover:bg-muted"
                 >
                   <Badge
                     variant="outline"
-                    className="font-mono min-w-[40px] justify-center text-base"
+                    className="min-w-[40px] justify-center font-mono text-base"
                   >
                     {formatKey(keystroke.key_pressed)}
                   </Badge>
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <User className="h-3 w-3 text-muted-foreground" />
-                      <span className="text-sm font-medium truncate">
+                      <span className="truncate text-sm font-medium">
                         {keystroke.employee_name}
                       </span>
                     </div>
-                    <div className="text-xs text-muted-foreground truncate">
-                      {keystroke.app_name || keystroke.window_title || 'Desconhecido'}
+                    <div className="truncate text-xs text-muted-foreground">
+                      {keystroke.app_name || keystroke.window_title || "Desconhecido"}
                     </div>
                   </div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3" />
-                    {format(new Date(keystroke.recorded_at), 'HH:mm:ss', { locale: ptBR })}
+                    {format(new Date(keystroke.recorded_at), "HH:mm:ss", { locale: ptBR })}
                   </div>
                   {keystroke.is_sensitive && (
                     <Badge variant="destructive" className="text-xs">

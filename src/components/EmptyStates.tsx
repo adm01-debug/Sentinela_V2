@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   FileQuestion,
   Search,
@@ -18,28 +18,28 @@ import {
   Database,
   Filter,
   Calendar,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 // Types
 export type EmptyStateType =
-  | 'no-data'
-  | 'no-results'
-  | 'no-users'
-  | 'no-files'
-  | 'no-activity'
-  | 'no-violations'
-  | 'no-reports'
-  | 'no-settings'
-  | 'error'
-  | 'offline'
-  | 'no-permission'
-  | 'coming-soon'
-  | 'no-database'
-  | 'no-filters'
-  | 'no-schedule'
-  | 'custom';
+  | "no-data"
+  | "no-results"
+  | "no-users"
+  | "no-files"
+  | "no-activity"
+  | "no-violations"
+  | "no-reports"
+  | "no-settings"
+  | "error"
+  | "offline"
+  | "no-permission"
+  | "coming-soon"
+  | "no-database"
+  | "no-filters"
+  | "no-schedule"
+  | "custom";
 
 interface EmptyStateConfig {
   icon: React.ElementType;
@@ -48,96 +48,96 @@ interface EmptyStateConfig {
   color: string;
 }
 
-const emptyStateConfigs: Record<Exclude<EmptyStateType, 'custom'>, EmptyStateConfig> = {
-  'no-data': {
+const emptyStateConfigs: Record<Exclude<EmptyStateType, "custom">, EmptyStateConfig> = {
+  "no-data": {
     icon: Database,
-    title: 'Nenhum dado encontrado',
-    description: 'Não há dados para exibir no momento.',
-    color: 'text-muted-foreground',
+    title: "Nenhum dado encontrado",
+    description: "Não há dados para exibir no momento.",
+    color: "text-muted-foreground",
   },
-  'no-results': {
+  "no-results": {
     icon: Search,
-    title: 'Nenhum resultado',
-    description: 'Nenhum resultado corresponde aos seus critérios de busca.',
-    color: 'text-muted-foreground',
+    title: "Nenhum resultado",
+    description: "Nenhum resultado corresponde aos seus critérios de busca.",
+    color: "text-muted-foreground",
   },
-  'no-users': {
+  "no-users": {
     icon: Users,
-    title: 'Nenhum usuário',
-    description: 'Não há usuários cadastrados ainda.',
-    color: 'text-primary',
+    title: "Nenhum usuário",
+    description: "Não há usuários cadastrados ainda.",
+    color: "text-primary",
   },
-  'no-files': {
+  "no-files": {
     icon: FolderOpen,
-    title: 'Nenhum arquivo',
-    description: 'Nenhum arquivo foi carregado ainda.',
-    color: 'text-warning',
+    title: "Nenhum arquivo",
+    description: "Nenhum arquivo foi carregado ainda.",
+    color: "text-warning",
   },
-  'no-activity': {
+  "no-activity": {
     icon: Activity,
-    title: 'Sem atividade',
-    description: 'Nenhuma atividade registrada neste período.',
-    color: 'text-success',
+    title: "Sem atividade",
+    description: "Nenhuma atividade registrada neste período.",
+    color: "text-success",
   },
-  'no-violations': {
+  "no-violations": {
     icon: Shield,
-    title: 'Nenhuma violação',
-    description: 'Ótimo! Não há violações de segurança.',
-    color: 'text-success',
+    title: "Nenhuma violação",
+    description: "Ótimo! Não há violações de segurança.",
+    color: "text-success",
   },
-  'no-reports': {
+  "no-reports": {
     icon: BarChart3,
-    title: 'Nenhum relatório',
-    description: 'Não há relatórios disponíveis.',
-    color: 'text-primary',
+    title: "Nenhum relatório",
+    description: "Não há relatórios disponíveis.",
+    color: "text-primary",
   },
-  'no-settings': {
+  "no-settings": {
     icon: Settings,
-    title: 'Sem configurações',
-    description: 'As configurações não foram definidas ainda.',
-    color: 'text-muted-foreground',
+    title: "Sem configurações",
+    description: "As configurações não foram definidas ainda.",
+    color: "text-muted-foreground",
   },
-  'error': {
+  error: {
     icon: AlertCircle,
-    title: 'Algo deu errado',
-    description: 'Ocorreu um erro ao carregar os dados.',
-    color: 'text-destructive',
+    title: "Algo deu errado",
+    description: "Ocorreu um erro ao carregar os dados.",
+    color: "text-destructive",
   },
-  'offline': {
+  offline: {
     icon: WifiOff,
-    title: 'Sem conexão',
-    description: 'Você está offline. Verifique sua conexão.',
-    color: 'text-warning',
+    title: "Sem conexão",
+    description: "Você está offline. Verifique sua conexão.",
+    color: "text-warning",
   },
-  'no-permission': {
+  "no-permission": {
     icon: Lock,
-    title: 'Acesso restrito',
-    description: 'Você não tem permissão para acessar este recurso.',
-    color: 'text-destructive',
+    title: "Acesso restrito",
+    description: "Você não tem permissão para acessar este recurso.",
+    color: "text-destructive",
   },
-  'coming-soon': {
+  "coming-soon": {
     icon: Clock,
-    title: 'Em breve',
-    description: 'Este recurso estará disponível em breve.',
-    color: 'text-primary',
+    title: "Em breve",
+    description: "Este recurso estará disponível em breve.",
+    color: "text-primary",
   },
-  'no-database': {
+  "no-database": {
     icon: Database,
-    title: 'Banco de dados vazio',
-    description: 'O banco de dados ainda não contém registros.',
-    color: 'text-muted-foreground',
+    title: "Banco de dados vazio",
+    description: "O banco de dados ainda não contém registros.",
+    color: "text-muted-foreground",
   },
-  'no-filters': {
+  "no-filters": {
     icon: Filter,
-    title: 'Filtros muito restritivos',
-    description: 'Tente ajustar os filtros para ver mais resultados.',
-    color: 'text-warning',
+    title: "Filtros muito restritivos",
+    description: "Tente ajustar os filtros para ver mais resultados.",
+    color: "text-warning",
   },
-  'no-schedule': {
+  "no-schedule": {
     icon: Calendar,
-    title: 'Sem agendamentos',
-    description: 'Nenhum agendamento configurado.',
-    color: 'text-primary',
+    title: "Sem agendamentos",
+    description: "Nenhum agendamento configurado.",
+    color: "text-primary",
   },
 };
 
@@ -146,7 +146,7 @@ interface EmptyStateAction {
   label: string;
   onClick: () => void;
   icon?: React.ElementType;
-  variant?: 'default' | 'secondary' | 'outline' | 'ghost';
+  variant?: "default" | "secondary" | "outline" | "ghost";
 }
 
 // Props
@@ -159,41 +159,41 @@ interface EmptyStateProps {
   primaryAction?: EmptyStateAction;
   secondaryAction?: EmptyStateAction;
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   illustration?: React.ReactNode;
 }
 
 // Sizes config
 const sizeConfig = {
   sm: {
-    icon: 'h-8 w-8',
-    iconContainer: 'h-14 w-14',
-    title: 'text-sm',
-    description: 'text-xs',
-    padding: 'py-6',
-    gap: 'gap-2',
+    icon: "h-8 w-8",
+    iconContainer: "h-14 w-14",
+    title: "text-sm",
+    description: "text-xs",
+    padding: "py-6",
+    gap: "gap-2",
   },
   md: {
-    icon: 'h-10 w-10',
-    iconContainer: 'h-20 w-20',
-    title: 'text-base',
-    description: 'text-sm',
-    padding: 'py-10',
-    gap: 'gap-3',
+    icon: "h-10 w-10",
+    iconContainer: "h-20 w-20",
+    title: "text-base",
+    description: "text-sm",
+    padding: "py-10",
+    gap: "gap-3",
   },
   lg: {
-    icon: 'h-14 w-14',
-    iconContainer: 'h-28 w-28',
-    title: 'text-lg',
-    description: 'text-base',
-    padding: 'py-16',
-    gap: 'gap-4',
+    icon: "h-14 w-14",
+    iconContainer: "h-28 w-28",
+    title: "text-lg",
+    description: "text-base",
+    padding: "py-16",
+    gap: "gap-4",
   },
 };
 
 // Main component
 export function EmptyState({
-  type = 'no-data',
+  type = "no-data",
   title,
   description,
   icon,
@@ -201,21 +201,21 @@ export function EmptyState({
   primaryAction,
   secondaryAction,
   className,
-  size = 'md',
+  size = "md",
   illustration,
 }: EmptyStateProps) {
-  const config = type !== 'custom' ? emptyStateConfigs[type] : null;
+  const config = type !== "custom" ? emptyStateConfigs[type] : null;
   const sizes = sizeConfig[size];
 
   const Icon = icon || config?.icon || FileQuestion;
-  const displayTitle = title || config?.title || 'Vazio';
-  const displayDescription = description || config?.description || '';
-  const displayColor = iconColor || config?.color || 'text-muted-foreground';
+  const displayTitle = title || config?.title || "Vazio";
+  const displayDescription = description || config?.description || "";
+  const displayColor = iconColor || config?.color || "text-muted-foreground";
 
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center text-center',
+        "flex flex-col items-center justify-center text-center",
         sizes.padding,
         sizes.gap,
         className
@@ -224,20 +224,56 @@ export function EmptyState({
       {/* Illustration or Icon */}
       {illustration ? (
         <div className="mb-2">{illustration}</div>
-      ) : size === 'lg' ? (
+      ) : size === "lg" ? (
         <div className="mb-2">
-          <svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-44 h-32 mx-auto" aria-hidden="true">
+          <svg
+            viewBox="0 0 200 140"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="mx-auto h-32 w-44"
+            aria-hidden="true"
+          >
             <rect x="40" y="90" width="120" height="6" rx="3" className="fill-muted" />
             <rect x="55" y="96" width="6" height="24" rx="2" className="fill-muted-foreground/20" />
-            <rect x="139" y="96" width="6" height="24" rx="2" className="fill-muted-foreground/20" />
-            <rect x="60" y="42" width="80" height="48" rx="6" className="fill-muted stroke-border" strokeWidth="1.5" />
+            <rect
+              x="139"
+              y="96"
+              width="6"
+              height="24"
+              rx="2"
+              className="fill-muted-foreground/20"
+            />
+            <rect
+              x="60"
+              y="42"
+              width="80"
+              height="48"
+              rx="6"
+              className="fill-muted stroke-border"
+              strokeWidth="1.5"
+            />
             <rect x="66" y="48" width="68" height="36" rx="3" className="fill-background" />
             <rect x="92" y="90" width="16" height="5" rx="2" className="fill-muted-foreground/20" />
             <rect x="76" y="58" width="48" height="3" rx="1.5" className="fill-primary/20" />
             <rect x="82" y="65" width="36" height="2" rx="1" className="fill-muted-foreground/15" />
             <rect x="86" y="71" width="28" height="2" rx="1" className="fill-muted-foreground/10" />
-            <circle cx="155" cy="38" r="12" className="stroke-primary/30" strokeWidth="2" fill="none" />
-            <line x1="164" y1="47" x2="172" y2="55" className="stroke-primary/30" strokeWidth="2" strokeLinecap="round" />
+            <circle
+              cx="155"
+              cy="38"
+              r="12"
+              className="stroke-primary/30"
+              strokeWidth="2"
+              fill="none"
+            />
+            <line
+              x1="164"
+              y1="47"
+              x2="172"
+              y2="55"
+              className="stroke-primary/30"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
             <circle cx="35" cy="60" r="3" className="fill-primary/15" />
             <circle cx="170" cy="75" r="2" className="fill-warning/20" />
           </svg>
@@ -245,7 +281,7 @@ export function EmptyState({
       ) : (
         <div
           className={cn(
-            'rounded-full bg-muted/50 flex items-center justify-center',
+            "flex items-center justify-center rounded-full bg-muted/50",
             sizes.iconContainer
           )}
         >
@@ -254,39 +290,33 @@ export function EmptyState({
       )}
 
       {/* Text */}
-      <div className="space-y-1 max-w-sm">
-        <h3 className={cn('font-semibold', sizes.title)}>{displayTitle}</h3>
+      <div className="max-w-sm space-y-1">
+        <h3 className={cn("font-semibold", sizes.title)}>{displayTitle}</h3>
         {displayDescription && (
-          <p className={cn('text-muted-foreground', sizes.description)}>
-            {displayDescription}
-          </p>
+          <p className={cn("text-muted-foreground", sizes.description)}>{displayDescription}</p>
         )}
       </div>
 
       {/* Actions */}
       {(primaryAction || secondaryAction) && (
-        <div className="flex items-center gap-2 mt-2">
+        <div className="mt-2 flex items-center gap-2">
           {primaryAction && (
             <Button
-              variant={primaryAction.variant || 'default'}
-              size={size === 'sm' ? 'sm' : 'default'}
+              variant={primaryAction.variant || "default"}
+              size={size === "sm" ? "sm" : "default"}
               onClick={primaryAction.onClick}
             >
-              {primaryAction.icon && (
-                <primaryAction.icon className="h-4 w-4 mr-2" />
-              )}
+              {primaryAction.icon && <primaryAction.icon className="mr-2 h-4 w-4" />}
               {primaryAction.label}
             </Button>
           )}
           {secondaryAction && (
             <Button
-              variant={secondaryAction.variant || 'outline'}
-              size={size === 'sm' ? 'sm' : 'default'}
+              variant={secondaryAction.variant || "outline"}
+              size={size === "sm" ? "sm" : "default"}
               onClick={secondaryAction.onClick}
             >
-              {secondaryAction.icon && (
-                <secondaryAction.icon className="h-4 w-4 mr-2" />
-              )}
+              {secondaryAction.icon && <secondaryAction.icon className="mr-2 h-4 w-4" />}
               {secondaryAction.label}
             </Button>
           )}
@@ -297,7 +327,7 @@ export function EmptyState({
 }
 
 // Pre-configured empty states for common use cases
-export function NoDataEmptyState(props: Omit<EmptyStateProps, 'type'>) {
+export function NoDataEmptyState(props: Omit<EmptyStateProps, "type">) {
   return <EmptyState type="no-data" {...props} />;
 }
 
@@ -305,7 +335,7 @@ export function NoResultsEmptyState({
   searchTerm,
   onClearSearch,
   ...props
-}: Omit<EmptyStateProps, 'type'> & {
+}: Omit<EmptyStateProps, "type"> & {
   searchTerm?: string;
   onClearSearch?: () => void;
 }) {
@@ -315,11 +345,11 @@ export function NoResultsEmptyState({
       description={
         searchTerm
           ? `Nenhum resultado para "${searchTerm}"`
-          : 'Nenhum resultado corresponde aos seus critérios de busca.'
+          : "Nenhum resultado corresponde aos seus critérios de busca."
       }
       primaryAction={
         onClearSearch
-          ? { label: 'Limpar busca', onClick: onClearSearch, icon: RefreshCw }
+          ? { label: "Limpar busca", onClick: onClearSearch, icon: RefreshCw }
           : undefined
       }
       {...props}
@@ -331,18 +361,16 @@ export function ErrorEmptyState({
   onRetry,
   errorMessage,
   ...props
-}: Omit<EmptyStateProps, 'type'> & {
+}: Omit<EmptyStateProps, "type"> & {
   onRetry?: () => void;
   errorMessage?: string;
 }) {
   return (
     <EmptyState
       type="error"
-      description={errorMessage || 'Ocorreu um erro ao carregar os dados.'}
+      description={errorMessage || "Ocorreu um erro ao carregar os dados."}
       primaryAction={
-        onRetry
-          ? { label: 'Tentar novamente', onClick: onRetry, icon: RefreshCw }
-          : undefined
+        onRetry ? { label: "Tentar novamente", onClick: onRetry, icon: RefreshCw } : undefined
       }
       {...props}
     />
@@ -352,16 +380,14 @@ export function ErrorEmptyState({
 export function NoPermissionEmptyState({
   onRequestAccess,
   ...props
-}: Omit<EmptyStateProps, 'type'> & {
+}: Omit<EmptyStateProps, "type"> & {
   onRequestAccess?: () => void;
 }) {
   return (
     <EmptyState
       type="no-permission"
       primaryAction={
-        onRequestAccess
-          ? { label: 'Solicitar acesso', onClick: onRequestAccess }
-          : undefined
+        onRequestAccess ? { label: "Solicitar acesso", onClick: onRequestAccess } : undefined
       }
       {...props}
     />
@@ -371,16 +397,14 @@ export function NoPermissionEmptyState({
 export function OfflineEmptyState({
   onRetry,
   ...props
-}: Omit<EmptyStateProps, 'type'> & {
+}: Omit<EmptyStateProps, "type"> & {
   onRetry?: () => void;
 }) {
   return (
     <EmptyState
       type="offline"
       primaryAction={
-        onRetry
-          ? { label: 'Tentar novamente', onClick: onRetry, icon: RefreshCw }
-          : undefined
+        onRetry ? { label: "Tentar novamente", onClick: onRetry, icon: RefreshCw } : undefined
       }
       {...props}
     />
@@ -392,7 +416,7 @@ export function CreateFirstEmptyState({
   onCreate,
   onImport,
   ...props
-}: Omit<EmptyStateProps, 'type'> & {
+}: Omit<EmptyStateProps, "type"> & {
   itemName: string;
   onCreate?: () => void;
   onImport?: () => void;
@@ -403,13 +427,11 @@ export function CreateFirstEmptyState({
       title={`Nenhum ${itemName}`}
       description={`Comece criando seu primeiro ${itemName}.`}
       primaryAction={
-        onCreate
-          ? { label: `Criar ${itemName}`, onClick: onCreate, icon: Plus }
-          : undefined
+        onCreate ? { label: `Criar ${itemName}`, onClick: onCreate, icon: Plus } : undefined
       }
       secondaryAction={
         onImport
-          ? { label: 'Importar', onClick: onImport, icon: Upload, variant: 'outline' }
+          ? { label: "Importar", onClick: onImport, icon: Upload, variant: "outline" }
           : undefined
       }
       {...props}
@@ -417,7 +439,7 @@ export function CreateFirstEmptyState({
   );
 }
 
-export function ComingSoonEmptyState(props: Omit<EmptyStateProps, 'type'>) {
+export function ComingSoonEmptyState(props: Omit<EmptyStateProps, "type">) {
   return <EmptyState type="coming-soon" {...props} />;
 }
 
@@ -426,9 +448,9 @@ export function TableEmptyState({
   hasFilters = false,
   onClearFilters,
   onCreate,
-  createLabel = 'Adicionar',
+  createLabel = "Adicionar",
   ...props
-}: Omit<EmptyStateProps, 'type'> & {
+}: Omit<EmptyStateProps, "type"> & {
   hasFilters?: boolean;
   onClearFilters?: () => void;
   onCreate?: () => void;
@@ -440,7 +462,7 @@ export function TableEmptyState({
         type="no-filters"
         primaryAction={
           onClearFilters
-            ? { label: 'Limpar filtros', onClick: onClearFilters, icon: Filter }
+            ? { label: "Limpar filtros", onClick: onClearFilters, icon: Filter }
             : undefined
         }
         size="sm"
@@ -452,11 +474,7 @@ export function TableEmptyState({
   return (
     <EmptyState
       type="no-data"
-      primaryAction={
-        onCreate
-          ? { label: createLabel, onClick: onCreate, icon: Plus }
-          : undefined
-      }
+      primaryAction={onCreate ? { label: createLabel, onClick: onCreate, icon: Plus } : undefined}
       size="sm"
       {...props}
     />

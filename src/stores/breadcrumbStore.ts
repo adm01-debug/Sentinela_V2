@@ -1,6 +1,6 @@
 // Breadcrumb Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface BreadcrumbItem {
   id: string;
@@ -32,17 +32,17 @@ interface BreadcrumbState {
 }
 
 const defaultHomeItem: BreadcrumbItem = {
-  id: 'home',
-  label: 'Home',
-  href: '/',
-  icon: 'Home',
+  id: "home",
+  label: "Home",
+  href: "/",
+  icon: "Home",
 };
 
 export const useBreadcrumbStore = create<BreadcrumbState>()(
   devtools(
     (set) => ({
       items: [],
-      separator: '/',
+      separator: "/",
       maxItems: 5,
       showHome: true,
       homeItem: defaultHomeItem,
@@ -83,9 +83,7 @@ export const useBreadcrumbStore = create<BreadcrumbState>()(
 
       updateItem: (id, updates) =>
         set((state) => ({
-          items: state.items.map((item) =>
-            item.id === id ? { ...item, ...updates } : item
-          ),
+          items: state.items.map((item) => (item.id === id ? { ...item, ...updates } : item)),
         })),
 
       setSeparator: (separator) => set({ separator }),
@@ -104,6 +102,6 @@ export const useBreadcrumbStore = create<BreadcrumbState>()(
           })),
         })),
     }),
-    { name: 'BreadcrumbStore' }
+    { name: "BreadcrumbStore" }
   )
 );

@@ -1,8 +1,8 @@
 // Date helpers
-import { format, formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { format, formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
-export function formatDate(date: string | Date, pattern: string = 'dd/MM/yyyy') {
+export function formatDate(date: string | Date, pattern: string = "dd/MM/yyyy") {
   return format(new Date(date), pattern, { locale: ptBR });
 }
 
@@ -11,5 +11,5 @@ export function formatRelative(date: string | Date) {
 }
 
 export function formatDateTime(date: string | Date) {
-  return format(new Date(date), 'dd/MM/yyyy HH:mm', { locale: ptBR });
+  return format(new Date(date), "dd/MM/yyyy HH:mm", { locale: ptBR });
 }

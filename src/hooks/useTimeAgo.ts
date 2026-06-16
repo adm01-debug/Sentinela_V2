@@ -4,7 +4,7 @@ export function useTimeAgo(date: Date, interval = 60000) {
   const [, setTick] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => setTick(t => t + 1), interval);
+    const timer = setInterval(() => setTick((t) => t + 1), interval);
     return () => clearInterval(timer);
   }, [interval]);
 

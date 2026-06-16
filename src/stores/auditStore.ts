@@ -1,7 +1,7 @@
 // Audit Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { AuditLog, AuditLogFilters, AuditLogStats } from '@/types';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { AuditLog, AuditLogFilters, AuditLogStats } from "@/types";
 
 interface AuditState {
   logs: AuditLog[];
@@ -40,8 +40,7 @@ export const useAuditStore = create<AuditState>()(
           logs: [log, ...state.logs].slice(0, 1000),
         })),
 
-      setFilters: (filters) =>
-        set((state) => ({ filters: { ...state.filters, ...filters } })),
+      setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters } })),
 
       clearFilters: () => set({ filters: {} }),
 
@@ -53,7 +52,7 @@ export const useAuditStore = create<AuditState>()(
 
       reset: () => set(initialState),
     }),
-    { name: 'AuditStore' }
+    { name: "AuditStore" }
   )
 );
 
@@ -64,5 +63,4 @@ export const selectLogsByUser = (userId) => (state: AuditState) =>
 export const selectLogsByAction = (action) => (state: AuditState) =>
   state.logs.filter((l) => l.action === action);
 
-export const selectRecentLogs = (count) => (state: AuditState) =>
-  state.logs.slice(0, count);
+export const selectRecentLogs = (count) => (state: AuditState) => state.logs.slice(0, count);

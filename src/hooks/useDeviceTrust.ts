@@ -12,7 +12,9 @@ interface DeviceInfo {
 
 function readKnownDevices(): string[] {
   const parsed: unknown = JSON.parse(localStorage.getItem("known_devices") || "[]");
-  return Array.isArray(parsed) ? parsed.filter((value): value is string => typeof value === "string") : [];
+  return Array.isArray(parsed)
+    ? parsed.filter((value): value is string => typeof value === "string")
+    : [];
 }
 
 export function useDeviceTrust() {
@@ -22,7 +24,14 @@ export function useDeviceTrust() {
 
   const fingerprint = useMemo(() => {
     if (!deviceInfo) return "";
-    return btoa(JSON.stringify([deviceInfo.userAgent, deviceInfo.platform, deviceInfo.screenResolution, deviceInfo.timezone]));
+    return btoa(
+      JSON.stringify([
+        deviceInfo.userAgent,
+        deviceInfo.platform,
+        deviceInfo.screenResolution,
+        deviceInfo.timezone,
+      ])
+    );
   }, [deviceInfo]);
 
   useEffect(() => {
@@ -38,7 +47,9 @@ export function useDeviceTrust() {
     setDeviceInfo(info);
 
     const knownDevices = readKnownDevices();
-    const fp = btoa(JSON.stringify([info.userAgent, info.platform, info.screenResolution, info.timezone]));
+    const fp = btoa(
+      JSON.stringify([info.userAgent, info.platform, info.screenResolution, info.timezone])
+    );
     setIsKnownDevice(knownDevices.includes(fp));
 
     let score = 50;

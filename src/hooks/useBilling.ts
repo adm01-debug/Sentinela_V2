@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useBillingStore } from '@/stores/billingStore';
-import { logger } from '@/lib/logger';
+import { useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useBillingStore } from "@/stores/billingStore";
+import { logger } from "@/lib/logger";
 
 interface CompanyPlan {
   companyName: string;
@@ -16,37 +16,39 @@ export function useBilling() {
   const store = useBillingStore();
 
   const companyQuery = useQuery({
-    queryKey: ['billing-company-plan'],
+    queryKey: ["billing-company-plan"],
     queryFn: async (): Promise<CompanyPlan | null> => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return null;
 
       // Get user's company
       const { data: userCompany } = await supabase
-        .from('user_companies')
-        .select('company_id')
-        .eq('user_id', user.id)
+        .from("user_companies")
+        .select("company_id")
+        .eq("user_id", user.id)
         .maybeSingle();
 
       if (!userCompany) return null;
 
       const { data: company } = await supabase
-        .from('companies')
-        .select('name, plan, max_employees, is_active')
-        .eq('id', userCompany.company_id)
+        .from("companies")
+        .select("name, plan, max_employees, is_active")
+        .eq("id", userCompany.company_id)
         .maybeSingle();
 
       if (!company) return null;
 
       // Count current employees
       const { count } = await supabase
-        .from('employees')
-        .select('id', { count: 'exact', head: true })
-        .eq('company_id', userCompany.company_id);
+        .from("employees")
+        .select("id", { count: "exact", head: true })
+        .eq("company_id", userCompany.company_id);
 
       return {
         companyName: company.name,
-        plan: company.plan ?? 'free',
+        plan: company.plan ?? "free",
         maxEmployees: company.max_employees,
         currentEmployees: count ?? 0,
         isActive: company.is_active ?? true,
@@ -61,7 +63,7 @@ export function useBilling() {
 
   const subscribeToPlan = useCallback(async (_planId: string) => {
     // Billing gateway integration placeholder - would integrate with Stripe/etc
-    logger.info('[Billing] Subscribe to plan:', _planId);
+    logger.info("[Billing] Subscribe to plan:", _planId);
   }, []);
 
   return {

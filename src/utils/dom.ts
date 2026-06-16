@@ -45,13 +45,18 @@ export function getRect(element: Element): DOMRect {
 
 export function isInViewport(element: Element): boolean {
   const rect = getRect(element);
-  return rect.top >= 0 && rect.left >= 0 &&
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
     rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
 }
 
 export function getOffset(element: HTMLElement): { top: number; left: number } {
-  let top = 0, left = 0, el: HTMLElement | null = element;
+  let top = 0,
+    left = 0,
+    el: HTMLElement | null = element;
   while (el) {
     top += el.offsetTop - el.scrollTop + el.clientTop;
     left += el.offsetLeft - el.scrollLeft + el.clientLeft;
@@ -69,11 +74,11 @@ export function getComputedStyle(element: Element, property: string): string {
 }
 
 export function show(element: HTMLElement): void {
-  element.style.display = '';
+  element.style.display = "";
 }
 
 export function hide(element: HTMLElement): void {
-  element.style.display = 'none';
+  element.style.display = "none";
 }
 
 export function isHidden(element: HTMLElement): boolean {
@@ -115,7 +120,9 @@ export function getClosest(element: Element, selector: string): Element | null {
 }
 
 export function getSiblings(element: Element): Element[] {
-  return element.parentElement ? Array.from(element.parentElement.children).filter((c) => c !== element) : [];
+  return element.parentElement
+    ? Array.from(element.parentElement.children).filter((c) => c !== element)
+    : [];
 }
 
 export function getIndex(element: Element): number {
@@ -123,6 +130,6 @@ export function getIndex(element: Element): number {
 }
 
 export function ready(callback: () => void): void {
-  if (document.readyState !== 'loading') callback();
-  else document.addEventListener('DOMContentLoaded', callback);
+  if (document.readyState !== "loading") callback();
+  else document.addEventListener("DOMContentLoaded", callback);
 }

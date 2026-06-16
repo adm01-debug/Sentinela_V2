@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function useEventSource(url: string) {
   const [data, setData] = useState<unknown>(null);
@@ -6,7 +6,7 @@ export function useEventSource(url: string) {
   useEffect(() => {
     const es = new EventSource(url);
     es.onmessage = (e: MessageEvent) => setData(JSON.parse(e.data));
-    es.onerror = () => setError(new Error('EventSource failed'));
+    es.onerror = () => setError(new Error("EventSource failed"));
     return () => es.close();
   }, [url]);
   return { data, error };

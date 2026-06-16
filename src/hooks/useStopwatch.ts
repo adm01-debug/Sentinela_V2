@@ -8,7 +8,7 @@ export function useStopwatch() {
   const start = useCallback(() => {
     if (running) return;
     setRunning(true);
-    intervalRef.current = setInterval(() => setTime(t => t + 10), 10);
+    intervalRef.current = setInterval(() => setTime((t) => t + 10), 10);
   }, [running]);
 
   const stop = useCallback(() => {

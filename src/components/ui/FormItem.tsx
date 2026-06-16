@@ -1,9 +1,11 @@
-import * as React from 'react';
-import { cn } from '@/utils/cn';
+import * as React from "react";
+import { cn } from "@/utils/cn";
 
 const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('space-y-2', className)} {...props} />
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("space-y-2", className)} {...props} />
+  )
 );
-FormItem.displayName = 'FormItem';
+FormItem.displayName = "FormItem";
 
 export { FormItem };

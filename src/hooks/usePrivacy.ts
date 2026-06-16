@@ -12,7 +12,7 @@ export function usePrivacy() {
     shareAnalytics: false,
     shareLocation: false,
     shareUsage: false,
-    doNotTrack: navigator.doNotTrack === "1"
+    doNotTrack: navigator.doNotTrack === "1",
   });
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export function usePrivacy() {
   }, []);
 
   const update = useCallback((updates: Partial<PrivacySettings>) => {
-    setSettings(prev => {
+    setSettings((prev) => {
       const next = { ...prev, ...updates };
       localStorage.setItem("privacySettings", JSON.stringify(next));
       return next;

@@ -10,12 +10,20 @@ export function useRealTimeMonitor(threshold = { warning: 70, critical: 90 }) {
   const [data, setData] = useState<MonitorData[]>([]);
   const [currentStatus, setCurrentStatus] = useState<MonitorData["status"]>("normal");
 
-  const addData = useCallback((value: number) => {
-    const status = value >= threshold.critical ? "critical" : value >= threshold.warning ? "warning" : "normal";
-    const entry: MonitorData = { timestamp: new Date(), value, status };
-    setData(prev => [...prev.slice(-99), entry]);
-    setCurrentStatus(status);
-  }, [threshold]);
+  const addData = useCallback(
+    (value: number) => {
+      const status =
+        value >= threshold.critical
+          ? "critical"
+          : value >= threshold.warning
+            ? "warning"
+            : "normal";
+      const entry: MonitorData = { timestamp: new Date(), value, status };
+      setData((prev) => [...prev.slice(-99), entry]);
+      setCurrentStatus(status);
+    },
+    [threshold]
+  );
 
   return { data, currentStatus, addData };
 }

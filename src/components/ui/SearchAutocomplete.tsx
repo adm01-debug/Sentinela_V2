@@ -1,12 +1,19 @@
-import * as React from 'react';
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { Check, ChevronsUpDown, Loader2, Search } from 'lucide-react';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { useDebounce } from '@/hooks/useDebounce';
-import { logger } from '@/lib/logger';
+import * as React from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
+import { Check, ChevronsUpDown, Loader2, Search } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useDebounce } from "@/hooks/useDebounce";
+import { logger } from "@/lib/logger";
 
 export interface SearchAutocompleteOption {
   value: string;
@@ -38,8 +45,8 @@ export function SearchAutocomplete({
   value,
   onChange,
   onSearch,
-  placeholder = 'Search...',
-  emptyMessage = 'No results found.',
+  placeholder = "Search...",
+  emptyMessage = "No results found.",
   loading: externalLoading = false,
   disabled = false,
   className,
@@ -50,35 +57,38 @@ export function SearchAutocomplete({
   renderOption,
 }: SearchAutocompleteProps) {
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [options, setOptions] = useState<SearchAutocompleteOption[]>(staticOptions);
   const [internalLoading, setInternalLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   const debouncedQuery = useDebounce(query, debounceMs);
   const isLoading = externalLoading || internalLoading;
 
-  const selectedOption = options.find(opt => opt.value === value);
+  const selectedOption = options.find((opt) => opt.value === value);
 
-  const handleSearch = useCallback(async (searchQuery: string) => {
-    if (!onSearch || searchQuery.length < minChars) {
-      setOptions(staticOptions.filter(opt => 
-        opt.label.toLowerCase().includes(searchQuery.toLowerCase())
-      ));
-      return;
-    }
+  const handleSearch = useCallback(
+    async (searchQuery: string) => {
+      if (!onSearch || searchQuery.length < minChars) {
+        setOptions(
+          staticOptions.filter((opt) => opt.label.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+        return;
+      }
 
-    setInternalLoading(true);
-    try {
-      const results = await onSearch(searchQuery);
-      setOptions(results.slice(0, maxResults));
-    } catch (error) {
-      logger.error('Search error:', error);
-      setOptions([]);
-    } finally {
-      setInternalLoading(false);
-    }
-  }, [onSearch, staticOptions, minChars, maxResults]);
+      setInternalLoading(true);
+      try {
+        const results = await onSearch(searchQuery);
+        setOptions(results.slice(0, maxResults));
+      } catch (error) {
+        logger.error("Search error:", error);
+        setOptions([]);
+      } finally {
+        setInternalLoading(false);
+      }
+    },
+    [onSearch, staticOptions, minChars, maxResults]
+  );
 
   useEffect(() => {
     handleSearch(debouncedQuery);
@@ -89,10 +99,10 @@ export function SearchAutocomplete({
   }, [staticOptions, onSearch]);
 
   const handleSelect = (selectedValue: string) => {
-    const newValue = clearable && selectedValue === value ? '' : selectedValue;
+    const newValue = clearable && selectedValue === value ? "" : selectedValue;
     onChange?.(newValue);
     setOpen(false);
-    setQuery('');
+    setQuery("");
   };
 
   return (
@@ -103,7 +113,7 @@ export function SearchAutocomplete({
           role="combobox"
           aria-expanded={open}
           disabled={disabled}
-          className={cn('w-full justify-between', className)}
+          className={cn("w-full justify-between", className)}
         >
           <span className="flex items-center gap-2 truncate">
             {selectedOption?.icon}
@@ -134,9 +144,7 @@ export function SearchAutocomplete({
                 <Loader2 className="h-4 w-4 animate-spin" />
               </div>
             )}
-            {!isLoading && options.length === 0 && (
-              <CommandEmpty>{emptyMessage}</CommandEmpty>
-            )}
+            {!isLoading && options.length === 0 && <CommandEmpty>{emptyMessage}</CommandEmpty>}
             {!isLoading && options.length > 0 && (
               <CommandGroup>
                 {options.map((option) => (
@@ -147,18 +155,27 @@ export function SearchAutocomplete({
                     disabled={option.disabled}
                     className="cursor-pointer"
                   >
-                    {renderOption ? renderOption(option) : (
-                      <div className="flex items-center gap-2 flex-1">
+                    {renderOption ? (
+                      renderOption(option)
+                    ) : (
+                      <div className="flex flex-1 items-center gap-2">
                         {option.icon}
                         <div className="flex flex-col">
                           <span>{option.label}</span>
                           {option.description && (
-                            <span className="text-xs text-muted-foreground">{option.description}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {option.description}
+                            </span>
                           )}
                         </div>
                       </div>
                     )}
-                    <Check className={cn('ml-auto h-4 w-4', value === option.value ? 'opacity-100' : 'opacity-0')} />
+                    <Check
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        value === option.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
                   </CommandItem>
                 ))}
               </CommandGroup>

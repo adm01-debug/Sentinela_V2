@@ -17,18 +17,18 @@ export function useDataGrid<T extends Record<string, unknown>>(
     sortField: null,
     sortOrder: "asc",
     page: 0,
-    pageSize: initialPageSize
+    pageSize: initialPageSize,
   });
 
   const sort = useCallback((field: keyof T) => {
-    setState(s => ({
+    setState((s) => ({
       ...s,
       sortField: field,
-      sortOrder: s.sortField === field && s.sortOrder === "asc" ? "desc" : "asc"
+      sortOrder: s.sortField === field && s.sortOrder === "asc" ? "desc" : "asc",
     }));
   }, []);
 
-  const setPage = useCallback((page: number) => setState(s => ({ ...s, page })), []);
+  const setPage = useCallback((page: number) => setState((s) => ({ ...s, page })), []);
 
   const sortedData = useMemo(() => {
     if (!state.sortField) return state.data;

@@ -1,32 +1,32 @@
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
-import AnalyticsPage from '../AnalyticsPage';
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import AnalyticsPage from "../AnalyticsPage";
 
 // Mocks
-vi.mock('react-i18next', () => ({
+vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string) => key,
   }),
 }));
 
-vi.mock('@/hooks/useAnalytics', () => ({
+vi.mock("@/hooks/useAnalytics", () => ({
   useAnalytics: () => ({
     data: {
       productivity: 85,
       activeHours: 42,
       activeUsers: 10,
       appsUsed: 15,
-      chartData: [{ date: '2026-01-01', productivity: 80 }],
+      chartData: [{ date: "2026-01-01", productivity: 80 }],
     },
     isLoading: false,
   }),
 }));
 
 // Mock Recharts
-vi.mock('recharts', () => ({
+vi.mock("recharts", () => ({
   ResponsiveContainer: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   AreaChart: () => <div data-testid="area-chart" />,
   Area: () => <div />,
@@ -36,7 +36,7 @@ vi.mock('recharts', () => ({
   Tooltip: () => <div />,
 }));
 
-vi.mock('@/components/PageTransition', () => ({
+vi.mock("@/components/PageTransition", () => ({
   PageTransition: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
 }));
 
@@ -48,7 +48,7 @@ const queryClient = new QueryClient({
   },
 });
 
-describe('AnalyticsPage', () => {
+describe("AnalyticsPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -63,27 +63,27 @@ describe('AnalyticsPage', () => {
     );
   };
 
-  it('renders correctly', () => {
+  it("renders correctly", () => {
     renderAnalytics();
 
-    expect(screen.getByText('Analytics')).toBeInTheDocument();
-    expect(screen.getByText('85%')).toBeInTheDocument();
-    expect(screen.getByText('42h')).toBeInTheDocument();
-    expect(screen.getByText('10')).toBeInTheDocument();
-    expect(screen.getByText('15')).toBeInTheDocument();
+    expect(screen.getByText("Analytics")).toBeInTheDocument();
+    expect(screen.getByText("85%")).toBeInTheDocument();
+    expect(screen.getByText("42h")).toBeInTheDocument();
+    expect(screen.getByText("10")).toBeInTheDocument();
+    expect(screen.getByText("15")).toBeInTheDocument();
   });
 
-  it('renders chart', () => {
+  it("renders chart", () => {
     renderAnalytics();
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    expect(screen.getByTestId("area-chart")).toBeInTheDocument();
   });
 
-  it('changes period when select is used', async () => {
+  it("changes period when select is used", async () => {
     renderAnalytics();
 
-    const select = screen.getByRole('combobox');
-    expect(select).toHaveTextContent('Últimos 7 dias');
-    
+    const select = screen.getByRole("combobox");
+    expect(select).toHaveTextContent("Últimos 7 dias");
+
     // Select behavior in Shadcn/Radix is complex to test without Radix specific helpers,
     // but we can check if it's there.
   });

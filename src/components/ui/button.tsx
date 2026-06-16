@@ -10,17 +10,24 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary-hover shadow-sm hover:shadow-md",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive-hover shadow-sm hover:shadow-destructive",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-accent",
+        default:
+          "bg-primary text-primary-foreground hover:bg-primary-hover shadow-sm hover:shadow-md",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive-hover shadow-sm hover:shadow-destructive",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-accent",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        success: "bg-success text-success-foreground hover:bg-success-hover shadow-sm hover:shadow-success",
-        warning: "bg-warning text-warning-foreground hover:bg-warning-hover shadow-sm hover:shadow-warning",
+        success:
+          "bg-success text-success-foreground hover:bg-success-hover shadow-sm hover:shadow-success",
+        warning:
+          "bg-warning text-warning-foreground hover:bg-warning-hover shadow-sm hover:shadow-warning",
         info: "bg-info text-info-foreground hover:bg-info-hover shadow-sm hover:shadow-info",
-        premium: "bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-md hover:shadow-glow",
-        glass: "bg-card/50 backdrop-blur-md border border-border/50 text-foreground hover:bg-card/70",
+        premium:
+          "bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-md hover:shadow-glow",
+        glass:
+          "bg-card/50 backdrop-blur-md border border-border/50 text-foreground hover:bg-card/70",
         glow: "bg-primary text-primary-foreground shadow-glow hover:shadow-glow-lg animate-glow-pulse",
       },
       size: {
@@ -38,12 +45,11 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
   leftIcon?: React.ReactNode;
@@ -51,17 +57,33 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, loading = false, leftIcon, rightIcon, children, disabled, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      loading = false,
+      leftIcon,
+      rightIcon,
+      children,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
     const Comp = asChild ? Slot : "button";
-    
+
     if (asChild) {
-      return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+      return (
+        <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      );
     }
-    
+
     return (
-      <Comp 
-        className={cn(buttonVariants({ variant, size, className }))} 
-        ref={ref} 
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
         disabled={disabled || loading}
         aria-busy={loading}
         aria-live="polite"
@@ -75,14 +97,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </>
         ) : (
           <>
-            {leftIcon && <span className="mr-1 flex items-center justify-center" aria-hidden="true">{leftIcon}</span>}
+            {leftIcon && (
+              <span className="mr-1 flex items-center justify-center" aria-hidden="true">
+                {leftIcon}
+              </span>
+            )}
             {children}
-            {rightIcon && <span className="ml-1 flex items-center justify-center" aria-hidden="true">{rightIcon}</span>}
+            {rightIcon && (
+              <span className="ml-1 flex items-center justify-center" aria-hidden="true">
+                {rightIcon}
+              </span>
+            )}
           </>
         )}
       </Comp>
     );
-  },
+  }
 );
 Button.displayName = "Button";
 

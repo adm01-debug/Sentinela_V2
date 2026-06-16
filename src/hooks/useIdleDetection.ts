@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from "react";
 
 export interface UseIdleDetectionOptions {
   timeout?: number;
@@ -8,11 +8,11 @@ export interface UseIdleDetectionOptions {
 }
 
 export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
-  const { 
+  const {
     timeout = 300000, // 5 minutes default
-    events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'],
+    events = ["mousedown", "mousemove", "keypress", "scroll", "touchstart"],
     onIdle,
-    onActive
+    onActive,
   } = options;
 
   const [isIdle, setIsIdle] = useState(false);
@@ -23,14 +23,14 @@ export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    
+
     if (isIdle) {
       setIsIdle(false);
       onActive?.();
     }
-    
+
     setLastActivity(Date.now());
-    
+
     timeoutRef.current = setTimeout(() => {
       setIsIdle(true);
       onIdle?.();
@@ -38,14 +38,14 @@ export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
   }, [timeout, isIdle, onIdle, onActive]);
 
   useEffect(() => {
-    events.forEach(event => {
+    events.forEach((event) => {
       document.addEventListener(event, resetTimer, { passive: true });
     });
 
     resetTimer();
 
     return () => {
-      events.forEach(event => {
+      events.forEach((event) => {
         document.removeEventListener(event, resetTimer);
       });
       if (timeoutRef.current) {

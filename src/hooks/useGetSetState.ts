@@ -9,7 +9,7 @@ export function useGetSetState<T extends object>(
   const get = useCallback(() => state.current, []);
   const set = useCallback((patch: Partial<T>) => {
     state.current = { ...state.current, ...patch };
-    setTick(t => t + 1);
+    setTick((t) => t + 1);
   }, []);
 
   return [get, set];

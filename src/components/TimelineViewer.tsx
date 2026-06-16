@@ -1,28 +1,32 @@
-import { memo, useMemo } from 'react';
-import { format, formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { LucideIcon, Circle, CheckCircle2, XCircle, AlertCircle, Clock, MoreHorizontal } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { memo, useMemo } from "react";
+import { format, formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import {
+  LucideIcon,
+  Circle,
+  CheckCircle2,
+  XCircle,
+  AlertCircle,
+  Clock,
+  MoreHorizontal,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 // ============================================================
 // TYPES
 // ============================================================
 
-type TimelineStatus = 'pending' | 'in_progress' | 'completed' | 'failed' | 'warning' | 'info';
+type TimelineStatus = "pending" | "in_progress" | "completed" | "failed" | "warning" | "info";
 
 interface TimelineEvent {
   id: string;
@@ -47,7 +51,7 @@ interface TimelineViewerProps {
   events: TimelineEvent[];
   title?: string;
   subtitle?: string;
-  variant?: 'default' | 'compact' | 'detailed';
+  variant?: "default" | "compact" | "detailed";
   showConnector?: boolean;
   maxItems?: number;
   emptyMessage?: string;
@@ -61,35 +65,35 @@ interface TimelineViewerProps {
 // ============================================================
 
 const statusConfig: Record<TimelineStatus, { icon: LucideIcon; color: string; bgColor: string }> = {
-  pending: { 
-    icon: Clock, 
-    color: 'text-muted-foreground', 
-    bgColor: 'bg-muted' 
+  pending: {
+    icon: Clock,
+    color: "text-muted-foreground",
+    bgColor: "bg-muted",
   },
-  in_progress: { 
-    icon: Circle, 
-    color: 'text-blue-500', 
-    bgColor: 'bg-blue-500/10' 
+  in_progress: {
+    icon: Circle,
+    color: "text-blue-500",
+    bgColor: "bg-blue-500/10",
   },
-  completed: { 
-    icon: CheckCircle2, 
-    color: 'text-success', 
-    bgColor: 'bg-success/10' 
+  completed: {
+    icon: CheckCircle2,
+    color: "text-success",
+    bgColor: "bg-success/10",
   },
-  failed: { 
-    icon: XCircle, 
-    color: 'text-destructive', 
-    bgColor: 'bg-destructive/10' 
+  failed: {
+    icon: XCircle,
+    color: "text-destructive",
+    bgColor: "bg-destructive/10",
   },
-  warning: { 
-    icon: AlertCircle, 
-    color: 'text-warning', 
-    bgColor: 'bg-warning/10' 
+  warning: {
+    icon: AlertCircle,
+    color: "text-warning",
+    bgColor: "bg-warning/10",
   },
-  info: { 
-    icon: Circle, 
-    color: 'text-info', 
-    bgColor: 'bg-info/10' 
+  info: {
+    icon: Circle,
+    color: "text-info",
+    bgColor: "bg-info/10",
   },
 };
 
@@ -101,7 +105,7 @@ interface TimelineEventItemProps {
   event: TimelineEvent;
   isLast: boolean;
   showConnector: boolean;
-  variant: 'default' | 'compact' | 'detailed';
+  variant: "default" | "compact" | "detailed";
 }
 
 const TimelineEventItem = memo(function TimelineEventItem({
@@ -110,27 +114,32 @@ const TimelineEventItem = memo(function TimelineEventItem({
   showConnector,
   variant,
 }: TimelineEventItemProps) {
-  const timestamp = typeof event.timestamp === 'string' 
-    ? new Date(event.timestamp) 
-    : event.timestamp;
+  const timestamp =
+    typeof event.timestamp === "string" ? new Date(event.timestamp) : event.timestamp;
 
-  const status = event.status || 'info';
+  const status = event.status || "info";
   const config = statusConfig[status];
   const Icon = event.icon || config.icon;
 
-  const relativeTime = formatDistanceToNow(timestamp, { 
-    addSuffix: true, 
-    locale: ptBR 
+  const relativeTime = formatDistanceToNow(timestamp, {
+    addSuffix: true,
+    locale: ptBR,
   });
 
   const fullTime = format(timestamp, "dd 'de' MMMM 'às' HH:mm", { locale: ptBR });
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
       <div className="flex items-center gap-3 py-2">
-        <div className={cn('flex-shrink-0 h-2 w-2 rounded-full', config.bgColor, config.color.replace('text-', 'bg-'))} />
-        <div className="flex-1 min-w-0">
-          <span className="text-sm truncate">{event.title}</span>
+        <div
+          className={cn(
+            "h-2 w-2 flex-shrink-0 rounded-full",
+            config.bgColor,
+            config.color.replace("text-", "bg-")
+          )}
+        />
+        <div className="min-w-0 flex-1">
+          <span className="truncate text-sm">{event.title}</span>
         </div>
         <Tooltip>
           <TooltipTrigger>
@@ -146,38 +155,38 @@ const TimelineEventItem = memo(function TimelineEventItem({
     <div className="relative flex gap-4">
       {/* Connector Line */}
       {showConnector && !isLast && (
-        <div className="absolute left-5 top-10 bottom-0 w-px bg-border" />
+        <div className="absolute bottom-0 left-5 top-10 w-px bg-border" />
       )}
 
       {/* Icon */}
-      <div className={cn(
-        'relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full',
-        config.bgColor
-      )}>
-        <Icon className={cn('h-5 w-5', config.color)} />
+      <div
+        className={cn(
+          "relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full",
+          config.bgColor
+        )}
+      >
+        <Icon className={cn("h-5 w-5", config.color)} />
       </div>
 
       {/* Content */}
-      <div className={cn('flex-1 pb-6', isLast && 'pb-0')}>
+      <div className={cn("flex-1 pb-6", isLast && "pb-0")}>
         <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
               <h4 className="text-sm font-medium">{event.title}</h4>
-              {status !== 'info' && (
-                <Badge variant="outline" className={cn('text-xs', config.color)}>
-                  {status === 'pending' && 'Pendente'}
-                  {status === 'in_progress' && 'Em andamento'}
-                  {status === 'completed' && 'Concluído'}
-                  {status === 'failed' && 'Falhou'}
-                  {status === 'warning' && 'Atenção'}
+              {status !== "info" && (
+                <Badge variant="outline" className={cn("text-xs", config.color)}>
+                  {status === "pending" && "Pendente"}
+                  {status === "in_progress" && "Em andamento"}
+                  {status === "completed" && "Concluído"}
+                  {status === "failed" && "Falhou"}
+                  {status === "warning" && "Atenção"}
                 </Badge>
               )}
             </div>
 
             {event.description && (
-              <p className="mt-1 text-sm text-muted-foreground">
-                {event.description}
-              </p>
+              <p className="mt-1 text-sm text-muted-foreground">{event.description}</p>
             )}
 
             {/* User & Time */}
@@ -185,13 +194,13 @@ const TimelineEventItem = memo(function TimelineEventItem({
               {event.user && (
                 <div className="flex items-center gap-1.5">
                   {event.user.avatar ? (
-                    <img 
-                      src={event.user.avatar} 
+                    <img
+                      src={event.user.avatar}
                       alt={event.user.name}
                       className="h-4 w-4 rounded-full"
                     />
                   ) : (
-                    <div className="h-4 w-4 rounded-full bg-muted flex items-center justify-center text-[10px] font-medium">
+                    <div className="flex h-4 w-4 items-center justify-center rounded-full bg-muted text-[10px] font-medium">
                       {event.user.name.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -207,11 +216,11 @@ const TimelineEventItem = memo(function TimelineEventItem({
             </div>
 
             {/* Metadata (detailed variant) */}
-            {variant === 'detailed' && event.metadata && (
+            {variant === "detailed" && event.metadata && (
               <div className="mt-3 flex flex-wrap gap-2">
                 {Object.entries(event.metadata).map(([key, value]) => (
                   <Badge key={key} variant="secondary" className="text-xs">
-                    <span className="text-muted-foreground mr-1">{key}:</span>
+                    <span className="mr-1 text-muted-foreground">{key}:</span>
                     {value}
                   </Badge>
                 ))}
@@ -250,10 +259,10 @@ function TimelineViewerComponent({
   events,
   title,
   subtitle,
-  variant = 'default',
+  variant = "default",
   showConnector = true,
   maxItems,
-  emptyMessage = 'Nenhum evento encontrado',
+  emptyMessage = "Nenhum evento encontrado",
   onLoadMore,
   hasMore = false,
   className,
@@ -266,7 +275,7 @@ function TimelineViewerComponent({
   }, [events, maxItems]);
 
   const content = (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       {/* Header */}
       {(title || subtitle) && (
         <div className="flex items-center justify-between">
@@ -280,20 +289,20 @@ function TimelineViewerComponent({
 
       {/* Events */}
       {displayEvents.length > 0 ? (
-        <div className={cn(variant === 'compact' && 'divide-y')}>
+        <div className={cn(variant === "compact" && "divide-y")}>
           {displayEvents.map((event, index) => (
             <TimelineEventItem
               key={event.id}
               event={event}
               isLast={index === displayEvents.length - 1}
-              showConnector={showConnector && variant !== 'compact'}
+              showConnector={showConnector && variant !== "compact"}
               variant={variant}
             />
           ))}
         </div>
       ) : (
         <div className="py-12 text-center">
-          <Circle className="h-12 w-12 mx-auto text-muted-foreground/30 mb-4" />
+          <Circle className="mx-auto mb-4 h-12 w-12 text-muted-foreground/30" />
           <p className="text-sm text-muted-foreground">{emptyMessage}</p>
         </div>
       )}

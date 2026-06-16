@@ -9,7 +9,7 @@ export function useCamera() {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: true,
-        ...constraints
+        ...constraints,
       });
       setStream(mediaStream);
       if (videoRef.current) videoRef.current.srcObject = mediaStream;
@@ -19,7 +19,7 @@ export function useCamera() {
   }, []);
 
   const stop = useCallback(() => {
-    stream?.getTracks().forEach(track => track.stop());
+    stream?.getTracks().forEach((track) => track.stop());
     setStream(null);
   }, [stream]);
 

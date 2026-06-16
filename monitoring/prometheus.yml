@@ -1,6 +1,6 @@
 global:
   scrape_interval: 15s
 scrape_configs:
-  - job_name: 'sentinela-api'
+  - job_name: "sentinela-api"
     static_configs:
-      - targets: ['api:8080']
+      - targets: ["api:8080"]

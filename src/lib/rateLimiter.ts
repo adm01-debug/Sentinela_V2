@@ -3,7 +3,7 @@
 // Prevents excessive API calls from the frontend
 // ============================================================
 
-import { logger } from '@/lib/logger';
+import { logger } from "@/lib/logger";
 
 interface RateLimitBucket {
   tokens: number;
@@ -11,9 +11,9 @@ interface RateLimitBucket {
 }
 
 interface RateLimiterConfig {
-  maxTokens: number;       // Max requests in window
-  refillRate: number;      // Tokens per second
-  refillInterval: number;  // How often to refill (ms)
+  maxTokens: number; // Max requests in window
+  refillRate: number; // Tokens per second
+  refillInterval: number; // How often to refill (ms)
 }
 
 const DEFAULT_CONFIG: RateLimiterConfig = {
@@ -33,7 +33,7 @@ class ClientRateLimiter {
   /**
    * Check if request is allowed. Returns true if allowed, false if rate limited.
    */
-  tryAcquire(key = 'global'): boolean {
+  tryAcquire(key = "global"): boolean {
     const now = Date.now();
     let bucket = this.buckets.get(key);
 
@@ -63,14 +63,14 @@ class ClientRateLimiter {
   /**
    * Get remaining tokens for a key
    */
-  remaining(key = 'global'): number {
+  remaining(key = "global"): number {
     return this.buckets.get(key)?.tokens ?? this.config.maxTokens;
   }
 
   /**
    * Wait until a token is available, then consume it
    */
-  async waitForToken(key = 'global', timeoutMs = 10000): Promise<void> {
+  async waitForToken(key = "global", timeoutMs = 10000): Promise<void> {
     const start = Date.now();
     while (!this.tryAcquire(key)) {
       if (Date.now() - start > timeoutMs) {
@@ -83,7 +83,7 @@ class ClientRateLimiter {
   /**
    * Reset a specific bucket
    */
-  reset(key = 'global'): void {
+  reset(key = "global"): void {
     this.buckets.delete(key);
   }
 
@@ -97,7 +97,15 @@ class ClientRateLimiter {
 
 // Singleton instances for different use cases
 export const apiRateLimiter = new ClientRateLimiter({ maxTokens: 30, refillRate: 2 });
-export const authRateLimiter = new ClientRateLimiter({ maxTokens: 5, refillRate: 1, refillInterval: 5000 });
-export const exportRateLimiter = new ClientRateLimiter({ maxTokens: 3, refillRate: 1, refillInterval: 10000 });
+export const authRateLimiter = new ClientRateLimiter({
+  maxTokens: 5,
+  refillRate: 1,
+  refillInterval: 5000,
+});
+export const exportRateLimiter = new ClientRateLimiter({
+  maxTokens: 3,
+  refillRate: 1,
+  refillInterval: 10000,
+});
 
 export { ClientRateLimiter };

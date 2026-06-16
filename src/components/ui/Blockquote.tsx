@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { cn } from '@/utils/cn';
+import * as React from "react";
+import { cn } from "@/utils/cn";
 
 interface BlockquoteProps extends React.BlockquoteHTMLAttributes<HTMLQuoteElement> {
   author?: string;
@@ -8,7 +8,7 @@ interface BlockquoteProps extends React.BlockquoteHTMLAttributes<HTMLQuoteElemen
 
 export function Blockquote({ author, source, className, children, ...props }: BlockquoteProps) {
   return (
-    <figure className={cn('border-l-4 border-primary pl-4', className)}>
+    <figure className={cn("border-l-4 border-primary pl-4", className)}>
       <blockquote className="italic text-muted-foreground" {...props}>
         {children}
       </blockquote>

@@ -1,6 +1,12 @@
 interface ChartTooltipProps {
   active?: boolean;
-  payload?: Array<{ name: string; value: number; color?: string; dataKey?: string; payload?: unknown }>;
+  payload?: Array<{
+    name: string;
+    value: number;
+    color?: string;
+    dataKey?: string;
+    payload?: unknown;
+  }>;
   label?: string;
   labelFormatter?: (label: string) => string;
   valueFormatter?: (value: number) => string;
@@ -16,9 +22,9 @@ export function ChartTooltipContent({
   if (!active || !payload?.length) return null;
 
   return (
-    <div className="rounded-lg border border-border/60 bg-popover/95 backdrop-blur-lg p-3 shadow-lg shadow-black/10 min-w-[140px] animate-in fade-in-0 zoom-in-95 duration-150">
+    <div className="min-w-[140px] rounded-lg border border-border/60 bg-popover/95 p-3 shadow-lg shadow-black/10 backdrop-blur-lg duration-150 animate-in fade-in-0 zoom-in-95">
       {label && (
-        <p className="text-xs font-semibold text-popover-foreground mb-1.5 pb-1.5 border-b border-border/40">
+        <p className="mb-1.5 border-b border-border/40 pb-1.5 text-xs font-semibold text-popover-foreground">
           {labelFormatter ? labelFormatter(label) : label}
         </p>
       )}
@@ -30,10 +36,12 @@ export function ChartTooltipContent({
                 className="h-2 w-2 shrink-0 rounded-full ring-1 ring-white/10"
                 style={{ backgroundColor: entry.color }}
               />
-              <span className="text-muted-foreground truncate">{entry.name}</span>
+              <span className="truncate text-muted-foreground">{entry.name}</span>
             </div>
             <span className="font-semibold tabular-nums text-popover-foreground">
-              {valueFormatter ? valueFormatter(Number(entry.value)) : entry.value?.toLocaleString('pt-BR')}
+              {valueFormatter
+                ? valueFormatter(Number(entry.value))
+                : entry.value?.toLocaleString("pt-BR")}
             </span>
           </div>
         ))}

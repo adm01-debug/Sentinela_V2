@@ -1,6 +1,6 @@
 // Search Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 interface SearchResult {
   id: string;
@@ -14,7 +14,15 @@ interface SearchResult {
   meta?: unknown;
 }
 
-type SearchResultType = 'employee' | 'activity' | 'alert' | 'report' | 'team' | 'project' | 'setting' | 'page';
+type SearchResultType =
+  | "employee"
+  | "activity"
+  | "alert"
+  | "report"
+  | "team"
+  | "project"
+  | "setting"
+  | "page";
 
 interface SearchFilters {
   types?: SearchResultType[];
@@ -63,7 +71,7 @@ export const useSearchStore = create<SearchState>()(
     persist(
       (set, _get) => ({
         isOpen: false,
-        query: '',
+        query: "",
         results: [],
         filters: {},
         recentSearches: [],
@@ -74,33 +82,38 @@ export const useSearchStore = create<SearchState>()(
 
         open: () => set({ isOpen: true }),
 
-        close: () => set({ isOpen: false, query: '', results: [], selectedIndex: 0 }),
+        close: () => set({ isOpen: false, query: "", results: [], selectedIndex: 0 }),
 
         toggle: () => set((state) => ({ isOpen: !state.isOpen })),
 
         setQuery: (query) => set({ query, selectedIndex: 0 }),
 
-        clearQuery: () => set({ query: '', results: [], selectedIndex: 0 }),
+        clearQuery: () => set({ query: "", results: [], selectedIndex: 0 }),
 
         setResults: (results) => set({ results }),
 
         clearResults: () => set({ results: [] }),
 
-        setFilters: (filters) =>
-          set((state) => ({ filters: { ...state.filters, ...filters } })),
+        setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters } })),
 
         clearFilters: () => set({ filters: {} }),
 
         addRecentSearch: (query) =>
           set((state) => ({
-            recentSearches: [query, ...state.recentSearches.filter((q) => q !== query)].slice(0, MAX_RECENT_SEARCHES),
+            recentSearches: [query, ...state.recentSearches.filter((q) => q !== query)].slice(
+              0,
+              MAX_RECENT_SEARCHES
+            ),
           })),
 
         clearRecentSearches: () => set({ recentSearches: [] }),
 
         addRecentResult: (result) =>
           set((state) => ({
-            recentResults: [result, ...state.recentResults.filter((r) => r.id !== result.id)].slice(0, MAX_RECENT_RESULTS),
+            recentResults: [result, ...state.recentResults.filter((r) => r.id !== result.id)].slice(
+              0,
+              MAX_RECENT_RESULTS
+            ),
           })),
 
         clearRecentResults: () => set({ recentResults: [] }),
@@ -118,13 +131,14 @@ export const useSearchStore = create<SearchState>()(
 
         selectPrevious: () =>
           set((state) => ({
-            selectedIndex: (state.selectedIndex - 1 + state.results.length) % Math.max(state.results.length, 1),
+            selectedIndex:
+              (state.selectedIndex - 1 + state.results.length) % Math.max(state.results.length, 1),
           })),
 
         reset: () =>
           set({
             isOpen: false,
-            query: '',
+            query: "",
             results: [],
             filters: {},
             isLoading: false,
@@ -133,7 +147,7 @@ export const useSearchStore = create<SearchState>()(
           }),
       }),
       {
-        name: 'search-store',
+        name: "search-store",
         partialize: (state) => ({
           recentSearches: state.recentSearches,
           recentResults: state.recentResults,
@@ -141,7 +155,7 @@ export const useSearchStore = create<SearchState>()(
         }),
       }
     ),
-    { name: 'SearchStore' }
+    { name: "SearchStore" }
   )
 );
 

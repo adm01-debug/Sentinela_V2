@@ -1,10 +1,10 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys } from '@/lib/queryClient';
+import { useState, useMemo, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys } from "@/lib/queryClient";
 
-type UserRole = 'admin' | 'manager' | 'viewer';
+type UserRole = "admin" | "manager" | "viewer";
 
 interface User {
   id: string;
@@ -35,10 +35,10 @@ interface UpdateUserData {
 export function useUserManagementPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
-  const [search, setSearch] = useState('');
-  const [roleFilter, setRoleFilter] = useState('all');
-  const [statusFilter, setStatusFilter] = useState('all');
+
+  const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -47,16 +47,13 @@ export function useUserManagementPage() {
   const usersQuery = useQuery({
     queryKey: [...queryKeys.users.lists(), { search, role: roleFilter, status: statusFilter }],
     queryFn: async () => {
-      let query = supabase
-        .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
+      let query = supabase.from("profiles").select("*").order("created_at", { ascending: false });
 
-      if (roleFilter !== 'all') {
-        query = query.eq('role', roleFilter);
+      if (roleFilter !== "all") {
+        query = query.eq("role", roleFilter);
       }
-      if (statusFilter !== 'all') {
-        query = query.eq('is_active', statusFilter === 'active');
+      if (statusFilter !== "all") {
+        query = query.eq("is_active", statusFilter === "active");
       }
       if (search) {
         query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`);
@@ -72,9 +69,9 @@ export function useUserManagementPage() {
   const stats = useMemo(() => {
     const users = usersQuery.data || [];
     const total = users.length;
-    const active = users.filter(u => u.is_active).length;
-    const admins = users.filter(u => u.role === 'admin').length;
-    const withMFA = users.filter(u => u.mfa_enabled).length;
+    const active = users.filter((u) => u.is_active).length;
+    const admins = users.filter((u) => u.role === "admin").length;
+    const withMFA = users.filter((u) => u.mfa_enabled).length;
 
     return { total, active, admins, withMFA };
   }, [usersQuery.data]);
@@ -90,18 +87,18 @@ export function useUserManagementPage() {
       if (authError) throw authError;
 
       const { error } = await supabase
-        .from('profiles')
+        .from("profiles")
         .update({ name: data.name, role: data.role })
-        .eq('id', authData.user.id);
+        .eq("id", authData.user.id);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-      toast({ title: 'Usuário criado com sucesso' });
+      toast({ title: "Usuário criado com sucesso" });
       setIsCreateDialogOpen(false);
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao criar usuário', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao criar usuário", description: error.message, variant: "destructive" });
     },
   });
 
@@ -109,18 +106,18 @@ export function useUserManagementPage() {
   const updateMutation = useMutation({
     mutationFn: async (data: UpdateUserData) => {
       const { error } = await supabase
-        .from('profiles')
+        .from("profiles")
         .update({ name: data.name, role: data.role, is_active: data.is_active })
-        .eq('id', data.id);
+        .eq("id", data.id);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-      toast({ title: 'Usuário atualizado com sucesso' });
+      toast({ title: "Usuário atualizado com sucesso" });
       setIsEditDialogOpen(false);
     },
     onError: () => {
-      toast({ title: 'Erro ao atualizar usuário', variant: 'destructive' });
+      toast({ title: "Erro ao atualizar usuário", variant: "destructive" });
     },
   });
 
@@ -132,11 +129,11 @@ export function useUserManagementPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-      toast({ title: 'Usuário removido com sucesso' });
+      toast({ title: "Usuário removido com sucesso" });
       setIsEditDialogOpen(false);
     },
     onError: () => {
-      toast({ title: 'Erro ao remover usuário', variant: 'destructive' });
+      toast({ title: "Erro ao remover usuário", variant: "destructive" });
     },
   });
 
@@ -147,10 +144,10 @@ export function useUserManagementPage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      toast({ title: 'Email de redefinição enviado' });
+      toast({ title: "Email de redefinição enviado" });
     },
     onError: () => {
-      toast({ title: 'Erro ao enviar email', variant: 'destructive' });
+      toast({ title: "Erro ao enviar email", variant: "destructive" });
     },
   });
 
@@ -175,9 +172,12 @@ export function useUserManagementPage() {
     setIsCreateDialogOpen(false);
   }, []);
 
-  const handleCreateUser = useCallback((data: CreateUserData) => {
-    createMutation.mutate(data);
-  }, [createMutation]);
+  const handleCreateUser = useCallback(
+    (data: CreateUserData) => {
+      createMutation.mutate(data);
+    },
+    [createMutation]
+  );
 
   const handleEditUser = useCallback((user: User) => {
     setSelectedUser(user);
@@ -189,21 +189,33 @@ export function useUserManagementPage() {
     setSelectedUser(null);
   }, []);
 
-  const handleUpdateUser = useCallback((data: UpdateUserData) => {
-    updateMutation.mutate(data);
-  }, [updateMutation]);
+  const handleUpdateUser = useCallback(
+    (data: UpdateUserData) => {
+      updateMutation.mutate(data);
+    },
+    [updateMutation]
+  );
 
-  const handleDeleteUser = useCallback((userId: string) => {
-    deleteMutation.mutate(userId);
-  }, [deleteMutation]);
+  const handleDeleteUser = useCallback(
+    (userId: string) => {
+      deleteMutation.mutate(userId);
+    },
+    [deleteMutation]
+  );
 
-  const handleResetPassword = useCallback((email: string) => {
-    resetPasswordMutation.mutate(email);
-  }, [resetPasswordMutation]);
+  const handleResetPassword = useCallback(
+    (email: string) => {
+      resetPasswordMutation.mutate(email);
+    },
+    [resetPasswordMutation]
+  );
 
-  const handleToggleStatus = useCallback((userId: string, isActive: boolean) => {
-    updateMutation.mutate({ id: userId, is_active: !isActive });
-  }, [updateMutation]);
+  const handleToggleStatus = useCallback(
+    (userId: string, isActive: boolean) => {
+      updateMutation.mutate({ id: userId, is_active: !isActive });
+    },
+    [updateMutation]
+  );
 
   return {
     // Data
@@ -215,10 +227,10 @@ export function useUserManagementPage() {
     selectedUser,
     isCreateDialogOpen,
     isEditDialogOpen,
-    
+
     // Loading states
     isLoading: usersQuery.isLoading,
-    
+
     // Handlers
     handleSearchChange,
     handleRoleFilterChange,
@@ -232,7 +244,7 @@ export function useUserManagementPage() {
     handleDeleteUser,
     handleResetPassword,
     handleToggleStatus,
-    
+
     // Mutation states
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,

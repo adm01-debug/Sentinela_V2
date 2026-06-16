@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState } from "react";
 import {
   MessageSquare,
   Send,
@@ -12,36 +12,36 @@ import {
   XCircle,
   RotateCcw,
   AlertTriangle,
-} from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
+} from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
   useViolationComments,
   useCreateViolationComment,
   useUpdateViolationComment,
   useDeleteViolationComment,
-} from '@/hooks/useViolationComments';
-import { useAuth } from '@/hooks/useAuth';
+} from "@/hooks/useViolationComments";
+import { useAuth } from "@/hooks/useAuth";
 
 // Status config
 const statusConfig: Record<string, { label: string; color: string }> = {
-  open: { label: 'Aberto', color: 'bg-yellow-500 text-white' },
-  acknowledged: { label: 'Reconhecido', color: 'bg-blue-500 text-white' },
-  investigating: { label: 'Em Investigação', color: 'bg-purple-500 text-white' },
-  resolved: { label: 'Resolvido', color: 'bg-green-500 text-white' },
-  dismissed: { label: 'Dispensado', color: 'bg-gray-500 text-white' },
+  open: { label: "Aberto", color: "bg-yellow-500 text-white" },
+  acknowledged: { label: "Reconhecido", color: "bg-blue-500 text-white" },
+  investigating: { label: "Em Investigação", color: "bg-purple-500 text-white" },
+  resolved: { label: "Resolvido", color: "bg-green-500 text-white" },
+  dismissed: { label: "Dispensado", color: "bg-gray-500 text-white" },
 };
 
 interface ViolationCommentsPanelProps {
@@ -49,11 +49,14 @@ interface ViolationCommentsPanelProps {
   currentStatus?: string;
 }
 
-function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: ViolationCommentsPanelProps) {
+function ViolationCommentsPanelBase({
+  violationId,
+  currentStatus = "open",
+}: ViolationCommentsPanelProps) {
   const { user } = useAuth();
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editContent, setEditContent] = useState('');
+  const [editContent, setEditContent] = useState("");
 
   const { data: comments, isLoading: loadingComments } = useViolationComments(violationId);
 
@@ -65,7 +68,7 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
     if (!newComment.trim()) return;
     createComment.mutate(
       { violation_id: violationId, content: newComment },
-      { onSuccess: () => setNewComment('') }
+      { onSuccess: () => setNewComment("") }
     );
   };
 
@@ -73,7 +76,12 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
     if (!editContent.trim()) return;
     updateComment.mutate(
       { id: commentId, content: editContent },
-      { onSuccess: () => { setEditingId(null); setEditContent(''); } }
+      {
+        onSuccess: () => {
+          setEditingId(null);
+          setEditContent("");
+        },
+      }
     );
   };
 
@@ -87,47 +95,47 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
           <span className="text-sm text-muted-foreground">Status:</span>
           <Badge className={status.color}>{status.label}</Badge>
         </div>
-        
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm">
               Ações
-              <MoreHorizontal className="h-4 w-4 ml-2" />
+              <MoreHorizontal className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {currentStatus === 'open' && (
+            {currentStatus === "open" && (
               <DropdownMenuItem>
-                <Eye className="h-4 w-4 mr-2" />
+                <Eye className="mr-2 h-4 w-4" />
                 Reconhecer
               </DropdownMenuItem>
             )}
-            {['open', 'acknowledged'].includes(currentStatus) && (
+            {["open", "acknowledged"].includes(currentStatus) && (
               <DropdownMenuItem>
-                <Search className="h-4 w-4 mr-2" />
+                <Search className="mr-2 h-4 w-4" />
                 Investigar
               </DropdownMenuItem>
             )}
             <DropdownMenuItem>
-              <AlertTriangle className="h-4 w-4 mr-2" />
+              <AlertTriangle className="mr-2 h-4 w-4" />
               Escalar
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            {!['resolved', 'dismissed'].includes(currentStatus) && (
+            {!["resolved", "dismissed"].includes(currentStatus) && (
               <>
                 <DropdownMenuItem>
-                  <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                  <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
                   Resolver
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <XCircle className="h-4 w-4 mr-2 text-gray-500" />
+                  <XCircle className="mr-2 h-4 w-4 text-gray-500" />
                   Dispensar
                 </DropdownMenuItem>
               </>
             )}
-            {['resolved', 'dismissed'].includes(currentStatus) && (
+            {["resolved", "dismissed"].includes(currentStatus) && (
               <DropdownMenuItem>
-                <RotateCcw className="h-4 w-4 mr-2 text-red-500" />
+                <RotateCcw className="mr-2 h-4 w-4 text-red-500" />
                 Reabrir
               </DropdownMenuItem>
             )}
@@ -139,7 +147,7 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
 
       {/* Comments */}
       <div className="space-y-4">
-        <h4 className="text-sm font-medium flex items-center gap-2">
+        <h4 className="flex items-center gap-2 text-sm font-medium">
           <MessageSquare className="h-4 w-4" />
           Comentários ({comments?.length || 0})
         </h4>
@@ -149,12 +157,14 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
             <Loader2 className="h-5 w-5 animate-spin" />
           </div>
         ) : (
-          <div className="space-y-3 max-h-[300px] overflow-y-auto">
+          <div className="max-h-[300px] space-y-3 overflow-y-auto">
             {comments?.map((comment) => (
               <div key={comment.id} className="flex gap-3">
                 <Avatar className="h-8 w-8">
                   <AvatarFallback className="text-xs">
-                    {(comment.user?.full_name || comment.user?.email || '?').substring(0, 2).toUpperCase()}
+                    {(comment.user?.full_name || comment.user?.email || "?")
+                      .substring(0, 2)
+                      .toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 space-y-1">
@@ -163,16 +173,21 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
                       {comment.user?.full_name || comment.user?.email}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: ptBR })}
+                      {formatDistanceToNow(new Date(comment.created_at), {
+                        addSuffix: true,
+                        locale: ptBR,
+                      })}
                     </span>
                     {comment.updated_at !== comment.created_at && (
                       <span className="text-xs text-muted-foreground">(editado)</span>
                     )}
                     {comment.is_internal && (
-                      <Badge variant="outline" className="text-xs">Interno</Badge>
+                      <Badge variant="outline" className="text-xs">
+                        Interno
+                      </Badge>
                     )}
                   </div>
-                  
+
                   {editingId === comment.id ? (
                     <div className="space-y-2">
                       <Textarea
@@ -193,7 +208,7 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
                     <p className="text-sm">{comment.content}</p>
                   )}
                 </div>
-                
+
                 {comment.user_id === user?.id && editingId !== comment.id && (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -202,18 +217,20 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => {
-                        setEditingId(comment.id);
-                        setEditContent(comment.content);
-                      }}>
-                        <Pencil className="h-4 w-4 mr-2" />
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setEditingId(comment.id);
+                          setEditContent(comment.content);
+                        }}
+                      >
+                        <Pencil className="mr-2 h-4 w-4" />
                         Editar
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-destructive"
                         onClick={() => deleteComment.mutate({ id: comment.id, violationId })}
                       >
-                        <Trash2 className="h-4 w-4 mr-2" />
+                        <Trash2 className="mr-2 h-4 w-4" />
                         Excluir
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -221,9 +238,9 @@ function ViolationCommentsPanelBase({ violationId, currentStatus = 'open' }: Vio
                 )}
               </div>
             ))}
-            
+
             {(!comments || comments.length === 0) && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="py-4 text-center text-sm text-muted-foreground">
                 Nenhum comentário ainda
               </p>
             )}

@@ -1,7 +1,7 @@
 name: Desktop Build
 on:
   push:
-    paths: ['desktop-agent/**']
+    paths: ["desktop-agent/**"]
 jobs:
   build:
     runs-on: ${{ matrix.os }}

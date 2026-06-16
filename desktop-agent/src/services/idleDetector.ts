@@ -1,7 +1,7 @@
-import log from 'electron-log';
-import { powerMonitor } from 'electron';
-import { CONFIG } from '../config';
-import { DataSender } from './dataSender';
+import log from "electron-log";
+import { powerMonitor } from "electron";
+import { CONFIG } from "../config";
+import { DataSender } from "./dataSender";
 
 export class IdleDetector {
   private dataSender: DataSender;
@@ -14,7 +14,7 @@ export class IdleDetector {
   }
 
   start(): void {
-    log.info('Idle detector started');
+    log.info("Idle detector started");
 
     this.pollTimer = setInterval(() => {
       const idleSeconds = powerMonitor.getSystemIdleTime();
@@ -29,7 +29,7 @@ export class IdleDetector {
           ? Math.round((Date.now() - this.idleStart.getTime()) / 1000)
           : idleSeconds;
 
-        this.dataSender.send('idle', {
+        this.dataSender.send("idle", {
           duration_seconds: idleDuration,
         });
 
@@ -40,13 +40,13 @@ export class IdleDetector {
     }, 15000); // Check every 15 seconds
 
     // System suspend/resume
-    powerMonitor.on('suspend', () => {
-      log.info('System suspended');
-      this.dataSender.send('idle', { duration_seconds: 0 });
+    powerMonitor.on("suspend", () => {
+      log.info("System suspended");
+      this.dataSender.send("idle", { duration_seconds: 0 });
     });
 
-    powerMonitor.on('resume', () => {
-      log.info('System resumed');
+    powerMonitor.on("resume", () => {
+      log.info("System resumed");
     });
   }
 
@@ -55,6 +55,6 @@ export class IdleDetector {
       clearInterval(this.pollTimer);
       this.pollTimer = null;
     }
-    log.info('Idle detector stopped');
+    log.info("Idle detector stopped");
   }
 }

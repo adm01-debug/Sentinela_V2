@@ -1,10 +1,10 @@
-import { useState, useCallback, useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, useCallback, useMemo } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface Anomaly {
   id: string;
   type: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   score: number;
   description: string;
   timestamp: Date;
@@ -14,7 +14,7 @@ export interface Anomaly {
 interface AnomalyPrediction {
   id: string;
   type: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   score: number;
   description: string;
   timestamp: string;
@@ -38,27 +38,35 @@ export function useAnomalyDetection(options: UseAnomalyDetectionOptions = {}) {
     setIsLoading(true);
     setError(null);
     try {
-      const { data, error: fnError } = await supabase.functions.invoke('predict-anomaly', {
-        body: { entityType, threshold, timeRange: '24h' }
+      const { data, error: fnError } = await supabase.functions.invoke("predict-anomaly", {
+        body: { entityType, threshold, timeRange: "24h" },
       });
       if (fnError) throw fnError;
-      setAnomalies((data?.predictions as AnomalyPrediction[] || []).map((p: AnomalyPrediction) => ({
-        ...p,
-        timestamp: new Date(p.timestamp)
-      })));
+      setAnomalies(
+        ((data?.predictions as AnomalyPrediction[]) || []).map((p: AnomalyPrediction) => ({
+          ...p,
+          timestamp: new Date(p.timestamp),
+        }))
+      );
     } catch (e) {
-      setError(e instanceof Error ? e : new Error('Detection failed'));
+      setError(e instanceof Error ? e : new Error("Detection failed"));
     } finally {
       setIsLoading(false);
     }
   }, [entityType, threshold]);
 
   const dismissAnomaly = useCallback((id: string) => {
-    setAnomalies(prev => prev.filter(a => a.id !== id));
+    setAnomalies((prev) => prev.filter((a) => a.id !== id));
   }, []);
 
-  const criticalCount = useMemo(() => anomalies.filter(a => a.severity === 'critical').length, [anomalies]);
-  const highCount = useMemo(() => anomalies.filter(a => a.severity === 'high').length, [anomalies]);
+  const criticalCount = useMemo(
+    () => anomalies.filter((a) => a.severity === "critical").length,
+    [anomalies]
+  );
+  const highCount = useMemo(
+    () => anomalies.filter((a) => a.severity === "high").length,
+    [anomalies]
+  );
 
   return { anomalies, isLoading, error, detectAnomalies, dismissAnomaly, criticalCount, highCount };
 }

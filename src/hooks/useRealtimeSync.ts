@@ -13,13 +13,16 @@ export function useRealtimeSync<T>(key: string, initialValue: T) {
     return () => channel.close();
   }, [key]);
 
-  const sync = useCallback((newValue: T) => {
-    setValue(newValue);
-    const channel = new BroadcastChannel(key);
-    channel.postMessage(newValue);
-    channel.close();
-    setLastSync(new Date());
-  }, [key]);
+  const sync = useCallback(
+    (newValue: T) => {
+      setValue(newValue);
+      const channel = new BroadcastChannel(key);
+      channel.postMessage(newValue);
+      channel.close();
+      setLastSync(new Date());
+    },
+    [key]
+  );
 
   return { value, sync, lastSync };
 }

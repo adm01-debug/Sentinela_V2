@@ -1,6 +1,6 @@
-import log from 'electron-log';
-import { app } from 'electron';
-import { CONFIG } from '../config';
+import log from "electron-log";
+import { app } from "electron";
+import { CONFIG } from "../config";
 
 interface QueueItem {
   data_type: string;
@@ -29,7 +29,7 @@ export class DataSender {
     });
 
     // Flush immediately for critical data
-    if (['screenshot', 'login', 'logout'].includes(dataType)) {
+    if (["screenshot", "login", "logout"].includes(dataType)) {
       this.flush();
     }
   }
@@ -50,10 +50,10 @@ export class DataSender {
     for (const item of batch) {
       try {
         const response = await fetch(`${CONFIG.API_URL}/agent-collector`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            'x-agent-key': this.agentKey,
+            "Content-Type": "application/json",
+            "x-agent-key": this.agentKey,
           },
           body: JSON.stringify({
             data_type: item.data_type,
@@ -66,7 +66,7 @@ export class DataSender {
         if (!response.ok) {
           const errorText = await response.text();
           log.warn(`Failed to send ${item.data_type}: ${response.status} - ${errorText}`);
-          
+
           if (response.status !== 400 && item.retries < CONFIG.MAX_RETRIES) {
             item.retries++;
             failed.push(item);
@@ -83,7 +83,7 @@ export class DataSender {
 
     // Re-queue failed items
     this.queue.unshift(...failed);
-    
+
     // Trim queue if too large
     if (this.queue.length > CONFIG.LOCAL_CACHE_MAX_ITEMS) {
       this.queue = this.queue.slice(-CONFIG.LOCAL_CACHE_MAX_ITEMS);

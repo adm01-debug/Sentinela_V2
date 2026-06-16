@@ -15,7 +15,7 @@ export interface Tag {
   createdBy?: string;
 }
 
-export type TagType = 'general' | 'priority' | 'status' | 'custom';
+export type TagType = "general" | "priority" | "status" | "custom";
 
 export interface TagCreateInput {
   name: string;
@@ -57,7 +57,7 @@ export interface BulkTagInput {
   tagIds: string[];
   resourceType: string;
   resourceIds: string[];
-  action: 'add' | 'remove' | 'replace';
+  action: "add" | "remove" | "replace";
 }
 
 export interface TagSuggestion {

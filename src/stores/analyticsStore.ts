@@ -1,6 +1,6 @@
 // Analytics Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 interface DateRange {
   start: string;
@@ -35,7 +35,7 @@ interface TrendData {
   current: number;
   previous: number;
   change: number;
-  trend: 'up' | 'down' | 'stable';
+  trend: "up" | "down" | "stable";
 }
 
 interface SummaryData {
@@ -50,7 +50,7 @@ interface AnalyticsState {
   data: AnalyticsData | null;
   dateRange: DateRange;
   selectedMetrics: string[];
-  groupBy: 'day' | 'week' | 'month';
+  groupBy: "day" | "week" | "month";
   compareMode: boolean;
   compareDateRange: DateRange | null;
   isLoading: boolean;
@@ -59,7 +59,7 @@ interface AnalyticsState {
   setData: (data: AnalyticsData) => void;
   setDateRange: (range: DateRange) => void;
   setSelectedMetrics: (metrics: string[]) => void;
-  setGroupBy: (groupBy: 'day' | 'week' | 'month') => void;
+  setGroupBy: (groupBy: "day" | "week" | "month") => void;
   setCompareMode: (enabled: boolean) => void;
   setCompareDateRange: (range: DateRange | null) => void;
   setLoading: (loading: boolean) => void;
@@ -67,14 +67,14 @@ interface AnalyticsState {
   reset: () => void;
 }
 
-const today = new Date().toISOString().split('T')[0];
-const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+const today = new Date().toISOString().split("T")[0];
+const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
 
 const initialState = {
   data: null,
   dateRange: { start: lastWeek, end: today },
-  selectedMetrics: ['productivity', 'activeTime', 'applications'],
-  groupBy: 'day' as const,
+  selectedMetrics: ["productivity", "activeTime", "applications"],
+  groupBy: "day" as const,
   compareMode: false,
   compareDateRange: null,
   isLoading: false,
@@ -106,7 +106,7 @@ export const useAnalyticsStore = create<AnalyticsState>()(
         reset: () => set(initialState),
       }),
       {
-        name: 'analytics-store',
+        name: "analytics-store",
         partialize: (state) => ({
           dateRange: state.dateRange,
           selectedMetrics: state.selectedMetrics,
@@ -114,6 +114,6 @@ export const useAnalyticsStore = create<AnalyticsState>()(
         }),
       }
     ),
-    { name: 'AnalyticsStore' }
+    { name: "AnalyticsStore" }
   )
 );

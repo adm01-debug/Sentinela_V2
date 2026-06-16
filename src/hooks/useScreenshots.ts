@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface Screenshot {
   id: string;
@@ -12,7 +12,7 @@ export interface Screenshot {
 
 export const useScreenshots = (employeeId: string, date: string) => {
   return useQuery({
-    queryKey: ['screenshots', employeeId, date],
+    queryKey: ["screenshots", employeeId, date],
     queryFn: async () => [] as Screenshot[],
     enabled: !!employeeId && !!date,
   });
@@ -21,14 +21,18 @@ export const useScreenshots = (employeeId: string, date: string) => {
 export const useDeleteScreenshot = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (_id: string) => { return; },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['screenshots'] }); },
+    mutationFn: async (_id: string) => {
+      return;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["screenshots"] });
+    },
   });
 };
 
 export const useScreenshot = (id: string | null | undefined) => {
   return useQuery({
-    queryKey: ['screenshot', id],
+    queryKey: ["screenshot", id],
     queryFn: async () => null as Screenshot | null,
     enabled: !!id,
   });

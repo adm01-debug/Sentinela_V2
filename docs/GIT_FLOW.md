@@ -2,14 +2,14 @@
 
 ## Branches
 
-| Branch | Propósito | Proteção |
-|--------|-----------|----------|
-| `main` | Produção estável | PR obrigatório, CI passando |
-| `feat/*` | Novas funcionalidades | - |
-| `fix/*` | Bug fixes | - |
-| `hotfix/*` | Correções urgentes em produção | Review prioritário |
-| `refactor/*` | Melhorias de código | - |
-| `docs/*` | Documentação | - |
+| Branch       | Propósito                      | Proteção                    |
+| ------------ | ------------------------------ | --------------------------- |
+| `main`       | Produção estável               | PR obrigatório, CI passando |
+| `feat/*`     | Novas funcionalidades          | -                           |
+| `fix/*`      | Bug fixes                      | -                           |
+| `hotfix/*`   | Correções urgentes em produção | Review prioritário          |
+| `refactor/*` | Melhorias de código            | -                           |
+| `docs/*`     | Documentação                   | -                           |
 
 ## Fluxo Normal
 

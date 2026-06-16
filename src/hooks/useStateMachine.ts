@@ -8,10 +8,13 @@ export function useStateMachine<S extends string, E extends string>(
 ) {
   const [state, setState] = useState(initialState);
 
-  const send = useCallback((event: E) => {
-    const nextState = transitions[state]?.[event];
-    if (nextState) setState(nextState);
-  }, [state, transitions]);
+  const send = useCallback(
+    (event: E) => {
+      const nextState = transitions[state]?.[event];
+      if (nextState) setState(nextState);
+    },
+    [state, transitions]
+  );
 
   const can = useCallback((event: E) => !!transitions[state]?.[event], [state, transitions]);
 

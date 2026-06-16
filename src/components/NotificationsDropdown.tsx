@@ -1,8 +1,8 @@
-import { memo, useCallback, useMemo } from 'react';
-import { Bell, Check } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Button } from '@/components/ui/button';
+import { memo, useCallback, useMemo } from "react";
+import { Bell, Check } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,15 +10,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   usePendingNotifications,
   useUnreadNotificationsCount,
   useMarkNotificationAsRead,
   useMarkAllNotificationsAsRead,
-} from '@/hooks/usePendingNotifications';
+} from "@/hooks/usePendingNotifications";
 
 interface NotificationItemProps {
   notification: {
@@ -47,16 +47,14 @@ const NotificationItem = memo(function NotificationItem({
 
   return (
     <DropdownMenuItem
-      className="flex flex-col items-start gap-1 p-3 cursor-pointer"
+      className="flex cursor-pointer flex-col items-start gap-1 p-3"
       onClick={handleClick}
     >
       <div className="flex w-full justify-between">
-        <span className="font-medium text-sm">{notification.title}</span>
+        <span className="text-sm font-medium">{notification.title}</span>
         <span className="text-xs text-muted-foreground">{timeAgo}</span>
       </div>
-      <p className="text-xs text-muted-foreground line-clamp-2">
-        {notification.message}
-      </p>
+      <p className="line-clamp-2 text-xs text-muted-foreground">{notification.message}</p>
     </DropdownMenuItem>
   );
 });
@@ -69,9 +67,12 @@ function NotificationsDropdownComponent() {
 
   const unreadCount = Number(unreadCountRaw) || 0;
 
-  const handleMarkAsRead = useCallback((id: string) => {
-    markAsRead.mutate(id);
-  }, [markAsRead]);
+  const handleMarkAsRead = useCallback(
+    (id: string) => {
+      markAsRead.mutate(id);
+    },
+    [markAsRead]
+  );
 
   const handleMarkAllAsRead = useCallback(() => {
     markAllAsRead.mutate();
@@ -89,9 +90,9 @@ function NotificationsDropdownComponent() {
           {unreadCount > 0 && (
             <Badge
               variant="destructive"
-              className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px]"
+              className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center p-0 text-[10px]"
             >
-              {unreadCount > 99 ? '99+' : unreadCount}
+              {unreadCount > 99 ? "99+" : unreadCount}
             </Badge>
           )}
         </Button>
@@ -106,7 +107,7 @@ function NotificationsDropdownComponent() {
               className="h-auto p-0 text-xs"
               onClick={handleMarkAllAsRead}
             >
-              <Check className="h-3 w-3 mr-1" />
+              <Check className="mr-1 h-3 w-3" />
               Marcar todas como lidas
             </Button>
           )}
@@ -114,13 +115,9 @@ function NotificationsDropdownComponent() {
         <DropdownMenuSeparator />
         <ScrollArea className="h-[300px]">
           {isLoading ? (
-            <div className="p-4 text-center text-sm text-muted-foreground">
-              Carregando...
-            </div>
+            <div className="p-4 text-center text-sm text-muted-foreground">Carregando...</div>
           ) : displayedNotifications.length === 0 ? (
-            <div className="p-4 text-center text-sm text-muted-foreground">
-              Nenhuma notificação
-            </div>
+            <div className="p-4 text-center text-sm text-muted-foreground">Nenhuma notificação</div>
           ) : (
             displayedNotifications.map((notification) => (
               <NotificationItem

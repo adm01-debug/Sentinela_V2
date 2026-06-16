@@ -1,15 +1,15 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useCallback, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export interface ScheduledReport {
   id: string;
   name: string;
   description?: string;
-  report_type: 'productivity' | 'violations' | 'activity' | 'summary' | 'custom';
-  format: 'pdf' | 'excel' | 'csv';
-  schedule: 'daily' | 'weekly' | 'monthly';
+  report_type: "productivity" | "violations" | "activity" | "summary" | "custom";
+  format: "pdf" | "excel" | "csv";
+  schedule: "daily" | "weekly" | "monthly";
   schedule_time: string;
   schedule_day?: number;
   recipients: string[];
@@ -33,11 +33,11 @@ export interface ReportFormData {
 }
 
 export const REPORT_TYPES = [
-  { value: 'productivity', label: 'Produtividade' },
-  { value: 'violations', label: 'Violacoes' },
-  { value: 'activity', label: 'Atividade' },
-  { value: 'summary', label: 'Resumo Executivo' },
-  { value: 'custom', label: 'Personalizado' },
+  { value: "productivity", label: "Produtividade" },
+  { value: "violations", label: "Violacoes" },
+  { value: "activity", label: "Atividade" },
+  { value: "summary", label: "Resumo Executivo" },
+  { value: "custom", label: "Personalizado" },
 ];
 
 interface ScheduledReportSettingRow {
@@ -52,12 +52,12 @@ interface ScheduledReportSettingRow {
 }
 
 const initialFormData: ReportFormData = {
-  name: '',
-  description: '',
-  report_type: 'summary',
-  format: 'pdf',
-  schedule: 'weekly',
-  schedule_time: '08:00',
+  name: "",
+  description: "",
+  report_type: "summary",
+  format: "pdf",
+  schedule: "weekly",
+  schedule_time: "08:00",
   recipients: [],
   is_active: true,
 };
@@ -66,31 +66,31 @@ export function useScheduledReportsPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingReport, setEditingReport] = useState<ScheduledReport | null>(null);
   const [deletingReport, setDeletingReport] = useState<ScheduledReport | null>(null);
   const [formData, setFormData] = useState<ReportFormData>(initialFormData);
-  const [newRecipient, setNewRecipient] = useState('');
+  const [newRecipient, setNewRecipient] = useState("");
 
   // Use scheduled_report_settings table that exists
   const { data: reports = [], isLoading } = useQuery({
-    queryKey: ['scheduled-reports'],
+    queryKey: ["scheduled-reports"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('scheduled_report_settings')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("scheduled_report_settings")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return ((data || []) as ScheduledReportSettingRow[]).map((r) => ({
         id: r.id,
         name: `Relatório ${r.report_type}`,
-        description: '',
-        report_type: (r.report_type || 'summary') as ScheduledReport['report_type'],
-        format: 'pdf' as const,
-        schedule: (r.report_type || 'weekly') as ScheduledReport['schedule'],
+        description: "",
+        report_type: (r.report_type || "summary") as ScheduledReport["report_type"],
+        format: "pdf" as const,
+        schedule: (r.report_type || "weekly") as ScheduledReport["schedule"],
         schedule_time: r.send_time,
         schedule_day: r.send_day_of_week || undefined,
         recipients: r.recipient_emails || [],
@@ -104,78 +104,84 @@ export function useScheduledReportsPage() {
 
   const createMutation = useMutation({
     mutationFn: async (data: ReportFormData) => {
-      const { error } = await supabase.from('scheduled_reports').insert(data);
+      const { error } = await supabase.from("scheduled_reports").insert(data);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['scheduled-reports'] });
-      toast({ title: 'Relatorio agendado!' });
+      queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
+      toast({ title: "Relatorio agendado!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: ReportFormData }) => {
-      const { error } = await supabase.from('scheduled_reports').update(data).eq('id', id);
+      const { error } = await supabase.from("scheduled_reports").update(data).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['scheduled-reports'] });
-      toast({ title: 'Atualizado!' });
+      queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
+      toast({ title: "Atualizado!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('scheduled_reports').delete().eq('id', id);
+      const { error } = await supabase.from("scheduled_reports").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['scheduled-reports'] });
-      toast({ title: 'Excluido!' });
+      queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
+      toast({ title: "Excluido!" });
       setIsDeleteDialogOpen(false);
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
   const runNowMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.functions.invoke('generate-report', { body: { report_id: id } });
+      const { error } = await supabase.functions.invoke("generate-report", {
+        body: { report_id: id },
+      });
       if (error) throw error;
     },
     onSuccess: () => {
-      toast({ title: 'Relatorio sendo gerado!' });
-      queryClient.invalidateQueries({ queryKey: ['scheduled-reports'] });
+      toast({ title: "Relatorio sendo gerado!" });
+      queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
   const filteredReports = useMemo(() => {
-    return reports.filter(report => {
-      const matchesSearch = !searchTerm || report.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesType = typeFilter === 'all' || report.report_type === typeFilter;
+    return reports.filter((report) => {
+      const matchesSearch =
+        !searchTerm || report.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesType = typeFilter === "all" || report.report_type === typeFilter;
       return matchesSearch && matchesType;
     });
   }, [reports, searchTerm, typeFilter]);
 
-  const stats = useMemo(() => ({
-    total: reports.length,
-    active: reports.filter(r => r.is_active).length,
-    daily: reports.filter(r => r.schedule === 'daily').length,
-    weekly: reports.filter(r => r.schedule === 'weekly').length,
-    monthly: reports.filter(r => r.schedule === 'monthly').length,
-  }), [reports]);
+  const stats = useMemo(
+    () => ({
+      total: reports.length,
+      active: reports.filter((r) => r.is_active).length,
+      daily: reports.filter((r) => r.schedule === "daily").length,
+      weekly: reports.filter((r) => r.schedule === "weekly").length,
+      monthly: reports.filter((r) => r.schedule === "monthly").length,
+    }),
+    [reports]
+  );
 
   const handleOpenCreate = useCallback(() => {
     setEditingReport(null);
@@ -187,7 +193,7 @@ export function useScheduledReportsPage() {
     setEditingReport(report);
     setFormData({
       name: report.name,
-      description: report.description || '',
+      description: report.description || "",
       report_type: report.report_type,
       format: report.format,
       schedule: report.schedule,
@@ -222,26 +228,46 @@ export function useScheduledReportsPage() {
   const handleAddRecipient = useCallback(() => {
     if (newRecipient && !formData.recipients.includes(newRecipient)) {
       setFormData({ ...formData, recipients: [...formData.recipients, newRecipient] });
-      setNewRecipient('');
+      setNewRecipient("");
     }
   }, [newRecipient, formData]);
 
-  const handleRemoveRecipient = useCallback((email: string) => {
-    setFormData({ ...formData, recipients: formData.recipients.filter(r => r !== email) });
-  }, [formData]);
+  const handleRemoveRecipient = useCallback(
+    (email: string) => {
+      setFormData({ ...formData, recipients: formData.recipients.filter((r) => r !== email) });
+    },
+    [formData]
+  );
 
   return {
-    searchTerm, setSearchTerm, typeFilter, setTypeFilter,
-    isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
-    editingReport, deletingReport, setDeletingReport,
-    formData, setFormData, newRecipient, setNewRecipient,
-    reports: filteredReports, stats, isLoading,
+    searchTerm,
+    setSearchTerm,
+    typeFilter,
+    setTypeFilter,
+    isDialogOpen,
+    isDeleteDialogOpen,
+    setIsDeleteDialogOpen,
+    editingReport,
+    deletingReport,
+    setDeletingReport,
+    formData,
+    setFormData,
+    newRecipient,
+    setNewRecipient,
+    reports: filteredReports,
+    stats,
+    isLoading,
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
     isRunning: runNowMutation.isPending,
-    handleOpenCreate, handleOpenEdit, handleCloseDialog,
-    handleSubmit, handleDelete, handleAddRecipient, handleRemoveRecipient,
+    handleOpenCreate,
+    handleOpenEdit,
+    handleCloseDialog,
+    handleSubmit,
+    handleDelete,
+    handleAddRecipient,
+    handleRemoveRecipient,
     handleRunNow: (id: string) => runNowMutation.mutate(id),
     REPORT_TYPES,
   };

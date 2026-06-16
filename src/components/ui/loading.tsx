@@ -17,7 +17,11 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
     };
 
     return (
-      <div ref={ref} className={cn("animate-spin text-primary", sizeClasses[size], className)} {...props}>
+      <div
+        ref={ref}
+        className={cn("animate-spin text-primary", sizeClasses[size], className)}
+        {...props}
+      >
         <Loader2 className="h-full w-full" />
       </div>
     );
@@ -52,9 +56,7 @@ const LoadingOverlay = ({
           )}
         >
           <Spinner size={spinnerSize} />
-          {text && (
-            <p className="mt-3 text-sm text-muted-foreground animate-pulse">{text}</p>
-          )}
+          {text && <p className="mt-3 animate-pulse text-sm text-muted-foreground">{text}</p>}
         </div>
       )}
     </div>
@@ -96,7 +98,7 @@ const PulseLoader = ({ className }: { className?: string }) => {
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          className="h-3 w-3 rounded-full bg-primary animate-pulse"
+          className="h-3 w-3 animate-pulse rounded-full bg-primary"
           style={{ animationDelay: `${i * 150}ms` }}
         />
       ))}

@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 // ============================================================
 // TYPES
@@ -34,10 +34,7 @@ export function useWhatsAppSettings() {
   return useQuery({
     queryKey: queryKeys.settings.whatsapp(),
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('whatsapp_settings')
-        .select('*')
-        .maybeSingle();
+      const { data, error } = await supabase.from("whatsapp_settings").select("*").maybeSingle();
 
       if (error) throw error;
       return data as WhatsAppSettings | null;
@@ -58,23 +55,23 @@ export function useUpdateWhatsAppSettings() {
     mutationFn: async (input: UpdateWhatsAppSettingsInput) => {
       // Check if settings exist
       const { data: existing } = await supabase
-        .from('whatsapp_settings')
-        .select('id')
+        .from("whatsapp_settings")
+        .select("id")
         .maybeSingle();
 
       let result;
       if (existing) {
         const { data, error } = await supabase
-          .from('whatsapp_settings')
+          .from("whatsapp_settings")
           .update(input)
-          .eq('id', existing.id)
+          .eq("id", existing.id)
           .select()
           .single();
         if (error) throw error;
         result = data;
       } else {
         const { data, error } = await supabase
-          .from('whatsapp_settings')
+          .from("whatsapp_settings")
           .insert(input)
           .select()
           .single();
@@ -87,15 +84,15 @@ export function useUpdateWhatsAppSettings() {
     onSuccess: () => {
       invalidateRelated.settings(queryClient);
       toast({
-        title: 'Configurações salvas',
-        description: 'As configurações do WhatsApp foram atualizadas.',
+        title: "Configurações salvas",
+        description: "As configurações do WhatsApp foram atualizadas.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao salvar configurações',
+        title: "Erro ao salvar configurações",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -106,7 +103,7 @@ export function useTestWhatsAppConnection() {
 
   return useMutation({
     mutationFn: async () => {
-      const { data, error } = await supabase.functions.invoke('send-whatsapp', {
+      const { data, error } = await supabase.functions.invoke("send-whatsapp", {
         body: { test: true },
       });
 
@@ -115,15 +112,15 @@ export function useTestWhatsAppConnection() {
     },
     onSuccess: () => {
       toast({
-        title: 'Conexão OK',
-        description: 'A conexão com o WhatsApp está funcionando.',
+        title: "Conexão OK",
+        description: "A conexão com o WhatsApp está funcionando.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro na conexão',
+        title: "Erro na conexão",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -133,13 +130,18 @@ export function useSendWhatsAppMessage() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ to, message, template_name, template_params }: {
+    mutationFn: async ({
+      to,
+      message,
+      template_name,
+      template_params,
+    }: {
       to: string;
       message?: string;
       template_name?: string;
       template_params?: Record<string, string>;
     }) => {
-      const { data, error } = await supabase.functions.invoke('send-whatsapp', {
+      const { data, error } = await supabase.functions.invoke("send-whatsapp", {
         body: { to, message, template_name, template_params },
       });
 
@@ -148,15 +150,15 @@ export function useSendWhatsAppMessage() {
     },
     onSuccess: () => {
       toast({
-        title: 'Mensagem enviada',
-        description: 'A mensagem foi enviada com sucesso.',
+        title: "Mensagem enviada",
+        description: "A mensagem foi enviada com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao enviar mensagem',
+        title: "Erro ao enviar mensagem",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });

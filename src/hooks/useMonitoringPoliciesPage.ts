@@ -1,7 +1,7 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useCallback, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export interface MonitoringPolicy {
   id: string;
@@ -16,7 +16,7 @@ export interface MonitoringPolicy {
   idle_detection: boolean;
   idle_threshold: number;
   work_hours_only: boolean;
-  applies_to: 'all' | 'teams' | 'employees';
+  applies_to: "all" | "teams" | "employees";
   team_ids?: string[];
   employee_ids?: string[];
   is_active: boolean;
@@ -35,13 +35,13 @@ export interface PolicyFormData {
   idle_detection: boolean;
   idle_threshold: number;
   work_hours_only: boolean;
-  applies_to: 'all' | 'teams' | 'employees';
+  applies_to: "all" | "teams" | "employees";
   is_active: boolean;
 }
 
 const initialFormData: PolicyFormData = {
-  name: '',
-  description: '',
+  name: "",
+  description: "",
   screenshot_interval: 300,
   activity_tracking: true,
   app_tracking: true,
@@ -51,7 +51,7 @@ const initialFormData: PolicyFormData = {
   idle_detection: true,
   idle_threshold: 300,
   work_hours_only: true,
-  applies_to: 'all',
+  applies_to: "all",
   is_active: true,
 };
 
@@ -59,7 +59,7 @@ export function useMonitoringPoliciesPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingPolicy, setEditingPolicy] = useState<MonitoringPolicy | null>(null);
@@ -67,14 +67,14 @@ export function useMonitoringPoliciesPage() {
   const [formData, setFormData] = useState<PolicyFormData>(initialFormData);
 
   const { data: policies = [], isLoading } = useQuery({
-    queryKey: ['monitoring-policies'],
+    queryKey: ["monitoring-policies"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('monitoring_settings')
-        .select('*')
-        .order('setting_key');
+        .from("monitoring_settings")
+        .select("*")
+        .order("setting_key");
       if (error) throw error;
-      
+
       // Map monitoring_settings to policy format
       interface SettingValue {
         screenshot_interval?: number;
@@ -111,7 +111,7 @@ export function useMonitoringPoliciesPage() {
           idle_detection: val.idle_detection ?? true,
           idle_threshold: val.idle_threshold || 300,
           work_hours_only: val.work_hours_only ?? true,
-          applies_to: (val.applies_to || 'all') as MonitoringPolicy['applies_to'],
+          applies_to: (val.applies_to || "all") as MonitoringPolicy["applies_to"],
           is_active: val.is_active ?? true,
           created_at: setting.created_at,
         };
@@ -138,16 +138,16 @@ export function useMonitoringPoliciesPage() {
           is_active: data.is_active,
         },
       };
-      const { error } = await supabase.from('monitoring_settings').insert(settingData);
+      const { error } = await supabase.from("monitoring_settings").insert(settingData);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['monitoring-policies'] });
-      toast({ title: 'Politica criada!' });
+      queryClient.invalidateQueries({ queryKey: ["monitoring-policies"] });
+      toast({ title: "Politica criada!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
@@ -170,44 +170,49 @@ export function useMonitoringPoliciesPage() {
           is_active: data.is_active,
         },
       };
-      const { error } = await supabase.from('monitoring_settings').update(settingData).eq('id', id);
+      const { error } = await supabase.from("monitoring_settings").update(settingData).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['monitoring-policies'] });
-      toast({ title: 'Politica atualizada!' });
+      queryClient.invalidateQueries({ queryKey: ["monitoring-policies"] });
+      toast({ title: "Politica atualizada!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('monitoring_settings').delete().eq('id', id);
+      const { error } = await supabase.from("monitoring_settings").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['monitoring-policies'] });
-      toast({ title: 'Politica excluida!' });
+      queryClient.invalidateQueries({ queryKey: ["monitoring-policies"] });
+      toast({ title: "Politica excluida!" });
       setIsDeleteDialogOpen(false);
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
   const filteredPolicies = useMemo(() => {
-    return policies.filter(p => !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    return policies.filter(
+      (p) => !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   }, [policies, searchTerm]);
 
-  const stats = useMemo(() => ({
-    total: policies.length,
-    active: policies.filter(p => p.is_active).length,
-    withScreenshots: policies.filter(p => p.screenshot_interval > 0).length,
-    withLocation: policies.filter(p => p.location_tracking).length,
-  }), [policies]);
+  const stats = useMemo(
+    () => ({
+      total: policies.length,
+      active: policies.filter((p) => p.is_active).length,
+      withScreenshots: policies.filter((p) => p.screenshot_interval > 0).length,
+      withLocation: policies.filter((p) => p.location_tracking).length,
+    }),
+    [policies]
+  );
 
   const handleOpenCreate = useCallback(() => {
     setEditingPolicy(null);
@@ -219,7 +224,7 @@ export function useMonitoringPoliciesPage() {
     setEditingPolicy(policy);
     setFormData({
       name: policy.name,
-      description: policy.description || '',
+      description: policy.description || "",
       screenshot_interval: policy.screenshot_interval,
       activity_tracking: policy.activity_tracking,
       app_tracking: policy.app_tracking,
@@ -256,15 +261,26 @@ export function useMonitoringPoliciesPage() {
   }, [deletingPolicy, deleteMutation]);
 
   return {
-    searchTerm, setSearchTerm,
-    isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
-    editingPolicy, deletingPolicy, setDeletingPolicy,
-    formData, setFormData,
-    policies: filteredPolicies, stats, isLoading,
+    searchTerm,
+    setSearchTerm,
+    isDialogOpen,
+    isDeleteDialogOpen,
+    setIsDeleteDialogOpen,
+    editingPolicy,
+    deletingPolicy,
+    setDeletingPolicy,
+    formData,
+    setFormData,
+    policies: filteredPolicies,
+    stats,
+    isLoading,
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
-    handleOpenCreate, handleOpenEdit, handleCloseDialog,
-    handleSubmit, handleDelete,
+    handleOpenCreate,
+    handleOpenEdit,
+    handleCloseDialog,
+    handleSubmit,
+    handleDelete,
   };
 }

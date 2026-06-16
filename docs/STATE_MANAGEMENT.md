@@ -17,8 +17,8 @@ src/stores/
 ## Creating a Store
 
 ```typescript
-import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 interface MyStore {
   data: string[];
@@ -34,7 +34,7 @@ export const useMyStore = create<MyStore>()(
         addItem: (item) => set((state) => ({ data: [...state.data, item] })),
         reset: () => set({ data: [] }),
       }),
-      { name: 'my-store' }
+      { name: "my-store" }
     )
   )
 );

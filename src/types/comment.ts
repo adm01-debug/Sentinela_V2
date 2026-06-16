@@ -25,14 +25,14 @@ export interface Comment {
   deletedAt?: string;
 }
 
-export type CommentResourceType = 
-  | 'employee'
-  | 'activity'
-  | 'screenshot'
-  | 'alert'
-  | 'report'
-  | 'project'
-  | 'task';
+export type CommentResourceType =
+  | "employee"
+  | "activity"
+  | "screenshot"
+  | "alert"
+  | "report"
+  | "project"
+  | "task";
 
 export interface CommentMention {
   userId: string;

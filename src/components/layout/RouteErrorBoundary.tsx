@@ -1,9 +1,9 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { captureError } from '@/lib/errorTracker';
-import { queryClient } from '@/lib/queryClient';
+import { Component, type ErrorInfo, type ReactNode } from "react";
+import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { captureError } from "@/lib/errorTracker";
+import { queryClient } from "@/lib/queryClient";
 
 interface Props {
   children: ReactNode;
@@ -26,9 +26,9 @@ export class RouteErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
     captureError(error, {
-      component: 'RouteErrorBoundary',
+      component: "RouteErrorBoundary",
       context: { componentStack: errorInfo.componentStack?.slice(0, 500) },
-      severity: 'high',
+      severity: "high",
     });
   }
 
@@ -38,7 +38,7 @@ export class RouteErrorBoundary extends Component<Props, State> {
   };
 
   handleGoHome = () => {
-    window.location.href = '/dashboard';
+    window.location.href = "/dashboard";
   };
 
   render() {
@@ -46,35 +46,33 @@ export class RouteErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) return this.props.fallback;
 
       return (
-        <div className="flex items-center justify-center min-h-[60vh] p-6">
-          <Card className="max-w-lg w-full">
+        <div className="flex min-h-[60vh] items-center justify-center p-6">
+          <Card className="w-full max-w-lg">
             <CardContent className="pt-6">
-              <div className="flex flex-col items-center text-center gap-4">
+              <div className="flex flex-col items-center gap-4 text-center">
                 <div className="rounded-full bg-destructive/10 p-4">
                   <AlertTriangle className="h-8 w-8 text-destructive" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-card-foreground">
-                    Algo deu errado
-                  </h2>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <h2 className="text-lg font-semibold text-card-foreground">Algo deu errado</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Ocorreu um erro inesperado ao carregar esta página.
                   </p>
                 </div>
 
                 {import.meta.env.DEV && this.state.error && (
                   <details className="w-full text-left">
-                    <summary className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">
+                    <summary className="cursor-pointer text-xs text-muted-foreground hover:text-foreground">
                       Detalhes técnicos
                     </summary>
-                    <pre className="mt-2 p-3 rounded-lg bg-muted text-xs overflow-auto max-h-40 text-muted-foreground">
+                    <pre className="mt-2 max-h-40 overflow-auto rounded-lg bg-muted p-3 text-xs text-muted-foreground">
                       {this.state.error.message}
                       {this.state.errorInfo?.componentStack?.slice(0, 300)}
                     </pre>
                   </details>
                 )}
 
-                <div className="flex gap-3 mt-2">
+                <div className="mt-2 flex gap-3">
                   <Button variant="outline" onClick={this.handleGoHome} className="gap-2">
                     <Home className="h-4 w-4" />
                     Início

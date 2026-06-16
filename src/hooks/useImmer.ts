@@ -6,7 +6,7 @@ export function useImmer<T>(initialValue: T): [T, (producer: Producer<T>) => voi
   const [state, setState] = useState(initialValue);
 
   const update = useCallback((producer: Producer<T>) => {
-    setState(current => {
+    setState((current) => {
       const draft = JSON.parse(JSON.stringify(current));
       const result = producer(draft);
       return result !== undefined ? result : draft;

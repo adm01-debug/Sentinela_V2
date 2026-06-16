@@ -1,23 +1,19 @@
-import { useMemo } from 'react';
-import { Filter, X, Calendar, User, AppWindow } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Button } from '@/components/ui/button';
+import { useMemo } from "react";
+import { Filter, X, Calendar, User, AppWindow } from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Calendar as CalendarComponent } from '@/components/ui/calendar';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 export interface RealtimeFilters {
   employeeName: string;
@@ -50,15 +46,15 @@ export const RealtimeActivityFilters = ({
 
   const clearFilters = () => {
     onFiltersChange({
-      employeeName: '',
-      appName: '',
+      employeeName: "",
+      appName: "",
       dateFrom: undefined,
       dateTo: undefined,
     });
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3 p-4 bg-muted/30 rounded-lg border">
+    <div className="flex flex-wrap items-center gap-3 rounded-lg border bg-muted/30 p-4">
       <div className="flex items-center gap-2 text-muted-foreground">
         <Filter className="h-4 w-4" />
         <span className="text-sm font-medium">Filtros</span>
@@ -73,12 +69,12 @@ export const RealtimeActivityFilters = ({
       <div className="flex items-center gap-2">
         <User className="h-4 w-4 text-muted-foreground" />
         <Select
-          value={filters.employeeName || 'all'}
+          value={filters.employeeName || "all"}
           onValueChange={(value) =>
-            onFiltersChange({ ...filters, employeeName: value === 'all' ? '' : value })
+            onFiltersChange({ ...filters, employeeName: value === "all" ? "" : value })
           }
         >
-          <SelectTrigger className="w-[180px] h-9">
+          <SelectTrigger className="h-9 w-[180px]">
             <SelectValue placeholder="Funcionário" />
           </SelectTrigger>
           <SelectContent>
@@ -96,12 +92,12 @@ export const RealtimeActivityFilters = ({
       <div className="flex items-center gap-2">
         <AppWindow className="h-4 w-4 text-muted-foreground" />
         <Select
-          value={filters.appName || 'all'}
+          value={filters.appName || "all"}
           onValueChange={(value) =>
-            onFiltersChange({ ...filters, appName: value === 'all' ? '' : value })
+            onFiltersChange({ ...filters, appName: value === "all" ? "" : value })
           }
         >
-          <SelectTrigger className="w-[180px] h-9">
+          <SelectTrigger className="h-9 w-[180px]">
             <SelectValue placeholder="Aplicativo" />
           </SelectTrigger>
           <SelectContent>
@@ -123,12 +119,12 @@ export const RealtimeActivityFilters = ({
               variant="outline"
               size="sm"
               className={cn(
-                'w-[140px] justify-start text-left font-normal h-9',
-                !filters.dateFrom && 'text-muted-foreground'
+                "h-9 w-[140px] justify-start text-left font-normal",
+                !filters.dateFrom && "text-muted-foreground"
               )}
             >
               <Calendar className="mr-2 h-4 w-4" />
-              {filters.dateFrom ? format(filters.dateFrom, 'dd/MM/yyyy', { locale: ptBR }) : 'De'}
+              {filters.dateFrom ? format(filters.dateFrom, "dd/MM/yyyy", { locale: ptBR }) : "De"}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -137,7 +133,7 @@ export const RealtimeActivityFilters = ({
               selected={filters.dateFrom}
               onSelect={(date) => onFiltersChange({ ...filters, dateFrom: date })}
               initialFocus
-              className={cn("p-3 pointer-events-auto")}
+              className={cn("pointer-events-auto p-3")}
             />
           </PopoverContent>
         </Popover>
@@ -151,12 +147,12 @@ export const RealtimeActivityFilters = ({
               variant="outline"
               size="sm"
               className={cn(
-                'w-[140px] justify-start text-left font-normal h-9',
-                !filters.dateTo && 'text-muted-foreground'
+                "h-9 w-[140px] justify-start text-left font-normal",
+                !filters.dateTo && "text-muted-foreground"
               )}
             >
               <Calendar className="mr-2 h-4 w-4" />
-              {filters.dateTo ? format(filters.dateTo, 'dd/MM/yyyy', { locale: ptBR }) : 'Até'}
+              {filters.dateTo ? format(filters.dateTo, "dd/MM/yyyy", { locale: ptBR }) : "Até"}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -165,7 +161,7 @@ export const RealtimeActivityFilters = ({
               selected={filters.dateTo}
               onSelect={(date) => onFiltersChange({ ...filters, dateTo: date })}
               initialFocus
-              className={cn("p-3 pointer-events-auto")}
+              className={cn("pointer-events-auto p-3")}
             />
           </PopoverContent>
         </Popover>
@@ -179,7 +175,7 @@ export const RealtimeActivityFilters = ({
           onClick={clearFilters}
           className="h-9 text-muted-foreground hover:text-foreground"
         >
-          <X className="h-4 w-4 mr-1" />
+          <X className="mr-1 h-4 w-4" />
           Limpar
         </Button>
       )}

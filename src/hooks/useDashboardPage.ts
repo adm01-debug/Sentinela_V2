@@ -1,22 +1,51 @@
-import { useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys } from '@/lib/queryClient';
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys } from "@/lib/queryClient";
 
-interface RecentViolation { id: string; employee_name: string; type: string; severity: string; created_at: string; }
-interface ActivityItem { id: string; type: string; description: string; created_at: string; }
+interface RecentViolation {
+  id: string;
+  employee_name: string;
+  type: string;
+  severity: string;
+  created_at: string;
+}
+interface ActivityItem {
+  id: string;
+  type: string;
+  description: string;
+  created_at: string;
+}
 
-interface ViolationRow { id: string; violation_type: string; severity: string; created_at: string; employee_name: string | null; }
-interface ProductivityLogRow { id: string; employee_name: string; recorded_date: string; productive_time_seconds: number; }
+interface ViolationRow {
+  id: string;
+  violation_type: string;
+  severity: string;
+  created_at: string;
+  employee_name: string | null;
+}
+interface ProductivityLogRow {
+  id: string;
+  employee_name: string;
+  recorded_date: string;
+  productive_time_seconds: number;
+}
 
 export function useDashboardPage() {
   const statsQuery = useQuery({
     queryKey: queryKeys.dashboard.stats(),
     queryFn: async () => {
       const [employees, violations, devices] = await Promise.all([
-        supabase.from('employees').select('id', { count: 'exact', head: true }).eq('status', 'active'),
-        supabase.from('security_violations').select('id', { count: 'exact', head: true }).eq('read', false).gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
-        supabase.from('devices').select('id', { count: 'exact', head: true }).eq('is_active', true),
+        supabase
+          .from("employees")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "active"),
+        supabase
+          .from("security_violations")
+          .select("id", { count: "exact", head: true })
+          .eq("read", false)
+          .gte("created_at", new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
+        supabase.from("devices").select("id", { count: "exact", head: true }).eq("is_active", true),
       ]);
       return {
         employees: employees.count || 0,
@@ -32,17 +61,17 @@ export function useDashboardPage() {
     queryKey: queryKeys.dashboard.recentViolations(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('security_violations')
-        .select('id, violation_type, severity, created_at, employee_name')
-        .order('created_at', { ascending: false })
+        .from("security_violations")
+        .select("id, violation_type, severity, created_at, employee_name")
+        .order("created_at", { ascending: false })
         .limit(5);
       if (error) throw error;
       return (data || []).map((v: ViolationRow) => ({
         id: v.id,
-        employee_name: v.employee_name || 'N/A',
+        employee_name: v.employee_name || "N/A",
         type: v.violation_type,
         severity: v.severity,
-        created_at: v.created_at
+        created_at: v.created_at,
       })) as RecentViolation[];
     },
   });
@@ -52,23 +81,23 @@ export function useDashboardPage() {
     queryFn: async () => {
       // Using productivity_logs as activity source since activity_logs doesn't exist
       const { data, error } = await supabase
-        .from('productivity_logs')
-        .select('id, employee_name, recorded_date, productive_time_seconds')
-        .order('recorded_date', { ascending: false })
+        .from("productivity_logs")
+        .select("id, employee_name, recorded_date, productive_time_seconds")
+        .order("recorded_date", { ascending: false })
         .limit(10);
       if (error) throw error;
       return (data || []).map((item: ProductivityLogRow) => ({
         id: item.id,
-        type: 'productivity',
+        type: "productivity",
         description: `${item.employee_name} - ${Math.round(item.productive_time_seconds / 60)}min produtivo`,
-        created_at: item.recorded_date
+        created_at: item.recorded_date,
       })) as ActivityItem[];
     },
   });
 
   const chartData = useMemo(() => {
     // Generate sample chart data for the week
-    const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
     return days.map((day) => ({
       day,
       violations: Math.floor(Math.random() * 10) + 1,

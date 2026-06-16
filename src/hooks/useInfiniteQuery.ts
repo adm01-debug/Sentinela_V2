@@ -13,11 +13,11 @@ export function useInfiniteQuery<T>({ fetchFn, pageSize = 20 }: UseInfiniteQuery
 
   const loadMore = useCallback(async () => {
     if (loading || !hasMore) return;
-    
+
     setLoading(true);
     try {
       const newData = await fetchFn(pageRef.current);
-      setData(prev => [...prev, ...newData]);
+      setData((prev) => [...prev, ...newData]);
       setHasMore(newData.length >= pageSize);
       pageRef.current++;
     } finally {

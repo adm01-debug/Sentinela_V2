@@ -1,17 +1,31 @@
-import { memo, useEffect, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Bell, Search, Menu, Sun, Moon, Monitor, User, LogOut, Settings, HelpCircle, CheckCircle2, Inbox, ArrowLeft } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useUIStore } from '@/stores/uiStore';
-import { useTheme } from '@/providers/ThemeProvider';
-import { useAuth } from '@/hooks/useAuth';
-import { useHeaderNotifications } from '@/hooks/useNotifications';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { memo, useEffect, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Bell,
+  Search,
+  Menu,
+  Sun,
+  Moon,
+  Monitor,
+  User,
+  LogOut,
+  Settings,
+  HelpCircle,
+  CheckCircle2,
+  Inbox,
+  ArrowLeft,
+} from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useUIStore } from "@/stores/uiStore";
+import { useTheme } from "@/providers/ThemeProvider";
+import { useAuth } from "@/hooks/useAuth";
+import { useHeaderNotifications } from "@/hooks/useNotifications";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,12 +33,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+} from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -32,10 +42,10 @@ interface HeaderProps {
 }
 
 const severityDot: Record<string, string> = {
-  critical: 'bg-destructive',
-  high: 'bg-warning',
-  medium: 'bg-info',
-  low: 'bg-muted-foreground',
+  critical: "bg-destructive",
+  high: "bg-warning",
+  medium: "bg-info",
+  low: "bg-muted-foreground",
 };
 
 export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }: HeaderProps) {
@@ -49,18 +59,18 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
 
   // Derive user display info
   const displayName = useMemo(() => {
-    if (!user) return 'Usuário';
-    return user.name || user.email?.split('@')[0] || 'Usuário';
+    if (!user) return "Usuário";
+    return user.name || user.email?.split("@")[0] || "Usuário";
   }, [user]);
 
-  const displayEmail = user?.email || '';
+  const displayEmail = user?.email || "";
 
   const initials = useMemo(() => {
-    if (!displayName || displayName === 'Usuário') return 'U';
+    if (!displayName || displayName === "Usuário") return "U";
     return displayName
-      .split(' ')
-      .map(n => n[0])
-      .join('')
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
       .slice(0, 2)
       .toUpperCase();
   }, [displayName]);
@@ -81,13 +91,13 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         onCommandPaletteOpen?.();
       }
     };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onCommandPaletteOpen]);
 
   const handleMarkAllRead = () => {
@@ -96,25 +106,26 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
 
   const handleLogout = useCallback(async () => {
     await logout();
-    navigate('/auth');
+    navigate("/auth");
   }, [logout, navigate]);
 
-  const ThemeIcon = theme === 'dark' ? Moon : theme === 'light' ? Sun : Monitor;
+  const ThemeIcon = theme === "dark" ? Moon : theme === "light" ? Sun : Monitor;
 
-  const timeLabel = 'agora';
+  const timeLabel = "agora";
 
-  const isDashboard = location.pathname === '/dashboard' || location.pathname === '/' || location.pathname === '';
+  const isDashboard =
+    location.pathname === "/dashboard" || location.pathname === "/" || location.pathname === "";
 
   return (
-    <header className="sticky top-0 z-30 flex h-12 items-center gap-2 border-b border-border/60 bg-background/95 backdrop-blur-sm px-3 sm:px-4">
+    <header className="sticky top-0 z-30 flex h-12 items-center gap-2 border-b border-border/60 bg-background/95 px-3 backdrop-blur-sm sm:px-4">
       {/* Mobile back button */}
       {!isDashboard && (
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden shrink-0 h-8 w-8"
+          className="h-8 w-8 shrink-0 md:hidden"
           onClick={() => navigate(-1)}
-          aria-label={t('common.back')}
+          aria-label={t("common.back")}
         >
           <ArrowLeft className="h-4 w-4" />
         </Button>
@@ -125,9 +136,9 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden shrink-0 h-8 w-8"
+          className="h-8 w-8 shrink-0 md:hidden"
           onClick={handleMenuClick}
-          aria-label={t('header.openNavMenu')}
+          aria-label={t("header.openNavMenu")}
         >
           <Menu className="h-4 w-4" />
         </Button>
@@ -137,26 +148,26 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
       <Button
         variant="ghost"
         size="icon"
-        className="hidden md:inline-flex shrink-0 h-8 w-8"
+        className="hidden h-8 w-8 shrink-0 md:inline-flex"
         onClick={toggleSidebarCollapse}
-        aria-label={t('header.toggleSidebar')}
+        aria-label={t("header.toggleSidebar")}
       >
         <Menu className="h-4 w-4" />
       </Button>
 
       {/* Search */}
-      <div className="flex-1 max-w-sm">
+      <div className="max-w-sm flex-1">
         <div className="relative">
-          <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+          <Search className="absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="search"
-            placeholder={t('header.searchPlaceholder')}
-            className="w-full bg-muted/40 pl-7 h-8 text-sm border-transparent hover:border-border focus:border-primary cursor-pointer transition-colors"
-            aria-label={t('header.searchLabel')}
+            placeholder={t("header.searchPlaceholder")}
+            className="h-8 w-full cursor-pointer border-transparent bg-muted/40 pl-7 text-sm transition-colors hover:border-border focus:border-primary"
+            aria-label={t("header.searchLabel")}
             readOnly
             onClick={handleSearchFocus}
           />
-          <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex h-5 items-center gap-0.5 rounded border bg-muted px-1.5 text-[10px] font-medium text-muted-foreground">
+          <kbd className="absolute right-2 top-1/2 hidden h-5 -translate-y-1/2 items-center gap-0.5 rounded border bg-muted px-1.5 text-[10px] font-medium text-muted-foreground sm:inline-flex">
             ⌘K
           </kbd>
         </div>
@@ -164,34 +175,42 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
 
       <div className="flex items-center gap-0.5">
         {/* Status */}
-        <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-md text-[11px] font-medium mr-0.5" aria-label="Sistema online">
+        <div
+          className="mr-0.5 hidden items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium sm:flex"
+          aria-label="Sistema online"
+        >
           <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-success" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-success" />
           </span>
-          <span className="text-success hidden lg:inline">Online</span>
-          <span className="text-muted-foreground font-normal">· {timeLabel}</span>
+          <span className="hidden text-success lg:inline">Online</span>
+          <span className="font-normal text-muted-foreground">· {timeLabel}</span>
         </div>
 
         {/* Theme */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label={t('header.changeTheme')} className="shrink-0 h-8 w-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={t("header.changeTheme")}
+              className="h-8 w-8 shrink-0"
+            >
               <ThemeIcon className="h-3.5 w-3.5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-36">
-            <DropdownMenuItem onClick={() => setTheme('light')} className="gap-2 text-xs">
+            <DropdownMenuItem onClick={() => setTheme("light")} className="gap-2 text-xs">
               <Sun className="h-3.5 w-3.5" />
-              {t('header.themeLight')}
+              {t("header.themeLight")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')} className="gap-2 text-xs">
+            <DropdownMenuItem onClick={() => setTheme("dark")} className="gap-2 text-xs">
               <Moon className="h-3.5 w-3.5" />
-              {t('header.themeDark')}
+              {t("header.themeDark")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('system')} className="gap-2 text-xs">
+            <DropdownMenuItem onClick={() => setTheme("system")} className="gap-2 text-xs">
               <Monitor className="h-3.5 w-3.5" />
-              {t('header.themeSystem')}
+              {t("header.themeSystem")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -202,8 +221,8 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
             <Button
               variant="ghost"
               size="icon"
-              className="relative shrink-0 h-8 w-8"
-              aria-label={t('header.notifications')}
+              className="relative h-8 w-8 shrink-0"
+              aria-label={t("header.notifications")}
             >
               <Bell className="h-3.5 w-3.5" />
               {unreadCount > 0 && (
@@ -214,10 +233,15 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
             </Button>
           </PopoverTrigger>
           <PopoverContent align="end" className="w-80 p-0">
-            <div className="flex items-center justify-between px-4 py-2.5 border-b">
+            <div className="flex items-center justify-between border-b px-4 py-2.5">
               <h4 className="text-sm font-semibold text-foreground">Notificações</h4>
               {unreadCount > 0 && (
-                <Button variant="ghost" size="sm" className="text-xs h-6 gap-1 px-2" onClick={handleMarkAllRead}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 gap-1 px-2 text-xs"
+                  onClick={handleMarkAllRead}
+                >
                   <CheckCircle2 className="h-3 w-3" />
                   Marcar lidas
                 </Button>
@@ -226,7 +250,7 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
             <ScrollArea className="h-[260px]">
               {notifications.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
-                  <Inbox className="h-8 w-8 text-muted-foreground/40 mb-2" />
+                  <Inbox className="mb-2 h-8 w-8 text-muted-foreground/40" />
                   <p className="text-sm font-medium text-muted-foreground">Nenhuma notificação</p>
                   <p className="text-xs text-muted-foreground/60">Tudo tranquilo por aqui</p>
                 </div>
@@ -236,17 +260,31 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
                     <button
                       key={notif.id}
                       type="button"
-                      className="flex gap-2.5 p-3 w-full text-left hover:bg-muted/50 transition-colors cursor-pointer"
-                      onClick={() => { markRead(notif.id); navigate('/alerts'); }}
+                      className="flex w-full cursor-pointer gap-2.5 p-3 text-left transition-colors hover:bg-muted/50"
+                      onClick={() => {
+                        markRead(notif.id);
+                        navigate("/alerts");
+                      }}
                     >
-                      <span className={`mt-1.5 h-2 w-2 rounded-full shrink-0 ${severityDot[notif.severity]}`} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[13px] font-medium text-foreground leading-snug">{notif.title}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{notif.description}</p>
-                        <p className="text-[11px] text-muted-foreground/60 mt-0.5">{notif.time}</p>
+                      <span
+                        className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${severityDot[notif.severity]}`}
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[13px] font-medium leading-snug text-foreground">
+                          {notif.title}
+                        </p>
+                        <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                          {notif.description}
+                        </p>
+                        <p className="mt-0.5 text-[11px] text-muted-foreground/60">{notif.time}</p>
                       </div>
                       {!notif.read && (
-                        <Badge variant="secondary" className="text-[10px] h-5 shrink-0 self-start bg-primary/10 text-primary border-0">Novo</Badge>
+                        <Badge
+                          variant="secondary"
+                          className="h-5 shrink-0 self-start border-0 bg-primary/10 text-[10px] text-primary"
+                        >
+                          Novo
+                        </Badge>
                       )}
                     </button>
                   ))}
@@ -254,59 +292,77 @@ export const Header = memo(function Header({ onMenuClick, onCommandPaletteOpen }
               )}
             </ScrollArea>
             <div className="border-t px-4 py-1.5">
-              <Button variant="ghost" size="sm" className="w-full text-xs h-7" onClick={() => navigate('/alerts')}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 w-full text-xs"
+                onClick={() => navigate("/alerts")}
+              >
                 Ver todas as notificações
               </Button>
             </div>
           </PopoverContent>
         </Popover>
 
-        <Separator orientation="vertical" className="h-5 mx-0.5 hidden sm:block" />
+        <Separator orientation="vertical" className="mx-0.5 hidden h-5 sm:block" />
 
         {/* User */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full p-0" aria-label={t('header.userMenu')}>
+            <Button
+              variant="ghost"
+              className="relative h-8 w-8 rounded-full p-0"
+              aria-label={t("header.userMenu")}
+            >
               <Avatar className="h-7 w-7 ring-2 ring-primary/10 transition-shadow hover:ring-primary/30">
-                <AvatarImage src={user?.avatar || ''} alt={displayName} />
-                <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary text-[11px] font-semibold">
+                <AvatarImage src={user?.avatar || ""} alt={displayName} />
+                <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-[11px] font-semibold text-primary">
                   {initials}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel className="font-normal py-2">
+            <DropdownMenuLabel className="py-2 font-normal">
               <div className="flex items-center gap-3">
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src={user?.avatar || ''} alt={displayName} />
-                  <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary text-xs font-semibold">
+                  <AvatarImage src={user?.avatar || ""} alt={displayName} />
+                  <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-xs font-semibold text-primary">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col space-y-0.5 min-w-0">
-                  <p className="text-sm font-medium leading-none truncate">{displayName}</p>
-                  <p className="text-xs text-muted-foreground truncate">{displayEmail}</p>
+                <div className="flex min-w-0 flex-col space-y-0.5">
+                  <p className="truncate text-sm font-medium leading-none">{displayName}</p>
+                  <p className="truncate text-xs text-muted-foreground">{displayEmail}</p>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate('/settings/profile')} className="gap-2 cursor-pointer text-xs">
+            <DropdownMenuItem
+              onClick={() => navigate("/settings/profile")}
+              className="cursor-pointer gap-2 text-xs"
+            >
               <User className="h-3.5 w-3.5" />
-              {t('header.myProfile')}
+              {t("header.myProfile")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate('/settings')} className="gap-2 cursor-pointer text-xs">
+            <DropdownMenuItem
+              onClick={() => navigate("/settings")}
+              className="cursor-pointer gap-2 text-xs"
+            >
               <Settings className="h-3.5 w-3.5" />
-              {t('nav.settings')}
+              {t("nav.settings")}
             </DropdownMenuItem>
-            <DropdownMenuItem className="gap-2 cursor-pointer text-xs">
+            <DropdownMenuItem className="cursor-pointer gap-2 text-xs">
               <HelpCircle className="h-3.5 w-3.5" />
-              {t('header.help')}
+              {t("header.help")}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="gap-2 cursor-pointer text-xs text-destructive focus:text-destructive">
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="cursor-pointer gap-2 text-xs text-destructive focus:text-destructive"
+            >
               <LogOut className="h-3.5 w-3.5" />
-              {t('header.logout')}
+              {t("header.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

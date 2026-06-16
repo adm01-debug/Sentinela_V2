@@ -1,6 +1,10 @@
 import { useState, useCallback } from "react";
 
-interface Step { id: string; label: string; completed: boolean; }
+interface Step {
+  id: string;
+  label: string;
+  completed: boolean;
+}
 
 export function useSteps(labels: string[]) {
   const [steps, setSteps] = useState<Step[]>(() =>
@@ -8,10 +12,13 @@ export function useSteps(labels: string[]) {
   );
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const complete = useCallback((index) => {
-    setSteps(prev => prev.map((s, i) => i === index ? { ...s, completed: true } : s));
-    if (index < steps.length - 1) setCurrentIndex(index + 1);
-  }, [steps.length]);
+  const complete = useCallback(
+    (index) => {
+      setSteps((prev) => prev.map((s, i) => (i === index ? { ...s, completed: true } : s)));
+      if (index < steps.length - 1) setCurrentIndex(index + 1);
+    },
+    [steps.length]
+  );
 
   const goTo = useCallback((index) => setCurrentIndex(index), []);
 

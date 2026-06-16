@@ -5,7 +5,9 @@ export class AsyncQueue {
   private running = 0;
   private concurrency: number;
 
-  constructor(concurrency = 1) { this.concurrency = concurrency; }
+  constructor(concurrency = 1) {
+    this.concurrency = concurrency;
+  }
 
   async add<T>(task: Task<T>): Promise<T> {
     return new Promise((resolve, reject) => {
@@ -18,13 +20,22 @@ export class AsyncQueue {
     if (this.running >= this.concurrency || this.queue.length === 0) return;
     this.running++;
     const { task, resolve, reject } = this.queue.shift()!;
-    try { resolve(await task()); }
-    catch (e) { reject(e); }
-    finally { this.running--; this.process(); }
+    try {
+      resolve(await task());
+    } catch (e) {
+      reject(e);
+    } finally {
+      this.running--;
+      this.process();
+    }
   }
 
-  get size(): number { return this.queue.length; }
-  get pending(): number { return this.running; }
+  get size(): number {
+    return this.queue.length;
+  }
+  get pending(): number {
+    return this.running;
+  }
 }
 
 export function createQueue(concurrency = 1): AsyncQueue {

@@ -53,19 +53,19 @@ export function has(key): boolean {
 export function set(key: string, value: string): void {
   const url = new URL(window.location.href);
   url.searchParams.set(key, value);
-  window.history.replaceState({}, '', url.toString());
+  window.history.replaceState({}, "", url.toString());
 }
 
 export function remove(key): void {
   const url = new URL(window.location.href);
   url.searchParams.delete(key);
-  window.history.replaceState({}, '', url.toString());
+  window.history.replaceState({}, "", url.toString());
 }
 
 export function clear(): void {
   const url = new URL(window.location.href);
-  url.search = '';
-  window.history.replaceState({}, '', url.toString());
+  url.search = "";
+  window.history.replaceState({}, "", url.toString());
 }
 
 export function merge(newParams: QueryParams): string {

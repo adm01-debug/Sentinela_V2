@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 export interface MonitoringSettings {
   id: string;
@@ -23,10 +23,7 @@ export function useMonitoringSettings() {
   return useQuery({
     queryKey: queryKeys.settings.monitoring(),
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('monitoring_settings')
-        .select('*')
-        .maybeSingle();
+      const { data, error } = await supabase.from("monitoring_settings").select("*").maybeSingle();
 
       if (error) throw error;
       return data as MonitoringSettings | null;
@@ -42,23 +39,23 @@ export function useUpdateMonitoringSettings() {
   return useMutation({
     mutationFn: async (input: Partial<MonitoringSettings>) => {
       const { data: existing } = await supabase
-        .from('monitoring_settings')
-        .select('id')
+        .from("monitoring_settings")
+        .select("id")
         .maybeSingle();
 
       let result;
       if (existing) {
         const { data, error } = await supabase
-          .from('monitoring_settings')
+          .from("monitoring_settings")
           .update(input)
-          .eq('id', existing.id)
+          .eq("id", existing.id)
           .select()
           .single();
         if (error) throw error;
         result = data;
       } else {
         const { data, error } = await supabase
-          .from('monitoring_settings')
+          .from("monitoring_settings")
           .insert(input)
           .select()
           .single();
@@ -70,10 +67,10 @@ export function useUpdateMonitoringSettings() {
     },
     onSuccess: () => {
       invalidateRelated.settings(queryClient);
-      toast({ title: 'Configurações salvas' });
+      toast({ title: "Configurações salvas" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao salvar', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
     },
   });
 }

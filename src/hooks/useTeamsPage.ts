@@ -1,7 +1,7 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useCallback, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export interface Team {
   id: string;
@@ -19,7 +19,7 @@ export interface TeamMember {
   id: string;
   employee_id: string;
   team_id: string;
-  role: 'member' | 'lead' | 'manager';
+  role: "member" | "lead" | "manager";
   joined_at: string;
   employee: {
     id: string;
@@ -51,8 +51,8 @@ interface TeamRow {
 }
 
 const initialFormData: TeamFormData = {
-  name: '',
-  description: '',
+  name: "",
+  description: "",
   manager_id: undefined,
   parent_team_id: undefined,
   is_active: true,
@@ -62,8 +62,8 @@ export function useTeamsPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isMembersDialogOpen, setIsMembersDialogOpen] = useState(false);
@@ -73,12 +73,12 @@ export function useTeamsPage() {
   const [formData, setFormData] = useState<TeamFormData>(initialFormData);
 
   const { data: teams = [], isLoading } = useQuery({
-    queryKey: ['teams'],
+    queryKey: ["teams"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('teams')
-        .select('*, employees!teams_manager_id_fkey(name)')
-        .order('name');
+        .from("teams")
+        .select("*, employees!teams_manager_id_fkey(name)")
+        .order("name");
       if (error) throw error;
       return (data as TeamRow[]).map((t) => ({
         ...t,
@@ -89,26 +89,26 @@ export function useTeamsPage() {
   });
 
   const { data: employees = [] } = useQuery({
-    queryKey: ['employees-managers'],
+    queryKey: ["employees-managers"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('employees')
-        .select('id, name, email')
-        .eq('status', 'active')
-        .order('name');
+        .from("employees")
+        .select("id, name, email")
+        .eq("status", "active")
+        .order("name");
       if (error) throw error;
       return data;
     },
   });
 
   const { data: teamMembers = [], isLoading: isLoadingMembers } = useQuery({
-    queryKey: ['team-members', selectedTeam?.id],
+    queryKey: ["team-members", selectedTeam?.id],
     queryFn: async () => {
       if (!selectedTeam) return [];
       const { data, error } = await supabase
-        .from('team_members')
-        .select('*, employees(id, name, email, position)')
-        .eq('team_id', selectedTeam.id);
+        .from("team_members")
+        .select("*, employees(id, name, email, position)")
+        .eq("team_id", selectedTeam.id);
       if (error) throw error;
       return data as TeamMember[];
     },
@@ -117,68 +117,73 @@ export function useTeamsPage() {
 
   const createMutation = useMutation({
     mutationFn: async (data: TeamFormData) => {
-      const { error } = await supabase.from('teams').insert(data);
+      const { error } = await supabase.from("teams").insert(data);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['teams'] });
-      toast({ title: 'Equipe criada!' });
+      queryClient.invalidateQueries({ queryKey: ["teams"] });
+      toast({ title: "Equipe criada!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: TeamFormData }) => {
-      const { error } = await supabase.from('teams').update(data).eq('id', id);
+      const { error } = await supabase.from("teams").update(data).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['teams'] });
-      toast({ title: 'Equipe atualizada!' });
+      queryClient.invalidateQueries({ queryKey: ["teams"] });
+      toast({ title: "Equipe atualizada!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('teams').delete().eq('id', id);
+      const { error } = await supabase.from("teams").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['teams'] });
-      toast({ title: 'Equipe excluida!' });
+      queryClient.invalidateQueries({ queryKey: ["teams"] });
+      toast({ title: "Equipe excluida!" });
       setIsDeleteDialogOpen(false);
       setDeletingTeam(null);
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 
   const filteredTeams = useMemo(() => {
-    return teams.filter(team => {
-      const matchesSearch = !searchTerm || 
+    return teams.filter((team) => {
+      const matchesSearch =
+        !searchTerm ||
         team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         team.description?.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'all' ||
-        (statusFilter === 'active' && team.is_active) ||
-        (statusFilter === 'inactive' && !team.is_active);
+      const matchesStatus =
+        statusFilter === "all" ||
+        (statusFilter === "active" && team.is_active) ||
+        (statusFilter === "inactive" && !team.is_active);
       return matchesSearch && matchesStatus;
     });
   }, [teams, searchTerm, statusFilter]);
 
-  const stats = useMemo(() => ({
-    total: teams.length,
-    active: teams.filter(t => t.is_active).length,
-    totalMembers: teams.reduce((sum, t) => sum + t.members_count, 0),
-    withManager: teams.filter(t => t.manager_id).length,
-  }), [teams]);
+  const stats = useMemo(
+    () => ({
+      total: teams.length,
+      active: teams.filter((t) => t.is_active).length,
+      totalMembers: teams.reduce((sum, t) => sum + t.members_count, 0),
+      withManager: teams.filter((t) => t.manager_id).length,
+    }),
+    [teams]
+  );
 
   const handleOpenCreate = useCallback(() => {
     setEditingTeam(null);
@@ -190,7 +195,7 @@ export function useTeamsPage() {
     setEditingTeam(team);
     setFormData({
       name: team.name,
-      description: team.description || '',
+      description: team.description || "",
       manager_id: team.manager_id,
       parent_team_id: team.parent_team_id,
       is_active: team.is_active,
@@ -224,19 +229,35 @@ export function useTeamsPage() {
   }, []);
 
   return {
-    searchTerm, setSearchTerm,
-    statusFilter, setStatusFilter,
-    isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
-    isMembersDialogOpen, setIsMembersDialogOpen,
-    editingTeam, deletingTeam, setDeletingTeam,
-    selectedTeam, teamMembers,
-    formData, setFormData,
-    teams: filteredTeams, employees, stats,
-    isLoading, isLoadingMembers,
+    searchTerm,
+    setSearchTerm,
+    statusFilter,
+    setStatusFilter,
+    isDialogOpen,
+    isDeleteDialogOpen,
+    setIsDeleteDialogOpen,
+    isMembersDialogOpen,
+    setIsMembersDialogOpen,
+    editingTeam,
+    deletingTeam,
+    setDeletingTeam,
+    selectedTeam,
+    teamMembers,
+    formData,
+    setFormData,
+    teams: filteredTeams,
+    employees,
+    stats,
+    isLoading,
+    isLoadingMembers,
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
-    handleOpenCreate, handleOpenEdit, handleCloseDialog,
-    handleSubmit, handleDelete, handleViewMembers,
+    handleOpenCreate,
+    handleOpenEdit,
+    handleCloseDialog,
+    handleSubmit,
+    handleDelete,
+    handleViewMembers,
   };
 }

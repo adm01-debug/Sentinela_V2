@@ -1,7 +1,7 @@
-import { memo, useCallback, ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
-import { VirtualList } from '@/components/VirtualList';
-import { cn } from '@/lib/utils';
+import { memo, useCallback, ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+import { VirtualList } from "@/components/VirtualList";
+import { cn } from "@/lib/utils";
 
 // ============================================================
 // TYPES
@@ -50,24 +50,23 @@ function VirtualizedTableInner<T>({
 
   const renderRow = useCallback(
     (item: T, index: number) => {
-      const rowClass = typeof rowClassName === 'function' 
-        ? rowClassName(item, index) 
-        : rowClassName;
+      const rowClass =
+        typeof rowClassName === "function" ? rowClassName(item, index) : rowClassName;
 
       return (
         <div
           className={cn(
-            'flex items-center border-b border-border hover:bg-muted/50 transition-colors',
-            onRowClick && 'cursor-pointer',
+            "flex items-center border-b border-border transition-colors hover:bg-muted/50",
+            onRowClick && "cursor-pointer",
             rowClass
           )}
-          role={onRowClick ? 'button' : undefined}
+          role={onRowClick ? "button" : undefined}
           tabIndex={onRowClick ? 0 : undefined}
           onClick={() => onRowClick?.(item, index)}
           onKeyDown={
             onRowClick
               ? (e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
+                  if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     onRowClick(item, index);
                   }
@@ -79,8 +78,8 @@ function VirtualizedTableInner<T>({
           {columns.map((column) => (
             <div
               key={column.key}
-              className={cn('px-4 py-2 flex items-center', column.className)}
-              style={{ width: column.width || 'auto', flex: column.width ? 'none' : 1 }}
+              className={cn("flex items-center px-4 py-2", column.className)}
+              style={{ width: column.width || "auto", flex: column.width ? "none" : 1 }}
             >
               {column.render(item, index)}
             </div>
@@ -93,22 +92,22 @@ function VirtualizedTableInner<T>({
 
   const emptyComponent = (
     <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-      <p>{emptyMessage || t('common.noData')}</p>
+      <p>{emptyMessage || t("common.noData")}</p>
     </div>
   );
 
   const loadingComponent = (
     <div className="flex items-center justify-center py-4">
-      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
+      <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-primary" />
     </div>
   );
 
   return (
-    <div className={cn('rounded-md border', className)}>
+    <div className={cn("rounded-md border", className)}>
       {/* Header */}
       <div
         className={cn(
-          'flex items-center bg-muted/50 border-b border-border font-medium text-sm',
+          "flex items-center border-b border-border bg-muted/50 text-sm font-medium",
           headerClassName
         )}
         style={{ height: rowHeight }}
@@ -116,8 +115,8 @@ function VirtualizedTableInner<T>({
         {columns.map((column) => (
           <div
             key={column.key}
-            className={cn('px-4 py-2', column.className)}
-            style={{ width: column.width || 'auto', flex: column.width ? 'none' : 1 }}
+            className={cn("px-4 py-2", column.className)}
+            style={{ width: column.width || "auto", flex: column.width ? "none" : 1 }}
           >
             {column.header}
           </div>

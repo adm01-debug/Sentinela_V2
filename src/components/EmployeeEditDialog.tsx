@@ -141,10 +141,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onOpenChange }: Props) =>
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cargo</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione o cargo" />
@@ -169,10 +166,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onOpenChange }: Props) =>
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Status</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o status" />
@@ -190,11 +184,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onOpenChange }: Props) =>
               )}
             />
             <DialogFooter className="pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancelar
               </Button>
               <Button type="submit" disabled={updateEmployee.isPending}>

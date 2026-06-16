@@ -1,11 +1,13 @@
 # Error Handling Guide
 
 ## Overview
+
 Standardized error handling patterns across the Sentinela application.
 
 ## Error Types
 
 ### Application Errors
+
 ```typescript
 // Base error class
 class AppError extends Error {
@@ -22,7 +24,10 @@ class AppError extends Error {
 
 // Specific error types
 class ValidationError extends AppError {
-  constructor(message: string, public fields?: Record<string, string>) {
+  constructor(
+    message: string,
+    public fields?: Record<string, string>
+  ) {
     super(message, "VALIDATION_ERROR", 400);
   }
 }
@@ -56,6 +61,7 @@ class RateLimitError extends AppError {
 ## Error Handling Patterns
 
 ### API Error Handler
+
 ```typescript
 // Global error handler middleware
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
@@ -90,6 +96,7 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
 ```
 
 ### React Error Boundary
+
 ```typescript
 class ErrorBoundary extends Component<Props, State> {
   state = { hasError: false, error: null };
@@ -113,6 +120,7 @@ class ErrorBoundary extends Component<Props, State> {
 ```
 
 ### Async Error Handling
+
 ```typescript
 // Wrap async route handlers
 const asyncHandler = (fn: RequestHandler) => (req: Request, res: Response, next: NextFunction) => {
@@ -120,39 +128,44 @@ const asyncHandler = (fn: RequestHandler) => (req: Request, res: Response, next:
 };
 
 // Usage
-router.get("/users/:id", asyncHandler(async (req, res) => {
-  const user = await userService.findById(req.params.id);
-  if (!user) throw new NotFoundError("User");
-  res.json(user);
-}));
+router.get(
+  "/users/:id",
+  asyncHandler(async (req, res) => {
+    const user = await userService.findById(req.params.id);
+    if (!user) throw new NotFoundError("User");
+    res.json(user);
+  })
+);
 ```
 
 ## Error Codes
 
-| Code | HTTP Status | Description |
-|------|-------------|-------------|
-| VALIDATION_ERROR | 400 | Invalid input data |
-| AUTH_ERROR | 401 | Authentication required |
-| FORBIDDEN | 403 | Insufficient permissions |
-| NOT_FOUND | 404 | Resource not found |
-| CONFLICT | 409 | Resource conflict |
-| RATE_LIMIT | 429 | Too many requests |
-| INTERNAL_ERROR | 500 | Server error |
-| SERVICE_UNAVAILABLE | 503 | Service temporarily unavailable |
+| Code                | HTTP Status | Description                     |
+| ------------------- | ----------- | ------------------------------- |
+| VALIDATION_ERROR    | 400         | Invalid input data              |
+| AUTH_ERROR          | 401         | Authentication required         |
+| FORBIDDEN           | 403         | Insufficient permissions        |
+| NOT_FOUND           | 404         | Resource not found              |
+| CONFLICT            | 409         | Resource conflict               |
+| RATE_LIMIT          | 429         | Too many requests               |
+| INTERNAL_ERROR      | 500         | Server error                    |
+| SERVICE_UNAVAILABLE | 503         | Service temporarily unavailable |
 
 ## Monitoring & Alerting
 
 ### Error Tracking
+
 - Sentry for error aggregation
 - Structured logging for analysis
 - Real-time alerts for critical errors
 
 ### Alert Thresholds
+
 - Error rate > 1%: Warning
 - Error rate > 5%: Critical
 - 5xx errors > 10/min: PagerDuty alert
 
 ## Related Documentation
+
 - [LOGGING.md](./LOGGING.md)
 - [INCIDENT_RESPONSE.md](./INCIDENT_RESPONSE.md)
-

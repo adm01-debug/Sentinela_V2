@@ -1,16 +1,16 @@
-import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
+import { useState, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
-export type SensitiveAction = 
-  | 'change_password'
-  | 'change_email'
-  | 'configure_mfa'
-  | 'disable_mfa'
-  | 'admin_action'
-  | 'delete_account'
-  | 'update_security_settings';
+export type SensitiveAction =
+  | "change_password"
+  | "change_email"
+  | "configure_mfa"
+  | "disable_mfa"
+  | "admin_action"
+  | "delete_account"
+  | "update_security_settings";
 
 interface ReauthState {
   isRequired: boolean;
@@ -34,32 +34,35 @@ export function useReauthentication() {
     error: null,
   });
 
-  const requiresReauth = useCallback((action: SensitiveAction): boolean => {
-    const sensitiveActions: SensitiveAction[] = [
-      'change_password',
-      'change_email',
-      'configure_mfa',
-      'disable_mfa',
-      'admin_action',
-      'delete_account',
-      'update_security_settings',
-    ];
+  const requiresReauth = useCallback(
+    (action: SensitiveAction): boolean => {
+      const sensitiveActions: SensitiveAction[] = [
+        "change_password",
+        "change_email",
+        "configure_mfa",
+        "disable_mfa",
+        "admin_action",
+        "delete_account",
+        "update_security_settings",
+      ];
 
-    if (!sensitiveActions.includes(action)) return false;
+      if (!sensitiveActions.includes(action)) return false;
 
-    // Check if recently verified
-    if (state.lastVerified) {
-      const timeSinceLastVerification = Date.now() - state.lastVerified;
-      if (timeSinceLastVerification < REAUTH_TIMEOUT_MS) {
-        return false;
+      // Check if recently verified
+      if (state.lastVerified) {
+        const timeSinceLastVerification = Date.now() - state.lastVerified;
+        if (timeSinceLastVerification < REAUTH_TIMEOUT_MS) {
+          return false;
+        }
       }
-    }
 
-    return true;
-  }, [state.lastVerified]);
+      return true;
+    },
+    [state.lastVerified]
+  );
 
   const requestReauth = useCallback((action: SensitiveAction) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       isRequired: true,
       action,
@@ -67,123 +70,129 @@ export function useReauthentication() {
     }));
   }, []);
 
-  const verifyPassword = useCallback(async (password: string): Promise<boolean> => {
-    if (!user?.email) {
-      toast({
-        title: 'Erro',
-        description: 'Usuário não autenticado',
-        variant: 'destructive',
-      });
-      return false;
-    }
-
-    setState(prev => ({ ...prev, isVerifying: true, error: null }));
-
-    try {
-      // Re-authenticate by signing in again
-      const { error } = await supabase.auth.signInWithPassword({
-        email: user.email,
-        password,
-      });
-
-      if (error) {
-        setState(prev => ({
-          ...prev,
-          isVerifying: false,
-          error: 'Senha incorreta',
-        }));
+  const verifyPassword = useCallback(
+    async (password: string): Promise<boolean> => {
+      if (!user?.email) {
+        toast({
+          title: "Erro",
+          description: "Usuário não autenticado",
+          variant: "destructive",
+        });
         return false;
       }
 
-      setState(prev => ({
-        ...prev,
-        isVerifying: false,
-        isRequired: false,
-        lastVerified: Date.now(),
-        error: null,
-      }));
+      setState((prev) => ({ ...prev, isVerifying: true, error: null }));
 
-      toast({
-        title: 'Verificado',
-        description: 'Identidade confirmada com sucesso',
-      });
+      try {
+        // Re-authenticate by signing in again
+        const { error } = await supabase.auth.signInWithPassword({
+          email: user.email,
+          password,
+        });
 
-      return true;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro ao verificar senha';
-      setState(prev => ({
-        ...prev,
-        isVerifying: false,
-        error: message,
-      }));
-      return false;
-    }
-  }, [user, toast]);
+        if (error) {
+          setState((prev) => ({
+            ...prev,
+            isVerifying: false,
+            error: "Senha incorreta",
+          }));
+          return false;
+        }
 
-  const verifyMFA = useCallback(async (code: string): Promise<boolean> => {
-    setState(prev => ({ ...prev, isVerifying: true, error: null }));
-
-    try {
-      const { data: factors } = await supabase.auth.mfa.listFactors();
-      const totpFactor = factors?.totp?.find(f => f.status === 'verified');
-
-      if (!totpFactor) {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           isVerifying: false,
-          error: 'MFA não configurado',
+          isRequired: false,
+          lastVerified: Date.now(),
+          error: null,
+        }));
+
+        toast({
+          title: "Verificado",
+          description: "Identidade confirmada com sucesso",
+        });
+
+        return true;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Erro ao verificar senha";
+        setState((prev) => ({
+          ...prev,
+          isVerifying: false,
+          error: message,
         }));
         return false;
       }
+    },
+    [user, toast]
+  );
 
-      const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({
-        factorId: totpFactor.id,
-      });
+  const verifyMFA = useCallback(
+    async (code: string): Promise<boolean> => {
+      setState((prev) => ({ ...prev, isVerifying: true, error: null }));
 
-      if (challengeError) throw challengeError;
+      try {
+        const { data: factors } = await supabase.auth.mfa.listFactors();
+        const totpFactor = factors?.totp?.find((f) => f.status === "verified");
 
-      const { error } = await supabase.auth.mfa.verify({
-        factorId: totpFactor.id,
-        challengeId: challenge.id,
-        code,
-      });
+        if (!totpFactor) {
+          setState((prev) => ({
+            ...prev,
+            isVerifying: false,
+            error: "MFA não configurado",
+          }));
+          return false;
+        }
 
-      if (error) {
-        setState(prev => ({
+        const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({
+          factorId: totpFactor.id,
+        });
+
+        if (challengeError) throw challengeError;
+
+        const { error } = await supabase.auth.mfa.verify({
+          factorId: totpFactor.id,
+          challengeId: challenge.id,
+          code,
+        });
+
+        if (error) {
+          setState((prev) => ({
+            ...prev,
+            isVerifying: false,
+            error: "Código MFA inválido",
+          }));
+          return false;
+        }
+
+        setState((prev) => ({
           ...prev,
           isVerifying: false,
-          error: 'Código MFA inválido',
+          isRequired: false,
+          lastVerified: Date.now(),
+          error: null,
+        }));
+
+        toast({
+          title: "Verificado",
+          description: "Identidade confirmada via MFA",
+        });
+
+        return true;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Erro ao verificar MFA";
+        setState((prev) => ({
+          ...prev,
+          isVerifying: false,
+          error: message,
         }));
         return false;
       }
-
-      setState(prev => ({
-        ...prev,
-        isVerifying: false,
-        isRequired: false,
-        lastVerified: Date.now(),
-        error: null,
-      }));
-
-      toast({
-        title: 'Verificado',
-        description: 'Identidade confirmada via MFA',
-      });
-
-      return true;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro ao verificar MFA';
-      setState(prev => ({
-        ...prev,
-        isVerifying: false,
-        error: message,
-      }));
-      return false;
-    }
-  }, [toast]);
+    },
+    [toast]
+  );
 
   const cancelReauth = useCallback(() => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       isRequired: false,
       action: null,
@@ -191,22 +200,25 @@ export function useReauthentication() {
     }));
   }, []);
 
-  const executeWithReauth = useCallback(async <T>(
-    action: SensitiveAction,
-    callback: () => Promise<T>
-  ): Promise<{ success: boolean; result?: T }> => {
-    if (requiresReauth(action)) {
-      requestReauth(action);
-      return { success: false };
-    }
+  const executeWithReauth = useCallback(
+    async <T>(
+      action: SensitiveAction,
+      callback: () => Promise<T>
+    ): Promise<{ success: boolean; result?: T }> => {
+      if (requiresReauth(action)) {
+        requestReauth(action);
+        return { success: false };
+      }
 
-    try {
-      const result = await callback();
-      return { success: true, result };
-    } catch (error) {
-      return { success: false };
-    }
-  }, [requiresReauth, requestReauth]);
+      try {
+        const result = await callback();
+        return { success: true, result };
+      } catch (error) {
+        return { success: false };
+      }
+    },
+    [requiresReauth, requestReauth]
+  );
 
   return {
     ...state,

@@ -1,5 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface Department {
   id: string;
@@ -27,13 +27,10 @@ export function useDepartments() {
   const queryClient = useQueryClient();
 
   const departmentsQuery = useQuery({
-    queryKey: ['departments'],
+    queryKey: ["departments"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('departments')
-        .select('*')
-        .order('name');
-      
+      const { data, error } = await supabase.from("departments").select("*").order("name");
+
       if (error) throw error;
       return data as Department[];
     },
@@ -41,48 +38,41 @@ export function useDepartments() {
 
   const createDepartment = useMutation({
     mutationFn: async (input: CreateDepartmentInput) => {
-      const { data, error } = await supabase
-        .from('departments')
-        .insert([input])
-        .select()
-        .single();
-      
+      const { data, error } = await supabase.from("departments").insert([input]).select().single();
+
       if (error) throw error;
       return data as Department;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['departments'] });
+      queryClient.invalidateQueries({ queryKey: ["departments"] });
     },
   });
 
   const updateDepartment = useMutation({
     mutationFn: async ({ id, ...input }: UpdateDepartmentInput) => {
       const { data, error } = await supabase
-        .from('departments')
+        .from("departments")
         .update(input)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data as Department;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['departments'] });
+      queryClient.invalidateQueries({ queryKey: ["departments"] });
     },
   });
 
   const deleteDepartment = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('departments')
-        .delete()
-        .eq('id', id);
-      
+      const { error } = await supabase.from("departments").delete().eq("id", id);
+
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['departments'] });
+      queryClient.invalidateQueries({ queryKey: ["departments"] });
     },
   });
 
@@ -100,14 +90,10 @@ export function useDepartments() {
 
 export function useDepartment(id: string) {
   return useQuery({
-    queryKey: ['departments', id],
+    queryKey: ["departments", id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('departments')
-        .select('*')
-        .eq('id', id)
-        .single();
-      
+      const { data, error } = await supabase.from("departments").select("*").eq("id", id).single();
+
       if (error) throw error;
       return data as Department;
     },

@@ -1,7 +1,7 @@
 // Screenshot Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { Screenshot, ScreenshotFilters, ScreenshotStats } from '@/types';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { Screenshot, ScreenshotFilters, ScreenshotStats } from "@/types";
 
 interface ScreenshotState {
   screenshots: Screenshot[];
@@ -9,10 +9,10 @@ interface ScreenshotState {
   selectedIds: string[];
   filters: ScreenshotFilters;
   stats: ScreenshotStats | null;
-  viewMode: 'grid' | 'list' | 'timeline';
+  viewMode: "grid" | "list" | "timeline";
   isLoading: boolean;
   error: string | null;
-  
+
   setScreenshots: (screenshots: Screenshot[]) => void;
   addScreenshot: (screenshot: Screenshot) => void;
   updateScreenshot: (id: string, data: Partial<Screenshot>) => void;
@@ -25,7 +25,7 @@ interface ScreenshotState {
   setFilters: (filters: Partial<ScreenshotFilters>) => void;
   clearFilters: () => void;
   setStats: (stats: ScreenshotStats) => void;
-  setViewMode: (mode: 'grid' | 'list' | 'timeline') => void;
+  setViewMode: (mode: "grid" | "list" | "timeline") => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   reset: () => void;
@@ -37,7 +37,7 @@ const initialState = {
   selectedIds: [],
   filters: {},
   stats: null,
-  viewMode: 'grid' as const,
+  viewMode: "grid" as const,
   isLoading: false,
   error: null,
 };
@@ -56,9 +56,7 @@ export const useScreenshotStore = create<ScreenshotState>()(
 
       updateScreenshot: (id, data) =>
         set((state) => ({
-          screenshots: state.screenshots.map((s) =>
-            s.id === id ? { ...s, ...data } : s
-          ),
+          screenshots: state.screenshots.map((s) => (s.id === id ? { ...s, ...data } : s)),
         })),
 
       removeScreenshot: (id) =>
@@ -85,8 +83,7 @@ export const useScreenshotStore = create<ScreenshotState>()(
 
       clearSelection: () => set({ selectedIds: [] }),
 
-      setFilters: (filters) =>
-        set((state) => ({ filters: { ...state.filters, ...filters } })),
+      setFilters: (filters) => set((state) => ({ filters: { ...state.filters, ...filters } })),
 
       clearFilters: () => set({ filters: {} }),
 
@@ -100,6 +97,6 @@ export const useScreenshotStore = create<ScreenshotState>()(
 
       reset: () => set(initialState),
     }),
-    { name: 'ScreenshotStore' }
+    { name: "ScreenshotStore" }
   )
 );

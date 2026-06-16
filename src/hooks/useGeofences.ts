@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
-import { geofenceService } from '@/services/geofenceService';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
+import { geofenceService } from "@/services/geofenceService";
 
 // ============================================================
 // TYPES
@@ -11,13 +11,13 @@ export interface Geofence {
   id: string;
   name: string;
   description?: string;
-  type: 'circle' | 'polygon';
+  type: "circle" | "polygon";
   coordinates: number[][];
   radius?: number;
   is_active: boolean;
   alert_on_enter: boolean;
   alert_on_exit: boolean;
-  applies_to: 'all' | 'teams' | 'employees';
+  applies_to: "all" | "teams" | "employees";
   target_ids?: string[];
   created_at: string;
   updated_at: string;
@@ -26,13 +26,13 @@ export interface Geofence {
 export interface CreateGeofenceInput {
   name: string;
   description?: string;
-  type: 'circle' | 'polygon';
+  type: "circle" | "polygon";
   coordinates: number[][];
   radius?: number;
   is_active?: boolean;
   alert_on_enter?: boolean;
   alert_on_exit?: boolean;
-  applies_to?: 'all' | 'teams' | 'employees';
+  applies_to?: "all" | "teams" | "employees";
   target_ids?: string[];
 }
 
@@ -45,7 +45,7 @@ export interface UpdateGeofenceInput {
   is_active?: boolean;
   alert_on_enter?: boolean;
   alert_on_exit?: boolean;
-  applies_to?: 'all' | 'teams' | 'employees';
+  applies_to?: "all" | "teams" | "employees";
   target_ids?: string[];
 }
 
@@ -71,8 +71,8 @@ export function useActiveGeofences() {
 
 export function useGeofence(id: string | null | undefined) {
   return useQuery({
-    queryKey: queryKeys.geofences.detail(id || ''),
-    queryFn: () => geofenceService.getGeofenceById(id || ''),
+    queryKey: queryKeys.geofences.detail(id || ""),
+    queryFn: () => geofenceService.getGeofenceById(id || ""),
     enabled: !!id,
     ...queryPresets.detail,
   });
@@ -103,16 +103,16 @@ export function useCreateGeofence() {
         is_active: input.is_active ?? true,
         alert_on_enter: input.alert_on_enter ?? true,
         alert_on_exit: input.alert_on_exit ?? true,
-        applies_to: input.applies_to ?? 'all',
+        applies_to: input.applies_to ?? "all",
         target_ids: input.target_ids,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
 
-      queryClient.setQueryData<Geofence[]>(
-        queryKeys.geofences.lists(),
-        (old) => [...(old || []), optimisticGeofence]
-      );
+      queryClient.setQueryData<Geofence[]>(queryKeys.geofences.lists(), (old) => [
+        ...(old || []),
+        optimisticGeofence,
+      ]);
 
       return { previousGeofences };
     },
@@ -121,16 +121,16 @@ export function useCreateGeofence() {
         queryClient.setQueryData(queryKeys.geofences.lists(), context.previousGeofences);
       }
       toast({
-        title: 'Erro ao criar geofence',
+        title: "Erro ao criar geofence",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
     onSuccess: () => {
       invalidateRelated.geofences(queryClient);
       toast({
-        title: 'Geofence criada',
-        description: 'A geofence foi criada com sucesso.',
+        title: "Geofence criada",
+        description: "A geofence foi criada com sucesso.",
       });
     },
   });
@@ -141,7 +141,8 @@ export function useUpdateGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: ({ id, ...input }: UpdateGeofenceInput) => geofenceService.updateGeofence(id, input),
+    mutationFn: ({ id, ...input }: UpdateGeofenceInput) =>
+      geofenceService.updateGeofence(id, input),
     onMutate: async ({ id, ...input }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.detail(id) });
@@ -151,14 +152,18 @@ export function useUpdateGeofence() {
 
       queryClient.setQueryData<Geofence[]>(
         queryKeys.geofences.lists(),
-        (old) => old?.map(g => g.id === id ? { ...g, ...input, updated_at: new Date().toISOString() } : g) || []
+        (old) =>
+          old?.map((g) =>
+            g.id === id ? { ...g, ...input, updated_at: new Date().toISOString() } : g
+          ) || []
       );
 
       if (previousGeofence) {
-        queryClient.setQueryData<Geofence>(
-          queryKeys.geofences.detail(id),
-          { ...previousGeofence, ...input, updated_at: new Date().toISOString() }
-        );
+        queryClient.setQueryData<Geofence>(queryKeys.geofences.detail(id), {
+          ...previousGeofence,
+          ...input,
+          updated_at: new Date().toISOString(),
+        });
       }
 
       return { previousGeofences, previousGeofence, id };
@@ -171,15 +176,15 @@ export function useUpdateGeofence() {
         queryClient.setQueryData(queryKeys.geofences.detail(context.id), context.previousGeofence);
       }
       toast({
-        title: 'Erro ao atualizar geofence',
+        title: "Erro ao atualizar geofence",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
     onSuccess: () => {
       invalidateRelated.geofences(queryClient);
       toast({
-        title: 'Geofence atualizada',
+        title: "Geofence atualizada",
       });
     },
   });
@@ -198,7 +203,7 @@ export function useDeleteGeofence() {
 
       queryClient.setQueryData<Geofence[]>(
         queryKeys.geofences.lists(),
-        (old) => old?.filter(g => g.id !== id) || []
+        (old) => old?.filter((g) => g.id !== id) || []
       );
 
       return { previousGeofences, id };
@@ -208,16 +213,16 @@ export function useDeleteGeofence() {
         queryClient.setQueryData(queryKeys.geofences.lists(), context.previousGeofences);
       }
       toast({
-        title: 'Erro ao excluir geofence',
+        title: "Erro ao excluir geofence",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
     onSuccess: (_, id) => {
       queryClient.removeQueries({ queryKey: queryKeys.geofences.detail(id) });
       invalidateRelated.geofences(queryClient);
       toast({
-        title: 'Geofence excluída',
+        title: "Geofence excluída",
       });
     },
   });
@@ -228,7 +233,8 @@ export function useToggleGeofence() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: ({ id, is_active }: { id: string; is_active: boolean }) => geofenceService.toggleGeofence(id, is_active),
+    mutationFn: ({ id, is_active }: { id: string; is_active: boolean }) =>
+      geofenceService.toggleGeofence(id, is_active),
     onMutate: async ({ id, is_active }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.geofences.lists() });
 
@@ -236,7 +242,7 @@ export function useToggleGeofence() {
 
       queryClient.setQueryData<Geofence[]>(
         queryKeys.geofences.lists(),
-        (old) => old?.map(g => g.id === id ? { ...g, is_active } : g) || []
+        (old) => old?.map((g) => (g.id === id ? { ...g, is_active } : g)) || []
       );
 
       return { previousGeofences };
@@ -246,15 +252,15 @@ export function useToggleGeofence() {
         queryClient.setQueryData(queryKeys.geofences.lists(), context.previousGeofences);
       }
       toast({
-        title: 'Erro ao alterar status',
+        title: "Erro ao alterar status",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
     onSuccess: (data: Geofence) => {
       invalidateRelated.geofences(queryClient);
       toast({
-        title: data.is_active ? 'Geofence ativada' : 'Geofence desativada',
+        title: data.is_active ? "Geofence ativada" : "Geofence desativada",
       });
     },
   });

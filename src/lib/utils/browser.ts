@@ -8,14 +8,14 @@ export async function copyToClipboard(text): Promise<boolean> {
     await navigator.clipboard.writeText(text);
     return true;
   } catch {
-    const textArea = document.createElement('textarea');
+    const textArea = document.createElement("textarea");
     textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-9999px';
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
     document.body.appendChild(textArea);
     textArea.select();
     try {
-      document.execCommand('copy');
+      document.execCommand("copy");
       return true;
     } catch {
       return false;
@@ -29,11 +29,9 @@ export async function copyToClipboard(text): Promise<boolean> {
  * Download file from blob or URL
  */
 export function downloadFile(content: Blob | string, filename: string): void {
-  const blob = typeof content === 'string' 
-    ? new Blob([content], { type: 'text/plain' })
-    : content;
+  const blob = typeof content === "string" ? new Blob([content], { type: "text/plain" }) : content;
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
   a.download = filename;
   document.body.appendChild(a);

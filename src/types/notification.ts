@@ -20,32 +20,32 @@ export interface Notification {
   updatedAt: string;
 }
 
-export type NotificationType = 
-  | 'alert'
-  | 'warning'
-  | 'info'
-  | 'success'
-  | 'error'
-  | 'system'
-  | 'task'
-  | 'mention'
-  | 'reminder';
+export type NotificationType =
+  | "alert"
+  | "warning"
+  | "info"
+  | "success"
+  | "error"
+  | "system"
+  | "task"
+  | "mention"
+  | "reminder";
 
-export type NotificationCategory = 
-  | 'security'
-  | 'productivity'
-  | 'compliance'
-  | 'system'
-  | 'team'
-  | 'report'
-  | 'billing'
-  | 'account';
+export type NotificationCategory =
+  | "security"
+  | "productivity"
+  | "compliance"
+  | "system"
+  | "team"
+  | "report"
+  | "billing"
+  | "account";
 
-export type NotificationPriority = 'low' | 'normal' | 'high' | 'urgent';
+export type NotificationPriority = "low" | "normal" | "high" | "urgent";
 
-export type NotificationChannel = 'in_app' | 'email' | 'push' | 'sms' | 'slack' | 'webhook';
+export type NotificationChannel = "in_app" | "email" | "push" | "sms" | "slack" | "webhook";
 
-export type NotificationStatus = 'pending' | 'sent' | 'delivered' | 'read' | 'dismissed' | 'failed';
+export type NotificationStatus = "pending" | "sent" | "delivered" | "read" | "dismissed" | "failed";
 
 export interface NotificationTemplate {
   id: string;
@@ -99,7 +99,7 @@ export interface QuietHoursSettings {
 
 export interface FrequencySettings {
   digestEnabled: boolean;
-  digestFrequency: 'daily' | 'weekly';
+  digestFrequency: "daily" | "weekly";
   digestTime: string;
   batchSimilar: boolean;
   maxPerHour: number;
@@ -139,5 +139,5 @@ export interface SendNotificationInput {
 
 export interface BulkNotificationInput {
   userIds: string[];
-  notification: Omit<SendNotificationInput, 'userId'>;
+  notification: Omit<SendNotificationInput, "userId">;
 }

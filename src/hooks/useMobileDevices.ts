@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 // ============================================================
 // TYPES
@@ -11,7 +11,7 @@ export interface MobileDevice {
   id: string;
   employee_id: string;
   device_name: string;
-  device_type: 'android' | 'ios';
+  device_type: "android" | "ios";
   os_version: string;
   app_version: string;
   push_token?: string;
@@ -53,12 +53,14 @@ export function useMobileDevices() {
     queryKey: queryKeys.mobileDevices.lists(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('mobile_devices')
-        .select(`
+        .from("mobile_devices")
+        .select(
+          `
           *,
           employee:employees(id, full_name)
-        `)
-        .order('last_seen_at', { ascending: false });
+        `
+        )
+        .order("last_seen_at", { ascending: false });
 
       if (error) throw error;
       return data as MobileDevice[];
@@ -72,18 +74,20 @@ export function useMobileDeviceLocations() {
     queryKey: queryKeys.mobileDevices.locations(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('mobile_devices')
-        .select(`
+        .from("mobile_devices")
+        .select(
+          `
           id,
           last_location,
           last_seen_at,
           employee:employees(id, full_name)
-        `)
-        .eq('is_active', true)
-        .not('last_location', 'is', null);
+        `
+        )
+        .eq("is_active", true)
+        .not("last_location", "is", null);
 
       if (error) throw error;
-      
+
       return data?.map((d: Record<string, unknown>) => ({
         device_id: d.id,
         ...(d.last_location as object),
@@ -96,17 +100,19 @@ export function useMobileDeviceLocations() {
 
 export function useMobileDevice(id: string | null | undefined) {
   return useQuery({
-    queryKey: queryKeys.mobileDevices.detail(id || ''),
+    queryKey: queryKeys.mobileDevices.detail(id || ""),
     queryFn: async () => {
       if (!id) return null;
-      
+
       const { data, error } = await supabase
-        .from('mobile_devices')
-        .select(`
+        .from("mobile_devices")
+        .select(
+          `
           *,
           employee:employees(id, full_name)
-        `)
-        .eq('id', id)
+        `
+        )
+        .eq("id", id)
         .single();
 
       if (error) throw error;
@@ -128,9 +134,9 @@ export function useUpdateMobileDevice() {
   return useMutation({
     mutationFn: async ({ id, ...input }: { id: string; is_active?: boolean }) => {
       const { data, error } = await supabase
-        .from('mobile_devices')
+        .from("mobile_devices")
         .update(input)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
 
@@ -140,15 +146,15 @@ export function useUpdateMobileDevice() {
     onSuccess: () => {
       invalidateRelated.mobileDevices(queryClient);
       toast({
-        title: 'Dispositivo atualizado',
-        description: 'O dispositivo foi atualizado com sucesso.',
+        title: "Dispositivo atualizado",
+        description: "O dispositivo foi atualizado com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao atualizar dispositivo',
+        title: "Erro ao atualizar dispositivo",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -160,25 +166,22 @@ export function useDeleteMobileDevice() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('mobile_devices')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from("mobile_devices").delete().eq("id", id);
 
       if (error) throw error;
     },
     onSuccess: () => {
       invalidateRelated.mobileDevices(queryClient);
       toast({
-        title: 'Dispositivo removido',
-        description: 'O dispositivo foi removido com sucesso.',
+        title: "Dispositivo removido",
+        description: "O dispositivo foi removido com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao remover dispositivo',
+        title: "Erro ao remover dispositivo",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -188,12 +191,16 @@ export function useSendPushNotification() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ deviceId, title, body }: { 
-      deviceId: string; 
-      title: string; 
+    mutationFn: async ({
+      deviceId,
+      title,
+      body,
+    }: {
+      deviceId: string;
+      title: string;
       body: string;
     }) => {
-      const { data, error } = await supabase.functions.invoke('send-push-notification', {
+      const { data, error } = await supabase.functions.invoke("send-push-notification", {
         body: { device_id: deviceId, title, body },
       });
 
@@ -202,15 +209,15 @@ export function useSendPushNotification() {
     },
     onSuccess: () => {
       toast({
-        title: 'Notificação enviada',
-        description: 'A notificação push foi enviada com sucesso.',
+        title: "Notificação enviada",
+        description: "A notificação push foi enviada com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao enviar notificação',
+        title: "Erro ao enviar notificação",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -222,12 +229,12 @@ export function useRequestDeviceLocation() {
 
   return useMutation({
     mutationFn: async (deviceId: string) => {
-      const { data, error } = await supabase.functions.invoke('send-push-notification', {
-        body: { 
-          device_id: deviceId, 
-          type: 'location_request',
-          title: 'Atualização de localização',
-          body: 'Atualizando sua localização...',
+      const { data, error } = await supabase.functions.invoke("send-push-notification", {
+        body: {
+          device_id: deviceId,
+          type: "location_request",
+          title: "Atualização de localização",
+          body: "Atualizando sua localização...",
         },
       });
 
@@ -239,17 +246,17 @@ export function useRequestDeviceLocation() {
       setTimeout(() => {
         queryClient.invalidateQueries({ queryKey: queryKeys.mobileDevices.locations() });
       }, 5000);
-      
+
       toast({
-        title: 'Solicitação enviada',
-        description: 'A atualização de localização foi solicitada.',
+        title: "Solicitação enviada",
+        description: "A atualização de localização foi solicitada.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao solicitar localização',
+        title: "Erro ao solicitar localização",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });

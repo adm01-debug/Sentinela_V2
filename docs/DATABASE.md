@@ -3,6 +3,7 @@
 ## Tables
 
 ### users
+
 - `id` UUID PRIMARY KEY
 - `email` VARCHAR UNIQUE
 - `role` VARCHAR
@@ -10,6 +11,7 @@
 - `updated_at` TIMESTAMP
 
 ### employees
+
 - `id` UUID PRIMARY KEY
 - `user_id` UUID REFERENCES users
 - `name` VARCHAR
@@ -18,6 +20,7 @@
 - `created_at` TIMESTAMP
 
 ### violations
+
 - `id` UUID PRIMARY KEY
 - `employee_id` UUID REFERENCES employees
 - `type` VARCHAR
@@ -26,6 +29,7 @@
 - `created_at` TIMESTAMP
 
 ### activities
+
 - `id` UUID PRIMARY KEY
 - `employee_id` UUID REFERENCES employees
 - `type` VARCHAR
@@ -33,6 +37,7 @@
 - `timestamp` TIMESTAMP
 
 ### reports
+
 - `id` UUID PRIMARY KEY
 - `type` VARCHAR
 - `status` VARCHAR
@@ -40,9 +45,11 @@
 - `created_at` TIMESTAMP
 
 ## Indexes
+
 - `idx_employees_user_id`
 - `idx_violations_employee_id`
 - `idx_activities_employee_timestamp`
 
 ## RLS Policies
+
 All tables have Row Level Security enabled.

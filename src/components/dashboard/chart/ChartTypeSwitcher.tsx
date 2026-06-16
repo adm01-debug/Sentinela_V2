@@ -1,8 +1,8 @@
-import { memo } from 'react';
-import { BarChart3, LineChart, AreaChart, PieChart } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { memo } from "react";
+import { BarChart3, LineChart, AreaChart, PieChart } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export type ChartType = 'line' | 'bar' | 'area' | 'pie';
+export type ChartType = "line" | "bar" | "area" | "pie";
 
 export interface ChartTypeSwitcherProps {
   value: ChartType;
@@ -13,13 +13,27 @@ export interface ChartTypeSwitcherProps {
 
 const chartTypeIcons = { line: LineChart, bar: BarChart3, area: AreaChart, pie: PieChart };
 
-function ChartTypeSwitcherComponent({ value, onChange, availableTypes = ['line', 'bar', 'area'], className }: ChartTypeSwitcherProps) {
+function ChartTypeSwitcherComponent({
+  value,
+  onChange,
+  availableTypes = ["line", "bar", "area"],
+  className,
+}: ChartTypeSwitcherProps) {
   return (
-    <div className={cn('flex items-center gap-1 p-1 bg-muted rounded-lg', className)}>
+    <div className={cn("flex items-center gap-1 rounded-lg bg-muted p-1", className)}>
       {availableTypes.map((type) => {
         const Icon = chartTypeIcons[type];
         return (
-          <button key={type} onClick={() => onChange(type)} className={cn('p-2 rounded-md transition-all', value === type ? 'bg-background shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground')}>
+          <button
+            key={type}
+            onClick={() => onChange(type)}
+            className={cn(
+              "rounded-md p-2 transition-all",
+              value === type
+                ? "bg-background text-primary shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
             <Icon className="h-4 w-4" />
           </button>
         );

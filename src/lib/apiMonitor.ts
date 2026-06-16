@@ -3,7 +3,7 @@
  * Tracks Supabase query durations and alerts on slow responses.
  */
 
-import { logger } from '@/lib/logger';
+import { logger } from "@/lib/logger";
 
 interface QueryMetric {
   table: string;
@@ -39,10 +39,8 @@ class ApiResponseMonitor {
 
     if (slow) {
       this.slowCount++;
-      const icon = durationMs >= VERY_SLOW_THRESHOLD_MS ? '🔴' : '🟡';
-      logger.warn(
-        `${icon} Slow query: ${operation} on ${table} took ${metric.durationMs}ms`
-      );
+      const icon = durationMs >= VERY_SLOW_THRESHOLD_MS ? "🔴" : "🟡";
+      logger.warn(`${icon} Slow query: ${operation} on ${table} took ${metric.durationMs}ms`);
     }
 
     this.history.push(metric);
@@ -56,11 +54,7 @@ class ApiResponseMonitor {
   /**
    * Wrap an async Supabase call with timing.
    */
-  async track<T>(
-    table: string,
-    operation: string,
-    fn: () => Promise<T>
-  ): Promise<T> {
+  async track<T>(table: string, operation: string, fn: () => Promise<T>): Promise<T> {
     const start = performance.now();
     try {
       const result = await fn();
@@ -78,13 +72,15 @@ class ApiResponseMonitor {
   getSummary() {
     const recent = this.history.slice(-50);
     const durations = recent.map((m) => m.durationMs);
-    const avg = durations.length > 0
-      ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length)
-      : 0;
+    const avg =
+      durations.length > 0
+        ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length)
+        : 0;
     const max = durations.length > 0 ? Math.max(...durations) : 0;
-    const p95 = durations.length > 0
-      ? durations.sort((a, b) => a - b)[Math.floor(durations.length * 0.95)] || 0
-      : 0;
+    const p95 =
+      durations.length > 0
+        ? durations.sort((a, b) => a - b)[Math.floor(durations.length * 0.95)] || 0
+        : 0;
 
     // Per-table breakdown
     const byTable = recent.reduce<Record<string, { count: number; avgMs: number; maxMs: number }>>(
@@ -105,9 +101,8 @@ class ApiResponseMonitor {
     return {
       totalQueries: this.totalCount,
       slowQueries: this.slowCount,
-      slowPercentage: this.totalCount > 0
-        ? Math.round((this.slowCount / this.totalCount) * 100)
-        : 0,
+      slowPercentage:
+        this.totalCount > 0 ? Math.round((this.slowCount / this.totalCount) * 100) : 0,
       avgMs: avg,
       maxMs: max,
       p95Ms: p95,
@@ -136,23 +131,23 @@ export const apiMonitor = new ApiResponseMonitor();
 export async function runHealthCheck(): Promise<{ ok: boolean; latency: number; error?: string }> {
   const start = performance.now();
   try {
-    const { error } = await (await import('@/integrations/supabase/client')).supabase
-      .from('geofences')
-      .select('id', { count: 'estimated', head: true })
+    const { error } = await (await import("@/integrations/supabase/client")).supabase
+      .from("geofences")
+      .select("id", { count: "estimated", head: true })
       .limit(1);
-    
+
     const latency = Math.round(performance.now() - start);
-    
+
     if (error) {
-      logger.error('[HealthCheck] Failed:', error.message);
+      logger.error("[HealthCheck] Failed:", error.message);
       return { ok: false, latency, error: error.message };
     }
-    
+
     return { ok: true, latency };
   } catch (err) {
     const latency = Math.round(performance.now() - start);
-    const msg = err instanceof Error ? err.message : 'Unknown network error';
-    logger.error('[HealthCheck] Exception:', msg);
+    const msg = err instanceof Error ? err.message : "Unknown network error";
+    logger.error("[HealthCheck] Exception:", msg);
     return { ok: false, latency, error: msg };
   }
 }

@@ -21,27 +21,27 @@ export interface Webhook {
   createdBy: string;
 }
 
-export type WebhookEvent = 
-  | 'employee.created'
-  | 'employee.updated'
-  | 'employee.deleted'
-  | 'activity.created'
-  | 'activity.updated'
-  | 'screenshot.captured'
-  | 'alert.triggered'
-  | 'alert.resolved'
-  | 'report.generated'
-  | 'user.created'
-  | 'user.updated'
-  | 'user.deleted'
-  | 'team.created'
-  | 'team.updated'
-  | 'violation.detected'
-  | 'integration.connected'
-  | 'integration.disconnected'
-  | '*';
+export type WebhookEvent =
+  | "employee.created"
+  | "employee.updated"
+  | "employee.deleted"
+  | "activity.created"
+  | "activity.updated"
+  | "screenshot.captured"
+  | "alert.triggered"
+  | "alert.resolved"
+  | "report.generated"
+  | "user.created"
+  | "user.updated"
+  | "user.deleted"
+  | "team.created"
+  | "team.updated"
+  | "violation.detected"
+  | "integration.connected"
+  | "integration.disconnected"
+  | "*";
 
-export type WebhookStatus = 'active' | 'paused' | 'failed' | 'disabled';
+export type WebhookStatus = "active" | "paused" | "failed" | "disabled";
 
 export interface RetryPolicy {
   maxAttempts: number;
@@ -52,7 +52,7 @@ export interface RetryPolicy {
 
 export interface WebhookFilter {
   field: string;
-  operator: 'eq' | 'ne' | 'in' | 'nin' | 'contains';
+  operator: "eq" | "ne" | "in" | "nin" | "contains";
   value: unknown;
 }
 
@@ -69,7 +69,7 @@ export interface WebhookDelivery {
   completedAt?: string;
 }
 
-export type DeliveryStatus = 'pending' | 'success' | 'failed' | 'retrying';
+export type DeliveryStatus = "pending" | "success" | "failed" | "retrying";
 
 export interface WebhookPayload {
   id: string;
@@ -92,7 +92,7 @@ export interface WebhookResponse {
 
 export interface DeliveryAttempt {
   attempt: number;
-  status: 'success' | 'failed';
+  status: "success" | "failed";
   statusCode?: number;
   error?: string;
   duration: number;

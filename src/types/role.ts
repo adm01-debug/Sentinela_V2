@@ -1,5 +1,5 @@
 // Role types for Sentinela v17
-import { Permission, PermissionScope } from './permission';
+import { Permission, PermissionScope } from "./permission";
 
 export interface Role {
   id: string;
@@ -23,14 +23,14 @@ export interface Role {
   updatedAt: string;
 }
 
-export type RoleType = 
-  | 'super_admin'
-  | 'admin'
-  | 'manager'
-  | 'supervisor'
-  | 'analyst'
-  | 'viewer'
-  | 'custom';
+export type RoleType =
+  | "super_admin"
+  | "admin"
+  | "manager"
+  | "supervisor"
+  | "analyst"
+  | "viewer"
+  | "custom";
 
 export interface RoleHierarchy {
   role: Role;

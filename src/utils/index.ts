@@ -1,6 +1,6 @@
 // Utils barrel file for Sentinela v17
 
-export { cn } from './cn';
+export { cn } from "./cn";
 
 export {
   sleep,
@@ -11,7 +11,7 @@ export {
   randomId,
   capitalize,
   slugify,
-} from './helpers';
+} from "./helpers";
 
 export {
   formatDate,
@@ -29,6 +29,6 @@ export {
   formatPhone,
   formatCPF,
   formatCNPJ,
-} from './formatters';
+} from "./formatters";
 
-export { ApiError, fetcher, buildQueryString, parseQueryString } from './api';
+export { ApiError, fetcher, buildQueryString, parseQueryString } from "./api";

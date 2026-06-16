@@ -1,6 +1,6 @@
 // Modal Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface ModalConfig {
   id: string;
@@ -10,13 +10,13 @@ interface ModalConfig {
 }
 
 interface ModalOptions {
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  size?: "sm" | "md" | "lg" | "xl" | "full";
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
   showCloseButton?: boolean;
   preventScroll?: boolean;
   centered?: boolean;
-  animation?: 'fade' | 'slide' | 'scale' | 'none';
+  animation?: "fade" | "slide" | "scale" | "none";
 }
 
 interface ConfirmConfig {
@@ -24,7 +24,7 @@ interface ConfirmConfig {
   message: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  variant?: 'default' | 'danger' | 'warning';
+  variant?: "default" | "danger" | "warning";
   onConfirm: () => void | Promise<void>;
   onCancel?: () => void;
 }
@@ -92,7 +92,7 @@ export const useModalStore = create<ModalState>()(
           ),
         })),
     }),
-    { name: 'ModalStore' }
+    { name: "ModalStore" }
   )
 );
 
@@ -100,7 +100,7 @@ export const useModalStore = create<ModalState>()(
 export const useModal = (id) => {
   const { modals, open, close, updateModal } = useModalStore();
   const modal = modals.find((m) => m.id === id);
-  
+
   return {
     isOpen: !!modal,
     props: modal?.props,
@@ -112,7 +112,7 @@ export const useModal = (id) => {
 
 export const useConfirmDialog = () => {
   const { confirm, closeConfirm, confirmDialog } = useModalStore();
-  
+
   return {
     isOpen: !!confirmDialog,
     config: confirmDialog,

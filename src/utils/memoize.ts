@@ -1,6 +1,8 @@
 // Memoization utilities for Sentinela v17
 
-type AnyFunction<TArgs extends unknown[] = unknown[], TResult = unknown> = (...args: TArgs) => TResult;
+type AnyFunction<TArgs extends unknown[] = unknown[], TResult = unknown> = (
+  ...args: TArgs
+) => TResult;
 
 export function memoize<TArgs extends unknown[], TResult>(
   fn: AnyFunction<TArgs, TResult>,

@@ -8,11 +8,11 @@ import {
   ResponsiveContainer,
   Legend,
   Cell,
-} from 'recharts';
-import { BarChart3 } from 'lucide-react';
-import { ChartTooltipContent } from './ChartTooltip';
-import { ChartEmptyState } from './ChartEmptyState';
-import { useChartColors } from '@/hooks/useChartColors';
+} from "recharts";
+import { BarChart3 } from "lucide-react";
+import { ChartTooltipContent } from "./ChartTooltip";
+import { ChartEmptyState } from "./ChartEmptyState";
+import { useChartColors } from "@/hooks/useChartColors";
 
 export interface BarSeriesConfig {
   dataKey: string;
@@ -27,7 +27,7 @@ interface BaseBarChartProps {
   series: BarSeriesConfig[];
   xAxisKey?: string;
   height?: number;
-  layout?: 'horizontal' | 'vertical';
+  layout?: "horizontal" | "vertical";
   showGrid?: boolean;
   showLegend?: boolean;
   colorByIndex?: boolean;
@@ -38,20 +38,20 @@ interface BaseBarChartProps {
 }
 
 const DEFAULT_COLORS = [
-  'hsl(0, 84%, 60%)',
-  'hsl(38, 92%, 50%)',
-  'hsl(217, 91%, 60%)',
-  'hsl(142, 76%, 36%)',
-  'hsl(262, 83%, 58%)',
-  'hsl(330, 81%, 60%)',
+  "hsl(0, 84%, 60%)",
+  "hsl(38, 92%, 50%)",
+  "hsl(217, 91%, 60%)",
+  "hsl(142, 76%, 36%)",
+  "hsl(262, 83%, 58%)",
+  "hsl(330, 81%, 60%)",
 ];
 
 export function BaseBarChart({
   data,
   series,
-  xAxisKey = 'name',
+  xAxisKey = "name",
   height = 250,
-  layout = 'horizontal',
+  layout = "horizontal",
   showGrid = true,
   showLegend = false,
   colorByIndex = false,
@@ -63,16 +63,23 @@ export function BaseBarChart({
   const chartColors = useChartColors();
 
   if (!data.length) {
-    return <ChartEmptyState icon={BarChart3} title={emptyTitle} description={emptyDescription} height={height} />;
+    return (
+      <ChartEmptyState
+        icon={BarChart3}
+        title={emptyTitle}
+        description={emptyDescription}
+        height={height}
+      />
+    );
   }
 
-  const isVertical = layout === 'vertical';
+  const isVertical = layout === "vertical";
 
   return (
     <ResponsiveContainer width="100%" height={height}>
       <BarChart
         data={data}
-        layout={isVertical ? 'vertical' : 'horizontal'}
+        layout={isVertical ? "vertical" : "horizontal"}
         margin={{ top: 5, right: 30, left: isVertical ? 100 : -20, bottom: 5 }}
       >
         {showGrid && <CartesianGrid strokeDasharray="3 3" stroke={chartColors.border} />}
@@ -89,8 +96,16 @@ export function BaseBarChart({
           </>
         ) : (
           <>
-            <XAxis dataKey={xAxisKey} stroke={chartColors.muted} tick={{ fill: chartColors.muted, fontSize: 12 }} />
-            <YAxis stroke={chartColors.muted} tick={{ fill: chartColors.muted, fontSize: 12 }} allowDecimals={false} />
+            <XAxis
+              dataKey={xAxisKey}
+              stroke={chartColors.muted}
+              tick={{ fill: chartColors.muted, fontSize: 12 }}
+            />
+            <YAxis
+              stroke={chartColors.muted}
+              tick={{ fill: chartColors.muted, fontSize: 12 }}
+              allowDecimals={false}
+            />
           </>
         )}
         <Tooltip content={<ChartTooltipContent valueFormatter={valueFormatter} />} />
@@ -105,9 +120,7 @@ export function BaseBarChart({
             stackId={s.stack}
           >
             {colorByIndex &&
-              data.map((_, idx) => (
-                <Cell key={`cell-${idx}`} fill={colors[idx % colors.length]} />
-              ))}
+              data.map((_, idx) => <Cell key={`cell-${idx}`} fill={colors[idx % colors.length]} />)}
           </Bar>
         ))}
       </BarChart>

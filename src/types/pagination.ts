@@ -77,11 +77,7 @@ export interface PageInfo {
   isLastPage: boolean;
 }
 
-export function calculatePagination(
-  page: number,
-  pageSize: number,
-  total: number
-): Pagination {
+export function calculatePagination(page: number, pageSize: number, total: number): Pagination {
   const totalPages = Math.ceil(total / pageSize);
   return {
     page,
@@ -111,23 +107,23 @@ export function generatePageNumbers(
   currentPage: number,
   totalPages: number,
   siblingCount = 1
-): (number | 'ellipsis')[] {
-  const pages: (number | 'ellipsis')[] = [];
+): (number | "ellipsis")[] {
+  const pages: (number | "ellipsis")[] = [];
   const leftSibling = Math.max(currentPage - siblingCount, 1);
   const rightSibling = Math.min(currentPage + siblingCount, totalPages);
-  
+
   const showLeftEllipsis = leftSibling > 2;
   const showRightEllipsis = rightSibling < totalPages - 1;
-  
+
   if (leftSibling > 1) pages.push(1);
-  if (showLeftEllipsis) pages.push('ellipsis');
-  
+  if (showLeftEllipsis) pages.push("ellipsis");
+
   for (let i = leftSibling; i <= rightSibling; i++) {
     pages.push(i);
   }
-  
-  if (showRightEllipsis) pages.push('ellipsis');
+
+  if (showRightEllipsis) pages.push("ellipsis");
   if (rightSibling < totalPages) pages.push(totalPages);
-  
+
   return pages;
 }

@@ -1,28 +1,28 @@
-import { memo } from 'react';
-import { Loader2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { memo } from "react";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // ============================================================
 // SPINNER
 // ============================================================
 
 interface SpinnerProps {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   className?: string;
 }
 
 const spinnerSizes = {
-  xs: 'h-3 w-3',
-  sm: 'h-4 w-4',
-  md: 'h-6 w-6',
-  lg: 'h-8 w-8',
-  xl: 'h-12 w-12',
+  xs: "h-3 w-3",
+  sm: "h-4 w-4",
+  md: "h-6 w-6",
+  lg: "h-8 w-8",
+  xl: "h-12 w-12",
 };
 
-export const Spinner = memo(function Spinner({ size = 'md', className }: SpinnerProps) {
+export const Spinner = memo(function Spinner({ size = "md", className }: SpinnerProps) {
   return (
     <Loader2
-      className={cn('animate-spin text-primary', spinnerSizes[size], className)}
+      className={cn("animate-spin text-primary", spinnerSizes[size], className)}
       aria-label="Carregando..."
     />
   );
@@ -39,11 +39,11 @@ interface PulseDotsProps {
 
 export const PulseDots = memo(function PulseDots({ count = 3, className }: PulseDotsProps) {
   return (
-    <div className={cn('flex items-center gap-1', className)}>
+    <div className={cn("flex items-center gap-1", className)}>
       {Array.from({ length: count }).map((_, i) => (
         <span
           key={i}
-          className="h-2 w-2 rounded-full bg-primary animate-pulse"
+          className="h-2 w-2 animate-pulse rounded-full bg-primary"
           style={{ animationDelay: `${i * 150}ms` }}
         />
       ))}
@@ -57,33 +57,29 @@ export const PulseDots = memo(function PulseDots({ count = 3, className }: Pulse
 
 interface ShimmerProps {
   className?: string;
-  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  rounded?: "none" | "sm" | "md" | "lg" | "xl" | "full";
   style?: React.CSSProperties;
 }
 
 const roundedClasses = {
-  none: 'rounded-none',
-  sm: 'rounded-sm',
-  md: 'rounded-md',
-  lg: 'rounded-lg',
-  xl: 'rounded-xl',
-  full: 'rounded-full',
+  none: "rounded-none",
+  sm: "rounded-sm",
+  md: "rounded-md",
+  lg: "rounded-lg",
+  xl: "rounded-xl",
+  full: "rounded-full",
 };
 
-export const Shimmer = memo(function Shimmer({ className, rounded = 'md', style }: ShimmerProps) {
+export const Shimmer = memo(function Shimmer({ className, rounded = "md", style }: ShimmerProps) {
   return (
     <div
-      className={cn(
-        'relative overflow-hidden bg-muted',
-        roundedClasses[rounded],
-        className
-      )}
+      className={cn("relative overflow-hidden bg-muted", roundedClasses[rounded], className)}
       style={style}
     >
       <div
-        className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]"
+        className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent"
         style={{
-          animation: 'shimmer 2s infinite',
+          animation: "shimmer 2s infinite",
         }}
       />
     </div>
@@ -95,19 +91,19 @@ export const Shimmer = memo(function Shimmer({ className, rounded = 'md', style 
 // ============================================================
 
 interface SkeletonCardProps {
-  variant?: 'stat' | 'chart' | 'list' | 'table';
+  variant?: "stat" | "chart" | "list" | "table";
   className?: string;
 }
 
 export const SkeletonCard = memo(function SkeletonCard({
-  variant = 'stat',
+  variant = "stat",
   className,
 }: SkeletonCardProps) {
   switch (variant) {
-    case 'stat':
+    case "stat":
       return (
-        <div className={cn('p-5 rounded-xl bg-card border space-y-3', className)}>
-          <div className="flex justify-between items-start">
+        <div className={cn("space-y-3 rounded-xl border bg-card p-5", className)}>
+          <div className="flex items-start justify-between">
             <Shimmer className="h-4 w-24" />
             <Shimmer className="h-10 w-10 rounded-xl" />
           </div>
@@ -116,17 +112,17 @@ export const SkeletonCard = memo(function SkeletonCard({
         </div>
       );
 
-    case 'chart':
+    case "chart":
       return (
-        <div className={cn('p-6 rounded-xl bg-card border space-y-4', className)}>
-          <div className="flex justify-between items-center">
+        <div className={cn("space-y-4 rounded-xl border bg-card p-6", className)}>
+          <div className="flex items-center justify-between">
             <div className="space-y-2">
               <Shimmer className="h-5 w-32" />
               <Shimmer className="h-3 w-48" />
             </div>
             <Shimmer className="h-9 w-24 rounded-md" />
           </div>
-          <div className="flex items-end gap-2 h-48">
+          <div className="flex h-48 items-end gap-2">
             {Array.from({ length: 7 }).map((_, i) => (
               <Shimmer
                 key={i}
@@ -139,9 +135,9 @@ export const SkeletonCard = memo(function SkeletonCard({
         </div>
       );
 
-    case 'list':
+    case "list":
       return (
-        <div className={cn('p-4 rounded-xl bg-card border space-y-3', className)}>
+        <div className={cn("space-y-3 rounded-xl border bg-card p-4", className)}>
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="flex items-center gap-3 p-2">
               <Shimmer className="h-10 w-10 rounded-full" rounded="full" />
@@ -155,18 +151,18 @@ export const SkeletonCard = memo(function SkeletonCard({
         </div>
       );
 
-    case 'table':
+    case "table":
       return (
-        <div className={cn('rounded-xl bg-card border overflow-hidden', className)}>
+        <div className={cn("overflow-hidden rounded-xl border bg-card", className)}>
           {/* Header */}
-          <div className="flex gap-4 p-4 border-b bg-muted/30">
+          <div className="flex gap-4 border-b bg-muted/30 p-4">
             {Array.from({ length: 5 }).map((_, i) => (
               <Shimmer key={i} className="h-4 flex-1" />
             ))}
           </div>
           {/* Rows */}
           {Array.from({ length: 6 }).map((_, rowIndex) => (
-            <div key={rowIndex} className="flex gap-4 p-4 border-b last:border-0">
+            <div key={rowIndex} className="flex gap-4 border-b p-4 last:border-0">
               {Array.from({ length: 5 }).map((_, colIndex) => (
                 <Shimmer key={colIndex} className="h-4 flex-1" />
               ))}
@@ -191,22 +187,20 @@ interface LoadingOverlayProps {
 }
 
 export const LoadingOverlay = memo(function LoadingOverlay({
-  message = 'Carregando...',
+  message = "Carregando...",
   fullScreen = false,
   className,
 }: LoadingOverlayProps) {
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center gap-4 bg-background/80 backdrop-blur-sm z-50',
-        fullScreen ? 'fixed inset-0' : 'absolute inset-0',
+        "z-50 flex flex-col items-center justify-center gap-4 bg-background/80 backdrop-blur-sm",
+        fullScreen ? "fixed inset-0" : "absolute inset-0",
         className
       )}
     >
       <Spinner size="lg" />
-      {message && (
-        <p className="text-sm text-muted-foreground animate-pulse">{message}</p>
-      )}
+      {message && <p className="animate-pulse text-sm text-muted-foreground">{message}</p>}
     </div>
   );
 });
@@ -220,11 +214,9 @@ interface PageLoadingProps {
   className?: string;
 }
 
-export const PageLoading = memo(function PageLoading({
-  className,
-}: PageLoadingProps) {
+export const PageLoading = memo(function PageLoading({ className }: PageLoadingProps) {
   return (
-    <div className={cn('p-6 md:p-8 space-y-6', className)}>
+    <div className={cn("space-y-6 p-6 md:p-8", className)}>
       {/* Header skeleton */}
       <div className="space-y-2">
         <Shimmer className="h-4 w-32" />
@@ -258,11 +250,11 @@ interface InlineLoadingProps {
 }
 
 export const InlineLoading = memo(function InlineLoading({
-  text = 'Carregando',
+  text = "Carregando",
   className,
 }: InlineLoadingProps) {
   return (
-    <span className={cn('inline-flex items-center gap-2 text-muted-foreground', className)}>
+    <span className={cn("inline-flex items-center gap-2 text-muted-foreground", className)}>
       <Spinner size="xs" />
       <span>{text}</span>
       <PulseDots count={3} />
@@ -280,11 +272,11 @@ interface ButtonLoadingProps {
 }
 
 export const ButtonLoading = memo(function ButtonLoading({
-  children = 'Processando...',
+  children = "Processando...",
   className,
 }: ButtonLoadingProps) {
   return (
-    <span className={cn('inline-flex items-center gap-2', className)}>
+    <span className={cn("inline-flex items-center gap-2", className)}>
       <Spinner size="sm" />
       {children}
     </span>

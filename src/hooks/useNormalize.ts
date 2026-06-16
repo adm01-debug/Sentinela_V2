@@ -6,12 +6,12 @@ export function useNormalize<T extends { id: string }>(
   return useMemo(() => {
     const ids: string[] = [];
     const entities: Record<string, T> = {};
-    
-    items.forEach(item => {
+
+    items.forEach((item) => {
       ids.push(item.id);
       entities[item.id] = item;
     });
-    
+
     return { ids, entities };
   }, [items]);
 }

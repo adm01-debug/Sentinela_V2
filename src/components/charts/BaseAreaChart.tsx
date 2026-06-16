@@ -7,11 +7,11 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-} from 'recharts';
-import { TrendingUp } from 'lucide-react';
-import { ChartTooltipContent } from './ChartTooltip';
-import { ChartEmptyState } from './ChartEmptyState';
-import { useChartColors } from '@/hooks/useChartColors';
+} from "recharts";
+import { TrendingUp } from "lucide-react";
+import { ChartTooltipContent } from "./ChartTooltip";
+import { ChartEmptyState } from "./ChartEmptyState";
+import { useChartColors } from "@/hooks/useChartColors";
 
 export interface AreaSeriesConfig {
   dataKey: string;
@@ -36,18 +36,18 @@ interface BaseAreaChartProps {
 }
 
 const DEFAULT_COLORS = [
-  'hsl(243, 75%, 59%)',
-  'hsl(142, 76%, 36%)',
-  'hsl(38, 92%, 50%)',
-  'hsl(0, 84%, 60%)',
-  'hsl(262, 83%, 58%)',
-  'hsl(330, 81%, 60%)',
+  "hsl(243, 75%, 59%)",
+  "hsl(142, 76%, 36%)",
+  "hsl(38, 92%, 50%)",
+  "hsl(0, 84%, 60%)",
+  "hsl(262, 83%, 58%)",
+  "hsl(330, 81%, 60%)",
 ];
 
 export function BaseAreaChart({
   data,
   series,
-  xAxisKey = 'date',
+  xAxisKey = "date",
   height = 300,
   showGrid = true,
   showLegend = false,
@@ -59,7 +59,14 @@ export function BaseAreaChart({
   const colors = useChartColors();
 
   if (!data.length) {
-    return <ChartEmptyState icon={TrendingUp} title={emptyTitle} description={emptyDescription} height={height} />;
+    return (
+      <ChartEmptyState
+        icon={TrendingUp}
+        title={emptyTitle}
+        description={emptyDescription}
+        height={height}
+      />
+    );
   }
 
   return (
@@ -69,7 +76,14 @@ export function BaseAreaChart({
           {series.map((s, i) => {
             const color = s.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
             return (
-              <linearGradient key={`gradient-${s.dataKey}`} id={`color-${s.dataKey}`} x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                key={`gradient-${s.dataKey}`}
+                id={`color-${s.dataKey}`}
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop offset="5%" stopColor={color} stopOpacity={0.3} />
                 <stop offset="95%" stopColor={color} stopOpacity={0} />
               </linearGradient>
@@ -98,7 +112,7 @@ export function BaseAreaChart({
             stroke={s.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length]}
             fill={`url(#color-${s.dataKey})`}
             strokeWidth={s.strokeWidth ?? 2}
-            strokeDasharray={s.dashed ? '5 5' : undefined}
+            strokeDasharray={s.dashed ? "5 5" : undefined}
             stackId={stacked ? "1" : undefined}
           />
         ))}

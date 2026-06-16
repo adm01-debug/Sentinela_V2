@@ -1,22 +1,38 @@
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { categoryLabels, statusLabels } from '@/data/settingsData';
-import type { ApplicationRule } from '@/hooks/useSettings';
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categoryLabels, statusLabels } from "@/data/settingsData";
+import type { ApplicationRule } from "@/hooks/useSettings";
 
 interface AddApplicationDialogProps {
-  onAdd: (name: string, category: ApplicationRule['category'], status: ApplicationRule['status']) => Promise<boolean>;
+  onAdd: (
+    name: string,
+    category: ApplicationRule["category"],
+    status: ApplicationRule["status"]
+  ) => Promise<boolean>;
 }
 
 export function AddApplicationDialog({ onAdd }: AddApplicationDialogProps) {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState<ApplicationRule['category']>('other');
-  const [status, setStatus] = useState<ApplicationRule['status']>('monitored');
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState<ApplicationRule["category"]>("other");
+  const [status, setStatus] = useState<ApplicationRule["status"]>("monitored");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,9 +44,9 @@ export function AddApplicationDialog({ onAdd }: AddApplicationDialogProps) {
     setLoading(false);
 
     if (success) {
-      setName('');
-      setCategory('other');
-      setStatus('monitored');
+      setName("");
+      setCategory("other");
+      setStatus("monitored");
       setOpen(false);
     }
   };
@@ -61,7 +77,10 @@ export function AddApplicationDialog({ onAdd }: AddApplicationDialogProps) {
 
           <div className="space-y-2">
             <Label>Categoria</Label>
-            <Select value={category} onValueChange={(v) => setCategory(v as ApplicationRule['category'])}>
+            <Select
+              value={category}
+              onValueChange={(v) => setCategory(v as ApplicationRule["category"])}
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -77,7 +96,7 @@ export function AddApplicationDialog({ onAdd }: AddApplicationDialogProps) {
 
           <div className="space-y-2">
             <Label>Status Inicial</Label>
-            <Select value={status} onValueChange={(v) => setStatus(v as ApplicationRule['status'])}>
+            <Select value={status} onValueChange={(v) => setStatus(v as ApplicationRule["status"])}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -94,7 +113,7 @@ export function AddApplicationDialog({ onAdd }: AddApplicationDialogProps) {
               Cancelar
             </Button>
             <Button type="submit" disabled={loading || !name.trim()}>
-              {loading ? 'Adicionando...' : 'Adicionar'}
+              {loading ? "Adicionando..." : "Adicionar"}
             </Button>
           </div>
         </form>

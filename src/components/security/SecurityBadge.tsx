@@ -1,10 +1,10 @@
-import { Shield, ShieldCheck, ShieldAlert, ShieldX } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useSecurity, isSecureContext } from '@/hooks/useSecurity';
-import { useAuth } from '@/hooks/useAuth';
+import { Shield, ShieldCheck, ShieldAlert, ShieldX } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useSecurity, isSecureContext } from "@/hooks/useSecurity";
+import { useAuth } from "@/hooks/useAuth";
 
-type SecurityLevel = 'high' | 'medium' | 'low' | 'critical';
+type SecurityLevel = "high" | "medium" | "low" | "critical";
 
 interface SecurityBadgeProps {
   showDetails?: boolean;
@@ -15,11 +15,11 @@ export function SecurityBadge({ showDetails = false }: SecurityBadgeProps) {
   const { isAuthenticated } = useAuth();
 
   const getSecurityLevel = (): SecurityLevel => {
-    if (!isAuthenticated) return 'critical';
-    if (!isSecureContext()) return 'low';
-    if (securityState.isIdle) return 'medium';
-    if (!isSecure) return 'medium';
-    return 'high';
+    if (!isAuthenticated) return "critical";
+    if (!isSecureContext()) return "low";
+    if (securityState.isIdle) return "medium";
+    if (!isSecure) return "medium";
+    return "high";
   };
 
   const level = getSecurityLevel();
@@ -27,27 +27,27 @@ export function SecurityBadge({ showDetails = false }: SecurityBadgeProps) {
   const config = {
     high: {
       icon: ShieldCheck,
-      label: 'Seguro',
-      color: 'bg-green-500/10 text-green-600 border-green-500/20',
-      description: 'Conexão segura e autenticada',
+      label: "Seguro",
+      color: "bg-green-500/10 text-green-600 border-green-500/20",
+      description: "Conexão segura e autenticada",
     },
     medium: {
       icon: Shield,
-      label: 'Atenção',
-      color: 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20',
-      description: 'Verifique sua sessão',
+      label: "Atenção",
+      color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
+      description: "Verifique sua sessão",
     },
     low: {
       icon: ShieldAlert,
-      label: 'Inseguro',
-      color: 'bg-orange-500/10 text-orange-600 border-orange-500/20',
-      description: 'Conexão não segura (HTTP)',
+      label: "Inseguro",
+      color: "bg-orange-500/10 text-orange-600 border-orange-500/20",
+      description: "Conexão não segura (HTTP)",
     },
     critical: {
       icon: ShieldX,
-      label: 'Desconectado',
-      color: 'bg-destructive/10 text-destructive border-destructive/20',
-      description: 'Faça login para continuar',
+      label: "Desconectado",
+      color: "bg-destructive/10 text-destructive border-destructive/20",
+      description: "Faça login para continuar",
     },
   };
 
@@ -58,7 +58,7 @@ export function SecurityBadge({ showDetails = false }: SecurityBadgeProps) {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className={`p-1.5 rounded-full ${color}`}>
+            <div className={`rounded-full p-1.5 ${color}`}>
               <Icon className="h-4 w-4" />
             </div>
           </TooltipTrigger>

@@ -1,11 +1,7 @@
-import { memo, useMemo } from 'react';
-import { cn } from '@/lib/utils';
-import { Card, CardContent } from '@/components/ui/card';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { memo, useMemo } from "react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 // ============================================================
 // TYPES
@@ -23,7 +19,7 @@ interface HeatmapCalendarProps {
   subtitle?: string;
   startDate?: Date;
   endDate?: Date;
-  colorScheme?: 'green' | 'blue' | 'purple' | 'orange' | 'red';
+  colorScheme?: "green" | "blue" | "purple" | "orange" | "red";
   showLegend?: boolean;
   showMonthLabels?: boolean;
   showDayLabels?: boolean;
@@ -41,57 +37,70 @@ interface HeatmapCalendarProps {
 
 const colorSchemes = {
   green: [
-    'bg-emerald-100 dark:bg-emerald-950',
-    'bg-emerald-300 dark:bg-emerald-800',
-    'bg-emerald-500 dark:bg-emerald-600',
-    'bg-emerald-700 dark:bg-emerald-400',
+    "bg-emerald-100 dark:bg-emerald-950",
+    "bg-emerald-300 dark:bg-emerald-800",
+    "bg-emerald-500 dark:bg-emerald-600",
+    "bg-emerald-700 dark:bg-emerald-400",
   ],
   blue: [
-    'bg-blue-100 dark:bg-blue-950',
-    'bg-blue-300 dark:bg-blue-800',
-    'bg-blue-500 dark:bg-blue-600',
-    'bg-blue-700 dark:bg-blue-400',
+    "bg-blue-100 dark:bg-blue-950",
+    "bg-blue-300 dark:bg-blue-800",
+    "bg-blue-500 dark:bg-blue-600",
+    "bg-blue-700 dark:bg-blue-400",
   ],
   purple: [
-    'bg-purple-100 dark:bg-purple-950',
-    'bg-purple-300 dark:bg-purple-800',
-    'bg-purple-500 dark:bg-purple-600',
-    'bg-purple-700 dark:bg-purple-400',
+    "bg-purple-100 dark:bg-purple-950",
+    "bg-purple-300 dark:bg-purple-800",
+    "bg-purple-500 dark:bg-purple-600",
+    "bg-purple-700 dark:bg-purple-400",
   ],
   orange: [
-    'bg-orange-100 dark:bg-orange-950',
-    'bg-orange-300 dark:bg-orange-800',
-    'bg-orange-500 dark:bg-orange-600',
-    'bg-orange-700 dark:bg-orange-400',
+    "bg-orange-100 dark:bg-orange-950",
+    "bg-orange-300 dark:bg-orange-800",
+    "bg-orange-500 dark:bg-orange-600",
+    "bg-orange-700 dark:bg-orange-400",
   ],
   red: [
-    'bg-red-100 dark:bg-red-950',
-    'bg-red-300 dark:bg-red-800',
-    'bg-red-500 dark:bg-red-600',
-    'bg-red-700 dark:bg-red-400',
+    "bg-red-100 dark:bg-red-950",
+    "bg-red-300 dark:bg-red-800",
+    "bg-red-500 dark:bg-red-600",
+    "bg-red-700 dark:bg-red-400",
   ],
 };
 
-const dayLabels = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-const monthLabels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+const dayLabels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+const monthLabels = [
+  "Jan",
+  "Fev",
+  "Mar",
+  "Abr",
+  "Mai",
+  "Jun",
+  "Jul",
+  "Ago",
+  "Set",
+  "Out",
+  "Nov",
+  "Dez",
+];
 
 // ============================================================
 // HELPER FUNCTIONS
 // ============================================================
 
 function getDateString(date: Date): string {
-  return date.toISOString().split('T')[0];
+  return date.toISOString().split("T")[0];
 }
 
 function getDaysInRange(start: Date, end: Date): Date[] {
   const days: Date[] = [];
   const current = new Date(start);
-  
+
   while (current <= end) {
     days.push(new Date(current));
     current.setDate(current.getDate() + 1);
   }
-  
+
   return days;
 }
 
@@ -119,9 +128,9 @@ const HeatmapCell = memo(function HeatmapCell({
   onClick,
 }: HeatmapCellProps) {
   const colors = colorSchemes[colorScheme];
-  
+
   const getColorClass = () => {
-    if (value === 0) return 'bg-muted/50';
+    if (value === 0) return "bg-muted/50";
     const ratio = value / maxValue;
     if (ratio <= 0.25) return colors[0];
     if (ratio <= 0.5) return colors[1];
@@ -129,11 +138,11 @@ const HeatmapCell = memo(function HeatmapCell({
     return colors[3];
   };
 
-  const formattedDate = date.toLocaleDateString('pt-BR', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+  const formattedDate = date.toLocaleDateString("pt-BR", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
 
   return (
@@ -143,9 +152,9 @@ const HeatmapCell = memo(function HeatmapCell({
           type="button"
           onClick={onClick}
           className={cn(
-            'rounded-sm transition-all hover:ring-2 hover:ring-ring hover:ring-offset-1',
+            "rounded-sm transition-all hover:ring-2 hover:ring-ring hover:ring-offset-1",
             getColorClass(),
-            onClick && 'cursor-pointer'
+            onClick && "cursor-pointer"
           )}
           style={{ width: size, height: size }}
           aria-label={`${formattedDate}: ${label || value}`}
@@ -154,7 +163,7 @@ const HeatmapCell = memo(function HeatmapCell({
       <TooltipContent side="top" className="text-xs">
         <div className="font-medium">{formattedDate}</div>
         <div className="text-muted-foreground">
-          {label || `${value} ${value === 1 ? 'atividade' : 'atividades'}`}
+          {label || `${value} ${value === 1 ? "atividade" : "atividades"}`}
         </div>
       </TooltipContent>
     </Tooltip>
@@ -177,14 +186,11 @@ const Legend = memo(function Legend({ colorScheme, size }: LegendProps) {
     <div className="flex items-center gap-1 text-xs text-muted-foreground">
       <span>Menos</span>
       <div className="flex gap-0.5">
-        <div
-          className="rounded-sm bg-muted/50"
-          style={{ width: size, height: size }}
-        />
+        <div className="rounded-sm bg-muted/50" style={{ width: size, height: size }} />
         {colors.map((color, index) => (
           <div
             key={index}
-            className={cn('rounded-sm', color)}
+            className={cn("rounded-sm", color)}
             style={{ width: size, height: size }}
           />
         ))}
@@ -204,7 +210,7 @@ function HeatmapCalendarComponent({
   subtitle,
   startDate,
   endDate,
-  colorScheme = 'green',
+  colorScheme = "green",
   showLegend = true,
   showMonthLabels = true,
   showDayLabels = true,
@@ -218,11 +224,11 @@ function HeatmapCalendarComponent({
   const { start, end } = useMemo(() => {
     const e = endDate || new Date();
     const s = startDate || new Date(e.getTime() - 52 * 7 * 24 * 60 * 60 * 1000);
-    
+
     // Adjust start to Sunday
     const adjustedStart = new Date(s);
     adjustedStart.setDate(adjustedStart.getDate() - adjustedStart.getDay());
-    
+
     return { start: adjustedStart, end: e };
   }, [startDate, endDate]);
 
@@ -243,7 +249,7 @@ function HeatmapCalendarComponent({
   const weeks = useMemo(() => {
     const days = getDaysInRange(start, end);
     const weekGroups: Date[][] = [];
-    
+
     let currentWeek: Date[] = [];
     days.forEach((day) => {
       if (day.getDay() === 0 && currentWeek.length > 0) {
@@ -252,11 +258,11 @@ function HeatmapCalendarComponent({
       }
       currentWeek.push(day);
     });
-    
+
     if (currentWeek.length > 0) {
       weekGroups.push(currentWeek);
     }
-    
+
     return weekGroups;
   }, [start, end]);
 
@@ -264,17 +270,17 @@ function HeatmapCalendarComponent({
   const monthPositions = useMemo(() => {
     const positions: { month: number; weekIndex: number }[] = [];
     let lastMonth = -1;
-    
+
     weeks.forEach((week, weekIndex) => {
       const firstDayOfWeek = week[0];
       const month = firstDayOfWeek.getMonth();
-      
+
       if (month !== lastMonth) {
         positions.push({ month, weekIndex });
         lastMonth = month;
       }
     });
-    
+
     return positions;
   }, [weeks]);
 
@@ -284,7 +290,7 @@ function HeatmapCalendarComponent({
   }, [data]);
 
   const content = (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       {/* Header with stats */}
       <div className="flex items-center justify-between">
         <div>
@@ -292,7 +298,7 @@ function HeatmapCalendarComponent({
           {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold">{totalActivity.toLocaleString('pt-BR')}</div>
+          <div className="text-2xl font-bold">{totalActivity.toLocaleString("pt-BR")}</div>
           <div className="text-xs text-muted-foreground">atividades no período</div>
         </div>
       </div>
@@ -306,7 +312,7 @@ function HeatmapCalendarComponent({
               {monthPositions.map(({ month, weekIndex }, index) => {
                 const nextPosition = monthPositions[index + 1]?.weekIndex || weeks.length;
                 const width = (nextPosition - weekIndex) * (cellSize + cellGap);
-                
+
                 return (
                   <div
                     key={`${month}-${weekIndex}`}
@@ -326,7 +332,10 @@ function HeatmapCalendarComponent({
             {showDayLabels && (
               <div className="flex flex-col justify-around pr-1" style={{ width: 24 }}>
                 {[1, 3, 5].map((dayIndex) => (
-                  <div key={dayIndex} className="text-xs text-muted-foreground h-3 flex items-center">
+                  <div
+                    key={dayIndex}
+                    className="flex h-3 items-center text-xs text-muted-foreground"
+                  >
                     {dayLabels[dayIndex]}
                   </div>
                 ))}
@@ -345,12 +354,12 @@ function HeatmapCalendarComponent({
                       ))}
                     </>
                   )}
-                  
+
                   {/* Days */}
                   {week.map((day) => {
                     const dateStr = getDateString(day);
                     const dayData = dataMap.get(dateStr);
-                    
+
                     return (
                       <HeatmapCell
                         key={dateStr}
@@ -403,7 +412,7 @@ interface MiniHeatmapProps {
   className?: string;
 }
 
-function MiniHeatmapComponent({ data, colorScheme = 'green', className }: MiniHeatmapProps) {
+function MiniHeatmapComponent({ data, colorScheme = "green", className }: MiniHeatmapProps) {
   const last30Days = useMemo(() => {
     const end = new Date();
     const start = new Date();

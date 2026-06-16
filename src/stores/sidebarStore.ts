@@ -1,6 +1,6 @@
 // Sidebar Store for Sentinela v17
-import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 interface SidebarState {
   isOpen: boolean;
@@ -75,7 +75,7 @@ export const useSidebarStore = create<SidebarState>()(
 
         setExpandedItems: (expandedItems) => set({ expandedItems }),
 
-        expandAll: () => set({ expandedItems: ['all'] }),
+        expandAll: () => set({ expandedItems: ["all"] }),
 
         collapseAll: () => set({ expandedItems: [] }),
 
@@ -93,7 +93,7 @@ export const useSidebarStore = create<SidebarState>()(
         reset: () => set(initialState),
       }),
       {
-        name: 'sidebar-store',
+        name: "sidebar-store",
         partialize: (state) => ({
           isCollapsed: state.isCollapsed,
           isPinned: state.isPinned,
@@ -102,6 +102,6 @@ export const useSidebarStore = create<SidebarState>()(
         }),
       }
     ),
-    { name: 'SidebarStore' }
+    { name: "SidebarStore" }
   )
 );

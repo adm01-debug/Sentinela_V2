@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, TouchEvent } from 'react';
+import { useState, useRef, useCallback, TouchEvent } from "react";
 
 export interface UsePinchToZoomOptions {
   minScale?: number;
@@ -25,28 +25,49 @@ export function usePinchToZoom(options: UsePinchToZoomOptions = {}) {
     return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
   };
 
-  const handleTouchStart = useCallback((e: TouchEvent) => {
-    if (e.touches.length === 2) {
-      initialDistance.current = getDistance(e.touches);
-      scaleAtStart.current = scale;
-      setOrigin(getCenter(e.touches));
-    }
-  }, [scale]);
+  const handleTouchStart = useCallback(
+    (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        initialDistance.current = getDistance(e.touches);
+        scaleAtStart.current = scale;
+        setOrigin(getCenter(e.touches));
+      }
+    },
+    [scale]
+  );
 
-  const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (e.touches.length === 2 && initialDistance.current) {
-      const currentDistance = getDistance(e.touches);
-      const newScale = (currentDistance / initialDistance.current) * scaleAtStart.current;
-      setScale(Math.max(minScale, Math.min(maxScale, newScale)));
-      setOrigin(getCenter(e.touches));
-    }
-  }, [minScale, maxScale]);
+  const handleTouchMove = useCallback(
+    (e: TouchEvent) => {
+      if (e.touches.length === 2 && initialDistance.current) {
+        const currentDistance = getDistance(e.touches);
+        const newScale = (currentDistance / initialDistance.current) * scaleAtStart.current;
+        setScale(Math.max(minScale, Math.min(maxScale, newScale)));
+        setOrigin(getCenter(e.touches));
+      }
+    },
+    [minScale, maxScale]
+  );
 
-  const handleTouchEnd = useCallback(() => { initialDistance.current = null; }, []);
+  const handleTouchEnd = useCallback(() => {
+    initialDistance.current = null;
+  }, []);
 
-  const resetZoom = useCallback(() => { setScale(1); setOrigin({ x: 0, y: 0 }); }, []);
+  const resetZoom = useCallback(() => {
+    setScale(1);
+    setOrigin({ x: 0, y: 0 });
+  }, []);
 
-  return { scale, origin, resetZoom, handlers: { onTouchStart: handleTouchStart, onTouchMove: handleTouchMove, onTouchEnd: handleTouchEnd }, style: { transform: `scale(${scale})`, transformOrigin: `${origin.x}px ${origin.y}px` } };
+  return {
+    scale,
+    origin,
+    resetZoom,
+    handlers: {
+      onTouchStart: handleTouchStart,
+      onTouchMove: handleTouchMove,
+      onTouchEnd: handleTouchEnd,
+    },
+    style: { transform: `scale(${scale})`, transformOrigin: `${origin.x}px ${origin.y}px` },
+  };
 }
 
 export default usePinchToZoom;

@@ -1,15 +1,15 @@
-import { memo, useCallback } from 'react';
-import { Search, X } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { memo, useCallback } from "react";
+import { Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import type { EmployeeFilters as FiltersType } from '@/hooks/useEmployeesPage';
+} from "@/components/ui/select";
+import type { EmployeeFilters as FiltersType } from "@/hooks/useEmployeesPage";
 
 interface Team {
   id: string;
@@ -33,10 +33,8 @@ function EmployeeFiltersComponent({
   onTeamChange,
   onClearFilters,
 }: EmployeeFiltersProps) {
-  const hasActiveFilters = 
-    filters.searchTerm !== '' || 
-    filters.statusFilter !== 'all' || 
-    filters.teamFilter !== 'all';
+  const hasActiveFilters =
+    filters.searchTerm !== "" || filters.statusFilter !== "all" || filters.teamFilter !== "all";
 
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,9 +44,12 @@ function EmployeeFiltersComponent({
   );
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4">
+    <div className="flex flex-col gap-4 sm:flex-row">
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        <Search
+          className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+          aria-hidden="true"
+        />
         <Input
           placeholder="Buscar por nome, email ou departamento..."
           value={filters.searchTerm}
@@ -59,7 +60,10 @@ function EmployeeFiltersComponent({
       </div>
 
       <Select value={filters.statusFilter} onValueChange={onStatusChange}>
-        <SelectTrigger className="w-full sm:w-[180px]" aria-label="Filtrar por status do funcionário">
+        <SelectTrigger
+          className="w-full sm:w-[180px]"
+          aria-label="Filtrar por status do funcionário"
+        >
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent>
@@ -87,7 +91,12 @@ function EmployeeFiltersComponent({
       </Select>
 
       {hasActiveFilters && (
-        <Button variant="ghost" size="icon" onClick={onClearFilters} aria-label="Limpar todos os filtros">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClearFilters}
+          aria-label="Limpar todos os filtros"
+        >
           <X className="h-4 w-4" aria-hidden="true" />
         </Button>
       )}

@@ -5,13 +5,16 @@ export function useStateHistory<T>(initial: T, capacity = 10) {
   const history = useRef<T[]>([initial]);
   const position = useRef(0);
 
-  const set = useCallback((value: T) => {
-    history.current = history.current.slice(0, position.current + 1);
-    history.current.push(value);
-    if (history.current.length > capacity) history.current.shift();
-    else position.current++;
-    setState(value);
-  }, [capacity]);
+  const set = useCallback(
+    (value: T) => {
+      history.current = history.current.slice(0, position.current + 1);
+      history.current.push(value);
+      if (history.current.length > capacity) history.current.shift();
+      else position.current++;
+      setState(value);
+    },
+    [capacity]
+  );
 
   const undo = useCallback(() => {
     if (position.current > 0) {
@@ -27,5 +30,12 @@ export function useStateHistory<T>(initial: T, capacity = 10) {
     }
   }, []);
 
-  return { state, set, undo, redo, canUndo: position.current > 0, canRedo: position.current < history.current.length - 1 };
+  return {
+    state,
+    set,
+    undo,
+    redo,
+    canUndo: position.current > 0,
+    canRedo: position.current < history.current.length - 1,
+  };
 }

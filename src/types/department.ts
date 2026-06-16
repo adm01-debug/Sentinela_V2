@@ -37,7 +37,7 @@ export interface DepartmentBudget {
 export interface DepartmentSettings {
   allowCrossTeamCollaboration: boolean;
   requireManagerApproval: boolean;
-  visibility: 'public' | 'private';
+  visibility: "public" | "private";
   workingHours: WorkingHours;
 }
 

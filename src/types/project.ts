@@ -27,8 +27,14 @@ export interface Project {
   deletedAt?: string;
 }
 
-export type ProjectStatus = 'planning' | 'active' | 'on_hold' | 'completed' | 'cancelled' | 'archived';
-export type ProjectPriority = 'low' | 'medium' | 'high' | 'critical';
+export type ProjectStatus =
+  | "planning"
+  | "active"
+  | "on_hold"
+  | "completed"
+  | "cancelled"
+  | "archived";
+export type ProjectPriority = "low" | "medium" | "high" | "critical";
 
 export interface ProjectMember {
   id: string;
@@ -40,7 +46,7 @@ export interface ProjectMember {
   isActive: boolean;
 }
 
-export type ProjectRole = 'owner' | 'manager' | 'developer' | 'designer' | 'qa' | 'viewer';
+export type ProjectRole = "owner" | "manager" | "developer" | "designer" | "qa" | "viewer";
 
 export interface ProjectBudget {
   estimated: number;
@@ -51,7 +57,7 @@ export interface ProjectBudget {
 }
 
 export interface ProjectSettings {
-  visibility: 'public' | 'private' | 'team';
+  visibility: "public" | "private" | "team";
   allowExternalMembers: boolean;
   requireTimeTracking: boolean;
   autoArchiveAfterDays?: number;

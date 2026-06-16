@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
 export interface MapMarker {
   id: string;
@@ -10,7 +10,7 @@ export interface MapMarker {
   title?: string;
   description?: string;
   color?: string;
-  type?: 'employee' | 'geofence' | 'violation';
+  type?: "employee" | "geofence" | "violation";
   data?: unknown;
 }
 
@@ -42,7 +42,7 @@ export function useMapboxToken() {
   return useQuery({
     queryKey: queryKeys.mapbox.token(),
     queryFn: async () => {
-      const { data, error } = await supabase.functions.invoke('get-mapbox-token');
+      const { data, error } = await supabase.functions.invoke("get-mapbox-token");
       if (error) throw error;
       return data.token as string;
     },

@@ -1,6 +1,13 @@
-import * as React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from './dialog';
-import { cn } from '@/utils/cn';
+import * as React from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "./dialog";
+import { cn } from "@/utils/cn";
 
 interface ModalProps {
   open: boolean;
@@ -10,18 +17,27 @@ interface ModalProps {
   children: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  size?: "sm" | "md" | "lg" | "xl" | "full";
 }
 
 const sizeClasses = {
-  sm: 'max-w-sm',
-  md: 'max-w-md',
-  lg: 'max-w-lg',
-  xl: 'max-w-xl',
-  full: 'max-w-[95vw]',
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+  full: "max-w-[95vw]",
 };
 
-export function Modal({ open, onOpenChange, title, description, children, footer, className, size = 'md' }: ModalProps) {
+export function Modal({
+  open,
+  onOpenChange,
+  title,
+  description,
+  children,
+  footer,
+  className,
+  size = "md",
+}: ModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={cn(sizeClasses[size], className)}>

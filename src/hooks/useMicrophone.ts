@@ -16,7 +16,7 @@ export function useMicrophone() {
       mediaRecorderRef.current.ondataavailable = (e: BlobEvent) => chunksRef.current.push(e.data);
       mediaRecorderRef.current.onstop = () => {
         setAudioBlob(new Blob(chunksRef.current, { type: "audio/webm" }));
-        stream.getTracks().forEach(t => t.stop());
+        stream.getTracks().forEach((t) => t.stop());
       };
 
       mediaRecorderRef.current.start();

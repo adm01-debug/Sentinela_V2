@@ -20,14 +20,14 @@ export interface Category {
   updatedAt: string;
 }
 
-export type CategoryType = 
-  | 'application'
-  | 'activity'
-  | 'alert'
-  | 'report'
-  | 'document'
-  | 'project'
-  | 'custom';
+export type CategoryType =
+  | "application"
+  | "activity"
+  | "alert"
+  | "report"
+  | "document"
+  | "project"
+  | "custom";
 
 export interface CategoryCreateInput {
   name: string;

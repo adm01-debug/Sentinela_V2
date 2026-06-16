@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,7 +8,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -19,7 +19,7 @@ interface ConfirmDialogProps {
   cancelText?: string;
   onConfirm: () => void;
   onCancel?: () => void;
-  variant?: 'default' | 'destructive';
+  variant?: "default" | "destructive";
   isLoading?: boolean;
 }
 
@@ -28,11 +28,11 @@ export function ConfirmDialog({
   onOpenChange,
   title,
   description,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText = "Confirm",
+  cancelText = "Cancel",
   onConfirm,
   onCancel,
-  variant = 'default',
+  variant = "default",
 }: ConfirmDialogProps) {
   const handleConfirm = () => {
     onConfirm();
@@ -49,15 +49,17 @@ export function ConfirmDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          {description && (
-            <AlertDialogDescription>{description}</AlertDialogDescription>
-          )}
+          {description && <AlertDialogDescription>{description}</AlertDialogDescription>}
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={handleCancel}>{cancelText}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
-            className={variant === 'destructive' ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90' : ''}
+            className={
+              variant === "destructive"
+                ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                : ""
+            }
           >
             {confirmText}
           </AlertDialogAction>

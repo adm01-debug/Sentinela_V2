@@ -8,20 +8,23 @@ export function useOptimistic<T>(
   const [optimisticValue, setOptimisticValue] = useState(initialValue);
   const [isPending, setIsPending] = useState(false);
 
-  const update = useCallback(async (newValue: T) => {
-    setOptimisticValue(newValue);
-    setIsPending(true);
-    
-    try {
-      const result = await updateFn(value, newValue);
-      setValue(result);
-      setOptimisticValue(result);
-    } catch {
-      setOptimisticValue(value);
-    } finally {
-      setIsPending(false);
-    }
-  }, [value, updateFn]);
+  const update = useCallback(
+    async (newValue: T) => {
+      setOptimisticValue(newValue);
+      setIsPending(true);
+
+      try {
+        const result = await updateFn(value, newValue);
+        setValue(result);
+        setOptimisticValue(result);
+      } catch {
+        setOptimisticValue(value);
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [value, updateFn]
+  );
 
   return { value: optimisticValue, isPending, update };
 }

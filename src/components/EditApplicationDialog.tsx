@@ -1,22 +1,33 @@
-import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { categoryLabels } from '@/data/settingsData';
-import type { ApplicationRule } from '@/hooks/useSettings';
+import { useState, useEffect } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categoryLabels } from "@/data/settingsData";
+import type { ApplicationRule } from "@/hooks/useSettings";
 
 interface EditApplicationDialogProps {
   rule: ApplicationRule | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSave: (id: string, name: string, category: ApplicationRule['category']) => Promise<boolean>;
+  onSave: (id: string, name: string, category: ApplicationRule["category"]) => Promise<boolean>;
 }
 
-export function EditApplicationDialog({ rule, open, onOpenChange, onSave }: EditApplicationDialogProps) {
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState<ApplicationRule['category']>('other');
+export function EditApplicationDialog({
+  rule,
+  open,
+  onOpenChange,
+  onSave,
+}: EditApplicationDialogProps) {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState<ApplicationRule["category"]>("other");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -59,7 +70,10 @@ export function EditApplicationDialog({ rule, open, onOpenChange, onSave }: Edit
 
           <div className="space-y-2">
             <Label>Categoria</Label>
-            <Select value={category} onValueChange={(v) => setCategory(v as ApplicationRule['category'])}>
+            <Select
+              value={category}
+              onValueChange={(v) => setCategory(v as ApplicationRule["category"])}
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -78,7 +92,7 @@ export function EditApplicationDialog({ rule, open, onOpenChange, onSave }: Edit
               Cancelar
             </Button>
             <Button type="submit" disabled={loading || !name.trim()}>
-              {loading ? 'Salvando...' : 'Salvar'}
+              {loading ? "Salvando..." : "Salvar"}
             </Button>
           </div>
         </form>

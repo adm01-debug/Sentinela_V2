@@ -1,14 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
-interface ChartDataPoint { date: string; value: number; }
-interface AppUsage { name: string; duration: number; category: string; }
+interface ChartDataPoint {
+  date: string;
+  value: number;
+}
+interface AppUsage {
+  name: string;
+  duration: number;
+  category: string;
+}
 
 interface RecentAlert {
   id: string;
   message: string;
-  severity: 'critical' | 'high' | 'medium' | 'low';
+  severity: "critical" | "high" | "medium" | "low";
   time: string;
   employee: string;
 }
@@ -25,13 +32,13 @@ export const useDashboardStats = () => {
     queryKey: queryKeys.dashboard.stats(),
     queryFn: async () => {
       const [employeesRes, violationsRes] = await Promise.all([
-        supabase.from('employees').select('id, status', { count: 'exact' }),
-        supabase.from('security_violations').select('id', { count: 'exact' }).eq('read', false),
+        supabase.from("employees").select("id, status", { count: "exact" }),
+        supabase.from("security_violations").select("id", { count: "exact" }).eq("read", false),
       ]);
-      
+
       const employees = (employeesRes.data || []) as Array<{ id: string; status: string | null }>;
-      const activeEmployees = employees.filter((e) => e.status === 'active').length;
-      
+      const activeEmployees = employees.filter((e) => e.status === "active").length;
+
       // Calculate a dummy productivity for now, or fetch from logs if available
       return {
         totalEmployees: employeesRes.count || 0,
@@ -50,11 +57,11 @@ export const useRecentAlerts = (limit = 4) => {
     queryKey: queryKeys.dashboard.recentViolations(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('security_violations')
-        .select('id, violation_type, severity, created_at, employee_name')
-        .order('created_at', { ascending: false })
+        .from("security_violations")
+        .select("id, violation_type, severity, created_at, employee_name")
+        .order("created_at", { ascending: false })
         .limit(limit);
-      
+
       if (error) throw error;
       if (!data || data.length === 0) return [];
 
@@ -69,13 +76,14 @@ export const useRecentAlerts = (limit = 4) => {
       return rows.map((v) => {
         const diff = now - new Date(v.created_at).getTime();
         const mins = Math.floor(diff / 60000);
-        const timeLabel = mins < 1 ? 'agora' : mins < 60 ? `${mins} min atrás` : `${Math.floor(mins / 60)}h atrás`;
+        const timeLabel =
+          mins < 1 ? "agora" : mins < 60 ? `${mins} min atrás` : `${Math.floor(mins / 60)}h atrás`;
         return {
           id: v.id,
-          message: v.violation_type || 'Violação detectada',
-          severity: (v.severity as RecentAlert['severity']) || 'medium',
+          message: v.violation_type || "Violação detectada",
+          severity: (v.severity as RecentAlert["severity"]) || "medium",
           time: timeLabel,
-          employee: v.employee_name || 'Desconhecido',
+          employee: v.employee_name || "Desconhecido",
         };
       });
     },
@@ -88,11 +96,11 @@ export const useRecentActivity = (limit = 5) => {
     queryKey: queryKeys.dashboard.recentActivity(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('productivity_logs')
-        .select('id, employee_name, recorded_date, productive_time_seconds')
-        .order('recorded_date', { ascending: false })
+        .from("productivity_logs")
+        .select("id, employee_name, recorded_date, productive_time_seconds")
+        .order("recorded_date", { ascending: false })
         .limit(limit);
-      
+
       if (error) throw error;
       if (!data || data.length === 0) return [];
 
@@ -104,18 +112,18 @@ export const useRecentActivity = (limit = 5) => {
       }>;
       return rows.map((item) => ({
         id: item.id,
-        user: item.employee_name || 'Desconhecido',
+        user: item.employee_name || "Desconhecido",
         action: `registrou ${Math.round((item.productive_time_seconds || 0) / 60)} min produtivo`,
-        time: item.recorded_date || '',
+        time: item.recorded_date || "",
       }));
     },
     ...queryPresets.dashboard,
   });
 };
 
-export const useActivityChart = (period: 'day' | 'week' | 'month' = 'week') => {
+export const useActivityChart = (period: "day" | "week" | "month" = "week") => {
   return useQuery({
-    queryKey: ['activity-chart', period],
+    queryKey: ["activity-chart", period],
     queryFn: async () => {
       // Logic to fetch aggregated activity data would go here
       return [] as ChartDataPoint[];
@@ -124,9 +132,9 @@ export const useActivityChart = (period: 'day' | 'week' | 'month' = 'week') => {
   });
 };
 
-export const useProductivityChart = (period: 'day' | 'week' | 'month' = 'week') => {
+export const useProductivityChart = (period: "day" | "week" | "month" = "week") => {
   return useQuery({
-    queryKey: ['productivity-chart', period],
+    queryKey: ["productivity-chart", period],
     queryFn: async () => {
       // Logic to fetch aggregated productivity data would go here
       return [] as ChartDataPoint[];
@@ -137,14 +145,14 @@ export const useProductivityChart = (period: 'day' | 'week' | 'month' = 'week') 
 
 export const useTopEmployees = (limit = 5) => {
   return useQuery({
-    queryKey: ['top-employees', limit],
+    queryKey: ["top-employees", limit],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('employees')
-        .select('*')
-        .eq('status', 'active')
+        .from("employees")
+        .select("*")
+        .eq("status", "active")
         .limit(limit);
-      
+
       if (error) throw error;
       return data || [];
     },
@@ -154,7 +162,7 @@ export const useTopEmployees = (limit = 5) => {
 
 export const useTopApplications = (limit = 10) => {
   return useQuery({
-    queryKey: ['top-applications', limit],
+    queryKey: ["top-applications", limit],
     queryFn: async () => [] as AppUsage[],
     ...queryPresets.list,
   });

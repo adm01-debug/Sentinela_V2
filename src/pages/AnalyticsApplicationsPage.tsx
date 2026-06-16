@@ -1,15 +1,25 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { useApplicationAnalytics } from '@/hooks/useAnalytics';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { useApplicationAnalytics } from "@/hooks/useAnalytics";
 
 const COLORS = [
-  'hsl(var(--primary))',
-  'hsl(var(--secondary))',
-  'hsl(var(--accent))',
-  'hsl(var(--muted-foreground))',
-  'hsl(var(--destructive))',
+  "hsl(var(--primary))",
+  "hsl(var(--secondary))",
+  "hsl(var(--accent))",
+  "hsl(var(--muted-foreground))",
+  "hsl(var(--destructive))",
 ];
 
 interface PieLabelRenderProps {
@@ -27,7 +37,7 @@ export default function AnalyticsApplicationsPage() {
   const { data } = useApplicationAnalytics();
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6 p-6">
       <h1 className="text-2xl font-bold">Uso de Aplicações</h1>
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
@@ -46,7 +56,9 @@ export default function AnalyticsApplicationsPage() {
                     outerRadius={80}
                     dataKey="count"
                     nameKey="category"
-                    label={({ category, percent }: PieLabelRenderProps) => `${category ?? ''} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                    label={({ category, percent }: PieLabelRenderProps) =>
+                      `${category ?? ""} ${((percent ?? 0) * 100).toFixed(0)}%`
+                    }
                   >
                     {data?.byCategory?.map((_: AppCategory, i) => (
                       <Cell key={i} fill={COLORS[i % COLORS.length]} />
@@ -70,7 +82,9 @@ export default function AnalyticsApplicationsPage() {
                   <Badge variant="default">{app.count}</Badge>
                 </div>
                 <Progress value={Math.min(Math.max(app.duration, 0), 100)} />
-                <p className="text-sm text-muted-foreground">{app.duration}h ({app.count})</p>
+                <p className="text-sm text-muted-foreground">
+                  {app.duration}h ({app.count})
+                </p>
               </div>
             ))}
           </CardContent>

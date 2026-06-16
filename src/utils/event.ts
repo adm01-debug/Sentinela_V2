@@ -135,10 +135,7 @@ export function waitForEvent<T extends Event>(
   });
 }
 
-export function throttleEvent<T extends Event>(
-  handler: EventHandler<T>,
-  limit
-): EventHandler<T> {
+export function throttleEvent<T extends Event>(handler: EventHandler<T>, limit): EventHandler<T> {
   let lastCall = 0;
   return (event: T) => {
     const now = Date.now();
@@ -149,10 +146,7 @@ export function throttleEvent<T extends Event>(
   };
 }
 
-export function debounceEvent<T extends Event>(
-  handler: EventHandler<T>,
-  delay
-): EventHandler<T> {
+export function debounceEvent<T extends Event>(handler: EventHandler<T>, delay): EventHandler<T> {
   let timeoutId: NodeJS.Timeout;
   return (event: T) => {
     clearTimeout(timeoutId);

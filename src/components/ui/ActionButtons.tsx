@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Copy,
   Check,
@@ -10,17 +10,17 @@ import {
   Trash2,
   Eye,
   EyeOff,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 // ============================================
 // COPY BUTTON
@@ -29,16 +29,16 @@ import {
 interface CopyButtonProps {
   value: string;
   onCopy?: (value: string) => void;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'ghost' | 'outline' | 'default';
+  size?: "sm" | "md" | "lg";
+  variant?: "ghost" | "outline" | "default";
   className?: string;
 }
 
 export function CopyButton({
   value,
   onCopy,
-  size = 'md',
-  variant = 'ghost',
+  size = "md",
+  variant = "ghost",
   className,
 }: CopyButtonProps) {
   const [copied, setCopied] = React.useState(false);
@@ -51,15 +51,15 @@ export function CopyButton({
   };
 
   const sizeStyles = {
-    sm: 'h-6 w-6',
-    md: 'h-8 w-8',
-    lg: 'h-10 w-10',
+    sm: "h-6 w-6",
+    md: "h-8 w-8",
+    lg: "h-10 w-10",
   };
 
   const iconSizes = {
-    sm: 'h-3 w-3',
-    md: 'h-4 w-4',
-    lg: 'h-5 w-5',
+    sm: "h-3 w-3",
+    md: "h-4 w-4",
+    lg: "h-5 w-5",
   };
 
   return (
@@ -73,14 +73,14 @@ export function CopyButton({
             onClick={handleCopy}
           >
             {copied ? (
-              <Check className={cn(iconSizes[size], 'text-green-500')} />
+              <Check className={cn(iconSizes[size], "text-green-500")} />
             ) : (
               <Copy className={iconSizes[size]} />
             )}
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{copied ? 'Copiado!' : 'Copiar'}</p>
+          <p>{copied ? "Copiado!" : "Copiar"}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -94,30 +94,30 @@ export function CopyButton({
 interface ExternalLinkButtonProps {
   href: string;
   label?: string;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'ghost' | 'outline' | 'default' | 'link';
+  size?: "sm" | "md" | "lg";
+  variant?: "ghost" | "outline" | "default" | "link";
   className?: string;
 }
 
 export function ExternalLinkButton({
   href,
   label,
-  size = 'md',
-  variant = 'link',
+  size = "md",
+  variant = "link",
   className,
 }: ExternalLinkButtonProps) {
   const iconSizes = {
-    sm: 'h-3 w-3',
-    md: 'h-4 w-4',
-    lg: 'h-5 w-5',
+    sm: "h-3 w-3",
+    md: "h-4 w-4",
+    lg: "h-5 w-5",
   };
 
   if (label) {
     return (
       <Button
         variant={variant}
-        size={size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'default'}
-        className={cn('gap-1', className)}
+        size={size === "sm" ? "sm" : size === "lg" ? "lg" : "default"}
+        className={cn("gap-1", className)}
         asChild
       >
         <a href={href} target="_blank" rel="noopener noreferrer">
@@ -132,12 +132,7 @@ export function ExternalLinkButton({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className={className}
-            asChild
-          >
+          <Button variant="ghost" size="icon" className={className} asChild>
             <a href={href} target="_blank" rel="noopener noreferrer">
               <ExternalLink className={iconSizes[size]} />
             </a>
@@ -162,7 +157,7 @@ interface ActionButtonGroupProps {
   onDownload?: () => void;
   onShare?: () => void;
   showLabels?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   className?: string;
 }
 
@@ -173,34 +168,34 @@ export function ActionButtonGroup({
   onDownload,
   onShare,
   showLabels = false,
-  size = 'md',
+  size = "md",
   className,
 }: ActionButtonGroupProps) {
   const iconSizes = {
-    sm: 'h-3 w-3',
-    md: 'h-4 w-4',
-    lg: 'h-5 w-5',
+    sm: "h-3 w-3",
+    md: "h-4 w-4",
+    lg: "h-5 w-5",
   };
 
   const buttonSizes = {
-    sm: 'h-7 w-7',
-    md: 'h-8 w-8',
-    lg: 'h-9 w-9',
+    sm: "h-7 w-7",
+    md: "h-8 w-8",
+    lg: "h-9 w-9",
   };
 
   const actions = [
-    { icon: Eye, label: 'Ver', onClick: onView, show: !!onView },
-    { icon: Pencil, label: 'Editar', onClick: onEdit, show: !!onEdit },
-    { icon: Download, label: 'Download', onClick: onDownload, show: !!onDownload },
-    { icon: Share2, label: 'Compartilhar', onClick: onShare, show: !!onShare },
-    { icon: Trash2, label: 'Excluir', onClick: onDelete, show: !!onDelete, destructive: true },
+    { icon: Eye, label: "Ver", onClick: onView, show: !!onView },
+    { icon: Pencil, label: "Editar", onClick: onEdit, show: !!onEdit },
+    { icon: Download, label: "Download", onClick: onDownload, show: !!onDownload },
+    { icon: Share2, label: "Compartilhar", onClick: onShare, show: !!onShare },
+    { icon: Trash2, label: "Excluir", onClick: onDelete, show: !!onDelete, destructive: true },
   ].filter((a) => a.show);
 
   if (actions.length === 0) return null;
 
   if (actions.length <= 3 || showLabels) {
     return (
-      <div className={cn('flex items-center gap-1', className)}>
+      <div className={cn("flex items-center gap-1", className)}>
         {actions.map((action, i) => (
           <TooltipProvider key={i}>
             <Tooltip>
@@ -210,7 +205,7 @@ export function ActionButtonGroup({
                   size="icon"
                   className={cn(
                     buttonSizes[size],
-                    action.destructive && 'text-destructive hover:text-destructive'
+                    action.destructive && "text-destructive hover:text-destructive"
                   )}
                   onClick={action.onClick}
                 >
@@ -241,9 +236,9 @@ export function ActionButtonGroup({
             {action.destructive && i > 0 && <DropdownMenuSeparator />}
             <DropdownMenuItem
               onClick={action.onClick}
-              className={action.destructive ? 'text-destructive focus:text-destructive' : ''}
+              className={action.destructive ? "text-destructive focus:text-destructive" : ""}
             >
-              <action.icon className="h-4 w-4 mr-2" />
+              <action.icon className="mr-2 h-4 w-4" />
               {action.label}
             </DropdownMenuItem>
           </React.Fragment>
@@ -260,26 +255,26 @@ export function ActionButtonGroup({
 interface ToggleVisibilityButtonProps {
   isVisible: boolean;
   onToggle: (visible: boolean) => void;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   className?: string;
 }
 
 export function ToggleVisibilityButton({
   isVisible,
   onToggle,
-  size = 'md',
+  size = "md",
   className,
 }: ToggleVisibilityButtonProps) {
   const iconSizes = {
-    sm: 'h-3 w-3',
-    md: 'h-4 w-4',
-    lg: 'h-5 w-5',
+    sm: "h-3 w-3",
+    md: "h-4 w-4",
+    lg: "h-5 w-5",
   };
 
   const buttonSizes = {
-    sm: 'h-6 w-6',
-    md: 'h-8 w-8',
-    lg: 'h-10 w-10',
+    sm: "h-6 w-6",
+    md: "h-8 w-8",
+    lg: "h-10 w-10",
   };
 
   return (
@@ -295,12 +290,12 @@ export function ToggleVisibilityButton({
             {isVisible ? (
               <Eye className={iconSizes[size]} />
             ) : (
-              <EyeOff className={cn(iconSizes[size], 'text-muted-foreground')} />
+              <EyeOff className={cn(iconSizes[size], "text-muted-foreground")} />
             )}
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{isVisible ? 'Ocultar' : 'Mostrar'}</p>
+          <p>{isVisible ? "Ocultar" : "Mostrar"}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -316,8 +311,8 @@ interface IconButtonWithBadgeProps {
   badge?: number | string;
   onClick?: () => void;
   tooltip?: string;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'ghost' | 'outline' | 'default';
+  size?: "sm" | "md" | "lg";
+  variant?: "ghost" | "outline" | "default";
   className?: string;
 }
 
@@ -326,33 +321,33 @@ export function IconButtonWithBadge({
   badge,
   onClick,
   tooltip,
-  size = 'md',
-  variant = 'ghost',
+  size = "md",
+  variant = "ghost",
   className,
 }: IconButtonWithBadgeProps) {
   const iconSizes = {
-    sm: 'h-4 w-4',
-    md: 'h-5 w-5',
-    lg: 'h-6 w-6',
+    sm: "h-4 w-4",
+    md: "h-5 w-5",
+    lg: "h-6 w-6",
   };
 
   const buttonSizes = {
-    sm: 'h-8 w-8',
-    md: 'h-10 w-10',
-    lg: 'h-12 w-12',
+    sm: "h-8 w-8",
+    md: "h-10 w-10",
+    lg: "h-12 w-12",
   };
 
   const button = (
     <Button
       variant={variant}
       size="icon"
-      className={cn('relative', buttonSizes[size], className)}
+      className={cn("relative", buttonSizes[size], className)}
       onClick={onClick}
     >
       <Icon className={iconSizes[size]} />
       {badge !== undefined && badge !== 0 && (
-        <span className="absolute -top-1 -right-1 h-5 min-w-[20px] rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center px-1">
-          {typeof badge === 'number' && badge > 99 ? '99+' : badge}
+        <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] text-destructive-foreground">
+          {typeof badge === "number" && badge > 99 ? "99+" : badge}
         </span>
       )}
     </Button>

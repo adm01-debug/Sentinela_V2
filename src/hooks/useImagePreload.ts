@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function useImagePreload(src: string) {
   const [loaded, setLoaded] = useState(false);

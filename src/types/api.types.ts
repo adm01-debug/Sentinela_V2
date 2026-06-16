@@ -4,7 +4,7 @@
  */
 
 // HTTP Method Types
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 // Generic API Response
 export interface ApiResponse<T = unknown> {
@@ -54,7 +54,7 @@ export interface PaginationInfo {
 export interface CursorPaginationParams {
   cursor?: string;
   limit?: number;
-  direction?: 'forward' | 'backward';
+  direction?: "forward" | "backward";
 }
 
 export interface CursorPaginatedResponse<T> {
@@ -71,13 +71,13 @@ export interface CursorInfo {
 // Sorting
 export interface SortParams {
   sort_by?: string;
-  sort_order?: 'asc' | 'desc';
+  sort_order?: "asc" | "desc";
 }
 
 export interface MultiSortParams {
   sort?: Array<{
     field: string;
-    order: 'asc' | 'desc';
+    order: "asc" | "desc";
   }>;
 }
 
@@ -86,12 +86,7 @@ export interface FilterParams {
   filters?: Record<string, FilterValue>;
 }
 
-export type FilterValue = 
-  | string 
-  | number 
-  | boolean 
-  | string[] 
-  | FilterOperator;
+export type FilterValue = string | number | boolean | string[] | FilterOperator;
 
 export interface FilterOperator {
   operator: FilterOperatorType;
@@ -99,19 +94,19 @@ export interface FilterOperator {
 }
 
 export type FilterOperatorType =
-  | 'eq'
-  | 'neq'
-  | 'gt'
-  | 'gte'
-  | 'lt'
-  | 'lte'
-  | 'like'
-  | 'ilike'
-  | 'in'
-  | 'nin'
-  | 'between'
-  | 'is_null'
-  | 'is_not_null';
+  | "eq"
+  | "neq"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "like"
+  | "ilike"
+  | "in"
+  | "nin"
+  | "between"
+  | "is_null"
+  | "is_not_null";
 
 // Search
 export interface SearchParams {
@@ -127,12 +122,8 @@ export interface DateRangeParams {
 }
 
 // Combined Query Params
-export interface QueryParams extends 
-  PaginationParams, 
-  SortParams, 
-  FilterParams, 
-  SearchParams,
-  DateRangeParams {
+export interface QueryParams
+  extends PaginationParams, SortParams, FilterParams, SearchParams, DateRangeParams {
   include?: string[];
   fields?: string[];
 }
@@ -208,10 +199,10 @@ export interface WebhookPayload<T = unknown> {
 }
 
 export interface WebhookHeaders {
-  'x-webhook-id': string;
-  'x-webhook-timestamp': string;
-  'x-webhook-signature': string;
-  'x-webhook-event': string;
+  "x-webhook-id": string;
+  "x-webhook-timestamp": string;
+  "x-webhook-signature": string;
+  "x-webhook-event": string;
 }
 
 // Rate Limiting
@@ -223,14 +214,14 @@ export interface RateLimitInfo {
 }
 
 export interface RateLimitHeaders {
-  'x-ratelimit-limit': string;
-  'x-ratelimit-remaining': string;
-  'x-ratelimit-reset': string;
+  "x-ratelimit-limit": string;
+  "x-ratelimit-remaining": string;
+  "x-ratelimit-reset": string;
 }
 
 // Health Check
 export interface HealthCheckResponse {
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: "healthy" | "degraded" | "unhealthy";
   version: string;
   uptime_seconds: number;
   checks: HealthCheck[];
@@ -238,7 +229,7 @@ export interface HealthCheckResponse {
 
 export interface HealthCheck {
   name: string;
-  status: 'pass' | 'warn' | 'fail';
+  status: "pass" | "warn" | "fail";
   message?: string;
   duration_ms?: number;
 }
@@ -283,23 +274,23 @@ export interface ApiVersion {
 
 // Error Codes
 export type ApiErrorCode =
-  | 'BAD_REQUEST'
-  | 'UNAUTHORIZED'
-  | 'FORBIDDEN'
-  | 'NOT_FOUND'
-  | 'METHOD_NOT_ALLOWED'
-  | 'CONFLICT'
-  | 'UNPROCESSABLE_ENTITY'
-  | 'TOO_MANY_REQUESTS'
-  | 'INTERNAL_SERVER_ERROR'
-  | 'SERVICE_UNAVAILABLE'
-  | 'GATEWAY_TIMEOUT'
-  | 'VALIDATION_ERROR'
-  | 'AUTHENTICATION_ERROR'
-  | 'AUTHORIZATION_ERROR'
-  | 'RESOURCE_NOT_FOUND'
-  | 'RESOURCE_CONFLICT'
-  | 'RATE_LIMIT_EXCEEDED';
+  | "BAD_REQUEST"
+  | "UNAUTHORIZED"
+  | "FORBIDDEN"
+  | "NOT_FOUND"
+  | "METHOD_NOT_ALLOWED"
+  | "CONFLICT"
+  | "UNPROCESSABLE_ENTITY"
+  | "TOO_MANY_REQUESTS"
+  | "INTERNAL_SERVER_ERROR"
+  | "SERVICE_UNAVAILABLE"
+  | "GATEWAY_TIMEOUT"
+  | "VALIDATION_ERROR"
+  | "AUTHENTICATION_ERROR"
+  | "AUTHORIZATION_ERROR"
+  | "RESOURCE_NOT_FOUND"
+  | "RESOURCE_CONFLICT"
+  | "RATE_LIMIT_EXCEEDED";
 
 // Status Code Mapping
 export const HTTP_STATUS_CODES: Record<ApiErrorCode, number> = {

@@ -1,6 +1,6 @@
-import { format } from 'date-fns';
-import { Skeleton } from './Skeleton';
-import { useActivityTimeline } from '@/hooks';
+import { format } from "date-fns";
+import { Skeleton } from "./Skeleton";
+import { useActivityTimeline } from "@/hooks";
 
 type TimelineActivity = {
   id: string;
@@ -24,10 +24,13 @@ export const ActivityTimeline = ({
   activities: activitiesProp,
   isLoading: isLoadingProp,
   employeeId,
-  date = format(new Date(), 'yyyy-MM-dd'),
+  date = format(new Date(), "yyyy-MM-dd"),
 }: Props) => {
   const enabled = !activitiesProp && !!employeeId;
-  const { data: activitiesQuery, isLoading: isLoadingQuery } = useActivityTimeline(employeeId ?? '', date);
+  const { data: activitiesQuery, isLoading: isLoadingQuery } = useActivityTimeline(
+    employeeId ?? "",
+    date
+  );
 
   const activities = activitiesProp ?? (enabled ? activitiesQuery : []);
   const isLoading = isLoadingProp ?? (enabled ? isLoadingQuery : false);
@@ -45,8 +48,10 @@ export const ActivityTimeline = ({
   return (
     <div className="space-y-4">
       {activities?.map((activity) => (
-        <div key={activity.id} className="flex gap-4 p-4 bg-card rounded-lg">
-          <div className="w-16 text-sm text-muted-foreground">{format(new Date(activity.timestamp), 'HH:mm')}</div>
+        <div key={activity.id} className="flex gap-4 rounded-lg bg-card p-4">
+          <div className="w-16 text-sm text-muted-foreground">
+            {format(new Date(activity.timestamp), "HH:mm")}
+          </div>
           <div>
             <p className="font-medium">{activity.application}</p>
             <p className="text-sm text-muted-foreground">{activity.title}</p>

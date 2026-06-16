@@ -1,7 +1,7 @@
-import React from 'react';
-import { Lock, Unlock } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import React from "react";
+import { Lock, Unlock } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface EncryptionStatusProps {
   encrypted: boolean;
@@ -18,7 +18,7 @@ export const EncryptionStatus: React.FC<EncryptionStatusProps> = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className={cn('flex items-center gap-2', className)}>
+          <div className={cn("flex items-center gap-2", className)}>
             {encrypted ? (
               <>
                 <Lock className="h-4 w-4 text-success" />
@@ -34,8 +34,8 @@ export const EncryptionStatus: React.FC<EncryptionStatusProps> = ({
         </TooltipTrigger>
         <TooltipContent>
           {encrypted
-            ? `Data encrypted${algorithm ? ` with ${algorithm}` : ''}`
-            : 'Data is not encrypted'}
+            ? `Data encrypted${algorithm ? ` with ${algorithm}` : ""}`
+            : "Data is not encrypted"}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

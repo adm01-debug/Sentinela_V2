@@ -1,12 +1,12 @@
-import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface BehaviorPattern {
   id: string;
-  type: 'routine' | 'deviation' | 'trend' | 'anomaly';
+  type: "routine" | "deviation" | "trend" | "anomaly";
   description: string;
   confidence: number;
-  frequency: 'daily' | 'weekly' | 'occasional';
+  frequency: "daily" | "weekly" | "occasional";
   recommendations?: string[];
 }
 
@@ -25,26 +25,37 @@ export function useBehaviorPatterns(options: UseBehaviorPatternsOptions = {}) {
     setIsLoading(true);
     setError(null);
     try {
-      const { data, error: fnError } = await supabase.functions.invoke('behavior-pattern', {
-        body: { employeeId, analysisPeriod }
+      const { data, error: fnError } = await supabase.functions.invoke("behavior-pattern", {
+        body: { employeeId, analysisPeriod },
       });
       if (fnError) throw fnError;
       setPatterns(data?.patterns || []);
     } catch (e) {
-      setError(e instanceof Error ? e : new Error('Analysis failed'));
+      setError(e instanceof Error ? e : new Error("Analysis failed"));
     } finally {
       setIsLoading(false);
     }
   }, [employeeId, analysisPeriod]);
 
-  const getPatternsByType = useCallback((type: BehaviorPattern['type']) => 
-    patterns.filter(p => p.type === type), [patterns]);
+  const getPatternsByType = useCallback(
+    (type: BehaviorPattern["type"]) => patterns.filter((p) => p.type === type),
+    [patterns]
+  );
 
-  const routines = patterns.filter(p => p.type === 'routine');
-  const deviations = patterns.filter(p => p.type === 'deviation');
-  const anomalies = patterns.filter(p => p.type === 'anomaly');
+  const routines = patterns.filter((p) => p.type === "routine");
+  const deviations = patterns.filter((p) => p.type === "deviation");
+  const anomalies = patterns.filter((p) => p.type === "anomaly");
 
-  return { patterns, routines, deviations, anomalies, isLoading, error, analyzePatterns, getPatternsByType };
+  return {
+    patterns,
+    routines,
+    deviations,
+    anomalies,
+    isLoading,
+    error,
+    analyzePatterns,
+    getPatternsByType,
+  };
 }
 
 export default useBehaviorPatterns;

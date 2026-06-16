@@ -18,7 +18,7 @@ export function useColorScheme() {
       setResolved(isDark ? "dark" : "light");
       document.documentElement.classList.toggle("dark", isDark);
     };
-    
+
     mql.addEventListener("change", update);
     update();
     return () => mql.removeEventListener("change", update);

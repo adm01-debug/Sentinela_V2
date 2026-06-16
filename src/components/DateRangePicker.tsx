@@ -1,16 +1,12 @@
-import * as React from 'react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Calendar as CalendarIcon } from 'lucide-react';
-import { DateRange } from 'react-day-picker';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import * as React from "react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { DateRange } from "react-day-picker";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface DateRangePickerProps {
   value?: { from: Date; to: Date };
@@ -23,7 +19,7 @@ export function DateRangePicker({
   value,
   onChange,
   className,
-  placeholder = 'Selecionar período',
+  placeholder = "Selecionar período",
 }: DateRangePickerProps) {
   const [date, setDate] = React.useState<DateRange | undefined>(
     value ? { from: value.from, to: value.to } : undefined
@@ -52,8 +48,8 @@ export function DateRangePicker({
         <Button
           variant="outline"
           className={cn(
-            'w-[260px] justify-start text-left font-normal',
-            !date && 'text-muted-foreground',
+            "w-[260px] justify-start text-left font-normal",
+            !date && "text-muted-foreground",
             className
           )}
         >
@@ -61,11 +57,11 @@ export function DateRangePicker({
           {date?.from ? (
             date.to ? (
               <>
-                {format(date.from, 'dd/MM/yyyy', { locale: ptBR })} -{' '}
-                {format(date.to, 'dd/MM/yyyy', { locale: ptBR })}
+                {format(date.from, "dd/MM/yyyy", { locale: ptBR })} -{" "}
+                {format(date.to, "dd/MM/yyyy", { locale: ptBR })}
               </>
             ) : (
-              format(date.from, 'dd/MM/yyyy', { locale: ptBR })
+              format(date.from, "dd/MM/yyyy", { locale: ptBR })
             )
           ) : (
             <span>{placeholder}</span>

@@ -4,12 +4,15 @@ export function useRaf(callback: (deltaTime: number) => void, active = true) {
   const rafRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
 
-  const loop = useCallback((time: number) => {
-    const delta = time - lastTimeRef.current;
-    lastTimeRef.current = time;
-    callback(delta);
-    rafRef.current = requestAnimationFrame(loop);
-  }, [callback]);
+  const loop = useCallback(
+    (time: number) => {
+      const delta = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+      callback(delta);
+      rafRef.current = requestAnimationFrame(loop);
+    },
+    [callback]
+  );
 
   useEffect(() => {
     if (active) {

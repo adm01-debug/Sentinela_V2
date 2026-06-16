@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 export interface WorkSchedule {
   id: string;
@@ -44,9 +44,9 @@ export function useWorkSchedules() {
     queryKey: queryKeys.workSchedules.lists(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('work_schedules')
-        .select('*')
-        .order('day_of_week', { ascending: true });
+        .from("work_schedules")
+        .select("*")
+        .order("day_of_week", { ascending: true });
       if (error) throw error;
       return data as WorkSchedule[];
     },
@@ -56,14 +56,14 @@ export function useWorkSchedules() {
 
 export function useEmployeeSchedule(employeeId: string | undefined) {
   return useQuery({
-    queryKey: queryKeys.workSchedules.employee(employeeId || ''),
+    queryKey: queryKeys.workSchedules.employee(employeeId || ""),
     queryFn: async () => {
       if (!employeeId) return [];
       const { data, error } = await supabase
-        .from('work_schedules')
-        .select('*')
-        .eq('employee_id', employeeId)
-        .eq('is_active', true);
+        .from("work_schedules")
+        .select("*")
+        .eq("employee_id", employeeId)
+        .eq("is_active", true);
       if (error) throw error;
       return data as WorkSchedule[];
     },
@@ -77,16 +77,16 @@ export function useCreateWorkSchedule() {
   const { toast } = useToast();
   return useMutation({
     mutationFn: async (input: CreateWorkScheduleInput) => {
-      const { data, error } = await supabase.from('work_schedules').insert(input).select().single();
+      const { data, error } = await supabase.from("work_schedules").insert(input).select().single();
       if (error) throw error;
       return data;
     },
     onSuccess: () => {
       invalidateRelated.workSchedules(queryClient);
-      toast({ title: 'Horário criado' });
+      toast({ title: "Horário criado" });
     },
     onError: (error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 }
@@ -96,16 +96,21 @@ export function useUpdateWorkSchedule() {
   const { toast } = useToast();
   return useMutation({
     mutationFn: async ({ id, ...input }: UpdateWorkScheduleInput) => {
-      const { data, error } = await supabase.from('work_schedules').update(input).eq('id', id).select().single();
+      const { data, error } = await supabase
+        .from("work_schedules")
+        .update(input)
+        .eq("id", id)
+        .select()
+        .single();
       if (error) throw error;
       return data;
     },
     onSuccess: () => {
       invalidateRelated.workSchedules(queryClient);
-      toast({ title: 'Horário atualizado' });
+      toast({ title: "Horário atualizado" });
     },
     onError: (error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 }
@@ -115,15 +120,15 @@ export function useDeleteWorkSchedule() {
   const { toast } = useToast();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('work_schedules').delete().eq('id', id);
+      const { error } = await supabase.from("work_schedules").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
       invalidateRelated.workSchedules(queryClient);
-      toast({ title: 'Horário excluído' });
+      toast({ title: "Horário excluído" });
     },
     onError: (error) => {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     },
   });
 }

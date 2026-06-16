@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState, useEffect, ReactNode } from 'react';
+import { memo, useCallback, useRef, useState, useEffect, ReactNode } from "react";
 
 interface VirtualListProps<T> {
   items: T[];
@@ -35,8 +35,8 @@ function VirtualListInner<T>({
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
+      container.addEventListener("scroll", handleScroll);
+      return () => container.removeEventListener("scroll", handleScroll);
     }
   }, [handleScroll]);
 
@@ -59,17 +59,11 @@ function VirtualListInner<T>({
   const offsetY = startIndex * itemHeight;
 
   return (
-    <div
-      ref={containerRef}
-      style={{ height: containerHeight, overflow: 'auto' }}
-    >
-      <div style={{ height: totalHeight, position: 'relative' }}>
+    <div ref={containerRef} style={{ height: containerHeight, overflow: "auto" }}>
+      <div style={{ height: totalHeight, position: "relative" }}>
         <div style={{ transform: `translateY(${offsetY}px)` }}>
           {visibleItems.map((item, index) => (
-            <div
-              key={keyExtractor(item, startIndex + index)}
-              style={{ height: itemHeight }}
-            >
+            <div key={keyExtractor(item, startIndex + index)} style={{ height: itemHeight }}>
               {renderItem(item, startIndex + index)}
             </div>
           ))}

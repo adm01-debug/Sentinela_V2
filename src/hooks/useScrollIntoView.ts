@@ -7,7 +7,7 @@ export function useScrollIntoView<T extends HTMLElement>() {
     ref.current?.scrollIntoView({
       behavior: "smooth",
       block: "center",
-      ...options
+      ...options,
     });
   }, []);
 

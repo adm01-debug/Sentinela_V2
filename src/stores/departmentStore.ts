@@ -1,8 +1,13 @@
 // Department Store for Sentinela - Supabase integrated
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { supabase } from '@/integrations/supabase/client';
-import type { Department, DepartmentFilters, DepartmentStats, DepartmentHierarchy } from '@/types/department';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { supabase } from "@/integrations/supabase/client";
+import type {
+  Department,
+  DepartmentFilters,
+  DepartmentStats,
+  DepartmentHierarchy,
+} from "@/types/department";
 
 interface DepartmentState {
   departments: Department[];
@@ -46,10 +51,16 @@ export const useDepartmentStore = create<DepartmentState & DepartmentActions>()(
         set({ isLoading: true, error: null });
         try {
           // Departments are derived from employees table department column
-          const { data, error } = await supabase.from('employees').select('department').not('department', 'is', null);
+          const { data, error } = await supabase
+            .from("employees")
+            .select("department")
+            .not("department", "is", null);
           if (error) throw error;
           const unique = [...new Set((data || []).map((e) => e.department).filter(Boolean))];
-          const depts = unique.map((name, i) => ({ id: String(i), name: name! })) as unknown as Department[];
+          const depts = unique.map((name, i) => ({
+            id: String(i),
+            name: name!,
+          })) as unknown as Department[];
           set({ departments: depts, isLoading: false });
         } catch (error) {
           set({ error: (error as Error).message, isLoading: false });
@@ -57,7 +68,7 @@ export const useDepartmentStore = create<DepartmentState & DepartmentActions>()(
       },
 
       fetchDepartment: async (id) => {
-        const dept = get().departments.find(d => d.id === id) || null;
+        const dept = get().departments.find((d) => d.id === id) || null;
         set({ currentDepartment: dept });
       },
 
@@ -66,30 +77,41 @@ export const useDepartmentStore = create<DepartmentState & DepartmentActions>()(
       },
 
       fetchStats: async () => {
-        set({ stats: { total: get().departments.length, active: get().departments.length, totalEmployees: 0 } as DepartmentStats });
+        set({
+          stats: {
+            total: get().departments.length,
+            active: get().departments.length,
+            totalEmployees: 0,
+          } as DepartmentStats,
+        });
       },
 
       createDepartment: async (data) => {
-        const dept = { id: crypto.randomUUID(), ...data, created_at: new Date().toISOString(), updated_at: new Date().toISOString() } as unknown as Department;
+        const dept = {
+          id: crypto.randomUUID(),
+          ...data,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        } as unknown as Department;
         set({ departments: [...get().departments, dept] });
         return dept;
       },
 
       updateDepartment: async (id, data) => {
-        const updated = { ...get().departments.find(d => d.id === id)!, ...data } as Department;
-        set({ departments: get().departments.map(d => d.id === id ? updated : d) });
+        const updated = { ...get().departments.find((d) => d.id === id)!, ...data } as Department;
+        set({ departments: get().departments.map((d) => (d.id === id ? updated : d)) });
         return updated;
       },
 
       deleteDepartment: async (id) => {
-        set({ departments: get().departments.filter(d => d.id !== id) });
+        set({ departments: get().departments.filter((d) => d.id !== id) });
       },
 
       setFilters: (filters) => set({ filters }),
       setCurrentDepartment: (department) => set({ currentDepartment: department }),
       clearError: () => set({ error: null }),
     }),
-    { name: 'DepartmentStore' }
+    { name: "DepartmentStore" }
   )
 );
 

@@ -1,15 +1,15 @@
-import { memo } from 'react';
-import { Search, X } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { memo } from "react";
+import { Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface FilterOption {
   value: string;
@@ -38,19 +38,20 @@ interface FilterBarProps {
 function FilterBarComponent({
   searchValue,
   onSearchChange,
-  searchPlaceholder = 'Buscar...',
+  searchPlaceholder = "Buscar...",
   filters = [],
   onClearFilters,
   showClear,
   className,
   children,
 }: FilterBarProps) {
-  const hasActiveFilters = filters.some(f => f.value !== 'all') || (searchValue && searchValue.length > 0);
+  const hasActiveFilters =
+    filters.some((f) => f.value !== "all") || (searchValue && searchValue.length > 0);
 
   return (
     <div className={cn("flex flex-wrap gap-4", className)}>
       {onSearchChange && (
-        <div className="relative flex-1 min-w-[200px] max-w-sm">
+        <div className="relative min-w-[200px] max-w-sm flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder={searchPlaceholder}
@@ -78,7 +79,7 @@ function FilterBarComponent({
 
       {showClear && hasActiveFilters && onClearFilters && (
         <Button variant="ghost" size="sm" onClick={onClearFilters}>
-          <X className="h-4 w-4 mr-1" />
+          <X className="mr-1 h-4 w-4" />
           Limpar
         </Button>
       )}

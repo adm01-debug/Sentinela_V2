@@ -1,14 +1,14 @@
-import { memo, useState } from 'react';
-import { Loader2, Shield, Copy, Check, QrCode, Smartphone, Phone } from 'lucide-react';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useMFA } from '@/hooks/useMFA';
-import { MFAPhoneEnroll } from '@/components/security/MFAPhoneEnroll';
+import { memo, useState } from "react";
+import { Loader2, Shield, Copy, Check, QrCode, Smartphone, Phone } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useMFA } from "@/hooks/useMFA";
+import { MFAPhoneEnroll } from "@/components/security/MFAPhoneEnroll";
 
 interface MFAEnrollProps {
   onEnrolled: () => void;
@@ -17,56 +17,56 @@ interface MFAEnrollProps {
 
 function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
   const { enroll, verify } = useMFA();
-  const [method, setMethod] = useState<'totp' | 'sms' | null>(null);
-  const [step, setStep] = useState<'choose' | 'qrcode' | 'verify'>('choose');
-  const [qrCodeUri, setQrCodeUri] = useState('');
-  const [secret, setSecret] = useState('');
-  const [factorId, setFactorId] = useState('');
-  const [verifyCode, setVerifyCode] = useState('');
-  const [error, setError] = useState('');
+  const [method, setMethod] = useState<"totp" | "sms" | null>(null);
+  const [step, setStep] = useState<"choose" | "qrcode" | "verify">("choose");
+  const [qrCodeUri, setQrCodeUri] = useState("");
+  const [secret, setSecret] = useState("");
+  const [factorId, setFactorId] = useState("");
+  const [verifyCode, setVerifyCode] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const handleStartEnroll = async () => {
     setLoading(true);
-    setError('');
-    
-    const response = await enroll('SecureWatch 2FA');
-    
+    setError("");
+
+    const response = await enroll("SecureWatch 2FA");
+
     if (response.error) {
       setError(response.error.message);
       setLoading(false);
       return;
     }
 
-    if (response.data && response.data.type === 'totp') {
+    if (response.data && response.data.type === "totp") {
       setFactorId(response.data.id);
       setQrCodeUri(response.data.totp.qr_code);
       setSecret(response.data.totp.secret);
-      setStep('qrcode');
+      setStep("qrcode");
     }
-    
+
     setLoading(false);
   };
 
   const handleVerify = async () => {
     if (verifyCode.length !== 6) {
-      setError('O código deve ter 6 dígitos');
+      setError("O código deve ter 6 dígitos");
       return;
     }
 
     setLoading(true);
-    setError('');
+    setError("");
 
     const { error: verifyError } = await verify(factorId, verifyCode);
 
     if (verifyError) {
-      setError('Código inválido. Tente novamente.');
+      setError("Código inválido. Tente novamente.");
       setLoading(false);
       return;
     }
 
-    toast.success('2FA ativado com sucesso!');
+    toast.success("2FA ativado com sucesso!");
     onEnrolled();
   };
 
@@ -77,20 +77,18 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
   };
 
   // Step 1: Choose method
-  if (step === 'choose') {
+  if (step === "choose") {
     return (
       <Card className="border-border/50">
         <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
             <Shield className="h-8 w-8 text-primary" />
           </div>
           <CardTitle>Escolha o Método de 2FA</CardTitle>
-          <CardDescription>
-            Selecione como deseja receber os códigos de verificação
-          </CardDescription>
+          <CardDescription>Selecione como deseja receber os códigos de verificação</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Tabs defaultValue="totp" onValueChange={(v) => setMethod(v as 'totp' | 'sms')}>
+          <Tabs defaultValue="totp" onValueChange={(v) => setMethod(v as "totp" | "sms")}>
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="totp" className="flex items-center gap-2">
                 <Smartphone className="h-4 w-4" />
@@ -103,9 +101,9 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
             </TabsList>
 
             <TabsContent value="totp" className="mt-4 space-y-3">
-              <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+              <div className="space-y-3 rounded-lg bg-muted/50 p-4">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-sm font-medium text-primary">
                     1
                   </div>
                   <div>
@@ -116,7 +114,7 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-sm font-medium text-primary">
                     2
                   </div>
                   <div>
@@ -127,7 +125,7 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-sm font-medium text-primary">
                     3
                   </div>
                   <div>
@@ -141,9 +139,9 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
             </TabsContent>
 
             <TabsContent value="sms" className="mt-4 space-y-3">
-              <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+              <div className="space-y-3 rounded-lg bg-muted/50 p-4">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-sm font-medium text-primary">
                     1
                   </div>
                   <div>
@@ -154,7 +152,7 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-sm font-medium text-primary">
                     2
                   </div>
                   <div>
@@ -165,7 +163,7 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-sm font-medium text-primary">
                     3
                   </div>
                   <div>
@@ -183,18 +181,18 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
             <Button variant="outline" onClick={onCancel} className="flex-1">
               Cancelar
             </Button>
-            <Button 
+            <Button
               onClick={() => {
-                if (method === 'sms') {
-                  setMethod('sms');
+                if (method === "sms") {
+                  setMethod("sms");
                 } else {
                   handleStartEnroll();
                 }
-              }} 
-              disabled={loading} 
+              }}
+              disabled={loading}
               className="flex-1"
             >
-              {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Continuar
             </Button>
           </div>
@@ -204,16 +202,16 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
   }
 
   // SMS Flow - Delegate to MFAPhoneEnroll
-  if (method === 'sms') {
+  if (method === "sms") {
     return <MFAPhoneEnroll onEnrolled={onEnrolled} onCancel={onCancel} />;
   }
 
   // TOTP Flow - Step 2: QR Code
-  if (step === 'qrcode') {
+  if (step === "qrcode") {
     return (
       <Card className="border-border/50">
         <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
             <QrCode className="h-8 w-8 text-primary" />
           </div>
           <CardTitle>Escaneie o QR Code</CardTitle>
@@ -224,18 +222,18 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
         <CardContent className="space-y-6">
           {/* QR Code */}
           <div className="flex justify-center">
-            <div className="bg-white p-4 rounded-lg">
-              <img src={qrCodeUri} alt="QR Code para 2FA" className="w-48 h-48" />
+            <div className="rounded-lg bg-white p-4">
+              <img src={qrCodeUri} alt="QR Code para 2FA" className="h-48 w-48" />
             </div>
           </div>
 
           {/* Manual entry */}
           <div className="space-y-2">
-            <p className="text-sm text-center text-muted-foreground">
+            <p className="text-center text-sm text-muted-foreground">
               Ou digite o código manualmente:
             </p>
             <div className="flex items-center gap-2">
-              <code className="flex-1 bg-muted px-3 py-2 rounded text-sm font-mono break-all">
+              <code className="flex-1 break-all rounded bg-muted px-3 py-2 font-mono text-sm">
                 {secret}
               </code>
               <Button variant="outline" size="icon" onClick={copySecret}>
@@ -248,7 +246,7 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
             <Button variant="outline" onClick={onCancel} className="flex-1">
               Cancelar
             </Button>
-            <Button onClick={() => setStep('verify')} className="flex-1">
+            <Button onClick={() => setStep("verify")} className="flex-1">
               Próximo
             </Button>
           </div>
@@ -261,7 +259,7 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
   return (
     <Card className="border-border/50">
       <CardHeader className="text-center">
-        <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
           <Smartphone className="h-8 w-8 text-primary" />
         </div>
         <CardTitle>Verificar Configuração</CardTitle>
@@ -286,17 +284,21 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
             maxLength={6}
             placeholder="000000"
             value={verifyCode}
-            onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
-            className="text-center text-2xl tracking-widest font-mono"
+            onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ""))}
+            className="text-center font-mono text-2xl tracking-widest"
           />
         </div>
 
         <div className="flex gap-3 pt-4">
-          <Button variant="outline" onClick={() => setStep('qrcode')} className="flex-1">
+          <Button variant="outline" onClick={() => setStep("qrcode")} className="flex-1">
             Voltar
           </Button>
-          <Button onClick={handleVerify} disabled={loading || verifyCode.length !== 6} className="flex-1">
-            {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+          <Button
+            onClick={handleVerify}
+            disabled={loading || verifyCode.length !== 6}
+            className="flex-1"
+          >
+            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
             Ativar 2FA
           </Button>
         </div>

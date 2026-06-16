@@ -4,7 +4,7 @@ export function useDeepMerge<T extends Record<string, unknown>>() {
   const merge = useCallback((target: T, ...sources: Partial<T>[]): T => {
     if (!sources.length) return target;
     const source = sources.shift();
-    
+
     if (typeof target !== "object" || typeof source !== "object") {
       return target;
     }

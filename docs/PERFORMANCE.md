@@ -1,16 +1,19 @@
 # Performance Guide
 
 ## Overview
+
 This guide covers performance optimization strategies for the Sentinela application.
 
 ## Performance Metrics
 
 ### Core Web Vitals
+
 - **LCP (Largest Contentful Paint)**: < 2.5s
 - **FID (First Input Delay)**: < 100ms
 - **CLS (Cumulative Layout Shift)**: < 0.1
 
 ### Application Metrics
+
 - **Time to First Byte (TTFB)**: < 200ms
 - **Time to Interactive (TTI)**: < 3.5s
 - **Bundle Size**: < 500KB (gzipped)
@@ -18,6 +21,7 @@ This guide covers performance optimization strategies for the Sentinela applicat
 ## Optimization Strategies
 
 ### Code Splitting
+
 ```typescript
 // Lazy load routes
 const Dashboard = lazy(() => import("./pages/DashboardPage"));
@@ -33,10 +37,11 @@ const Reports = lazy(() => import("./pages/ReportsPage"));
 ```
 
 ### Memoization
+
 ```typescript
 // Memoize expensive computations
-const memoizedData = useMemo(() => 
-  processLargeDataset(rawData), 
+const memoizedData = useMemo(() =>
+  processLargeDataset(rawData),
   [rawData]
 );
 
@@ -52,18 +57,19 @@ const ExpensiveComponent = memo(({ data }) => {
 ```
 
 ### Virtual Scrolling
+
 ```typescript
 import { useVirtualizer } from "@tanstack/react-virtual";
 
 const VirtualList = ({ items }) => {
   const parentRef = useRef();
-  
+
   const virtualizer = useVirtualizer({
     count: items.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 50,
   });
-  
+
   return (
     <div ref={parentRef} style={{ height: "400px", overflow: "auto" }}>
       <div style={{ height: virtualizer.getTotalSize() }}>
@@ -85,11 +91,13 @@ const VirtualList = ({ items }) => {
 ## Database Performance
 
 ### Query Optimization
+
 - Use indexes on frequently queried columns
 - Implement pagination for large datasets
 - Use `EXPLAIN ANALYZE` to optimize slow queries
 
 ### Caching Strategy
+
 - Redis for session data and real-time counters
 - CDN for static assets
 - Browser caching with service workers
@@ -97,11 +105,13 @@ const VirtualList = ({ items }) => {
 ## Monitoring
 
 ### Performance Monitoring Tools
+
 - Lighthouse CI for automated audits
 - Web Vitals library for real-user monitoring
 - Application Performance Monitoring (APM)
 
 ### Key Dashboards
+
 - `/monitoring/performance` - Real-time metrics
 - `/admin/analytics` - Historical trends
 
@@ -114,7 +124,7 @@ const VirtualList = ({ items }) => {
 5. **Compression**: Gzip/Brotli for all text assets
 
 ## Related Documentation
+
 - [CACHING.md](./CACHING.md)
 - [SCALING.md](./SCALING.md)
 - [MONITORING.md](./MONITORING.md)
-

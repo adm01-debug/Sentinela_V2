@@ -18,7 +18,7 @@ export function useMouse<T extends HTMLElement>() {
         x: e.clientX,
         y: e.clientY,
         elementX: rect ? e.clientX - rect.left : 0,
-        elementY: rect ? e.clientY - rect.top : 0
+        elementY: rect ? e.clientY - rect.top : 0,
       });
     };
 

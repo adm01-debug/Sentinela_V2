@@ -1,4 +1,4 @@
-import { useEffect, useRef, RefObject } from 'react';
+import { useEffect, useRef, RefObject } from "react";
 
 // ============================================================
 // useOnClickOutside - Detect clicks outside an element
@@ -31,12 +31,12 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
       handler(event);
     };
 
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
+    document.addEventListener("mousedown", listener);
+    document.addEventListener("touchstart", listener);
 
     return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
+      document.removeEventListener("mousedown", listener);
+      document.removeEventListener("touchstart", listener);
     };
   }, [ref, handler, enabled]);
 }
@@ -69,12 +69,12 @@ export function useOnClickOutsideMultiple<T extends HTMLElement = HTMLElement>(
       }
     };
 
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
+    document.addEventListener("mousedown", listener);
+    document.addEventListener("touchstart", listener);
 
     return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
+      document.removeEventListener("mousedown", listener);
+      document.removeEventListener("touchstart", listener);
     };
   }, [refs, handler, enabled]);
 }

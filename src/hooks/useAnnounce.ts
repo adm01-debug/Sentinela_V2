@@ -1,11 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 export const useAnnounce = () => {
-  const [message, setMessage] = useState('');
-  const [politeness, setPoliteness] = useState<'polite' | 'assertive'>('polite');
+  const [message, setMessage] = useState("");
+  const [politeness, setPoliteness] = useState<"polite" | "assertive">("polite");
 
-  const announce = useCallback((msg: string, level: 'polite' | 'assertive' = 'polite') => {
-    setMessage('');
+  const announce = useCallback((msg: string, level: "polite" | "assertive" = "polite") => {
+    setMessage("");
     setTimeout(() => {
       setMessage(msg);
       setPoliteness(level);

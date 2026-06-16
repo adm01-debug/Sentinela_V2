@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
-import { ArrowLeft, Save, Eye } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { PageTransition } from '@/components/PageTransition';
-import { supabase } from '@/integrations/supabase/client';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { ArrowLeft, Save, Eye } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { PageTransition } from "@/components/PageTransition";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Factor {
   id: string;
@@ -30,7 +30,10 @@ export const UEBASettingsPage = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.from('risk_score_factors').select('*').order('category, name');
+      const { data } = await supabase
+        .from("risk_score_factors")
+        .select("*")
+        .order("category, name");
       setFactors((data as Factor[]) || []);
       setLoading(false);
     })();
@@ -45,14 +48,14 @@ export const UEBASettingsPage = () => {
     try {
       for (const f of factors) {
         const { error } = await supabase
-          .from('risk_score_factors')
+          .from("risk_score_factors")
           .update({ weight: f.weight, enabled: f.enabled })
-          .eq('id', f.id);
+          .eq("id", f.id);
         if (error) throw error;
       }
-      toast.success('Configurações salvas');
+      toast.success("Configurações salvas");
     } catch (e) {
-      toast.error('Falha ao salvar', { description: e instanceof Error ? e.message : 'Unknown' });
+      toast.error("Falha ao salvar", { description: e instanceof Error ? e.message : "Unknown" });
     } finally {
       setSaving(false);
     }
@@ -67,7 +70,12 @@ export const UEBASettingsPage = () => {
     <PageTransition>
       <div className="space-y-6">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={() => navigate('/admin/ueba')} className="gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/admin/ueba")}
+            className="gap-2"
+          >
             <ArrowLeft className="h-4 w-4" />
             Voltar
           </Button>
@@ -88,7 +96,7 @@ export const UEBASettingsPage = () => {
             <div className="flex items-center justify-between">
               <div>
                 <Label className="text-sm font-medium">Modo de Calibração</Label>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Calcula scores mas não dispara alertas. Recomendado por 30 dias após instalação.
                 </p>
               </div>
@@ -99,13 +107,15 @@ export const UEBASettingsPage = () => {
 
         {loading ? (
           <Card>
-            <CardContent className="py-8 text-center text-sm text-muted-foreground">Carregando fatores...</CardContent>
+            <CardContent className="py-8 text-center text-sm text-muted-foreground">
+              Carregando fatores...
+            </CardContent>
           </Card>
         ) : (
           Object.entries(grouped).map(([category, items]) => (
             <Card key={category}>
               <CardHeader>
-                <CardTitle className="text-sm font-medium capitalize flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-sm font-medium capitalize">
                   {category}
                   <Badge variant="outline" className="text-[10px]">
                     {items.length} fatores
@@ -114,10 +124,15 @@ export const UEBASettingsPage = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 {items.map((f) => (
-                  <div key={f.id} className="grid gap-3 sm:grid-cols-[1fr_120px_80px] items-center pb-3 border-b border-border last:border-0">
+                  <div
+                    key={f.id}
+                    className="grid items-center gap-3 border-b border-border pb-3 last:border-0 sm:grid-cols-[1fr_120px_80px]"
+                  >
                     <div>
                       <Label className="text-sm font-medium">{f.display_name}</Label>
-                      {f.description && <p className="text-xs text-muted-foreground">{f.description}</p>}
+                      {f.description && (
+                        <p className="text-xs text-muted-foreground">{f.description}</p>
+                      )}
                     </div>
                     <div>
                       <Label className="text-xs">Peso</Label>
@@ -127,12 +142,17 @@ export const UEBASettingsPage = () => {
                         min="0"
                         max="5"
                         value={f.weight}
-                        onChange={(e) => updateFactor(f.id, { weight: parseFloat(e.target.value) || 0 })}
+                        onChange={(e) =>
+                          updateFactor(f.id, { weight: parseFloat(e.target.value) || 0 })
+                        }
                         className="h-8"
                       />
                     </div>
                     <div className="flex items-center justify-end">
-                      <Switch checked={f.enabled} onCheckedChange={(v) => updateFactor(f.id, { enabled: v })} />
+                      <Switch
+                        checked={f.enabled}
+                        onCheckedChange={(v) => updateFactor(f.id, { enabled: v })}
+                      />
                     </div>
                   </div>
                 ))}
@@ -144,7 +164,7 @@ export const UEBASettingsPage = () => {
         <div className="flex justify-end">
           <Button onClick={handleSave} disabled={saving} className="gap-2">
             <Save className="h-4 w-4" />
-            {saving ? 'Salvando...' : 'Salvar Configurações'}
+            {saving ? "Salvando..." : "Salvar Configurações"}
           </Button>
         </div>
       </div>

@@ -11,19 +11,19 @@ export function useCategories(initialCategories: Category[] = []) {
 
   const add = useCallback((name: string, parentId?: string) => {
     const category: Category = { id: crypto.randomUUID(), name, parentId };
-    setCategories(prev => [...prev, category]);
+    setCategories((prev) => [...prev, category]);
     return category;
   }, []);
 
   const remove = useCallback((id: string) => {
-    setCategories(prev => prev.filter(c => c.id !== id && c.parentId !== id));
+    setCategories((prev) => prev.filter((c) => c.id !== id && c.parentId !== id));
   }, []);
 
   const tree = useMemo(() => {
     const buildTree = (parentId?: string): (Category & { children: Category[] })[] => {
       return categories
-        .filter(c => c.parentId === parentId)
-        .map(c => ({ ...c, children: buildTree(c.id) }));
+        .filter((c) => c.parentId === parentId)
+        .map((c) => ({ ...c, children: buildTree(c.id) }));
     };
     return buildTree(undefined);
   }, [categories]);

@@ -3,9 +3,9 @@
 // Captures unhandled errors, promise rejections, and manual reports
 // ============================================================
 
-import * as Sentry from '@sentry/react';
-import { logger } from '@/lib/logger';
-import { supabase } from '@/integrations/supabase/client';
+import * as Sentry from "@sentry/react";
+import { logger } from "@/lib/logger";
+import { supabase } from "@/integrations/supabase/client";
 
 // ============================================================
 // TYPES
@@ -16,7 +16,7 @@ interface ErrorReport {
   stack?: string;
   component?: string;
   context?: Record<string, unknown>;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   url: string;
   userAgent: string;
   timestamp: string;
@@ -58,10 +58,7 @@ class ErrorTracker {
     if (sentryDsn) {
       Sentry.init({
         dsn: sentryDsn,
-        integrations: [
-          Sentry.browserTracingIntegration(),
-          Sentry.replayIntegration(),
-        ],
+        integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
         // Performance Monitoring
         tracesSampleRate: 1.0,
         // Session Replay
@@ -69,13 +66,13 @@ class ErrorTracker {
         replaysOnErrorSampleRate: 1.0,
         environment: import.meta.env.MODE,
       });
-      logger.info('[ErrorTracker] Sentry Initialized');
+      logger.info("[ErrorTracker] Sentry Initialized");
     }
 
     // Global error handler (Native fallback)
-    window.addEventListener('error', (event) => {
+    window.addEventListener("error", (event) => {
       this.captureError(event.error ?? new Error(event.message), {
-        component: 'window.onerror',
+        component: "window.onerror",
         context: {
           filename: event.filename,
           lineno: event.lineno,
@@ -85,21 +82,18 @@ class ErrorTracker {
     });
 
     // Unhandled promise rejections (Native fallback)
-    window.addEventListener('unhandledrejection', (event) => {
-      const error =
-        event.reason instanceof Error
-          ? event.reason
-          : new Error(String(event.reason));
+    window.addEventListener("unhandledrejection", (event) => {
+      const error = event.reason instanceof Error ? event.reason : new Error(String(event.reason));
       this.captureError(error, {
-        component: 'unhandledrejection',
-        severity: 'high',
+        component: "unhandledrejection",
+        severity: "high",
       });
     });
 
     // Periodic flush (to internal logs)
     this.flushTimer = setInterval(() => this.flush(), this.config.flushIntervalMs);
 
-    logger.info('[ErrorTracker] Native collection initialized');
+    logger.info("[ErrorTracker] Native collection initialized");
   }
 
   captureError(
@@ -107,14 +101,14 @@ class ErrorTracker {
     options: {
       component?: string;
       context?: Record<string, unknown>;
-      severity?: ErrorReport['severity'];
+      severity?: ErrorReport["severity"];
     } = {}
   ): void {
     // Sampling
     if (Math.random() > this.config.sampleRate) return;
 
     // Dedup by message + stack fingerprint
-    const fingerprint = `${error.message}::${error.stack?.slice(0, 200) ?? ''}`;
+    const fingerprint = `${error.message}::${error.stack?.slice(0, 200) ?? ""}`;
     if (this.seenErrors.has(fingerprint)) return;
     this.seenErrors.add(fingerprint);
 
@@ -145,7 +139,7 @@ class ErrorTracker {
     });
 
     this.queue.push(report);
-    logger.error(`[ErrorTracker] Captured: ${report.message}`, report.component ?? '');
+    logger.error(`[ErrorTracker] Captured: ${report.message}`, report.component ?? "");
 
     // Auto-flush if queue is full
     if (this.queue.length >= this.config.maxQueueSize) {
@@ -153,31 +147,31 @@ class ErrorTracker {
     }
   }
 
-  private classifySeverity(error: Error): ErrorReport['severity'] {
+  private classifySeverity(error: Error): ErrorReport["severity"] {
     const msg = error.message.toLowerCase();
-    if (msg.includes('chunk') || msg.includes('loading')) return 'medium';
-    if (msg.includes('network') || msg.includes('fetch')) return 'high';
-    if (msg.includes('security') || msg.includes('auth')) return 'critical';
-    return 'medium';
+    if (msg.includes("chunk") || msg.includes("loading")) return "medium";
+    if (msg.includes("network") || msg.includes("fetch")) return "high";
+    if (msg.includes("security") || msg.includes("auth")) return "critical";
+    return "medium";
   }
 
   async flush(): Promise<void> {
     if (this.queue.length === 0) return;
 
     // Load pending from storage
-    const stored = localStorage.getItem('sentinela_pending_errors');
+    const stored = localStorage.getItem("sentinela_pending_errors");
     let pending: ErrorReport[] = [];
     try {
       if (stored) pending = JSON.parse(stored);
     } catch (e) {
-      logger.warn('[ErrorTracker] Failed to parse pending errors from localStorage');
+      logger.warn("[ErrorTracker] Failed to parse pending errors from localStorage");
     }
-    
+
     const batch = [...pending, ...this.queue.splice(0, this.config.maxQueueSize)];
     if (batch.length === 0) return;
 
     try {
-      const { error } = await supabase.from('error_reports').insert(
+      const { error } = await supabase.from("error_reports").insert(
         batch.map((r) => ({
           message: r.message,
           stack: r.stack ?? null,
@@ -191,14 +185,14 @@ class ErrorTracker {
       );
 
       if (error) {
-        logger.warn('[ErrorTracker] Failed to persist errors, saving locally:', error.message);
-        localStorage.setItem('sentinela_pending_errors', JSON.stringify(batch.slice(-50)));
+        logger.warn("[ErrorTracker] Failed to persist errors, saving locally:", error.message);
+        localStorage.setItem("sentinela_pending_errors", JSON.stringify(batch.slice(-50)));
       } else {
-        localStorage.removeItem('sentinela_pending_errors');
+        localStorage.removeItem("sentinela_pending_errors");
       }
     } catch {
-      logger.warn('[ErrorTracker] Flush failed, saving locally');
-      localStorage.setItem('sentinela_pending_errors', JSON.stringify(batch.slice(-50)));
+      logger.warn("[ErrorTracker] Flush failed, saving locally");
+      localStorage.setItem("sentinela_pending_errors", JSON.stringify(batch.slice(-50)));
     }
   }
 
@@ -230,7 +224,7 @@ export function captureError(
   options?: {
     component?: string;
     context?: Record<string, unknown>;
-    severity?: ErrorReport['severity'];
+    severity?: ErrorReport["severity"];
   }
 ): void {
   errorTracker.captureError(error, options);

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from "react";
 
 export interface WizardStep {
   id: string;
@@ -12,7 +12,7 @@ export interface UseMultiStepWizardOptions {
   steps: WizardStep[];
   initialStep?: number;
   onComplete?: () => void;
-  onStepChange?: (step: number, direction: 'next' | 'prev') => void;
+  onStepChange?: (step: number, direction: "next" | "prev") => void;
 }
 
 export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
@@ -26,11 +26,14 @@ export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
   const isLastStep = currentStep === steps.length - 1;
   const progress = ((currentStep + 1) / steps.length) * 100;
 
-  const goToStep = useCallback((step: number) => {
-    if (step >= 0 && step < steps.length) {
-      setCurrentStep(step);
-    }
-  }, [steps.length]);
+  const goToStep = useCallback(
+    (step: number) => {
+      if (step >= 0 && step < steps.length) {
+        setCurrentStep(step);
+      }
+    },
+    [steps.length]
+  );
 
   const nextStep = useCallback(async () => {
     const step = steps[currentStep];
@@ -40,17 +43,20 @@ export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
       setIsValidating(false);
       if (!isValid) return false;
     }
-    setCompletedSteps(prev => new Set([...prev, currentStep]));
-    if (isLastStep) { onComplete?.(); return true; }
-    setCurrentStep(prev => prev + 1);
-    onStepChange?.(currentStep + 1, 'next');
+    setCompletedSteps((prev) => new Set([...prev, currentStep]));
+    if (isLastStep) {
+      onComplete?.();
+      return true;
+    }
+    setCurrentStep((prev) => prev + 1);
+    onStepChange?.(currentStep + 1, "next");
     return true;
   }, [currentStep, steps, isLastStep, onComplete, onStepChange]);
 
   const prevStep = useCallback(() => {
     if (!isFirstStep) {
-      setCurrentStep(prev => prev - 1);
-      onStepChange?.(currentStep - 1, 'prev');
+      setCurrentStep((prev) => prev - 1);
+      onStepChange?.(currentStep - 1, "prev");
     }
   }, [isFirstStep, currentStep, onStepChange]);
 
@@ -61,7 +67,21 @@ export function useMultiStepWizard(options: UseMultiStepWizardOptions) {
 
   const isStepCompleted = useCallback((step: number) => completedSteps.has(step), [completedSteps]);
 
-  return { currentStep, currentStepData, steps, isFirstStep, isLastStep, progress, isValidating, goToStep, nextStep, prevStep, reset, isStepCompleted, completedSteps: Array.from(completedSteps) };
+  return {
+    currentStep,
+    currentStepData,
+    steps,
+    isFirstStep,
+    isLastStep,
+    progress,
+    isValidating,
+    goToStep,
+    nextStep,
+    prevStep,
+    reset,
+    isStepCompleted,
+    completedSteps: Array.from(completedSteps),
+  };
 }
 
 export default useMultiStepWizard;

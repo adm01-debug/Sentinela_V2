@@ -1,7 +1,7 @@
-import { memo, useState, useEffect } from 'react';
-import { WifiOff, Wifi } from 'lucide-react';
-import { useNetworkStatus } from '@/hooks/useNetworkStatus';
-import { cn } from '@/lib/utils';
+import { memo, useState, useEffect } from "react";
+import { WifiOff, Wifi } from "lucide-react";
+import { useNetworkStatus } from "@/hooks/useNetworkStatus";
+import { cn } from "@/lib/utils";
 
 export const NetworkStatusBanner = memo(function NetworkStatusBanner() {
   const { isOnline } = useNetworkStatus();
@@ -26,10 +26,10 @@ export const NetworkStatusBanner = memo(function NetworkStatusBanner() {
       role="alert"
       aria-live="assertive"
       className={cn(
-        'fixed top-0 left-0 right-0 z-[100] flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium transition-all duration-300',
+        "fixed left-0 right-0 top-0 z-[100] flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium transition-all duration-300",
         !isOnline
-          ? 'bg-destructive text-destructive-foreground'
-          : 'bg-primary text-primary-foreground'
+          ? "bg-destructive text-destructive-foreground"
+          : "bg-primary text-primary-foreground"
       )}
     >
       {!isOnline ? (

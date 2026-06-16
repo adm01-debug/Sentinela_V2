@@ -1,11 +1,21 @@
-import { memo, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Edit, Trash2, Monitor, Smartphone, Link2, Mail, Phone, Building2, Briefcase } from 'lucide-react';
-import { CreateFirstEmptyState } from '@/components/EmptyStates';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { VirtualizedTable, type Column } from '@/components/VirtualizedTable';
+import { memo, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Edit,
+  Trash2,
+  Monitor,
+  Smartphone,
+  Link2,
+  Mail,
+  Phone,
+  Building2,
+  Briefcase,
+} from "lucide-react";
+import { CreateFirstEmptyState } from "@/components/EmptyStates";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { VirtualizedTable, type Column } from "@/components/VirtualizedTable";
 import {
   Table,
   TableBody,
@@ -13,16 +23,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
-import type { EmployeeWithDetails, EmployeeDevice } from '@/hooks/useEmployees';
-import { statusConfig, getInitials } from '@/hooks/useEmployeesPage';
+} from "@/components/ui/table";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import type { EmployeeWithDetails, EmployeeDevice } from "@/hooks/useEmployees";
+import { statusConfig, getInitials } from "@/hooks/useEmployeesPage";
 
 interface Team {
   id: string;
@@ -41,7 +46,7 @@ interface EmployeeTableProps {
 const deviceTypeIcons = {
   desktop: Monitor,
   laptop: Monitor,
-  mobile: Smartphone
+  mobile: Smartphone,
 };
 
 // Use VirtualizedTable for large lists (>50 items), regular table for small lists
@@ -57,210 +62,226 @@ function EmployeeTableComponent({
 }: EmployeeTableProps) {
   const { t } = useTranslation();
 
-  const getTeamName = useCallback((teamId: string | null) => {
-    if (!teamId) return null;
-    const team = teams.find(t => t.id === teamId);
-    return team?.name || null;
-  }, [teams]);
+  const getTeamName = useCallback(
+    (teamId: string | null) => {
+      if (!teamId) return null;
+      const team = teams.find((t) => t.id === teamId);
+      return team?.name || null;
+    },
+    [teams]
+  );
 
-  const columns: Column<EmployeeWithDetails>[] = useMemo(() => [
-    {
-      key: 'employee',
-      header: t('employees.name'),
-      width: '250px',
-      render: (employee) => (
-        <div className="flex items-center gap-3">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={employee.avatar_url || undefined} />
-            <AvatarFallback className="text-xs">{getInitials(employee.name)}</AvatarFallback>
-          </Avatar>
-          <div className="min-w-0">
-            <p className="font-medium truncate">{employee.name}</p>
-            {employee.position && (
-              <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
-                <Briefcase className="h-3 w-3 flex-shrink-0" />
-                {employee.position}
+  const columns: Column<EmployeeWithDetails>[] = useMemo(
+    () => [
+      {
+        key: "employee",
+        header: t("employees.name"),
+        width: "250px",
+        render: (employee) => (
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={employee.avatar_url || undefined} />
+              <AvatarFallback className="text-xs">{getInitials(employee.name)}</AvatarFallback>
+            </Avatar>
+            <div className="min-w-0">
+              <p className="truncate font-medium">{employee.name}</p>
+              {employee.position && (
+                <p className="flex items-center gap-1 truncate text-xs text-muted-foreground">
+                  <Briefcase className="h-3 w-3 flex-shrink-0" />
+                  {employee.position}
+                </p>
+              )}
+            </div>
+          </div>
+        ),
+      },
+      {
+        key: "contact",
+        header: t("employees.email"),
+        width: "200px",
+        render: (employee) => (
+          <div className="min-w-0 space-y-0.5">
+            {employee.email && (
+              <p className="flex items-center gap-1 truncate text-sm">
+                <Mail className="h-3 w-3 flex-shrink-0 text-muted-foreground" />
+                <span className="truncate">{employee.email}</span>
+              </p>
+            )}
+            {employee.phone && (
+              <p className="flex items-center gap-1 text-sm">
+                <Phone className="h-3 w-3 flex-shrink-0 text-muted-foreground" />
+                {employee.phone}
               </p>
             )}
           </div>
-        </div>
-      ),
-    },
-    {
-      key: 'contact',
-      header: t('employees.email'),
-      width: '200px',
-      render: (employee) => (
-        <div className="space-y-0.5 min-w-0">
-          {employee.email && (
-            <p className="text-sm flex items-center gap-1 truncate">
-              <Mail className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-              <span className="truncate">{employee.email}</span>
-            </p>
-          )}
-          {employee.phone && (
-            <p className="text-sm flex items-center gap-1">
-              <Phone className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-              {employee.phone}
-            </p>
-          )}
-        </div>
-      ),
-    },
-    {
-      key: 'department',
-      header: t('employees.department'),
-      width: '150px',
-      render: (employee) => (
-        employee.department ? (
-          <span className="flex items-center gap-1 text-sm">
-            <Building2 className="h-3 w-3 text-muted-foreground" />
-            {employee.department}
-          </span>
-        ) : <span className="text-muted-foreground">-</span>
-      ),
-    },
-    {
-      key: 'team',
-      header: t('employees.team'),
-      width: '120px',
-      render: (employee) => {
-        const teamName = getTeamName(employee.team_id);
-        return teamName ? (
-          <Badge variant="outline" className="text-xs">{teamName}</Badge>
-        ) : (
-          <span className="text-muted-foreground text-sm">-</span>
-        );
+        ),
       },
-    },
-    {
-      key: 'status',
-      header: t('employees.status'),
-      width: '100px',
-      render: (employee) => {
-        const status = statusConfig[employee.status as keyof typeof statusConfig];
-        return (
-          <Badge className={cn('font-normal text-xs', status?.color)}>
-            {status?.label || employee.status}
-          </Badge>
-        );
-      },
-    },
-    {
-      key: 'devices',
-      header: t('employees.devices'),
-      width: '200px',
-      render: (employee) => (
-        <div className="flex flex-wrap gap-1">
-          {employee.devices && employee.devices.length > 0 ? (
-            employee.devices.slice(0, 2).map((device: EmployeeDevice) => {
-              const DeviceIcon = deviceTypeIcons[device.device_type as keyof typeof deviceTypeIcons] || Monitor;
-              return (
-                <TooltipProvider key={device.id}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Badge 
-                        variant="secondary" 
-                        className="cursor-pointer flex items-center gap-1 text-xs"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onUnassignDevice(employee.id, device.id);
-                        }}
-                      >
-                        <DeviceIcon className="h-3 w-3" />
-                        {device.device_name.slice(0, 10)}
-                        {device.is_primary && <span>★</span>}
-                      </Badge>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{t('common.delete')}: {device.device_name}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
-            })
+      {
+        key: "department",
+        header: t("employees.department"),
+        width: "150px",
+        render: (employee) =>
+          employee.department ? (
+            <span className="flex items-center gap-1 text-sm">
+              <Building2 className="h-3 w-3 text-muted-foreground" />
+              {employee.department}
+            </span>
           ) : (
-            <span className="text-muted-foreground text-xs">{t('common.none')}</span>
-          )}
-          {employee.devices && employee.devices.length > 2 && (
-            <Badge variant="outline" className="text-xs">+{employee.devices.length - 2}</Badge>
-          )}
-        </div>
-      ),
-    },
-    {
-      key: 'actions',
-      header: t('common.actions'),
-      width: '120px',
-      className: 'justify-end',
-      render: (employee) => (
-        <div className="flex justify-end gap-1">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onAssignDevice(employee);
-                  }}
-                >
-                  <Link2 className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>{t('employees.assignDevice')}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+            <span className="text-muted-foreground">-</span>
+          ),
+      },
+      {
+        key: "team",
+        header: t("employees.team"),
+        width: "120px",
+        render: (employee) => {
+          const teamName = getTeamName(employee.team_id);
+          return teamName ? (
+            <Badge variant="outline" className="text-xs">
+              {teamName}
+            </Badge>
+          ) : (
+            <span className="text-sm text-muted-foreground">-</span>
+          );
+        },
+      },
+      {
+        key: "status",
+        header: t("employees.status"),
+        width: "100px",
+        render: (employee) => {
+          const status = statusConfig[employee.status as keyof typeof statusConfig];
+          return (
+            <Badge className={cn("text-xs font-normal", status?.color)}>
+              {status?.label || employee.status}
+            </Badge>
+          );
+        },
+      },
+      {
+        key: "devices",
+        header: t("employees.devices"),
+        width: "200px",
+        render: (employee) => (
+          <div className="flex flex-wrap gap-1">
+            {employee.devices && employee.devices.length > 0 ? (
+              employee.devices.slice(0, 2).map((device: EmployeeDevice) => {
+                const DeviceIcon =
+                  deviceTypeIcons[device.device_type as keyof typeof deviceTypeIcons] || Monitor;
+                return (
+                  <TooltipProvider key={device.id}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Badge
+                          variant="secondary"
+                          className="flex cursor-pointer items-center gap-1 text-xs"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onUnassignDevice(employee.id, device.id);
+                          }}
+                        >
+                          <DeviceIcon className="h-3 w-3" />
+                          {device.device_name.slice(0, 10)}
+                          {device.is_primary && <span>★</span>}
+                        </Badge>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>
+                          {t("common.delete")}: {device.device_name}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                );
+              })
+            ) : (
+              <span className="text-xs text-muted-foreground">{t("common.none")}</span>
+            )}
+            {employee.devices && employee.devices.length > 2 && (
+              <Badge variant="outline" className="text-xs">
+                +{employee.devices.length - 2}
+              </Badge>
+            )}
+          </div>
+        ),
+      },
+      {
+        key: "actions",
+        header: t("common.actions"),
+        width: "120px",
+        className: "justify-end",
+        render: (employee) => (
+          <div className="flex justify-end gap-1">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAssignDevice(employee);
+                    }}
+                  >
+                    <Link2 className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>{t("employees.assignDevice")}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onEdit(employee);
-                  }}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>{t('common.edit')}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(employee);
+                    }}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>{t("common.edit")}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete(employee);
-                  }}
-                >
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>{t('common.delete')}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      ),
-    },
-  ], [t, getTeamName, onAssignDevice, onEdit, onDelete, onUnassignDevice]);
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(employee);
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>{t("common.delete")}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        ),
+      },
+    ],
+    [t, getTeamName, onAssignDevice, onEdit, onDelete, onUnassignDevice]
+  );
 
   if (employees.length === 0) {
     return (
       <CreateFirstEmptyState
         itemName="funcionário"
-        onCreate={() => {/* handled by parent */}}
+        onCreate={() => {
+          /* handled by parent */
+        }}
         size="lg"
       />
     );
@@ -275,7 +296,7 @@ function EmployeeTableComponent({
         rowHeight={64}
         containerHeight={500}
         keyExtractor={(employee) => employee.id}
-        emptyMessage={t('employees.noEmployees')}
+        emptyMessage={t("employees.noEmployees")}
       />
     );
   }
@@ -287,10 +308,10 @@ function EmployeeTableComponent({
         <TableHeader>
           <TableRow className="hover:bg-transparent">
             {columns.map((column) => (
-              <TableHead 
+              <TableHead
                 key={column.key}
-                className={cn('h-12', column.className)}
-                style={{ width: column.width || 'auto' }}
+                className={cn("h-12", column.className)}
+                style={{ width: column.width || "auto" }}
               >
                 {column.header}
               </TableHead>
@@ -301,10 +322,10 @@ function EmployeeTableComponent({
           {employees.map((employee, index) => (
             <TableRow key={employee.id} className="h-16">
               {columns.map((column) => (
-                <TableCell 
+                <TableCell
                   key={column.key}
                   className={cn(column.className)}
-                  style={{ width: column.width || 'auto' }}
+                  style={{ width: column.width || "auto" }}
                 >
                   {column.render(employee, index)}
                 </TableCell>

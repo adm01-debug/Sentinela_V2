@@ -1,7 +1,13 @@
 // Form components for features
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface FormFieldProps {
   name: string;
@@ -13,11 +19,27 @@ interface FormFieldProps {
   placeholder?: string;
 }
 
-export function FormField({ name, label, type = 'text', value, onChange, required, placeholder }: FormFieldProps) {
+export function FormField({
+  name,
+  label,
+  type = "text",
+  value,
+  onChange,
+  required,
+  placeholder,
+}: FormFieldProps) {
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>{label}</Label>
-      <Input id={name} name={name} type={type} value={value} onChange={onChange} required={required} placeholder={placeholder} />
+      <Input
+        id={name}
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        required={required}
+        placeholder={placeholder}
+      />
     </div>
   );
 }
@@ -36,9 +58,15 @@ export function FormSelect({ name, label, options, value, onChange }: FormSelect
     <div className="space-y-2">
       <Label htmlFor={name}>{label}</Label>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger><SelectValue placeholder={`Select ${label.toLowerCase()}...`} /></SelectTrigger>
+        <SelectTrigger>
+          <SelectValue placeholder={`Select ${label.toLowerCase()}...`} />
+        </SelectTrigger>
         <SelectContent>
-          {options.map(o => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+          {options.map((o) => (
+            <SelectItem key={o.value} value={o.value}>
+              {o.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>

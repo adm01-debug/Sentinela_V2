@@ -3,7 +3,7 @@
 /**
  * Generate a unique ID with optional prefix
  */
-export function generateId(prefix = ''): string {
+export function generateId(prefix = ""): string {
   const timestamp = Date.now().toString(36);
   const randomPart = Math.random().toString(36).substring(2, 9);
   return prefix ? `${prefix}_${timestamp}${randomPart}` : `${timestamp}${randomPart}`;
@@ -13,9 +13,9 @@ export function generateId(prefix = ''): string {
  * Generate UUID v4
  */
 export function generateUUID(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
@@ -24,17 +24,13 @@ export function generateUUID(): string {
  * Sleep for specified milliseconds
  */
 export function sleep(ms): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
  * Retry async function with exponential backoff
  */
-export async function retry<T>(
-  fn: () => Promise<T>,
-  maxRetries = 3,
-  baseDelay = 1000
-): Promise<T> {
+export async function retry<T>(fn: () => Promise<T>, maxRetries = 3, baseDelay = 1000): Promise<T> {
   let lastError: Error | undefined;
   for (let i = 0; i < maxRetries; i++) {
     try {

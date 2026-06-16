@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
-import { usePermissions } from '@/hooks/usePermissions';
-import type { Permission } from '@/constants/permissions';
+import { ReactNode } from "react";
+import { usePermissions } from "@/hooks/usePermissions";
+import type { Permission } from "@/constants/permissions";
 
 interface PermissionGateProps {
   permission?: Permission;
@@ -10,12 +10,19 @@ interface PermissionGateProps {
   children: ReactNode;
 }
 
-export function PermissionGate({ permission, permissions, requireAll = false, fallback = null, children }: PermissionGateProps) {
+export function PermissionGate({
+  permission,
+  permissions,
+  requireAll = false,
+  fallback = null,
+  children,
+}: PermissionGateProps) {
   const { hasPermission, hasAnyPermission, hasAllPermissions } = usePermissions();
 
   const hasAccess = (() => {
     if (permission) return hasPermission(permission);
-    if (permissions) return requireAll ? hasAllPermissions(permissions) : hasAnyPermission(permissions);
+    if (permissions)
+      return requireAll ? hasAllPermissions(permissions) : hasAnyPermission(permissions);
     return true;
   })();
 

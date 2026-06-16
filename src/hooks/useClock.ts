@@ -13,6 +13,6 @@ export function useClock(updateInterval = 1000) {
     hours: time.getHours(),
     minutes: time.getMinutes(),
     seconds: time.getSeconds(),
-    formatted: time.toLocaleTimeString()
+    formatted: time.toLocaleTimeString(),
   };
 }

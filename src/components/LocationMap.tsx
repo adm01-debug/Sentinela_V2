@@ -1,6 +1,6 @@
-import React from 'react';
-import { MapPin } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React from "react";
+import { MapPin } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface LocationMapProps {
   latitude?: number;
@@ -31,18 +31,16 @@ export function LocationMap({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
+        <div className="flex aspect-video items-center justify-center rounded-lg bg-muted">
           <div className="text-center text-muted-foreground">
-            <MapPin className="h-12 w-12 mx-auto mb-2" />
+            <MapPin className="mx-auto mb-2 h-12 w-12" />
             <p>Map integration placeholder</p>
             {latitude && longitude && (
-              <p className="text-sm mt-2">
+              <p className="mt-2 text-sm">
                 Lat: {latitude.toFixed(4)}, Lng: {longitude.toFixed(4)}
               </p>
             )}
-            {locations.length > 0 && (
-              <p className="text-sm mt-2">{locations.length} locations</p>
-            )}
+            {locations.length > 0 && <p className="mt-2 text-sm">{locations.length} locations</p>}
           </div>
         </div>
       </CardContent>

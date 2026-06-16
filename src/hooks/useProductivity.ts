@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ProductivityMetric {
   date: string;
@@ -19,16 +19,18 @@ export function useProductivity(employeeName?: string, days = 30) {
   }, [days]);
 
   const query = useQuery({
-    queryKey: ['productivity', employeeName, days],
+    queryKey: ["productivity", employeeName, days],
     queryFn: async (): Promise<ProductivityMetric[]> => {
       let q = supabase
-        .from('keystroke_logs')
-        .select('employee_name, recorded_at, keystrokes_count, active_time_seconds, idle_time_seconds')
-        .gte('recorded_at', since)
-        .order('recorded_at', { ascending: false })
+        .from("keystroke_logs")
+        .select(
+          "employee_name, recorded_at, keystrokes_count, active_time_seconds, idle_time_seconds"
+        )
+        .gte("recorded_at", since)
+        .order("recorded_at", { ascending: false })
         .limit(500);
 
-      if (employeeName) q = q.eq('employee_name', employeeName);
+      if (employeeName) q = q.eq("employee_name", employeeName);
 
       const { data, error } = await q;
       if (error) throw error;
@@ -37,7 +39,7 @@ export function useProductivity(employeeName?: string, days = 30) {
       const grouped = new Map<string, ProductivityMetric>();
 
       for (const row of data ?? []) {
-        const date = row.recorded_at.split('T')[0];
+        const date = row.recorded_at.split("T")[0];
         const key = `${date}_${row.employee_name}`;
         const existing = grouped.get(key);
 

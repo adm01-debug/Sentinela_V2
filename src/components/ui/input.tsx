@@ -11,7 +11,8 @@ const inputVariants = cva(
         default: "border-input",
         ghost: "border-transparent bg-muted/50 focus-visible:bg-background",
         outline: "border-2 border-input focus-visible:border-primary",
-        filled: "border-transparent bg-muted focus-visible:bg-background focus-visible:border-input",
+        filled:
+          "border-transparent bg-muted focus-visible:bg-background focus-visible:border-input",
         success: "border-success/50 bg-success/5 focus-visible:ring-success",
         error: "border-destructive/50 bg-destructive/5 focus-visible:ring-destructive",
         warning: "border-warning/50 bg-warning/5 focus-visible:ring-warning",
@@ -31,8 +32,7 @@ const inputVariants = cva(
 );
 
 export interface InputProps
-  extends Omit<React.ComponentProps<"input">, "size">,
-    VariantProps<typeof inputVariants> {
+  extends Omit<React.ComponentProps<"input">, "size">, VariantProps<typeof inputVariants> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   clearable?: boolean;
@@ -120,12 +120,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {hasRightContent && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+            <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1.5">
               {clearable && String(internalValue).length > 0 && (
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -134,13 +134,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               )}
               {status && <StatusIcon />}

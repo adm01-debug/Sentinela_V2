@@ -1,13 +1,9 @@
-import { memo, useMemo } from 'react';
-import { TrendingUp, TrendingDown, Minus, LucideIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Card } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { memo, useMemo } from "react";
+import { TrendingUp, TrendingDown, Minus, LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 // ============================================================
 // TYPES
@@ -29,8 +25,8 @@ interface KPIWidgetProps {
   icon?: LucideIcon;
   iconColor?: string;
   sparklineData?: SparklineData[];
-  format?: 'number' | 'currency' | 'percent' | 'duration';
-  variant?: 'default' | 'compact' | 'detailed';
+  format?: "number" | "currency" | "percent" | "duration";
+  variant?: "default" | "compact" | "detailed";
   isLoading?: boolean;
   className?: string;
 }
@@ -50,12 +46,12 @@ interface SparklineProps {
 const Sparkline = memo(function Sparkline({
   data,
   height = 40,
-  color = 'hsl(var(--primary))',
+  color = "hsl(var(--primary))",
   showArea = true,
   className,
 }: SparklineProps) {
   const { path, areaPath } = useMemo(() => {
-    if (!data || data.length < 2) return { path: '', areaPath: '', points: [] };
+    if (!data || data.length < 2) return { path: "", areaPath: "", points: [] };
 
     const values = data.map((d) => d.value);
     const min = Math.min(...values);
@@ -73,9 +69,7 @@ const Sparkline = memo(function Sparkline({
       label: d.label,
     }));
 
-    const linePath = pointsList
-      .map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`)
-      .join(' ');
+    const linePath = pointsList.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
 
     const area = `${linePath} L ${width} ${height} L 0 ${height} Z`;
 
@@ -86,14 +80,14 @@ const Sparkline = memo(function Sparkline({
 
   return (
     <svg
-      className={cn('w-full', className)}
+      className={cn("w-full", className)}
       viewBox={`0 0 100 ${height}`}
       preserveAspectRatio="none"
     >
       {showArea && (
         <path
           d={areaPath}
-          fill={`url(#sparkline-gradient-${color.replace(/[^a-zA-Z0-9]/g, '')})`}
+          fill={`url(#sparkline-gradient-${color.replace(/[^a-zA-Z0-9]/g, "")})`}
           opacity={0.2}
         />
       )}
@@ -109,7 +103,7 @@ const Sparkline = memo(function Sparkline({
       {/* Gradient definition */}
       <defs>
         <linearGradient
-          id={`sparkline-gradient-${color.replace(/[^a-zA-Z0-9]/g, '')}`}
+          id={`sparkline-gradient-${color.replace(/[^a-zA-Z0-9]/g, "")}`}
           x1="0"
           y1="0"
           x2="0"
@@ -143,8 +137,8 @@ const ProgressRing = memo(function ProgressRing({
   max = 100,
   size = 60,
   strokeWidth = 6,
-  color = 'hsl(var(--primary))',
-  bgColor = 'hsl(var(--muted))',
+  color = "hsl(var(--primary))",
+  bgColor = "hsl(var(--muted))",
   showValue = true,
   className,
 }: ProgressRingProps) {
@@ -154,8 +148,8 @@ const ProgressRing = memo(function ProgressRing({
   const strokeDashoffset = circumference - progress * circumference;
 
   return (
-    <div className={cn('relative', className)} style={{ width: size, height: size }}>
-      <svg className="transform -rotate-90" width={size} height={size}>
+    <div className={cn("relative", className)} style={{ width: size, height: size }}>
+      <svg className="-rotate-90 transform" width={size} height={size}>
         {/* Background circle */}
         <circle
           cx={size / 2}
@@ -197,24 +191,26 @@ function KPIWidgetComponent({
   value,
   previousValue,
   change,
-  changeLabel = 'vs período anterior',
+  changeLabel = "vs período anterior",
   target,
-  targetLabel = 'Meta',
+  targetLabel = "Meta",
   icon: Icon,
-  iconColor = 'text-primary',
+  iconColor = "text-primary",
   sparklineData,
-  format = 'number',
-  variant = 'default',
+  format = "number",
+  variant = "default",
   isLoading = false,
   className,
 }: KPIWidgetProps) {
   // Calculate change if not provided
   const calculatedChange = useMemo(() => {
     if (change !== undefined) return change;
-    if (previousValue !== undefined && typeof value === 'number' && typeof previousValue === 'number') {
-      return previousValue !== 0
-        ? Math.round(((value - previousValue) / previousValue) * 100)
-        : 0;
+    if (
+      previousValue !== undefined &&
+      typeof value === "number" &&
+      typeof previousValue === "number"
+    ) {
+      return previousValue !== 0 ? Math.round(((value - previousValue) / previousValue) * 100) : 0;
     }
     return undefined;
   }, [change, value, previousValue]);
@@ -224,44 +220,44 @@ function KPIWidgetComponent({
 
   const TrendIcon = isPositive ? TrendingUp : isNegative ? TrendingDown : Minus;
   const trendColor = isPositive
-    ? 'text-success'
+    ? "text-success"
     : isNegative
-    ? 'text-destructive'
-    : 'text-muted-foreground';
+      ? "text-destructive"
+      : "text-muted-foreground";
 
   // Format value
   const formattedValue = useMemo(() => {
-    if (typeof value === 'string') return value;
+    if (typeof value === "string") return value;
 
     switch (format) {
-      case 'currency':
-        return new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
+      case "currency":
+        return new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
           minimumFractionDigits: 0,
           maximumFractionDigits: 0,
         }).format(value);
-      case 'percent':
+      case "percent":
         return `${value.toFixed(1)}%`;
-      case 'duration': {
+      case "duration": {
         const hours = Math.floor(value / 60);
         const mins = value % 60;
         return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
       }
       default:
-        return value.toLocaleString('pt-BR');
+        return value.toLocaleString("pt-BR");
     }
   }, [value, format]);
 
   // Progress towards target
   const targetProgress = useMemo(() => {
-    if (target === undefined || typeof value !== 'number') return undefined;
+    if (target === undefined || typeof value !== "number") return undefined;
     return (value / target) * 100;
   }, [value, target]);
 
   if (isLoading) {
     return (
-      <Card className={cn('p-5', className)}>
+      <Card className={cn("p-5", className)}>
         <div className="flex items-start justify-between">
           <div className="flex-1 space-y-3">
             <Skeleton className="h-4 w-24" />
@@ -270,26 +266,26 @@ function KPIWidgetComponent({
           </div>
           <Skeleton className="h-10 w-10 rounded-xl" />
         </div>
-        {variant === 'detailed' && <Skeleton className="h-10 w-full mt-4" />}
+        {variant === "detailed" && <Skeleton className="mt-4 h-10 w-full" />}
       </Card>
     );
   }
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
-      <Card className={cn('p-4 hover-lift', className)}>
+      <Card className={cn("hover-lift p-4", className)}>
         <div className="flex items-center gap-3">
           {Icon && (
-            <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-muted/50">
-              <Icon className={cn('h-5 w-5', iconColor)} />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted/50">
+              <Icon className={cn("h-5 w-5", iconColor)} />
             </div>
           )}
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-muted-foreground truncate">{title}</p>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-xs font-medium text-muted-foreground">{title}</p>
             <div className="flex items-baseline gap-2">
               <span className="text-lg font-bold">{formattedValue}</span>
               {calculatedChange !== undefined && (
-                <span className={cn('text-xs font-medium flex items-center gap-0.5', trendColor)}>
+                <span className={cn("flex items-center gap-0.5 text-xs font-medium", trendColor)}>
                   <TrendIcon className="h-3 w-3" />
                   {Math.abs(calculatedChange)}%
                 </span>
@@ -302,17 +298,17 @@ function KPIWidgetComponent({
   }
 
   return (
-    <Card className={cn('p-5 hover-lift overflow-hidden', className)}>
+    <Card className={cn("hover-lift overflow-hidden p-5", className)}>
       <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-muted-foreground">{title}</p>
-          <div className="flex items-baseline gap-2 mt-1">
+          <div className="mt-1 flex items-baseline gap-2">
             <span className="text-2xl font-bold tracking-tight">{formattedValue}</span>
             {target !== undefined && (
               <Tooltip>
                 <TooltipTrigger>
                   <span className="text-xs text-muted-foreground">
-                    / {typeof target === 'number' ? target.toLocaleString('pt-BR') : target}
+                    / {typeof target === "number" ? target.toLocaleString("pt-BR") : target}
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>{targetLabel}</TooltipContent>
@@ -322,17 +318,17 @@ function KPIWidgetComponent({
 
           {/* Change indicator */}
           {calculatedChange !== undefined && (
-            <div className="flex items-center gap-2 mt-2">
+            <div className="mt-2 flex items-center gap-2">
               <span
                 className={cn(
-                  'inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-xs font-medium',
-                  isPositive && 'bg-success/10 text-success',
-                  isNegative && 'bg-destructive/10 text-destructive',
-                  !isPositive && !isNegative && 'bg-muted text-muted-foreground'
+                  "inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-xs font-medium",
+                  isPositive && "bg-success/10 text-success",
+                  isNegative && "bg-destructive/10 text-destructive",
+                  !isPositive && !isNegative && "bg-muted text-muted-foreground"
                 )}
               >
                 <TrendIcon className="h-3 w-3" />
-                {calculatedChange > 0 ? '+' : ''}
+                {calculatedChange > 0 ? "+" : ""}
                 {calculatedChange}%
               </span>
               <span className="text-xs text-muted-foreground">{changeLabel}</span>
@@ -348,40 +344,42 @@ function KPIWidgetComponent({
             strokeWidth={5}
             color={
               targetProgress >= 100
-                ? 'hsl(var(--success))'
+                ? "hsl(var(--success))"
                 : targetProgress >= 70
-                ? 'hsl(var(--primary))'
-                : 'hsl(var(--warning))'
+                  ? "hsl(var(--primary))"
+                  : "hsl(var(--warning))"
             }
           />
         ) : Icon ? (
-          <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-muted/50">
-            <Icon className={cn('h-6 w-6', iconColor)} />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-muted/50">
+            <Icon className={cn("h-6 w-6", iconColor)} />
           </div>
         ) : null}
       </div>
 
       {/* Sparkline */}
       {sparklineData && sparklineData.length > 1 && (
-        <div className="mt-4 -mx-5 -mb-5 px-5 pb-2 pt-2 bg-muted/30">
+        <div className="-mx-5 -mb-5 mt-4 bg-muted/30 px-5 pb-2 pt-2">
           <Sparkline
             data={sparklineData}
             height={40}
             color={
               calculatedChange !== undefined && calculatedChange < 0
-                ? 'hsl(var(--destructive))'
-                : 'hsl(var(--primary))'
+                ? "hsl(var(--destructive))"
+                : "hsl(var(--primary))"
             }
           />
         </div>
       )}
 
       {/* Detailed variant extras */}
-      {variant === 'detailed' && previousValue !== undefined && (
-        <div className="mt-4 pt-4 border-t border-border/50 flex justify-between text-xs text-muted-foreground">
+      {variant === "detailed" && previousValue !== undefined && (
+        <div className="mt-4 flex justify-between border-t border-border/50 pt-4 text-xs text-muted-foreground">
           <span>Período anterior</span>
           <span className="font-medium">
-            {typeof previousValue === 'number' ? previousValue.toLocaleString('pt-BR') : previousValue}
+            {typeof previousValue === "number"
+              ? previousValue.toLocaleString("pt-BR")
+              : previousValue}
           </span>
         </div>
       )}
@@ -403,13 +401,13 @@ interface KPIGridProps {
 
 function KPIGridComponent({ children, columns = 4, className }: KPIGridProps) {
   const gridCols = {
-    2: 'grid-cols-1 sm:grid-cols-2',
-    3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-    5: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5',
+    2: "grid-cols-1 sm:grid-cols-2",
+    3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+    4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
+    5: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5",
   };
 
-  return <div className={cn('grid gap-4', gridCols[columns], className)}>{children}</div>;
+  return <div className={cn("grid gap-4", gridCols[columns], className)}>{children}</div>;
 }
 
 export const KPIGrid = memo(KPIGridComponent);

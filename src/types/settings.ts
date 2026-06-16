@@ -1,4 +1,4 @@
-import type { Alert } from './alert';
+import type { Alert } from "./alert";
 
 export interface Settings {
   general: GeneralSettings;
@@ -18,7 +18,7 @@ export interface GeneralSettings {
 
 export interface SecuritySettings {
   twoFactorEnabled: boolean;
-  twoFactorMethod: 'app' | 'sms' | 'email';
+  twoFactorMethod: "app" | "sms" | "email";
   sessionTimeout: number;
   passwordMinLength: number;
   passwordRequireSpecial: boolean;
@@ -30,13 +30,13 @@ export interface NotificationSettings {
   push: boolean;
   slack: boolean;
   slackWebhook?: string;
-  alertThreshold: Alert['severity'];
+  alertThreshold: Alert["severity"];
 }
 
 export interface MonitoringSettings {
   screenshotEnabled: boolean;
   screenshotInterval: number;
-  screenshotQuality: 'low' | 'medium' | 'high';
+  screenshotQuality: "low" | "medium" | "high";
   blurScreenshots: boolean;
   trackKeystrokes: boolean;
   trackMouseClicks: boolean;

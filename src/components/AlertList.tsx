@@ -1,9 +1,9 @@
-import { memo } from 'react';
-import { format } from 'date-fns';
-import { Alert } from '@/types';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import { memo } from "react";
+import { format } from "date-fns";
+import { Alert } from "@/types";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   alerts: Alert[];
@@ -11,11 +11,11 @@ interface Props {
   onAcknowledge: (id: string) => void;
 }
 
-const severityVariants: Record<string, 'default' | 'warning' | 'destructive'> = {
-  low: 'default',
-  medium: 'warning',
-  high: 'destructive',
-  critical: 'destructive',
+const severityVariants: Record<string, "default" | "warning" | "destructive"> = {
+  low: "default",
+  medium: "warning",
+  high: "destructive",
+  critical: "destructive",
 };
 
 const AlertListBase = ({ alerts, isLoading, onAcknowledge }: Props) => {
@@ -32,21 +32,16 @@ const AlertListBase = ({ alerts, isLoading, onAcknowledge }: Props) => {
   return (
     <div className="space-y-4">
       {alerts.map((alert) => (
-        <div
-          key={alert.id}
-          className="flex items-start justify-between p-4 bg-card rounded-lg"
-        >
+        <div key={alert.id} className="flex items-start justify-between rounded-lg bg-card p-4">
           <div>
             <div className="flex items-center gap-2">
               <span className="font-medium">{alert.title}</span>
-              <Badge variant={severityVariants[alert.severity]}>
-                {alert.severity}
-              </Badge>
+              <Badge variant={severityVariants[alert.severity]}>{alert.severity}</Badge>
               {alert.acknowledged && <Badge variant="secondary">Acknowledged</Badge>}
             </div>
-            <p className="text-sm text-muted-foreground mt-1">{alert.message}</p>
-            <p className="text-xs text-muted-foreground mt-2">
-              {format(new Date(alert.createdAt), 'MMM dd, yyyy HH:mm')}
+            <p className="mt-1 text-sm text-muted-foreground">{alert.message}</p>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {format(new Date(alert.createdAt), "MMM dd, yyyy HH:mm")}
             </p>
           </div>
           {!alert.acknowledged && (

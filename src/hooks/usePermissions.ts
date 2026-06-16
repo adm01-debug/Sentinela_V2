@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
-import { useCallback, useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useMemo } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
 export interface Permission {
   id: string;
@@ -28,25 +28,30 @@ export interface UsePermissionsReturn {
 
 export function usePermissions(): UsePermissionsReturn {
   const { user } = useAuth();
-  
-  const { data: permissionsRaw, isLoading, error, refetch } = useQuery({
-    queryKey: queryKeys.permissions.user(user?.id || ''),
+
+  const {
+    data: permissionsRaw,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: queryKeys.permissions.user(user?.id || ""),
     queryFn: async () => {
       if (!user?.id) return [];
-      
+
       const { data, error } = await supabase
-        .from('user_roles')
-        .select('role:roles(permissions)')
-        .eq('user_id', user.id);
+        .from("user_roles")
+        .select("role:roles(permissions)")
+        .eq("user_id", user.id);
 
       if (error) throw error;
-      
+
       const perms = new Set<string>();
       data?.forEach((ur) => {
         const role = ur.role as { permissions?: string[] } | null;
         role?.permissions?.forEach((p) => perms.add(p));
       });
-      
+
       return Array.from(perms);
     },
     enabled: !!user?.id,
@@ -58,19 +63,32 @@ export function usePermissions(): UsePermissionsReturn {
     [permissionsRaw]
   );
 
-  const hasPermission = useCallback((permission: string): boolean => {
-    return permissions.includes(permission) || permissions.includes('admin') || permissions.includes('*');
-  }, [permissions]);
+  const hasPermission = useCallback(
+    (permission: string): boolean => {
+      return (
+        permissions.includes(permission) ||
+        permissions.includes("admin") ||
+        permissions.includes("*")
+      );
+    },
+    [permissions]
+  );
 
-  const hasAnyPermission = useCallback((perms: string[]): boolean => {
-    if (permissions.includes('admin') || permissions.includes('*')) return true;
-    return perms.some(p => permissions.includes(p));
-  }, [permissions]);
+  const hasAnyPermission = useCallback(
+    (perms: string[]): boolean => {
+      if (permissions.includes("admin") || permissions.includes("*")) return true;
+      return perms.some((p) => permissions.includes(p));
+    },
+    [permissions]
+  );
 
-  const hasAllPermissions = useCallback((perms: string[]): boolean => {
-    if (permissions.includes('admin') || permissions.includes('*')) return true;
-    return perms.every(p => permissions.includes(p));
-  }, [permissions]);
+  const hasAllPermissions = useCallback(
+    (perms: string[]): boolean => {
+      if (permissions.includes("admin") || permissions.includes("*")) return true;
+      return perms.every((p) => permissions.includes(p));
+    },
+    [permissions]
+  );
 
   return {
     permissions,
@@ -79,7 +97,9 @@ export function usePermissions(): UsePermissionsReturn {
     hasPermission,
     hasAnyPermission,
     hasAllPermissions,
-    refresh: async () => { await refetch(); },
+    refresh: async () => {
+      await refetch();
+    },
   };
 }
 
@@ -98,9 +118,9 @@ export function useRoles() {
     queryKey: queryKeys.permissions.roles(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('roles')
-        .select('*')
-        .order('name', { ascending: true });
+        .from("roles")
+        .select("*")
+        .order("name", { ascending: true });
 
       if (error) throw error;
       return data as UserRole[];

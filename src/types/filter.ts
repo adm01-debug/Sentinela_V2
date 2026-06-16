@@ -9,31 +9,31 @@ export interface Filter {
   isActive: boolean;
 }
 
-export type FilterOperator = 
-  | 'eq'
-  | 'ne'
-  | 'gt'
-  | 'gte'
-  | 'lt'
-  | 'lte'
-  | 'in'
-  | 'nin'
-  | 'contains'
-  | 'startsWith'
-  | 'endsWith'
-  | 'between'
-  | 'isNull'
-  | 'isNotNull'
-  | 'isEmpty'
-  | 'isNotEmpty';
+export type FilterOperator =
+  | "eq"
+  | "ne"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "in"
+  | "nin"
+  | "contains"
+  | "startsWith"
+  | "endsWith"
+  | "between"
+  | "isNull"
+  | "isNotNull"
+  | "isEmpty"
+  | "isNotEmpty";
 
 export type FilterValue = string | number | boolean | Date | string[] | number[] | null;
 
-export type FilterType = 'string' | 'number' | 'boolean' | 'date' | 'datetime' | 'array' | 'enum';
+export type FilterType = "string" | "number" | "boolean" | "date" | "datetime" | "array" | "enum";
 
 export interface FilterGroup {
   id: string;
-  logic: 'and' | 'or';
+  logic: "and" | "or";
   filters: (Filter | FilterGroup)[];
 }
 

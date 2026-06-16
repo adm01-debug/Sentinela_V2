@@ -1,12 +1,12 @@
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   filters: { severity?: string; acknowledged?: boolean };
@@ -14,25 +14,25 @@ interface Props {
 }
 
 const severities = [
-  { value: 'all', label: 'All Severities' },
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' },
-  { value: 'critical', label: 'Critical' },
+  { value: "all", label: "All Severities" },
+  { value: "low", label: "Low" },
+  { value: "medium", label: "Medium" },
+  { value: "high", label: "High" },
+  { value: "critical", label: "Critical" },
 ];
 
 const acknowledgement = [
-  { value: 'all', label: 'All' },
-  { value: 'false', label: 'Unacknowledged' },
-  { value: 'true', label: 'Acknowledged' },
+  { value: "all", label: "All" },
+  { value: "false", label: "Unacknowledged" },
+  { value: "true", label: "Acknowledged" },
 ];
 
 export const AlertFilters = ({ filters, onChange }: Props) => (
   <div className="flex gap-4">
     <Select
-      value={filters.severity || 'all'}
+      value={filters.severity || "all"}
       onValueChange={(value) =>
-        onChange({ ...filters, severity: value === 'all' ? undefined : value })
+        onChange({ ...filters, severity: value === "all" ? undefined : value })
       }
     >
       <SelectTrigger className="w-[180px]">
@@ -48,13 +48,11 @@ export const AlertFilters = ({ filters, onChange }: Props) => (
     </Select>
 
     <Select
-      value={
-        filters.acknowledged === undefined ? 'all' : String(filters.acknowledged)
-      }
+      value={filters.acknowledged === undefined ? "all" : String(filters.acknowledged)}
       onValueChange={(value) =>
         onChange({
           ...filters,
-          acknowledged: value === 'all' ? undefined : value === 'true',
+          acknowledged: value === "all" ? undefined : value === "true",
         })
       }
     >

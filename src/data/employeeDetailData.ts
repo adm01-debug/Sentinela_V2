@@ -1,4 +1,4 @@
-export type ApplicationCategory = 'productive' | 'neutral' | 'unproductive';
+export type ApplicationCategory = "productive" | "neutral" | "unproductive";
 
 export interface ApplicationUsage {
   id: string;
@@ -19,29 +19,29 @@ export interface TimelineActivity {
 
 export const defaultApplications: ApplicationUsage[] = [
   {
-    id: 'app1',
-    name: 'Chrome',
-    icon: '🌐',
-    category: 'productive',
+    id: "app1",
+    name: "Chrome",
+    icon: "🌐",
+    category: "productive",
     duration: 95,
-    lastUsed: 'há 3 min',
+    lastUsed: "há 3 min",
   },
   {
-    id: 'app2',
-    name: 'YouTube',
-    icon: '▶️',
-    category: 'unproductive',
+    id: "app2",
+    name: "YouTube",
+    icon: "▶️",
+    category: "unproductive",
     duration: 22,
-    lastUsed: 'há 1 h',
+    lastUsed: "há 1 h",
   },
 ];
 
 export const defaultActivities: TimelineActivity[] = [
   {
-    id: 't1',
+    id: "t1",
     timestamp: new Date().toISOString(),
-    application: 'Chrome',
-    title: 'Acessou portal interno',
+    application: "Chrome",
+    title: "Acessou portal interno",
     duration: 180,
   },
 ];

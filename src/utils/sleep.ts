@@ -52,7 +52,7 @@ export function wait(condition: () => boolean, interval = 100, maxWait = 5000): 
       if (condition()) {
         resolve();
       } else if (Date.now() - startTime >= maxWait) {
-        reject(new Error('Wait timeout'));
+        reject(new Error("Wait timeout"));
       } else {
         setTimeout(check, interval);
       }
@@ -73,7 +73,7 @@ export function waitFor<T>(
       if (result !== undefined && result !== null) {
         resolve(result);
       } else if (Date.now() - startTime >= maxWait) {
-        reject(new Error('WaitFor timeout'));
+        reject(new Error("WaitFor timeout"));
       } else {
         setTimeout(check, interval);
       }
@@ -84,7 +84,7 @@ export function waitFor<T>(
 
 export function nextTick(): Promise<void> {
   return new Promise((resolve) => {
-    if (typeof queueMicrotask === 'function') {
+    if (typeof queueMicrotask === "function") {
       queueMicrotask(() => resolve());
     } else {
       Promise.resolve().then(() => resolve());
@@ -98,7 +98,7 @@ export function nextFrame(): Promise<number> {
 
 export function idle(options?: IdleRequestOptions): Promise<IdleDeadline> {
   return new Promise((resolve) => {
-    if (typeof requestIdleCallback === 'function') {
+    if (typeof requestIdleCallback === "function") {
       requestIdleCallback(resolve, options);
     } else {
       setTimeout(() => resolve({ didTimeout: false, timeRemaining: () => 50 }), 1);

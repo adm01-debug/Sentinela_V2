@@ -20,42 +20,42 @@ export interface Integration {
   createdBy: string;
 }
 
-export type IntegrationType = 
-  | 'communication'
-  | 'storage'
-  | 'calendar'
-  | 'project_management'
-  | 'hr'
-  | 'identity'
-  | 'analytics'
-  | 'notification'
-  | 'custom';
+export type IntegrationType =
+  | "communication"
+  | "storage"
+  | "calendar"
+  | "project_management"
+  | "hr"
+  | "identity"
+  | "analytics"
+  | "notification"
+  | "custom";
 
-export type IntegrationProvider = 
-  | 'slack'
-  | 'teams'
-  | 'google_workspace'
-  | 'microsoft_365'
-  | 'jira'
-  | 'asana'
-  | 'trello'
-  | 'github'
-  | 'gitlab'
-  | 'okta'
-  | 'azure_ad'
-  | 'salesforce'
-  | 'hubspot'
-  | 'zapier'
-  | 'webhook'
-  | 'custom';
+export type IntegrationProvider =
+  | "slack"
+  | "teams"
+  | "google_workspace"
+  | "microsoft_365"
+  | "jira"
+  | "asana"
+  | "trello"
+  | "github"
+  | "gitlab"
+  | "okta"
+  | "azure_ad"
+  | "salesforce"
+  | "hubspot"
+  | "zapier"
+  | "webhook"
+  | "custom";
 
-export type IntegrationStatus = 
-  | 'pending'
-  | 'connecting'
-  | 'connected'
-  | 'error'
-  | 'disconnected'
-  | 'suspended';
+export type IntegrationStatus =
+  | "pending"
+  | "connecting"
+  | "connected"
+  | "error"
+  | "disconnected"
+  | "suspended";
 
 export interface IntegrationConfig {
   webhookUrl?: string;
@@ -87,7 +87,7 @@ export interface IntegrationMetadata {
 
 export interface SyncOptions {
   enabled: boolean;
-  direction: 'inbound' | 'outbound' | 'bidirectional';
+  direction: "inbound" | "outbound" | "bidirectional";
   frequency: number;
   batchSize: number;
   retryAttempts: number;
@@ -102,7 +102,7 @@ export interface FieldMapping {
 
 export interface IntegrationFilter {
   field: string;
-  operator: 'eq' | 'ne' | 'gt' | 'lt' | 'contains' | 'in';
+  operator: "eq" | "ne" | "gt" | "lt" | "contains" | "in";
   value: unknown;
 }
 
@@ -115,8 +115,8 @@ export interface RateLimits {
 export interface IntegrationEvent {
   id: string;
   integrationId: string;
-  type: 'sync' | 'webhook' | 'error' | 'auth';
-  status: 'success' | 'failure' | 'pending';
+  type: "sync" | "webhook" | "error" | "auth";
+  status: "success" | "failure" | "pending";
   data?: unknown;
   error?: string;
   duration?: number;

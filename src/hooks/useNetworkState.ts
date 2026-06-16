@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface NetworkConnection {
   downlink?: number;
@@ -31,13 +31,13 @@ export function useNetworkState(): NetworkState {
       });
     };
 
-    window.addEventListener('online', updateState);
-    window.addEventListener('offline', updateState);
+    window.addEventListener("online", updateState);
+    window.addEventListener("offline", updateState);
     updateState();
 
     return () => {
-      window.removeEventListener('online', updateState);
-      window.removeEventListener('offline', updateState);
+      window.removeEventListener("online", updateState);
+      window.removeEventListener("offline", updateState);
     };
   }, []);
 

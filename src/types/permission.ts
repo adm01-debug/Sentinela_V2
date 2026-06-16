@@ -15,42 +15,42 @@ export interface Permission {
   updatedAt: string;
 }
 
-export type PermissionResource = 
-  | 'users'
-  | 'teams'
-  | 'departments'
-  | 'projects'
-  | 'employees'
-  | 'activities'
-  | 'screenshots'
-  | 'alerts'
-  | 'reports'
-  | 'settings'
-  | 'integrations'
-  | 'api_keys'
-  | 'webhooks'
-  | 'billing'
-  | 'audit_logs'
-  | 'roles'
-  | 'permissions'
-  | '*';
+export type PermissionResource =
+  | "users"
+  | "teams"
+  | "departments"
+  | "projects"
+  | "employees"
+  | "activities"
+  | "screenshots"
+  | "alerts"
+  | "reports"
+  | "settings"
+  | "integrations"
+  | "api_keys"
+  | "webhooks"
+  | "billing"
+  | "audit_logs"
+  | "roles"
+  | "permissions"
+  | "*";
 
-export type PermissionAction = 
-  | 'create'
-  | 'read'
-  | 'update'
-  | 'delete'
-  | 'manage'
-  | 'export'
-  | 'import'
-  | 'approve'
-  | '*';
+export type PermissionAction =
+  | "create"
+  | "read"
+  | "update"
+  | "delete"
+  | "manage"
+  | "export"
+  | "import"
+  | "approve"
+  | "*";
 
-export type PermissionScope = 'own' | 'team' | 'department' | 'organization' | 'all';
+export type PermissionScope = "own" | "team" | "department" | "organization" | "all";
 
 export interface PermissionCondition {
   field: string;
-  operator: 'eq' | 'ne' | 'in' | 'nin' | 'gt' | 'lt';
+  operator: "eq" | "ne" | "in" | "nin" | "gt" | "lt";
   value: unknown;
 }
 

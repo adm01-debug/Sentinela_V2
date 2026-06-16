@@ -10,8 +10,8 @@ export function randomFloat(min: number, max: number, decimals = 2): number {
 }
 
 export function randomString(length: number, charset?: string): string {
-  const chars = charset || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
+  const chars = charset || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
   const cryptoObj = window.crypto;
   const values = new Uint32Array(length);
   cryptoObj.getRandomValues(values);
@@ -22,11 +22,11 @@ export function randomString(length: number, charset?: string): string {
 }
 
 export function randomHex(length): string {
-  return randomString(length, '0123456789abcdef');
+  return randomString(length, "0123456789abcdef");
 }
 
 export function randomAlphanumeric(length): string {
-  return randomString(length, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+  return randomString(length, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 }
 
 export function randomBoolean(): boolean {
@@ -53,18 +53,18 @@ export function shuffle<T>(array: T[]): T[] {
 }
 
 export function uuid(): string {
-  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
     return crypto.randomUUID();
   }
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
 
 export function nanoid(size = 21): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
   return randomString(size, chars);
 }
 

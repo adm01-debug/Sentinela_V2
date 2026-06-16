@@ -8,10 +8,40 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useBlockedIPs, BlockIPInput } from "@/hooks/useBlockedIPs";
 
 interface BlockIPDialogProps {
@@ -24,36 +54,36 @@ interface BlockIPDialogProps {
   prefillCount?: number;
 }
 
-const BlockIPDialog = ({ 
-  open, 
-  onOpenChange, 
-  onBlock, 
+const BlockIPDialog = ({
+  open,
+  onOpenChange,
+  onBlock,
   isBlocking,
-  prefillIP = '',
-  prefillEndpoint = '',
-  prefillCount
+  prefillIP = "",
+  prefillEndpoint = "",
+  prefillCount,
 }: BlockIPDialogProps) => {
   const [ipAddress, setIpAddress] = useState(prefillIP);
-  const [reason, setReason] = useState('');
-  const [expiration, setExpiration] = useState<string>('permanent');
+  const [reason, setReason] = useState("");
+  const [expiration, setExpiration] = useState<string>("permanent");
 
   const handleSubmit = () => {
     if (!ipAddress.trim()) return;
 
     let expiresAt: string | null = null;
     const now = new Date();
-    
+
     switch (expiration) {
-      case '1h':
+      case "1h":
         expiresAt = addHours(now, 1).toISOString();
         break;
-      case '24h':
+      case "24h":
         expiresAt = addHours(now, 24).toISOString();
         break;
-      case '7d':
+      case "7d":
         expiresAt = addDays(now, 7).toISOString();
         break;
-      case '30d':
+      case "30d":
         expiresAt = addDays(now, 30).toISOString();
         break;
       default:
@@ -68,9 +98,9 @@ const BlockIPDialog = ({
       endpoint: prefillEndpoint || undefined,
     });
 
-    setIpAddress('');
-    setReason('');
-    setExpiration('permanent');
+    setIpAddress("");
+    setReason("");
+    setExpiration("permanent");
     onOpenChange(false);
   };
 
@@ -130,12 +160,12 @@ const BlockIPDialog = ({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancelar
           </Button>
-          <Button 
-            onClick={handleSubmit} 
+          <Button
+            onClick={handleSubmit}
             disabled={!ipAddress.trim() || isBlocking}
             variant="destructive"
           >
-            {isBlocking ? 'Bloqueando...' : 'Bloquear IP'}
+            {isBlocking ? "Bloqueando..." : "Bloquear IP"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -144,28 +174,21 @@ const BlockIPDialog = ({
 };
 
 export const BlockedIPsPanel = memo(() => {
-  const { 
-    activeBlocks, 
-    inactiveBlocks, 
-    isLoading, 
-    blockIP, 
-    unblockIP, 
-    deleteBlock,
-    isBlocking 
-  } = useBlockedIPs();
-  
+  const { activeBlocks, inactiveBlocks, isLoading, blockIP, unblockIP, deleteBlock, isBlocking } =
+    useBlockedIPs();
+
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const getExpirationStatus = (expiresAt: string | null) => {
     if (!expiresAt) return <Badge variant="destructive">Permanente</Badge>;
-    
+
     const expDate = new Date(expiresAt);
     const now = new Date();
-    
+
     if (expDate < now) {
       return <Badge variant="secondary">Expirado</Badge>;
     }
-    
+
     return (
       <Badge variant="outline" className="gap-1">
         <Clock className="h-3 w-3" />
@@ -177,7 +200,7 @@ export const BlockedIPsPanel = memo(() => {
   if (isLoading) {
     return (
       <Card>
-        <CardContent className="flex items-center justify-center h-64">
+        <CardContent className="flex h-64 items-center justify-center">
           <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
         </CardContent>
       </Card>
@@ -193,12 +216,13 @@ export const BlockedIPsPanel = memo(() => {
             <div>
               <CardTitle>IPs Bloqueados</CardTitle>
               <CardDescription>
-                Gerencie IPs bloqueados manualmente. {activeBlocks.length} IP(s) atualmente bloqueado(s).
+                Gerencie IPs bloqueados manualmente. {activeBlocks.length} IP(s) atualmente
+                bloqueado(s).
               </CardDescription>
             </div>
           </div>
           <Button onClick={() => setDialogOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="mr-2 h-4 w-4" />
             Bloquear IP
           </Button>
         </div>
@@ -207,11 +231,11 @@ export const BlockedIPsPanel = memo(() => {
       <CardContent className="space-y-6">
         {/* Active Blocks */}
         <div>
-          <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
+          <h3 className="mb-3 flex items-center gap-2 text-sm font-medium">
             <Ban className="h-4 w-4 text-destructive" />
             Bloqueios Ativos ({activeBlocks.length})
           </h3>
-          
+
           <Table>
             <TableHeader>
               <TableRow>
@@ -227,9 +251,7 @@ export const BlockedIPsPanel = memo(() => {
               {activeBlocks.length > 0 ? (
                 activeBlocks.map((block) => (
                   <TableRow key={block.id}>
-                    <TableCell className="font-mono font-medium">
-                      {block.ip_address}
-                    </TableCell>
+                    <TableCell className="font-mono font-medium">{block.ip_address}</TableCell>
                     <TableCell className="max-w-[200px] truncate">
                       {block.reason || <span className="text-muted-foreground">-</span>}
                     </TableCell>
@@ -248,7 +270,7 @@ export const BlockedIPsPanel = memo(() => {
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost" size="sm">
-                            <Unlock className="h-4 w-4 mr-1" />
+                            <Unlock className="mr-1 h-4 w-4" />
                             Desbloquear
                           </Button>
                         </AlertDialogTrigger>
@@ -272,7 +294,7 @@ export const BlockedIPsPanel = memo(() => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                  <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
                     Nenhum IP bloqueado atualmente
                   </TableCell>
                 </TableRow>
@@ -284,11 +306,11 @@ export const BlockedIPsPanel = memo(() => {
         {/* Inactive Blocks / History */}
         {inactiveBlocks.length > 0 && (
           <div>
-            <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
+            <h3 className="mb-3 flex items-center gap-2 text-sm font-medium">
               <Clock className="h-4 w-4 text-muted-foreground" />
               Histórico de Bloqueios ({inactiveBlocks.length})
             </h3>
-            
+
             <Table>
               <TableHeader>
                 <TableRow>
@@ -301,21 +323,13 @@ export const BlockedIPsPanel = memo(() => {
               <TableBody>
                 {inactiveBlocks.slice(0, 10).map((block) => (
                   <TableRow key={block.id} className="opacity-60">
-                    <TableCell className="font-mono">
-                      {block.ip_address}
-                    </TableCell>
-                    <TableCell className="max-w-[200px] truncate">
-                      {block.reason || '-'}
-                    </TableCell>
+                    <TableCell className="font-mono">{block.ip_address}</TableCell>
+                    <TableCell className="max-w-[200px] truncate">{block.reason || "-"}</TableCell>
                     <TableCell className="text-sm">
                       {format(new Date(block.blocked_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
-                        onClick={() => deleteBlock(block.id)}
-                      >
+                      <Button variant="ghost" size="sm" onClick={() => deleteBlock(block.id)}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </TableCell>

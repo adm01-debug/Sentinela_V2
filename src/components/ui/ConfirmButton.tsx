@@ -1,6 +1,6 @@
-import { memo, useState } from 'react';
-import { Loader2 } from 'lucide-react';
-import { Button, ButtonProps } from '@/components/ui/button';
+import { memo, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { Button, ButtonProps } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,9 +10,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 
-interface ConfirmButtonProps extends Omit<ButtonProps, 'onClick'> {
+interface ConfirmButtonProps extends Omit<ButtonProps, "onClick"> {
   onConfirm: () => void | Promise<void>;
   title?: string;
   description?: string;
@@ -23,10 +23,10 @@ interface ConfirmButtonProps extends Omit<ButtonProps, 'onClick'> {
 
 function ConfirmButtonComponent({
   onConfirm,
-  title = 'Confirmar acao',
-  description = 'Tem certeza que deseja continuar?',
-  confirmText = 'Confirmar',
-  cancelText = 'Cancelar',
+  title = "Confirmar acao",
+  description = "Tem certeza que deseja continuar?",
+  confirmText = "Confirmar",
+  cancelText = "Cancelar",
   isLoading,
   children,
   ...buttonProps

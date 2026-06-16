@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
@@ -7,7 +7,9 @@ export function useEventListener<K extends keyof WindowEventMap>(
 ) {
   const savedHandler = useRef(handler);
 
-  useEffect(() => { savedHandler.current = handler; }, [handler]);
+  useEffect(() => {
+    savedHandler.current = handler;
+  }, [handler]);
 
   useEffect(() => {
     const target = element ?? window;

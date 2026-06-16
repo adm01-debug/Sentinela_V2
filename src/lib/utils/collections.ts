@@ -4,12 +4,15 @@
  * Group array by key
  */
 export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
-  return array.reduce((result, item) => {
-    const groupKey = String(item[key]);
-    if (!result[groupKey]) result[groupKey] = [];
-    result[groupKey].push(item);
-    return result;
-  }, {} as Record<string, T[]>);
+  return array.reduce(
+    (result, item) => {
+      const groupKey = String(item[key]);
+      if (!result[groupKey]) result[groupKey] = [];
+      result[groupKey].push(item);
+      return result;
+    },
+    {} as Record<string, T[]>
+  );
 }
 
 /**
@@ -17,7 +20,7 @@ export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
  */
 export function uniqueBy<T>(array: T[], key: keyof T): T[] {
   const seen = new Set();
-  return array.filter(item => {
+  return array.filter((item) => {
     const value = item[key];
     if (seen.has(value)) return false;
     seen.add(value);
@@ -28,12 +31,12 @@ export function uniqueBy<T>(array: T[], key: keyof T): T[] {
 /**
  * Sort array by key
  */
-export function sortBy<T>(array: T[], key: keyof T, order: 'asc' | 'desc' = 'asc'): T[] {
+export function sortBy<T>(array: T[], key: keyof T, order: "asc" | "desc" = "asc"): T[] {
   return [...array].sort((a, b) => {
     const aVal = a[key];
     const bVal = b[key];
     const comparison = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
-    return order === 'asc' ? comparison : -comparison;
+    return order === "asc" ? comparison : -comparison;
   });
 }
 
@@ -51,24 +54,18 @@ export function chunk<T>(array: T[], size: number): T[][] {
 /**
  * Omit keys from object
  */
-export function omit<T extends object, K extends keyof T>(
-  obj: T,
-  keys: K[]
-): Omit<T, K> {
+export function omit<T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
   const result = { ...obj };
-  keys.forEach(key => delete result[key]);
+  keys.forEach((key) => delete result[key]);
   return result;
 }
 
 /**
  * Pick keys from object
  */
-export function pick<T extends object, K extends keyof T>(
-  obj: T,
-  keys: K[]
-): Pick<T, K> {
+export function pick<T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
   const result = {} as Pick<T, K>;
-  keys.forEach(key => {
+  keys.forEach((key) => {
     if (key in obj) result[key] = obj[key];
   });
   return result;
@@ -78,7 +75,7 @@ export function pick<T extends object, K extends keyof T>(
  * Deep clone object
  */
 export function deepClone<T>(obj: T): T {
-  if (obj === null || typeof obj !== 'object') return obj;
+  if (obj === null || typeof obj !== "object") return obj;
   if (Array.isArray(obj)) return obj.map(deepClone) as T;
   const clone = {} as T;
   for (const key in obj) {

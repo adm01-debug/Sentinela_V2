@@ -1,18 +1,20 @@
-import { memo } from 'react';
-import { SkeletonPageLayout } from './SkeletonPageLayout';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { memo } from "react";
+import { SkeletonPageLayout } from "./SkeletonPageLayout";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export const SettingsSkeleton = memo(function SettingsSkeleton() {
   return (
     <SkeletonPageLayout>
-      <div className="space-y-6 animate-pulse" role="status" aria-label="Loading settings">
+      <div className="animate-pulse space-y-6" role="status" aria-label="Loading settings">
         <div>
-          <Skeleton className="h-8 w-48 mb-2" />
+          <Skeleton className="mb-2 h-8 w-48" />
           <Skeleton className="h-4 w-64" />
         </div>
         <div className="flex gap-2 border-b border-border pb-2">
-          {[1, 2, 3, 4, 5].map((i) => (<Skeleton key={i} className="h-10 w-28" />))}
+          {[1, 2, 3, 4, 5].map((i) => (
+            <Skeleton key={i} className="h-10 w-28" />
+          ))}
         </div>
         <Card>
           <CardHeader>

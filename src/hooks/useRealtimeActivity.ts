@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets, REFETCH_INTERVALS } from '@/lib/queryClient';
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys, queryPresets, REFETCH_INTERVALS } from "@/lib/queryClient";
 
 export interface RealtimeActivity {
   id: string;
@@ -20,9 +20,9 @@ export function useRealtimeActivity(limit = 50) {
     queryKey: queryKeys.activity.realtime(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('activity_logs')
-        .select('*, employee:employees(full_name)')
-        .order('created_at', { ascending: false })
+        .from("activity_logs")
+        .select("*, employee:employees(full_name)")
+        .order("created_at", { ascending: false })
         .limit(limit);
 
       if (error) throw error;
@@ -35,15 +35,15 @@ export function useRealtimeActivity(limit = 50) {
 
 export function useEmployeeActivity(employeeId: string | undefined) {
   return useQuery({
-    queryKey: queryKeys.activity.employee(employeeId || ''),
+    queryKey: queryKeys.activity.employee(employeeId || ""),
     queryFn: async () => {
       if (!employeeId) return [];
-      
+
       const { data, error } = await supabase
-        .from('activity_logs')
-        .select('*')
-        .eq('employee_id', employeeId)
-        .order('created_at', { ascending: false })
+        .from("activity_logs")
+        .select("*")
+        .eq("employee_id", employeeId)
+        .order("created_at", { ascending: false })
         .limit(100);
 
       if (error) throw error;

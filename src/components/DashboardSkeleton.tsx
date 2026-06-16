@@ -1,8 +1,8 @@
-import { memo } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { AppSidebar as Sidebar } from '@/components/AppSidebar';
-import { Header } from '@/components/Header';
+import { memo } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { AppSidebar as Sidebar } from "@/components/AppSidebar";
+import { Header } from "@/components/Header";
 
 // ============================================================
 // SKELETON PARA STAT CARD
@@ -16,7 +16,7 @@ function StatCardSkeletonBase() {
         <Skeleton className="h-4 w-4 rounded" />
       </CardHeader>
       <CardContent>
-        <Skeleton className="h-8 w-20 mb-1" />
+        <Skeleton className="mb-1 h-8 w-20" />
         <Skeleton className="h-3 w-32" />
       </CardContent>
     </Card>
@@ -37,8 +37,8 @@ function ChartSkeletonBase({ height = 300 }: { height?: number }) {
       <CardContent>
         <div className="flex items-end justify-between gap-2" style={{ height }}>
           {Array.from({ length: 12 }).map((_, i) => (
-            <Skeleton 
-              key={i} 
+            <Skeleton
+              key={i}
               className="flex-1 rounded-t"
               style={{ height: `${Math.random() * 60 + 40}%` }}
             />
@@ -87,23 +87,23 @@ function TableSkeletonBase({ rows = 5, cols = 4 }: { rows?: number; cols?: numbe
       </CardHeader>
       <CardContent>
         {/* Header */}
-        <div className="flex gap-4 pb-3 border-b">
+        <div className="flex gap-4 border-b pb-3">
           {Array.from({ length: cols }).map((_, i) => (
             <Skeleton key={i} className="h-4 flex-1" />
           ))}
         </div>
-        
+
         {/* Rows */}
         <div className="space-y-3 pt-3">
           {Array.from({ length: rows }).map((_, rowIndex) => (
             <div key={rowIndex} className="flex gap-4">
               {Array.from({ length: cols }).map((_, colIndex) => (
-                <Skeleton 
-                  key={colIndex} 
-                  className="h-4 flex-1" 
-                  style={{ 
-                    width: colIndex === 0 ? '30%' : '20%',
-                    opacity: 1 - (rowIndex * 0.1)
+                <Skeleton
+                  key={colIndex}
+                  className="h-4 flex-1"
+                  style={{
+                    width: colIndex === 0 ? "30%" : "20%",
+                    opacity: 1 - rowIndex * 0.1,
                   }}
                 />
               ))}
@@ -150,9 +150,9 @@ function DashboardSkeletonBase() {
       <Sidebar />
       <div className="lg:pl-64">
         <Header />
-        <main className="p-4 lg:p-6 space-y-6 animate-pulse">
+        <main className="animate-pulse space-y-6 p-4 lg:p-6">
           {/* Header */}
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div className="space-y-2">
               <Skeleton className="h-8 w-32" />
               <Skeleton className="h-4 w-48" />
@@ -164,7 +164,7 @@ function DashboardSkeletonBase() {
           </div>
 
           {/* Stat Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             <StatCardSkeleton />
             <StatCardSkeleton />
             <StatCardSkeleton />
@@ -172,7 +172,7 @@ function DashboardSkeletonBase() {
           </div>
 
           {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <ChartSkeleton height={300} />
             </div>
@@ -196,9 +196,9 @@ function ListPageSkeletonBase() {
       <Sidebar />
       <div className="lg:pl-64">
         <Header />
-        <main className="p-4 lg:p-6 space-y-6 animate-pulse">
+        <main className="animate-pulse space-y-6 p-4 lg:p-6">
           {/* Header */}
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div className="space-y-2">
               <Skeleton className="h-8 w-40" />
               <Skeleton className="h-4 w-56" />
@@ -231,7 +231,7 @@ function DetailPageSkeletonBase() {
       <Sidebar />
       <div className="lg:pl-64">
         <Header />
-        <main className="p-4 lg:p-6 space-y-6 animate-pulse">
+        <main className="animate-pulse space-y-6 p-4 lg:p-6">
           {/* Back button + Title */}
           <div className="flex items-center gap-4">
             <Skeleton className="h-9 w-9 rounded" />
@@ -242,14 +242,14 @@ function DetailPageSkeletonBase() {
           </div>
 
           {/* Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <StatCardSkeleton />
             <StatCardSkeleton />
             <StatCardSkeleton />
           </div>
 
           {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <ListSkeleton rows={6} />
             <ChartSkeleton height={250} />
           </div>

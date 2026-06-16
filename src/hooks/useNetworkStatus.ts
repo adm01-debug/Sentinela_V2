@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 interface NetworkConnection extends EventTarget {
-  effectiveType?: '4g' | '3g' | '2g' | 'slow-2g';
+  effectiveType?: "4g" | "3g" | "2g" | "slow-2g";
   downlink?: number;
   rtt?: number;
   saveData?: boolean;
@@ -13,7 +13,7 @@ interface NavigatorWithConnection extends Navigator {
 
 export interface NetworkStatus {
   isOnline: boolean;
-  effectiveType?: '4g' | '3g' | '2g' | 'slow-2g';
+  effectiveType?: "4g" | "3g" | "2g" | "slow-2g";
   downlink?: number;
   rtt?: number;
   saveData?: boolean;
@@ -25,7 +25,7 @@ export interface UseNetworkStatusOptions {
 
 export function useNetworkStatus(options: UseNetworkStatusOptions = {}) {
   const { onStatusChange } = options;
-  
+
   const getNetworkStatus = useCallback((): NetworkStatus => {
     const connection = (navigator as NavigatorWithConnection).connection;
     return {
@@ -46,25 +46,25 @@ export function useNetworkStatus(options: UseNetworkStatusOptions = {}) {
       onStatusChange?.(newStatus);
     };
 
-    window.addEventListener('online', updateStatus);
-    window.addEventListener('offline', updateStatus);
-    
+    window.addEventListener("online", updateStatus);
+    window.addEventListener("offline", updateStatus);
+
     const connection = (navigator as NavigatorWithConnection).connection;
     if (connection) {
-      connection.addEventListener('change', updateStatus);
+      connection.addEventListener("change", updateStatus);
     }
 
     return () => {
-      window.removeEventListener('online', updateStatus);
-      window.removeEventListener('offline', updateStatus);
+      window.removeEventListener("online", updateStatus);
+      window.removeEventListener("offline", updateStatus);
       if (connection) {
-        connection.removeEventListener('change', updateStatus);
+        connection.removeEventListener("change", updateStatus);
       }
     };
   }, [getNetworkStatus, onStatusChange]);
 
-  const isSlowConnection = status.effectiveType === '2g' || status.effectiveType === 'slow-2g';
-  const isFastConnection = status.effectiveType === '4g' && (status.downlink || 0) > 5;
+  const isSlowConnection = status.effectiveType === "2g" || status.effectiveType === "slow-2g";
+  const isFastConnection = status.effectiveType === "4g" && (status.downlink || 0) > 5;
 
   return { ...status, isSlowConnection, isFastConnection };
 }

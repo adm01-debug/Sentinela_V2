@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from "react";
 
 type KeyHandler = (event: KeyboardEvent) => void;
 
@@ -35,16 +35,16 @@ export function useKeyboardShortcuts(shortcuts: ShortcutConfig[]) {
   );
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 }
 
 export function useGlobalSearch(callback: () => void) {
   useKeyboardShortcuts([
-    { key: 'k', ctrlKey: true, handler: callback },
-    { key: 'k', metaKey: true, handler: callback },
-    { key: '/', handler: callback },
+    { key: "k", ctrlKey: true, handler: callback },
+    { key: "k", metaKey: true, handler: callback },
+    { key: "/", handler: callback },
   ]);
 }
 

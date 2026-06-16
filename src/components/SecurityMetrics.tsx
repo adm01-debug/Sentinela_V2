@@ -1,5 +1,5 @@
-import { Printer, Usb, HardDrive, Eye, Loader2 } from 'lucide-react';
-import { useSecurityMetrics } from '@/hooks/useSecurityMetrics';
+import { Printer, Usb, HardDrive, Eye, Loader2 } from "lucide-react";
+import { useSecurityMetrics } from "@/hooks/useSecurityMetrics";
 
 export function SecurityMetrics() {
   const { data, isLoading } = useSecurityMetrics();
@@ -11,14 +11,29 @@ export function SecurityMetrics() {
     hdBlocked: 0,
     suspiciousActivity: 0,
     criticalViolations: data?.critical_violations ?? 0,
-    highViolations: data?.violations_by_type?.filter(v => v.type === 'high').length ?? 0,
+    highViolations: data?.violations_by_type?.filter((v) => v.type === "high").length ?? 0,
   };
 
   const metricItems = [
-    { icon: Printer, label: 'Print Bloqueados', value: metrics.printBlocked, color: 'text-destructive' },
-    { icon: Usb, label: 'USB Bloqueados', value: metrics.usbBlocked, color: 'text-warning' },
-    { icon: HardDrive, label: 'HD Ext. Bloqueados', value: metrics.hdBlocked, color: 'text-destructive' },
-    { icon: Eye, label: 'Atividades Suspeitas', value: metrics.suspiciousActivity, color: 'text-warning' },
+    {
+      icon: Printer,
+      label: "Print Bloqueados",
+      value: metrics.printBlocked,
+      color: "text-destructive",
+    },
+    { icon: Usb, label: "USB Bloqueados", value: metrics.usbBlocked, color: "text-warning" },
+    {
+      icon: HardDrive,
+      label: "HD Ext. Bloqueados",
+      value: metrics.hdBlocked,
+      color: "text-destructive",
+    },
+    {
+      icon: Eye,
+      label: "Atividades Suspeitas",
+      value: metrics.suspiciousActivity,
+      color: "text-warning",
+    },
   ];
 
   if (isLoading) {
@@ -51,8 +66,8 @@ export function SecurityMetrics() {
           </div>
         ))}
       </div>
-      
-      <div className="mt-6 pt-4 border-t border-border/50">
+
+      <div className="mt-6 border-t border-border/50 pt-4">
         <div className="grid grid-cols-2 gap-4 text-center">
           <div>
             <p className="text-2xl font-bold text-destructive">{metrics.criticalViolations}</p>

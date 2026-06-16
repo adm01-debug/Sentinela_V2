@@ -8,11 +8,11 @@ Deno.test("Mobile Collector Contract - Valid Payload", () => {
     battery_level: 85,
     location: {
       latitude: -23.5505,
-      longitude: -46.6333
+      longitude: -46.6333,
     },
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
-  
+
   const result = mobileCollectorSchema.safeParse(validPayload);
   assertEquals(result.success, true);
 });
@@ -23,10 +23,10 @@ Deno.test("Mobile Collector Contract - Invalid Range (Latitude)", () => {
     device_id: "mobile-1",
     location: {
       latitude: 100, // Invalid
-      longitude: -46.6333
-    }
+      longitude: -46.6333,
+    },
   };
-  
+
   const result = mobileCollectorSchema.safeParse(invalidPayload);
   assertEquals(result.success, false);
 });

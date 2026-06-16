@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import { Inbox, Loader2, RefreshCw, ServerCrash } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { memo } from "react";
+import { Inbox, Loader2, RefreshCw, ServerCrash } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 // ============================================================
 // LOADING STATE
@@ -9,21 +9,21 @@ import { cn } from '@/lib/utils';
 interface LoadingStateProps {
   message?: string;
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 export const DataLoading = memo(function DataLoading({
-  message = 'Carregando dados...',
+  message = "Carregando dados...",
   className,
-  size = 'md',
+  size = "md",
 }: LoadingStateProps) {
-  const sizeMap = { sm: 'h-4 w-4', md: 'h-6 w-6', lg: 'h-8 w-8' };
-  const textMap = { sm: 'text-xs', md: 'text-sm', lg: 'text-base' };
+  const sizeMap = { sm: "h-4 w-4", md: "h-6 w-6", lg: "h-8 w-8" };
+  const textMap = { sm: "text-xs", md: "text-sm", lg: "text-base" };
 
   return (
-    <div className={cn('flex flex-col items-center justify-center py-12 gap-3', className)}>
-      <Loader2 className={cn('animate-spin text-primary', sizeMap[size])} />
-      <p className={cn('text-muted-foreground', textMap[size])}>{message}</p>
+    <div className={cn("flex flex-col items-center justify-center gap-3 py-12", className)}>
+      <Loader2 className={cn("animate-spin text-primary", sizeMap[size])} />
+      <p className={cn("text-muted-foreground", textMap[size])}>{message}</p>
     </div>
   );
 });
@@ -43,20 +43,20 @@ interface EmptyStateProps {
 }
 
 export const DataEmpty = memo(function DataEmpty({
-  title = 'Nenhum dado encontrado',
-  description = 'Não há registros para exibir no momento.',
+  title = "Nenhum dado encontrado",
+  description = "Não há registros para exibir no momento.",
   icon,
   action,
   className,
 }: EmptyStateProps) {
   return (
-    <div className={cn('flex flex-col items-center justify-center py-16 gap-4', className)}>
+    <div className={cn("flex flex-col items-center justify-center gap-4 py-16", className)}>
       <div className="rounded-full bg-muted p-4">
         {icon || <Inbox className="h-8 w-8 text-muted-foreground" />}
       </div>
       <div className="text-center">
         <h3 className="text-sm font-semibold text-card-foreground">{title}</h3>
-        <p className="text-xs text-muted-foreground mt-1 max-w-sm">{description}</p>
+        <p className="mt-1 max-w-sm text-xs text-muted-foreground">{description}</p>
       </div>
       {action && (
         <Button variant="outline" size="sm" onClick={action.onClick}>
@@ -79,21 +79,21 @@ interface ErrorStateProps {
 }
 
 export const DataError = memo(function DataError({
-  title = 'Erro ao carregar dados',
+  title = "Erro ao carregar dados",
   description,
   error,
   onRetry,
   className,
 }: ErrorStateProps) {
   return (
-    <div className={cn('flex flex-col items-center justify-center py-16 gap-4', className)}>
+    <div className={cn("flex flex-col items-center justify-center gap-4 py-16", className)}>
       <div className="rounded-full bg-destructive/10 p-4">
         <ServerCrash className="h-8 w-8 text-destructive" />
       </div>
       <div className="text-center">
         <h3 className="text-sm font-semibold text-card-foreground">{title}</h3>
-        <p className="text-xs text-muted-foreground mt-1 max-w-sm">
-          {description || error?.message || 'Ocorreu um erro inesperado. Tente novamente.'}
+        <p className="mt-1 max-w-sm text-xs text-muted-foreground">
+          {description || error?.message || "Ocorreu um erro inesperado. Tente novamente."}
         </p>
       </div>
       {onRetry && (

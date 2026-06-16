@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface MitreTechnique {
   id: string;
@@ -19,7 +19,11 @@ export function useMitreTechniques() {
     let mounted = true;
     (async () => {
       try {
-        const { data } = await supabase.from('mitre_techniques').select('*').eq('enabled', true).order('id');
+        const { data } = await supabase
+          .from("mitre_techniques")
+          .select("*")
+          .eq("enabled", true)
+          .order("id");
         if (mounted) setTechniques((data as MitreTechnique[]) || []);
       } finally {
         if (mounted) setLoading(false);

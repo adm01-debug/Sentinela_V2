@@ -104,7 +104,8 @@ async function computeCurrentMetrics(
     .limit(5000);
 
   const apps = new Set<string>();
-  for (const c of (clicks as Array<{ recorded_at: string; app_name: string | null }> | null) || []) {
+  for (const c of (clicks as Array<{ recorded_at: string; app_name: string | null }> | null) ||
+    []) {
     metrics.daily_clicks++;
     if (c.app_name) apps.add(c.app_name);
   }
@@ -145,14 +146,18 @@ async function processEmployee(
   const trainVectors: number[][] = [];
   // Synthetic training points around baseline mean ± std_dev (since real history sampling here is too costly)
   for (let i = 0; i < 100; i++) {
-    const v = baselines.map((b) => normalize(b.mean + (Math.random() - 0.5) * b.std_dev * 2, b.mean, b.std_dev || 1));
+    const v = baselines.map((b) =>
+      normalize(b.mean + (Math.random() - 0.5) * b.std_dev * 2, b.mean, b.std_dev || 1)
+    );
     trainVectors.push(v);
   }
 
   const hst = new HalfSpaceTrees(featureNames.length, { numTrees: HST_TREES, maxDepth: HST_DEPTH });
   hst.fit(trainVectors);
 
-  const currentVec = baselines.map((b) => normalize(current[b.feature_name] ?? 0, b.mean, b.std_dev || 1));
+  const currentVec = baselines.map((b) =>
+    normalize(current[b.feature_name] ?? 0, b.mean, b.std_dev || 1)
+  );
   const hstScore = hst.score(currentVec);
 
   const factorMap = new Map(factors.map((f) => [f.name, f]));

@@ -8,7 +8,7 @@ export function useSSE<T>(url: string) {
 
   const connect = useCallback(() => {
     sourceRef.current = new EventSource(url);
-    
+
     sourceRef.current.onopen = () => setConnected(true);
     sourceRef.current.onerror = () => {
       setError(new Error("SSE connection error"));

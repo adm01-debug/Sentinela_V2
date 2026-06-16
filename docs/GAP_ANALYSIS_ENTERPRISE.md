@@ -5,6 +5,7 @@ Comparativo com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Pur
 ---
 
 ## 1. DLP (Data Loss Prevention) Avançado
+
 - Inspeção de conteúdo em tempo real (regex, classificadores ML) em arquivos, e-mails, clipboard, uploads
 - Bloqueio de transferência de dados sensíveis (PII, PCI, PHI, segredos) via USB, e-mail, web upload, impressão
 - Fingerprinting de documentos confidenciais (Exact Data Match)
@@ -12,6 +13,7 @@ Comparativo com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Pur
 - Watermarking dinâmico em telas com dados sensíveis
 
 ## 2. UEBA (User & Entity Behavior Analytics) com ML
+
 - Modelos de baseline comportamental por usuário (peer group analysis)
 - Risk scoring dinâmico com ML não-supervisionado (Isolation Forest, Autoencoders)
 - Detecção preditiva de insider threat (funcionário em saída, descontentamento)
@@ -19,6 +21,7 @@ Comparativo com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Pur
 - Kill chain mapping (MITRE ATT&CK Insider Threat Matrix)
 
 ## 3. Integração SIEM/SOAR Empresarial
+
 - Conectores nativos: Splunk, QRadar, Sentinel, Chronicle, Elastic SIEM
 - Suporte CEF/LEEF/Syslog
 - Playbooks SOAR (Cortex XSOAR, Phantom, Tines)
@@ -26,6 +29,7 @@ Comparativo com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Pur
 - Integração com EDR/XDR (CrowdStrike, SentinelOne, Defender)
 
 ## 4. Forensics & Investigação Avançada
+
 - Timeline forense unificada multi-fonte
 - Chain of custody com hash criptográfico (SHA-256) e assinatura digital
 - Export forense em formato padrão (E01, AFF4)
@@ -34,6 +38,7 @@ Comparativo com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Pur
 - Pesquisa OCR full-text em screenshots históricos
 
 ## 5. Endpoint Coverage Universal
+
 - Agente macOS, Linux (Ubuntu/RHEL/Debian)
 - Citrix/VDI, RDP, VMware Horizon
 - Terminal servers (multi-user Windows Server)
@@ -41,6 +46,7 @@ Comparativo com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Pur
 - Network DLP appliance (inline proxy/ICAP)
 
 ## 6. Compliance & Governança Avançada
+
 - Frameworks pré-configurados: SOC 2, ISO 27001, HIPAA, PCI-DSS, GDPR, NIST 800-53, FedRAMP
 - Evidence collection automatizada
 - DSAR workflow (LGPD/GDPR Art. 15)
@@ -50,6 +56,7 @@ Comparativo com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Pur
 - Modo privacy-first com pseudonimização opt-in
 
 ## 7. Produtividade & Workforce Analytics
+
 - Process mining
 - Benchmarking entre equipes/departamentos com normalização estatística
 - Burnout detection (overwork, weekend activity)
@@ -59,6 +66,7 @@ Comparativo com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Pur
 - ROI calculator por aplicação/licença
 
 ## 8. Plataforma & Operações Enterprise
+
 - Multi-region deployment com data residency (EU, US, BR, APAC)
 - Air-gapped / on-premises (Kubernetes Helm)
 - HA com RTO/RPO documentados (multi-AZ failover)
@@ -74,20 +82,21 @@ Comparativo com líderes de mercado (Teramind, Veriato, ActivTrak, Microsoft Pur
 
 ## Priorização (ROI vs. Esforço)
 
-| Prioridade | Gap | Justificativa |
-|---|---|---|
-| **P0** | DLP com OCR + clipboard | Diferenciador #1; bloqueia 80% dos vazamentos |
-| **P0** | Agente macOS + Linux | Bloqueador de venda enterprise |
-| **P1** | UEBA com ML + risk scoring | "Monitoring" → "threat detection" |
-| **P1** | SIEM connectors (Splunk/Sentinel) | Requisito de RFP corporativo |
-| **P2** | Frameworks compliance pré-configurados | Acelera vendas reguladas |
-| **P2** | SCIM 2.0 + SAML enterprise | Requisito IT enterprise |
-| **P3** | Forensics chain of custody | Diferenciador legal/HR |
-| **P3** | On-premises / air-gapped | Mercado governo/defesa |
+| Prioridade | Gap                                    | Justificativa                                 |
+| ---------- | -------------------------------------- | --------------------------------------------- |
+| **P0**     | DLP com OCR + clipboard                | Diferenciador #1; bloqueia 80% dos vazamentos |
+| **P0**     | Agente macOS + Linux                   | Bloqueador de venda enterprise                |
+| **P1**     | UEBA com ML + risk scoring             | "Monitoring" → "threat detection"             |
+| **P1**     | SIEM connectors (Splunk/Sentinel)      | Requisito de RFP corporativo                  |
+| **P2**     | Frameworks compliance pré-configurados | Acelera vendas reguladas                      |
+| **P2**     | SCIM 2.0 + SAML enterprise             | Requisito IT enterprise                       |
+| **P3**     | Forensics chain of custody             | Diferenciador legal/HR                        |
+| **P3**     | On-premises / air-gapped               | Mercado governo/defesa                        |
 
 ---
 
 ## Próximos Passos
+
 1. Validar prioridades com stakeholders
 2. Roadmap fásico de 4 trimestres (P0 → P2)
 3. Spike técnico em DLP-OCR e UEBA-ML

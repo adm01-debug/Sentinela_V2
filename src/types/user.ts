@@ -1,7 +1,7 @@
 // User types for Sentinela v17
-import { Role } from './role';
-import { Team } from './team';
-import { Department } from './department';
+import { Role } from "./role";
+import { Team } from "./team";
+import { Department } from "./department";
 
 export interface User {
   id: string;
@@ -30,10 +30,10 @@ export interface User {
   permissions: string[];
 }
 
-export type UserStatus = 'active' | 'inactive' | 'pending' | 'suspended' | 'deleted';
+export type UserStatus = "active" | "inactive" | "pending" | "suspended" | "deleted";
 
 export interface UserPreferences {
-  theme: 'light' | 'dark' | 'system';
+  theme: "light" | "dark" | "system";
   language: string;
   timezone: string;
   notifications: NotificationPreferences;

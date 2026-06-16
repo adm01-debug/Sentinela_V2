@@ -5,11 +5,14 @@ export function useBlockNavigation(when: boolean, message = "Changes may not be 
 
   useEffect(() => setBlocked(when), [when]);
 
-  const handleBeforeUnload = useCallback((e: BeforeUnloadEvent) => {
-    if (!blocked) return;
-    e.preventDefault();
-    e.returnValue = message;
-  }, [blocked, message]);
+  const handleBeforeUnload = useCallback(
+    (e: BeforeUnloadEvent) => {
+      if (!blocked) return;
+      e.preventDefault();
+      e.returnValue = message;
+    },
+    [blocked, message]
+  );
 
   useEffect(() => {
     window.addEventListener("beforeunload", handleBeforeUnload);

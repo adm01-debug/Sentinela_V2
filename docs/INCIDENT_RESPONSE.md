@@ -1,25 +1,28 @@
 # Incident Response Guide
 
 ## Overview
+
 Standard procedures for handling production incidents.
 
 ## Severity Levels
 
-| Level | Description | Response Time | Examples |
-|-------|-------------|---------------|----------|
-| SEV1 | Critical - Service down | 15 minutes | Complete outage, data breach |
-| SEV2 | Major - Degraded service | 30 minutes | Partial outage, slow response |
-| SEV3 | Minor - Limited impact | 4 hours | Feature broken, minor bug |
-| SEV4 | Low - Minimal impact | 24 hours | UI issue, typo |
+| Level | Description              | Response Time | Examples                      |
+| ----- | ------------------------ | ------------- | ----------------------------- |
+| SEV1  | Critical - Service down  | 15 minutes    | Complete outage, data breach  |
+| SEV2  | Major - Degraded service | 30 minutes    | Partial outage, slow response |
+| SEV3  | Minor - Limited impact   | 4 hours       | Feature broken, minor bug     |
+| SEV4  | Low - Minimal impact     | 24 hours      | UI issue, typo                |
 
 ## Response Process
 
 ### 1. Detection
+
 - Automated monitoring alerts
 - User reports via support
 - Internal discovery
 
 ### 2. Triage
+
 ```
 □ Verify the incident
 □ Assess severity level
@@ -28,6 +31,7 @@ Standard procedures for handling production incidents.
 ```
 
 ### 3. Response
+
 ```
 □ Establish incident commander
 □ Create incident channel (#incident-YYYYMMDD-N)
@@ -37,6 +41,7 @@ Standard procedures for handling production incidents.
 ```
 
 ### 4. Resolution
+
 ```
 □ Confirm fix deployed
 □ Verify services restored
@@ -45,6 +50,7 @@ Standard procedures for handling production incidents.
 ```
 
 ### 5. Post-Incident
+
 ```
 □ Schedule post-mortem (within 48 hours)
 □ Write incident report
@@ -55,17 +61,20 @@ Standard procedures for handling production incidents.
 ## Roles & Responsibilities
 
 ### Incident Commander (IC)
+
 - Coordinates response efforts
 - Makes decisions on response actions
 - Manages communication
 - Escalates as needed
 
 ### Technical Lead
+
 - Investigates root cause
 - Implements fixes
 - Coordinates with other engineers
 
 ### Communications Lead
+
 - Updates status page
 - Notifies stakeholders
 - Prepares customer communications
@@ -73,6 +82,7 @@ Standard procedures for handling production incidents.
 ## Communication Templates
 
 ### Initial Acknowledgment
+
 ```
 **Incident Detected**
 
@@ -84,6 +94,7 @@ Next Update: [time]
 ```
 
 ### Progress Update
+
 ```
 **Update - [Incident Name]**
 
@@ -95,6 +106,7 @@ Next Update: [time]
 ```
 
 ### Resolution Notice
+
 ```
 **Resolved - [Incident Name]**
 
@@ -108,11 +120,11 @@ Follow-up: Post-mortem scheduled for [date]
 
 ## Escalation Matrix
 
-| Severity | Primary | Secondary | Executive |
-|----------|---------|-----------|-----------|
-| SEV1 | On-call Engineer | Team Lead | CTO |
-| SEV2 | On-call Engineer | Team Lead | - |
-| SEV3 | On-call Engineer | - | - |
+| Severity | Primary          | Secondary | Executive |
+| -------- | ---------------- | --------- | --------- |
+| SEV1     | On-call Engineer | Team Lead | CTO       |
+| SEV2     | On-call Engineer | Team Lead | -         |
+| SEV3     | On-call Engineer | -         | -         |
 
 ## Post-Mortem Template
 
@@ -120,32 +132,38 @@ Follow-up: Post-mortem scheduled for [date]
 # Incident Post-Mortem: [Title]
 
 ## Summary
+
 - **Date**: YYYY-MM-DD
 - **Duration**: X hours Y minutes
 - **Severity**: SEV[N]
 - **Impact**: [description]
 
 ## Timeline
+
 - HH:MM - Event/action
 - HH:MM - Event/action
 
 ## Root Cause
+
 [Detailed explanation]
 
 ## Resolution
+
 [What fixed the issue]
 
 ## Lessons Learned
+
 - What went well
 - What could be improved
 
 ## Action Items
+
 - [ ] Action 1 - Owner - Due date
 - [ ] Action 2 - Owner - Due date
 ```
 
 ## Related Documentation
+
 - [RUNBOOK.md](./RUNBOOK.md)
 - [DISASTER_RECOVERY.md](./DISASTER_RECOVERY.md)
 - [MONITORING.md](./MONITORING.md)
-

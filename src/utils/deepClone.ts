@@ -1,7 +1,7 @@
 // Deep clone/merge utilities for Sentinela v17
 
 export function deepClone<T>(obj: T): T {
-  if (obj === null || typeof obj !== 'object') {
+  if (obj === null || typeof obj !== "object") {
     return obj;
   }
 
@@ -73,7 +73,7 @@ export function deepMerge<T extends Record<string, unknown>>(
 }
 
 function isObject(item): item is Record<string, unknown> {
-  return item !== null && typeof item === 'object' && !Array.isArray(item);
+  return item !== null && typeof item === "object" && !Array.isArray(item);
 }
 
 export function deepEqual(a: unknown, b: unknown): boolean {
@@ -110,10 +110,7 @@ export function deepFreeze<T extends Record<string, unknown>>(obj: T): Readonly<
   return Object.freeze(obj);
 }
 
-export function deepDiff<T extends Record<string, unknown>>(
-  original: T,
-  modified: T
-): Partial<T> {
+export function deepDiff<T extends Record<string, unknown>>(original: T, modified: T): Partial<T> {
   const diff: Partial<T> = {};
 
   const allKeys = new Set([...Object.keys(original), ...Object.keys(modified)]);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from "react";
 
 export interface PerformanceMetrics {
   fps: number;
@@ -21,7 +21,7 @@ export interface UsePerformanceMonitorOptions {
 export function usePerformanceMonitor(options: UsePerformanceMonitorOptions = {}) {
   const { sampleInterval = 1000, onThresholdExceeded, thresholds = {} } = options;
   const { minFps = 30, maxMemory = 100, maxLoadTime = 3000 } = thresholds;
-  
+
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     fps: 60,
     memory: undefined,
@@ -29,7 +29,7 @@ export function usePerformanceMonitor(options: UsePerformanceMonitorOptions = {}
     domNodes: 0,
     resourceCount: 0,
   });
-  
+
   const frameCount = useRef(0);
   const lastTime = useRef(performance.now());
 
@@ -47,32 +47,36 @@ export function usePerformanceMonitor(options: UsePerformanceMonitorOptions = {}
       const now = performance.now();
       const elapsed = now - lastTime.current;
       const fps = Math.round((frameCount.current / elapsed) * 1000);
-      
+
       frameCount.current = 0;
       lastTime.current = now;
 
       // Get memory if available
-      interface PerformanceWithMemory extends Performance { memory?: { usedJSHeapSize: number } }
+      interface PerformanceWithMemory extends Performance {
+        memory?: { usedJSHeapSize: number };
+      }
       const perf = performance as PerformanceWithMemory;
-      const memory = perf.memory?.usedJSHeapSize 
-        ? Math.round(perf.memory.usedJSHeapSize / 1048576) 
+      const memory = perf.memory?.usedJSHeapSize
+        ? Math.round(perf.memory.usedJSHeapSize / 1048576)
         : undefined;
 
       // Get DOM metrics
-      const domNodes = document.getElementsByTagName('*').length;
-      const resourceCount = performance.getEntriesByType('resource').length;
+      const domNodes = document.getElementsByTagName("*").length;
+      const resourceCount = performance.getEntriesByType("resource").length;
 
       // Get load time
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navigation = performance.getEntriesByType(
+        "navigation"
+      )[0] as PerformanceNavigationTiming;
       const loadTime = navigation ? Math.round(navigation.loadEventEnd - navigation.startTime) : 0;
 
       const newMetrics = { fps, memory, loadTime, domNodes, resourceCount };
       setMetrics(newMetrics);
 
       // Check thresholds
-      if (fps < minFps) onThresholdExceeded?.('fps', fps);
-      if (memory && memory > maxMemory) onThresholdExceeded?.('memory', memory);
-      if (loadTime > maxLoadTime) onThresholdExceeded?.('loadTime', loadTime);
+      if (fps < minFps) onThresholdExceeded?.("fps", fps);
+      if (memory && memory > maxMemory) onThresholdExceeded?.("memory", memory);
+      if (loadTime > maxLoadTime) onThresholdExceeded?.("loadTime", loadTime);
     }, sampleInterval);
 
     return () => {
@@ -81,12 +85,15 @@ export function usePerformanceMonitor(options: UsePerformanceMonitorOptions = {}
     };
   }, [sampleInterval, minFps, maxMemory, maxLoadTime, onThresholdExceeded]);
 
-  const getPerformanceReport = useCallback(() => ({
-    ...metrics,
-    timestamp: new Date().toISOString(),
-    userAgent: navigator.userAgent,
-    url: window.location.href,
-  }), [metrics]);
+  const getPerformanceReport = useCallback(
+    () => ({
+      ...metrics,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      url: window.location.href,
+    }),
+    [metrics]
+  );
 
   return { metrics, getPerformanceReport };
 }

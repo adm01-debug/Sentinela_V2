@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { TrendingUp, Loader2 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
+import { useState, useEffect } from "react";
+import { TrendingUp, Loader2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 interface ProductivityLog {
   id: string;
@@ -27,15 +27,15 @@ export function ProductivityCard() {
   const fetchLogs = async () => {
     try {
       const { data, error } = await supabase
-        .from('productivity_logs')
-        .select('*')
-        .order('recorded_date', { ascending: false })
+        .from("productivity_logs")
+        .select("*")
+        .order("recorded_date", { ascending: false })
         .limit(10);
 
       if (error) throw error;
       setLogs(data || []);
     } catch (error) {
-      logger.error('Error fetching productivity logs:', error);
+      logger.error("Error fetching productivity logs:", error);
     } finally {
       setLoading(false);
     }
@@ -49,15 +49,16 @@ export function ProductivityCard() {
   };
 
   const getProductivityScore = (log: ProductivityLog) => {
-    const total = log.productive_time_seconds + log.unproductive_time_seconds + log.neutral_time_seconds;
+    const total =
+      log.productive_time_seconds + log.unproductive_time_seconds + log.neutral_time_seconds;
     if (total === 0) return 0;
     return Math.round((log.productive_time_seconds / total) * 100);
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-500';
-    if (score >= 60) return 'text-yellow-500';
-    return 'text-red-500';
+    if (score >= 80) return "text-green-500";
+    if (score >= 60) return "text-yellow-500";
+    return "text-red-500";
   };
 
   if (loading) {
@@ -86,41 +87,37 @@ export function ProductivityCard() {
       </CardHeader>
       <CardContent>
         {logs.length === 0 ? (
-          <p className="text-center text-muted-foreground py-8">
-            Nenhum registro de produtividade
-          </p>
+          <p className="py-8 text-center text-muted-foreground">Nenhum registro de produtividade</p>
         ) : (
           <div className="space-y-4">
             {logs.map((log) => {
               const score = getProductivityScore(log);
               return (
-                <div key={log.id} className="p-3 rounded-lg bg-muted/50">
-                  <div className="flex items-center justify-between mb-2">
+                <div key={log.id} className="rounded-lg bg-muted/50 p-3">
+                  <div className="mb-2 flex items-center justify-between">
                     <div>
                       <p className="font-medium">{log.employee_name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {new Date(log.recorded_date).toLocaleDateString('pt-BR')}
+                        {new Date(log.recorded_date).toLocaleDateString("pt-BR")}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className={`text-2xl font-bold ${getScoreColor(score)}`}>
-                        {score}%
-                      </p>
+                      <p className={`text-2xl font-bold ${getScoreColor(score)}`}>{score}%</p>
                       <p className="text-xs text-muted-foreground">produtivo</p>
                     </div>
                   </div>
-                  <Progress value={score} className="h-2 mb-2" />
+                  <Progress value={score} className="mb-2 h-2" />
                   <div className="flex gap-4 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-green-500" />
+                      <span className="h-2 w-2 rounded-full bg-green-500" />
                       Produtivo: {formatTime(log.productive_time_seconds)}
                     </span>
                     <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-red-500" />
+                      <span className="h-2 w-2 rounded-full bg-red-500" />
                       Improdutivo: {formatTime(log.unproductive_time_seconds)}
                     </span>
                     <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-gray-500" />
+                      <span className="h-2 w-2 rounded-full bg-gray-500" />
                       Neutro: {formatTime(log.neutral_time_seconds)}
                     </span>
                   </div>

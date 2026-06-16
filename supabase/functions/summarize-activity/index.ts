@@ -29,7 +29,7 @@ serve(async (req) => {
     );
 
     const { period = "day", employeeId } = await req.json();
-    
+
     const periodHours = period === "day" ? 24 : period === "week" ? 168 : 720;
     const since = new Date(Date.now() - periodHours * 60 * 60 * 1000).toISOString();
 
@@ -61,10 +61,16 @@ serve(async (req) => {
       }));
 
     // Productivity score
-    const productivityScores = activities?.filter((a: any) => a.productivity_score).map((a: any) => a.productivity_score) || [];
-    const productivityScore = productivityScores.length > 0 
-      ? Math.round(productivityScores.reduce((a: number, b: number) => a + b, 0) / productivityScores.length)
-      : 0;
+    const productivityScores =
+      activities?.filter((a: any) => a.productivity_score).map((a: any) => a.productivity_score) ||
+      [];
+    const productivityScore =
+      productivityScores.length > 0
+        ? Math.round(
+            productivityScores.reduce((a: number, b: number) => a + b, 0) /
+              productivityScores.length
+          )
+        : 0;
 
     // Peak hours
     const hourCounts: Record<number, number> = {};
@@ -89,10 +95,17 @@ serve(async (req) => {
       highlights.push(`${totalActivities} activities recorded from ${uniqueUsers} users`);
     }
     if (topApplications.length > 0) {
-      highlights.push(`Most used app: ${topApplications[0].name} (${topApplications[0].percentage}%)`);
+      highlights.push(
+        `Most used app: ${topApplications[0].name} (${topApplications[0].percentage}%)`
+      );
     }
     if (productivityScore > 0) {
-      const status = productivityScore >= 70 ? "good" : productivityScore >= 50 ? "moderate" : "needs improvement";
+      const status =
+        productivityScore >= 70
+          ? "good"
+          : productivityScore >= 50
+            ? "moderate"
+            : "needs improvement";
       highlights.push(`Productivity is ${status} at ${productivityScore}%`);
     }
     if (violations?.length) {
@@ -127,9 +140,9 @@ serve(async (req) => {
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

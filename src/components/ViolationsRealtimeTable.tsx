@@ -1,13 +1,35 @@
-import { memo, useState } from 'react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { AlertTriangle, ShieldAlert, AlertCircle, Info, Eye, CheckCircle, Search, Filter } from 'lucide-react';
-import { SecurityViolation } from '@/hooks/useSecurityViolations';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
+import { memo, useState } from "react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import {
+  AlertTriangle,
+  ShieldAlert,
+  AlertCircle,
+  Info,
+  Eye,
+  CheckCircle,
+  Search,
+  Filter,
+} from "lucide-react";
+import { SecurityViolation } from "@/hooks/useSecurityViolations";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 // Extended type for realtime table that includes UI-specific fields
 interface RealtimeViolation extends SecurityViolation {
@@ -23,45 +45,51 @@ interface ViolationsRealtimeTableProps {
 }
 
 const severityConfig = {
-  critical: { icon: ShieldAlert, color: 'bg-destructive text-destructive-foreground', label: 'Crítico' },
-  high: { icon: AlertTriangle, color: 'bg-orange-500 text-white', label: 'Alto' },
-  medium: { icon: AlertCircle, color: 'bg-yellow-500 text-black', label: 'Médio' },
-  low: { icon: Info, color: 'bg-blue-500 text-white', label: 'Baixo' },
+  critical: {
+    icon: ShieldAlert,
+    color: "bg-destructive text-destructive-foreground",
+    label: "Crítico",
+  },
+  high: { icon: AlertTriangle, color: "bg-orange-500 text-white", label: "Alto" },
+  medium: { icon: AlertCircle, color: "bg-yellow-500 text-black", label: "Médio" },
+  low: { icon: Info, color: "bg-blue-500 text-white", label: "Baixo" },
 };
 
 function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRealtimeTableProps) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [severityFilter, setSeverityFilter] = useState<string>('all');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
-  const [employeeFilter, setEmployeeFilter] = useState<string>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [severityFilter, setSeverityFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [employeeFilter, setEmployeeFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   // Helper to get employee name from violation
-  const getEmployeeName = (v: RealtimeViolation) => v.employee_name || v.employee?.name || 'Unknown';
-  const getPolicyName = (v: RealtimeViolation) => v.policy_name || v.description || '';
-  const getDevice = (v: RealtimeViolation) => v.device || '-';
-  const isRead = (v: RealtimeViolation) => v.read ?? v.status === 'reviewed';
+  const getEmployeeName = (v: RealtimeViolation) =>
+    v.employee_name || v.employee?.name || "Unknown";
+  const getPolicyName = (v: RealtimeViolation) => v.policy_name || v.description || "";
+  const getDevice = (v: RealtimeViolation) => v.device || "-";
+  const isRead = (v: RealtimeViolation) => v.read ?? v.status === "reviewed";
 
   // Get unique values for filters
-  const types = [...new Set(violations.map(v => v.violation_type))];
-  const employees = [...new Set(violations.map(v => getEmployeeName(v)))];
+  const types = [...new Set(violations.map((v) => v.violation_type))];
+  const employees = [...new Set(violations.map((v) => getEmployeeName(v)))];
 
   // Filter violations
-  const filteredViolations = violations.filter(v => {
+  const filteredViolations = violations.filter((v) => {
     const employeeName = getEmployeeName(v);
     const policyName = getPolicyName(v);
-    
-    const matchesSearch = 
+
+    const matchesSearch =
       employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       policyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       v.violation_type.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesSeverity = severityFilter === 'all' || v.severity === severityFilter;
-    const matchesType = typeFilter === 'all' || v.violation_type === typeFilter;
-    const matchesEmployee = employeeFilter === 'all' || employeeName === employeeFilter;
-    const matchesStatus = statusFilter === 'all' || 
-      (statusFilter === 'unread' && !isRead(v)) || 
-      (statusFilter === 'read' && isRead(v));
+
+    const matchesSeverity = severityFilter === "all" || v.severity === severityFilter;
+    const matchesType = typeFilter === "all" || v.violation_type === typeFilter;
+    const matchesEmployee = employeeFilter === "all" || employeeName === employeeFilter;
+    const matchesStatus =
+      statusFilter === "all" ||
+      (statusFilter === "unread" && !isRead(v)) ||
+      (statusFilter === "read" && isRead(v));
 
     return matchesSearch && matchesSeverity && matchesType && matchesEmployee && matchesStatus;
   });
@@ -69,9 +97,12 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
   return (
     <div className="space-y-4">
       {/* Filters */}
-      <div className="flex flex-wrap gap-3 items-center">
-        <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="relative min-w-[200px] flex-1">
+          <Search
+            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
           <Input
             placeholder="Buscar por funcionário, política ou tipo..."
             value={searchTerm}
@@ -80,10 +111,10 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
             aria-label="Buscar violações por funcionário, política ou tipo"
           />
         </div>
-        
+
         <Select value={severityFilter} onValueChange={setSeverityFilter}>
           <SelectTrigger className="w-[140px]" aria-label="Filtrar por severidade">
-            <Filter className="h-4 w-4 mr-2" aria-hidden="true" />
+            <Filter className="mr-2 h-4 w-4" aria-hidden="true" />
             <SelectValue placeholder="Severidade" />
           </SelectTrigger>
           <SelectContent>
@@ -101,8 +132,10 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos os tipos</SelectItem>
-            {types.map(type => (
-              <SelectItem key={type} value={type}>{type}</SelectItem>
+            {types.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -113,8 +146,10 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
-            {employees.map(emp => (
-              <SelectItem key={emp} value={emp}>{emp}</SelectItem>
+            {employees.map((emp) => (
+              <SelectItem key={emp} value={emp}>
+                {emp}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -136,7 +171,7 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
       </div>
 
       {/* Table */}
-      <div className="rounded-lg border border-border overflow-hidden">
+      <div className="overflow-hidden rounded-lg border border-border">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50">
@@ -153,7 +188,7 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
           <TableBody>
             {filteredViolations.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={8} className="py-8 text-center text-muted-foreground">
                   Nenhuma violação encontrada
                 </TableCell>
               </TableRow>
@@ -162,17 +197,17 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
                 const config = severityConfig[violation.severity];
                 const Icon = config.icon;
                 const read = isRead(violation);
-                
+
                 return (
-                  <TableRow 
-                    key={violation.id} 
-                    className={`${!read ? 'bg-primary/5' : ''} hover:bg-muted/50 transition-colors`}
+                  <TableRow
+                    key={violation.id}
+                    className={`${!read ? "bg-primary/5" : ""} transition-colors hover:bg-muted/50`}
                   >
                     <TableCell>
                       {read ? (
                         <CheckCircle className="h-4 w-4 text-green-500" />
                       ) : (
-                        <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                        <div className="h-2 w-2 animate-pulse rounded-full bg-primary" />
                       )}
                     </TableCell>
                     <TableCell>

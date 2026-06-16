@@ -1,5 +1,3 @@
-
-
 import { Suspense, type ReactNode } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -14,7 +12,7 @@ function DefaultFallback() {
       <Skeleton className="h-8 w-1/3" />
       <Skeleton className="h-4 w-2/3" />
       <Skeleton className="h-4 w-1/2" />
-      <div className="grid grid-cols-3 gap-4 mt-6">
+      <div className="mt-6 grid grid-cols-3 gap-4">
         <Skeleton className="h-24" />
         <Skeleton className="h-24" />
         <Skeleton className="h-24" />
@@ -24,9 +22,5 @@ function DefaultFallback() {
 }
 
 export function SuspenseWrapper({ children, fallback }: Props) {
-  return (
-    <Suspense fallback={fallback || <DefaultFallback />}>
-      {children}
-    </Suspense>
-  );
+  return <Suspense fallback={fallback || <DefaultFallback />}>{children}</Suspense>;
 }

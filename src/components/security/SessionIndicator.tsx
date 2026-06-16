@@ -1,20 +1,12 @@
-import { memo, useState, useEffect } from 'react';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Shield, LogOut, Clock, MapPin, Monitor, AlertTriangle } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { memo, useState, useEffect } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Shield, LogOut, Clock, MapPin, Monitor, AlertTriangle } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 // ============================================================
 // TYPES
@@ -39,7 +31,7 @@ interface SessionIndicatorProps {
   onLogout?: () => void;
   onExtend?: () => void;
   showDetails?: boolean;
-  variant?: 'compact' | 'full';
+  variant?: "compact" | "full";
   className?: string;
 }
 
@@ -47,48 +39,48 @@ interface SessionIndicatorProps {
 // SESSION STATUS
 // ============================================================
 
-type SessionStatus = 'active' | 'idle' | 'expiring' | 'expired';
+type SessionStatus = "active" | "idle" | "expiring" | "expired";
 
 function getSessionStatus(session: SessionInfo): SessionStatus {
   const now = new Date();
   const expiresAt = new Date(session.expiresAt);
   const lastActivity = new Date(session.lastActivityAt);
-  
-  if (now > expiresAt) return 'expired';
-  
+
+  if (now > expiresAt) return "expired";
+
   const timeToExpire = expiresAt.getTime() - now.getTime();
-  if (timeToExpire < 5 * 60 * 1000) return 'expiring'; // Less than 5 minutes
-  
+  if (timeToExpire < 5 * 60 * 1000) return "expiring"; // Less than 5 minutes
+
   const idleTime = now.getTime() - lastActivity.getTime();
-  if (idleTime > 10 * 60 * 1000) return 'idle'; // More than 10 minutes idle
-  
-  return 'active';
+  if (idleTime > 10 * 60 * 1000) return "idle"; // More than 10 minutes idle
+
+  return "active";
 }
 
 const statusConfig = {
   active: {
-    color: 'bg-success',
-    pulseColor: 'bg-success',
-    label: 'Ativo',
-    textColor: 'text-success',
+    color: "bg-success",
+    pulseColor: "bg-success",
+    label: "Ativo",
+    textColor: "text-success",
   },
   idle: {
-    color: 'bg-warning',
-    pulseColor: 'bg-warning',
-    label: 'Inativo',
-    textColor: 'text-warning',
+    color: "bg-warning",
+    pulseColor: "bg-warning",
+    label: "Inativo",
+    textColor: "text-warning",
   },
   expiring: {
-    color: 'bg-destructive',
-    pulseColor: 'bg-destructive',
-    label: 'Expirando',
-    textColor: 'text-destructive',
+    color: "bg-destructive",
+    pulseColor: "bg-destructive",
+    label: "Expirando",
+    textColor: "text-destructive",
   },
   expired: {
-    color: 'bg-muted',
-    pulseColor: 'bg-muted',
-    label: 'Expirado',
-    textColor: 'text-muted-foreground',
+    color: "bg-muted",
+    pulseColor: "bg-muted",
+    label: "Expirado",
+    textColor: "text-muted-foreground",
   },
 };
 
@@ -98,39 +90,29 @@ const statusConfig = {
 
 interface StatusDotProps {
   status: SessionStatus;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   pulse?: boolean;
 }
 
-const StatusDot = memo(function StatusDot({
-  status,
-  size = 'md',
-  pulse = true,
-}: StatusDotProps) {
+const StatusDot = memo(function StatusDot({ status, size = "md", pulse = true }: StatusDotProps) {
   const config = statusConfig[status];
   const sizeClasses = {
-    sm: 'h-2 w-2',
-    md: 'h-2.5 w-2.5',
-    lg: 'h-3 w-3',
+    sm: "h-2 w-2",
+    md: "h-2.5 w-2.5",
+    lg: "h-3 w-3",
   };
 
   return (
     <span className="relative flex">
-      {pulse && (status === 'active' || status === 'expiring') && (
+      {pulse && (status === "active" || status === "expiring") && (
         <span
           className={cn(
-            'absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping',
+            "absolute inline-flex h-full w-full animate-ping rounded-full opacity-75",
             config.pulseColor
           )}
         />
       )}
-      <span
-        className={cn(
-          'relative inline-flex rounded-full',
-          sizeClasses[size],
-          config.color
-        )}
-      />
+      <span className={cn("relative inline-flex rounded-full", sizeClasses[size], config.color)} />
     </span>
   );
 });
@@ -157,20 +139,16 @@ const CompactIndicator = memo(function CompactIndicator({
       <TooltipTrigger asChild>
         <button
           onClick={onClick}
-          className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-muted/50 transition-colors"
+          className="flex items-center gap-2 rounded-md px-2 py-1 transition-colors hover:bg-muted/50"
         >
           <StatusDot status={status} size="sm" />
-          <span className="text-xs text-muted-foreground hidden sm:inline">
-            {config.label}
-          </span>
+          <span className="hidden text-xs text-muted-foreground sm:inline">{config.label}</span>
         </button>
       </TooltipTrigger>
       <TooltipContent>
         <div className="text-xs">
           <div className="font-medium">{session.email}</div>
-          <div className="text-muted-foreground">
-            Sessão {config.label.toLowerCase()}
-          </div>
+          <div className="text-muted-foreground">Sessão {config.label.toLowerCase()}</div>
         </div>
       </TooltipContent>
     </Tooltip>
@@ -214,7 +192,7 @@ const SessionDetailsPanel = memo(function SessionDetailsPanel({
   });
 
   return (
-    <div className="space-y-4 w-72">
+    <div className="w-72 space-y-4">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
@@ -222,23 +200,23 @@ const SessionDetailsPanel = memo(function SessionDetailsPanel({
             <Shield className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <div className="font-medium text-sm">{session.email}</div>
+            <div className="text-sm font-medium">{session.email}</div>
             <div className="flex items-center gap-1.5">
               <StatusDot status={status} size="sm" pulse={false} />
-              <span className={cn('text-xs', config.textColor)}>
-                {config.label}
-              </span>
+              <span className={cn("text-xs", config.textColor)}>{config.label}</span>
             </div>
           </div>
         </div>
         {session.isCurrentSession && (
-          <Badge variant="outline" className="text-xs">Atual</Badge>
+          <Badge variant="outline" className="text-xs">
+            Atual
+          </Badge>
         )}
       </div>
 
       {/* Warning for expiring session */}
-      {status === 'expiring' && (
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-destructive/10 text-destructive text-xs">
+      {status === "expiring" && (
+        <div className="flex items-center gap-2 rounded-lg bg-destructive/10 p-2 text-xs text-destructive">
           <AlertTriangle className="h-4 w-4" />
           <span>Sessão expira em {expiresIn}</span>
         </div>
@@ -269,15 +247,15 @@ const SessionDetailsPanel = memo(function SessionDetailsPanel({
       </div>
 
       {/* Actions */}
-      <div className="flex gap-2 pt-2 border-t">
-        {status === 'expiring' && onExtend && (
+      <div className="flex gap-2 border-t pt-2">
+        {status === "expiring" && onExtend && (
           <Button size="sm" className="flex-1" onClick={onExtend}>
             Estender sessão
           </Button>
         )}
         {onLogout && (
           <Button
-            variant={status === 'expiring' ? 'outline' : 'destructive'}
+            variant={status === "expiring" ? "outline" : "destructive"}
             size="sm"
             className="flex-1"
             onClick={onLogout}
@@ -300,7 +278,7 @@ function SessionIndicatorComponent({
   onLogout,
   onExtend,
   showDetails = true,
-  variant = 'compact',
+  variant = "compact",
   className,
 }: SessionIndicatorProps) {
   const [status, setStatus] = useState<SessionStatus>(() => getSessionStatus(session));
@@ -321,13 +299,13 @@ function SessionIndicatorComponent({
 
   if (!showDetails) {
     return (
-      <div className={cn('flex items-center', className)}>
+      <div className={cn("flex items-center", className)}>
         <StatusDot status={status} />
       </div>
     );
   }
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
       <Popover>
         <PopoverTrigger asChild>
@@ -348,7 +326,7 @@ function SessionIndicatorComponent({
   }
 
   return (
-    <div className={cn('p-4 rounded-lg border bg-card', className)}>
+    <div className={cn("rounded-lg border bg-card p-4", className)}>
       <SessionDetailsPanel
         session={session}
         status={status}
@@ -389,7 +367,7 @@ function SessionListComponent({
   });
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">Sessões ativas</h3>
         {onLogoutAll && sessions.length > 1 && (

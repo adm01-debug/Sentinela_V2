@@ -3,10 +3,10 @@
 // Gerenciamento de filtros salvos por usuário e entidade
 // ============================================================
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 // ============================================================
 // TYPES
@@ -32,7 +32,7 @@ interface UseSavedFiltersOptions {
 
 export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions) {
   const queryClient = useQueryClient();
-  const queryKey = ['saved-filters', entityType];
+  const queryKey = ["saved-filters", entityType];
 
   // ============================================================
   // QUERY - Listar filtros salvos
@@ -46,17 +46,16 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
     queryFn: async (): Promise<SavedFilter[]> => {
       // Ready to fetch
 
-
       const { data, error } = await supabase
-        .from('saved_filters')
-        .select('*')
-        .eq('entity_type', entityType)
-        .order('created_at', { ascending: false });
+        .from("saved_filters")
+        .select("*")
+        .eq("entity_type", entityType)
+        .order("created_at", { ascending: false });
 
       if (error) {
         // Se a tabela não existe, retorna array vazio
-        if (error.code === '42P01') {
-          logger.warn('[SavedFilters] Tabela não existe ainda');
+        if (error.code === "42P01") {
+          logger.warn("[SavedFilters] Tabela não existe ainda");
           return [];
         }
         throw error;
@@ -74,11 +73,10 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
     mutationFn: async (filter: { name: string; filters: unknown; is_default?: boolean }) => {
       // Proceed to save
 
-
       const { data: userData } = await supabase.auth.getUser();
 
       const { data, error } = await supabase
-        .from('saved_filters')
+        .from("saved_filters")
         .insert({
           user_id: userData.user?.id,
           entity_type: entityType,
@@ -94,11 +92,11 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
-      toast.success('Filtro salvo com sucesso!');
+      toast.success("Filtro salvo com sucesso!");
     },
     onError: (error: Error) => {
-      logger.error('[SavedFilters] Erro ao salvar:', error);
-      toast.error('Erro ao salvar filtro');
+      logger.error("[SavedFilters] Erro ao salvar:", error);
+      toast.error("Erro ao salvar filtro");
     },
   });
 
@@ -109,21 +107,17 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
     mutationFn: async (id: string) => {
       // Proceed to delete
 
-
-      const { error } = await supabase
-        .from('saved_filters')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from("saved_filters").delete().eq("id", id);
 
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
-      toast.success('Filtro removido');
+      toast.success("Filtro removido");
     },
     onError: (error: Error) => {
-      logger.error('[SavedFilters] Erro ao deletar:', error);
-      toast.error('Erro ao remover filtro');
+      logger.error("[SavedFilters] Erro ao deletar:", error);
+      toast.error("Erro ao remover filtro");
     },
   });
 
@@ -134,28 +128,27 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
     mutationFn: async (id: string) => {
       // Proceed to set default
 
-
       // Remove default de todos os filtros do mesmo tipo
       await supabase
-        .from('saved_filters')
+        .from("saved_filters")
         .update({ is_default: false })
-        .eq('entity_type', entityType);
+        .eq("entity_type", entityType);
 
       // Define novo default
       const { error } = await supabase
-        .from('saved_filters')
+        .from("saved_filters")
         .update({ is_default: true })
-        .eq('id', id);
+        .eq("id", id);
 
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
-      toast.success('Filtro padrão definido');
+      toast.success("Filtro padrão definido");
     },
     onError: (error: Error) => {
-      logger.error('[SavedFilters] Erro ao definir padrão:', error);
-      toast.error('Erro ao definir filtro padrão');
+      logger.error("[SavedFilters] Erro ao definir padrão:", error);
+      toast.error("Erro ao definir filtro padrão");
     },
   });
 

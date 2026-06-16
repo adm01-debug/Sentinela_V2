@@ -5,7 +5,9 @@ export function useSafeState<T>(initialValue: T): [T, (value: T) => void] {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const setSafeState = useCallback((value: T) => {

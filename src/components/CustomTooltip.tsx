@@ -1,20 +1,15 @@
-import { memo, ReactNode, useRef, useState, useEffect, useCallback } from 'react';
-import { Info, HelpCircle, AlertCircle, Copy, Check } from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
-import { useClipboard } from '@/hooks/useClipboard';
+import { memo, ReactNode, useRef, useState, useEffect, useCallback } from "react";
+import { Info, HelpCircle, AlertCircle, Copy, Check } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { useClipboard } from "@/hooks/useClipboard";
 
 // ============================================================
 // TYPES
 // ============================================================
 
-type TooltipSide = 'top' | 'right' | 'bottom' | 'left';
-type TooltipAlign = 'start' | 'center' | 'end';
+type TooltipSide = "top" | "right" | "bottom" | "left";
+type TooltipAlign = "start" | "center" | "end";
 
 interface SimpleTooltipProps {
   content: ReactNode;
@@ -33,8 +28,8 @@ interface SimpleTooltipProps {
 function SimpleTooltipComponent({
   content,
   children,
-  side = 'top',
-  align = 'center',
+  side = "top",
+  align = "center",
   delayDuration = 300,
   className,
   disabled = false,
@@ -61,7 +56,7 @@ export const SimpleTooltip = memo(SimpleTooltipComponent);
 // InfoTooltip - Icon with tooltip
 // ============================================================
 
-type InfoTooltipVariant = 'info' | 'help' | 'warning';
+type InfoTooltipVariant = "info" | "help" | "warning";
 
 interface InfoTooltipProps {
   content: ReactNode;
@@ -78,15 +73,15 @@ const variantIcons = {
 };
 
 const variantColors = {
-  info: 'text-blue-500',
-  help: 'text-muted-foreground',
-  warning: 'text-orange-500',
+  info: "text-blue-500",
+  help: "text-muted-foreground",
+  warning: "text-orange-500",
 };
 
 function InfoTooltipComponent({
   content,
-  variant = 'info',
-  side = 'top',
+  variant = "info",
+  side = "top",
   className,
   iconClassName,
 }: InfoTooltipProps) {
@@ -95,7 +90,7 @@ function InfoTooltipComponent({
   return (
     <SimpleTooltip content={content} side={side} className={className}>
       <span className="inline-flex cursor-help">
-        <Icon className={cn('h-4 w-4', variantColors[variant], iconClassName)} />
+        <Icon className={cn("h-4 w-4", variantColors[variant], iconClassName)} />
       </span>
     </SimpleTooltip>
   );
@@ -117,8 +112,8 @@ interface TruncatedTextProps {
 function TruncatedTextComponent({
   text,
   className,
-  maxWidth = '100%',
-  side = 'top',
+  maxWidth = "100%",
+  side = "top",
 }: TruncatedTextProps) {
   const textRef = useRef<HTMLSpanElement>(null);
   const [isTruncated, setIsTruncated] = useState(false);
@@ -131,16 +126,12 @@ function TruncatedTextComponent({
   }, [text]);
 
   const style = {
-    maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth,
+    maxWidth: typeof maxWidth === "number" ? `${maxWidth}px` : maxWidth,
   };
 
   return (
     <SimpleTooltip content={text} disabled={!isTruncated} side={side}>
-      <span
-        ref={textRef}
-        className={cn('block truncate', className)}
-        style={style}
-      >
+      <span ref={textRef} className={cn("block truncate", className)} style={style}>
         {text}
       </span>
     </SimpleTooltip>
@@ -173,22 +164,21 @@ function CopyableTextComponent({
   }, [copy, text]);
 
   return (
-    <SimpleTooltip content={copied ? 'Copiado!' : 'Clique para copiar'}>
+    <SimpleTooltip content={copied ? "Copiado!" : "Clique para copiar"}>
       <button
         onClick={handleCopy}
         className={cn(
-          'inline-flex items-center gap-1 hover:text-primary transition-colors',
+          "inline-flex items-center gap-1 transition-colors hover:text-primary",
           className
         )}
       >
         <span>{displayText || text}</span>
-        {showIcon && (
-          copied ? (
+        {showIcon &&
+          (copied ? (
             <Check className="h-3 w-3 text-green-500" />
           ) : (
             <Copy className="h-3 w-3 opacity-50" />
-          )
-        )}
+          ))}
       </button>
     </SimpleTooltip>
   );

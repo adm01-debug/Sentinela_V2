@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { logger } from '@/lib/logger';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { logger } from "@/lib/logger";
 
 export interface UseAutoSaveDraftOptions<T> {
   key: string;
@@ -24,7 +24,9 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
           const { timestamp } = JSON.parse(stored);
           setHasDraft(true);
           setLastSaved(new Date(timestamp));
-        } catch (e) { logger.error('Failed to parse draft:', e); }
+        } catch (e) {
+          logger.error("Failed to parse draft:", e);
+        }
       }
       initialLoadRef.current = false;
       return;
@@ -37,7 +39,9 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
       setHasDraft(true);
       onSave?.(data);
     }, delay);
-    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, [key, data, delay, onSave]);
 
   const restoreDraft = useCallback(() => {
@@ -47,7 +51,9 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
         const { data: draftData } = JSON.parse(stored);
         onRestore?.(draftData);
         return draftData;
-      } catch (e) { logger.error('Failed to restore draft:', e); }
+      } catch (e) {
+        logger.error("Failed to restore draft:", e);
+      }
     }
     return null;
   }, [key, onRestore]);
@@ -60,7 +66,13 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
 
   const getDraft = useCallback(() => {
     const stored = localStorage.getItem(key);
-    if (stored) { try { return JSON.parse(stored).data; } catch { return null; } }
+    if (stored) {
+      try {
+        return JSON.parse(stored).data;
+      } catch {
+        return null;
+      }
+    }
     return null;
   }, [key]);
 

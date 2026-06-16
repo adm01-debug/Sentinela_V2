@@ -1,6 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface WhitelistedIP {
   id: string;
@@ -30,12 +30,12 @@ export interface UpdateWhitelistData extends Partial<CreateWhitelistData> {
 
 export function useWhitelistedIPs() {
   return useQuery({
-    queryKey: ['whitelisted-ips'],
+    queryKey: ["whitelisted-ips"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('whitelisted_ips')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("whitelisted_ips")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       return data as WhitelistedIP[];
@@ -49,7 +49,7 @@ export function useCreateWhitelistIP() {
   return useMutation({
     mutationFn: async (data: CreateWhitelistData) => {
       const { data: result, error } = await supabase
-        .from('whitelisted_ips')
+        .from("whitelisted_ips")
         .insert({
           ip_address: data.ip_address,
           description: data.description || null,
@@ -65,14 +65,14 @@ export function useCreateWhitelistIP() {
       return result;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['whitelisted-ips'] });
-      toast.success('IP adicionado à whitelist');
+      queryClient.invalidateQueries({ queryKey: ["whitelisted-ips"] });
+      toast.success("IP adicionado à whitelist");
     },
     onError: (error: Error & { code?: string }) => {
-      if (error.code === '23505') {
-        toast.error('Este IP já está na whitelist');
+      if (error.code === "23505") {
+        toast.error("Este IP já está na whitelist");
       } else {
-        toast.error('Erro ao adicionar IP: ' + error.message);
+        toast.error("Erro ao adicionar IP: " + error.message);
       }
     },
   });
@@ -84,9 +84,9 @@ export function useUpdateWhitelistIP() {
   return useMutation({
     mutationFn: async ({ id, ...data }: { id: string } & UpdateWhitelistData) => {
       const { data: result, error } = await supabase
-        .from('whitelisted_ips')
+        .from("whitelisted_ips")
         .update(data)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
 
@@ -94,11 +94,11 @@ export function useUpdateWhitelistIP() {
       return result;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['whitelisted-ips'] });
-      toast.success('IP atualizado');
+      queryClient.invalidateQueries({ queryKey: ["whitelisted-ips"] });
+      toast.success("IP atualizado");
     },
     onError: (error) => {
-      toast.error('Erro ao atualizar IP: ' + error.message);
+      toast.error("Erro ao atualizar IP: " + error.message);
     },
   });
 }
@@ -108,28 +108,25 @@ export function useDeleteWhitelistIP() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('whitelisted_ips')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from("whitelisted_ips").delete().eq("id", id);
 
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['whitelisted-ips'] });
-      toast.success('IP removido da whitelist');
+      queryClient.invalidateQueries({ queryKey: ["whitelisted-ips"] });
+      toast.success("IP removido da whitelist");
     },
     onError: (error) => {
-      toast.error('Erro ao remover IP: ' + error.message);
+      toast.error("Erro ao remover IP: " + error.message);
     },
   });
 }
 
 export function useCheckIPWhitelist(ipAddress: string | null | undefined) {
   return useQuery({
-    queryKey: ['ip-whitelist-check', ipAddress],
+    queryKey: ["ip-whitelist-check", ipAddress],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc('get_ip_whitelist_info', {
+      const { data, error } = await supabase.rpc("get_ip_whitelist_info", {
         p_ip_address: ipAddress!,
       });
 

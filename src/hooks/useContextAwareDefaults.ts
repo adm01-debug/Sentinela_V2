@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from "react";
 
 export interface ContextRule<T> {
   condition: () => boolean;
@@ -12,10 +12,12 @@ export interface UseContextAwareDefaultsOptions<T> {
   storageKey?: string;
 }
 
-export function useContextAwareDefaults<T extends Record<string, unknown>>(options: UseContextAwareDefaultsOptions<T>) {
+export function useContextAwareDefaults<T extends Record<string, unknown>>(
+  options: UseContextAwareDefaultsOptions<T>
+) {
   const { baseDefaults, rules, storageKey } = options;
   const [userOverrides, setUserOverrides] = useState<Partial<T>>(() => {
-    if (storageKey && typeof window !== 'undefined') {
+    if (storageKey && typeof window !== "undefined") {
       const stored = localStorage.getItem(storageKey);
       return stored ? JSON.parse(stored) : {};
     }
@@ -27,18 +29,23 @@ export function useContextAwareDefaults<T extends Record<string, unknown>>(optio
   }, [storageKey, userOverrides]);
 
   const contextDefaults = useMemo(() => {
-    const applicableRules = rules.filter(r => r.condition()).sort((a, b) => (b.priority || 0) - (a.priority || 0));
+    const applicableRules = rules
+      .filter((r) => r.condition())
+      .sort((a, b) => (b.priority || 0) - (a.priority || 0));
     return applicableRules.reduce((acc, rule) => ({ ...acc, ...rule.defaults }), {} as Partial<T>);
   }, [rules]);
 
-  const defaults = useMemo(() => ({ ...baseDefaults, ...contextDefaults, ...userOverrides }), [baseDefaults, contextDefaults, userOverrides]);
+  const defaults = useMemo(
+    () => ({ ...baseDefaults, ...contextDefaults, ...userOverrides }),
+    [baseDefaults, contextDefaults, userOverrides]
+  );
 
   const setOverride = useCallback(<K extends keyof T>(key: K, value: T[K]) => {
-    setUserOverrides(prev => ({ ...prev, [key]: value }));
+    setUserOverrides((prev) => ({ ...prev, [key]: value }));
   }, []);
 
   const clearOverride = useCallback(<K extends keyof T>(key: K) => {
-    setUserOverrides(prev => {
+    setUserOverrides((prev) => {
       const rest = { ...prev };
       delete rest[key];
       return rest as Partial<T>;
@@ -47,7 +54,14 @@ export function useContextAwareDefaults<T extends Record<string, unknown>>(optio
 
   const clearAllOverrides = useCallback(() => setUserOverrides({}), []);
 
-  return { defaults, userOverrides, contextDefaults, setOverride, clearOverride, clearAllOverrides };
+  return {
+    defaults,
+    userOverrides,
+    contextDefaults,
+    setOverride,
+    clearOverride,
+    clearAllOverrides,
+  };
 }
 
 export default useContextAwareDefaults;

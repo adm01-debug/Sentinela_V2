@@ -1,5 +1,3 @@
-
-
 import { QueryProvider } from "./QueryProvider";
 import { ThemeProvider } from "./ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";

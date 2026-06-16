@@ -2,8 +2,13 @@
 
 export interface Alert {
   id: string;
-  type: 'print_attempt' | 'usb_blocked' | 'external_hd' | 'suspicious_activity' | 'unauthorized_app';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  type:
+    | "print_attempt"
+    | "usb_blocked"
+    | "external_hd"
+    | "suspicious_activity"
+    | "unauthorized_app";
+  severity: "low" | "medium" | "high" | "critical";
   message: string;
   employeeName: string;
   device: string;
@@ -15,8 +20,8 @@ export interface Employee {
   name: string;
   department: string;
   avatar: string;
-  status: 'online' | 'offline' | 'idle';
+  status: "online" | "offline" | "idle";
   lastActivity: string;
-  device: 'desktop' | 'mobile';
+  device: "desktop" | "mobile";
   productivityScore: number;
 }

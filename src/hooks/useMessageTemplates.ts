@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 // ============================================================
 // TYPES
@@ -10,7 +10,7 @@ import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 export interface MessageTemplate {
   id: string;
   name: string;
-  type: 'email' | 'whatsapp' | 'sms' | 'push';
+  type: "email" | "whatsapp" | "sms" | "push";
   subject?: string;
   content: string;
   variables: string[];
@@ -21,7 +21,7 @@ export interface MessageTemplate {
 
 export interface CreateMessageTemplateInput {
   name: string;
-  type: 'email' | 'whatsapp' | 'sms' | 'push';
+  type: "email" | "whatsapp" | "sms" | "push";
   subject?: string;
   content: string;
   variables?: string[];
@@ -46,9 +46,9 @@ export function useMessageTemplates() {
     queryKey: queryKeys.messageTemplates.lists(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('message_templates')
-        .select('*')
-        .order('name', { ascending: true });
+        .from("message_templates")
+        .select("*")
+        .order("name", { ascending: true });
 
       if (error) throw error;
       return data as MessageTemplate[];
@@ -59,14 +59,14 @@ export function useMessageTemplates() {
 
 export function useMessageTemplate(id: string | null | undefined) {
   return useQuery({
-    queryKey: queryKeys.messageTemplates.detail(id || ''),
+    queryKey: queryKeys.messageTemplates.detail(id || ""),
     queryFn: async () => {
       if (!id) return null;
-      
+
       const { data, error } = await supabase
-        .from('message_templates')
-        .select('*')
-        .eq('id', id)
+        .from("message_templates")
+        .select("*")
+        .eq("id", id)
         .single();
 
       if (error) throw error;
@@ -82,11 +82,11 @@ export function useMessageTemplatesByType(type: string) {
     queryKey: queryKeys.messageTemplates.byType(type),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('message_templates')
-        .select('*')
-        .eq('type', type)
-        .eq('is_active', true)
-        .order('name', { ascending: true });
+        .from("message_templates")
+        .select("*")
+        .eq("type", type)
+        .eq("is_active", true)
+        .order("name", { ascending: true });
 
       if (error) throw error;
       return data as MessageTemplate[];
@@ -107,7 +107,7 @@ export function useCreateMessageTemplate() {
   return useMutation({
     mutationFn: async (input: CreateMessageTemplateInput) => {
       const { data, error } = await supabase
-        .from('message_templates')
+        .from("message_templates")
         .insert(input)
         .select()
         .single();
@@ -118,15 +118,15 @@ export function useCreateMessageTemplate() {
     onSuccess: () => {
       invalidateRelated.messageTemplates(queryClient);
       toast({
-        title: 'Template criado',
-        description: 'O template foi criado com sucesso.',
+        title: "Template criado",
+        description: "O template foi criado com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao criar template',
+        title: "Erro ao criar template",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -139,9 +139,9 @@ export function useUpdateMessageTemplate() {
   return useMutation({
     mutationFn: async ({ id, ...input }: UpdateMessageTemplateInput) => {
       const { data, error } = await supabase
-        .from('message_templates')
+        .from("message_templates")
         .update(input)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
 
@@ -151,15 +151,15 @@ export function useUpdateMessageTemplate() {
     onSuccess: () => {
       invalidateRelated.messageTemplates(queryClient);
       toast({
-        title: 'Template atualizado',
-        description: 'O template foi atualizado com sucesso.',
+        title: "Template atualizado",
+        description: "O template foi atualizado com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao atualizar template',
+        title: "Erro ao atualizar template",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -171,25 +171,22 @@ export function useDeleteMessageTemplate() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('message_templates')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from("message_templates").delete().eq("id", id);
 
       if (error) throw error;
     },
     onSuccess: () => {
       invalidateRelated.messageTemplates(queryClient);
       toast({
-        title: 'Template excluído',
-        description: 'O template foi excluído com sucesso.',
+        title: "Template excluído",
+        description: "O template foi excluído com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao excluir template',
+        title: "Erro ao excluir template",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -202,9 +199,9 @@ export function useToggleMessageTemplate() {
   return useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
       const { data, error } = await supabase
-        .from('message_templates')
+        .from("message_templates")
         .update({ is_active })
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
 
@@ -214,14 +211,14 @@ export function useToggleMessageTemplate() {
     onSuccess: (data: { is_active: boolean }) => {
       invalidateRelated.messageTemplates(queryClient);
       toast({
-        title: data.is_active ? 'Template ativado' : 'Template desativado',
+        title: data.is_active ? "Template ativado" : "Template desativado",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao alterar status',
+        title: "Erro ao alterar status",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -235,16 +232,16 @@ export function useDuplicateMessageTemplate() {
     mutationFn: async (id: string) => {
       // First get the template
       const { data: template, error: fetchError } = await supabase
-        .from('message_templates')
-        .select('*')
-        .eq('id', id)
+        .from("message_templates")
+        .select("*")
+        .eq("id", id)
         .single();
 
       if (fetchError) throw fetchError;
 
       // Create a copy
       const { data, error } = await supabase
-        .from('message_templates')
+        .from("message_templates")
         .insert({
           name: `${template.name} (Cópia)`,
           type: template.type,
@@ -262,15 +259,15 @@ export function useDuplicateMessageTemplate() {
     onSuccess: () => {
       invalidateRelated.messageTemplates(queryClient);
       toast({
-        title: 'Template duplicado',
-        description: 'O template foi duplicado com sucesso.',
+        title: "Template duplicado",
+        description: "O template foi duplicado com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao duplicar template',
+        title: "Erro ao duplicar template",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });

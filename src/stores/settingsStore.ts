@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface Settings {
   general: { companyName: string; timezone: string; dateFormat: string };
@@ -16,8 +16,8 @@ interface SettingsState {
 }
 
 const defaultSettings: Settings = {
-  general: { companyName: '', timezone: 'UTC', dateFormat: 'YYYY-MM-DD' },
-  security: { twoFactorEnabled: false, sessionTimeout: 30, passwordPolicy: 'medium' },
+  general: { companyName: "", timezone: "UTC", dateFormat: "YYYY-MM-DD" },
+  security: { twoFactorEnabled: false, sessionTimeout: 30, passwordPolicy: "medium" },
   notifications: { email: true, push: true, slack: false },
   monitoring: { screenshotInterval: 5, activityTracking: true, idleTimeout: 5 },
 };
@@ -33,6 +33,6 @@ export const useSettingsStore = create<SettingsState>()(
         })),
       resetSettings: () => set({ settings: defaultSettings }),
     }),
-    { name: 'settings-storage' }
+    { name: "settings-storage" }
   )
 );

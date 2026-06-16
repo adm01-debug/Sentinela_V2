@@ -1,7 +1,7 @@
 // Table types for Sentinela v17
-import { Sort, SortDirection } from './sort';
-import { FilterGroup } from './filter';
-import { Pagination } from './pagination';
+import { Sort, SortDirection } from "./sort";
+import { FilterGroup } from "./filter";
+import { Pagination } from "./pagination";
 
 export interface TableColumn<T = unknown> {
   id: string;
@@ -14,11 +14,11 @@ export interface TableColumn<T = unknown> {
   filterable?: boolean;
   resizable?: boolean;
   hidden?: boolean;
-  sticky?: 'left' | 'right';
+  sticky?: "left" | "right";
   width?: number | string;
   minWidth?: number;
   maxWidth?: number;
-  align?: 'left' | 'center' | 'right';
+  align?: "left" | "center" | "right";
   meta?: unknown;
 }
 
@@ -115,7 +115,7 @@ export interface TableRef<T = unknown> {
   instance: TableInstance<T>;
   actions: TableActions;
   getSelectedRows: () => T[];
-  exportData: (format: 'csv' | 'xlsx' | 'json') => void;
+  exportData: (format: "csv" | "xlsx" | "json") => void;
   scrollToRow: (rowId) => void;
   scrollToTop: () => void;
 }
@@ -134,7 +134,7 @@ export interface BulkAction<T = unknown> {
   id: string;
   label: string;
   icon?: string;
-  variant?: 'default' | 'danger';
+  variant?: "default" | "danger";
   action: (selectedRows: T[]) => void | Promise<void>;
   isDisabled?: (selectedRows: T[]) => boolean;
   requiresConfirmation?: boolean;

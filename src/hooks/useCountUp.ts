@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 interface UseCountUpOptions {
   end: number;
@@ -13,9 +13,9 @@ export function useCountUp({
   end,
   duration = 800,
   decimals = 0,
-  prefix = '',
-  suffix = '',
-  separator = '',
+  prefix = "",
+  suffix = "",
+  separator = "",
 }: UseCountUpOptions) {
   const [value, setValue] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
@@ -65,7 +65,7 @@ export function useCountUp({
     return () => observer.disconnect();
   }, [end, duration]);
 
-  const formatted = `${prefix}${value.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, separator || ',')}${suffix}`;
+  const formatted = `${prefix}${value.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, separator || ",")}${suffix}`;
 
   return { ref, value, formatted };
 }

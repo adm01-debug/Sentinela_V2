@@ -1,11 +1,18 @@
-import { useEffect, useState } from 'react';
-import { ShieldAlert, Loader2 } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useEffect, useState } from "react";
+import { ShieldAlert, Loader2 } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface Incident {
   id: string;
@@ -21,16 +28,16 @@ interface Incident {
 }
 
 const severityColor: Record<string, string> = {
-  low: 'bg-muted text-muted-foreground',
-  medium: 'bg-warning/15 text-warning',
-  high: 'bg-destructive/15 text-destructive',
-  critical: 'bg-destructive text-destructive-foreground',
+  low: "bg-muted text-muted-foreground",
+  medium: "bg-warning/15 text-warning",
+  high: "bg-destructive/15 text-destructive",
+  critical: "bg-destructive text-destructive-foreground",
 };
 
 const actionLabel: Record<string, string> = {
-  alert: 'Alerta',
-  redact: 'Redigido',
-  block: 'Bloqueado',
+  alert: "Alerta",
+  redact: "Redigido",
+  block: "Bloqueado",
 };
 
 export default function DLPIncidentsPage() {
@@ -41,13 +48,13 @@ export default function DLPIncidentsPage() {
     void load();
 
     const channel = supabase
-      .channel('dlp-incidents-feed')
+      .channel("dlp-incidents-feed")
       .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'dlp_incidents' },
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "dlp_incidents" },
         (payload) => {
           setIncidents((prev) => [payload.new as Incident, ...prev].slice(0, 100));
-        },
+        }
       )
       .subscribe();
 
@@ -59,9 +66,11 @@ export default function DLPIncidentsPage() {
   async function load() {
     setLoading(true);
     const { data } = await supabase
-      .from('dlp_incidents')
-      .select('id, source_type, action_taken, severity, classifier_code, employee_name, device_name, match_count, match_summary, detected_at')
-      .order('detected_at', { ascending: false })
+      .from("dlp_incidents")
+      .select(
+        "id, source_type, action_taken, severity, classifier_code, employee_name, device_name, match_count, match_summary, detected_at"
+      )
+      .order("detected_at", { ascending: false })
       .limit(100);
     setIncidents((data as Incident[]) || []);
     setLoading(false);
@@ -73,9 +82,7 @@ export default function DLPIncidentsPage() {
         <h1 className="flex items-center gap-2 text-2xl font-semibold">
           <ShieldAlert className="h-6 w-6 text-destructive" /> DLP — Incidentes
         </h1>
-        <p className="text-sm text-muted-foreground">
-          Detecções de dados sensíveis em tempo real.
-        </p>
+        <p className="text-sm text-muted-foreground">Detecções de dados sensíveis em tempo real.</p>
       </header>
 
       <Card>
@@ -109,11 +116,16 @@ export default function DLPIncidentsPage() {
                 {incidents.map((i) => (
                   <TableRow key={i.id}>
                     <TableCell className="text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(i.detected_at), { addSuffix: true, locale: ptBR })}
+                      {formatDistanceToNow(new Date(i.detected_at), {
+                        addSuffix: true,
+                        locale: ptBR,
+                      })}
                     </TableCell>
-                    <TableCell>{i.employee_name || '—'}</TableCell>
-                    <TableCell><Badge variant="outline">{i.source_type}</Badge></TableCell>
-                    <TableCell className="font-mono text-xs">{i.classifier_code || '—'}</TableCell>
+                    <TableCell>{i.employee_name || "—"}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{i.source_type}</Badge>
+                    </TableCell>
+                    <TableCell className="font-mono text-xs">{i.classifier_code || "—"}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className={severityColor[i.severity]}>
                         {i.severity}

@@ -1,9 +1,9 @@
-import { memo } from 'react';
-import { Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
+import { memo } from "react";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -11,16 +11,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import type { DeviceFormData } from '@/hooks/useEmployeesPage';
-import type { EmployeeWithDetails } from '@/hooks/useEmployees';
+} from "@/components/ui/select";
+import type { DeviceFormData } from "@/hooks/useEmployeesPage";
+import type { EmployeeWithDetails } from "@/hooks/useEmployees";
 
 interface DeviceAssignDialogProps {
   open: boolean;
@@ -51,7 +51,7 @@ function DeviceAssignDialogComponent({
         <DialogHeader>
           <DialogTitle>Vincular Dispositivo</DialogTitle>
           <DialogDescription>
-            {employee ? `Vincule um dispositivo a ${employee.name}` : 'Vincule um dispositivo'}
+            {employee ? `Vincule um dispositivo a ${employee.name}` : "Vincule um dispositivo"}
           </DialogDescription>
         </DialogHeader>
 
@@ -61,7 +61,7 @@ function DeviceAssignDialogComponent({
             <Input
               id="device_name"
               value={deviceData.device_name}
-              onChange={(e) => handleChange('device_name', e.target.value)}
+              onChange={(e) => handleChange("device_name", e.target.value)}
               placeholder="Ex: Desktop-001, Notebook-Maria"
             />
           </div>
@@ -70,7 +70,7 @@ function DeviceAssignDialogComponent({
             <Label htmlFor="device_type">Tipo de Dispositivo</Label>
             <Select
               value={deviceData.device_type}
-              onValueChange={(value) => handleChange('device_type', value)}
+              onValueChange={(value) => handleChange("device_type", value)}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -87,7 +87,7 @@ function DeviceAssignDialogComponent({
             <Checkbox
               id="is_primary"
               checked={deviceData.is_primary}
-              onCheckedChange={(checked) => handleChange('is_primary', !!checked)}
+              onCheckedChange={(checked) => handleChange("is_primary", !!checked)}
             />
             <Label htmlFor="is_primary" className="cursor-pointer">
               Dispositivo principal
@@ -99,10 +99,7 @@ function DeviceAssignDialogComponent({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancelar
           </Button>
-          <Button
-            onClick={onSubmit}
-            disabled={!deviceData.device_name.trim() || isSubmitting}
-          >
+          <Button onClick={onSubmit} disabled={!deviceData.device_name.trim() || isSubmitting}>
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Vincular
           </Button>

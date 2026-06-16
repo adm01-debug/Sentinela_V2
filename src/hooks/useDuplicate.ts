@@ -3,10 +3,10 @@
 // Duplicação inteligente de registros
 // ============================================================
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 // ============================================================
 // TYPES
@@ -33,13 +33,7 @@ export interface DuplicateResult {
 // DEFAULT EXCLUDE FIELDS
 // ============================================================
 
-const DEFAULT_EXCLUDE_FIELDS = [
-  'id',
-  'created_at',
-  'updated_at',
-  'deleted_at',
-  'archived_at',
-];
+const DEFAULT_EXCLUDE_FIELDS = ["id", "created_at", "updated_at", "deleted_at", "archived_at"];
 
 // ============================================================
 // MAIN HOOK
@@ -55,7 +49,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
     transformData,
     onSuccess,
     onError,
-    customSuffix = ' (Cópia)',
+    customSuffix = " (Cópia)",
   } = options;
 
   const queryClient = useQueryClient();
@@ -69,16 +63,15 @@ export function useDuplicate<T extends Record<string, unknown>>(
     mutationFn: async (id: string): Promise<T> => {
       // Proceed to duplicate
 
-
       // Buscar registro original
       const { data: original, error: fetchError } = await supabase
         .from(table)
-        .select('*')
-        .eq('id', id)
+        .select("*")
+        .eq("id", id)
         .single();
 
       if (fetchError || !original) {
-        throw new Error('Registro não encontrado');
+        throw new Error("Registro não encontrado");
       }
 
       // Preparar dados para duplicação
@@ -106,12 +99,12 @@ export function useDuplicate<T extends Record<string, unknown>>(
       if (queryKey) {
         queryClient.invalidateQueries({ queryKey });
       }
-      toast.success('Registro duplicado com sucesso!');
+      toast.success("Registro duplicado com sucesso!");
       onSuccess?.(newRecord, originalId);
     },
     onError: (error: Error) => {
-      logger.error('[Duplicate] Erro:', error);
-      toast.error(error.message || 'Erro ao duplicar registro');
+      logger.error("[Duplicate] Erro:", error);
+      toast.error(error.message || "Erro ao duplicar registro");
       onError?.(error);
     },
   });
@@ -124,25 +117,19 @@ export function useDuplicate<T extends Record<string, unknown>>(
     mutationFn: async (ids: string[]): Promise<T[]> => {
       // Proceed to duplicate many
 
-
       // Buscar registros originais
       const { data: originals, error: fetchError } = await supabase
         .from(table)
-        .select('*')
-        .in('id', ids);
+        .select("*")
+        .in("id", ids);
 
       if (fetchError || !originals) {
-        throw new Error('Registros não encontrados');
+        throw new Error("Registros não encontrados");
       }
 
       // Preparar dados para duplicação
       const duplicatesData = originals.map((original) =>
-        prepareDuplicateData(
-          original as T,
-          allExcludeFields,
-          transformData,
-          customSuffix
-        )
+        prepareDuplicateData(original as T, allExcludeFields, transformData, customSuffix)
       );
 
       // Inserir cópias
@@ -164,8 +151,8 @@ export function useDuplicate<T extends Record<string, unknown>>(
       toast.success(`${newRecords.length} registros duplicados!`);
     },
     onError: (error: Error) => {
-      logger.error('[Duplicate] Erro em lote:', error);
-      toast.error(error.message || 'Erro ao duplicar registros');
+      logger.error("[Duplicate] Erro em lote:", error);
+      toast.error(error.message || "Erro ao duplicar registros");
       onError?.(error);
     },
   });
@@ -190,20 +177,23 @@ function prepareDuplicateData<T extends Record<string, unknown>>(
   original: T,
   excludeFields: string[],
   transformData?: (original: T) => Partial<T>,
-  customSuffix: string = ' (Cópia)'
+  customSuffix: string = " (Cópia)"
 ): Partial<T> {
   // Remover campos excluídos
-  const cleanData = Object.entries(original).reduce((acc, [key, value]) => {
-    if (!excludeFields.includes(key)) {
-      acc[key] = value;
-    }
-    return acc;
-  }, {} as Record<string, unknown>);
+  const cleanData = Object.entries(original).reduce(
+    (acc, [key, value]) => {
+      if (!excludeFields.includes(key)) {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {} as Record<string, unknown>
+  );
 
   // Adicionar sufixo a campos de nome/título
-  const nameFields = ['name', 'title', 'nome', 'titulo'];
+  const nameFields = ["name", "title", "nome", "titulo"];
   nameFields.forEach((field) => {
-    if (cleanData[field] && typeof cleanData[field] === 'string') {
+    if (cleanData[field] && typeof cleanData[field] === "string") {
       cleanData[field] = `${cleanData[field]}${customSuffix}`;
     }
   });

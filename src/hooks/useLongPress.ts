@@ -1,4 +1,4 @@
-import { useRef, useCallback, MouseEvent, TouchEvent } from 'react';
+import { useRef, useCallback, MouseEvent, TouchEvent } from "react";
 
 export interface UseLongPressOptions {
   onLongPress: (e: MouseEvent | TouchEvent) => void;
@@ -13,19 +13,28 @@ export function useLongPress(options: UseLongPressOptions) {
   const isLongPress = useRef(false);
   const targetRef = useRef<EventTarget | null>(null);
 
-  const start = useCallback((e: MouseEvent | TouchEvent) => {
-    if (shouldPreventDefault && e.target) {
-      e.target.addEventListener('contextmenu', (ev) => ev.preventDefault(), { once: true });
-    }
-    targetRef.current = e.target;
-    isLongPress.current = false;
-    timerRef.current = setTimeout(() => { isLongPress.current = true; onLongPress(e); }, delay);
-  }, [onLongPress, delay, shouldPreventDefault]);
+  const start = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (shouldPreventDefault && e.target) {
+        e.target.addEventListener("contextmenu", (ev) => ev.preventDefault(), { once: true });
+      }
+      targetRef.current = e.target;
+      isLongPress.current = false;
+      timerRef.current = setTimeout(() => {
+        isLongPress.current = true;
+        onLongPress(e);
+      }, delay);
+    },
+    [onLongPress, delay, shouldPreventDefault]
+  );
 
-  const clear = useCallback((e: MouseEvent | TouchEvent, shouldTriggerClick = true) => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    if (shouldTriggerClick && !isLongPress.current && onClick) onClick(e);
-  }, [onClick]);
+  const clear = useCallback(
+    (e: MouseEvent | TouchEvent, shouldTriggerClick = true) => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      if (shouldTriggerClick && !isLongPress.current && onClick) onClick(e);
+    },
+    [onClick]
+  );
 
   return {
     onMouseDown: start,

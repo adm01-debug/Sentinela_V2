@@ -1,5 +1,5 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { cn } from "@/lib/utils";
 
 interface RadialProgressItem {
   value: number;
@@ -15,12 +15,17 @@ interface RadialProgressProps {
   className?: string;
 }
 
-export function RadialProgress({ items, size = 150, strokeWidth = 10, className }: RadialProgressProps) {
+export function RadialProgress({
+  items,
+  size = 150,
+  strokeWidth = 10,
+  className,
+}: RadialProgressProps) {
   const gap = 4;
 
   return (
-    <div className={cn('relative inline-flex items-center justify-center', className)}>
-      <svg width={size} height={size} className="transform -rotate-90">
+    <div className={cn("relative inline-flex items-center justify-center", className)}>
+      <svg width={size} height={size} className="-rotate-90 transform">
         {items.map((item, index) => {
           const radius = (size - strokeWidth) / 2 - index * (strokeWidth + gap);
           const circumference = radius * 2 * Math.PI;
@@ -29,8 +34,27 @@ export function RadialProgress({ items, size = 150, strokeWidth = 10, className 
 
           return (
             <React.Fragment key={index}>
-              <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="hsl(var(--muted))" strokeWidth={strokeWidth} opacity={0.3} />
-              <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={item.color} strokeWidth={strokeWidth} strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} className="transition-all duration-500 ease-out" />
+              <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke="hsl(var(--muted))"
+                strokeWidth={strokeWidth}
+                opacity={0.3}
+              />
+              <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke={item.color}
+                strokeWidth={strokeWidth}
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                strokeDashoffset={offset}
+                className="transition-all duration-500 ease-out"
+              />
             </React.Fragment>
           );
         })}
@@ -38,7 +62,9 @@ export function RadialProgress({ items, size = 150, strokeWidth = 10, className 
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
         {items.length === 1 ? (
           <>
-            <span className="text-2xl font-bold">{Math.round((items[0].value / items[0].max) * 100)}%</span>
+            <span className="text-2xl font-bold">
+              {Math.round((items[0].value / items[0].max) * 100)}%
+            </span>
             <span className="text-xs text-muted-foreground">{items[0].label}</span>
           </>
         ) : (

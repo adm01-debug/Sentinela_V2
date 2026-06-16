@@ -1,7 +1,7 @@
-import log from 'electron-log';
-import { clipboard } from 'electron';
-import { CONFIG } from '../../config';
-import { dlpEngine, DLPScanResult } from './dlpEngine';
+import log from "electron-log";
+import { clipboard } from "electron";
+import { CONFIG } from "../../config";
+import { dlpEngine, DLPScanResult } from "./dlpEngine";
 
 // ============================================================
 // Clipboard DLP — intercepta texto copiado e bloqueia se sensível
@@ -12,14 +12,14 @@ const POLL_INTERVAL_MS = 500;
 export class ClipboardDLP {
   private agentKey: string;
   private timer: NodeJS.Timeout | null = null;
-  private lastHash = '';
+  private lastHash = "";
 
   constructor(agentKey: string) {
     this.agentKey = agentKey;
   }
 
   start(): void {
-    log.info('Clipboard DLP started');
+    log.info("Clipboard DLP started");
     this.timer = setInterval(() => this.tick(), POLL_INTERVAL_MS);
   }
 
@@ -28,7 +28,7 @@ export class ClipboardDLP {
       clearInterval(this.timer);
       this.timer = null;
     }
-    log.info('Clipboard DLP stopped');
+    log.info("Clipboard DLP stopped");
   }
 
   private hash(s: string): string {
@@ -47,7 +47,7 @@ export class ClipboardDLP {
 
       const text = clipboard.readText();
       if (!text || text.length === 0) {
-        this.lastHash = '';
+        this.lastHash = "";
         return;
       }
 
@@ -55,24 +55,24 @@ export class ClipboardDLP {
       if (h === this.lastHash) return;
       this.lastHash = h;
 
-      const result = dlpEngine.scan(text, 'clipboard');
+      const result = dlpEngine.scan(text, "clipboard");
       if (!result.matched) return;
 
       this.handleMatch(text, result);
     } catch (err) {
-      log.debug('Clipboard DLP tick error', err);
+      log.debug("Clipboard DLP tick error", err);
     }
   }
 
   private handleMatch(text: string, result: DLPScanResult): void {
     log.warn(
       `DLP clipboard match: ${result.matches.length} hits, ` +
-      `severity=${result.highestSeverity}, action=${result.highestAction}`
+        `severity=${result.highestSeverity}, action=${result.highestAction}`
     );
 
-    if (result.highestAction === 'block' || result.highestAction === 'redact') {
+    if (result.highestAction === "block" || result.highestAction === "redact") {
       clipboard.clear();
-      this.lastHash = '';
+      this.lastHash = "";
     }
 
     // Group matches by classifier for compact payload
@@ -82,10 +82,10 @@ export class ClipboardDLP {
     }
     const summary = Array.from(byClassifier.entries())
       .map(([code, count]) => `${code}:${count}`)
-      .join(', ');
+      .join(", ");
 
     const payload = {
-      source_type: 'clipboard',
+      source_type: "clipboard",
       action_taken: result.highestAction,
       severity: result.highestSeverity,
       match_count: result.matches.length,
@@ -97,12 +97,12 @@ export class ClipboardDLP {
     };
 
     fetch(`${CONFIG.API_URL}/dlp-incident-report`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'x-agent-key': this.agentKey,
+        "Content-Type": "application/json",
+        "x-agent-key": this.agentKey,
       },
       body: JSON.stringify(payload),
-    }).catch((err) => log.warn('DLP incident report failed', err));
+    }).catch((err) => log.warn("DLP incident report failed", err));
   }
 }

@@ -1,7 +1,7 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface UserPreferences {
-  theme: 'light' | 'dark' | 'system';
+  theme: "light" | "dark" | "system";
   language: string;
   notifications: boolean;
   timezone: string;
@@ -20,8 +20,8 @@ interface UserState {
 
 export const useUserStore = create<UserState>()((set) => ({
   preferences: {
-    theme: 'system',
-    language: 'en',
+    theme: "system",
+    language: "en",
     notifications: true,
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   },

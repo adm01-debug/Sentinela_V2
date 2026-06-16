@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
-import { webhookService } from '@/services/webhookService';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
+import { webhookService } from "@/services/webhookService";
 
 // ============================================================
 // TYPES
@@ -64,7 +64,7 @@ export function useWebhooks() {
 
 export function useWebhook(id: string | null | undefined) {
   return useQuery({
-    queryKey: queryKeys.webhooks.detail(id || ''),
+    queryKey: queryKeys.webhooks.detail(id || ""),
     queryFn: () => webhookService.getWebhookById(id as string),
     enabled: !!id,
     ...queryPresets.detail,
@@ -73,7 +73,7 @@ export function useWebhook(id: string | null | undefined) {
 
 export function useWebhookLogs(webhookId: string | undefined) {
   return useQuery({
-    queryKey: queryKeys.webhooks.logs(webhookId || ''),
+    queryKey: queryKeys.webhooks.logs(webhookId || ""),
     queryFn: () => webhookService.getWebhookLogs(webhookId as string),
     enabled: !!webhookId,
     ...queryPresets.list,
@@ -93,15 +93,15 @@ export function useCreateWebhook() {
     onSuccess: () => {
       invalidateRelated.webhooks(queryClient);
       toast({
-        title: 'Webhook criado',
-        description: 'O webhook foi criado com sucesso.',
+        title: "Webhook criado",
+        description: "O webhook foi criado com sucesso.",
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Erro ao criar webhook',
+        title: "Erro ao criar webhook",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -116,15 +116,15 @@ export function useUpdateWebhook() {
     onSuccess: () => {
       invalidateRelated.webhooks(queryClient);
       toast({
-        title: 'Webhook atualizado',
-        description: 'O webhook foi atualizado com sucesso.',
+        title: "Webhook atualizado",
+        description: "O webhook foi atualizado com sucesso.",
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Erro ao atualizar webhook',
+        title: "Erro ao atualizar webhook",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -139,15 +139,15 @@ export function useDeleteWebhook() {
     onSuccess: () => {
       invalidateRelated.webhooks(queryClient);
       toast({
-        title: 'Webhook excluído',
-        description: 'O webhook foi excluído com sucesso.',
+        title: "Webhook excluído",
+        description: "O webhook foi excluído com sucesso.",
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Erro ao excluir webhook',
+        title: "Erro ao excluir webhook",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -160,15 +160,15 @@ export function useTestWebhook() {
     mutationFn: (id: string) => webhookService.testWebhook(id),
     onSuccess: () => {
       toast({
-        title: 'Teste enviado',
-        description: 'O webhook de teste foi enviado com sucesso.',
+        title: "Teste enviado",
+        description: "O webhook de teste foi enviado com sucesso.",
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Erro ao testar webhook',
+        title: "Erro ao testar webhook",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -179,19 +179,20 @@ export function useToggleWebhook() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: ({ id, is_active }: { id: string; is_active: boolean }) => webhookService.toggleWebhook(id, is_active),
+    mutationFn: ({ id, is_active }: { id: string; is_active: boolean }) =>
+      webhookService.toggleWebhook(id, is_active),
     onSuccess: (data: Webhook) => {
       invalidateRelated.webhooks(queryClient);
       toast({
-        title: data.is_active ? 'Webhook ativado' : 'Webhook desativado',
-        description: `O webhook foi ${data.is_active ? 'ativado' : 'desativado'} com sucesso.`,
+        title: data.is_active ? "Webhook ativado" : "Webhook desativado",
+        description: `O webhook foi ${data.is_active ? "ativado" : "desativado"} com sucesso.`,
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Erro ao alterar status',
+        title: "Erro ao alterar status",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });

@@ -12,14 +12,14 @@ export function useHierarchy<T extends { id: string; parentId?: string }>(
 ): HierarchyNode<T>[] {
   return useMemo(() => {
     const map = new Map<string, HierarchyNode<T>>();
-    
-    items.forEach(item => {
+
+    items.forEach((item) => {
       map.set(item.id, { item, children: [], depth: 0 });
     });
 
     const roots: HierarchyNode<T>[] = [];
-    
-    items.forEach(item => {
+
+    items.forEach((item) => {
       const node = map.get(item.id)!;
       if (item.parentId && map.has(item.parentId)) {
         const parent = map.get(item.parentId)!;

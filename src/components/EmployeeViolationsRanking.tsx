@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
-import { Trophy, Medal, Award, AlertTriangle } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { useSecurityViolations, SecurityViolation } from '@/hooks/useSecurityViolations';
+import { useMemo } from "react";
+import { Trophy, Medal, Award, AlertTriangle } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useSecurityViolations, SecurityViolation } from "@/hooks/useSecurityViolations";
 
 interface EmployeeRanking {
   name: string;
@@ -21,7 +21,7 @@ export function EmployeeViolationsRanking() {
     const employeeMap = new Map<string, EmployeeRanking>();
 
     violations.forEach((violation: SecurityViolation & { employee_name?: string }) => {
-      const employeeName = violation.employee?.name || violation.employee_name || 'Unknown';
+      const employeeName = violation.employee?.name || violation.employee_name || "Unknown";
       const existing = employeeMap.get(employeeName) || {
         name: employeeName,
         totalViolations: 0,
@@ -32,9 +32,9 @@ export function EmployeeViolationsRanking() {
       };
 
       existing.totalViolations += 1;
-      if (violation.severity === 'critical') existing.criticalCount += 1;
-      else if (violation.severity === 'high') existing.highCount += 1;
-      else if (violation.severity === 'medium') existing.mediumCount += 1;
+      if (violation.severity === "critical") existing.criticalCount += 1;
+      else if (violation.severity === "high") existing.highCount += 1;
+      else if (violation.severity === "medium") existing.mediumCount += 1;
       else existing.lowCount += 1;
 
       employeeMap.set(employeeName, existing);
@@ -54,9 +54,9 @@ export function EmployeeViolationsRanking() {
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
+      .split(" ")
       .map((n: string) => n[0])
-      .join('')
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
@@ -91,9 +91,7 @@ export function EmployeeViolationsRanking() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-center text-muted-foreground py-8">
-            Nenhuma violação registrada
-          </p>
+          <p className="py-8 text-center text-muted-foreground">Nenhuma violação registrada</p>
         </CardContent>
       </Card>
     );
@@ -112,38 +110,37 @@ export function EmployeeViolationsRanking() {
           {ranking.map((employee, index) => (
             <div
               key={employee.name}
-              className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+              className="flex items-center gap-3 rounded-lg bg-muted/50 p-3 transition-colors hover:bg-muted"
             >
-              <div className="flex items-center justify-center w-6">
-                {getRankIcon(index)}
-              </div>
-              
+              <div className="flex w-6 items-center justify-center">{getRankIcon(index)}</div>
+
               <Avatar className="h-9 w-9">
-                <AvatarFallback className="text-xs bg-primary/10 text-primary">
+                <AvatarFallback className="bg-primary/10 text-xs text-primary">
                   {getInitials(employee.name)}
                 </AvatarFallback>
               </Avatar>
-              
-              <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{employee.name}</p>
-                <div className="flex gap-1 mt-1">
+
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-medium">{employee.name}</p>
+                <div className="mt-1 flex gap-1">
                   {employee.criticalCount > 0 && (
-                    <Badge variant="destructive" className="text-xs px-1.5 py-0">
+                    <Badge variant="destructive" className="px-1.5 py-0 text-xs">
                       {employee.criticalCount} críticas
                     </Badge>
                   )}
                   {employee.highCount > 0 && (
-                    <Badge variant="outline" className="text-xs px-1.5 py-0 border-orange-500 text-orange-500">
+                    <Badge
+                      variant="outline"
+                      className="border-orange-500 px-1.5 py-0 text-xs text-orange-500"
+                    >
                       {employee.highCount} altas
                     </Badge>
                   )}
                 </div>
               </div>
-              
+
               <div className="text-right">
-                <p className="text-2xl font-bold text-destructive">
-                  {employee.totalViolations}
-                </p>
+                <p className="text-2xl font-bold text-destructive">{employee.totalViolations}</p>
                 <p className="text-xs text-muted-foreground">violações</p>
               </div>
             </div>

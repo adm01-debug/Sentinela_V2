@@ -18,7 +18,7 @@ export function usePWA() {
     };
 
     window.addEventListener("beforeinstallprompt", handler);
-    
+
     if (window.matchMedia("(display-mode: standalone)").matches) {
       setIsInstalled(true);
     }
@@ -28,10 +28,10 @@ export function usePWA() {
 
   const install = useCallback(async () => {
     if (!deferredPrompt) return false;
-    
+
     await deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    
+
     if (outcome === "accepted") {
       setIsInstalled(true);
       setCanInstall(false);

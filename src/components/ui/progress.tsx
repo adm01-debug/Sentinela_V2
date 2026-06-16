@@ -18,7 +18,8 @@ const progressVariants = cva("relative w-full overflow-hidden rounded-full bg-se
 });
 
 interface ProgressProps
-  extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>,
+  extends
+    React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>,
     VariantProps<typeof progressVariants> {
   color?: "primary" | "success" | "warning" | "destructive" | "info";
   showValue?: boolean;
@@ -26,10 +27,7 @@ interface ProgressProps
   striped?: boolean;
 }
 
-const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  ProgressProps
->(
+const Progress = React.forwardRef<React.ElementRef<typeof ProgressPrimitive.Root>, ProgressProps>(
   (
     {
       className,
@@ -53,24 +51,20 @@ const Progress = React.forwardRef<
 
     return (
       <div className={cn("relative", className)}>
-        <ProgressPrimitive.Root
-          ref={ref}
-          className={cn(progressVariants({ size }))}
-          {...props}
-        >
+        <ProgressPrimitive.Root ref={ref} className={cn(progressVariants({ size }))} {...props}>
           <ProgressPrimitive.Indicator
             className={cn(
-              "h-full w-full flex-1 transition-all duration-500 ease-out rounded-full",
+              "h-full w-full flex-1 rounded-full transition-all duration-500 ease-out",
               colorClasses[color],
               animated && "animate-pulse",
               striped &&
-                "bg-[length:1rem_1rem] bg-[linear-gradient(45deg,rgba(255,255,255,.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,.15)_50%,rgba(255,255,255,.15)_75%,transparent_75%,transparent)]"
+                "bg-[linear-gradient(45deg,rgba(255,255,255,.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,.15)_50%,rgba(255,255,255,.15)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem]"
             )}
             style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
           />
         </ProgressPrimitive.Root>
         {showValue && (
-          <span className="absolute right-0 -top-6 text-sm text-muted-foreground">
+          <span className="absolute -top-6 right-0 text-sm text-muted-foreground">
             {Math.round(value || 0)}%
           </span>
         )}
@@ -138,9 +132,7 @@ const CircularProgress = ({
           }}
         />
       </svg>
-      {showValue && (
-        <span className="absolute text-sm font-medium">{Math.round(percentage)}%</span>
-      )}
+      {showValue && <span className="absolute text-sm font-medium">{Math.round(percentage)}%</span>}
     </div>
   );
 };
@@ -172,7 +164,7 @@ const StepsProgress = ({ steps, currentStep, className }: StepsProgressProps) =>
                 <div
                   className={cn(
                     "flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all duration-200",
-                    isCompleted && "bg-primary border-primary text-primary-foreground",
+                    isCompleted && "border-primary bg-primary text-primary-foreground",
                     isCurrent && "border-primary text-primary",
                     !isCompleted && !isCurrent && "border-muted text-muted-foreground"
                   )}
@@ -196,14 +188,14 @@ const StepsProgress = ({ steps, currentStep, className }: StepsProgressProps) =>
                     {step.label}
                   </p>
                   {step.description && (
-                    <p className="text-xs text-muted-foreground mt-0.5">{step.description}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{step.description}</p>
                   )}
                 </div>
               </div>
               {!isLast && (
                 <div
                   className={cn(
-                    "flex-1 h-0.5 mx-4 transition-colors duration-200",
+                    "mx-4 h-0.5 flex-1 transition-colors duration-200",
                     isCompleted ? "bg-primary" : "bg-muted"
                   )}
                 />

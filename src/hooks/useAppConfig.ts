@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { useState, useCallback, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface AppConfig {
   id: string;
@@ -27,16 +27,16 @@ interface UseAppConfigReturn {
 }
 
 const defaultConfig: AppConfig = {
-  id: 'default',
+  id: "default",
   maintenanceMode: false,
   maxUploadSize: 10485760, // 10MB
   sessionTimeout: 3600,
   mfaRequired: false,
-  defaultLanguage: 'pt-BR',
-  supportedLanguages: ['pt-BR', 'en', 'es'],
+  defaultLanguage: "pt-BR",
+  supportedLanguages: ["pt-BR", "en", "es"],
   theme: {
-    primaryColor: '#1890ff',
-    secondaryColor: '#52c41a',
+    primaryColor: "#1890ff",
+    secondaryColor: "#52c41a",
   },
   features: {},
 };
@@ -50,16 +50,16 @@ export function useAppConfig(): UseAppConfigReturn {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const { data, error: fetchError } = await supabase
-        .from('app_config')
-        .select('*')
+        .from("app_config")
+        .select("*")
         .maybeSingle();
-      
+
       if (fetchError) throw fetchError;
-      setConfig(data as AppConfig || defaultConfig);
+      setConfig((data as AppConfig) || defaultConfig);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch app config');
+      setError(err instanceof Error ? err.message : "Failed to fetch app config");
       setConfig(defaultConfig);
     } finally {
       setIsLoading(false);
@@ -70,14 +70,17 @@ export function useAppConfig(): UseAppConfigReturn {
     fetchConfig();
   }, [fetchConfig]);
 
-  const updateConfig = useCallback(async (updates: Partial<AppConfig>) => {
-    const { error } = await supabase
-      .from('app_config')
-      .upsert({ ...config, ...updates } as Record<string, unknown>);
-    
-    if (error) throw error;
-    await fetchConfig();
-  }, [config, fetchConfig]);
+  const updateConfig = useCallback(
+    async (updates: Partial<AppConfig>) => {
+      const { error } = await supabase
+        .from("app_config")
+        .upsert({ ...config, ...updates } as Record<string, unknown>);
+
+      if (error) throw error;
+      await fetchConfig();
+    },
+    [config, fetchConfig]
+  );
 
   return {
     config,

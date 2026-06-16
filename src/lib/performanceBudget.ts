@@ -3,7 +3,7 @@
  * Only active in development mode.
  */
 
-import { logger } from '@/lib/logger';
+import { logger } from "@/lib/logger";
 
 interface PerformanceBudget {
   /** Max JS bundle size in KB */
@@ -37,50 +37,53 @@ interface BudgetViolation {
   value: number;
   budget: number;
   unit: string;
-  severity: 'warning' | 'critical';
+  severity: "warning" | "critical";
 }
 
 function checkDOMBudget(): BudgetViolation | null {
-  const nodeCount = document.querySelectorAll('*').length;
+  const nodeCount = document.querySelectorAll("*").length;
   if (nodeCount > BUDGET.maxDOMNodes) {
     return {
-      metric: 'DOM Nodes',
+      metric: "DOM Nodes",
       value: nodeCount,
       budget: BUDGET.maxDOMNodes,
-      unit: 'nodes',
-      severity: nodeCount > BUDGET.maxDOMNodes * 1.5 ? 'critical' : 'warning',
+      unit: "nodes",
+      severity: nodeCount > BUDGET.maxDOMNodes * 1.5 ? "critical" : "warning",
     };
   }
   return null;
 }
 
 function checkWebVitals(): void {
-  if (!('PerformanceObserver' in window)) return;
+  if (!("PerformanceObserver" in window)) return;
 
   try {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         const violations: BudgetViolation[] = [];
 
-        if (entry.entryType === 'largest-contentful-paint') {
+        if (entry.entryType === "largest-contentful-paint") {
           const lcp = entry.startTime;
           if (lcp > BUDGET.maxLCP) {
             violations.push({
-              metric: 'LCP',
+              metric: "LCP",
               value: Math.round(lcp),
               budget: BUDGET.maxLCP,
-              unit: 'ms',
-              severity: lcp > BUDGET.maxLCP * 1.5 ? 'critical' : 'warning',
+              unit: "ms",
+              severity: lcp > BUDGET.maxLCP * 1.5 ? "critical" : "warning",
             });
           }
         }
 
-        if (entry.entryType === 'layout-shift' && !(entry as PerformanceEntry & { hadRecentInput?: boolean }).hadRecentInput) {
+        if (
+          entry.entryType === "layout-shift" &&
+          !(entry as PerformanceEntry & { hadRecentInput?: boolean }).hadRecentInput
+        ) {
           // CLS tracking is cumulative - handled elsewhere
         }
 
         violations.forEach((v) => {
-          const icon = v.severity === 'critical' ? '🔴' : '🟡';
+          const icon = v.severity === "critical" ? "🔴" : "🟡";
           logger.warn(
             `${icon} Performance budget exceeded: ${v.metric} = ${v.value}${v.unit} (budget: ${v.budget}${v.unit})`
           );
@@ -88,8 +91,8 @@ function checkWebVitals(): void {
       }
     });
 
-    observer.observe({ type: 'largest-contentful-paint', buffered: true });
-    observer.observe({ type: 'layout-shift', buffered: true });
+    observer.observe({ type: "largest-contentful-paint", buffered: true });
+    observer.observe({ type: "layout-shift", buffered: true });
   } catch {
     // PerformanceObserver not supported for these types
   }
@@ -152,5 +155,5 @@ export function initPerformanceMonitoring(): void {
     auditPerformanceBudget();
   }, 30000);
 
-  logger.info('📊 Performance budget monitoring initialized');
+  logger.info("📊 Performance budget monitoring initialized");
 }

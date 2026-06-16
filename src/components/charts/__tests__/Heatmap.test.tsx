@@ -1,41 +1,43 @@
-import type { ReactNode } from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import { BaseHeatmap } from '../BaseHeatmap';
-import { ThemeProvider } from '@/providers/ThemeProvider';
+import type { ReactNode } from "react";
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { BaseHeatmap } from "../BaseHeatmap";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
-vi.mock('recharts', async () => {
-  const actual = await vi.importActual('recharts');
+vi.mock("recharts", async () => {
+  const actual = await vi.importActual("recharts");
   return {
     ...actual,
-    ResponsiveContainer: ({ children }: { children: ReactNode }) => <div data-testid="responsive-container">{children}</div>,
+    ResponsiveContainer: ({ children }: { children: ReactNode }) => (
+      <div data-testid="responsive-container">{children}</div>
+    ),
   };
 });
 
-describe('BaseHeatmap', () => {
+describe("BaseHeatmap", () => {
   const mockData = [
-    { x: 'Mon', y: '10am', value: 10 },
-    { x: 'Mon', y: '11am', value: 20 },
-    { x: 'Tue', y: '10am', value: 15 },
+    { x: "Mon", y: "10am", value: 10 },
+    { x: "Mon", y: "11am", value: 20 },
+    { x: "Tue", y: "10am", value: 15 },
   ];
 
-  it('renders correctly with data', () => {
+  it("renders correctly with data", () => {
     render(
       <ThemeProvider>
         <BaseHeatmap data={mockData} />
       </ThemeProvider>
     );
-    
-    expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
+
+    expect(screen.getByTestId("responsive-container")).toBeInTheDocument();
   });
 
-  it('renders empty state when data is empty', () => {
+  it("renders empty state when data is empty", () => {
     render(
       <ThemeProvider>
         <BaseHeatmap data={[]} emptyTitle="No data available" />
       </ThemeProvider>
     );
-    
-    expect(screen.getByText('No data available')).toBeInTheDocument();
+
+    expect(screen.getByText("No data available")).toBeInTheDocument();
   });
 });

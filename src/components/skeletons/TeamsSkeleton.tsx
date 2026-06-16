@@ -1,15 +1,15 @@
-import { memo } from 'react';
-import { SkeletonPageLayout } from './SkeletonPageLayout';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { memo } from "react";
+import { SkeletonPageLayout } from "./SkeletonPageLayout";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export const TeamsSkeleton = memo(function TeamsSkeleton() {
   return (
     <SkeletonPageLayout>
-      <div className="space-y-6 animate-pulse" role="status" aria-label="Loading teams">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="animate-pulse space-y-6" role="status" aria-label="Loading teams">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <Skeleton className="h-8 w-32 mb-2" />
+            <Skeleton className="mb-2 h-8 w-32" />
             <Skeleton className="h-4 w-56" />
           </div>
           <Skeleton className="h-10 w-36" />
@@ -22,7 +22,7 @@ export const TeamsSkeleton = memo(function TeamsSkeleton() {
                   <div className="flex items-center gap-3">
                     <Skeleton className="h-10 w-10 rounded-lg" />
                     <div>
-                      <Skeleton className="h-5 w-32 mb-1" />
+                      <Skeleton className="mb-1 h-5 w-32" />
                       <Skeleton className="h-3 w-24" />
                     </div>
                   </div>
@@ -30,17 +30,26 @@ export const TeamsSkeleton = memo(function TeamsSkeleton() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center gap-2 mb-4">
+                <div className="mb-4 flex items-center gap-2">
                   <div className="flex -space-x-2">
                     {[1, 2, 3, 4].map((j) => (
-                      <Skeleton key={j} className="h-8 w-8 rounded-full border-2 border-background" />
+                      <Skeleton
+                        key={j}
+                        className="h-8 w-8 rounded-full border-2 border-background"
+                      />
                     ))}
                   </div>
                   <Skeleton className="h-4 w-20" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div><Skeleton className="h-3 w-16 mb-1" /><Skeleton className="h-5 w-12" /></div>
-                  <div><Skeleton className="h-3 w-20 mb-1" /><Skeleton className="h-5 w-16" /></div>
+                  <div>
+                    <Skeleton className="mb-1 h-3 w-16" />
+                    <Skeleton className="h-5 w-12" />
+                  </div>
+                  <div>
+                    <Skeleton className="mb-1 h-3 w-20" />
+                    <Skeleton className="h-5 w-16" />
+                  </div>
                 </div>
               </CardContent>
             </Card>

@@ -24,7 +24,7 @@ export interface Screenshot {
   deletedAt?: string;
 }
 
-export type ImageFormat = 'png' | 'jpg' | 'webp';
+export type ImageFormat = "png" | "jpg" | "webp";
 
 export interface ScreenshotMetadata {
   activeWindow?: string;
@@ -55,20 +55,20 @@ export interface ScreenshotAnalysis {
 export interface ScreenshotFlag {
   type: FlagType;
   reason: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   flaggedAt: string;
   flaggedBy?: string;
   resolvedAt?: string;
   resolvedBy?: string;
 }
 
-export type FlagType = 
-  | 'inappropriate_content'
-  | 'sensitive_data'
-  | 'policy_violation'
-  | 'suspicious_activity'
-  | 'manual_review'
-  | 'ai_flagged';
+export type FlagType =
+  | "inappropriate_content"
+  | "sensitive_data"
+  | "policy_violation"
+  | "suspicious_activity"
+  | "manual_review"
+  | "ai_flagged";
 
 export interface ScreenshotFilters {
   employeeId?: string;
@@ -87,7 +87,7 @@ export interface ScreenshotFilters {
 
 export interface ScreenshotSettings {
   captureInterval: number;
-  quality: 'low' | 'medium' | 'high';
+  quality: "low" | "medium" | "high";
   format: ImageFormat;
   blurSensitive: boolean;
   retentionDays: number;
@@ -107,6 +107,6 @@ export interface ScreenshotStats {
 
 export interface ScreenshotBulkAction {
   screenshotIds: string[];
-  action: 'archive' | 'delete' | 'blur' | 'flag' | 'unflag';
+  action: "archive" | "delete" | "blur" | "flag" | "unflag";
   reason?: string;
 }

@@ -1,5 +1,5 @@
 // Billing types for Sentinela v17
-import type { Subscription } from './subscription';
+import type { Subscription } from "./subscription";
 
 export interface BillingAccount {
   id: string;
@@ -18,14 +18,14 @@ export interface BillingAccount {
   updatedAt: string;
 }
 
-export type BillingStatus = 'active' | 'past_due' | 'suspended' | 'cancelled';
+export type BillingStatus = "active" | "past_due" | "suspended" | "cancelled";
 
 export interface BillingPlan {
   id: string;
   name: string;
-  tier: 'free' | 'starter' | 'professional' | 'enterprise';
+  tier: "free" | "starter" | "professional" | "enterprise";
   price: number;
-  billingCycle: 'monthly' | 'yearly';
+  billingCycle: "monthly" | "yearly";
   features: PlanFeature[];
   limits: PlanLimits;
   isActive: boolean;
@@ -51,7 +51,7 @@ export interface PlanLimits {
 
 export interface PaymentMethod {
   id: string;
-  type: 'card' | 'bank' | 'paypal' | 'invoice';
+  type: "card" | "bank" | "paypal" | "invoice";
   last4?: string;
   brand?: string;
   expiryMonth?: number;
@@ -85,7 +85,7 @@ export interface Invoice {
   createdAt: string;
 }
 
-export type InvoiceStatus = 'draft' | 'pending' | 'paid' | 'overdue' | 'cancelled' | 'refunded';
+export type InvoiceStatus = "draft" | "pending" | "paid" | "overdue" | "cancelled" | "refunded";
 
 export interface InvoiceItem {
   description: string;

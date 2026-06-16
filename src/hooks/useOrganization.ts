@@ -19,7 +19,7 @@ export function useOrganization() {
   }, []);
 
   const addMember = useCallback((memberId: string) => {
-    setOrganization(org => org ? { ...org, members: [...org.members, memberId] } : null);
+    setOrganization((org) => (org ? { ...org, members: [...org.members, memberId] } : null));
   }, []);
 
   return { organization, loading, load, addMember };

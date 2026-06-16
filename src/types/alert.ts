@@ -1,7 +1,7 @@
 export interface Alert {
   id: string;
-  type: 'security' | 'productivity' | 'policy' | 'system';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  type: "security" | "productivity" | "policy" | "system";
+  severity: "low" | "medium" | "high" | "critical";
   title: string;
   message: string;
   employeeId?: string;
@@ -17,8 +17,8 @@ export interface Alert {
 export interface AlertRule {
   id: string;
   name: string;
-  type: Alert['type'];
-  severity: Alert['severity'];
+  type: Alert["type"];
+  severity: Alert["severity"];
   enabled: boolean;
   conditions: AlertCondition[];
   actions: AlertAction[];
@@ -26,11 +26,11 @@ export interface AlertRule {
 
 export interface AlertCondition {
   field: string;
-  operator: 'eq' | 'neq' | 'gt' | 'lt' | 'contains' | 'regex';
+  operator: "eq" | "neq" | "gt" | "lt" | "contains" | "regex";
   value: string | number;
 }
 
 export interface AlertAction {
-  type: 'email' | 'slack' | 'webhook' | 'dashboard';
+  type: "email" | "slack" | "webhook" | "dashboard";
   config: unknown;
 }

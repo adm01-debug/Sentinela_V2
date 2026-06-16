@@ -1,16 +1,23 @@
 import { useState, useCallback } from "react";
 
-interface Snackbar { id: string; message: string; type: "success" | "error" | "info"; }
+interface Snackbar {
+  id: string;
+  message: string;
+  type: "success" | "error" | "info";
+}
 
 export function useSnackbar(duration = 3000) {
   const [snackbars, setSnackbars] = useState<Snackbar[]>([]);
 
-  const show = useCallback((message: string, type: Snackbar["type"] = "info") => {
-    const id = crypto.randomUUID();
-    setSnackbars(prev => [...prev, { id, message, type }]);
-    setTimeout(() => setSnackbars(prev => prev.filter(s => s.id !== id)), duration);
-    return id;
-  }, [duration]);
+  const show = useCallback(
+    (message: string, type: Snackbar["type"] = "info") => {
+      const id = crypto.randomUUID();
+      setSnackbars((prev) => [...prev, { id, message, type }]);
+      setTimeout(() => setSnackbars((prev) => prev.filter((s) => s.id !== id)), duration);
+      return id;
+    },
+    [duration]
+  );
 
   const success = useCallback((msg: string) => show(msg, "success"), [show]);
   const error = useCallback((msg: string) => show(msg, "error"), [show]);

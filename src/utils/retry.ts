@@ -4,47 +4,44 @@ export interface RetryOptions {
   maxAttempts?: number;
   delay?: number;
   maxDelay?: number;
-  backoff?: 'linear' | 'exponential' | 'fixed';
+  backoff?: "linear" | "exponential" | "fixed";
   backoffFactor?: number;
   retryOn?: (error: Error) => boolean;
   onRetry?: (error: Error, attempt: number) => void;
   signal?: AbortSignal;
 }
 
-const defaultOptions: Required<Omit<RetryOptions, 'retryOn' | 'onRetry' | 'signal'>> = {
+const defaultOptions: Required<Omit<RetryOptions, "retryOn" | "onRetry" | "signal">> = {
   maxAttempts: 3,
   delay: 1000,
   maxDelay: 30000,
-  backoff: 'exponential',
+  backoff: "exponential",
   backoffFactor: 2,
 };
 
 function calculateDelay(attempt: number, options: Required<RetryOptions>): number {
   let delay: number;
   switch (options.backoff) {
-    case 'linear':
+    case "linear":
       delay = options.delay * attempt;
       break;
-    case 'exponential':
+    case "exponential":
       delay = options.delay * Math.pow(options.backoffFactor, attempt - 1);
       break;
-    case 'fixed':
+    case "fixed":
     default:
       delay = options.delay;
   }
   return Math.min(delay, options.maxDelay);
 }
 
-export async function retry<T>(
-  fn: () => Promise<T>,
-  options: RetryOptions = {}
-): Promise<T> {
+export async function retry<T>(fn: () => Promise<T>, options: RetryOptions = {}): Promise<T> {
   const opts = { ...defaultOptions, ...options } as Required<RetryOptions>;
-  let lastError: Error = new Error('Retry failed');
+  let lastError: Error = new Error("Retry failed");
 
   for (let attempt = 1; attempt <= opts.maxAttempts; attempt++) {
     if (opts.signal?.aborted) {
-      throw new Error('Retry aborted');
+      throw new Error("Retry aborted");
     }
 
     try {
@@ -92,10 +89,10 @@ export async function retryWithFallback<T>(
 export async function retryUntil<T>(
   fn: () => Promise<T>,
   predicate: (result: T) => boolean,
-  options: Omit<RetryOptions, 'retryOn'> = {}
+  options: Omit<RetryOptions, "retryOn"> = {}
 ): Promise<T> {
   const opts = { ...defaultOptions, ...options };
-  
+
   for (let attempt = 1; attempt <= opts.maxAttempts; attempt++) {
     const result = await fn();
     if (predicate(result)) {
@@ -118,18 +115,21 @@ export class RetryError extends Error {
     public readonly lastError: Error
   ) {
     super(message);
-    this.name = 'RetryError';
+    this.name = "RetryError";
   }
 }
 
 export function isRetryable(error: Error): boolean {
-  const retryableCodes = ['ECONNRESET', 'ETIMEDOUT', 'ENOTFOUND', 'EAI_AGAIN'];
+  const retryableCodes = ["ECONNRESET", "ETIMEDOUT", "ENOTFOUND", "EAI_AGAIN"];
   const retryableStatuses = [408, 429, 500, 502, 503, 504];
 
-  if ('code' in error && retryableCodes.includes((error as Error & { code: string }).code)) {
+  if ("code" in error && retryableCodes.includes((error as Error & { code: string }).code)) {
     return true;
   }
-  if ('status' in error && retryableStatuses.includes((error as Error & { status: number }).status)) {
+  if (
+    "status" in error &&
+    retryableStatuses.includes((error as Error & { status: number }).status)
+  ) {
     return true;
   }
   return false;

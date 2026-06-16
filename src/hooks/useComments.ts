@@ -17,18 +17,18 @@ export function useComments() {
       content,
       author,
       createdAt: new Date(),
-      parentId
+      parentId,
     };
-    setComments(prev => [...prev, comment]);
+    setComments((prev) => [...prev, comment]);
     return comment;
   }, []);
 
   const remove = useCallback((id: string) => {
-    setComments(prev => prev.filter(c => c.id !== id && c.parentId !== id));
+    setComments((prev) => prev.filter((c) => c.id !== id && c.parentId !== id));
   }, []);
 
   const edit = useCallback((id: string, content: string) => {
-    setComments(prev => prev.map(c => c.id === id ? { ...c, content } : c));
+    setComments((prev) => prev.map((c) => (c.id === id ? { ...c, content } : c)));
   }, []);
 
   return { comments, add, remove, edit };

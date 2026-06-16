@@ -23,22 +23,28 @@ export interface Export {
   createdAt: string;
 }
 
-export type ExportType = 'manual' | 'scheduled' | 'automated';
+export type ExportType = "manual" | "scheduled" | "automated";
 
-export type ExportResourceType = 
-  | 'employees'
-  | 'activities'
-  | 'screenshots'
-  | 'alerts'
-  | 'reports'
-  | 'users'
-  | 'teams'
-  | 'audit_logs'
-  | 'analytics';
+export type ExportResourceType =
+  | "employees"
+  | "activities"
+  | "screenshots"
+  | "alerts"
+  | "reports"
+  | "users"
+  | "teams"
+  | "audit_logs"
+  | "analytics";
 
-export type ExportFormat = 'csv' | 'xlsx' | 'json' | 'pdf' | 'xml';
+export type ExportFormat = "csv" | "xlsx" | "json" | "pdf" | "xml";
 
-export type ExportStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'cancelled' | 'expired';
+export type ExportStatus =
+  | "pending"
+  | "processing"
+  | "completed"
+  | "failed"
+  | "cancelled"
+  | "expired";
 
 export interface ExportOptions {
   includeHeaders: boolean;
@@ -46,7 +52,7 @@ export interface ExportOptions {
   timezone: string;
   delimiter?: string;
   encoding?: string;
-  compression?: 'none' | 'zip' | 'gzip';
+  compression?: "none" | "zip" | "gzip";
   splitSize?: number;
   includeMetadata: boolean;
   anonymize?: boolean;
@@ -66,7 +72,7 @@ export interface ExportSchedule {
   id: string;
   name: string;
   exportConfig: ExportCreateInput;
-  frequency: 'daily' | 'weekly' | 'monthly';
+  frequency: "daily" | "weekly" | "monthly";
   dayOfWeek?: number;
   dayOfMonth?: number;
   time: string;

@@ -10,6 +10,8 @@ export function useStylesheet(href) {
     link.href = href;
     document.head.appendChild(link);
 
-    return () => { link.remove(); };
+    return () => {
+      link.remove();
+    };
   }, [href]);
 }

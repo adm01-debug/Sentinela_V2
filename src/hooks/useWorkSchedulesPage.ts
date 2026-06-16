@@ -1,7 +1,7 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useWorkSchedules, type WorkSchedule } from '@/hooks/useWorkSchedules';
-import { useEmployees } from '@/hooks/useEmployees';
-import { useOvertimeNotifications } from '@/hooks/useOvertimeNotifications';
+import { useState, useMemo, useCallback } from "react";
+import { useWorkSchedules, type WorkSchedule } from "@/hooks/useWorkSchedules";
+import { useEmployees } from "@/hooks/useEmployees";
+import { useOvertimeNotifications } from "@/hooks/useOvertimeNotifications";
 
 // ============================================================
 // TYPES
@@ -29,23 +29,23 @@ export interface AssignFormData {
 }
 
 export const WEEKDAYS = [
-  { value: 1, label: 'Segunda', short: 'Seg' },
-  { value: 2, label: 'Terça', short: 'Ter' },
-  { value: 3, label: 'Quarta', short: 'Qua' },
-  { value: 4, label: 'Quinta', short: 'Qui' },
-  { value: 5, label: 'Sexta', short: 'Sex' },
-  { value: 6, label: 'Sábado', short: 'Sáb' },
-  { value: 0, label: 'Domingo', short: 'Dom' },
+  { value: 1, label: "Segunda", short: "Seg" },
+  { value: 2, label: "Terça", short: "Ter" },
+  { value: 3, label: "Quarta", short: "Qua" },
+  { value: 4, label: "Quinta", short: "Qui" },
+  { value: 5, label: "Sexta", short: "Sex" },
+  { value: 6, label: "Sábado", short: "Sáb" },
+  { value: 0, label: "Domingo", short: "Dom" },
 ] as const;
 
 const initialScheduleForm: ScheduleFormData = {
-  name: '',
-  description: '',
+  name: "",
+  description: "",
   work_days: [1, 2, 3, 4, 5],
-  start_time: '09:00',
-  end_time: '18:00',
-  break_start: '12:00',
-  break_end: '13:00',
+  start_time: "09:00",
+  end_time: "18:00",
+  break_start: "12:00",
+  break_end: "13:00",
   flexible_start: false,
   flexible_minutes: 15,
   overtime_allowed: true,
@@ -54,9 +54,9 @@ const initialScheduleForm: ScheduleFormData = {
 };
 
 const initialAssignForm: AssignFormData = {
-  employee_id: '',
-  schedule_id: '',
-  effective_date: new Date().toISOString().split('T')[0],
+  employee_id: "",
+  schedule_id: "",
+  effective_date: new Date().toISOString().split("T")[0],
 };
 
 // ============================================================
@@ -70,10 +70,23 @@ export function useWorkSchedulesPage() {
     [schedulesQuery.data]
   );
   const employeeSchedules = useMemo<
-    Array<{ employee_id: string; schedule_id: string; id: string; effective_from: string; [key: string]: unknown }>
+    Array<{
+      employee_id: string;
+      schedule_id: string;
+      id: string;
+      effective_from: string;
+      [key: string]: unknown;
+    }>
   >(() => [], []);
   const overtimeRequests = useMemo<
-    Array<{ id: string; status: string; employee_name?: string; reason?: string; hours?: number; [key: string]: unknown }>
+    Array<{
+      id: string;
+      status: string;
+      employee_name?: string;
+      reason?: string;
+      hours?: number;
+      [key: string]: unknown;
+    }>
   >(() => [], []);
   const blockLogs = useMemo<Array<{ id: string; blocked_at: string; [key: string]: unknown }>>(
     () => [],
@@ -81,7 +94,10 @@ export function useWorkSchedulesPage() {
   );
   const loading = schedulesQuery.isLoading;
   const addSchedule = useCallback(async (_data: ScheduleFormData) => {}, []);
-  const updateSchedule = useCallback(async (_id: string, _data: Partial<ScheduleFormData>) => {}, []);
+  const updateSchedule = useCallback(
+    async (_id: string, _data: Partial<ScheduleFormData>) => {},
+    []
+  );
   const deleteSchedule = useCallback(async (_id: string) => {}, []);
   const assignSchedule = useCallback(
     async (_employeeId: string, _scheduleId?: string, _effectiveDate?: string) => {},
@@ -95,13 +111,13 @@ export function useWorkSchedulesPage() {
     () => (employeesQuery.data || []) as Array<{ id: string; name: string }>,
     [employeesQuery.data]
   );
-  
+
   // Enable realtime notifications
   useOvertimeNotifications();
 
   // Search & Filters
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState('schedules');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState("schedules");
 
   // Dialog states
   const [isScheduleDialogOpen, setIsScheduleDialogOpen] = useState(false);
@@ -120,36 +136,39 @@ export function useWorkSchedulesPage() {
   const filteredSchedules = useMemo(() => {
     if (!searchTerm) return schedules;
     const term = searchTerm.toLowerCase();
-    return schedules.filter(s => 
-      (s.name ?? '').toLowerCase().includes(term) ||
-      s.description?.toLowerCase().includes(term)
+    return schedules.filter(
+      (s) =>
+        (s.name ?? "").toLowerCase().includes(term) || s.description?.toLowerCase().includes(term)
     );
   }, [schedules, searchTerm]);
 
   const filteredEmployeeSchedules = useMemo(() => {
     if (!searchTerm) return employeeSchedules;
     const term = searchTerm.toLowerCase();
-    return employeeSchedules.filter(es => {
-      const employee = employees.find(e => e.id === es.employee_id);
+    return employeeSchedules.filter((es) => {
+      const employee = employees.find((e) => e.id === es.employee_id);
       return employee?.name.toLowerCase().includes(term);
     });
   }, [employeeSchedules, searchTerm, employees]);
 
   const pendingOvertimeRequests = useMemo(() => {
-    return overtimeRequests.filter(r => r.status === 'pending');
+    return overtimeRequests.filter((r) => r.status === "pending");
   }, [overtimeRequests]);
 
   // Stats
-  const stats = useMemo(() => ({
-    totalSchedules: schedules.length,
-    totalAssignments: employeeSchedules.length,
-    pendingOvertimeRequests: pendingOvertimeRequests.length,
-    recentBlocks: blockLogs.filter(b => {
-      const blockDate = new Date(b.blocked_at);
-      const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-      return blockDate > dayAgo;
-    }).length,
-  }), [schedules, employeeSchedules, pendingOvertimeRequests, blockLogs]);
+  const stats = useMemo(
+    () => ({
+      totalSchedules: schedules.length,
+      totalAssignments: employeeSchedules.length,
+      pendingOvertimeRequests: pendingOvertimeRequests.length,
+      recentBlocks: blockLogs.filter((b) => {
+        const blockDate = new Date(b.blocked_at);
+        const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+        return blockDate > dayAgo;
+      }).length,
+    }),
+    [schedules, employeeSchedules, pendingOvertimeRequests, blockLogs]
+  );
 
   // Form handlers
   const resetScheduleForm = useCallback(() => {
@@ -164,7 +183,7 @@ export function useWorkSchedulesPage() {
   // Schedule CRUD
   const handleCreateSchedule = useCallback(async () => {
     if (!scheduleForm.name.trim()) return;
-    
+
     await addSchedule({
       name: scheduleForm.name.trim(),
       description: scheduleForm.description.trim(),
@@ -179,14 +198,14 @@ export function useWorkSchedulesPage() {
       overtime_requires_approval: scheduleForm.overtime_requires_approval,
       block_outside_hours: scheduleForm.block_outside_hours,
     });
-    
+
     resetScheduleForm();
     setIsScheduleDialogOpen(false);
   }, [scheduleForm, addSchedule, resetScheduleForm]);
 
   const handleUpdateSchedule = useCallback(async () => {
     if (!selectedSchedule || !scheduleForm.name.trim()) return;
-    
+
     await updateSchedule(selectedSchedule.id, {
       name: scheduleForm.name.trim(),
       description: scheduleForm.description.trim() || undefined,
@@ -201,14 +220,14 @@ export function useWorkSchedulesPage() {
       overtime_requires_approval: scheduleForm.overtime_requires_approval,
       block_outside_hours: scheduleForm.block_outside_hours,
     });
-    
+
     resetScheduleForm();
     setIsScheduleDialogOpen(false);
   }, [selectedSchedule, scheduleForm, updateSchedule, resetScheduleForm]);
 
   const handleDeleteSchedule = useCallback(async () => {
     if (!scheduleToDelete) return;
-    
+
     await deleteSchedule(scheduleToDelete.id);
     setScheduleToDelete(null);
     setIsDeleteDialogOpen(false);
@@ -217,29 +236,34 @@ export function useWorkSchedulesPage() {
   // Assignment handlers
   const handleAssignSchedule = useCallback(async () => {
     if (!assignForm.employee_id || !assignForm.schedule_id) return;
-    
-    await assignSchedule(
-      assignForm.employee_id,
-      assignForm.schedule_id,
-      assignForm.effective_date
-    );
-    
+
+    await assignSchedule(assignForm.employee_id, assignForm.schedule_id, assignForm.effective_date);
+
     resetAssignForm();
     setIsAssignDialogOpen(false);
   }, [assignForm, assignSchedule, resetAssignForm]);
 
-  const handleRemoveAssignment = useCallback(async (assignmentId: string) => {
-    await removeEmployeeSchedule(assignmentId);
-  }, [removeEmployeeSchedule]);
+  const handleRemoveAssignment = useCallback(
+    async (assignmentId: string) => {
+      await removeEmployeeSchedule(assignmentId);
+    },
+    [removeEmployeeSchedule]
+  );
 
   // Overtime handlers
-  const handleApproveOvertime = useCallback(async (requestId: string) => {
-    await updateOvertimeRequest(requestId, 'approved');
-  }, [updateOvertimeRequest]);
+  const handleApproveOvertime = useCallback(
+    async (requestId: string) => {
+      await updateOvertimeRequest(requestId, "approved");
+    },
+    [updateOvertimeRequest]
+  );
 
-  const handleRejectOvertime = useCallback(async (requestId: string) => {
-    await updateOvertimeRequest(requestId, 'rejected');
-  }, [updateOvertimeRequest]);
+  const handleRejectOvertime = useCallback(
+    async (requestId: string) => {
+      await updateOvertimeRequest(requestId, "rejected");
+    },
+    [updateOvertimeRequest]
+  );
 
   // Dialog openers
   const openCreateScheduleDialog = useCallback(() => {
@@ -250,13 +274,13 @@ export function useWorkSchedulesPage() {
   const openEditScheduleDialog = useCallback((schedule: WorkSchedule) => {
     setSelectedSchedule(schedule);
     setScheduleForm({
-      name: schedule.name ?? '',
-      description: schedule.description || '',
+      name: schedule.name ?? "",
+      description: schedule.description || "",
       work_days: schedule.work_days ?? [1, 2, 3, 4, 5],
-      start_time: schedule.start_time ?? '09:00',
-      end_time: schedule.end_time ?? '18:00',
-      break_start: schedule.break_start || '',
-      break_end: schedule.break_end || '',
+      start_time: schedule.start_time ?? "09:00",
+      end_time: schedule.end_time ?? "18:00",
+      break_start: schedule.break_start || "",
+      break_end: schedule.break_end || "",
       flexible_start: schedule.flexible_start ?? false,
       flexible_minutes: schedule.flexible_minutes ?? 15,
       overtime_allowed: schedule.overtime_allowed ?? false,
@@ -278,11 +302,11 @@ export function useWorkSchedulesPage() {
 
   // Toggle work day
   const toggleWorkDay = useCallback((day: number) => {
-    setScheduleForm(prev => ({
+    setScheduleForm((prev) => ({
       ...prev,
       work_days: prev.work_days.includes(day)
-        ? prev.work_days.filter(d => d !== day)
-        : [...prev.work_days, day].sort()
+        ? prev.work_days.filter((d) => d !== day)
+        : [...prev.work_days, day].sort(),
     }));
   }, []);
 
@@ -344,28 +368,33 @@ export function useWorkSchedulesPage() {
 // ============================================================
 
 export function formatWorkDays(days: number[]): string {
-  if (days.length === 7) return 'Todos os dias';
-  if (days.length === 5 && !days.includes(0) && !days.includes(6)) return 'Seg - Sex';
-  if (days.length === 6 && !days.includes(0)) return 'Seg - Sáb';
-  
+  if (days.length === 7) return "Todos os dias";
+  if (days.length === 5 && !days.includes(0) && !days.includes(6)) return "Seg - Sex";
+  if (days.length === 6 && !days.includes(0)) return "Seg - Sáb";
+
   return days
     .sort((a, b) => (a === 0 ? 7 : a) - (b === 0 ? 7 : b))
-    .map(d => WEEKDAYS.find(w => w.value === d)?.short || '')
-    .join(', ');
+    .map((d) => WEEKDAYS.find((w) => w.value === d)?.short || "")
+    .join(", ");
 }
 
-export function calculateWorkHours(start: string, end: string, breakStart?: string, breakEnd?: string): number {
-  const [startH, startM] = start.split(':').map(Number);
-  const [endH, endM] = end.split(':').map(Number);
-  
-  let totalMinutes = (endH * 60 + endM) - (startH * 60 + startM);
-  
+export function calculateWorkHours(
+  start: string,
+  end: string,
+  breakStart?: string,
+  breakEnd?: string
+): number {
+  const [startH, startM] = start.split(":").map(Number);
+  const [endH, endM] = end.split(":").map(Number);
+
+  let totalMinutes = endH * 60 + endM - (startH * 60 + startM);
+
   if (breakStart && breakEnd) {
-    const [breakStartH, breakStartM] = breakStart.split(':').map(Number);
-    const [breakEndH, breakEndM] = breakEnd.split(':').map(Number);
-    const breakMinutes = (breakEndH * 60 + breakEndM) - (breakStartH * 60 + breakStartM);
+    const [breakStartH, breakStartM] = breakStart.split(":").map(Number);
+    const [breakEndH, breakEndM] = breakEnd.split(":").map(Number);
+    const breakMinutes = breakEndH * 60 + breakEndM - (breakStartH * 60 + breakStartM);
     totalMinutes -= breakMinutes;
   }
-  
+
   return totalMinutes / 60;
 }

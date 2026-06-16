@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 // ============================================================
 // TYPES
@@ -14,7 +14,7 @@ export interface ScheduledReport {
   schedule: string; // cron expression
   recipients: string[];
   filters?: unknown;
-  format: 'pdf' | 'csv' | 'xlsx';
+  format: "pdf" | "csv" | "xlsx";
   is_active: boolean;
   last_run_at?: string;
   next_run_at?: string;
@@ -28,7 +28,7 @@ export interface CreateScheduledReportInput {
   schedule: string;
   recipients: string[];
   filters?: unknown;
-  format?: 'pdf' | 'csv' | 'xlsx';
+  format?: "pdf" | "csv" | "xlsx";
   is_active?: boolean;
 }
 
@@ -38,7 +38,7 @@ export interface UpdateScheduledReportInput {
   schedule?: string;
   recipients?: string[];
   filters?: unknown;
-  format?: 'pdf' | 'csv' | 'xlsx';
+  format?: "pdf" | "csv" | "xlsx";
   is_active?: boolean;
 }
 
@@ -51,9 +51,9 @@ export function useScheduledReports() {
     queryKey: queryKeys.reports.scheduled(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('scheduled_reports')
-        .select('*')
-        .order('name', { ascending: true });
+        .from("scheduled_reports")
+        .select("*")
+        .order("name", { ascending: true });
 
       if (error) throw error;
       return data as ScheduledReport[];
@@ -64,14 +64,14 @@ export function useScheduledReports() {
 
 export function useScheduledReport(id: string | null | undefined) {
   return useQuery({
-    queryKey: queryKeys.reports.detail(id || ''),
+    queryKey: queryKeys.reports.detail(id || ""),
     queryFn: async () => {
       if (!id) return null;
-      
+
       const { data, error } = await supabase
-        .from('scheduled_reports')
-        .select('*')
-        .eq('id', id)
+        .from("scheduled_reports")
+        .select("*")
+        .eq("id", id)
         .single();
 
       if (error) throw error;
@@ -93,7 +93,7 @@ export function useCreateScheduledReport() {
   return useMutation({
     mutationFn: async (input: CreateScheduledReportInput) => {
       const { data, error } = await supabase
-        .from('scheduled_reports')
+        .from("scheduled_reports")
         .insert(input)
         .select()
         .single();
@@ -104,15 +104,15 @@ export function useCreateScheduledReport() {
     onSuccess: () => {
       invalidateRelated.reports(queryClient);
       toast({
-        title: 'Relatório agendado',
-        description: 'O relatório foi agendado com sucesso.',
+        title: "Relatório agendado",
+        description: "O relatório foi agendado com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao agendar relatório',
+        title: "Erro ao agendar relatório",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -125,9 +125,9 @@ export function useUpdateScheduledReport() {
   return useMutation({
     mutationFn: async ({ id, ...input }: UpdateScheduledReportInput) => {
       const { data, error } = await supabase
-        .from('scheduled_reports')
+        .from("scheduled_reports")
         .update(input)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
 
@@ -137,15 +137,15 @@ export function useUpdateScheduledReport() {
     onSuccess: () => {
       invalidateRelated.reports(queryClient);
       toast({
-        title: 'Relatório atualizado',
-        description: 'O relatório agendado foi atualizado.',
+        title: "Relatório atualizado",
+        description: "O relatório agendado foi atualizado.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao atualizar relatório',
+        title: "Erro ao atualizar relatório",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -157,25 +157,22 @@ export function useDeleteScheduledReport() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('scheduled_reports')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from("scheduled_reports").delete().eq("id", id);
 
       if (error) throw error;
     },
     onSuccess: () => {
       invalidateRelated.reports(queryClient);
       toast({
-        title: 'Relatório excluído',
-        description: 'O relatório agendado foi excluído.',
+        title: "Relatório excluído",
+        description: "O relatório agendado foi excluído.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao excluir relatório',
+        title: "Erro ao excluir relatório",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -186,7 +183,7 @@ export function useRunScheduledReport() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { data, error } = await supabase.functions.invoke('send-scheduled-report', {
+      const { data, error } = await supabase.functions.invoke("send-scheduled-report", {
         body: { report_id: id, manual: true },
       });
 
@@ -195,15 +192,15 @@ export function useRunScheduledReport() {
     },
     onSuccess: () => {
       toast({
-        title: 'Relatório executado',
-        description: 'O relatório foi gerado e enviado.',
+        title: "Relatório executado",
+        description: "O relatório foi gerado e enviado.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao executar relatório',
+        title: "Erro ao executar relatório",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });

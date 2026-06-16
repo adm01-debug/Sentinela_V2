@@ -1,35 +1,33 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
-import { EmployeesPage } from '../EmployeesPage';
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import { EmployeesPage } from "../EmployeesPage";
 
 // Mocks
-vi.mock('react-i18next', () => ({
+vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string) => key,
   }),
 }));
 
 const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual("react-router-dom");
   return {
     ...actual,
     useNavigate: () => mockNavigate,
   };
 });
 
-vi.mock('@/hooks/useEmployeesPage', () => ({
+vi.mock("@/hooks/useEmployeesPage", () => ({
   useEmployeesPage: () => ({
-    filteredEmployees: [
-      { id: '1', name: 'Employee One', department: 'IT', status: 'active' },
-    ],
-    teams: [{ id: '1', name: 'Team Alpha' }],
+    filteredEmployees: [{ id: "1", name: "Employee One", department: "IT", status: "active" }],
+    teams: [{ id: "1", name: "Team Alpha" }],
     stats: { total: 1, active: 1, inactive: 0 },
     loading: false,
-    filters: { search: '', status: 'all', team: 'all' },
+    filters: { search: "", status: "all", team: "all" },
     setSearchTerm: vi.fn(),
     setStatusFilter: vi.fn(),
     setTeamFilter: vi.fn(),
@@ -41,44 +39,48 @@ vi.mock('@/hooks/useEmployeesPage', () => ({
   }),
 }));
 
-vi.mock('@/hooks/useChartColors', () => ({
+vi.mock("@/hooks/useChartColors", () => ({
   useChartColors: () => ({
-    success: '#000',
-    muted: '#111',
-    warning: '#222',
-    destructive: '#333',
-    border: '#444',
-    primary: '#555',
+    success: "#000",
+    muted: "#111",
+    warning: "#222",
+    destructive: "#333",
+    border: "#444",
+    primary: "#555",
   }),
 }));
 
 // Mock Recharts
-vi.mock('recharts', () => ({
+vi.mock("recharts", () => ({
   ResponsiveContainer: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
-  BarChart: ({ children }: { children?: React.ReactNode }) => <div data-testid="bar-chart">{children}</div>,
+  BarChart: ({ children }: { children?: React.ReactNode }) => (
+    <div data-testid="bar-chart">{children}</div>
+  ),
   Bar: () => <div />,
   XAxis: () => <div />,
   YAxis: () => <div />,
   CartesianGrid: () => <div />,
   Tooltip: () => <div />,
-  PieChart: ({ children }: { children?: React.ReactNode }) => <div data-testid="pie-chart">{children}</div>,
+  PieChart: ({ children }: { children?: React.ReactNode }) => (
+    <div data-testid="pie-chart">{children}</div>
+  ),
   Pie: () => <div />,
   Cell: () => <div />,
 }));
 
-vi.mock('@/components/PageTransition', () => ({
+vi.mock("@/components/PageTransition", () => ({
   PageTransition: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
 }));
 
-vi.mock('@/components/employees/EmployeeStatsCards', () => ({
+vi.mock("@/components/employees/EmployeeStatsCards", () => ({
   EmployeeStatsCards: () => <div data-testid="stats-cards" />,
 }));
 
-vi.mock('@/components/employees/EmployeeFilters', () => ({
+vi.mock("@/components/employees/EmployeeFilters", () => ({
   EmployeeFilters: () => <div data-testid="employee-filters" />,
 }));
 
-vi.mock('@/components/employees/EmployeeTable', () => ({
+vi.mock("@/components/employees/EmployeeTable", () => ({
   EmployeeTable: () => <div data-testid="employee-table" />,
 }));
 
@@ -90,7 +92,7 @@ const queryClient = new QueryClient({
   },
 });
 
-describe('EmployeesPage', () => {
+describe("EmployeesPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -105,21 +107,21 @@ describe('EmployeesPage', () => {
     );
   };
 
-  it('renders correctly', () => {
+  it("renders correctly", () => {
     renderEmployees();
-    expect(screen.getByText('employees.title')).toBeInTheDocument();
-    expect(screen.getByText('employees.addEmployee')).toBeInTheDocument();
-    expect(screen.getByTestId('stats-cards')).toBeInTheDocument();
-    expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
-    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
-    expect(screen.getByTestId('employee-filters')).toBeInTheDocument();
-    expect(screen.getByTestId('employee-table')).toBeInTheDocument();
+    expect(screen.getByText("employees.title")).toBeInTheDocument();
+    expect(screen.getByText("employees.addEmployee")).toBeInTheDocument();
+    expect(screen.getByTestId("stats-cards")).toBeInTheDocument();
+    expect(screen.getByTestId("bar-chart")).toBeInTheDocument();
+    expect(screen.getByTestId("pie-chart")).toBeInTheDocument();
+    expect(screen.getByTestId("employee-filters")).toBeInTheDocument();
+    expect(screen.getByTestId("employee-table")).toBeInTheDocument();
   });
 
-  it('navigates to create page on button click', () => {
+  it("navigates to create page on button click", () => {
     renderEmployees();
-    const addButton = screen.getByText('employees.addEmployee');
+    const addButton = screen.getByText("employees.addEmployee");
     fireEvent.click(addButton);
-    expect(mockNavigate).toHaveBeenCalledWith('/employees/new');
+    expect(mockNavigate).toHaveBeenCalledWith("/employees/new");
   });
 });

@@ -8,8 +8,8 @@ export function usePrompt() {
   const prompt = useCallback((defaultValue = ""): Promise<string | null> => {
     setValue(defaultValue);
     setIsOpen(true);
-    
-    return new Promise(resolve => {
+
+    return new Promise((resolve) => {
       setResolveRef(() => resolve);
     });
   }, []);

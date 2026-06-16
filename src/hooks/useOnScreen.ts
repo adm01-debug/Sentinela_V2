@@ -8,10 +8,9 @@ export function useOnScreen<T extends HTMLElement>(threshold = 0.1) {
     const el = ref.current;
     if (!el) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsOnScreen(entry.isIntersecting),
-      { threshold }
-    );
+    const observer = new IntersectionObserver(([entry]) => setIsOnScreen(entry.isIntersecting), {
+      threshold,
+    });
 
     observer.observe(el);
     return () => observer.disconnect();

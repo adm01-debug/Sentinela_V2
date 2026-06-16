@@ -1,12 +1,12 @@
-import React from 'react';
-import { Lock, Unlock, Monitor, Smartphone, Laptop } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import React from "react";
+import { Lock, Unlock, Monitor, Smartphone, Laptop } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface SessionActivityProps {
   device: string;
-  deviceType: 'desktop' | 'mobile' | 'tablet';
+  deviceType: "desktop" | "mobile" | "tablet";
   location: string;
   lastActive: string;
   isCurrent?: boolean;
@@ -31,15 +31,21 @@ export const SessionActivityItem: React.FC<SessionActivityProps> = ({
   const DeviceIcon = deviceIcons[deviceType];
 
   return (
-    <div className="flex items-center justify-between p-4 rounded-lg border bg-card hover:shadow-elevation-1 transition-shadow">
+    <div className="hover:shadow-elevation-1 flex items-center justify-between rounded-lg border bg-card p-4 transition-shadow">
       <div className="flex items-center gap-4">
-        <div className={cn('p-2 rounded-lg', isCurrent ? 'bg-primary/10' : 'bg-muted')}>
-          <DeviceIcon className={cn('h-5 w-5', isCurrent ? 'text-primary' : 'text-muted-foreground')} />
+        <div className={cn("rounded-lg p-2", isCurrent ? "bg-primary/10" : "bg-muted")}>
+          <DeviceIcon
+            className={cn("h-5 w-5", isCurrent ? "text-primary" : "text-muted-foreground")}
+          />
         </div>
         <div>
           <div className="flex items-center gap-2">
             <span className="font-medium">{device}</span>
-            {isCurrent && <Badge variant="secondary" className="text-xs">Current</Badge>}
+            {isCurrent && (
+              <Badge variant="secondary" className="text-xs">
+                Current
+              </Badge>
+            )}
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>{location}</span>
@@ -59,7 +65,7 @@ export const SessionActivityItem: React.FC<SessionActivityProps> = ({
               )}
             </TooltipTrigger>
             <TooltipContent>
-              {isSecure ? 'Secure connection' : 'Connection not fully secure'}
+              {isSecure ? "Secure connection" : "Connection not fully secure"}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

@@ -1,11 +1,11 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useCallback, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
-export type RuleType = 'app' | 'url' | 'keyword' | 'time' | 'geofence' | 'idle' | 'usb' | 'print';
-export type RuleAction = 'alert' | 'block' | 'log' | 'notify_manager';
-export type RuleSeverity = 'low' | 'medium' | 'high' | 'critical';
+export type RuleType = "app" | "url" | "keyword" | "time" | "geofence" | "idle" | "usb" | "print";
+export type RuleAction = "alert" | "block" | "log" | "notify_manager";
+export type RuleSeverity = "low" | "medium" | "high" | "critical";
 
 export interface ViolationRule {
   id: string;
@@ -31,28 +31,28 @@ export interface RuleFormData {
 }
 
 export const RULE_TYPES: Array<{ value: RuleType; label: string; icon: string }> = [
-  { value: 'app', label: 'Aplicativo', icon: 'AppWindow' },
-  { value: 'url', label: 'URL/Website', icon: 'Globe' },
-  { value: 'keyword', label: 'Palavra-chave', icon: 'Search' },
-  { value: 'time', label: 'Horário', icon: 'Clock' },
-  { value: 'geofence', label: 'Localização', icon: 'MapPin' },
-  { value: 'idle', label: 'Ociosidade', icon: 'Moon' },
-  { value: 'usb', label: 'USB', icon: 'Usb' },
-  { value: 'print', label: 'Impressão', icon: 'Printer' },
+  { value: "app", label: "Aplicativo", icon: "AppWindow" },
+  { value: "url", label: "URL/Website", icon: "Globe" },
+  { value: "keyword", label: "Palavra-chave", icon: "Search" },
+  { value: "time", label: "Horário", icon: "Clock" },
+  { value: "geofence", label: "Localização", icon: "MapPin" },
+  { value: "idle", label: "Ociosidade", icon: "Moon" },
+  { value: "usb", label: "USB", icon: "Usb" },
+  { value: "print", label: "Impressão", icon: "Printer" },
 ];
 
 export const RULE_ACTIONS: Array<{ value: RuleAction; label: string }> = [
-  { value: 'alert', label: 'Criar alerta' },
-  { value: 'block', label: 'Bloquear ação' },
-  { value: 'log', label: 'Apenas registrar' },
-  { value: 'notify_manager', label: 'Notificar gerente' },
+  { value: "alert", label: "Criar alerta" },
+  { value: "block", label: "Bloquear ação" },
+  { value: "log", label: "Apenas registrar" },
+  { value: "notify_manager", label: "Notificar gerente" },
 ];
 
 const initialFormData: RuleFormData = {
-  name: '',
-  description: '',
-  type: 'app',
-  severity: 'medium',
+  name: "",
+  description: "",
+  type: "app",
+  severity: "medium",
   is_active: true,
   notify_employee: false,
   notify_admin: true,
@@ -62,10 +62,10 @@ export function useViolationRulesPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
-  const [severityFilter, setSeverityFilter] = useState<string>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [severityFilter, setSeverityFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingRule, setEditingRule] = useState<ViolationRule | null>(null);
@@ -73,12 +73,12 @@ export function useViolationRulesPage() {
   const [formData, setFormData] = useState<RuleFormData>(initialFormData);
 
   const { data: rules = [], isLoading } = useQuery({
-    queryKey: ['violation-rules'],
+    queryKey: ["violation-rules"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('violation_rules')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("violation_rules")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return (data || []).map((r) => ({
         id: r.id,
@@ -96,9 +96,9 @@ export function useViolationRulesPage() {
   });
 
   const { data: teams = [] } = useQuery({
-    queryKey: ['teams-list'],
+    queryKey: ["teams-list"],
     queryFn: async () => {
-      const { data, error } = await supabase.from('teams').select('id, name').order('name');
+      const { data, error } = await supabase.from("teams").select("id, name").order("name");
       if (error) throw error;
       return data;
     },
@@ -115,16 +115,16 @@ export function useViolationRulesPage() {
         notify_employee: data.notify_employee,
         notify_admin: data.notify_admin,
       };
-      const { error } = await supabase.from('violation_rules').insert(dbData);
+      const { error } = await supabase.from("violation_rules").insert(dbData);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['violation-rules'] });
-      toast({ title: 'Regra criada com sucesso!' });
+      queryClient.invalidateQueries({ queryKey: ["violation-rules"] });
+      toast({ title: "Regra criada com sucesso!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao criar regra', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao criar regra", description: error.message, variant: "destructive" });
     },
   });
 
@@ -139,70 +139,78 @@ export function useViolationRulesPage() {
         notify_employee: data.notify_employee,
         notify_admin: data.notify_admin,
       };
-      const { error } = await supabase.from('violation_rules').update(dbData).eq('id', id);
+      const { error } = await supabase.from("violation_rules").update(dbData).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['violation-rules'] });
-      toast({ title: 'Regra atualizada!' });
+      queryClient.invalidateQueries({ queryKey: ["violation-rules"] });
+      toast({ title: "Regra atualizada!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao atualizar', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao atualizar", description: error.message, variant: "destructive" });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('violation_rules').delete().eq('id', id);
+      const { error } = await supabase.from("violation_rules").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['violation-rules'] });
-      toast({ title: 'Regra excluída!' });
+      queryClient.invalidateQueries({ queryKey: ["violation-rules"] });
+      toast({ title: "Regra excluída!" });
       setIsDeleteDialogOpen(false);
       setDeletingRule(null);
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao excluir', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao excluir", description: error.message, variant: "destructive" });
     },
   });
 
   const toggleMutation = useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
-      const { error } = await supabase.from('violation_rules').update({ is_active }).eq('id', id);
+      const { error } = await supabase.from("violation_rules").update({ is_active }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['violation-rules'] });
+      queryClient.invalidateQueries({ queryKey: ["violation-rules"] });
     },
   });
 
   const filteredRules = useMemo(() => {
-    return rules.filter(rule => {
-      const matchesSearch = !searchTerm || 
+    return rules.filter((rule) => {
+      const matchesSearch =
+        !searchTerm ||
         rule.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         rule.description?.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesType = typeFilter === 'all' || rule.type === typeFilter;
-      const matchesSeverity = severityFilter === 'all' || rule.severity === severityFilter;
-      const matchesStatus = statusFilter === 'all' || 
-        (statusFilter === 'active' && rule.is_active) ||
-        (statusFilter === 'inactive' && !rule.is_active);
+      const matchesType = typeFilter === "all" || rule.type === typeFilter;
+      const matchesSeverity = severityFilter === "all" || rule.severity === severityFilter;
+      const matchesStatus =
+        statusFilter === "all" ||
+        (statusFilter === "active" && rule.is_active) ||
+        (statusFilter === "inactive" && !rule.is_active);
       return matchesSearch && matchesType && matchesSeverity && matchesStatus;
     });
   }, [rules, searchTerm, typeFilter, severityFilter, statusFilter]);
 
-  const stats = useMemo(() => ({
-    total: rules.length,
-    active: rules.filter(r => r.is_active).length,
-    byType: RULE_TYPES.map(t => ({ ...t, count: rules.filter(r => r.type === t.value).length })),
-    bySeverity: {
-      critical: rules.filter(r => r.severity === 'critical').length,
-      high: rules.filter(r => r.severity === 'high').length,
-      medium: rules.filter(r => r.severity === 'medium').length,
-      low: rules.filter(r => r.severity === 'low').length,
-    },
-  }), [rules]);
+  const stats = useMemo(
+    () => ({
+      total: rules.length,
+      active: rules.filter((r) => r.is_active).length,
+      byType: RULE_TYPES.map((t) => ({
+        ...t,
+        count: rules.filter((r) => r.type === t.value).length,
+      })),
+      bySeverity: {
+        critical: rules.filter((r) => r.severity === "critical").length,
+        high: rules.filter((r) => r.severity === "high").length,
+        medium: rules.filter((r) => r.severity === "medium").length,
+        low: rules.filter((r) => r.severity === "low").length,
+      },
+    }),
+    [rules]
+  );
 
   const handleOpenCreate = useCallback(() => {
     setEditingRule(null);
@@ -214,7 +222,7 @@ export function useViolationRulesPage() {
     setEditingRule(rule);
     setFormData({
       name: rule.name,
-      description: rule.description || '',
+      description: rule.description || "",
       type: rule.type,
       severity: rule.severity,
       is_active: rule.is_active,
@@ -244,24 +252,44 @@ export function useViolationRulesPage() {
     }
   }, [deletingRule, deleteMutation]);
 
-  const handleToggle = useCallback((rule: ViolationRule) => {
-    toggleMutation.mutate({ id: rule.id, is_active: !rule.is_active });
-  }, [toggleMutation]);
+  const handleToggle = useCallback(
+    (rule: ViolationRule) => {
+      toggleMutation.mutate({ id: rule.id, is_active: !rule.is_active });
+    },
+    [toggleMutation]
+  );
 
   return {
-    searchTerm, setSearchTerm,
-    typeFilter, setTypeFilter,
-    severityFilter, setSeverityFilter,
-    statusFilter, setStatusFilter,
-    isDialogOpen, isDeleteDialogOpen, setIsDeleteDialogOpen,
-    editingRule, deletingRule, setDeletingRule,
-    formData, setFormData,
-    rules: filteredRules, teams, stats, isLoading,
+    searchTerm,
+    setSearchTerm,
+    typeFilter,
+    setTypeFilter,
+    severityFilter,
+    setSeverityFilter,
+    statusFilter,
+    setStatusFilter,
+    isDialogOpen,
+    isDeleteDialogOpen,
+    setIsDeleteDialogOpen,
+    editingRule,
+    deletingRule,
+    setDeletingRule,
+    formData,
+    setFormData,
+    rules: filteredRules,
+    teams,
+    stats,
+    isLoading,
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
-    handleOpenCreate, handleOpenEdit, handleCloseDialog,
-    handleSubmit, handleDelete, handleToggle,
-    RULE_TYPES, RULE_ACTIONS,
+    handleOpenCreate,
+    handleOpenEdit,
+    handleCloseDialog,
+    handleSubmit,
+    handleDelete,
+    handleToggle,
+    RULE_TYPES,
+    RULE_ACTIONS,
   };
 }

@@ -1,5 +1,5 @@
 // Form types for Sentinela v17
-import { ValidationError } from './common';
+import { ValidationError } from "./common";
 
 export interface FormField {
   name: string;
@@ -19,34 +19,34 @@ export interface FormField {
   layout?: FieldLayout;
 }
 
-export type FormFieldType = 
-  | 'text'
-  | 'email'
-  | 'password'
-  | 'number'
-  | 'tel'
-  | 'url'
-  | 'textarea'
-  | 'select'
-  | 'multiselect'
-  | 'checkbox'
-  | 'radio'
-  | 'switch'
-  | 'date'
-  | 'time'
-  | 'datetime'
-  | 'daterange'
-  | 'file'
-  | 'image'
-  | 'color'
-  | 'slider'
-  | 'rating'
-  | 'autocomplete'
-  | 'tags'
-  | 'richtext'
-  | 'code'
-  | 'json'
-  | 'custom';
+export type FormFieldType =
+  | "text"
+  | "email"
+  | "password"
+  | "number"
+  | "tel"
+  | "url"
+  | "textarea"
+  | "select"
+  | "multiselect"
+  | "checkbox"
+  | "radio"
+  | "switch"
+  | "date"
+  | "time"
+  | "datetime"
+  | "daterange"
+  | "file"
+  | "image"
+  | "color"
+  | "slider"
+  | "rating"
+  | "autocomplete"
+  | "tags"
+  | "richtext"
+  | "code"
+  | "json"
+  | "custom";
 
 export interface FieldValidation {
   required?: boolean;
@@ -71,9 +71,9 @@ export interface FieldOption {
 
 export interface FieldDependency {
   field: string;
-  operator: 'eq' | 'ne' | 'in' | 'nin' | 'gt' | 'lt';
+  operator: "eq" | "ne" | "in" | "nin" | "gt" | "lt";
   value: unknown;
-  action: 'show' | 'hide' | 'enable' | 'disable' | 'require';
+  action: "show" | "hide" | "enable" | "disable" | "require";
 }
 
 export interface ConditionalRender {
@@ -116,7 +116,7 @@ export interface FormConfig {
 export interface FormLayout {
   columns: number;
   gap?: number;
-  labelPosition?: 'top' | 'left' | 'inline';
+  labelPosition?: "top" | "left" | "inline";
   labelWidth?: number | string;
 }
 
@@ -148,7 +148,7 @@ export interface FormSubmitResult<T = unknown> {
   errors?: ValidationError[];
 }
 
-export type FormMode = 'create' | 'edit' | 'view' | 'clone';
+export type FormMode = "create" | "edit" | "view" | "clone";
 
 export interface DynamicFormProps<T = Record<string, unknown>> {
   config: FormConfig;

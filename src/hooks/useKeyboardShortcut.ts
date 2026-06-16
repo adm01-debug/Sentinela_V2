@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 // ============================================================
 // TYPES
 // ============================================================
 
-type KeyModifier = 'ctrl' | 'alt' | 'shift' | 'meta';
+type KeyModifier = "ctrl" | "alt" | "shift" | "meta";
 
 interface ShortcutOptions {
   enabled?: boolean;
@@ -41,7 +41,7 @@ export function useKeyboardShortcut(
     enabled = true,
     preventDefault = true,
     stopPropagation = false,
-    target = typeof document !== 'undefined' ? document : null,
+    target = typeof document !== "undefined" ? document : null,
   } = options;
 
   const handlerRef = useRef(handler);
@@ -55,10 +55,10 @@ export function useKeyboardShortcut(
       const keyMatches = event.key.toLowerCase() === key.toLowerCase();
 
       // Check modifiers
-      const ctrlRequired = modifiers.includes('ctrl');
-      const altRequired = modifiers.includes('alt');
-      const shiftRequired = modifiers.includes('shift');
-      const metaRequired = modifiers.includes('meta');
+      const ctrlRequired = modifiers.includes("ctrl");
+      const altRequired = modifiers.includes("alt");
+      const shiftRequired = modifiers.includes("shift");
+      const metaRequired = modifiers.includes("meta");
 
       const modifiersMatch =
         event.ctrlKey === ctrlRequired &&
@@ -77,9 +77,9 @@ export function useKeyboardShortcut(
       }
     };
 
-    target.addEventListener('keydown', handleKeyDown as EventListener);
+    target.addEventListener("keydown", handleKeyDown as EventListener);
     return () => {
-      target.removeEventListener('keydown', handleKeyDown as EventListener);
+      target.removeEventListener("keydown", handleKeyDown as EventListener);
     };
   }, [key, modifiers, enabled, preventDefault, stopPropagation, target]);
 }
@@ -105,10 +105,10 @@ export function useKeyboardShortcuts(shortcuts: ShortcutDefinition[]): void {
         if (!enabled) continue;
 
         const keyMatches = event.key.toLowerCase() === key.toLowerCase();
-        const ctrlRequired = modifiers.includes('ctrl');
-        const altRequired = modifiers.includes('alt');
-        const shiftRequired = modifiers.includes('shift');
-        const metaRequired = modifiers.includes('meta');
+        const ctrlRequired = modifiers.includes("ctrl");
+        const altRequired = modifiers.includes("alt");
+        const shiftRequired = modifiers.includes("shift");
+        const metaRequired = modifiers.includes("meta");
 
         const modifiersMatch =
           event.ctrlKey === ctrlRequired &&
@@ -125,8 +125,8 @@ export function useKeyboardShortcuts(shortcuts: ShortcutDefinition[]): void {
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 }
 
@@ -138,7 +138,7 @@ export function useKeyboardShortcuts(shortcuts: ShortcutDefinition[]): void {
  * Register handler for Escape key
  */
 export function useEscapeKey(handler: () => void, enabled = true): void {
-  useKeyboardShortcut('Escape', handler, [], { enabled });
+  useKeyboardShortcut("Escape", handler, [], { enabled });
 }
 
 // ============================================================
@@ -149,7 +149,7 @@ export function useEscapeKey(handler: () => void, enabled = true): void {
  * Register handler for Enter key
  */
 export function useEnterKey(handler: () => void, enabled = true): void {
-  useKeyboardShortcut('Enter', handler, [], { enabled, preventDefault: false });
+  useKeyboardShortcut("Enter", handler, [], { enabled, preventDefault: false });
 }
 
 // ============================================================
@@ -160,22 +160,22 @@ export function useEnterKey(handler: () => void, enabled = true): void {
  * Ctrl/Cmd + S (Save)
  */
 export function useSaveShortcut(handler: () => void, enabled = true): void {
-  const isMac = typeof navigator !== 'undefined' && navigator.platform.includes('Mac');
-  useKeyboardShortcut('s', handler, [isMac ? 'meta' : 'ctrl'], { enabled });
+  const isMac = typeof navigator !== "undefined" && navigator.platform.includes("Mac");
+  useKeyboardShortcut("s", handler, [isMac ? "meta" : "ctrl"], { enabled });
 }
 
 /**
  * Ctrl/Cmd + K (Command palette)
  */
 export function useCommandPaletteShortcut(handler: () => void, enabled = true): void {
-  const isMac = typeof navigator !== 'undefined' && navigator.platform.includes('Mac');
-  useKeyboardShortcut('k', handler, [isMac ? 'meta' : 'ctrl'], { enabled });
+  const isMac = typeof navigator !== "undefined" && navigator.platform.includes("Mac");
+  useKeyboardShortcut("k", handler, [isMac ? "meta" : "ctrl"], { enabled });
 }
 
 /**
  * Ctrl/Cmd + / (Help)
  */
 export function useHelpShortcut(handler: () => void, enabled = true): void {
-  const isMac = typeof navigator !== 'undefined' && navigator.platform.includes('Mac');
-  useKeyboardShortcut('/', handler, [isMac ? 'meta' : 'ctrl'], { enabled });
+  const isMac = typeof navigator !== "undefined" && navigator.platform.includes("Mac");
+  useKeyboardShortcut("/", handler, [isMac ? "meta" : "ctrl"], { enabled });
 }

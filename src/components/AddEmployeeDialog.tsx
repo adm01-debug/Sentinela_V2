@@ -1,22 +1,22 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { useCreateEmployee, type EmployeeCreateInput } from '@/hooks/useEmployees';
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { useCreateEmployee, type EmployeeCreateInput } from "@/hooks/useEmployees";
 
 interface Props {
   open: boolean;
@@ -24,33 +24,38 @@ interface Props {
 }
 
 const departments = [
-  { value: 'engineering', label: 'Engineering' },
-  { value: 'sales', label: 'Sales' },
-  { value: 'marketing', label: 'Marketing' },
+  { value: "engineering", label: "Engineering" },
+  { value: "sales", label: "Sales" },
+  { value: "marketing", label: "Marketing" },
 ];
 
 const roles = [
-  { value: 'developer', label: 'Developer' },
-  { value: 'designer', label: 'Designer' },
-  { value: 'manager', label: 'Manager' },
+  { value: "developer", label: "Developer" },
+  { value: "designer", label: "Designer" },
+  { value: "manager", label: "Manager" },
 ];
 
 export const AddEmployeeDialog = ({ open, onClose }: Props) => {
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    department: 'engineering',
-    role: 'developer',
+    name: "",
+    email: "",
+    department: "engineering",
+    role: "developer",
   });
   const createEmployee = useCreateEmployee();
 
   const handleSubmit = () => {
     createEmployee.mutate(
-      { name: form.name, full_name: form.name, email: form.email, department: form.department } as EmployeeCreateInput,
+      {
+        name: form.name,
+        full_name: form.name,
+        email: form.email,
+        department: form.department,
+      } as EmployeeCreateInput,
       {
         onSuccess: () => {
           onClose();
-          setForm({ name: '', email: '', department: 'engineering', role: 'developer' });
+          setForm({ name: "", email: "", department: "engineering", role: "developer" });
         },
       }
     );
@@ -100,10 +105,7 @@ export const AddEmployeeDialog = ({ open, onClose }: Props) => {
           </div>
           <div className="space-y-2">
             <Label>Role</Label>
-            <Select
-              value={form.role}
-              onValueChange={(value) => setForm({ ...form, role: value })}
-            >
+            <Select value={form.role} onValueChange={(value) => setForm({ ...form, role: value })}>
               <SelectTrigger>
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>

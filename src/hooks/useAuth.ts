@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useAuth, type User } from '@/providers/AuthProvider';
-import { supabase } from '@/integrations/supabase/client';
+import { useState } from "react";
+import { useAuth, type User } from "@/providers/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
 
 export { useAuth };
 export type { User };

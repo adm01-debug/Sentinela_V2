@@ -73,4 +73,3 @@ jobs:
           # Only run API contract tests here. Integration tests (e.g.
           # agent-collector_test.ts) require a live Supabase stack and run elsewhere.
           find supabase/functions -name "contract_test.ts" | xargs -I {} deno test --allow-env --allow-net {}
-

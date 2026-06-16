@@ -1,7 +1,7 @@
-import React from 'react';
-import { CheckCircle, XCircle, Fingerprint } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
+import React from "react";
+import { CheckCircle, XCircle, Fingerprint } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 interface DeviceTrustProps {
   trusted: boolean;
@@ -15,14 +15,14 @@ export const DeviceTrustIndicator: React.FC<DeviceTrustProps> = ({
   className,
 }) => {
   return (
-    <div className={cn('flex items-center gap-2', className)}>
+    <div className={cn("flex items-center gap-2", className)}>
       {trusted ? (
         <>
           <CheckCircle className="h-4 w-4 text-success" />
           <span className="text-sm text-success">Trusted Device</span>
           {verified && (
             <Badge variant="outline" className="text-xs">
-              <Fingerprint className="h-3 w-3 mr-1" />
+              <Fingerprint className="mr-1 h-3 w-3" />
               Verified
             </Badge>
           )}

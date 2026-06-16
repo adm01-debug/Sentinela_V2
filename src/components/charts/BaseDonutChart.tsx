@@ -1,8 +1,8 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { PieChart as PieIcon } from 'lucide-react';
-import { ChartTooltipContent } from './ChartTooltip';
-import { ChartEmptyState } from './ChartEmptyState';
-import { useChartColors } from '@/hooks/useChartColors';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { PieChart as PieIcon } from "lucide-react";
+import { ChartTooltipContent } from "./ChartTooltip";
+import { ChartEmptyState } from "./ChartEmptyState";
+import { useChartColors } from "@/hooks/useChartColors";
 
 interface DonutDataItem {
   name: string;
@@ -45,7 +45,14 @@ export function BaseDonutChart({
   ];
 
   if (!data.length) {
-    return <ChartEmptyState icon={PieIcon} title={emptyTitle} description={emptyDescription} height={height} />;
+    return (
+      <ChartEmptyState
+        icon={PieIcon}
+        title={emptyTitle}
+        description={emptyDescription}
+        height={height}
+      />
+    );
   }
 
   return (
@@ -60,9 +67,7 @@ export function BaseDonutChart({
           paddingAngle={2}
           dataKey="value"
           label={
-            showLabel
-              ? ({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`
-              : false
+            showLabel ? ({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)` : false
           }
           labelLine={false}
         >

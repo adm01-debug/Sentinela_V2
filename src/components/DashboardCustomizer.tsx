@@ -1,15 +1,8 @@
-import { useState } from 'react';
-import { 
-  Settings2, 
-  GripVertical, 
-  RotateCcw,
-  LayoutDashboard,
-  Eye,
-  EyeOff
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
+import { useState } from "react";
+import { Settings2, GripVertical, RotateCcw, LayoutDashboard, Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 import {
   Sheet,
   SheetContent,
@@ -18,45 +11,40 @@ import {
   SheetTitle,
   SheetTrigger,
   SheetFooter,
-} from '@/components/ui/sheet';
+} from "@/components/ui/sheet";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useDashboardLayout, DashboardWidget } from '@/hooks/useDashboardLayout';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/select";
+import { useDashboardLayout, DashboardWidget } from "@/hooks/useDashboardLayout";
+import { cn } from "@/lib/utils";
 
-const widgetIcons: Record<DashboardWidget['type'], string> = {
-  stats: '📊',
-  chart: '📈',
-  alerts: '🚨',
-  employees: '👥',
-  ranking: '🏆',
-  security: '🔒',
-  custom: '⚙️',
+const widgetIcons: Record<DashboardWidget["type"], string> = {
+  stats: "📊",
+  chart: "📈",
+  alerts: "🚨",
+  employees: "👥",
+  ranking: "🏆",
+  security: "🔒",
+  custom: "⚙️",
 };
 
-const sizeLabels: Record<NonNullable<DashboardWidget['size']>, string> = {
-  small: 'Pequeno (1/4)',
-  medium: 'Médio (1/3)',
-  large: 'Grande (2/3)',
-  full: 'Largura total',
+const sizeLabels: Record<NonNullable<DashboardWidget["size"]>, string> = {
+  small: "Pequeno (1/4)",
+  medium: "Médio (1/3)",
+  large: "Grande (2/3)",
+  full: "Largura total",
 };
 
 export function DashboardCustomizer() {
-  const {
-    widgets,
-    toggleWidget,
-    resizeWidget,
-    resetLayout,
-  } = useDashboardLayout();
+  const { widgets, toggleWidget, resizeWidget, resetLayout } = useDashboardLayout();
 
   const [open, setOpen] = useState(false);
 
-  const visibleCount = widgets.filter(w => w.visible).length;
+  const visibleCount = widgets.filter((w) => w.visible).length;
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -78,33 +66,33 @@ export function DashboardCustomizer() {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="py-6 space-y-4">
+        <div className="space-y-4 py-6">
           {widgets.map((widget) => (
             <div
               key={widget.id}
               className={cn(
-                'flex items-center gap-4 p-3 rounded-lg border transition-colors',
-                widget.visible ? 'bg-background' : 'bg-muted/50 opacity-60'
+                "flex items-center gap-4 rounded-lg border p-3 transition-colors",
+                widget.visible ? "bg-background" : "bg-muted/50 opacity-60"
               )}
             >
               {/* Drag handle */}
-              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
-              
+              <GripVertical className="h-4 w-4 cursor-grab text-muted-foreground" />
+
               {/* Icon e título */}
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <span>{widgetIcons[widget.type]}</span>
-                  <span className="font-medium truncate">{widget.title}</span>
+                  <span className="truncate font-medium">{widget.title}</span>
                 </div>
-                <Badge variant="outline" className="text-xs mt-1">
+                <Badge variant="outline" className="mt-1 text-xs">
                   {widget.type}
                 </Badge>
               </div>
 
               {/* Seletor de tamanho */}
               <Select
-                value={widget.size || 'medium'}
-                onValueChange={(value) => resizeWidget(widget.id, value as DashboardWidget['size'])}
+                value={widget.size || "medium"}
+                onValueChange={(value) => resizeWidget(widget.id, value as DashboardWidget["size"])}
                 disabled={!widget.visible}
               >
                 <SelectTrigger className="w-[130px]">
@@ -126,10 +114,7 @@ export function DashboardCustomizer() {
                 ) : (
                   <EyeOff className="h-4 w-4 text-muted-foreground" />
                 )}
-                <Switch
-                  checked={widget.visible}
-                  onCheckedChange={() => toggleWidget(widget.id)}
-                />
+                <Switch checked={widget.visible} onCheckedChange={() => toggleWidget(widget.id)} />
               </div>
             </div>
           ))}
@@ -140,9 +125,7 @@ export function DashboardCustomizer() {
             <RotateCcw className="h-4 w-4" />
             Restaurar padrão
           </Button>
-          <Button onClick={() => setOpen(false)}>
-            Concluir
-          </Button>
+          <Button onClick={() => setOpen(false)}>Concluir</Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>

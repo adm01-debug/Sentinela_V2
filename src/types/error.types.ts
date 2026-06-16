@@ -1,12 +1,12 @@
-export type ErrorCode = 
-  | 'AUTH_INVALID_CREDENTIALS'
-  | 'AUTH_EXPIRED_TOKEN'
-  | 'AUTH_UNAUTHORIZED'
-  | 'FORBIDDEN'
-  | 'NOT_FOUND'
-  | 'VALIDATION_ERROR'
-  | 'SERVER_ERROR'
-  | 'NETWORK_ERROR';
+export type ErrorCode =
+  | "AUTH_INVALID_CREDENTIALS"
+  | "AUTH_EXPIRED_TOKEN"
+  | "AUTH_UNAUTHORIZED"
+  | "FORBIDDEN"
+  | "NOT_FOUND"
+  | "VALIDATION_ERROR"
+  | "SERVER_ERROR"
+  | "NETWORK_ERROR";
 
 export interface AppError {
   code: ErrorCode;
@@ -37,4 +37,4 @@ export interface ErrorLogEntry {
   userId?: string;
 }
 
-export type Severity = 'low' | 'medium' | 'high' | 'critical';
+export type Severity = "low" | "medium" | "high" | "critical";

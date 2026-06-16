@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 export interface AlertNotificationSettings {
   id: string;
@@ -24,9 +24,9 @@ export function useAlertSettings() {
     queryKey: queryKeys.settings.alerts(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('alert_notification_settings')
-        .select('*')
-        .eq('setting_type', 'email')
+        .from("alert_notification_settings")
+        .select("*")
+        .eq("setting_type", "email")
         .maybeSingle();
 
       if (error) throw error;
@@ -40,14 +40,14 @@ export function useAlertSettings() {
       const existing = query.data;
       if (existing?.id) {
         const { error } = await supabase
-          .from('alert_notification_settings')
+          .from("alert_notification_settings")
           .update(updates)
-          .eq('id', existing.id);
+          .eq("id", existing.id);
         if (error) throw error;
       } else {
         const { error } = await supabase
-          .from('alert_notification_settings')
-          .insert({ setting_type: 'email', ...updates });
+          .from("alert_notification_settings")
+          .insert({ setting_type: "email", ...updates });
         if (error) throw error;
       }
     },
@@ -60,18 +60,18 @@ export function useAlertSettings() {
     const current = query.data?.recipient_emails || [];
     if (current.includes(email)) return false;
     await updateMutation.mutateAsync({ recipient_emails: [...current, email] });
-    toast({ title: 'Email adicionado' });
+    toast({ title: "Email adicionado" });
     return true;
   };
 
   const removeEmail = async (email: string) => {
     const current = query.data?.recipient_emails || [];
     await updateMutation.mutateAsync({ recipient_emails: current.filter((e) => e !== email) });
-    toast({ title: 'Email removido' });
+    toast({ title: "Email removido" });
   };
 
   const testNotification = async () => {
-    toast({ title: 'Email de teste enviado!' });
+    toast({ title: "Email de teste enviado!" });
   };
 
   return {

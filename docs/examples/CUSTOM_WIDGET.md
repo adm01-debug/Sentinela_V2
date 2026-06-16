@@ -1,4 +1,5 @@
 # Example: Custom Widget
+
 ```typescript
 import { WidgetBase, useWidgetData } from '@/components';
 export const CustomWidget = () => {

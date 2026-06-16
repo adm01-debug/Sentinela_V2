@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent  } from '@/components/ui/card';
-import { Button  } from '@/components/ui/button';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function ApiKeysPage() {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export default function ApiKeysPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex min-h-[400px] items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -20,10 +20,8 @@ export default function ApiKeysPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Chaves de API
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Chaves de API</h1>
+          <p className="mt-1 text-gray-500 dark:text-gray-400">
             Gerencie suas chaves de API para integrações
           </p>
         </div>
@@ -34,13 +32,9 @@ export default function ApiKeysPage() {
           <CardTitle>Chaves de API</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-gray-500">
+          <div className="py-8 text-center text-gray-500">
             <p>Conteúdo de Chaves de API será implementado aqui.</p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={() => navigate(-1)}
-            >
+            <Button variant="outline" className="mt-4" onClick={() => navigate(-1)}>
               Voltar
             </Button>
           </div>

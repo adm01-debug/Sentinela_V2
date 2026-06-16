@@ -3,25 +3,25 @@
 // Ações em lote para múltiplos registros
 // ============================================================
 
-import { useState, useCallback } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, useCallback } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 // ============================================================
 // TYPES
 // ============================================================
 
-export type BulkActionType = 
-  | 'delete'
-  | 'archive'
-  | 'restore'
-  | 'update'
-  | 'export'
-  | 'duplicate'
-  | 'assign'
-  | 'tag'
-  | 'status';
+export type BulkActionType =
+  | "delete"
+  | "archive"
+  | "restore"
+  | "update"
+  | "export"
+  | "duplicate"
+  | "assign"
+  | "tag"
+  | "status";
 
 export interface BulkActionResult {
   success: string[];
@@ -83,15 +83,18 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
     });
   }, []);
 
-  const toggleSelectAll = useCallback((allIds: string[]) => {
-    if (selectAll) {
-      setSelectedIds(new Set());
-      setSelectAll(false);
-    } else {
-      setSelectedIds(new Set(allIds));
-      setSelectAll(true);
-    }
-  }, [selectAll]);
+  const toggleSelectAll = useCallback(
+    (allIds: string[]) => {
+      if (selectAll) {
+        setSelectedIds(new Set());
+        setSelectAll(false);
+      } else {
+        setSelectedIds(new Set(allIds));
+        setSelectAll(true);
+      }
+    },
+    [selectAll]
+  );
 
   const clearSelection = useCallback(() => {
     setSelectedIds(new Set());
@@ -108,22 +111,18 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
     mutationFn: async (ids: string[]): Promise<BulkActionResult> => {
       // Proceed to delete
 
-
       const result: BulkActionResult = { success: [], failed: [], total: ids.length };
 
       // Soft delete (se a tabela suporta)
       const { data, error } = await supabase
         .from(table)
         .update({ deleted_at: new Date().toISOString() } as Record<string, unknown>)
-        .in('id', ids)
-        .select('id');
+        .in("id", ids)
+        .select("id");
 
       if (error) {
         // Se soft delete não funcionar, tenta hard delete
-        const { error: hardError } = await supabase
-          .from(table)
-          .delete()
-          .in('id', ids);
+        const { error: hardError } = await supabase.from(table).delete().in("id", ids);
 
         if (hardError) {
           ids.forEach((id: string) => result.failed.push({ id, error: hardError.message }));
@@ -147,7 +146,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       onSuccess?.(result);
     },
     onError: (error: Error) => {
-      toast.error('Erro ao remover itens');
+      toast.error("Erro ao remover itens");
       onError?.(error);
     },
   });
@@ -157,19 +156,21 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
   // ============================================================
 
   const bulkUpdateMutation = useMutation({
-    mutationFn: async (params: { ids: string[]; updates: Partial<T> }): Promise<BulkActionResult> => {
+    mutationFn: async (params: {
+      ids: string[];
+      updates: Partial<T>;
+    }): Promise<BulkActionResult> => {
       const { ids, updates } = params;
 
       // Proceed to update
-
 
       const result: BulkActionResult = { success: [], failed: [], total: ids.length };
 
       const { data, error } = await supabase
         .from(table)
         .update(updates as Record<string, unknown>)
-        .in('id', ids)
-        .select('id');
+        .in("id", ids)
+        .select("id");
 
       if (error) {
         ids.forEach((id: string) => result.failed.push({ id, error: error.message }));
@@ -186,7 +187,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       onSuccess?.(result);
     },
     onError: (error: Error) => {
-      toast.error('Erro ao atualizar itens');
+      toast.error("Erro ao atualizar itens");
       onError?.(error);
     },
   });
@@ -199,18 +200,25 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
     mutationFn: async (ids: string[]): Promise<BulkActionResult> => {
       // Proceed to archive
 
-
       const { data, error } = await supabase
         .from(table)
-        .update({ archived_at: new Date().toISOString(), status: 'archived' })
-        .in('id', ids)
-        .select('id');
+        .update({ archived_at: new Date().toISOString(), status: "archived" })
+        .in("id", ids)
+        .select("id");
 
       if (error) {
-        return { success: [], failed: ids.map((id: string) => ({ id, error: error.message })), total: ids.length };
+        return {
+          success: [],
+          failed: ids.map((id: string) => ({ id, error: error.message })),
+          total: ids.length,
+        };
       }
 
-      return { success: (data ?? []).map((d: { id: string }) => d.id), failed: [], total: ids.length };
+      return {
+        success: (data ?? []).map((d: { id: string }) => d.id),
+        failed: [],
+        total: ids.length,
+      };
     },
     onSuccess: (result) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
@@ -219,7 +227,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       onSuccess?.(result);
     },
     onError: (error: Error) => {
-      toast.error('Erro ao arquivar itens');
+      toast.error("Erro ao arquivar itens");
       onError?.(error);
     },
   });
@@ -232,18 +240,25 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
     mutationFn: async (ids: string[]): Promise<BulkActionResult> => {
       // Proceed to restore
 
-
       const { data, error } = await supabase
         .from(table)
-        .update({ deleted_at: null, archived_at: null, status: 'active' })
-        .in('id', ids)
-        .select('id');
+        .update({ deleted_at: null, archived_at: null, status: "active" })
+        .in("id", ids)
+        .select("id");
 
       if (error) {
-        return { success: [], failed: ids.map((id: string) => ({ id, error: error.message })), total: ids.length };
+        return {
+          success: [],
+          failed: ids.map((id: string) => ({ id, error: error.message })),
+          total: ids.length,
+        };
       }
 
-      return { success: (data ?? []).map((d: { id: string }) => d.id), failed: [], total: ids.length };
+      return {
+        success: (data ?? []).map((d: { id: string }) => d.id),
+        failed: [],
+        total: ids.length,
+      };
     },
     onSuccess: (result) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
@@ -252,7 +267,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       onSuccess?.(result);
     },
     onError: (error: Error) => {
-      toast.error('Erro ao restaurar itens');
+      toast.error("Erro ao restaurar itens");
       onError?.(error);
     },
   });
@@ -265,15 +280,18 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
     mutationFn: async (ids: string[]): Promise<BulkActionResult> => {
       // Proceed to duplicate
 
-
       // Buscar dados originais
       const { data: originals, error: fetchError } = await supabase
         .from(table)
-        .select('*')
-        .in('id', ids);
+        .select("*")
+        .in("id", ids);
 
       if (fetchError || !originals) {
-        return { success: [], failed: ids.map((id: string) => ({ id, error: 'Não encontrado' })), total: ids.length };
+        return {
+          success: [],
+          failed: ids.map((id: string) => ({ id, error: "Não encontrado" })),
+          total: ids.length,
+        };
       }
 
       // Criar cópias (removendo id, created_at, updated_at)
@@ -289,16 +307,21 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         };
       });
 
-      const { data, error } = await supabase
-        .from(table)
-        .insert(copies)
-        .select('id');
+      const { data, error } = await supabase.from(table).insert(copies).select("id");
 
       if (error) {
-        return { success: [], failed: ids.map((id: string) => ({ id, error: error.message })), total: ids.length };
+        return {
+          success: [],
+          failed: ids.map((id: string) => ({ id, error: error.message })),
+          total: ids.length,
+        };
       }
 
-      return { success: (data ?? []).map((d: { id: string }) => d.id), failed: [], total: ids.length };
+      return {
+        success: (data ?? []).map((d: { id: string }) => d.id),
+        failed: [],
+        total: ids.length,
+      };
     },
     onSuccess: (result) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
@@ -306,7 +329,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
       onSuccess?.(result);
     },
     onError: (error: Error) => {
-      toast.error('Erro ao duplicar itens');
+      toast.error("Erro ao duplicar itens");
       onError?.(error);
     },
   });

@@ -3,19 +3,26 @@
  * Core type definitions for report-related entities
  */
 
-export type ReportType = 
-  | 'productivity'
-  | 'violations'
-  | 'attendance'
-  | 'activity'
-  | 'security'
-  | 'compliance'
-  | 'executive'
-  | 'custom';
+export type ReportType =
+  | "productivity"
+  | "violations"
+  | "attendance"
+  | "activity"
+  | "security"
+  | "compliance"
+  | "executive"
+  | "custom";
 
-export type ReportFormat = 'pdf' | 'csv' | 'excel' | 'json' | 'html';
-export type ReportFrequency = 'once' | 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'quarterly' | 'yearly';
-export type ReportStatus = 'draft' | 'generating' | 'completed' | 'failed' | 'scheduled';
+export type ReportFormat = "pdf" | "csv" | "excel" | "json" | "html";
+export type ReportFrequency =
+  | "once"
+  | "daily"
+  | "weekly"
+  | "biweekly"
+  | "monthly"
+  | "quarterly"
+  | "yearly";
+export type ReportStatus = "draft" | "generating" | "completed" | "failed" | "scheduled";
 
 export interface Report {
   id: string;
@@ -56,14 +63,22 @@ export interface ReportColumn {
   field: string;
   type: ColumnType;
   width?: number;
-  align?: 'left' | 'center' | 'right';
+  align?: "left" | "center" | "right";
   format?: string;
   aggregate?: AggregateFunction;
   visible?: boolean;
 }
 
-export type ColumnType = 'string' | 'number' | 'date' | 'datetime' | 'boolean' | 'currency' | 'percentage' | 'duration';
-export type AggregateFunction = 'sum' | 'avg' | 'min' | 'max' | 'count' | 'count_distinct';
+export type ColumnType =
+  | "string"
+  | "number"
+  | "date"
+  | "datetime"
+  | "boolean"
+  | "currency"
+  | "percentage"
+  | "duration";
+export type AggregateFunction = "sum" | "avg" | "min" | "max" | "count" | "count_distinct";
 
 export interface ReportGrouping {
   fields: string[];
@@ -73,7 +88,7 @@ export interface ReportGrouping {
 
 export interface ReportSorting {
   field: string;
-  direction: 'asc' | 'desc';
+  direction: "asc" | "desc";
 }
 
 export interface ReportTemplate {
@@ -107,7 +122,7 @@ export interface ReportChartConfig {
   stacked?: boolean;
 }
 
-export type ChartType = 'bar' | 'line' | 'pie' | 'doughnut' | 'area' | 'scatter' | 'heatmap';
+export type ChartType = "bar" | "line" | "pie" | "doughnut" | "area" | "scatter" | "heatmap";
 
 export interface ScheduledReport {
   id: string;
@@ -122,7 +137,7 @@ export interface ScheduledReport {
   is_active: boolean;
   last_run_at?: string;
   next_run_at?: string;
-  last_run_status?: 'success' | 'failed';
+  last_run_status?: "success" | "failed";
   organization_id: string;
   created_by: string;
   created_at: string;
@@ -138,7 +153,7 @@ export interface ScheduleConfig {
 }
 
 export interface ReportRecipient {
-  type: 'user' | 'email' | 'slack' | 'webhook';
+  type: "user" | "email" | "slack" | "webhook";
   value: string; // user_id, email, channel, or webhook URL
   name?: string;
 }
@@ -146,7 +161,7 @@ export interface ReportRecipient {
 export interface ReportDelivery {
   id: string;
   scheduled_report_id: string;
-  status: 'pending' | 'sending' | 'delivered' | 'failed';
+  status: "pending" | "sending" | "delivered" | "failed";
   recipient: ReportRecipient;
   file_url?: string;
   error_message?: string;

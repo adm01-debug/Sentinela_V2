@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
 export interface GeofenceViolation {
   id: string;
@@ -24,24 +24,24 @@ export interface GeofenceViolationFilters {
 
 export function useGeofenceViolations(filters?: GeofenceViolationFilters) {
   return useQuery({
-    queryKey: [...queryKeys.geofences.all, 'violations', filters],
+    queryKey: [...queryKeys.geofences.all, "violations", filters],
     queryFn: async () => {
       let query = supabase
-        .from('geofence_violations')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("geofence_violations")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       if (filters?.employeeName) {
-        query = query.ilike('employee_name', `%${filters.employeeName}%`);
+        query = query.ilike("employee_name", `%${filters.employeeName}%`);
       }
       if (filters?.device) {
-        query = query.ilike('device', `%${filters.device}%`);
+        query = query.ilike("device", `%${filters.device}%`);
       }
       if (filters?.startDate) {
-        query = query.gte('created_at', filters.startDate);
+        query = query.gte("created_at", filters.startDate);
       }
       if (filters?.endDate) {
-        query = query.lte('created_at', filters.endDate);
+        query = query.lte("created_at", filters.endDate);
       }
 
       const { data, error } = await query;

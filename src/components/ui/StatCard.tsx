@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import { LucideIcon } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { memo } from "react";
+import { LucideIcon } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface StatCardProps {
   title: string;
@@ -21,7 +21,7 @@ function StatCardComponent({
   value,
   subtitle,
   icon: Icon,
-  iconColor = 'text-muted-foreground',
+  iconColor = "text-muted-foreground",
   trend,
   className,
 }: StatCardProps) {
@@ -35,8 +35,9 @@ function StatCardComponent({
         <div className="text-2xl font-bold">{value}</div>
         {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
         {trend && (
-          <p className={cn("text-xs mt-1", trend.isPositive ? "text-green-600" : "text-red-600")}>
-            {trend.isPositive ? "+" : ""}{trend.value}%
+          <p className={cn("mt-1 text-xs", trend.isPositive ? "text-green-600" : "text-red-600")}>
+            {trend.isPositive ? "+" : ""}
+            {trend.value}%
           </p>
         )}
       </CardContent>

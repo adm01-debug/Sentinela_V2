@@ -1,19 +1,19 @@
-import { useState, useCallback, useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { AppSidebar } from '@/components/AppSidebar';
-import { Header } from '@/components/Header';
-import { BottomNav } from '@/components/layout/BottomNav';
-import { SkipLinks } from '@/components/ui/SkipLinks';
-import { HealthMonitor } from '@/components/HealthMonitor';
-import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
-import { ScrollToTopButton } from '@/components/ScrollToTopButton';
-import { useUIStore } from '@/stores/uiStore';
-import { cn } from '@/utils/cn';
-import { CommandPalette } from '@/components/CommandPalette';
-import { KeyboardShortcutsDialog } from '@/components/KeyboardShortcutsDialog';
-import { KeyboardShortcutsProvider } from '@/components/KeyboardShortcutsProvider';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useState, useCallback, useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { AppSidebar } from "@/components/AppSidebar";
+import { Header } from "@/components/Header";
+import { BottomNav } from "@/components/layout/BottomNav";
+import { SkipLinks } from "@/components/ui/SkipLinks";
+import { HealthMonitor } from "@/components/HealthMonitor";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { ScrollToTopButton } from "@/components/ScrollToTopButton";
+import { useUIStore } from "@/stores/uiStore";
+import { cn } from "@/utils/cn";
+import { CommandPalette } from "@/components/CommandPalette";
+import { KeyboardShortcutsDialog } from "@/components/KeyboardShortcutsDialog";
+import { KeyboardShortcutsProvider } from "@/components/KeyboardShortcutsProvider";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export const MainLayout = () => {
   useDocumentTitle();
@@ -26,20 +26,20 @@ export const MainLayout = () => {
   // Global "Back" keyboard shortcut
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !isMobileMenuOpen && !isCommandPaletteOpen) {
+      if (e.key === "Escape" && !isMobileMenuOpen && !isCommandPaletteOpen) {
         // Only navigate back if no modals are open
         const isDialogVisible = document.querySelector('[role="dialog"]');
-        if (!isDialogVisible && location.pathname !== '/dashboard') {
+        if (!isDialogVisible && location.pathname !== "/dashboard") {
           navigate(-1);
         }
       }
     };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
   }, [location.pathname, navigate, isMobileMenuOpen, isCommandPaletteOpen]);
 
   const handleMobileMenuToggle = useCallback(() => {
-    setIsMobileMenuOpen(prev => !prev);
+    setIsMobileMenuOpen((prev) => !prev);
   }, []);
 
   const handleCommandPaletteOpen = useCallback(() => {
@@ -57,9 +57,7 @@ export const MainLayout = () => {
         </nav>
 
         {/* Mobile Sidebar Removed (using AppSidebar or separate component if needed) */}
-        <div className="hidden">
-           {/* Placeholder if mobile specific sidebar is required */}
-        </div>
+        <div className="hidden">{/* Placeholder if mobile specific sidebar is required */}</div>
 
         {/* Command Palette */}
         <CommandPalette open={isCommandPaletteOpen} onOpenChange={setIsCommandPaletteOpen} />
@@ -68,9 +66,9 @@ export const MainLayout = () => {
         {/* Main Content Area */}
         <div
           className={cn(
-            'flex-1 flex flex-col overflow-hidden transition-all duration-300',
-            'md:ml-[60px]',
-            !sidebarCollapsed && 'md:ml-[252px]'
+            "flex flex-1 flex-col overflow-hidden transition-all duration-300",
+            "md:ml-[60px]",
+            !sidebarCollapsed && "md:ml-[252px]"
           )}
         >
           <Header
@@ -80,9 +78,9 @@ export const MainLayout = () => {
           <main
             id="main-content"
             role="main"
-            className="flex-1 overflow-auto px-4 py-4 sm:px-5 sm:py-5 pb-20 md:pb-5 scroll-smooth"
+            className="flex-1 overflow-auto scroll-smooth px-4 py-4 pb-20 sm:px-5 sm:py-5 md:pb-5"
           >
-            <div className="max-w-[1600px] mx-auto w-full">
+            <div className="mx-auto w-full max-w-[1600px]">
               <Breadcrumbs className="mb-4" />
               <AnimatePresence mode="wait">
                 <motion.div

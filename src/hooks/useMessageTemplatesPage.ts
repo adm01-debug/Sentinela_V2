@@ -1,7 +1,7 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useCallback, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 // Types (mapped from DB schema)
 export interface MessageTemplate {
@@ -43,31 +43,31 @@ interface MessageTemplateRow {
 
 // Constants
 export const TEMPLATE_CATEGORIES = [
-  { value: 'notification', label: 'Notificação', icon: 'Bell' },
-  { value: 'alert', label: 'Alerta', icon: 'AlertTriangle' },
-  { value: 'reminder', label: 'Lembrete', icon: 'Clock' },
-  { value: 'welcome', label: 'Boas-vindas', icon: 'UserPlus' },
-  { value: 'violation', label: 'Violação', icon: 'ShieldAlert' },
-  { value: 'report', label: 'Relatório', icon: 'FileText' },
-  { value: 'custom', label: 'Personalizado', icon: 'Settings' },
+  { value: "notification", label: "Notificação", icon: "Bell" },
+  { value: "alert", label: "Alerta", icon: "AlertTriangle" },
+  { value: "reminder", label: "Lembrete", icon: "Clock" },
+  { value: "welcome", label: "Boas-vindas", icon: "UserPlus" },
+  { value: "violation", label: "Violação", icon: "ShieldAlert" },
+  { value: "report", label: "Relatório", icon: "FileText" },
+  { value: "custom", label: "Personalizado", icon: "Settings" },
 ] as const;
 
 export const TEMPLATE_VARIABLES = [
-  { key: '{{employee_name}}', description: 'Nome do funcionário' },
-  { key: '{{employee_email}}', description: 'Email do funcionário' },
-  { key: '{{date}}', description: 'Data atual' },
-  { key: '{{time}}', description: 'Hora atual' },
-  { key: '{{company_name}}', description: 'Nome da empresa' },
-  { key: '{{manager_name}}', description: 'Nome do gerente' },
-  { key: '{{violation_type}}', description: 'Tipo de violação' },
-  { key: '{{violation_date}}', description: 'Data da violação' },
+  { key: "{{employee_name}}", description: "Nome do funcionário" },
+  { key: "{{employee_email}}", description: "Email do funcionário" },
+  { key: "{{date}}", description: "Data atual" },
+  { key: "{{time}}", description: "Hora atual" },
+  { key: "{{company_name}}", description: "Nome da empresa" },
+  { key: "{{manager_name}}", description: "Nome do gerente" },
+  { key: "{{violation_type}}", description: "Tipo de violação" },
+  { key: "{{violation_date}}", description: "Data da violação" },
 ] as const;
 
 // Initial form state
 const initialFormData: TemplateFormData = {
-  name: '',
-  content: '',
-  category: 'notification',
+  name: "",
+  content: "",
+  category: "notification",
   variables: [],
   is_active: true,
 };
@@ -77,9 +77,9 @@ export function useMessageTemplatesPage() {
   const queryClient = useQueryClient();
 
   // State
-  const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState<MessageTemplate | null>(null);
@@ -89,12 +89,12 @@ export function useMessageTemplatesPage() {
 
   // Queries
   const { data: templates = [], isLoading } = useQuery({
-    queryKey: ['message-templates'],
+    queryKey: ["message-templates"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('message_templates')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("message_templates")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return ((data || []) as MessageTemplateRow[]).map((t) => ({
         id: t.id,
@@ -121,18 +121,22 @@ export function useMessageTemplatesPage() {
         template_type: data.category,
         variables: data.variables,
         is_active: data.is_active,
-        channel: 'email',
+        channel: "email",
       };
-      const { error } = await supabase.from('message_templates').insert(dbData);
+      const { error } = await supabase.from("message_templates").insert(dbData);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['message-templates'] });
-      toast({ title: 'Template criado com sucesso!' });
+      queryClient.invalidateQueries({ queryKey: ["message-templates"] });
+      toast({ title: "Template criado com sucesso!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao criar template', description: error.message, variant: 'destructive' });
+      toast({
+        title: "Erro ao criar template",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -145,71 +149,84 @@ export function useMessageTemplatesPage() {
         variables: data.variables,
         is_active: data.is_active,
       };
-      const { error } = await supabase.from('message_templates').update(dbData).eq('id', id);
+      const { error } = await supabase.from("message_templates").update(dbData).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['message-templates'] });
-      toast({ title: 'Template atualizado com sucesso!' });
+      queryClient.invalidateQueries({ queryKey: ["message-templates"] });
+      toast({ title: "Template atualizado com sucesso!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao atualizar template', description: error.message, variant: 'destructive' });
+      toast({
+        title: "Erro ao atualizar template",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('message_templates').delete().eq('id', id);
+      const { error } = await supabase.from("message_templates").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['message-templates'] });
-      toast({ title: 'Template excluído com sucesso!' });
+      queryClient.invalidateQueries({ queryKey: ["message-templates"] });
+      toast({ title: "Template excluído com sucesso!" });
       setIsDeleteDialogOpen(false);
       setDeletingTemplate(null);
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao excluir template', description: error.message, variant: 'destructive' });
+      toast({
+        title: "Erro ao excluir template",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
   const toggleStatusMutation = useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
-      const { error } = await supabase.from('message_templates').update({ is_active }).eq('id', id);
+      const { error } = await supabase.from("message_templates").update({ is_active }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['message-templates'] });
+      queryClient.invalidateQueries({ queryKey: ["message-templates"] });
     },
   });
 
   // Filtered templates
   const filteredTemplates = useMemo(() => {
-    return templates.filter(template => {
-      const matchesSearch = !searchTerm || 
+    return templates.filter((template) => {
+      const matchesSearch =
+        !searchTerm ||
         template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         template.content.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesCategory = categoryFilter === 'all' || template.category === categoryFilter;
-      const matchesStatus = statusFilter === 'all' || 
-        (statusFilter === 'active' && template.is_active) ||
-        (statusFilter === 'inactive' && !template.is_active);
-      
+
+      const matchesCategory = categoryFilter === "all" || template.category === categoryFilter;
+      const matchesStatus =
+        statusFilter === "all" ||
+        (statusFilter === "active" && template.is_active) ||
+        (statusFilter === "inactive" && !template.is_active);
+
       return matchesSearch && matchesCategory && matchesStatus;
     });
   }, [templates, searchTerm, categoryFilter, statusFilter]);
 
   // Stats
-  const stats = useMemo(() => ({
-    total: templates.length,
-    active: templates.filter(t => t.is_active).length,
-    inactive: templates.filter(t => !t.is_active).length,
-    byCategory: TEMPLATE_CATEGORIES.map(cat => ({
-      ...cat,
-      count: templates.filter(t => t.category === cat.value).length,
-    })),
-  }), [templates]);
+  const stats = useMemo(
+    () => ({
+      total: templates.length,
+      active: templates.filter((t) => t.is_active).length,
+      inactive: templates.filter((t) => !t.is_active).length,
+      byCategory: TEMPLATE_CATEGORIES.map((cat) => ({
+        ...cat,
+        count: templates.filter((t) => t.category === cat.value).length,
+      })),
+    }),
+    [templates]
+  );
 
   // Handlers
   const handleOpenCreate = useCallback(() => {
@@ -256,12 +273,15 @@ export function useMessageTemplatesPage() {
     }
   }, [deletingTemplate, deleteMutation]);
 
-  const handleToggleStatus = useCallback((template: MessageTemplate) => {
-    toggleStatusMutation.mutate({ id: template.id, is_active: !template.is_active });
-  }, [toggleStatusMutation]);
+  const handleToggleStatus = useCallback(
+    (template: MessageTemplate) => {
+      toggleStatusMutation.mutate({ id: template.id, is_active: !template.is_active });
+    },
+    [toggleStatusMutation]
+  );
 
   const handleInsertVariable = useCallback((variable: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       content: prev.content + variable,
       variables: [...new Set([...prev.variables, variable])],
@@ -276,14 +296,14 @@ export function useMessageTemplatesPage() {
 
   const getPreviewContent = useCallback((content: string): string => {
     return content
-      .replace(/\{\{employee_name\}\}/g, 'João Silva')
-      .replace(/\{\{employee_email\}\}/g, 'joao@empresa.com')
-      .replace(/\{\{date\}\}/g, new Date().toLocaleDateString('pt-BR'))
-      .replace(/\{\{time\}\}/g, new Date().toLocaleTimeString('pt-BR'))
-      .replace(/\{\{company_name\}\}/g, 'Minha Empresa')
-      .replace(/\{\{manager_name\}\}/g, 'Maria Santos')
-      .replace(/\{\{violation_type\}\}/g, 'Acesso não autorizado')
-      .replace(/\{\{violation_date\}\}/g, new Date().toLocaleDateString('pt-BR'));
+      .replace(/\{\{employee_name\}\}/g, "João Silva")
+      .replace(/\{\{employee_email\}\}/g, "joao@empresa.com")
+      .replace(/\{\{date\}\}/g, new Date().toLocaleDateString("pt-BR"))
+      .replace(/\{\{time\}\}/g, new Date().toLocaleTimeString("pt-BR"))
+      .replace(/\{\{company_name\}\}/g, "Minha Empresa")
+      .replace(/\{\{manager_name\}\}/g, "Maria Santos")
+      .replace(/\{\{violation_type\}\}/g, "Acesso não autorizado")
+      .replace(/\{\{violation_date\}\}/g, new Date().toLocaleDateString("pt-BR"));
   }, []);
 
   return {
@@ -303,18 +323,18 @@ export function useMessageTemplatesPage() {
     setFormData,
     previewMode,
     setPreviewMode,
-    
+
     // Data
     templates: filteredTemplates,
     allTemplates: templates,
     stats,
     isLoading,
-    
+
     // Loading states
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
-    
+
     // Handlers
     handleOpenCreate,
     handleOpenEdit,
@@ -326,7 +346,7 @@ export function useMessageTemplatesPage() {
     handleInsertVariable,
     extractVariables,
     getPreviewContent,
-    
+
     // Constants
     TEMPLATE_CATEGORIES,
     TEMPLATE_VARIABLES,

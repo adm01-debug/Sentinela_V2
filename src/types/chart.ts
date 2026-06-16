@@ -7,20 +7,20 @@ export interface ChartConfig {
   plugins?: ChartPlugin[];
 }
 
-export type ChartType = 
-  | 'line'
-  | 'bar'
-  | 'area'
-  | 'pie'
-  | 'donut'
-  | 'scatter'
-  | 'radar'
-  | 'heatmap'
-  | 'treemap'
-  | 'funnel'
-  | 'gauge'
-  | 'sparkline'
-  | 'composed';
+export type ChartType =
+  | "line"
+  | "bar"
+  | "area"
+  | "pie"
+  | "donut"
+  | "scatter"
+  | "radar"
+  | "heatmap"
+  | "treemap"
+  | "funnel"
+  | "gauge"
+  | "sparkline"
+  | "composed";
 
 export interface ChartData {
   labels?: string[];
@@ -45,7 +45,7 @@ export interface ChartDataset {
   hidden?: boolean;
 }
 
-export type ChartDataPoint = 
+export type ChartDataPoint =
   | number
   | { x: number | string | Date; y: number }
   | { name: string; value: number }
@@ -69,7 +69,7 @@ export interface ChartOptions {
 export interface ChartTitle {
   display: boolean;
   text: string;
-  position?: 'top' | 'bottom' | 'left' | 'right';
+  position?: "top" | "bottom" | "left" | "right";
   font?: ChartFont;
   color?: string;
   padding?: number | { top?: number; bottom?: number };
@@ -77,8 +77,8 @@ export interface ChartTitle {
 
 export interface ChartLegend {
   display?: boolean;
-  position?: 'top' | 'bottom' | 'left' | 'right';
-  align?: 'start' | 'center' | 'end';
+  position?: "top" | "bottom" | "left" | "right";
+  align?: "start" | "center" | "end";
   labels?: LegendLabels;
   onClick?: (event: ChartEvent, item: LegendItem) => void;
 }
@@ -102,9 +102,9 @@ export interface LegendItem {
 
 export interface ChartTooltip {
   enabled?: boolean;
-  mode?: 'point' | 'nearest' | 'index' | 'dataset' | 'x' | 'y';
+  mode?: "point" | "nearest" | "index" | "dataset" | "x" | "y";
   intersect?: boolean;
-  position?: 'average' | 'nearest';
+  position?: "average" | "nearest";
   backgroundColor?: string;
   titleColor?: string;
   bodyColor?: string;
@@ -138,9 +138,9 @@ export interface ChartScales {
 }
 
 export interface ChartAxis {
-  type?: 'linear' | 'logarithmic' | 'category' | 'time';
+  type?: "linear" | "logarithmic" | "category" | "time";
   display?: boolean;
-  position?: 'top' | 'bottom' | 'left' | 'right';
+  position?: "top" | "bottom" | "left" | "right";
   title?: AxisTitle;
   min?: number;
   max?: number;
@@ -176,7 +176,16 @@ export interface AxisTicks {
 }
 
 export interface TimeScale {
-  unit?: 'millisecond' | 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year';
+  unit?:
+    | "millisecond"
+    | "second"
+    | "minute"
+    | "hour"
+    | "day"
+    | "week"
+    | "month"
+    | "quarter"
+    | "year";
   displayFormats?: Record<string, string>;
   tooltipFormat?: string;
 }
@@ -189,9 +198,9 @@ export interface ChartAnimation {
 }
 
 export interface ChartInteraction {
-  mode?: 'point' | 'nearest' | 'index' | 'dataset' | 'x' | 'y';
+  mode?: "point" | "nearest" | "index" | "dataset" | "x" | "y";
   intersect?: boolean;
-  axis?: 'x' | 'y' | 'xy';
+  axis?: "x" | "y" | "xy";
 }
 
 export interface ChartLayout {
@@ -202,7 +211,7 @@ export interface ChartFont {
   family?: string;
   size?: number;
   weight?: string | number;
-  style?: 'normal' | 'italic';
+  style?: "normal" | "italic";
 }
 
 export interface ChartEvent {
@@ -229,7 +238,7 @@ export interface ChartPlugin {
 
 export interface ChartRef {
   getBase64Image: () => string;
-  downloadImage: (filename?: string, format?: 'png' | 'jpeg') => void;
+  downloadImage: (filename?: string, format?: "png" | "jpeg") => void;
   resetZoom: () => void;
-  update: (mode?: 'none' | 'show' | 'hide' | 'default') => void;
+  update: (mode?: "none" | "show" | "hide" | "default") => void;
 }

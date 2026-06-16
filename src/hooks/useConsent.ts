@@ -9,7 +9,10 @@ interface ConsentState {
 
 export function useConsent() {
   const [consent, setConsent] = useState<ConsentState>({
-    analytics: false, marketing: false, preferences: false, necessary: true
+    analytics: false,
+    marketing: false,
+    preferences: false,
+    necessary: true,
   });
   const [hasResponded, setHasResponded] = useState(false);
 
@@ -21,12 +24,15 @@ export function useConsent() {
     }
   }, []);
 
-  const updateConsent = useCallback((updates: Partial<ConsentState>) => {
-    const newConsent = { ...consent, ...updates, necessary: true };
-    setConsent(newConsent);
-    localStorage.setItem("consent", JSON.stringify(newConsent));
-    setHasResponded(true);
-  }, [consent]);
+  const updateConsent = useCallback(
+    (updates: Partial<ConsentState>) => {
+      const newConsent = { ...consent, ...updates, necessary: true };
+      setConsent(newConsent);
+      localStorage.setItem("consent", JSON.stringify(newConsent));
+      setHasResponded(true);
+    },
+    [consent]
+  );
 
   const acceptAll = useCallback(() => {
     updateConsent({ analytics: true, marketing: true, preferences: true });

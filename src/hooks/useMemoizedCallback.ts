@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef } from "react";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useMemoizedCallback<T extends (...args: never[]) => unknown>(fn: T): T {
   const ref = useRef(fn);

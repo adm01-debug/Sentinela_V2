@@ -1,13 +1,17 @@
 export class ApiError extends Error {
-  constructor(public status: number, message: string, public data?: unknown) {
+  constructor(
+    public status: number,
+    message: string,
+    public data?: unknown
+  ) {
     super(message);
-    this.name = 'ApiError';
+    this.name = "ApiError";
   }
 }
 
 export const fetcher = async <T>(url: string, options?: RequestInit): Promise<T> => {
   const res = await fetch(url, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
     ...options,
   });
   if (!res.ok) throw new ApiError(res.status, res.statusText);
@@ -18,7 +22,6 @@ export const buildQueryString = (params: Record<string, string | number | boolea
   Object.entries(params)
     .filter(([, v]) => v !== undefined)
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
-    .join('&');
+    .join("&");
 
 export const parseQueryString = (qs) => Object.fromEntries(new URLSearchParams(qs));
-

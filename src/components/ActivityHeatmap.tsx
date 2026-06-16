@@ -1,5 +1,5 @@
-import { Activity } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Activity } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ActivityHeatmapProps {
   keystrokes: Array<{ recorded_at: string; employee_name: string }>;
@@ -12,9 +12,7 @@ export const ActivityHeatmap = ({ keystrokes, clicks }: ActivityHeatmapProps) =>
     const keystrokesInHour = keystrokes.filter(
       (k) => new Date(k.recorded_at).getHours() === hour
     ).length;
-    const clicksInHour = clicks.filter(
-      (c) => new Date(c.recorded_at).getHours() === hour
-    ).length;
+    const clicksInHour = clicks.filter((c) => new Date(c.recorded_at).getHours() === hour).length;
     return {
       hour,
       keystrokes: keystrokesInHour,
@@ -27,11 +25,11 @@ export const ActivityHeatmap = ({ keystrokes, clicks }: ActivityHeatmapProps) =>
 
   const getIntensityClass = (value: number) => {
     const intensity = value / maxActivity;
-    if (intensity === 0) return 'bg-muted';
-    if (intensity < 0.25) return 'bg-primary/20';
-    if (intensity < 0.5) return 'bg-primary/40';
-    if (intensity < 0.75) return 'bg-primary/60';
-    return 'bg-primary';
+    if (intensity === 0) return "bg-muted";
+    if (intensity < 0.25) return "bg-primary/20";
+    if (intensity < 0.5) return "bg-primary/40";
+    if (intensity < 0.75) return "bg-primary/60";
+    return "bg-primary";
   };
 
   // Group activity by employee
@@ -61,17 +59,17 @@ export const ActivityHeatmap = ({ keystrokes, clicks }: ActivityHeatmapProps) =>
       <CardContent className="space-y-6">
         {/* Hourly heatmap */}
         <div>
-          <p className="text-sm text-muted-foreground mb-2">Atividade por Hora</p>
+          <p className="mb-2 text-sm text-muted-foreground">Atividade por Hora</p>
           <div className="flex gap-1">
             {hourlyActivity.map((hour) => (
               <div
                 key={hour.hour}
-                className={`flex-1 h-8 rounded ${getIntensityClass(hour.total)} transition-colors`}
+                className={`h-8 flex-1 rounded ${getIntensityClass(hour.total)} transition-colors`}
                 title={`${hour.hour}h: ${hour.keystrokes} teclas, ${hour.clicks} cliques`}
               />
             ))}
           </div>
-          <div className="flex justify-between text-xs text-muted-foreground mt-1">
+          <div className="mt-1 flex justify-between text-xs text-muted-foreground">
             <span>0h</span>
             <span>6h</span>
             <span>12h</span>
@@ -82,9 +80,9 @@ export const ActivityHeatmap = ({ keystrokes, clicks }: ActivityHeatmapProps) =>
 
         {/* Top employees */}
         <div>
-          <p className="text-sm text-muted-foreground mb-2">Funcionários Mais Ativos</p>
+          <p className="mb-2 text-sm text-muted-foreground">Funcionários Mais Ativos</p>
           {sortedEmployees.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-4">
+            <p className="py-4 text-center text-sm text-muted-foreground">
               Nenhuma atividade registrada
             </p>
           ) : (
@@ -96,12 +94,12 @@ export const ActivityHeatmap = ({ keystrokes, clicks }: ActivityHeatmapProps) =>
                     <div className="flex justify-between text-sm">
                       <span className="truncate">{employee.name}</span>
                       <span className="text-muted-foreground">
-                        {employee.total.toLocaleString('pt-BR')}
+                        {employee.total.toLocaleString("pt-BR")}
                       </span>
                     </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-2 overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full bg-primary rounded-full transition-all"
+                        className="h-full rounded-full bg-primary transition-all"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>

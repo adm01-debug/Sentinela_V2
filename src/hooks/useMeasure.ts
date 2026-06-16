@@ -12,7 +12,12 @@ interface Dimensions {
 export function useMeasure<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   const [dimensions, setDimensions] = useState<Dimensions>({
-    width: 0, height: 0, top: 0, left: 0, bottom: 0, right: 0
+    width: 0,
+    height: 0,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   });
 
   useEffect(() => {
@@ -27,7 +32,7 @@ export function useMeasure<T extends HTMLElement>() {
         top: rect.top,
         left: rect.left,
         bottom: rect.bottom,
-        right: rect.right
+        right: rect.right,
       });
     });
 

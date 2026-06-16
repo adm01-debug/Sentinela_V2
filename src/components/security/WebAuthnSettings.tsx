@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
-import { 
-  Fingerprint, 
-  Plus, 
-  Trash2, 
-  Smartphone, 
-  Laptop, 
+import React, { useState } from "react";
+import {
+  Fingerprint,
+  Plus,
+  Trash2,
+  Smartphone,
+  Laptop,
   Monitor,
   ShieldCheck,
   ShieldAlert,
   Pencil,
   Loader2,
   CheckCircle2,
-  XCircle
-} from 'lucide-react';
-import { formatDistanceToNow, format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { useWebAuthn, WebAuthnCredential } from '@/hooks/useWebAuthn';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Skeleton } from '@/components/ui/skeleton';
+  XCircle,
+} from "lucide-react";
+import { formatDistanceToNow, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { useWebAuthn, WebAuthnCredential } from "@/hooks/useWebAuthn";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,7 +33,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
@@ -41,16 +41,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
 function DeviceIcon({ type }: { type: string | null }) {
   switch (type?.toLowerCase()) {
-    case 'ios':
-    case 'android':
+    case "ios":
+    case "android":
       return <Smartphone className="h-5 w-5" />;
-    case 'macos':
-    case 'windows':
-    case 'linux':
+    case "macos":
+    case "windows":
+    case "linux":
       return <Laptop className="h-5 w-5" />;
     default:
       return <Monitor className="h-5 w-5" />;
@@ -63,9 +63,13 @@ interface PasskeyItemProps {
   onRename: (params: { id: string; name: string }) => void;
 }
 
-const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRename }: PasskeyItemProps) {
+const PasskeyItem = React.memo(function PasskeyItem({
+  credential,
+  onDelete,
+  onRename,
+}: PasskeyItemProps) {
   const [isRenaming, setIsRenaming] = useState(false);
-  const [newName, setNewName] = useState(credential.friendly_name || '');
+  const [newName, setNewName] = useState(credential.friendly_name || "");
 
   const handleRename = () => {
     if (newName.trim()) {
@@ -76,23 +80,26 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
 
   return (
     <>
-      <div className="flex items-start gap-4 p-4 border rounded-lg">
-        <div className="p-2 rounded-full bg-primary/10 text-primary">
+      <div className="flex items-start gap-4 rounded-lg border p-4">
+        <div className="rounded-full bg-primary/10 p-2 text-primary">
           <DeviceIcon type={credential.device_type} />
         </div>
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <p className="font-medium truncate">
-              {credential.friendly_name || 'Passkey'}
-            </p>
-            <Badge variant="outline">{credential.device_type || 'Unknown'}</Badge>
+            <p className="truncate font-medium">{credential.friendly_name || "Passkey"}</p>
+            <Badge variant="outline">{credential.device_type || "Unknown"}</Badge>
           </div>
           <p className="text-sm text-muted-foreground">
-            Criada {formatDistanceToNow(new Date(credential.created_at), { addSuffix: true, locale: ptBR })}
+            Criada{" "}
+            {formatDistanceToNow(new Date(credential.created_at), {
+              addSuffix: true,
+              locale: ptBR,
+            })}
           </p>
           {credential.last_used_at && (
             <p className="text-xs text-muted-foreground">
-              Último uso: {format(new Date(credential.last_used_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+              Último uso:{" "}
+              {format(new Date(credential.last_used_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
             </p>
           )}
         </div>
@@ -101,7 +108,7 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
             variant="ghost"
             size="icon"
             onClick={() => {
-              setNewName(credential.friendly_name || '');
+              setNewName(credential.friendly_name || "");
               setIsRenaming(true);
             }}
           >
@@ -109,7 +116,11 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-destructive hover:text-destructive"
+              >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </AlertDialogTrigger>
@@ -117,12 +128,16 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
               <AlertDialogHeader>
                 <AlertDialogTitle>Remover Passkey?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Isso removerá a autenticação biométrica deste dispositivo. Você precisará usar outro método de login.
+                  Isso removerá a autenticação biométrica deste dispositivo. Você precisará usar
+                  outro método de login.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={() => onDelete(credential.id)} className="bg-destructive text-destructive-foreground">
+                <AlertDialogAction
+                  onClick={() => onDelete(credential.id)}
+                  className="bg-destructive text-destructive-foreground"
+                >
                   Remover
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -135,9 +150,7 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Renomear Passkey</DialogTitle>
-            <DialogDescription>
-              Digite um nome para identificar esta credencial
-            </DialogDescription>
+            <DialogDescription>Digite um nome para identificar esta credencial</DialogDescription>
           </DialogHeader>
           <div className="py-4">
             <Label htmlFor="passkey-name">Nome</Label>
@@ -152,9 +165,7 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
             <Button variant="outline" onClick={() => setIsRenaming(false)}>
               Cancelar
             </Button>
-            <Button onClick={handleRename}>
-              Salvar
-            </Button>
+            <Button onClick={handleRename}>Salvar</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -175,13 +186,13 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
   } = useWebAuthn();
 
   const [showRegister, setShowRegister] = useState(false);
-  const [passkeyName, setPasskeyName] = useState('');
+  const [passkeyName, setPasskeyName] = useState("");
 
   const handleRegister = async () => {
     const result = await registerPasskey(passkeyName || undefined);
     if (result.success) {
       setShowRegister(false);
-      setPasskeyName('');
+      setPasskeyName("");
     }
   };
 
@@ -198,7 +209,7 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Status Card */}
-        <div className="flex items-center justify-between p-4 border rounded-lg">
+        <div className="flex items-center justify-between rounded-lg border p-4">
           <div className="flex items-center gap-4">
             {isSupported ? (
               hasPasskeys ? (
@@ -211,23 +222,23 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
             )}
             <div>
               <p className="font-medium">
-                {!isSupported 
-                  ? 'Não Suportado'
-                  : hasPasskeys 
-                    ? 'Passkeys Configuradas' 
-                    : 'Nenhuma Passkey'}
+                {!isSupported
+                  ? "Não Suportado"
+                  : hasPasskeys
+                    ? "Passkeys Configuradas"
+                    : "Nenhuma Passkey"}
               </p>
               <p className="text-sm text-muted-foreground">
                 {!isSupported
-                  ? 'Seu dispositivo ou navegador não suporta WebAuthn'
+                  ? "Seu dispositivo ou navegador não suporta WebAuthn"
                   : hasPasskeys
                     ? `${credentials.length} passkey(s) registrada(s)`
-                    : 'Configure para login mais rápido e seguro'}
+                    : "Configure para login mais rápido e seguro"}
               </p>
             </div>
           </div>
-          <Badge variant={!isSupported ? 'secondary' : hasPasskeys ? 'default' : 'outline'}>
-            {!isSupported ? 'Indisponível' : hasPasskeys ? 'Ativo' : 'Inativo'}
+          <Badge variant={!isSupported ? "secondary" : hasPasskeys ? "default" : "outline"}>
+            {!isSupported ? "Indisponível" : hasPasskeys ? "Ativo" : "Inativo"}
           </Badge>
         </div>
 
@@ -269,30 +280,28 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
             </div>
           </ScrollArea>
         ) : isSupported ? (
-          <div className="text-center py-8 border rounded-lg border-dashed">
-            <Fingerprint className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-            <p className="text-muted-foreground mb-4">
-              Nenhuma passkey registrada ainda
-            </p>
+          <div className="rounded-lg border border-dashed py-8 text-center">
+            <Fingerprint className="mx-auto mb-3 h-12 w-12 text-muted-foreground" />
+            <p className="mb-4 text-muted-foreground">Nenhuma passkey registrada ainda</p>
           </div>
         ) : null}
 
         {/* Register Button */}
         {isSupported && (
           <>
-            <Button 
-              onClick={() => setShowRegister(true)} 
+            <Button
+              onClick={() => setShowRegister(true)}
               className="w-full"
               disabled={isRegistering}
             >
               {isRegistering ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Registrando...
                 </>
               ) : (
                 <>
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="mr-2 h-4 w-4" />
                   Adicionar Passkey
                 </>
               )}
@@ -309,7 +318,7 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
                     Use a autenticação biométrica do seu dispositivo para criar uma passkey
                   </DialogDescription>
                 </DialogHeader>
-                <div className="py-4 space-y-4">
+                <div className="space-y-4 py-4">
                   <div>
                     <Label htmlFor="new-passkey-name">Nome da Passkey (opcional)</Label>
                     <Input
@@ -319,10 +328,10 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
                       placeholder="Ex: MacBook do Trabalho"
                     />
                   </div>
-                  <div className="p-4 bg-muted rounded-lg">
+                  <div className="rounded-lg bg-muted p-4">
                     <p className="text-sm text-muted-foreground">
-                      Ao clicar em &quot;Registrar&quot;, você será solicitado a usar sua impressão digital,
-                      reconhecimento facial ou PIN do dispositivo.
+                      Ao clicar em &quot;Registrar&quot;, você será solicitado a usar sua impressão
+                      digital, reconhecimento facial ou PIN do dispositivo.
                     </p>
                   </div>
                 </div>
@@ -333,12 +342,12 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
                   <Button onClick={handleRegister} disabled={isRegistering}>
                     {isRegistering ? (
                       <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Aguardando...
                       </>
                     ) : (
                       <>
-                        <Fingerprint className="h-4 w-4 mr-2" />
+                        <Fingerprint className="mr-2 h-4 w-4" />
                         Registrar
                       </>
                     )}
@@ -350,12 +359,12 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
         )}
 
         {/* Info Box */}
-        <div className="p-4 bg-muted/50 rounded-lg">
-          <h4 className="font-medium mb-2">O que são Passkeys?</h4>
+        <div className="rounded-lg bg-muted/50 p-4">
+          <h4 className="mb-2 font-medium">O que são Passkeys?</h4>
           <p className="text-sm text-muted-foreground">
-            Passkeys são credenciais criptográficas armazenadas no seu dispositivo que permitem 
-            login sem senha usando biometria (impressão digital, Face ID) ou PIN. São mais 
-            seguras que senhas tradicionais e resistentes a phishing.
+            Passkeys são credenciais criptográficas armazenadas no seu dispositivo que permitem
+            login sem senha usando biometria (impressão digital, Face ID) ou PIN. São mais seguras
+            que senhas tradicionais e resistentes a phishing.
           </p>
         </div>
       </CardContent>

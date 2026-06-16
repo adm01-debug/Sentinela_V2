@@ -7,11 +7,11 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-} from 'recharts';
-import { TrendingUp } from 'lucide-react';
-import { ChartTooltipContent } from './ChartTooltip';
-import { ChartEmptyState } from './ChartEmptyState';
-import { useChartColors } from '@/hooks/useChartColors';
+} from "recharts";
+import { TrendingUp } from "lucide-react";
+import { ChartTooltipContent } from "./ChartTooltip";
+import { ChartEmptyState } from "./ChartEmptyState";
+import { useChartColors } from "@/hooks/useChartColors";
 
 export interface LineSeriesConfig {
   dataKey: string;
@@ -35,18 +35,18 @@ interface BaseLineChartProps {
 }
 
 const DEFAULT_COLORS = [
-  'hsl(243, 75%, 59%)',
-  'hsl(142, 76%, 36%)',
-  'hsl(38, 92%, 50%)',
-  'hsl(0, 84%, 60%)',
-  'hsl(262, 83%, 58%)',
-  'hsl(330, 81%, 60%)',
+  "hsl(243, 75%, 59%)",
+  "hsl(142, 76%, 36%)",
+  "hsl(38, 92%, 50%)",
+  "hsl(0, 84%, 60%)",
+  "hsl(262, 83%, 58%)",
+  "hsl(330, 81%, 60%)",
 ];
 
 export function BaseLineChart({
   data,
   series,
-  xAxisKey = 'date',
+  xAxisKey = "date",
   height = 300,
   showGrid = true,
   showLegend = false,
@@ -57,7 +57,14 @@ export function BaseLineChart({
   const colors = useChartColors();
 
   if (!data.length) {
-    return <ChartEmptyState icon={TrendingUp} title={emptyTitle} description={emptyDescription} height={height} />;
+    return (
+      <ChartEmptyState
+        icon={TrendingUp}
+        title={emptyTitle}
+        description={emptyDescription}
+        height={height}
+      />
+    );
   }
 
   return (
@@ -85,7 +92,7 @@ export function BaseLineChart({
             stroke={s.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length]}
             strokeWidth={s.strokeWidth ?? 2}
             dot={s.dot ?? false}
-            strokeDasharray={s.dashed ? '5 5' : undefined}
+            strokeDasharray={s.dashed ? "5 5" : undefined}
           />
         ))}
       </LineChart>

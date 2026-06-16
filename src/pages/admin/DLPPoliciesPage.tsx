@@ -1,21 +1,38 @@
-import { useEffect, useState } from 'react';
-import { Shield, Plus, Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { useEffect, useState } from "react";
+import { Shield, Plus, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
-  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,
-} from '@/components/ui/dialog';
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useToast } from '@/hooks/use-toast';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useToast } from "@/hooks/use-toast";
 
 interface Classifier {
   id: string;
@@ -40,16 +57,16 @@ interface Policy {
 }
 
 const severityColor: Record<string, string> = {
-  low: 'bg-muted text-muted-foreground',
-  medium: 'bg-warning/15 text-warning',
-  high: 'bg-destructive/15 text-destructive',
-  critical: 'bg-destructive text-destructive-foreground',
+  low: "bg-muted text-muted-foreground",
+  medium: "bg-warning/15 text-warning",
+  high: "bg-destructive/15 text-destructive",
+  critical: "bg-destructive text-destructive-foreground",
 };
 
 const actionLabel: Record<string, string> = {
-  alert: 'Alertar',
-  redact: 'Redigir',
-  block: 'Bloquear',
+  alert: "Alertar",
+  redact: "Redigir",
+  block: "Bloquear",
 };
 
 export default function DLPPoliciesPage() {
@@ -62,14 +79,14 @@ export default function DLPPoliciesPage() {
   const [open, setOpen] = useState(false);
 
   const [form, setForm] = useState({
-    name: '',
-    description: '',
-    classifier_id: '',
-    severity: 'medium',
-    action: 'alert',
+    name: "",
+    description: "",
+    classifier_id: "",
+    severity: "medium",
+    action: "alert",
     scope_clipboard: true,
     scope_screenshot: true,
-    keywords: '',
+    keywords: "",
   });
 
   useEffect(() => {
@@ -83,25 +100,25 @@ export default function DLPPoliciesPage() {
       if (!u.user) return;
 
       const { data: uc } = await supabase
-        .from('user_companies')
-        .select('company_id')
-        .eq('user_id', u.user.id)
+        .from("user_companies")
+        .select("company_id")
+        .eq("user_id", u.user.id)
         .maybeSingle();
       const cid = uc?.company_id ?? null;
       setCompanyId(cid);
 
       const [{ data: cls }, { data: pol }] = await Promise.all([
         supabase
-          .from('dlp_classifiers')
-          .select('id, code, name, category, default_severity, default_action')
-          .eq('is_active', true)
-          .order('category'),
+          .from("dlp_classifiers")
+          .select("id, code, name, category, default_severity, default_action")
+          .eq("is_active", true)
+          .order("category"),
         cid
           ? supabase
-              .from('dlp_policies')
-              .select('*')
-              .eq('company_id', cid)
-              .order('created_at', { ascending: false })
+              .from("dlp_policies")
+              .select("*")
+              .eq("company_id", cid)
+              .order("created_at", { ascending: false })
           : Promise.resolve({ data: [] as Policy[] }),
       ]);
 
@@ -113,12 +130,9 @@ export default function DLPPoliciesPage() {
   }
 
   async function togglePolicy(id: string, value: boolean) {
-    const { error } = await supabase
-      .from('dlp_policies')
-      .update({ is_active: value })
-      .eq('id', id);
+    const { error } = await supabase.from("dlp_policies").update({ is_active: value }).eq("id", id);
     if (error) {
-      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
     setPolicies((prev) => prev.map((p) => (p.id === id ? { ...p, is_active: value } : p)));
@@ -126,24 +140,32 @@ export default function DLPPoliciesPage() {
 
   async function createPolicy() {
     if (!companyId) {
-      toast({ title: 'Erro', description: 'Empresa não vinculada ao usuário', variant: 'destructive' });
+      toast({
+        title: "Erro",
+        description: "Empresa não vinculada ao usuário",
+        variant: "destructive",
+      });
       return;
     }
     if (!form.name.trim() || !form.classifier_id) {
-      toast({ title: 'Campos obrigatórios', description: 'Informe nome e classifier.', variant: 'destructive' });
+      toast({
+        title: "Campos obrigatórios",
+        description: "Informe nome e classifier.",
+        variant: "destructive",
+      });
       return;
     }
     setSaving(true);
     const scope: string[] = [];
-    if (form.scope_clipboard) scope.push('clipboard');
-    if (form.scope_screenshot) scope.push('screenshot');
+    if (form.scope_clipboard) scope.push("clipboard");
+    if (form.scope_screenshot) scope.push("screenshot");
 
     const keywords = form.keywords
       .split(/[\n,]/)
       .map((k) => k.trim())
       .filter(Boolean);
 
-    const { error } = await supabase.from('dlp_policies').insert({
+    const { error } = await supabase.from("dlp_policies").insert({
       company_id: companyId,
       name: form.name.trim(),
       description: form.description.trim() || null,
@@ -151,27 +173,35 @@ export default function DLPPoliciesPage() {
       keywords: keywords.length > 0 ? keywords : null,
       severity: form.severity,
       action: form.action,
-      scope: scope.length > 0 ? scope : ['clipboard'],
+      scope: scope.length > 0 ? scope : ["clipboard"],
       is_active: true,
     });
     setSaving(false);
 
     if (error) {
-      toast({ title: 'Erro ao criar política', description: error.message, variant: 'destructive' });
+      toast({
+        title: "Erro ao criar política",
+        description: error.message,
+        variant: "destructive",
+      });
       return;
     }
-    toast({ title: 'Política criada', description: form.name });
+    toast({ title: "Política criada", description: form.name });
     setOpen(false);
     setForm({
-      name: '', description: '', classifier_id: '',
-      severity: 'medium', action: 'alert',
-      scope_clipboard: true, scope_screenshot: true, keywords: '',
+      name: "",
+      description: "",
+      classifier_id: "",
+      severity: "medium",
+      action: "alert",
+      scope_clipboard: true,
+      scope_screenshot: true,
+      keywords: "",
     });
     void load();
   }
 
-  const classifierName = (id: string | null) =>
-    classifiers.find((c) => c.id === id)?.name ?? '—';
+  const classifierName = (id: string | null) => classifiers.find((c) => c.id === id)?.name ?? "—";
 
   return (
     <div className="space-y-6 p-6">
@@ -195,7 +225,8 @@ export default function DLPPoliciesPage() {
             <DialogHeader>
               <DialogTitle>Nova política DLP</DialogTitle>
               <DialogDescription>
-                Selecione um classifier e a ação a ser tomada quando dados sensíveis forem detectados.
+                Selecione um classifier e a ação a ser tomada quando dados sensíveis forem
+                detectados.
               </DialogDescription>
             </DialogHeader>
 
@@ -232,8 +263,13 @@ export default function DLPPoliciesPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label>Severidade</Label>
-                  <Select value={form.severity} onValueChange={(v) => setForm({ ...form, severity: v })}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
+                  <Select
+                    value={form.severity}
+                    onValueChange={(v) => setForm({ ...form, severity: v })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="low">Baixa</SelectItem>
                       <SelectItem value="medium">Média</SelectItem>
@@ -244,8 +280,13 @@ export default function DLPPoliciesPage() {
                 </div>
                 <div>
                   <Label>Ação</Label>
-                  <Select value={form.action} onValueChange={(v) => setForm({ ...form, action: v })}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
+                  <Select
+                    value={form.action}
+                    onValueChange={(v) => setForm({ ...form, action: v })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="alert">Apenas alertar</SelectItem>
                       <SelectItem value="redact">Redigir</SelectItem>
@@ -319,7 +360,9 @@ export default function DLPPoliciesPage() {
             {classifiers.map((c) => (
               <Badge key={c.id} variant="outline" className="gap-1">
                 {c.name}
-                <span className={`ml-1 rounded px-1 text-[10px] ${severityColor[c.default_severity]}`}>
+                <span
+                  className={`ml-1 rounded px-1 text-[10px] ${severityColor[c.default_severity]}`}
+                >
                   {c.default_severity}
                 </span>
               </Badge>
@@ -371,7 +414,7 @@ export default function DLPPoliciesPage() {
                     </TableCell>
                     <TableCell>{actionLabel[p.action]}</TableCell>
                     <TableCell>
-                      <span className="text-xs text-muted-foreground">{p.scope.join(', ')}</span>
+                      <span className="text-xs text-muted-foreground">{p.scope.join(", ")}</span>
                     </TableCell>
                     <TableCell className="text-right">
                       <Switch

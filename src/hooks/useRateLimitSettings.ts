@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets, invalidateRelated } from "@/lib/queryClient";
 
 // ============================================================
 // TYPES
@@ -35,9 +35,9 @@ export function useRateLimitSettings() {
     queryKey: queryKeys.rateLimiting.settings(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('rate_limit_settings')
-        .select('*')
-        .order('endpoint', { ascending: true });
+        .from("rate_limit_settings")
+        .select("*")
+        .order("endpoint", { ascending: true });
 
       if (error) throw error;
       return data as RateLimitSettings[];
@@ -57,9 +57,9 @@ export function useUpdateRateLimitSettings() {
   return useMutation({
     mutationFn: async ({ id, ...input }: UpdateRateLimitSettingsInput) => {
       const { data, error } = await supabase
-        .from('rate_limit_settings')
+        .from("rate_limit_settings")
         .update(input)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
 
@@ -69,15 +69,15 @@ export function useUpdateRateLimitSettings() {
     onSuccess: () => {
       invalidateRelated.rateLimiting(queryClient);
       toast({
-        title: 'Configurações atualizadas',
-        description: 'As configurações de rate limit foram atualizadas.',
+        title: "Configurações atualizadas",
+        description: "As configurações de rate limit foram atualizadas.",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao atualizar configurações',
+        title: "Erro ao atualizar configurações",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -90,9 +90,9 @@ export function useToggleRateLimitSetting() {
   return useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
       const { data, error } = await supabase
-        .from('rate_limit_settings')
+        .from("rate_limit_settings")
         .update({ is_active })
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .single();
 
@@ -102,14 +102,14 @@ export function useToggleRateLimitSetting() {
     onSuccess: (data: { is_active: boolean }) => {
       invalidateRelated.rateLimiting(queryClient);
       toast({
-        title: data.is_active ? 'Rate limit ativado' : 'Rate limit desativado',
+        title: data.is_active ? "Rate limit ativado" : "Rate limit desativado",
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao alterar status',
+        title: "Erro ao alterar status",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });

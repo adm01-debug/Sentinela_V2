@@ -9,11 +9,11 @@ export function useAudio(src?: string) {
   useEffect(() => {
     const audio = new Audio(src);
     audioRef.current = audio;
-    
+
     audio.addEventListener("loadedmetadata", () => setDuration(audio.duration));
     audio.addEventListener("timeupdate", () => setCurrentTime(audio.currentTime));
     audio.addEventListener("ended", () => setPlaying(false));
-    
+
     return () => {
       audio.pause();
       audio.src = "";
@@ -30,7 +30,7 @@ export function useAudio(src?: string) {
     setPlaying(false);
   }, []);
 
-  const toggle = useCallback(() => playing ? pause() : play(), [playing, play, pause]);
+  const toggle = useCallback(() => (playing ? pause() : play()), [playing, play, pause]);
 
   const seek = useCallback((time: number) => {
     if (audioRef.current) audioRef.current.currentTime = time;

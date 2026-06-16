@@ -1,4 +1,4 @@
-export type ReportSeverity = 'low' | 'medium' | 'high' | 'critical';
+export type ReportSeverity = "low" | "medium" | "high" | "critical";
 
 export interface ReportData {
   id: string;

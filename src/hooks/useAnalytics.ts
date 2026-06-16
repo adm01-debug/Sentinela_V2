@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { trackEvent, trackPageView } from './google-analytics';
-import { analyticsService } from '@/services/analyticsService';
+import { useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { trackEvent, trackPageView } from "./google-analytics";
+import { analyticsService } from "@/services/analyticsService";
 
 export function useAnalytics(params?: { period?: string }) {
   const track = useCallback((event: string, p?: Record<string, string | number | boolean>) => {
@@ -13,7 +13,7 @@ export function useAnalytics(params?: { period?: string }) {
   }, []);
 
   const query = useQuery({
-    queryKey: ['analytics', params],
+    queryKey: ["analytics", params],
     queryFn: () => analyticsService.getDashboardMetrics(params),
     enabled: !!params,
   });
@@ -27,21 +27,21 @@ export function useAnalytics(params?: { period?: string }) {
 
 export function useApplicationAnalytics() {
   return useQuery({
-    queryKey: ['analytics-applications'],
+    queryKey: ["analytics-applications"],
     queryFn: () => analyticsService.getApplicationAnalytics(),
   });
 }
 
 export function useProductivityAnalytics() {
   return useQuery({
-    queryKey: ['analytics-productivity'],
+    queryKey: ["analytics-productivity"],
     queryFn: () => analyticsService.getProductivityAnalytics(),
   });
 }
 
 export function useTrendsAnalytics() {
   return useQuery({
-    queryKey: ['analytics-trends'],
+    queryKey: ["analytics-trends"],
     queryFn: () => analyticsService.getTrendsAnalytics(),
   });
 }

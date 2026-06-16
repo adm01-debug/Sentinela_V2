@@ -20,15 +20,15 @@ export function useAPIKeys() {
       name,
       key: `sk_${crypto.randomUUID().replace(/-/g, "")}`,
       createdAt: new Date(),
-      status: "active"
+      status: "active",
     };
-    setKeys(prev => [...prev, newKey]);
+    setKeys((prev) => [...prev, newKey]);
     setLoading(false);
     return newKey;
   }, []);
 
   const revokeKey = useCallback((id: string) => {
-    setKeys(prev => prev.map(k => k.id === id ? { ...k, status: "revoked" as const } : k));
+    setKeys((prev) => prev.map((k) => (k.id === id ? { ...k, status: "revoked" as const } : k)));
   }, []);
 
   return { keys, loading, generateKey, revokeKey };

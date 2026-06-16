@@ -15,7 +15,7 @@ export function useContextMenu() {
   }, []);
 
   const close = useCallback(() => {
-    setState(s => ({ ...s, isOpen: false }));
+    setState((s) => ({ ...s, isOpen: false }));
   }, []);
 
   useEffect(() => {

@@ -7,9 +7,9 @@ export interface Sort {
   priority?: number;
 }
 
-export type SortDirection = 'asc' | 'desc';
+export type SortDirection = "asc" | "desc";
 
-export type NullsPosition = 'first' | 'last';
+export type NullsPosition = "first" | "last";
 
 export interface SortConfig {
   field: string;
@@ -20,7 +20,7 @@ export interface SortConfig {
   customSort?: string;
 }
 
-export type SortType = 'string' | 'number' | 'date' | 'boolean' | 'custom';
+export type SortType = "string" | "number" | "date" | "boolean" | "custom";
 
 export interface MultiSort {
   sorts: Sort[];
@@ -63,24 +63,22 @@ export interface SortOptions {
   nullsFirst: boolean;
 }
 
-export function createSort(field: string, direction: SortDirection = 'asc'): Sort {
+export function createSort(field: string, direction: SortDirection = "asc"): Sort {
   return { field, direction };
 }
 
 export function toggleDirection(direction: SortDirection): SortDirection {
-  return direction === 'asc' ? 'desc' : 'asc';
+  return direction === "asc" ? "desc" : "asc";
 }
 
 export function sortToQueryString(sorts: Sort[]): string {
-  return sorts
-    .map(s => `${s.direction === 'desc' ? '-' : ''}${s.field}`)
-    .join(',');
+  return sorts.map((s) => `${s.direction === "desc" ? "-" : ""}${s.field}`).join(",");
 }
 
 export function parseQueryStringToSort(queryString): Sort[] {
   if (!queryString) return [];
-  return queryString.split(',').map(part => ({
-    field: part.startsWith('-') ? part.slice(1) : part,
-    direction: part.startsWith('-') ? 'desc' : 'asc',
+  return queryString.split(",").map((part) => ({
+    field: part.startsWith("-") ? part.slice(1) : part,
+    direction: part.startsWith("-") ? "desc" : "asc",
   }));
 }

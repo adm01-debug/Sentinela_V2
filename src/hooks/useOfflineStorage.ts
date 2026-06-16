@@ -7,11 +7,14 @@ export function useOfflineStorage<T>(key: string, initialValue: T) {
   });
   const [synced, setSynced] = useState(true);
 
-  const save = useCallback((newValue: T) => {
-    setValue(newValue);
-    localStorage.setItem(key, JSON.stringify(newValue));
-    setSynced(false);
-  }, [key]);
+  const save = useCallback(
+    (newValue: T) => {
+      setValue(newValue);
+      localStorage.setItem(key, JSON.stringify(newValue));
+      setSynced(false);
+    },
+    [key]
+  );
 
   const sync = useCallback(async () => {
     setSynced(true);

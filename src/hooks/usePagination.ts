@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback } from "react";
 
 export interface PaginationState {
   page: number;
@@ -19,10 +19,10 @@ export interface UsePaginationReturn<T> {
   pageSize: number;
   totalPages: number;
   totalItems: number;
-  
+
   // Dados paginados
   paginatedData: T[];
-  
+
   // Navegação
   goToPage: (page: number) => void;
   nextPage: () => void;
@@ -30,13 +30,13 @@ export interface UsePaginationReturn<T> {
   firstPage: () => void;
   lastPage: () => void;
   setPageSize: (size: number) => void;
-  
+
   // Info
   startIndex: number;
   endIndex: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
-  
+
   // Para queries
   offset: number;
   limit: number;
@@ -49,10 +49,7 @@ export function usePagination<T>(
   data: T[],
   options: UsePaginationOptions = {}
 ): UsePaginationReturn<T> {
-  const {
-    initialPage = 1,
-    initialPageSize = 10,
-  } = options;
+  const { initialPage = 1, initialPageSize = 10 } = options;
 
   const [page, setPage] = useState(initialPage);
   const [pageSize, setPageSizeState] = useState(initialPageSize);
@@ -74,9 +71,12 @@ export function usePagination<T>(
     return data.slice(startIndex, endIndex);
   }, [data, startIndex, endIndex]);
 
-  const goToPage = useCallback((newPage: number) => {
-    setPage(Math.max(1, Math.min(newPage, totalPages)));
-  }, [totalPages]);
+  const goToPage = useCallback(
+    (newPage: number) => {
+      setPage(Math.max(1, Math.min(newPage, totalPages)));
+    },
+    [totalPages]
+  );
 
   const nextPage = useCallback(() => {
     if (safePage < totalPages) setPage(safePage + 1);
@@ -119,11 +119,7 @@ export function usePagination<T>(
  * Hook para paginação server-side (com React Query)
  */
 export function useServerPagination(options: UsePaginationOptions = {}) {
-  const {
-    initialPage = 1,
-    initialPageSize = 10,
-    totalItems = 0,
-  } = options;
+  const { initialPage = 1, initialPageSize = 10, totalItems = 0 } = options;
 
   const [page, setPage] = useState(initialPage);
   const [pageSize, setPageSizeState] = useState(initialPageSize);
@@ -131,9 +127,12 @@ export function useServerPagination(options: UsePaginationOptions = {}) {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const goToPage = useCallback((newPage: number) => {
-    setPage(Math.max(1, Math.min(newPage, totalPages || 1)));
-  }, [totalPages]);
+  const goToPage = useCallback(
+    (newPage: number) => {
+      setPage(Math.max(1, Math.min(newPage, totalPages || 1)));
+    },
+    [totalPages]
+  );
 
   const nextPage = useCallback(() => {
     if (page < totalPages) setPage(page + 1);

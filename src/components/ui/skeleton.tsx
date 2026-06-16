@@ -5,11 +5,11 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   animation?: "pulse" | "shimmer" | "none";
 }
 
-function Skeleton({ 
-  className, 
+function Skeleton({
+  className,
   variant = "default",
   animation = "pulse",
-  ...props 
+  ...props
 }: SkeletonProps) {
   const variants = {
     default: "rounded-md",
@@ -20,19 +20,15 @@ function Skeleton({
 
   const animations = {
     pulse: "animate-pulse",
-    shimmer: "animate-shimmer bg-gradient-to-r from-muted via-muted-foreground/10 to-muted bg-[length:200%_100%]",
+    shimmer:
+      "animate-shimmer bg-gradient-to-r from-muted via-muted-foreground/10 to-muted bg-[length:200%_100%]",
     none: "",
   };
 
   return (
-    <div 
-      className={cn(
-        "bg-muted",
-        variants[variant],
-        animations[animation],
-        className
-      )} 
-      {...props} 
+    <div
+      className={cn("bg-muted", variants[variant], animations[animation], className)}
+      {...props}
     />
   );
 }
@@ -42,11 +38,7 @@ function SkeletonText({ lines = 3, className }: { lines?: number; className?: st
   return (
     <div className={cn("space-y-2", className)}>
       {Array.from({ length: lines }).map((_, i) => (
-        <Skeleton 
-          key={i} 
-          variant="text" 
-          className={i === lines - 1 ? "w-3/4" : "w-full"} 
-        />
+        <Skeleton key={i} variant="text" className={i === lines - 1 ? "w-3/4" : "w-full"} />
       ))}
     </div>
   );
@@ -54,10 +46,10 @@ function SkeletonText({ lines = 3, className }: { lines?: number; className?: st
 
 function SkeletonCard({ className }: { className?: string }) {
   return (
-    <div className={cn("rounded-lg border bg-card p-6 space-y-4", className)}>
+    <div className={cn("space-y-4 rounded-lg border bg-card p-6", className)}>
       <div className="flex items-center gap-4">
         <Skeleton variant="circular" className="h-12 w-12" />
-        <div className="space-y-2 flex-1">
+        <div className="flex-1 space-y-2">
           <Skeleton className="h-4 w-1/3" />
           <Skeleton className="h-3 w-1/2" />
         </div>

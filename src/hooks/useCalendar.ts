@@ -8,7 +8,7 @@ export function useCalendar(initialDate = new Date()) {
     const month = currentDate.getMonth();
     const lastDay = new Date(year, month + 1, 0);
     const days: Date[] = [];
-    
+
     for (let d = 1; d <= lastDay.getDate(); d++) {
       days.push(new Date(year, month, d));
     }
@@ -16,11 +16,11 @@ export function useCalendar(initialDate = new Date()) {
   }, [currentDate]);
 
   const nextMonth = useCallback(() => {
-    setCurrentDate(d => new Date(d.getFullYear(), d.getMonth() + 1, 1));
+    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
   }, []);
 
   const prevMonth = useCallback(() => {
-    setCurrentDate(d => new Date(d.getFullYear(), d.getMonth() - 1, 1));
+    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
   }, []);
 
   const goToDate = useCallback((date: Date) => setCurrentDate(date), []);

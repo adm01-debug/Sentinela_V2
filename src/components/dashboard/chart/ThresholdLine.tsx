@@ -5,6 +5,11 @@ export interface ThresholdLineProps {
   strokeDasharray?: string;
 }
 
-export function ThresholdLine({ value, label, color = 'hsl(var(--destructive))', strokeDasharray = '5 5' }: ThresholdLineProps) {
+export function ThresholdLine({
+  value,
+  label,
+  color = "hsl(var(--destructive))",
+  strokeDasharray = "5 5",
+}: ThresholdLineProps) {
   return { value, label, color, strokeDasharray };
 }

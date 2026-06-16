@@ -1,8 +1,8 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/utils/cn';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useNavigate, useLocation } from "react-router-dom";
+import { ChevronLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/utils/cn";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface BackButtonProps {
   className?: string;
@@ -10,13 +10,13 @@ interface BackButtonProps {
   fallbackPath?: string;
 }
 
-export function BackButton({ className, label = 'Voltar', fallbackPath }: BackButtonProps) {
+export function BackButton({ className, label = "Voltar", fallbackPath }: BackButtonProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
   // Determine if we have history to go back to
   // If the path is just '/' or '/dashboard', we might not want to show it or go back to login
-  const canGoBack = window.history.length > 1 && location.key !== 'default';
+  const canGoBack = window.history.length > 1 && location.key !== "default";
 
   const handleBack = () => {
     if (canGoBack) {
@@ -25,7 +25,7 @@ export function BackButton({ className, label = 'Voltar', fallbackPath }: BackBu
       navigate(fallbackPath);
     } else {
       // Default fallback to dashboard if no history
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   };
 
@@ -38,7 +38,7 @@ export function BackButton({ className, label = 'Voltar', fallbackPath }: BackBu
             size="sm"
             onClick={handleBack}
             className={cn(
-              'h-8 gap-1.5 px-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-all active:scale-95 group',
+              "group h-8 gap-1.5 px-2 text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-95",
               className
             )}
             aria-label={label}

@@ -15,18 +15,18 @@ export function useProjects() {
       id: crypto.randomUUID(),
       name,
       status: "active",
-      createdAt: new Date()
+      createdAt: new Date(),
     };
-    setProjects(prev => [...prev, project]);
+    setProjects((prev) => [...prev, project]);
     return project;
   }, []);
 
   const updateStatus = useCallback((id: string, status: Project["status"]) => {
-    setProjects(prev => prev.map(p => p.id === id ? { ...p, status } : p));
+    setProjects((prev) => prev.map((p) => (p.id === id ? { ...p, status } : p)));
   }, []);
 
   const remove = useCallback((id: string) => {
-    setProjects(prev => prev.filter(p => p.id !== id));
+    setProjects((prev) => prev.filter((p) => p.id !== id));
   }, []);
 
   return { projects, create, updateStatus, remove };

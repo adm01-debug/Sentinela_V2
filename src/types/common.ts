@@ -114,16 +114,23 @@ export interface BatchResult<T = unknown> {
   results: { item: T; success: boolean; error?: string }[];
 }
 
-export type Status = 'idle' | 'loading' | 'success' | 'error';
+export type Status = "idle" | "loading" | "success" | "error";
 
-export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type Size = "xs" | "sm" | "md" | "lg" | "xl";
 
-export type Variant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+export type Variant =
+  | "default"
+  | "primary"
+  | "secondary"
+  | "success"
+  | "warning"
+  | "danger"
+  | "info";
 
-export type Alignment = 'left' | 'center' | 'right';
+export type Alignment = "left" | "center" | "right";
 
-export type Direction = 'horizontal' | 'vertical';
+export type Direction = "horizontal" | "vertical";
 
-export type Position = 'top' | 'right' | 'bottom' | 'left';
+export type Position = "top" | "right" | "bottom" | "left";
 
-export type Theme = 'light' | 'dark' | 'system';
+export type Theme = "light" | "dark" | "system";

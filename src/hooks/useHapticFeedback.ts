@@ -1,6 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-export type HapticPattern = 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error' | 'selection';
+export type HapticPattern =
+  | "light"
+  | "medium"
+  | "heavy"
+  | "success"
+  | "warning"
+  | "error"
+  | "selection";
 
 const PATTERNS: Record<HapticPattern, number[]> = {
   light: [10],
@@ -13,13 +20,16 @@ const PATTERNS: Record<HapticPattern, number[]> = {
 };
 
 export function useHapticFeedback() {
-  const isSupported = typeof navigator !== 'undefined' && 'vibrate' in navigator;
+  const isSupported = typeof navigator !== "undefined" && "vibrate" in navigator;
 
-  const trigger = useCallback((pattern: HapticPattern | number[]) => {
-    if (!isSupported) return false;
-    const vibrationPattern = Array.isArray(pattern) ? pattern : PATTERNS[pattern];
-    return navigator.vibrate(vibrationPattern);
-  }, [isSupported]);
+  const trigger = useCallback(
+    (pattern: HapticPattern | number[]) => {
+      if (!isSupported) return false;
+      const vibrationPattern = Array.isArray(pattern) ? pattern : PATTERNS[pattern];
+      return navigator.vibrate(vibrationPattern);
+    },
+    [isSupported]
+  );
 
   const stop = useCallback(() => {
     if (isSupported) navigator.vibrate(0);

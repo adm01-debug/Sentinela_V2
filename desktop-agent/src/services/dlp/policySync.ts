@@ -1,6 +1,6 @@
-import log from 'electron-log';
-import { CONFIG } from '../../config';
-import { dlpEngine, DLPClassifier, DLPPolicy } from './dlpEngine';
+import log from "electron-log";
+import { CONFIG } from "../../config";
+import { dlpEngine, DLPClassifier, DLPPolicy } from "./dlpEngine";
 
 // ============================================================
 // Policy Sync — pulls active policies + classifiers periodically
@@ -19,9 +19,9 @@ export class PolicySync {
   async start(): Promise<void> {
     await this.refresh();
     this.timer = setInterval(() => {
-      this.refresh().catch((err) => log.warn('DLP policy refresh failed', err));
+      this.refresh().catch((err) => log.warn("DLP policy refresh failed", err));
     }, REFRESH_INTERVAL_MS);
-    log.info('DLP policy sync started');
+    log.info("DLP policy sync started");
   }
 
   stop(): void {
@@ -34,10 +34,10 @@ export class PolicySync {
   async refresh(): Promise<void> {
     try {
       const res = await fetch(`${CONFIG.API_URL}/dlp-policy-sync`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'x-agent-key': this.agentKey,
-          'Content-Type': 'application/json',
+          "x-agent-key": this.agentKey,
+          "Content-Type": "application/json",
         },
       });
       if (!res.ok) {
@@ -54,7 +54,7 @@ export class PolicySync {
         `DLP loaded: ${json.classifiers?.length || 0} classifiers, ${json.policies?.length || 0} policies`
       );
     } catch (err) {
-      log.warn('DLP policy sync error', err);
+      log.warn("DLP policy sync error", err);
     }
   }
 }

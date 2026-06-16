@@ -45,16 +45,19 @@ export function fromMilliseconds(ms): Duration {
   };
 }
 
-export function formatDuration(ms: number, options?: { short?: boolean; maxUnits?: number }): string {
+export function formatDuration(
+  ms: number,
+  options?: { short?: boolean; maxUnits?: number }
+): string {
   const { short = false, maxUnits = 2 } = options || {};
   const duration = fromMilliseconds(ms);
   const parts: string[] = [];
 
   const units: { key: keyof Duration; long: string; short: string }[] = [
-    { key: 'days', long: 'dia', short: 'd' },
-    { key: 'hours', long: 'hora', short: 'h' },
-    { key: 'minutes', long: 'minuto', short: 'min' },
-    { key: 'seconds', long: 'segundo', short: 's' },
+    { key: "days", long: "dia", short: "d" },
+    { key: "hours", long: "hora", short: "h" },
+    { key: "minutes", long: "minuto", short: "min" },
+    { key: "seconds", long: "segundo", short: "s" },
   ];
 
   for (const unit of units) {
@@ -63,13 +66,13 @@ export function formatDuration(ms: number, options?: { short?: boolean; maxUnits
       if (short) {
         parts.push(`${value}${unit.short}`);
       } else {
-        parts.push(`${value} ${unit.long}${value > 1 ? 's' : ''}`);
+        parts.push(`${value} ${unit.long}${value > 1 ? "s" : ""}`);
       }
       if (parts.length >= maxUnits) break;
     }
   }
 
-  return parts.join(short ? ' ' : ' e ') || (short ? '0s' : '0 segundos');
+  return parts.join(short ? " " : " e ") || (short ? "0s" : "0 segundos");
 }
 
 export function formatTimeAgo(date: Date | string | number): string {
@@ -77,7 +80,7 @@ export function formatTimeAgo(date: Date | string | number): string {
   const timestamp = new Date(date).getTime();
   const diff = now - timestamp;
 
-  if (diff < MS.minute) return 'agora mesmo';
+  if (diff < MS.minute) return "agora mesmo";
   if (diff < MS.hour) return `há ${Math.floor(diff / MS.minute)} min`;
   if (diff < MS.day) return `há ${Math.floor(diff / MS.hour)}h`;
   if (diff < MS.week) return `há ${Math.floor(diff / MS.day)} dias`;
@@ -91,7 +94,7 @@ export function formatTimeRemaining(targetDate: Date | string | number): string 
   const target = new Date(targetDate).getTime();
   const diff = target - now;
 
-  if (diff <= 0) return 'expirado';
+  if (diff <= 0) return "expirado";
   return `em ${formatDuration(diff)}`;
 }
 
@@ -112,7 +115,9 @@ export function humanReadableDuration(seconds): string {
 }
 
 export function parseIsoDuration(iso): Duration {
-  const match = iso.match(/P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/);
+  const match = iso.match(
+    /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/
+  );
   if (!match) return {};
   return {
     years: parseInt(match[1]) || 0,

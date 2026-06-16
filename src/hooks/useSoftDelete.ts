@@ -3,9 +3,9 @@
 // Exclusão suave com suporte a restauração
 // ============================================================
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 // ============================================================
 // TYPES
@@ -18,7 +18,7 @@ export interface SoftDeleteOptions {
   statusField?: string;
   deletedStatus?: string;
   activeStatus?: string;
-  onSuccess?: (id: string, action?: 'delete' | 'restore') => void;
+  onSuccess?: (id: string, action?: "delete" | "restore") => void;
   onError?: (error: Error) => void;
 }
 
@@ -43,10 +43,10 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   const {
     table,
     queryKey,
-    deletedAtField = 'deleted_at',
+    deletedAtField = "deleted_at",
     statusField,
-    deletedStatus = 'deleted',
-    activeStatus = 'active',
+    deletedStatus = "deleted",
+    activeStatus = "active",
     onSuccess,
     onError,
   } = options;
@@ -61,7 +61,6 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
     mutationFn: async (id: string) => {
       // Proceed to delete
 
-
       const updates: Record<string, string> = {
         [deletedAtField]: new Date().toISOString(),
       };
@@ -70,20 +69,17 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
         updates[statusField] = deletedStatus;
       }
 
-      const { error } = await supabase
-        .from(table)
-        .update(updates)
-        .eq('id', id);
+      const { error } = await supabase.from(table).update(updates).eq("id", id);
 
       if (error) throw error;
     },
     onSuccess: (_, id) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
-      toast.success('Registro movido para lixeira');
-      onSuccess?.(id, 'delete');
+      toast.success("Registro movido para lixeira");
+      onSuccess?.(id, "delete");
     },
     onError: (error: Error) => {
-      toast.error('Erro ao excluir registro');
+      toast.error("Erro ao excluir registro");
       onError?.(error);
     },
   });
@@ -96,7 +92,6 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
     mutationFn: async (ids: string[]) => {
       // Proceed to delete many
 
-
       const updates: Record<string, string> = {
         [deletedAtField]: new Date().toISOString(),
       };
@@ -105,10 +100,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
         updates[statusField] = deletedStatus;
       }
 
-      const { error } = await supabase
-        .from(table)
-        .update(updates)
-        .in('id', ids);
+      const { error } = await supabase.from(table).update(updates).in("id", ids);
 
       if (error) throw error;
     },
@@ -117,7 +109,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
       toast.success(`${ids.length} registros movidos para lixeira`);
     },
     onError: (error: Error) => {
-      toast.error('Erro ao excluir registros');
+      toast.error("Erro ao excluir registros");
       onError?.(error);
     },
   });
@@ -130,7 +122,6 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
     mutationFn: async (id: string) => {
       // Proceed to restore
 
-
       const updates: Record<string, string | null> = {
         [deletedAtField]: null,
       };
@@ -139,20 +130,17 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
         updates[statusField] = activeStatus;
       }
 
-      const { error } = await supabase
-        .from(table)
-        .update(updates)
-        .eq('id', id);
+      const { error } = await supabase.from(table).update(updates).eq("id", id);
 
       if (error) throw error;
     },
     onSuccess: (_, id) => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
-      toast.success('Registro restaurado');
-      onSuccess?.(id, 'restore');
+      toast.success("Registro restaurado");
+      onSuccess?.(id, "restore");
     },
     onError: (error: Error) => {
-      toast.error('Erro ao restaurar registro');
+      toast.error("Erro ao restaurar registro");
       onError?.(error);
     },
   });
@@ -165,7 +153,6 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
     mutationFn: async (ids: string[]) => {
       // Proceed to restore many
 
-
       const updates: Record<string, string | null> = {
         [deletedAtField]: null,
       };
@@ -174,10 +161,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
         updates[statusField] = activeStatus;
       }
 
-      const { error } = await supabase
-        .from(table)
-        .update(updates)
-        .in('id', ids);
+      const { error } = await supabase.from(table).update(updates).in("id", ids);
 
       if (error) throw error;
     },
@@ -186,7 +170,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
       toast.success(`${ids.length} registros restaurados`);
     },
     onError: (error: Error) => {
-      toast.error('Erro ao restaurar registros');
+      toast.error("Erro ao restaurar registros");
       onError?.(error);
     },
   });
@@ -199,20 +183,16 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
     mutationFn: async (id: string) => {
       // Proceed to hard delete
 
-
-      const { error } = await supabase
-        .from(table)
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from(table).delete().eq("id", id);
 
       if (error) throw error;
     },
     onSuccess: () => {
       if (queryKey) queryClient.invalidateQueries({ queryKey });
-      toast.success('Registro excluído permanentemente');
+      toast.success("Registro excluído permanentemente");
     },
     onError: (error: Error) => {
-      toast.error('Erro ao excluir registro permanentemente');
+      toast.error("Erro ao excluir registro permanentemente");
       onError?.(error);
     },
   });
@@ -225,11 +205,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
     mutationFn: async (ids: string[]) => {
       // Proceed to hard delete many
 
-
-      const { error } = await supabase
-        .from(table)
-        .delete()
-        .in('id', ids);
+      const { error } = await supabase.from(table).delete().in("id", ids);
 
       if (error) throw error;
     },
@@ -238,7 +214,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
       toast.success(`${ids.length} registros excluídos permanentemente`);
     },
     onError: (error: Error) => {
-      toast.error('Erro ao excluir registros permanentemente');
+      toast.error("Erro ao excluir registros permanentemente");
       onError?.(error);
     },
   });
@@ -257,11 +233,9 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
     isDeleting: softDeleteMutation.isPending || softDeleteManyMutation.isPending,
     isRestoring: restoreMutation.isPending || restoreManyMutation.isPending,
     isHardDeleting: hardDeleteMutation.isPending || hardDeleteManyMutation.isPending,
-    error: (
-      softDeleteMutation.error ||
+    error: (softDeleteMutation.error ||
       restoreMutation.error ||
-      hardDeleteMutation.error
-    ) as Error | null,
+      hardDeleteMutation.error) as Error | null,
   };
 }
 

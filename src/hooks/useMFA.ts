@@ -1,13 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
 export interface MFAFactor {
   id: string;
   friendly_name?: string;
-  factor_type: 'totp';
-  status: 'unverified' | 'verified';
+  factor_type: "totp";
+  status: "unverified" | "verified";
   created_at: string;
   updated_at: string;
 }
@@ -47,7 +47,7 @@ export function useEnrollMFA() {
   return useMutation({
     mutationFn: async (friendlyName?: string) => {
       const { data, error } = await supabase.auth.mfa.enroll({
-        factorType: 'totp',
+        factorType: "totp",
         friendlyName,
       });
       if (error) throw error;
@@ -57,7 +57,11 @@ export function useEnrollMFA() {
       queryClient.invalidateQueries({ queryKey: queryKeys.mfa.factors() });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao configurar MFA', description: error.message, variant: 'destructive' });
+      toast({
+        title: "Erro ao configurar MFA",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 }
@@ -68,7 +72,9 @@ export function useVerifyMFA() {
 
   return useMutation({
     mutationFn: async ({ factorId, code }: { factorId: string; code: string }) => {
-      const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({ factorId });
+      const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({
+        factorId,
+      });
       if (challengeError) throw challengeError;
 
       const { data, error } = await supabase.auth.mfa.verify({
@@ -81,10 +87,10 @@ export function useVerifyMFA() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.mfa.all });
-      toast({ title: 'MFA verificado com sucesso' });
+      toast({ title: "MFA verificado com sucesso" });
     },
     onError: (error) => {
-      toast({ title: 'Código inválido', description: error.message, variant: 'destructive' });
+      toast({ title: "Código inválido", description: error.message, variant: "destructive" });
     },
   });
 }
@@ -100,10 +106,10 @@ export function useUnenrollMFA() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.mfa.all });
-      toast({ title: 'MFA desativado' });
+      toast({ title: "MFA desativado" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao desativar MFA', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao desativar MFA", description: error.message, variant: "destructive" });
     },
   });
 }
@@ -118,7 +124,7 @@ export function useMFA() {
   const unenrollMutation = useUnenrollMFA();
 
   const factors = Array.isArray(factorsQuery.data) ? factorsQuery.data : [];
-  const isEnrolled = factors.some((f: MFAFactor) => f.status === 'verified');
+  const isEnrolled = factors.some((f: MFAFactor) => f.status === "verified");
 
   return {
     isEnrolled,
@@ -126,7 +132,7 @@ export function useMFA() {
     status: statusQuery.data,
     loading: factorsQuery.isLoading || statusQuery.isLoading,
     error: factorsQuery.error || statusQuery.error,
-    
+
     enroll: async (friendlyName?: string) => {
       try {
         const data = await enrollMutation.mutateAsync(friendlyName);
@@ -135,7 +141,7 @@ export function useMFA() {
         return { data: null, error: error as Error };
       }
     },
-    
+
     verify: async (factorId: string, code: string) => {
       try {
         const data = await verifyMutation.mutateAsync({ factorId, code });
@@ -144,7 +150,7 @@ export function useMFA() {
         return { data: null, error: error as Error };
       }
     },
-    
+
     unenroll: async (factorId: string) => {
       try {
         await unenrollMutation.mutateAsync(factorId);
@@ -153,7 +159,7 @@ export function useMFA() {
         return { error: error as Error };
       }
     },
-    
+
     checkMFAStatus: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.mfa.all });
     },

@@ -13,10 +13,13 @@ export function useSync<T>(key: string, initial: T) {
     return () => window.removeEventListener("storage", handler);
   }, [key]);
 
-  const sync = useCallback((newValue: T) => {
-    setValue(newValue);
-    localStorage.setItem(key, JSON.stringify(newValue));
-  }, [key]);
+  const sync = useCallback(
+    (newValue: T) => {
+      setValue(newValue);
+      localStorage.setItem(key, JSON.stringify(newValue));
+    },
+    [key]
+  );
 
   return [value, sync] as const;
 }

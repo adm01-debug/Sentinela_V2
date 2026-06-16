@@ -1,6 +1,9 @@
 // URL utilities for Sentinela v17
 
-export function buildUrl(base: string, params?: Record<string, string | number | boolean | undefined>): string {
+export function buildUrl(
+  base: string,
+  params?: Record<string, string | number | boolean | undefined>
+): string {
   if (!params) return base;
   const url = new URL(base, window.location.origin);
   Object.entries(params).forEach(([key, value]) => {
@@ -20,7 +23,9 @@ export function parseUrl(url): URL | null {
 }
 
 export function getQueryParams(url?: string): Record<string, string> {
-  const searchParams = url ? new URL(url, window.location.origin).searchParams : new URLSearchParams(window.location.search);
+  const searchParams = url
+    ? new URL(url, window.location.origin).searchParams
+    : new URLSearchParams(window.location.search);
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
     params[key] = value;
@@ -60,18 +65,18 @@ export function isValidUrl(url): boolean {
 export function joinPaths(...paths: string[]): string {
   return paths
     .map((path, index) => {
-      if (index === 0) return path.replace(/\/+$/, '');
-      if (index === paths.length - 1) return path.replace(/^\/+/, '');
-      return path.replace(/^\/+|\/+$/g, '');
+      if (index === 0) return path.replace(/\/+$/, "");
+      if (index === paths.length - 1) return path.replace(/^\/+/, "");
+      return path.replace(/^\/+|\/+$/g, "");
     })
     .filter(Boolean)
-    .join('/');
+    .join("/");
 }
 
 export function getPathSegments(url): string[] {
   const parsed = parseUrl(url);
   if (!parsed) return [];
-  return parsed.pathname.split('/').filter(Boolean);
+  return parsed.pathname.split("/").filter(Boolean);
 }
 
 export function getDomain(url): string | null {
@@ -81,12 +86,12 @@ export function getDomain(url): string | null {
 
 export function getProtocol(url): string | null {
   const parsed = parseUrl(url);
-  return parsed?.protocol.replace(':', '') || null;
+  return parsed?.protocol.replace(":", "") || null;
 }
 
 export function normalizeUrl(url): string {
   const parsed = parseUrl(url);
   if (!parsed) return url;
-  parsed.pathname = parsed.pathname.replace(/\/+/g, '/').replace(/\/$/, '') || '/';
+  parsed.pathname = parsed.pathname.replace(/\/+/g, "/").replace(/\/$/, "") || "/";
   return parsed.toString();
 }

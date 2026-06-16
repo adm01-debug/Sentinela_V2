@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface Activity {
   id: string;
@@ -25,7 +25,7 @@ interface ActivityState {
 export const useActivityStore = create<ActivityState>()((set) => ({
   activities: [],
   realtimeActivities: [],
-  dateRange: { start: '', end: '' },
+  dateRange: { start: "", end: "" },
   isLoading: false,
   setActivities: (activities) => set({ activities }),
   addRealtimeActivity: (activity) =>

@@ -3,30 +3,30 @@
 // Filtros avançados com múltiplos critérios e operadores
 // ============================================================
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from "react";
 
 // ============================================================
 // TYPES
 // ============================================================
 
 export type FilterOperator =
-  | 'equals'
-  | 'not_equals'
-  | 'contains'
-  | 'not_contains'
-  | 'starts_with'
-  | 'ends_with'
-  | 'greater_than'
-  | 'less_than'
-  | 'greater_or_equal'
-  | 'less_or_equal'
-  | 'between'
-  | 'in'
-  | 'not_in'
-  | 'is_empty'
-  | 'is_not_empty';
+  | "equals"
+  | "not_equals"
+  | "contains"
+  | "not_contains"
+  | "starts_with"
+  | "ends_with"
+  | "greater_than"
+  | "less_than"
+  | "greater_or_equal"
+  | "less_or_equal"
+  | "between"
+  | "in"
+  | "not_in"
+  | "is_empty"
+  | "is_not_empty";
 
-export type FilterValueType = 'string' | 'number' | 'date' | 'boolean' | 'select' | 'multi_select';
+export type FilterValueType = "string" | "number" | "date" | "boolean" | "select" | "multi_select";
 
 export interface FilterField {
   key: string;
@@ -46,7 +46,7 @@ export interface FilterCondition {
 
 export interface FilterGroup {
   id: string;
-  logic: 'AND' | 'OR';
+  logic: "AND" | "OR";
   conditions: FilterCondition[];
 }
 
@@ -61,30 +61,47 @@ export interface UseAdvancedFiltersOptions {
 // ============================================================
 
 export const OPERATOR_LABELS: Record<FilterOperator, string> = {
-  equals: 'é igual a',
-  not_equals: 'é diferente de',
-  contains: 'contém',
-  not_contains: 'não contém',
-  starts_with: 'começa com',
-  ends_with: 'termina com',
-  greater_than: 'maior que',
-  less_than: 'menor que',
-  greater_or_equal: 'maior ou igual a',
-  less_or_equal: 'menor ou igual a',
-  between: 'está entre',
-  in: 'está em',
-  not_in: 'não está em',
-  is_empty: 'está vazio',
-  is_not_empty: 'não está vazio',
+  equals: "é igual a",
+  not_equals: "é diferente de",
+  contains: "contém",
+  not_contains: "não contém",
+  starts_with: "começa com",
+  ends_with: "termina com",
+  greater_than: "maior que",
+  less_than: "menor que",
+  greater_or_equal: "maior ou igual a",
+  less_or_equal: "menor ou igual a",
+  between: "está entre",
+  in: "está em",
+  not_in: "não está em",
+  is_empty: "está vazio",
+  is_not_empty: "não está vazio",
 };
 
 const DEFAULT_OPERATORS_BY_TYPE: Record<FilterValueType, FilterOperator[]> = {
-  string: ['equals', 'not_equals', 'contains', 'not_contains', 'starts_with', 'ends_with', 'is_empty', 'is_not_empty'],
-  number: ['equals', 'not_equals', 'greater_than', 'less_than', 'greater_or_equal', 'less_or_equal', 'between'],
-  date: ['equals', 'not_equals', 'greater_than', 'less_than', 'between'],
-  boolean: ['equals'],
-  select: ['equals', 'not_equals', 'is_empty', 'is_not_empty'],
-  multi_select: ['in', 'not_in', 'is_empty', 'is_not_empty'],
+  string: [
+    "equals",
+    "not_equals",
+    "contains",
+    "not_contains",
+    "starts_with",
+    "ends_with",
+    "is_empty",
+    "is_not_empty",
+  ],
+  number: [
+    "equals",
+    "not_equals",
+    "greater_than",
+    "less_than",
+    "greater_or_equal",
+    "less_or_equal",
+    "between",
+  ],
+  date: ["equals", "not_equals", "greater_than", "less_than", "between"],
+  boolean: ["equals"],
+  select: ["equals", "not_equals", "is_empty", "is_not_empty"],
+  multi_select: ["in", "not_in", "is_empty", "is_not_empty"],
 };
 
 // ============================================================
@@ -97,21 +114,21 @@ function generateId(): string {
 
 function createEmptyCondition(fieldKey: string, fields: FilterField[]): FilterCondition {
   const field = fields.find((f) => f.key === fieldKey) ?? fields[0];
-  const operators = field?.operators ?? DEFAULT_OPERATORS_BY_TYPE[field?.type ?? 'string'];
+  const operators = field?.operators ?? DEFAULT_OPERATORS_BY_TYPE[field?.type ?? "string"];
 
   return {
     id: generateId(),
-    field: field?.key ?? '',
-    operator: operators[0] ?? 'equals',
-    value: '',
+    field: field?.key ?? "",
+    operator: operators[0] ?? "equals",
+    value: "",
   };
 }
 
 function createEmptyGroup(fields: FilterField[]): FilterGroup {
   return {
     id: generateId(),
-    logic: 'AND',
-    conditions: [createEmptyCondition(fields[0]?.key ?? '', fields)],
+    logic: "AND",
+    conditions: [createEmptyCondition(fields[0]?.key ?? "", fields)],
   };
 }
 
@@ -152,7 +169,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   );
 
   const updateGroupLogic = useCallback(
-    (groupId: string, logic: 'AND' | 'OR') => {
+    (groupId: string, logic: "AND" | "OR") => {
       setFilterGroups((prev) => {
         const newGroups = prev.map((g) => (g.id === groupId ? { ...g, logic } : g));
         onChange?.(newGroups);
@@ -173,7 +190,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
           if (g.id !== groupId) return g;
           return {
             ...g,
-            conditions: [...g.conditions, createEmptyCondition(fields[0]?.key ?? '', fields)],
+            conditions: [...g.conditions, createEmptyCondition(fields[0]?.key ?? "", fields)],
           };
         });
         onChange?.(newGroups);
@@ -192,7 +209,10 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
           // Garantir pelo menos uma condição
           return {
             ...g,
-            conditions: newConditions.length > 0 ? newConditions : [createEmptyCondition(fields[0]?.key ?? '', fields)],
+            conditions:
+              newConditions.length > 0
+                ? newConditions
+                : [createEmptyCondition(fields[0]?.key ?? "", fields)],
           };
         });
         onChange?.(newGroups);
@@ -234,17 +254,24 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   // ============================================================
 
   const toQueryParams = useMemo(() => {
-    const params: Record<string, {
-      field: string;
-      operator: string;
-      value: unknown;
-      value2: unknown;
-      logic: string;
-    }> = {};
+    const params: Record<
+      string,
+      {
+        field: string;
+        operator: string;
+        value: unknown;
+        value2: unknown;
+        logic: string;
+      }
+    > = {};
 
     filterGroups.forEach((group, groupIndex) => {
       group.conditions.forEach((condition, condIndex) => {
-        if (!condition.value && condition.operator !== 'is_empty' && condition.operator !== 'is_not_empty') {
+        if (
+          !condition.value &&
+          condition.operator !== "is_empty" &&
+          condition.operator !== "is_not_empty"
+        ) {
           return; // Skip empty conditions
         }
 
@@ -269,7 +296,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   const getOperatorsForField = useCallback(
     (fieldKey: string): FilterOperator[] => {
       const field = fields.find((f) => f.key === fieldKey);
-      return field?.operators ?? DEFAULT_OPERATORS_BY_TYPE[field?.type ?? 'string'];
+      return field?.operators ?? DEFAULT_OPERATORS_BY_TYPE[field?.type ?? "string"];
     },
     [fields]
   );
@@ -281,7 +308,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   const hasActiveFilters = useMemo(() => {
     return filterGroups.some((group) =>
       group.conditions.some(
-        (c) => c.value || c.operator === 'is_empty' || c.operator === 'is_not_empty'
+        (c) => c.value || c.operator === "is_empty" || c.operator === "is_not_empty"
       )
     );
   }, [filterGroups]);

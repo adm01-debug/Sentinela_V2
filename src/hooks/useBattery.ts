@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface BatteryManager {
   level: number;
@@ -21,15 +21,28 @@ interface BatteryState {
 }
 
 export function useBattery() {
-  const [state, setState] = useState<BatteryState>({ supported: false, level: 1, charging: false, chargingTime: 0, dischargingTime: 0 });
+  const [state, setState] = useState<BatteryState>({
+    supported: false,
+    level: 1,
+    charging: false,
+    chargingTime: 0,
+    dischargingTime: 0,
+  });
   useEffect(() => {
     const nav = navigator as NavigatorWithBattery;
     if (!nav.getBattery) return;
     nav.getBattery().then((battery: BatteryManager) => {
-      const update = () => setState({ supported: true, level: battery.level, charging: battery.charging, chargingTime: battery.chargingTime, dischargingTime: battery.dischargingTime });
+      const update = () =>
+        setState({
+          supported: true,
+          level: battery.level,
+          charging: battery.charging,
+          chargingTime: battery.chargingTime,
+          dischargingTime: battery.dischargingTime,
+        });
       update();
-      battery.addEventListener('levelchange', update);
-      battery.addEventListener('chargingchange', update);
+      battery.addEventListener("levelchange", update);
+      battery.addEventListener("chargingchange", update);
     });
   }, []);
   return state;

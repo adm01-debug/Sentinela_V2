@@ -9,7 +9,7 @@ Deno.test("Agent Collector Contract - Valid Payload", () => {
     data: { keystrokes: 10 },
     timestamp: new Date().toISOString(),
   };
-  
+
   const result = agentCollectorSchema.safeParse(validPayload);
   assertEquals(result.success, true);
 });
@@ -21,12 +21,15 @@ Deno.test("Agent Collector Contract - Invalid Payload (Missing Field)", () => {
     data_type: "activity",
     data: {},
   };
-  
+
   const result = agentCollectorSchema.safeParse(invalidPayload);
   assertEquals(result.success, false);
   if (!result.success) {
     const issues = result.error.issues;
-    assertEquals(issues.some(i => i.path.includes("device_id")), true);
+    assertEquals(
+      issues.some((i) => i.path.includes("device_id")),
+      true
+    );
   }
 });
 
@@ -37,7 +40,7 @@ Deno.test("Agent Collector Contract - Invalid Data Type", () => {
     data_type: "invalid_type",
     data: {},
   };
-  
+
   const result = agentCollectorSchema.safeParse(invalidPayload);
   assertEquals(result.success, false);
 });

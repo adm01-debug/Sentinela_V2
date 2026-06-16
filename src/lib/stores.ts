@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 // ============================================================
 // SIDEBAR STORE
@@ -19,7 +19,7 @@ export const useSidebarStore = create<SidebarState>()(
       setCollapsed: (collapsed) => set({ isCollapsed: collapsed }),
     }),
     {
-      name: 'sidebar-storage',
+      name: "sidebar-storage",
     }
   )
 );
@@ -54,22 +54,23 @@ export const useGlobalFiltersStore = create<GlobalFiltersState>()(
       employeeFilter: null,
       teamFilter: null,
       statusFilter: null,
-      searchTerm: '',
+      searchTerm: "",
       setDateRange: (range) => set({ dateRange: range }),
       setEmployeeFilter: (employeeId) => set({ employeeFilter: employeeId }),
       setTeamFilter: (teamId) => set({ teamFilter: teamId }),
       setStatusFilter: (status) => set({ statusFilter: status }),
       setSearchTerm: (term) => set({ searchTerm: term }),
-      clearAllFilters: () => set({
-        dateRange: { from: null, to: null },
-        employeeFilter: null,
-        teamFilter: null,
-        statusFilter: null,
-        searchTerm: '',
-      }),
+      clearAllFilters: () =>
+        set({
+          dateRange: { from: null, to: null },
+          employeeFilter: null,
+          teamFilter: null,
+          statusFilter: null,
+          searchTerm: "",
+        }),
     }),
     {
-      name: 'global-filters-storage',
+      name: "global-filters-storage",
     }
   )
 );
@@ -82,7 +83,7 @@ interface Notification {
   id: string;
   title: string;
   message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
+  type: "info" | "success" | "warning" | "error";
   read: boolean;
   createdAt: Date;
 }
@@ -90,7 +91,7 @@ interface Notification {
 interface NotificationsState {
   notifications: Notification[];
   unreadCount: number;
-  addNotification: (notification: Omit<Notification, 'id' | 'read' | 'createdAt'>) => void;
+  addNotification: (notification: Omit<Notification, "id" | "read" | "createdAt">) => void;
   markAsRead: (id) => void;
   markAllAsRead: () => void;
   removeNotification: (id) => void;
@@ -116,9 +117,7 @@ export const useNotificationsStore = create<NotificationsState>()(
       },
       markAsRead: (id) => {
         set((state) => ({
-          notifications: state.notifications.map((n) =>
-            n.id === id ? { ...n, read: true } : n
-          ),
+          notifications: state.notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
           unreadCount: Math.max(0, state.unreadCount - 1),
         }));
       },
@@ -133,16 +132,17 @@ export const useNotificationsStore = create<NotificationsState>()(
           const notification = state.notifications.find((n) => n.id === id);
           return {
             notifications: state.notifications.filter((n) => n.id !== id),
-            unreadCount: notification && !notification.read 
-              ? Math.max(0, state.unreadCount - 1) 
-              : state.unreadCount,
+            unreadCount:
+              notification && !notification.read
+                ? Math.max(0, state.unreadCount - 1)
+                : state.unreadCount,
           };
         });
       },
       clearAll: () => set({ notifications: [], unreadCount: 0 }),
     }),
     {
-      name: 'notifications-storage',
+      name: "notifications-storage",
     }
   )
 );
@@ -152,29 +152,29 @@ export const useNotificationsStore = create<NotificationsState>()(
 // ============================================================
 
 interface UserPreferencesState {
-  theme: 'light' | 'dark' | 'system';
+  theme: "light" | "dark" | "system";
   language: string;
   compactMode: boolean;
   autoRefresh: boolean;
   refreshInterval: number; // seconds
-  defaultView: 'grid' | 'list';
-  setTheme: (theme: 'light' | 'dark' | 'system') => void;
+  defaultView: "grid" | "list";
+  setTheme: (theme: "light" | "dark" | "system") => void;
   setLanguage: (language) => void;
   setCompactMode: (compact: boolean) => void;
   setAutoRefresh: (enabled: boolean) => void;
   setRefreshInterval: (interval) => void;
-  setDefaultView: (view: 'grid' | 'list') => void;
+  setDefaultView: (view: "grid" | "list") => void;
 }
 
 export const useUserPreferencesStore = create<UserPreferencesState>()(
   persist(
     (set) => ({
-      theme: 'system',
-      language: 'pt-BR',
+      theme: "system",
+      language: "pt-BR",
       compactMode: false,
       autoRefresh: true,
       refreshInterval: 30,
-      defaultView: 'grid',
+      defaultView: "grid",
       setTheme: (theme) => set({ theme }),
       setLanguage: (language) => set({ language }),
       setCompactMode: (compactMode) => set({ compactMode }),
@@ -183,7 +183,7 @@ export const useUserPreferencesStore = create<UserPreferencesState>()(
       setDefaultView: (defaultView) => set({ defaultView }),
     }),
     {
-      name: 'user-preferences-storage',
+      name: "user-preferences-storage",
     }
   )
 );
@@ -208,8 +208,7 @@ export const useAuthStateStore = create<AuthStateStore>()((set) => ({
   userRole: null,
   setAuth: (userId, email, role) =>
     set({ isAuthenticated: true, userId, userEmail: email, userRole: role }),
-  clearAuth: () =>
-    set({ isAuthenticated: false, userId: null, userEmail: null, userRole: null }),
+  clearAuth: () => set({ isAuthenticated: false, userId: null, userEmail: null, userRole: null }),
 }));
 
 // ============================================================
@@ -224,7 +223,7 @@ interface DashboardLayoutState {
   resetLayout: () => void;
 }
 
-const DEFAULT_WIDGETS = ['stats', 'violations', 'activity', 'productivity'];
+const DEFAULT_WIDGETS = ["stats", "violations", "activity", "productivity"];
 
 export const useDashboardLayoutStore = create<DashboardLayoutState>()(
   persist(
@@ -241,7 +240,7 @@ export const useDashboardLayoutStore = create<DashboardLayoutState>()(
       resetLayout: () => set({ visibleWidgets: DEFAULT_WIDGETS, widgetOrder: DEFAULT_WIDGETS }),
     }),
     {
-      name: 'dashboard-layout-storage',
+      name: "dashboard-layout-storage",
     }
   )
 );

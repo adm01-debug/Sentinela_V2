@@ -1,6 +1,6 @@
 // Command Store for Sentinela v17 (Command Palette)
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface Command {
   id: string;
@@ -54,26 +54,27 @@ export const useCommandStore = create<CommandState>()(
   devtools(
     (set, get) => ({
       isOpen: false,
-      query: '',
+      query: "",
       groups: [],
       recentCommands: [],
       selectedIndex: 0,
       isLoading: false,
 
-      open: () => set({ isOpen: true, query: '', selectedIndex: 0 }),
+      open: () => set({ isOpen: true, query: "", selectedIndex: 0 }),
 
-      close: () => set({ isOpen: false, query: '' }),
+      close: () => set({ isOpen: false, query: "" }),
 
-      toggle: () => set((state) => ({ isOpen: !state.isOpen, query: '', selectedIndex: 0 })),
+      toggle: () => set((state) => ({ isOpen: !state.isOpen, query: "", selectedIndex: 0 })),
 
       setQuery: (query) => set({ query, selectedIndex: 0 }),
 
-      clearQuery: () => set({ query: '', selectedIndex: 0 }),
+      clearQuery: () => set({ query: "", selectedIndex: 0 }),
 
       registerGroup: (group) =>
         set((state) => ({
-          groups: [...state.groups.filter((g) => g.id !== group.id), group]
-            .sort((a, b) => (b.priority || 0) - (a.priority || 0)),
+          groups: [...state.groups.filter((g) => g.id !== group.id), group].sort(
+            (a, b) => (b.priority || 0) - (a.priority || 0)
+          ),
         })),
 
       unregisterGroup: (groupId) =>
@@ -93,9 +94,7 @@ export const useCommandStore = create<CommandState>()(
       unregisterCommand: (groupId, commandId) =>
         set((state) => ({
           groups: state.groups.map((g) =>
-            g.id === groupId
-              ? { ...g, commands: g.commands.filter((c) => c.id !== commandId) }
-              : g
+            g.id === groupId ? { ...g, commands: g.commands.filter((c) => c.id !== commandId) } : g
           ),
         })),
 
@@ -119,7 +118,10 @@ export const useCommandStore = create<CommandState>()(
 
       addToRecent: (commandId) =>
         set((state) => ({
-          recentCommands: [commandId, ...state.recentCommands.filter((id) => id !== commandId)].slice(0, MAX_RECENT),
+          recentCommands: [
+            commandId,
+            ...state.recentCommands.filter((id) => id !== commandId),
+          ].slice(0, MAX_RECENT),
         })),
 
       setSelectedIndex: (selectedIndex) => set({ selectedIndex }),
@@ -138,9 +140,9 @@ export const useCommandStore = create<CommandState>()(
 
       setLoading: (isLoading) => set({ isLoading }),
 
-      reset: () => set({ isOpen: false, query: '', selectedIndex: 0, isLoading: false }),
+      reset: () => set({ isOpen: false, query: "", selectedIndex: 0, isLoading: false }),
     }),
-    { name: 'CommandStore' }
+    { name: "CommandStore" }
   )
 );
 

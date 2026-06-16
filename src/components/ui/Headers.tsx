@@ -1,14 +1,14 @@
-import React from 'react';
-import { ChevronRight, Home, MoreHorizontal } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import React from "react";
+import { ChevronRight, Home, MoreHorizontal } from "lucide-react";
+import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 // ============================================
 // BREADCRUMB
@@ -32,27 +32,25 @@ interface BreadcrumbProps {
 export function Breadcrumb({
   items,
   showHome = true,
-  homeHref = '/',
+  homeHref = "/",
   maxItems = 4,
   separator,
   className,
 }: BreadcrumbProps) {
-  const allItems = showHome
-    ? [{ label: 'Início', href: homeHref, icon: Home }, ...items]
-    : items;
+  const allItems = showHome ? [{ label: "Início", href: homeHref, icon: Home }, ...items] : items;
 
   const shouldCollapse = allItems.length > maxItems;
   const visibleItems: (BreadcrumbItem & { collapsed?: boolean })[] = shouldCollapse
-    ? [allItems[0], { label: '...', collapsed: true }, ...allItems.slice(-2)]
+    ? [allItems[0], { label: "...", collapsed: true }, ...allItems.slice(-2)]
     : allItems;
-  const collapsedItems = shouldCollapse
-    ? allItems.slice(1, -2)
-    : [];
+  const collapsedItems = shouldCollapse ? allItems.slice(1, -2) : [];
 
-  const Separator = separator || <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />;
+  const Separator = separator || (
+    <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+  );
 
   return (
-    <nav aria-label="Breadcrumb" className={cn('flex items-center', className)}>
+    <nav aria-label="Breadcrumb" className={cn("flex items-center", className)}>
       <ol className="flex items-center gap-1.5 text-sm">
         {visibleItems.map((item, index) => {
           const isLast = index === visibleItems.length - 1;
@@ -72,8 +70,8 @@ export function Breadcrumb({
                     <DropdownMenuContent align="start">
                       {collapsedItems.map((collapsed, i) => (
                         <DropdownMenuItem key={i} asChild>
-                          <Link to={collapsed.href || '#'}>
-                            {collapsed.icon && <collapsed.icon className="h-4 w-4 mr-2" />}
+                          <Link to={collapsed.href || "#"}>
+                            {collapsed.icon && <collapsed.icon className="mr-2 h-4 w-4" />}
                             {collapsed.label}
                           </Link>
                         </DropdownMenuItem>
@@ -89,20 +87,20 @@ export function Breadcrumb({
             <li key={index} className="flex items-center gap-1.5">
               {index > 0 && Separator}
               {isLast ? (
-                <span className="font-medium text-foreground flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5 font-medium text-foreground">
                   {Icon && <Icon className="h-4 w-4" />}
                   {item.label}
                 </span>
               ) : item.href ? (
                 <Link
                   to={item.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
+                  className="flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {Icon && <Icon className="h-4 w-4" />}
                   {item.label}
                 </Link>
               ) : (
-                <span className="text-muted-foreground flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5 text-muted-foreground">
                   {Icon && <Icon className="h-4 w-4" />}
                   {item.label}
                 </span>
@@ -137,16 +135,12 @@ export function PageHeader({
   className,
 }: PageHeaderProps) {
   return (
-    <div className={cn('space-y-4', className)}>
-      {breadcrumbs && breadcrumbs.length > 0 && (
-        <Breadcrumb items={breadcrumbs} />
-      )}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div className={cn("space-y-4", className)}>
+      {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumb items={breadcrumbs} />}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-          {description && (
-            <p className="text-muted-foreground mt-1">{description}</p>
-          )}
+          {description && <p className="mt-1 text-muted-foreground">{description}</p>}
         </div>
         {actions && <div className="flex items-center gap-2">{actions}</div>}
       </div>
@@ -163,7 +157,7 @@ interface SectionHeaderProps {
   title: string;
   description?: string;
   action?: React.ReactNode;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   className?: string;
 }
 
@@ -171,22 +165,20 @@ export function SectionHeader({
   title,
   description,
   action,
-  size = 'md',
+  size = "md",
   className,
 }: SectionHeaderProps) {
   const sizeStyles = {
-    sm: 'text-base',
-    md: 'text-lg',
-    lg: 'text-xl',
+    sm: "text-base",
+    md: "text-lg",
+    lg: "text-xl",
   };
 
   return (
-    <div className={cn('flex items-start justify-between gap-4', className)}>
+    <div className={cn("flex items-start justify-between gap-4", className)}>
       <div>
-        <h2 className={cn('font-semibold', sizeStyles[size])}>{title}</h2>
-        {description && (
-          <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
-        )}
+        <h2 className={cn("font-semibold", sizeStyles[size])}>{title}</h2>
+        {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
       </div>
       {action}
     </div>
@@ -205,26 +197,18 @@ interface CardHeaderProps {
   className?: string;
 }
 
-export function CardHeader({
-  title,
-  subtitle,
-  icon: Icon,
-  action,
-  className,
-}: CardHeaderProps) {
+export function CardHeader({ title, subtitle, icon: Icon, action, className }: CardHeaderProps) {
   return (
-    <div className={cn('flex items-start justify-between gap-4 p-4 border-b', className)}>
+    <div className={cn("flex items-start justify-between gap-4 border-b p-4", className)}>
       <div className="flex items-start gap-3">
         {Icon && (
-          <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
             <Icon className="h-4 w-4 text-primary" />
           </div>
         )}
         <div>
           <h3 className="font-medium">{title}</h3>
-          {subtitle && (
-            <p className="text-sm text-muted-foreground">{subtitle}</p>
-          )}
+          {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
         </div>
       </div>
       {action}
@@ -243,11 +227,11 @@ interface DividerProps {
 
 export function Divider({ label, className }: DividerProps) {
   if (!label) {
-    return <hr className={cn('border-border', className)} />;
+    return <hr className={cn("border-border", className)} />;
   }
 
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn("relative", className)}>
       <div className="absolute inset-0 flex items-center">
         <span className="w-full border-t border-border" />
       </div>

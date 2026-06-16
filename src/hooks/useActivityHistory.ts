@@ -3,28 +3,28 @@
 // Histórico de atividades e auditoria de entidades
 // ============================================================
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 // ============================================================
 // TYPES
 // ============================================================
 
 export type ActivityType =
-  | 'create'
-  | 'update'
-  | 'delete'
-  | 'restore'
-  | 'archive'
-  | 'view'
-  | 'export'
-  | 'import'
-  | 'share'
-  | 'comment'
-  | 'assign'
-  | 'status_change'
-  | 'custom';
+  | "create"
+  | "update"
+  | "delete"
+  | "restore"
+  | "archive"
+  | "view"
+  | "export"
+  | "import"
+  | "share"
+  | "comment"
+  | "assign"
+  | "status_change"
+  | "custom";
 
 export interface ActivityRecord {
   id: string;
@@ -57,15 +57,10 @@ interface UseActivityHistoryOptions {
 // ============================================================
 
 export function useActivityHistory(options: UseActivityHistoryOptions) {
-  const {
-    entityType,
-    entityId,
-    limit = 50,
-    activityTypes,
-  } = options;
+  const { entityType, entityId, limit = 50, activityTypes } = options;
 
   const queryClient = useQueryClient();
-  const queryKey = ['activity-history', entityType, entityId, activityTypes?.join(',')];
+  const queryKey = ["activity-history", entityType, entityId, activityTypes?.join(",")];
 
   // ============================================================
   // QUERY - Listar atividades
@@ -81,31 +76,32 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
     queryFn: async (): Promise<ActivityRecord[]> => {
       // Ready to fetch
 
-
       let query = supabase
-        .from('activity_logs')
-        .select(`
+        .from("activity_logs")
+        .select(
+          `
           *,
           user:user_id(full_name, email, avatar_url)
-        `)
-        .eq('entity_type', entityType)
-        .order('created_at', { ascending: false })
+        `
+        )
+        .eq("entity_type", entityType)
+        .order("created_at", { ascending: false })
         .limit(limit);
 
       if (entityId) {
-        query = query.eq('entity_id', entityId);
+        query = query.eq("entity_id", entityId);
       }
 
       if (activityTypes && activityTypes.length > 0) {
-        query = query.in('activity_type', activityTypes);
+        query = query.in("activity_type", activityTypes);
       }
 
       const { data, error } = await query;
 
       if (error) {
         // Tabela não existe
-        if (error.code === '42P01') {
-          logger.warn('[ActivityHistory] Tabela não existe');
+        if (error.code === "42P01") {
+          logger.warn("[ActivityHistory] Tabela não existe");
           return [];
         }
         throw error;
@@ -131,20 +127,17 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
     }) => {
       // Proceed to log
 
-
       const { data: userData } = await supabase.auth.getUser();
 
-      const { error } = await supabase
-        .from('activity_logs')
-        .insert({
-          entity_type: entityType,
-          entity_id: params.entityId,
-          activity_type: params.activityType,
-          description: params.description,
-          changes: params.changes,
-          metadata: params.metadata,
-          user_id: userData.user?.id,
-        });
+      const { error } = await supabase.from("activity_logs").insert({
+        entity_type: entityType,
+        entity_id: params.entityId,
+        activity_type: params.activityType,
+        description: params.description,
+        changes: params.changes,
+        metadata: params.metadata,
+        user_id: userData.user?.id,
+      });
 
       if (error) throw error;
     },
@@ -159,47 +152,47 @@ export function useActivityHistory(options: UseActivityHistoryOptions) {
 
   const getActivityIcon = (type: ActivityType): string => {
     const icons: Record<ActivityType, string> = {
-      create: '➕',
-      update: '✏️',
-      delete: '🗑️',
-      restore: '♻️',
-      archive: '📦',
-      view: '👁️',
-      export: '📤',
-      import: '📥',
-      share: '🔗',
-      comment: '💬',
-      assign: '👤',
-      status_change: '🔄',
-      custom: '⚡',
+      create: "➕",
+      update: "✏️",
+      delete: "🗑️",
+      restore: "♻️",
+      archive: "📦",
+      view: "👁️",
+      export: "📤",
+      import: "📥",
+      share: "🔗",
+      comment: "💬",
+      assign: "👤",
+      status_change: "🔄",
+      custom: "⚡",
     };
-    return icons[type] ?? '📝';
+    return icons[type] ?? "📝";
   };
 
   const getActivityLabel = (type: ActivityType): string => {
     const labels: Record<ActivityType, string> = {
-      create: 'Criação',
-      update: 'Atualização',
-      delete: 'Exclusão',
-      restore: 'Restauração',
-      archive: 'Arquivamento',
-      view: 'Visualização',
-      export: 'Exportação',
-      import: 'Importação',
-      share: 'Compartilhamento',
-      comment: 'Comentário',
-      assign: 'Atribuição',
-      status_change: 'Mudança de Status',
-      custom: 'Ação',
+      create: "Criação",
+      update: "Atualização",
+      delete: "Exclusão",
+      restore: "Restauração",
+      archive: "Arquivamento",
+      view: "Visualização",
+      export: "Exportação",
+      import: "Importação",
+      share: "Compartilhamento",
+      comment: "Comentário",
+      assign: "Atribuição",
+      status_change: "Mudança de Status",
+      custom: "Ação",
     };
-    return labels[type] ?? 'Ação';
+    return labels[type] ?? "Ação";
   };
 
   const groupByDate = (): Map<string, ActivityRecord[]> => {
     const grouped = new Map<string, ActivityRecord[]>();
 
     activities.forEach((activity) => {
-      const date = new Date(activity.created_at).toLocaleDateString('pt-BR');
+      const date = new Date(activity.created_at).toLocaleDateString("pt-BR");
       const existing = grouped.get(date) ?? [];
       grouped.set(date, [...existing, activity]);
     });

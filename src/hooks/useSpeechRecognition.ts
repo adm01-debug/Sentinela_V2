@@ -33,7 +33,11 @@ export function useSpeechRecognition() {
     recognitionRef.current = new SpeechRecognitionCtor();
     recognitionRef.current.continuous = true;
     recognitionRef.current.onresult = (e: SpeechRecognitionEvent) => {
-      setTranscript(Array.from(e.results).map((r: SpeechRecognitionResult) => r[0].transcript).join(""));
+      setTranscript(
+        Array.from(e.results)
+          .map((r: SpeechRecognitionResult) => r[0].transcript)
+          .join("")
+      );
     };
     recognitionRef.current.start();
     setListening(true);

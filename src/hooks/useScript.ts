@@ -6,10 +6,13 @@ export function useScript(src: string | null | undefined) {
   const [status, setStatus] = useState<Status>(src ? "loading" : "idle");
 
   useEffect(() => {
-    if (!src) { setStatus("idle"); return; }
+    if (!src) {
+      setStatus("idle");
+      return;
+    }
 
     let script = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement;
-    
+
     if (!script) {
       script = document.createElement("script");
       script.src = src;

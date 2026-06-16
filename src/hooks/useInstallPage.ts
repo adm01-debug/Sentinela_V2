@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export function useInstallPage() {
   const { toast } = useToast();
@@ -10,13 +10,13 @@ export function useInstallPage() {
   const [copied, setCopied] = useState(false);
 
   const agentKeysQuery = useQuery({
-    queryKey: ['agent-keys'],
+    queryKey: ["agent-keys"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('agent_keys')
-        .select('*')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
+        .from("agent_keys")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data || [];
     },
@@ -25,16 +25,14 @@ export function useInstallPage() {
   const generateKey = async () => {
     try {
       const key = crypto.randomUUID();
-      const { error } = await supabase
-        .from('agent_keys')
-        .insert({ key, name: 'New Agent Key' });
+      const { error } = await supabase.from("agent_keys").insert({ key, name: "New Agent Key" });
       if (error) throw error;
       setAgentKey(key);
-      toast({ title: 'Chave gerada com sucesso' });
+      toast({ title: "Chave gerada com sucesso" });
       agentKeysQuery.refetch();
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro desconhecido';
-      toast({ title: 'Erro ao gerar chave', description: message, variant: 'destructive' });
+      const message = error instanceof Error ? error.message : "Erro desconhecido";
+      toast({ title: "Erro ao gerar chave", description: message, variant: "destructive" });
     }
   };
 
@@ -43,9 +41,9 @@ export function useInstallPage() {
       await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-      toast({ title: 'Copiado para a área de transferência' });
+      toast({ title: "Copiado para a área de transferência" });
     } catch {
-      toast({ title: 'Erro ao copiar', variant: 'destructive' });
+      toast({ title: "Erro ao copiar", variant: "destructive" });
     }
   };
 

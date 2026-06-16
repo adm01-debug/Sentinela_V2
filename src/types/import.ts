@@ -19,26 +19,26 @@ export interface Import {
   createdAt: string;
 }
 
-export type ImportResourceType = 
-  | 'employees'
-  | 'users'
-  | 'teams'
-  | 'departments'
-  | 'projects'
-  | 'applications'
-  | 'categories';
+export type ImportResourceType =
+  | "employees"
+  | "users"
+  | "teams"
+  | "departments"
+  | "projects"
+  | "applications"
+  | "categories";
 
-export type ImportFormat = 'csv' | 'xlsx' | 'json' | 'xml';
+export type ImportFormat = "csv" | "xlsx" | "json" | "xml";
 
-export type ImportStatus = 
-  | 'pending'
-  | 'validating'
-  | 'validated'
-  | 'processing'
-  | 'completed'
-  | 'partial'
-  | 'failed'
-  | 'cancelled';
+export type ImportStatus =
+  | "pending"
+  | "validating"
+  | "validated"
+  | "processing"
+  | "completed"
+  | "partial"
+  | "failed"
+  | "cancelled";
 
 export interface ImportFile {
   name: string;
@@ -58,7 +58,7 @@ export interface FieldMapping {
 }
 
 export interface FieldTransform {
-  type: 'lowercase' | 'uppercase' | 'trim' | 'date' | 'number' | 'boolean' | 'custom';
+  type: "lowercase" | "uppercase" | "trim" | "date" | "number" | "boolean" | "custom";
   format?: string;
   customFunction?: string;
 }
@@ -69,7 +69,7 @@ export interface ImportOptions {
   encoding: string;
   dateFormat: string;
   timezone: string;
-  onDuplicate: 'skip' | 'update' | 'error';
+  onDuplicate: "skip" | "update" | "error";
   batchSize: number;
   validateOnly: boolean;
   sendNotifications: boolean;

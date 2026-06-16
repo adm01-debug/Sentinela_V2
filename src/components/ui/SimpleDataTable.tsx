@@ -1,6 +1,6 @@
 // Simple DataTable for basic use cases
-import { memo } from 'react';
-import { FileText } from 'lucide-react';
+import { memo } from "react";
+import { FileText } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -8,9 +8,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { EmptyState } from '@/components/ui/EmptyState';
+} from "@/components/ui/table";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 interface Column<T> {
   key: string;
@@ -32,7 +32,7 @@ function DataTableComponent<T>({
   data,
   columns,
   isLoading,
-  emptyMessage = 'Nenhum dado encontrado',
+  emptyMessage = "Nenhum dado encontrado",
   emptyDescription,
   keyExtractor,
 }: DataTableProps<T>) {
@@ -66,7 +66,9 @@ function DataTableComponent<T>({
           <TableRow key={keyExtractor(row)}>
             {columns.map((col) => (
               <TableCell key={col.key} className={col.className}>
-                {col.render ? col.render(row) : (row as Record<string, unknown>)[col.key] as React.ReactNode}
+                {col.render
+                  ? col.render(row)
+                  : ((row as Record<string, unknown>)[col.key] as React.ReactNode)}
               </TableCell>
             ))}
           </TableRow>

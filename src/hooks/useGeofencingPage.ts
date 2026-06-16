@@ -1,14 +1,14 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { useRealtime } from '@/hooks/useRealtime';
+import { useState, useCallback, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useRealtime } from "@/hooks/useRealtime";
 
 export interface Geofence {
   id: string;
   name: string;
   description?: string;
-  type: 'polygon' | 'circle';
+  type: "polygon" | "circle";
   coordinates?: number[][]; // Changed to optional for circle types
   center_lat?: number;
   center_lng?: number;
@@ -40,7 +40,7 @@ interface GeofenceRow {
 export interface GeofenceFormData {
   name: string;
   description: string;
-  type: 'polygon' | 'circle';
+  type: "polygon" | "circle";
   coordinates?: number[][];
   center_lat: number;
   center_lng: number;
@@ -52,13 +52,13 @@ export interface GeofenceFormData {
 }
 
 const initialFormData: GeofenceFormData = {
-  name: '',
-  description: '',
-  type: 'circle',
+  name: "",
+  description: "",
+  type: "circle",
   center_lat: -23.5505,
   center_lng: -46.6333,
   radius: 500,
-  color: '#3b82f6',
+  color: "#3b82f6",
   is_active: true,
   restricted: false,
   required: false,
@@ -66,12 +66,12 @@ const initialFormData: GeofenceFormData = {
 };
 
 export const GEOFENCE_COLORS = [
-  { value: '#3b82f6', label: 'Azul' },
-  { value: '#22c55e', label: 'Verde' },
-  { value: '#ef4444', label: 'Vermelho' },
-  { value: '#f59e0b', label: 'Amarelo' },
-  { value: '#8b5cf6', label: 'Roxo' },
-  { value: '#ec4899', label: 'Rosa' },
+  { value: "#3b82f6", label: "Azul" },
+  { value: "#22c55e", label: "Verde" },
+  { value: "#ef4444", label: "Vermelho" },
+  { value: "#f59e0b", label: "Amarelo" },
+  { value: "#8b5cf6", label: "Roxo" },
+  { value: "#ec4899", label: "Rosa" },
 ];
 
 export function useGeofencingPage() {
@@ -89,36 +89,36 @@ export function useGeofencingPage() {
   const [drawnPoints, setDrawnPoints] = useState<Array<{ lat: number; lng: number }>>([]);
 
   const { data: geofences = [], isLoading } = useQuery({
-    queryKey: ['geofences'],
+    queryKey: ["geofences"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('geofences')
-        .select('*')
-        .order('name');
+      const { data, error } = await supabase.from("geofences").select("*").order("name");
       if (error) throw error;
-      
+
       // Count employees per geofence from employee_geofences table
       const geofenceIds = (data as GeofenceRow[]).map((g) => g.id);
       const { data: employeeCounts } = await supabase
-        .from('employee_geofences')
-        .select('geofence_id')
-        .in('geofence_id', geofenceIds);
-      
-      const countMap = (employeeCounts || []).reduce((acc: Record<string, number>, eg: { geofence_id: string }) => {
-        acc[eg.geofence_id] = (acc[eg.geofence_id] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
-      
+        .from("employee_geofences")
+        .select("geofence_id")
+        .in("geofence_id", geofenceIds);
+
+      const countMap = (employeeCounts || []).reduce(
+        (acc: Record<string, number>, eg: { geofence_id: string }) => {
+          acc[eg.geofence_id] = (acc[eg.geofence_id] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+
       return (data as GeofenceRow[]).map((g) => ({
         id: g.id,
         name: g.name,
         description: g.description,
-        type: g.geometry?.type === 'Polygon' ? 'polygon' : 'circle',
+        type: g.geometry?.type === "Polygon" ? "polygon" : "circle",
         center_lat: g.latitude,
         center_lng: g.longitude,
         radius: g.radius_meters,
         coordinates: g.geometry?.coordinates?.[0] || [],
-        color: g.color || '#3b82f6',
+        color: g.color || "#3b82f6",
         is_active: g.is_active,
         restricted: g.restricted || false,
         required: g.required || false,
@@ -128,17 +128,17 @@ export function useGeofencingPage() {
     },
   });
 
-  useRealtime('security_violations', ['geofence-violations']);
+  useRealtime("security_violations", ["geofence-violations"]);
 
   const { data: events = [] } = useQuery({
-    queryKey: ['geofence-violations', selectedGeofence?.id],
+    queryKey: ["geofence-violations", selectedGeofence?.id],
     queryFn: async () => {
       if (!selectedGeofence) return [];
       const { data, error } = await supabase
-        .from('geofence_violations')
-        .select('*')
-        .eq('nearest_geofence_id', selectedGeofence.id)
-        .order('created_at', { ascending: false })
+        .from("geofence_violations")
+        .select("*")
+        .eq("nearest_geofence_id", selectedGeofence.id)
+        .order("created_at", { ascending: false })
         .limit(50);
       if (error) throw error;
       return data;
@@ -159,18 +159,23 @@ export function useGeofencingPage() {
         restricted: data.restricted,
         required: data.required,
         type: data.type,
-        geometry: data.type === 'polygon' ? { type: 'Polygon', coordinates: [data.coordinates] } : null,
+        geometry:
+          data.type === "polygon" ? { type: "Polygon", coordinates: [data.coordinates] } : null,
       };
-      const { error } = await supabase.from('geofences').insert(geofenceData);
+      const { error } = await supabase.from("geofences").insert(geofenceData);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['geofences'] });
-      toast({ title: 'Geofence criada com sucesso!' });
+      queryClient.invalidateQueries({ queryKey: ["geofences"] });
+      toast({ title: "Geofence criada com sucesso!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao criar geofence', description: error.message, variant: 'destructive' });
+      toast({
+        title: "Erro ao criar geofence",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -187,43 +192,47 @@ export function useGeofencingPage() {
         restricted: data.restricted,
         required: data.required,
         type: data.type,
-        geometry: data.type === 'polygon' ? { type: 'Polygon', coordinates: [data.coordinates] } : null,
+        geometry:
+          data.type === "polygon" ? { type: "Polygon", coordinates: [data.coordinates] } : null,
       };
-      const { error } = await supabase.from('geofences').update(geofenceData).eq('id', id);
+      const { error } = await supabase.from("geofences").update(geofenceData).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['geofences'] });
-      toast({ title: 'Geofence atualizada!' });
+      queryClient.invalidateQueries({ queryKey: ["geofences"] });
+      toast({ title: "Geofence atualizada!" });
       handleCloseDialog();
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao atualizar', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao atualizar", description: error.message, variant: "destructive" });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('geofences').delete().eq('id', id);
+      const { error } = await supabase.from("geofences").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['geofences'] });
-      toast({ title: 'Geofence excluída!' });
+      queryClient.invalidateQueries({ queryKey: ["geofences"] });
+      toast({ title: "Geofence excluída!" });
       setIsDeleteDialogOpen(false);
       setSelectedGeofence(null);
     },
     onError: (error: Error) => {
-      toast({ title: 'Erro ao excluir', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao excluir", description: error.message, variant: "destructive" });
     },
   });
 
-  const stats = useMemo(() => ({
-    total: geofences.length,
-    active: geofences.filter(g => g.is_active).length,
-    restricted: geofences.filter(g => g.restricted).length,
-    required: geofences.filter(g => g.required).length,
-  }), [geofences]);
+  const stats = useMemo(
+    () => ({
+      total: geofences.length,
+      active: geofences.filter((g) => g.is_active).length,
+      restricted: geofences.filter((g) => g.restricted).length,
+      required: geofences.filter((g) => g.required).length,
+    }),
+    [geofences]
+  );
 
   const handleOpenCreate = useCallback(() => {
     setEditingGeofence(null);
@@ -234,10 +243,12 @@ export function useGeofencingPage() {
 
   const handleOpenEdit = useCallback((geofence: Geofence) => {
     setEditingGeofence(geofence);
-    const geometryPoints = (geofence.geometry?.coordinates?.[0] || geofence.coordinates || []) as number[][];
+    const geometryPoints = (geofence.geometry?.coordinates?.[0] ||
+      geofence.coordinates ||
+      []) as number[][];
     setFormData({
       name: geofence.name,
-      description: geofence.description || '',
+      description: geofence.description || "",
       type: geofence.type,
       center_lat: geofence.center_lat || -23.5505,
       center_lng: geofence.center_lng || -46.6333,
@@ -248,7 +259,7 @@ export function useGeofencingPage() {
       required: geofence.required,
       coordinates: geometryPoints,
     });
-    setDrawnPoints(geometryPoints.map(c => ({ lat: c[1], lng: c[0] })));
+    setDrawnPoints(geometryPoints.map((c) => ({ lat: c[1], lng: c[0] })));
     setIsDialogOpen(true);
   }, []);
 
@@ -274,13 +285,16 @@ export function useGeofencingPage() {
     }
   }, [selectedGeofence, deleteMutation]);
 
-  const handleMapClick = useCallback((lat: number, lng: number) => {
-    if (isDrawing && formData.type === 'polygon') {
-      setDrawnPoints(prev => [...prev, { lat, lng }]);
-    } else if (formData.type === 'circle') {
-      setFormData(prev => ({ ...prev, center_lat: lat, center_lng: lng }));
-    }
-  }, [isDrawing, formData.type]);
+  const handleMapClick = useCallback(
+    (lat: number, lng: number) => {
+      if (isDrawing && formData.type === "polygon") {
+        setDrawnPoints((prev) => [...prev, { lat, lng }]);
+      } else if (formData.type === "circle") {
+        setFormData((prev) => ({ ...prev, center_lat: lat, center_lng: lng }));
+      }
+    },
+    [isDrawing, formData.type]
+  );
 
   return {
     selectedGeofence,

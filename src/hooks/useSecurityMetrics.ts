@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
 interface ViolationRow {
   id: string;
@@ -27,8 +27,10 @@ export function useSecurityMetrics() {
     queryKey: queryKeys.securityMetrics.overview(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('security_violations')
-        .select('id, severity, status, violation_type, employee_id, created_at, employee:employees(full_name)');
+        .from("security_violations")
+        .select(
+          "id, severity, status, violation_type, employee_id, created_at, employee:employees(full_name)"
+        );
 
       if (error) throw error;
 
@@ -36,9 +38,9 @@ export function useSecurityMetrics() {
 
       const metrics: SecurityMetrics = {
         total_violations: violations.length,
-        critical_violations: violations.filter((v) => v.severity === 'critical').length,
-        resolved_violations: violations.filter((v) => v.status === 'resolved').length,
-        pending_violations: violations.filter((v) => v.status === 'pending').length,
+        critical_violations: violations.filter((v) => v.severity === "critical").length,
+        resolved_violations: violations.filter((v) => v.status === "resolved").length,
+        pending_violations: violations.filter((v) => v.status === "pending").length,
         violations_by_type: [],
         violations_trend: [],
         top_violators: [],
@@ -59,8 +61,8 @@ export function useSecurityMetrics() {
         if (!byEmployee[v.employee_id]) {
           const emp = v.employee;
           byEmployee[v.employee_id] = {
-            name: emp?.full_name || 'Unknown', 
-            count: 0 
+            name: emp?.full_name || "Unknown",
+            count: 0,
           };
         }
         byEmployee[v.employee_id].count++;

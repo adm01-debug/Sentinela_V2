@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface Employee {
   id: string;
@@ -6,7 +6,7 @@ interface Employee {
   email: string;
   department: string;
   role: string;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
   avatar?: string;
 }
 
@@ -20,14 +20,14 @@ interface EmployeeState {
   updateEmployee: (id: string, data: Partial<Employee>) => void;
   deleteEmployee: (id) => void;
   selectEmployee: (employee: Employee | null) => void;
-  setFilters: (filters: Partial<EmployeeState['filters']>) => void;
+  setFilters: (filters: Partial<EmployeeState["filters"]>) => void;
   setLoading: (loading: boolean) => void;
 }
 
 export const useEmployeeStore = create<EmployeeState>()((set) => ({
   employees: [],
   selectedEmployee: null,
-  filters: { department: '', status: '', search: '' },
+  filters: { department: "", status: "", search: "" },
   isLoading: false,
   setEmployees: (employees) => set({ employees }),
   addEmployee: (employee) => set((state) => ({ employees: [...state.employees, employee] })),

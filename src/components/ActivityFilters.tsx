@@ -1,6 +1,6 @@
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   filters: { startDate: string; endDate: string; employeeId?: string };
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const ActivityFilters = ({ filters, onChange }: Props) => (
-  <div className="flex gap-4 items-end flex-wrap">
+  <div className="flex flex-wrap items-end gap-4">
     <div className="space-y-1">
       <Label htmlFor="start-date">Start Date</Label>
       <Input
@@ -34,8 +34,8 @@ export const ActivityFilters = ({ filters, onChange }: Props) => (
         const start = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         onChange({
           ...filters,
-          startDate: start.toISOString().split('T')[0],
-          endDate: end.toISOString().split('T')[0],
+          startDate: start.toISOString().split("T")[0],
+          endDate: end.toISOString().split("T")[0],
         });
       }}
     >
@@ -48,8 +48,8 @@ export const ActivityFilters = ({ filters, onChange }: Props) => (
         const start = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
         onChange({
           ...filters,
-          startDate: start.toISOString().split('T')[0],
-          endDate: end.toISOString().split('T')[0],
+          startDate: start.toISOString().split("T")[0],
+          endDate: end.toISOString().split("T")[0],
         });
       }}
     >

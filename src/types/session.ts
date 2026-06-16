@@ -20,12 +20,12 @@ export interface Session {
   revokedReason?: string;
 }
 
-export type SessionType = 'web' | 'mobile' | 'desktop' | 'api' | 'oauth';
+export type SessionType = "web" | "mobile" | "desktop" | "api" | "oauth";
 
-export type SessionStatus = 'active' | 'expired' | 'revoked' | 'locked';
+export type SessionStatus = "active" | "expired" | "revoked" | "locked";
 
 export interface DeviceInfo {
-  type: 'desktop' | 'mobile' | 'tablet' | 'unknown';
+  type: "desktop" | "mobile" | "tablet" | "unknown";
   os: string;
   osVersion?: string;
   browser?: string;

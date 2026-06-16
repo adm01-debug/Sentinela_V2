@@ -1,9 +1,9 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface Alert {
   id: string;
   type: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   title: string;
   message: string;
   employeeId?: string;
@@ -19,13 +19,13 @@ interface AlertState {
   acknowledgeAlert: (id) => void;
   acknowledgeAll: () => void;
   deleteAlert: (id) => void;
-  setFilters: (filters: Partial<AlertState['filters']>) => void;
+  setFilters: (filters: Partial<AlertState["filters"]>) => void;
 }
 
 export const useAlertStore = create<AlertState>()((set) => ({
   alerts: [],
   unacknowledgedCount: 0,
-  filters: { severity: '', type: '' },
+  filters: { severity: "", type: "" },
   addAlert: (alert) =>
     set((state) => ({
       alerts: [alert, ...state.alerts],

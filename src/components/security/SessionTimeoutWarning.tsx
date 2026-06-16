@@ -1,7 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Clock } from 'lucide-react';
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { useSecurity } from '@/hooks/useSecurity';
+import { useEffect, useState } from "react";
+import { Clock } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useSecurity } from "@/hooks/useSecurity";
 
 interface SessionTimeoutWarningProps {
   onExtend: () => void;
@@ -18,7 +26,7 @@ export function SessionTimeoutWarning({ onExtend }: SessionTimeoutWarningProps) 
     }
 
     const timer = setInterval(() => {
-      setCountdown(prev => {
+      setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
           return 0;
@@ -38,7 +46,7 @@ export function SessionTimeoutWarning({ onExtend }: SessionTimeoutWarningProps) 
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -51,18 +59,14 @@ export function SessionTimeoutWarning({ onExtend }: SessionTimeoutWarningProps) 
           </div>
           <AlertDialogDescription className="space-y-2">
             <p>
-              Sua sessão irá expirar por inatividade em{' '}
+              Sua sessão irá expirar por inatividade em{" "}
               <span className="font-bold text-destructive">{formatTime(countdown)}</span>
             </p>
-            <p className="text-sm">
-              Clique no botão abaixo para continuar usando o sistema.
-            </p>
+            <p className="text-sm">Clique no botão abaixo para continuar usando o sistema.</p>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction onClick={handleExtend}>
-            Continuar Sessão
-          </AlertDialogAction>
+          <AlertDialogAction onClick={handleExtend}>Continuar Sessão</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

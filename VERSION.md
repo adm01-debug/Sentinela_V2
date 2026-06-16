@@ -6,12 +6,12 @@
 
 ## Version History
 
-| Version | Date | Description |
-|---------|------|-------------|
-| 19.0.0 | 2026-01-13 | 100% test coverage achievement |
-| 18.0.0 | 2026-01-12 | Enterprise documentation |
-| 17.0.0 | 2026-01-11 | Advanced monitoring |
-| 16.0.0 | 2026-01-10 | Initial enterprise release |
+| Version | Date       | Description                    |
+| ------- | ---------- | ------------------------------ |
+| 19.0.0  | 2026-01-13 | 100% test coverage achievement |
+| 18.0.0  | 2026-01-12 | Enterprise documentation       |
+| 17.0.0  | 2026-01-11 | Advanced monitoring            |
+| 16.0.0  | 2026-01-10 | Initial enterprise release     |
 
 ## Build Info
 

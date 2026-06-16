@@ -1,8 +1,8 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { logger } from '@/lib/logger';
+import React, { Component, ErrorInfo, ReactNode } from "react";
+import { AlertTriangle, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { logger } from "@/lib/logger";
 
 interface Props {
   children: ReactNode;
@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     if (import.meta.env.DEV) {
-      logger.error('ErrorBoundary caught an error:', error, errorInfo);
+      logger.error("ErrorBoundary caught an error:", error, errorInfo);
     }
   }
 
@@ -43,7 +43,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-[300px] flex items-center justify-center p-4">
+        <div className="flex min-h-[300px] items-center justify-center p-4">
           <Card className="w-full max-w-md">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">

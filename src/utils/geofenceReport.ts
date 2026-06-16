@@ -1,6 +1,6 @@
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import { format } from 'date-fns';
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+import { format } from "date-fns";
 
 interface GeofenceViolation {
   created_at: string | number | Date;
@@ -17,8 +17,8 @@ export const generateGeofencePDFReport = (violations: GeofenceViolation[], perio
   // Title
   doc.setFontSize(20);
   doc.setTextColor(44, 62, 80);
-  doc.text('Relatório Mensal de Violações de Geofence', 14, 22);
-  
+  doc.text("Relatório Mensal de Violações de Geofence", 14, 22);
+
   doc.setFontSize(10);
   doc.setTextColor(127, 140, 141);
   doc.text(`Período: ${periodName} | Gerado em: ${now}`, 14, 30);
@@ -26,42 +26,42 @@ export const generateGeofencePDFReport = (violations: GeofenceViolation[], perio
   // Executive Summary
   doc.setFontSize(14);
   doc.setTextColor(44, 62, 80);
-  doc.text('Resumo Executivo', 14, 45);
-  
+  doc.text("Resumo Executivo", 14, 45);
+
   const totalViolations = violations.length;
-  const uniqueEmployees = new Set(violations.map(v => v.employee_name)).size;
-  const uniqueDevices = new Set(violations.map(v => v.device)).size;
+  const uniqueEmployees = new Set(violations.map((v) => v.employee_name)).size;
+  const uniqueDevices = new Set(violations.map((v) => v.device)).size;
 
   autoTable(doc, {
     startY: 50,
-    head: [['Indicador', 'Valor']],
+    head: [["Indicador", "Valor"]],
     body: [
-      ['Total de Violações Detectadas', totalViolations.toString()],
-      ['Colaboradores Envolvidos', uniqueEmployees.toString()],
-      ['Dispositivos Monitorados com Alertas', uniqueDevices.toString()],
+      ["Total de Violações Detectadas", totalViolations.toString()],
+      ["Colaboradores Envolvidos", uniqueEmployees.toString()],
+      ["Dispositivos Monitorados com Alertas", uniqueDevices.toString()],
     ],
-    theme: 'striped',
-    headStyles: { fillColor: [52, 152, 219] }
+    theme: "striped",
+    headStyles: { fillColor: [52, 152, 219] },
   });
 
   // Detailed Table
   doc.addPage();
   doc.setFontSize(14);
-  doc.text('Detalhamento por Colaborador', 14, 22);
+  doc.text("Detalhamento por Colaborador", 14, 22);
 
   autoTable(doc, {
     startY: 30,
-    head: [['Data/Hora', 'Colaborador', 'Dispositivo', 'Distância', 'Ação']],
-    body: violations.map(v => [
+    head: [["Data/Hora", "Colaborador", "Dispositivo", "Distância", "Ação"]],
+    body: violations.map((v) => [
       format(new Date(v.created_at), "dd/MM/yy HH:mm"),
       v.employee_name,
       v.device,
       `${v.distance_meters}m`,
-      v.action_taken === 'blocked' ? 'Bloqueado' : 'Notificado'
+      v.action_taken === "blocked" ? "Bloqueado" : "Notificado",
     ]),
     styles: { fontSize: 8 },
-    headStyles: { fillColor: [52, 152, 219] }
+    headStyles: { fillColor: [52, 152, 219] },
   });
 
-  doc.save(`relatorio-geofence-${periodName.replace(/\s/g, '-')}.pdf`);
+  doc.save(`relatorio-geofence-${periodName.replace(/\s/g, "-")}.pdf`);
 };

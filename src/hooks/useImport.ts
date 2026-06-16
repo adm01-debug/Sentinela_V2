@@ -27,7 +27,7 @@ export function useImport<T>() {
       const text = await file.text();
       const lines = text.split("\n");
       const headers = lines[0].split(",");
-      const rows = lines.slice(1).map(line => {
+      const rows = lines.slice(1).map((line) => {
         const values = line.split(",");
         return headers.reduce((obj, h, i) => ({ ...obj, [h.trim()]: values[i]?.trim() }), {});
       });

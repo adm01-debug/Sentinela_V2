@@ -3,14 +3,13 @@
  */
 
 // Email validation
-export const isValidEmail = (email): boolean => 
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+export const isValidEmail = (email): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 // Password strength validation
 export const isStrongPassword = (password): boolean =>
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
 
-export const getPasswordStrength = (password): 'weak' | 'medium' | 'strong' => {
+export const getPasswordStrength = (password): "weak" | "medium" | "strong" => {
   let score = 0;
   if (password.length >= 8) score++;
   if (password.length >= 12) score++;
@@ -18,22 +17,22 @@ export const getPasswordStrength = (password): 'weak' | 'medium' | 'strong' => {
   if (/[A-Z]/.test(password)) score++;
   if (/\d/.test(password)) score++;
   if (/[@$!%*?&]/.test(password)) score++;
-  if (score <= 2) return 'weak';
-  if (score <= 4) return 'medium';
-  return 'strong';
+  if (score <= 2) return "weak";
+  if (score <= 4) return "medium";
+  return "strong";
 };
 
 // CPF validation
 export const isValidCPF = (cpf): boolean => {
-  const cleaned = cpf.replace(/\D/g, '');
+  const cleaned = cpf.replace(/\D/g, "");
   if (cleaned.length !== 11 || /^(\d)\1+$/.test(cleaned)) return false;
-  
+
   let sum = 0;
   for (let i = 0; i < 9; i++) sum += parseInt(cleaned[i]) * (10 - i);
   let digit = 11 - (sum % 11);
   if (digit > 9) digit = 0;
   if (parseInt(cleaned[9]) !== digit) return false;
-  
+
   sum = 0;
   for (let i = 0; i < 10; i++) sum += parseInt(cleaned[i]) * (11 - i);
   digit = 11 - (sum % 11);
@@ -43,18 +42,18 @@ export const isValidCPF = (cpf): boolean => {
 
 // CNPJ validation
 export const isValidCNPJ = (cnpj): boolean => {
-  const cleaned = cnpj.replace(/\D/g, '');
+  const cleaned = cnpj.replace(/\D/g, "");
   if (cleaned.length !== 14 || /^(\d)\1+$/.test(cleaned)) return false;
-  
+
   const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
   const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  
+
   let sum = 0;
   for (let i = 0; i < 12; i++) sum += parseInt(cleaned[i]) * weights1[i];
   let digit = 11 - (sum % 11);
   if (digit > 9) digit = 0;
   if (parseInt(cleaned[12]) !== digit) return false;
-  
+
   sum = 0;
   for (let i = 0; i < 13; i++) sum += parseInt(cleaned[i]) * weights2[i];
   digit = 11 - (sum % 11);
@@ -64,7 +63,7 @@ export const isValidCNPJ = (cnpj): boolean => {
 
 // Phone validation (BR)
 export const isValidPhone = (phone): boolean => {
-  const cleaned = phone.replace(/\D/g, '');
+  const cleaned = phone.replace(/\D/g, "");
   return cleaned.length >= 10 && cleaned.length <= 11;
 };
 
@@ -79,8 +78,7 @@ export const isValidURL = (url): boolean => {
 };
 
 // Required validation
-export const isRequired = (value): boolean => 
-  value !== null && value !== undefined && value !== '';
+export const isRequired = (value): boolean => value !== null && value !== undefined && value !== "";
 
 // Min length validation
 export const minLength = (value: string | unknown[], min: number): boolean => value.length >= min;
@@ -89,5 +87,5 @@ export const minLength = (value: string | unknown[], min: number): boolean => va
 export const maxLength = (value: string | unknown[], max: number): boolean => value.length <= max;
 
 // Range validation
-export const inRange = (value: number, min: number, max: number): boolean => 
+export const inRange = (value: number, min: number, max: number): boolean =>
   value >= min && value <= max;

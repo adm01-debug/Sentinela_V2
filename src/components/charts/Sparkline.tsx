@@ -1,5 +1,5 @@
-import { LineChart, Line, ResponsiveContainer } from 'recharts';
-import { useChartColors } from '@/hooks/useChartColors';
+import { LineChart, Line, ResponsiveContainer } from "recharts";
+import { useChartColors } from "@/hooks/useChartColors";
 
 interface SparklineProps {
   data: number[];

@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface GlobalFilters {
   dateRange: { start: string; end: string } | null;
@@ -29,8 +29,7 @@ export const useFilterStore = create<FilterState>()((set) => ({
   setDateRange: (start, end) =>
     set((state) => ({ filters: { ...state.filters, dateRange: { start, end } } })),
   clearDateRange: () => set((state) => ({ filters: { ...state.filters, dateRange: null } })),
-  setDepartments: (departments) =>
-    set((state) => ({ filters: { ...state.filters, departments } })),
+  setDepartments: (departments) => set((state) => ({ filters: { ...state.filters, departments } })),
   setEmployees: (employees) => set((state) => ({ filters: { ...state.filters, employees } })),
   setStatus: (status) => set((state) => ({ filters: { ...state.filters, status } })),
   resetFilters: () => set({ filters: defaultFilters }),

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Info,
   AlertCircle,
@@ -7,15 +7,15 @@ import {
   X,
   ChevronRight,
   ExternalLink,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 // ============================================
 // INFO CARD
 // ============================================
 
-type InfoCardVariant = 'info' | 'success' | 'warning' | 'error' | 'neutral';
+type InfoCardVariant = "info" | "success" | "warning" | "error" | "neutral";
 
 interface InfoCardProps {
   variant?: InfoCardVariant;
@@ -33,46 +33,49 @@ interface InfoCardProps {
   className?: string;
 }
 
-const variantConfig: Record<InfoCardVariant, {
-  icon: React.ElementType;
-  bg: string;
-  border: string;
-  iconColor: string;
-}> = {
+const variantConfig: Record<
+  InfoCardVariant,
+  {
+    icon: React.ElementType;
+    bg: string;
+    border: string;
+    iconColor: string;
+  }
+> = {
   info: {
     icon: Info,
-    bg: 'bg-blue-50 dark:bg-blue-950/50',
-    border: 'border-blue-200 dark:border-blue-800',
-    iconColor: 'text-blue-600 dark:text-blue-400',
+    bg: "bg-blue-50 dark:bg-blue-950/50",
+    border: "border-blue-200 dark:border-blue-800",
+    iconColor: "text-blue-600 dark:text-blue-400",
   },
   success: {
     icon: CheckCircle,
-    bg: 'bg-green-50 dark:bg-green-950/50',
-    border: 'border-green-200 dark:border-green-800',
-    iconColor: 'text-green-600 dark:text-green-400',
+    bg: "bg-green-50 dark:bg-green-950/50",
+    border: "border-green-200 dark:border-green-800",
+    iconColor: "text-green-600 dark:text-green-400",
   },
   warning: {
     icon: AlertTriangle,
-    bg: 'bg-yellow-50 dark:bg-yellow-950/50',
-    border: 'border-yellow-200 dark:border-yellow-800',
-    iconColor: 'text-yellow-600 dark:text-yellow-400',
+    bg: "bg-yellow-50 dark:bg-yellow-950/50",
+    border: "border-yellow-200 dark:border-yellow-800",
+    iconColor: "text-yellow-600 dark:text-yellow-400",
   },
   error: {
     icon: AlertCircle,
-    bg: 'bg-red-50 dark:bg-red-950/50',
-    border: 'border-red-200 dark:border-red-800',
-    iconColor: 'text-red-600 dark:text-red-400',
+    bg: "bg-red-50 dark:bg-red-950/50",
+    border: "border-red-200 dark:border-red-800",
+    iconColor: "text-red-600 dark:text-red-400",
   },
   neutral: {
     icon: Info,
-    bg: 'bg-muted/50',
-    border: 'border-border',
-    iconColor: 'text-muted-foreground',
+    bg: "bg-muted/50",
+    border: "border-border",
+    iconColor: "text-muted-foreground",
   },
 };
 
 export function InfoCard({
-  variant = 'info',
+  variant = "info",
   title,
   children,
   icon,
@@ -86,35 +89,24 @@ export function InfoCard({
   const Icon = icon || config.icon;
 
   return (
-    <div
-      className={cn(
-        'relative rounded-lg border p-4',
-        config.bg,
-        config.border,
-        className
-      )}
-    >
+    <div className={cn("relative rounded-lg border p-4", config.bg, config.border, className)}>
       <div className="flex gap-3">
-        {showIcon && (
-          <Icon className={cn('h-5 w-5 shrink-0 mt-0.5', config.iconColor)} />
-        )}
-        <div className="flex-1 min-w-0">
-          {title && (
-            <h4 className="font-medium text-sm mb-1">{title}</h4>
-          )}
+        {showIcon && <Icon className={cn("mt-0.5 h-5 w-5 shrink-0", config.iconColor)} />}
+        <div className="min-w-0 flex-1">
+          {title && <h4 className="mb-1 text-sm font-medium">{title}</h4>}
           <div className="text-sm text-muted-foreground">{children}</div>
           {action && (
             <Button
               variant="link"
               size="sm"
-              className="h-auto p-0 mt-2 text-sm"
+              className="mt-2 h-auto p-0 text-sm"
               onClick={action.onClick}
             >
               {action.label}
               {action.external ? (
-                <ExternalLink className="h-3 w-3 ml-1" />
+                <ExternalLink className="ml-1 h-3 w-3" />
               ) : (
-                <ChevronRight className="h-3 w-3 ml-1" />
+                <ChevronRight className="ml-1 h-3 w-3" />
               )}
             </Button>
           )}
@@ -123,7 +115,7 @@ export function InfoCard({
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 shrink-0 -mt-1 -mr-1"
+            className="-mr-1 -mt-1 h-6 w-6 shrink-0"
             onClick={onDismiss}
           >
             <X className="h-4 w-4" />
@@ -144,17 +136,11 @@ interface CalloutProps {
   className?: string;
 }
 
-export function Callout({ variant = 'info', children, className }: CalloutProps) {
+export function Callout({ variant = "info", children, className }: CalloutProps) {
   const config = variantConfig[variant];
 
   return (
-    <div
-      className={cn(
-        'border-l-4 pl-4 py-2',
-        config.border,
-        className
-      )}
-    >
+    <div className={cn("border-l-4 py-2 pl-4", config.border, className)}>
       <div className="text-sm">{children}</div>
     </div>
   );
@@ -181,25 +167,29 @@ export function FeatureCard({
 }: FeatureCardProps) {
   return (
     <div
-      role={onClick ? 'button' : undefined}
+      role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
       className={cn(
-        'p-4 rounded-lg border bg-card transition-all duration-200',
-        onClick && 'cursor-pointer hover:border-primary/50 hover:shadow-md',
+        "rounded-lg border bg-card p-4 transition-all duration-200",
+        onClick && "cursor-pointer hover:border-primary/50 hover:shadow-md",
         className
       )}
       onClick={onClick}
-      onKeyDown={onClick ? (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick();
-        }
-      } : undefined}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
     >
-      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
         <Icon className="h-5 w-5 text-primary" />
       </div>
-      <h3 className="font-medium mb-1">{title}</h3>
+      <h3 className="mb-1 font-medium">{title}</h3>
       <p className="text-sm text-muted-foreground">{description}</p>
     </div>
   );
@@ -214,10 +204,10 @@ interface StatHighlightProps {
   label: string;
   trend?: {
     value: number;
-    direction: 'up' | 'down';
+    direction: "up" | "down";
   };
   icon?: React.ElementType;
-  variant?: 'default' | 'success' | 'warning' | 'error';
+  variant?: "default" | "success" | "warning" | "error";
   className?: string;
 }
 
@@ -226,43 +216,39 @@ export function StatHighlight({
   label,
   trend,
   icon: Icon,
-  variant = 'default',
+  variant = "default",
   className,
 }: StatHighlightProps) {
   const variantStyles = {
-    default: 'bg-card',
-    success: 'bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800',
-    warning: 'bg-yellow-50 dark:bg-yellow-950/30 border-yellow-200 dark:border-yellow-800',
-    error: 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800',
+    default: "bg-card",
+    success: "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800",
+    warning: "bg-yellow-50 dark:bg-yellow-950/30 border-yellow-200 dark:border-yellow-800",
+    error: "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800",
   };
 
   return (
-    <div
-      className={cn(
-        'p-4 rounded-lg border',
-        variantStyles[variant],
-        className
-      )}
-    >
+    <div className={cn("rounded-lg border p-4", variantStyles[variant], className)}>
       <div className="flex items-start justify-between">
         <div>
           <p className="text-2xl font-bold">{value}</p>
-          <p className="text-sm text-muted-foreground mt-0.5">{label}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{label}</p>
         </div>
         {Icon && (
-          <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
             <Icon className="h-5 w-5 text-muted-foreground" />
           </div>
         )}
       </div>
       {trend && (
-        <div className={cn(
-          'flex items-center gap-1 mt-2 text-xs font-medium',
-          trend.direction === 'up' ? 'text-green-600' : 'text-red-600'
-        )}>
-          <span>{trend.direction === 'up' ? '↑' : '↓'}</span>
+        <div
+          className={cn(
+            "mt-2 flex items-center gap-1 text-xs font-medium",
+            trend.direction === "up" ? "text-green-600" : "text-red-600"
+          )}
+        >
+          <span>{trend.direction === "up" ? "↑" : "↓"}</span>
           <span>{Math.abs(trend.value)}%</span>
-          <span className="text-muted-foreground font-normal">vs período anterior</span>
+          <span className="font-normal text-muted-foreground">vs período anterior</span>
         </div>
       )}
     </div>
@@ -280,7 +266,7 @@ interface TipCardProps {
   className?: string;
 }
 
-export function TipCard({ tip, title = 'Dica', onDismiss, className }: TipCardProps) {
+export function TipCard({ tip, title = "Dica", onDismiss, className }: TipCardProps) {
   return (
     <InfoCard
       variant="info"

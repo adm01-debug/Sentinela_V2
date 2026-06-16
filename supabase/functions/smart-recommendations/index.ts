@@ -35,7 +35,7 @@ serve(async (req) => {
     const [activitiesRes, violationsRes, employeesRes] = await Promise.all([
       supabase.from("activities").select("*").order("created_at", { ascending: false }).limit(1000),
       supabase.from("violations").select("*").order("created_at", { ascending: false }).limit(200),
-      supabase.from("employees").select("*").eq("status", "active")
+      supabase.from("employees").select("*").eq("status", "active"),
     ]);
 
     const activities = activitiesRes.data || [];
@@ -61,15 +61,20 @@ serve(async (req) => {
         actions: [
           "Review current policy for this violation type",
           "Communicate updated guidelines to employees",
-          "Consider automated prevention measures"
+          "Consider automated prevention measures",
         ],
-        metrics: { violationCount: topViolationType[1], type: topViolationType[0] }
+        metrics: { violationCount: topViolationType[1], type: topViolationType[0] },
       });
     }
 
     // Productivity recommendations
-    const productivityScores = activities.filter((a: any) => a.productivity_score).map((a: any) => a.productivity_score);
-    const avgProductivity = productivityScores.length > 0 ? productivityScores.reduce((a: number, b: number) => a + b, 0) / productivityScores.length : 0;
+    const productivityScores = activities
+      .filter((a: any) => a.productivity_score)
+      .map((a: any) => a.productivity_score);
+    const avgProductivity =
+      productivityScores.length > 0
+        ? productivityScores.reduce((a: number, b: number) => a + b, 0) / productivityScores.length
+        : 0;
 
     if (avgProductivity < 50) {
       recommendations.push({
@@ -84,9 +89,9 @@ serve(async (req) => {
           "Identify top time-consuming non-productive applications",
           "Implement focus time policies",
           "Review and optimize workflows",
-          "Consider productivity training"
+          "Consider productivity training",
         ],
-        metrics: { avgProductivity }
+        metrics: { avgProductivity },
       });
     }
 
@@ -107,9 +112,9 @@ serve(async (req) => {
           "Review and address all critical violations immediately",
           "Implement stricter access controls",
           "Enable additional monitoring for sensitive operations",
-          "Conduct security awareness training"
+          "Conduct security awareness training",
         ],
-        metrics: { criticalViolations, highViolations }
+        metrics: { criticalViolations, highViolations },
       });
     }
 
@@ -132,9 +137,9 @@ serve(async (req) => {
           "Verify agent installation on affected devices",
           "Check network connectivity issues",
           "Review employee work patterns",
-          "Update monitoring policies if needed"
+          "Update monitoring policies if needed",
         ],
-        metrics: { lowActivityCount: employeesWithLowActivity, totalEmployees: employees.length }
+        metrics: { lowActivityCount: employeesWithLowActivity, totalEmployees: employees.length },
       });
     }
 
@@ -152,17 +157,17 @@ serve(async (req) => {
           dataAnalyzed: {
             activities: activities.length,
             violations: violations.length,
-            employees: employees.length
-          }
-        }
+            employees: employees.length,
+          },
+        },
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

@@ -6,10 +6,7 @@ interface RetryOptions {
   backoff?: boolean;
 }
 
-export function useRetry<T>(
-  fn: () => Promise<T>,
-  options: RetryOptions = {}
-) {
+export function useRetry<T>(fn: () => Promise<T>, options: RetryOptions = {}) {
   const { maxRetries = 3, delay = 1000, backoff = true } = options;
   const [attempts, setAttempts] = useState(0);
   const [error, setError] = useState<Error | null>(null);
@@ -18,7 +15,7 @@ export function useRetry<T>(
   const execute = useCallback(async (): Promise<T | null> => {
     setLoading(true);
     setError(null);
-    
+
     for (let i = 0; i <= maxRetries; i++) {
       try {
         setAttempts(i + 1);
@@ -31,7 +28,7 @@ export function useRetry<T>(
           setLoading(false);
           return null;
         }
-        await new Promise(r => setTimeout(r, backoff ? delay * (i + 1) : delay));
+        await new Promise((r) => setTimeout(r, backoff ? delay * (i + 1) : delay));
       }
     }
     return null;

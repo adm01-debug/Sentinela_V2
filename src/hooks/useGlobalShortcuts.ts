@@ -1,6 +1,6 @@
-import { useEffect, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '@/constants';
+import { useEffect, useCallback, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/constants";
 
 export interface KeyboardShortcut {
   key: string;
@@ -23,44 +23,89 @@ export function useGlobalShortcuts(onToggleHelp: () => void) {
 
   const shortcuts: KeyboardShortcut[] = [
     // Navigation
-    { key: 'd', alt: true, description: 'Ir para Dashboard', category: 'Navegação', action: () => navigate(ROUTES.DASHBOARD) },
-    { key: 'e', alt: true, description: 'Ir para Funcionários', category: 'Navegação', action: () => navigate(ROUTES.EMPLOYEES) },
-    { key: 'a', alt: true, description: 'Ir para Alertas', category: 'Navegação', action: () => navigate(ROUTES.ALERTS) },
-    { key: 'r', alt: true, description: 'Ir para Relatórios', category: 'Navegação', action: () => navigate(ROUTES.REPORTS) },
-    { key: 's', alt: true, description: 'Ir para Configurações', category: 'Navegação', action: () => navigate(ROUTES.SETTINGS) },
+    {
+      key: "d",
+      alt: true,
+      description: "Ir para Dashboard",
+      category: "Navegação",
+      action: () => navigate(ROUTES.DASHBOARD),
+    },
+    {
+      key: "e",
+      alt: true,
+      description: "Ir para Funcionários",
+      category: "Navegação",
+      action: () => navigate(ROUTES.EMPLOYEES),
+    },
+    {
+      key: "a",
+      alt: true,
+      description: "Ir para Alertas",
+      category: "Navegação",
+      action: () => navigate(ROUTES.ALERTS),
+    },
+    {
+      key: "r",
+      alt: true,
+      description: "Ir para Relatórios",
+      category: "Navegação",
+      action: () => navigate(ROUTES.REPORTS),
+    },
+    {
+      key: "s",
+      alt: true,
+      description: "Ir para Configurações",
+      category: "Navegação",
+      action: () => navigate(ROUTES.SETTINGS),
+    },
     // Actions
-    { key: 'Escape', description: 'Voltar para página anterior', category: 'Geral', action: () => {
-      if (window.history.length > 1) {
-        navigate(-1);
-      } else {
-        navigate(ROUTES.DASHBOARD);
-      }
-    } },
-    { key: '?', shift: true, description: 'Mostrar atalhos', category: 'Geral', action: () => helpToggle.current() },
+    {
+      key: "Escape",
+      description: "Voltar para página anterior",
+      category: "Geral",
+      action: () => {
+        if (window.history.length > 1) {
+          navigate(-1);
+        } else {
+          navigate(ROUTES.DASHBOARD);
+        }
+      },
+    },
+    {
+      key: "?",
+      shift: true,
+      description: "Mostrar atalhos",
+      category: "Geral",
+      action: () => helpToggle.current(),
+    },
   ];
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    const target = e.target as HTMLElement;
-    const tag = target.tagName.toLowerCase();
-    if (tag === 'input' || tag === 'textarea' || tag === 'select' || target.isContentEditable) return;
-
-    for (const s of shortcuts) {
-      const ctrlMatch = s.ctrl ? (e.ctrlKey || e.metaKey) : !(e.ctrlKey || e.metaKey);
-      const shiftMatch = s.shift ? e.shiftKey : !e.shiftKey;
-      const altMatch = s.alt ? e.altKey : !e.altKey;
-
-      if (e.key.toLowerCase() === s.key.toLowerCase() && ctrlMatch && shiftMatch && altMatch) {
-        e.preventDefault();
-        s.action();
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const tag = target.tagName.toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select" || target.isContentEditable)
         return;
+
+      for (const s of shortcuts) {
+        const ctrlMatch = s.ctrl ? e.ctrlKey || e.metaKey : !(e.ctrlKey || e.metaKey);
+        const shiftMatch = s.shift ? e.shiftKey : !e.shiftKey;
+        const altMatch = s.alt ? e.altKey : !e.altKey;
+
+        if (e.key.toLowerCase() === s.key.toLowerCase() && ctrlMatch && shiftMatch && altMatch) {
+          e.preventDefault();
+          s.action();
+          return;
+        }
       }
-    }
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps -- 'shortcuts' is rebuilt each render but its action closures only depend on navigate/helpToggle ref
-  }, [navigate]);
+    [navigate]
+  );
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
   return shortcuts;
@@ -78,9 +123,9 @@ export function groupShortcuts(shortcuts: KeyboardShortcut[]) {
 /** Format shortcut key combo for display */
 export function formatShortcutKey(s: KeyboardShortcut): string {
   const parts: string[] = [];
-  if (s.ctrl) parts.push('Ctrl');
-  if (s.alt) parts.push('Alt');
-  if (s.shift) parts.push('Shift');
+  if (s.ctrl) parts.push("Ctrl");
+  if (s.alt) parts.push("Alt");
+  if (s.shift) parts.push("Shift");
   parts.push(s.key.toUpperCase());
-  return parts.join(' + ');
+  return parts.join(" + ");
 }

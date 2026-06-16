@@ -3,8 +3,8 @@
  * Core type definitions for employee-related entities
  */
 
-export type EmployeeStatus = 'active' | 'inactive' | 'suspended' | 'pending';
-export type EmployeeRole = 'admin' | 'manager' | 'supervisor' | 'employee' | 'contractor';
+export type EmployeeStatus = "active" | "inactive" | "suspended" | "pending";
+export type EmployeeRole = "admin" | "manager" | "supervisor" | "employee" | "contractor";
 
 export interface Employee {
   id: string;
@@ -59,13 +59,7 @@ export interface EmployeeActivity {
   ended_at?: string;
 }
 
-export type ActivityType = 
-  | 'application'
-  | 'website'
-  | 'idle'
-  | 'meeting'
-  | 'break'
-  | 'offline';
+export type ActivityType = "application" | "website" | "idle" | "meeting" | "break" | "offline";
 
 export interface EmployeeProductivity {
   id: string;
@@ -95,15 +89,15 @@ export interface EmployeeAttendance {
   notes?: string;
 }
 
-export type AttendanceStatus = 
-  | 'present'
-  | 'absent'
-  | 'late'
-  | 'half_day'
-  | 'remote'
-  | 'holiday'
-  | 'sick_leave'
-  | 'vacation';
+export type AttendanceStatus =
+  | "present"
+  | "absent"
+  | "late"
+  | "half_day"
+  | "remote"
+  | "holiday"
+  | "sick_leave"
+  | "vacation";
 
 export interface EmployeeDevice {
   id: string;
@@ -119,7 +113,7 @@ export interface EmployeeDevice {
   is_approved: boolean;
 }
 
-export type DeviceType = 'desktop' | 'laptop' | 'mobile' | 'tablet';
+export type DeviceType = "desktop" | "laptop" | "mobile" | "tablet";
 
 // Filter and query types
 export interface EmployeeFilters {
@@ -135,7 +129,7 @@ export interface EmployeeFilters {
 
 export interface EmployeeSort {
   field: keyof Employee;
-  direction: 'asc' | 'desc';
+  direction: "asc" | "desc";
 }
 
 export interface EmployeePagination {
@@ -147,7 +141,7 @@ export interface EmployeeQueryOptions {
   filters?: EmployeeFilters;
   sort?: EmployeeSort;
   pagination?: EmployeePagination;
-  include?: ('team' | 'manager' | 'devices' | 'location')[];
+  include?: ("team" | "manager" | "devices" | "location")[];
 }
 
 // Create and update types
@@ -171,7 +165,7 @@ export interface EmployeeUpdateInput extends Partial<EmployeeCreateInput> {
 }
 
 export interface EmployeeBulkAction {
-  action: 'activate' | 'deactivate' | 'suspend' | 'delete' | 'assign_team' | 'assign_manager';
+  action: "activate" | "deactivate" | "suspend" | "delete" | "assign_team" | "assign_manager";
   employee_ids: string[];
   params?: unknown;
 }

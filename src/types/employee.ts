@@ -4,7 +4,7 @@ export interface Employee {
   email: string;
   department: string;
   role: string;
-  status: 'active' | 'inactive' | 'suspended';
+  status: "active" | "inactive" | "suspended";
   avatar?: string;
   phone?: string;
   hireDate: string;
@@ -26,11 +26,11 @@ export interface EmployeeFilters {
   search?: string;
   department?: string;
   status?: string;
-  sortBy?: 'name' | 'department' | 'status' | 'hireDate';
-  sortOrder?: 'asc' | 'desc';
+  sortBy?: "name" | "department" | "status" | "hireDate";
+  sortOrder?: "asc" | "desc";
   page?: number;
   limit?: number;
 }
 
-export type CreateEmployeeInput = Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateEmployeeInput = Omit<Employee, "id" | "createdAt" | "updatedAt">;
 export type UpdateEmployeeInput = Partial<CreateEmployeeInput>;

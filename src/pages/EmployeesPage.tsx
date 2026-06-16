@@ -1,16 +1,16 @@
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Plus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useEmployeesPage } from '@/hooks/useEmployeesPage';
-import { EmployeeStatsCards } from '@/components/employees/EmployeeStatsCards';
-import { EmployeeFilters } from '@/components/employees/EmployeeFilters';
-import { EmployeeTable } from '@/components/employees/EmployeeTable';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useChartColors } from '@/hooks/useChartColors';
-import { BaseBarChart, BaseDonutChart } from '@/components/charts';
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useEmployeesPage } from "@/hooks/useEmployeesPage";
+import { EmployeeStatsCards } from "@/components/employees/EmployeeStatsCards";
+import { EmployeeFilters } from "@/components/employees/EmployeeFilters";
+import { EmployeeTable } from "@/components/employees/EmployeeTable";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useChartColors } from "@/hooks/useChartColors";
+import { BaseBarChart, BaseDonutChart } from "@/components/charts";
 
 export const EmployeesPage = () => {
   const navigate = useNavigate();
@@ -32,16 +32,18 @@ export const EmployeesPage = () => {
     handleUnassignDevice,
   } = useEmployeesPage();
 
-  const safeTeams = Array.isArray(teams) ? (teams as Array<{ id?: string; name?: string }>).map((t) => ({
-    id: String(t.id || ''),
-    name: String(t.name || ''),
-  })) : [];
+  const safeTeams = Array.isArray(teams)
+    ? (teams as Array<{ id?: string; name?: string }>).map((t) => ({
+        id: String(t.id || ""),
+        name: String(t.name || ""),
+      }))
+    : [];
 
   // Department distribution chart data
   const departmentData = useMemo(() => {
     const deptMap: Record<string, number> = {};
     filteredEmployees.forEach((emp) => {
-      const dept = String(emp.department || 'Sem Departamento');
+      const dept = String(emp.department || "Sem Departamento");
       deptMap[dept] = (deptMap[dept] || 0) + 1;
     });
     return Object.entries(deptMap)
@@ -54,10 +56,13 @@ export const EmployeesPage = () => {
   const statusData = useMemo(() => {
     const statusMap: Record<string, number> = {};
     filteredEmployees.forEach((emp) => {
-      const status = String(emp.status || 'unknown');
+      const status = String(emp.status || "unknown");
       statusMap[status] = (statusMap[status] || 0) + 1;
     });
-    return Object.entries(statusMap).map(([name, value]) => ({ name: name === 'active' ? 'Ativos' : name === 'inactive' ? 'Inativos' : name, value }));
+    return Object.entries(statusMap).map(([name, value]) => ({
+      name: name === "active" ? "Ativos" : name === "inactive" ? "Inativos" : name,
+      value,
+    }));
   }, [filteredEmployees]);
 
   const PIE_COLORS = [colors.success, colors.muted, colors.warning, colors.destructive];
@@ -65,14 +70,13 @@ export const EmployeesPage = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title={t('employees.title')}
-        description={t('employees.subtitle')}
+        title={t("employees.title")}
+        description={t("employees.subtitle")}
         showBackButton={false}
-
         actions={
-          <Button onClick={() => navigate('/employees/new')} className="gap-2 h-9">
+          <Button onClick={() => navigate("/employees/new")} className="h-9 gap-2">
             <Plus className="h-4 w-4" />
-            {t('employees.addEmployee')}
+            {t("employees.addEmployee")}
           </Button>
         }
       />
@@ -80,7 +84,7 @@ export const EmployeesPage = () => {
       <EmployeeStatsCards stats={stats} isLoading={loading} />
 
       {/* Charts Row */}
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
         <Card className="lg:col-span-3">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Distribuição por Departamento</CardTitle>
@@ -89,7 +93,7 @@ export const EmployeesPage = () => {
             <div className="h-[220px]">
               <BaseBarChart
                 data={departmentData}
-                series={[{ dataKey: 'value', label: 'Funcionários', color: colors.primary }]}
+                series={[{ dataKey: "value", label: "Funcionários", color: colors.primary }]}
                 xAxisKey="name"
                 height={220}
               />
@@ -112,10 +116,13 @@ export const EmployeesPage = () => {
                 showLabel={false}
               />
             </div>
-            <div className="flex justify-center gap-4 mt-2">
+            <div className="mt-2 flex justify-center gap-4">
               {statusData.map((s, i) => (
                 <div key={s.name} className="flex items-center gap-1.5 text-xs">
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }} />
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }}
+                  />
                   <span className="text-muted-foreground">{s.name}</span>
                   <span className="font-medium">{s.value}</span>
                 </div>
