@@ -1,6 +1,5 @@
 import { memo, ReactNode, Suspense } from 'react';
 import { cn } from '@/lib/utils';
-import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface PageLayoutProps {
