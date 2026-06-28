@@ -73,13 +73,6 @@ function PageLayoutComponent({
 
   return (
     <div className={cn('mx-auto w-full', maxWidthClasses[maxWidth], paddingClasses[padding], className)}>
-      {/* Breadcrumbs */}
-      {breadcrumbs && (
-        <div className="mb-4">
-          <Breadcrumbs />
-        </div>
-      )}
-
       {/* Header */}
       {header ? (
         header
@@ -106,11 +99,11 @@ function PageLayoutComponent({
       ) : null}
 
       {/* Content */}
-      <main className={cn('space-y-6', contentClassName)}>
+      <div className={cn('space-y-6', contentClassName)}>
         <Suspense fallback={<PageLayoutSkeleton />}>
           {children}
         </Suspense>
-      </main>
+      </div>
     </div>
   );
 }
