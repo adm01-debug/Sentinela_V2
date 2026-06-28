@@ -91,10 +91,10 @@ export const AppRoutes = () => (
     <Suspense fallback={<PageLoader />}>
       <Routes>
       {/* Auth */}
-      <Route path="/auth" element={<AuthGuard><Auth /></AuthGuard>} />
+      <Route path="/auth" element={<GuestGuard><Auth /></GuestGuard>} />
       <Route path={ROUTES.LOGIN} element={<Navigate to="/auth" replace />} />
       <Route path={ROUTES.REGISTER} element={<Navigate to="/auth" replace />} />
-      <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
+      <Route path={ROUTES.FORGOT_PASSWORD} element={<GuestGuard><ForgotPasswordPage /></GuestGuard>} />
 
       {/* Protected */}
       <Route element={<AuthGuard><MainLayout /></AuthGuard>}>
