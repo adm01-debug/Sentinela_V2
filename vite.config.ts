@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
+// Note: cast to any so Vitest's `test` block can live in vite config without pulling vitest types
 export default defineConfig(({ mode: _mode }) => ({
   plugins: [react()],
   resolve: {
@@ -37,12 +38,14 @@ export default defineConfig(({ mode: _mode }) => ({
     ],
     force: true,
   },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/test/setup.ts',
-    include: ['src/**/*.{test,spec}.{ts,tsx}'],
-  },
+  ...({
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: './src/test/setup.ts',
+      include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    },
+  } as Record<string, unknown>),
   server: {
     port: 8080,
     host: '0.0.0.0',
