@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 import { BackButton } from '@/components/navigation/BackButton';
-import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 
 interface PageHeaderProps {
   title: string;
