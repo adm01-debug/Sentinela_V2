@@ -1,6 +1,8 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig, type UserConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+
+type ViteUserConfigWithTest = UserConfig & { test?: Record<string, unknown> };
 
 export default defineConfig({
   plugins: [react()],
