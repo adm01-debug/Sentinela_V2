@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Session as SupaSession, User as SupaUser } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
@@ -177,7 +177,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [resolveUser]);
 
-  const value = {
+  const value = useMemo<AuthContextType>(() => ({
     user,
     session,
     isAuthenticated: !!session,
@@ -186,7 +186,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     login,
     logout,
     refresh,
-  };
+  }), [user, session, isLoading, error, login, logout, refresh]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
