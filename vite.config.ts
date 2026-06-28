@@ -1,10 +1,8 @@
-import { defineConfig, type UserConfig } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-type ViteUserConfigWithTest = UserConfig & { test?: Record<string, unknown> };
-
-export default defineConfig({
+export default defineConfig(({ mode: _mode }) => ({
   plugins: [react()],
   resolve: {
     alias: {
