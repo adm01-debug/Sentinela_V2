@@ -16,7 +16,8 @@ export function AuthGuard({ children }: GuardProps) {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/auth" state={{ from: location }} replace />;
+    // pathname-only avoids a new state object on every render (would trigger Navigate loops)
+    return <Navigate to="/auth" state={{ from: location.pathname }} replace />;
   }
 
   return <>{children}</>;
