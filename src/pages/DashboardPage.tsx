@@ -96,6 +96,37 @@ export const DashboardPage = () => {
               Filtros
               {departmentFilter !== 'all' && <Badge variant="secondary" className="ml-1.5 h-5 min-w-5 px-1 flex items-center justify-center">1</Badge>}
             </Button>
+            <PresentationMode
+              slides={[
+                {
+                  id: 'kpis',
+                  title: 'Indicadores-chave',
+                  content: (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {statsCards.map((card) => (
+                        <StatCard key={card.accentColor} {...card} />
+                      ))}
+                    </div>
+                  ),
+                },
+                {
+                  id: 'charts',
+                  title: 'Tendências & Performance',
+                  content: <DashboardChartsRow colors={colors} />,
+                },
+                {
+                  id: 'ops',
+                  title: 'Alertas, Atividade & Departamentos',
+                  content: (
+                    <div className="grid gap-4 grid-cols-1 lg:grid-cols-12">
+                      <DashboardAlertsCard alerts={alerts} />
+                      <DashboardActivityCard activities={activities} />
+                      <DepartmentPieChart departmentData={departmentData} />
+                    </div>
+                  ),
+                },
+              ]}
+            />
             <DashboardCustomizer />
           </div>
         }
