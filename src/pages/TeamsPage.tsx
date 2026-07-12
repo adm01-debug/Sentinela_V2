@@ -101,13 +101,29 @@ export default function TeamsPage() {
 
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder={t('common.search')} 
-            className="pl-9 h-10" 
-            value={search} 
-            onChange={e => setSearch(e.target.value)} 
+          <Input
+            placeholder={t('common.search')}
+            className="pl-9 h-10"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            aria-label={t('common.search')}
           />
         </div>
+
+        {isError && (
+          <Card className="border-destructive/50 bg-destructive/5">
+            <CardHeader className="flex-row items-center gap-3 space-y-0">
+              <AlertCircle className="h-5 w-5 text-destructive" />
+              <div className="flex-1">
+                <CardTitle className="text-sm">Erro ao carregar equipes</CardTitle>
+                <CardDescription>{(error as Error)?.message || 'Tente novamente.'}</CardDescription>
+              </div>
+              <Button variant="outline" size="sm" onClick={() => refetch()}>
+                Tentar novamente
+              </Button>
+            </CardHeader>
+          </Card>
+        )}
 
         {/* Charts Section */}
         {sizeData.length > 0 && (
