@@ -55,23 +55,69 @@ export function useTeams() {
   });
 }
 
-export function useTeam(id) {
+export function useTeam(id: string | undefined) {
   return useQuery({
     queryKey: queryKeys.teams.detail(id || ''),
     queryFn: async () => {
       if (!id) return null;
-      
+
       const { data, error } = await supabase
         .from('teams')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
-      return data as Team;
+      return data as Team | null;
     },
     enabled: !!id,
     ...queryPresets.detail,
+  });
+}
+
+export interface TeamMemberEmployee {
+  id: string;
+  name: string;
+  email: string | null;
+  department: string | null;
+  position: string | null;
+  status: string;
+  avatar_url: string | null;
+}
+
+export function useTeamMembers(teamId: string | undefined) {
+  return useQuery({
+    queryKey: [...queryKeys.teams.detail(teamId || ''), 'members'],
+    queryFn: async () => {
+      if (!teamId) return [];
+      const { data, error } = await supabase
+        .from('employees')
+        .select('id, name, email, department, position, status, avatar_url')
+        .eq('team_id', teamId)
+        .order('name', { ascending: true });
+      if (error) throw error;
+      return (data || []) as TeamMemberEmployee[];
+    },
+    enabled: !!teamId,
+    staleTime: CACHE_TIMES.STABLE,
+  });
+}
+
+export function useAvailableEmployees(teamId: string | undefined) {
+  return useQuery({
+    queryKey: [...queryKeys.teams.detail(teamId || ''), 'available-employees'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('employees')
+        .select('id, name, email, department, position, status, avatar_url')
+        .is('team_id', null)
+        .eq('status', 'active')
+        .order('name', { ascending: true });
+      if (error) throw error;
+      return (data || []) as TeamMemberEmployee[];
+    },
+    enabled: !!teamId,
+    staleTime: CACHE_TIMES.STABLE,
   });
 }
 
