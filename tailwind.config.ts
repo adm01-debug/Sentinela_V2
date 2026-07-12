@@ -62,6 +62,18 @@ const config: Config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        card: "var(--radius-card, 0.75rem)",
+        pill: "9999px",
+      },
+      spacing: {
+        page: "var(--space-page, 1.5rem)",
+        section: "var(--space-section, 1.5rem)",
+        card: "var(--space-card, 1.25rem)",
+      },
+      boxShadow: {
+        card: "var(--shadow-card, 0 1px 2px 0 hsl(var(--foreground) / 0.04))",
+        "card-hover": "var(--shadow-card-hover, 0 8px 24px -8px hsl(var(--foreground) / 0.12))",
+        elevated: "var(--shadow-elevated, 0 12px 32px -12px hsl(var(--foreground) / 0.18))",
       },
       keyframes: {
         "accordion-down": {
