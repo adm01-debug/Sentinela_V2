@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { MapPin, Plus, Edit, Trash2, Users, Search, Bell, LayoutDashboard, Upload, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,8 +19,18 @@ import { useToast } from '@/hooks/use-toast';
 
 import { PolygonUpload } from '@/components/geofence/PolygonUpload';
 
+// Parse numeric input tolerando vazio / NaN — evita gravar NaN no state
+const parseNumField = (raw: string, fallback = 0, isInt = false): number => {
+  if (raw === '' || raw === '-' || raw === undefined) return fallback;
+  const n = isInt ? parseInt(raw, 10) : parseFloat(raw);
+  return Number.isFinite(n) ? n : fallback;
+};
+
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+
 export default function GeofencingPage() {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const {
     selectedGeofence, setSelectedGeofence,
@@ -42,7 +53,7 @@ export default function GeofencingPage() {
         showBackButton={false}
         actions={
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => window.location.href = '/geofencing/alerts'} className="h-9 gap-2">
+            <Button variant="outline" onClick={() => navigate('/geofencing/alerts')} className="h-9 gap-2">
               <Bell className="h-4 w-4" />
               Ver Alertas
             </Button>
@@ -153,15 +164,18 @@ export default function GeofencingPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label>Latitude</Label>
-                  <Input type="number" step="0.0001" value={formData.center_lat} onChange={e => setFormData(prev => ({ ...prev, center_lat: parseFloat(e.target.value) }))} />
+                  <Input type="number" step="0.0001" min={-90} max={90} value={formData.center_lat}
+                    onChange={e => setFormData(prev => ({ ...prev, center_lat: clamp(parseNumField(e.target.value, 0), -90, 90) }))} />
                 </div>
                 <div className="space-y-2">
                   <Label>Longitude</Label>
-                  <Input type="number" step="0.0001" value={formData.center_lng} onChange={e => setFormData(prev => ({ ...prev, center_lng: parseFloat(e.target.value) }))} />
+                  <Input type="number" step="0.0001" min={-180} max={180} value={formData.center_lng}
+                    onChange={e => setFormData(prev => ({ ...prev, center_lng: clamp(parseNumField(e.target.value, 0), -180, 180) }))} />
                 </div>
                 <div className="space-y-2">
                   <Label>Raio (m)</Label>
-                  <Input type="number" value={formData.radius} onChange={e => setFormData(prev => ({ ...prev, radius: parseInt(e.target.value) }))} />
+                  <Input type="number" min={1} value={formData.radius}
+                    onChange={e => setFormData(prev => ({ ...prev, radius: Math.max(1, parseNumField(e.target.value, 1, true)) }))} />
                 </div>
               </div>
             ) : (
