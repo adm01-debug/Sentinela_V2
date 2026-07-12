@@ -24,6 +24,13 @@ const severityBadgeStyles = {
   critical: "bg-destructive text-destructive-foreground",
 };
 
+const severityLabels: Record<Alert["severity"], string> = {
+  critical: "CRÍTICO",
+  high: "ALTO",
+  medium: "MÉDIO",
+  low: "BAIXO",
+};
+
 interface AlertItemProps {
   alert: Alert;
 }
@@ -50,13 +57,7 @@ export function AlertItem({ alert }: AlertItemProps) {
               severityBadgeStyles[alert.severity]
             )}
           >
-            {alert.severity === "critical"
-              ? "CRÍTICO"
-              : alert.severity === "high"
-                ? "ALTO"
-                : alert.severity === "medium"
-                  ? "MÉDIO"
-                  : "BAIXO"}
+            {severityLabels[alert.severity]}
           </span>
         </div>
         <p className="text-sm text-foreground/80">{alert.message}</p>
