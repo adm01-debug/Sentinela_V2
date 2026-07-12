@@ -199,6 +199,7 @@ export const DashboardPage = () => {
         <DashboardAlertsCard alerts={alerts} />
         <DashboardActivityCard activities={activities} />
         <DepartmentPieChart departmentData={departmentData} />
+        <TopApplicationsCard />
       </div>
     </div>
   );
