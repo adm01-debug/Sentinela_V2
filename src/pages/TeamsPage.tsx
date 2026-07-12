@@ -211,30 +211,60 @@ export default function TeamsPage() {
           />
         )}
 
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (!open) setTeamName(''); }}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Nova Equipe</DialogTitle>
+              <DialogDescription>Dê um nome único para identificar a equipe.</DialogDescription>
             </DialogHeader>
-            <div className="py-4">
-              <Input 
-                value={teamName} 
-                onChange={e => setTeamName(e.target.value)} 
-                placeholder="Ex: Desenvolvimento, Vendas, RH" 
+            <div className="py-4 space-y-2">
+              <Input
+                value={teamName}
+                onChange={e => setTeamName(e.target.value)}
+                placeholder="Ex: Desenvolvimento, Vendas, RH"
                 autoFocus
-                onKeyDown={e => e.key === 'Enter' && handleCreate()}
+                maxLength={80}
+                aria-invalid={duplicateName}
+                onKeyDown={e => { if (e.key === 'Enter' && !duplicateName) handleCreate(); }}
               />
+              {duplicateName && (
+                <p className="text-xs text-destructive">Já existe uma equipe com esse nome.</p>
+              )}
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
                 {t('common.cancel')}
               </Button>
-              <Button onClick={handleCreate} disabled={!teamName.trim() || createTeam.isPending}>
+              <Button
+                onClick={handleCreate}
+                disabled={!teamName.trim() || duplicateName || createTeam.isPending}
+              >
                 {createTeam.isPending ? t('common.saving') : t('common.create')}
               </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        <AlertDialog open={confirmDeleteId !== null} onOpenChange={(open) => !open && setConfirmDeleteId(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Excluir equipe?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Esta ação não pode ser desfeita. Os membros perderão o vínculo com esta equipe.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={deleteTeam.isPending}>{t('common.cancel')}</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleConfirmDelete}
+                disabled={deleteTeam.isPending}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                {deleteTeam.isPending ? t('common.saving') : t('common.delete')}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </PageTransition>
   );
