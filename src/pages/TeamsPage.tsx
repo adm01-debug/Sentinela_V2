@@ -30,45 +30,60 @@ export default function TeamsPage() {
   const [search, setSearch] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [teamName, setTeamName] = useState('');
-  
-  const { data: teams, isLoading } = useTeams();
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
+  const { data: teams, isLoading, isError, error, refetch } = useTeams();
   const createTeam = useCreateTeam();
   const deleteTeam = useDeleteTeam();
   const colors = useChartColors();
 
-  const filtered = useMemo(() => 
-    (teams || []).filter(t => 
-      !search || t.name.toLowerCase().includes(search.toLowerCase())
+  const filtered = useMemo(() =>
+    (teams || []).filter(team =>
+      !search || team.name.toLowerCase().includes(search.toLowerCase())
     ), [teams, search]
   );
 
   const handleCreate = async () => {
-    if (!teamName.trim()) return;
+    const name = teamName.trim();
+    if (!name) return;
+    // Prevent duplicates client-side (server unique constraint should back this)
+    if ((teams || []).some(team => team.name.toLowerCase() === name.toLowerCase())) {
+      return;
+    }
     try {
-      await createTeam.mutateAsync({ name: teamName.trim() });
+      await createTeam.mutateAsync({ name });
       setIsDialogOpen(false);
       setTeamName('');
-    } catch (err) {
-      // Error handled by mutation toast
+    } catch {
+      // Error toast handled by mutation
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleConfirmDelete = async () => {
+    if (!confirmDeleteId) return;
     try {
-      await deleteTeam.mutateAsync(id);
-    } catch (err) {
-      // Error handled by mutation toast
+      await deleteTeam.mutateAsync(confirmDeleteId);
+    } catch {
+      // Error toast handled by mutation
+    } finally {
+      setConfirmDeleteId(null);
     }
   };
 
-  // Team size chart
+  // Team size chart — uses full dataset (not filtered) for stable global metric
   const sizeData = useMemo(() =>
-    filtered
-      .map(t => ({ name: t.name, membros: t.member_count || 0 }))
+    (teams || [])
+      .map(team => ({ name: team.name, membros: team.member_count || 0 }))
       .sort((a, b) => b.membros - a.membros)
       .slice(0, 10),
-    [filtered]
+    [teams]
   );
+
+  const duplicateName = useMemo(() => {
+    const name = teamName.trim().toLowerCase();
+    if (!name) return false;
+    return (teams || []).some(team => team.name.toLowerCase() === name);
+  }, [teamName, teams]);
 
   return (
     <PageTransition>
