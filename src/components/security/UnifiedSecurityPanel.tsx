@@ -2,7 +2,7 @@
 // UNIFIED SECURITY PANEL - Refactored with sub-components
 // ============================================================
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useMFA } from '@/hooks/useMFA';
@@ -41,6 +41,12 @@ interface MonitoringSetting {
   setting_value: unknown;
 }
 
+interface SecuritySettings {
+  mfa_required: boolean;
+  ip_whitelist_enabled: boolean;
+  session_timeout: number;
+}
+
 interface KnownDevice {
   id: string;
   is_trusted: boolean;
@@ -52,8 +58,20 @@ interface SecurityAlert {
   read?: boolean;
 }
 
+const TABS = [
+  { value: 'overview', label: 'Visão Geral', icon: Eye },
+  { value: 'mfa', label: 'MFA', icon: Key },
+  { value: 'passkeys', label: 'Passkeys', icon: Fingerprint },
+  { value: 'devices', label: 'Dispositivos', icon: Monitor },
+  { value: 'sessions', label: 'Sessões', icon: Activity },
+  { value: 'alerts', label: 'Alertas', icon: Bell },
+  { value: 'whitelist', label: 'IP Whitelist', icon: MapPin },
+  { value: 'geo', label: 'Geo', icon: Globe },
+  { value: 'notifications', label: 'Push', icon: Bell },
+] as const;
+
 // ============================================================
-// MAIN COMPONENT (~200 lines vs original 726)
+// MAIN COMPONENT
 // ============================================================
 
 export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
@@ -65,23 +83,27 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
   const { data: blockedIPs } = useBlockedIPs();
 
   useEffect(() => {
+    let cancelled = false;
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) setUserId(user.id);
+      if (!cancelled && user) setUserId(user.id);
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const { data: devices = [], isLoading: devicesLoading, refetch: refetchDevices } = useQuery({
     queryKey: ['security', 'devices', userId],
-    queryFn: () => userId ? getKnownDevices(userId) : Promise.resolve([]),
+    queryFn: () => (userId ? getKnownDevices(userId) : Promise.resolve([])),
     enabled: !!userId,
-    ...(queryPresets as any).config,
+    ...queryPresets.config,
   });
 
   const { data: loginEvents = [], isLoading: eventsLoading, refetch: refetchEvents } = useQuery({
     queryKey: ['security', 'loginEvents', userId],
-    queryFn: () => userId ? getLoginEvents(userId, 20) : Promise.resolve([]),
+    queryFn: () => (userId ? getLoginEvents(userId, 20) : Promise.resolve([])),
     enabled: !!userId,
-    ...(queryPresets as any).config,
+    ...queryPresets.config,
   });
 
   const { data: alerts = [], isLoading: alertsLoading, refetch: refetchAlerts } = useQuery({
@@ -95,10 +117,10 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
       if (error) throw error;
       return data || [];
     },
-    ...(queryPresets as any).list,
+    ...queryPresets.list,
   });
 
-  const { data: settings } = useQuery({
+  const { data: settings } = useQuery<SecuritySettings>({
     queryKey: queryKeys.security.settings,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -106,17 +128,22 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
         .select('*')
         .in('setting_key', ['mfa_required', 'ip_whitelist_enabled', 'session_timeout_hours']);
       if (error) throw error;
+      const rows = (data ?? []) as MonitoringSetting[];
       return {
-        mfa_required: data?.find((s: MonitoringSetting) => s.setting_key === 'mfa_required')?.setting_value === true,
-        ip_whitelist_enabled: data?.find((s: MonitoringSetting) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
-        session_timeout: (data?.find((s: MonitoringSetting) => s.setting_key === 'session_timeout_hours')?.setting_value as number) || 24,
+        mfa_required: rows.find((s) => s.setting_key === 'mfa_required')?.setting_value === true,
+        ip_whitelist_enabled: rows.find((s) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
+        session_timeout: (rows.find((s) => s.setting_key === 'session_timeout_hours')?.setting_value as number) || 24,
       };
     },
-  } as any);
+  });
 
-  const trustedDevices = Array.isArray(devices) ? devices.filter((d: KnownDevice) => d.is_trusted).length : 0;
-  const unresolvedAlerts = Array.isArray(alerts) ? alerts.filter((a: SecurityAlert) => !a.read).length : 0;
-  const score = calculateSecurityScore(isEnrolled, trustedDevices, Array.isArray(devices) ? devices.length : 0, unresolvedAlerts);
+  const devicesArr = useMemo(() => (Array.isArray(devices) ? (devices as KnownDevice[]) : []), [devices]);
+  const alertsArr = useMemo(() => (Array.isArray(alerts) ? (alerts as SecurityAlert[]) : []), [alerts]);
+  const eventsArr = useMemo(() => (Array.isArray(loginEvents) ? (loginEvents as LoginEvent[]) : []), [loginEvents]);
+
+  const trustedDevices = devicesArr.filter((d) => d.is_trusted).length;
+  const unresolvedAlerts = alertsArr.filter((a) => !a.read).length;
+  const score = calculateSecurityScore(isEnrolled, trustedDevices, devicesArr.length, unresolvedAlerts);
   const isLoading = mfaLoading || devicesLoading || eventsLoading || alertsLoading;
 
   const handleRefresh = () => {
@@ -131,43 +158,51 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
       <SecurityScoreCard
         score={score}
         isEnrolled={isEnrolled}
-        devicesCount={Array.isArray(devices) ? devices.length : 0}
+        devicesCount={devicesArr.length}
         trustedDevices={trustedDevices}
-        loginEventsCount={Array.isArray(loginEvents) ? loginEvents.length : 0}
+        loginEventsCount={eventsArr.length}
         unresolvedAlerts={unresolvedAlerts}
         isLoading={isLoading}
         onRefresh={handleRefresh}
       />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-9">
-          <TabsTrigger value="overview" className="gap-1 text-xs sm:text-sm"><Eye className="h-4 w-4" /><span className="hidden md:inline">Visão Geral</span></TabsTrigger>
-          <TabsTrigger value="mfa" className="gap-1 text-xs sm:text-sm"><Key className="h-4 w-4" /><span className="hidden md:inline">MFA</span></TabsTrigger>
-          <TabsTrigger value="passkeys" className="gap-1 text-xs sm:text-sm"><Fingerprint className="h-4 w-4" /><span className="hidden md:inline">Passkeys</span></TabsTrigger>
-          <TabsTrigger value="devices" className="gap-1 text-xs sm:text-sm"><Monitor className="h-4 w-4" /><span className="hidden md:inline">Dispositivos</span></TabsTrigger>
-          <TabsTrigger value="sessions" className="gap-1 text-xs sm:text-sm"><Activity className="h-4 w-4" /><span className="hidden md:inline">Sessões</span></TabsTrigger>
-          <TabsTrigger value="alerts" className="gap-1 text-xs sm:text-sm"><Bell className="h-4 w-4" /><span className="hidden md:inline">Alertas</span></TabsTrigger>
-          <TabsTrigger value="whitelist" className="gap-1 text-xs sm:text-sm"><MapPin className="h-4 w-4" /><span className="hidden md:inline">IP Whitelist</span></TabsTrigger>
-          <TabsTrigger value="geo" className="gap-1 text-xs sm:text-sm"><Globe className="h-4 w-4" /><span className="hidden md:inline">Geo</span></TabsTrigger>
-          <TabsTrigger value="notifications" className="gap-1 text-xs sm:text-sm"><Bell className="h-4 w-4" /><span className="hidden md:inline">Push</span></TabsTrigger>
-        </TabsList>
+        <ScrollArea className="w-full">
+          <TabsList className="inline-flex md:grid md:w-full md:grid-cols-9">
+            {TABS.map(({ value, label, icon: Icon }) => (
+              <TabsTrigger
+                key={value}
+                value={value}
+                aria-label={label}
+                className="gap-1 text-xs sm:text-sm"
+              >
+                <Icon className="h-4 w-4" aria-hidden="true" />
+                <span className="hidden md:inline">{label}</span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </ScrollArea>
 
-        {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
-            <OverviewSettingsCard settings={settings as any} blockedIPsCount={blockedIPs?.length ?? 0} />
-            <OverviewActivityCard loginEvents={loginEvents as LoginEvent[]} />
+            <OverviewSettingsCard settings={settings} blockedIPsCount={blockedIPs?.length ?? 0} />
+            <OverviewActivityCard loginEvents={eventsArr} />
           </div>
           {score.total < 100 && (
-            <SecurityRecommendations isEnrolled={isEnrolled} trustedDevices={trustedDevices} totalDevices={Array.isArray(devices) ? devices.length : 0} unresolvedAlerts={unresolvedAlerts} />
+            <SecurityRecommendations
+              isEnrolled={isEnrolled}
+              trustedDevices={trustedDevices}
+              totalDevices={devicesArr.length}
+              unresolvedAlerts={unresolvedAlerts}
+            />
           )}
         </TabsContent>
 
         <TabsContent value="mfa"><MFAStatusTab isEnrolled={isEnrolled} factors={Array.isArray(factors) ? factors : []} /></TabsContent>
         <TabsContent value="passkeys"><WebAuthnSettings /></TabsContent>
         <TabsContent value="devices">{userId && <KnownDevicesPanel />}</TabsContent>
-        <TabsContent value="sessions"><SessionHistoryTab loginEvents={loginEvents as LoginEvent[]} /></TabsContent>
-        <TabsContent value="alerts"><SecurityAlertsTab alerts={Array.isArray(alerts) ? alerts : []} /></TabsContent>
+        <TabsContent value="sessions"><SessionHistoryTab loginEvents={eventsArr} /></TabsContent>
+        <TabsContent value="alerts"><SecurityAlertsTab alerts={alertsArr} /></TabsContent>
         <TabsContent value="whitelist"><IPWhitelistManager /></TabsContent>
         <TabsContent value="geo"><GeoBlockingManager /></TabsContent>
         <TabsContent value="notifications"><NotificationSettings /></TabsContent>
@@ -177,62 +212,110 @@ export const UnifiedSecurityPanel = React.memo(function UnifiedSecurityPanel() {
 });
 
 // ============================================================
-// Small inline sub-components for overview tab
+// Sub-components for overview tab
 // ============================================================
 
-function OverviewSettingsCard({ settings, blockedIPsCount }: { settings?: { mfa_required: boolean; ip_whitelist_enabled: boolean; session_timeout: number }; blockedIPsCount: number }) {
+function OverviewSettingsCard({ settings, blockedIPsCount }: { settings?: SecuritySettings; blockedIPsCount: number }) {
+  const rows: Array<{ label: string; value: React.ReactNode }> = [
+    {
+      label: 'MFA Obrigatório',
+      value: <Badge variant={settings?.mfa_required ? 'default' : 'secondary'}>{settings?.mfa_required ? 'Sim' : 'Não'}</Badge>,
+    },
+    {
+      label: 'Whitelist de IP',
+      value: <Badge variant={settings?.ip_whitelist_enabled ? 'default' : 'secondary'}>{settings?.ip_whitelist_enabled ? 'Ativo' : 'Inativo'}</Badge>,
+    },
+    {
+      label: 'Timeout da Sessão',
+      value: <Badge variant="outline">{settings?.session_timeout ?? 24}h</Badge>,
+    },
+    {
+      label: 'IPs Bloqueados',
+      value: <Badge variant={blockedIPsCount > 0 ? 'destructive' : 'secondary'}>{blockedIPsCount}</Badge>,
+    },
+  ];
+
   return (
     <Card>
-      <CardHeader><CardTitle className="text-lg flex items-center gap-2"><Lock className="h-5 w-5" />Configurações de Segurança</CardTitle></CardHeader>
+      <CardHeader>
+        <CardTitle className="text-lg flex items-center gap-2">
+          <Lock className="h-5 w-5" aria-hidden="true" />
+          Configurações de Segurança
+        </CardTitle>
+      </CardHeader>
       <CardContent className="space-y-3">
-        <div className="flex items-center justify-between py-2"><span>MFA Obrigatório</span><Badge variant={settings?.mfa_required ? 'default' : 'secondary'}>{settings?.mfa_required ? 'Sim' : 'Não'}</Badge></div>
-        <Separator />
-        <div className="flex items-center justify-between py-2"><span>Whitelist de IP</span><Badge variant={settings?.ip_whitelist_enabled ? 'default' : 'secondary'}>{settings?.ip_whitelist_enabled ? 'Ativo' : 'Inativo'}</Badge></div>
-        <Separator />
-        <div className="flex items-center justify-between py-2"><span>Timeout da Sessão</span><Badge variant="outline">{settings?.session_timeout || 24}h</Badge></div>
-        <Separator />
-        <div className="flex items-center justify-between py-2"><span>IPs Bloqueados</span><Badge variant={blockedIPsCount > 0 ? 'destructive' : 'secondary'}>{blockedIPsCount}</Badge></div>
+        {rows.map((row, i) => (
+          <React.Fragment key={row.label}>
+            <div className="flex items-center justify-between py-2">
+              <span>{row.label}</span>
+              {row.value}
+            </div>
+            {i < rows.length - 1 && <Separator />}
+          </React.Fragment>
+        ))}
       </CardContent>
     </Card>
+  );
+}
+
+function eventLabel(type: LoginEvent['event_type']): string {
+  switch (type) {
+    case 'login_success': return 'Login bem-sucedido';
+    case 'login_failed': return 'Tentativa de login falhou';
+    case 'new_device': return 'Novo dispositivo detectado';
+    default: return String(type);
+  }
+}
+
+function EventIcon({ type }: { type: LoginEvent['event_type'] }) {
+  const cls =
+    type === 'login_success' ? 'bg-success/15 text-success' :
+    type === 'login_failed' ? 'bg-destructive/15 text-destructive' :
+    'bg-primary/15 text-primary';
+  const Icon =
+    type === 'login_success' ? CheckCircle2 :
+    type === 'login_failed' ? XCircle :
+    Activity;
+  return (
+    <div className={`mt-1 p-1 rounded-full ${cls}`} aria-hidden="true">
+      <Icon className="h-3 w-3" />
+    </div>
   );
 }
 
 function OverviewActivityCard({ loginEvents }: { loginEvents: LoginEvent[] }) {
   return (
     <Card>
-      <CardHeader><CardTitle className="text-lg flex items-center gap-2"><Activity className="h-5 w-5" />Atividade Recente</CardTitle></CardHeader>
+      <CardHeader>
+        <CardTitle className="text-lg flex items-center gap-2">
+          <Activity className="h-5 w-5" aria-hidden="true" />
+          Atividade Recente
+        </CardTitle>
+      </CardHeader>
       <CardContent>
         <ScrollArea className="h-[200px]">
           {loginEvents.length === 0 ? (
             <p className="text-center text-muted-foreground py-4">Nenhum evento recente</p>
           ) : (
-            <div className="space-y-3">
+            <ul className="space-y-3">
               {loginEvents.slice(0, 5).map((event) => (
-                <div key={event.id} className="flex items-start gap-3 text-sm">
-                  <div className={`mt-1 p-1 rounded-full ${
-                    event.event_type === 'login_success' ? 'bg-green-100 text-green-600' :
-                    event.event_type === 'login_failed' ? 'bg-red-100 text-red-600' :
-                    'bg-blue-100 text-blue-600'
-                  }`}>
-                    {event.event_type === 'login_success' ? <CheckCircle2 className="h-3 w-3" /> :
-                     event.event_type === 'login_failed' ? <XCircle className="h-3 w-3" /> :
-                     <Activity className="h-3 w-3" />}
-                  </div>
+                <li key={event.id} className="flex items-start gap-3 text-sm">
+                  <EventIcon type={event.event_type} />
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate">
-                      {event.event_type === 'login_success' ? 'Login bem-sucedido' :
-                       event.event_type === 'login_failed' ? 'Tentativa de login falhou' :
-                       event.event_type === 'new_device' ? 'Novo dispositivo detectado' :
-                       event.event_type}
+                    <p className="font-medium truncate">{eventLabel(event.event_type)}</p>
+                    <p className="text-muted-foreground truncate">
+                      {event.ip_address} • {event.location || 'Local desconhecido'}
                     </p>
-                    <p className="text-muted-foreground truncate">{event.ip_address} • {event.location || 'Local desconhecido'}</p>
                   </div>
-                  <span className="text-muted-foreground whitespace-nowrap">
+                  <time
+                    className="text-muted-foreground whitespace-nowrap"
+                    dateTime={event.created_at}
+                  >
                     {formatDistanceToNow(new Date(event.created_at), { addSuffix: true, locale: ptBR })}
-                  </span>
-                </div>
+                  </time>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </ScrollArea>
       </CardContent>
@@ -240,19 +323,58 @@ function OverviewActivityCard({ loginEvents }: { loginEvents: LoginEvent[] }) {
   );
 }
 
-function SecurityRecommendations({ isEnrolled, trustedDevices, totalDevices, unresolvedAlerts }: { isEnrolled: boolean; trustedDevices: number; totalDevices: number; unresolvedAlerts: number }) {
+function SecurityRecommendations({
+  isEnrolled,
+  trustedDevices,
+  totalDevices,
+  unresolvedAlerts,
+}: {
+  isEnrolled: boolean;
+  trustedDevices: number;
+  totalDevices: number;
+  unresolvedAlerts: number;
+}) {
+  const items: Array<{ icon: typeof XCircle; tone: string; text: string }> = [];
+  if (!isEnrolled) {
+    items.push({
+      icon: XCircle,
+      tone: 'text-destructive',
+      text: 'Ative a autenticação de dois fatores (MFA) para proteger sua conta',
+    });
+  }
+  if (trustedDevices < totalDevices && totalDevices > 0) {
+    items.push({
+      icon: AlertTriangle,
+      tone: 'text-warning',
+      text: 'Revise e marque como confiáveis os dispositivos que você reconhece',
+    });
+  }
+  if (unresolvedAlerts > 0) {
+    items.push({
+      icon: AlertTriangle,
+      tone: 'text-warning',
+      text: `Você tem ${unresolvedAlerts} alerta(s) pendente(s) para revisar`,
+    });
+  }
+
+  if (items.length === 0) return null;
+
   return (
-    <Card className="border-yellow-200 bg-yellow-50/50 dark:border-yellow-900 dark:bg-yellow-950/20">
+    <Card className="border-warning/40 bg-warning/5">
       <CardHeader>
-        <CardTitle className="text-lg flex items-center gap-2 text-yellow-700 dark:text-yellow-400">
-          <AlertTriangle className="h-5 w-5" />Recomendações de Segurança
+        <CardTitle className="text-lg flex items-center gap-2 text-warning">
+          <AlertTriangle className="h-5 w-5" aria-hidden="true" />
+          Recomendações de Segurança
         </CardTitle>
       </CardHeader>
       <CardContent>
         <ul className="space-y-2">
-          {!isEnrolled && <li className="flex items-center gap-2 text-sm"><XCircle className="h-4 w-4 text-destructive" /><span>Ative a autenticação de dois fatores (MFA) para proteger sua conta</span></li>}
-          {trustedDevices < totalDevices && totalDevices > 0 && <li className="flex items-center gap-2 text-sm"><AlertTriangle className="h-4 w-4 text-yellow-500" /><span>Revise e marque como confiáveis os dispositivos que você reconhece</span></li>}
-          {unresolvedAlerts > 0 && <li className="flex items-center gap-2 text-sm"><AlertTriangle className="h-4 w-4 text-yellow-500" /><span>Você tem {unresolvedAlerts} alerta(s) pendente(s) para revisar</span></li>}
+          {items.map(({ icon: Icon, tone, text }, i) => (
+            <li key={i} className="flex items-center gap-2 text-sm">
+              <Icon className={`h-4 w-4 ${tone}`} aria-hidden="true" />
+              <span>{text}</span>
+            </li>
+          ))}
         </ul>
       </CardContent>
     </Card>
