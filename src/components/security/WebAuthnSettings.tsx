@@ -43,18 +43,26 @@ import {
 import { formatDistanceToNow, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+type DeviceKind = 'ios' | 'android' | 'macos' | 'windows' | 'linux' | 'unknown';
+
+function normalizeDeviceType(type: string | null | undefined): DeviceKind {
+  const t = type?.toLowerCase();
+  if (t === 'ios' || t === 'android') return t;
+  if (t === 'macos' || t === 'windows' || t === 'linux') return t;
+  return 'unknown';
+}
+
 function DeviceIcon({ type }: { type: string | null }) {
-  switch (type?.toLowerCase()) {
-    case 'ios':
-    case 'android':
-      return <Smartphone className="h-5 w-5" />;
-    case 'macos':
-    case 'windows':
-    case 'linux':
-      return <Laptop className="h-5 w-5" />;
-    default:
-      return <Monitor className="h-5 w-5" />;
-  }
+  const kind = normalizeDeviceType(type);
+  if (kind === 'ios' || kind === 'android') return <Smartphone className="h-5 w-5" aria-hidden="true" />;
+  if (kind === 'macos' || kind === 'windows' || kind === 'linux') return <Laptop className="h-5 w-5" aria-hidden="true" />;
+  return <Monitor className="h-5 w-5" aria-hidden="true" />;
+}
+
+function safeDate(iso: string | null | undefined): Date | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
 interface PasskeyItemProps {
