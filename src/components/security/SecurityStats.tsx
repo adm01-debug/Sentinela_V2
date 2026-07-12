@@ -43,9 +43,7 @@ export const SecurityStats = React.memo(function SecurityStats(props: SecuritySt
       {STATS.map(({ key, label, icon: Icon, tone }) => (
         <Card key={key}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle asChild className="text-sm font-medium">
-              <dt>{label}</dt>
-            </CardTitle>
+            <dt className="text-sm font-medium">{label}</dt>
             <Icon className={`h-4 w-4 ${TONE_ICON[tone]}`} aria-hidden="true" />
           </CardHeader>
           <CardContent>
