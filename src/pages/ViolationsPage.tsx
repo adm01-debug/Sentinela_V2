@@ -258,8 +258,20 @@ export default function ViolationsPage() {
                 <div><label className="text-sm text-muted-foreground">Status</label><div className="flex items-center gap-1">{statusIcons[selectedViolation.status]} <span className="capitalize">{selectedViolation.status}</span></div></div>
                 <div className="col-span-2"><label className="text-sm text-muted-foreground">Data</label><p>{format(new Date(selectedViolation.created_at), "dd/MM/yyyy 'às' HH:mm:ss", { locale: ptBR })}</p></div>
                 <div className="col-span-2"><label className="text-sm text-muted-foreground">Descrição</label><p>{selectedViolation.description || 'Sem descrição'}</p></div>
+                {selectedViolation.resolution_notes && (
+                  <div className="col-span-2 border-t pt-3">
+                    <label className="text-sm text-muted-foreground">Notas de resolução</label>
+                    <p className="text-sm">{selectedViolation.resolution_notes}</p>
+                    {selectedViolation.resolved_at && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Resolvida em {format(new Date(selectedViolation.resolved_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
               {selectedViolation.status === 'open' && <Button className="w-full" onClick={() => { setIsDetailsOpen(false); handleOpenResolve(selectedViolation); }}>Resolver Violação</Button>}
+
             </div>
           )}
         </DialogContent>
