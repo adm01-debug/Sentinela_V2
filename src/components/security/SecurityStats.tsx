@@ -1,40 +1,56 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import { Shield, AlertTriangle, CheckCircle, Clock, type LucideIcon } from 'lucide-react';
 
-interface SecurityStatsProps { total: number; critical: number; unresolved: number; today: number; }
+interface SecurityStatsProps {
+  total: number;
+  critical: number;
+  unresolved: number;
+  today: number;
+}
 
-export const SecurityStats = React.memo(function SecurityStats({ total, critical, unresolved, today }: SecurityStatsProps) {
+interface StatDef {
+  key: keyof SecurityStatsProps;
+  label: string;
+  icon: LucideIcon;
+  tone: 'muted' | 'destructive' | 'warning' | 'primary';
+}
+
+const STATS: readonly StatDef[] = [
+  { key: 'total', label: 'Total de Eventos', icon: Shield, tone: 'muted' },
+  { key: 'critical', label: 'Críticos', icon: AlertTriangle, tone: 'destructive' },
+  { key: 'unresolved', label: 'Não Resolvidos', icon: Clock, tone: 'warning' },
+  { key: 'today', label: 'Hoje', icon: CheckCircle, tone: 'primary' },
+] as const;
+
+const TONE_ICON: Record<StatDef['tone'], string> = {
+  muted: 'text-muted-foreground',
+  destructive: 'text-destructive',
+  warning: 'text-warning',
+  primary: 'text-primary',
+};
+
+const TONE_VALUE: Record<StatDef['tone'], string> = {
+  muted: '',
+  destructive: 'text-destructive',
+  warning: 'text-warning',
+  primary: 'text-primary',
+};
+
+export const SecurityStats = React.memo(function SecurityStats(props: SecurityStatsProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total de Eventos</CardTitle>
-          <Shield className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent><div className="text-2xl font-bold">{total}</div></CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Críticos</CardTitle>
-          <AlertTriangle className="h-4 w-4 text-red-500" />
-        </CardHeader>
-        <CardContent><div className="text-2xl font-bold text-red-500">{critical}</div></CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Não Resolvidos</CardTitle>
-          <Clock className="h-4 w-4 text-yellow-500" />
-        </CardHeader>
-        <CardContent><div className="text-2xl font-bold text-yellow-500">{unresolved}</div></CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Hoje</CardTitle>
-          <CheckCircle className="h-4 w-4 text-blue-500" />
-        </CardHeader>
-        <CardContent><div className="text-2xl font-bold text-blue-500">{today}</div></CardContent>
-      </Card>
-    </div>
+    <dl className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" aria-label="Estatísticas de segurança">
+      {STATS.map(({ key, label, icon: Icon, tone }) => (
+        <Card key={key}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <dt className="text-sm font-medium">{label}</dt>
+            <Icon className={`h-4 w-4 ${TONE_ICON[tone]}`} aria-hidden="true" />
+          </CardHeader>
+          <CardContent>
+            <dd className={`text-2xl font-bold ${TONE_VALUE[tone]}`}>{props[key]}</dd>
+          </CardContent>
+        </Card>
+      ))}
+    </dl>
   );
 });
