@@ -162,6 +162,13 @@ export const DashboardPage = () => {
         ))}
       </div>
 
+      <AIInsights
+        totalEmployees={totalEmployees}
+        activeEmployees={activeEmployees}
+        productivity={productivity}
+        alertsCount={alertsCount}
+      />
+
       <DashboardChartsRow colors={colors} />
 
       {/* Bottom Row */}
