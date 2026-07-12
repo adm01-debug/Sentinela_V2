@@ -139,7 +139,6 @@ export default function SecuritySettingsPage() {
       <PageHeader
         title="Configurações de Segurança"
         description="Configure autenticação, senha e proteção da conta"
-        icon={<Shield className="h-6 w-6 text-primary" />}
         showBackButton={false}
       />
 
