@@ -276,16 +276,16 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
           </div>
         ) : credentials.length > 0 ? (
           <ScrollArea className="h-[300px]">
-            <div className="space-y-3 pr-4">
+            <ul className="space-y-3 pr-4" aria-label="Passkeys registradas">
               {credentials.map((credential) => (
                 <PasskeyItem
                   key={credential.id}
                   credential={credential}
-                  onDelete={(id: string) => (deletePasskey as any)(id)}
+                  onDelete={deletePasskey}
                   onRename={renamePasskey}
                 />
               ))}
-            </div>
+            </ul>
           </ScrollArea>
         ) : isSupported ? (
           <div className="text-center py-8 border rounded-lg border-dashed">
