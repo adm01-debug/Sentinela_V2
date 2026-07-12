@@ -1,4 +1,5 @@
 import * as path from "path";
+import { timingSafeEqual } from "crypto";
 import { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain } from "electron";
 import log from "electron-log";
 import Store from "electron-store";
@@ -265,9 +266,11 @@ function stopServices(): void {
   clipboardDLP?.stop();
   policySync?.stop();
 
-  if (isAuthenticated) {
-    dataSender?.send("logout", { timestamp: new Date().toISOString() });
-    dataSender?.flush();
+  if (dataSender) {
+    if (isAuthenticated) {
+      dataSender.send("logout", { timestamp: new Date().toISOString() });
+    }
+    dataSender.flush();
   }
 }
 
@@ -295,7 +298,9 @@ function setupIPC(): void {
 
   ipcMain.handle("verify-stealth-password", (_event, password: string) => {
     const stored = store.get("stealthPassword") as string;
-    if (password === stored) {
+    const storedBuffer = Buffer.from(stored || "");
+    const inputBuffer = Buffer.from(password || "");
+    if (storedBuffer.length === inputBuffer.length && timingSafeEqual(storedBuffer, inputBuffer)) {
       disableStealth();
       return { success: true };
     }
