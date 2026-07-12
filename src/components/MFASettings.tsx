@@ -172,9 +172,12 @@ export function MFASettings() {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
-                <MFAEnroll 
-                  onEnrolled={handleEnrolled} 
-                  onCancel={() => setShowEnrollDialog(false)} 
+                <VisuallyHidden>
+                  <DialogTitle>Ativar autenticação de dois fatores</DialogTitle>
+                </VisuallyHidden>
+                <MFAEnroll
+                  onEnrolled={handleEnrolled}
+                  onCancel={() => setShowEnrollDialog(false)}
                 />
               </DialogContent>
             </Dialog>
