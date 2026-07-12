@@ -14,7 +14,7 @@ import { CommandPalette } from '@/components/CommandPalette';
 import { KeyboardShortcutsDialog } from '@/components/KeyboardShortcutsDialog';
 import { KeyboardShortcutsProvider } from '@/components/KeyboardShortcutsProvider';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 export const MainLayout = () => {
   useDocumentTitle();
