@@ -237,10 +237,54 @@ export const useTopEmployees = (limit = 5) => {
   });
 };
 
+/**
+ * Top aplicativos por tempo de uso nos últimos 7 dias.
+ * Agrega o jsonb `apps_used` de `productivity_logs`.
+ * Formato esperado por linha: [{ name, duration, category? }, ...] ou
+ * { "AppName": seconds, ... } — ambos suportados.
+ */
 export const useTopApplications = (limit = 10) => {
-  return useQuery({
+  return useQuery<AppUsage[]>({
     queryKey: ['top-applications', limit],
-    queryFn: async () => [] as AppUsage[],
+    queryFn: async () => {
+      const since = startDateISO(7);
+      const { data, error } = await supabase
+        .from('productivity_logs')
+        .select('apps_used')
+        .gte('recorded_date', since);
+
+      if (error) throw error;
+
+      const totals = new Map<string, { duration: number; category: string }>();
+
+      for (const row of data || []) {
+        const apps = (row as { apps_used: unknown }).apps_used;
+        if (!apps) continue;
+
+        if (Array.isArray(apps)) {
+          for (const entry of apps as Array<{ name?: string; duration?: number; category?: string }>) {
+            if (!entry?.name) continue;
+            const prev = totals.get(entry.name) || { duration: 0, category: entry.category || 'other' };
+            prev.duration += Number(entry.duration) || 0;
+            if (entry.category) prev.category = entry.category;
+            totals.set(entry.name, prev);
+          }
+        } else if (typeof apps === 'object') {
+          for (const [name, value] of Object.entries(apps as Record<string, unknown>)) {
+            const secs = typeof value === 'number' ? value : Number((value as { duration?: number })?.duration) || 0;
+            const prev = totals.get(name) || { duration: 0, category: 'other' };
+            prev.duration += secs;
+            totals.set(name, prev);
+          }
+        }
+      }
+
+      return Array.from(totals.entries())
+        .map(([name, v]) => ({ name, duration: v.duration, category: v.category }))
+        .sort((a, b) => b.duration - a.duration)
+        .slice(0, limit);
+    },
     ...queryPresets.list,
   });
 };
+
