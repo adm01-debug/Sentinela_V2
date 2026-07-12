@@ -51,6 +51,7 @@ export const AddEmployeeDialog = ({ open, onClose }: Props) => {
         full_name: form.name,
         email: form.email,
         department: form.department,
+        role: form.role,
       } as EmployeeCreateInput,
       {
         onSuccess: () => {
