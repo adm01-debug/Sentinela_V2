@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Users, Activity, TrendingUp, AlertTriangle, Filter, X } from 'lucide-react';
 import { useDashboardStats, useRecentAlerts, useRecentActivity } from '@/hooks/useDashboard';
@@ -18,10 +18,18 @@ import { DashboardSkeleton } from './dashboard/DashboardSkeleton';
 import { PresentationMode } from '@/components/dashboard/PresentationMode';
 import { AIInsights } from '@/components/dashboard/AIInsights';
 
+const DEPARTMENT_MAP: Record<string, string> = {
+  engineering: 'Engenharia',
+  marketing: 'Marketing',
+  sales: 'Vendas',
+  hr: 'RH',
+};
+
 export const DashboardPage = () => {
   const [period, setPeriod] = useState<Period>('week');
   const [showFilters, setShowFilters] = useState(false);
   const [departmentFilter, setDepartmentFilter] = useState('all');
+  const [now, setNow] = useState(() => new Date());
 
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const { data: realAlerts } = useRecentAlerts();
@@ -29,31 +37,45 @@ export const DashboardPage = () => {
   const colors = useChartColors();
   const { t } = useTranslation();
 
-  const departmentData = useMemo(() => [
-    { name: 'Engenharia', value: 35, color: colors.primary },
-    { name: 'Marketing', value: 22, color: colors.accent },
-    { name: 'Vendas', value: 28, color: colors.success },
-    { name: 'RH', value: 15, color: colors.info },
-    { name: 'Financeiro', value: 18, color: colors.warning },
-    { name: 'Suporte', value: 10, color: colors.destructive },
-  ], [colors]);
+  // Relógio ao vivo — atualiza a cada 30s para o indicador "Ao vivo"
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(new Date()), 30_000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const departmentData = useMemo(() => {
+    const base = [
+      { name: 'Engenharia', value: 35, color: colors.primary },
+      { name: 'Marketing', value: 22, color: colors.accent },
+      { name: 'Vendas', value: 28, color: colors.success },
+      { name: 'RH', value: 15, color: colors.info },
+      { name: 'Financeiro', value: 18, color: colors.warning },
+      { name: 'Suporte', value: 10, color: colors.destructive },
+    ];
+    if (departmentFilter === 'all') return base;
+    const target = DEPARTMENT_MAP[departmentFilter];
+    return target ? base.filter((d) => d.name === target) : base;
+  }, [colors, departmentFilter]);
+
+  // Períodos afetam labels de tendência exibidos nos cards
+  const trendLabel = period === 'day' ? 'desde ontem' : period === 'month' ? 'este mês' : 'esta semana';
 
   const statsCards = useMemo(() => [
-    { title: t('dashboard.totalEmployees'), value: stats?.totalEmployees || 128, icon: Users, iconColor: 'bg-primary/10 text-primary', trend: { value: 5.2, label: 'desde o mês passado' }, accentColor: 'primary' as const },
-    { title: t('dashboard.activeNow'), value: stats?.activeEmployees || 45, icon: Activity, iconColor: 'bg-success/10 text-success', trend: { value: 12, label: 'desde ontem' }, accentColor: 'success' as const, pulse: true },
-    { title: t('dashboard.productivity'), value: (stats?.averageProductivity || 87) + '%', icon: TrendingUp, iconColor: 'bg-warning/10 text-warning', trend: { value: 3.8, label: 'esta semana' }, accentColor: 'warning' as const },
-    { title: t('dashboard.alerts'), value: stats?.alertsCount || 3, icon: AlertTriangle, iconColor: 'bg-destructive/10 text-destructive', trend: { value: -25, label: 'vs semana passada', isPositive: true }, accentColor: 'destructive' as const },
-  ], [stats, t]);
+    { title: t('dashboard.totalEmployees'), value: stats?.totalEmployees ?? 128, icon: Users, iconColor: 'bg-primary/10 text-primary', trend: { value: 5.2, label: trendLabel }, accentColor: 'primary' as const },
+    { title: t('dashboard.activeNow'), value: stats?.activeEmployees ?? 45, icon: Activity, iconColor: 'bg-success/10 text-success', trend: { value: 12, label: trendLabel }, accentColor: 'success' as const, pulse: true },
+    { title: t('dashboard.productivity'), value: (stats?.averageProductivity ?? 87) + '%', icon: TrendingUp, iconColor: 'bg-warning/10 text-warning', trend: { value: 3.8, label: trendLabel }, accentColor: 'warning' as const },
+    { title: t('dashboard.alerts'), value: stats?.alertsCount ?? 3, icon: AlertTriangle, iconColor: 'bg-destructive/10 text-destructive', trend: { value: -25, label: 'vs período anterior', isPositive: true }, accentColor: 'destructive' as const },
+  ], [stats, t, trendLabel]);
 
   const alerts = useMemo(() => realAlerts && realAlerts.length > 0 ? realAlerts : fallbackAlerts, [realAlerts]);
   const activities = useMemo(() => realActivity && realActivity.length > 0 ? realActivity : fallbackActivities, [realActivity]);
 
   if (statsLoading) return <DashboardSkeleton />;
 
-  const totalEmployees = stats?.totalEmployees || 128;
-  const activeEmployees = stats?.activeEmployees || 45;
-  const productivity = stats?.averageProductivity || 87;
-  const alertsCount = stats?.alertsCount || 3;
+  const totalEmployees = stats?.totalEmployees ?? 128;
+  const activeEmployees = stats?.activeEmployees ?? 45;
+  const productivity = stats?.averageProductivity ?? 87;
+  const alertsCount = stats?.alertsCount ?? 3;
 
   return (
     <div className="space-y-6">
@@ -70,7 +92,7 @@ export const DashboardPage = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-70" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-success" />
               </span>
-              <span>Ao vivo · {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+              <span>Ao vivo · {now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
             <div role="tablist" aria-label="Período" className="flex gap-1 mr-2">
               {(['day', 'week', 'month'] as Period[]).map(p => (
