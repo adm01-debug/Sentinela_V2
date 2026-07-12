@@ -42,10 +42,11 @@ export default function ViolationsPage() {
     isResolveOpen, setIsResolveOpen,
     selectedViolation,
     resolutionNotes, setResolutionNotes,
-    violations, stats, isLoading, isResolving,
+    violations, allViolations, stats, isLoading, isResolving,
     handleViewDetails, handleOpenResolve, handleResolve,
     VIOLATION_TYPES,
   } = useViolationsPage();
+
   const colors = useChartColors();
 
   // Severity chart data
