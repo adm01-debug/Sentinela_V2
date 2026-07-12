@@ -17,6 +17,7 @@ import { DashboardAlertsCard, DashboardActivityCard } from './dashboard/Dashboar
 import { DashboardSkeleton } from './dashboard/DashboardSkeleton';
 import { PresentationMode } from '@/components/dashboard/PresentationMode';
 import { AIInsights } from '@/components/dashboard/AIInsights';
+import { TopApplicationsCard } from '@/components/dashboard/TopApplicationsCard';
 
 const DEPARTMENT_MAP: Record<string, string> = {
   engineering: 'Engenharia',
@@ -198,6 +199,7 @@ export const DashboardPage = () => {
         <DashboardAlertsCard alerts={alerts} />
         <DashboardActivityCard activities={activities} />
         <DepartmentPieChart departmentData={departmentData} />
+        <TopApplicationsCard />
       </div>
     </div>
   );
