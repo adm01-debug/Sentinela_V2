@@ -204,7 +204,8 @@ export class DLPEngine {
       if (policy.keywords && policy.keywords.length > 0) {
         const lower = text.toLowerCase();
         for (const kw of policy.keywords) {
-          const k = kw.toLowerCase();
+          const k = kw.trim().toLowerCase();
+          if (!k) continue;
           let idx = lower.indexOf(k);
           while (idx !== -1) {
             matches.push({
