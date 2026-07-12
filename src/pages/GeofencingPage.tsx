@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { MapPin, Plus, Edit, Trash2, Users, Search, Bell, LayoutDashboard, Upload, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,8 +19,18 @@ import { useToast } from '@/hooks/use-toast';
 
 import { PolygonUpload } from '@/components/geofence/PolygonUpload';
 
+// Parse numeric input tolerando vazio / NaN — evita gravar NaN no state
+const parseNumField = (raw: string, fallback = 0, isInt = false): number => {
+  if (raw === '' || raw === '-' || raw === undefined) return fallback;
+  const n = isInt ? parseInt(raw, 10) : parseFloat(raw);
+  return Number.isFinite(n) ? n : fallback;
+};
+
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+
 export default function GeofencingPage() {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const {
     selectedGeofence, setSelectedGeofence,
