@@ -248,7 +248,7 @@ export function useDeleteTeam() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('teams')
         .delete()
@@ -257,7 +257,7 @@ export function useDeleteTeam() {
       if (error) throw error;
       return id;
     },
-    onMutate: async (id: any) => {
+    onMutate: async (id: string) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.teams.lists() });
 
       const previousTeams = queryClient.getQueryData<Team[]>(queryKeys.teams.lists());
@@ -326,7 +326,7 @@ export function useRemoveTeamMember() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (employeeId: any) => {
+    mutationFn: async (employeeId: string) => {
       const { error } = await supabase
         .from('employees')
         .update({ team_id: null })
