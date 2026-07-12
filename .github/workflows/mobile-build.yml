@@ -6,9 +6,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: expo/expo-github-action@b18a61f0d4f5cf90af1b5a4b1b85490e9fd8c62b # v8.0.0
+      - uses: expo/expo-github-action@v8
       - run: cd mobile-app && npm ci
       - run: cd mobile-app && npx expo export
