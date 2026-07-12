@@ -43,18 +43,26 @@ import {
 import { formatDistanceToNow, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+type DeviceKind = 'ios' | 'android' | 'macos' | 'windows' | 'linux' | 'unknown';
+
+function normalizeDeviceType(type: string | null | undefined): DeviceKind {
+  const t = type?.toLowerCase();
+  if (t === 'ios' || t === 'android') return t;
+  if (t === 'macos' || t === 'windows' || t === 'linux') return t;
+  return 'unknown';
+}
+
 function DeviceIcon({ type }: { type: string | null }) {
-  switch (type?.toLowerCase()) {
-    case 'ios':
-    case 'android':
-      return <Smartphone className="h-5 w-5" />;
-    case 'macos':
-    case 'windows':
-    case 'linux':
-      return <Laptop className="h-5 w-5" />;
-    default:
-      return <Monitor className="h-5 w-5" />;
-  }
+  const kind = normalizeDeviceType(type);
+  if (kind === 'ios' || kind === 'android') return <Smartphone className="h-5 w-5" aria-hidden="true" />;
+  if (kind === 'macos' || kind === 'windows' || kind === 'linux') return <Laptop className="h-5 w-5" aria-hidden="true" />;
+  return <Monitor className="h-5 w-5" aria-hidden="true" />;
+}
+
+function safeDate(iso: string | null | undefined): Date | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
 interface PasskeyItemProps {
@@ -74,25 +82,35 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
     }
   };
 
+  const createdAt = safeDate(credential.created_at);
+  const lastUsedAt = safeDate(credential.last_used_at);
+  const displayName = credential.friendly_name || 'Passkey';
+
   return (
     <>
-      <div className="flex items-start gap-4 p-4 border rounded-lg">
-        <div className="p-2 rounded-full bg-primary/10 text-primary">
+      <li className="flex items-start gap-4 p-4 border rounded-lg">
+        <div className="p-2 rounded-full bg-primary/10 text-primary" aria-hidden="true">
           <DeviceIcon type={credential.device_type} />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <p className="font-medium truncate">
-              {credential.friendly_name || 'Passkey'}
-            </p>
-            <Badge variant="outline">{credential.device_type || 'Unknown'}</Badge>
+          <div className="flex items-center gap-2 flex-wrap">
+            <p className="font-medium truncate">{displayName}</p>
+            <Badge variant="outline">{credential.device_type || 'Desconhecido'}</Badge>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Criada {formatDistanceToNow(new Date(credential.created_at), { addSuffix: true, locale: ptBR })}
-          </p>
-          {credential.last_used_at && (
+          {createdAt && (
+            <p className="text-sm text-muted-foreground">
+              Criada{' '}
+              <time dateTime={createdAt.toISOString()} title={format(createdAt, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}>
+                {formatDistanceToNow(createdAt, { addSuffix: true, locale: ptBR })}
+              </time>
+            </p>
+          )}
+          {lastUsedAt && (
             <p className="text-xs text-muted-foreground">
-              Último uso: {format(new Date(credential.last_used_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+              Último uso:{' '}
+              <time dateTime={lastUsedAt.toISOString()}>
+                {format(lastUsedAt, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+              </time>
             </p>
           )}
         </div>
@@ -100,22 +118,23 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
           <Button
             variant="ghost"
             size="icon"
+            aria-label={`Renomear ${displayName}`}
             onClick={() => {
               setNewName(credential.friendly_name || '');
               setIsRenaming(true);
             }}
           >
-            <Pencil className="h-4 w-4" />
+            <Pencil className="h-4 w-4" aria-hidden="true" />
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
-                <Trash2 className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" aria-label={`Remover ${displayName}`}>
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Remover Passkey?</AlertDialogTitle>
+                <AlertDialogTitle>Remover {displayName}?</AlertDialogTitle>
                 <AlertDialogDescription>
                   Isso removerá a autenticação biométrica deste dispositivo. Você precisará usar outro método de login.
                 </AlertDialogDescription>
@@ -129,7 +148,7 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
             </AlertDialogContent>
           </AlertDialog>
         </div>
-      </div>
+      </li>
 
       <Dialog open={isRenaming} onOpenChange={setIsRenaming}>
         <DialogContent>
@@ -202,9 +221,9 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
           <div className="flex items-center gap-4">
             {isSupported ? (
               hasPasskeys ? (
-                <ShieldCheck className="h-8 w-8 text-green-500" />
+                <ShieldCheck className="h-8 w-8 text-success" />
               ) : (
-                <ShieldAlert className="h-8 w-8 text-yellow-500" />
+                <ShieldAlert className="h-8 w-8 text-warning" />
               )
             ) : (
               <XCircle className="h-8 w-8 text-muted-foreground" />
@@ -235,15 +254,15 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
         {isSupported && (
           <div className="grid grid-cols-3 gap-4">
             <div className="flex items-center gap-2 text-sm">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span>Impressão Digital</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span>Face ID</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span>PIN do Dispositivo</span>
             </div>
           </div>
@@ -257,16 +276,16 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
           </div>
         ) : credentials.length > 0 ? (
           <ScrollArea className="h-[300px]">
-            <div className="space-y-3 pr-4">
+            <ul className="space-y-3 pr-4" aria-label="Passkeys registradas">
               {credentials.map((credential) => (
                 <PasskeyItem
                   key={credential.id}
                   credential={credential}
-                  onDelete={(id: string) => (deletePasskey as any)(id)}
+                  onDelete={deletePasskey}
                   onRename={renamePasskey}
                 />
               ))}
-            </div>
+            </ul>
           </ScrollArea>
         ) : isSupported ? (
           <div className="text-center py-8 border rounded-lg border-dashed">
