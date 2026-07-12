@@ -15,6 +15,7 @@ import { type Period, fallbackAlerts, fallbackActivities } from './dashboard/das
 import { DashboardChartsRow, DepartmentPieChart } from './dashboard/DashboardCharts';
 import { DashboardAlertsCard, DashboardActivityCard } from './dashboard/DashboardCards';
 import { DashboardSkeleton } from './dashboard/DashboardSkeleton';
+import { PresentationMode } from '@/components/dashboard/PresentationMode';
 
 export const DashboardPage = () => {
   const [period, setPeriod] = useState<Period>('week');
