@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,12 +12,21 @@ interface MFAPhoneEnrollProps {
   onCancel: () => void;
 }
 
+const PHONE_MAX_LEN = 16;
+const CODE_LEN = 6;
+
+function formatPhoneInput(value: string): string {
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+}
+
 export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
   const {
     isEnrolling,
     isVerifying,
     phoneNumber,
-    factorId,
     error,
     enrollPhone,
     verifyPhone,
@@ -29,29 +38,22 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
   const [verifyCode, setVerifyCode] = useState('');
   const [step, setStep] = useState<'phone' | 'verify'>('phone');
 
-  const formatPhoneInput = (value: string) => {
-    const digits = value.replace(/\D/g, '');
-    if (digits.length <= 2) return digits;
-    if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
-  };
+  const phoneDigits = inputPhone.replace(/\D/g, '');
+  const canSubmitPhone = phoneDigits.length === 11 && !isEnrolling;
+  const canSubmitCode = verifyCode.length === CODE_LEN && !isVerifying;
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputPhone(formatPhoneInput(e.target.value));
-  };
-
-  const handleEnrollPhone = async () => {
+  const handleEnrollPhone = async (e?: FormEvent) => {
+    e?.preventDefault();
+    if (!canSubmitPhone) return;
     const result = await enrollPhone(inputPhone);
-    if (result.data) {
-      setStep('verify');
-    }
+    if (result.data) setStep('verify');
   };
 
-  const handleVerify = async () => {
+  const handleVerify = async (e?: FormEvent) => {
+    e?.preventDefault();
+    if (!canSubmitCode) return;
     const result = await verifyPhone(verifyCode);
-    if (result.data) {
-      onEnrolled();
-    }
+    if (result.data) onEnrolled();
   };
 
   const handleBack = () => {
@@ -65,55 +67,61 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
     return (
       <Card className="border-border/50">
         <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+          <div
+            className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+            aria-hidden="true"
+          >
             <Phone className="h-8 w-8 text-primary" />
           </div>
           <CardTitle>Configurar MFA por SMS</CardTitle>
-          <CardDescription>
-            Receba códigos de verificação por mensagem de texto
-          </CardDescription>
+          <CardDescription>Receba códigos de verificação por mensagem de texto</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+        <CardContent>
+          <form onSubmit={handleEnrollPhone} className="space-y-4" noValidate>
+            {error && (
+              <Alert variant="destructive" role="alert">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
 
-          <div className="space-y-2">
-            <Label htmlFor="phone">Número de Celular</Label>
-            <div className="flex gap-2">
-              <div className="flex items-center px-3 bg-muted rounded-l-md border border-r-0">
-                <span className="text-sm text-muted-foreground">+55</span>
+            <div className="space-y-2">
+              <Label htmlFor="phone">Número de celular</Label>
+              <div className="flex gap-0">
+                <div
+                  className="flex items-center px-3 bg-muted rounded-l-md border border-r-0"
+                  aria-hidden="true"
+                >
+                  <span className="text-sm text-muted-foreground">+55</span>
+                </div>
+                <Input
+                  id="phone"
+                  type="tel"
+                  autoComplete="tel-national"
+                  value={inputPhone}
+                  onChange={(e) => setInputPhone(formatPhoneInput(e.target.value))}
+                  placeholder="(11) 99999-9999"
+                  className="rounded-l-none"
+                  maxLength={PHONE_MAX_LEN}
+                  aria-describedby="phone-help"
+                  aria-invalid={inputPhone.length > 0 && !canSubmitPhone}
+                  required
+                />
               </div>
-              <Input
-                id="phone"
-                type="tel"
-                value={inputPhone}
-                onChange={handlePhoneChange}
-                placeholder="(11) 99999-9999"
-                className="rounded-l-none"
-                maxLength={16}
-              />
+              <p id="phone-help" className="text-xs text-muted-foreground">
+                Será enviado um código de verificação para este número
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Será enviado um código de verificação para este número
-            </p>
-          </div>
 
-          <div className="flex gap-3 pt-4">
-            <Button variant="outline" onClick={onCancel} className="flex-1">
-              Cancelar
-            </Button>
-            <Button
-              onClick={handleEnrollPhone}
-              disabled={inputPhone.replace(/\D/g, '').length < 11 || isEnrolling}
-              className="flex-1"
-            >
-              {isEnrolling ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              Enviar Código
-            </Button>
-          </div>
+            <div className="flex gap-3 pt-4">
+              <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={!canSubmitPhone} className="flex-1">
+                {isEnrolling && <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" />}
+                Enviar código
+              </Button>
+            </div>
+          </form>
         </CardContent>
       </Card>
     );
@@ -122,60 +130,65 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
   return (
     <Card className="border-border/50">
       <CardHeader className="text-center">
-        <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+        <div
+          className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+          aria-hidden="true"
+        >
           <MessageSquare className="h-8 w-8 text-primary" />
         </div>
-        <CardTitle>Verificar Código SMS</CardTitle>
+        <CardTitle>Verificar código SMS</CardTitle>
         <CardDescription>
-          Digite o código enviado para {phoneNumber}
+          Digite o código enviado para <span className="font-medium">{phoneNumber}</span>
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+      <CardContent>
+        <form onSubmit={handleVerify} className="space-y-4" noValidate>
+          {error && (
+            <Alert variant="destructive" role="alert">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-        <div className="space-y-2">
-          <Label htmlFor="sms-code">Código de Verificação</Label>
-          <Input
-            id="sms-code"
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            maxLength={6}
-            value={verifyCode}
-            onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
-            placeholder="000000"
-            className="text-center text-2xl tracking-widest font-mono"
-          />
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="sms-code">Código de verificação</Label>
+            <Input
+              id="sms-code"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="one-time-code"
+              maxLength={CODE_LEN}
+              value={verifyCode}
+              onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, '').slice(0, CODE_LEN))}
+              placeholder="000000"
+              className="text-center text-2xl tracking-widest font-mono"
+              aria-label="Código de 6 dígitos"
+              required
+            />
+          </div>
 
-        <Button
-          variant="link"
-          onClick={resendCode}
-          className="w-full"
-          disabled={isVerifying}
-        >
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Reenviar código
-        </Button>
-
-        <div className="flex gap-3 pt-4">
-          <Button variant="outline" onClick={handleBack} className="flex-1">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar
-          </Button>
           <Button
-            onClick={handleVerify}
-            disabled={verifyCode.length !== 6 || isVerifying}
-            className="flex-1"
+            type="button"
+            variant="link"
+            onClick={resendCode}
+            className="w-full"
+            disabled={isVerifying || isEnrolling}
           >
-            {isVerifying ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-            Ativar SMS MFA
+            <RefreshCw className="h-4 w-4 mr-2" aria-hidden="true" />
+            Reenviar código
           </Button>
-        </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button type="button" variant="outline" onClick={handleBack} className="flex-1">
+              <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" />
+              Voltar
+            </Button>
+            <Button type="submit" disabled={!canSubmitCode} className="flex-1">
+              {isVerifying && <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" />}
+              Ativar SMS MFA
+            </Button>
+          </div>
+        </form>
       </CardContent>
     </Card>
   );
