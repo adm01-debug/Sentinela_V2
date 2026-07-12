@@ -17,6 +17,7 @@ export const EmployeesPage = () => {
   const { t } = useTranslation();
   const colors = useChartColors();
   const {
+    employees,
     filteredEmployees,
     teams,
     stats,
@@ -37,10 +38,17 @@ export const EmployeesPage = () => {
     name: String(t.name || ''),
   })) : [];
 
-  // Department distribution chart data
+  const STATUS_LABELS: Record<string, string> = {
+    active: 'Ativos',
+    inactive: 'Inativos',
+    vacation: 'Férias',
+    leave: 'Afastados',
+  };
+
+  // Department distribution — usa base completa (não filtrada) para métrica agregada estável
   const departmentData = useMemo(() => {
     const deptMap: Record<string, number> = {};
-    filteredEmployees.forEach((emp) => {
+    employees.forEach((emp) => {
       const dept = String(emp.department || 'Sem Departamento');
       deptMap[dept] = (deptMap[dept] || 0) + 1;
     });
@@ -48,19 +56,22 @@ export const EmployeesPage = () => {
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value)
       .slice(0, 8);
-  }, [filteredEmployees]);
+  }, [employees]);
 
-  // Status distribution for pie chart
+  // Status distribution para pie chart — usa base completa
   const statusData = useMemo(() => {
     const statusMap: Record<string, number> = {};
-    filteredEmployees.forEach((emp) => {
+    employees.forEach((emp) => {
       const status = String(emp.status || 'unknown');
       statusMap[status] = (statusMap[status] || 0) + 1;
     });
-    return Object.entries(statusMap).map(([name, value]) => ({ name: name === 'active' ? 'Ativos' : name === 'inactive' ? 'Inativos' : name, value }));
-  }, [filteredEmployees]);
+    return Object.entries(statusMap).map(([name, value]) => ({
+      name: STATUS_LABELS[name] ?? name,
+      value,
+    }));
+  }, [employees]);
 
-  const PIE_COLORS = [colors.success, colors.muted, colors.warning, colors.destructive];
+  const PIE_COLORS = [colors.success, colors.muted, colors.warning, colors.info, colors.destructive];
 
   return (
     <div className="space-y-6">
