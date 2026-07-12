@@ -89,18 +89,35 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
           <DeviceIcon type={credential.device_type} />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <p className="font-medium truncate">
-              {credential.friendly_name || 'Passkey'}
-            </p>
-            <Badge variant="outline">{credential.device_type || 'Unknown'}</Badge>
+  const createdAt = safeDate(credential.created_at);
+  const lastUsedAt = safeDate(credential.last_used_at);
+  const displayName = credential.friendly_name || 'Passkey';
+
+  return (
+    <>
+      <li className="flex items-start gap-4 p-4 border rounded-lg">
+        <div className="p-2 rounded-full bg-primary/10 text-primary" aria-hidden="true">
+          <DeviceIcon type={credential.device_type} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <p className="font-medium truncate">{displayName}</p>
+            <Badge variant="outline">{credential.device_type || 'Desconhecido'}</Badge>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Criada {formatDistanceToNow(new Date(credential.created_at), { addSuffix: true, locale: ptBR })}
-          </p>
-          {credential.last_used_at && (
+          {createdAt && (
+            <p className="text-sm text-muted-foreground">
+              Criada{' '}
+              <time dateTime={createdAt.toISOString()} title={format(createdAt, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}>
+                {formatDistanceToNow(createdAt, { addSuffix: true, locale: ptBR })}
+              </time>
+            </p>
+          )}
+          {lastUsedAt && (
             <p className="text-xs text-muted-foreground">
-              Último uso: {format(new Date(credential.last_used_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+              Último uso:{' '}
+              <time dateTime={lastUsedAt.toISOString()}>
+                {format(lastUsedAt, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+              </time>
             </p>
           )}
         </div>
@@ -108,22 +125,23 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
           <Button
             variant="ghost"
             size="icon"
+            aria-label={`Renomear ${displayName}`}
             onClick={() => {
               setNewName(credential.friendly_name || '');
               setIsRenaming(true);
             }}
           >
-            <Pencil className="h-4 w-4" />
+            <Pencil className="h-4 w-4" aria-hidden="true" />
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
-                <Trash2 className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" aria-label={`Remover ${displayName}`}>
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Remover Passkey?</AlertDialogTitle>
+                <AlertDialogTitle>Remover {displayName}?</AlertDialogTitle>
                 <AlertDialogDescription>
                   Isso removerá a autenticação biométrica deste dispositivo. Você precisará usar outro método de login.
                 </AlertDialogDescription>
@@ -137,7 +155,7 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
             </AlertDialogContent>
           </AlertDialog>
         </div>
-      </div>
+      </li>
 
       <Dialog open={isRenaming} onOpenChange={setIsRenaming}>
         <DialogContent>
