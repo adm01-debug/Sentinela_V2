@@ -14,7 +14,7 @@ import { CommandPalette } from '@/components/CommandPalette';
 import { KeyboardShortcutsDialog } from '@/components/KeyboardShortcutsDialog';
 import { KeyboardShortcutsProvider } from '@/components/KeyboardShortcutsProvider';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 export const MainLayout = () => {
   useDocumentTitle();
@@ -23,6 +23,7 @@ export const MainLayout = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   // Global "Back" keyboard shortcut
   useEffect(() => {
@@ -92,10 +93,10 @@ export const MainLayout = () => {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={location.pathname}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                  animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                  exit={reduceMotion ? undefined : { opacity: 0 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.15, ease: [0.4, 0, 0.2, 1] }}
                 >
                   <Outlet />
                 </motion.div>

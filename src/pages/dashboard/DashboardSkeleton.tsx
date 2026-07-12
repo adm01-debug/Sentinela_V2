@@ -35,5 +35,17 @@ export const DashboardSkeleton = () => (
         </div>
       </div>
     </div>
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      {[0, 1, 2].map(i => (
+        <div
+          key={i}
+          className="lg:col-span-4 rounded-xl border bg-card p-5 space-y-3 animate-in fade-in slide-in-from-bottom-2 fill-mode-both"
+          style={{ animationDelay: `${600 + i * 80}ms`, animationDuration: '400ms' }}
+        >
+          <Skeleton width={160} height={16} />
+          <Skeleton height={180} className="rounded-lg" />
+        </div>
+      ))}
+    </div>
   </div>
 );

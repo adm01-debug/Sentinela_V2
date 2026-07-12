@@ -1,7 +1,7 @@
 import { memo, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { Info } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export interface WidgetCardProps {
@@ -17,8 +17,14 @@ export interface WidgetCardProps {
 }
 
 function WidgetCardComponent({ title, subtitle, children, className, actions, loading = false, error, onRetry, infoTooltip }: WidgetCardProps) {
+  const reduce = useReducedMotion();
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className={cn('bg-card border rounded-xl p-4 sm:p-6 transition-shadow duration-200 hover:shadow-md', className)}>
+    <motion.div
+      initial={reduce ? false : { opacity: 0, y: 20 }}
+      animate={reduce ? undefined : { opacity: 1, y: 0 }}
+      transition={{ duration: reduce ? 0 : 0.3 }}
+      className={cn('bg-card border rounded-card shadow-card p-card transition-shadow duration-200 hover:shadow-card-hover', className)}
+    >
       <div className="flex items-start justify-between mb-4">
         <div>
           <div className="flex items-center gap-2">
