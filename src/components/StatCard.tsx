@@ -12,12 +12,17 @@ function useCountUp(target: number, duration = 1200): number {
   const frameRef = useRef<number>(0);
 
   useEffect(() => {
-    if (target === 0) { setCurrent(0); return; }
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced || target === 0) {
+      setCurrent(target);
+      return;
+    }
     const start = performance.now();
     const animate = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      // ease-out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setCurrent(Math.round(eased * target));
       if (progress < 1) {
