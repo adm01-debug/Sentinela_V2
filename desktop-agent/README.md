@@ -59,7 +59,9 @@ src/
     ├── usbBlocker.ts     # Bloqueio de USB storage
     ├── printScreenBlocker.ts # Bloqueio de print screen
     ├── idleDetector.ts   # Detecção de inatividade
-    └── autoUpdater.ts    # Auto-atualização
+    ├── autoUpdater.ts    # Auto-atualização
+    └── dlp/
+        └── dlpEngine.ts  # Motor de prevenção de perda de dados (DLP)
 ```
 
 ## Comunicação com Backend
