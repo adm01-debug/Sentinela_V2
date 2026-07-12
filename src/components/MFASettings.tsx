@@ -80,46 +80,79 @@ export function MFASettings() {
               </AlertDescription>
             </Alert>
 
-            {(Array.isArray(factors) ? factors.filter(f => f.status === 'verified') : []).map((factor) => (
-              <div key={factor.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Smartphone className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="font-medium">{factor.friendly_name || 'Authenticator App'}</p>
-                    <p className="text-sm text-muted-foreground">
-                      Configurado em {new Date(factor.created_at).toLocaleDateString('pt-BR')}
-                    </p>
+            {verifiedFactors.map((factor) => {
+              const label = factor.friendly_name || 'Authenticator App';
+              const isDisabling = disablingId === factor.id;
+              return (
+                <div key={factor.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Smartphone className="h-5 w-5 text-muted-foreground" aria-hidden />
+                    <div>
+                      <p className="font-medium">{label}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Configurado em {new Date(factor.created_at).toLocaleDateString('pt-BR')}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Desativar 2FA?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Isso removerá a proteção de autenticação de dois fatores da sua conta. 
-                        Você precisará configurar novamente se quiser reativá-la.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction 
-                        onClick={handleDisable2FA}
-                        disabled={disabling}
-                        className="bg-destructive hover:bg-destructive/90"
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive hover:text-destructive"
+                        aria-label={`Remover ${label}`}
+                        disabled={isDisabling}
                       >
-                        {disabling ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                        Desativar 2FA
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
-            ))}
+                        {isDisabling ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Desativar 2FA?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Isso removerá a proteção de autenticação de dois fatores da sua conta.
+                          Você precisará configurar novamente se quiser reativá-la.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleUnenroll(factor.id, label)}
+                          disabled={isDisabling}
+                          className="bg-destructive hover:bg-destructive/90"
+                        >
+                          {isDisabling ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                          Desativar 2FA
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              );
+            })}
+
+            {unverifiedFactors.length > 0 && (
+              <Alert variant="destructive" className="bg-warning/10 border-warning/30">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription className="flex items-center justify-between gap-3">
+                  <span>
+                    Existe(m) {unverifiedFactors.length} configuração(ões) de 2FA incompleta(s).
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() =>
+                      unverifiedFactors.forEach((f) =>
+                        handleUnenroll(f.id, f.friendly_name || 'Fator pendente'),
+                      )
+                    }
+                    disabled={disablingId !== null}
+                  >
+                    Limpar
+                  </Button>
+                </AlertDescription>
+              </Alert>
+            )}
           </>
         ) : (
           <>
