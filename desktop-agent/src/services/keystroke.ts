@@ -58,13 +58,13 @@ export class KeystrokeService {
   private async updateActiveWindow(): Promise<void> {
     try {
       const activeWin = await import("active-win");
-      const win = await activeWin.default();
+      const win = await activeWin.activeWindow();
       if (win) {
         this.currentApp = win.owner?.name || "";
         this.currentWindow = win.title || "";
       }
-    } catch {
-      // ignore
+    } catch (error) {
+      log.warn("Failed to get active window:", error);
     }
   }
 
