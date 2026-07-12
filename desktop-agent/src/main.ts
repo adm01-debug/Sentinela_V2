@@ -277,6 +277,10 @@ function stopServices(): void {
 // ============================================================
 // IPC HANDLERS
 // ============================================================
+const stealthPasswordAttempts = { count: 0, lockedUntil: 0 };
+const MAX_PASSWORD_ATTEMPTS = 5;
+const LOCKOUT_DURATION_MS = 60_000;
+
 function setupIPC(): void {
   ipcMain.handle("get-status", () => ({
     authenticated: isAuthenticated,
@@ -297,12 +301,27 @@ function setupIPC(): void {
   });
 
   ipcMain.handle("verify-stealth-password", (_event, password: string) => {
+    const now = Date.now();
+    if (stealthPasswordAttempts.lockedUntil > now) {
+      const remaining = Math.ceil((stealthPasswordAttempts.lockedUntil - now) / 1000);
+      log.warn(`Stealth password locked out for ${remaining}s`);
+      return { success: false, lockedOut: true, remainingSeconds: remaining };
+    }
+
     const stored = store.get("stealthPassword") as string;
     const storedBuffer = Buffer.from(stored || "");
     const inputBuffer = Buffer.from(password || "");
     if (storedBuffer.length === inputBuffer.length && timingSafeEqual(storedBuffer, inputBuffer)) {
+      stealthPasswordAttempts.count = 0;
       disableStealth();
       return { success: true };
+    }
+
+    stealthPasswordAttempts.count += 1;
+    if (stealthPasswordAttempts.count >= MAX_PASSWORD_ATTEMPTS) {
+      stealthPasswordAttempts.lockedUntil = now + LOCKOUT_DURATION_MS;
+      stealthPasswordAttempts.count = 0;
+      log.warn("Stealth password: too many failed attempts, locking out for 60s");
     }
     return { success: false };
   });
