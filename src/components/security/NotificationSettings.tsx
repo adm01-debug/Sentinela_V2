@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { 
   Bell, 
   BellOff, 
@@ -12,8 +11,45 @@ import {
   CheckCircle2, 
   XCircle, 
   AlertTriangle,
-  Smartphone
+  Smartphone,
+  type LucideIcon
 } from 'lucide-react';
+
+type AlertType = {
+  id: string;
+  label: string;
+  description: string;
+  icon: LucideIcon;
+  bg: string;
+  fg: string;
+};
+
+const ALERT_TYPES: readonly AlertType[] = [
+  {
+    id: 'critical',
+    label: 'Alertas Críticos',
+    description: 'Violações de alta severidade',
+    icon: AlertTriangle,
+    bg: 'bg-destructive/15',
+    fg: 'text-destructive',
+  },
+  {
+    id: 'high',
+    label: 'Alertas de Alta Prioridade',
+    description: 'Tentativas de acesso suspeitas',
+    icon: AlertTriangle,
+    bg: 'bg-warning/15',
+    fg: 'text-warning',
+  },
+  {
+    id: 'device',
+    label: 'Novo Dispositivo',
+    description: 'Login de dispositivo desconhecido',
+    icon: Smartphone,
+    bg: 'bg-primary/15',
+    fg: 'text-primary',
+  },
+] as const;
 
 export const NotificationSettings = React.memo(function NotificationSettings() {
   const { 
