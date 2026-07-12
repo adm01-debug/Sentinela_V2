@@ -23,6 +23,7 @@ export const MainLayout = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   // Global "Back" keyboard shortcut
   useEffect(() => {
