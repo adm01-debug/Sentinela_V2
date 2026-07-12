@@ -158,9 +158,11 @@ export function useViolationsPage() {
     selectedViolation,
     resolutionNotes, setResolutionNotes,
     violations: filteredViolations,
+    allViolations: violations,
     stats, isLoading,
     isResolving: resolveMutation.isPending,
     handleViewDetails, handleOpenResolve, handleResolve,
     VIOLATION_TYPES,
   };
 }
+
