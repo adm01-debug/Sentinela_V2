@@ -74,11 +74,11 @@ const navSections: NavSection[] = [
     id: "time",
     titleKey: "sections.timeHours",
     items: [
-      { icon: Timer, labelKey: "nav.timeClock", path: "/time-clock" },
-      { icon: FolderKanban, labelKey: "nav.projects", path: "/projects" },
-      { icon: ClipboardList, labelKey: "nav.timesheets", path: "/timesheets" },
-      { icon: UserCheck, labelKey: "nav.attendance", path: "/attendance" },
-      { icon: BarChart, labelKey: "nav.hoursTracking", path: "/hours-tracking" },
+      { icon: Timer, labelKey: "nav.timeClock", path: ROUTES.TIME_CLOCK },
+      { icon: FolderKanban, labelKey: "nav.projects", path: ROUTES.PROJECTS },
+      { icon: ClipboardList, labelKey: "nav.timesheets", path: ROUTES.TIMESHEETS },
+      { icon: UserCheck, labelKey: "nav.attendance", path: ROUTES.ATTENDANCE },
+      { icon: BarChart, labelKey: "nav.hoursTracking", path: ROUTES.HOURS_TRACKING },
     ],
   },
   {
