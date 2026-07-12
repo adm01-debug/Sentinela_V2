@@ -10,15 +10,12 @@ jobs:
   # Packaging the installer happens in the release pipeline on a Windows host.
   typecheck:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: desktop-agent
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - run: npm ci --ignore-scripts
-      - run: npm run typecheck
+          node-version: '20'
+      - run: cd desktop-agent && npm ci --ignore-scripts
+      - run: cd desktop-agent && npm run typecheck
