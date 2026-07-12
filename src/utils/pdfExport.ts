@@ -169,7 +169,7 @@ export const generatePDF = (reportData: ReportData) => {
     body: reportData.alertsByType.map((a) => [
       a.type,
       a.count.toString(),
-      `${((a.count / totalAlerts) * 100).toFixed(1)}%`,
+      totalAlerts > 0 ? `${((a.count / totalAlerts) * 100).toFixed(1)}%` : "0.0%",
     ]),
     theme: "striped",
     headStyles: { fillColor: colors.danger, textColor: 255, fontStyle: "bold", fontSize: 9 },
@@ -352,26 +352,34 @@ export const generatePDF = (reportData: ReportData) => {
   doc.setFont("helvetica", "normal");
   doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
   const avgProductivity =
-    reportData.dailyActivity.reduce((sum, d) => sum + d.productive, 0) /
-    reportData.dailyActivity.length;
-  const bestDay = reportData.dailyActivity.reduce((best, d) =>
-    d.productive > best.productive ? d : best
-  );
-  const worstDay = reportData.dailyActivity.reduce((worst, d) =>
-    d.productive < worst.productive ? d : worst
-  );
+    reportData.dailyActivity.length > 0
+      ? reportData.dailyActivity.reduce((sum, d) => sum + d.productive, 0) /
+        reportData.dailyActivity.length
+      : 0;
+  const bestDay =
+    reportData.dailyActivity.length > 0
+      ? reportData.dailyActivity.reduce((best, d) => (d.productive > best.productive ? d : best))
+      : null;
+  const worstDay =
+    reportData.dailyActivity.length > 0
+      ? reportData.dailyActivity.reduce((worst, d) => (d.productive < worst.productive ? d : worst))
+      : null;
   doc.text(
     `• Média de produtividade no período: ${avgProductivity.toFixed(1)}%`,
     margin + 12,
     yPos + 24
   );
   doc.text(
-    `• Melhor dia: ${bestDay.date} com ${bestDay.productive}% de tempo produtivo`,
+    bestDay
+      ? `• Melhor dia: ${bestDay.date} com ${bestDay.productive}% de tempo produtivo`
+      : "• Melhor dia: sem dados disponíveis",
     margin + 12,
     yPos + 34
   );
   doc.text(
-    `• Dia que requer atenção: ${worstDay.date} com ${worstDay.productive}% de tempo produtivo`,
+    worstDay
+      ? `• Dia que requer atenção: ${worstDay.date} com ${worstDay.productive}% de tempo produtivo`
+      : "• Dia que requer atenção: sem dados disponíveis",
     margin + 12,
     yPos + 44
   );

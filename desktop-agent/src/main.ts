@@ -1,5 +1,5 @@
 import * as path from "path";
-import { timingSafeEqual } from "crypto";
+import { timingSafeEqual, createHash } from "crypto";
 import { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain } from "electron";
 import log from "electron-log";
 import Store from "electron-store";
@@ -24,6 +24,8 @@ let mainWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let isAuthenticated = false;
 let stealthMode = false;
+let isInitializing = false;
+let isQuitting = false;
 
 interface StoreSchema {
   agentKey: string;
@@ -196,6 +198,16 @@ function disableStealth(): void {
 // SERVICES INITIALIZATION
 // ============================================================
 async function initializeServices(): Promise<void> {
+  if (isInitializing) return;
+  isInitializing = true;
+  try {
+    await _initializeServicesImpl();
+  } finally {
+    isInitializing = false;
+  }
+}
+
+async function _initializeServicesImpl(): Promise<void> {
   const agentKey = store.get("agentKey");
 
   if (!agentKey) {
@@ -263,7 +275,7 @@ async function initializeServices(): Promise<void> {
   log.info("All monitoring services started");
 }
 
-function stopServices(): void {
+async function stopServices(): Promise<void> {
   screenshotService?.stop();
   keystrokeService?.stop();
   appTrackerService?.stop();
@@ -277,7 +289,7 @@ function stopServices(): void {
     if (isAuthenticated) {
       dataSender.send("logout", { timestamp: new Date().toISOString() });
     }
-    dataSender.flush();
+    await dataSender.flush();
   }
 }
 
@@ -316,9 +328,15 @@ function setupIPC(): void {
     }
 
     const stored = store.get("stealthPassword");
-    const storedBuffer = Buffer.from(stored || "");
-    const inputBuffer = Buffer.from(password || "");
-    if (storedBuffer.length === inputBuffer.length && timingSafeEqual(storedBuffer, inputBuffer)) {
+    // Hash both sides to a constant 32-byte digest so timingSafeEqual always
+    // runs on equal-length inputs (removes the length-leaking early branch).
+    const storedBuffer = createHash("sha256")
+      .update(stored || "")
+      .digest();
+    const inputBuffer = createHash("sha256")
+      .update(password || "")
+      .digest();
+    if (timingSafeEqual(storedBuffer, inputBuffer)) {
       stealthPasswordAttempts.count = 0;
       disableStealth();
       return { success: true };
@@ -386,9 +404,15 @@ if (!gotTheLock) {
     await initializeServices();
   });
 
-  app.on("will-quit", () => {
-    stopServices();
-    globalShortcut.unregisterAll();
+  app.on("will-quit", (event) => {
+    if (!isQuitting) {
+      event.preventDefault();
+      isQuitting = true;
+      stopServices().finally(() => {
+        globalShortcut.unregisterAll();
+        app.quit();
+      });
+    }
   });
 
   app.on("window-all-closed", (e: Event) => {
