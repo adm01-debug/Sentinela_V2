@@ -25,7 +25,14 @@ let tray: Tray | null = null;
 let isAuthenticated = false;
 let stealthMode = false;
 
-const store = new Store({
+interface StoreSchema {
+  agentKey: string;
+  deviceName: string;
+  stealthMode: boolean;
+  stealthPassword: string;
+}
+
+const store = new Store<StoreSchema>({
   encryptionKey: "sentinela-secure-storage-key",
   schema: {
     agentKey: { type: "string", default: "" },
@@ -147,7 +154,7 @@ function updateTrayMenu(): void {
 // STEALTH MODE
 // ============================================================
 function toggleStealthMode(): void {
-  const password = store.get("stealthPassword") as string;
+  const password = store.get("stealthPassword");
 
   if (stealthMode) {
     // Exiting stealth - require password
@@ -189,7 +196,7 @@ function disableStealth(): void {
 // SERVICES INITIALIZATION
 // ============================================================
 async function initializeServices(): Promise<void> {
-  const agentKey = store.get("agentKey") as string;
+  const agentKey = store.get("agentKey");
 
   if (!agentKey) {
     log.info("No agent key configured, showing setup window");
@@ -286,7 +293,7 @@ function setupIPC(): void {
     authenticated: isAuthenticated,
     stealthMode,
     version: app.getVersion(),
-    agentKey: store.get("agentKey") ? "****" + (store.get("agentKey") as string).slice(-4) : "",
+    agentKey: store.get("agentKey") ? "****" + store.get("agentKey").slice(-4) : "",
   }));
 
   ipcMain.handle("set-agent-key", async (_event, key: string) => {
@@ -308,7 +315,7 @@ function setupIPC(): void {
       return { success: false, lockedOut: true, remainingSeconds: remaining };
     }
 
-    const stored = store.get("stealthPassword") as string;
+    const stored = store.get("stealthPassword");
     const storedBuffer = Buffer.from(stored || "");
     const inputBuffer = Buffer.from(password || "");
     if (storedBuffer.length === inputBuffer.length && timingSafeEqual(storedBuffer, inputBuffer)) {
@@ -362,7 +369,7 @@ if (!gotTheLock) {
     }
 
     // Stealth mode from store
-    stealthMode = store.get("stealthMode") as boolean;
+    stealthMode = store.get("stealthMode");
 
     createWindow();
 
