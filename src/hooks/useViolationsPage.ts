@@ -51,30 +51,44 @@ export function useViolationsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('security_violations')
-        .select('*')
+        .select('id, employee_name, violation_type, severity, description, status, resolution_notes, resolved_at, resolved_by, created_at, read')
         .order('created_at', { ascending: false })
         .limit(200);
       if (error) throw error;
-      return data.map((v: any) => ({
-        id: v.id,
-        employee_id: v.employee_id || '',
-        employee_name: v.employee_name || 'Desconhecido',
-        violation_type: v.violation_type,
-        severity: v.severity as ViolationSeverity,
-        status: (v.read ? 'resolved' : 'open') as ViolationStatus,
-        description: v.description || undefined,
-        created_at: v.created_at,
-      })) as Violation[];
+      return (data ?? []).map((v) => {
+        const rawStatus = (v as { status?: string }).status;
+        const status: ViolationStatus =
+          rawStatus === 'investigating' || rawStatus === 'resolved' || rawStatus === 'dismissed' || rawStatus === 'open'
+            ? rawStatus
+            : ((v as { read?: boolean }).read ? 'resolved' : 'open');
+        return {
+          id: v.id as string,
+          employee_id: '',
+          employee_name: (v.employee_name as string) || 'Desconhecido',
+          violation_type: v.violation_type as string,
+          severity: v.severity as ViolationSeverity,
+          status,
+          description: (v.description as string) || undefined,
+          resolution_notes: (v as { resolution_notes?: string }).resolution_notes || undefined,
+          resolved_at: (v as { resolved_at?: string }).resolved_at || undefined,
+          resolved_by: (v as { resolved_by?: string }).resolved_by || undefined,
+          created_at: v.created_at as string,
+        } satisfies Violation;
+      });
     },
   });
 
   const resolveMutation = useMutation({
     mutationFn: async ({ id, status, notes }: { id: string; status: ViolationStatus; notes?: string }) => {
+      const { data: userRes } = await supabase.auth.getUser();
       const { error } = await supabase
         .from('security_violations')
         .update({
+          status,
+          resolution_notes: notes || null,
+          resolved_at: status === 'resolved' || status === 'dismissed' ? new Date().toISOString() : null,
+          resolved_by: userRes.user?.id ?? null,
           read: status === 'resolved' || status === 'dismissed',
-          description: notes || undefined,
         })
         .eq('id', id);
       if (error) throw error;
@@ -90,6 +104,7 @@ export function useViolationsPage() {
       toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     },
   });
+
 
   const filteredViolations = useMemo(() => {
     return violations.filter(v => {
