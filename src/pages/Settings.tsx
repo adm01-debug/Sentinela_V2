@@ -15,6 +15,8 @@ import { MFASettings } from '@/components/MFASettings';
 import { AlertSettingsPanel } from '@/components/AlertSettingsPanel';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { useSettings as useSettingsHook, type ApplicationRule } from '@/hooks/useSettings';
+import { usePolicies } from '@/hooks/usePolicies';
+import { useApplicationRules } from '@/hooks/useApplicationRules';
 import { type SecurityPolicy, categoryLabels } from '@/data/settingsData';
 import { SettingsSkeleton } from '@/components/PageSkeletons';
 import { Shield, AppWindow, Bell, UserCog, Search, Loader2 } from 'lucide-react';
@@ -22,26 +24,31 @@ import { Shield, AppWindow, Bell, UserCog, Search, Loader2 } from 'lucide-react'
 const SettingsContent = memo(function SettingsContent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const settingsQuery = useSettingsHook();
-  const settingsData = settingsQuery.data as Record<string, unknown> | null;
-  const loading = settingsQuery.isLoading;
-  const policies = (settingsData?.policies || []) as SecurityPolicy[];
-  const appRules = ((settingsData?.appRules || settingsData?.applicationRules || []) as ApplicationRule[]);
-  const updatePolicy = (id: string, enabled: boolean) => {};
-  const updateAppRule = (id: string, status: string) => {};
-  const addAppRule = async (_name: string, _cat: string, _status: 'allowed' | 'blocked' | 'monitored') => true;
-  const deleteAppRule = async (_id: string) => true;
-  const editAppRule = async (_id: string, _name: string, _cat: string) => true;
+
+  // Real data hooks
+  const { policies: rawPolicies, isLoading: policiesLoading, toggle: togglePolicy } = usePolicies();
+  const {
+    rules: appRules,
+    isLoading: rulesLoading,
+    add: addAppRule,
+    updateStatus: updateAppStatus,
+    editRule: editAppRule,
+    remove: deleteAppRule,
+  } = useApplicationRules();
+
+  const policies = rawPolicies as unknown as SecurityPolicy[];
+  const loading = policiesLoading || rulesLoading;
+
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [editingRule, setEditingRule] = useState<ApplicationRule | null>(null);
 
-  const handlePolicyToggle = (id: string, enabled: boolean) => {
-    updatePolicy(id, enabled);
+  const handlePolicyToggle = (id: string, _enabled: boolean) => {
+    togglePolicy(id);
   };
 
   const handleStatusChange = (id: string, status: 'allowed' | 'blocked' | 'monitored') => {
-    updateAppRule(id, status);
+    updateAppStatus(id, status);
   };
 
   const devicePolicies = policies.filter(p => p.category === 'device');
