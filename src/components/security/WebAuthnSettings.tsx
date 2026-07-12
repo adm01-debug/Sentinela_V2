@@ -82,13 +82,6 @@ const PasskeyItem = React.memo(function PasskeyItem({ credential, onDelete, onRe
     }
   };
 
-  return (
-    <>
-      <div className="flex items-start gap-4 p-4 border rounded-lg">
-        <div className="p-2 rounded-full bg-primary/10 text-primary">
-          <DeviceIcon type={credential.device_type} />
-        </div>
-        <div className="flex-1 min-w-0">
   const createdAt = safeDate(credential.created_at);
   const lastUsedAt = safeDate(credential.last_used_at);
   const displayName = credential.friendly_name || 'Passkey';
