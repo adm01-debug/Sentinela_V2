@@ -3998,8 +3998,12 @@ export type Database = {
           notified_employee: boolean | null
           policy_name: string
           read: boolean
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
           screenshot_url: string | null
           severity: string
+          status: string
           violation_type: string
         }
         Insert: {
@@ -4015,8 +4019,12 @@ export type Database = {
           notified_employee?: boolean | null
           policy_name: string
           read?: boolean
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
           screenshot_url?: string | null
           severity?: string
+          status?: string
           violation_type: string
         }
         Update: {
@@ -4032,8 +4040,12 @@ export type Database = {
           notified_employee?: boolean | null
           policy_name?: string
           read?: boolean
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
           screenshot_url?: string | null
           severity?: string
+          status?: string
           violation_type?: string
         }
         Relationships: [
