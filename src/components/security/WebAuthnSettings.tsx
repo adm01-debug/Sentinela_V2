@@ -221,9 +221,9 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
           <div className="flex items-center gap-4">
             {isSupported ? (
               hasPasskeys ? (
-                <ShieldCheck className="h-8 w-8 text-green-500" />
+                <ShieldCheck className="h-8 w-8 text-success" />
               ) : (
-                <ShieldAlert className="h-8 w-8 text-yellow-500" />
+                <ShieldAlert className="h-8 w-8 text-warning" />
               )
             ) : (
               <XCircle className="h-8 w-8 text-muted-foreground" />
@@ -254,15 +254,15 @@ export const WebAuthnSettings = React.memo(function WebAuthnSettings() {
         {isSupported && (
           <div className="grid grid-cols-3 gap-4">
             <div className="flex items-center gap-2 text-sm">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span>Impressão Digital</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span>Face ID</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span>PIN do Dispositivo</span>
             </div>
           </div>

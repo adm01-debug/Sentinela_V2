@@ -25,9 +25,9 @@ export const NotificationSettings = React.memo(function NotificationSettings() {
 
   const getStatusIcon = () => {
     if (!isSupported) return <BellOff className="h-8 w-8 text-muted-foreground" />;
-    if (permission === 'granted') return <BellRing className="h-8 w-8 text-green-500" />;
-    if (permission === 'denied') return <XCircle className="h-8 w-8 text-red-500" />;
-    return <Bell className="h-8 w-8 text-yellow-500" />;
+    if (permission === 'granted') return <BellRing className="h-8 w-8 text-success" />;
+    if (permission === 'denied') return <XCircle className="h-8 w-8 text-destructive" />;
+    return <Bell className="h-8 w-8 text-warning" />;
   };
 
   const getStatusText = () => {
@@ -86,11 +86,11 @@ export const NotificationSettings = React.memo(function NotificationSettings() {
                   <p className="font-medium text-yellow-700 dark:text-yellow-400">
                     Notificações bloqueadas
                   </p>
-                  <p className="text-sm text-yellow-600 dark:text-yellow-500">
+                  <p className="text-sm text-yellow-600 dark:text-warning">
                     Para receber alertas de segurança, você precisa desbloquear as notificações 
                     nas configurações do navegador:
                   </p>
-                  <ol className="text-sm text-yellow-600 dark:text-yellow-500 list-decimal list-inside space-y-1">
+                  <ol className="text-sm text-yellow-600 dark:text-warning list-decimal list-inside space-y-1">
                     <li>Clique no ícone de cadeado na barra de endereço</li>
                     <li>Encontre a opção "Notificações"</li>
                     <li>Altere de "Bloquear" para "Permitir"</li>
@@ -155,7 +155,7 @@ export const NotificationSettings = React.memo(function NotificationSettings() {
 
             <div className="pt-4 border-t">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                <CheckCircle2 className="h-4 w-4 text-success" />
                 <span>Conectado ao sistema de alertas em tempo real</span>
               </div>
             </div>
