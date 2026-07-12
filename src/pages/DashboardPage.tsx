@@ -16,6 +16,7 @@ import { DashboardChartsRow, DepartmentPieChart } from './dashboard/DashboardCha
 import { DashboardAlertsCard, DashboardActivityCard } from './dashboard/DashboardCards';
 import { DashboardSkeleton } from './dashboard/DashboardSkeleton';
 import { PresentationMode } from '@/components/dashboard/PresentationMode';
+import { AIInsights } from '@/components/dashboard/AIInsights';
 
 export const DashboardPage = () => {
   const [period, setPeriod] = useState<Period>('week');
