@@ -161,9 +161,9 @@ export default function TeamsPage() {
                           {t('common.edit')}
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem 
-                        className="text-destructive focus:text-destructive" 
-                        onClick={() => handleDelete(team.id)}
+                      <DropdownMenuItem
+                        className="text-destructive focus:text-destructive"
+                        onClick={() => setConfirmDeleteId(team.id)}
                       >
                         <Trash2 className="mr-2 h-4 w-4" />
                         {t('common.delete')}
