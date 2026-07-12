@@ -53,7 +53,7 @@ export default function GeofencingPage() {
         showBackButton={false}
         actions={
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => window.location.href = '/geofencing/alerts'} className="h-9 gap-2">
+            <Button variant="outline" onClick={() => navigate('/geofencing/alerts')} className="h-9 gap-2">
               <Bell className="h-4 w-4" />
               Ver Alertas
             </Button>
