@@ -64,7 +64,8 @@ export default function ViolationsPage() {
     { name: 'Resolvidas', value: stats.resolved, color: colors.success },
   ].filter(d => d.value > 0), [stats, colors]);
 
-  // Daily trend (last 7 days)
+  // Tendência dos últimos 7 dias — usa a lista COMPLETA (não filtrada)
+  // para evitar métricas enganosas quando o usuário aplica filtros.
   const dailyTrend = useMemo(() => {
     const days: Record<string, number> = {};
     for (let i = 6; i >= 0; i--) {
@@ -72,12 +73,13 @@ export default function ViolationsPage() {
       d.setDate(d.getDate() - i);
       days[format(d, 'dd/MM')] = 0;
     }
-    violations.forEach(v => {
+    allViolations.forEach(v => {
       const key = format(new Date(v.created_at), 'dd/MM');
       if (key in days) days[key]++;
     });
     return Object.entries(days).map(([date, count]) => ({ date, count }));
-  }, [violations]);
+  }, [allViolations]);
+
 
   if (isLoading) {
     return (
