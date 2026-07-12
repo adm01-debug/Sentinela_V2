@@ -14,25 +14,25 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 export function MFASettings() {
   const { isEnrolled, factors, loading, unenroll, checkMFAStatus } = useMFA();
   const [showEnrollDialog, setShowEnrollDialog] = useState(false);
-  const [disabling, setDisabling] = useState(false);
+  const [disablingId, setDisablingId] = useState<string | null>(null);
+
+  const factorList = Array.isArray(factors) ? factors : [];
+  const verifiedFactors = factorList.filter((f) => f.status === 'verified');
+  const unverifiedFactors = factorList.filter((f) => f.status !== 'verified');
 
   const handleEnrolled = () => {
     setShowEnrollDialog(false);
     checkMFAStatus();
   };
 
-  const handleDisable2FA = async () => {
-    const verifiedFactor = Array.isArray(factors) ? factors.find(f => f.status === 'verified') : null;
-    if (!verifiedFactor) return;
-
-    setDisabling(true);
-    const { error } = await unenroll(verifiedFactor.id);
-    setDisabling(false);
-
+  const handleUnenroll = async (factorId: string, label: string) => {
+    setDisablingId(factorId);
+    const { error } = await unenroll(factorId);
+    setDisablingId(null);
     if (error) {
-      toast.error('Erro ao desativar 2FA: ' + error.message);
+      toast.error(`Erro ao remover ${label}: ${error.message}`);
     } else {
-      toast.success('2FA desativado com sucesso');
+      toast.success(`${label} removido com sucesso`);
     }
   };
 
