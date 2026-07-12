@@ -164,15 +164,18 @@ export default function GeofencingPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label>Latitude</Label>
-                  <Input type="number" step="0.0001" value={formData.center_lat} onChange={e => setFormData(prev => ({ ...prev, center_lat: parseFloat(e.target.value) }))} />
+                  <Input type="number" step="0.0001" min={-90} max={90} value={formData.center_lat}
+                    onChange={e => setFormData(prev => ({ ...prev, center_lat: clamp(parseNumField(e.target.value, 0), -90, 90) }))} />
                 </div>
                 <div className="space-y-2">
                   <Label>Longitude</Label>
-                  <Input type="number" step="0.0001" value={formData.center_lng} onChange={e => setFormData(prev => ({ ...prev, center_lng: parseFloat(e.target.value) }))} />
+                  <Input type="number" step="0.0001" min={-180} max={180} value={formData.center_lng}
+                    onChange={e => setFormData(prev => ({ ...prev, center_lng: clamp(parseNumField(e.target.value, 0), -180, 180) }))} />
                 </div>
                 <div className="space-y-2">
                   <Label>Raio (m)</Label>
-                  <Input type="number" value={formData.radius} onChange={e => setFormData(prev => ({ ...prev, radius: parseInt(e.target.value) }))} />
+                  <Input type="number" min={1} value={formData.radius}
+                    onChange={e => setFormData(prev => ({ ...prev, radius: Math.max(1, parseNumField(e.target.value, 1, true)) }))} />
                 </div>
               </div>
             ) : (
