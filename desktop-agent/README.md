@@ -1,5 +1,7 @@
 # Sentinela Desktop Agent
 
+> Versão atual: 1.0.0
+
 Agente nativo de monitoramento para Windows, construído com Electron.
 
 ## Funcionalidades
