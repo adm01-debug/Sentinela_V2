@@ -40,14 +40,16 @@ export function AddApplicationDialog({ onAdd }: AddApplicationDialogProps) {
     if (!name.trim()) return;
 
     setLoading(true);
-    const success = await onAdd(name.trim(), category, status);
-    setLoading(false);
-
-    if (success) {
-      setName("");
-      setCategory("other");
-      setStatus("monitored");
-      setOpen(false);
+    try {
+      const success = await onAdd(name.trim(), category, status);
+      if (success) {
+        setName("");
+        setCategory("other");
+        setStatus("monitored");
+        setOpen(false);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
