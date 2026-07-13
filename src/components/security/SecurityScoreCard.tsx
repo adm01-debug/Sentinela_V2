@@ -20,6 +20,8 @@ export interface SecurityScore {
   alerts: number;
 }
 
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+
 export function calculateSecurityScore(
   mfaEnabled: boolean,
   trustedDevices: number,
@@ -28,14 +30,15 @@ export function calculateSecurityScore(
 ): SecurityScore {
   const mfa = mfaEnabled ? 25 : 0;
   const sessions = 25;
-  const devices = totalDevices > 0 ? Math.round((trustedDevices / totalDevices) * 25) : 25;
-  const alerts = Math.max(0, 25 - (unresolvedAlerts * 5));
-  return { total: mfa + sessions + devices + alerts, mfa, sessions, devices, alerts };
+  const safeTrusted = clamp(trustedDevices, 0, Math.max(0, totalDevices));
+  const devices = totalDevices > 0 ? Math.round((safeTrusted / totalDevices) * 25) : 25;
+  const alerts = clamp(25 - Math.max(0, unresolvedAlerts) * 5, 0, 25);
+  const total = clamp(mfa + sessions + devices + alerts, 0, 100);
+  return { total, mfa, sessions, devices, alerts };
 }
 
 export function getScoreColor(score: number): string {
   if (score >= 80) return 'text-success';
-  if (score >= 60) return 'text-warning';
   if (score >= 40) return 'text-warning';
   return 'text-destructive';
 }
@@ -102,7 +105,7 @@ export const SecurityScoreCard = React.memo(function SecurityScoreCard({
             </div>
             <div className="flex items-baseline gap-4">
               <div
-                className={`text-5xl font-bold ${getScoreColor(score.total)}`}
+                className={`text-5xl font-bold tabular-nums ${getScoreColor(score.total)}`}
                 aria-label={`Pontuação: ${score.total} de 100`}
               >
                 {score.total}
@@ -110,7 +113,7 @@ export const SecurityScoreCard = React.memo(function SecurityScoreCard({
               <div className="text-sm text-muted-foreground">de 100 pontos</div>
             </div>
             <Progress
-              value={score.total}
+              value={clamp(score.total, 0, 100)}
               className="h-2"
               aria-label={`Pontuação de segurança: ${score.total} de 100`}
             />
