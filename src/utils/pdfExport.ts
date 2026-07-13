@@ -6,10 +6,39 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { format, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import type { ReportData } from '@/data/reportData';
-import { colors, chartColors, drawRoundedRect, drawMetricCard, drawHorizontalBarChart, drawPieChart, drawLegend, drawAreaChart, type RGB } from './pdf/pdfHelpers';
+import {
+  colors,
+  chartColors,
+  drawRoundedRect,
+  drawMetricCard,
+  drawHorizontalBarChart,
+  drawPieChart,
+  drawLegend,
+  drawAreaChart,
+  type RGB,
+} from './pdf/pdfHelpers';
 
-export const generatePDF = (reportData: ReportData) => {
+/**
+ * Rich report payload consumed by {@link generatePDF}.
+ * Kept local to this module so the on-disk report layout stays decoupled
+ * from the lighter `ReportData` shape used elsewhere in the app.
+ */
+export interface PdfReportData {
+  period: { start: Date | string | number; end: Date | string | number };
+  department: string;
+  summary: {
+    totalEmployees: number;
+    avgProductivity: number;
+    totalAlerts: number;
+    blockedAttempts: number;
+  };
+  alertsByType: Array<{ type: string; count: number }>;
+  productivityByDepartment: Array<{ department: string; score: number; employees: number }>;
+  topAlertEmployees: Array<{ name: string; department: string; alerts: number }>;
+  dailyActivity: Array<{ date: string; productive: number; neutral: number; unproductive: number }>;
+}
+
+export const generatePDF = (reportData: PdfReportData) => {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
