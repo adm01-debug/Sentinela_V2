@@ -117,7 +117,7 @@ export function useUnreadViolationsCount() {
   return useQuery({
     queryKey: queryKeys.violations.unread(),
     queryFn: fetchUnreadCount,
-    ...(queryPresets as any).realtime,
+    ...(queryPresets as { realtime?: { staleTime?: number; gcTime?: number; refetchInterval?: number } }).realtime,
   });
 }
 
@@ -134,16 +134,16 @@ export function useViolationStats() {
       const stats = {
         total: data?.length || 0,
         bySeverity: {
-          critical: data?.filter((v: any) => v.severity === 'critical').length || 0,
-          high: data?.filter((v: any) => v.severity === 'high').length || 0,
-          medium: data?.filter((v: any) => v.severity === 'medium').length || 0,
-          low: data?.filter((v: any) => v.severity === 'low').length || 0,
+          critical: data?.filter((v) => v.severity === 'critical').length || 0,
+          high: data?.filter((v) => v.severity === 'high').length || 0,
+          medium: data?.filter((v) => v.severity === 'medium').length || 0,
+          low: data?.filter((v) => v.severity === 'low').length || 0,
         },
         byStatus: {
-          pending: data?.filter((v: any) => v.status === 'pending').length || 0,
-          reviewed: data?.filter((v: any) => v.status === 'reviewed').length || 0,
-          resolved: data?.filter((v: any) => v.status === 'resolved').length || 0,
-          dismissed: data?.filter((v: any) => v.status === 'dismissed').length || 0,
+          pending: data?.filter((v) => v.status === 'pending').length || 0,
+          reviewed: data?.filter((v) => v.status === 'reviewed').length || 0,
+          resolved: data?.filter((v) => v.status === 'resolved').length || 0,
+          dismissed: data?.filter((v) => v.status === 'dismissed').length || 0,
         },
       };
 
@@ -202,7 +202,8 @@ export function useUpdateViolationStatus() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.map((v: any) =>
+          previousViolations.map((v) =>
+
             v.id === id
               ? {
                   ...v,
@@ -238,7 +239,7 @@ export function useUpdateViolationStatus() {
       });
     },
 
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       const statusText = {
         pending: 'pendente',
         reviewed: 'revisada',
@@ -289,7 +290,7 @@ export function useBulkUpdateViolations() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.map((v: any) =>
+          previousViolations.map((v) =>
             ids.includes(v.id) ? { ...v, status } : v
           )
         );
@@ -309,7 +310,7 @@ export function useBulkUpdateViolations() {
       });
     },
 
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       toast({
         title: 'Atualização em lote',
         description: `${data.length} violações foram atualizadas.`,
@@ -331,7 +332,7 @@ export function useDeleteViolation() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('security_violations')
         .delete()
@@ -351,7 +352,7 @@ export function useDeleteViolation() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.filter((v: any) => v.id !== deletedId)
+          previousViolations.filter((v) => v.id !== deletedId)
         );
       }
 
