@@ -205,34 +205,21 @@ const SessionDetailsPanel = memo(function SessionDetailsPanel({
   onExtend,
 }: SessionDetailsPanelProps) {
   const config = statusConfig[status];
-  const startedAt = new Date(session.startedAt);
-  const lastActivityAt = new Date(session.lastActivityAt);
-  const expiresAt = new Date(session.expiresAt);
 
-  const sessionDuration = formatDistanceToNow(startedAt, {
-    locale: ptBR,
-  });
-
-  const lastActivity = formatDistanceToNow(lastActivityAt, {
-    addSuffix: true,
-    locale: ptBR,
-  });
-
-  const expiresIn = formatDistanceToNow(expiresAt, {
-    addSuffix: false,
-    locale: ptBR,
-  });
+  const sessionDuration = safeDistance(session.startedAt);
+  const lastActivity = safeDistance(session.lastActivityAt, { addSuffix: true });
+  const expiresIn = safeDistance(session.expiresAt);
 
   return (
     <div className="space-y-4 w-72">
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-            <Shield className="h-5 w-5 text-primary" />
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 shrink-0">
+            <Shield className="h-5 w-5 text-primary" aria-hidden="true" />
           </div>
-          <div>
-            <div className="font-medium text-sm">{session.email}</div>
+          <div className="min-w-0">
+            <div className="font-medium text-sm truncate">{session.email}</div>
             <div className="flex items-center gap-1.5">
               <StatusDot status={status} size="sm" pulse={false} />
               <span className={cn('text-xs', config.textColor)}>
@@ -242,41 +229,48 @@ const SessionDetailsPanel = memo(function SessionDetailsPanel({
           </div>
         </div>
         {session.isCurrentSession && (
-          <Badge variant="outline" className="text-xs">Atual</Badge>
+          <Badge variant="outline" className="text-xs shrink-0">Atual</Badge>
         )}
       </div>
 
       {/* Warning for expiring session */}
       {status === 'expiring' && (
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-destructive/10 text-destructive text-xs">
-          <AlertTriangle className="h-4 w-4" />
+        <div
+          role="alert"
+          className="flex items-center gap-2 p-2 rounded-lg bg-destructive/15 text-destructive text-xs"
+        >
+          <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
           <span>Sessão expira em {expiresIn}</span>
         </div>
       )}
 
       {/* Session Info */}
-      <div className="space-y-2 text-sm">
+      <dl className="space-y-2 text-sm">
         <div className="flex items-center gap-2 text-muted-foreground">
-          <Clock className="h-4 w-4" />
-          <span>Ativa há {sessionDuration}</span>
+          <Clock className="h-4 w-4 shrink-0" aria-hidden="true" />
+          <dt className="sr-only">Duração da sessão</dt>
+          <dd>Ativa há {sessionDuration}</dd>
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
-          <Clock className="h-4 w-4" />
-          <span>Última atividade {lastActivity}</span>
+          <Clock className="h-4 w-4 shrink-0" aria-hidden="true" />
+          <dt className="sr-only">Última atividade</dt>
+          <dd>Última atividade {lastActivity}</dd>
         </div>
         {session.device && (
           <div className="flex items-center gap-2 text-muted-foreground">
-            <Monitor className="h-4 w-4" />
-            <span>{session.device}</span>
+            <Monitor className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <dt className="sr-only">Dispositivo</dt>
+            <dd className="truncate">{session.device}</dd>
           </div>
         )}
         {session.location && (
           <div className="flex items-center gap-2 text-muted-foreground">
-            <MapPin className="h-4 w-4" />
-            <span>{session.location}</span>
+            <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <dt className="sr-only">Localização</dt>
+            <dd className="truncate">{session.location}</dd>
           </div>
         )}
-      </div>
+      </dl>
 
       {/* Actions */}
       <div className="flex gap-2 pt-2 border-t">
@@ -291,8 +285,9 @@ const SessionDetailsPanel = memo(function SessionDetailsPanel({
             size="sm"
             className="flex-1"
             onClick={onLogout}
+            aria-label={`Encerrar sessão de ${session.email}`}
           >
-            <LogOut className="mr-2 h-4 w-4" />
+            <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
             Encerrar
           </Button>
         )}
