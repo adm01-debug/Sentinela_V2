@@ -6,10 +6,39 @@ import { queryKeys, queryPresets } from '@/lib/queryClient';
 export interface MFAFactor {
   id: string;
   friendly_name?: string;
-  factor_type: 'totp';
+  factor_type: 'totp' | 'phone';
   status: 'unverified' | 'verified';
   created_at: string;
   updated_at: string;
+}
+
+type QueryPreset = { staleTime?: number; gcTime?: number; refetchOnWindowFocus?: boolean };
+const presetConfig = (queryPresets as { config?: QueryPreset }).config ?? {};
+
+/**
+ * Humaniza mensagens de erro da Auth API para PT-BR,
+ * evitando expor stack traces ou mensagens em inglês ao usuário final.
+ */
+function humanizeMFAError(error: unknown, fallback: string): string {
+  const message = error instanceof Error ? error.message : String(error ?? '');
+  const normalized = message.toLowerCase();
+
+  if (normalized.includes('invalid') && normalized.includes('code')) {
+    return 'Código inválido. Verifique e tente novamente.';
+  }
+  if (normalized.includes('expired')) {
+    return 'Código expirado. Solicite um novo.';
+  }
+  if (normalized.includes('rate') || normalized.includes('too many')) {
+    return 'Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.';
+  }
+  if (normalized.includes('network') || normalized.includes('fetch')) {
+    return 'Falha de conexão. Verifique sua internet e tente novamente.';
+  }
+  if (normalized.includes('already') && normalized.includes('enroll')) {
+    return 'Este fator já está cadastrado na sua conta.';
+  }
+  return message || fallback;
 }
 
 export function useMFAFactors() {
@@ -20,7 +49,7 @@ export function useMFAFactors() {
       if (error) throw error;
       return data.totp as MFAFactor[];
     },
-    ...(queryPresets as any).config,
+    ...presetConfig,
   });
 }
 
@@ -36,7 +65,7 @@ export function useMFAStatus() {
         currentAuthenticationMethods: data.currentAuthenticationMethods,
       };
     },
-    ...(queryPresets as any).config,
+    ...presetConfig,
   });
 }
 
@@ -57,7 +86,11 @@ export function useEnrollMFA() {
       queryClient.invalidateQueries({ queryKey: queryKeys.mfa.factors() });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao configurar MFA', description: error.message, variant: 'destructive' });
+      toast({
+        title: 'Erro ao configurar MFA',
+        description: humanizeMFAError(error, 'Não foi possível iniciar o cadastro do fator.'),
+        variant: 'destructive',
+      });
     },
   });
 }
@@ -84,7 +117,11 @@ export function useVerifyMFA() {
       toast({ title: 'MFA verificado com sucesso' });
     },
     onError: (error) => {
-      toast({ title: 'Código inválido', description: error.message, variant: 'destructive' });
+      toast({
+        title: 'Código inválido',
+        description: humanizeMFAError(error, 'Não foi possível verificar o código.'),
+        variant: 'destructive',
+      });
     },
   });
 }
@@ -103,7 +140,11 @@ export function useUnenrollMFA() {
       toast({ title: 'MFA desativado' });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao desativar MFA', description: error.message, variant: 'destructive' });
+      toast({
+        title: 'Erro ao desativar MFA',
+        description: humanizeMFAError(error, 'Não foi possível remover o fator.'),
+        variant: 'destructive',
+      });
     },
   });
 }
@@ -117,8 +158,8 @@ export function useMFA() {
   const verifyMutation = useVerifyMFA();
   const unenrollMutation = useUnenrollMFA();
 
-  const factors = Array.isArray(factorsQuery.data) ? factorsQuery.data : [];
-  const isEnrolled = factors.some((f: any) => f.status === 'verified');
+  const factors: MFAFactor[] = Array.isArray(factorsQuery.data) ? factorsQuery.data : [];
+  const isEnrolled = factors.some((f) => f.status === 'verified');
 
   return {
     isEnrolled,
@@ -126,7 +167,7 @@ export function useMFA() {
     status: statusQuery.data,
     loading: factorsQuery.isLoading || statusQuery.isLoading,
     error: factorsQuery.error || statusQuery.error,
-    
+
     enroll: async (friendlyName?: string) => {
       try {
         const data = await enrollMutation.mutateAsync(friendlyName);
@@ -135,7 +176,7 @@ export function useMFA() {
         return { data: null, error: error as Error };
       }
     },
-    
+
     verify: async (factorId: string, code: string) => {
       try {
         const data = await verifyMutation.mutateAsync({ factorId, code });
@@ -144,7 +185,7 @@ export function useMFA() {
         return { data: null, error: error as Error };
       }
     },
-    
+
     unenroll: async (factorId: string) => {
       try {
         await unenrollMutation.mutateAsync(factorId);
@@ -153,7 +194,7 @@ export function useMFA() {
         return { error: error as Error };
       }
     },
-    
+
     checkMFAStatus: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.mfa.all });
     },
