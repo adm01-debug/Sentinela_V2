@@ -35,12 +35,12 @@ export function useDashboardPage() {
         .order('created_at', { ascending: false })
         .limit(5);
       if (error) throw error;
-      return (data || []).map((v: any) => ({ 
+      return (data || []).map((v) => ({
         id: v.id,
         employee_name: v.employee_name || 'N/A',
         type: v.violation_type,
         severity: v.severity,
-        created_at: v.created_at
+        created_at: v.created_at,
       })) as RecentViolation[];
     },
   });
