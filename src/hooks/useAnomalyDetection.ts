@@ -42,9 +42,9 @@ export function useAnomalyDetection(options: UseAnomalyDetectionOptions = {}) {
         body: { entityType, threshold, timeRange: '24h' }
       });
       if (fnError) throw fnError;
-      setAnomalies((data?.predictions as AnomalyPrediction[] || []).map((p: any) => ({
+      setAnomalies(((data?.predictions as AnomalyPrediction[]) || []).map((p) => ({
         ...p,
-        timestamp: new Date(p.timestamp)
+        timestamp: new Date(p.timestamp),
       })));
     } catch (e) {
       setError(e instanceof Error ? e : new Error('Detection failed'));

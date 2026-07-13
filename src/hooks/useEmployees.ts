@@ -4,6 +4,11 @@ import { useToast } from '@/hooks/use-toast';
 import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 import { useRealtime } from '@/hooks/useRealtime';
 
+type QueryPreset = { staleTime?: number; gcTime?: number; refetchOnWindowFocus?: boolean };
+type QueryPresetsShape = { list?: QueryPreset; detail?: QueryPreset; dashboard?: QueryPreset };
+const presets: QueryPresetsShape = queryPresets as QueryPresetsShape;
+
+
 // ============================================================
 // TYPES
 // ============================================================
@@ -76,12 +81,12 @@ interface AttendanceStatsRow {
 
 export const useEmployees = (filters?: EmployeeFilters) => {
   const queryKey = queryKeys.employees.list(filters);
-  useRealtime('employees', queryKey as unknown as any[]);
+  useRealtime('employees', queryKey as unknown as unknown[]);
   
   return useQuery({
     queryKey,
     queryFn: () => employeeService.getEmployees(filters),
-    ...(queryPresets as any).list,
+    ...(presets.list ?? {}),
   });
 };
 
@@ -90,7 +95,7 @@ export const useEmployee = (id: string) => {
     queryKey: queryKeys.employees.detail(id),
     queryFn: () => employeeService.getEmployeeById(id),
     enabled: !!id,
-    ...(queryPresets as any).detail,
+    ...(presets.detail ?? {}),
   });
 };
 
@@ -131,7 +136,7 @@ export const useEmployeeStats = (id: string, startDate: string, endDate: string)
       };
     },
     enabled: !!id && !!startDate && !!endDate,
-    ...(queryPresets as any).dashboard,
+    ...(presets.dashboard ?? {}),
   });
 };
 

@@ -2,6 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys, queryPresets, REFETCH_INTERVALS } from '@/lib/queryClient';
 
+type RealtimePreset = { staleTime?: number; gcTime?: number; refetchInterval?: number };
+const realtimePreset = (queryPresets as { realtime?: RealtimePreset }).realtime ?? {};
+
 export interface ActiveEmployee {
   id: string;
   full_name: string;
@@ -25,12 +28,12 @@ export function useActiveEmployees() {
 
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
       
-      return data.map((emp: any) => ({
+      return data.map((emp) => ({
         ...emp,
         is_online: emp.last_activity_at ? emp.last_activity_at > fiveMinutesAgo : false,
       })) as ActiveEmployee[];
     },
-    ...(queryPresets as any).realtime,
+    ...realtimePreset,
     refetchInterval: REFETCH_INTERVALS.FREQUENT,
   });
 }
@@ -50,6 +53,6 @@ export function useOnlineEmployeesCount() {
       if (error) throw error;
       return count || 0;
     },
-    ...(queryPresets as any).realtime,
+    ...realtimePreset,
   });
 }
