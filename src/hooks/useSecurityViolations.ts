@@ -310,7 +310,7 @@ export function useBulkUpdateViolations() {
       });
     },
 
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       toast({
         title: 'Atualização em lote',
         description: `${data.length} violações foram atualizadas.`,
