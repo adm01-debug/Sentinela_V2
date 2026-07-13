@@ -17,7 +17,7 @@ export function useGamificationPage() {
     queryFn: async () => {
       const { data, error } = await supabase.from('gamification_leaderboard').select('*').order('points', { ascending: false }).limit(20);
       if (error) throw error;
-      return (data || []).map((e: any, i: number) => ({ ...(e as object), rank: i + 1 })) as LeaderboardEntry[];
+      return (data || []).map((e, i: number) => ({ ...(e as Omit<LeaderboardEntry, 'rank'>), rank: i + 1 })) as LeaderboardEntry[];
     },
   });
 
