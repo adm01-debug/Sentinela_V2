@@ -267,11 +267,14 @@ function OverviewSettingsCard({ settings, blockedIPsCount }: { settings?: Securi
   );
 }
 
-const EVENT_META: Record<LoginEvent['event_type'], { label: string; icon: LucideIcon; cls: string }> = {
+const EVENT_META: Partial<Record<LoginEvent['event_type'], { label: string; icon: LucideIcon; cls: string }>> = {
   login_success: { label: 'Login bem-sucedido', icon: CheckCircle2, cls: 'bg-success/15 text-success' },
   login_failed: { label: 'Tentativa de login falhou', icon: XCircle, cls: 'bg-destructive/15 text-destructive' },
   new_device: { label: 'Novo dispositivo detectado', icon: Activity, cls: 'bg-primary/15 text-primary' },
+  logout: { label: 'Sessão encerrada', icon: XCircle, cls: 'bg-muted text-muted-foreground' },
 };
+
+const DEFAULT_EVENT_META = { label: 'Evento', icon: Activity, cls: 'bg-primary/15 text-primary' } as const;
 
 function EventIcon({ type }: { type: LoginEvent['event_type'] }) {
   const meta = EVENT_META[type] ?? EVENT_META.new_device;
