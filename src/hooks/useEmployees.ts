@@ -4,6 +4,11 @@ import { useToast } from '@/hooks/use-toast';
 import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 import { useRealtime } from '@/hooks/useRealtime';
 
+type QueryPreset = { staleTime?: number; gcTime?: number; refetchOnWindowFocus?: boolean };
+type QueryPresetsShape = { list?: QueryPreset; detail?: QueryPreset; dashboard?: QueryPreset };
+const presets: QueryPresetsShape = queryPresets as QueryPresetsShape;
+
+
 // ============================================================
 // TYPES
 // ============================================================
