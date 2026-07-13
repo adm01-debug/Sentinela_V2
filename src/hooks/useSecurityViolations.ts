@@ -352,7 +352,7 @@ export function useDeleteViolation() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.filter((v: any) => v.id !== deletedId)
+          previousViolations.filter((v) => v.id !== deletedId)
         );
       }
 
