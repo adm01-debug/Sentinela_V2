@@ -164,8 +164,10 @@ const CompactIndicator = memo(function CompactIndicator({
     <Tooltip>
       <TooltipTrigger asChild>
         <button
+          type="button"
           onClick={onClick}
-          className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-muted/50 transition-colors"
+          aria-label={`Sessão ${config.label.toLowerCase()} de ${session.email}`}
+          className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <StatusDot status={status} size="sm" />
           <span className="text-xs text-muted-foreground hidden sm:inline">
