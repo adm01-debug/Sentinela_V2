@@ -33,7 +33,7 @@ export function useHeaderNotifications(limit = 8) {
     queryKey: ['header-notifications', limit],
     queryFn: async () => {
       const data = await notificationService.getHeaderNotifications(limit);
-      return data.map((v: any) => ({
+      return data.map((v) => ({
         id: v.id,
         title: v.violation_type || 'Violação detectada',
         description: v.employee_name

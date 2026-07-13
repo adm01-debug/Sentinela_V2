@@ -5,7 +5,7 @@ export function useEventSource(url: string) {
   const [error, setError] = useState<Error | null>(null);
   useEffect(() => {
     const es = new EventSource(url);
-    es.onmessage = (e: any) => setData(JSON.parse(e.data));
+    es.onmessage = (e: MessageEvent<string>) => setData(JSON.parse(e.data));
     es.onerror = () => setError(new Error('EventSource failed'));
     return () => es.close();
   }, [url]);

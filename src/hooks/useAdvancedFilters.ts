@@ -234,7 +234,13 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
   // ============================================================
 
   const toQueryParams = useMemo(() => {
-    const params = {};
+    const params: Record<string, {
+      field: string;
+      operator: string;
+      value: unknown;
+      value2: unknown;
+      logic: string;
+    }> = {};
 
     filterGroups.forEach((group, groupIndex) => {
       group.conditions.forEach((condition, condIndex) => {
@@ -243,7 +249,7 @@ export function useAdvancedFilters(options: UseAdvancedFiltersOptions) {
         }
 
         const key = `filter_${groupIndex}_${condIndex}`;
-        (params as any)[key] = {
+        params[key] = {
           field: condition.field,
           operator: condition.operator,
           value: condition.value,

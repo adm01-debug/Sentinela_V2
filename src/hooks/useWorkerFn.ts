@@ -7,7 +7,7 @@ export function useWorkerFn<T, R>(fn: (input: T) => R) {
     return new Promise((resolve) => {
       const blob = new Blob([`onmessage=e=>postMessage((${fn.toString()})(e.data))`], { type: "text/javascript" });
       workerRef.current = new Worker(URL.createObjectURL(blob));
-      workerRef.current.onmessage = (e: any) => { resolve(e.data); workerRef.current?.terminate(); };
+      workerRef.current.onmessage = (e: MessageEvent<R>) => { resolve(e.data); workerRef.current?.terminate(); };
       workerRef.current.postMessage(input);
     });
   }, [fn]);
