@@ -277,7 +277,7 @@ const EVENT_META: Partial<Record<LoginEvent['event_type'], { label: string; icon
 const DEFAULT_EVENT_META = { label: 'Evento', icon: Activity, cls: 'bg-primary/15 text-primary' } as const;
 
 function EventIcon({ type }: { type: LoginEvent['event_type'] }) {
-  const meta = EVENT_META[type] ?? EVENT_META.new_device;
+  const meta = EVENT_META[type] ?? DEFAULT_EVENT_META;
   const Icon = meta.icon;
   return (
     <div className={`mt-1 p-1 rounded-full shrink-0 ${meta.cls}`} aria-hidden="true">
@@ -302,7 +302,7 @@ function OverviewActivityCard({ loginEvents }: { loginEvents: LoginEvent[] }) {
           ) : (
             <ul className="space-y-3" aria-label="Eventos recentes de login">
               {loginEvents.slice(0, 5).map((event) => {
-                const meta = EVENT_META[event.event_type] ?? EVENT_META.new_device;
+                const meta = EVENT_META[event.event_type] ?? DEFAULT_EVENT_META;
                 const rel = safeRelativeDate(event.created_at);
                 return (
                   <li key={event.id} className="flex items-start gap-3 text-sm">
