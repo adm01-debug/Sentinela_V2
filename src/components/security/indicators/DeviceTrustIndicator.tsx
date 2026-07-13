@@ -15,22 +15,26 @@ export const DeviceTrustIndicator: React.FC<DeviceTrustProps> = ({
   className,
 }) => {
   return (
-    <div className={cn('flex items-center gap-2', className)}>
+    <div
+      className={cn('flex items-center gap-2', className)}
+      role="status"
+      aria-label={trusted ? 'Dispositivo confiável' : 'Dispositivo não verificado'}
+    >
       {trusted ? (
         <>
-          <CheckCircle className="h-4 w-4 text-success" />
-          <span className="text-sm text-success">Trusted Device</span>
+          <CheckCircle className="h-4 w-4 text-success shrink-0" aria-hidden="true" />
+          <span className="text-sm text-success">Dispositivo Confiável</span>
           {verified && (
             <Badge variant="outline" className="text-xs">
-              <Fingerprint className="h-3 w-3 mr-1" />
-              Verified
+              <Fingerprint className="h-3 w-3 mr-1" aria-hidden="true" />
+              Verificado
             </Badge>
           )}
         </>
       ) : (
         <>
-          <XCircle className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">Unverified Device</span>
+          <XCircle className="h-4 w-4 text-muted-foreground shrink-0" aria-hidden="true" />
+          <span className="text-sm text-muted-foreground">Dispositivo Não Verificado</span>
         </>
       )}
     </div>
