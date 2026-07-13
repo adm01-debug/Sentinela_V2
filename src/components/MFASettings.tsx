@@ -1,46 +1,106 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import {
+  AlertTriangle,
+  Loader2,
+  Shield,
+  ShieldCheck,
+  ShieldOff,
+  Smartphone,
+  Trash2,
+} from 'lucide-react';
+import { toast } from 'sonner';
+
+import { MFAEnroll } from '@/components/MFAEnroll';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Shield, ShieldCheck, ShieldOff, Loader2, Smartphone, Trash2, AlertTriangle } from 'lucide-react';
 import { useMFA } from '@/hooks/useMFA';
-import { MFAEnroll } from '@/components/MFAEnroll';
-import { toast } from 'sonner';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+
+const DEFAULT_FACTOR_LABEL = 'Aplicativo autenticador';
+
+function formatEnrollmentDate(value: string | null | undefined): string {
+  if (!value) return '—';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '—';
+  return date.toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+}
 
 export function MFASettings() {
   const { isEnrolled, factors, loading, unenroll, checkMFAStatus } = useMFA();
   const [showEnrollDialog, setShowEnrollDialog] = useState(false);
   const [disablingId, setDisablingId] = useState<string | null>(null);
+  const [bulkCleaning, setBulkCleaning] = useState(false);
 
-  const factorList = Array.isArray(factors) ? factors : [];
-  const verifiedFactors = factorList.filter((f) => f.status === 'verified');
-  const unverifiedFactors = factorList.filter((f) => f.status !== 'verified');
+  const { verifiedFactors, unverifiedFactors } = useMemo(() => {
+    const list = Array.isArray(factors) ? factors : [];
+    return {
+      verifiedFactors: list.filter((f) => f.status === 'verified'),
+      unverifiedFactors: list.filter((f) => f.status !== 'verified'),
+    };
+  }, [factors]);
 
-  const handleEnrolled = () => {
+  const handleEnrolled = useCallback(() => {
     setShowEnrollDialog(false);
-    checkMFAStatus();
-  };
+    void checkMFAStatus();
+  }, [checkMFAStatus]);
 
-  const handleUnenroll = async (factorId: string, label: string) => {
-    setDisablingId(factorId);
-    const { error } = await unenroll(factorId);
-    setDisablingId(null);
-    if (error) {
-      toast.error(`Erro ao remover ${label}: ${error.message}`);
-    } else {
+  const handleUnenroll = useCallback(
+    async (factorId: string, label: string) => {
+      setDisablingId(factorId);
+      const { error } = await unenroll(factorId);
+      setDisablingId(null);
+      if (error) {
+        toast.error(`Erro ao remover ${label}: ${error.message}`);
+        return false;
+      }
       toast.success(`${label} removido com sucesso`);
+      return true;
+    },
+    [unenroll],
+  );
+
+  const handleClearUnverified = useCallback(async () => {
+    if (unverifiedFactors.length === 0) return;
+    setBulkCleaning(true);
+    try {
+      // Serial para não estourar rate limit da API de auth
+      for (const factor of unverifiedFactors) {
+        await handleUnenroll(factor.id, factor.friendly_name || 'Fator pendente');
+      }
+    } finally {
+      setBulkCleaning(false);
     }
-  };
+  }, [unverifiedFactors, handleUnenroll]);
 
   if (loading) {
     return (
       <Card className="border-border/50">
-        <CardContent className="flex items-center justify-center py-8">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <CardContent
+          className="flex items-center justify-center py-8"
+          role="status"
+          aria-live="polite"
+          aria-label="Carregando configurações de 2FA"
+        >
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" aria-hidden="true" />
+          <span className="sr-only">Carregando…</span>
         </CardContent>
       </Card>
     );
@@ -49,9 +109,12 @@ export function MFASettings() {
   return (
     <Card className="border-border/50">
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-lg ${isEnrolled ? 'bg-success/20' : 'bg-muted'}`}>
+            <div
+              className={`p-2 rounded-lg ${isEnrolled ? 'bg-success/20' : 'bg-muted'}`}
+              aria-hidden="true"
+            >
               {isEnrolled ? (
                 <ShieldCheck className="h-5 w-5 text-success" />
               ) : (
@@ -59,96 +122,129 @@ export function MFASettings() {
               )}
             </div>
             <div>
-              <CardTitle className="text-lg">Autenticação de Dois Fatores (2FA)</CardTitle>
+              <CardTitle className="text-lg">Autenticação de dois fatores (2FA)</CardTitle>
               <CardDescription>
                 Adicione uma camada extra de segurança à sua conta
               </CardDescription>
             </div>
           </div>
-          <Badge variant={isEnrolled ? 'default' : 'secondary'} className={isEnrolled ? 'bg-success' : ''}>
+          <Badge
+            variant={isEnrolled ? 'default' : 'secondary'}
+            className={isEnrolled ? 'bg-success text-success-foreground' : ''}
+          >
             {isEnrolled ? 'Ativo' : 'Inativo'}
           </Badge>
         </div>
       </CardHeader>
+
       <CardContent className="space-y-4">
         {isEnrolled ? (
           <>
             <Alert className="bg-success/10 border-success/20">
-              <ShieldCheck className="h-4 w-4 text-success" />
+              <ShieldCheck className="h-4 w-4 text-success" aria-hidden="true" />
               <AlertDescription className="text-success">
                 Sua conta está protegida com autenticação de dois fatores.
               </AlertDescription>
             </Alert>
 
-            {verifiedFactors.map((factor) => {
-              const label = factor.friendly_name || 'Authenticator App';
-              const isDisabling = disablingId === factor.id;
-              return (
-                <div key={factor.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Smartphone className="h-5 w-5 text-muted-foreground" aria-hidden />
-                    <div>
-                      <p className="font-medium">{label}</p>
-                      <p className="text-sm text-muted-foreground">
-                        Configurado em {new Date(factor.created_at).toLocaleDateString('pt-BR')}
-                      </p>
+            <ul className="space-y-2" aria-label="Fatores de autenticação ativos">
+              {verifiedFactors.map((factor) => {
+                const label = factor.friendly_name || DEFAULT_FACTOR_LABEL;
+                const isDisabling = disablingId === factor.id;
+                return (
+                  <li
+                    key={factor.id}
+                    className="flex items-center justify-between gap-3 p-4 bg-muted/50 rounded-lg"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <Smartphone
+                        className="h-5 w-5 shrink-0 text-muted-foreground"
+                        aria-hidden="true"
+                      />
+                      <div className="min-w-0">
+                        <p className="font-medium truncate">{label}</p>
+                        <p className="text-sm text-muted-foreground">
+                          Configurado em {formatEnrollmentDate(factor.created_at)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive hover:text-destructive"
-                        aria-label={`Remover ${label}`}
-                        disabled={isDisabling}
-                      >
-                        {isDisabling ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Desativar 2FA?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Isso removerá a proteção de autenticação de dois fatores da sua conta.
-                          Você precisará configurar novamente se quiser reativá-la.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleUnenroll(factor.id, label)}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive shrink-0"
+                          aria-label={`Remover ${label}`}
                           disabled={isDisabling}
-                          className="bg-destructive hover:bg-destructive/90"
                         >
-                          {isDisabling ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                          Desativar 2FA
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
-              );
-            })}
+                          {isDisabling ? (
+                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                          ) : (
+                            <Trash2 className="h-4 w-4" aria-hidden="true" />
+                          )}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Desativar 2FA?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Isso removerá a proteção de autenticação de dois fatores da sua conta.
+                            Você precisará configurar novamente se quiser reativá-la.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleUnenroll(factor.id, label)}
+                            disabled={isDisabling}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            {isDisabling ? (
+                              <Loader2
+                                className="h-4 w-4 animate-spin mr-2"
+                                aria-hidden="true"
+                              />
+                            ) : null}
+                            Desativar 2FA
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </li>
+                );
+              })}
+            </ul>
 
             {unverifiedFactors.length > 0 && (
-              <Alert variant="destructive" className="bg-warning/10 border-warning/30">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription className="flex items-center justify-between gap-3">
+              <Alert
+                variant="destructive"
+                className="bg-warning/10 border-warning/30"
+                role="alert"
+              >
+                <AlertTriangle className="h-4 w-4" aria-hidden="true" />
+                <AlertDescription className="flex flex-wrap items-center justify-between gap-3">
                   <span>
-                    Existe(m) {unverifiedFactors.length} configuração(ões) de 2FA incompleta(s).
+                    {unverifiedFactors.length === 1
+                      ? 'Existe 1 configuração de 2FA incompleta.'
+                      : `Existem ${unverifiedFactors.length} configurações de 2FA incompletas.`}
                   </span>
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() =>
-                      unverifiedFactors.forEach((f) =>
-                        handleUnenroll(f.id, f.friendly_name || 'Fator pendente'),
-                      )
-                    }
-                    disabled={disablingId !== null}
+                    onClick={handleClearUnverified}
+                    disabled={bulkCleaning || disablingId !== null}
                   >
-                    Limpar
+                    {bulkCleaning ? (
+                      <>
+                        <Loader2
+                          className="h-4 w-4 animate-spin mr-2"
+                          aria-hidden="true"
+                        />
+                        Limpando…
+                      </>
+                    ) : (
+                      'Limpar pendentes'
+                    )}
                   </Button>
                 </AlertDescription>
               </Alert>
@@ -157,17 +253,17 @@ export function MFASettings() {
         ) : (
           <>
             <Alert>
-              <Shield className="h-4 w-4" />
+              <Shield className="h-4 w-4" aria-hidden="true" />
               <AlertDescription>
-                A autenticação de dois fatores adiciona uma camada extra de segurança, 
-                exigindo um código do seu celular além da senha para fazer login.
+                A autenticação de dois fatores adiciona uma camada extra de segurança, exigindo
+                um código do seu celular além da senha para fazer login.
               </AlertDescription>
             </Alert>
 
             <Dialog open={showEnrollDialog} onOpenChange={setShowEnrollDialog}>
               <DialogTrigger asChild>
                 <Button className="w-full">
-                  <ShieldCheck className="h-4 w-4 mr-2" />
+                  <ShieldCheck className="h-4 w-4 mr-2" aria-hidden="true" />
                   Ativar 2FA
                 </Button>
               </DialogTrigger>
