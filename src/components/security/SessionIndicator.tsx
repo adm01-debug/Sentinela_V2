@@ -1,9 +1,17 @@
-import { memo, useState, useEffect, useCallback } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Shield, LogOut, Clock, MapPin, Monitor, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+// Safely format a distance-to-now, returning fallback for invalid dates.
+function safeDistance(value: Date | string | number | undefined, opts?: { addSuffix?: boolean }): string {
+  if (value === undefined || value === null) return '—';
+  const d = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(d.getTime())) return '—';
+  return formatDistanceToNow(d, { addSuffix: opts?.addSuffix, locale: ptBR });
+}
 import { Badge } from '@/components/ui/badge';
 import {
   Popover,
