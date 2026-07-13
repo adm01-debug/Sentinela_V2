@@ -267,26 +267,17 @@ function OverviewSettingsCard({ settings, blockedIPsCount }: { settings?: Securi
   );
 }
 
-function eventLabel(type: LoginEvent['event_type']): string {
-  switch (type) {
-    case 'login_success': return 'Login bem-sucedido';
-    case 'login_failed': return 'Tentativa de login falhou';
-    case 'new_device': return 'Novo dispositivo detectado';
-    default: return String(type);
-  }
-}
+const EVENT_META: Record<LoginEvent['event_type'], { label: string; icon: LucideIcon; cls: string }> = {
+  login_success: { label: 'Login bem-sucedido', icon: CheckCircle2, cls: 'bg-success/15 text-success' },
+  login_failed: { label: 'Tentativa de login falhou', icon: XCircle, cls: 'bg-destructive/15 text-destructive' },
+  new_device: { label: 'Novo dispositivo detectado', icon: Activity, cls: 'bg-primary/15 text-primary' },
+};
 
 function EventIcon({ type }: { type: LoginEvent['event_type'] }) {
-  const cls =
-    type === 'login_success' ? 'bg-success/15 text-success' :
-    type === 'login_failed' ? 'bg-destructive/15 text-destructive' :
-    'bg-primary/15 text-primary';
-  const Icon =
-    type === 'login_success' ? CheckCircle2 :
-    type === 'login_failed' ? XCircle :
-    Activity;
+  const meta = EVENT_META[type] ?? EVENT_META.new_device;
+  const Icon = meta.icon;
   return (
-    <div className={`mt-1 p-1 rounded-full ${cls}`} aria-hidden="true">
+    <div className={`mt-1 p-1 rounded-full shrink-0 ${meta.cls}`} aria-hidden="true">
       <Icon className="h-3 w-3" />
     </div>
   );
@@ -306,24 +297,31 @@ function OverviewActivityCard({ loginEvents }: { loginEvents: LoginEvent[] }) {
           {loginEvents.length === 0 ? (
             <p className="text-center text-muted-foreground py-4">Nenhum evento recente</p>
           ) : (
-            <ul className="space-y-3">
-              {loginEvents.slice(0, 5).map((event) => (
-                <li key={event.id} className="flex items-start gap-3 text-sm">
-                  <EventIcon type={event.event_type} />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate">{eventLabel(event.event_type)}</p>
-                    <p className="text-muted-foreground truncate">
-                      {event.ip_address} • {event.location || 'Local desconhecido'}
-                    </p>
-                  </div>
-                  <time
-                    className="text-muted-foreground whitespace-nowrap"
-                    dateTime={event.created_at}
-                  >
-                    {formatDistanceToNow(new Date(event.created_at), { addSuffix: true, locale: ptBR })}
-                  </time>
-                </li>
-              ))}
+            <ul className="space-y-3" aria-label="Eventos recentes de login">
+              {loginEvents.slice(0, 5).map((event) => {
+                const meta = EVENT_META[event.event_type] ?? EVENT_META.new_device;
+                const rel = safeRelativeDate(event.created_at);
+                return (
+                  <li key={event.id} className="flex items-start gap-3 text-sm">
+                    <EventIcon type={event.event_type} />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium truncate">{meta.label}</p>
+                      <p className="text-muted-foreground truncate">
+                        <span className="sr-only">Origem: </span>
+                        {event.ip_address || '—'} • {event.location || 'Local desconhecido'}
+                      </p>
+                    </div>
+                    {rel && (
+                      <time
+                        className="text-muted-foreground whitespace-nowrap shrink-0"
+                        dateTime={event.created_at}
+                      >
+                        {rel}
+                      </time>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </ScrollArea>
