@@ -81,7 +81,7 @@ interface AttendanceStatsRow {
 
 export const useEmployees = (filters?: EmployeeFilters) => {
   const queryKey = queryKeys.employees.list(filters);
-  useRealtime('employees', queryKey as unknown as readonly unknown[]);
+  useRealtime('employees', queryKey as unknown as unknown[]);
   
   return useQuery({
     queryKey,
