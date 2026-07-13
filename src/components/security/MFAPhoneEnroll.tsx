@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { memo, useEffect, useRef, useState, type FormEvent } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,8 @@ interface MFAPhoneEnrollProps {
   onCancel: () => void;
 }
 
+const RESEND_COOLDOWN_SECONDS = 30;
+
 const PHONE_MAX_LEN = 16;
 const CODE_LEN = 6;
 
@@ -22,7 +24,7 @@ function formatPhoneInput(value: string): string {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
 }
 
-export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
+function MFAPhoneEnrollBase({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
   const {
     isEnrolling,
     isVerifying,
@@ -37,16 +39,33 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
   const [inputPhone, setInputPhone] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
   const [step, setStep] = useState<'phone' | 'verify'>('phone');
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const codeInputRef = useRef<HTMLInputElement>(null);
 
   const phoneDigits = inputPhone.replace(/\D/g, '');
   const canSubmitPhone = phoneDigits.length === 11 && !isEnrolling;
   const canSubmitCode = verifyCode.length === CODE_LEN && !isVerifying;
 
+  // Cooldown countdown for resend button
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const t = setInterval(() => setResendCooldown((s) => Math.max(0, s - 1)), 1000);
+    return () => clearInterval(t);
+  }, [resendCooldown]);
+
+  // Autofocus code input when switching to verify step
+  useEffect(() => {
+    if (step === 'verify') codeInputRef.current?.focus();
+  }, [step]);
+
   const handleEnrollPhone = async (e?: FormEvent) => {
     e?.preventDefault();
     if (!canSubmitPhone) return;
     const result = await enrollPhone(inputPhone);
-    if (result.data) setStep('verify');
+    if (result.data) {
+      setStep('verify');
+      setResendCooldown(RESEND_COOLDOWN_SECONDS);
+    }
   };
 
   const handleVerify = async (e?: FormEvent) => {
@@ -56,11 +75,18 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
     if (result.data) onEnrolled();
   };
 
+  const handleResend = async () => {
+    if (resendCooldown > 0 || isVerifying || isEnrolling) return;
+    await resendCode();
+    setResendCooldown(RESEND_COOLDOWN_SECONDS);
+  };
+
   const handleBack = () => {
     reset();
     setStep('phone');
     setInputPhone('');
     setVerifyCode('');
+    setResendCooldown(0);
   };
 
   if (step === 'phone') {
@@ -153,6 +179,7 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
             <Label htmlFor="sms-code">Código de verificação</Label>
             <Input
               id="sms-code"
+              ref={codeInputRef}
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
@@ -161,7 +188,7 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
               value={verifyCode}
               onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, '').slice(0, CODE_LEN))}
               placeholder="000000"
-              className="text-center text-2xl tracking-widest font-mono"
+              className="text-center text-2xl tracking-widest font-mono tabular-nums"
               aria-label="Código de 6 dígitos"
               required
             />
@@ -170,12 +197,19 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
           <Button
             type="button"
             variant="link"
-            onClick={resendCode}
+            onClick={handleResend}
             className="w-full"
-            disabled={isVerifying || isEnrolling}
+            disabled={isVerifying || isEnrolling || resendCooldown > 0}
+            aria-label={
+              resendCooldown > 0
+                ? `Reenviar código em ${resendCooldown} segundos`
+                : 'Reenviar código'
+            }
           >
             <RefreshCw className="h-4 w-4 mr-2" aria-hidden="true" />
-            Reenviar código
+            {resendCooldown > 0
+              ? `Reenviar em ${resendCooldown}s`
+              : 'Reenviar código'}
           </Button>
 
           <div className="flex gap-3 pt-4">
@@ -193,3 +227,5 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
     </Card>
   );
 }
+
+export const MFAPhoneEnroll = memo(MFAPhoneEnrollBase);
