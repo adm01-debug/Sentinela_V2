@@ -239,7 +239,7 @@ export function useUpdateViolationStatus() {
       });
     },
 
-    onSuccess: (data: any) => {
+    onSuccess: (data) => {
       const statusText = {
         pending: 'pendente',
         reviewed: 'revisada',
