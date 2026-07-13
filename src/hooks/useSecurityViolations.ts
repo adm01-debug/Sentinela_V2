@@ -202,7 +202,8 @@ export function useUpdateViolationStatus() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.map((v: any) =>
+          previousViolations.map((v) =>
+
             v.id === id
               ? {
                   ...v,
