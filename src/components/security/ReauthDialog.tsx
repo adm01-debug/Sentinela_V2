@@ -91,8 +91,8 @@ export function ReauthDialog({
         </DialogHeader>
 
         {error && (
-          <Alert variant="destructive">
-            <AlertTriangle className="h-4 w-4" />
+          <Alert variant="destructive" role="alert">
+            <AlertTriangle className="h-4 w-4" aria-hidden="true" />
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
@@ -100,11 +100,11 @@ export function ReauthDialog({
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'password' | 'mfa')}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="password" className="flex items-center gap-2">
-              <Lock className="h-4 w-4" />
+              <Lock className="h-4 w-4" aria-hidden="true" />
               Senha
             </TabsTrigger>
             <TabsTrigger value="mfa" disabled={!isEnrolled} className="flex items-center gap-2">
-              <Smartphone className="h-4 w-4" />
+              <Smartphone className="h-4 w-4" aria-hidden="true" />
               MFA
             </TabsTrigger>
           </TabsList>
@@ -119,6 +119,8 @@ export function ReauthDialog({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Digite sua senha"
+                  autoComplete="current-password"
+                  aria-invalid={!!error}
                   autoFocus
                   disabled={isVerifying}
                 />
@@ -139,7 +141,7 @@ export function ReauthDialog({
                   disabled={!password || isVerifying}
                 >
                   {isVerifying ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" />
                   ) : null}
                   Verificar
                 </Button>
@@ -158,9 +160,12 @@ export function ReauthDialog({
                   pattern="[0-9]*"
                   maxLength={6}
                   value={mfaCode}
-                  onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, ''))}
+                  onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                   placeholder="000000"
                   className="text-center text-xl tracking-widest font-mono"
+                  autoComplete="one-time-code"
+                  aria-label="Código MFA de 6 dígitos"
+                  aria-invalid={!!error}
                   autoFocus
                   disabled={isVerifying}
                 />
@@ -184,7 +189,7 @@ export function ReauthDialog({
                   disabled={mfaCode.length !== 6 || isVerifying}
                 >
                   {isVerifying ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" />
                   ) : null}
                   Verificar
                 </Button>
