@@ -1,4 +1,7 @@
-// @ts-nocheck
+/**
+ * PDF report generator (SecureWatch).
+ * All jsPDF calls are strongly typed via helpers in ./pdf/pdfHelpers.
+ */
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { format, differenceInDays } from 'date-fns';

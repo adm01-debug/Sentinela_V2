@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Hook for managing focus trap within a container
@@ -128,28 +128,18 @@ export function useArrowNavigation<T extends HTMLElement>(
  * Hook for reduced motion preference
  */
 export function usePrefersReducedMotion(): boolean {
-  const mediaQuery = typeof window !== 'undefined' 
-    ? window.matchMedia('(prefers-reduced-motion: reduce)') 
-    : null;
-
-  const getInitialState = () => mediaQuery?.matches ?? false;
-
-  const [prefersReducedMotion, setPrefersReducedMotion] = 
-    typeof window !== 'undefined' 
-      ? [getInitialState(), () => {}]
-      : [false, () => {}];
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  });
 
   useEffect(() => {
-    if (!mediaQuery) return;
-
-    const handler = (e: MediaQueryListEvent) => {
-      // @ts-ignore - setState might not exist in SSR
-      setPrefersReducedMotion?.(e.matches);
-    };
-
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
-  }, [mediaQuery]);
+  }, []);
 
   return prefersReducedMotion;
 }
