@@ -179,6 +179,7 @@ function MFAPhoneEnrollBase({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
             <Label htmlFor="sms-code">Código de verificação</Label>
             <Input
               id="sms-code"
+              ref={codeInputRef}
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
@@ -187,7 +188,7 @@ function MFAPhoneEnrollBase({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
               value={verifyCode}
               onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, '').slice(0, CODE_LEN))}
               placeholder="000000"
-              className="text-center text-2xl tracking-widest font-mono"
+              className="text-center text-2xl tracking-widest font-mono tabular-nums"
               aria-label="Código de 6 dígitos"
               required
             />
@@ -196,12 +197,19 @@ function MFAPhoneEnrollBase({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
           <Button
             type="button"
             variant="link"
-            onClick={resendCode}
+            onClick={handleResend}
             className="w-full"
-            disabled={isVerifying || isEnrolling}
+            disabled={isVerifying || isEnrolling || resendCooldown > 0}
+            aria-label={
+              resendCooldown > 0
+                ? `Reenviar código em ${resendCooldown} segundos`
+                : 'Reenviar código'
+            }
           >
             <RefreshCw className="h-4 w-4 mr-2" aria-hidden="true" />
-            Reenviar código
+            {resendCooldown > 0
+              ? `Reenviar em ${resendCooldown}s`
+              : 'Reenviar código'}
           </Button>
 
           <div className="flex gap-3 pt-4">
@@ -219,3 +227,5 @@ function MFAPhoneEnrollBase({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
     </Card>
   );
 }
+
+export const MFAPhoneEnroll = memo(MFAPhoneEnrollBase);
