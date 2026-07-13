@@ -16,10 +16,19 @@ import { Separator } from '@/components/ui/separator';
 import {
   Lock, AlertTriangle, XCircle, CheckCircle2, Activity,
   Eye, Bell, Key, Monitor, MapPin, Globe, Fingerprint,
+  type LucideIcon,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
+
+/** Format ISO date safely; returns null on invalid input to avoid "Invalid Date". */
+function safeRelativeDate(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  return formatDistanceToNow(d, { addSuffix: true, locale: ptBR });
+}
 
 // Sub-components
 import { SecurityScoreCard, calculateSecurityScore } from './SecurityScoreCard';
