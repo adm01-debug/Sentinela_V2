@@ -290,7 +290,7 @@ export function useBulkUpdateViolations() {
       if (previousViolations) {
         queryClient.setQueryData<SecurityViolation[]>(
           queryKeys.violations.list(),
-          previousViolations.map((v: any) =>
+          previousViolations.map((v) =>
             ids.includes(v.id) ? { ...v, status } : v
           )
         );
