@@ -188,8 +188,9 @@ export function useEmployeesPage() {
       resetForm();
       setIsCreateOpen(false);
       toast.success('Funcionário criado com sucesso');
-    } catch (err: any) {
-      toast.error(err.message || 'Erro ao criar funcionário');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || 'Erro ao criar funcionário');
     }
   }, [formData, createEmployee, resetForm]);
 
@@ -217,8 +218,9 @@ export function useEmployeesPage() {
       setSelectedEmployee(null);
       setIsEditOpen(false);
       toast.success('Funcionário atualizado com sucesso');
-    } catch (err: any) {
-      toast.error(err.message || 'Erro ao atualizar funcionário');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || 'Erro ao atualizar funcionário');
     }
   }, [selectedEmployee, formData, updateEmployee, resetForm]);
 
@@ -230,8 +232,9 @@ export function useEmployeesPage() {
       setSelectedEmployee(null);
       setIsDeleteOpen(false);
       toast.success('Funcionário removido com sucesso');
-    } catch (err: any) {
-      toast.error(err.message || 'Erro ao remover funcionário');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || 'Erro ao remover funcionário');
     }
   }, [selectedEmployee, deleteEmployee]);
 
