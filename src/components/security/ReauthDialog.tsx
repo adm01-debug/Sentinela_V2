@@ -189,7 +189,7 @@ export function ReauthDialog({
                   disabled={mfaCode.length !== 6 || isVerifying}
                 >
                   {isVerifying ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" />
                   ) : null}
                   Verificar
                 </Button>
