@@ -71,7 +71,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
   const selectMany = useCallback((ids: string[]) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      ids.forEach((id: any) => next.add(id));
+      ids.forEach((id: string) => next.add(id));
       return next;
     });
   }, []);
@@ -79,7 +79,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
   const deselectMany = useCallback((ids: string[]) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      ids.forEach((id: any) => next.delete(id));
+      ids.forEach((id: string) => next.delete(id));
       return next;
     });
   }, []);
@@ -127,7 +127,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
           .in('id', ids);
 
         if (hardError) {
-          ids.forEach((id: any) => result.failed.push({ id, error: hardError.message }));
+          ids.forEach((id: string) => result.failed.push({ id, error: hardError.message }));
         } else {
           result.success = ids;
         }
@@ -173,7 +173,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .select('id');
 
       if (error) {
-        ids.forEach((id: any) => result.failed.push({ id, error: error.message }));
+        ids.forEach((id: string) => result.failed.push({ id, error: error.message }));
       } else {
         result.success = (data ?? []).map((d: { id: string }) => d.id);
       }
@@ -208,7 +208,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .select('id');
 
       if (error) {
-        return { success: [], failed: ids.map((id: any) => ({ id, error: error.message })), total: ids.length };
+        return { success: [], failed: ids.map((id: string) => ({ id, error: error.message })), total: ids.length };
       }
 
       return { success: (data ?? []).map((d: { id: string }) => d.id), failed: [], total: ids.length };
@@ -241,7 +241,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .select('id');
 
       if (error) {
-        return { success: [], failed: ids.map((id: any) => ({ id, error: error.message })), total: ids.length };
+        return { success: [], failed: ids.map((id: string) => ({ id, error: error.message })), total: ids.length };
       }
 
       return { success: (data ?? []).map((d: { id: string }) => d.id), failed: [], total: ids.length };
@@ -274,7 +274,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .in('id', ids);
 
       if (fetchError || !originals) {
-        return { success: [], failed: ids.map((id: any) => ({ id, error: 'Não encontrado' })), total: ids.length };
+        return { success: [], failed: ids.map((id: string) => ({ id, error: 'Não encontrado' })), total: ids.length };
       }
 
       // Criar cópias (removendo id, created_at, updated_at)
@@ -293,7 +293,7 @@ export function useBulkActions<T extends { id: string }>(config: UseBulkActionsC
         .select('id');
 
       if (error) {
-        return { success: [], failed: ids.map((id: any) => ({ id, error: error.message })), total: ids.length };
+        return { success: [], failed: ids.map((id: string) => ({ id, error: error.message })), total: ids.length };
       }
 
       return { success: (data ?? []).map((d: { id: string }) => d.id), failed: [], total: ids.length };
