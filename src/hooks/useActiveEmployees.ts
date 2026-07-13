@@ -2,6 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { queryKeys, queryPresets, REFETCH_INTERVALS } from '@/lib/queryClient';
 
+type RealtimePreset = { staleTime?: number; gcTime?: number; refetchInterval?: number };
+const realtimePreset = (queryPresets as { realtime?: RealtimePreset }).realtime ?? {};
+
 export interface ActiveEmployee {
   id: string;
   full_name: string;
