@@ -5,6 +5,7 @@ export { SessionTimeoutWarning } from './SessionTimeoutWarning';
 export { SessionIndicator } from './SessionIndicator';
 export { ReauthDialog } from './ReauthDialog';
 export { MFAPhoneEnroll } from './MFAPhoneEnroll';
+export { UnifiedMFAPanel } from './UnifiedMFAPanel';
 export { KnownDevicesPanel } from './KnownDevicesPanel';
 export { UnifiedSecurityPanel } from './UnifiedSecurityPanel';
 export { GeoBlockingManager } from './GeoBlockingManager';
