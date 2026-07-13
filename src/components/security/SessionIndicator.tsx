@@ -310,18 +310,13 @@ function SessionIndicatorComponent({
 }: SessionIndicatorProps) {
   const [status, setStatus] = useState<SessionStatus>(() => getSessionStatus(session));
 
-  // Update status periodically
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setStatus(getSessionStatus(session));
-    }, 30000); // Check every 30 seconds
-
-    return () => clearInterval(interval);
-  }, [session]);
-
-  // Update status when session changes
+  // Recompute status when session changes and refresh periodically.
   useEffect(() => {
     setStatus(getSessionStatus(session));
+    const interval = setInterval(() => {
+      setStatus(getSessionStatus(session));
+    }, 30000);
+    return () => clearInterval(interval);
   }, [session]);
 
   if (!showDetails) {
