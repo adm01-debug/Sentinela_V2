@@ -55,11 +55,11 @@ export function useDashboardPage() {
         .order('recorded_date', { ascending: false })
         .limit(10);
       if (error) throw error;
-      return (data || []).map((item: any) => ({
+      return (data || []).map((item) => ({
         id: item.id,
         type: 'productivity',
         description: `${item.employee_name} - ${Math.round(item.productive_time_seconds / 60)}min produtivo`,
-        created_at: item.recorded_date
+        created_at: item.recorded_date,
       })) as ActivityItem[];
     },
   });
