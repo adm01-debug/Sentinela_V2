@@ -24,7 +24,7 @@ function formatPhoneInput(value: string): string {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
 }
 
-export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
+function MFAPhoneEnrollBase({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
   const {
     isEnrolling,
     isVerifying,
@@ -39,16 +39,33 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
   const [inputPhone, setInputPhone] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
   const [step, setStep] = useState<'phone' | 'verify'>('phone');
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const codeInputRef = useRef<HTMLInputElement>(null);
 
   const phoneDigits = inputPhone.replace(/\D/g, '');
   const canSubmitPhone = phoneDigits.length === 11 && !isEnrolling;
   const canSubmitCode = verifyCode.length === CODE_LEN && !isVerifying;
 
+  // Cooldown countdown for resend button
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const t = setInterval(() => setResendCooldown((s) => Math.max(0, s - 1)), 1000);
+    return () => clearInterval(t);
+  }, [resendCooldown]);
+
+  // Autofocus code input when switching to verify step
+  useEffect(() => {
+    if (step === 'verify') codeInputRef.current?.focus();
+  }, [step]);
+
   const handleEnrollPhone = async (e?: FormEvent) => {
     e?.preventDefault();
     if (!canSubmitPhone) return;
     const result = await enrollPhone(inputPhone);
-    if (result.data) setStep('verify');
+    if (result.data) {
+      setStep('verify');
+      setResendCooldown(RESEND_COOLDOWN_SECONDS);
+    }
   };
 
   const handleVerify = async (e?: FormEvent) => {
@@ -58,11 +75,18 @@ export function MFAPhoneEnroll({ onEnrolled, onCancel }: MFAPhoneEnrollProps) {
     if (result.data) onEnrolled();
   };
 
+  const handleResend = async () => {
+    if (resendCooldown > 0 || isVerifying || isEnrolling) return;
+    await resendCode();
+    setResendCooldown(RESEND_COOLDOWN_SECONDS);
+  };
+
   const handleBack = () => {
     reset();
     setStep('phone');
     setInputPhone('');
     setVerifyCode('');
+    setResendCooldown(0);
   };
 
   if (step === 'phone') {
