@@ -117,7 +117,7 @@ export function useUnreadViolationsCount() {
   return useQuery({
     queryKey: queryKeys.violations.unread(),
     queryFn: fetchUnreadCount,
-    ...(queryPresets as any).realtime,
+    ...(queryPresets as { realtime?: { staleTime?: number; gcTime?: number; refetchInterval?: number } }).realtime,
   });
 }
 
