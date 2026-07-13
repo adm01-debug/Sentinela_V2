@@ -81,13 +81,14 @@ export function useUserManagementPage() {
 
   // Create user mutation
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: CreateUserData) => {
       const { data: authData, error: authError } = await supabase.auth.admin.createUser({
         email: data.email,
         password: data.password,
         email_confirm: true,
       });
       if (authError) throw authError;
+      if (!authData.user) throw new Error('Falha ao criar usuário');
 
       const { error } = await supabase
         .from('profiles')
