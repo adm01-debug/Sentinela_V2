@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,9 +15,45 @@ interface MFAEnrollProps {
   onCancel: () => void;
 }
 
+interface StepItem {
+  title: string;
+  description: string;
+}
+
+const TOTP_STEPS: readonly StepItem[] = [
+  { title: 'Instale um app autenticador', description: 'Google Authenticator, Microsoft Authenticator, ou similar' },
+  { title: 'Escaneie o QR code', description: 'Use o app para escanear o código que será exibido' },
+  { title: 'Digite o código de verificação', description: 'Confirme a configuração com o código gerado' },
+] as const;
+
+const SMS_STEPS: readonly StepItem[] = [
+  { title: 'Informe seu número de celular', description: 'Usaremos este número para enviar códigos de verificação' },
+  { title: 'Receba o código por SMS', description: 'Um código será enviado para seu celular' },
+  { title: 'Confirme o código', description: 'Digite o código recebido para ativar' },
+] as const;
+
+const StepList = ({ steps }: { steps: readonly StepItem[] }) => (
+  <ol className="bg-muted/50 rounded-lg p-4 space-y-3" aria-label="Etapas de configuração">
+    {steps.map((s, i) => (
+      <li key={s.title} className="flex items-start gap-3">
+        <div
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium"
+          aria-hidden="true"
+        >
+          {i + 1}
+        </div>
+        <div className="min-w-0">
+          <p className="font-medium">{s.title}</p>
+          <p className="text-sm text-muted-foreground">{s.description}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+);
+
 function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
   const { enroll, verify } = useMFA();
-  const [method, setMethod] = useState<'totp' | 'sms' | null>(null);
+  const [method, setMethod] = useState<'totp' | 'sms'>('totp');
   const [step, setStep] = useState<'choose' | 'qrcode' | 'verify'>('choose');
   const [qrCodeUri, setQrCodeUri] = useState('');
   const [secret, setSecret] = useState('');
@@ -30,9 +66,9 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
   const handleStartEnroll = async () => {
     setLoading(true);
     setError('');
-    
+
     const response = await enroll('SecureWatch 2FA');
-    
+
     if (response.error) {
       setError(response.error.message);
       setLoading(false);
@@ -45,11 +81,12 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
       setSecret(response.data.totp.secret);
       setStep('qrcode');
     }
-    
+
     setLoading(false);
   };
 
-  const handleVerify = async () => {
+  const handleVerify = async (e?: FormEvent) => {
+    e?.preventDefault();
     if (verifyCode.length !== 6) {
       setError('O código deve ter 6 dígitos');
       return;
@@ -70,10 +107,15 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
     onEnrolled();
   };
 
-  const copySecret = () => {
-    navigator.clipboard.writeText(secret);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copySecret = async () => {
+    try {
+      await navigator.clipboard.writeText(secret);
+      setCopied(true);
+      toast.success('Código copiado');
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error('Não foi possível copiar. Copie manualmente.');
+    }
   };
 
   // Step 1: Choose method
@@ -81,7 +123,10 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
     return (
       <Card className="border-border/50">
         <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+          <div
+            className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+            aria-hidden="true"
+          >
             <Shield className="h-8 w-8 text-primary" />
           </div>
           <CardTitle>Escolha o Método de 2FA</CardTitle>
@@ -90,111 +135,44 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Tabs defaultValue="totp" onValueChange={(v) => setMethod(v as 'totp' | 'sms')}>
+          <Tabs value={method} onValueChange={(v) => setMethod(v as 'totp' | 'sms')}>
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="totp" className="flex items-center gap-2">
-                <Smartphone className="h-4 w-4" />
+                <Smartphone className="h-4 w-4" aria-hidden="true" />
                 App Autenticador
               </TabsTrigger>
               <TabsTrigger value="sms" className="flex items-center gap-2">
-                <Phone className="h-4 w-4" />
+                <Phone className="h-4 w-4" aria-hidden="true" />
                 SMS
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="totp" className="mt-4 space-y-3">
-              <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
-                    1
-                  </div>
-                  <div>
-                    <p className="font-medium">Instale um app autenticador</p>
-                    <p className="text-sm text-muted-foreground">
-                      Google Authenticator, Microsoft Authenticator, ou similar
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
-                    2
-                  </div>
-                  <div>
-                    <p className="font-medium">Escaneie o QR code</p>
-                    <p className="text-sm text-muted-foreground">
-                      Use o app para escanear o código que será exibido
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
-                    3
-                  </div>
-                  <div>
-                    <p className="font-medium">Digite o código de verificação</p>
-                    <p className="text-sm text-muted-foreground">
-                      Confirme a configuração com o código gerado
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <StepList steps={TOTP_STEPS} />
             </TabsContent>
 
             <TabsContent value="sms" className="mt-4 space-y-3">
-              <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
-                    1
-                  </div>
-                  <div>
-                    <p className="font-medium">Informe seu número de celular</p>
-                    <p className="text-sm text-muted-foreground">
-                      Usaremos este número para enviar códigos de verificação
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
-                    2
-                  </div>
-                  <div>
-                    <p className="font-medium">Receba o código por SMS</p>
-                    <p className="text-sm text-muted-foreground">
-                      Um código será enviado para seu celular
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-medium">
-                    3
-                  </div>
-                  <div>
-                    <p className="font-medium">Confirme o código</p>
-                    <p className="text-sm text-muted-foreground">
-                      Digite o código recebido para ativar
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <StepList steps={SMS_STEPS} />
             </TabsContent>
           </Tabs>
 
           <div className="flex gap-3 pt-4">
-            <Button variant="outline" onClick={onCancel} className="flex-1">
+            <Button variant="outline" onClick={onCancel} className="flex-1" type="button">
               Cancelar
             </Button>
-            <Button 
+            <Button
+              type="button"
               onClick={() => {
                 if (method === 'sms') {
-                  setMethod('sms');
+                  setStep('verify'); // delegated to MFAPhoneEnroll below
                 } else {
                   handleStartEnroll();
                 }
-              }} 
-              disabled={loading} 
+              }}
+              disabled={loading}
               className="flex-1"
             >
-              {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" /> : null}
               Continuar
             </Button>
           </div>
@@ -213,7 +191,10 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
     return (
       <Card className="border-border/50">
         <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+          <div
+            className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+            aria-hidden="true"
+          >
             <QrCode className="h-8 w-8 text-primary" />
           </div>
           <CardTitle>Escaneie o QR Code</CardTitle>
@@ -225,30 +206,49 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
           {/* QR Code */}
           <div className="flex justify-center">
             <div className="bg-white p-4 rounded-lg">
-              <img src={qrCodeUri} alt="QR Code para 2FA" className="w-48 h-48" />
+              <img
+                src={qrCodeUri}
+                alt="QR Code para configuração da autenticação de dois fatores"
+                className="w-48 h-48"
+                width={192}
+                height={192}
+              />
             </div>
           </div>
 
           {/* Manual entry */}
           <div className="space-y-2">
-            <p className="text-sm text-center text-muted-foreground">
+            <Label htmlFor="totp-secret" className="text-sm text-center block text-muted-foreground">
               Ou digite o código manualmente:
-            </p>
+            </Label>
             <div className="flex items-center gap-2">
-              <code className="flex-1 bg-muted px-3 py-2 rounded text-sm font-mono break-all">
+              <code
+                id="totp-secret"
+                className="flex-1 bg-muted px-3 py-2 rounded text-sm font-mono break-all select-all"
+              >
                 {secret}
               </code>
-              <Button variant="outline" size="icon" onClick={copySecret}>
-                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={copySecret}
+                type="button"
+                aria-label={copied ? 'Código copiado' : 'Copiar código secreto'}
+              >
+                {copied ? (
+                  <Check className="h-4 w-4 text-success" aria-hidden="true" />
+                ) : (
+                  <Copy className="h-4 w-4" aria-hidden="true" />
+                )}
               </Button>
             </div>
           </div>
 
           <div className="flex gap-3">
-            <Button variant="outline" onClick={onCancel} className="flex-1">
+            <Button variant="outline" onClick={onCancel} className="flex-1" type="button">
               Cancelar
             </Button>
-            <Button onClick={() => setStep('verify')} className="flex-1">
+            <Button onClick={() => setStep('verify')} className="flex-1" type="button">
               Próximo
             </Button>
           </div>
@@ -261,7 +261,10 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
   return (
     <Card className="border-border/50">
       <CardHeader className="text-center">
-        <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+        <div
+          className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+          aria-hidden="true"
+        >
           <Smartphone className="h-8 w-8 text-primary" />
         </div>
         <CardTitle>Verificar Configuração</CardTitle>
@@ -269,37 +272,52 @@ function MFAEnrollBase({ onEnrolled, onCancel }: MFAEnrollProps) {
           Digite o código de 6 dígitos do seu aplicativo autenticador
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+      <CardContent>
+        <form onSubmit={handleVerify} className="space-y-4">
+          {error && (
+            <Alert variant="destructive" role="alert">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-        <div className="space-y-2">
-          <Label htmlFor="verify-code">Código de verificação</Label>
-          <Input
-            id="verify-code"
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            maxLength={6}
-            placeholder="000000"
-            value={verifyCode}
-            onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
-            className="text-center text-2xl tracking-widest font-mono"
-          />
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="verify-code">Código de verificação</Label>
+            <Input
+              id="verify-code"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={6}
+              placeholder="000000"
+              value={verifyCode}
+              onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
+              className="text-center text-2xl tracking-widest font-mono tabular-nums"
+              autoComplete="one-time-code"
+              autoFocus
+              aria-invalid={!!error}
+              aria-describedby={error ? 'verify-code-error' : undefined}
+            />
+          </div>
 
-        <div className="flex gap-3 pt-4">
-          <Button variant="outline" onClick={() => setStep('qrcode')} className="flex-1">
-            Voltar
-          </Button>
-          <Button onClick={handleVerify} disabled={loading || verifyCode.length !== 6} className="flex-1">
-            {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-            Ativar 2FA
-          </Button>
-        </div>
+          <div className="flex gap-3 pt-4">
+            <Button
+              variant="outline"
+              onClick={() => setStep('qrcode')}
+              className="flex-1"
+              type="button"
+            >
+              Voltar
+            </Button>
+            <Button
+              type="submit"
+              disabled={loading || verifyCode.length !== 6}
+              className="flex-1"
+            >
+              {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" /> : null}
+              Ativar 2FA
+            </Button>
+          </div>
+        </form>
       </CardContent>
     </Card>
   );
