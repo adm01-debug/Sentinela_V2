@@ -136,9 +136,9 @@ export function useDuplicate<T extends Record<string, unknown>>(
       }
 
       // Preparar dados para duplicação
-      const duplicatesData = originals.map((original: any) =>
+      const duplicatesData = (originals as unknown as T[]).map((original) =>
         prepareDuplicateData(
-          original as T,
+          original,
           allExcludeFields,
           transformData,
           customSuffix
