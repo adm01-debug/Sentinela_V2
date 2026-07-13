@@ -161,8 +161,8 @@ export function useSecurity() {
   // SANITIZATION
   // ============================================================
 
-  const sanitizeInput = useCallback((input: any): string => {
-    return input
+  const sanitizeInput = useCallback((input: unknown): string => {
+    return String(input ?? '')
       .replace(/[<>]/g, '') // Remove HTML brackets
       .replace(/javascript:/gi, '') // Remove javascript protocol
       .replace(/on\w+=/gi, '') // Remove event handlers
