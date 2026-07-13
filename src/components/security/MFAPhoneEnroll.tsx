@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { memo, useEffect, useRef, useState, type FormEvent } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,8 @@ interface MFAPhoneEnrollProps {
   onEnrolled: () => void;
   onCancel: () => void;
 }
+
+const RESEND_COOLDOWN_SECONDS = 30;
 
 const PHONE_MAX_LEN = 16;
 const CODE_LEN = 6;
