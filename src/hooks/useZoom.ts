@@ -5,7 +5,7 @@ interface UseZoomOptions {
   maxZoom?: number;
   step?: number;
   initialZoom?: number;
-  onChange?: (zoom) => void;
+  onChange?: (zoom: number) => void;
 }
 
 interface UseZoomReturn {
@@ -13,13 +13,13 @@ interface UseZoomReturn {
   zoomIn: () => void;
   zoomOut: () => void;
   resetZoom: () => void;
-  setZoom: (value: any) => void;
+  setZoom: (value: number) => void;
   isMinZoom: boolean;
   isMaxZoom: boolean;
   zoomPercentage: string;
   containerRef: React.RefObject<HTMLDivElement>;
   handleWheel: (e: WheelEvent) => void;
-  handlePinch: (scale) => void;
+  handlePinch: (scale: number) => void;
 }
 
 export function useZoom(options: UseZoomOptions = {}): UseZoomReturn {
@@ -35,11 +35,11 @@ export function useZoom(options: UseZoomOptions = {}): UseZoomReturn {
   const containerRef = useRef<HTMLDivElement>(null);
   const lastPinchScale = useRef(1);
 
-  const clampZoom = useCallback((value): number => {
+  const clampZoom = useCallback((value: number): number => {
     return Math.min(Math.max(value, minZoom), maxZoom);
   }, [minZoom, maxZoom]);
 
-  const setZoom = useCallback((value: any) => {
+  const setZoom = useCallback((value: number) => {
     const clampedValue = clampZoom(value);
     setZoomState(clampedValue);
     onChange?.(clampedValue);
@@ -65,7 +65,7 @@ export function useZoom(options: UseZoomOptions = {}): UseZoomReturn {
     }
   }, [zoom, step, setZoom]);
 
-  const handlePinch = useCallback((scale) => {
+  const handlePinch = useCallback((scale: number) => {
     const delta = scale - lastPinchScale.current;
     lastPinchScale.current = scale;
     setZoom(zoom + delta);
