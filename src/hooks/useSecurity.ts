@@ -250,7 +250,7 @@ export function generateSecureRandom(length = 32): string {
 /**
  * Hash sensitive data (client-side, for non-critical operations)
  */
-export async function hashData(data: string | ArrayBuffer | ArrayBufferView): Promise<string> {
+export async function hashData(data: string): Promise<string> {
   const encoder = new TextEncoder();
   const dataBuffer = encoder.encode(data);
   const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
