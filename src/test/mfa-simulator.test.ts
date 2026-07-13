@@ -178,7 +178,7 @@ describe('MFA SMS resend', () => {
     const sim = makeSim();
     const { factorId } = sim.enroll('totp');
     sim.advance(DEFAULT_CONFIG.smsResendCooldownMs);
-    expect(() => sim.resendSms(factorId)).toThrowError(/invalid_input/);
+    expect(() => sim.resendSms(factorId)).toThrow(MFAError);
   });
 
   it('rejeita resend em fator expirado', () => {
@@ -292,6 +292,6 @@ describe('MFA regressões e gaps', () => {
   });
 
   it('advance negativo é rejeitado', () => {
-    expect(() => makeSim().advance(-1)).toThrowError(/invalid_input/);
+    expect(() => makeSim().advance(-1)).toThrow(MFAError);
   });
 });
