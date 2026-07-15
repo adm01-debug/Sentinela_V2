@@ -16,7 +16,7 @@ type Schema<T> = {
 };
 
 export function useSchema<T extends Record<string, unknown>>(schema: Schema<T>) {
-  const validate = useCallback((data: unknown): ValidationResult => {
+  const validate = useCallback((data: Record<string, unknown>): ValidationResult => {
     const errors: Record<string, string> = {};
     
     for (const [key, rules] of Object.entries(schema)) {
