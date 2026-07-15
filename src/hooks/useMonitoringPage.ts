@@ -45,7 +45,7 @@ export function useMonitoringPage() {
       
       if (error) throw error;
 
-      return data.map((emp: any) => {
+      return data.map((emp: Record<string, unknown>) => {
         const status: 'online' | 'offline' | 'idle' | 'busy' = 'offline';
 
         return {
