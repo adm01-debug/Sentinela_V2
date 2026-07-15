@@ -57,7 +57,7 @@ export default function GeofenceViolationsPage() {
       `${format(dateRange.from, 'MMMM yyyy', { locale: ptBR })}` : 
       'Geral';
       
-    generateGeofencePDFReport(violations, period);
+    generateGeofencePDFReport(violations as unknown as Parameters<typeof generateGeofencePDFReport>[0], period);
     toast({ title: 'Relatório PDF gerado com sucesso!' });
   };
 
