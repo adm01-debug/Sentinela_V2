@@ -23,7 +23,7 @@ export interface SavedFilter {
 
 interface UseSavedFiltersOptions {
   entityType: string;
-  onApply?: (filters: any) => void;
+  onApply?: (filters: Record<string, unknown>) => void;
 }
 
 // ============================================================

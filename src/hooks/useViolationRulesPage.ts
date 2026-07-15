@@ -80,7 +80,7 @@ export function useViolationRulesPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((r: any) => ({
+      return (data || []).map((r: Record<string, unknown>) => ({
         id: r.id,
         name: r.rule_value,
         description: r.description,
@@ -105,7 +105,7 @@ export function useViolationRulesPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const dbData = {
         rule_type: data.type,
         rule_value: data.name,

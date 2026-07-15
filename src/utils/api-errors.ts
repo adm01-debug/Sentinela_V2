@@ -14,7 +14,7 @@ export interface ApiErrorResponse {
   };
 }
 
-export const handleApiError = (error: any, context?: string) => {
+export const handleApiError = (error: unknown, context?: string) => {
   console.error(`API Error [${context || 'Unknown'}]:`, error);
 
   // Handle Supabase function 422 errors
@@ -34,7 +34,7 @@ export const handleApiError = (error: any, context?: string) => {
   toast.error(message);
 };
 
-export const isValidationError = (error: any): error is ApiErrorResponse => {
+export const isValidationError = (error: unknown): error is ApiErrorResponse => {
   return (
     error &&
     typeof error === 'object' &&

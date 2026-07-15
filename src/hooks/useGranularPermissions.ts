@@ -106,8 +106,8 @@ export function useRolesWithPermissions() {
       const rolesWithPerms: RoleWithPermissions[] = (roles as Role[]).map(role => ({
         ...role,
         permissions: rolePermissions
-          .filter((rp: any) => rp.role_id === role.id)
-          .map((rp: any) => rp.permission as unknown as Permission)
+          .filter((rp: { role_id: string; permission: unknown }) => rp.role_id === role.id)
+          .map((rp: { role_id: string; permission: unknown }) => rp.permission as unknown as Permission)
           .filter(Boolean),
       }));
 
@@ -136,7 +136,7 @@ export function useCreateRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const { data: role, error } = await supabase
         .from('roles')
         .insert({

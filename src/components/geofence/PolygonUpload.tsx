@@ -75,7 +75,7 @@ export function PolygonUpload({ isOpen, onClose, onUpload }: PolygonUploadProps)
         title: "Polígono carregado com sucesso!",
         description: `${coordinates.length} pontos processados.`,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "Erro no processamento",
         description: error.message,
