@@ -23,7 +23,7 @@ export interface SavedFilter {
 
 interface UseSavedFiltersOptions {
   entityType: string;
-  onApply?: (filters: any) => void;
+  onApply?: (filters: Record<string, unknown>) => void;
 }
 
 // ============================================================
@@ -180,7 +180,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
 
   const applyFilter = (filter: SavedFilter) => {
     if (onApply) {
-      onApply(filter.filters);
+      onApply(filter.filters as Record<string, unknown>);
       toast.info(`Filtro "${filter.name}" aplicado`);
     }
   };

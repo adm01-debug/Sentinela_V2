@@ -44,7 +44,7 @@ export const useUsers = () => {
   });
 };
 
-export const useUser = (id: any) => {
+export const useUser = (id: string) => {
   return useQuery({
     queryKey: ['user', id],
     queryFn: async () => {
@@ -59,7 +59,7 @@ export const useUser = (id: any) => {
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const { data: result, error } = await supabase.from('profiles').insert(data).select().maybeSingle();
       if (error) throw error;
       return result;
