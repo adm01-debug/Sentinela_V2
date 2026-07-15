@@ -78,7 +78,7 @@ export function PolygonUpload({ isOpen, onClose, onUpload }: PolygonUploadProps)
     } catch (error: unknown) {
       toast({
         title: "Erro no processamento",
-        description: error.message,
+        description: error instanceof Error ? error.message : String(error),
         variant: "destructive",
       });
     }
