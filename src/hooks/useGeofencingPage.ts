@@ -132,7 +132,7 @@ export function useGeofencingPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: GeofenceFormData) => {
       const geofenceData = {
         name: data.name,
         description: data.description,
