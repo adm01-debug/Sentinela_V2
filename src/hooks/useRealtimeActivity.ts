@@ -50,6 +50,6 @@ export function useEmployeeActivity(employeeId: string | undefined) {
       return data as RealtimeActivity[];
     },
     enabled: !!employeeId,
-    ...(queryPresets as any).list,
+    ...queryPresets.list,
   });
 }
