@@ -67,11 +67,14 @@ export function useTeamsPage() {
         .select('*, employees!teams_manager_id_fkey(name)')
         .order('name');
       if (error) throw error;
-      return data.map((t: Record<string, unknown>) => ({
-        ...t,
-        manager_name: t.employees?.name,
-        members_count: t.members_count || 0,
-      })) as Team[];
+      return data.map((row) => {
+        const t = row as Record<string, unknown> & { employees?: { name?: string }; members_count?: number };
+        return {
+          ...t,
+          manager_name: t.employees?.name,
+          members_count: t.members_count || 0,
+        };
+      }) as Team[];
     },
   });
 
