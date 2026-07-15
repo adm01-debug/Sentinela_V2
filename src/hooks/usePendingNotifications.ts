@@ -30,7 +30,7 @@ export function usePendingNotifications() {
         created_at: n.createdAt.toISOString(),
       }));
     },
-    ...(queryPresets as any).realtime,
+    ...queryPresets.realtime,
     refetchInterval: REFETCH_INTERVALS.FREQUENT,
   });
 }
@@ -43,7 +43,7 @@ export function useUnreadNotificationsCount() {
     queryFn: async (): Promise<number> => {
       return unreadCount;
     },
-    ...(queryPresets as any).realtime,
+    ...queryPresets.realtime,
   });
 }
 
