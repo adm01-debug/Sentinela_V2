@@ -1,4 +1,5 @@
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 export interface ValidationErrorDetail {
   field: string;
@@ -17,7 +18,7 @@ export interface ApiErrorResponse {
 type MaybeApiError = { error?: { code?: string; message?: string; details?: ValidationErrorDetail[] }; message?: string };
 
 export const handleApiError = (error: unknown, context?: string) => {
-  console.error(`API Error [${context || 'Unknown'}]:`, error);
+  logger.error(`API Error [${context || 'Unknown'}]:`, error);
   const e = (error ?? {}) as MaybeApiError;
 
   if (e.error?.code === 'VALIDATION_ERROR') {

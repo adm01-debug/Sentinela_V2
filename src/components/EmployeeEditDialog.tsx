@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { logger } from "@/lib/logger";
 import { useForm } from "react-hook-form";
 import { Employee, EmployeeUpdateInput } from "@/types";
 import {
@@ -68,7 +69,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onOpenChange }: Props) =>
       onOpenChange(false);
     } catch (error) {
       toast.error("Erro ao atualizar funcionário");
-      console.error(error);
+      logger.error('[EmployeeEditDialog] update failed:', error);
     }
   };
 

@@ -39,9 +39,10 @@ export const EmployeeHeader = ({ employee }: Props) => {
     }
   };
 
-  const displayName = employee.full_name ?? (employee as any).name ?? 'Sem nome';
-  const avatarSrc = employee.avatar_url || (employee as any).avatar;
-  const roleLabel = employee.role || (employee as any).position || '-';
+  const legacy = employee as unknown as Record<string, string | undefined>;
+  const displayName = employee.full_name ?? legacy.name ?? 'Sem nome';
+  const avatarSrc = employee.avatar_url || legacy.avatar;
+  const roleLabel = employee.role || legacy.position || '-';
   const departmentLabel = employee.department ?? '-';
 
   return (

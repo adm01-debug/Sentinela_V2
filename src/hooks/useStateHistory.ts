@@ -5,7 +5,7 @@ export function useStateHistory<T>(initial: T, capacity = 10) {
   const history = useRef<T[]>([initial]);
   const position = useRef(0);
 
-  const set = useCallback((value: any) => {
+  const set = useCallback((value: T) => {
     history.current = history.current.slice(0, position.current + 1);
     history.current.push(value);
     if (history.current.length > capacity) history.current.shift();

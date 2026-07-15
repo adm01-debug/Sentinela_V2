@@ -14,9 +14,9 @@ export interface Recommendation {
 export interface UseSmartRecommendationsOptions<T> {
   items: T[];
   userPreferences?: Record<string, number>;
-  getItemFeatures: (item: any) => Record<string, number>;
-  getItemId: (item: any) => string;
-  getItemTitle: (item: any) => string;
+  getItemFeatures: (item: T) => Record<string, number>;
+  getItemId: (item: T) => string;
+  getItemTitle: (item: T) => string;
   maxRecommendations?: number;
 }
 

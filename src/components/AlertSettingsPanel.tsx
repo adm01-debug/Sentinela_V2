@@ -49,7 +49,7 @@ export function AlertSettingsPanel() {
           </div>
         </div>
         <Switch
-          checked={(settings as any)?.enabled ?? true}
+          checked={settings?.enabled ?? true}
           onCheckedChange={(checked) => updateSettings({ enabled: checked })}
         />
       </div>
@@ -61,7 +61,7 @@ export function AlertSettingsPanel() {
           <div className="flex items-center gap-2">
             <Switch
               id="notify-critical"
-              checked={(settings as any)?.notify_critical ?? true}
+              checked={settings?.notify_critical ?? true}
               onCheckedChange={(checked) => updateSettings({ notify_critical: checked })}
             />
             <Label htmlFor="notify-critical" className="flex items-center gap-2">
@@ -71,7 +71,7 @@ export function AlertSettingsPanel() {
           <div className="flex items-center gap-2">
             <Switch
               id="notify-high"
-              checked={(settings as any)?.notify_high ?? true}
+              checked={settings?.notify_high ?? true}
               onCheckedChange={(checked) => updateSettings({ notify_high: checked })}
             />
             <Label htmlFor="notify-high" className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export function AlertSettingsPanel() {
           <div className="flex items-center gap-2">
             <Switch
               id="notify-medium"
-              checked={(settings as any)?.notify_medium ?? false}
+              checked={settings?.notify_medium ?? false}
               onCheckedChange={(checked) => updateSettings({ notify_medium: checked })}
             />
             <Label htmlFor="notify-medium" className="flex items-center gap-2">
@@ -91,7 +91,7 @@ export function AlertSettingsPanel() {
           <div className="flex items-center gap-2">
             <Switch
               id="notify-low"
-              checked={(settings as any)?.notify_low ?? false}
+              checked={settings?.notify_low ?? false}
               onCheckedChange={(checked) => updateSettings({ notify_low: checked })}
             />
             <Label htmlFor="notify-low" className="flex items-center gap-2">
@@ -122,9 +122,9 @@ export function AlertSettingsPanel() {
           </Button>
         </div>
 
-        {(settings as any)?.recipient_emails && (settings as any).recipient_emails.length > 0 ? (
+        {settings?.recipient_emails && settings.recipient_emails.length > 0 ? (
           <div className="flex flex-wrap gap-2">
-            {(settings as any).recipient_emails.map((email: string) => (
+            {settings.recipient_emails.map((email: string) => (
               <Badge key={email} variant="secondary" className="pl-3 pr-1 py-1.5 gap-2">
                 {email}
                 <button
@@ -148,7 +148,7 @@ export function AlertSettingsPanel() {
         <Button 
           variant="outline" 
           onClick={handleTest} 
-          disabled={testing || !(settings as any)?.recipient_emails?.length}
+          disabled={testing || !settings?.recipient_emails?.length}
           className="gap-2"
         >
           {testing ? (
