@@ -5,7 +5,7 @@ import { logger } from '@/lib/logger';
 
 export type RealtimeEntity = 'employees' | 'teams' | 'security_violations' | 'attendance_records';
 
-export function useRealtime(entity: RealtimeEntity, queryKey: any[]) {
+export function useRealtime(entity: RealtimeEntity, queryKey: readonly unknown[]) {
   const queryClient = useQueryClient();
   const lastPayloadRef = useRef<string | null>(null);
 
