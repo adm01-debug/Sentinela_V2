@@ -96,7 +96,11 @@ export const queryKeys = {
     all: ['mapbox'] as const,
     token: () => [...queryKeys.mapbox.all, 'token'] as const,
   }
-} as const;
+// Intentional: consumers extend queryKeys dynamically with domain-specific keys
+// (devices, gamification, auditLogs, etc.). Strict typing here would require
+// centralizing hundreds of query key namespaces in a single file.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+} as any;
 
 // ============================================================
 // QUERY CLIENT INSTANCE
