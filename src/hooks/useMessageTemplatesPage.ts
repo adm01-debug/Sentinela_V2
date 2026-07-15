@@ -81,7 +81,7 @@ export function useMessageTemplatesPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((t: any) => ({
+      return (data || []).map((t: Record<string, unknown>) => ({
         id: t.id,
         name: t.name,
         description: t.description,
@@ -99,7 +99,7 @@ export function useMessageTemplatesPage() {
 
   // Mutations
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const dbData = {
         name: data.name,
         body: data.content,

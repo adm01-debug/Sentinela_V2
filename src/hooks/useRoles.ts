@@ -40,7 +40,7 @@ export function useRoles(userRoles: string[] = []) {
             .from('permissions')
             .select('name')
             .in('id', permissionIds);
-          permissionNames = (perms ?? []).map((p: any) => p.name);
+          permissionNames = (perms ?? []).map((p: { name: string }) => p.name);
         }
 
         // Count users with this role

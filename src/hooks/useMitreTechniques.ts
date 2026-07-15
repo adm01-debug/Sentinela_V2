@@ -30,6 +30,6 @@ export function useMitreTechniques() {
     };
   }, []);
 
-  const byId = (id: string) => techniques.find((t: any) => t.id === id);
+  const byId = (id: string) => techniques.find((t: { id: string }) => t.id === id);
   return { techniques, loading, byId };
 }

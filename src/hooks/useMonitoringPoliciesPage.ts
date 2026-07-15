@@ -89,7 +89,7 @@ export function useMonitoringPoliciesPage() {
         applies_to?: string;
         is_active?: boolean;
       }
-      return (data || []).map((setting: any) => {
+      return (data || []).map((setting: Record<string, unknown>) => {
         const val = (setting.setting_value || {}) as SettingValue;
         return {
           id: setting.id,
@@ -113,7 +113,7 @@ export function useMonitoringPoliciesPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const settingData = {
         setting_key: data.name,
         description: data.description,

@@ -69,7 +69,7 @@ export function useInternetAccessPage() {
         .order('employee_name');
       if (error) throw error;
       // Map to expected interface
-      return (data || []).map((item: any) => ({
+      return (data || []).map((item: Record<string, unknown>) => ({
         id: item.id,
         name: `Regra - ${item.employee_name}`,
         description: item.notes || '',
@@ -85,7 +85,7 @@ export function useInternetAccessPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const { error } = await supabase.from('internet_access_rules').insert(data);
       if (error) throw error;
     },

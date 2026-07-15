@@ -73,7 +73,7 @@ export function useScheduledReportsPage() {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []).map((r: any) => ({
+      return (data || []).map((r: Record<string, unknown>) => ({
         id: r.id,
         name: `Relatório ${r.report_type}`,
         description: '',
@@ -92,7 +92,7 @@ export function useScheduledReportsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const { error } = await supabase.from('scheduled_reports').insert(data);
       if (error) throw error;
     },

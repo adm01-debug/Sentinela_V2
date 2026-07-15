@@ -67,7 +67,7 @@ export function useTeamsPage() {
         .select('*, employees!teams_manager_id_fkey(name)')
         .order('name');
       if (error) throw error;
-      return data.map((t: any) => ({
+      return data.map((t: Record<string, unknown>) => ({
         ...t,
         manager_name: t.employees?.name,
         members_count: t.members_count || 0,
@@ -103,7 +103,7 @@ export function useTeamsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const { error } = await supabase.from('teams').insert(data);
       if (error) throw error;
     },
