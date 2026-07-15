@@ -24,12 +24,12 @@ export function usePolicies() {
       if (error) throw error;
 
       return (data ?? []).map((row: Record<string, unknown>): Policy => ({
-        id: row.id,
-        name: row.name,
-        description: row.description,
-        enabled: row.enabled ?? true,
-        category: row.category,
-        created_at: row.created_at,
+        id: String(row.id ?? ''),
+        name: String(row.name ?? ''),
+        description: String(row.description ?? ''),
+        enabled: (row.enabled as boolean | null) ?? true,
+        category: String(row.category ?? ''),
+        created_at: String(row.created_at ?? ''),
       }));
     },
     staleTime: 60_000,
