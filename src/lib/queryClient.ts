@@ -96,8 +96,7 @@ export const queryKeys = {
     all: ['mapbox'] as const,
     token: () => [...queryKeys.mapbox.all, 'token'] as const,
   }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-} as any;
+} as const;
 
 // ============================================================
 // QUERY CLIENT INSTANCE
