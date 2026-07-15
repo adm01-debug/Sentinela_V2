@@ -59,7 +59,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const softDeleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       // Proceed to delete
 
 
@@ -128,7 +128,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const restoreMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       // Proceed to restore
 
 
@@ -197,7 +197,7 @@ export function useSoftDelete(options: SoftDeleteOptions): SoftDeleteResult {
   // ============================================================
 
   const hardDeleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       // Proceed to hard delete
 
 

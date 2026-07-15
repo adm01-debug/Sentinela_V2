@@ -122,7 +122,7 @@ export function useScheduledReportsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('scheduled_reports').delete().eq('id', id);
       if (error) throw error;
     },
@@ -137,7 +137,7 @@ export function useScheduledReportsPage() {
   });
 
   const runNowMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.functions.invoke('generate-report', { body: { report_id: id } });
       if (error) throw error;
     },

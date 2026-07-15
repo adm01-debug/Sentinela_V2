@@ -188,7 +188,7 @@ export function useGeofencingPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('geofences').delete().eq('id', id);
       if (error) throw error;
     },

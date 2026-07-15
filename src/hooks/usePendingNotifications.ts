@@ -52,7 +52,7 @@ export function useMarkNotificationAsRead() {
   const { markAsRead } = useNotificationsStore();
 
   return useMutation({
-    mutationFn: async (id: any) => {
+    mutationFn: async (id: string) => {
       markAsRead(id);
     },
     onSuccess: () => {
