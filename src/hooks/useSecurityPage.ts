@@ -63,8 +63,8 @@ export function useSecurityPage() {
       if (error) throw error;
       
       const settings: SecuritySettings = {
-        mfa_required: data?.find((s: any) => s.setting_key === 'mfa_required')?.setting_value === true,
-        ip_whitelist_enabled: data?.find((s: any) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
+        mfa_required: data?.find((s: { setting_key: string; setting_value: unknown }) => s.setting_key === 'mfa_required')?.setting_value === true,
+        ip_whitelist_enabled: data?.find((s: { setting_key: string; setting_value: unknown }) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
       };
       return settings;
     },
