@@ -251,7 +251,7 @@ export function useToggleGeofence() {
         variant: 'destructive',
       });
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data: Geofence) => {
       invalidateRelated.geofences(queryClient);
       toast({
         title: data.is_active ? 'Geofence ativada' : 'Geofence desativada',
