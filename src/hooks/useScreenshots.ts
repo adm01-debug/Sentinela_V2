@@ -22,7 +22,7 @@ export const useScreenshots = (employeeId: string, date: string) => {
 export const useDeleteScreenshot = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (_id: any) => { return; },
+    mutationFn: async (_id: string) => { return; },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['screenshots'] }); },
   });
 };

@@ -41,7 +41,7 @@ export function useChartExport(options: UseChartExportOptions = {}) {
     } finally { setIsExporting(false); }
   }, [filename]);
 
-  const exportToCSV = useCallback((data: any[], customFilename?: string) => {
+  const exportToCSV = useCallback((data: Record<string, unknown>[], customFilename?: string) => {
     if (!data.length) return;
     setIsExporting(true);
     try {
