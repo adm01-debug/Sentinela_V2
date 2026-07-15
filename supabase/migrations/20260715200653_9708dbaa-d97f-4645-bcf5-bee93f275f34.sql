@@ -1,0 +1,17 @@
+CREATE INDEX IF NOT EXISTS idx_projects_company_id ON public.projects(company_id);
+CREATE INDEX IF NOT EXISTS idx_projects_created_at ON public.projects(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_geofences_company_id ON public.geofences(company_id);
+CREATE INDEX IF NOT EXISTS idx_geofence_violations_created_at ON public.geofence_violations(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_employee_geofences_geofence ON public.employee_geofences(geofence_id);
+CREATE INDEX IF NOT EXISTS idx_tasks_created_at ON public.tasks(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_attendance_records_date ON public.attendance_records(date DESC);
+CREATE INDEX IF NOT EXISTS idx_timesheets_status ON public.timesheets(status);
+CREATE INDEX IF NOT EXISTS idx_time_entries_employee_clock_in ON public.time_entries(employee_id, clock_in DESC);
+ANALYZE public.projects;
+ANALYZE public.geofences;
+ANALYZE public.geofence_violations;
+ANALYZE public.employee_geofences;
+ANALYZE public.tasks;
+ANALYZE public.attendance_records;
+ANALYZE public.timesheets;
+ANALYZE public.time_entries;
