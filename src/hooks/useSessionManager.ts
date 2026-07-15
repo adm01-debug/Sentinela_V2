@@ -17,11 +17,14 @@ export function useSessionManager() {
       
       const { data } = await supabase.from('user_sessions').select('*').eq('user_id', session.user.id).order('last_activity', { ascending: false });
       
-      const mapped: Session[] = (data || []).map((s: any) => ({
-        id: s.id, userId: s.user_id, device: s.device || 'Unknown', browser: s.browser || 'Unknown',
-        ip: s.ip_address || 'Unknown', location: s.location, createdAt: new Date(s.created_at),
-        lastActivity: new Date(s.last_activity), current: s.id === currentSessionId
-      }));
+      const mapped: Session[] = (data || []).map((row) => {
+        const s = row as Record<string, string>;
+        return {
+          id: s.id, userId: s.user_id, device: s.device || 'Unknown', browser: s.browser || 'Unknown',
+          ip: s.ip_address || 'Unknown', location: s.location, createdAt: new Date(s.created_at),
+          lastActivity: new Date(s.last_activity), current: s.id === currentSessionId
+        };
+      });
       setSessions(mapped);
     } catch (e) { logger.error('Failed to fetch sessions:', e); }
     finally { setIsLoading(false); }

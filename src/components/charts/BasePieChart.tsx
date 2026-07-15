@@ -16,7 +16,7 @@ interface BasePieChartProps {
   showLabel?: boolean;
   showLegend?: boolean;
   colors?: string[];
-  valueFormatter?: (value: any) => string;
+  valueFormatter?: (value: number | string) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }

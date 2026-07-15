@@ -22,7 +22,7 @@ export interface ScatterSeriesConfig {
 }
 
 interface BaseScatterChartProps {
-  data: any[];
+  data: Array<Record<string, unknown>>;
   series: ScatterSeriesConfig[];
   xAxisKey?: string;
   yAxisKey?: string;
@@ -30,7 +30,7 @@ interface BaseScatterChartProps {
   height?: number;
   showGrid?: boolean;
   showLegend?: boolean;
-  valueFormatter?: (value: any) => string;
+  valueFormatter?: (value: number | string) => string;
   emptyTitle?: string;
   emptyDescription?: string;
 }

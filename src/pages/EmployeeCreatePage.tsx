@@ -151,7 +151,7 @@ export default function EmployeeCreatePage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="status">Status</Label>
-                  <Select defaultValue="active" onValueChange={v => setValue('status', v as any)}>
+                  <Select defaultValue="active" onValueChange={v => setValue('status', v as 'active' | 'inactive')}>
                     <SelectTrigger id="status">
                       <SelectValue placeholder="Selecione o status" />
                     </SelectTrigger>
