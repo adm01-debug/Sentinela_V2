@@ -84,13 +84,13 @@ export function useMobileDeviceLocations() {
 
       if (error) throw error;
       
-      return data?.map((d: any) => ({
+      return data?.map((d: { id: string; last_location: object | null; employee: unknown }) => ({
         device_id: d.id,
         ...(d.last_location as object),
         employee: d.employee,
       })) as DeviceLocation[];
     },
-    ...(queryPresets as any).realtime,
+    ...queryPresets.realtime,
   });
 }
 
