@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { logger } from "@/lib/logger";
 import { useForm } from "react-hook-form";
 import { Employee, EmployeeUpdateInput } from "@/types";
 import {
