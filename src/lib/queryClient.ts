@@ -96,7 +96,7 @@ export const queryKeys = {
     all: ['mapbox'] as const,
     token: () => [...queryKeys.mapbox.all, 'token'] as const,
   }
-} as any;
+} as const;
 
 // ============================================================
 // QUERY CLIENT INSTANCE
@@ -107,8 +107,9 @@ export const queryClient = new QueryClient({
     queries: {
       staleTime: CACHE_TIMES.STABLE,
       gcTime: CACHE_TIMES.STATIC,
-      retry: (failureCount, error: any) => {
-        if (error?.status === 404 || error?.status === 403 || error?.status === 401) return false;
+      retry: (failureCount, error: unknown) => {
+        const status = (error as { status?: number } | null)?.status;
+        if (status === 404 || status === 403 || status === 401) return false;
         return failureCount < 3;
       },
       refetchOnWindowFocus: false,
@@ -118,7 +119,7 @@ export const queryClient = new QueryClient({
     },
   },
   queryCache: new QueryCache({
-    onError: (error: any, query) => {
+    onError: (error: unknown, query) => {
       if (query.meta?.silent) return;
       logger.error(`[Query Error] ${query.queryKey}:`, error);
     },
@@ -157,4 +158,4 @@ export const invalidateRelated = {
   settings: (client: QueryClient) => {
     client.invalidateQueries({ queryKey: queryKeys.settings.all });
   }
-} as any;
+} as const;

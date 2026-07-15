@@ -65,7 +65,7 @@ export function useActiveGeofences() {
   return useQuery({
     queryKey: queryKeys.geofences.active(),
     queryFn: () => geofenceService.getActiveGeofences(),
-    ...(queryPresets as any).config,
+    ...queryPresets.config,
   });
 }
 

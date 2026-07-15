@@ -50,7 +50,7 @@ export function useDashboardLayout() {
       return data as DashboardLayout | null;
     },
     enabled: !!user?.id,
-    ...(queryPresets as any).config,
+    ...queryPresets.config,
   });
 
   const widgets = useMemo(() => {
