@@ -143,7 +143,7 @@ export default function GeofencingPage() {
               </div>
               <div className="space-y-2">
                 <Label>Tipo de Área</Label>
-                <Select value={formData.type} onValueChange={(v: string) => setFormData(prev => ({ ...prev, type: v }))}>
+                <Select value={formData.type} onValueChange={(v: any) => setFormData(prev => ({ ...prev, type: v }))}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

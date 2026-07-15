@@ -105,7 +105,7 @@ export function useViolationRulesPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: Record<string, unknown>) => {
+    mutationFn: async (data: any) => {
       const dbData = {
         rule_type: data.type,
         rule_value: data.name,

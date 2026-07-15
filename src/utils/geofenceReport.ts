@@ -3,7 +3,7 @@ import autoTable from 'jspdf-autotable';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-export const generateGeofencePDFReport = (violations: Array<Record<string, unknown>>, periodName: string) => {
+export const generateGeofencePDFReport = (violations: any[], periodName: string) => {
   const doc = new jsPDF();
   const now = format(new Date(), "dd/MM/yyyy HH:mm");
 
