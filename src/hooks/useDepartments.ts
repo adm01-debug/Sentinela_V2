@@ -45,7 +45,7 @@ export function useDepartments() {
         .from('departments')
         .insert([input])
         .select()
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
       return data as Department;
@@ -62,7 +62,7 @@ export function useDepartments() {
         .update(input)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
       return data as Department;
@@ -106,7 +106,7 @@ export function useDepartment(id: string) {
         .from('departments')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
       return data as Department;

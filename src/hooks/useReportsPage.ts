@@ -38,7 +38,7 @@ export function useReportsPage() {
 
   const generateMutation = useMutation({
     mutationFn: async (type: ReportType) => {
-      const { data, error } = await supabase.from('reports').insert({ type, name: type + '_' + Date.now(), status: 'pending' }).select().single();
+      const { data, error } = await supabase.from('reports').insert({ type, name: type + '_' + Date.now(), status: 'pending' }).select().maybeSingle();
       if (error) throw error;
       await supabase.functions.invoke('generate-report', { body: { reportId: data.id } });
       return data;

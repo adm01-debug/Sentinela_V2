@@ -43,7 +43,7 @@ export function useSubscription(): UseSubscriptionReturn {
         .from('subscriptions')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
       
       if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
       setSubscription(data);

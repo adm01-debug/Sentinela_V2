@@ -77,7 +77,7 @@ export function useCreateWorkSchedule() {
   const { toast } = useToast();
   return useMutation({
     mutationFn: async (input: CreateWorkScheduleInput) => {
-      const { data, error } = await supabase.from('work_schedules').insert(input).select().single();
+      const { data, error } = await supabase.from('work_schedules').insert(input).select().maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -96,7 +96,7 @@ export function useUpdateWorkSchedule() {
   const { toast } = useToast();
   return useMutation({
     mutationFn: async ({ id, ...input }: UpdateWorkScheduleInput) => {
-      const { data, error } = await supabase.from('work_schedules').update(input).eq('id', id).select().single();
+      const { data, error } = await supabase.from('work_schedules').update(input).eq('id', id).select().maybeSingle();
       if (error) throw error;
       return data;
     },

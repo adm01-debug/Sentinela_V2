@@ -67,7 +67,7 @@ export function useMessageTemplate(id: string | null | undefined) {
         .from('message_templates')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data as MessageTemplate;
@@ -110,7 +110,7 @@ export function useCreateMessageTemplate() {
         .from('message_templates')
         .insert(input)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -143,7 +143,7 @@ export function useUpdateMessageTemplate() {
         .update(input)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -206,7 +206,7 @@ export function useToggleMessageTemplate() {
         .update({ is_active })
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -238,7 +238,7 @@ export function useDuplicateMessageTemplate() {
         .from('message_templates')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (fetchError) throw fetchError;
 
@@ -254,7 +254,7 @@ export function useDuplicateMessageTemplate() {
           is_active: false,
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

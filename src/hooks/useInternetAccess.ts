@@ -41,7 +41,7 @@ export function useCreateInternetAccessRule() {
         .from('internet_access_rules')
         .insert(input)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -67,7 +67,7 @@ export function useUpdateInternetAccessRule() {
         .update(input)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

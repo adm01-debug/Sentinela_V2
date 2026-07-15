@@ -185,7 +185,7 @@ export function useCreatePolicy() {
           enabled: true,
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -211,7 +211,7 @@ export function useUpdatePolicy() {
         .update(input)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

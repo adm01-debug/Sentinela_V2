@@ -46,7 +46,7 @@ export function useApproveOvertime() {
         .update({ status: 'approved', approved_by: user?.id })
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -74,7 +74,7 @@ export function useRejectOvertime() {
         .update({ status: 'rejected', approved_by: user?.id })
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

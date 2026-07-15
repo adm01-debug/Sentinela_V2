@@ -69,7 +69,7 @@ export function useUpdateWhatsAppSettings() {
           .update(input)
           .eq('id', existing.id)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         result = data;
       } else {
@@ -77,7 +77,7 @@ export function useUpdateWhatsAppSettings() {
           .from('whatsapp_settings')
           .insert(input)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         result = data;
       }

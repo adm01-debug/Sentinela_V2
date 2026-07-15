@@ -15,7 +15,7 @@ export const reportService = {
       .from('ai_analysis_reports')
       .select('*')
       .eq('id', id)
-      .single();
+      .maybeSingle();
     if (error) throw error;
     return data;
   },
@@ -36,7 +36,7 @@ export const reportService = {
         summary: params.summary || 'Report generated',
       })
       .select()
-      .single();
+      .maybeSingle();
     if (error) throw error;
     return data;
   }

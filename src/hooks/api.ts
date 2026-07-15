@@ -38,7 +38,7 @@ export function useEmployees(params?: EmployeeQueryParams) {
 export function useCreateEmployee() {
   return useMutation({
     mutationFn: async (employee: EmployeeInsert) => {
-      const { data, error } = await supabase.from('employees').insert(employee).select().single();
+      const { data, error } = await supabase.from('employees').insert(employee).select().maybeSingle();
       if (error) throw error;
       return data;
     },

@@ -125,7 +125,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
           change_summary: params.summary,
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

@@ -83,7 +83,7 @@ export function useCreateViolationComment() {
           *,
           user:users(id, email, full_name)
         `)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -155,7 +155,7 @@ export function useUpdateViolationComment() {
         .update({ content, updated_at: new Date().toISOString() })
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

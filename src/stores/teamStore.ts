@@ -79,7 +79,7 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         createTeam: async (data) => {
           set({ isLoading: true, error: null });
           try {
-            const { data: team, error } = await supabase.from('teams').insert(data).select().single();
+            const { data: team, error } = await supabase.from('teams').insert(data).select().maybeSingle();
             if (error) throw error;
             const typed = team as Team;
             set({ teams: [...get().teams, typed], isLoading: false });
@@ -93,7 +93,7 @@ export const useTeamStore = create<TeamState & TeamActions>()(
         updateTeam: async (id, data) => {
           set({ isLoading: true, error: null });
           try {
-            const { data: team, error } = await supabase.from('teams').update(data as Record<string, unknown>).eq('id', id).select().single();
+            const { data: team, error } = await supabase.from('teams').update(data as Record<string, unknown>).eq('id', id).select().maybeSingle();
             if (error) throw error;
             const typed = team as Team;
             set({ teams: get().teams.map(t => t.id === id ? typed : t), currentTeam: get().currentTeam?.id === id ? typed : get().currentTeam, isLoading: false });

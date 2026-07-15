@@ -107,7 +107,7 @@ export function useMobileDevice(id: string | null | undefined) {
           employee:employees(id, full_name)
         `)
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data as MobileDevice;
@@ -132,7 +132,7 @@ export function useUpdateMobileDevice() {
         .update(input)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

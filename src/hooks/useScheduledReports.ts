@@ -72,7 +72,7 @@ export function useScheduledReport(id: string | null | undefined) {
         .from('scheduled_reports')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data as ScheduledReport;
@@ -96,7 +96,7 @@ export function useCreateScheduledReport() {
         .from('scheduled_reports')
         .insert(input)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -129,7 +129,7 @@ export function useUpdateScheduledReport() {
         .update(input)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

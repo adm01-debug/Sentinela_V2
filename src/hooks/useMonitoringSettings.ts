@@ -53,7 +53,7 @@ export function useUpdateMonitoringSettings() {
           .update(input)
           .eq('id', existing.id)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         result = data;
       } else {
@@ -61,7 +61,7 @@ export function useUpdateMonitoringSettings() {
           .from('monitoring_settings')
           .insert(input)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         result = data;
       }

@@ -28,7 +28,7 @@ export const employeeService = {
     if (payload.name && !payload.full_name) payload.full_name = payload.name;
     if (payload.full_name && !payload.name) payload.name = payload.full_name;
     
-    const { data: result, error } = await supabase.from('employees').insert(payload).select().single();
+    const { data: result, error } = await supabase.from('employees').insert(payload).select().maybeSingle();
     if (error) throw error;
     return result;
   },
@@ -38,7 +38,7 @@ export const employeeService = {
     if (payload.name && !payload.full_name) payload.full_name = payload.name;
     if (payload.full_name && !payload.name) payload.name = payload.full_name;
 
-    const { data: result, error } = await supabase.from('employees').update(payload).eq('id', id).select().single();
+    const { data: result, error } = await supabase.from('employees').update(payload).eq('id', id).select().maybeSingle();
     if (error) throw error;
     return result;
   },
@@ -87,7 +87,7 @@ export const employeeService = {
       device_name: name,
       device_type: type,
       is_primary: primary,
-    }).select().single();
+    }).select().maybeSingle();
     
     if (error) throw error;
     return data;

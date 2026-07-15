@@ -272,7 +272,7 @@ export function useWebAuthn() {
         .from('webauthn_credentials')
         .select('*')
         .eq('credential_id', credentialId)
-        .single();
+        .maybeSingle();
 
       if (fetchError || !credential) {
         throw new Error('Credencial não encontrada');
