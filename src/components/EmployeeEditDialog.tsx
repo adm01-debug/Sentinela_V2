@@ -68,7 +68,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onOpenChange }: Props) =>
       onOpenChange(false);
     } catch (error) {
       toast.error("Erro ao atualizar funcionário");
-      console.error(error);
+      logger.error('[EmployeeEditDialog] update failed:', error);
     }
   };
 
