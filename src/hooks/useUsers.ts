@@ -48,7 +48,7 @@ export const useUser = (id: any) => {
   return useQuery({
     queryKey: ['user', id],
     queryFn: async () => {
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single();
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', id).maybeSingle();
       if (error) throw error;
       return mapProfileToUser(data as ProfileRow);
     },
@@ -60,7 +60,7 @@ export const useCreateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: any) => {
-      const { data: result, error } = await supabase.from('profiles').insert(data).select().single();
+      const { data: result, error } = await supabase.from('profiles').insert(data).select().maybeSingle();
       if (error) throw error;
       return result;
     },
@@ -72,7 +72,7 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: UpdateUserData }) => {
-      const { data: result, error } = await supabase.from('profiles').update(data).eq('id', id).select().single();
+      const { data: result, error } = await supabase.from('profiles').update(data).eq('id', id).select().maybeSingle();
       if (error) throw error;
       return result;
     },

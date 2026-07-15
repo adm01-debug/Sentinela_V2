@@ -19,7 +19,7 @@ export function useEmployeeDetailPage() {
         .from('employees')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },

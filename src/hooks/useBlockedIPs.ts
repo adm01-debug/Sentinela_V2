@@ -71,7 +71,7 @@ export function useBlockedIPs() {
           is_active: true,
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -146,7 +146,7 @@ export function useBlockIP() {
           is_active: true,
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

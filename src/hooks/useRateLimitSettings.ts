@@ -61,7 +61,7 @@ export function useUpdateRateLimitSettings() {
         .update(input)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -94,7 +94,7 @@ export function useToggleRateLimitSetting() {
         .update({ is_active })
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

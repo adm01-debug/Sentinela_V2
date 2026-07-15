@@ -145,7 +145,7 @@ export function useCreateRole() {
           is_system: false,
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return role;
@@ -172,7 +172,7 @@ export function useUpdateRole() {
         .update(data)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return role;

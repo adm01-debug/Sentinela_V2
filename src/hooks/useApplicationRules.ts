@@ -40,7 +40,7 @@ export function useApplicationRules() {
         .from('application_rules')
         .insert(input)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },

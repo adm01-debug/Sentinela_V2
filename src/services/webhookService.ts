@@ -17,7 +17,7 @@ export const webhookService = {
       .from('webhooks')
       .select('*')
       .eq('id', id)
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     return data as Webhook;
@@ -40,7 +40,7 @@ export const webhookService = {
       .from('webhooks')
       .insert(input)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     return data;
@@ -52,7 +52,7 @@ export const webhookService = {
       .update(input)
       .eq('id', id)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     return data;
@@ -87,7 +87,7 @@ export const webhookService = {
       .update({ is_active })
       .eq('id', id)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     return data;

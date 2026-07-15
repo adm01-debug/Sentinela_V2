@@ -251,7 +251,7 @@ export function useAwardPoints() {
           })
           .eq('employee_id', employeeId)
           .select()
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
         return data;
@@ -267,7 +267,7 @@ export function useAwardPoints() {
             longest_streak: 0,
           })
           .select()
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
         return data;
@@ -329,7 +329,7 @@ export function useAwardBadge() {
           *,
           badge:badges(*)
         `)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

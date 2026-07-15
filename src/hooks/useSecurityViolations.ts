@@ -103,7 +103,7 @@ export function useViolation(id: string | null | undefined) {
           employee:employees(id, name, email)
         `)
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -182,7 +182,7 @@ export function useUpdateViolationStatus() {
         .update(updates)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

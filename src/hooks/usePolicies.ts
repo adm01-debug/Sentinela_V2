@@ -66,7 +66,7 @@ export function usePolicies() {
         enabled: true,
       })
       .select()
-      .single();
+      .maybeSingle();
     if (error) throw error;
     queryClient.invalidateQueries({ queryKey: ['security-policies'] });
     return data;

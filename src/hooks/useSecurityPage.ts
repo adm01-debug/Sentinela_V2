@@ -63,8 +63,8 @@ export function useSecurityPage() {
       if (error) throw error;
       
       const settings: SecuritySettings = {
-        mfa_required: data?.find((s: any) => s.setting_key === 'mfa_required')?.setting_value === true,
-        ip_whitelist_enabled: data?.find((s: any) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
+        mfa_required: data?.find((s: { setting_key: string; setting_value: unknown }) => s.setting_key === 'mfa_required')?.setting_value === true,
+        ip_whitelist_enabled: data?.find((s: { setting_key: string; setting_value: unknown }) => s.setting_key === 'ip_whitelist_enabled')?.setting_value === true,
       };
       return settings;
     },
@@ -101,7 +101,7 @@ export function useSecurityPage() {
   });
 
   const resolveEventMutation = useMutation({
-    mutationFn: async (eventId: any) => {
+    mutationFn: async (eventId: string) => {
       const { error } = await supabase
         .from('security_violations')
         .update({ read: true })
@@ -121,8 +121,8 @@ export function useSecurityPage() {
     severityFilter,
     typeFilter,
     isLoading: eventsQuery.isLoading,
-    handleSeverityFilterChange: useCallback((v: any) => setSeverityFilter(v), []),
-    handleTypeFilterChange: useCallback((v: any) => setTypeFilter(v), []),
+    handleSeverityFilterChange: useCallback((v: string) => setSeverityFilter(v), []),
+    handleTypeFilterChange: useCallback((v: string) => setTypeFilter(v), []),
     handleUpdateSettings: useCallback((s: Partial<SecuritySettings>) => updateSettingsMutation.mutate(s), [updateSettingsMutation]),
     handleResolveEvent: useCallback((id: string) => resolveEventMutation.mutate(id), [resolveEventMutation]),
     isUpdating: updateSettingsMutation.isPending,

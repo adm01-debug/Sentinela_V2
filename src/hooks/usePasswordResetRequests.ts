@@ -96,7 +96,7 @@ export function usePasswordResetRequests() {
         .from('password_reset_requests')
         .select('user_email')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (!request) throw new Error('Request not found');
 

@@ -29,7 +29,7 @@ export const geofenceService = {
       .from('geofences')
       .select('*')
       .eq('id', id)
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     return data as Geofence;
@@ -40,7 +40,7 @@ export const geofenceService = {
       .from('geofences')
       .insert(input)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     return data as Geofence;
@@ -52,7 +52,7 @@ export const geofenceService = {
       .update(input)
       .eq('id', id)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     return data as Geofence;
@@ -74,7 +74,7 @@ export const geofenceService = {
       .update({ is_active })
       .eq('id', id)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     return data as Geofence;

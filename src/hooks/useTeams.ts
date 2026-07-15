@@ -135,7 +135,7 @@ export function useCreateTeam() {
         .from('teams')
         .insert(input)
         .select('*')
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data as Team;
@@ -192,7 +192,7 @@ export function useUpdateTeam() {
         .update(input)
         .eq('id', id)
         .select('*')
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data as Team;

@@ -95,7 +95,7 @@ describe('Employee Management', () => {
         }),
       });
 
-      const { data, error } = await supabase.from('employees').insert(newEmployee).select().single();
+      const { data, error } = await supabase.from('employees').insert(newEmployee).select().maybeSingle();
       expect(error).toBeNull();
       expect(data!.name).toBe('New Employee');
     });
@@ -109,7 +109,7 @@ describe('Employee Management', () => {
         }),
       });
 
-      const { error } = await supabase.from('employees').insert({ email: 'no-name@test.com' }).select().single();
+      const { error } = await supabase.from('employees').insert({ email: 'no-name@test.com' }).select().maybeSingle();
       expect(error).toBeTruthy();
     });
   });
@@ -126,7 +126,7 @@ describe('Employee Management', () => {
         }),
       });
 
-      const { data, error } = await supabase.from('employees').update({ name: 'Updated Name' }).eq('id', '1').select().single();
+      const { data, error } = await supabase.from('employees').update({ name: 'Updated Name' }).eq('id', '1').select().maybeSingle();
       expect(error).toBeNull();
       expect(data!.name).toBe('Updated Name');
     });

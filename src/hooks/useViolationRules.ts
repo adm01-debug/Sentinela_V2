@@ -88,7 +88,7 @@ export function useViolationRule(id) {
         .from('violation_rules')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data as ViolationRule;
@@ -112,7 +112,7 @@ export function useCreateViolationRule() {
         .from('violation_rules')
         .insert(input)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -145,7 +145,7 @@ export function useUpdateViolationRule() {
         .update(input)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -208,7 +208,7 @@ export function useToggleViolationRule() {
         .update({ is_active })
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

@@ -90,7 +90,7 @@ describe('Geofence Operations', () => {
         }),
       }),
     });
-    const { data, error } = await supabase.from('geofences').insert({ name: 'New Zone', latitude: -23.0, longitude: -46.0, radius_meters: 200 }).select().single();
+    const { data, error } = await supabase.from('geofences').insert({ name: 'New Zone', latitude: -23.0, longitude: -46.0, radius_meters: 200 }).select().maybeSingle();
     expect(error).toBeNull();
     expect(data!.name).toBe('New Zone');
   });
@@ -122,7 +122,7 @@ describe('Device Management', () => {
         }),
       }),
     });
-    const { data, error } = await supabase.from('devices').insert({ name: 'NEW-PC', device_type: 'desktop' }).select().single();
+    const { data, error } = await supabase.from('devices').insert({ name: 'NEW-PC', device_type: 'desktop' }).select().maybeSingle();
     expect(error).toBeNull();
   });
 });
@@ -222,7 +222,7 @@ describe('Gamification', () => {
         }),
       }),
     });
-    const { data } = await supabase.from('employee_points').select('*').eq('employee_id', '1').single();
+    const { data } = await supabase.from('employee_points').select('*').eq('employee_id', '1').maybeSingle();
     expect(data!.total_points).toBe(250);
     expect(data!.level).toBe(3);
   });
@@ -255,7 +255,7 @@ describe('Multi-Tenant Company', () => {
         }),
       }),
     });
-    const { data } = await supabase.from('companies').select('*').eq('slug', 'acme').single();
+    const { data } = await supabase.from('companies').select('*').eq('slug', 'acme').maybeSingle();
     expect(data!.name).toBe('Acme Corp');
     expect(data!.plan).toBe('enterprise');
   });

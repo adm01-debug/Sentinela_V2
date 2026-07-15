@@ -59,7 +59,7 @@ export function useCreateWhitelistIP() {
           allowed_endpoints: data.allowed_endpoints || [],
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return result;
@@ -88,7 +88,7 @@ export function useUpdateWhitelistIP() {
         .update(data)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return result;

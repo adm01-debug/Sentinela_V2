@@ -102,7 +102,7 @@ export function useSavedFilters({ entityType, onApply }: UseSavedFiltersOptions)
           is_default: filter.is_default ?? false,
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

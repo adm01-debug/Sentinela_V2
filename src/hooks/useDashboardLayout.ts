@@ -76,7 +76,7 @@ export function useDashboardLayout() {
           .update({ widgets: newWidgets } as Record<string, unknown>)
           .eq('id', (existing as { id: string }).id)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         return data;
       } else {
@@ -84,7 +84,7 @@ export function useDashboardLayout() {
           .from('dashboard_layouts')
           .insert({ user_id: user.id, widgets: newWidgets })
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         return data;
       }
@@ -150,7 +150,7 @@ export function useSaveDashboardLayout() {
           .update({ widgets })
           .eq('id', (existing as { id: string }).id)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         return data;
       } else {
@@ -158,7 +158,7 @@ export function useSaveDashboardLayout() {
           .from('dashboard_layouts')
           .insert({ user_id: user.id, widgets })
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         return data;
       }

@@ -75,7 +75,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
         .from(table)
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (fetchError || !original) {
         throw new Error('Registro não encontrado');
@@ -94,7 +94,7 @@ export function useDuplicate<T extends Record<string, unknown>>(
         .from(table)
         .insert(duplicateData)
         .select()
-        .single();
+        .maybeSingle();
 
       if (insertError) {
         throw new Error(`Erro ao duplicar: ${insertError.message}`);
