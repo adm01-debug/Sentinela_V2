@@ -99,7 +99,7 @@ export function useMessageTemplatesPage() {
 
   // Mutations
   const createMutation = useMutation({
-    mutationFn: async (data: Record<string, unknown>) => {
+    mutationFn: async (data: TemplateFormData) => {
       const dbData = {
         name: data.name,
         body: data.content,

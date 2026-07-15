@@ -103,7 +103,7 @@ export function useTeamsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: Record<string, unknown>) => {
+    mutationFn: async (data: TeamFormData) => {
       const { error } = await supabase.from('teams').insert(data);
       if (error) throw error;
     },

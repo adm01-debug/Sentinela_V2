@@ -85,7 +85,7 @@ export function useInternetAccessPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: Record<string, unknown>) => {
+    mutationFn: async (data: RuleFormData) => {
       const { error } = await supabase.from('internet_access_rules').insert(data);
       if (error) throw error;
     },

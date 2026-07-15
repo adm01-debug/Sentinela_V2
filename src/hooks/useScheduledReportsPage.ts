@@ -92,7 +92,7 @@ export function useScheduledReportsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: Record<string, unknown>) => {
+    mutationFn: async (data: ReportFormData) => {
       const { error } = await supabase.from('scheduled_reports').insert(data);
       if (error) throw error;
     },

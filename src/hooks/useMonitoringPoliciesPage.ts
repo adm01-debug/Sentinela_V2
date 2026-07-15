@@ -113,7 +113,7 @@ export function useMonitoringPoliciesPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: Record<string, unknown>) => {
+    mutationFn: async (data: PolicyFormData) => {
       const settingData = {
         setting_key: data.name,
         description: data.description,
