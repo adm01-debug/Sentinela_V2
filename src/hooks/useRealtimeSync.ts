@@ -6,7 +6,7 @@ export function useRealtimeSync<T>(key: string, initialValue: T) {
 
   useEffect(() => {
     const channel = new BroadcastChannel(key);
-    channel.onmessage = (e: any) => {
+    channel.onmessage = (e: MessageEvent) => {
       setValue(e.data);
       setLastSync(new Date());
     };

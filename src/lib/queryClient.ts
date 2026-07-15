@@ -124,7 +124,7 @@ export const queryClient = new QueryClient({
     },
   }),
   mutationCache: new MutationCache({
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       logger.error('[Mutation Error]:', error);
       toast.error(error.message || 'Ocorreu um erro na operação');
     },

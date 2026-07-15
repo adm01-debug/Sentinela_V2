@@ -34,7 +34,7 @@ export function useViolations(filters?: { severity?: string; status?: string; em
   });
 
   const resolveMutation = useMutation({
-    mutationFn: (id: any) => violationService.resolveViolation(id),
+    mutationFn: (id: string) => violationService.resolveViolation(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['violations'] }),
   });
 
@@ -42,7 +42,7 @@ export function useViolations(filters?: { severity?: string; status?: string; em
   const unresolved = useMemo(() => violations.filter(v => v.status !== 'resolved'), [violations]);
   const critical = useMemo(() => violations.filter(v => v.severity === 'critical' && v.status !== 'resolved'), [violations]);
 
-  const resolve = useCallback((id: any) => resolveMutation.mutate(id), [resolveMutation]);
+  const resolve = useCallback((id: string) => resolveMutation.mutate(id), [resolveMutation]);
 
   return {
     violations,

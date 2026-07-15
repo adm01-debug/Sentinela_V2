@@ -97,7 +97,7 @@ export function useCreateWebhook() {
         description: 'O webhook foi criado com sucesso.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast({
         title: 'Erro ao criar webhook',
         description: error.message,
@@ -120,7 +120,7 @@ export function useUpdateWebhook() {
         description: 'O webhook foi atualizado com sucesso.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast({
         title: 'Erro ao atualizar webhook',
         description: error.message,
@@ -143,7 +143,7 @@ export function useDeleteWebhook() {
         description: 'O webhook foi excluído com sucesso.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast({
         title: 'Erro ao excluir webhook',
         description: error.message,
@@ -164,7 +164,7 @@ export function useTestWebhook() {
         description: 'O webhook de teste foi enviado com sucesso.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast({
         title: 'Erro ao testar webhook',
         description: error.message,
@@ -187,7 +187,7 @@ export function useToggleWebhook() {
         description: `O webhook foi ${data.is_active ? 'ativado' : 'desativado'} com sucesso.`,
       });
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast({
         title: 'Erro ao alterar status',
         description: error.message,
