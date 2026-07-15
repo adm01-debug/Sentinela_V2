@@ -67,7 +67,7 @@ export function useSensitiveKeywordsPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const newKeyword: SensitiveKeyword = {
         id: Date.now().toString(),
         ...data,
