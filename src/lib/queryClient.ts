@@ -96,7 +96,7 @@ export const queryKeys = {
     all: ['mapbox'] as const,
     token: () => [...queryKeys.mapbox.all, 'token'] as const,
   }
-} as Record<string, any> & typeof queryKeysBase;
+} as Record<string, Record<string, unknown>>;
 
 // ============================================================
 // QUERY CLIENT INSTANCE
