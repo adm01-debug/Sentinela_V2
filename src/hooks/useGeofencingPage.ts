@@ -94,7 +94,7 @@ export function useGeofencingPage() {
         return acc;
       }, {} as Record<string, number>);
       
-      return data.map((g: any) => ({
+      return data.map((g: Record<string, any>) => ({
         id: g.id,
         name: g.name,
         description: g.description,
