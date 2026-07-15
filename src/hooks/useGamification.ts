@@ -122,7 +122,7 @@ async function fetchLeaderboard(
         .select('*', { count: 'exact', head: true })
         .eq('employee_id', entry.employee_id);
 
-      const employeeData = entry.employee as { name: string } | null;
+      const employeeData = Array.isArray(entry.employee) ? entry.employee[0] : entry.employee;
       return {
         employee_id: entry.employee_id,
         employee_name: employeeData?.name || 'Unknown',
