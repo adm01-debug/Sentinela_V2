@@ -100,7 +100,7 @@ export function useCreateWebhook() {
     onError: (error: unknown) => {
       toast({
         title: 'Erro ao criar webhook',
-        description: error.message,
+        description: error instanceof Error ? error.message : String(error),
         variant: 'destructive',
       });
     },
@@ -123,7 +123,7 @@ export function useUpdateWebhook() {
     onError: (error: unknown) => {
       toast({
         title: 'Erro ao atualizar webhook',
-        description: error.message,
+        description: error instanceof Error ? error.message : String(error),
         variant: 'destructive',
       });
     },
@@ -146,7 +146,7 @@ export function useDeleteWebhook() {
     onError: (error: unknown) => {
       toast({
         title: 'Erro ao excluir webhook',
-        description: error.message,
+        description: error instanceof Error ? error.message : String(error),
         variant: 'destructive',
       });
     },
@@ -167,7 +167,7 @@ export function useTestWebhook() {
     onError: (error: unknown) => {
       toast({
         title: 'Erro ao testar webhook',
-        description: error.message,
+        description: error instanceof Error ? error.message : String(error),
         variant: 'destructive',
       });
     },
@@ -180,7 +180,7 @@ export function useToggleWebhook() {
 
   return useMutation({
     mutationFn: ({ id, is_active }: { id: string; is_active: boolean }) => webhookService.toggleWebhook(id, is_active),
-    onSuccess: (data: any) => {
+    onSuccess: (data: { is_active: boolean }) => {
       invalidateRelated.webhooks(queryClient);
       toast({
         title: data.is_active ? 'Webhook ativado' : 'Webhook desativado',
@@ -190,7 +190,7 @@ export function useToggleWebhook() {
     onError: (error: unknown) => {
       toast({
         title: 'Erro ao alterar status',
-        description: error.message,
+        description: error instanceof Error ? error.message : String(error),
         variant: 'destructive',
       });
     },
