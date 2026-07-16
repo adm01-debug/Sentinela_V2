@@ -223,9 +223,9 @@ export function StatHighlight({
 }: StatHighlightProps) {
   const variantStyles = {
     default: 'bg-card',
-    success: 'bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800',
-    warning: 'bg-yellow-50 dark:bg-yellow-950/30 border-yellow-200 dark:border-yellow-800',
-    error: 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800',
+    success: 'bg-success/10 border-success/30',
+    warning: 'bg-warning/10 border-warning/30',
+    error: 'bg-destructive/10 border-destructive/30',
   };
 
   return (
