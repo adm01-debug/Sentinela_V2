@@ -42,7 +42,7 @@ interface HeatmapCalendarProps {
 // Uses semantic HSL tokens with opacity modifiers → dark mode automatic, tenant-themable.
 const colorSchemes = {
   green: ['bg-success/20', 'bg-success/40', 'bg-success/70', 'bg-success'],
-  blue: ['bg-info/20', 'bg-info/40', 'bg-info/70', 'bg-info'],
+  blue: ['bg-primary/20', 'bg-primary/40', 'bg-primary/70', 'bg-primary'],
   purple: ['bg-accent/30', 'bg-accent/50', 'bg-accent/75', 'bg-accent'],
   orange: ['bg-warning/20', 'bg-warning/40', 'bg-warning/70', 'bg-warning'],
   red: ['bg-destructive/20', 'bg-destructive/40', 'bg-destructive/70', 'bg-destructive'],
