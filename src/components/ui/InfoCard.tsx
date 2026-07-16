@@ -250,7 +250,7 @@ export function StatHighlight({
       {trend && (
         <div className={cn(
           'flex items-center gap-1 mt-2 text-xs font-medium',
-          trend.direction === 'up' ? 'text-green-600' : 'text-red-600'
+          trend.direction === 'up' ? 'text-success' : 'text-destructive'
         )}>
           <span>{trend.direction === 'up' ? '↑' : '↓'}</span>
           <span>{Math.abs(trend.value)}%</span>
