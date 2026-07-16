@@ -39,37 +39,13 @@ interface HeatmapCalendarProps {
 // COLOR SCHEMES
 // ============================================================
 
+// Uses semantic HSL tokens with opacity modifiers → dark mode automatic, tenant-themable.
 const colorSchemes = {
-  green: [
-    'bg-emerald-100 dark:bg-emerald-950',
-    'bg-emerald-300 dark:bg-emerald-800',
-    'bg-emerald-500 dark:bg-emerald-600',
-    'bg-emerald-700 dark:bg-emerald-400',
-  ],
-  blue: [
-    'bg-blue-100 dark:bg-blue-950',
-    'bg-blue-300 dark:bg-blue-800',
-    'bg-blue-500 dark:bg-blue-600',
-    'bg-blue-700 dark:bg-blue-400',
-  ],
-  purple: [
-    'bg-purple-100 dark:bg-purple-950',
-    'bg-purple-300 dark:bg-purple-800',
-    'bg-purple-500 dark:bg-purple-600',
-    'bg-purple-700 dark:bg-purple-400',
-  ],
-  orange: [
-    'bg-orange-100 dark:bg-orange-950',
-    'bg-orange-300 dark:bg-orange-800',
-    'bg-orange-500 dark:bg-orange-600',
-    'bg-orange-700 dark:bg-orange-400',
-  ],
-  red: [
-    'bg-red-100 dark:bg-red-950',
-    'bg-red-300 dark:bg-red-800',
-    'bg-red-500 dark:bg-red-600',
-    'bg-red-700 dark:bg-red-400',
-  ],
+  green: ['bg-success/20', 'bg-success/40', 'bg-success/70', 'bg-success'],
+  blue: ['bg-primary/20', 'bg-primary/40', 'bg-primary/70', 'bg-primary'],
+  purple: ['bg-accent/30', 'bg-accent/50', 'bg-accent/75', 'bg-accent'],
+  orange: ['bg-warning/20', 'bg-warning/40', 'bg-warning/70', 'bg-warning'],
+  red: ['bg-destructive/20', 'bg-destructive/40', 'bg-destructive/70', 'bg-destructive'],
 };
 
 const dayLabels = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
