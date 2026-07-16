@@ -23,7 +23,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 
 // ============================================
-// STATUS BADGE
+// STATUS BADGE — 100% semantic tokens
 // ============================================
 
 export type StatusType =
@@ -57,139 +57,46 @@ interface StatusConfig {
   dotColor: string;
 }
 
+// Semantic tone classes — driven by CSS tokens (--success/--warning/--destructive/--info)
+const TONE = {
+  success: 'bg-success/10 text-success border-success/30',
+  warning: 'bg-warning/10 text-warning border-warning/30',
+  destructive: 'bg-destructive/10 text-destructive border-destructive/30',
+  info: 'bg-info/10 text-info border-info/30',
+  muted: 'bg-muted text-muted-foreground border-border',
+} as const;
+
+const DOT = {
+  success: 'bg-success',
+  warning: 'bg-warning',
+  destructive: 'bg-destructive',
+  info: 'bg-info',
+  muted: 'bg-muted-foreground',
+} as const;
+
 const statusConfigs: Record<StatusType, StatusConfig> = {
-  active: {
-    label: 'Ativo',
-    icon: Activity,
-    className: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800',
-    dotColor: 'bg-green-500',
-  },
-  inactive: {
-    label: 'Inativo',
-    icon: Moon,
-    className: 'bg-muted text-muted-foreground border-border',
-    dotColor: 'bg-muted-foreground',
-  },
-  pending: {
-    label: 'Pendente',
-    icon: Clock,
-    className: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800',
-    dotColor: 'bg-yellow-500',
-  },
-  success: {
-    label: 'Sucesso',
-    icon: CheckCircle,
-    className: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800',
-    dotColor: 'bg-green-500',
-  },
-  error: {
-    label: 'Erro',
-    icon: XCircle,
-    className: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800',
-    dotColor: 'bg-red-500',
-  },
-  warning: {
-    label: 'Alerta',
-    icon: AlertCircle,
-    className: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800',
-    dotColor: 'bg-yellow-500',
-  },
-  info: {
-    label: 'Info',
-    icon: AlertCircle,
-    className: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-    dotColor: 'bg-blue-500',
-  },
-  loading: {
-    label: 'Carregando',
-    icon: Loader2,
-    className: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-    dotColor: 'bg-blue-500',
-  },
-  paused: {
-    label: 'Pausado',
-    icon: Pause,
-    className: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800',
-    dotColor: 'bg-yellow-500',
-  },
-  stopped: {
-    label: 'Parado',
-    icon: Ban,
-    className: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800',
-    dotColor: 'bg-red-500',
-  },
-  online: {
-    label: 'Online',
-    icon: Wifi,
-    className: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800',
-    dotColor: 'bg-green-500',
-  },
-  offline: {
-    label: 'Offline',
-    icon: WifiOff,
-    className: 'bg-muted text-muted-foreground border-border',
-    dotColor: 'bg-muted-foreground',
-  },
-  visible: {
-    label: 'Visível',
-    icon: Eye,
-    className: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-    dotColor: 'bg-blue-500',
-  },
-  hidden: {
-    label: 'Oculto',
-    icon: EyeOff,
-    className: 'bg-muted text-muted-foreground border-border',
-    dotColor: 'bg-muted-foreground',
-  },
-  locked: {
-    label: 'Bloqueado',
-    icon: Lock,
-    className: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800',
-    dotColor: 'bg-red-500',
-  },
-  unlocked: {
-    label: 'Desbloqueado',
-    icon: Unlock,
-    className: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800',
-    dotColor: 'bg-green-500',
-  },
-  secure: {
-    label: 'Seguro',
-    icon: ShieldCheck,
-    className: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800',
-    dotColor: 'bg-green-500',
-  },
-  insecure: {
-    label: 'Inseguro',
-    icon: ShieldAlert,
-    className: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800',
-    dotColor: 'bg-red-500',
-  },
-  verified: {
-    label: 'Verificado',
-    icon: CheckCircle,
-    className: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-    dotColor: 'bg-blue-500',
-  },
-  idle: {
-    label: 'Ocioso',
-    icon: Moon,
-    className: 'bg-muted text-muted-foreground border-border',
-    dotColor: 'bg-muted-foreground',
-  },
-  busy: {
-    label: 'Ocupado',
-    icon: Zap,
-    className: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border-orange-200 dark:border-orange-800',
-    dotColor: 'bg-orange-500',
-  },
-  default: {
-    label: 'Padrão',
-    icon: AlertCircle,
-    className: 'bg-gray-100 text-gray-800 border-gray-200',
-    dotColor: 'bg-gray-500',
-  },
+  active:    { label: 'Ativo',        icon: Activity,    className: TONE.success,     dotColor: DOT.success },
+  inactive:  { label: 'Inativo',      icon: Moon,        className: TONE.muted,       dotColor: DOT.muted },
+  pending:   { label: 'Pendente',     icon: Clock,       className: TONE.warning,     dotColor: DOT.warning },
+  success:   { label: 'Sucesso',      icon: CheckCircle, className: TONE.success,     dotColor: DOT.success },
+  error:     { label: 'Erro',         icon: XCircle,     className: TONE.destructive, dotColor: DOT.destructive },
+  warning:   { label: 'Alerta',       icon: AlertCircle, className: TONE.warning,     dotColor: DOT.warning },
+  info:      { label: 'Info',         icon: AlertCircle, className: TONE.info,        dotColor: DOT.info },
+  loading:   { label: 'Carregando',   icon: Loader2,     className: TONE.info,        dotColor: DOT.info },
+  paused:    { label: 'Pausado',      icon: Pause,       className: TONE.warning,     dotColor: DOT.warning },
+  stopped:   { label: 'Parado',       icon: Ban,         className: TONE.destructive, dotColor: DOT.destructive },
+  online:    { label: 'Online',       icon: Wifi,        className: TONE.success,     dotColor: DOT.success },
+  offline:   { label: 'Offline',      icon: WifiOff,     className: TONE.muted,       dotColor: DOT.muted },
+  visible:   { label: 'Visível',      icon: Eye,         className: TONE.info,        dotColor: DOT.info },
+  hidden:    { label: 'Oculto',       icon: EyeOff,      className: TONE.muted,       dotColor: DOT.muted },
+  locked:    { label: 'Bloqueado',    icon: Lock,        className: TONE.destructive, dotColor: DOT.destructive },
+  unlocked:  { label: 'Desbloqueado', icon: Unlock,      className: TONE.success,     dotColor: DOT.success },
+  secure:    { label: 'Seguro',       icon: ShieldCheck, className: TONE.success,     dotColor: DOT.success },
+  insecure:  { label: 'Inseguro',     icon: ShieldAlert, className: TONE.destructive, dotColor: DOT.destructive },
+  verified:  { label: 'Verificado',   icon: CheckCircle, className: TONE.info,        dotColor: DOT.info },
+  idle:      { label: 'Ocioso',       icon: Moon,        className: TONE.muted,       dotColor: DOT.muted },
+  busy:      { label: 'Ocupado',      icon: Zap,         className: TONE.warning,     dotColor: DOT.warning },
+  default:   { label: 'Padrão',       icon: AlertCircle, className: TONE.muted,       dotColor: DOT.muted },
 };
 
 interface StatusBadgeProps {
@@ -305,10 +212,10 @@ export function DotIndicator({
   className,
 }: DotIndicatorProps) {
   const colorStyles = {
-    success: 'bg-green-500',
-    warning: 'bg-yellow-500',
-    error: 'bg-red-500',
-    info: 'bg-blue-500',
+    success: 'bg-success',
+    warning: 'bg-warning',
+    error: 'bg-destructive',
+    info: 'bg-info',
     neutral: 'bg-muted-foreground',
   };
 
