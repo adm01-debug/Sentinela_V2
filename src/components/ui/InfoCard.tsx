@@ -41,27 +41,27 @@ const variantConfig: Record<InfoCardVariant, {
 }> = {
   info: {
     icon: Info,
-    bg: 'bg-blue-50 dark:bg-blue-950/50',
-    border: 'border-blue-200 dark:border-blue-800',
-    iconColor: 'text-blue-600 dark:text-blue-400',
+    bg: 'bg-info/10',
+    border: 'border-info/30',
+    iconColor: 'text-info',
   },
   success: {
     icon: CheckCircle,
-    bg: 'bg-green-50 dark:bg-green-950/50',
-    border: 'border-green-200 dark:border-green-800',
-    iconColor: 'text-green-600 dark:text-green-400',
+    bg: 'bg-success/10',
+    border: 'border-success/30',
+    iconColor: 'text-success',
   },
   warning: {
     icon: AlertTriangle,
-    bg: 'bg-yellow-50 dark:bg-yellow-950/50',
-    border: 'border-yellow-200 dark:border-yellow-800',
-    iconColor: 'text-yellow-600 dark:text-yellow-400',
+    bg: 'bg-warning/10',
+    border: 'border-warning/30',
+    iconColor: 'text-warning',
   },
   error: {
     icon: AlertCircle,
-    bg: 'bg-red-50 dark:bg-red-950/50',
-    border: 'border-red-200 dark:border-red-800',
-    iconColor: 'text-red-600 dark:text-red-400',
+    bg: 'bg-destructive/10',
+    border: 'border-destructive/30',
+    iconColor: 'text-destructive',
   },
   neutral: {
     icon: Info,
@@ -223,9 +223,9 @@ export function StatHighlight({
 }: StatHighlightProps) {
   const variantStyles = {
     default: 'bg-card',
-    success: 'bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800',
-    warning: 'bg-yellow-50 dark:bg-yellow-950/30 border-yellow-200 dark:border-yellow-800',
-    error: 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800',
+    success: 'bg-success/10 border-success/30',
+    warning: 'bg-warning/10 border-warning/30',
+    error: 'bg-destructive/10 border-destructive/30',
   };
 
   return (
@@ -250,7 +250,7 @@ export function StatHighlight({
       {trend && (
         <div className={cn(
           'flex items-center gap-1 mt-2 text-xs font-medium',
-          trend.direction === 'up' ? 'text-green-600' : 'text-red-600'
+          trend.direction === 'up' ? 'text-success' : 'text-destructive'
         )}>
           <span>{trend.direction === 'up' ? '↑' : '↓'}</span>
           <span>{Math.abs(trend.value)}%</span>
