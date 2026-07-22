@@ -1,21 +1,20 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { SecurityViolation } from '@/hooks/useSecurityViolations';
 import { useMemo } from 'react';
+import { useChartColors } from '@/hooks/useChartColors';
 
 interface ViolationsByTypeChartProps {
   violations: SecurityViolation[];
 }
 
-const COLORS = [
-  'hsl(0, 84%, 60%)',
-  'hsl(38, 92%, 50%)',
-  'hsl(217, 91%, 60%)',
-  'hsl(142, 76%, 36%)',
-  'hsl(262, 83%, 58%)',
-  'hsl(330, 81%, 60%)',
-];
-
 export function ViolationsByTypeChart({ violations }: ViolationsByTypeChartProps) {
+  const c = useChartColors();
+
+  const palette = useMemo(
+    () => [c.destructive, c.warning, c.info, c.success, c.accent, c.primary],
+    [c],
+  );
+
   const data = useMemo(() => {
     const typeCounts = violations.reduce((acc, v) => {
       acc[v.violation_type] = (acc[v.violation_type] || 0) + 1;
@@ -50,13 +49,13 @@ export function ViolationsByTypeChart({ violations }: ViolationsByTypeChartProps
           labelLine={false}
         >
           {data.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell key={`cell-${index}`} fill={palette[index % palette.length]} />
           ))}
         </Pie>
         <Tooltip
           contentStyle={{
-            backgroundColor: 'hsl(var(--card))',
-            border: '1px solid hsl(var(--border))',
+            backgroundColor: c.card,
+            border: `1px solid ${c.border}`,
             borderRadius: '8px',
           }}
         />
