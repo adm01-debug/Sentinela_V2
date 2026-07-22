@@ -4,6 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, AreaChart, Area,
 } from "recharts";
+import { useChartColors } from "@/hooks/useChartColors";
 
 interface TelemetryRow {
   id: string;
@@ -29,6 +30,14 @@ function formatBucketTime(ts: number, timeFilter: string): string {
 }
 
 export function TelemetryCharts({ rows, timeFilter }: Props) {
+  const c = useChartColors();
+  const tooltipStyle = {
+    backgroundColor: c.card,
+    border: `1px solid ${c.border}`,
+    borderRadius: '8px',
+    color: c.foreground,
+  };
+
   const bucketMs = useMemo(() => {
     if (timeFilter === "1h") return 5 * 60 * 1000;
     if (timeFilter === "6h") return 30 * 60 * 1000;
@@ -106,7 +115,7 @@ export function TelemetryCharts({ rows, timeFilter }: Props) {
       .map(([name, count]) => ({ name, alertas: count }));
   }, [rows]);
 
-  const PIE_COLORS = ["hsl(45, 93%, 47%)", "hsl(var(--destructive))", "hsl(0, 84%, 60%)"];
+  const PIE_COLORS = [c.warning, c.destructive, c.accent];
 
   if (rows.length === 0) return null;
 
@@ -121,12 +130,12 @@ export function TelemetryCharts({ rows, timeFilter }: Props) {
           <CardContent>
             <ResponsiveContainer width="100%" height={220}>
               <AreaChart data={timelineData}>
-                <XAxis dataKey="time" tick={{ fontSize: 10 }} />
-                <YAxis tick={{ fontSize: 10 }} allowDecimals={false} />
-                <Tooltip />
-                <Area type="monotone" dataKey="lentas" stackId="1" fill="hsl(45, 93%, 47%)" stroke="hsl(45, 93%, 47%)" fillOpacity={0.6} name="Lentas" />
-                <Area type="monotone" dataKey="muitoLentas" stackId="1" fill="hsl(var(--destructive))" stroke="hsl(var(--destructive))" fillOpacity={0.6} name="Muito Lentas" />
-                <Area type="monotone" dataKey="erros" stackId="1" fill="hsl(0, 84%, 60%)" stroke="hsl(0, 84%, 60%)" fillOpacity={0.6} name="Erros" />
+                <XAxis dataKey="time" tick={{ fill: c.muted, fontSize: 10 }} stroke={c.muted} />
+                <YAxis tick={{ fill: c.muted, fontSize: 10 }} stroke={c.muted} allowDecimals={false} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Area type="monotone" dataKey="lentas" stackId="1" fill={c.warning} stroke={c.warning} fillOpacity={0.6} name="Lentas" />
+                <Area type="monotone" dataKey="muitoLentas" stackId="1" fill={c.destructive} stroke={c.destructive} fillOpacity={0.6} name="Muito Lentas" />
+                <Area type="monotone" dataKey="erros" stackId="1" fill={c.accent} stroke={c.accent} fillOpacity={0.6} name="Erros" />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -152,7 +161,7 @@ export function TelemetryCharts({ rows, timeFilter }: Props) {
                     <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={tooltipStyle} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -168,11 +177,11 @@ export function TelemetryCharts({ rows, timeFilter }: Props) {
           <CardContent>
             <ResponsiveContainer width="100%" height={220}>
               <AreaChart data={durationData}>
-                <XAxis dataKey="time" tick={{ fontSize: 10 }} />
-                <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip formatter={(value) => `${value}ms`} />
-                <Area type="monotone" dataKey="maxMs" fill="hsl(var(--destructive))" stroke="hsl(var(--destructive))" fillOpacity={0.2} name="Máxima" />
-                <Area type="monotone" dataKey="mediaMs" fill="hsl(var(--primary))" stroke="hsl(var(--primary))" fillOpacity={0.4} name="Média" />
+                <XAxis dataKey="time" tick={{ fill: c.muted, fontSize: 10 }} stroke={c.muted} />
+                <YAxis tick={{ fill: c.muted, fontSize: 10 }} stroke={c.muted} />
+                <Tooltip contentStyle={tooltipStyle} formatter={(value) => `${value}ms`} />
+                <Area type="monotone" dataKey="maxMs" fill={c.destructive} stroke={c.destructive} fillOpacity={0.2} name="Máxima" />
+                <Area type="monotone" dataKey="mediaMs" fill={c.primary} stroke={c.primary} fillOpacity={0.4} name="Média" />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -185,10 +194,10 @@ export function TelemetryCharts({ rows, timeFilter }: Props) {
           <CardContent>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={tableAlertData} layout="vertical" margin={{ left: 60 }}>
-                <XAxis type="number" tick={{ fontSize: 10 }} allowDecimals={false} />
-                <YAxis type="category" dataKey="name" tick={{ fontSize: 9 }} width={55} />
-                <Tooltip />
-                <Bar dataKey="alertas" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} name="Alertas" />
+                <XAxis type="number" tick={{ fill: c.muted, fontSize: 10 }} stroke={c.muted} allowDecimals={false} />
+                <YAxis type="category" dataKey="name" tick={{ fill: c.muted, fontSize: 9 }} stroke={c.muted} width={55} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Bar dataKey="alertas" fill={c.primary} radius={[0, 4, 4, 0]} name="Alertas" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
