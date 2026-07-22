@@ -75,6 +75,7 @@ const UEBADashboardPage = lazy(() => import('@/pages/admin/ueba/UEBADashboardPag
 const EmployeeRiskProfilePage = lazy(() => import('@/pages/admin/ueba/EmployeeRiskProfilePage'));
 const UEBASettingsPage = lazy(() => import('@/pages/admin/ueba/UEBASettingsPage'));
 const EdgeFunctionDashboard = lazy(() => import('@/pages/admin/EdgeFunctionDashboard'));
+const ChartSimulationPage = lazy(() => import('@/pages/dev/ChartSimulationPage'));
 
 // ============================================================
 // ROUTE GUARDS
