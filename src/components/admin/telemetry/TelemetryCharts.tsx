@@ -4,6 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, AreaChart, Area,
 } from "recharts";
+import { useChartColors } from "@/hooks/useChartColors";
 
 interface TelemetryRow {
   id: string;
