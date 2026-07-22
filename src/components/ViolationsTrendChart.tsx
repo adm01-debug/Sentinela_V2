@@ -1,17 +1,17 @@
 import { useMemo, useState } from 'react';
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   Legend,
   AreaChart,
-  Area
+  Area,
 } from 'recharts';
-import { format, subDays, startOfDay, startOfWeek, startOfMonth, eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval } from 'date-fns';
+import { format, subDays, startOfDay, eachDayOfInterval } from 'date-fns';
+import { useChartColors } from '@/hooks/useChartColors';
 import { ptBR } from 'date-fns/locale';
 import { 
   Select,
@@ -87,8 +87,10 @@ export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) 
     };
   }, [violations, period]);
 
+  const c = useChartColors();
+
   const TrendIcon = trend.direction === 'up' ? TrendingUp : trend.direction === 'down' ? TrendingDown : Minus;
-  const trendColor = trend.direction === 'up' ? 'text-destructive' : trend.direction === 'down' ? 'text-green-500' : 'text-muted-foreground';
+  const trendColor = trend.direction === 'up' ? 'text-destructive' : trend.direction === 'down' ? 'text-success' : 'text-muted-foreground';
 
   return (
     <div className="rounded-xl border border-border bg-card p-6">
@@ -98,7 +100,7 @@ export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) 
           <div className="flex items-center gap-2 mt-1">
             <TrendIcon className={`h-4 w-4 ${trendColor}`} />
             <span className={`text-sm ${trendColor}`}>
-              {trend.direction === 'up' ? '+' : trend.direction === 'down' ? '-' : ''}{trend.percent}% 
+              {trend.direction === 'up' ? '+' : trend.direction === 'down' ? '-' : ''}{trend.percent}%
               {trend.direction === 'up' ? ' aumento' : trend.direction === 'down' ? ' redução' : ' estável'}
             </span>
             <span className="text-xs text-muted-foreground">vs período anterior</span>
@@ -120,35 +122,35 @@ export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) 
         <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="hsl(217, 91%, 60%)" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="hsl(217, 91%, 60%)" stopOpacity={0}/>
+              <stop offset="5%" stopColor={c.primary} stopOpacity={0.3} />
+              <stop offset="95%" stopColor={c.primary} stopOpacity={0} />
             </linearGradient>
             <linearGradient id="colorCritical" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="hsl(0, 84%, 60%)" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="hsl(0, 84%, 60%)" stopOpacity={0}/>
+              <stop offset="5%" stopColor={c.destructive} stopOpacity={0.3} />
+              <stop offset="95%" stopColor={c.destructive} stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-          <XAxis 
-            dataKey="date" 
-            stroke="hsl(var(--muted-foreground))" 
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+          <CartesianGrid strokeDasharray="3 3" stroke={c.border} />
+          <XAxis
+            dataKey="date"
+            stroke={c.muted}
+            tick={{ fill: c.muted, fontSize: 12 }}
             interval={period === '90d' ? 6 : period === '30d' ? 2 : 0}
           />
-          <YAxis 
-            stroke="hsl(var(--muted-foreground))" 
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+          <YAxis
+            stroke={c.muted}
+            tick={{ fill: c.muted, fontSize: 12 }}
             allowDecimals={false}
           />
-          <Tooltip 
-            contentStyle={{ 
-              backgroundColor: 'hsl(var(--card))', 
-              border: '1px solid hsl(var(--border))',
-              borderRadius: '8px'
+          <Tooltip
+            contentStyle={{
+              backgroundColor: c.card,
+              border: `1px solid ${c.border}`,
+              borderRadius: '8px',
             }}
-            labelStyle={{ color: 'hsl(var(--foreground))' }}
+            labelStyle={{ color: c.foreground }}
           />
-          <Legend 
+          <Legend
             wrapperStyle={{ paddingTop: '20px' }}
             formatter={(value) => {
               const labels: Record<string, string> = {
@@ -156,31 +158,31 @@ export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) 
                 critical: 'Críticas',
                 high: 'Alta',
                 medium: 'Média',
-                low: 'Baixa'
+                low: 'Baixa',
               };
-              return <span style={{ color: 'hsl(var(--muted-foreground))' }}>{labels[value] || value}</span>;
+              return <span style={{ color: c.muted }}>{labels[value] || value}</span>;
             }}
           />
-          <Area 
-            type="monotone" 
-            dataKey="total" 
-            stroke="hsl(217, 91%, 60%)" 
-            fillOpacity={1} 
-            fill="url(#colorTotal)" 
+          <Area
+            type="monotone"
+            dataKey="total"
+            stroke={c.primary}
+            fillOpacity={1}
+            fill="url(#colorTotal)"
             strokeWidth={2}
           />
-          <Area 
-            type="monotone" 
-            dataKey="critical" 
-            stroke="hsl(0, 84%, 60%)" 
-            fillOpacity={1} 
-            fill="url(#colorCritical)" 
+          <Area
+            type="monotone"
+            dataKey="critical"
+            stroke={c.destructive}
+            fillOpacity={1}
+            fill="url(#colorCritical)"
             strokeWidth={2}
           />
-          <Line 
-            type="monotone" 
-            dataKey="high" 
-            stroke="hsl(38, 92%, 50%)" 
+          <Line
+            type="monotone"
+            dataKey="high"
+            stroke={c.warning}
             strokeWidth={2}
             dot={false}
           />
