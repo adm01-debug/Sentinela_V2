@@ -91,6 +91,9 @@ export const AppRoutes = () => (
   <RouteErrorBoundary>
     <Suspense fallback={<PageLoader />}>
       <Routes>
+      {/* Dev-only public route for chart contrast simulation */}
+      <Route path="/dev/chart-simulation" element={<ChartSimulationPage />} />
+
       {/* Auth */}
       <Route path="/auth" element={<GuestGuard><Auth /></GuestGuard>} />
       <Route path={ROUTES.LOGIN} element={<Navigate to="/auth" replace />} />
