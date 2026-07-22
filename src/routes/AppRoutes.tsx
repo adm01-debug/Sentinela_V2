@@ -75,6 +75,7 @@ const UEBADashboardPage = lazy(() => import('@/pages/admin/ueba/UEBADashboardPag
 const EmployeeRiskProfilePage = lazy(() => import('@/pages/admin/ueba/EmployeeRiskProfilePage'));
 const UEBASettingsPage = lazy(() => import('@/pages/admin/ueba/UEBASettingsPage'));
 const EdgeFunctionDashboard = lazy(() => import('@/pages/admin/EdgeFunctionDashboard'));
+const ChartSimulationPage = lazy(() => import('@/pages/dev/ChartSimulationPage'));
 
 // ============================================================
 // ROUTE GUARDS
@@ -90,6 +91,9 @@ export const AppRoutes = () => (
   <RouteErrorBoundary>
     <Suspense fallback={<PageLoader />}>
       <Routes>
+      {/* Dev-only public route for chart contrast simulation */}
+      <Route path="/dev/chart-simulation" element={<ChartSimulationPage />} />
+
       {/* Auth */}
       <Route path="/auth" element={<GuestGuard><Auth /></GuestGuard>} />
       <Route path={ROUTES.LOGIN} element={<Navigate to="/auth" replace />} />
