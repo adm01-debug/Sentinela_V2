@@ -56,7 +56,7 @@ export function useDailyJourney(employeeId: string, date: string) {
       if (entriesRes.error) throw entriesRes.error;
       const employeeName = (empRes.data as { name?: string } | null)?.name ?? '';
 
-      const [violationsRes, prodRes] = await Promise.all([
+      const [violationsRes, prodRes, capturesRes] = await Promise.all([
         employeeName
           ? supabase
               .from('security_violations')
@@ -72,10 +72,21 @@ export function useDailyJourney(employeeId: string, date: string) {
               .eq('employee_name', employeeName)
               .eq('recorded_date', date)
           : Promise.resolve({ data: [], error: null } as const),
+        employeeName
+          ? supabase
+              .from('screen_captures')
+              .select('id, captured_at, app_name, window_title')
+              .eq('employee_name', employeeName)
+              .gte('captured_at', dayStart)
+              .lte('captured_at', dayEnd)
+              .order('captured_at', { ascending: true })
+              .limit(200)
+          : Promise.resolve({ data: [], error: null } as const),
       ]);
 
       if (violationsRes.error) throw violationsRes.error;
       if (prodRes.error) throw prodRes.error;
+      if (capturesRes.error) throw capturesRes.error;
 
       const events: JourneyEvent[] = [];
 
@@ -104,6 +115,21 @@ export function useDailyJourney(employeeId: string, date: string) {
           durationMinutes: 3,
           label: `${v.violation_type ?? 'Violação'} (${v.severity ?? 'medium'})`,
           meta: { violationId: v.id },
+        });
+      }
+
+      for (const c of (capturesRes.data ?? []) as Array<{
+        id: string;
+        captured_at: string;
+        app_name?: string | null;
+        window_title?: string | null;
+      }>) {
+        events.push({
+          kind: 'screenshot',
+          startMinute: toMinuteOfDay(c.captured_at),
+          durationMinutes: 2,
+          label: c.window_title ?? c.app_name ?? 'Screenshot',
+          meta: { screenshotId: c.id },
         });
       }
 
