@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react';
 import { format, subDays } from 'date-fns';
-import { AlertTriangle, CheckCircle2, Clock, Gavel, TrendingUp } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Clock, Download, Gavel, TrendingUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { DisputeSlaAlertsCard } from '@/components/disputes/DisputeSlaAlertsCard';
+import { exportDisputeMetricsPdf } from '@/utils/disputeMetricsPdf';
 import {
   BarChart,
   Bar,
@@ -74,7 +77,20 @@ export default function DisputeMetricsPage() {
       <PageHeader
         title="Métricas de Contestação (SLA)"
         description={`Acompanhamento do SLA de ${DISPUTE_SLA_HOURS}h para julgamento formal de contestações LGPD.`}
+        actions={
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={!data}
+            onClick={() => data && exportDisputeMetricsPdf({ from: params.from, to: params.to, metrics: data })}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Exportar PDF
+          </Button>
+        }
       />
+
+      <DisputeSlaAlertsCard />
 
       <Card>
         <CardHeader>
