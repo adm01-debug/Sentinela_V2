@@ -119,6 +119,35 @@ export default function DisputeEscalationAuditPage() {
     ? 100
     : Math.round((rows.filter((r) => (r.status ?? 500) < 400).length / rows.length) * 100);
 
+  // Histograma de latência por bucket (ms).
+  const histogram = useMemo(() => {
+    const buckets = [
+      { label: '<100ms', min: 0, max: 100, count: 0 },
+      { label: '100-300', min: 100, max: 300, count: 0 },
+      { label: '300-600', min: 300, max: 600, count: 0 },
+      { label: '600ms-1s', min: 600, max: 1000, count: 0 },
+      { label: '1-2s', min: 1000, max: 2000, count: 0 },
+      { label: '2-5s', min: 2000, max: 5000, count: 0 },
+      { label: '>5s', min: 5000, max: Infinity, count: 0 },
+    ];
+    for (const d of durations) {
+      const b = buckets.find((x) => d >= x.min && d < x.max);
+      if (b) b.count += 1;
+    }
+    return buckets;
+  }, [durations]);
+
+  // Taxa de erro nas últimas 24h + falhas acionáveis.
+  const cutoff24h = subHours(new Date(), 24);
+  const last24h = rows.filter((r) => new Date(r.created_at) >= cutoff24h);
+  const errors24h = last24h.filter((r) => (r.status ?? 500) >= 400);
+  const errorRate24h = last24h.length === 0
+    ? 0
+    : Math.round((errors24h.length / last24h.length) * 100);
+  const errorTrend: 'ok' | 'watch' | 'alert' =
+    errorRate24h >= 15 ? 'alert' : errorRate24h >= 5 ? 'watch' : 'ok';
+  const recentErrors = errors24h.slice(0, 5);
+
   // Alerta realtime quando heartbeat degrada.
   useEffect(() => {
     if (heartbeatStatus === 'down') {
