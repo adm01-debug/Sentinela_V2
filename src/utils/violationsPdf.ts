@@ -490,27 +490,30 @@ export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Prom
     });
   } catch { /* não bloqueia geração do PDF */ }
 
+  // URL pública de verificação + QR codes
+  const origin = typeof window !== 'undefined' ? window.location.origin : '';
+  const verifyUrl = `${origin}/verify-report?id=${encodeURIComponent(reportId)}&sig=${encodeURIComponent(signature)}`;
+  let qrDataUrl = '';
+  let qrSmallDataUrl = '';
+  try {
+    qrDataUrl = await QRCode.toDataURL(verifyUrl, { width: 320, margin: 1, errorCorrectionLevel: 'M' });
+    qrSmallDataUrl = await QRCode.toDataURL(verifyUrl, { width: 96, margin: 0, errorCorrectionLevel: 'L' });
+  } catch { /* segue sem QR se falhar */ }
 
-  // Footer com paginação e assinatura
+  // Footer com paginação, assinatura e QR de verificação
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
+    const ph = doc.internal.pageSize.getHeight();
     doc.setFontSize(8);
     doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
-    doc.text(
-      `Página ${i} de ${pageCount}`,
-      pageWidth - margin,
-      doc.internal.pageSize.getHeight() - 8,
-      { align: 'right' },
-    );
-    doc.text('Sentinela • Relatório confidencial', margin, doc.internal.pageSize.getHeight() - 8);
+    doc.text(`Página ${i} de ${pageCount}`, pageWidth - margin, ph - 8, { align: 'right' });
+    doc.text('Sentinela • Relatório confidencial', margin, ph - 8);
     doc.setFontSize(6);
-    doc.text(
-      `${reportId} • SHA-256: ${shortSig}…`,
-      pageWidth / 2,
-      doc.internal.pageSize.getHeight() - 8,
-      { align: 'center' },
-    );
+    doc.text(`${reportId} • SHA-256: ${shortSig}…`, pageWidth / 2, ph - 8, { align: 'center' });
+    if (qrSmallDataUrl) {
+      try { doc.addImage(qrSmallDataUrl, 'PNG', pageWidth - margin - 12, ph - 22, 12, 12); } catch { /* ignore */ }
+    }
   }
 
   // Página final de verificação de integridade
@@ -533,16 +536,36 @@ export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Prom
   vy += 4;
   doc.setFont('helvetica', 'bold'); doc.text('Assinatura (SHA-256):', margin, vy); vy += 5;
   doc.setFont('courier', 'normal'); doc.setFontSize(8);
-  const sigLines = doc.splitTextToSize(signature, pageWidth - margin * 2) as string[];
+  const sigLines = doc.splitTextToSize(signature, pageWidth - margin * 2 - 55) as string[];
   sigLines.forEach(l => { doc.text(l, margin, vy); vy += 4; });
+  vy += 4;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+  doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+  doc.text('Portal de verificação:', margin, vy); vy += 5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+  doc.setTextColor(60, 60, 60);
+  const urlLines = doc.splitTextToSize(verifyUrl, pageWidth - margin * 2 - 55) as string[];
+  urlLines.forEach(l => { doc.text(l, margin, vy); vy += 4; });
   vy += 4;
   doc.setFont('helvetica', 'italic'); doc.setFontSize(8);
   doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+  doc.text(
+    'Escaneie o QR code para validar a autenticidade deste documento no portal público.',
+    margin, vy,
+  );
+  vy += 5;
   doc.text(
     'Qualquer alteração no conjunto de eventos ou nos filtros aplicados invalida esta assinatura.',
     margin, vy,
   );
 
+  if (qrDataUrl) {
+    try { doc.addImage(qrDataUrl, 'PNG', pageWidth - margin - 50, 20, 50, 50); } catch { /* ignore */ }
+    doc.setFontSize(7); doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+    doc.text('Scan para verificar', pageWidth - margin - 25, 74, { align: 'center' });
+  }
+
   const stamp = format(new Date(), 'yyyyMMdd_HHmm');
   doc.save(`violacoes_${stamp}_${reportId}.pdf`);
+
 };
