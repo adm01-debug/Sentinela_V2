@@ -14,6 +14,7 @@ import { useEmployees, type EmployeeWithDetails } from '@/hooks/useEmployees';
 import { AppCategoryManager } from '@/components/productivity/AppCategoryManager';
 import { ProductivityCategoryDonut } from '@/components/productivity/ProductivityCategoryDonut';
 import { ProductivityScoreCard } from '@/components/productivity/ProductivityScoreCard';
+import { WeeklyRankingCard } from '@/components/productivity/WeeklyRankingCard';
 
 
 interface PerformerItem {
