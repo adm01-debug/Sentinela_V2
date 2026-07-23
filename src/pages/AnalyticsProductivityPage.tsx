@@ -101,6 +101,17 @@ export default function AnalyticsProductivityPage() {
     setDays('7');
   };
 
+  const currentFilters = useMemo(
+    () => ({ days, employeeName, device }),
+    [days, employeeName, device],
+  );
+
+  const handleApplySavedFilter = (f: Record<string, unknown>) => {
+    if (typeof f.days === 'string') setDays(f.days);
+    if (typeof f.employeeName === 'string') setEmployeeName(f.employeeName);
+    if (typeof f.device === 'string') setDevice(f.device);
+  };
+
 
   return (
     <div className="p-6 space-y-6">
