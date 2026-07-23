@@ -79,6 +79,7 @@ const ChartSimulationPage = lazy(() => import('@/pages/dev/ChartSimulationPage')
 const VerifyReportSimulatorPage = lazy(() => import('@/pages/dev/VerifyReportSimulatorPage'));
 
 const OrgChartPage = lazy(() => import('@/pages/OrgChartPage'));
+const AgentOnboardingPage = lazy(() => import('@/pages/AgentOnboardingPage'));
 const ApiDocsPage = lazy(() => import('@/pages/ApiDocsPage'));
 const VerifyReportPage = lazy(() => import('@/pages/VerifyReportPage'));
 
@@ -186,6 +187,7 @@ export const AppRoutes = () => (
         <Route path="/organization/chart" element={<OrgChartPage />} />
         <Route path="/docs/api" element={<ApiDocsPage />} />
         <Route path="/verify-report" element={<VerifyReportPage />} />
+        <Route path="/agents/onboarding" element={<AdminGuard><AgentOnboardingPage /></AdminGuard>} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
