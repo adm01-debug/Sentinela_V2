@@ -275,6 +275,79 @@ export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Prom
     });
   }
 
+  // Evidências visuais — top violações críticas/altas com screenshot associado
+  const severityRank: Record<string, number> = { critical: 4, high: 3, medium: 2, low: 1 };
+  const withShots = violations
+    .filter(v => !!v.screenshot_url)
+    .sort((a, b) => (severityRank[b.severity] || 0) - (severityRank[a.severity] || 0)
+      || new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 6);
+
+  if (withShots.length > 0) {
+    doc.addPage();
+    let ey = 20;
+    doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+    doc.text('Evidências visuais (top críticas)', margin, ey);
+    ey += 4;
+    doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+    doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+    doc.text(`Até ${withShots.length} screenshots das violações mais severas do período`, margin, ey + 3);
+    ey += 10;
+
+    const cellW = (pageWidth - margin * 2 - 8) / 2;
+    const cellH = 70;
+    const images = await Promise.all(withShots.map(v => fetchImageAsDataUrl(v.screenshot_url as string)));
+
+    for (let i = 0; i < withShots.length; i++) {
+      const col = i % 2;
+      const row = Math.floor(i / 2);
+      if (row > 0 && col === 0 && ey + cellH > 270) {
+        doc.addPage(); ey = 20;
+      }
+      const x = margin + col * (cellW + 8);
+      const y2 = ey + row * (cellH + 6);
+
+      // moldura
+      doc.setDrawColor(220, 220, 220); doc.setLineWidth(0.3);
+      doc.rect(x, y2, cellW, cellH);
+
+      const v = withShots[i];
+      const img = images[i];
+      const imgAreaH = cellH - 16;
+      if (img) {
+        const aspect = img.w / img.h;
+        let dw = cellW - 4; let dh = dw / aspect;
+        if (dh > imgAreaH - 2) { dh = imgAreaH - 2; dw = dh * aspect; }
+        const ix = x + (cellW - dw) / 2;
+        const iy = y2 + 2 + (imgAreaH - dh) / 2;
+        try {
+          doc.addImage(img.data, img.format, ix, iy, dw, dh, undefined, 'FAST');
+        } catch {
+          doc.setFontSize(8); doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+          doc.text('Falha ao renderizar imagem', x + cellW / 2, y2 + imgAreaH / 2, { align: 'center' });
+        }
+      } else {
+        doc.setFontSize(8); doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+        doc.text('Screenshot indisponível', x + cellW / 2, y2 + imgAreaH / 2, { align: 'center' });
+      }
+
+      // caption
+      const capY = y2 + cellH - 12;
+      doc.setDrawColor(235, 235, 235);
+      doc.line(x + 2, capY, x + cellW - 2, capY);
+      doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+      doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+      const title = `${v.employee_name} • ${SEVERITY_LABEL[v.severity] || v.severity}`;
+      doc.text(doc.splitTextToSize(title, cellW - 4)[0], x + 3, capY + 4);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7);
+      doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+      const sub = `${format(new Date(v.created_at), 'dd/MM/yyyy HH:mm', { locale: ptBR })} • ${typeLabels[v.violation_type] || v.violation_type}`;
+      doc.text(doc.splitTextToSize(sub, cellW - 4)[0], x + 3, capY + 8);
+    }
+  }
+
+
   // Footer com paginação
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
