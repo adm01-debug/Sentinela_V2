@@ -4,11 +4,20 @@ import { supabase } from '@/integrations/supabase/client';
 export type LiveViewStatus =
   | 'idle'
   | 'authorizing'
+  | 'waiting_consent'
   | 'waiting_agent'
   | 'connecting'
   | 'live'
   | 'ended'
   | 'error';
+
+export type ConsentState = 'pending' | 'granted' | 'denied' | 'not_required' | 'timeout';
+
+export interface ConsentInfo {
+  state: ConsentState;
+  reason: string | null;
+  decidedAt: string | null;
+}
 
 export interface LiveViewMetrics {
   fps: number;
@@ -29,11 +38,13 @@ export interface UseLiveViewSession {
   sessionId: string | null;
   error: string | null;
   metrics: LiveViewMetrics;
+  consent: ConsentInfo;
   videoRef: React.RefObject<HTMLVideoElement>;
   start: () => Promise<void>;
   stop: (reason?: string) => Promise<void>;
   snapshot: () => string | null;
 }
+
 
 const DEFAULT_METRICS: LiveViewMetrics = {
   fps: 0,
