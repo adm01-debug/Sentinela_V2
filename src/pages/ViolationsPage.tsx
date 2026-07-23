@@ -293,7 +293,16 @@ export default function ViolationsPage() {
                   </div>
                 )}
               </div>
-              {selectedViolation.status === 'open' && <Button className="w-full" onClick={() => { setIsDetailsOpen(false); handleOpenResolve(selectedViolation); }}>Resolver Violação</Button>}
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Button variant="outline" className="flex-1" onClick={() => setTimelineId(selectedViolation.id)}>
+                  Ver timeline detalhada
+                </Button>
+                {selectedViolation.status === 'open' && (
+                  <Button className="flex-1" onClick={() => { setIsDetailsOpen(false); handleOpenResolve(selectedViolation); }}>
+                    Resolver Violação
+                  </Button>
+                )}
+              </div>
 
             </div>
           )}
