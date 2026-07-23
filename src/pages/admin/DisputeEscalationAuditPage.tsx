@@ -562,6 +562,7 @@ export default function DisputeEscalationAuditPage() {
       <div className="mb-6 grid gap-6 lg:grid-cols-2">
         <SlackIntegrationsCard />
         <SlackDlqCard />
+        <SlackWebhookMttrCard />
       </div>
 
       <Card>
