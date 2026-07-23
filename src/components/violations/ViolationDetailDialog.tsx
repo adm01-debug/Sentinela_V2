@@ -61,7 +61,7 @@ export function ViolationDetailDialog({ violationId, open, onOpenChange }: Props
       const { data, error } = await supabase
         .from('security_violations')
         .select(
-          'id, employee_name, policy_name, violation_type, severity, description, device, ip_address, created_at, screenshot_url, location, status, resolution_notes',
+          'id, employee_name, policy_name, violation_type, severity, description, device, ip_address, created_at, screenshot_url, location, status, resolution_notes, employee_notified_at, employee_acknowledged_at, employee_ack_reason, employee_ack_signature, employee_ack_device, employee_ack_ip',
         )
         .eq('id', violationId)
         .maybeSingle();
