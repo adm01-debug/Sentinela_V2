@@ -282,6 +282,9 @@ export const AppSidebar = memo(function AppSidebar() {
                               {!sidebarCollapsed && (
                                 <span className="truncate">{label}</span>
                               )}
+                              {item.path === DISPUTE_METRICS_PATH && (
+                                <SlaAlertsBadge collapsed={sidebarCollapsed} />
+                              )}
                             </NavLink>
                           );
 
