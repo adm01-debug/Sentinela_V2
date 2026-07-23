@@ -79,6 +79,7 @@ const ChartSimulationPage = lazy(() => import('@/pages/dev/ChartSimulationPage')
 const VerifyReportSimulatorPage = lazy(() => import('@/pages/dev/VerifyReportSimulatorPage'));
 
 const OrgChartPage = lazy(() => import('@/pages/OrgChartPage'));
+const AgentOnboardingPage = lazy(() => import('@/pages/AgentOnboardingPage'));
 const ApiDocsPage = lazy(() => import('@/pages/ApiDocsPage'));
 const VerifyReportPage = lazy(() => import('@/pages/VerifyReportPage'));
 
