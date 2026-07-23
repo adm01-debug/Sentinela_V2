@@ -5727,6 +5727,26 @@ export type Database = {
         }
         Relationships: []
       }
+      slack_webhook_mttr: {
+        Row: {
+          integration_id: string | null
+          integration_name: string | null
+          mttr_avg_seconds: number | null
+          mttr_max_seconds: number | null
+          mttr_p50_seconds: number | null
+          mttr_p95_seconds: number | null
+          recovery_events: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slack_notification_dlq_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "slack_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       check_rate_limit: {
@@ -5742,6 +5762,7 @@ export type Database = {
       cleanup_expired_webauthn_challenges: { Args: never; Returns: number }
       cleanup_old_edge_function_logs: { Args: never; Returns: number }
       cleanup_rate_limit_logs: { Args: never; Returns: number }
+      cleanup_slack_dlq_old_items: { Args: never; Returns: number }
       create_monthly_partition: {
         Args: { p_partition_date: string; p_table_name: string }
         Returns: string
