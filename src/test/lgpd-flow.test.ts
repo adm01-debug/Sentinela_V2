@@ -8,11 +8,14 @@
  *   4. Notificação idempotente (payload determinístico)
  */
 import { describe, it, expect } from 'vitest';
+import { webcrypto } from 'node:crypto';
 import { computeMetrics, DISPUTE_SLA_HOURS } from '@/hooks/useDisputeMetrics';
+
+const subtle = (globalThis.crypto?.subtle ?? webcrypto.subtle) as SubtleCrypto;
 
 async function sha256(input: string) {
   const buf = new TextEncoder().encode(input);
-  const hash = await crypto.subtle.digest('SHA-256', buf);
+  const hash = await subtle.digest('SHA-256', buf);
   return Array.from(new Uint8Array(hash))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
