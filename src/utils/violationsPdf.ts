@@ -38,7 +38,39 @@ const STATUS_LABEL: Record<string, string> = {
   resolved: 'Resolvida', dismissed: 'Descartada',
 };
 
-export const generateViolationsPdf = (payload: ViolationsPdfPayload): void => {
+/** Baixa uma imagem e converte em dataURL para embutir no PDF. Retorna null em falha. */
+const fetchImageAsDataUrl = async (
+  url: string,
+  timeoutMs = 4000,
+): Promise<{ data: string; format: 'JPEG' | 'PNG'; w: number; h: number } | null> => {
+  try {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), timeoutMs);
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(t);
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    if (blob.size > 3 * 1024 * 1024) return null; // skip >3MB
+    const dataUrl: string = await new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(String(fr.result));
+      fr.onerror = () => reject(fr.error);
+      fr.readAsDataURL(blob);
+    });
+    const format: 'JPEG' | 'PNG' = blob.type.includes('png') ? 'PNG' : 'JPEG';
+    const dims = await new Promise<{ w: number; h: number }>((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+      img.onerror = () => resolve({ w: 400, h: 300 });
+      img.src = dataUrl;
+    });
+    return { data: dataUrl, format, w: dims.w, h: dims.h };
+  } catch {
+    return null;
+  }
+};
+
+export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Promise<void> => {
   const { violations, periodLabel, filters, typeLabels, groupByEmployee } = payload;
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
