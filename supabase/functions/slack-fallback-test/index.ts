@@ -78,7 +78,7 @@ Deno.serve(async (req) => {
     }
 
     const resendKey = Deno.env.get('RESEND_API_KEY');
-    if (!resendKey) {
+    if (!resendKey && mode === 'real') {
       return new Response(
         JSON.stringify({ error: 'RESEND_API_KEY not configured', configured: false }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
