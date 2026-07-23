@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { format, differenceInMinutes, subHours } from 'date-fns';
+import { format, differenceInMinutes, subHours, startOfHour } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
   AlertTriangle,
@@ -13,6 +13,8 @@ import {
   Loader2,
   BarChart3,
   XCircle,
+  FileText,
+  LineChart as LineChartIcon,
 } from 'lucide-react';
 import {
   BarChart,
@@ -22,6 +24,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  LineChart,
+  Line,
 } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -30,6 +34,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -40,6 +51,8 @@ import {
 } from '@/components/ui/table';
 import { toast } from 'sonner';
 import { useChartColors } from '@/hooks/useChartColors';
+import { exportEscalationAuditPdf } from '@/utils/escalationAuditPdf';
+
 
 type Severity = 'warning' | 'critical' | 'breached';
 
@@ -80,6 +93,8 @@ export default function DisputeEscalationAuditPage() {
   const queryClient = useQueryClient();
   const chartColors = useChartColors();
   const [invoking, setInvoking] = useState(false);
+  const [severityFilter, setSeverityFilter] = useState<'all' | Severity>('all');
+
 
   const { data, isLoading } = useQuery({
     queryKey: ['dispute-escalation-audit'],
@@ -148,6 +163,38 @@ export default function DisputeEscalationAuditPage() {
     errorRate24h >= 15 ? 'alert' : errorRate24h >= 5 ? 'watch' : 'ok';
   const recentErrors = errors24h.slice(0, 5);
 
+  // Timeline de execuções por hora (últimas 24h) — expõe gaps do cron.
+  const timeline = useMemo(() => {
+    const bucketMap = new Map<number, { ok: number; fail: number }>();
+    for (let i = 23; i >= 0; i -= 1) {
+      const ts = startOfHour(subHours(new Date(), i)).getTime();
+      bucketMap.set(ts, { ok: 0, fail: 0 });
+    }
+    for (const r of last24h) {
+      const key = startOfHour(new Date(r.created_at)).getTime();
+      const b = bucketMap.get(key);
+      if (!b) continue;
+      if ((r.status ?? 500) < 400) b.ok += 1;
+      else b.fail += 1;
+    }
+    return Array.from(bucketMap.entries()).map(([ts, v]) => ({
+      hour: format(new Date(ts), 'HH:mm'),
+      ok: v.ok,
+      fail: v.fail,
+      total: v.ok + v.fail,
+    }));
+  }, [last24h]);
+
+  // Filtro de severidade aplicado à tabela.
+  const filteredRows = useMemo(
+    () =>
+      severityFilter === 'all'
+        ? rows
+        : rows.filter((r) => r.payload_summary?.severity === severityFilter),
+    [rows, severityFilter],
+  );
+
+
   // Alerta realtime quando heartbeat degrada.
   useEffect(() => {
     if (heartbeatStatus === 'down') {
@@ -214,6 +261,40 @@ export default function DisputeEscalationAuditPage() {
     URL.revokeObjectURL(url);
   }
 
+  function handleExportPdf() {
+    try {
+      exportEscalationAuditPdf({
+        generatedAt: new Date(),
+        heartbeat: {
+          status: heartbeatStatus,
+          lastRun,
+          minutesSinceLastRun,
+        },
+        performance: { p50, p95, successRate, sampleSize: durations.length },
+        counts: { breached, critical, warning, total: rows.length },
+        errors24h: {
+          errorRate: errorRate24h,
+          total: last24h.length,
+          failed: errors24h.length,
+          recent: recentErrors.map((e) => ({
+            created_at: e.created_at,
+            status: e.status,
+            message: e.error_message ?? e.payload_summary?.title ?? 'Falha desconhecida',
+          })),
+        },
+        histogram: histogram.map((h) => ({ label: h.label, count: h.count })),
+      });
+      toast.success('PDF gerado com sucesso');
+    } catch (err) {
+      toast.error('Falha ao gerar PDF', {
+        description: err instanceof Error ? err.message : 'Erro desconhecido',
+      });
+    }
+  }
+
+
+
+
   return (
     <PageLayout>
       <PageHeader
@@ -233,6 +314,11 @@ export default function DisputeEscalationAuditPage() {
               <Download className="h-4 w-4 mr-2" />
               Exportar CSV
             </Button>
+            <Button variant="outline" size="sm" onClick={handleExportPdf} disabled={rows.length === 0}>
+              <FileText className="h-4 w-4 mr-2" />
+              Exportar PDF
+            </Button>
+
           </div>
         }
       />
@@ -337,7 +423,53 @@ export default function DisputeEscalationAuditPage() {
         </Card>
       </div>
 
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
+            <LineChartIcon className="h-4 w-4 text-primary" />
+            Execuções por hora (últimas 24h)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart data={timeline} margin={{ top: 8, right: 12, bottom: 8, left: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={chartColors.border} />
+              <XAxis dataKey="hour" tick={{ fill: chartColors.muted, fontSize: 11 }} />
+              <YAxis allowDecimals={false} tick={{ fill: chartColors.muted, fontSize: 11 }} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: chartColors.card,
+                  border: `1px solid ${chartColors.border}`,
+                  borderRadius: 8,
+                  color: chartColors.foreground,
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="ok"
+                name="Sucesso"
+                stroke={chartColors.success}
+                strokeWidth={2}
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="fail"
+                name="Falhas"
+                stroke={chartColors.destructive}
+                strokeWidth={2}
+                dot={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+          <p className="text-xs text-muted-foreground mt-2">
+            Gaps consecutivos indicam falha do agendamento pg_cron. Esperado: ~4 execuções/h.
+          </p>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-4 lg:grid-cols-3 mb-6">
+
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -426,8 +558,25 @@ export default function DisputeEscalationAuditPage() {
 
 
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle>Últimas 200 escalações</CardTitle>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">Filtrar:</span>
+            <Select
+              value={severityFilter}
+              onValueChange={(v) => setSeverityFilter(v as 'all' | Severity)}
+            >
+              <SelectTrigger className="h-8 w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas ({rows.length})</SelectItem>
+                <SelectItem value="breached">Violado ({breached})</SelectItem>
+                <SelectItem value="critical">Crítico ({critical})</SelectItem>
+                <SelectItem value="warning">Atenção ({warning})</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -436,9 +585,11 @@ export default function DisputeEscalationAuditPage() {
                 <Skeleton key={i} className="h-10 w-full" />
               ))}
             </div>
-          ) : rows.length === 0 ? (
+          ) : filteredRows.length === 0 ? (
             <p className="text-sm text-muted-foreground py-6 text-center">
-              Nenhuma escalação registrada ainda. Use "Executar agora" para forçar uma verificação.
+              {rows.length === 0
+                ? 'Nenhuma escalação registrada ainda. Use "Executar agora" para forçar uma verificação.'
+                : 'Nenhuma escalação corresponde ao filtro selecionado.'}
             </p>
           ) : (
             <Table>
@@ -454,7 +605,7 @@ export default function DisputeEscalationAuditPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {rows.map((row) => (
+                {filteredRows.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
                       {format(new Date(row.created_at), 'dd/MM/yyyy HH:mm', { locale: ptBR })}
@@ -485,3 +636,4 @@ export default function DisputeEscalationAuditPage() {
     </PageLayout>
   );
 }
+
