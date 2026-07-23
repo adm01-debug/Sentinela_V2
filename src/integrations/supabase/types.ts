@@ -2486,8 +2486,11 @@ export type Database = {
         Row: {
           agent_id: string
           company_id: string
+          consent_decided_at: string | null
           consent_granted: boolean | null
+          consent_reason: string | null
           consent_required: boolean
+          consent_state: string
           created_at: string
           end_reason: string | null
           ended_at: string | null
@@ -2502,8 +2505,11 @@ export type Database = {
         Insert: {
           agent_id: string
           company_id: string
+          consent_decided_at?: string | null
           consent_granted?: boolean | null
+          consent_reason?: string | null
           consent_required?: boolean
+          consent_state?: string
           created_at?: string
           end_reason?: string | null
           ended_at?: string | null
@@ -2518,8 +2524,11 @@ export type Database = {
         Update: {
           agent_id?: string
           company_id?: string
+          consent_decided_at?: string | null
           consent_granted?: boolean | null
+          consent_reason?: string | null
           consent_required?: boolean
+          consent_state?: string
           created_at?: string
           end_reason?: string | null
           ended_at?: string | null
