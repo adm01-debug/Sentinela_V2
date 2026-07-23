@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { format, differenceInMinutes } from 'date-fns';
+import { format, differenceInMinutes, subHours } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
   AlertTriangle,
@@ -11,7 +11,18 @@ import {
   PlayCircle,
   Gauge,
   Loader2,
+  BarChart3,
+  XCircle,
 } from 'lucide-react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -28,6 +39,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { toast } from 'sonner';
+import { useChartColors } from '@/hooks/useChartColors';
 
 type Severity = 'warning' | 'critical' | 'breached';
 
@@ -66,6 +78,7 @@ function percentile(values: number[], p: number): number {
 
 export default function DisputeEscalationAuditPage() {
   const queryClient = useQueryClient();
+  const chartColors = useChartColors();
   const [invoking, setInvoking] = useState(false);
 
   const { data, isLoading } = useQuery({
@@ -105,6 +118,35 @@ export default function DisputeEscalationAuditPage() {
   const successRate = rows.length === 0
     ? 100
     : Math.round((rows.filter((r) => (r.status ?? 500) < 400).length / rows.length) * 100);
+
+  // Histograma de latência por bucket (ms).
+  const histogram = useMemo(() => {
+    const buckets = [
+      { label: '<100ms', min: 0, max: 100, count: 0 },
+      { label: '100-300', min: 100, max: 300, count: 0 },
+      { label: '300-600', min: 300, max: 600, count: 0 },
+      { label: '600ms-1s', min: 600, max: 1000, count: 0 },
+      { label: '1-2s', min: 1000, max: 2000, count: 0 },
+      { label: '2-5s', min: 2000, max: 5000, count: 0 },
+      { label: '>5s', min: 5000, max: Infinity, count: 0 },
+    ];
+    for (const d of durations) {
+      const b = buckets.find((x) => d >= x.min && d < x.max);
+      if (b) b.count += 1;
+    }
+    return buckets;
+  }, [durations]);
+
+  // Taxa de erro nas últimas 24h + falhas acionáveis.
+  const cutoff24h = subHours(new Date(), 24);
+  const last24h = rows.filter((r) => new Date(r.created_at) >= cutoff24h);
+  const errors24h = last24h.filter((r) => (r.status ?? 500) >= 400);
+  const errorRate24h = last24h.length === 0
+    ? 0
+    : Math.round((errors24h.length / last24h.length) * 100);
+  const errorTrend: 'ok' | 'watch' | 'alert' =
+    errorRate24h >= 15 ? 'alert' : errorRate24h >= 5 ? 'watch' : 'ok';
+  const recentErrors = errors24h.slice(0, 5);
 
   // Alerta realtime quando heartbeat degrada.
   useEffect(() => {
@@ -294,6 +336,94 @@ export default function DisputeEscalationAuditPage() {
           </CardContent>
         </Card>
       </div>
+
+      <div className="grid gap-4 lg:grid-cols-3 mb-6">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <BarChart3 className="h-4 w-4 text-primary" />
+              Distribuição de Latência
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {durations.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-8 text-center">
+                Sem dados de duração ainda.
+              </p>
+            ) : (
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={histogram} margin={{ top: 8, right: 8, bottom: 8, left: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={chartColors.border} />
+                  <XAxis dataKey="label" tick={{ fill: chartColors.muted, fontSize: 11 }} />
+                  <YAxis allowDecimals={false} tick={{ fill: chartColors.muted, fontSize: 11 }} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartColors.card,
+                      border: `1px solid ${chartColors.border}`,
+                      borderRadius: 8,
+                      color: chartColors.foreground,
+                    }}
+                    formatter={(value: number) => [`${value} execuções`, 'Quantidade']}
+                  />
+                  <Bar dataKey="count" fill={chartColors.primary} radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+            <p className="text-xs text-muted-foreground mt-2">
+              Distribuição em {durations.length} execuções. p95: <strong>{p95}ms</strong>.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <XCircle
+                className={
+                  errorTrend === 'alert'
+                    ? 'h-4 w-4 text-destructive'
+                    : errorTrend === 'watch'
+                      ? 'h-4 w-4 text-warning'
+                      : 'h-4 w-4 text-success'
+                }
+              />
+              Taxa de Erro 24h
+            </CardTitle>
+            <Badge
+              variant={
+                errorTrend === 'alert' ? 'destructive' : errorTrend === 'watch' ? 'secondary' : 'default'
+              }
+            >
+              {errorRate24h}%
+            </Badge>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold tabular-nums">
+              {errors24h.length}
+              <span className="text-sm font-normal text-muted-foreground ml-2">
+                / {last24h.length} execuções
+              </span>
+            </div>
+            <div className="mt-3 space-y-1.5 max-h-32 overflow-auto">
+              {recentErrors.length === 0 ? (
+                <p className="text-xs text-muted-foreground">Nenhuma falha nas últimas 24h.</p>
+              ) : (
+                recentErrors.map((e) => (
+                  <div key={e.id} className="text-xs border-l-2 border-destructive/60 pl-2">
+                    <div className="text-muted-foreground">
+                      {format(new Date(e.created_at), 'dd/MM HH:mm', { locale: ptBR })} · HTTP {e.status ?? '?'}
+                    </div>
+                    <div className="truncate text-foreground">
+                      {e.error_message ?? e.payload_summary?.title ?? 'Falha desconhecida'}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
 
       <Card>
         <CardHeader>
