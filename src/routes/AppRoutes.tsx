@@ -76,6 +76,8 @@ const EmployeeRiskProfilePage = lazy(() => import('@/pages/admin/ueba/EmployeeRi
 const UEBASettingsPage = lazy(() => import('@/pages/admin/ueba/UEBASettingsPage'));
 const EdgeFunctionDashboard = lazy(() => import('@/pages/admin/EdgeFunctionDashboard'));
 const ChartSimulationPage = lazy(() => import('@/pages/dev/ChartSimulationPage'));
+const VerifyReportSimulatorPage = lazy(() => import('@/pages/dev/VerifyReportSimulatorPage'));
+
 const OrgChartPage = lazy(() => import('@/pages/OrgChartPage'));
 const ApiDocsPage = lazy(() => import('@/pages/ApiDocsPage'));
 const VerifyReportPage = lazy(() => import('@/pages/VerifyReportPage'));
@@ -96,6 +98,8 @@ export const AppRoutes = () => (
       <Routes>
       {/* Dev-only public route for chart contrast simulation */}
       <Route path="/dev/chart-simulation" element={<ChartSimulationPage />} />
+      <Route path="/dev/verify-simulator" element={<VerifyReportSimulatorPage />} />
+
 
       {/* Auth */}
       <Route path="/auth" element={<GuestGuard><Auth /></GuestGuard>} />
