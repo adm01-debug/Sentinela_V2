@@ -130,16 +130,17 @@ export const generateJourneyPdf = ({ employeeName, date, events, summary }: Jour
       alternateRowStyles: { fillColor: colors.light },
       margin: { left: margin, right: margin },
       columnStyles: {
-        0: { cellWidth: 25, halign: 'center' },
-        1: { cellWidth: 35 },
-        2: { cellWidth: 122 },
+        0: { cellWidth: 22, halign: 'center' },
+        1: { cellWidth: 25, halign: 'center' },
+        2: { cellWidth: 30 },
+        3: { cellWidth: 105 },
       },
       didParseCell: (data) => {
-        if (data.column.index === 1 && data.section === 'body') {
+        if (data.column.index === 2 && data.section === 'body') {
           const raw = String(data.cell.raw ?? '');
           if (raw === 'Violação') { data.cell.styles.textColor = colors.danger; data.cell.styles.fontStyle = 'bold'; }
-          else if (raw === 'Check-in') { data.cell.styles.textColor = colors.success; }
-          else if (raw === 'Check-out') { data.cell.styles.textColor = colors.warning; }
+          else if (raw === 'Presença') { data.cell.styles.textColor = colors.success; }
+          else if (raw === 'Ociosidade') { data.cell.styles.textColor = colors.warning; }
         }
       },
     });
