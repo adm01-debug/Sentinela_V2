@@ -261,6 +261,37 @@ export default function DisputeEscalationAuditPage() {
     URL.revokeObjectURL(url);
   }
 
+  function handleExportPdf() {
+    try {
+      exportEscalationAuditPdf({
+        generatedAt: new Date(),
+        heartbeat: {
+          status: heartbeatStatus,
+          lastRun,
+          minutesSinceLastRun,
+        },
+        performance: { p50, p95, successRate, sampleSize: durations.length },
+        counts: { breached, critical, warning, total: rows.length },
+        errors24h: {
+          errorRate: errorRate24h,
+          total: last24h.length,
+          failed: errors24h.length,
+          recent: recentErrors.map((e) => ({
+            created_at: e.created_at,
+            status: e.status,
+            message: e.error_message ?? e.payload_summary?.title ?? 'Falha desconhecida',
+          })),
+        },
+        histogram: histogram.map((h) => ({ label: h.label, count: h.count })),
+      });
+      toast.success('PDF gerado com sucesso');
+    } catch (err) {
+      toast.error('Falha ao gerar PDF', {
+        description: err instanceof Error ? err.message : 'Erro desconhecido',
+      });
+    }
+
+
   return (
     <PageLayout>
       <PageHeader
