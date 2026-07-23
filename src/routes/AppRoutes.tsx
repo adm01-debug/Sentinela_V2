@@ -87,6 +87,7 @@ const LiveViewSimulatorPage = lazy(() => import('@/pages/dev/LiveViewSimulatorPa
 const IceDiagnosticsPage = lazy(() => import('@/pages/admin/IceDiagnosticsPage'));
 const LiveViewReportPage = lazy(() => import('@/pages/admin/LiveViewReportPage'));
 const AcknowledgmentReportPage = lazy(() => import('@/pages/admin/AcknowledgmentReportPage'));
+const DisputeMetricsPage = lazy(() => import('@/pages/admin/DisputeMetricsPage'));
 
 
 // ============================================================
@@ -199,6 +200,7 @@ export const AppRoutes = () => (
         <Route path="/admin/ice-diagnostics" element={<AdminGuard><IceDiagnosticsPage /></AdminGuard>} />
         <Route path="/admin/live-view-report" element={<AdminGuard><LiveViewReportPage /></AdminGuard>} />
         <Route path="/admin/acknowledgment-report" element={<AdminGuard><AcknowledgmentReportPage /></AdminGuard>} />
+        <Route path="/admin/dispute-metrics" element={<AdminGuard><DisputeMetricsPage /></AdminGuard>} />
 
       </Route>
 

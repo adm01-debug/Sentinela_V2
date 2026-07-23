@@ -141,12 +141,19 @@ export function useResolveDispute() {
         .select()
         .maybeSingle();
       if (error) throw error;
+
+      // Dispara notificação ao contestante (fire-and-forget)
+      supabase.functions
+        .invoke('notify-dispute-decision', { body: { dispute_id: input.disputeId } })
+        .catch(() => undefined);
+
       return data as ViolationDispute;
     },
     onSuccess: (_d, vars) => {
       qc.invalidateQueries({ queryKey: ['violation-disputes', vars.violationId] });
       qc.invalidateQueries({ queryKey: ['violation-detail', vars.violationId] });
       qc.invalidateQueries({ queryKey: ['violations'] });
+      qc.invalidateQueries({ queryKey: ['dispute-metrics'] });
     },
   });
 }
