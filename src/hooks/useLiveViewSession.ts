@@ -297,5 +297,5 @@ export function useLiveViewSession(agentId: string | undefined): UseLiveViewSess
     return canvas.toDataURL('image/png');
   }, []);
 
-  return { status, sessionId, error, metrics, videoRef, start, stop, snapshot };
+  return { status, sessionId, error, metrics, consent, videoRef, start, stop, snapshot };
 }
