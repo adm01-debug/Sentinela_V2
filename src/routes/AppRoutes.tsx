@@ -82,6 +82,8 @@ const OrgChartPage = lazy(() => import('@/pages/OrgChartPage'));
 const AgentOnboardingPage = lazy(() => import('@/pages/AgentOnboardingPage'));
 const ApiDocsPage = lazy(() => import('@/pages/ApiDocsPage'));
 const VerifyReportPage = lazy(() => import('@/pages/VerifyReportPage'));
+const LiveViewPage = lazy(() => import('@/pages/LiveViewPage'));
+const LiveViewSimulatorPage = lazy(() => import('@/pages/dev/LiveViewSimulatorPage'));
 
 // ============================================================
 // ROUTE GUARDS
@@ -100,6 +102,7 @@ export const AppRoutes = () => (
       {/* Dev-only public route for chart contrast simulation */}
       <Route path="/dev/chart-simulation" element={<ChartSimulationPage />} />
       <Route path="/dev/verify-simulator" element={<VerifyReportSimulatorPage />} />
+      <Route path="/dev/live-view-simulator" element={<LiveViewSimulatorPage />} />
 
 
       {/* Auth */}
@@ -188,6 +191,7 @@ export const AppRoutes = () => (
         <Route path="/docs/api" element={<ApiDocsPage />} />
         <Route path="/verify-report" element={<VerifyReportPage />} />
         <Route path="/agents/onboarding" element={<AdminGuard><AgentOnboardingPage /></AdminGuard>} />
+        <Route path="/agents/:agentId/live" element={<AdminGuard><LiveViewPage /></AdminGuard>} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
