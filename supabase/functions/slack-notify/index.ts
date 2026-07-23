@@ -56,8 +56,9 @@ Deno.serve(async (req) => {
 
   const { data: integrations, error } = await supabase
     .from('slack_integrations')
-    .select('id, webhook_url, event_types, min_severity, failure_count')
-    .eq('is_active', true);
+    .select('id, name, webhook_url, event_types, min_severity, failure_count, auto_pause_threshold')
+    .eq('is_active', true)
+    .is('auto_paused_at', null);
 
   if (error) return json({ error: error.message }, 500);
 
@@ -70,6 +71,9 @@ Deno.serve(async (req) => {
   if (targets.length === 0) {
     return json({ ok: true, delivered: 0, matched: 0 });
   }
+
+  // HTTP statuses que indicam webhook permanentemente inválido (auto-pausa imediata)
+  const PERMANENT_FAILURE_STATUSES = new Set([400, 403, 404, 410]);
 
   const emoji = SEVERITY_EMOJI[severity];
   const color = SEVERITY_COLOR[severity];
@@ -118,6 +122,8 @@ Deno.serve(async (req) => {
   let delivered = 0;
   const errors: Array<{ id: string; message: string }> = [];
 
+  const autoPaused: Array<{ id: string; name: string; reason: string }> = [];
+
   for (const target of targets as any[]) {
     try {
       const res = await fetch(target.webhook_url, {
@@ -129,32 +135,54 @@ Deno.serve(async (req) => {
         delivered += 1;
         await supabase
           .from('slack_integrations')
-          .update({ last_success_at: new Date().toISOString(), failure_count: 0, last_error: null })
+          .update({
+            last_success_at: new Date().toISOString(),
+            failure_count: 0,
+            last_error: null,
+          })
           .eq('id', target.id);
       } else {
         const body = await res.text().catch(() => '');
         const msg = `HTTP ${res.status} ${body.slice(0, 200)}`;
         errors.push({ id: target.id, message: msg });
-        await supabase
-          .from('slack_integrations')
-          .update({
-            last_error: msg,
-            last_error_at: new Date().toISOString(),
-            failure_count: (target.failure_count ?? 0) + 1,
-          })
-          .eq('id', target.id);
+        const nextFailureCount = (target.failure_count ?? 0) + 1;
+        const threshold = target.auto_pause_threshold ?? 5;
+        const isPermanent = PERMANENT_FAILURE_STATUSES.has(res.status);
+        const shouldPause = isPermanent || nextFailureCount >= threshold;
+        const update: Record<string, unknown> = {
+          last_error: msg,
+          last_error_at: new Date().toISOString(),
+          failure_count: nextFailureCount,
+        };
+        if (shouldPause) {
+          const reason = isPermanent
+            ? `Webhook inválido (HTTP ${res.status}) — pausado automaticamente`
+            : `${nextFailureCount} falhas consecutivas atingiram o limite de ${threshold}`;
+          update.is_active = false;
+          update.auto_paused_at = new Date().toISOString();
+          update.auto_pause_reason = reason;
+          autoPaused.push({ id: target.id, name: target.name, reason });
+        }
+        await supabase.from('slack_integrations').update(update).eq('id', target.id);
       }
     } catch (e: any) {
       const msg = String(e?.message ?? e).slice(0, 200);
       errors.push({ id: target.id, message: msg });
-      await supabase
-        .from('slack_integrations')
-        .update({
-          last_error: msg,
-          last_error_at: new Date().toISOString(),
-          failure_count: (target.failure_count ?? 0) + 1,
-        })
-        .eq('id', target.id);
+      const nextFailureCount = (target.failure_count ?? 0) + 1;
+      const threshold = target.auto_pause_threshold ?? 5;
+      const update: Record<string, unknown> = {
+        last_error: msg,
+        last_error_at: new Date().toISOString(),
+        failure_count: nextFailureCount,
+      };
+      if (nextFailureCount >= threshold) {
+        const reason = `${nextFailureCount} falhas consecutivas atingiram o limite de ${threshold}`;
+        update.is_active = false;
+        update.auto_paused_at = new Date().toISOString();
+        update.auto_pause_reason = reason;
+        autoPaused.push({ id: target.id, name: target.name, reason });
+      }
+      await supabase.from('slack_integrations').update(update).eq('id', target.id);
     }
   }
 
@@ -163,8 +191,15 @@ Deno.serve(async (req) => {
     status: errors.length === 0 ? 200 : 207,
     duration_ms: Date.now() - startedAt,
     error_message: errors.length > 0 ? errors.map((e) => e.message).join(' | ').slice(0, 500) : null,
-    payload_summary: { event_type, severity, delivered, matched: targets.length, errors: errors.length },
+    payload_summary: {
+      event_type,
+      severity,
+      delivered,
+      matched: targets.length,
+      errors: errors.length,
+      auto_paused: autoPaused,
+    },
   });
 
-  return json({ ok: true, delivered, matched: targets.length, errors });
+  return json({ ok: true, delivered, matched: targets.length, errors, auto_paused: autoPaused });
 });

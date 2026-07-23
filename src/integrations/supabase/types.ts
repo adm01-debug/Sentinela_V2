@@ -4575,6 +4575,9 @@ export type Database = {
       }
       slack_integrations: {
         Row: {
+          auto_pause_reason: string | null
+          auto_pause_threshold: number
+          auto_paused_at: string | null
           created_at: string
           created_by: string | null
           event_types: string[]
@@ -4590,6 +4593,9 @@ export type Database = {
           webhook_url: string
         }
         Insert: {
+          auto_pause_reason?: string | null
+          auto_pause_threshold?: number
+          auto_paused_at?: string | null
           created_at?: string
           created_by?: string | null
           event_types?: string[]
@@ -4605,6 +4611,9 @@ export type Database = {
           webhook_url: string
         }
         Update: {
+          auto_pause_reason?: string | null
+          auto_pause_threshold?: number
+          auto_paused_at?: string | null
           created_at?: string
           created_by?: string | null
           event_types?: string[]
