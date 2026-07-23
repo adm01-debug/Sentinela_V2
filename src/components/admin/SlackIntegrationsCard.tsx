@@ -343,6 +343,9 @@ export function SlackIntegrationsCard() {
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-medium">{i.name}</span>
+                    <Badge variant="outline" className="text-xs">
+                      {companyName(i.company_id)}
+                    </Badge>
                     {i.auto_paused_at ? (
                       <Badge variant="destructive" className="gap-1">
                         <PauseCircle className="h-3 w-3" />
