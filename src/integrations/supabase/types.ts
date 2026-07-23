@@ -4578,6 +4578,7 @@ export type Database = {
           auto_pause_reason: string | null
           auto_pause_threshold: number
           auto_paused_at: string | null
+          company_id: string | null
           created_at: string
           created_by: string | null
           event_types: string[]
@@ -4596,6 +4597,7 @@ export type Database = {
           auto_pause_reason?: string | null
           auto_pause_threshold?: number
           auto_paused_at?: string | null
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           event_types?: string[]
@@ -4614,6 +4616,7 @@ export type Database = {
           auto_pause_reason?: string | null
           auto_pause_threshold?: number
           auto_paused_at?: string | null
+          company_id?: string | null
           created_at?: string
           created_by?: string | null
           event_types?: string[]
@@ -4628,7 +4631,15 @@ export type Database = {
           updated_at?: string
           webhook_url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "slack_integrations_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       slack_notification_dlq: {
         Row: {
