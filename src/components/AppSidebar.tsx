@@ -16,6 +16,9 @@ import { ROUTES, APP_NAME } from '@/constants';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SlaAlertsBadge } from '@/components/disputes/SlaAlertsBadge';
+
+const DISPUTE_METRICS_PATH = '/admin/dispute-metrics';
 
 interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
@@ -278,6 +281,9 @@ export const AppSidebar = memo(function AppSidebar() {
                               )} />
                               {!sidebarCollapsed && (
                                 <span className="truncate">{label}</span>
+                              )}
+                              {item.path === DISPUTE_METRICS_PATH && (
+                                <SlaAlertsBadge collapsed={sidebarCollapsed} />
                               )}
                             </NavLink>
                           );
