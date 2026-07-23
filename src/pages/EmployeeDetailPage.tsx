@@ -120,7 +120,7 @@ export default function EmployeeDetailPage() {
               </div>
             </div>
           )}
-          <TeamComparisonSection
+          <TeamComparisonInline
             employeeName={displayName}
             date={journeyDate}
             employeeScore={journeySummary?.productivityScore ?? 0}
