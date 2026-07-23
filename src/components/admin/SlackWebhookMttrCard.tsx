@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { Activity, Loader2, TrendingUp } from 'lucide-react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Activity, Loader2, Siren, TrendingUp } from 'lucide-react';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import {
   Card,
@@ -9,6 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 interface MttrRow {
   integration_id: string;
@@ -48,17 +50,51 @@ export function SlackWebhookMttrCard() {
     refetchInterval: 60_000,
   });
 
+  const runMonitor = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke('slack-mttr-monitor', {
+        body: { trigger: 'manual' },
+      });
+      if (error) throw error;
+      return data as { alerts?: Array<{ integration: string; severity: string }>; checked?: number };
+    },
+    onSuccess: (res) => {
+      const n = res.alerts?.length ?? 0;
+      toast.success(
+        n === 0
+          ? `Verificação concluída — ${res.checked ?? 0} integrações analisadas, sem degradação.`
+          : `${n} alerta(s) proativo(s) disparados no Slack.`,
+      );
+    },
+    onError: (err: Error) => toast.error(`Falha na verificação: ${err.message}`),
+  });
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Activity className="h-5 w-5 text-primary" />
-          MTTR de webhooks Slack
-        </CardTitle>
-        <CardDescription>
-          Tempo entre auto-pausa da integração e o primeiro reenvio bem-sucedido — proxy para
-          quanto tempo cada webhook fica indisponível.
-        </CardDescription>
+      <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">
+        <div className="space-y-1">
+          <CardTitle className="flex items-center gap-2">
+            <Activity className="h-5 w-5 text-primary" />
+            MTTR de webhooks Slack
+          </CardTitle>
+          <CardDescription>
+            Tempo entre auto-pausa da integração e o primeiro reenvio bem-sucedido. Alertas
+            proativos rodam a cada hora quando p95 ≥ 30min.
+          </CardDescription>
+        </div>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => runMonitor.mutate()}
+          disabled={runMonitor.isPending}
+        >
+          {runMonitor.isPending ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Siren className="mr-2 h-4 w-4" />
+          )}
+          Verificar agora
+        </Button>
       </CardHeader>
       <CardContent>
         {isLoading ? (
