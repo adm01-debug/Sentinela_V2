@@ -4573,6 +4573,54 @@ export type Database = {
           },
         ]
       }
+      slack_integrations: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          event_types: string[]
+          failure_count: number
+          id: string
+          is_active: boolean
+          last_error: string | null
+          last_error_at: string | null
+          last_success_at: string | null
+          min_severity: string
+          name: string
+          updated_at: string
+          webhook_url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          event_types?: string[]
+          failure_count?: number
+          id?: string
+          is_active?: boolean
+          last_error?: string | null
+          last_error_at?: string | null
+          last_success_at?: string | null
+          min_severity?: string
+          name: string
+          updated_at?: string
+          webhook_url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          event_types?: string[]
+          failure_count?: number
+          id?: string
+          is_active?: boolean
+          last_error?: string | null
+          last_error_at?: string | null
+          last_success_at?: string | null
+          min_severity?: string
+          name?: string
+          updated_at?: string
+          webhook_url?: string
+        }
+        Relationships: []
+      }
       station_block_logs: {
         Row: {
           block_type: string

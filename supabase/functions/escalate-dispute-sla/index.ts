@@ -153,6 +153,39 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Slack (critical + breached) — dispara função slack-notify que filtra por integração ativa.
+    let slackDelivered = 0;
+    if (d.severity === 'critical' || d.severity === 'breached') {
+      try {
+        const slackRes = await fetch(`${SUPABASE_URL}/functions/v1/slack-notify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${SERVICE_KEY}`,
+          },
+          body: JSON.stringify({
+            event_type: 'dispute_sla_escalation',
+            severity: d.severity,
+            title,
+            message,
+            fields: {
+              'Contestação': d.id.slice(0, 8),
+              'Colaborador': d.employee_name ?? '—',
+              'Categoria': d.category ?? '—',
+              'Horas restantes': String(d.hoursUntilBreach),
+              'Status': d.status,
+            },
+          }),
+        });
+        if (slackRes.ok) {
+          const body = await slackRes.json().catch(() => ({}));
+          slackDelivered = Number(body?.delivered ?? 0);
+        }
+      } catch {
+        /* slack falha não deve bloquear o resto */
+      }
+    }
+
     // Log persistente para auditoria e dedup (schema real da tabela).
     await supabase.from('edge_function_logs').insert({
       function_name: 'escalate-dispute-sla',
@@ -167,6 +200,7 @@ Deno.serve(async (req) => {
         severity: d.severity,
         hours_until_breach: d.hoursUntilBreach,
         push_delivered: delivered,
+        slack_delivered: slackDelivered,
       },
     });
 
