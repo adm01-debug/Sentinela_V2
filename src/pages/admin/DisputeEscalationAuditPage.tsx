@@ -55,6 +55,7 @@ import { exportEscalationAuditPdf } from '@/utils/escalationAuditPdf';
 import { SlackIntegrationsCard } from '@/components/admin/SlackIntegrationsCard';
 import { SlackDlqCard } from '@/components/admin/SlackDlqCard';
 import { SlackWebhookMttrCard } from '@/components/admin/SlackWebhookMttrCard';
+import { SlackUptimeHistoryCard } from '@/components/admin/SlackUptimeHistoryCard';
 
 
 type Severity = 'warning' | 'critical' | 'breached';
