@@ -1,10 +1,16 @@
+import { useState, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TrendingUp, TrendingDown, Minus, Loader2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { TrendingUp, TrendingDown, Minus, Loader2, X } from 'lucide-react';
 import { useProductivityAnalytics } from '@/hooks/useAnalytics';
 import { useCompanyAppUsage } from '@/hooks/useCompanyAppUsage';
+import { useEmployees, type EmployeeWithDetails } from '@/hooks/useEmployees';
 import { AppCategoryManager } from '@/components/productivity/AppCategoryManager';
 import { ProductivityCategoryDonut } from '@/components/productivity/ProductivityCategoryDonut';
 import { ProductivityScoreCard } from '@/components/productivity/ProductivityScoreCard';
@@ -32,9 +38,34 @@ interface MetricItem {
   value: number | string;
 }
 
+const RANGE_OPTIONS: Array<{ value: string; label: string }> = [
+  { value: '1', label: 'Hoje' },
+  { value: '7', label: 'Últimos 7 dias' },
+  { value: '30', label: 'Últimos 30 dias' },
+  { value: '90', label: 'Últimos 90 dias' },
+];
+
 export default function AnalyticsProductivityPage() {
   const { data } = useProductivityAnalytics();
-  const { data: appUsage, isLoading: isLoadingUsage } = useCompanyAppUsage(7);
+  const [days, setDays] = useState<string>('7');
+  const [employeeName, setEmployeeName] = useState<string>('all');
+  const [device, setDevice] = useState<string>('');
+
+  const { data: employeesData } = useEmployees();
+  const employees = (employeesData ?? []) as EmployeeWithDetails[];
+  const employeeOptions = useMemo(
+    () =>
+      employees
+        .map((e) => e.full_name ?? e.name)
+        .filter((n): n is string => !!n)
+        .sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    [employees],
+  );
+
+  const { data: appUsage, isLoading: isLoadingUsage } = useCompanyAppUsage(Number(days), {
+    employeeName: employeeName === 'all' ? undefined : employeeName,
+    device: device.trim() || undefined,
+  });
 
   const getTrendIcon = (trend: number) => {
     if (trend > 0) return <TrendingUp className="h-4 w-4 text-success" />;
@@ -48,6 +79,14 @@ export default function AnalyticsProductivityPage() {
 
   const usage = appUsage?.usage ?? [];
   const idleSeconds = appUsage?.idleSeconds ?? 0;
+
+  const hasFilters = employeeName !== 'all' || device.trim() !== '' || days !== '7';
+  const clearFilters = () => {
+    setEmployeeName('all');
+    setDevice('');
+    setDays('7');
+  };
+
 
   return (
     <div className="p-6 space-y-6">
