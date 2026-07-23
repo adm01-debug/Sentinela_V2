@@ -42,6 +42,7 @@ function severityOf(hoursUntilBreach: number): Severity | null {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  const startedAt = Date.now();
 
   const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
   const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
