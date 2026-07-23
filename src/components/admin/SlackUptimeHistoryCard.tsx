@@ -173,13 +173,13 @@ export function SlackUptimeHistoryCard() {
               <div className="h-32">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={series.daily} stackOffset="sign">
-                    <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
                     <XAxis dataKey="label" tick={{ fontSize: 11 }} stroke={colors.muted} />
                     <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke={colors.muted} />
                     <Tooltip
                       contentStyle={{
-                        background: colors.tooltipBg,
-                        border: `1px solid ${colors.grid}`,
+                        background: colors.card,
+                        border: `1px solid ${colors.border}`,
                         borderRadius: 6,
                         fontSize: 12,
                       }}
