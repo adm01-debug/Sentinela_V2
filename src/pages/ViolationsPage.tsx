@@ -50,7 +50,10 @@ export default function ViolationsPage() {
     VIOLATION_TYPES,
   } = useViolationsPage();
 
+  useViolationsRealtime();
+
   const colors = useChartColors();
+
 
   // Severity chart data
   const severityChartData = useMemo(() => [
