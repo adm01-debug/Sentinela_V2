@@ -26,7 +26,9 @@ export default function EmployeeDetailPage() {
   const shiftDay = (delta: number) =>
     setJourneyDate((d) => format(addDays(parseISO(d), delta), 'yyyy-MM-dd'));
 
-  const { data: journeyEvents = [], isLoading: journeyLoading } = useDailyJourney(id!, journeyDate);
+  const { data: journey, isLoading: journeyLoading } = useDailyJourney(id!, journeyDate);
+  const journeyEvents = journey?.events ?? [];
+  const journeySummary = journey?.summary;
 
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
   if (!employee) return <div className="p-6">Funcionário não encontrado</div>;
