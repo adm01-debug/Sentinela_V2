@@ -15,6 +15,7 @@ import { AutoUpdaterService } from './services/autoUpdater';
 import { IdleDetector } from './services/idleDetector';
 import { ClipboardDLP } from './services/dlp/clipboardDLP';
 import { PolicySync } from './services/dlp/policySync';
+import { ViolationNotifier } from './services/violationNotifier';
 
 // ============================================================
 // GLOBALS
