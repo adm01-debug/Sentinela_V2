@@ -176,14 +176,50 @@ export function useLiveViewSession(agentId: string | undefined): UseLiveViewSess
           } catch { /* ignore */ }
         }
       })
+      .on('broadcast', { event: 'consent' }, async ({ payload }) => {
+        const state: ConsentState =
+          payload?.state === 'granted' ? 'granted' :
+          payload?.state === 'denied' ? 'denied' :
+          payload?.state === 'not_required' ? 'not_required' : 'pending';
+        const reason = (payload?.reason as string | undefined) ?? null;
+        const decidedAt = new Date().toISOString();
+        setConsent({ state, reason, decidedAt });
+
+        if (data?.session_id) {
+          await supabase
+            .from('live_view_sessions')
+            .update({
+              consent_state: state,
+              consent_reason: reason,
+              consent_decided_at: decidedAt,
+              consent_granted: state === 'granted' || state === 'not_required',
+            })
+            .eq('id', data.session_id);
+          await supabase.from('live_view_audit').insert({
+            session_id: data.session_id,
+            company_id: null as unknown as string,
+            event: `consent.${state}`,
+            payload: { reason, decided_at: decidedAt },
+          } as never);
+        }
+
+        if (state === 'denied') {
+          setError(reason ?? 'consent_denied');
+          setStatus('ended');
+          cleanup();
+        }
+      })
       .on('broadcast', { event: 'declined' }, ({ payload }) => {
-        setError(payload?.reason ?? 'agent_declined');
+        const reason = (payload?.reason as string | undefined) ?? 'agent_declined';
+        const decidedAt = new Date().toISOString();
+        setConsent({ state: 'denied', reason, decidedAt });
+        setError(reason);
         setStatus('ended');
         cleanup();
       })
       .subscribe(async (sub) => {
         if (sub !== 'SUBSCRIBED') return;
-        setStatus('waiting_agent');
+        setStatus('waiting_consent');
         // Create offer as recvonly
         pc.addTransceiver('video', { direction: 'recvonly' });
         const offer = await pc.createOffer();
@@ -193,7 +229,29 @@ export function useLiveViewSession(agentId: string | undefined): UseLiveViewSess
           event: 'offer',
           payload: { session_id: data.session_id, sdp: offer },
         });
+        // Timeout de consentimento (45s) — se não decidir, marca timeout
+        window.setTimeout(async () => {
+          setConsent((c) => {
+            if (c.state !== 'pending') return c;
+            const decidedAt = new Date().toISOString();
+            void supabase.from('live_view_sessions').update({
+              consent_state: 'timeout',
+              consent_decided_at: decidedAt,
+            }).eq('id', data.session_id);
+            void supabase.from('live_view_audit').insert({
+              session_id: data.session_id,
+              company_id: null as unknown as string,
+              event: 'consent.timeout',
+              payload: { decided_at: decidedAt },
+            } as never);
+            setError('consent_timeout');
+            setStatus('ended');
+            cleanup();
+            return { state: 'timeout', reason: 'Colaborador não respondeu em 45s', decidedAt };
+          });
+        }, 45_000);
       });
+
 
     // Metrics loop
     metricsTimerRef.current = window.setInterval(async () => {
