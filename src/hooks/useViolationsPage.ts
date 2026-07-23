@@ -19,6 +19,7 @@ export interface Violation {
   resolved_at?: string;
   resolved_by?: string;
   resolution_notes?: string;
+  screenshot_url?: string | null;
 }
 
 export const VIOLATION_TYPES = [
