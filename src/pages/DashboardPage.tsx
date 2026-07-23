@@ -18,6 +18,7 @@ import { DashboardSkeleton } from './dashboard/DashboardSkeleton';
 import { PresentationMode } from '@/components/dashboard/PresentationMode';
 import { AIInsights } from '@/components/dashboard/AIInsights';
 import { TopApplicationsCard } from '@/components/dashboard/TopApplicationsCard';
+import { OnboardingChecklist } from '@/components/onboarding/OnboardingChecklist';
 
 const DEPARTMENT_MAP: Record<string, string> = {
   engineering: 'Engenharia',
