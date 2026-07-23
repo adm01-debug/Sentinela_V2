@@ -204,6 +204,7 @@ export const AppRoutes = () => (
         <Route path="/admin/acknowledgment-report" element={<AdminGuard><AcknowledgmentReportPage /></AdminGuard>} />
         <Route path="/admin/dispute-metrics" element={<AdminGuard><DisputeMetricsPage /></AdminGuard>} />
         <Route path="/admin/dispute-escalation-audit" element={<AdminGuard><DisputeEscalationAuditPage /></AdminGuard>} />
+        <Route path="/admin/integrations-health" element={<AdminGuard><IntegrationsHealthPage /></AdminGuard>} />
 
       </Route>
 
