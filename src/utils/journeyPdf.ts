@@ -114,12 +114,16 @@ export const generateJourneyPdf = ({ employeeName, date, events, summary }: Jour
   } else {
     autoTable(doc, {
       startY: yPos,
-      head: [['Hora', 'Tipo', 'Descrição']],
-      body: events.map((e) => [
-        format(new Date(e.timestamp), 'HH:mm:ss'),
-        eventTypeLabel(e.type),
-        e.description ?? e.title ?? '-',
-      ]),
+      head: [['Início', 'Duração', 'Tipo', 'Descrição']],
+      body: events
+        .slice()
+        .sort((a, b) => a.startMinute - b.startMinute)
+        .map((e) => [
+          minutesToTime(e.startMinute),
+          `${e.durationMinutes} min`,
+          kindLabel(e.kind),
+          e.label ?? '-',
+        ]),
       theme: 'striped',
       headStyles: { fillColor: colors.dark, textColor: 255, fontStyle: 'bold', fontSize: 9 },
       bodyStyles: { fontSize: 9 },
