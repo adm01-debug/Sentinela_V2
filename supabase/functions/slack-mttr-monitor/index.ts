@@ -57,8 +57,7 @@ Deno.serve(async (req) => {
       .from('edge_function_logs')
       .select('id', { count: 'exact', head: true })
       .eq('function_name', 'slack-mttr-monitor')
-      .eq('status', severity)
-      .contains('metadata', { integration_id: row.integration_id })
+      .contains('payload_summary', { integration_id: row.integration_id, severity })
       .gte('created_at', since);
 
     if ((count ?? 0) > 0) {
