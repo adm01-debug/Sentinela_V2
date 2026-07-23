@@ -47,6 +47,7 @@ let autoUpdaterService: AutoUpdaterService;
 let idleDetector: IdleDetector;
 let clipboardDLP: ClipboardDLP;
 let policySync: PolicySync;
+let violationNotifier: ViolationNotifier;
 
 // Auto-launch
 const autoLauncher = new AutoLaunch({
