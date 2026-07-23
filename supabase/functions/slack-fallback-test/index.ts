@@ -37,6 +37,33 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Rate limit: máx 5 testes / 10min por admin (previne abuso e custo Resend)
+    const { data: rl } = await supabase.rpc('check_rate_limit', {
+      p_identifier: userData.user.id,
+      p_identifier_type: 'user',
+      p_endpoint: 'slack-fallback-test',
+      p_max_requests: 5,
+      p_window_seconds: 600,
+    });
+    const rateLimit = rl as { allowed: boolean; retry_after_seconds?: number } | null;
+    if (rateLimit && !rateLimit.allowed) {
+      return new Response(
+        JSON.stringify({
+          error: 'rate_limited',
+          message: 'Limite de 5 testes a cada 10 minutos atingido',
+          retry_after_seconds: rateLimit.retry_after_seconds,
+        }),
+        {
+          status: 429,
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'Retry-After': String(rateLimit.retry_after_seconds ?? 600),
+          },
+        },
+      );
+    }
+
     const resendKey = Deno.env.get('RESEND_API_KEY');
     if (!resendKey) {
       return new Response(
@@ -94,6 +121,24 @@ Deno.serve(async (req) => {
     });
 
     const body = await emailRes.text();
+    let resendId: string | null = null;
+    try { resendId = (JSON.parse(body) as { id?: string }).id ?? null; } catch { /* noop */ }
+
+    // Auditoria — persiste em edge_function_logs para o card de histórico
+    await supabase.from('edge_function_logs').insert({
+      function_name: 'slack-fallback-test',
+      status: emailRes.ok ? 'success' : 'error',
+      metadata: {
+        triggered_by: userData.user.email,
+        user_id: userData.user.id,
+        recipients_count: recipients.length,
+        recipients,
+        resend_status: emailRes.status,
+        resend_id: resendId,
+        error: emailRes.ok ? null : body.slice(0, 500),
+      },
+    });
+
     if (!emailRes.ok) {
       return new Response(
         JSON.stringify({ error: 'Falha no envio', status: emailRes.status, details: body }),
@@ -105,6 +150,7 @@ Deno.serve(async (req) => {
       JSON.stringify({
         success: true,
         recipients: recipients.length,
+        resend_id: resendId,
         message: `Teste enviado para ${recipients.length} destinatário(s)`,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
