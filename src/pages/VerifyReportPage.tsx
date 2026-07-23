@@ -130,15 +130,32 @@ export default function VerifyReportPage() {
       )}
 
       {status === 'valid' && row && (
-        <Card className="border-success/40 bg-success/5">
-          <CardHeader className="flex-row items-center gap-3 space-y-0">
+        <Card className="relative overflow-hidden border-success/40 bg-success/5">
+          {/* Watermark diagonal "VERIFICADO" */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.08]"
+          >
+            <span className="rotate-[-24deg] select-none whitespace-nowrap text-[6rem] font-black tracking-widest text-success">
+              VERIFICADO
+            </span>
+          </div>
+          {/* Selo circular no canto */}
+          <div className="pointer-events-none absolute right-4 top-4 flex h-20 w-20 rotate-[-12deg] items-center justify-center rounded-full border-4 border-success/70 text-center text-[10px] font-black uppercase leading-tight tracking-wider text-success/80">
+            Sentinela<br />Autêntico<br />
+            <span className="text-[8px] font-bold">
+              {format(new Date(row.created_at), 'dd/MM/yy')}
+            </span>
+          </div>
+
+          <CardHeader className="relative flex-row items-center gap-3 space-y-0">
             <CheckCircle2 className="h-6 w-6 text-success" aria-hidden />
             <div>
               <CardTitle className="text-base text-success">Relatório autêntico</CardTitle>
               <p className="text-xs text-muted-foreground">Registro localizado no backend.</p>
             </div>
           </CardHeader>
-          <CardContent className="space-y-2 text-sm">
+          <CardContent className="relative space-y-2 text-sm">
             <div className="flex justify-between"><span className="text-muted-foreground">ID:</span><span className="font-mono">{row.report_id}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Tipo:</span><span>{row.report_type}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Eventos:</span><span>{row.event_count}</span></div>
@@ -156,6 +173,7 @@ export default function VerifyReportPage() {
           </CardContent>
         </Card>
       )}
+
     </div>
   );
 }
