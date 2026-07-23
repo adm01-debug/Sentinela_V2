@@ -314,6 +314,11 @@ export default function DisputeEscalationAuditPage() {
               <Download className="h-4 w-4 mr-2" />
               Exportar CSV
             </Button>
+            <Button variant="outline" size="sm" onClick={handleExportPdf} disabled={rows.length === 0}>
+              <FileText className="h-4 w-4 mr-2" />
+              Exportar PDF
+            </Button>
+
           </div>
         }
       />
