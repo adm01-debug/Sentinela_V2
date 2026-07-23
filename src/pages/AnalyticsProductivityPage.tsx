@@ -16,6 +16,7 @@ import { ProductivityCategoryDonut } from '@/components/productivity/Productivit
 import { ProductivityScoreCard } from '@/components/productivity/ProductivityScoreCard';
 import { WeeklyRankingCard } from '@/components/productivity/WeeklyRankingCard';
 import { WeeklyTrendCard } from '@/components/productivity/WeeklyTrendCard';
+import { WeeklyInsightsCard } from '@/components/productivity/WeeklyInsightsCard';
 import { useWeeklyProductivityRanking } from '@/hooks/useWeeklyProductivityRanking';
 import { generateAnalyticsPdf } from '@/utils/analyticsPdf';
 import { SavedFiltersBar } from '@/components/SavedFiltersBar';
@@ -239,6 +240,8 @@ export default function AnalyticsProductivityPage() {
           )}
 
           <WeeklyRankingCard days={Math.max(1, Number(days) || 7)} />
+
+          <WeeklyInsightsCard days={Math.max(1, Number(days) || 7)} />
 
           <div className="grid gap-6 md:grid-cols-2">
 
