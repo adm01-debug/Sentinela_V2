@@ -118,6 +118,21 @@ export function useDailyJourney(employeeId: string, date: string) {
         });
       }
 
+      for (const c of (capturesRes.data ?? []) as Array<{
+        id: string;
+        captured_at: string;
+        app_name?: string | null;
+        window_title?: string | null;
+      }>) {
+        events.push({
+          kind: 'screenshot',
+          startMinute: toMinuteOfDay(c.captured_at),
+          durationMinutes: 2,
+          label: c.window_title ?? c.app_name ?? 'Screenshot',
+          meta: { screenshotId: c.id },
+        });
+      }
+
       // Resumo diário agregando todos os dispositivos daquele colaborador.
       let productiveSeconds = 0;
       let neutralSeconds = 0;
