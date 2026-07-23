@@ -12,7 +12,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { format, subDays, addDays, parseISO } from 'date-fns';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, FileDown } from 'lucide-react';
+import { generateJourneyPdf } from '@/utils/journeyPdf';
 
 export default function EmployeeDetailPage() {
   const { id } = useParams<{ id: string }>();
