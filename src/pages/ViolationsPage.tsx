@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
 import { useViolationsPage, type Violation, type ViolationStatus } from '@/hooks/useViolationsPage';
+import { useViolationsRealtime } from '@/hooks/useViolationsRealtime';
 
 import { useChartColors } from '@/hooks/useChartColors';
 import {
