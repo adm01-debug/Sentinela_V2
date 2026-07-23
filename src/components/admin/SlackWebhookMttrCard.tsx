@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Activity, Loader2, Siren, TrendingUp } from 'lucide-react';
+import { Activity, CalendarClock, Loader2, Siren, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import {
@@ -69,6 +69,21 @@ export function SlackWebhookMttrCard() {
     onError: (err: Error) => toast.error(`Falha na verificação: ${err.message}`),
   });
 
+  const sendDigest = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke('slack-weekly-digest', {
+        body: { trigger: 'manual' },
+      });
+      if (error) throw error;
+      return data as { dispatched?: boolean; totals?: { violations?: number } };
+    },
+    onSuccess: (res) =>
+      toast.success(
+        `Digest enviado — ${res.totals?.violations ?? 0} violações consolidadas dos últimos 7 dias.`,
+      ),
+    onError: (err: Error) => toast.error(`Falha ao enviar digest: ${err.message}`),
+  });
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">
@@ -79,22 +94,37 @@ export function SlackWebhookMttrCard() {
           </CardTitle>
           <CardDescription>
             Tempo entre auto-pausa da integração e o primeiro reenvio bem-sucedido. Alertas
-            proativos rodam a cada hora quando p95 ≥ 30min.
+            proativos rodam a cada hora quando p95 ≥ 30min. Digest semanal toda segunda 09:00 UTC.
           </CardDescription>
         </div>
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => runMonitor.mutate()}
-          disabled={runMonitor.isPending}
-        >
-          {runMonitor.isPending ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Siren className="mr-2 h-4 w-4" />
-          )}
-          Verificar agora
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => sendDigest.mutate()}
+            disabled={sendDigest.isPending}
+          >
+            {sendDigest.isPending ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <CalendarClock className="mr-2 h-4 w-4" />
+            )}
+            Enviar digest
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => runMonitor.mutate()}
+            disabled={runMonitor.isPending}
+          >
+            {runMonitor.isPending ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Siren className="mr-2 h-4 w-4" />
+            )}
+            Verificar agora
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         {isLoading ? (
