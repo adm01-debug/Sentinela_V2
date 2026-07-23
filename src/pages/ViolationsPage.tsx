@@ -140,7 +140,7 @@ export default function ViolationsPage() {
               <DropdownMenuItem
                 onClick={() => {
                   const typeLabels = Object.fromEntries(VIOLATION_TYPES.map(t => [t.value, t.label]));
-                  generateViolationsPdf({
+                  void generateViolationsPdf({
                     violations,
                     periodLabel: `${violations.length} violaç${violations.length === 1 ? 'ão' : 'ões'} • filtros ativos`,
                     filters: { search: searchTerm, severity: severityFilter, status: statusFilter, type: typeFilter },
@@ -153,7 +153,7 @@ export default function ViolationsPage() {
               <DropdownMenuItem
                 onClick={() => {
                   const typeLabels = Object.fromEntries(VIOLATION_TYPES.map(t => [t.value, t.label]));
-                  generateViolationsPdf({
+                  void generateViolationsPdf({
                     violations,
                     periodLabel: `${violations.length} violaç${violations.length === 1 ? 'ão' : 'ões'} • agrupado por colaborador`,
                     filters: { search: searchTerm, severity: severityFilter, status: statusFilter, type: typeFilter },
