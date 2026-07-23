@@ -6,8 +6,8 @@ import {
   BarChart3, Shield, Monitor, Camera, Globe, Calendar, Gamepad2,
   Building2, UserCog, ScrollText, Smartphone, MapPin, Clock, Download,
   Key, Webhook, MessageSquare, Brain, FolderKanban, Timer, ClipboardList,
-  UserCheck, BarChart, ChevronDown, LogOut, Link2, ShieldCheck, FileCheck, DownloadCloud
-
+  UserCheck, BarChart, ChevronDown, LogOut, Link2, ShieldCheck, FileCheck, DownloadCloud,
+  Gavel, ClipboardCheck, Video
 } from 'lucide-react';
 import { useUIStore } from '@/stores';
 import { useAuth } from '@/hooks/useAuth';
