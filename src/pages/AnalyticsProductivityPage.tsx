@@ -155,7 +155,10 @@ export default function AnalyticsProductivityPage() {
             </div>
           )}
 
+          <WeeklyRankingCard days={Math.max(1, Number(days) || 7)} />
+
           <div className="grid gap-6 md:grid-cols-2">
+
             <Card>
               <CardHeader><CardTitle>Top Produtivos</CardTitle></CardHeader>
               <CardContent className="space-y-4">
