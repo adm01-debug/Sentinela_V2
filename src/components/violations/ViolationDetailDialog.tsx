@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -9,9 +10,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/Skeleton';
-import { AlertTriangle, Image as ImageIcon, MapPin, Monitor, Shield, ShieldCheck, Clock, BellOff } from 'lucide-react';
+import { AlertTriangle, Image as ImageIcon, MapPin, Monitor, Shield, ShieldCheck, Clock, BellOff, Gavel } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { ViolationDisputeDialog } from './ViolationDisputeDialog';
+import { DISPUTE_STATUS_LABEL, type DisputeStatus } from '@/hooks/useViolationDisputes';
 
 interface Props {
   violationId: string | null;
@@ -39,6 +43,8 @@ interface ViolationDetail {
   employee_ack_signature: string | null;
   employee_ack_device: string | null;
   employee_ack_ip: string | null;
+  company_id: string | null;
+  dispute_status: DisputeStatus | null;
 }
 
 const severityTone: Record<string, string> = {
@@ -61,7 +67,7 @@ export function ViolationDetailDialog({ violationId, open, onOpenChange }: Props
       const { data, error } = await supabase
         .from('security_violations')
         .select(
-          'id, employee_name, policy_name, violation_type, severity, description, device, ip_address, created_at, screenshot_url, location, status, resolution_notes, employee_notified_at, employee_acknowledged_at, employee_ack_reason, employee_ack_signature, employee_ack_device, employee_ack_ip',
+          'id, employee_name, policy_name, violation_type, severity, description, device, ip_address, created_at, screenshot_url, location, status, resolution_notes, employee_notified_at, employee_acknowledged_at, employee_ack_reason, employee_ack_signature, employee_ack_device, employee_ack_ip, company_id, dispute_status',
         )
         .eq('id', violationId)
         .maybeSingle();
@@ -69,6 +75,7 @@ export function ViolationDetailDialog({ violationId, open, onOpenChange }: Props
       return data as ViolationDetail | null;
     },
   });
+  const [disputeOpen, setDisputeOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -229,9 +236,40 @@ export function ViolationDetailDialog({ violationId, open, onOpenChange }: Props
               )}
             </div>
 
+            <div className="rounded-md border p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                  Contestação (LGPD)
+                </div>
+                {data.dispute_status && (
+                  <Badge variant="outline" className="text-xs">
+                    {DISPUTE_STATUS_LABEL[data.dispute_status]}
+                  </Badge>
+                )}
+              </div>
+              <Button
+                size="sm"
+                variant={data.dispute_status ? 'outline' : 'default'}
+                className="gap-1.5 w-full"
+                onClick={() => setDisputeOpen(true)}
+                disabled={!data.company_id}
+              >
+                <Gavel className="h-4 w-4" />
+                {data.dispute_status ? 'Ver contestação' : 'Contestar violação'}
+              </Button>
+            </div>
           </div>
         )}
       </DialogContent>
+      {data?.company_id && (
+        <ViolationDisputeDialog
+          open={disputeOpen}
+          onOpenChange={setDisputeOpen}
+          violationId={data.id}
+          companyId={data.company_id}
+          employeeName={data.employee_name ?? '—'}
+        />
+      )}
     </Dialog>
   );
 }

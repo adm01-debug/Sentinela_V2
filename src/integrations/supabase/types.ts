@@ -4223,6 +4223,7 @@ export type Database = {
           created_at: string
           description: string | null
           device: string | null
+          dispute_status: string | null
           employee_ack_device: string | null
           employee_ack_ip: string | null
           employee_ack_reason: string | null
@@ -4250,6 +4251,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           device?: string | null
+          dispute_status?: string | null
           employee_ack_device?: string | null
           employee_ack_ip?: string | null
           employee_ack_reason?: string | null
@@ -4277,6 +4279,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           device?: string | null
+          dispute_status?: string | null
           employee_ack_device?: string | null
           employee_ack_ip?: string | null
           employee_ack_reason?: string | null
@@ -5050,6 +5053,84 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      violation_disputes: {
+        Row: {
+          category: string
+          company_id: string
+          created_at: string
+          employee_name: string
+          evidence_urls: string[] | null
+          id: string
+          reason: string
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          signature_sha256: string | null
+          status: string
+          submitted_by: string | null
+          submitter_device: string | null
+          submitter_ip: string | null
+          submitter_type: string
+          updated_at: string
+          violation_id: string
+        }
+        Insert: {
+          category: string
+          company_id: string
+          created_at?: string
+          employee_name: string
+          evidence_urls?: string[] | null
+          id?: string
+          reason: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          signature_sha256?: string | null
+          status?: string
+          submitted_by?: string | null
+          submitter_device?: string | null
+          submitter_ip?: string | null
+          submitter_type?: string
+          updated_at?: string
+          violation_id: string
+        }
+        Update: {
+          category?: string
+          company_id?: string
+          created_at?: string
+          employee_name?: string
+          evidence_urls?: string[] | null
+          id?: string
+          reason?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          signature_sha256?: string | null
+          status?: string
+          submitted_by?: string | null
+          submitter_device?: string | null
+          submitter_ip?: string | null
+          submitter_type?: string
+          updated_at?: string
+          violation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "violation_disputes_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "violation_disputes_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "security_violations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       violation_rules: {
         Row: {
