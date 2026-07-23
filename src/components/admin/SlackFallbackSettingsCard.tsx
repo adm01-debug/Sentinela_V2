@@ -232,6 +232,29 @@ export function SlackFallbackSettingsCard() {
           </div>
         </div>
 
+        <div className="space-y-2 rounded-md border border-dashed p-3">
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <FlaskConical className="h-4 w-4 text-primary" />
+            Modo de teste (Chaos Engineering)
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Injeta falhas simuladas para validar o comportamento do sistema em cenários adversos.
+            Modos chaos são registrados como <code className="font-mono">simulated: true</code> na auditoria.
+          </p>
+          <Select value={chaosMode} onValueChange={(v) => setChaosMode(v as ChaosMode)}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="real">Real — envia via Resend</SelectItem>
+              <SelectItem value="timeout">Timeout — 8s sem resposta</SelectItem>
+              <SelectItem value="error_429">Rate limit 429 — provedor limitou</SelectItem>
+              <SelectItem value="error_500">Erro 500 — falha upstream</SelectItem>
+              <SelectItem value="partial_failure">Falha parcial — metade rejeitada</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="flex gap-2">
           <Button
             className="flex-1"
@@ -243,16 +266,21 @@ export function SlackFallbackSettingsCard() {
           <Button
             variant="outline"
             onClick={async () => {
-              const t = toast.loading('Enviando teste...');
-              const { data, error } = await supabase.functions.invoke('slack-fallback-test');
+              setTesting(true);
+              const label = chaosMode === 'real' ? 'Enviando teste real...' : `Simulando [${chaosMode}]...`;
+              const t = toast.loading(label);
+              const { data, error } = await supabase.functions.invoke('slack-fallback-test', {
+                body: { mode: chaosMode },
+              });
               toast.dismiss(t);
               if (error) toast.error(`Falha: ${error.message}`);
-              else toast.success(data?.message ?? 'Teste enviado');
+              else toast.success(data?.message ?? 'Teste concluído');
               qc.invalidateQueries({ queryKey: ['slack-fallback-last-test'] });
+              setTesting(false);
             }}
-            disabled={!local.enabled || (local.recipient_emails ?? []).length === 0}
+            disabled={testing || !local.enabled || (local.recipient_emails ?? []).length === 0}
           >
-            Testar
+            {testing ? 'Executando...' : chaosMode === 'real' ? 'Testar' : `Simular ${chaosMode}`}
           </Button>
         </div>
       </CardContent>
