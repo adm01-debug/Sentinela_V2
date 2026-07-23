@@ -12,7 +12,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { format, subDays, addDays, parseISO } from 'date-fns';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, FileDown } from 'lucide-react';
+import { generateJourneyPdf } from '@/utils/journeyPdf';
 
 export default function EmployeeDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -82,6 +83,14 @@ export default function EmployeeDetailPage() {
             </div>
             <Button variant="ghost" size="sm" onClick={() => setJourneyDate(format(new Date(), 'yyyy-MM-dd'))}>
               Hoje
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => generateJourneyPdf({ employeeName: displayName, date: journeyDate, events: journeyEvents, summary: journeySummary })}
+              disabled={journeyLoading}
+            >
+              <FileDown className="mr-2 h-4 w-4" /> Exportar PDF
             </Button>
             <div className="ml-auto text-sm text-muted-foreground">
               {journeyLoading ? 'Carregando…' : `${journeyEvents.length} eventos`}
