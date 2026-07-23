@@ -558,50 +558,6 @@ export default function DisputeEscalationAuditPage() {
 
 
       <Card>
-        <CardHeader>
-          <CardTitle>Últimas 200 escalações</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="space-y-2">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-10 w-full" />
-              ))}
-            </div>
-          ) : rows.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-6 text-center">
-              Nenhuma escalação registrada ainda. Use "Executar agora" para forçar uma verificação.
-            </p>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Quando</TableHead>
-                  <TableHead>Severidade</TableHead>
-                  <TableHead>Contestação</TableHead>
-                  <TableHead className="text-right">Horas restantes</TableHead>
-                  <TableHead className="text-right">Push</TableHead>
-                  <TableHead className="text-right">Duração</TableHead>
-                  <TableHead>Mensagem</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
-                      {format(new Date(row.created_at), 'dd/MM/yyyy HH:mm', { locale: ptBR })}
-                    </TableCell>
-                    <TableCell>{severityBadge(row.payload_summary?.severity)}</TableCell>
-                    <TableCell className="font-mono text-xs">
-                      {row.payload_summary?.dispute_id?.slice(0, 8) ?? '—'}
-                    </TableCell>
-                    <TableCell className="text-right tabular-nums">
-                      {row.payload_summary?.hours_until_breach ?? '—'}h
-                    </TableCell>
-                    <TableCell className="text-right tabular-nums">
-                      {row.payload_summary?.push_delivered ?? 0}
-                    </TableCell>
-      <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle>Últimas 200 escalações</CardTitle>
           <div className="flex items-center gap-2">
