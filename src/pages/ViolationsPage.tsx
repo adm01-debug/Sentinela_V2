@@ -324,6 +324,12 @@ export default function ViolationsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <ViolationTimelineDialog
+        violationId={timelineId}
+        open={!!timelineId}
+        onOpenChange={(o) => !o && setTimelineId(null)}
+      />
     </div>
   );
 }
