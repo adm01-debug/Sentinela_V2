@@ -19,7 +19,7 @@ import {
   ShieldCheck,
   Monitor,
   Loader2,
-  CircleCheck,
+  CheckCircle2,
   Circle,
   Wifi,
   Apple,
@@ -144,7 +144,7 @@ export default function AgentOnboardingPage() {
                   !active && !done && 'border-border text-muted-foreground',
                 )}
               >
-                {done ? <CircleCheck className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
+                {done ? <CheckCircle2 className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
                 <span className="font-medium">
                   {s.id}. {s.label}
                 </span>
@@ -352,7 +352,7 @@ export default function AgentOnboardingPage() {
           <CardContent className="space-y-4">
             {isConnected ? (
               <Alert className="border-success/40 bg-success/10">
-                <CircleCheck className="h-4 w-4 text-success" />
+                <CheckCircle2 className="h-4 w-4 text-success" />
                 <AlertTitle>Agente conectado com sucesso</AlertTitle>
                 <AlertDescription>
                   Última comunicação:{' '}
