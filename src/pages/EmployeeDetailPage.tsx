@@ -87,7 +87,40 @@ export default function EmployeeDetailPage() {
               {journeyLoading ? 'Carregando…' : `${journeyEvents.length} eventos`}
             </div>
           </div>
+          {journeySummary && journeySummary.totalSeconds > 0 && (
+            <div className="grid gap-3 md:grid-cols-4">
+              <div className="rounded-lg border bg-card p-4">
+                <div className="text-xs text-muted-foreground">Score de produtividade</div>
+                <div className="text-2xl font-bold text-success">{journeySummary.productivityScore}%</div>
+              </div>
+              <div className="rounded-lg border bg-card p-4">
+                <div className="text-xs text-muted-foreground">Produtivo</div>
+                <div className="text-2xl font-bold">{Math.round(journeySummary.productiveSeconds / 60)} min</div>
+              </div>
+              <div className="rounded-lg border bg-card p-4">
+                <div className="text-xs text-muted-foreground">Neutro</div>
+                <div className="text-2xl font-bold">{Math.round(journeySummary.neutralSeconds / 60)} min</div>
+              </div>
+              <div className="rounded-lg border bg-card p-4">
+                <div className="text-xs text-muted-foreground">Improdutivo</div>
+                <div className="text-2xl font-bold text-destructive">{Math.round(journeySummary.unproductiveSeconds / 60)} min</div>
+              </div>
+            </div>
+          )}
           <DailyJourneyTimeline date={journeyDate} events={journeyEvents} />
+          {journeySummary && journeySummary.topApps.length > 0 && (
+            <div className="rounded-lg border bg-card p-4">
+              <div className="mb-2 text-sm font-semibold">Top aplicações do dia</div>
+              <ul className="space-y-1 text-sm">
+                {journeySummary.topApps.map((a) => (
+                  <li key={a.name} className="flex justify-between">
+                    <span className="text-foreground">{a.name}</span>
+                    <span className="text-muted-foreground">{Math.round(a.seconds / 60)} min</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </TabsContent>
         <TabsContent value="stats" className="mt-6">
           <div className="bg-card border rounded-lg p-12 text-center text-muted-foreground">
