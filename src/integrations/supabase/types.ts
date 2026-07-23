@@ -3801,6 +3801,45 @@ export type Database = {
         }
         Relationships: []
       }
+      report_signatures: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          event_count: number
+          generated_by: string | null
+          id: string
+          payload: Json
+          period_label: string | null
+          report_id: string
+          report_type: string
+          signature: string
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          event_count?: number
+          generated_by?: string | null
+          id?: string
+          payload: Json
+          period_label?: string | null
+          report_id: string
+          report_type?: string
+          signature: string
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          event_count?: number
+          generated_by?: string | null
+          id?: string
+          payload?: Json
+          period_label?: string | null
+          report_id?: string
+          report_type?: string
+          signature?: string
+        }
+        Relationships: []
+      }
       risk_score_factors: {
         Row: {
           category: string

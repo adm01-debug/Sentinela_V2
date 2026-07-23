@@ -78,6 +78,7 @@ const EdgeFunctionDashboard = lazy(() => import('@/pages/admin/EdgeFunctionDashb
 const ChartSimulationPage = lazy(() => import('@/pages/dev/ChartSimulationPage'));
 const OrgChartPage = lazy(() => import('@/pages/OrgChartPage'));
 const ApiDocsPage = lazy(() => import('@/pages/ApiDocsPage'));
+const VerifyReportPage = lazy(() => import('@/pages/VerifyReportPage'));
 
 // ============================================================
 // ROUTE GUARDS
@@ -180,6 +181,7 @@ export const AppRoutes = () => (
         <Route path="/admin/edge-functions" element={<EdgeFunctionDashboard />} />
         <Route path="/organization/chart" element={<OrgChartPage />} />
         <Route path="/docs/api" element={<ApiDocsPage />} />
+        <Route path="/verify-report" element={<VerifyReportPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
