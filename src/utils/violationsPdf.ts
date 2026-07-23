@@ -474,6 +474,21 @@ export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Prom
   } catch { /* fallback */ }
   const shortSig = signature.slice(0, 16);
 
+  // Registra assinatura no backend para verificação pública
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    await supabase.from('report_signatures').insert({
+      report_id: reportId,
+      report_type: 'violations',
+      signature,
+      payload: JSON.parse(signaturePayload),
+      event_count: violations.length,
+      period_label: periodLabel,
+      generated_by: user?.id ?? null,
+    });
+  } catch { /* não bloqueia geração do PDF */ }
+
+
   // Footer com paginação e assinatura
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
