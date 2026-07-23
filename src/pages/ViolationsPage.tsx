@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { ViolationTimelineDialog } from '@/components/violations/ViolationTimelineDialog';
 import { EmptyState } from '@/components/EmptyState';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -51,6 +52,8 @@ export default function ViolationsPage() {
   } = useViolationsPage();
 
   useViolationsRealtime();
+
+  const [timelineId, setTimelineId] = useState<string | null>(null);
 
   const colors = useChartColors();
 
@@ -292,7 +295,16 @@ export default function ViolationsPage() {
                   </div>
                 )}
               </div>
-              {selectedViolation.status === 'open' && <Button className="w-full" onClick={() => { setIsDetailsOpen(false); handleOpenResolve(selectedViolation); }}>Resolver Violação</Button>}
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Button variant="outline" className="flex-1" onClick={() => setTimelineId(selectedViolation.id)}>
+                  Ver timeline detalhada
+                </Button>
+                {selectedViolation.status === 'open' && (
+                  <Button className="flex-1" onClick={() => { setIsDetailsOpen(false); handleOpenResolve(selectedViolation); }}>
+                    Resolver Violação
+                  </Button>
+                )}
+              </div>
 
             </div>
           )}
@@ -312,6 +324,12 @@ export default function ViolationsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <ViolationTimelineDialog
+        violationId={timelineId}
+        open={!!timelineId}
+        onOpenChange={(o) => !o && setTimelineId(null)}
+      />
     </div>
   );
 }
