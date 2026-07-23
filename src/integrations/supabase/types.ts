@@ -4573,6 +4573,63 @@ export type Database = {
           },
         ]
       }
+      slack_delivery_events: {
+        Row: {
+          attempts: number
+          company_id: string | null
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          event_type: string
+          id: string
+          integration_id: string | null
+          severity: string | null
+          status_code: number | null
+          success: boolean
+        }
+        Insert: {
+          attempts?: number
+          company_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          event_type: string
+          id?: string
+          integration_id?: string | null
+          severity?: string | null
+          status_code?: number | null
+          success: boolean
+        }
+        Update: {
+          attempts?: number
+          company_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          event_type?: string
+          id?: string
+          integration_id?: string | null
+          severity?: string | null
+          status_code?: number | null
+          success?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slack_delivery_events_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "slack_delivery_events_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "slack_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       slack_integrations: {
         Row: {
           auto_pause_reason: string | null
