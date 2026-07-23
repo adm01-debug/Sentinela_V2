@@ -7,7 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Mail, Plus, X, AlertCircle } from 'lucide-react';
+import { Mail, Plus, X, AlertCircle, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 
 const SETTING_TYPE = 'slack_fallback';
@@ -39,6 +41,26 @@ export function SlackFallbackSettingsCard() {
       if (error) throw error;
       return data as FallbackSetting | null;
     },
+  });
+
+  const { data: lastTest } = useQuery({
+    queryKey: ['slack-fallback-last-test'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('edge_function_logs')
+        .select('status, created_at, metadata')
+        .eq('function_name', 'slack-fallback-test')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      return data as {
+        status: string;
+        created_at: string;
+        metadata: { triggered_by?: string; recipients_count?: number; resend_id?: string | null; error?: string | null };
+      } | null;
+    },
+    refetchInterval: 30_000,
   });
 
   useEffect(() => {
@@ -126,6 +148,32 @@ export function SlackFallbackSettingsCard() {
           </span>
         </div>
 
+        {lastTest && (
+          <div className="flex items-start gap-2 rounded-md border p-3 text-sm">
+            {lastTest.status === 'success' ? (
+              <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-success mt-0.5" />
+            ) : (
+              <XCircle className="h-4 w-4 flex-shrink-0 text-destructive mt-0.5" />
+            )}
+            <div className="flex-1 space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="font-medium">
+                  Último teste: {lastTest.status === 'success' ? 'Sucesso' : 'Falha'}
+                </span>
+                <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <Clock className="h-3 w-3" />
+                  {formatDistanceToNow(new Date(lastTest.created_at), { addSuffix: true, locale: ptBR })}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {lastTest.metadata?.recipients_count ?? 0} destinatário(s)
+                {lastTest.metadata?.triggered_by && ` · por ${lastTest.metadata.triggered_by}`}
+                {lastTest.metadata?.error && ` · ${lastTest.metadata.error.slice(0, 80)}`}
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="space-y-2">
           <Label>Destinatários</Label>
           <div className="flex gap-2">
@@ -196,6 +244,7 @@ export function SlackFallbackSettingsCard() {
               toast.dismiss(t);
               if (error) toast.error(`Falha: ${error.message}`);
               else toast.success(data?.message ?? 'Teste enviado');
+              qc.invalidateQueries({ queryKey: ['slack-fallback-last-test'] });
             }}
             disabled={!local.enabled || (local.recipient_emails ?? []).length === 0}
           >
