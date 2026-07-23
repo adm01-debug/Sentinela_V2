@@ -178,6 +178,8 @@ export const AppRoutes = () => (
         <Route path="/admin/ueba/settings" element={<UEBASettingsPage />} />
         <Route path="/admin/ueba/:employeeId" element={<EmployeeRiskProfilePage />} />
         <Route path="/admin/edge-functions" element={<EdgeFunctionDashboard />} />
+        <Route path="/organization/chart" element={<OrgChartPage />} />
+        <Route path="/docs/api" element={<ApiDocsPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
