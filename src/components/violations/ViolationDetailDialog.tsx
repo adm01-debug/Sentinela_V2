@@ -33,6 +33,12 @@ interface ViolationDetail {
   location: string | null;
   status: string | null;
   resolution_notes: string | null;
+  employee_notified_at: string | null;
+  employee_acknowledged_at: string | null;
+  employee_ack_reason: string | null;
+  employee_ack_signature: string | null;
+  employee_ack_device: string | null;
+  employee_ack_ip: string | null;
 }
 
 const severityTone: Record<string, string> = {
