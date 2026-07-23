@@ -120,6 +120,11 @@ export default function EmployeeDetailPage() {
               </div>
             </div>
           )}
+          <TeamComparisonSection
+            employeeName={displayName}
+            date={journeyDate}
+            employeeScore={journeySummary?.productivityScore ?? 0}
+          />
           <DailyJourneyTimeline
             date={journeyDate}
             events={journeyEvents}
