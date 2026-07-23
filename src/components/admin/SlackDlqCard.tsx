@@ -40,6 +40,8 @@ const SEVERITY_VARIANT: Record<DlqItem['severity'], 'default' | 'destructive' | 
 
 export function SlackDlqCard() {
   const qc = useQueryClient();
+  const [bulkTarget, setBulkTarget] = useState<string | null>(null);
+
 
   const { data: items = [], isLoading } = useQuery({
     queryKey: ['slack-dlq'],
