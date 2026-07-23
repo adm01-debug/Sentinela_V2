@@ -338,7 +338,23 @@ export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Prom
 
     const cellW = (pageWidth - margin * 2 - 8) / 2;
     const cellH = 70;
-    const images = await Promise.all(withShots.map(v => fetchImageAsDataUrl(v.screenshot_url as string)));
+    const urls = withShots.map(v => v.screenshot_url as string);
+    const [images, ocrMap] = await Promise.all([
+      Promise.all(urls.map(u => fetchImageAsDataUrl(u))),
+      (async () => {
+        const map = new Map<string, string>();
+        try {
+          const { data } = await supabase
+            .from('screen_captures')
+            .select('capture_url, extracted_text')
+            .in('capture_url', urls);
+          (data || []).forEach((r: { capture_url: string; extracted_text: string | null }) => {
+            if (r.extracted_text) map.set(r.capture_url, r.extracted_text);
+          });
+        } catch { /* ignore */ }
+        return map;
+      })(),
+    ]);
 
     for (let i = 0; i < withShots.length; i++) {
       const col = i % 2;
@@ -385,6 +401,56 @@ export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Prom
       doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
       const sub = `${format(new Date(v.created_at), 'dd/MM/yyyy HH:mm', { locale: ptBR })} • ${typeLabels[v.violation_type] || v.violation_type}`;
       doc.text(doc.splitTextToSize(sub, cellW - 4)[0], x + 3, capY + 8);
+    }
+
+    // Anexo — texto OCR extraído (transcrição integral por evidência)
+    const ocrEntries = withShots
+      .map((v, idx) => ({ v, idx, text: ocrMap.get(v.screenshot_url as string) }))
+      .filter(e => e.text && e.text.trim().length > 0);
+
+    if (ocrEntries.length > 0) {
+      doc.addPage();
+      let oy = 20;
+      doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+      doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+      doc.text('Transcrição OCR das evidências', margin, oy);
+      oy += 4;
+      doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+      doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+      doc.text('Texto extraído automaticamente das capturas de tela associadas.', margin, oy + 3);
+      oy += 10;
+
+      const maxWidth = pageWidth - margin * 2 - 8;
+      ocrEntries.forEach(({ v, idx, text }, i) => {
+        const clipped = (text as string).slice(0, 1200);
+        const lines = doc.splitTextToSize(clipped, maxWidth) as string[];
+        const blockH = 12 + lines.length * 3.6 + 4;
+        if (oy + blockH > 275) { doc.addPage(); oy = 20; }
+
+        // header do bloco
+        doc.setFillColor(248, 250, 252);
+        doc.setDrawColor(226, 232, 240);
+        doc.roundedRect(margin, oy, pageWidth - margin * 2, blockH, 2, 2, 'FD');
+
+        doc.setFontSize(9); doc.setFont('helvetica', 'bold');
+        doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+        doc.text(`#${idx + 1} ${v.employee_name}`, margin + 4, oy + 5);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7);
+        doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+        doc.text(
+          `${format(new Date(v.created_at), 'dd/MM/yyyy HH:mm', { locale: ptBR })} • ${typeLabels[v.violation_type] || v.violation_type} • ${SEVERITY_LABEL[v.severity] || v.severity}`,
+          pageWidth - margin - 4, oy + 5, { align: 'right' },
+        );
+
+        doc.setFontSize(8); doc.setTextColor(50, 50, 50);
+        doc.text(lines, margin + 4, oy + 11);
+        if ((text as string).length > 1200) {
+          doc.setFontSize(6); doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+          doc.text('… (texto truncado)', margin + 4, oy + blockH - 2);
+        }
+        oy += blockH + 4;
+        void i;
+      });
     }
   }
 
