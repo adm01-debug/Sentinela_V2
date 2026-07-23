@@ -69,9 +69,26 @@ export function SlackIntegrationsCard() {
   const [name, setName] = useState('');
   const [webhookUrl, setWebhookUrl] = useState('');
   const [minSeverity, setMinSeverity] = useState<Severity>('critical');
+  const [companyId, setCompanyId] = useState<string>('__global__');
   const [testingId, setTestingId] = useState<string | null>(null);
 
-  const { data: integrations = [], isLoading } = useQuery({
+  const { data: companies = [] } = useQuery({
+    queryKey: ['companies-for-slack'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('companies')
+        .select('id, name')
+        .eq('is_active', true)
+        .order('name');
+      if (error) throw error;
+      return (data ?? []) as CompanyOption[];
+    },
+  });
+
+  const companyName = (id: string | null) =>
+    id ? companies.find((c) => c.id === id)?.name ?? 'Empresa desconhecida' : 'Global (todas)';
+
+
     queryKey: ['slack-integrations'],
     queryFn: async () => {
       const { data, error } = await supabase
