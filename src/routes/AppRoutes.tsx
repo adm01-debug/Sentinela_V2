@@ -98,6 +98,8 @@ export const AppRoutes = () => (
       <Routes>
       {/* Dev-only public route for chart contrast simulation */}
       <Route path="/dev/chart-simulation" element={<ChartSimulationPage />} />
+      <Route path="/dev/verify-simulator" element={<VerifyReportSimulatorPage />} />
+
 
       {/* Auth */}
       <Route path="/auth" element={<GuestGuard><Auth /></GuestGuard>} />
