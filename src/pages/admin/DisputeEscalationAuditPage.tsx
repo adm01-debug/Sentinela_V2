@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { format, differenceInMinutes } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { AlertTriangle, ShieldAlert, Activity } from 'lucide-react';
+import { AlertTriangle, ShieldAlert, Activity, Heart, Download } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
