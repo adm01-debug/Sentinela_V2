@@ -44,7 +44,7 @@ export const useDisputeMetrics = (params: { from: string; to: string }) => {
   });
 };
 
-function computeMetrics(rows: DisputeRow[]): DisputeMetrics {
+export function computeMetrics(rows: DisputeRow[]): DisputeMetrics {
   const byStatus: Record<DisputeStatus, number> = {
     pending: 0,
     under_review: 0,
