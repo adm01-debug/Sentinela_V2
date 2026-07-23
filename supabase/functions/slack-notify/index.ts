@@ -193,7 +193,9 @@ Deno.serve(async (req) => {
   }
 
   for (const target of targets as any[]) {
+    const targetStart = Date.now();
     const result = await postWithRetry(target.webhook_url);
+    const durationMs = Date.now() - targetStart;
     if (result.ok) {
       delivered += 1;
       if (result.attempts > 1) {
@@ -230,10 +232,6 @@ Deno.serve(async (req) => {
       }
       await supabase.from('slack_integrations').update(update).eq('id', target.id);
 
-      // Dead-Letter Queue: persiste a mensagem para que admin possa reenviar após
-      // corrigir o webhook. Só entra na DLQ se for falha permanente OU se a
-      // integração acabou de ser auto-pausada (evita duplicar itens durante
-      // falhas transitórias que ainda podem se recuperar em próximas execuções).
       if (result.permanent || shouldPause) {
         await supabase.from('slack_notification_dlq').insert({
           integration_id: target.id,
@@ -251,7 +249,21 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Registro por integração para telemetria de uptime (últimos 7 dias)
+    await supabase.from('slack_delivery_events').insert({
+      integration_id: target.id,
+      company_id: target.company_id ?? null,
+      event_type,
+      severity,
+      success: result.ok,
+      status_code: result.status ?? null,
+      attempts: result.attempts,
+      duration_ms: durationMs,
+      error_message: result.ok ? null : result.message.slice(0, 500),
+    });
   }
+
+
 
   await supabase.from('edge_function_logs').insert({
     function_name: 'slack-notify',
