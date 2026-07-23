@@ -121,62 +121,97 @@ Deno.serve(async (req) => {
 
   let delivered = 0;
   const errors: Array<{ id: string; message: string }> = [];
-
   const autoPaused: Array<{ id: string; name: string; reason: string }> = [];
+  const retryStats: Array<{ id: string; attempts: number; recovered: boolean }> = [];
+
+  // Retry policy: erros transitórios (429/5xx/network) tentam novamente com backoff
+  // exponencial + jitter antes de contabilizar falha. Erros permanentes (400/403/404/410)
+  // pulam retry e vão direto para auto-pausa.
+  const MAX_ATTEMPTS = 3;
+  const BASE_DELAY_MS = 500;
+  const MAX_DELAY_MS = 4000;
+  const TRANSIENT_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504]);
+
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  async function postWithRetry(webhookUrl: string): Promise<
+    | { ok: true; attempts: number }
+    | { ok: false; attempts: number; status?: number; message: string; permanent: boolean }
+  > {
+    let lastMessage = 'unknown';
+    let lastStatus: number | undefined;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
+        const res = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(slackPayload),
+          signal: controller.signal,
+        });
+        clearTimeout(timeout);
+        if (res.ok) return { ok: true, attempts: attempt };
+        const body = await res.text().catch(() => '');
+        lastStatus = res.status;
+        lastMessage = `HTTP ${res.status} ${body.slice(0, 200)}`;
+        if (PERMANENT_FAILURE_STATUSES.has(res.status)) {
+          return { ok: false, attempts: attempt, status: res.status, message: lastMessage, permanent: true };
+        }
+        if (!TRANSIENT_STATUSES.has(res.status)) {
+          return { ok: false, attempts: attempt, status: res.status, message: lastMessage, permanent: false };
+        }
+        // Respeita Retry-After (segundos) do Slack quando presente
+        const retryAfter = Number(res.headers.get('retry-after') ?? '0');
+        const backoff = retryAfter > 0
+          ? Math.min(retryAfter * 1000, MAX_DELAY_MS)
+          : Math.min(BASE_DELAY_MS * 2 ** (attempt - 1), MAX_DELAY_MS);
+        const jitter = Math.floor(Math.random() * 250);
+        if (attempt < MAX_ATTEMPTS) await sleep(backoff + jitter);
+      } catch (e: any) {
+        lastMessage = String(e?.message ?? e).slice(0, 200);
+        // network/timeout são transitórios
+        if (attempt < MAX_ATTEMPTS) {
+          const backoff = Math.min(BASE_DELAY_MS * 2 ** (attempt - 1), MAX_DELAY_MS);
+          const jitter = Math.floor(Math.random() * 250);
+          await sleep(backoff + jitter);
+        }
+      }
+    }
+    return { ok: false, attempts: MAX_ATTEMPTS, status: lastStatus, message: lastMessage, permanent: false };
+  }
 
   for (const target of targets as any[]) {
-    try {
-      const res = await fetch(target.webhook_url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(slackPayload),
-      });
-      if (res.ok) {
-        delivered += 1;
-        await supabase
-          .from('slack_integrations')
-          .update({
-            last_success_at: new Date().toISOString(),
-            failure_count: 0,
-            last_error: null,
-          })
-          .eq('id', target.id);
-      } else {
-        const body = await res.text().catch(() => '');
-        const msg = `HTTP ${res.status} ${body.slice(0, 200)}`;
-        errors.push({ id: target.id, message: msg });
-        const nextFailureCount = (target.failure_count ?? 0) + 1;
-        const threshold = target.auto_pause_threshold ?? 5;
-        const isPermanent = PERMANENT_FAILURE_STATUSES.has(res.status);
-        const shouldPause = isPermanent || nextFailureCount >= threshold;
-        const update: Record<string, unknown> = {
-          last_error: msg,
-          last_error_at: new Date().toISOString(),
-          failure_count: nextFailureCount,
-        };
-        if (shouldPause) {
-          const reason = isPermanent
-            ? `Webhook inválido (HTTP ${res.status}) — pausado automaticamente`
-            : `${nextFailureCount} falhas consecutivas atingiram o limite de ${threshold}`;
-          update.is_active = false;
-          update.auto_paused_at = new Date().toISOString();
-          update.auto_pause_reason = reason;
-          autoPaused.push({ id: target.id, name: target.name, reason });
-        }
-        await supabase.from('slack_integrations').update(update).eq('id', target.id);
+    const result = await postWithRetry(target.webhook_url);
+    if (result.ok) {
+      delivered += 1;
+      if (result.attempts > 1) {
+        retryStats.push({ id: target.id, attempts: result.attempts, recovered: true });
       }
-    } catch (e: any) {
-      const msg = String(e?.message ?? e).slice(0, 200);
+      await supabase
+        .from('slack_integrations')
+        .update({
+          last_success_at: new Date().toISOString(),
+          failure_count: 0,
+          last_error: null,
+        })
+        .eq('id', target.id);
+    } else {
+      const msg = result.message;
       errors.push({ id: target.id, message: msg });
+      retryStats.push({ id: target.id, attempts: result.attempts, recovered: false });
       const nextFailureCount = (target.failure_count ?? 0) + 1;
       const threshold = target.auto_pause_threshold ?? 5;
+      const shouldPause = result.permanent || nextFailureCount >= threshold;
       const update: Record<string, unknown> = {
         last_error: msg,
         last_error_at: new Date().toISOString(),
         failure_count: nextFailureCount,
       };
-      if (nextFailureCount >= threshold) {
-        const reason = `${nextFailureCount} falhas consecutivas atingiram o limite de ${threshold}`;
+      if (shouldPause) {
+        const reason = result.permanent
+          ? `Webhook inválido (HTTP ${result.status}) — pausado após ${result.attempts} tentativa(s)`
+          : `${nextFailureCount} falhas consecutivas atingiram o limite de ${threshold} (após ${result.attempts} tentativas por envio)`;
         update.is_active = false;
         update.auto_paused_at = new Date().toISOString();
         update.auto_pause_reason = reason;
@@ -198,8 +233,16 @@ Deno.serve(async (req) => {
       matched: targets.length,
       errors: errors.length,
       auto_paused: autoPaused,
+      retries: retryStats,
     },
   });
 
-  return json({ ok: true, delivered, matched: targets.length, errors, auto_paused: autoPaused });
+  return json({
+    ok: true,
+    delivered,
+    matched: targets.length,
+    errors,
+    auto_paused: autoPaused,
+    retries: retryStats,
+  });
 });
