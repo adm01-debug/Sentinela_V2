@@ -45,13 +45,13 @@ export const useDisputeMetrics = (params: { from: string; to: string }) => {
 };
 
 function computeMetrics(rows: DisputeRow[]): DisputeMetrics {
-  const byStatus = {
+  const byStatus: Record<DisputeStatus, number> = {
     pending: 0,
     under_review: 0,
     approved: 0,
     rejected: 0,
-    escalated: 0,
-  } as Record<DisputeStatus, number>;
+    withdrawn: 0,
+  };
   const byCategory: Record<string, number> = {};
   const resolutionsMs: number[] = [];
   const timelineMap = new Map<string, { created: number; resolved: number }>();
