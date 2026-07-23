@@ -136,7 +136,33 @@ export function SlackDlqCard() {
           serem reenviadas manualmente. Reative a integração antes de reenviar.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
+        {/* Ações em lote por integração */}
+        {byIntegration.length > 0 && (
+          <div className="flex flex-wrap gap-2 rounded-md border border-border bg-muted/30 p-3">
+            <span className="text-xs font-medium text-muted-foreground self-center mr-1">
+              Reenvio em lote:
+            </span>
+            {byIntegration.map(([intId, count]) => (
+              <Button
+                key={intId ?? 'null'}
+                variant="secondary"
+                size="sm"
+                disabled={!intId || bulkReplayMutation.isPending}
+                onClick={() => intId && bulkReplayMutation.mutate(intId)}
+                className="gap-1.5"
+              >
+                {bulkReplayMutation.isPending && bulkTarget === intId ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Zap className="h-3.5 w-3.5" />
+                )}
+                {intId ? `Integração • ${count}` : `Sem integração • ${count}`}
+              </Button>
+            ))}
+          </div>
+        )}
+
         {isLoading ? (
           <div className="flex items-center justify-center py-6 text-muted-foreground">
             <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Carregando fila…
