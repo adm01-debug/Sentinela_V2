@@ -56,6 +56,7 @@ import { SlackIntegrationsCard } from '@/components/admin/SlackIntegrationsCard'
 import { SlackDlqCard } from '@/components/admin/SlackDlqCard';
 import { SlackWebhookMttrCard } from '@/components/admin/SlackWebhookMttrCard';
 import { SlackUptimeHistoryCard } from '@/components/admin/SlackUptimeHistoryCard';
+import { SlackFallbackSettingsCard } from '@/components/admin/SlackFallbackSettingsCard';
 
 
 type Severity = 'warning' | 'critical' | 'breached';
@@ -565,6 +566,7 @@ export default function DisputeEscalationAuditPage() {
         <SlackDlqCard />
         <SlackWebhookMttrCard />
         <SlackUptimeHistoryCard />
+        <SlackFallbackSettingsCard />
       </div>
 
       <Card>
