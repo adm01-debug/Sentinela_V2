@@ -5618,6 +5618,7 @@ export type Database = {
         Returns: Json
       }
       cleanup_expired_webauthn_challenges: { Args: never; Returns: number }
+      cleanup_old_edge_function_logs: { Args: never; Returns: number }
       cleanup_rate_limit_logs: { Args: never; Returns: number }
       create_monthly_partition: {
         Args: { p_partition_date: string; p_table_name: string }
