@@ -18,7 +18,15 @@ import { WeeklyRankingCard } from '@/components/productivity/WeeklyRankingCard';
 import { WeeklyTrendCard } from '@/components/productivity/WeeklyTrendCard';
 import { useWeeklyProductivityRanking } from '@/hooks/useWeeklyProductivityRanking';
 import { generateAnalyticsPdf } from '@/utils/analyticsPdf';
+import { SavedFiltersBar } from '@/components/SavedFiltersBar';
 import { toast } from 'sonner';
+
+const QUICK_PRESETS: Array<{ label: string; days: string }> = [
+  { label: 'Hoje', days: '1' },
+  { label: 'Semana', days: '7' },
+  { label: 'Mês', days: '30' },
+  { label: 'Trimestre', days: '90' },
+];
 
 
 interface PerformerItem {
