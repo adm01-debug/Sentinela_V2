@@ -258,7 +258,7 @@ export function SlackIntegrationsCard() {
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Form */}
-        <div className="grid gap-3 rounded-md border border-border bg-muted/30 p-4 md:grid-cols-[1fr_2fr_180px_auto]">
+        <div className="grid gap-3 rounded-md border border-border bg-muted/30 p-4 md:grid-cols-2 lg:grid-cols-[1fr_1.5fr_160px_160px_auto]">
           <div className="space-y-1.5">
             <Label htmlFor="slack-name">Nome</Label>
             <Input
@@ -279,6 +279,22 @@ export function SlackIntegrationsCard() {
             />
           </div>
           <div className="space-y-1.5">
+            <Label>Empresa</Label>
+            <Select value={companyId} onValueChange={setCompanyId}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__global__">Global (todas)</SelectItem>
+                {companies.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
             <Label>Severidade mínima</Label>
             <Select value={minSeverity} onValueChange={(v) => setMinSeverity(v as Severity)}>
               <SelectTrigger>
@@ -291,6 +307,7 @@ export function SlackIntegrationsCard() {
               </SelectContent>
             </Select>
           </div>
+
           <div className="flex items-end">
             <Button
               onClick={() => createMutation.mutate()}
