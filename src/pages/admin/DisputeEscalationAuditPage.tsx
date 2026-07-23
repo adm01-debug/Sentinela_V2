@@ -53,6 +53,7 @@ import { toast } from 'sonner';
 import { useChartColors } from '@/hooks/useChartColors';
 import { exportEscalationAuditPdf } from '@/utils/escalationAuditPdf';
 import { SlackIntegrationsCard } from '@/components/admin/SlackIntegrationsCard';
+import { SlackDlqCard } from '@/components/admin/SlackDlqCard';
 
 
 type Severity = 'warning' | 'critical' | 'breached';
