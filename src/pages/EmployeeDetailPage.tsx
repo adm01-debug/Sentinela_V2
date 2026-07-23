@@ -118,7 +118,15 @@ export default function EmployeeDetailPage() {
               </div>
             </div>
           )}
-          <DailyJourneyTimeline date={journeyDate} events={journeyEvents} />
+          <DailyJourneyTimeline
+            date={journeyDate}
+            events={journeyEvents}
+            onScreenshotClick={(id) => setScreenshotId(id)}
+          />
+          <ScreenshotViewerDialog
+            screenshotId={screenshotId}
+            onOpenChange={(open) => !open && setScreenshotId(null)}
+          />
           {journeySummary && journeySummary.topApps.length > 0 && (
             <div className="rounded-lg border bg-card p-4">
               <div className="mb-2 text-sm font-semibold">Top aplicações do dia</div>
