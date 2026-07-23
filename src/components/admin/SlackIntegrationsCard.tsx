@@ -38,6 +38,9 @@ interface SlackIntegration {
   last_error: string | null;
   last_error_at: string | null;
   failure_count: number;
+  auto_pause_threshold: number;
+  auto_paused_at: string | null;
+  auto_pause_reason: string | null;
   created_at: string;
 }
 
