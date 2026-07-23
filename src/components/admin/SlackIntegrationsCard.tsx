@@ -136,6 +136,39 @@ export function SlackIntegrationsCard() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const thresholdMutation = useMutation({
+    mutationFn: async ({ id, auto_pause_threshold }: { id: string; auto_pause_threshold: number }) => {
+      const { error } = await supabase
+        .from('slack_integrations')
+        .update({ auto_pause_threshold })
+        .eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['slack-integrations'] }),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const reactivateMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('slack_integrations')
+        .update({
+          is_active: true,
+          auto_paused_at: null,
+          auto_pause_reason: null,
+          failure_count: 0,
+          last_error: null,
+        })
+        .eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success('Integração reativada. Contador de falhas zerado.');
+      qc.invalidateQueries({ queryKey: ['slack-integrations'] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   async function sendTest(integration: SlackIntegration) {
     setTestingId(integration.id);
     try {
