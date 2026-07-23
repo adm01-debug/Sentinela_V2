@@ -76,13 +76,13 @@ Deno.serve(async (req) => {
   const since = new Date(now - DEDUP_HOURS * 3_600_000).toISOString();
   const { data: recent } = await supabase
     .from('edge_function_logs')
-    .select('metadata')
+    .select('payload_summary')
     .eq('function_name', 'escalate-dispute-sla')
     .gte('created_at', since);
 
   const alreadySent = new Set<string>();
   for (const r of (recent as any[]) ?? []) {
-    const key = r?.metadata?.dedup_key;
+    const key = r?.payload_summary?.dedup_key;
     if (typeof key === 'string') alreadySent.add(key);
   }
 
