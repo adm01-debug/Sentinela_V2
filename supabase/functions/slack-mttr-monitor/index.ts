@@ -91,11 +91,13 @@ Deno.serve(async (req) => {
 
     await supabase.from('edge_function_logs').insert({
       function_name: 'slack-mttr-monitor',
-      status: severity,
+      method: 'CRON',
+      status: notifyRes.status,
       duration_ms: 0,
-      metadata: {
+      payload_summary: {
         integration_id: row.integration_id,
         integration_name: row.integration_name,
+        severity,
         p95_seconds: p95,
         notify_status: notifyRes.status,
       },
