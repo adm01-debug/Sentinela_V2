@@ -142,10 +142,10 @@ export default function DisputeMetricsPage() {
               <CardContent className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data.backlogAgeBuckets}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} />
-                    <XAxis dataKey="label" stroke={colors.axis} />
-                    <YAxis stroke={colors.axis} />
-                    <Tooltip contentStyle={{ background: colors.tooltipBg, border: `1px solid ${colors.grid}` }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                    <XAxis dataKey="label" stroke={colors.muted} />
+                    <YAxis stroke={colors.muted} />
+                    <Tooltip contentStyle={{ background: colors.card, border: `1px solid ${colors.border}` }} />
                     <Bar dataKey="count" fill={colors.warning} radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -159,10 +159,10 @@ export default function DisputeMetricsPage() {
               <CardContent className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={statusData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} />
-                    <XAxis dataKey="name" stroke={colors.axis} />
-                    <YAxis stroke={colors.axis} />
-                    <Tooltip contentStyle={{ background: colors.tooltipBg, border: `1px solid ${colors.grid}` }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                    <XAxis dataKey="name" stroke={colors.muted} />
+                    <YAxis stroke={colors.muted} />
+                    <Tooltip contentStyle={{ background: colors.card, border: `1px solid ${colors.border}` }} />
                     <Bar dataKey="value" fill={colors.primary} radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -176,11 +176,11 @@ export default function DisputeMetricsPage() {
               <CardContent className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={categoryData} layout="vertical">
-                    <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} />
-                    <XAxis type="number" stroke={colors.axis} />
-                    <YAxis type="category" dataKey="name" width={140} stroke={colors.axis} />
-                    <Tooltip contentStyle={{ background: colors.tooltipBg, border: `1px solid ${colors.grid}` }} />
-                    <Bar dataKey="value" fill={colors.secondary} radius={[0, 4, 4, 0]} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                    <XAxis type="number" stroke={colors.muted} />
+                    <YAxis type="category" dataKey="name" width={140} stroke={colors.muted} />
+                    <Tooltip contentStyle={{ background: colors.card, border: `1px solid ${colors.border}` }} />
+                    <Bar dataKey="value" fill={colors.accent} radius={[0, 4, 4, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -196,10 +196,10 @@ export default function DisputeMetricsPage() {
               <CardContent className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={data.timeline}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} />
-                    <XAxis dataKey="date" stroke={colors.axis} />
-                    <YAxis stroke={colors.axis} />
-                    <Tooltip contentStyle={{ background: colors.tooltipBg, border: `1px solid ${colors.grid}` }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={colors.border} />
+                    <XAxis dataKey="date" stroke={colors.muted} />
+                    <YAxis stroke={colors.muted} />
+                    <Tooltip contentStyle={{ background: colors.card, border: `1px solid ${colors.border}` }} />
                     <Legend />
                     <Line type="monotone" dataKey="created" name="Abertas" stroke={colors.primary} strokeWidth={2} />
                     <Line type="monotone" dataKey="resolved" name="Julgadas" stroke={colors.success} strokeWidth={2} />
