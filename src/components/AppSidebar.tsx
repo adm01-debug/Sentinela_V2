@@ -106,6 +106,7 @@ const navSections: NavSection[] = [
       { icon: ClipboardCheck, labelKey: 'Relatório de Ciência LGPD', path: '/admin/acknowledgment-report' },
       { icon: Gavel, labelKey: 'Métricas de Contestação', path: '/admin/dispute-metrics' },
       { icon: Activity, labelKey: 'Auditoria de Escalações', path: '/admin/dispute-escalation-audit' },
+      { icon: Activity, labelKey: 'Saúde de Integrações', path: '/admin/integrations-health' },
       { icon: Video, labelKey: 'Relatório Live View', path: '/admin/live-view-report' },
       { icon: Download, labelKey: 'nav.exportData', path: '/export' },
     ],

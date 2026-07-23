@@ -89,6 +89,7 @@ const LiveViewReportPage = lazy(() => import('@/pages/admin/LiveViewReportPage')
 const AcknowledgmentReportPage = lazy(() => import('@/pages/admin/AcknowledgmentReportPage'));
 const DisputeMetricsPage = lazy(() => import('@/pages/admin/DisputeMetricsPage'));
 const DisputeEscalationAuditPage = lazy(() => import('@/pages/admin/DisputeEscalationAuditPage'));
+const IntegrationsHealthPage = lazy(() => import('@/pages/admin/IntegrationsHealthPage'));
 
 
 // ============================================================
@@ -203,6 +204,7 @@ export const AppRoutes = () => (
         <Route path="/admin/acknowledgment-report" element={<AdminGuard><AcknowledgmentReportPage /></AdminGuard>} />
         <Route path="/admin/dispute-metrics" element={<AdminGuard><DisputeMetricsPage /></AdminGuard>} />
         <Route path="/admin/dispute-escalation-audit" element={<AdminGuard><DisputeEscalationAuditPage /></AdminGuard>} />
+        <Route path="/admin/integrations-health" element={<AdminGuard><IntegrationsHealthPage /></AdminGuard>} />
 
       </Route>
 
