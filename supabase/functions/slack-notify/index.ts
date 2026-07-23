@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
     return json({ error: 'invalid_json' }, 400);
   }
 
-  const { event_type, severity, title, message, fields, url } = payload ?? {};
+  const { event_type, severity, title, message, fields, url, company_id } = payload ?? {};
   if (!event_type || !severity || !title || !message) {
     return json({ error: 'missing_fields', required: ['event_type', 'severity', 'title', 'message'] }, 400);
   }
@@ -54,11 +54,22 @@ Deno.serve(async (req) => {
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
   );
 
-  const { data: integrations, error } = await supabase
+  // Multi-tenant: quando company_id é enviado, seleciona integrações da empresa
+  // + integrações globais (company_id IS NULL). Sem company_id, roteia apenas
+  // integrações globais para preservar compatibilidade com chamadas legadas.
+  let query = supabase
     .from('slack_integrations')
-    .select('id, name, webhook_url, event_types, min_severity, failure_count, auto_pause_threshold')
+    .select('id, name, webhook_url, event_types, min_severity, failure_count, auto_pause_threshold, company_id')
     .eq('is_active', true)
     .is('auto_paused_at', null);
+
+  if (company_id) {
+    query = query.or(`company_id.eq.${company_id},company_id.is.null`);
+  } else {
+    query = query.is('company_id', null);
+  }
+
+  const { data: integrations, error } = await query;
 
   if (error) return json({ error: error.message }, 500);
 
