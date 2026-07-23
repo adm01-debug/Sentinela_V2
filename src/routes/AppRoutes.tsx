@@ -85,6 +85,8 @@ const VerifyReportPage = lazy(() => import('@/pages/VerifyReportPage'));
 const LiveViewPage = lazy(() => import('@/pages/LiveViewPage'));
 const LiveViewSimulatorPage = lazy(() => import('@/pages/dev/LiveViewSimulatorPage'));
 const IceDiagnosticsPage = lazy(() => import('@/pages/admin/IceDiagnosticsPage'));
+const LiveViewReportPage = lazy(() => import('@/pages/admin/LiveViewReportPage'));
+
 
 // ============================================================
 // ROUTE GUARDS
