@@ -56,8 +56,9 @@ Deno.serve(async (req) => {
 
   const { data: integrations, error } = await supabase
     .from('slack_integrations')
-    .select('id, webhook_url, event_types, min_severity, failure_count')
-    .eq('is_active', true);
+    .select('id, name, webhook_url, event_types, min_severity, failure_count, auto_pause_threshold')
+    .eq('is_active', true)
+    .is('auto_paused_at', null);
 
   if (error) return json({ error: error.message }, 500);
 
@@ -70,6 +71,9 @@ Deno.serve(async (req) => {
   if (targets.length === 0) {
     return json({ ok: true, delivered: 0, matched: 0 });
   }
+
+  // HTTP statuses que indicam webhook permanentemente inválido (auto-pausa imediata)
+  const PERMANENT_FAILURE_STATUSES = new Set([400, 403, 404, 410]);
 
   const emoji = SEVERITY_EMOJI[severity];
   const color = SEVERITY_COLOR[severity];
