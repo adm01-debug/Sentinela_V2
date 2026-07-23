@@ -337,6 +337,94 @@ export default function DisputeEscalationAuditPage() {
         </Card>
       </div>
 
+      <div className="grid gap-4 lg:grid-cols-3 mb-6">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <BarChart3 className="h-4 w-4 text-primary" />
+              Distribuição de Latência
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {durations.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-8 text-center">
+                Sem dados de duração ainda.
+              </p>
+            ) : (
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={histogram} margin={{ top: 8, right: 8, bottom: 8, left: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={chartColors.border} />
+                  <XAxis dataKey="label" tick={{ fill: chartColors.muted, fontSize: 11 }} />
+                  <YAxis allowDecimals={false} tick={{ fill: chartColors.muted, fontSize: 11 }} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartColors.card,
+                      border: `1px solid ${chartColors.border}`,
+                      borderRadius: 8,
+                      color: chartColors.foreground,
+                    }}
+                    formatter={(value: number) => [`${value} execuções`, 'Quantidade']}
+                  />
+                  <Bar dataKey="count" fill={chartColors.primary} radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+            <p className="text-xs text-muted-foreground mt-2">
+              Distribuição em {durations.length} execuções. p95: <strong>{p95}ms</strong>.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <XCircle
+                className={
+                  errorTrend === 'alert'
+                    ? 'h-4 w-4 text-destructive'
+                    : errorTrend === 'watch'
+                      ? 'h-4 w-4 text-warning'
+                      : 'h-4 w-4 text-success'
+                }
+              />
+              Taxa de Erro 24h
+            </CardTitle>
+            <Badge
+              variant={
+                errorTrend === 'alert' ? 'destructive' : errorTrend === 'watch' ? 'secondary' : 'default'
+              }
+            >
+              {errorRate24h}%
+            </Badge>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold tabular-nums">
+              {errors24h.length}
+              <span className="text-sm font-normal text-muted-foreground ml-2">
+                / {last24h.length} execuções
+              </span>
+            </div>
+            <div className="mt-3 space-y-1.5 max-h-32 overflow-auto">
+              {recentErrors.length === 0 ? (
+                <p className="text-xs text-muted-foreground">Nenhuma falha nas últimas 24h.</p>
+              ) : (
+                recentErrors.map((e) => (
+                  <div key={e.id} className="text-xs border-l-2 border-destructive/60 pl-2">
+                    <div className="text-muted-foreground">
+                      {format(new Date(e.created_at), 'dd/MM HH:mm', { locale: ptBR })} · HTTP {e.status ?? '?'}
+                    </div>
+                    <div className="truncate text-foreground">
+                      {e.error_message ?? e.payload_summary?.title ?? 'Falha desconhecida'}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+
       <Card>
         <CardHeader>
           <CardTitle>Últimas 200 escalações</CardTitle>
