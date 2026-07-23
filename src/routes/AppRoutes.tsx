@@ -202,6 +202,7 @@ export const AppRoutes = () => (
         <Route path="/admin/live-view-report" element={<AdminGuard><LiveViewReportPage /></AdminGuard>} />
         <Route path="/admin/acknowledgment-report" element={<AdminGuard><AcknowledgmentReportPage /></AdminGuard>} />
         <Route path="/admin/dispute-metrics" element={<AdminGuard><DisputeMetricsPage /></AdminGuard>} />
+        <Route path="/admin/dispute-escalation-audit" element={<AdminGuard><DisputeEscalationAuditPage /></AdminGuard>} />
 
       </Route>
 
