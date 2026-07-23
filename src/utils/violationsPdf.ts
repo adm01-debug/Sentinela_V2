@@ -38,7 +38,39 @@ const STATUS_LABEL: Record<string, string> = {
   resolved: 'Resolvida', dismissed: 'Descartada',
 };
 
-export const generateViolationsPdf = (payload: ViolationsPdfPayload): void => {
+/** Baixa uma imagem e converte em dataURL para embutir no PDF. Retorna null em falha. */
+const fetchImageAsDataUrl = async (
+  url: string,
+  timeoutMs = 4000,
+): Promise<{ data: string; format: 'JPEG' | 'PNG'; w: number; h: number } | null> => {
+  try {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), timeoutMs);
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(t);
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    if (blob.size > 3 * 1024 * 1024) return null; // skip >3MB
+    const dataUrl: string = await new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(String(fr.result));
+      fr.onerror = () => reject(fr.error);
+      fr.readAsDataURL(blob);
+    });
+    const format: 'JPEG' | 'PNG' = blob.type.includes('png') ? 'PNG' : 'JPEG';
+    const dims = await new Promise<{ w: number; h: number }>((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+      img.onerror = () => resolve({ w: 400, h: 300 });
+      img.src = dataUrl;
+    });
+    return { data: dataUrl, format, w: dims.w, h: dims.h };
+  } catch {
+    return null;
+  }
+};
+
+export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Promise<void> => {
   const { violations, periodLabel, filters, typeLabels, groupByEmployee } = payload;
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -242,6 +274,79 @@ export const generateViolationsPdf = (payload: ViolationsPdfPayload): void => {
       margin: { left: margin, right: margin },
     });
   }
+
+  // Evidências visuais — top violações críticas/altas com screenshot associado
+  const severityRank: Record<string, number> = { critical: 4, high: 3, medium: 2, low: 1 };
+  const withShots = violations
+    .filter(v => !!v.screenshot_url)
+    .sort((a, b) => (severityRank[b.severity] || 0) - (severityRank[a.severity] || 0)
+      || new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 6);
+
+  if (withShots.length > 0) {
+    doc.addPage();
+    let ey = 20;
+    doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+    doc.text('Evidências visuais (top críticas)', margin, ey);
+    ey += 4;
+    doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+    doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+    doc.text(`Até ${withShots.length} screenshots das violações mais severas do período`, margin, ey + 3);
+    ey += 10;
+
+    const cellW = (pageWidth - margin * 2 - 8) / 2;
+    const cellH = 70;
+    const images = await Promise.all(withShots.map(v => fetchImageAsDataUrl(v.screenshot_url as string)));
+
+    for (let i = 0; i < withShots.length; i++) {
+      const col = i % 2;
+      const row = Math.floor(i / 2);
+      if (row > 0 && col === 0 && ey + cellH > 270) {
+        doc.addPage(); ey = 20;
+      }
+      const x = margin + col * (cellW + 8);
+      const y2 = ey + row * (cellH + 6);
+
+      // moldura
+      doc.setDrawColor(220, 220, 220); doc.setLineWidth(0.3);
+      doc.rect(x, y2, cellW, cellH);
+
+      const v = withShots[i];
+      const img = images[i];
+      const imgAreaH = cellH - 16;
+      if (img) {
+        const aspect = img.w / img.h;
+        let dw = cellW - 4; let dh = dw / aspect;
+        if (dh > imgAreaH - 2) { dh = imgAreaH - 2; dw = dh * aspect; }
+        const ix = x + (cellW - dw) / 2;
+        const iy = y2 + 2 + (imgAreaH - dh) / 2;
+        try {
+          doc.addImage(img.data, img.format, ix, iy, dw, dh, undefined, 'FAST');
+        } catch {
+          doc.setFontSize(8); doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+          doc.text('Falha ao renderizar imagem', x + cellW / 2, y2 + imgAreaH / 2, { align: 'center' });
+        }
+      } else {
+        doc.setFontSize(8); doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+        doc.text('Screenshot indisponível', x + cellW / 2, y2 + imgAreaH / 2, { align: 'center' });
+      }
+
+      // caption
+      const capY = y2 + cellH - 12;
+      doc.setDrawColor(235, 235, 235);
+      doc.line(x + 2, capY, x + cellW - 2, capY);
+      doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+      doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+      const title = `${v.employee_name} • ${SEVERITY_LABEL[v.severity] || v.severity}`;
+      doc.text(doc.splitTextToSize(title, cellW - 4)[0], x + 3, capY + 4);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7);
+      doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+      const sub = `${format(new Date(v.created_at), 'dd/MM/yyyy HH:mm', { locale: ptBR })} • ${typeLabels[v.violation_type] || v.violation_type}`;
+      doc.text(doc.splitTextToSize(sub, cellW - 4)[0], x + 3, capY + 8);
+    }
+  }
+
 
   // Footer com paginação
   const pageCount = doc.getNumberOfPages();

@@ -19,6 +19,7 @@ export interface Violation {
   resolved_at?: string;
   resolved_by?: string;
   resolution_notes?: string;
+  screenshot_url?: string | null;
 }
 
 export const VIOLATION_TYPES = [
@@ -51,7 +52,7 @@ export function useViolationsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('security_violations')
-        .select('id, employee_name, violation_type, severity, description, status, resolution_notes, resolved_at, resolved_by, created_at, read')
+        .select('id, employee_name, violation_type, severity, description, status, resolution_notes, resolved_at, resolved_by, created_at, read, screenshot_url')
         .order('created_at', { ascending: false })
         .limit(200);
       if (error) throw error;
@@ -73,6 +74,7 @@ export function useViolationsPage() {
           resolved_at: (v as { resolved_at?: string }).resolved_at || undefined,
           resolved_by: (v as { resolved_by?: string }).resolved_by || undefined,
           created_at: v.created_at as string,
+          screenshot_url: (v as { screenshot_url?: string | null }).screenshot_url ?? null,
         } satisfies Violation;
       });
     },
