@@ -270,6 +270,7 @@ function stopServices(): void {
   idleDetector?.stop();
   clipboardDLP?.stop();
   policySync?.stop();
+  violationNotifier?.stop();
   
   if (isAuthenticated) {
     dataSender?.send('logout', { timestamp: new Date().toISOString() });
