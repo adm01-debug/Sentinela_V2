@@ -7,7 +7,8 @@ import autoTable from 'jspdf-autotable';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { colors } from './pdf/pdfHelpers';
-import type { JourneyEvent, JourneySummary } from '@/hooks/useDailyJourney';
+import type { DailyJourneySummary } from '@/hooks/useDailyJourney';
+import type { JourneyEvent } from '@/components/timeline/DailyJourneyTimeline';
 
 interface JourneyPdfPayload {
   employeeName: string;
