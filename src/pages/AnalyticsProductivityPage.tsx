@@ -99,6 +99,48 @@ export default function AnalyticsProductivityPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
+          <div className="flex flex-wrap items-end gap-3 rounded-lg border bg-card p-4">
+            <div className="grid gap-1">
+              <Label htmlFor="prod-range" className="text-xs text-muted-foreground">Período</Label>
+              <Select value={days} onValueChange={setDays}>
+                <SelectTrigger id="prod-range" className="w-44"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {RANGE_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="prod-employee" className="text-xs text-muted-foreground">Colaborador</Label>
+              <Select value={employeeName} onValueChange={setEmployeeName}>
+                <SelectTrigger id="prod-employee" className="w-56"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos</SelectItem>
+                  {employeeOptions.map((n) => (
+                    <SelectItem key={n} value={n}>{n}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="prod-device" className="text-xs text-muted-foreground">Dispositivo</Label>
+              <Input
+                id="prod-device"
+                placeholder="Ex.: NOTE-042"
+                value={device}
+                onChange={(e) => setDevice(e.target.value)}
+                className="w-44"
+              />
+            </div>
+            {hasFilters && (
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="ml-auto">
+                <X className="mr-1 h-3.5 w-3.5" /> Limpar
+              </Button>
+            )}
+          </div>
+
+
           {isLoadingUsage ? (
             <div className="flex justify-center py-8">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
