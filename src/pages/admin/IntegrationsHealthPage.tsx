@@ -285,7 +285,6 @@ export default function IntegrationsHealthPage() {
       <PageHeader
         title="Saúde de Integrações"
         description="Status em tempo real dos canais de notificação: Slack, WhatsApp e FCM/Push Mobile."
-        icon={HeartPulse}
       />
 
       {query.isLoading ? (
