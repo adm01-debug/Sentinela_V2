@@ -8,6 +8,19 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
   try {
+    // Parse mode do body (chaos engineering) — default 'real'
+    type ChaosMode = 'real' | 'timeout' | 'error_429' | 'error_500' | 'partial_failure';
+    let mode: ChaosMode = 'real';
+    if (req.method !== 'GET') {
+      try {
+        const bodyJson = await req.json().catch(() => ({}));
+        const requested = (bodyJson?.mode ?? 'real') as string;
+        if (['real', 'timeout', 'error_429', 'error_500', 'partial_failure'].includes(requested)) {
+          mode = requested as ChaosMode;
+        }
+      } catch { /* noop */ }
+    }
+
     const authHeader = req.headers.get('Authorization') ?? '';
     const jwt = authHeader.replace('Bearer ', '');
     if (!jwt) {
