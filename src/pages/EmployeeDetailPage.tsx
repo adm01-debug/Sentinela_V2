@@ -4,6 +4,7 @@ import { useEmployee, useEmployeeStats, type EmployeeWithDetails } from '@/hooks
 import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { DailyJourneyTimeline } from '@/components/timeline/DailyJourneyTimeline';
+import { ScreenshotViewerDialog } from '@/components/timeline/ScreenshotViewerDialog';
 import { useDailyJourney } from '@/hooks/useDailyJourney';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
