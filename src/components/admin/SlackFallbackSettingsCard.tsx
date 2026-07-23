@@ -244,6 +244,7 @@ export function SlackFallbackSettingsCard() {
               toast.dismiss(t);
               if (error) toast.error(`Falha: ${error.message}`);
               else toast.success(data?.message ?? 'Teste enviado');
+              qc.invalidateQueries({ queryKey: ['slack-fallback-last-test'] });
             }}
             disabled={!local.enabled || (local.recipient_emails ?? []).length === 0}
           >
