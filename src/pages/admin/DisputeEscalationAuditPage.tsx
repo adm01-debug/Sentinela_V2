@@ -78,6 +78,7 @@ function percentile(values: number[], p: number): number {
 
 export default function DisputeEscalationAuditPage() {
   const queryClient = useQueryClient();
+  const chartColors = useChartColors();
   const [invoking, setInvoking] = useState(false);
 
   const { data, isLoading } = useQuery({
