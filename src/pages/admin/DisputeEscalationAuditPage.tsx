@@ -54,6 +54,7 @@ import { useChartColors } from '@/hooks/useChartColors';
 import { exportEscalationAuditPdf } from '@/utils/escalationAuditPdf';
 import { SlackIntegrationsCard } from '@/components/admin/SlackIntegrationsCard';
 import { SlackDlqCard } from '@/components/admin/SlackDlqCard';
+import { SlackWebhookMttrCard } from '@/components/admin/SlackWebhookMttrCard';
 
 
 type Severity = 'warning' | 'critical' | 'breached';
@@ -561,6 +562,7 @@ export default function DisputeEscalationAuditPage() {
       <div className="mb-6 grid gap-6 lg:grid-cols-2">
         <SlackIntegrationsCard />
         <SlackDlqCard />
+        <SlackWebhookMttrCard />
       </div>
 
       <Card>

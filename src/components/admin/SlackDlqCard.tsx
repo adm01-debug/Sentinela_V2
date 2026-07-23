@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Zap } from 'lucide-react';
 import { AlertOctagon, Inbox, Loader2, RotateCw, Trash2, CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -39,6 +40,8 @@ const SEVERITY_VARIANT: Record<DlqItem['severity'], 'default' | 'destructive' | 
 
 export function SlackDlqCard() {
   const qc = useQueryClient();
+  const [bulkTarget, setBulkTarget] = useState<string | null>(null);
+
 
   const { data: items = [], isLoading } = useQuery({
     queryKey: ['slack-dlq'],
@@ -56,6 +59,15 @@ export function SlackDlqCard() {
     },
   });
 
+  const byIntegration = useMemo(() => {
+    const map = new Map<string | null, number>();
+    for (const it of items) {
+      map.set(it.integration_id, (map.get(it.integration_id) ?? 0) + 1);
+    }
+    return Array.from(map.entries()).filter(([, c]) => c > 0);
+  }, [items]);
+
+
   const replayMutation = useMutation({
     mutationFn: async (id: string) => {
       const { data, error } = await supabase.functions.invoke('slack-dlq-replay', {
@@ -70,6 +82,26 @@ export function SlackDlqCard() {
       qc.invalidateQueries({ queryKey: ['slack-integrations'] });
     },
     onError: (e: Error) => toast.error(`Falha no reenvio: ${e.message}`),
+  });
+
+  const bulkReplayMutation = useMutation({
+    mutationFn: async (integrationId: string) => {
+      const { data, error } = await supabase.functions.invoke('slack-dlq-bulk-replay', {
+        body: { integration_id: integrationId },
+      });
+      if (error) throw error;
+      return data as { processed: number; succeeded: number; failed: number };
+    },
+    onSuccess: (data) => {
+      toast.success(
+        `Replay em lote concluído: ${data.succeeded}/${data.processed} entregues${
+          data.failed > 0 ? ` • ${data.failed} falharam` : ''
+        }.`,
+      );
+      qc.invalidateQueries({ queryKey: ['slack-dlq'] });
+      qc.invalidateQueries({ queryKey: ['slack-integrations'] });
+    },
+    onError: (e: Error) => toast.error(`Falha no lote: ${e.message}`),
   });
 
   const deleteMutation = useMutation({
@@ -115,7 +147,39 @@ export function SlackDlqCard() {
           serem reenviadas manualmente. Reative a integração antes de reenviar.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
+        {/* Ações em lote por integração */}
+        {byIntegration.length > 0 && (
+          <div className="flex flex-wrap gap-2 rounded-md border border-border bg-muted/30 p-3">
+            <span className="text-xs font-medium text-muted-foreground self-center mr-1">
+              Reenvio em lote:
+            </span>
+            {byIntegration.map(([intId, count]) => (
+              <Button
+                key={intId ?? 'null'}
+                variant="secondary"
+                size="sm"
+                disabled={!intId || bulkReplayMutation.isPending}
+                onClick={() => {
+                  if (!intId) return;
+                  setBulkTarget(intId);
+                  bulkReplayMutation.mutate(intId, {
+                    onSettled: () => setBulkTarget(null),
+                  });
+                }}
+                className="gap-1.5"
+              >
+                {bulkReplayMutation.isPending && bulkTarget === intId ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Zap className="h-3.5 w-3.5" />
+                )}
+                {intId ? `Integração • ${count}` : `Sem integração • ${count}`}
+              </Button>
+            ))}
+          </div>
+        )}
+
         {isLoading ? (
           <div className="flex items-center justify-center py-6 text-muted-foreground">
             <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Carregando fila…
