@@ -31,6 +31,8 @@ export function SlackFallbackSettingsCard() {
   const qc = useQueryClient();
   const [emailInput, setEmailInput] = useState('');
   const [local, setLocal] = useState<Partial<FallbackSetting>>({});
+  const [chaosMode, setChaosMode] = useState<ChaosMode>('real');
+  const [testing, setTesting] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['slack-fallback-settings'],
