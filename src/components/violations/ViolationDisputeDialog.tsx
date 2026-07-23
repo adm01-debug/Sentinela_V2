@@ -39,7 +39,7 @@ import {
   type DisputeCategory,
   type DisputeStatus,
 } from '@/hooks/useViolationDisputes';
-import { useIsAdmin } from '@/hooks/useIsAdmin';
+import { useAuth } from '@/hooks/useAuth';
 
 interface Props {
   open: boolean;
@@ -73,7 +73,8 @@ export function ViolationDisputeDialog({
   employeeName,
 }: Props) {
   const { data: disputes = [], isLoading } = useViolationDisputes(open ? violationId : null);
-  const { data: isAdmin } = useIsAdmin();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin' || user?.isAdmin === true;
   const create = useCreateDispute();
   const resolve = useResolveDispute();
 
