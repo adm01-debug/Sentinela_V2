@@ -157,3 +157,23 @@ export default function EmployeeDetailPage() {
     </div>
   );
 }
+
+function TeamComparisonInline({
+  employeeName,
+  date,
+  employeeScore,
+}: {
+  employeeName: string;
+  date: string;
+  employeeScore: number;
+}) {
+  const { data, isLoading } = useTeamProductivityAverage(date, employeeName);
+  return (
+    <TeamComparisonCard
+      employeeScore={employeeScore}
+      teamAverageScore={data?.avgProductivityScore ?? 0}
+      sampleSize={data?.sampleSize ?? 0}
+      isLoading={isLoading}
+    />
+  );
+}
