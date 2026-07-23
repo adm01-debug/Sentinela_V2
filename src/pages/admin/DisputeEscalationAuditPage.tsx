@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { format, differenceInMinutes, subHours } from 'date-fns';
+import { format, differenceInMinutes, subHours, startOfHour } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
   AlertTriangle,
@@ -13,6 +13,8 @@ import {
   Loader2,
   BarChart3,
   XCircle,
+  FileText,
+  LineChart as LineChartIcon,
 } from 'lucide-react';
 import {
   BarChart,
@@ -22,6 +24,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  LineChart,
+  Line,
 } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -30,6 +34,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -40,6 +51,8 @@ import {
 } from '@/components/ui/table';
 import { toast } from 'sonner';
 import { useChartColors } from '@/hooks/useChartColors';
+import { exportEscalationAuditPdf } from '@/utils/escalationAuditPdf';
+
 
 type Severity = 'warning' | 'critical' | 'breached';
 
