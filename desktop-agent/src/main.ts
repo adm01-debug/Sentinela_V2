@@ -247,6 +247,10 @@ async function initializeServices(): Promise<void> {
   clipboardDLP = new ClipboardDLP(agentKey);
   clipboardDLP.start();
 
+  // Violation notifier — LGPD real-time awareness overlay
+  violationNotifier = new ViolationNotifier(agentKey, require('os').hostname());
+  violationNotifier.start();
+
   // Auto-updater
   autoUpdaterService = new AutoUpdaterService();
   autoUpdaterService.start();
