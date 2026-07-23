@@ -1,17 +1,18 @@
 import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Camera, Power, Radio, Wifi, Play } from 'lucide-react';
+import { ArrowLeft, Camera, Power, Radio, Wifi, Play, ShieldCheck, ShieldX, ShieldAlert, Clock } from 'lucide-react';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useLiveViewSession } from '@/hooks/useLiveViewSession';
+import { useLiveViewSession, type ConsentState } from '@/hooks/useLiveViewSession';
 import { toast } from 'sonner';
 
 const STATUS_LABEL: Record<string, string> = {
   idle: 'Aguardando início',
   authorizing: 'Autorizando…',
+  waiting_consent: 'Aguardando consentimento do colaborador',
   waiting_agent: 'Aguardando agente',
   connecting: 'Negociando conexão',
   live: 'AO VIVO',
@@ -19,9 +20,26 @@ const STATUS_LABEL: Record<string, string> = {
   error: 'Erro',
 };
 
+const CONSENT_META: Record<ConsentState, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline'; Icon: typeof ShieldCheck }> = {
+  pending: { label: 'Pendente', variant: 'secondary', Icon: Clock },
+  granted: { label: 'Consentido', variant: 'default', Icon: ShieldCheck },
+  denied: { label: 'Recusado', variant: 'destructive', Icon: ShieldX },
+  timeout: { label: 'Tempo esgotado', variant: 'outline', Icon: ShieldAlert },
+  not_required: { label: 'Não requerido', variant: 'outline', Icon: ShieldCheck },
+};
+
+function formatDecidedAt(iso: string | null): string {
+  if (!iso) return '—';
+  try {
+    return new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'medium' });
+  } catch {
+    return iso;
+  }
+}
+
 export default function LiveViewPage() {
   const { agentId } = useParams<{ agentId: string }>();
-  const { status, error, metrics, videoRef, start, stop, snapshot } = useLiveViewSession(agentId);
+  const { status, error, metrics, consent, videoRef, start, stop, snapshot } = useLiveViewSession(agentId);
 
   useEffect(() => {
     if (error) toast.error(error);
@@ -41,6 +59,8 @@ export default function LiveViewPage() {
   };
 
   const isLive = status === 'live';
+  const consentMeta = CONSENT_META[consent.state];
+  const ConsentIcon = consentMeta.Icon;
 
   return (
     <PageLayout>
@@ -75,6 +95,10 @@ export default function LiveViewPage() {
                 <Radio className="mr-1 size-3 animate-pulse" />
                 {STATUS_LABEL[status] ?? status}
               </Badge>
+              <Badge variant={consentMeta.variant} className="pointer-events-auto uppercase tracking-wide">
+                <ConsentIcon className="mr-1 size-3" />
+                LGPD · {consentMeta.label}
+              </Badge>
               {isLive && (
                 <span className="rounded bg-black/40 px-2 py-1 backdrop-blur">
                   <Wifi className="mr-1 inline size-3" />
@@ -91,7 +115,7 @@ export default function LiveViewPage() {
             Uso restrito a administradores. Toda sessão é registrada em auditoria (LGPD).
           </div>
           <div className="flex flex-wrap gap-2">
-            {!isLive && status !== 'authorizing' && status !== 'connecting' && (
+            {!isLive && status !== 'authorizing' && status !== 'connecting' && status !== 'waiting_consent' && (
               <Button onClick={() => void start()} disabled={!agentId}>
                 <Play className="mr-2 size-4" /> Iniciar sessão
               </Button>
@@ -109,6 +133,34 @@ export default function LiveViewPage() {
           </div>
         </CardContent>
       </Card>
+
+      <Card className="border-border/60">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <ShieldCheck className="size-4 text-primary" /> Trilha de consentimento LGPD
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-3 text-sm sm:grid-cols-3">
+          <div>
+            <div className="text-xs uppercase text-muted-foreground">Estado</div>
+            <div className="mt-1 flex items-center gap-2 font-medium">
+              <ConsentIcon className="size-4" />
+              {consentMeta.label}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs uppercase text-muted-foreground">Motivo informado</div>
+            <div className="mt-1 font-medium">
+              {consent.reason ?? (consent.state === 'pending' ? 'Aguardando decisão do colaborador…' : '—')}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs uppercase text-muted-foreground">Decidido em</div>
+            <div className="mt-1 font-medium tabular-nums">{formatDecidedAt(consent.decidedAt)}</div>
+          </div>
+        </CardContent>
+      </Card>
     </PageLayout>
   );
 }
+
