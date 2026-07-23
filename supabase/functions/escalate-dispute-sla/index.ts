@@ -42,6 +42,7 @@ function severityOf(hoursUntilBreach: number): Severity | null {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  const startedAt = Date.now();
 
   const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
   const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -75,13 +76,13 @@ Deno.serve(async (req) => {
   const since = new Date(now - DEDUP_HOURS * 3_600_000).toISOString();
   const { data: recent } = await supabase
     .from('edge_function_logs')
-    .select('metadata')
+    .select('payload_summary')
     .eq('function_name', 'escalate-dispute-sla')
     .gte('created_at', since);
 
   const alreadySent = new Set<string>();
   for (const r of (recent as any[]) ?? []) {
-    const key = r?.metadata?.dedup_key;
+    const key = r?.payload_summary?.dedup_key;
     if (typeof key === 'string') alreadySent.add(key);
   }
 
@@ -152,12 +153,14 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Log persistente para auditoria e dedup.
+    // Log persistente para auditoria e dedup (schema real da tabela).
     await supabase.from('edge_function_logs').insert({
       function_name: 'escalate-dispute-sla',
-      status: d.severity === 'breached' ? 'error' : 'warning',
-      message: title,
-      metadata: {
+      status: d.severity === 'breached' ? 500 : 200,
+      duration_ms: Date.now() - startedAt,
+      error_message: d.severity === 'breached' ? title : null,
+      payload_summary: {
+        title,
         dedup_key: dedupKey,
         dispute_id: d.id,
         violation_id: d.violation_id,
