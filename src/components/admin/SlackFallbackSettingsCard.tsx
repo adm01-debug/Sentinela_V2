@@ -43,6 +43,26 @@ export function SlackFallbackSettingsCard() {
     },
   });
 
+  const { data: lastTest } = useQuery({
+    queryKey: ['slack-fallback-last-test'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('edge_function_logs')
+        .select('status, created_at, metadata')
+        .eq('function_name', 'slack-fallback-test')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      return data as {
+        status: string;
+        created_at: string;
+        metadata: { triggered_by?: string; recipients_count?: number; resend_id?: string | null; error?: string | null };
+      } | null;
+    },
+    refetchInterval: 30_000,
+  });
+
   useEffect(() => {
     if (data) setLocal(data);
     else setLocal({
