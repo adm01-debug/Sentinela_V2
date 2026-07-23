@@ -78,6 +78,7 @@ const EdgeFunctionDashboard = lazy(() => import('@/pages/admin/EdgeFunctionDashb
 const ChartSimulationPage = lazy(() => import('@/pages/dev/ChartSimulationPage'));
 const OrgChartPage = lazy(() => import('@/pages/OrgChartPage'));
 const ApiDocsPage = lazy(() => import('@/pages/ApiDocsPage'));
+const VerifyReportPage = lazy(() => import('@/pages/VerifyReportPage'));
 
 // ============================================================
 // ROUTE GUARDS
