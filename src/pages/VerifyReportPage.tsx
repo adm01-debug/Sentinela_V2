@@ -2,7 +2,8 @@
  * Portal público de verificação de integridade dos relatórios PDF.
  * O usuário informa o ID do relatório (SNL-...) e valida o SHA-256 registrado.
  */
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,13 +26,13 @@ interface SignatureRow {
 type Status = 'idle' | 'loading' | 'valid' | 'invalid' | 'not_found';
 
 export default function VerifyReportPage() {
+  const [searchParams] = useSearchParams();
   const [reportId, setReportId] = useState('');
   const [expected, setExpected] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [row, setRow] = useState<SignatureRow | null>(null);
 
-  const handleVerify = async () => {
-    const id = reportId.trim();
+  const runVerify = useCallback(async (id: string, sig: string) => {
     if (!id) return;
     setStatus('loading'); setRow(null);
     const { data, error } = await supabase
@@ -41,12 +42,26 @@ export default function VerifyReportPage() {
       .maybeSingle();
     if (error || !data) { setStatus('not_found'); return; }
     setRow(data);
-    if (expected.trim()) {
-      setStatus(data.signature.toLowerCase() === expected.trim().toLowerCase() ? 'valid' : 'invalid');
+    if (sig.trim()) {
+      setStatus(data.signature.toLowerCase() === sig.trim().toLowerCase() ? 'valid' : 'invalid');
     } else {
       setStatus('valid');
     }
-  };
+  }, []);
+
+  const handleVerify = () => runVerify(reportId.trim(), expected);
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    const sig = searchParams.get('sig');
+    if (id) {
+      setReportId(id);
+      if (sig) setExpected(sig);
+      void runVerify(id, sig ?? '');
+    }
+  }, [searchParams, runVerify]);
+
+
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
