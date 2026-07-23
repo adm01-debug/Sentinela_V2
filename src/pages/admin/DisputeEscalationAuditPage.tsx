@@ -163,6 +163,38 @@ export default function DisputeEscalationAuditPage() {
     errorRate24h >= 15 ? 'alert' : errorRate24h >= 5 ? 'watch' : 'ok';
   const recentErrors = errors24h.slice(0, 5);
 
+  // Timeline de execuções por hora (últimas 24h) — expõe gaps do cron.
+  const timeline = useMemo(() => {
+    const bucketMap = new Map<number, { ok: number; fail: number }>();
+    for (let i = 23; i >= 0; i -= 1) {
+      const ts = startOfHour(subHours(new Date(), i)).getTime();
+      bucketMap.set(ts, { ok: 0, fail: 0 });
+    }
+    for (const r of last24h) {
+      const key = startOfHour(new Date(r.created_at)).getTime();
+      const b = bucketMap.get(key);
+      if (!b) continue;
+      if ((r.status ?? 500) < 400) b.ok += 1;
+      else b.fail += 1;
+    }
+    return Array.from(bucketMap.entries()).map(([ts, v]) => ({
+      hour: format(new Date(ts), 'HH:mm'),
+      ok: v.ok,
+      fail: v.fail,
+      total: v.ok + v.fail,
+    }));
+  }, [last24h]);
+
+  // Filtro de severidade aplicado à tabela.
+  const filteredRows = useMemo(
+    () =>
+      severityFilter === 'all'
+        ? rows
+        : rows.filter((r) => r.payload_summary?.severity === severityFilter),
+    [rows, severityFilter],
+  );
+
+
   // Alerta realtime quando heartbeat degrada.
   useEffect(() => {
     if (heartbeatStatus === 'down') {
