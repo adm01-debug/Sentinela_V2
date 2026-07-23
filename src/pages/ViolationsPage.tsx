@@ -114,21 +114,59 @@ export default function ViolationsPage() {
           <h1 className="text-2xl font-bold">Violações de Segurança</h1>
           <p className="text-muted-foreground mt-1">Gerencie incidentes e violações de políticas</p>
         </div>
-        <XlsxExportButton
-          filename="violacoes"
-          sheets={[{
-            name: 'Violações',
-            rows: violations.map(v => ({
-              Funcionário: v.employee_name,
-              Tipo: VIOLATION_TYPES.find(t => t.value === v.violation_type)?.label || v.violation_type,
-              Severidade: v.severity,
-              Status: v.status,
-              Descrição: v.description || '',
-              Data: format(new Date(v.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR }),
-            })),
-          }]}
-          disabled={violations.length === 0}
-        />
+        <div className="flex gap-2">
+          <XlsxExportButton
+            filename="violacoes"
+            sheets={[{
+              name: 'Violações',
+              rows: violations.map(v => ({
+                Funcionário: v.employee_name,
+                Tipo: VIOLATION_TYPES.find(t => t.value === v.violation_type)?.label || v.violation_type,
+                Severidade: v.severity,
+                Status: v.status,
+                Descrição: v.description || '',
+                Data: format(new Date(v.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR }),
+              })),
+            }]}
+            disabled={violations.length === 0}
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" disabled={violations.length === 0}>
+                <FileDown className="h-4 w-4 mr-2" /> Exportar PDF
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => {
+                  const typeLabels = Object.fromEntries(VIOLATION_TYPES.map(t => [t.value, t.label]));
+                  generateViolationsPdf({
+                    violations,
+                    periodLabel: `${violations.length} violaç${violations.length === 1 ? 'ão' : 'ões'} • filtros ativos`,
+                    filters: { search: searchTerm, severity: severityFilter, status: statusFilter, type: typeFilter },
+                    typeLabels,
+                  });
+                }}
+              >
+                <FileDown className="h-4 w-4 mr-2" /> Lista completa
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  const typeLabels = Object.fromEntries(VIOLATION_TYPES.map(t => [t.value, t.label]));
+                  generateViolationsPdf({
+                    violations,
+                    periodLabel: `${violations.length} violaç${violations.length === 1 ? 'ão' : 'ões'} • agrupado por colaborador`,
+                    filters: { search: searchTerm, severity: severityFilter, status: statusFilter, type: typeFilter },
+                    typeLabels,
+                    groupByEmployee: true,
+                  });
+                }}
+              >
+                <Users className="h-4 w-4 mr-2" /> Agrupado por colaborador
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
 
