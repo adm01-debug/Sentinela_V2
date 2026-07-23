@@ -121,6 +121,24 @@ Deno.serve(async (req) => {
     });
 
     const body = await emailRes.text();
+    let resendId: string | null = null;
+    try { resendId = (JSON.parse(body) as { id?: string }).id ?? null; } catch { /* noop */ }
+
+    // Auditoria — persiste em edge_function_logs para o card de histórico
+    await supabase.from('edge_function_logs').insert({
+      function_name: 'slack-fallback-test',
+      status: emailRes.ok ? 'success' : 'error',
+      metadata: {
+        triggered_by: userData.user.email,
+        user_id: userData.user.id,
+        recipients_count: recipients.length,
+        recipients,
+        resend_status: emailRes.status,
+        resend_id: resendId,
+        error: emailRes.ok ? null : body.slice(0, 500),
+      },
+    });
+
     if (!emailRes.ok) {
       return new Response(
         JSON.stringify({ error: 'Falha no envio', status: emailRes.status, details: body }),
@@ -132,6 +150,7 @@ Deno.serve(async (req) => {
       JSON.stringify({
         success: true,
         recipients: recipients.length,
+        resend_id: resendId,
         message: `Teste enviado para ${recipients.length} destinatário(s)`,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
