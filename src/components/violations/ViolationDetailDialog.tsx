@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/Skeleton';
-import { AlertTriangle, Image as ImageIcon, MapPin, Monitor, Shield } from 'lucide-react';
+import { AlertTriangle, Image as ImageIcon, MapPin, Monitor, Shield, ShieldCheck, Clock, BellOff } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Props {
