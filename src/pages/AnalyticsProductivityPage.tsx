@@ -1,10 +1,16 @@
+import { useState, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TrendingUp, TrendingDown, Minus, Loader2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { TrendingUp, TrendingDown, Minus, Loader2, X } from 'lucide-react';
 import { useProductivityAnalytics } from '@/hooks/useAnalytics';
 import { useCompanyAppUsage } from '@/hooks/useCompanyAppUsage';
+import { useEmployees, type EmployeeWithDetails } from '@/hooks/useEmployees';
 import { AppCategoryManager } from '@/components/productivity/AppCategoryManager';
 import { ProductivityCategoryDonut } from '@/components/productivity/ProductivityCategoryDonut';
 import { ProductivityScoreCard } from '@/components/productivity/ProductivityScoreCard';
@@ -32,9 +38,34 @@ interface MetricItem {
   value: number | string;
 }
 
+const RANGE_OPTIONS: Array<{ value: string; label: string }> = [
+  { value: '1', label: 'Hoje' },
+  { value: '7', label: 'Últimos 7 dias' },
+  { value: '30', label: 'Últimos 30 dias' },
+  { value: '90', label: 'Últimos 90 dias' },
+];
+
 export default function AnalyticsProductivityPage() {
   const { data } = useProductivityAnalytics();
-  const { data: appUsage, isLoading: isLoadingUsage } = useCompanyAppUsage(7);
+  const [days, setDays] = useState<string>('7');
+  const [employeeName, setEmployeeName] = useState<string>('all');
+  const [device, setDevice] = useState<string>('');
+
+  const { data: employeesData } = useEmployees();
+  const employees = (employeesData ?? []) as EmployeeWithDetails[];
+  const employeeOptions = useMemo(
+    () =>
+      employees
+        .map((e) => e.full_name ?? e.name)
+        .filter((n): n is string => !!n)
+        .sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    [employees],
+  );
+
+  const { data: appUsage, isLoading: isLoadingUsage } = useCompanyAppUsage(Number(days), {
+    employeeName: employeeName === 'all' ? undefined : employeeName,
+    device: device.trim() || undefined,
+  });
 
   const getTrendIcon = (trend: number) => {
     if (trend > 0) return <TrendingUp className="h-4 w-4 text-success" />;
@@ -49,6 +80,14 @@ export default function AnalyticsProductivityPage() {
   const usage = appUsage?.usage ?? [];
   const idleSeconds = appUsage?.idleSeconds ?? 0;
 
+  const hasFilters = employeeName !== 'all' || device.trim() !== '' || days !== '7';
+  const clearFilters = () => {
+    setEmployeeName('all');
+    setDevice('');
+    setDays('7');
+  };
+
+
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Análise de Produtividade</h1>
@@ -60,6 +99,48 @@ export default function AnalyticsProductivityPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
+          <div className="flex flex-wrap items-end gap-3 rounded-lg border bg-card p-4">
+            <div className="grid gap-1">
+              <Label htmlFor="prod-range" className="text-xs text-muted-foreground">Período</Label>
+              <Select value={days} onValueChange={setDays}>
+                <SelectTrigger id="prod-range" className="w-44"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {RANGE_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="prod-employee" className="text-xs text-muted-foreground">Colaborador</Label>
+              <Select value={employeeName} onValueChange={setEmployeeName}>
+                <SelectTrigger id="prod-employee" className="w-56"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos</SelectItem>
+                  {employeeOptions.map((n) => (
+                    <SelectItem key={n} value={n}>{n}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="prod-device" className="text-xs text-muted-foreground">Dispositivo</Label>
+              <Input
+                id="prod-device"
+                placeholder="Ex.: NOTE-042"
+                value={device}
+                onChange={(e) => setDevice(e.target.value)}
+                className="w-44"
+              />
+            </div>
+            {hasFilters && (
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="ml-auto">
+                <X className="mr-1 h-3.5 w-3.5" /> Limpar
+              </Button>
+            )}
+          </div>
+
+
           {isLoadingUsage ? (
             <div className="flex justify-center py-8">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
