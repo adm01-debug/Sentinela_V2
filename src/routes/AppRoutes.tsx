@@ -84,6 +84,7 @@ const ApiDocsPage = lazy(() => import('@/pages/ApiDocsPage'));
 const VerifyReportPage = lazy(() => import('@/pages/VerifyReportPage'));
 const LiveViewPage = lazy(() => import('@/pages/LiveViewPage'));
 const LiveViewSimulatorPage = lazy(() => import('@/pages/dev/LiveViewSimulatorPage'));
+const IceDiagnosticsPage = lazy(() => import('@/pages/admin/IceDiagnosticsPage'));
 
 // ============================================================
 // ROUTE GUARDS
@@ -192,6 +193,7 @@ export const AppRoutes = () => (
         <Route path="/verify-report" element={<VerifyReportPage />} />
         <Route path="/agents/onboarding" element={<AdminGuard><AgentOnboardingPage /></AdminGuard>} />
         <Route path="/agents/:agentId/live" element={<AdminGuard><LiveViewPage /></AdminGuard>} />
+        <Route path="/admin/ice-diagnostics" element={<AdminGuard><IceDiagnosticsPage /></AdminGuard>} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
