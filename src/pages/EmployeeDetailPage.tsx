@@ -25,6 +25,7 @@ export default function EmployeeDetailPage() {
   const { data: stats } = useEmployeeStats(id!, startDate, endDate);
 
   const [journeyDate, setJourneyDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
+  const [screenshotId, setScreenshotId] = useState<string | null>(null);
   const shiftDay = (delta: number) =>
     setJourneyDate((d) => format(addDays(parseISO(d), delta), 'yyyy-MM-dd'));
 
