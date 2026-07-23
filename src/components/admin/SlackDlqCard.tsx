@@ -160,7 +160,13 @@ export function SlackDlqCard() {
                 variant="secondary"
                 size="sm"
                 disabled={!intId || bulkReplayMutation.isPending}
-                onClick={() => intId && bulkReplayMutation.mutate(intId)}
+                onClick={() => {
+                  if (!intId) return;
+                  setBulkTarget(intId);
+                  bulkReplayMutation.mutate(intId, {
+                    onSettled: () => setBulkTarget(null),
+                  });
+                }}
                 className="gap-1.5"
               >
                 {bulkReplayMutation.isPending && bulkTarget === intId ? (
