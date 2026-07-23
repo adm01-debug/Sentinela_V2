@@ -8,6 +8,19 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
   try {
+    // Parse mode do body (chaos engineering) — default 'real'
+    type ChaosMode = 'real' | 'timeout' | 'error_429' | 'error_500' | 'partial_failure';
+    let mode: ChaosMode = 'real';
+    if (req.method !== 'GET') {
+      try {
+        const bodyJson = await req.json().catch(() => ({}));
+        const requested = (bodyJson?.mode ?? 'real') as string;
+        if (['real', 'timeout', 'error_429', 'error_500', 'partial_failure'].includes(requested)) {
+          mode = requested as ChaosMode;
+        }
+      } catch { /* noop */ }
+    }
+
     const authHeader = req.headers.get('Authorization') ?? '';
     const jwt = authHeader.replace('Bearer ', '');
     if (!jwt) {
@@ -65,7 +78,7 @@ Deno.serve(async (req) => {
     }
 
     const resendKey = Deno.env.get('RESEND_API_KEY');
-    if (!resendKey) {
+    if (!resendKey && mode === 'real') {
       return new Response(
         JSON.stringify({ error: 'RESEND_API_KEY not configured', configured: false }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
@@ -109,49 +122,99 @@ Deno.serve(async (req) => {
       </div>
     `;
 
-    const emailRes = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from,
-        to: recipients,
-        subject: '[TESTE] Fallback Resend - SecureWatch',
-        html,
-      }),
-    });
-
-    const body = await emailRes.text();
+    // Dispatcher com injeção de falhas para prever gaps do sistema
+    let emailStatus = 0;
+    let emailOk = false;
+    let body = '';
     let resendId: string | null = null;
-    try { resendId = (JSON.parse(body) as { id?: string }).id ?? null; } catch { /* noop */ }
+    let perRecipient: Array<{ email: string; delivered: boolean; error?: string }> | null = null;
+
+    if (mode === 'timeout') {
+      // Simula latência acima do orçamento (~8s) sem chamar Resend
+      await new Promise((r) => setTimeout(r, 8000));
+      emailStatus = 408;
+      body = JSON.stringify({ simulated: true, reason: 'timeout' });
+    } else if (mode === 'error_429') {
+      emailStatus = 429;
+      body = JSON.stringify({ simulated: true, reason: 'rate_limited', retry_after: 30 });
+    } else if (mode === 'error_500') {
+      emailStatus = 500;
+      body = JSON.stringify({ simulated: true, reason: 'upstream_provider_error' });
+    } else if (mode === 'partial_failure') {
+      // Metade entrega, metade falha (simula bounce/reject por destinatário)
+      const half = Math.max(1, Math.floor(recipients.length / 2));
+      perRecipient = recipients.map((email, i) => ({
+        email,
+        delivered: i < half,
+        error: i < half ? undefined : 'invalid_recipient',
+      }));
+      const delivered = perRecipient.filter((r) => r.delivered).length;
+      emailOk = delivered > 0;
+      emailStatus = emailOk ? 207 : 502; // 207 Multi-Status
+      body = JSON.stringify({ simulated: true, delivered, failed: recipients.length - delivered });
+    } else {
+      // Modo real
+      const emailRes = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from,
+          to: recipients,
+          subject: '[TESTE] Fallback Resend - SecureWatch',
+          html,
+        }),
+      });
+      body = await emailRes.text();
+      emailStatus = emailRes.status;
+      emailOk = emailRes.ok;
+      try { resendId = (JSON.parse(body) as { id?: string }).id ?? null; } catch { /* noop */ }
+    }
+
+    const success = mode === 'real' ? emailOk : (mode === 'partial_failure' && emailOk);
 
     // Auditoria — persiste em edge_function_logs para o card de histórico
     await supabase.from('edge_function_logs').insert({
       function_name: 'slack-fallback-test',
-      status: emailRes.ok ? 'success' : 'error',
+      status: success ? 'success' : 'error',
       metadata: {
         triggered_by: userData.user.email,
         user_id: userData.user.id,
+        mode,
+        simulated: mode !== 'real',
         recipients_count: recipients.length,
         recipients,
-        resend_status: emailRes.status,
+        per_recipient: perRecipient,
+        resend_status: emailStatus,
         resend_id: resendId,
-        error: emailRes.ok ? null : body.slice(0, 500),
+        error: success ? null : body.slice(0, 500),
       },
     });
 
-    if (!emailRes.ok) {
+    if (!success) {
       return new Response(
-        JSON.stringify({ error: 'Falha no envio', status: emailRes.status, details: body }),
-        { status: emailRes.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        JSON.stringify({
+          error: mode === 'real' ? 'Falha no envio' : `Chaos [${mode}] simulou falha`,
+          mode,
+          simulated: mode !== 'real',
+          status: emailStatus,
+          per_recipient: perRecipient,
+          details: body,
+        }),
+        { status: emailStatus, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
 
     return new Response(
       JSON.stringify({
         success: true,
+        mode,
+        simulated: mode !== 'real',
         recipients: recipients.length,
+        per_recipient: perRecipient,
         resend_id: resendId,
-        message: `Teste enviado para ${recipients.length} destinatário(s)`,
+        message: mode === 'real'
+          ? `Teste enviado para ${recipients.length} destinatário(s)`
+          : `Chaos [${mode}] executado — verifique o histórico`,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     );
