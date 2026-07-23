@@ -7,11 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Mail, Plus, X, AlertCircle, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Mail, Plus, X, AlertCircle, CheckCircle2, XCircle, Clock, FlaskConical } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 
+type ChaosMode = 'real' | 'timeout' | 'error_429' | 'error_500' | 'partial_failure';
 const SETTING_TYPE = 'slack_fallback';
 
 interface FallbackSetting {
