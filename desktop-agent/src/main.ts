@@ -15,6 +15,7 @@ import { AutoUpdaterService } from './services/autoUpdater';
 import { IdleDetector } from './services/idleDetector';
 import { ClipboardDLP } from './services/dlp/clipboardDLP';
 import { PolicySync } from './services/dlp/policySync';
+import { ViolationNotifier } from './services/violationNotifier';
 
 // ============================================================
 // GLOBALS
@@ -46,6 +47,7 @@ let autoUpdaterService: AutoUpdaterService;
 let idleDetector: IdleDetector;
 let clipboardDLP: ClipboardDLP;
 let policySync: PolicySync;
+let violationNotifier: ViolationNotifier;
 
 // Auto-launch
 const autoLauncher = new AutoLaunch({
@@ -245,6 +247,10 @@ async function initializeServices(): Promise<void> {
   clipboardDLP = new ClipboardDLP(agentKey);
   clipboardDLP.start();
 
+  // Violation notifier — LGPD real-time awareness overlay
+  violationNotifier = new ViolationNotifier(agentKey, require('os').hostname());
+  violationNotifier.start();
+
   // Auto-updater
   autoUpdaterService = new AutoUpdaterService();
   autoUpdaterService.start();
@@ -264,6 +270,7 @@ function stopServices(): void {
   idleDetector?.stop();
   clipboardDLP?.stop();
   policySync?.stop();
+  violationNotifier?.stop();
   
   if (isAuthenticated) {
     dataSender?.send('logout', { timestamp: new Date().toISOString() });

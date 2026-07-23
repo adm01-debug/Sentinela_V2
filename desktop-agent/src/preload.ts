@@ -6,6 +6,10 @@ contextBridge.exposeInMainWorld('sentinelaAPI', {
   toggleStealth: () => ipcRenderer.invoke('toggle-stealth'),
   verifyStealthPassword: (password: string) => ipcRenderer.invoke('verify-stealth-password', password),
   setStealthPassword: (password: string) => ipcRenderer.invoke('set-stealth-password', password),
+  acknowledgeViolation: (id: string, reason?: string) =>
+    ipcRenderer.invoke('violation:acknowledge', { id, reason }),
+
+
   
   // Event listeners
   onAuthSuccess: (callback: (data: unknown) => void) => {

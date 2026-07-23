@@ -4223,7 +4223,13 @@ export type Database = {
           created_at: string
           description: string | null
           device: string | null
+          employee_ack_device: string | null
+          employee_ack_ip: string | null
+          employee_ack_reason: string | null
+          employee_ack_signature: string | null
+          employee_acknowledged_at: string | null
           employee_name: string
+          employee_notified_at: string | null
           id: string
           ip_address: string | null
           location: string | null
@@ -4244,7 +4250,13 @@ export type Database = {
           created_at?: string
           description?: string | null
           device?: string | null
+          employee_ack_device?: string | null
+          employee_ack_ip?: string | null
+          employee_ack_reason?: string | null
+          employee_ack_signature?: string | null
+          employee_acknowledged_at?: string | null
           employee_name: string
+          employee_notified_at?: string | null
           id?: string
           ip_address?: string | null
           location?: string | null
@@ -4265,7 +4277,13 @@ export type Database = {
           created_at?: string
           description?: string | null
           device?: string | null
+          employee_ack_device?: string | null
+          employee_ack_ip?: string | null
+          employee_ack_reason?: string | null
+          employee_ack_signature?: string | null
+          employee_acknowledged_at?: string | null
           employee_name?: string
+          employee_notified_at?: string | null
           id?: string
           ip_address?: string | null
           location?: string | null
