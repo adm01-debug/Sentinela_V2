@@ -112,8 +112,10 @@ export function SlackIntegrationsCard() {
         webhook_url: webhookUrl.trim(),
         min_severity: minSeverity,
         event_types: ['dispute_sla_escalation'],
+        company_id: companyId === '__global__' ? null : companyId,
       });
       if (error) throw error;
+
     },
     onSuccess: () => {
       toast.success('Integração Slack criada.');
