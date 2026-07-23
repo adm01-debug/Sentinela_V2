@@ -2,11 +2,13 @@ import { useParams } from 'react-router-dom';
 import { useEmployee, useEmployeeStats, type EmployeeWithDetails } from '@/hooks/useEmployees';
 import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
-import { DailyJourneyTimeline, type JourneyEvent } from '@/components/timeline/DailyJourneyTimeline';
+import { DailyJourneyTimeline } from '@/components/timeline/DailyJourneyTimeline';
+import { useDailyJourney } from '@/hooks/useDailyJourney';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { format, subDays } from 'date-fns';
+
 
 export default function EmployeeDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -22,12 +24,9 @@ export default function EmployeeDetailPage() {
 
   const displayName = employee.full_name ?? employee.name ?? 'Sem nome';
 
-  // Eventos de jornada — hoje construídos a partir de stats agregados;
-  // futuramente virão do hook de atividades reais.
-  const journeyEvents: JourneyEvent[] = [
-    { kind: 'presence', startMinute: 8 * 60, durationMinutes: 9 * 60, label: 'Login → Logout' },
-    { kind: 'idle', startMinute: 12 * 60, durationMinutes: 60, label: 'Intervalo' },
-  ];
+  // Eventos reais do dia: presença (time_entries) + violações (security_violations).
+  const { data: journeyEvents = [] } = useDailyJourney(id!, today);
+
 
   return (
     <div className="space-y-6">

@@ -32,26 +32,39 @@ function normalizeApps(raw: unknown): AppUsage[] {
   return out;
 }
 
+interface UseCompanyAppUsageOptions {
+  employeeName?: string;
+  device?: string;
+}
+
 /**
  * Agrega o uso de aplicações da empresa nos últimos `days` dias
- * a partir de `productivity_logs.apps_used`.
+ * a partir de `productivity_logs.apps_used`. Aceita filtros opcionais
+ * por colaborador (nome exato) ou por dispositivo.
  */
-export function useCompanyAppUsage(days: number = 7) {
+export function useCompanyAppUsage(days: number = 7, options: UseCompanyAppUsageOptions = {}) {
   const { user } = useAuth();
   const { companyId } = useAppCategories();
+  const { employeeName, device } = options;
 
   const startDate = format(subDays(new Date(), days - 1), 'yyyy-MM-dd');
 
   return useQuery({
-    queryKey: ['company-app-usage', companyId, days],
+    queryKey: ['company-app-usage', companyId, days, employeeName ?? null, device ?? null],
     enabled: !!user?.id,
     staleTime: 60_000,
     queryFn: async (): Promise<{ usage: AppUsage[]; idleSeconds: number }> => {
-      const { data, error } = await supabase
+      let query = supabase
         .from('productivity_logs')
         .select('apps_used, neutral_time_seconds')
         .gte('recorded_date', startDate);
+
+      if (employeeName) query = query.eq('employee_name', employeeName);
+      if (device) query = query.eq('device', device);
+
+      const { data, error } = await query;
       if (error) throw error;
+
 
       const totals = new Map<string, number>();
       let idleSeconds = 0;

@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import { PageHeader } from '@/components/layout/PageHeader';
+import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
 import { useQuery } from '@tanstack/react-query';
+
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -144,7 +146,29 @@ function AttendancePage() {
         title="Controle de Assiduidade"
         description="Atrasos, faltas, presença e horas extras"
         showBackButton={false}
+        actions={
+          <XlsxExportButton
+            filename="assiduidade"
+            sheets={[{
+              name: 'Registros',
+              rows: filtered.map((r) => ({
+                Funcionário: r.employees?.name ?? '',
+                Departamento: r.employees?.department ?? '',
+                Data: r.date ?? '',
+                'Entrada': r.actual_start ? new Date(r.actual_start).toLocaleTimeString('pt-BR') : '',
+                'Saída': r.actual_end ? new Date(r.actual_end).toLocaleTimeString('pt-BR') : '',
+                'Minutos trabalhados': r.total_worked_minutes ?? 0,
+                'Atraso (min)': r.late_minutes ?? 0,
+                'Saída antecipada (min)': r.early_departure_minutes ?? 0,
+                'Hora extra (min)': r.overtime_minutes ?? 0,
+                Status: statusConfig[String(r.status ?? '')]?.label ?? String(r.status ?? ''),
+              })),
+            }]}
+            disabled={filtered.length === 0}
+          />
+        }
       />
+
 
 
       {/* Stats */}

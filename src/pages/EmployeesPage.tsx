@@ -11,6 +11,8 @@ import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useChartColors } from '@/hooks/useChartColors';
 import { BaseBarChart, BaseDonutChart } from '@/components/charts';
+import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
+
 
 export const EmployeesPage = () => {
   const navigate = useNavigate();
@@ -81,11 +83,29 @@ export const EmployeesPage = () => {
         showBackButton={false}
 
         actions={
-          <Button onClick={() => navigate('/employees/new')} className="gap-2 h-9">
-            <Plus className="h-4 w-4" />
-            {t('employees.addEmployee')}
-          </Button>
+          <div className="flex gap-2">
+            <XlsxExportButton
+              filename="funcionarios"
+              sheets={[{
+                name: 'Funcionários',
+                rows: filteredEmployees.map((e) => ({
+                  Nome: String(e.name ?? e.full_name ?? ''),
+                  Email: String(e.email ?? ''),
+                  Departamento: String(e.department ?? ''),
+                  Cargo: String(e.position ?? ''),
+                  Status: STATUS_LABELS[String(e.status ?? '')] ?? String(e.status ?? ''),
+                  'Contratado em': e.hire_date ? new Date(e.hire_date).toLocaleDateString('pt-BR') : '',
+                })),
+              }]}
+              disabled={filteredEmployees.length === 0}
+            />
+            <Button onClick={() => navigate('/employees/new')} className="gap-2 h-9">
+              <Plus className="h-4 w-4" />
+              {t('employees.addEmployee')}
+            </Button>
+          </div>
         }
+
       />
 
       <EmployeeStatsCards stats={stats} isLoading={loading} />
