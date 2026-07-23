@@ -115,6 +115,46 @@ export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Prom
   drawMetricCard(doc, 'Resolvidas', String(byStatus.resolved || 0), margin + (cardWidth + 4) * 3, y, cardWidth, 22, colors.success);
   y += 30;
 
+  // Insights executivos automáticos
+  if (violations.length > 0) {
+    const byEmployee = new Map<string, number>();
+    const byType = new Map<string, number>();
+    const byDay = new Map<string, number>();
+    violations.forEach(v => {
+      byEmployee.set(v.employee_name, (byEmployee.get(v.employee_name) || 0) + 1);
+      byType.set(v.violation_type, (byType.get(v.violation_type) || 0) + 1);
+      const dayKey = format(new Date(v.created_at), 'yyyy-MM-dd');
+      byDay.set(dayKey, (byDay.get(dayKey) || 0) + 1);
+    });
+    const topEmp = [...byEmployee.entries()].sort((a, b) => b[1] - a[1])[0];
+    const topType = [...byType.entries()].sort((a, b) => b[1] - a[1])[0];
+    const topDay = [...byDay.entries()].sort((a, b) => b[1] - a[1])[0];
+    const critRate = total > 0 ? Math.round(((bySeverity.critical || 0) / total) * 100) : 0;
+    const openRate = total > 0 ? Math.round(((byStatus.open || 0) / total) * 100) : 0;
+
+    const insights: string[] = [];
+    if (topEmp) insights.push(`Colaborador com mais ocorrências: ${topEmp[0]} (${topEmp[1]} eventos, ${Math.round((topEmp[1] / total) * 100)}% do total).`);
+    if (topType) insights.push(`Tipo predominante: ${typeLabels[topType[0]] || topType[0]} (${topType[1]} eventos).`);
+    if (topDay) insights.push(`Dia de maior volume: ${format(new Date(topDay[0]), 'dd/MM/yyyy', { locale: ptBR })} com ${topDay[1]} violações.`);
+    if (critRate >= 20) insights.push(`Atenção: ${critRate}% das violações são críticas — priorize contenção imediata.`);
+    else if (critRate > 0) insights.push(`${critRate}% das violações classificadas como críticas.`);
+    if (openRate >= 50) insights.push(`${openRate}% dos casos permanecem em aberto — recomenda-se revisão do fluxo de resposta.`);
+
+    doc.setFillColor(248, 250, 252);
+    doc.setDrawColor(226, 232, 240);
+    const boxH = 8 + insights.length * 5 + 4;
+    doc.roundedRect(margin, y, pageWidth - margin * 2, boxH, 2, 2, 'FD');
+    doc.setFontSize(10); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+    doc.text('Insights executivos', margin + 4, y + 6);
+    doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+    insights.forEach((line, i) => {
+      doc.setTextColor(60, 60, 60);
+      doc.text(`• ${line}`, margin + 4, y + 11 + i * 5);
+    });
+    y += boxH + 6;
+  }
+
   // Breakdown por severidade
   doc.setFontSize(11); doc.setFont('helvetica', 'bold');
   doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
