@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, TrendingDown, Minus, Loader2, X } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Loader2, X, FileDown } from 'lucide-react';
 import { useProductivityAnalytics } from '@/hooks/useAnalytics';
 import { useCompanyAppUsage } from '@/hooks/useCompanyAppUsage';
 import { useEmployees, type EmployeeWithDetails } from '@/hooks/useEmployees';
@@ -15,6 +15,10 @@ import { AppCategoryManager } from '@/components/productivity/AppCategoryManager
 import { ProductivityCategoryDonut } from '@/components/productivity/ProductivityCategoryDonut';
 import { ProductivityScoreCard } from '@/components/productivity/ProductivityScoreCard';
 import { WeeklyRankingCard } from '@/components/productivity/WeeklyRankingCard';
+import { WeeklyTrendCard } from '@/components/productivity/WeeklyTrendCard';
+import { useWeeklyProductivityRanking } from '@/hooks/useWeeklyProductivityRanking';
+import { generateAnalyticsPdf } from '@/utils/analyticsPdf';
+import { toast } from 'sonner';
 
 
 interface PerformerItem {
