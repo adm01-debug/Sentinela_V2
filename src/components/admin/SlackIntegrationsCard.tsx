@@ -42,7 +42,14 @@ interface SlackIntegration {
   auto_paused_at: string | null;
   auto_pause_reason: string | null;
   created_at: string;
+  company_id: string | null;
 }
+
+interface CompanyOption {
+  id: string;
+  name: string;
+}
+
 
 const EVENT_TYPES = [{ value: 'dispute_sla_escalation', label: 'Escalação de SLA de contestação' }];
 
@@ -62,11 +69,29 @@ export function SlackIntegrationsCard() {
   const [name, setName] = useState('');
   const [webhookUrl, setWebhookUrl] = useState('');
   const [minSeverity, setMinSeverity] = useState<Severity>('critical');
+  const [companyId, setCompanyId] = useState<string>('__global__');
   const [testingId, setTestingId] = useState<string | null>(null);
+
+  const { data: companies = [] } = useQuery({
+    queryKey: ['companies-for-slack'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('companies')
+        .select('id, name')
+        .eq('is_active', true)
+        .order('name');
+      if (error) throw error;
+      return (data ?? []) as CompanyOption[];
+    },
+  });
+
+  const companyName = (id: string | null) =>
+    id ? companies.find((c) => c.id === id)?.name ?? 'Empresa desconhecida' : 'Global (todas)';
 
   const { data: integrations = [], isLoading } = useQuery({
     queryKey: ['slack-integrations'],
     queryFn: async () => {
+
       const { data, error } = await supabase
         .from('slack_integrations')
         .select('*')
@@ -87,14 +112,17 @@ export function SlackIntegrationsCard() {
         webhook_url: webhookUrl.trim(),
         min_severity: minSeverity,
         event_types: ['dispute_sla_escalation'],
+        company_id: companyId === '__global__' ? null : companyId,
       });
       if (error) throw error;
+
     },
     onSuccess: () => {
       toast.success('Integração Slack criada.');
       setName('');
       setWebhookUrl('');
       setMinSeverity('critical');
+      setCompanyId('__global__');
       qc.invalidateQueries({ queryKey: ['slack-integrations'] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -230,7 +258,7 @@ export function SlackIntegrationsCard() {
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Form */}
-        <div className="grid gap-3 rounded-md border border-border bg-muted/30 p-4 md:grid-cols-[1fr_2fr_180px_auto]">
+        <div className="grid gap-3 rounded-md border border-border bg-muted/30 p-4 md:grid-cols-2 lg:grid-cols-[1fr_1.5fr_160px_160px_auto]">
           <div className="space-y-1.5">
             <Label htmlFor="slack-name">Nome</Label>
             <Input
@@ -251,6 +279,22 @@ export function SlackIntegrationsCard() {
             />
           </div>
           <div className="space-y-1.5">
+            <Label>Empresa</Label>
+            <Select value={companyId} onValueChange={setCompanyId}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__global__">Global (todas)</SelectItem>
+                {companies.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
             <Label>Severidade mínima</Label>
             <Select value={minSeverity} onValueChange={(v) => setMinSeverity(v as Severity)}>
               <SelectTrigger>
@@ -263,6 +307,7 @@ export function SlackIntegrationsCard() {
               </SelectContent>
             </Select>
           </div>
+
           <div className="flex items-end">
             <Button
               onClick={() => createMutation.mutate()}
@@ -298,6 +343,9 @@ export function SlackIntegrationsCard() {
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-medium">{i.name}</span>
+                    <Badge variant="outline" className="text-xs">
+                      {companyName(i.company_id)}
+                    </Badge>
                     {i.auto_paused_at ? (
                       <Badge variant="destructive" className="gap-1">
                         <PauseCircle className="h-3 w-3" />
