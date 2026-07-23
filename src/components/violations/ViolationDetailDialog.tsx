@@ -75,6 +75,7 @@ export function ViolationDetailDialog({ violationId, open, onOpenChange }: Props
       return data as ViolationDetail | null;
     },
   });
+  const [disputeOpen, setDisputeOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -235,9 +236,40 @@ export function ViolationDetailDialog({ violationId, open, onOpenChange }: Props
               )}
             </div>
 
+            <div className="rounded-md border p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                  Contestação (LGPD)
+                </div>
+                {data.dispute_status && (
+                  <Badge variant="outline" className="text-xs">
+                    {DISPUTE_STATUS_LABEL[data.dispute_status]}
+                  </Badge>
+                )}
+              </div>
+              <Button
+                size="sm"
+                variant={data.dispute_status ? 'outline' : 'default'}
+                className="gap-1.5 w-full"
+                onClick={() => setDisputeOpen(true)}
+                disabled={!data.company_id}
+              >
+                <Gavel className="h-4 w-4" />
+                {data.dispute_status ? 'Ver contestação' : 'Contestar violação'}
+              </Button>
+            </div>
           </div>
         )}
       </DialogContent>
+      {data?.company_id && (
+        <ViolationDisputeDialog
+          open={disputeOpen}
+          onOpenChange={setDisputeOpen}
+          violationId={data.id}
+          companyId={data.company_id}
+          employeeName={data.employee_name ?? '—'}
+        />
+      )}
     </Dialog>
   );
 }
