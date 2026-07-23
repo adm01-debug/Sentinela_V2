@@ -59,6 +59,15 @@ export function SlackDlqCard() {
     },
   });
 
+  const byIntegration = useMemo(() => {
+    const map = new Map<string | null, number>();
+    for (const it of items) {
+      map.set(it.integration_id, (map.get(it.integration_id) ?? 0) + 1);
+    }
+    return Array.from(map.entries()).filter(([, c]) => c > 0);
+  }, [items]);
+
+
   const replayMutation = useMutation({
     mutationFn: async (id: string) => {
       const { data, error } = await supabase.functions.invoke('slack-dlq-replay', {
