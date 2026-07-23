@@ -47,10 +47,6 @@ export default function LiveViewPage() {
       <PageHeader
         title="Visualização remota"
         description="Transmissão ao vivo do agente monitorado via WebRTC ponto a ponto."
-        breadcrumbs={[
-          { label: 'Agentes', href: '/agents/onboarding' },
-          { label: 'Live view' },
-        ]}
         actions={
           <Button variant="outline" size="sm" asChild>
             <Link to="/agents/onboarding">

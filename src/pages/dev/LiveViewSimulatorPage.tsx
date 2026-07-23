@@ -62,9 +62,9 @@ function buildScenarios(): Scenario[] {
   let n = 0;
   for (const cat of categories) {
     for (let i = 0; i < 25; i++) {
-      const base = {
+      const input: Scenario['input'] = {
         agentOnline: true,
-        consent: 'granted' as const,
+        consent: 'granted',
         turnAvailable: true,
         sameCompany: true,
         isAdmin: true,
@@ -73,7 +73,6 @@ function buildScenarios(): Scenario[] {
         tokenExpiredMs: 300_000,
         packetLossPct: Math.random() * 20,
       };
-      let input = { ...base };
       let expected: Scenario['expected'] = 'live';
       switch (cat) {
         case 'consent_denied':
@@ -131,7 +130,7 @@ function buildScenarios(): Scenario[] {
   }
   // Extra: cross-product stress cases
   for (let i = 0; i < 25; i++) {
-    const input = {
+    const input: Scenario['input'] = {
       agentOnline: Math.random() > 0.3,
       consent: (['granted', 'denied', 'pending'] as const)[i % 3],
       turnAvailable: Math.random() > 0.5,
