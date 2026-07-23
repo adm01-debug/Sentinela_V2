@@ -5,7 +5,9 @@ import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { DailyJourneyTimeline } from '@/components/timeline/DailyJourneyTimeline';
 import { ScreenshotViewerDialog } from '@/components/timeline/ScreenshotViewerDialog';
+import { TeamComparisonCard } from '@/components/timeline/TeamComparisonCard';
 import { useDailyJourney } from '@/hooks/useDailyJourney';
+import { useTeamProductivityAverage } from '@/hooks/useTeamProductivityAverage';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -118,6 +120,11 @@ export default function EmployeeDetailPage() {
               </div>
             </div>
           )}
+          <TeamComparisonInline
+            employeeName={displayName}
+            date={journeyDate}
+            employeeScore={journeySummary?.productivityScore ?? 0}
+          />
           <DailyJourneyTimeline
             date={journeyDate}
             events={journeyEvents}
@@ -148,5 +155,25 @@ export default function EmployeeDetailPage() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+function TeamComparisonInline({
+  employeeName,
+  date,
+  employeeScore,
+}: {
+  employeeName: string;
+  date: string;
+  employeeScore: number;
+}) {
+  const { data, isLoading } = useTeamProductivityAverage(date, employeeName);
+  return (
+    <TeamComparisonCard
+      employeeScore={employeeScore}
+      teamAverageScore={data?.avgProductivityScore ?? 0}
+      sampleSize={data?.sampleSize ?? 0}
+      isLoading={isLoading}
+    />
   );
 }
