@@ -568,6 +568,7 @@ export default function DisputeEscalationAuditPage() {
         <SlackWebhookMttrCard />
         <SlackUptimeHistoryCard />
         <SlackFallbackSettingsCard />
+        <SlackFallbackHistoryCard />
       </div>
 
       <Card>
