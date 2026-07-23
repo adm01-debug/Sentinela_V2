@@ -564,6 +564,7 @@ export default function DisputeEscalationAuditPage() {
         <SlackIntegrationsCard />
         <SlackDlqCard />
         <SlackWebhookMttrCard />
+        <SlackUptimeHistoryCard />
       </div>
 
       <Card>
