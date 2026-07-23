@@ -4,6 +4,7 @@ import { useEmployee, useEmployeeStats, type EmployeeWithDetails } from '@/hooks
 import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { DailyJourneyTimeline } from '@/components/timeline/DailyJourneyTimeline';
+import { ScreenshotViewerDialog } from '@/components/timeline/ScreenshotViewerDialog';
 import { useDailyJourney } from '@/hooks/useDailyJourney';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
@@ -24,6 +25,7 @@ export default function EmployeeDetailPage() {
   const { data: stats } = useEmployeeStats(id!, startDate, endDate);
 
   const [journeyDate, setJourneyDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
+  const [screenshotId, setScreenshotId] = useState<string | null>(null);
   const shiftDay = (delta: number) =>
     setJourneyDate((d) => format(addDays(parseISO(d), delta), 'yyyy-MM-dd'));
 
@@ -116,7 +118,15 @@ export default function EmployeeDetailPage() {
               </div>
             </div>
           )}
-          <DailyJourneyTimeline date={journeyDate} events={journeyEvents} />
+          <DailyJourneyTimeline
+            date={journeyDate}
+            events={journeyEvents}
+            onScreenshotClick={(id) => setScreenshotId(id)}
+          />
+          <ScreenshotViewerDialog
+            screenshotId={screenshotId}
+            onOpenChange={(open) => !open && setScreenshotId(null)}
+          />
           {journeySummary && journeySummary.topApps.length > 0 && (
             <div className="rounded-lg border bg-card p-4">
               <div className="mb-2 text-sm font-semibold">Top aplicações do dia</div>
