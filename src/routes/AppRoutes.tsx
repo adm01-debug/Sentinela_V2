@@ -89,6 +89,7 @@ const LiveViewReportPage = lazy(() => import('@/pages/admin/LiveViewReportPage')
 const AcknowledgmentReportPage = lazy(() => import('@/pages/admin/AcknowledgmentReportPage'));
 const DisputeMetricsPage = lazy(() => import('@/pages/admin/DisputeMetricsPage'));
 const DisputeEscalationAuditPage = lazy(() => import('@/pages/admin/DisputeEscalationAuditPage'));
+const IntegrationsHealthPage = lazy(() => import('@/pages/admin/IntegrationsHealthPage'));
 
 
 // ============================================================
