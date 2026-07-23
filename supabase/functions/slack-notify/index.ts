@@ -218,7 +218,28 @@ Deno.serve(async (req) => {
         autoPaused.push({ id: target.id, name: target.name, reason });
       }
       await supabase.from('slack_integrations').update(update).eq('id', target.id);
+
+      // Dead-Letter Queue: persiste a mensagem para que admin possa reenviar após
+      // corrigir o webhook. Só entra na DLQ se for falha permanente OU se a
+      // integração acabou de ser auto-pausada (evita duplicar itens durante
+      // falhas transitórias que ainda podem se recuperar em próximas execuções).
+      if (result.permanent || shouldPause) {
+        await supabase.from('slack_notification_dlq').insert({
+          integration_id: target.id,
+          event_type,
+          severity,
+          title,
+          message,
+          fields: fields ?? {},
+          url: url ?? null,
+          last_error: msg,
+          last_status: result.status ?? null,
+          attempts: result.attempts,
+          permanent: result.permanent,
+        });
+      }
     }
+
   }
 
   await supabase.from('edge_function_logs').insert({
