@@ -77,7 +77,20 @@ export default function DisputeMetricsPage() {
       <PageHeader
         title="Métricas de Contestação (SLA)"
         description={`Acompanhamento do SLA de ${DISPUTE_SLA_HOURS}h para julgamento formal de contestações LGPD.`}
+        actions={
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={!data}
+            onClick={() => data && exportDisputeMetricsPdf({ from: params.from, to: params.to, metrics: data })}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Exportar PDF
+          </Button>
+        }
       />
+
+      <DisputeSlaAlertsCard />
 
       <Card>
         <CardHeader>
