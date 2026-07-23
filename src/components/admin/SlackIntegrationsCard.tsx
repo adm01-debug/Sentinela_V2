@@ -122,6 +122,7 @@ export function SlackIntegrationsCard() {
       setName('');
       setWebhookUrl('');
       setMinSeverity('critical');
+      setCompanyId('__global__');
       qc.invalidateQueries({ queryKey: ['slack-integrations'] });
     },
     onError: (e: Error) => toast.error(e.message),
