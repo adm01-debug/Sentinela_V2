@@ -180,13 +180,28 @@ export function SlackFallbackSettingsCard() {
           </div>
         </div>
 
-        <Button
-          className="w-full"
-          onClick={() => save.mutate(local)}
-          disabled={save.isPending || isLoading}
-        >
-          {save.isPending ? 'Salvando...' : 'Salvar configurações'}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            className="flex-1"
+            onClick={() => save.mutate(local)}
+            disabled={save.isPending || isLoading}
+          >
+            {save.isPending ? 'Salvando...' : 'Salvar configurações'}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={async () => {
+              const t = toast.loading('Enviando teste...');
+              const { data, error } = await supabase.functions.invoke('slack-fallback-test');
+              toast.dismiss(t);
+              if (error) toast.error(`Falha: ${error.message}`);
+              else toast.success(data?.message ?? 'Teste enviado');
+            }}
+            disabled={!local.enabled || (local.recipient_emails ?? []).length === 0}
+          >
+            Testar
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
