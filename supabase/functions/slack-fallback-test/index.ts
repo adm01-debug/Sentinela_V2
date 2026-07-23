@@ -37,6 +37,33 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Rate limit: máx 5 testes / 10min por admin (previne abuso e custo Resend)
+    const { data: rl } = await supabase.rpc('check_rate_limit', {
+      p_identifier: userData.user.id,
+      p_identifier_type: 'user',
+      p_endpoint: 'slack-fallback-test',
+      p_max_requests: 5,
+      p_window_seconds: 600,
+    });
+    const rateLimit = rl as { allowed: boolean; retry_after_seconds?: number } | null;
+    if (rateLimit && !rateLimit.allowed) {
+      return new Response(
+        JSON.stringify({
+          error: 'rate_limited',
+          message: 'Limite de 5 testes a cada 10 minutos atingido',
+          retry_after_seconds: rateLimit.retry_after_seconds,
+        }),
+        {
+          status: 429,
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'Retry-After': String(rateLimit.retry_after_seconds ?? 600),
+          },
+        },
+      );
+    }
+
     const resendKey = Deno.env.get('RESEND_API_KEY');
     if (!resendKey) {
       return new Response(
