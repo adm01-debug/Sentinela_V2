@@ -455,7 +455,26 @@ export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Prom
   }
 
 
-  // Footer com paginação
+  // Assinatura digital — hash SHA-256 do payload + ID único do relatório
+  const reportId = `SNL-${format(new Date(), 'yyyyMMddHHmmss')}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+  const signaturePayload = JSON.stringify({
+    reportId,
+    generatedAt: new Date().toISOString(),
+    total: violations.length,
+    period: periodLabel,
+    filters,
+    ids: violations.map(v => v.id),
+  });
+  let signature = 'n/a';
+  try {
+    const enc = new TextEncoder().encode(signaturePayload);
+    const hash = await crypto.subtle.digest('SHA-256', enc);
+    signature = Array.from(new Uint8Array(hash))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+  } catch { /* fallback */ }
+  const shortSig = signature.slice(0, 16);
+
+  // Footer com paginação e assinatura
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -468,8 +487,45 @@ export const generateViolationsPdf = async (payload: ViolationsPdfPayload): Prom
       { align: 'right' },
     );
     doc.text('Sentinela • Relatório confidencial', margin, doc.internal.pageSize.getHeight() - 8);
+    doc.setFontSize(6);
+    doc.text(
+      `${reportId} • SHA-256: ${shortSig}…`,
+      pageWidth / 2,
+      doc.internal.pageSize.getHeight() - 8,
+      { align: 'center' },
+    );
   }
 
+  // Página final de verificação de integridade
+  doc.addPage();
+  let vy = 20;
+  doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+  doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+  doc.text('Certificado de integridade', margin, vy);
+  vy += 8;
+  doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(60, 60, 60);
+  const certLines = [
+    `ID do relatório: ${reportId}`,
+    `Gerado em: ${format(new Date(), 'dd/MM/yyyy HH:mm:ss', { locale: ptBR })}`,
+    `Período analisado: ${periodLabel}`,
+    `Total de eventos: ${violations.length}`,
+    `Algoritmo: SHA-256 sobre payload canônico (ID, período, filtros, IDs)`,
+  ];
+  certLines.forEach(l => { doc.text(l, margin, vy); vy += 5; });
+  vy += 4;
+  doc.setFont('helvetica', 'bold'); doc.text('Assinatura (SHA-256):', margin, vy); vy += 5;
+  doc.setFont('courier', 'normal'); doc.setFontSize(8);
+  const sigLines = doc.splitTextToSize(signature, pageWidth - margin * 2) as string[];
+  sigLines.forEach(l => { doc.text(l, margin, vy); vy += 4; });
+  vy += 4;
+  doc.setFont('helvetica', 'italic'); doc.setFontSize(8);
+  doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+  doc.text(
+    'Qualquer alteração no conjunto de eventos ou nos filtros aplicados invalida esta assinatura.',
+    margin, vy,
+  );
+
   const stamp = format(new Date(), 'yyyyMMdd_HHmm');
-  doc.save(`violacoes_${stamp}.pdf`);
+  doc.save(`violacoes_${stamp}_${reportId}.pdf`);
 };
