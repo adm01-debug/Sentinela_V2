@@ -258,6 +258,134 @@ Deno.serve(async (req) => {
     },
   });
 
+  // ─── Fallback via Resend ────────────────────────────────────────────────
+  // Se todos os alvos ativos falharam (delivered === 0 && matched > 0), ou
+  // não houve alvos porque todos estão auto-pausados e a severidade é
+  // critical/breached, enviamos por e-mail via Resend usando destinatários
+  // configurados em alert_notification_settings (setting_type='slack_fallback').
+  let fallbackResult: {
+    attempted: boolean;
+    delivered: number;
+    recipients: number;
+    error?: string;
+    reason?: string;
+  } = { attempted: false, delivered: 0, recipients: 0 };
+
+  const shouldFallback =
+    (targets.length > 0 && delivered === 0) ||
+    (targets.length === 0 && (SEVERITY_RANK[severity] ?? 0) >= SEVERITY_RANK.critical);
+
+  if (shouldFallback) {
+    const resendKey = Deno.env.get('RESEND_API_KEY');
+    if (!resendKey) {
+      fallbackResult = { attempted: true, delivered: 0, recipients: 0, reason: 'resend_key_missing' };
+    } else {
+      const { data: fbSettings } = await supabase
+        .from('alert_notification_settings')
+        .select('recipient_emails, enabled, notify_critical, notify_high, notify_medium, notify_low')
+        .eq('setting_type', 'slack_fallback')
+        .maybeSingle();
+
+      const passesSeverity = (() => {
+        if (!fbSettings) return false;
+        if (severity === 'breached' || severity === 'critical') return fbSettings.notify_critical;
+        if (severity === 'warning') return fbSettings.notify_high || fbSettings.notify_medium;
+        return fbSettings.notify_low;
+      })();
+
+      const recipients = (fbSettings?.recipient_emails ?? []).filter(
+        (e: string) => typeof e === 'string' && e.includes('@'),
+      );
+
+      if (!fbSettings?.enabled || !passesSeverity || recipients.length === 0) {
+        fallbackResult = {
+          attempted: true,
+          delivered: 0,
+          recipients: recipients.length,
+          reason: !fbSettings?.enabled
+            ? 'fallback_disabled'
+            : !passesSeverity
+            ? 'severity_filtered'
+            : 'no_recipients',
+        };
+      } else {
+        const fieldsHtml =
+          fields && typeof fields === 'object'
+            ? Object.entries(fields)
+                .map(
+                  ([k, v]) =>
+                    `<tr><td style="padding:4px 12px 4px 0;color:#666"><b>${k}</b></td><td style="padding:4px 0">${String(v)}</td></tr>`,
+                )
+                .join('')
+            : '';
+        const html = `
+<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:640px;margin:0 auto">
+  <div style="border-left:4px solid ${color};padding:16px 20px;background:#fafafa">
+    <h2 style="margin:0 0 8px;color:#111">${emoji} ${title}</h2>
+    <p style="margin:0;color:#333;white-space:pre-wrap">${message}</p>
+  </div>
+  ${fieldsHtml ? `<table style="margin:16px 0;border-collapse:collapse">${fieldsHtml}</table>` : ''}
+  ${url ? `<p><a href="${url}" style="display:inline-block;background:${color};color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none">Abrir no painel</a></p>` : ''}
+  <hr style="border:none;border-top:1px solid #eee;margin:24px 0"/>
+  <p style="font-size:12px;color:#888">
+    Este e-mail foi enviado como <b>fallback</b> porque a entrega via Slack falhou
+    (${event_type} • severidade ${severity} • ${new Date().toISOString()}).
+  </p>
+</div>`;
+
+        try {
+          const emailRes = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              from: Deno.env.get('RESEND_FROM_EMAIL') ?? 'SecureWatch <alerts@securewatch.app>',
+              to: recipients,
+              subject: `[Fallback ${severity.toUpperCase()}] ${title}`,
+              html,
+            }),
+          });
+          if (emailRes.ok) {
+            fallbackResult = {
+              attempted: true,
+              delivered: recipients.length,
+              recipients: recipients.length,
+              reason: 'sent_via_resend',
+            };
+          } else {
+            const body = await emailRes.text().catch(() => '');
+            fallbackResult = {
+              attempted: true,
+              delivered: 0,
+              recipients: recipients.length,
+              error: `HTTP ${emailRes.status} ${body.slice(0, 200)}`,
+            };
+          }
+        } catch (e: any) {
+          fallbackResult = {
+            attempted: true,
+            delivered: 0,
+            recipients: recipients.length,
+            error: String(e?.message ?? e).slice(0, 200),
+          };
+        }
+      }
+    }
+
+    await supabase.from('edge_function_logs').insert({
+      function_name: 'slack-notify:fallback',
+      status: fallbackResult.delivered > 0 ? 200 : 207,
+      duration_ms: Date.now() - startedAt,
+      error_message: fallbackResult.error ?? null,
+      payload_summary: {
+        event_type,
+        severity,
+        slack_matched: targets.length,
+        slack_delivered: delivered,
+        fallback: fallbackResult,
+      },
+    });
+  }
+
   return json({
     ok: true,
     delivered,
@@ -265,5 +393,6 @@ Deno.serve(async (req) => {
     errors,
     auto_paused: autoPaused,
     retries: retryStats,
+    fallback: fallbackResult,
   });
 });
