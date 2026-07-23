@@ -152,12 +152,14 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Log persistente para auditoria e dedup.
+    // Log persistente para auditoria e dedup (schema real da tabela).
     await supabase.from('edge_function_logs').insert({
       function_name: 'escalate-dispute-sla',
-      status: d.severity === 'breached' ? 'error' : 'warning',
-      message: title,
-      metadata: {
+      status: d.severity === 'breached' ? 500 : 200,
+      duration_ms: Date.now() - startedAt,
+      error_message: d.severity === 'breached' ? title : null,
+      payload_summary: {
+        title,
         dedup_key: dedupKey,
         dispute_id: d.id,
         violation_id: d.violation_id,
