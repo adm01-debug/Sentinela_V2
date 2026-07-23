@@ -57,6 +57,7 @@ import { SlackDlqCard } from '@/components/admin/SlackDlqCard';
 import { SlackWebhookMttrCard } from '@/components/admin/SlackWebhookMttrCard';
 import { SlackUptimeHistoryCard } from '@/components/admin/SlackUptimeHistoryCard';
 import { SlackFallbackSettingsCard } from '@/components/admin/SlackFallbackSettingsCard';
+import { SlackFallbackHistoryCard } from '@/components/admin/SlackFallbackHistoryCard';
 
 
 type Severity = 'warning' | 'critical' | 'breached';
