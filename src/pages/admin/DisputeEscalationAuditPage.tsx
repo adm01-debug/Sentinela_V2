@@ -423,7 +423,53 @@ export default function DisputeEscalationAuditPage() {
         </Card>
       </div>
 
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
+            <LineChartIcon className="h-4 w-4 text-primary" />
+            Execuções por hora (últimas 24h)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart data={timeline} margin={{ top: 8, right: 12, bottom: 8, left: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={chartColors.border} />
+              <XAxis dataKey="hour" tick={{ fill: chartColors.muted, fontSize: 11 }} />
+              <YAxis allowDecimals={false} tick={{ fill: chartColors.muted, fontSize: 11 }} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: chartColors.card,
+                  border: `1px solid ${chartColors.border}`,
+                  borderRadius: 8,
+                  color: chartColors.foreground,
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="ok"
+                name="Sucesso"
+                stroke={chartColors.success}
+                strokeWidth={2}
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="fail"
+                name="Falhas"
+                stroke={chartColors.destructive}
+                strokeWidth={2}
+                dot={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+          <p className="text-xs text-muted-foreground mt-2">
+            Gaps consecutivos indicam falha do agendamento pg_cron. Esperado: ~4 execuções/h.
+          </p>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-4 lg:grid-cols-3 mb-6">
+
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-sm font-medium flex items-center gap-2">
