@@ -4630,6 +4630,71 @@ export type Database = {
         }
         Relationships: []
       }
+      slack_notification_dlq: {
+        Row: {
+          attempts: number
+          created_at: string
+          event_type: string
+          fields: Json
+          id: string
+          integration_id: string | null
+          last_error: string
+          last_status: number | null
+          message: string
+          permanent: boolean
+          replay_success: boolean | null
+          replayed_at: string | null
+          replayed_by: string | null
+          severity: string
+          title: string
+          url: string | null
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          event_type: string
+          fields?: Json
+          id?: string
+          integration_id?: string | null
+          last_error: string
+          last_status?: number | null
+          message: string
+          permanent?: boolean
+          replay_success?: boolean | null
+          replayed_at?: string | null
+          replayed_by?: string | null
+          severity: string
+          title: string
+          url?: string | null
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          event_type?: string
+          fields?: Json
+          id?: string
+          integration_id?: string | null
+          last_error?: string
+          last_status?: number | null
+          message?: string
+          permanent?: boolean
+          replay_success?: boolean | null
+          replayed_at?: string | null
+          replayed_by?: string | null
+          severity?: string
+          title?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slack_notification_dlq_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "slack_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       station_block_logs: {
         Row: {
           block_type: string

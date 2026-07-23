@@ -53,6 +53,7 @@ import { toast } from 'sonner';
 import { useChartColors } from '@/hooks/useChartColors';
 import { exportEscalationAuditPdf } from '@/utils/escalationAuditPdf';
 import { SlackIntegrationsCard } from '@/components/admin/SlackIntegrationsCard';
+import { SlackDlqCard } from '@/components/admin/SlackDlqCard';
 
 
 type Severity = 'warning' | 'critical' | 'breached';
@@ -557,8 +558,9 @@ export default function DisputeEscalationAuditPage() {
         </Card>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-6 grid gap-6 lg:grid-cols-2">
         <SlackIntegrationsCard />
+        <SlackDlqCard />
       </div>
 
       <Card>
