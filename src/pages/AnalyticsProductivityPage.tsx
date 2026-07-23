@@ -241,6 +241,8 @@ export default function AnalyticsProductivityPage() {
 
           <WeeklyRankingCard days={Math.max(1, Number(days) || 7)} />
 
+          <WeeklyInsightsCard days={Math.max(1, Number(days) || 7)} />
+
           <div className="grid gap-6 md:grid-cols-2">
 
             <Card>
