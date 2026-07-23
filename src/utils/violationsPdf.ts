@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { colors, drawMetricCard, type RGB } from './pdf/pdfHelpers';
 import type { Violation } from '@/hooks/useViolationsPage';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface ViolationsPdfPayload {
   violations: Violation[];
