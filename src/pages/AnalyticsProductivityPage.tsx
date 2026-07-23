@@ -16,6 +16,7 @@ import { ProductivityCategoryDonut } from '@/components/productivity/Productivit
 import { ProductivityScoreCard } from '@/components/productivity/ProductivityScoreCard';
 import { WeeklyRankingCard } from '@/components/productivity/WeeklyRankingCard';
 import { WeeklyTrendCard } from '@/components/productivity/WeeklyTrendCard';
+import { WeeklyInsightsCard } from '@/components/productivity/WeeklyInsightsCard';
 import { useWeeklyProductivityRanking } from '@/hooks/useWeeklyProductivityRanking';
 import { generateAnalyticsPdf } from '@/utils/analyticsPdf';
 import { SavedFiltersBar } from '@/components/SavedFiltersBar';
