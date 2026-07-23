@@ -40,11 +40,23 @@ import type { SecurityViolation } from '@/hooks/useSecurityViolations';
 type Severity = SecurityViolation['severity'];
 type Status = SecurityViolation['status'];
 
+export interface DrilldownDateRange {
+  from: string; // ISO date (yyyy-MM-dd) inclusive
+  to: string;   // ISO date (yyyy-MM-dd) inclusive
+}
+
 interface ViolationsDrilldownDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  violationType: string | null;
   violations: SecurityViolation[];
+  /** Filtro inicial por tipo. */
+  violationType?: string | null;
+  /** Filtro inicial por severidade. */
+  initialSeverity?: Severity | null;
+  /** Intervalo de datas (inclusive) para restringir. */
+  dateRange?: DrilldownDateRange | null;
+  /** Título override; caso ausente, gerado automaticamente. */
+  titleOverride?: string;
   pageSize?: number;
 }
 
@@ -62,11 +74,21 @@ const STATUS_TOKEN: Record<Status, string> = {
   dismissed: 'bg-muted text-muted-foreground border-border',
 };
 
+const SEVERITY_LABEL: Record<Severity, string> = {
+  low: 'Baixa',
+  medium: 'Média',
+  high: 'Alta',
+  critical: 'Crítica',
+};
+
 export function ViolationsDrilldownDialog({
   open,
   onOpenChange,
-  violationType,
   violations,
+  violationType = null,
+  initialSeverity = null,
+  dateRange = null,
+  titleOverride,
   pageSize = 10,
 }: ViolationsDrilldownDialogProps) {
   const [severity, setSeverity] = useState<Severity | 'all'>('all');
@@ -74,23 +96,29 @@ export function ViolationsDrilldownDialog({
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
 
-  // Reset ao abrir ou mudar de tipo
+  // Reset ao abrir ou mudar contexto de drill-down
   useEffect(() => {
     if (open) {
-      setSeverity('all');
+      setSeverity(initialSeverity ?? 'all');
       setStatus('all');
       setSearch('');
       setPage(1);
     }
-  }, [open, violationType]);
+  }, [open, violationType, initialSeverity, dateRange?.from, dateRange?.to]);
 
   const filtered = useMemo(() => {
-    if (!violationType) return [];
     const term = search.trim().toLowerCase();
+    const fromMs = dateRange ? new Date(`${dateRange.from}T00:00:00`).getTime() : null;
+    const toMs = dateRange ? new Date(`${dateRange.to}T23:59:59.999`).getTime() : null;
+
     return violations.filter((v) => {
-      if (v.violation_type !== violationType) return false;
+      if (violationType && v.violation_type !== violationType) return false;
       if (severity !== 'all' && v.severity !== severity) return false;
       if (status !== 'all' && v.status !== status) return false;
+      if (fromMs !== null && toMs !== null) {
+        const t = new Date(v.created_at).getTime();
+        if (t < fromMs || t > toMs) return false;
+      }
       if (term) {
         const haystack = [
           v.description,
@@ -103,7 +131,7 @@ export function ViolationsDrilldownDialog({
       }
       return true;
     });
-  }, [violations, violationType, severity, status, search]);
+  }, [violations, violationType, severity, status, search, dateRange]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, totalPages);
@@ -112,20 +140,30 @@ export function ViolationsDrilldownDialog({
     currentPage * pageSize,
   );
 
-  // Reset página quando filtros mudam
   useEffect(() => {
     setPage(1);
   }, [severity, status, search]);
+
+  const title = useMemo(() => {
+    if (titleOverride) return titleOverride;
+    if (violationType) return `Violações do tipo: ${violationType}`;
+    if (initialSeverity) return `Violações de severidade: ${SEVERITY_LABEL[initialSeverity]}`;
+    if (dateRange) {
+      return dateRange.from === dateRange.to
+        ? `Violações em ${format(new Date(`${dateRange.from}T00:00:00`), 'dd/MM/yyyy', { locale: ptBR })}`
+        : `Violações entre ${dateRange.from} e ${dateRange.to}`;
+    }
+    return 'Detalhes de violações';
+  }, [titleOverride, violationType, initialSeverity, dateRange]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>
-            Detalhes de violação: <span className="text-primary">{violationType ?? '—'}</span>
-          </DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            {filtered.length} ocorrência{filtered.length === 1 ? '' : 's'} encontrada
+            <span data-testid="drill-count">{filtered.length}</span> ocorrência
+            {filtered.length === 1 ? '' : 's'} encontrada
             {filtered.length === 1 ? '' : 's'} com os filtros atuais.
           </DialogDescription>
         </DialogHeader>
@@ -204,7 +242,7 @@ export function ViolationsDrilldownDialog({
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className={SEVERITY_TOKEN[v.severity]}>
-                        {v.severity}
+                        {SEVERITY_LABEL[v.severity]}
                       </Badge>
                     </TableCell>
                     <TableCell>
