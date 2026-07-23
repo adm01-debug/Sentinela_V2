@@ -6,7 +6,9 @@ import { ActivityChart } from '@/components/ActivityChart';
 import { ActivityTable } from '@/components/ActivityTable';
 import { ApplicationBreakdown } from '@/components/ApplicationBreakdown';
 import { PageHeader } from '@/components/layout/PageHeader';
+import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
 import { format, subDays } from 'date-fns';
+
 
 interface HourlyItem { date: string; value: number; }
 interface AppBreakdown { app: string; duration: number; percentage: number; }
@@ -25,13 +27,23 @@ export const ActivitiesPage = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader 
-        title={t('nav.activities')} 
+      <PageHeader
+        title={t('nav.activities')}
         description="Visualize e analise todas as atividades registradas no sistema."
         showBackButton={false}
-
+        actions={
+          <XlsxExportButton
+            filename="atividades"
+            sheets={[{
+              name: 'Atividades',
+              rows: (activityList as Array<Record<string, unknown>>).map(a => ({ ...a })),
+            }]}
+            disabled={activityList.length === 0}
+          />
+        }
       />
       <ActivityFilters filters={filters} onChange={setFilters} />
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2"><ActivityChart data={summaryObj?.hourlyDistribution || []} /></div>
         <div><ApplicationBreakdown data={summaryObj?.applicationBreakdown || []} /></div>

@@ -5,6 +5,8 @@ import { Loader2, Plus, FileText, AlertCircle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
+
 
 interface ReportItem {
   id: string;
@@ -44,11 +46,27 @@ export const ReportsPage = () => {
         description="Gere e visualize relatórios detalhados de atividades e produtividade."
         showBackButton={false}
         actions={
-          <Button onClick={() => navigate('/reports/custom')} className="gap-2 h-9">
-            <Plus className="h-4 w-4" />
-            Novo Relatório
-          </Button>
+          <div className="flex gap-2">
+            <XlsxExportButton
+              filename="relatorios"
+              sheets={[{
+                name: 'Relatórios',
+                rows: reports.map(r => ({
+                  Nome: r.name || r.report_type || 'Sem título',
+                  Tipo: r.report_type ?? '',
+                  Status: STATUS_LABEL[r.status ?? 'pending'] ?? r.status ?? '',
+                  'Criado em': r.created_at ? new Date(r.created_at).toLocaleString('pt-BR') : '',
+                })),
+              }]}
+              disabled={reports.length === 0}
+            />
+            <Button onClick={() => navigate('/reports/custom')} className="gap-2 h-9">
+              <Plus className="h-4 w-4" />
+              Novo Relatório
+            </Button>
+          </div>
         }
+
       />
 
       {isLoading ? (

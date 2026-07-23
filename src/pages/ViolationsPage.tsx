@@ -11,7 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
+import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
 import { useViolationsPage, type Violation, type ViolationStatus } from '@/hooks/useViolationsPage';
+
 import { useChartColors } from '@/hooks/useChartColors';
 import {
   BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area,
@@ -100,7 +102,23 @@ export default function ViolationsPage() {
           <h1 className="text-2xl font-bold">Violações de Segurança</h1>
           <p className="text-muted-foreground mt-1">Gerencie incidentes e violações de políticas</p>
         </div>
+        <XlsxExportButton
+          filename="violacoes"
+          sheets={[{
+            name: 'Violações',
+            rows: violations.map(v => ({
+              Funcionário: v.employee_name,
+              Tipo: VIOLATION_TYPES.find(t => t.value === v.violation_type)?.label || v.violation_type,
+              Severidade: v.severity,
+              Status: v.status,
+              Descrição: v.description || '',
+              Data: format(new Date(v.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR }),
+            })),
+          }]}
+          disabled={violations.length === 0}
+        />
       </div>
+
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
