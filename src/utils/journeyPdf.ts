@@ -14,18 +14,24 @@ interface JourneyPdfPayload {
   employeeName: string;
   date: string; // yyyy-MM-dd
   events: JourneyEvent[];
-  summary?: JourneySummary;
+  summary?: DailyJourneySummary;
 }
 
-const eventTypeLabel = (type: JourneyEvent['type']): string => {
-  switch (type) {
-    case 'check_in': return 'Check-in';
-    case 'check_out': return 'Check-out';
+const kindLabel = (kind: JourneyEvent['kind']): string => {
+  switch (kind) {
+    case 'presence': return 'Presença';
+    case 'application': return 'Aplicação';
+    case 'idle': return 'Ociosidade';
     case 'violation': return 'Violação';
-    case 'activity': return 'Atividade';
     case 'screenshot': return 'Screenshot';
-    default: return type;
+    default: return kind;
   }
+};
+
+const minutesToTime = (mins: number): string => {
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 };
 
 export const generateJourneyPdf = ({ employeeName, date, events, summary }: JourneyPdfPayload): void => {
