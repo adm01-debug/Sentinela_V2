@@ -13,7 +13,7 @@ import {
 import { format, subDays, startOfDay, eachDayOfInterval } from 'date-fns';
 import { useChartColors } from '@/hooks/useChartColors';
 import { ptBR } from 'date-fns/locale';
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -21,21 +21,27 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
-
-interface Violation {
-  id: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  created_at: string;
-}
+import type { SecurityViolation } from '@/hooks/useSecurityViolations';
+import { ViolationsDrilldownDialog } from './ViolationsDrilldownDialog';
 
 interface ViolationsTrendChartProps {
-  violations: Violation[];
+  violations: SecurityViolation[];
+  /** Callback opcional quando o usuário clica em um ponto do gráfico. */
+  onDateSelect?: (dateISO: string) => void;
+  /** Desativa o diálogo interno de drill-down. */
+  disableInternalDrilldown?: boolean;
 }
 
 type Period = '7d' | '30d' | '90d';
 
-export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) {
+export function ViolationsTrendChart({
+  violations,
+  onDateSelect,
+  disableInternalDrilldown = false,
+}: ViolationsTrendChartProps) {
   const [period, setPeriod] = useState<Period>('30d');
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
   const { chartData, trend } = useMemo(() => {
     const now = new Date();
@@ -43,13 +49,11 @@ export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) 
     const days = daysMap[period];
     const startDate = startOfDay(subDays(now, days - 1));
 
-    // Get all dates in range
     const dates = eachDayOfInterval({ start: startDate, end: now });
 
-    // Group violations by date and severity
     const grouped = dates.map(date => {
       const dateStr = format(date, 'yyyy-MM-dd');
-      const dayViolations = violations.filter(v => 
+      const dayViolations = violations.filter(v =>
         format(new Date(v.created_at), 'yyyy-MM-dd') === dateStr
       );
 
@@ -64,24 +68,23 @@ export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) 
       };
     });
 
-    // Calculate trend (compare last half with first half)
     const midpoint = Math.floor(grouped.length / 2);
     const firstHalf = grouped.slice(0, midpoint);
     const secondHalf = grouped.slice(midpoint);
-    
+
     const firstHalfTotal = firstHalf.reduce((sum, d) => sum + d.total, 0);
     const secondHalfTotal = secondHalf.reduce((sum, d) => sum + d.total, 0);
-    
+
     let trendValue: 'up' | 'down' | 'stable' = 'stable';
     let trendPercent = 0;
-    
+
     if (firstHalfTotal > 0) {
       trendPercent = Math.round(((secondHalfTotal - firstHalfTotal) / firstHalfTotal) * 100);
       if (trendPercent > 5) trendValue = 'up';
       else if (trendPercent < -5) trendValue = 'down';
     }
 
-    return { 
+    return {
       chartData: grouped,
       trend: { direction: trendValue, percent: Math.abs(trendPercent) }
     };
@@ -91,6 +94,17 @@ export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) 
 
   const TrendIcon = trend.direction === 'up' ? TrendingUp : trend.direction === 'down' ? TrendingDown : Minus;
   const trendColor = trend.direction === 'up' ? 'text-destructive' : trend.direction === 'down' ? 'text-success' : 'text-muted-foreground';
+
+  const handleChartClick = (state: unknown) => {
+    const s = state as { activePayload?: Array<{ payload?: { fullDate?: string } }> } | null;
+    const iso = s?.activePayload?.[0]?.payload?.fullDate;
+    if (!iso) return;
+    onDateSelect?.(iso);
+    if (!disableInternalDrilldown) {
+      setSelectedDate(iso);
+      setOpen(true);
+    }
+  };
 
   return (
     <div className="rounded-xl border border-border bg-card p-6">
@@ -119,7 +133,12 @@ export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) 
       </div>
 
       <ResponsiveContainer width="100%" height={300}>
-        <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+        <AreaChart
+          data={chartData}
+          margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+          onClick={handleChartClick}
+          style={{ cursor: 'pointer' }}
+        >
           <defs>
             <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor={c.primary} stopOpacity={0.3} />
@@ -188,6 +207,15 @@ export function ViolationsTrendChart({ violations }: ViolationsTrendChartProps) 
           />
         </AreaChart>
       </ResponsiveContainer>
+
+      {!disableInternalDrilldown && (
+        <ViolationsDrilldownDialog
+          open={open}
+          onOpenChange={setOpen}
+          dateRange={selectedDate ? { from: selectedDate, to: selectedDate } : null}
+          violations={violations}
+        />
+      )}
     </div>
   );
 }
