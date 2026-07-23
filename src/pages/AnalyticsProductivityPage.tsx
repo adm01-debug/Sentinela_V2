@@ -18,7 +18,15 @@ import { WeeklyRankingCard } from '@/components/productivity/WeeklyRankingCard';
 import { WeeklyTrendCard } from '@/components/productivity/WeeklyTrendCard';
 import { useWeeklyProductivityRanking } from '@/hooks/useWeeklyProductivityRanking';
 import { generateAnalyticsPdf } from '@/utils/analyticsPdf';
+import { SavedFiltersBar } from '@/components/SavedFiltersBar';
 import { toast } from 'sonner';
+
+const QUICK_PRESETS: Array<{ label: string; days: string }> = [
+  { label: 'Hoje', days: '1' },
+  { label: 'Semana', days: '7' },
+  { label: 'Mês', days: '30' },
+  { label: 'Trimestre', days: '90' },
+];
 
 
 interface PerformerItem {
@@ -93,6 +101,17 @@ export default function AnalyticsProductivityPage() {
     setDays('7');
   };
 
+  const currentFilters = useMemo(
+    () => ({ days, employeeName, device }),
+    [days, employeeName, device],
+  );
+
+  const handleApplySavedFilter = (f: Record<string, unknown>) => {
+    if (typeof f.days === 'string') setDays(f.days);
+    if (typeof f.employeeName === 'string') setEmployeeName(f.employeeName);
+    if (typeof f.device === 'string') setDevice(f.device);
+  };
+
 
   return (
     <div className="p-6 space-y-6">
@@ -105,7 +124,28 @@ export default function AnalyticsProductivityPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
+          <div className="flex flex-wrap items-center gap-2 rounded-lg border bg-card p-3">
+            <span className="text-xs font-medium text-muted-foreground mr-1">Períodos rápidos:</span>
+            {QUICK_PRESETS.map((p) => (
+              <Button
+                key={p.days}
+                size="sm"
+                variant={days === p.days ? 'default' : 'outline'}
+                onClick={() => setDays(p.days)}
+              >
+                {p.label}
+              </Button>
+            ))}
+            <div className="mx-2 h-6 w-px bg-border" />
+            <SavedFiltersBar
+              module="analytics-productivity"
+              currentFilters={currentFilters}
+              onApplyFilter={handleApplySavedFilter}
+            />
+          </div>
+
           <div className="flex flex-wrap items-end gap-3 rounded-lg border bg-card p-4">
+
             <div className="grid gap-1">
               <Label htmlFor="prod-range" className="text-xs text-muted-foreground">Período</Label>
               <Select value={days} onValueChange={setDays}>
