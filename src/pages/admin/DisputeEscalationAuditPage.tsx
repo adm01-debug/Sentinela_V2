@@ -93,6 +93,8 @@ export default function DisputeEscalationAuditPage() {
   const queryClient = useQueryClient();
   const chartColors = useChartColors();
   const [invoking, setInvoking] = useState(false);
+  const [severityFilter, setSeverityFilter] = useState<'all' | Severity>('all');
+
 
   const { data, isLoading } = useQuery({
     queryKey: ['dispute-escalation-audit'],
