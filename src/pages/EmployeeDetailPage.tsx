@@ -5,6 +5,7 @@ import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { DailyJourneyTimeline } from '@/components/timeline/DailyJourneyTimeline';
 import { ScreenshotViewerDialog } from '@/components/timeline/ScreenshotViewerDialog';
+import { ViolationDetailDialog } from '@/components/violations/ViolationDetailDialog';
 import { TeamComparisonCard } from '@/components/timeline/TeamComparisonCard';
 import { useDailyJourney } from '@/hooks/useDailyJourney';
 import { useTeamProductivityAverage } from '@/hooks/useTeamProductivityAverage';
