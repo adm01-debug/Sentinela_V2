@@ -184,6 +184,51 @@ export function ViolationDetailDialog({ violationId, open, onOpenChange }: Props
                 <p className="mt-1 text-sm text-foreground whitespace-pre-wrap">{data.resolution_notes}</p>
               </div>
             )}
+
+            <div className="rounded-md border p-3 space-y-2">
+              <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                Ciência do Colaborador (LGPD)
+              </div>
+              {data.employee_acknowledged_at ? (
+                <div className="space-y-1">
+                  <Badge className="bg-success/15 text-success gap-1">
+                    <ShieldCheck className="h-3 w-3" /> Ciente
+                  </Badge>
+                  <div className="text-xs text-muted-foreground">
+                    Confirmado em{' '}
+                    {format(new Date(data.employee_acknowledged_at), "dd/MM/yyyy 'às' HH:mm:ss", { locale: ptBR })}
+                    {data.employee_ack_device ? ` · ${data.employee_ack_device}` : ''}
+                    {data.employee_ack_ip ? ` · IP ${data.employee_ack_ip}` : ''}
+                  </div>
+                  {data.employee_ack_reason && (
+                    <div className="text-xs text-foreground">
+                      <span className="text-muted-foreground">Justificativa: </span>
+                      {data.employee_ack_reason}
+                    </div>
+                  )}
+                  {data.employee_ack_signature && (
+                    <div className="text-[10px] font-mono text-muted-foreground break-all">
+                      SHA-256: {data.employee_ack_signature}
+                    </div>
+                  )}
+                </div>
+              ) : data.employee_notified_at ? (
+                <div>
+                  <Badge className="bg-warning/15 text-warning gap-1">
+                    <Clock className="h-3 w-3" /> Notificado, aguardando ciência
+                  </Badge>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Aviso exibido em{' '}
+                    {format(new Date(data.employee_notified_at), "dd/MM/yyyy 'às' HH:mm:ss", { locale: ptBR })}
+                  </div>
+                </div>
+              ) : (
+                <Badge variant="outline" className="gap-1">
+                  <BellOff className="h-3 w-3" /> Não notificado (agente offline)
+                </Badge>
+              )}
+            </div>
+
           </div>
         )}
       </DialogContent>
