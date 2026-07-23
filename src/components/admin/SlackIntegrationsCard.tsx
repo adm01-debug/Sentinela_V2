@@ -88,9 +88,10 @@ export function SlackIntegrationsCard() {
   const companyName = (id: string | null) =>
     id ? companies.find((c) => c.id === id)?.name ?? 'Empresa desconhecida' : 'Global (todas)';
 
-
+  const { data: integrations = [], isLoading } = useQuery({
     queryKey: ['slack-integrations'],
     queryFn: async () => {
+
       const { data, error } = await supabase
         .from('slack_integrations')
         .select('*')
