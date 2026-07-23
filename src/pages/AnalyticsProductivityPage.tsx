@@ -1,8 +1,12 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { useProductivityAnalytics } from '@/hooks/useAnalytics';
+import { AppCategoryManager } from '@/components/productivity/AppCategoryManager';
+import { ProductivityCategoryDonut } from '@/components/productivity/ProductivityCategoryDonut';
+import { ProductivityScoreCard } from '@/components/productivity/ProductivityScoreCard';
 
 interface PerformerItem {
   id: string;
