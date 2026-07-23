@@ -2440,6 +2440,114 @@ export type Database = {
         }
         Relationships: []
       }
+      live_view_audit: {
+        Row: {
+          company_id: string
+          created_at: string
+          event: string
+          id: string
+          payload: Json
+          session_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          event: string
+          id?: string
+          payload?: Json
+          session_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          event?: string
+          id?: string
+          payload?: Json
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_view_audit_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_view_audit_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "live_view_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_view_sessions: {
+        Row: {
+          agent_id: string
+          company_id: string
+          consent_granted: boolean | null
+          consent_required: boolean
+          created_at: string
+          end_reason: string | null
+          ended_at: string | null
+          id: string
+          ip: string | null
+          requested_by: string
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          agent_id: string
+          company_id: string
+          consent_granted?: boolean | null
+          consent_required?: boolean
+          created_at?: string
+          end_reason?: string | null
+          ended_at?: string | null
+          id?: string
+          ip?: string | null
+          requested_by: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          agent_id?: string
+          company_id?: string
+          consent_granted?: boolean | null
+          consent_required?: boolean
+          created_at?: string
+          end_reason?: string | null
+          ended_at?: string | null
+          id?: string
+          ip?: string | null
+          requested_by?: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_view_sessions_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agent_keys"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_view_sessions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       login_security_events: {
         Row: {
           created_at: string
