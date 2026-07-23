@@ -53,6 +53,8 @@ export default function ViolationsPage() {
 
   useViolationsRealtime();
 
+  const [timelineId, setTimelineId] = useState<string | null>(null);
+
   const colors = useChartColors();
 
 
