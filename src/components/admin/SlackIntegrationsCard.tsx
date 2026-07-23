@@ -298,13 +298,20 @@ export function SlackIntegrationsCard() {
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-medium">{i.name}</span>
-                    <Badge variant={i.is_active ? 'default' : 'secondary'}>
-                      {i.is_active ? 'Ativa' : 'Pausada'}
-                    </Badge>
+                    {i.auto_paused_at ? (
+                      <Badge variant="destructive" className="gap-1">
+                        <PauseCircle className="h-3 w-3" />
+                        Auto-pausada
+                      </Badge>
+                    ) : (
+                      <Badge variant={i.is_active ? 'default' : 'secondary'}>
+                        {i.is_active ? 'Ativa' : 'Pausada'}
+                      </Badge>
+                    )}
                     {i.failure_count > 0 && (
                       <Badge variant="destructive" className="gap-1">
                         <AlertTriangle className="h-3 w-3" />
-                        {i.failure_count} falhas
+                        {i.failure_count}/{i.auto_pause_threshold} falhas
                       </Badge>
                     )}
                     {i.last_success_at && (
@@ -320,7 +327,12 @@ export function SlackIntegrationsCard() {
                   <p className="mt-1 truncate font-mono text-xs text-muted-foreground">
                     {maskWebhook(i.webhook_url)}
                   </p>
-                  {i.last_error && (
+                  {i.auto_pause_reason && (
+                    <p className="mt-1 text-xs text-destructive">
+                      Auto-pausa: {i.auto_pause_reason}
+                    </p>
+                  )}
+                  {i.last_error && !i.auto_pause_reason && (
                     <p className="mt-1 text-xs text-destructive">Último erro: {i.last_error}</p>
                   )}
                 </div>
@@ -331,7 +343,7 @@ export function SlackIntegrationsCard() {
                       severityMutation.mutate({ id: i.id, min_severity: v as Severity })
                     }
                   >
-                    <SelectTrigger className="w-[150px]">
+                    <SelectTrigger className="w-[130px]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -340,13 +352,42 @@ export function SlackIntegrationsCard() {
                       <SelectItem value="breached">Violado</SelectItem>
                     </SelectContent>
                   </Select>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <Label htmlFor={`th-${i.id}`} className="text-xs text-muted-foreground">
+                      Limite
+                    </Label>
+                    <Input
+                      id={`th-${i.id}`}
+                      type="number"
+                      min={1}
+                      max={100}
+                      className="w-16"
+                      defaultValue={i.auto_pause_threshold}
+                      onBlur={(e) => {
+                        const v = Math.max(1, Math.min(100, Number(e.target.value) || 5));
+                        if (v !== i.auto_pause_threshold) {
+                          thresholdMutation.mutate({ id: i.id, auto_pause_threshold: v });
+                        }
+                      }}
+                    />
+                  </div>
+                  {i.auto_paused_at ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => reactivateMutation.mutate(i.id)}
+                      disabled={reactivateMutation.isPending}
+                    >
+                      <RotateCcw className="h-4 w-4" />
+                      Reativar
+                    </Button>
+                  ) : (
                     <Switch
                       checked={i.is_active}
                       onCheckedChange={(v) => toggleMutation.mutate({ id: i.id, is_active: v })}
                       aria-label="Ativar integração"
                     />
-                  </div>
+                  )}
                   <Button
                     variant="outline"
                     size="sm"
@@ -379,8 +420,9 @@ export function SlackIntegrationsCard() {
         )}
 
         <p className="text-xs text-muted-foreground">
-          Somente severidade igual ou acima do mínimo dispara mensagens. Falhas consecutivas são
-          contabilizadas mas não desativam a integração automaticamente — use o toggle para pausar.
+          Somente severidade igual ou acima do mínimo dispara mensagens. Ao atingir o limite de
+          falhas consecutivas (ou receber HTTP 400/403/404/410 do Slack), a integração é
+          <strong> pausada automaticamente</strong> — reative manualmente após corrigir o webhook.
         </p>
       </CardContent>
     </Card>
