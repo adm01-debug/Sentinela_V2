@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, TrendingDown, Minus, Loader2, X } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Loader2, X, FileDown } from 'lucide-react';
 import { useProductivityAnalytics } from '@/hooks/useAnalytics';
 import { useCompanyAppUsage } from '@/hooks/useCompanyAppUsage';
 import { useEmployees, type EmployeeWithDetails } from '@/hooks/useEmployees';
@@ -15,6 +15,10 @@ import { AppCategoryManager } from '@/components/productivity/AppCategoryManager
 import { ProductivityCategoryDonut } from '@/components/productivity/ProductivityCategoryDonut';
 import { ProductivityScoreCard } from '@/components/productivity/ProductivityScoreCard';
 import { WeeklyRankingCard } from '@/components/productivity/WeeklyRankingCard';
+import { WeeklyTrendCard } from '@/components/productivity/WeeklyTrendCard';
+import { useWeeklyProductivityRanking } from '@/hooks/useWeeklyProductivityRanking';
+import { generateAnalyticsPdf } from '@/utils/analyticsPdf';
+import { toast } from 'sonner';
 
 
 interface PerformerItem {
@@ -67,6 +71,7 @@ export default function AnalyticsProductivityPage() {
     employeeName: employeeName === 'all' ? undefined : employeeName,
     device: device.trim() || undefined,
   });
+  const { data: ranking } = useWeeklyProductivityRanking(Math.max(1, Number(days) || 7));
 
   const getTrendIcon = (trend: number) => {
     if (trend > 0) return <TrendingUp className="h-4 w-4 text-success" />;
@@ -134,12 +139,50 @@ export default function AnalyticsProductivityPage() {
                 className="w-44"
               />
             </div>
-            {hasFilters && (
-              <Button variant="ghost" size="sm" onClick={clearFilters} className="ml-auto">
-                <X className="mr-1 h-3.5 w-3.5" /> Limpar
+            <div className="ml-auto flex items-center gap-2">
+              {hasFilters && (
+                <Button variant="ghost" size="sm" onClick={clearFilters}>
+                  <X className="mr-1 h-3.5 w-3.5" /> Limpar
+                </Button>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const productive = usage
+                    .filter((u) => (u.app ?? '').toLowerCase().length > 0)
+                    .reduce((acc, u) => acc + (u.duration ?? 0), 0);
+                  generateAnalyticsPdf({
+                    periodLabel: RANGE_OPTIONS.find((o) => o.value === days)?.label ?? `Últimos ${days} dias`,
+                    filters: {
+                      employee: employeeName === 'all' ? undefined : employeeName,
+                      device: device.trim() || undefined,
+                    },
+                    score: {
+                      productiveSeconds: productive,
+                      neutralSeconds: idleSeconds,
+                      unproductiveSeconds: 0,
+                      idleSeconds,
+                    },
+                    topApps: usage.slice(0, 15).map((u) => ({ name: u.app, seconds: u.duration })),
+                    ranking: ranking?.entries ?? [],
+                    teamAverageScore: ranking?.teamAverageScore ?? 0,
+                  });
+                  toast.success('Relatório PDF gerado com sucesso');
+                }}
+                disabled={isLoadingUsage}
+              >
+                <FileDown className="mr-2 h-4 w-4" /> Exportar PDF
               </Button>
-            )}
+            </div>
           </div>
+
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <WeeklyTrendCard days={Math.max(1, Number(days) || 7)} />
+            <WeeklyRankingCard days={Math.max(1, Number(days) || 7)} limit={5} />
+          </div>
+
 
 
           {isLoadingUsage ? (

@@ -5,6 +5,7 @@ import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
 import { DailyJourneyTimeline } from '@/components/timeline/DailyJourneyTimeline';
 import { ScreenshotViewerDialog } from '@/components/timeline/ScreenshotViewerDialog';
+import { ViolationDetailDialog } from '@/components/violations/ViolationDetailDialog';
 import { TeamComparisonCard } from '@/components/timeline/TeamComparisonCard';
 import { useDailyJourney } from '@/hooks/useDailyJourney';
 import { useTeamProductivityAverage } from '@/hooks/useTeamProductivityAverage';
@@ -28,6 +29,7 @@ export default function EmployeeDetailPage() {
 
   const [journeyDate, setJourneyDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
   const [screenshotId, setScreenshotId] = useState<string | null>(null);
+  const [violationId, setViolationId] = useState<string | null>(null);
   const shiftDay = (delta: number) =>
     setJourneyDate((d) => format(addDays(parseISO(d), delta), 'yyyy-MM-dd'));
 
@@ -129,10 +131,16 @@ export default function EmployeeDetailPage() {
             date={journeyDate}
             events={journeyEvents}
             onScreenshotClick={(id) => setScreenshotId(id)}
+            onViolationClick={(id) => setViolationId(id)}
           />
           <ScreenshotViewerDialog
             screenshotId={screenshotId}
             onOpenChange={(open) => !open && setScreenshotId(null)}
+          />
+          <ViolationDetailDialog
+            violationId={violationId}
+            open={!!violationId}
+            onOpenChange={(open) => !open && setViolationId(null)}
           />
           {journeySummary && journeySummary.topApps.length > 0 && (
             <div className="rounded-lg border bg-card p-4">
