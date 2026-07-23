@@ -181,6 +181,7 @@ export const AppRoutes = () => (
         <Route path="/admin/edge-functions" element={<EdgeFunctionDashboard />} />
         <Route path="/organization/chart" element={<OrgChartPage />} />
         <Route path="/docs/api" element={<ApiDocsPage />} />
+        <Route path="/verify-report" element={<VerifyReportPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
