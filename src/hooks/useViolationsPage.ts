@@ -52,7 +52,7 @@ export function useViolationsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('security_violations')
-        .select('id, employee_name, violation_type, severity, description, status, resolution_notes, resolved_at, resolved_by, created_at, read')
+        .select('id, employee_name, violation_type, severity, description, status, resolution_notes, resolved_at, resolved_by, created_at, read, screenshot_url')
         .order('created_at', { ascending: false })
         .limit(200);
       if (error) throw error;
