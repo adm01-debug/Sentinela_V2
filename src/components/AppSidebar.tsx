@@ -6,7 +6,8 @@ import {
   BarChart3, Shield, Monitor, Camera, Globe, Calendar, Gamepad2,
   Building2, UserCog, ScrollText, Smartphone, MapPin, Clock, Download,
   Key, Webhook, MessageSquare, Brain, FolderKanban, Timer, ClipboardList,
-  UserCheck, BarChart, ChevronDown, LogOut, Link2, ShieldCheck, FileCheck
+  UserCheck, BarChart, ChevronDown, LogOut, Link2, ShieldCheck, FileCheck, DownloadCloud
+
 } from 'lucide-react';
 import { useUIStore } from '@/stores';
 import { useAuth } from '@/hooks/useAuth';
@@ -117,7 +118,9 @@ const navSections: NavSection[] = [
     items: [
       { icon: Settings, labelKey: 'nav.settings', path: ROUTES.SETTINGS },
       { icon: Key, labelKey: 'nav.apiKeys', path: ROUTES.SETTINGS_API },
+      { icon: DownloadCloud, labelKey: 'Onboarding do Agente', path: '/agents/onboarding' },
     ],
+
   },
 ];
 
