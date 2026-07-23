@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
 import { useViolationsPage, type Violation, type ViolationStatus } from '@/hooks/useViolationsPage';
+import { useViolationsRealtime } from '@/hooks/useViolationsRealtime';
 
 import { useChartColors } from '@/hooks/useChartColors';
 import {
@@ -49,7 +50,10 @@ export default function ViolationsPage() {
     VIOLATION_TYPES,
   } = useViolationsPage();
 
+  useViolationsRealtime();
+
   const colors = useChartColors();
+
 
   // Severity chart data
   const severityChartData = useMemo(() => [
