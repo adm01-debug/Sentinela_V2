@@ -42,7 +42,14 @@ interface SlackIntegration {
   auto_paused_at: string | null;
   auto_pause_reason: string | null;
   created_at: string;
+  company_id: string | null;
 }
+
+interface CompanyOption {
+  id: string;
+  name: string;
+}
+
 
 const EVENT_TYPES = [{ value: 'dispute_sla_escalation', label: 'Escalação de SLA de contestação' }];
 
