@@ -118,7 +118,9 @@ const navSections: NavSection[] = [
     items: [
       { icon: Settings, labelKey: 'nav.settings', path: ROUTES.SETTINGS },
       { icon: Key, labelKey: 'nav.apiKeys', path: ROUTES.SETTINGS_API },
+      { icon: DownloadCloud, labelKey: 'Onboarding do Agente', path: '/agents/onboarding' },
     ],
+
   },
 ];
 
