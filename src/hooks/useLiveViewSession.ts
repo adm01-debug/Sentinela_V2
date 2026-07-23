@@ -58,6 +58,8 @@ export function useLiveViewSession(agentId: string | undefined): UseLiveViewSess
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [metrics, setMetrics] = useState<LiveViewMetrics>(DEFAULT_METRICS);
+  const [consent, setConsent] = useState<ConsentInfo>({ state: 'pending', reason: null, decidedAt: null });
+
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const pcRef = useRef<RTCPeerConnection | null>(null);
