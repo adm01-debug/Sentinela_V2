@@ -7,7 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Mail, Plus, X, AlertCircle } from 'lucide-react';
+import { Mail, Plus, X, AlertCircle, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 
 const SETTING_TYPE = 'slack_fallback';
