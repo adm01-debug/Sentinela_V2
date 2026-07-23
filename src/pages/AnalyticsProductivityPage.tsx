@@ -71,6 +71,10 @@ export default function AnalyticsProductivityPage() {
     employeeName: employeeName === 'all' ? undefined : employeeName,
     device: device.trim() || undefined,
   });
+  const { data: ranking } = useWeeklyProductivityRanking(Math.max(1, Number(days) || 7));
+    employeeName: employeeName === 'all' ? undefined : employeeName,
+    device: device.trim() || undefined,
+  });
 
   const getTrendIcon = (trend: number) => {
     if (trend > 0) return <TrendingUp className="h-4 w-4 text-success" />;
