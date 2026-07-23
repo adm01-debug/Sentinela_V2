@@ -2,11 +2,13 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Loader2 } from 'lucide-react';
 import { useProductivityAnalytics } from '@/hooks/useAnalytics';
+import { useCompanyAppUsage } from '@/hooks/useCompanyAppUsage';
 import { AppCategoryManager } from '@/components/productivity/AppCategoryManager';
 import { ProductivityCategoryDonut } from '@/components/productivity/ProductivityCategoryDonut';
 import { ProductivityScoreCard } from '@/components/productivity/ProductivityScoreCard';
+
 
 interface PerformerItem {
   id: string;
@@ -32,6 +34,7 @@ interface MetricItem {
 
 export default function AnalyticsProductivityPage() {
   const { data } = useProductivityAnalytics();
+  const { data: appUsage, isLoading: isLoadingUsage } = useCompanyAppUsage(7);
 
   const getTrendIcon = (trend: number) => {
     if (trend > 0) return <TrendingUp className="h-4 w-4 text-success" />;
@@ -43,13 +46,8 @@ export default function AnalyticsProductivityPage() {
   const byDepartment = (data?.byDepartment || []) as DepartmentItem[];
   const metrics = (data?.metrics || []) as MetricItem[];
 
-  // Sample usage data for the category donut/score (in real use, plug into activity aggregations)
-  const sampleUsage = [
-    { app: 'chrome.exe', duration: 3600 },
-    { app: 'vscode.exe', duration: 5400 },
-    { app: 'slack.exe', duration: 1800 },
-    { app: 'instagram.com', duration: 900 },
-  ];
+  const usage = appUsage?.usage ?? [];
+  const idleSeconds = appUsage?.idleSeconds ?? 0;
 
   return (
     <div className="p-6 space-y-6">
@@ -62,12 +60,18 @@ export default function AnalyticsProductivityPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-3">
-            <ProductivityScoreCard usage={sampleUsage} idleSeconds={1200} />
-            <div className="md:col-span-2">
-              <ProductivityCategoryDonut usage={sampleUsage} />
+          {isLoadingUsage ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
             </div>
-          </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-3">
+              <ProductivityScoreCard usage={usage} idleSeconds={idleSeconds} />
+              <div className="md:col-span-2">
+                <ProductivityCategoryDonut usage={usage} />
+              </div>
+            </div>
+          )}
 
           <div className="grid gap-6 md:grid-cols-2">
             <Card>

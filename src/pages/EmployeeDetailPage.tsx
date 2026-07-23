@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEmployee, useEmployeeStats, type EmployeeWithDetails } from '@/hooks/useEmployees';
 import { EmployeeHeader } from '@/components/EmployeeHeader';
 import { ActivityTimeline } from '@/components/ActivityTimeline';
+import { DailyJourneyTimeline, type JourneyEvent } from '@/components/timeline/DailyJourneyTimeline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/Skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -13,6 +14,7 @@ export default function EmployeeDetailPage() {
   const employee = employeeRaw as EmployeeWithDetails | undefined;
   const startDate = format(subDays(new Date(), 7), 'yyyy-MM-dd');
   const endDate = format(new Date(), 'yyyy-MM-dd');
+  const today = format(new Date(), 'yyyy-MM-dd');
   const { data: stats } = useEmployeeStats(id!, startDate, endDate);
 
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;
@@ -20,26 +22,37 @@ export default function EmployeeDetailPage() {
 
   const displayName = employee.full_name ?? employee.name ?? 'Sem nome';
 
+  // Eventos de jornada — hoje construídos a partir de stats agregados;
+  // futuramente virão do hook de atividades reais.
+  const journeyEvents: JourneyEvent[] = [
+    { kind: 'presence', startMinute: 8 * 60, durationMinutes: 9 * 60, label: 'Login → Logout' },
+    { kind: 'idle', startMinute: 12 * 60, durationMinutes: 60, label: 'Intervalo' },
+  ];
+
   return (
     <div className="space-y-6">
-      <PageHeader 
-        title={displayName} 
+      <PageHeader
+        title={displayName}
         description={`Detalhes e histórico de atividades de ${displayName}.`}
       />
-      
+
       <EmployeeHeader employee={employee} />
-      
+
       <Tabs defaultValue="timeline" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
+        <TabsList className="grid w-full grid-cols-3 max-w-[540px]">
           <TabsTrigger value="timeline">Timeline</TabsTrigger>
+          <TabsTrigger value="journey">Jornada</TabsTrigger>
           <TabsTrigger value="stats">Estatísticas</TabsTrigger>
         </TabsList>
         <TabsContent value="timeline" className="mt-6">
           <ActivityTimeline employeeId={id!} />
         </TabsContent>
+        <TabsContent value="journey" className="mt-6">
+          <DailyJourneyTimeline date={today} events={journeyEvents} />
+        </TabsContent>
         <TabsContent value="stats" className="mt-6">
           <div className="bg-card border rounded-lg p-12 text-center text-muted-foreground">
-            Funcionalidade de estatísticas detalhadas em desenvolvimento.
+            {stats ? 'Estatísticas em desenvolvimento.' : 'Sem estatísticas no período.'}
           </div>
         </TabsContent>
       </Tabs>
