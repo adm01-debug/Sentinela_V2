@@ -131,10 +131,16 @@ export default function EmployeeDetailPage() {
             date={journeyDate}
             events={journeyEvents}
             onScreenshotClick={(id) => setScreenshotId(id)}
+            onViolationClick={(id) => setViolationId(id)}
           />
           <ScreenshotViewerDialog
             screenshotId={screenshotId}
             onOpenChange={(open) => !open && setScreenshotId(null)}
+          />
+          <ViolationDetailDialog
+            violationId={violationId}
+            open={!!violationId}
+            onOpenChange={(open) => !open && setViolationId(null)}
           />
           {journeySummary && journeySummary.topApps.length > 0 && (
             <div className="rounded-lg border bg-card p-4">
