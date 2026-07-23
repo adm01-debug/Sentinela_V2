@@ -73,6 +73,26 @@ export function SlackDlqCard() {
     onError: (e: Error) => toast.error(`Falha no reenvio: ${e.message}`),
   });
 
+  const bulkReplayMutation = useMutation({
+    mutationFn: async (integrationId: string) => {
+      const { data, error } = await supabase.functions.invoke('slack-dlq-bulk-replay', {
+        body: { integration_id: integrationId },
+      });
+      if (error) throw error;
+      return data as { processed: number; succeeded: number; failed: number };
+    },
+    onSuccess: (data) => {
+      toast.success(
+        `Replay em lote concluído: ${data.succeeded}/${data.processed} entregues${
+          data.failed > 0 ? ` • ${data.failed} falharam` : ''
+        }.`,
+      );
+      qc.invalidateQueries({ queryKey: ['slack-dlq'] });
+      qc.invalidateQueries({ queryKey: ['slack-integrations'] });
+    },
+    onError: (e: Error) => toast.error(`Falha no lote: ${e.message}`),
+  });
+
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from('slack_notification_dlq').delete().eq('id', id);
