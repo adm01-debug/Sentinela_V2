@@ -103,6 +103,72 @@ export const generateViolationsPdf = (payload: ViolationsPdfPayload): void => {
   });
   y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 8;
 
+  // Tendência dos últimos 14 dias (mini bar chart embutido)
+  if (violations.length > 0) {
+    const days = 14;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const buckets: { label: string; count: number; crit: number }[] = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date(today); d.setDate(d.getDate() - i);
+      buckets.push({ label: format(d, 'dd/MM'), count: 0, crit: 0 });
+    }
+    const startTs = today.getTime() - (days - 1) * 86400000;
+    violations.forEach(v => {
+      const t = new Date(v.created_at).getTime();
+      const idx = Math.floor((t - startTs) / 86400000);
+      if (idx >= 0 && idx < days) {
+        buckets[idx].count++;
+        if (v.severity === 'critical') buckets[idx].crit++;
+      }
+    });
+    const max = Math.max(1, ...buckets.map(b => b.count));
+    const chartH = 32;
+    const chartW = pageWidth - margin * 2;
+    const barW = (chartW - 8) / days;
+
+    doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+    doc.text(`Tendência dos últimos ${days} dias`, margin, y);
+    y += 4;
+    // eixo base
+    doc.setDrawColor(220, 220, 220); doc.setLineWidth(0.3);
+    doc.line(margin, y + chartH, margin + chartW, y + chartH);
+    buckets.forEach((b, i) => {
+      const x = margin + 4 + i * barW;
+      const h = (b.count / max) * chartH;
+      const critH = (b.crit / max) * chartH;
+      // total
+      doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
+      doc.rect(x, y + chartH - h, barW - 2, h, 'F');
+      // parcela crítica
+      if (critH > 0) {
+        doc.setFillColor(colors.danger[0], colors.danger[1], colors.danger[2]);
+        doc.rect(x, y + chartH - critH, barW - 2, critH, 'F');
+      }
+      // valor
+      if (b.count > 0) {
+        doc.setFontSize(6); doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+        doc.text(String(b.count), x + (barW - 2) / 2, y + chartH - h - 1, { align: 'center' });
+      }
+      // label dia (a cada 2)
+      if (i % 2 === 0) {
+        doc.setFontSize(6); doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
+        doc.text(b.label, x + (barW - 2) / 2, y + chartH + 4, { align: 'center' });
+      }
+    });
+    // legenda
+    doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
+    doc.rect(margin + chartW - 60, y - 3, 3, 3, 'F');
+    doc.setFontSize(7); doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
+    doc.text('Total', margin + chartW - 55, y - 0.5);
+    doc.setFillColor(colors.danger[0], colors.danger[1], colors.danger[2]);
+    doc.rect(margin + chartW - 38, y - 3, 3, 3, 'F');
+    doc.text('Críticas', margin + chartW - 33, y - 0.5);
+    y += chartH + 10;
+  }
+
+
+
   // Corpo — agrupado ou plano
   if (groupByEmployee) {
     const groups = new Map<string, Violation[]>();
