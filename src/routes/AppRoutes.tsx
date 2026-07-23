@@ -187,6 +187,7 @@ export const AppRoutes = () => (
         <Route path="/organization/chart" element={<OrgChartPage />} />
         <Route path="/docs/api" element={<ApiDocsPage />} />
         <Route path="/verify-report" element={<VerifyReportPage />} />
+        <Route path="/agents/onboarding" element={<AdminGuard><AgentOnboardingPage /></AdminGuard>} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
