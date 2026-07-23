@@ -148,6 +148,50 @@ export type Database = {
         }
         Relationships: []
       }
+      app_categories: {
+        Row: {
+          app_identifier: string
+          app_type: string
+          category: string
+          company_id: string
+          created_at: string
+          created_by: string | null
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          app_identifier: string
+          app_type?: string
+          category?: string
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          app_identifier?: string
+          app_type?: string
+          category?: string
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_categories_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       application_rules: {
         Row: {
           category: string

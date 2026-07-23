@@ -76,6 +76,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.0",
     "react-i18next": "^14.0.0",
+    "react-organizational-chart": "^2.2.1",
     "react-resizable-panels": "^4.7.1",
     "react-router-dom": "^6.21.0",
     "recharts": "^2.10.0",

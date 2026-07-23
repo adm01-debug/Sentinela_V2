@@ -76,6 +76,8 @@ const EmployeeRiskProfilePage = lazy(() => import('@/pages/admin/ueba/EmployeeRi
 const UEBASettingsPage = lazy(() => import('@/pages/admin/ueba/UEBASettingsPage'));
 const EdgeFunctionDashboard = lazy(() => import('@/pages/admin/EdgeFunctionDashboard'));
 const ChartSimulationPage = lazy(() => import('@/pages/dev/ChartSimulationPage'));
+const OrgChartPage = lazy(() => import('@/pages/OrgChartPage'));
+const ApiDocsPage = lazy(() => import('@/pages/ApiDocsPage'));
 
 // ============================================================
 // ROUTE GUARDS
@@ -176,6 +178,8 @@ export const AppRoutes = () => (
         <Route path="/admin/ueba/settings" element={<UEBASettingsPage />} />
         <Route path="/admin/ueba/:employeeId" element={<EmployeeRiskProfilePage />} />
         <Route path="/admin/edge-functions" element={<EdgeFunctionDashboard />} />
+        <Route path="/organization/chart" element={<OrgChartPage />} />
+        <Route path="/docs/api" element={<ApiDocsPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
