@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Activity, Loader2, Siren, TrendingUp } from 'lucide-react';
+import { Activity, CalendarClock, Loader2, Siren, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import {
