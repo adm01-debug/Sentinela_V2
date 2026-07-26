@@ -944,6 +944,47 @@ export type Database = {
         }
         Relationships: []
       }
+      data_retention_policies: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          data_type: string
+          id: string
+          is_active: boolean
+          retention_days: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          data_type: string
+          id?: string
+          is_active?: boolean
+          retention_days?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          data_type?: string
+          id?: string
+          is_active?: boolean
+          retention_days?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_retention_policies_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       devices: {
         Row: {
           agent_version: string | null
@@ -3917,6 +3958,157 @@ export type Database = {
           window_start?: string
         }
         Relationships: []
+      }
+      recording_chunks: {
+        Row: {
+          app_name: string | null
+          company_id: string | null
+          created_at: string
+          duration_seconds: number
+          id: string
+          mime_type: string
+          sequence: number
+          session_id: string
+          sha256: string | null
+          size_bytes: number
+          started_at: string
+          storage_path: string
+          window_title: string | null
+        }
+        Insert: {
+          app_name?: string | null
+          company_id?: string | null
+          created_at?: string
+          duration_seconds?: number
+          id?: string
+          mime_type?: string
+          sequence: number
+          session_id: string
+          sha256?: string | null
+          size_bytes?: number
+          started_at: string
+          storage_path: string
+          window_title?: string | null
+        }
+        Update: {
+          app_name?: string | null
+          company_id?: string | null
+          created_at?: string
+          duration_seconds?: number
+          id?: string
+          mime_type?: string
+          sequence?: number
+          session_id?: string
+          sha256?: string | null
+          size_bytes?: number
+          started_at?: string
+          storage_path?: string
+          window_title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recording_chunks_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recording_chunks_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "recording_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recording_sessions: {
+        Row: {
+          authorized_by: string | null
+          chunk_count: number
+          company_id: string | null
+          consent_acknowledged: boolean
+          created_at: string
+          device: string | null
+          device_id: string | null
+          duration_seconds: number
+          employee_id: string | null
+          employee_name: string
+          ended_at: string | null
+          error_summary: string | null
+          expires_at: string | null
+          id: string
+          reason: string | null
+          started_at: string
+          status: string
+          total_bytes: number
+          updated_at: string
+        }
+        Insert: {
+          authorized_by?: string | null
+          chunk_count?: number
+          company_id?: string | null
+          consent_acknowledged?: boolean
+          created_at?: string
+          device?: string | null
+          device_id?: string | null
+          duration_seconds?: number
+          employee_id?: string | null
+          employee_name: string
+          ended_at?: string | null
+          error_summary?: string | null
+          expires_at?: string | null
+          id?: string
+          reason?: string | null
+          started_at?: string
+          status?: string
+          total_bytes?: number
+          updated_at?: string
+        }
+        Update: {
+          authorized_by?: string | null
+          chunk_count?: number
+          company_id?: string | null
+          consent_acknowledged?: boolean
+          created_at?: string
+          device?: string | null
+          device_id?: string | null
+          duration_seconds?: number
+          employee_id?: string | null
+          employee_name?: string
+          ended_at?: string | null
+          error_summary?: string | null
+          expires_at?: string | null
+          id?: string
+          reason?: string | null
+          started_at?: string
+          status?: string
+          total_bytes?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recording_sessions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recording_sessions_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recording_sessions_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       report_signatures: {
         Row: {
