@@ -161,6 +161,9 @@ export default function SessionRecordingsPage() {
         isLoading={eventsLoading}
         onSeek={(offset) => setSeekToOffset(offset)}
       />
+
+      <RecordingStorageCostCard />
+
     </PageLayout>
   );
 }
