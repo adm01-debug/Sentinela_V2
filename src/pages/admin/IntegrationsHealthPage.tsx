@@ -17,6 +17,8 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ChaosCoverageCard } from '@/components/admin/ChaosCoverageCard';
+
 
 type HealthLevel = 'ok' | 'warn' | 'down' | 'off';
 
@@ -322,6 +324,9 @@ export default function IntegrationsHealthPage() {
               <ChannelCard key={c.label} health={c} />
             ))}
           </div>
+
+          <ChaosCoverageCard />
+
         </>
       )}
     </PageLayout>
