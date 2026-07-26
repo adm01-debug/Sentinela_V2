@@ -322,6 +322,9 @@ export default function IntegrationsHealthPage() {
               <ChannelCard key={c.label} health={c} />
             ))}
           </div>
+
+          <ChaosCoverageCard />
+
         </>
       )}
     </PageLayout>
