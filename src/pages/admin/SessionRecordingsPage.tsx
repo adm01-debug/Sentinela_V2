@@ -15,6 +15,8 @@ import { RefreshCw, Clapperboard, HardDrive, TimerReset } from 'lucide-react';
 import { RecordingSessionList } from '@/components/recordings/RecordingSessionList';
 import { RecordingPlayer } from '@/components/recordings/RecordingPlayer';
 import { RecordingEventTimeline } from '@/components/recordings/RecordingEventTimeline';
+import { RecordingStorageCostCard } from '@/components/recordings/RecordingStorageCostCard';
+
 import {
   useRecordingChunks,
   useRecordingSessions,
@@ -161,6 +163,9 @@ export default function SessionRecordingsPage() {
         isLoading={eventsLoading}
         onSeek={(offset) => setSeekToOffset(offset)}
       />
+
+      <RecordingStorageCostCard />
+
     </PageLayout>
   );
 }
