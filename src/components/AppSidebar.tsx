@@ -63,6 +63,7 @@ const navSections: NavSection[] = [
       { icon: Shield, labelKey: 'nav.violations', path: '/violations' },
       { icon: Bell, labelKey: 'nav.alerts', path: ROUTES.ALERTS },
       { icon: Camera, labelKey: 'nav.screenshots', path: ROUTES.SCREENSHOTS },
+      { icon: Video, labelKey: 'Gravações de Sessão', path: '/admin/session-recordings' },
       { icon: Globe, labelKey: 'nav.internetAccess', path: '/internet-access' },
     ],
   },
