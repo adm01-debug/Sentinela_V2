@@ -33,18 +33,19 @@ type Channel =
 
 interface TransferEvent {
   file_name: string;
-  file_extension: string | null;
+  file_extension?: string;
   file_size_bytes: number;
-  file_hash: string | null;
-  source_path: string | null;
-  destination_path: string | null;
+  file_hash?: string;
+  source_path?: string;
+  destination_path?: string;
   channel: Channel;
   direction: 'in' | 'out';
-  removable_device_label?: string | null;
-  removable_device_serial?: string | null;
+  removable_device_label?: string;
+  removable_device_serial?: string;
   occurred_at: string;
   metadata: Record<string, unknown>;
 }
+
 
 /** Arquivos maiores que isto têm apenas o prefixo hasheado. */
 const MAX_HASH_BYTES = 32 * 1024 * 1024;
