@@ -146,13 +146,18 @@ export class FileTransferWatcher {
     if (this.watchers.has(dir)) return;
 
     try {
-      const watcher = fs.watch(dir, { recursive: true }, (_event, filename) => {
-        if (!filename) return;
-        const fullPath = path.join(dir, filename.toString());
-        this.scheduleEvent(fullPath, channel, direction, deviceLabel);
-      });
+      const watcher = fs.watch(
+        dir,
+        { recursive: true },
+        (_event: string, filename: string | Buffer | null) => {
+          if (!filename) return;
+          const fullPath = path.join(dir, filename.toString());
+          this.scheduleEvent(fullPath, channel, direction, deviceLabel);
+        },
+      );
 
-      watcher.on('error', (error) => {
+      watcher.on('error', (error: unknown) => {
+
         log.warn(`Watcher error on ${dir}:`, error);
         this.watchers.delete(dir);
         try {
