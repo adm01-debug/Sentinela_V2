@@ -1784,6 +1784,146 @@ export type Database = {
         }
         Relationships: []
       }
+      file_transfers: {
+        Row: {
+          application: string | null
+          channel: string
+          company_id: string | null
+          created_at: string
+          destination_domain: string | null
+          destination_path: string | null
+          device_id: string | null
+          direction: string
+          dlp_incident_id: string | null
+          dlp_policy_id: string | null
+          employee_id: string | null
+          file_extension: string | null
+          file_hash: string | null
+          file_name: string
+          file_size_bytes: number
+          id: string
+          metadata: Json
+          occurred_at: string
+          process_name: string | null
+          recording_session_id: string | null
+          removable_device_label: string | null
+          removable_device_serial: string | null
+          sensitivity: string
+          source_path: string | null
+          updated_at: string
+          verdict: string
+          violation_id: string | null
+        }
+        Insert: {
+          application?: string | null
+          channel: string
+          company_id?: string | null
+          created_at?: string
+          destination_domain?: string | null
+          destination_path?: string | null
+          device_id?: string | null
+          direction?: string
+          dlp_incident_id?: string | null
+          dlp_policy_id?: string | null
+          employee_id?: string | null
+          file_extension?: string | null
+          file_hash?: string | null
+          file_name: string
+          file_size_bytes?: number
+          id?: string
+          metadata?: Json
+          occurred_at?: string
+          process_name?: string | null
+          recording_session_id?: string | null
+          removable_device_label?: string | null
+          removable_device_serial?: string | null
+          sensitivity?: string
+          source_path?: string | null
+          updated_at?: string
+          verdict?: string
+          violation_id?: string | null
+        }
+        Update: {
+          application?: string | null
+          channel?: string
+          company_id?: string | null
+          created_at?: string
+          destination_domain?: string | null
+          destination_path?: string | null
+          device_id?: string | null
+          direction?: string
+          dlp_incident_id?: string | null
+          dlp_policy_id?: string | null
+          employee_id?: string | null
+          file_extension?: string | null
+          file_hash?: string | null
+          file_name?: string
+          file_size_bytes?: number
+          id?: string
+          metadata?: Json
+          occurred_at?: string
+          process_name?: string | null
+          recording_session_id?: string | null
+          removable_device_label?: string | null
+          removable_device_serial?: string | null
+          sensitivity?: string
+          source_path?: string | null
+          updated_at?: string
+          verdict?: string
+          violation_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_transfers_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "file_transfers_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "file_transfers_dlp_incident_id_fkey"
+            columns: ["dlp_incident_id"]
+            isOneToOne: false
+            referencedRelation: "dlp_incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "file_transfers_dlp_policy_id_fkey"
+            columns: ["dlp_policy_id"]
+            isOneToOne: false
+            referencedRelation: "dlp_policies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "file_transfers_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "file_transfers_recording_session_id_fkey"
+            columns: ["recording_session_id"]
+            isOneToOne: false
+            referencedRelation: "recording_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "file_transfers_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "security_violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       geo_blocking_settings: {
         Row: {
           block_proxy: boolean

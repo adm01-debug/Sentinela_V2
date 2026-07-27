@@ -7,7 +7,7 @@ import {
   Building2, UserCog, ScrollText, Smartphone, MapPin, Clock, Download,
   Key, Webhook, MessageSquare, Brain, FolderKanban, Timer, ClipboardList,
   UserCheck, BarChart, ChevronDown, LogOut, Link2, ShieldCheck, FileCheck, DownloadCloud,
-  Gavel, ClipboardCheck, Video
+  Gavel, ClipboardCheck, Video, FileSymlink
 } from 'lucide-react';
 import { useUIStore } from '@/stores';
 import { useAuth } from '@/hooks/useAuth';
@@ -64,6 +64,7 @@ const navSections: NavSection[] = [
       { icon: Bell, labelKey: 'nav.alerts', path: ROUTES.ALERTS },
       { icon: Camera, labelKey: 'nav.screenshots', path: ROUTES.SCREENSHOTS },
       { icon: Video, labelKey: 'Gravações de Sessão', path: '/admin/session-recordings' },
+      { icon: FileSymlink, labelKey: 'Transferências de Arquivos', path: '/admin/file-transfers' },
       { icon: Globe, labelKey: 'nav.internetAccess', path: '/internet-access' },
     ],
   },
