@@ -258,24 +258,28 @@ export class FileTransferWatcher {
     const { hash, partial } = this.hashFile(fullPath, stats.size);
     const extension = path.extname(baseName).replace('.', '').toLowerCase() || null;
 
-    this.enqueue({
+    // O schema do servidor usa campos opcionais (não nuláveis): chaves sem
+    // valor são omitidas em vez de enviadas como null.
+    const event: TransferEvent = {
       file_name: baseName,
-      file_extension: extension,
       file_size_bytes: stats.size,
-      file_hash: hash,
-      source_path: direction === 'out' ? fullPath : null,
       destination_path: direction === 'out' ? deviceLabel ?? fullPath : fullPath,
       channel,
       direction,
-      removable_device_label: channel === 'usb' ? deviceLabel : null,
-      removable_device_serial: null,
       occurred_at: new Date(stats.mtimeMs).toISOString(),
       metadata: {
         hostname: os.hostname(),
         platform: process.platform,
         hash_partial: partial,
       },
-    });
+    };
+    if (extension) event.file_extension = extension;
+    if (hash) event.file_hash = hash;
+    if (direction === 'out') event.source_path = fullPath;
+    if (channel === 'usb' && deviceLabel) event.removable_device_label = deviceLabel;
+
+    this.enqueue(event);
+
   }
 
   private hashFile(fullPath: string, size: number): { hash: string | null; partial: boolean } {
