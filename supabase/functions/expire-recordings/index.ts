@@ -11,6 +11,9 @@ const BUCKET = 'session-recordings';
 /** Sessões sem trechos novos por mais de 15 min são consideradas interrompidas. */
 const STALE_MINUTES = 15;
 const MAX_SESSIONS_PER_RUN = 200;
+/** Retenção padrão de eventos de transferência quando não há política cadastrada. */
+const DEFAULT_FILE_TRANSFER_DAYS = 90;
+
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -103,9 +106,64 @@ serve(async (req) => {
       expiredSessions++;
     }
 
-    const summary = { closed_stale: closedStale, expired_sessions: expiredSessions, removed_objects: removedObjects };
+    // 3. Aplica a retenção de transferências de arquivo (por empresa, com padrão global)
+    //    Premissa: `data_retention_policies.company_id IS NULL` representa a política global;
+    //    uma política específica de empresa sempre prevalece sobre ela.
+    const { data: ftPolicies } = await supabase
+      .from('data_retention_policies')
+      .select('company_id, retention_days')
+      .eq('data_type', 'file_transfers')
+      .eq('is_active', true);
+
+    const globalDays =
+      ftPolicies?.find((p) => p.company_id === null)?.retention_days ?? DEFAULT_FILE_TRANSFER_DAYS;
+    const perCompany = (ftPolicies ?? []).filter((p) => p.company_id !== null);
+
+    let purgedFileTransfers = 0;
+
+    for (const policy of perCompany) {
+      const cutoff = new Date(Date.now() - policy.retention_days * 86_400_000).toISOString();
+      const { data: removed, error } = await supabase
+        .from('file_transfers')
+        .delete()
+        .eq('company_id', policy.company_id)
+        .lt('occurred_at', cutoff)
+        .select('id');
+      if (error) {
+        console.error(`Falha ao expurgar file_transfers da empresa ${policy.company_id}: ${error.message}`);
+        continue;
+      }
+      purgedFileTransfers += removed?.length ?? 0;
+    }
+
+    // Empresas sem política própria caem no padrão global.
+    const globalCutoff = new Date(Date.now() - globalDays * 86_400_000).toISOString();
+    let globalQuery = supabase
+      .from('file_transfers')
+      .delete()
+      .lt('occurred_at', globalCutoff);
+    const excluded = perCompany.map((p) => p.company_id as string);
+    if (excluded.length > 0) {
+      globalQuery = globalQuery.or(
+        `company_id.is.null,company_id.not.in.(${excluded.join(',')})`,
+      );
+    }
+    const { data: globalRemoved, error: globalError } = await globalQuery.select('id');
+    if (globalError) {
+      console.error(`Falha no expurgo global de file_transfers: ${globalError.message}`);
+    } else {
+      purgedFileTransfers += globalRemoved?.length ?? 0;
+    }
+
+    const summary = {
+      closed_stale: closedStale,
+      expired_sessions: expiredSessions,
+      removed_objects: removedObjects,
+      purged_file_transfers: purgedFileTransfers,
+    };
     await logger.log(supabase, { status: 200, method: req.method, payload_summary: summary });
     return json({ success: true, ...summary, executed_at: nowIso });
+
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Erro desconhecido';
     await logger.log(supabase, { status: 500, method: req.method, error_message: message });
