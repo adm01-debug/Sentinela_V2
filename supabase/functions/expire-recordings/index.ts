@@ -11,6 +11,9 @@ const BUCKET = 'session-recordings';
 /** Sessões sem trechos novos por mais de 15 min são consideradas interrompidas. */
 const STALE_MINUTES = 15;
 const MAX_SESSIONS_PER_RUN = 200;
+/** Retenção padrão de eventos de transferência quando não há política cadastrada. */
+const DEFAULT_FILE_TRANSFER_DAYS = 90;
+
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
