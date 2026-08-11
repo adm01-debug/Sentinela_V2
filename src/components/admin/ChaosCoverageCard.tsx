@@ -47,8 +47,8 @@ interface ScenarioResult {
   stale: boolean;
 }
 
-function coerceMode(metadata: Record<string, unknown> | null): ChaosMode | null {
-  const raw = metadata?.mode;
+function coerceMode(payload_summary: Record<string, unknown> | null): ChaosMode | null {
+  const raw = payload_summary?.mode;
   if (typeof raw !== 'string') return null;
   return SCENARIOS.some((s) => s.mode === raw) ? (raw as ChaosMode) : null;
 }
@@ -59,7 +59,7 @@ export function ChaosCoverageCard() {
     queryFn: async (): Promise<ScenarioResult[]> => {
       const { data, error } = await supabase
         .from('edge_function_logs')
-        .select('id, created_at, status, duration_ms, error_message, metadata')
+        .select('id, created_at, status, duration_ms, error_message, payload_summary')
         .eq('function_name', 'slack-fallback-test')
         .order('created_at', { ascending: false })
         .limit(200);
@@ -69,7 +69,7 @@ export function ChaosCoverageCard() {
       const now = Date.now();
 
       return SCENARIOS.map((scenario) => {
-        const matching = logs.filter((l) => coerceMode(l.metadata) === scenario.mode);
+        const matching = logs.filter((l) => coerceMode(l.payload_summary) === scenario.mode);
         const last = matching[0] ?? null;
         const durations = matching
           .map((l) => l.duration_ms)

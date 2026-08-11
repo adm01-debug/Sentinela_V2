@@ -52,7 +52,7 @@ export function SlackFallbackSettingsCard() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('edge_function_logs')
-        .select('status, created_at, metadata')
+        .select('status, created_at, payload_summary')
         .eq('function_name', 'slack-fallback-test')
         .order('created_at', { ascending: false })
         .limit(1)
@@ -61,7 +61,7 @@ export function SlackFallbackSettingsCard() {
       return data as {
         status: string;
         created_at: string;
-        metadata: { triggered_by?: string; recipients_count?: number; resend_id?: string | null; error?: string | null };
+        payload_summary: { triggered_by?: string; recipients_count?: number; resend_id?: string | null; error?: string | null };
       } | null;
     },
     refetchInterval: 30_000,
@@ -170,9 +170,9 @@ export function SlackFallbackSettingsCard() {
                 </span>
               </div>
               <p className="text-xs text-muted-foreground">
-                {lastTest.metadata?.recipients_count ?? 0} destinatário(s)
-                {lastTest.metadata?.triggered_by && ` · por ${lastTest.metadata.triggered_by}`}
-                {lastTest.metadata?.error && ` · ${lastTest.metadata.error.slice(0, 80)}`}
+                {lastTest.payload_summary?.recipients_count ?? 0} destinatário(s)
+                {lastTest.payload_summary?.triggered_by && ` · por ${lastTest.payload_summary.triggered_by}`}
+                {lastTest.payload_summary?.error && ` · ${lastTest.payload_summary.error.slice(0, 80)}`}
               </p>
             </div>
           </div>

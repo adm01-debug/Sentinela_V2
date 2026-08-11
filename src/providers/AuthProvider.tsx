@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Session as SupaSession, User as SupaUser } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
@@ -24,6 +24,7 @@ export interface AuthContextType {
   session: SupaSession | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isRoleLoading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -53,29 +54,6 @@ function mapSupabaseUser(supaUser: SupaUser | undefined | null): User | null {
   };
 }
 
-async function checkAdminRole(userId: string): Promise<boolean> {
-  try {
-    const { data, error } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId)
-      .eq('role', 'admin')
-      .maybeSingle();
-    
-    if (error) {
-      // Ignorar erro de "não encontrado" (PGRST116)
-      if (error.code !== 'PGRST116') { 
-         logger.warn(`[AuthProvider] Role check warning for ${userId}:`, error.message);
-      }
-      return false;
-    }
-    return !!data;
-  } catch (err) {
-    logger.error('[AuthProvider] Failed to check admin role:', err);
-    return false;
-  }
-}
-
 // ============================================================
 // PROVIDER
 // ============================================================
@@ -85,41 +63,119 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<SupaSession | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Separate flag for role resolution: stays true until checkAdminRole resolves.
+  // Route guards (SupervisorGuard/AdminGuard) read `isRoleLoading` so they don't
+  // render an early `<Navigate to="/dashboard">` based on a stale `role: 'user'`.
+  const [isRoleLoading, setIsRoleLoading] = useState(true);
+  // Ref accessible inside async callbacks (resolveUser .finally, etc.) to guard
+  // against setting state after the component has unmounted.
+  const mountedRef = useRef(true);
 
   const resolveUser = useCallback(async (supaUser: SupaUser | undefined | null) => {
     if (!supaUser) {
       setUser(null);
+      setIsRoleLoading(false);
+      setIsLoading(false);
       return;
     }
 
     const mapped = mapSupabaseUser(supaUser);
     if (mapped) {
-      const isAdmin = await checkAdminRole(mapped.id);
-      mapped.isAdmin = isAdmin;
-      mapped.role = isAdmin ? 'admin' : (mapped.role === 'admin' ? 'user' : mapped.role || 'user');
+      // Commit the metadata-derived role immediately so route guards have *something*.
+      // Then run the real admin-role query in the background and update the role
+      // if it disagrees. The isRoleLoading flag stays true until either:
+      //   (a) the real query resolves (best case, ~100ms), OR
+      //   (b) the safety timeout fires (3s) — at which point we assume 'user'
+      //        but keep the real query running so it can still update the role.
+      setUser(mapped);
+      setIsRoleLoading(true);
+      setIsLoading(false);
+
+      let queryDone = false;
+      let resolvedIsAdmin = false;
+
+      supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', mapped.id)
+        .eq('role', 'admin')
+        .maybeSingle()
+        .then((res) => {
+          if (res.error && res.error.code !== 'PGRST116') {
+            logger.warn(`[AuthProvider] Role check warning for ${mapped.id}:`, res.error.message);
+          }
+          resolvedIsAdmin = !!res.data;
+        })
+        .catch((err) => {
+          logger.error('[AuthProvider] checkAdminRole failed:', err);
+        })
+        .finally(() => {
+          queryDone = true;
+          if (!mountedRef.current) return;
+          // Always re-commit the user with the truth once the query settles,
+          // even if the timeout already released isRoleLoading.
+          setUser((current) => {
+            if (!current) return current;
+            return {
+              ...current,
+              isAdmin: resolvedIsAdmin,
+              role: resolvedIsAdmin ? 'admin' : (current.role === 'admin' ? 'user' : current.role || 'user'),
+            };
+          });
+          // Only flip isRoleLoading if the timeout hasn't already done it.
+          // The timeout handler is the source of truth for "give up waiting."
+        });
+
+      // Safety net: if the query takes too long, release isRoleLoading so the
+      // UI can render. The query above will still update the role when it lands.
+      setTimeout(() => {
+        if (!queryDone) {
+          logger.warn(`[AuthProvider] Role check timed out for ${mapped.id}; releasing UI`);
+        }
+        if (mountedRef.current) setIsRoleLoading(false);
+      }, 3000);
+    } else {
+      setUser(null);
+      setIsRoleLoading(false);
+      setIsLoading(false);
     }
-    setUser(mapped);
   }, []);
 
+  const isAuthenticated = !!session?.user && !!user && !isRoleLoading;
+
   useEffect(() => {
-    let mounted = true;
+    mountedRef.current = true;
 
     // Initial session check
     const initSession = async () => {
+      // Safety timeout: if getSession() hangs (bad token in localStorage, slow
+      // network, stuck supabase-js), unblock the UI after 8s so the user can
+      // reach the login screen instead of staring at the splash forever.
+      const safetyTimeout = setTimeout(() => {
+        if (mountedRef.current) {
+          logger.warn('[AuthProvider] getSession() timed out after 8s, releasing loading state');
+          setIsLoading(false);
+        }
+      }, 8000);
+
       try {
         const { data, error } = await supabase.auth.getSession();
         if (error) throw error;
-        
-        if (mounted) {
+
+        if (mountedRef.current) {
           setSession(data.session);
           if (data.session?.user) {
             await resolveUser(data.session.user);
+          } else {
+            setUser(null);
+            setIsLoading(false);
           }
         }
       } catch (err) {
         logger.error('[AuthProvider] Initial session error:', err);
+        if (mountedRef.current) setIsLoading(false);
       } finally {
-        if (mounted) setIsLoading(false);
+        clearTimeout(safetyTimeout);
       }
     };
 
@@ -129,19 +185,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
       logger.info(`[AuthProvider] Auth event: ${event}`);
       
-      if (mounted) {
+      if (mountedRef.current) {
         setSession(newSession);
         if (newSession?.user) {
           await resolveUser(newSession.user);
         } else {
           setUser(null);
+          setIsLoading(false);
         }
-        setIsLoading(false);
       }
     });
 
     return () => {
-      mounted = false;
+      mountedRef.current = false;
       subscription.unsubscribe();
     };
   }, [resolveUser]);
@@ -180,13 +236,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value = useMemo<AuthContextType>(() => ({
     user,
     session,
-    isAuthenticated: !!session,
+    isAuthenticated,
     isLoading,
+    isRoleLoading,
     error,
     login,
     logout,
     refresh,
-  }), [user, session, isLoading, error, login, logout, refresh]);
+  }), [user, session, isAuthenticated, isLoading, isRoleLoading, error, login, logout, refresh]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

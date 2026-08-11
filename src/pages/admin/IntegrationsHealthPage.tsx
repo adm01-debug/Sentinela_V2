@@ -42,8 +42,8 @@ const LEVEL_STYLES: Record<HealthLevel, { badge: string; label: string; ring: st
 async function loadSlackHealth(): Promise<ChannelHealth> {
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   const [integrations, dlq, mttr, logs] = await Promise.all([
-    supabase.from('slack_integrations').select('id, is_active, paused_until, last_success_at, last_error_message'),
-    supabase.from('slack_notification_dlq').select('id, status', { count: 'exact', head: false }).eq('status', 'pending'),
+    supabase.from('slack_integrations').select('id, name, is_active, auto_paused_at, last_success_at, last_error'),
+    supabase.from('slack_notification_dlq').select('id, last_status', { count: 'exact', head: false }).eq('last_status', 0),
     supabase.from('slack_webhook_mttr' as never).select('*').limit(1).maybeSingle(),
     supabase
       .from('edge_function_logs')
@@ -55,12 +55,12 @@ async function loadSlackHealth(): Promise<ChannelHealth> {
 
   const rows = integrations.data ?? [];
   const active = rows.filter((r) => r.is_active).length;
-  const paused = rows.filter((r) => r.paused_until && new Date(r.paused_until) > new Date()).length;
+  const paused = rows.filter((r) => r.auto_paused_at && new Date(r.auto_paused_at) > new Date()).length;
   const dlqPending = dlq.count ?? 0;
   const logRows = logs.data ?? [];
   const errors = logRows.filter((l) => (l.status ?? 0) >= 400).length;
   const lastEvent = logRows[0]?.created_at ?? rows[0]?.last_success_at ?? null;
-  const lastError = rows.find((r) => r.last_error_message)?.last_error_message ?? null;
+  const lastError = rows.find((r) => r.last_error)?.last_error ?? null;
   const p95 = (mttr.data as { p95_minutes?: number } | null)?.p95_minutes ?? null;
 
   let level: HealthLevel = 'ok';

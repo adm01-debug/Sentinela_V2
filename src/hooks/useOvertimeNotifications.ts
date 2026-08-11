@@ -22,7 +22,7 @@ export function useOvertimeNotifications() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('overtime_requests')
-        .select('*, employee:employees(full_name)')
+        .select('*, employee:employees(name)')
         .eq('status', 'pending')
         .order('created_at', { ascending: false });
 

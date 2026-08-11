@@ -82,6 +82,7 @@ export const queryKeys = {
   },
   notifications: {
     all: ['notifications'] as const,
+    overtime: () => [...queryKeys.notifications.all, 'overtime'] as const,
   },
   geofences: {
     all: ['geofences'] as const,
@@ -89,8 +90,33 @@ export const queryKeys = {
   mobileDevices: {
     all: ['mobile-devices'] as const,
   },
+  devices: {
+    all: ['devices'] as const,
+    lists: () => [...queryKeys.devices.all, 'list'] as const,
+    list: (filters?: unknown) => [...queryKeys.devices.lists(), filters] as const,
+    details: () => [...queryKeys.devices.all, 'detail'] as const,
+    detail: (id: string) => [...queryKeys.devices.details(), id] as const,
+  },
+  workSchedules: {
+    all: ['work_schedules'] as const,
+    lists: () => [...queryKeys.workSchedules.all, 'list'] as const,
+    list: (filters?: unknown) => [...queryKeys.workSchedules.lists(), filters] as const,
+    details: () => [...queryKeys.workSchedules.all, 'detail'] as const,
+    detail: (id: string) => [...queryKeys.workSchedules.details(), id] as const,
+    employee: (id: string) => [...queryKeys.workSchedules.all, 'employee', id] as const,
+  },
+  gamification: {
+    all: ['gamification'] as const,
+    leaderboard: (period?: string) => [...queryKeys.gamification.all, 'leaderboard', period] as const,
+    achievements: () => [...queryKeys.gamification.all, 'achievements'] as const,
+  },
   activity: {
     all: ['activity'] as const,
+  },
+  auditLogs: {
+    all: ['audit-logs'] as const,
+    lists: () => [...queryKeys.auditLogs.all, 'list'] as const,
+    list: (filters?: unknown) => [...queryKeys.auditLogs.lists(), filters] as const,
   },
   mapbox: {
     all: ['mapbox'] as const,

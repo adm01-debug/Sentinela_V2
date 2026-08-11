@@ -12,7 +12,7 @@ interface FallbackLog {
   status: number;
   duration_ms: number | null;
   error_message: string | null;
-  metadata: Record<string, unknown> | null;
+  payload_summary: Record<string, unknown> | null;
 }
 
 export function SlackFallbackHistoryCard() {
@@ -21,7 +21,7 @@ export function SlackFallbackHistoryCard() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('edge_function_logs')
-        .select('id, created_at, status, duration_ms, error_message, metadata')
+        .select('id, created_at, status, duration_ms, error_message, payload_summary')
         .eq('function_name', 'slack-notify:fallback')
         .order('created_at', { ascending: false })
         .limit(20);
@@ -63,7 +63,7 @@ export function SlackFallbackHistoryCard() {
         <div className="space-y-2 max-h-72 overflow-y-auto">
           {data?.map((log) => {
             const ok = log.status < 300;
-            const meta = (log.metadata ?? {}) as {
+            const meta = (log.payload_summary ?? {}) as {
               fallback?: { delivered?: number; recipients?: number; reason?: string };
             };
             const fb = meta.fallback;

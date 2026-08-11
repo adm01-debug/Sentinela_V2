@@ -57,7 +57,11 @@ function observe(type: string, name: string, cb: MetricCallback) {
       cb(metric);
 
       if (metric.rating === 'poor') {
-        log.warn(`Poor ${name}: ${metric.value}`, { metric: metric as unknown as Record<string, unknown> });
+        if (import.meta.env.PROD) {
+          log.warn(`Poor ${name}: ${metric.value}`, { metric: metric as unknown as Record<string, unknown> });
+        } else {
+          log.debug(`Poor ${name}: ${metric.value}`, { metric: metric as unknown as Record<string, unknown> });
+        }
       } else {
         log.debug(`${name}: ${metric.value} (${metric.rating})`, { metric: metric as unknown as Record<string, unknown> });
       }

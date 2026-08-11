@@ -8,10 +8,10 @@ interface GuardProps {
 }
 
 export function AuthGuard({ children }: GuardProps) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, isRoleLoading } = useAuth();
   const location = useLocation();
 
-  if (isLoading) {
+  if (isLoading || isRoleLoading) {
     return <BrandedSplash />;
   }
 
@@ -24,9 +24,9 @@ export function AuthGuard({ children }: GuardProps) {
 }
 
 export function GuestGuard({ children }: GuardProps) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, isRoleLoading } = useAuth();
 
-  if (isLoading) {
+  if (isLoading || isRoleLoading) {
     return <BrandedSplash />;
   }
 
@@ -38,9 +38,9 @@ export function GuestGuard({ children }: GuardProps) {
 }
 
 export function AdminGuard({ children }: GuardProps) {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, isRoleLoading } = useAuth();
 
-  if (isLoading) {
+  if (isLoading || isRoleLoading) {
     return <BrandedSplash />;
   }
 
@@ -54,9 +54,9 @@ export function AdminGuard({ children }: GuardProps) {
 }
 
 export function SupervisorGuard({ children }: GuardProps) {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, isRoleLoading } = useAuth();
 
-  if (isLoading) {
+  if (isLoading || isRoleLoading) {
     return <BrandedSplash />;
   }
 

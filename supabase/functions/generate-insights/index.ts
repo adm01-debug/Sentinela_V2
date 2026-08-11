@@ -33,10 +33,11 @@ serve(async (req) => {
     const insights: Insight[] = [];
 
     // Fetch data for analysis
-    const [activitiesRes, violationsRes, employeesRes] = await Promise.all([
-      supabase.from("activities").select("*").order("created_at", { ascending: false }).limit(500),
+    const [activitiesRes, violationsRes, employeesRes, profilesRes] = await Promise.all([
+      supabase.from("activity_logs").select("*").order("created_at", { ascending: false }).limit(500),
       supabase.from("violations").select("*").order("created_at", { ascending: false }).limit(100),
-      supabase.from("employees").select("*").eq("status", "active")
+      supabase.from("employees").select("*").eq("status", "active"),
+      supabase.from("profiles").select("id, user_id")
     ]);
 
     const activities = activitiesRes.data || [];
@@ -89,10 +90,8 @@ serve(async (req) => {
 
     // Generate recommendations
     if (insightTypes.includes("recommendation")) {
-      const inactiveEmployees = employees.filter((e: any) => {
-        const lastActivity = activities.find((a: any) => a.employee_id === e.id);
-        return !lastActivity || new Date(lastActivity.created_at) < new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-      });
+      const activeUserIds = new Set(activities.map((a: any) => a.user_id));
+      const inactiveEmployees = employees.filter((e: any) => !activeUserIds.has(e.id));
 
       if (inactiveEmployees.length > employees.length * 0.1) {
         insights.push({
@@ -108,8 +107,8 @@ serve(async (req) => {
       }
 
       // Productivity recommendation
-      const avgProductivity = activities.reduce((sum: number, a: any) => sum + (a.productivity_score || 0), 0) / activities.length;
-      if (avgProductivity < 60) {
+      const avgProductivity = activities.reduce((sum: number, a: any) => sum + (a.productivity_score || 0), 0) / Math.max(activities.length, 1);
+      if (avgProductivity > 0 && avgProductivity < 60) {
         insights.push({
           id: crypto.randomUUID(),
           type: "recommendation",

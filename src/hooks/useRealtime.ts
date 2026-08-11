@@ -10,7 +10,7 @@ export function useRealtime(entity: RealtimeEntity, queryKey: readonly unknown[]
   const lastPayloadRef = useRef<string | null>(null);
 
   useEffect(() => {
-    logger.info(`[Realtime] Subscribing to ${entity}`);
+    logger.debug(`[Realtime] Subscribing to ${entity}`);
     
     const channel = supabase
       .channel(`public:${entity}-changes`)
@@ -22,18 +22,18 @@ export function useRealtime(entity: RealtimeEntity, queryKey: readonly unknown[]
           if (payloadStr === lastPayloadRef.current) return;
           lastPayloadRef.current = payloadStr;
           
-          logger.info(`[Realtime] ${entity} changed`, payload);
+          logger.debug(`[Realtime] ${entity} changed`, payload);
           queryClient.invalidateQueries({ queryKey });
         }
       )
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-          logger.info(`[Realtime] Successfully subscribed to ${entity}`);
+          logger.debug(`[Realtime] Successfully subscribed to ${entity}`);
         }
       });
 
     return () => {
-      logger.info(`[Realtime] Unsubscribing from ${entity}`);
+      logger.debug(`[Realtime] Unsubscribing from ${entity}`);
       supabase.removeChannel(channel);
     };
   }, [entity, queryKey, queryClient]);

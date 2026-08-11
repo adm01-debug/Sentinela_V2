@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { defineConfig } from 'vite';
 
 // Note: cast to any so Vitest's `test` block can live in vite config without pulling vitest types
 export default defineConfig(({ mode: _mode }) => ({
@@ -47,7 +47,7 @@ export default defineConfig(({ mode: _mode }) => ({
     },
   } as Record<string, unknown>),
   server: {
-    port: 8080,
+    port: 8081,
     host: '0.0.0.0',
     allowedHosts: true,
   },

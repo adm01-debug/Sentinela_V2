@@ -20,7 +20,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { useChartColors } from '@/hooks/useChartColors';
 
 interface DeliveryEvent {
@@ -132,11 +131,17 @@ export function SlackUptimeHistoryCard() {
         </CardTitle>
         <CardDescription className="flex flex-wrap items-center gap-3">
           <span>Sucesso vs. falha diária de cada webhook configurado.</span>
-          <Badge variant="outline">{totals.channels} canais</Badge>
-          <Badge variant="outline">{totals.envios} envios</Badge>
-          <Badge variant={totals.uptime >= 99 ? 'default' : totals.uptime >= 95 ? 'secondary' : 'destructive'}>
+          <span className="inline-flex items-center rounded-md border border-border bg-secondary px-2 py-0.5 text-xs font-medium">{totals.channels} canais</span>
+          <span className="inline-flex items-center rounded-md border border-border bg-secondary px-2 py-0.5 text-xs font-medium">{totals.envios} envios</span>
+          <span className={
+            totals.uptime >= 99
+              ? 'inline-flex items-center rounded-md bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground'
+              : totals.uptime >= 95
+              ? 'inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium'
+              : 'inline-flex items-center rounded-md bg-destructive px-2 py-0.5 text-xs font-medium text-destructive-foreground'
+          }>
             Uptime global: {totals.uptime}%
-          </Badge>
+          </span>
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">

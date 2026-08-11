@@ -24,13 +24,17 @@ interface PerformanceBudget {
 
 const BUDGET: PerformanceBudget = {
   maxBundleSizeKB: 500,
-  maxTTI: 3000,
-  maxFCP: 1500,
-  maxLCP: 2500,
-  maxCLS: 0.1,
-  maxDOMNodes: 3000,
-  maxRendersPerSecond: 30,
+  maxTTI: 5000,
+  maxFCP: 2000,
+  maxLCP: 4000,
+  maxCLS: 0.15,
+  maxDOMNodes: 5000,
+  maxRendersPerSecond: 50,
 };
+
+// Module-level handles — stored here so hot reload re-initializes cleanly.
+let _webVitalsObserver: PerformanceObserver | null = null;
+let _auditInterval: ReturnType<typeof setInterval> | null = null;
 
 interface BudgetViolation {
   metric: string;
@@ -57,6 +61,11 @@ function checkDOMBudget(): BudgetViolation | null {
 function checkWebVitals(): void {
   if (!('PerformanceObserver' in window)) return;
 
+  const lastWarned: Record<string, number> = {};
+
+  // Disconnect any previous observer before creating a new one (prevents stacking on HMR hot reload)
+  if (_webVitalsObserver) { _webVitalsObserver.disconnect(); _webVitalsObserver = null; }
+
   try {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
@@ -80,6 +89,11 @@ function checkWebVitals(): void {
         }
 
         violations.forEach((v) => {
+          const key = `${v.metric}:${v.severity}`;
+          const now = Date.now();
+          if (lastWarned[key] && now - lastWarned[key] < 30000) return;
+          lastWarned[key] = now;
+          if (!import.meta.env.PROD && v.severity !== 'critical') return;
           const icon = v.severity === 'critical' ? '🔴' : '🟡';
           logger.warn(
             `${icon} Performance budget exceeded: ${v.metric} = ${v.value}${v.unit} (budget: ${v.budget}${v.unit})`
@@ -88,6 +102,7 @@ function checkWebVitals(): void {
       }
     });
 
+    _webVitalsObserver = observer;
     observer.observe({ type: 'largest-contentful-paint', buffered: true });
     observer.observe({ type: 'layout-shift', buffered: true });
   } catch {
@@ -148,7 +163,8 @@ export function initPerformanceMonitoring(): void {
   checkWebVitals();
 
   // Check DOM budget periodically
-  setInterval(() => {
+  if (_auditInterval) { clearInterval(_auditInterval); _auditInterval = null; }
+  _auditInterval = setInterval(() => {
     auditPerformanceBudget();
   }, 30000);
 

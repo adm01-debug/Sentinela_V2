@@ -1,0 +1,246 @@
+[
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000001",
+    "device_id": "d0000000-0000-0000-0000-000000000001",
+    "file_name": "Orcamento_Cliente_Acme_2026.pdf",
+    "file_size_bytes": 245678,
+    "file_extension": "pdf",
+    "file_hash": "a1b2c3d4e5f6071829abcdef0123456789abcdef0123456789abcdef0123456",
+    "channel": "email_attach",
+    "direction": "out",
+    "application": "Outlook",
+    "destination_domain": "cliente.com.br",
+    "destination_path": "cliente@acme.com.br",
+    "process_name": "OUTLOOK.EXE",
+    "sensitivity": "internal",
+    "verdict": "allowed",
+    "occurred_at": "2026-08-08T09:15:00+00:00",
+    "metadata": {
+      "to": [
+        "cliente@acme.com.br"
+      ],
+      "subject": "Proposta comercial 2026"
+    },
+    "removable_device_label": null,
+    "removable_device_serial": null
+  },
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000001",
+    "device_id": "d0000000-0000-0000-0000-000000000001",
+    "file_name": "lista_clientes_vip_2026.xlsx",
+    "file_size_bytes": 1245678,
+    "file_extension": "xlsx",
+    "file_hash": "b2c3d4e5f6071829abcdef0123456789abcdef0123456789abcdef01234567a",
+    "channel": "cloud_sync",
+    "direction": "out",
+    "application": "Google Drive",
+    "destination_domain": "drive.google.com",
+    "destination_path": "/backup/personal",
+    "process_name": "GoogleDriveFS.exe",
+    "sensitivity": "confidential",
+    "verdict": "blocked",
+    "occurred_at": "2026-08-08T14:32:00+00:00",
+    "metadata": {
+      "matched_policy": "Termos confidenciais Promo Brindes",
+      "reason": "keyword match: lista-clientes-vip"
+    },
+    "removable_device_label": null,
+    "removable_device_serial": null
+  },
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000002",
+    "device_id": "d0000000-0000-0000-0000-000000000002",
+    "file_name": "apresentacao_comercial.pptx",
+    "file_size_bytes": 3456789,
+    "file_extension": "pptx",
+    "file_hash": "c3d4e5f6071829abcdef0123456789abcdef0123456789abcdef01234567ab",
+    "channel": "cloud_sync",
+    "direction": "out",
+    "application": "OneDrive",
+    "destination_domain": "onedrive.com",
+    "destination_path": "/Documents",
+    "process_name": "OneDrive.exe",
+    "sensitivity": "internal",
+    "verdict": "allowed",
+    "occurred_at": "2026-08-08T16:45:00+00:00",
+    "metadata": {
+      "to": "mariana.costa@promobrindes.com.br"
+    },
+    "removable_device_label": null,
+    "removable_device_serial": null
+  },
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000003",
+    "device_id": "d0000000-0000-0000-0000-000000000003",
+    "file_name": "database_export_clientes.sql",
+    "file_size_bytes": 89234567,
+    "file_extension": "sql",
+    "file_hash": "d4e5f6071829abcdef0123456789abcdef0123456789abcdef01234567abc",
+    "channel": "usb",
+    "direction": "out",
+    "application": "Finder",
+    "destination_domain": null,
+    "destination_path": "/Volumes/SANDISK",
+    "process_name": "Finder",
+    "sensitivity": "restricted",
+    "verdict": "blocked",
+    "occurred_at": "2026-08-08T18:10:00+00:00",
+    "metadata": {
+      "matched_policy": "Bloqueio de CPF",
+      "reason": "file contains PII patterns"
+    },
+    "removable_device_label": "SANDISK",
+    "removable_device_serial": "4C530001234567"
+  },
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000001",
+    "device_id": "d0000000-0000-0000-0000-000000000001",
+    "file_name": "relatorio_vendas_julho.pdf",
+    "file_size_bytes": 567890,
+    "file_extension": "pdf",
+    "file_hash": "e5f6071829abcdef0123456789abcdef0123456789abcdef01234567abcd",
+    "channel": "email_attach",
+    "direction": "out",
+    "application": "Outlook",
+    "destination_domain": "gmail.com",
+    "destination_path": "gerencia@gmail.com",
+    "process_name": "OUTLOOK.EXE",
+    "sensitivity": "internal",
+    "verdict": "allowed",
+    "occurred_at": "2026-08-09T09:00:00+00:00",
+    "metadata": {
+      "to": [
+        "gerencia@gmail.com"
+      ]
+    },
+    "removable_device_label": null,
+    "removable_device_serial": null
+  },
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000005",
+    "device_id": "d0000000-0000-0000-0000-000000000005",
+    "file_name": "contrato_fornecedor_xyz.pdf",
+    "file_size_bytes": 678901,
+    "file_extension": "pdf",
+    "file_hash": "f6071829abcdef0123456789abcdef0123456789abcdef01234567abcde",
+    "channel": "email_attach",
+    "direction": "out",
+    "application": "Outlook",
+    "destination_domain": "fornecedorxyz.com.br",
+    "destination_path": "contato@fornecedorxyz.com.br",
+    "process_name": "OUTLOOK.EXE",
+    "sensitivity": "confidential",
+    "verdict": "allowed",
+    "occurred_at": "2026-08-09T11:30:00+00:00",
+    "metadata": {
+      "to": [
+        "contato@fornecedorxyz.com.br"
+      ]
+    },
+    "removable_device_label": null,
+    "removable_device_serial": null
+  },
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000002",
+    "device_id": "d0000000-0000-0000-0000-000000000002",
+    "file_name": "cadastro_clientes_com_cpf.xlsx",
+    "file_size_bytes": 2345678,
+    "file_extension": "xlsx",
+    "file_hash": "071829abcdef0123456789abcdef0123456789abcdef01234567abcdef0",
+    "channel": "cloud_sync",
+    "direction": "out",
+    "application": "Dropbox",
+    "destination_domain": "dropbox.com",
+    "destination_path": "/backup",
+    "process_name": "Dropbox.exe",
+    "sensitivity": "restricted",
+    "verdict": "blocked",
+    "occurred_at": "2026-08-09T15:20:00+00:00",
+    "metadata": {
+      "matched_policy": "Bloqueio de CPF",
+      "reason": "file contains 150+ CPF patterns"
+    },
+    "removable_device_label": null,
+    "removable_device_serial": null
+  },
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000003",
+    "device_id": "d0000000-0000-0000-0000-000000000003",
+    "file_name": "app_release_v2.0.zip",
+    "file_size_bytes": 45678901,
+    "file_extension": "zip",
+    "file_hash": "1829abcdef0123456789abcdef0123456789abcdef01234567abcdef01",
+    "channel": "network_share",
+    "direction": "out",
+    "application": "GitHub Desktop",
+    "destination_domain": "github.com",
+    "destination_path": "sentinela-v2/main",
+    "process_name": "GitHub Desktop",
+    "sensitivity": "internal",
+    "verdict": "allowed",
+    "occurred_at": "2026-08-10T08:30:00+00:00",
+    "metadata": {
+      "repo": "sentinela-v2",
+      "branch": "main"
+    },
+    "removable_device_label": null,
+    "removable_device_serial": null
+  },
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000001",
+    "device_id": "d0000000-0000-0000-0000-000000000001",
+    "file_name": "planilha_custos_2026.xlsx",
+    "file_size_bytes": 456789,
+    "file_extension": "xlsx",
+    "file_hash": "29abcdef0123456789abcdef0123456789abcdef01234567abcdef012",
+    "channel": "email_attach",
+    "direction": "out",
+    "application": "Outlook",
+    "destination_domain": "promobrindes.com.br",
+    "destination_path": "ti@promobrindes.com.br",
+    "process_name": "OUTLOOK.EXE",
+    "sensitivity": "internal",
+    "verdict": "allowed",
+    "occurred_at": "2026-08-10T10:15:00+00:00",
+    "metadata": {
+      "to": [
+        "ti@promobrindes.com.br"
+      ]
+    },
+    "removable_device_label": null,
+    "removable_device_serial": null
+  },
+  {
+    "company_id": "c0000000-0000-0000-0000-000000000001",
+    "employee_id": "e0000000-0000-0000-0000-000000000006",
+    "device_id": "d0000000-0000-0000-0000-000000000006",
+    "file_name": "estrategia_marketing_2026.pdf",
+    "file_size_bytes": 1234567,
+    "file_extension": "pdf",
+    "file_hash": "abcdef0123456789abcdef0123456789abcdef01234567abcdef0123",
+    "channel": "cloud_sync",
+    "direction": "out",
+    "application": "Dropbox",
+    "destination_domain": "dropbox.com",
+    "destination_path": "/compartilhado",
+    "process_name": "Dropbox.exe",
+    "sensitivity": "confidential",
+    "verdict": "flagged",
+    "occurred_at": "2026-08-10T12:00:00+00:00",
+    "metadata": {
+      "matched_policy": "Termos confidenciais Promo Brindes",
+      "reason": "partial keyword match"
+    },
+    "removable_device_label": null,
+    "removable_device_serial": null
+  }
+]

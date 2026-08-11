@@ -5,13 +5,9 @@
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
-- [ ] Documentation update
-
-## Testing
-- [ ] Unit tests pass
-- [ ] E2E tests pass
+- [ ] Documentation
 
 ## Checklist
-- [ ] Code follows style guidelines
-- [ ] Self-reviewed
+- [ ] Tests added
 - [ ] Documentation updated
+- [ ] Lint passes

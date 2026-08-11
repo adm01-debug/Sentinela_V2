@@ -5,23 +5,20 @@ import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
 export interface WorkSchedule {
   id: string;
-  employee_id: string;
-  day_of_week: number;
-  start_time: string;
-  end_time: string;
-  break_start?: string;
-  break_end?: string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-  name?: string;
+  name: string;
   description?: string;
   work_days?: number[];
-  flexible_start?: boolean;
-  flexible_minutes?: number;
-  overtime_allowed?: boolean;
-  overtime_requires_approval?: boolean;
-  block_outside_hours?: boolean;
+  start_time: string;
+  end_time: string;
+  lunch_start?: string;
+  lunch_end?: string;
+  allow_overtime?: boolean;
+  auto_block_enabled?: boolean;
+  grace_period_minutes?: number;
+  created_by?: string;
+  created_at: string;
+  updated_at: string;
+  company_id?: string;
 }
 
 export interface CreateWorkScheduleInput {
@@ -46,7 +43,7 @@ export function useWorkSchedules() {
       const { data, error } = await supabase
         .from('work_schedules')
         .select('*')
-        .order('day_of_week', { ascending: true });
+        .order('name', { ascending: true });
       if (error) throw error;
       return data as WorkSchedule[];
     },

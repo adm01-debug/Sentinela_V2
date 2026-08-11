@@ -9,7 +9,16 @@ export const useAlerts = (filters?: { severity?: string; acknowledged?: boolean 
       if (filters?.severity) query = query.eq('severity', filters.severity);
       const { data, error } = await query;
       if (error) throw error;
-      return { data: data || [], total: data?.length || 0 };
+      const mapped = (data || []).map((row: Record<string, unknown>) => ({
+        id: row.id,
+        title: row.policy_name ?? row.violation_type ?? 'Alerta',
+        message: row.description ?? '',
+        severity: row.severity,
+        acknowledged: !!row.read,
+        createdAt: row.created_at,
+        ...row,
+      }));
+      return { data: mapped, total: mapped.length };
     },
   });
 };
@@ -20,7 +29,16 @@ export const useAlert = (id: string) => {
     queryFn: async () => {
       const { data, error } = await supabase.from('security_violations').select('*').eq('id', id).maybeSingle();
       if (error) throw error;
-      return data;
+      if (!data) return null;
+      return {
+        id: data.id,
+        title: data.policy_name ?? data.violation_type ?? 'Alerta',
+        message: data.description ?? '',
+        severity: data.severity,
+        acknowledged: !!data.read,
+        createdAt: data.created_at,
+        ...data,
+      };
     },
     enabled: !!id,
   });

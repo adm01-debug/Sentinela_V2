@@ -82,12 +82,20 @@ export default function DLPPoliciesPage() {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
 
+      // Resolve the user's company_id. Primary: user_companies table.
+      // Fallback: auth.users.user_metadata.company_id (set via signup / admin update).
+      // This avoids a hard dependency on the user_companies RLS, which may
+      // recurse in some setups.
+      let cid: string | null = null;
       const { data: uc } = await supabase
         .from('user_companies')
         .select('company_id')
         .eq('user_id', u.user.id)
         .maybeSingle();
-      const cid = uc?.company_id ?? null;
+      cid = uc?.company_id ?? null;
+      if (!cid) {
+        cid = (u.user.user_metadata?.company_id as string | undefined) ?? null;
+      }
       setCompanyId(cid);
 
       const [{ data: cls }, { data: pol }] = await Promise.all([
