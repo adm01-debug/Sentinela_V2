@@ -1,0 +1,19 @@
+{
+  "dashboard": {
+    "title": "Performance Dashboard",
+    "panels": [
+      {
+        "title": "Response Time",
+        "type": "graph"
+      },
+      {
+        "title": "Throughput",
+        "type": "graph"
+      },
+      {
+        "title": "CPU Usage",
+        "type": "gauge"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: sentinela-pdb
+  namespace: sentinela
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: sentinela-web

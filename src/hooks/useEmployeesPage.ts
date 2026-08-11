@@ -1,0 +1,394 @@
+import { useState, useMemo, useCallback } from 'react';
+import { 
+  useEmployees, 
+  useCreateEmployee, 
+  useUpdateEmployee, 
+  useDeleteEmployee, 
+  useAssignDevice,
+  useUnassignDevice,
+  type EmployeeWithDetails, 
+  type EmployeeCreateInput, 
+  type EmployeeUpdateInput 
+} from '@/hooks/useEmployees';
+import { useTeams } from '@/hooks/useTeams';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+
+// ============================================================
+// TYPES
+// ============================================================
+
+export interface EmployeeFormData {
+  name: string;
+  email: string;
+  department: string;
+  position: string;
+  team_id: string;
+  status: string;
+  hire_date: string;
+  phone: string;
+  notes: string;
+}
+
+export interface DeviceFormData {
+  device_name: string;
+  device_type: string;
+  is_primary: boolean;
+}
+
+export interface EmployeeFilters {
+  searchTerm: string;
+  statusFilter: string;
+  teamFilter: string;
+}
+
+export interface EmployeeStats {
+  total: number;
+  active: number;
+  withTeam: number;
+  withDevices: number;
+}
+
+const initialFormData: EmployeeFormData = {
+  name: '',
+  email: '',
+  department: '',
+  position: '',
+  team_id: '',
+  status: 'active',
+  hire_date: '',
+  phone: '',
+  notes: ''
+};
+
+const initialDeviceData: DeviceFormData = {
+  device_name: '',
+  device_type: 'desktop',
+  is_primary: false
+};
+
+// ============================================================
+// HOOK
+// ============================================================
+
+export function useEmployeesPage() {
+  const { t } = useTranslation();
+  const employeesQuery = useEmployees();
+  const employees = (employeesQuery.data as EmployeeWithDetails[]) || [];
+  const loading = employeesQuery.isLoading;
+  
+  const createMutation = useCreateEmployee();
+  const updateMutation = useUpdateEmployee();
+  const deleteMutation = useDeleteEmployee();
+  const assignDeviceMutation = useAssignDevice();
+  const unassignDeviceMutation = useUnassignDevice();
+  
+  const createEmployee = async (data: EmployeeCreateInput) => createMutation.mutateAsync(data);
+  const updateEmployee = async (id: string, data: Partial<EmployeeUpdateInput>) => updateMutation.mutateAsync({ id, data: data as EmployeeUpdateInput });
+  const deleteEmployee = async (id: string) => deleteMutation.mutateAsync(id);
+  
+  const teamsQuery = useTeams();
+  const teams = teamsQuery.data || [];
+
+  // Filters
+  const [filters, setFilters] = useState<EmployeeFilters>({
+    searchTerm: '',
+    statusFilter: 'all',
+    teamFilter: 'all'
+  });
+
+  // Dialog states
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeviceOpen, setIsDeviceOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  // Selected employee
+  const [selectedEmployee, setSelectedEmployee] = useState<EmployeeWithDetails | null>(null);
+
+  // Form states
+  const [formData, setFormData] = useState<EmployeeFormData>(initialFormData);
+  const [deviceData, setDeviceData] = useState<DeviceFormData>(initialDeviceData);
+
+  // Filtered employees
+  const filteredEmployees = useMemo(() => {
+    if (!Array.isArray(employees)) return [];
+    return employees.filter(emp => {
+      const name = emp.name || '';
+      const email = emp.email || '';
+      const department = emp.department || '';
+      const searchTerm = (filters.searchTerm || '').toLowerCase();
+
+      const matchesSearch = 
+        name.toLowerCase().includes(searchTerm) ||
+        email.toLowerCase().includes(searchTerm) ||
+        department.toLowerCase().includes(searchTerm);
+      const matchesStatus = !filters.statusFilter || filters.statusFilter === 'all' || emp.status === filters.statusFilter;
+      const matchesTeam = !filters.teamFilter || filters.teamFilter === 'all' || emp.team_id === filters.teamFilter || 
+        (!emp.team_id && filters.teamFilter === 'none');
+      return matchesSearch && matchesStatus && matchesTeam;
+    });
+  }, [employees, filters]);
+
+  // Stats
+  const stats = useMemo<EmployeeStats>(() => ({
+    total: employees.length,
+    active: employees.filter(e => e.status === 'active').length,
+    withTeam: employees.filter(e => e.team_id).length,
+    withDevices: employees.filter(e => e.devices && e.devices.length > 0).length
+  }), [employees]);
+
+  // Filter handlers
+  const setSearchTerm = useCallback((value: string) => {
+    setFilters(prev => ({ ...prev, searchTerm: value }));
+  }, []);
+
+  const setStatusFilter = useCallback((value: string) => {
+    setFilters(prev => ({ ...prev, statusFilter: value }));
+  }, []);
+
+  const setTeamFilter = useCallback((value: string) => {
+    setFilters(prev => ({ ...prev, teamFilter: value }));
+  }, []);
+
+  const clearFilters = useCallback(() => {
+    setFilters({ searchTerm: '', statusFilter: 'all', teamFilter: 'all' });
+  }, []);
+
+  // Form handlers
+  const resetForm = useCallback(() => {
+    setFormData(initialFormData);
+  }, []);
+
+  const resetDeviceForm = useCallback(() => {
+    setDeviceData(initialDeviceData);
+  }, []);
+
+  const handleCreate = useCallback(async () => {
+    if (!formData.name.trim()) {
+      toast.error('O nome do funcionário é obrigatório');
+      return;
+    }
+    
+    try {
+      await createEmployee({
+        name: formData.name.trim(),
+        full_name: formData.name.trim(),
+        email: formData.email.trim() || undefined,
+        department: formData.department.trim() || undefined,
+        position: formData.position.trim() || undefined,
+        team_id: formData.team_id || undefined,
+        status: formData.status,
+        hire_date: formData.hire_date || undefined,
+        phone: formData.phone.trim() || undefined,
+        avatar_url: undefined,
+        notes: formData.notes.trim() || undefined
+      });
+      
+      resetForm();
+      setIsCreateOpen(false);
+      toast.success('Funcionário criado com sucesso');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || 'Erro ao criar funcionário');
+    }
+  }, [formData, createEmployee, resetForm]);
+
+  const handleUpdate = useCallback(async () => {
+    if (!selectedEmployee || !formData.name.trim()) {
+      toast.error('O nome do funcionário é obrigatório');
+      return;
+    }
+    
+    try {
+      await updateEmployee(selectedEmployee.id, {
+        name: formData.name.trim(),
+        full_name: formData.name.trim(),
+        email: formData.email.trim() || undefined,
+        department: formData.department.trim() || undefined,
+        position: formData.position.trim() || undefined,
+        team_id: formData.team_id || undefined,
+        status: formData.status,
+        hire_date: formData.hire_date || undefined,
+        phone: formData.phone.trim() || undefined,
+        notes: formData.notes.trim() || undefined
+      });
+      
+      resetForm();
+      setSelectedEmployee(null);
+      setIsEditOpen(false);
+      toast.success('Funcionário atualizado com sucesso');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || 'Erro ao atualizar funcionário');
+    }
+  }, [selectedEmployee, formData, updateEmployee, resetForm]);
+
+  const handleDelete = useCallback(async () => {
+    if (!selectedEmployee) return;
+    
+    try {
+      await deleteEmployee(selectedEmployee.id);
+      setSelectedEmployee(null);
+      setIsDeleteOpen(false);
+      toast.success('Funcionário removido com sucesso');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || 'Erro ao remover funcionário');
+    }
+  }, [selectedEmployee, deleteEmployee]);
+
+  const handleAssignDevice = useCallback(async () => {
+    if (!selectedEmployee || !deviceData.device_name.trim()) return;
+    
+    try {
+      await assignDeviceMutation.mutateAsync({
+        employeeId: selectedEmployee.id,
+        name: deviceData.device_name.trim(),
+        type: deviceData.device_type,
+        primary: deviceData.is_primary
+      });
+      
+      resetDeviceForm();
+      setIsDeviceOpen(false);
+    } catch (err) {
+      // Error handled by mutation toast
+    }
+  }, [selectedEmployee, deviceData, assignDeviceMutation, resetDeviceForm]);
+
+  const handleUnassignDevice = useCallback(async (employeeId: string, deviceId: string) => {
+    try {
+      await unassignDeviceMutation.mutateAsync({ employeeId, deviceId });
+    } catch (err) {
+      // Error handled by mutation toast
+    }
+  }, [unassignDeviceMutation]);
+
+  // Dialog openers
+  const openCreateDialog = useCallback(() => {
+    resetForm();
+    setIsCreateOpen(true);
+  }, [resetForm]);
+
+  const openEditDialog = useCallback((employee: EmployeeWithDetails) => {
+    setSelectedEmployee(employee);
+    setFormData({
+      name: employee.name,
+      email: employee.email || '',
+      department: employee.department || '',
+      position: employee.position || '',
+      team_id: employee.team_id || '',
+      status: employee.status,
+      hire_date: employee.hire_date || '',
+      phone: employee.phone || '',
+      notes: employee.notes || ''
+    });
+    setIsEditOpen(true);
+  }, []);
+
+  const openDeviceDialog = useCallback((employee: EmployeeWithDetails) => {
+    setSelectedEmployee(employee);
+    resetDeviceForm();
+    setIsDeviceOpen(true);
+  }, [resetDeviceForm]);
+
+  const openDeleteDialog = useCallback((employee: EmployeeWithDetails) => {
+    setSelectedEmployee(employee);
+    setIsDeleteOpen(true);
+  }, []);
+
+  // Dialog closers
+  const closeCreateDialog = useCallback(() => {
+    setIsCreateOpen(false);
+    resetForm();
+  }, [resetForm]);
+
+  const closeEditDialog = useCallback(() => {
+    setIsEditOpen(false);
+    setSelectedEmployee(null);
+    resetForm();
+  }, [resetForm]);
+
+  const closeDeviceDialog = useCallback(() => {
+    setIsDeviceOpen(false);
+    setSelectedEmployee(null);
+    resetDeviceForm();
+  }, [resetDeviceForm]);
+
+  const closeDeleteDialog = useCallback(() => {
+    setIsDeleteOpen(false);
+    setSelectedEmployee(null);
+  }, []);
+
+  return {
+    // Data
+    employees,
+    filteredEmployees,
+    teams,
+    stats,
+    loading,
+    selectedEmployee,
+
+    // Filters
+    filters,
+    setSearchTerm,
+    setStatusFilter,
+    setTeamFilter,
+    clearFilters,
+
+    // Form data
+    formData,
+    setFormData,
+    deviceData,
+    setDeviceData,
+
+    // Dialog states
+    isCreateOpen,
+    isEditOpen,
+    isDeviceOpen,
+    isDeleteOpen,
+
+    // Actions
+    handleCreate,
+    handleUpdate,
+    handleDelete,
+    handleAssignDevice,
+    handleUnassignDevice,
+
+    // Dialog handlers
+    openCreateDialog,
+    openEditDialog,
+    openDeviceDialog,
+    openDeleteDialog,
+    closeCreateDialog,
+    closeEditDialog,
+    closeDeviceDialog,
+    closeDeleteDialog,
+  };
+}
+
+// ============================================================
+// CONSTANTS
+// ============================================================
+
+export const statusConfig = {
+  active: { label: 'Ativo', color: 'bg-success/20 text-success' },
+  inactive: { label: 'Inativo', color: 'bg-muted text-muted-foreground' },
+  vacation: { label: 'Férias', color: 'bg-warning/20 text-warning' },
+  leave: { label: 'Afastado', color: 'bg-info/20 text-info' }
+} as const;
+
+export const deviceTypeLabels = {
+  desktop: 'Desktop',
+  laptop: 'Laptop',
+  mobile: 'Mobile'
+} as const;
+
+// ============================================================
+// HELPERS
+// ============================================================
+
+export function getInitials(name: string): string {
+  if (!name) return '??';
+  return name.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase();
+}

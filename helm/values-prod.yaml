@@ -1,0 +1,8 @@
+replicaCount: 5
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+autoscaling:
+  minReplicas: 3
+  maxReplicas: 20

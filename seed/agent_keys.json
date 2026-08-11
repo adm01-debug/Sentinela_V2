@@ -1,0 +1,6 @@
+[
+  {"id":"a0000000-0000-0000-0000-000000000001","company_id":"c0000000-0000-0000-0000-000000000001","key_name":"Carlos – Desktop Principal","agent_key":"sk-sentinela-demo-0001-aaaa1111bbbb2222","device_name":"CARLOS-DESKTOP-01","employee_name":"Carlos Silva","is_active":true,"last_seen_at":"2026-08-10T18:20:00+00:00"},
+  {"id":"a0000000-0000-0000-0000-000000000002","company_id":"c0000000-0000-0000-0000-000000000001","key_name":"Mariana – Notebook","agent_key":"sk-sentinela-demo-0002-cccc3333dddd4444","device_name":"MARIANA-NB-01","employee_name":"Mariana Costa","is_active":true,"last_seen_at":"2026-08-10T18:30:00+00:00"},
+  {"id":"a0000000-0000-0000-0000-000000000003","company_id":"c0000000-0000-0000-0000-000000000001","key_name":"Roberto – Notebook","agent_key":"sk-sentinela-demo-0003-eeee5555ffff6666","device_name":"ROBERTO-NB-01","employee_name":"Roberto Almeida","is_active":true,"last_seen_at":"2026-08-10T18:31:00+00:00"},
+  {"id":"a0000000-0000-0000-0000-000000000004","company_id":"c0000000-0000-0000-0000-000000000001","key_name":"Fernando – Notebook","agent_key":"sk-sentinela-demo-0004-7777gggg8888hhhh","device_name":"FERNANDO-NB-01","employee_name":"Fernando Santos","is_active":false,"last_seen_at":"2026-07-25T10:00:00+00:00"}
+]

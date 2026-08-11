@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentinela-web
+  labels:
+    app: sentinela
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sentinela
+  template:
+    metadata:
+      labels:
+        app: sentinela
+    spec:
+      containers:
+        - name: web
+          image: sentinela/web:latest
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
