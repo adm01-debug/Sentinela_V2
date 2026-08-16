@@ -37,15 +37,17 @@ provisionado até 2026-12). O agente desktop tem serviços reais, não esqueleto
 
 | Classificação                                        |     Qtd |        % |
 | ---------------------------------------------------- | ------: | -------: |
-| ✅ IMPLEMENTADO_TOTAL                                |      24 |    22,4% |
-| 🟨 IMPLEMENTADO_PARCIAL                              |      38 |    35,5% |
-| 🟦 SUGERIDO_OU_INICIADO                              |      37 |    34,6% |
-| ⬛ MORTO_OU_ABANDONADO                               |       8 |     7,5% |
-| **Total de linhas de inventário classificadas (§6)** | **107** | **100%** |
+| ✅ IMPLEMENTADO_TOTAL                                |      24 |    22,2% |
+| 🟨 IMPLEMENTADO_PARCIAL                              |      39 |    36,1% |
+| 🟦 SUGERIDO_OU_INICIADO                              |      37 |    34,3% |
+| ⬛ MORTO_OU_ABANDONADO                               |       8 |     7,4% |
+| **Total de linhas de inventário classificadas (§6)** | **108** | **100%** |
 
 > Números após a **revalidação da §8.4**, que reexecutou os achados por métodos diferentes dos
 > originais e encontrou 6 defeitos neste próprio documento — entre eles uma classificação
-> invertida (`Settings.tsx`, que era ⬛ e é ✅). Quem for conferir, comece por lá.
+> invertida (`Settings.tsx`, que era ⬛ e é ✅) —, e após a **intervenção da §13**, que destravou o
+> `npm ci` e permitiu executar a suíte de testes pela primeira vez. Quem for conferir, comece por
+> essas duas seções.
 
 **Denominador declarado:** os 107 são as **linhas das tabelas de inventário da §6** — recontadas
 por script sobre este próprio arquivo, não estimadas. Duas ressalvas de leitura, para que ninguém
@@ -205,8 +207,8 @@ das pontas não destrava o `npm ci`: as três versões precisam voltar à mesma 
 E na **primeiríssima execução do CI** (`25677720655`, 11/05/2026 14:52), o job `quality` já falhou
 e os jobs `build` e `test` já saíram como `skipped` — exatamente o padrão de hoje.
 
-Ou seja: **o job `test` nunca executou uma única vez em toda a história do repositório.** Os 1.174
-blocos de teste nunca foram exercitados por pipeline, e o badge "1.888 testes / 100% coverage" do
+Ou seja: **o job `test` nunca executou uma única vez em toda a história do repositório.** Os 1.767
+testes nunca foram exercitados por pipeline, e o badge "1.888 testes / 100% coverage" do
 README nunca teve lastro de CI em momento algum.
 
 > Nota de honestidade: na primeira versão deste documento eu havia verificado apenas as 30
@@ -699,16 +701,21 @@ A falha de isolamento multi-tenant (§5.6) não é um descuido isolado — é **
 
 #### 8.4.2 Achados que resistiram — e como foram retestados
 
-| Achado                                      | Método original                                 | Método da revalidação                                                                                                                                                                        | Veredito                                                                         |
-| ------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| 55 tabelas lógicas vazias                   | `n_live_tup` (**estimativa** do planejador)     | `count(*)` **exato** em todas as 154 tabelas via `query_to_xml`. Descobri que **177 das 199 tabelas nunca passaram por `ANALYZE`** — a estimativa poderia estar arbitrariamente errada       | ✅ **Sobrevive.** Exato = estimado: 55 vazias, 50 com dados. Só 1 tabela diverge |
-| CI nunca verde / testes nunca rodaram       | 30 execuções mais recentes                      | Paginação até a **primeira execução da história** (274 runs) + inspeção dos jobs do run inaugural                                                                                            | ✅ **Sobrevive e sai reforçado** — `test` saiu `skipped` já em 11/05/2026        |
-| Dashboard com dados fictícios               | Leitura do código                               | Verifiquei se o componente está atrás de flag ou condicional (**não está**, `DashboardPage.tsx:198`) e se há caminho alternativo de dados (**não há** — `data=` recebe as constantes direto) | ✅ **Sobrevive**                                                                 |
-| 2 Edge Functions invocadas e ausentes       | Comparação de nomes                             | Localizadas as chamadas exatas: `useGamificationPage.ts:45` e `useWhatsAppIntegrationPage.ts:171` — código vivo, não comentário nem teste                                                    | ✅ **Sobrevive**                                                                 |
-| 38 Edge Functions sem chamador              | Busca por string literal                        | Testei o risco de **invocação dinâmica** (`functions.invoke(variável)`): **zero ocorrências** — todas as invocações usam string literal, então o critério é válido                           | ✅ **Sobrevive**                                                                 |
-| 6 funções de banco ausentes                 | `comm` entre migrations e `pg_proc` de `public` | Reconsultado em **todos** os schemas, não só `public`                                                                                                                                        | ✅ **Sobrevive**                                                                 |
-| 1.174 blocos de teste (vs. 1.888 do README) | `grep` de `it(`/`test(`                         | Testadas as variantes que meu regex poderia perder: `it.each`/`test.each` (**2**), `.skip`/`.only` (**0**), Playwright (**2**)                                                               | ✅ **Sobrevive** — margem de erro < 0,5%                                         |
-| `pg_cron` ausente                           | `pg_extension`                                  | Sem novo método disponível; consulta direta ao catálogo é a fonte primária                                                                                                                   | ✅ Sobrevive                                                                     |
+> Um deles **não resistiu por muito tempo**: a contagem de testes, marcada aqui como sobrevivente,
+> foi derrubada na §13 quando a suíte finalmente rodou. Deixo a linha original com o veredito
+> corrigido, porque o erro é instrutivo — retestar por outro _método estático_ ainda é comparar o
+> mapa com o mapa.
+
+| Achado                                      | Método original                                 | Método da revalidação                                                                                                                                                                        | Veredito                                                                                                                                                                                                                                                     |
+| ------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 55 tabelas lógicas vazias                   | `n_live_tup` (**estimativa** do planejador)     | `count(*)` **exato** em todas as 154 tabelas via `query_to_xml`. Descobri que **177 das 199 tabelas nunca passaram por `ANALYZE`** — a estimativa poderia estar arbitrariamente errada       | ✅ **Sobrevive.** Exato = estimado: 55 vazias, 50 com dados. Só 1 tabela diverge                                                                                                                                                                             |
+| CI nunca verde / testes nunca rodaram       | 30 execuções mais recentes                      | Paginação até a **primeira execução da história** (274 runs) + inspeção dos jobs do run inaugural                                                                                            | ✅ **Sobrevive e sai reforçado** — `test` saiu `skipped` já em 11/05/2026                                                                                                                                                                                    |
+| Dashboard com dados fictícios               | Leitura do código                               | Verifiquei se o componente está atrás de flag ou condicional (**não está**, `DashboardPage.tsx:198`) e se há caminho alternativo de dados (**não há** — `data=` recebe as constantes direto) | ✅ **Sobrevive**                                                                                                                                                                                                                                             |
+| 2 Edge Functions invocadas e ausentes       | Comparação de nomes                             | Localizadas as chamadas exatas: `useGamificationPage.ts:45` e `useWhatsAppIntegrationPage.ts:171` — código vivo, não comentário nem teste                                                    | ✅ **Sobrevive**                                                                                                                                                                                                                                             |
+| 38 Edge Functions sem chamador              | Busca por string literal                        | Testei o risco de **invocação dinâmica** (`functions.invoke(variável)`): **zero ocorrências** — todas as invocações usam string literal, então o critério é válido                           | ✅ **Sobrevive**                                                                                                                                                                                                                                             |
+| 6 funções de banco ausentes                 | `comm` entre migrations e `pg_proc` de `public` | Reconsultado em **todos** os schemas, não só `public`                                                                                                                                        | ✅ **Sobrevive**                                                                                                                                                                                                                                             |
+| 1.174 blocos de teste (vs. 1.888 do README) | `grep` de `it(`/`test(`                         | Testadas as variantes que meu regex poderia perder: `it.each`/`test.each` (**2**), `.skip`/`.only` (**0**), Playwright (**2**)                                                               | ❌ **DERRUBADO na §13.** Executar a suíte deu **1.767** testes, não 1.174. O `grep` não enxerga testes gerados em laço; a "margem de erro < 0,5%" que eu declarei aqui era ilusão de um método que só se comparava consigo mesmo. Só medir por fora derrubou |
+| `pg_cron` ausente                           | `pg_extension`                                  | Sem novo método disponível; consulta direta ao catálogo é a fonte primária                                                                                                                   | ✅ Sobrevive                                                                                                                                                                                                                                                 |
 
 #### 8.4.3 O que a revalidação **não** conseguiu resolver
 
@@ -814,7 +821,7 @@ Declarado, não escondido:
 | 4   | **Ativar RLS** em `achievements`, `departments`, `gamification_leaderboard`                                                        | Vazamento entre empresas em sistema multi-tenant                                             | 1 migration |
 | 5   | **Criar as 2 Edge Functions ausentes** (`award-gamification-points`, `sync-whatsapp-templates`) ou remover as chamadas             | Fio quebrado que gera erro para o usuário                                                    | pequeno     |
 | 6   | **Corrigir `mobile-build.yml`** (remover ou apontar para caminho válido) e escolher **um** pipeline de deploy                      | Workflow morto e dois deploys concorrentes escondem qual é a verdade de produção             | pequeno     |
-| 7   | **Sincronizar README/VERSION com o medido** (1.174 testes; remover badge de cobertura sem lastro)                                  | O documento que todo dev e todo agente lê primeiro é o mais desatualizado                    | pequeno     |
+| 7   | **Sincronizar README/VERSION com o medido** (1.767 testes, 78 falhando; remover badge de cobertura sem lastro)                     | O documento que todo dev e todo agente lê primeiro é o mais desatualizado                    | pequeno     |
 | 8   | **Podar código morto**: 2 páginas sem rota, `HeroMetrics`, `useDashboardPage`, `useProductivityComparison` e os utilitários órfãos | 77% dos hooks sem consumidor tornam a navegação do código enganosa                           | médio       |
 
 ### Toca produção ou muda arquitetura — **decisão sua**
@@ -837,7 +844,9 @@ Declarado, não escondido:
 - [x] Todo achado grave verificado de forma independente (§8.2) — e **três foram corrigidos para
       menos** (§8.3)
 - [x] **Achados graves reexecutados por método diferente do original** (§8.4) — 6 defeitos
-      encontrados neste próprio documento e corrigidos; 8 achados resistiram, 2 saíram reforçados
+      encontrados neste próprio documento e corrigidos; 7 achados resistiram, 2 saíram reforçados
+      e **1 foi derrubado depois** pela execução real da suíte (§13) — a revalidação por métodos
+      estáticos não bastou para ele
 - [x] Runtime marcado `VERIFICADO` ou `NAO_VERIFICADO`, sem meio-termo
 - [x] Lacunas declaradas no próprio documento (§10 e §8.4.3)
 - [x] Nada alterado em produção — nenhuma escrita executada. Ressalva registrada em §8.4.1 (item 6):
