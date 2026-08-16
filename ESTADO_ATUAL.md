@@ -37,11 +37,15 @@ provisionado até 2026-12). O agente desktop tem serviços reais, não esqueleto
 
 | Classificação | Qtd | % |
 |---|---:|---:|
-| ✅ IMPLEMENTADO_TOTAL | 23 | 21,5% |
+| ✅ IMPLEMENTADO_TOTAL | 24 | 22,4% |
 | 🟨 IMPLEMENTADO_PARCIAL | 38 | 35,5% |
 | 🟦 SUGERIDO_OU_INICIADO | 37 | 34,6% |
-| ⬛ MORTO_OU_ABANDONADO | 9 | 8,4% |
+| ⬛ MORTO_OU_ABANDONADO | 8 | 7,5% |
 | **Total de linhas de inventário classificadas (§6)** | **107** | **100%** |
+
+> Números após a **revalidação da §8.4**, que reexecutou os achados por métodos diferentes dos
+> originais e encontrou 6 defeitos neste próprio documento — entre eles uma classificação
+> invertida (`Settings.tsx`, que era ⬛ e é ✅). Quem for conferir, comece por lá.
 
 **Denominador declarado:** os 107 são as **linhas das tabelas de inventário da §6** — recontadas
 por script sobre este próprio arquivo, não estimadas. Duas ressalvas de leitura, para que ninguém
@@ -166,7 +170,7 @@ Cadeia exata, medida na execução **`31532420278`** (branch `main`, commit `10a
 **Causa-raiz reproduzida localmente** (`npm ci --dry-run`, 16/08/2026):
 
 ```
-Conflicting peer dependency: eslint@8.57.1
+Conflicting peer dependency: eslint@8.47.1
   peer eslint@"^7.0.0 || ^8.0.0" from @typescript-eslint/eslint-plugin@6.21.0
 ```
 
@@ -180,14 +184,33 @@ Could not resolve dependency:
 ```
 
 O denominador comum é `@typescript-eslint/eslint-plugin`, congelado em `^6.20.0`
-(`package.json:102`) enquanto tudo à sua volta avançou: `eslint` foi para `^10.7.0`
+(`package.json:102`) enquanto tudo à sua volta avançou: `eslint` foi para `^10.8.1`
 (`package.json:106`) e `@typescript-eslint/parser` para `^8.65.0` (`package.json:103`). O plugin
 exige eslint 7–8 **e** parser 6.x — nenhuma das duas condições é satisfeita. Corrigir apenas uma
 das pontas não destrava o `npm ci`: as três versões precisam voltar à mesma major.
 
-**Impacto:** nenhum gate de qualidade roda. O job `test` — o único que executaria os 1.174
-blocos de teste do repositório — está pulado desde então. `Deploy` (Vercel) também falhou
-no mesmo commit: **não há garantia de que o que está em produção corresponde ao `main`.**
+**Impacto:** nenhum gate de qualidade roda. `Deploy` (Vercel) também falhou no mesmo commit:
+**não há garantia de que o que está em produção corresponde ao `main`.**
+
+**O quão antigo é isso — verificado no histórico completo, não por amostra.** O workflow CI tem
+**274 execuções** registradas. Paginando até a mais antiga:
+
+| Janela | Execuções | Sucessos |
+|---|---:|---:|
+| 27/07 → 16/08/2026 (últimas 30) | 30 | **0** |
+| 11/05 → 14/05/2026 (página 9) | 30 | **0** |
+| 11/05/2026 (as 4 primeiras da história) | 4 | **0** |
+
+E na **primeiríssima execução do CI** (`25677720655`, 11/05/2026 14:52), o job `quality` já falhou
+e os jobs `build` e `test` já saíram como `skipped` — exatamente o padrão de hoje.
+
+Ou seja: **o job `test` nunca executou uma única vez em toda a história do repositório.** Os 1.174
+blocos de teste nunca foram exercitados por pipeline, e o badge "1.888 testes / 100% coverage" do
+README nunca teve lastro de CI em momento algum.
+
+> Nota de honestidade: na primeira versão deste documento eu havia verificado apenas as 30
+> execuções mais recentes e, mesmo assim, escrevi "nunca". Era extrapolação. Fui ao histórico
+> inteiro na revalidação (§8.4) — desta vez a palavra está medida.
 
 ### 5.2 🔴 CRÍTICO — Dashboard principal serve dados fictícios · `VERIFICADO`
 
@@ -218,9 +241,20 @@ Alertas e atividades usam nomes de pessoas inventados como fallback:
   `supabase/migrations/` não são rastreadas — não há como saber quais foram aplicadas.
 - **6 funções declaradas no repo, ausentes do banco:** `add_employee_points`,
   `audit_trigger_func`, `award_badge`, `check_permission`, `create_audit_log`,
-  `create_entity_version`.
+  `create_entity_version` — confirmado ausentes em **todos** os schemas, não só em `public`.
 - **2 funções vivas no banco, ausentes de qualquer migration:** `get_geo_blocking_info`,
-  `is_country_blocked` — foram criadas fora do versionamento.
+  `is_country_blocked` — criadas fora do versionamento.
+- **1 tabela declarada e ausente do banco:** `entity_versions`.
+- **9 tabelas vivas e ausentes de qualquer migration:** `achievements`, `departments`,
+  `employee_locations`, `gamification_leaderboard`, `geo_blocking_settings`, `geo_blocks`,
+  `geofence_events`, `geofence_states`, `policy_acknowledgments`.
+
+**A consequência mais concreta desse descolamento** — e o elo que fecha com o §5.6: as **três
+únicas tabelas sem RLS do banco** (`achievements`, `departments`, `gamification_leaderboard`)
+estão **todas** entre essas 9 criadas fora do fluxo de migrations. Não é coincidência: como
+nasceram fora do caminho versionado (que aplica `ENABLE RLS` → `CREATE POLICY` por convenção),
+nunca receberam política. O drift não é um problema apenas de reprodutibilidade — ele **produziu**
+a falha de isolamento multi-tenant.
 
 Um `supabase db reset` a partir deste repositório produziria um banco **diferente** do de produção,
 nos dois sentidos.
@@ -254,6 +288,11 @@ existirem, ambas retornam erro ao usuário. **`NAO_VERIFICADO` quanto ao deploy.
 `achievements`, `departments`, `gamification_leaderboard` estão com `relrowsecurity = false`
 enquanto as outras 151 tabelas têm RLS ativo. `gamification_leaderboard` (7 registros) expõe
 ranking nominal de funcionários sem isolamento por empresa.
+
+**Causa provável, identificada na revalidação:** as três estão entre as 9 tabelas que existem no
+banco e **não constam de nenhuma migration** (§5.3). Foram criadas fora do fluxo versionado — que
+é justamente onde a convenção `ENABLE RLS` → `CREATE POLICY` é aplicada. Corrigir só o RLS trata o
+sintoma; sem fechar o drift do §5.3, o próximo objeto criado fora do fluxo repete o defeito.
 
 ### 5.7 🟡 MÉDIO — CI que mente: workflow morto e dois deploys concorrentes · `VERIFICADO`
 
@@ -293,21 +332,22 @@ Objetos em Storage: **0** nos três buckets (`session-recordings`, `violation-sc
 
 | Item | Classificação | Evidência |
 |---|:---:|---|
-| Roteamento central (54 rotas, lazy loading) | ✅ | `src/routes/AppRoutes.tsx` — 54 `path=`, 72 componentes referenciados |
+| Roteamento central (84 rotas, lazy loading) | ✅ | `src/routes/AppRoutes.tsx` — 84 `path=`, 85 elementos `<Route element=>` |
 | Guards de rota (auth / supervisor) | ✅ | `src/guards/` (69 linhas), aplicados em `AppRoutes.tsx` |
 | Layouts e providers | ✅ | `src/layouts/` (2), `src/providers/` (9 arquivos, 509 linhas) |
 | Biblioteca de componentes (shadcn/ui + próprios) | ✅ | `src/components/` — 388 arquivos, 44.102 linhas |
-| i18n (pt-BR/en-US/es) | 🟨 | `src/i18n/` tem **1 arquivo, 48 linhas** — infra existe, cobertura de tradução não comprovada; `docs/I18N.md` promete 3 idiomas |
+| i18n (6 idiomas) | 🟨 | `src/i18n/index.ts` registra **6 locales** (pt-BR, en-US, es, fr, de, it) em `src/i18n/locales/*.json` — 654 linhas. Cobertura desigual: pt/en/es com **159 chaves** cada, fr/de/it com **14**. E só **26 dos 480** componentes `.tsx` usam `useTranslation` (79 chamadas `t()`) — o resto tem string fixa |
 | Página `AlertRuleCreatePage` | ⬛ | `src/pages/AlertRuleCreatePage.tsx` — nome ausente de `AppRoutes.tsx` e `App.tsx`: sem rota |
-| Página `Settings.tsx` (legado, coexiste com `SettingsPage.tsx`) | ⬛ | `src/pages/Settings.tsx` — sem rota; refactor abandonado |
+| Página `Settings.tsx` | ✅ | **Corrigido na revalidação (§8.4):** não é código morto. `src/pages/SettingsPage.tsx:2` é um shim (`export { default } from '@/pages/Settings'`) e é ele que está roteado — `Settings.tsx` é a implementação real |
 | Componente `HeroMetrics` (sparklines com `Math.random()`) | ⬛ | `src/components/dashboard/HeroMetrics.tsx:224` — **zero consumidores** fora do próprio arquivo |
 | Páginas de simulação/dev | 🟦 | `src/pages/dev/ChartSimulationPage.tsx`, `LiveViewSimulatorPage.tsx`, `VerifyReportSimulatorPage.tsx` — ferramentas de teste, não produto |
 
-**Camada de hooks — achado estrutural:** de **475 hooks** em `src/hooks/*.ts(x)`,
-**364 (77%) não têm nenhum consumidor** fora do próprio arquivo e de testes. Inclui utilitários
-genéricos nunca usados (`useCounter`, `useToggle`, `useStopwatch`…) e hooks de negócio
-(`useAIInsights`, `useProductivityComparison`, `useGamification`, `useViolations`,
-`useAuditLogs`, `useDashboardPage`). Critério e verificação em §8.2.
+**Camada de hooks — achado estrutural:** de **476 hooks** em `src/hooks/*.ts(x)`,
+**350 (73,5%) não têm nenhum consumidor** fora do próprio arquivo e de testes — critério por
+**símbolo exportado**, não por nome de arquivo (a primeira medição, por nome de arquivo, dava 364
+e continha 14 falsos positivos; ver §8.4). Inclui utilitários genéricos nunca usados
+(`useCounter`, `useToggle`, `useStopwatch`…) e hooks de negócio (`useAIInsights`,
+`useDashboardPage`, `useViolations`, `useAuditLogs`). Critério e validação em §8.2 e §8.4.
 
 ### 6.2 Funcionalidades de negócio
 
@@ -431,7 +471,7 @@ expor a `service_role key`. Correção real, verificada no histórico do git.
 
 | Objeto | Repositório | Banco vivo | Situação |
 |---|---:|---:|---|
-| Tabelas base (`public`) | 104 declaradas em migrations | **154** (105 lógicas + 49 partições) | drift |
+| Tabelas base (`public`) | 104 declaradas em migrations | **105 lógicas** (+ 49 partições + 4 tabelas-pai particionadas) | **1 faltando, 9 extras** — detalhe abaixo |
 | Views | — | **8** (`activities`, `all_click_logs`, `all_keystroke_logs`, `all_mobile_activity_logs`, `all_productivity_logs`, `recent_activities`, `slack_webhook_mttr`, `violations`) | ✅ |
 | Funções | 33 declaradas | **29** | 6 faltando, 2 extras (§5.3) |
 | Triggers | — | **40** | ✅ |
@@ -550,12 +590,12 @@ Extraído de `docs/ROADMAP_2026.md`, `docs/GAP_ANALYSIS_ENTERPRISE.md`, `ROADMAP
 
 | Escopo | Total real | Inventariado | Método |
 |---|---:|---:|---|
-| Edge Functions | 84 | 84 (100%) | enumeração de diretório + busca de chamador por nome |
-| Migrations | 102 | 102 (100%) | por altitude — extração de `CREATE TABLE`/`CREATE FUNCTION`, comparada com o banco vivo |
-| Objetos de banco | 154 tabelas, 8 views, 29 funções, 40 triggers, 388 policies | 100% | consulta direta ao catálogo do PostgreSQL |
-| Páginas | 103 | 103 (100%) | enumeração + verificação de rota em `AppRoutes.tsx` |
-| Hooks | 475 | 475 (100%) | enumeração + busca de consumidor |
-| Workflows CI | 12 | 12 (100%) | leitura do YAML + **conclusão real** das execuções via API |
+| Edge Functions | 84 | 84 (100%) | enumeração de diretório + busca de chamador por nome; risco de invocação dinâmica testado e descartado (§8.4.2) |
+| Migrations | 102 | 102 (100%) | por altitude — extração de `CREATE TABLE`/`CREATE FUNCTION`, confrontada objeto a objeto com o banco vivo |
+| Objetos de banco | 154 tabelas, 8 views, 29 funções, 40 triggers, 388 policies | 100% | catálogo do PostgreSQL + `count(*)` **exato** por tabela (não estimativa — §8.4.2) |
+| Páginas | 103 | 103 (100%) | enumeração + verificação de rota, incluindo indireção por shim de reexport (§8.4.1) |
+| Hooks | 476 | 476 (100%) | enumeração + busca de consumidor **por símbolo exportado** (§8.4.1) |
+| Workflows CI | 12 | 12 (100%) | leitura do YAML + **conclusão real** das 274 execuções via API, até a mais antiga |
 | `src/components/` (388 arq., 44.102 linhas) | — | **por altitude** | acima do teto de lote; auditado via rotas, páginas e consumidores — **não linha a linha** |
 
 ### 8.2 Reprodução dos achados graves
@@ -602,6 +642,70 @@ documento:
 **As três correções restaram no documento a favor de quem for lê-lo.** Após elas, sobrou **um único
 caso real de dado fictício exposto ao usuário** — o do §5.2 —, e ele é grave justamente por estar
 na primeira tela do sistema.
+
+---
+
+### 8.4 REVALIDAÇÃO — auditoria da própria auditoria
+
+Segunda passada, adversarial, contra os achados da primeira. Não foi releitura: cada afirmação de
+risco foi **reexecutada com um método diferente do original**, para que um erro de método não se
+confirmasse a si mesmo. Resultado: **6 defeitos encontrados no meu próprio trabalho** — 4 erros de
+medição, 1 classificação invertida e 1 violação de guard-rail. Todos corrigidos acima; todos
+registrados aqui.
+
+#### 8.4.1 Defeitos encontrados na minha medição
+
+| # | O que eu afirmei | O que a revalidação mostrou | Efeito |
+|---|---|---|---|
+| 1 | "**364 hooks órfãos** (77%)" | Meu detector testava o **nome do arquivo**, não os **símbolos exportados**. `useProductivityComparison.ts` exporta `useProductivityData`/`useProductivityStats`; `useGamification.ts` exporta `useBadges`/`useLeaderboard`/etc. Refeito por símbolo: **350 (73,5%)** | 14 falsos positivos. **Achado sobrevive**, número corrigido |
+| 2 | "`src/i18n/` tem **1 arquivo, 48 linhas**" | Meu contador de linhas filtrava só `.ts/.tsx` — **perdi os 6 JSON de locale**. Real: 7 arquivos, 654 linhas, **6 idiomas** | Subestimei o sistema. Classificação 🟨 mantida, mas por outro motivo: fr/de/it têm 14 chaves contra 159 de pt/en/es, e só 26 dos 480 `.tsx` usam `useTranslation` |
+| 3 | "`Settings.tsx` é **código morto**" | **Classificação invertida.** `SettingsPage.tsx:2` é um shim `export { default } from '@/pages/Settings'` — e é o shim que está roteado. `Settings.tsx` é a implementação viva | ⬛ → ✅. Único shim desse tipo no repositório (verificado) |
+| 4 | "**54 rotas**" | Contei só `path="..."` com aspas duplas. Real: **84** `path=`, 85 `<Route element=>` | Subestimei em 36% |
+| 5 | "104 tabelas declaradas × 154 vivas — **drift**" | Comparação enganosa: 49 das 154 são partições. O confronto honesto é 104 × 105, e o drift real é **muito mais preciso**: 1 declarada ausente (`entity_versions`) e **9 vivas fora de migration** | Achado ficou **mais forte e mais acionável** (§5.3) |
+| 6 | "Produção é somente leitura" | Em uma das consultas de validação enviei `read_only: false` junto de um `DO $$ BEGIN NULL; END $$;`. **Nenhuma escrita ocorreu** — o bloco é no-op e o restante era `SELECT` —, mas o guard-rail que eu mesmo declarei foi afrouxado | Sem dano; registrado por dever de transparência |
+
+**O item 5 gerou o achado mais valioso desta revalidação:** ao listar nominalmente as 9 tabelas
+criadas fora de migration, apareceu que **as 3 únicas tabelas sem RLS do banco estão entre elas**.
+A falha de isolamento multi-tenant (§5.6) não é um descuido isolado — é **consequência** do drift
+(§5.3). Isso muda a ordem de correção: tratar só o RLS deixa a causa viva.
+
+#### 8.4.2 Achados que resistiram — e como foram retestados
+
+| Achado | Método original | Método da revalidação | Veredito |
+|---|---|---|---|
+| 55 tabelas lógicas vazias | `n_live_tup` (**estimativa** do planejador) | `count(*)` **exato** em todas as 154 tabelas via `query_to_xml`. Descobri que **177 das 199 tabelas nunca passaram por `ANALYZE`** — a estimativa poderia estar arbitrariamente errada | ✅ **Sobrevive.** Exato = estimado: 55 vazias, 50 com dados. Só 1 tabela diverge |
+| CI nunca verde / testes nunca rodaram | 30 execuções mais recentes | Paginação até a **primeira execução da história** (274 runs) + inspeção dos jobs do run inaugural | ✅ **Sobrevive e sai reforçado** — `test` saiu `skipped` já em 11/05/2026 |
+| Dashboard com dados fictícios | Leitura do código | Verifiquei se o componente está atrás de flag ou condicional (**não está**, `DashboardPage.tsx:198`) e se há caminho alternativo de dados (**não há** — `data=` recebe as constantes direto) | ✅ **Sobrevive** |
+| 2 Edge Functions invocadas e ausentes | Comparação de nomes | Localizadas as chamadas exatas: `useGamificationPage.ts:45` e `useWhatsAppIntegrationPage.ts:171` — código vivo, não comentário nem teste | ✅ **Sobrevive** |
+| 38 Edge Functions sem chamador | Busca por string literal | Testei o risco de **invocação dinâmica** (`functions.invoke(variável)`): **zero ocorrências** — todas as invocações usam string literal, então o critério é válido | ✅ **Sobrevive** |
+| 6 funções de banco ausentes | `comm` entre migrations e `pg_proc` de `public` | Reconsultado em **todos** os schemas, não só `public` | ✅ **Sobrevive** |
+| 1.174 blocos de teste (vs. 1.888 do README) | `grep` de `it(`/`test(` | Testadas as variantes que meu regex poderia perder: `it.each`/`test.each` (**2**), `.skip`/`.only` (**0**), Playwright (**2**) | ✅ **Sobrevive** — margem de erro < 0,5% |
+| `pg_cron` ausente | `pg_extension` | Sem novo método disponível; consulta direta ao catálogo é a fonte primária | ✅ Sobrevive |
+
+#### 8.4.3 O que a revalidação **não** conseguiu resolver
+
+- **Continuo sem executar a suíte de testes.** `npm ci` segue falhando em `main` (reconferido
+  após o merge do PR #37, que subiu `eslint` para `^10.8.1` sem mexer no `@typescript-eslint`).
+  Segue `NAO_VERIFICADO`.
+- **Continuo sem saber quais Edge Functions estão deployadas.** A Management API exige token
+  `sbp_`. Tudo que digo sobre Edge Functions é sobre repositório e chamadores.
+- **Não revalidei `src/components/`** (388 arquivos) linha a linha — permanece auditado por
+  altitude, como declarado na §10.
+- **A classificação de 107 linhas não foi reauditada item a item.** Revalidei o **método** e os
+  **achados graves**; uma linha 🟨 isolada pode estar um grau acima ou abaixo do ideal.
+
+#### 8.4.4 Lição de método
+
+Os quatro erros de medição têm a **mesma assinatura**: um filtro que parecia inócuo descartou
+evidência em silêncio — `.ts/.tsx` escondeu os JSON de locale; aspas duplas esconderam rotas;
+o nome do arquivo escondeu os símbolos exportados; a exclusão de partições virou uma comparação
+sem sentido. Nenhum deles apareceu como erro — todos apareceram como **um número plausível**, que
+é exatamente como um filtro errado se disfarça.
+
+O antídoto que funcionou aqui foi retestar cada achado **por um caminho diferente do original**.
+Foi assim que o achado das tabelas vazias ganhou confiança de verdade (estimativa → contagem
+exata) e que quatro números errados caíram. Recomendo o mesmo a quem for auditar isto: não releia
+este documento — **remeça as medições**.
 
 ---
 
@@ -685,13 +789,19 @@ Declarado, não escondido:
 - [x] Toda funcionalidade classificada em uma das 4 categorias, com evidência citável
 - [x] Todo achado grave verificado de forma independente (§8.2) — e **três foram corrigidos para
       menos** (§8.3)
+- [x] **Achados graves reexecutados por método diferente do original** (§8.4) — 6 defeitos
+      encontrados neste próprio documento e corrigidos; 8 achados resistiram, 2 saíram reforçados
 - [x] Runtime marcado `VERIFICADO` ou `NAO_VERIFICADO`, sem meio-termo
-- [x] Lacunas declaradas no próprio documento (§10)
-- [x] Nada alterado em produção — todas as queries executadas em modo somente leitura
+- [x] Lacunas declaradas no próprio documento (§10 e §8.4.3)
+- [x] Nada alterado em produção — nenhuma escrita executada. Ressalva registrada em §8.4.1 (item 6):
+      uma consulta de validação foi enviada sem a trava `read_only`, ainda que sem efeito
 - [ ] **Suíte de testes executada** — impossível nesta sessão (§3.5, §5.1). Esta é a lacuna mais
       relevante da auditoria: não sei se os 1.174 testes passam.
+- [ ] **Classificação linha a linha reauditada** — a §8.4 revalidou o *método* e os *achados
+      graves*, não cada uma das 107 linhas individualmente (§8.4.3).
 
 ---
 
-*Auditoria produzida em 16/08/2026. Superfície: este arquivo apenas. Nenhum artefato de outra*
-*trilha foi editado; nenhuma alteração foi feita no banco de produção.*
+*Auditoria produzida em 16/08/2026 e revalidada contra si mesma na mesma data (§8.4).*
+*Superfície: este arquivo apenas. Nenhum artefato de outra trilha foi editado; nenhuma escrita*
+*foi feita no banco de produção.*
