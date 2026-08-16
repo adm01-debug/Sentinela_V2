@@ -170,9 +170,20 @@ Conflicting peer dependency: eslint@8.57.1
   peer eslint@"^7.0.0 || ^8.0.0" from @typescript-eslint/eslint-plugin@6.21.0
 ```
 
-`package.json:106` declara `"eslint": "^10.7.0"` enquanto `package.json:102-103` mantêm
-`@typescript-eslint/*` em `^6.20.0`, cujo peer aceita apenas eslint 7 ou 8. O `eslint` foi
-promovido a v10 sem promover o `typescript-eslint` junto.
+E confirmada no runner do GitHub (job `lint` da execução `31960310129`, 16/08/2026 17:00:54),
+que expõe uma **segunda incompatibilidade da mesma família**:
+
+```
+Could not resolve dependency:
+  peer @typescript-eslint/parser@"^6.0.0 || ^6.0.0-alpha" from @typescript-eslint/eslint-plugin@6.21.0
+  dev @typescript-eslint/parser@"^8.65.0" from the root project
+```
+
+O denominador comum é `@typescript-eslint/eslint-plugin`, congelado em `^6.20.0`
+(`package.json:102`) enquanto tudo à sua volta avançou: `eslint` foi para `^10.7.0`
+(`package.json:106`) e `@typescript-eslint/parser` para `^8.65.0` (`package.json:103`). O plugin
+exige eslint 7–8 **e** parser 6.x — nenhuma das duas condições é satisfeita. Corrigir apenas uma
+das pontas não destrava o `npm ci`: as três versões precisam voltar à mesma major.
 
 **Impacto:** nenhum gate de qualidade roda. O job `test` — o único que executaria os 1.174
 blocos de teste do repositório — está pulado desde então. `Deploy` (Vercel) também falhou
@@ -646,7 +657,7 @@ Declarado, não escondido:
 
 | # | Ação | Por quê | Esforço |
 |---|---|---|---|
-| 1 | **Destravar o `npm ci`**: alinhar `@typescript-eslint/*` à major do `eslint` (ou fixar `eslint` em `^8`) e regenerar o lockfile | Reacende **todo** o CI: lint, type-check, build e os 1.174 testes voltam a rodar. É o pré-requisito de qualquer outra melhoria | 1 commit |
+| 1 | **Destravar o `npm ci`**: alinhar as três pontas — `eslint`, `@typescript-eslint/parser` e `@typescript-eslint/eslint-plugin` — na mesma major, e regenerar o lockfile. Corrigir só uma delas não resolve (§5.1) | Reacende **todo** o CI: lint, type-check, build e os 1.174 testes voltam a rodar. É o pré-requisito de qualquer outra melhoria | 1 commit |
 | 2 | **Ligar os gráficos do dashboard a dados reais** ou rotulá-los explicitamente como demonstração | Hoje a primeira tela do sistema mostra números inventados a quem decide por eles | pequeno |
 | 3 | **Remover os fallbacks com nomes de pessoas fictícias** (`dashboardData.ts:29-42`), trocando por estado vazio honesto | "Carlos Silva — acesso não autorizado detectado" é indistinguível de um alerta real | pequeno |
 | 4 | **Ativar RLS** em `achievements`, `departments`, `gamification_leaderboard` | Vazamento entre empresas em sistema multi-tenant | 1 migration |
