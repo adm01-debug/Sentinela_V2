@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets, CACHE_TIMES } from '@/lib/queryClient';
-import { useToast } from '@/hooks/use-toast';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys, queryPresets, CACHE_TIMES } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 // ============================================================
 // TYPES
@@ -12,9 +12,9 @@ export interface Badge {
   name: string;
   description: string;
   icon: string;
-  category: 'productivity' | 'attendance' | 'teamwork' | 'achievement' | 'special';
+  category: "productivity" | "attendance" | "teamwork" | "achievement" | "special";
   points_required: number;
-  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+  rarity: "common" | "uncommon" | "rare" | "epic" | "legendary";
   is_active: boolean;
   created_at: string;
 }
@@ -34,7 +34,7 @@ export interface EmployeePoints {
   level: number;
   experience: number;
   current_streak: number;
-  longest_streak: number;
+  best_streak: number;
   last_activity_date: string;
   updated_at: string;
 }
@@ -53,7 +53,9 @@ export interface PointTransaction {
   employee_id: string;
   points: number;
   reason: string;
-  category: string;
+  description: string | null;
+  reference_type: string | null;
+  reference_id: string | null;
   created_at: string;
 }
 
@@ -63,10 +65,10 @@ export interface PointTransaction {
 
 async function fetchBadges(): Promise<Badge[]> {
   const { data, error } = await supabase
-    .from('badges')
-    .select('*')
-    .eq('is_active', true)
-    .order('points_required');
+    .from("badges")
+    .select("*")
+    .eq("is_active", true)
+    .order("points");
 
   if (error) throw error;
   return data || [];
@@ -74,13 +76,15 @@ async function fetchBadges(): Promise<Badge[]> {
 
 async function fetchEmployeeBadges(employeeId: string): Promise<EmployeeBadge[]> {
   const { data, error } = await supabase
-    .from('employee_badges')
-    .select(`
+    .from("employee_badges")
+    .select(
+      `
       *,
       badge:badges(*)
-    `)
-    .eq('employee_id', employeeId)
-    .order('earned_at', { ascending: false });
+    `
+    )
+    .eq("employee_id", employeeId)
+    .order("earned_at", { ascending: false });
 
   if (error) throw error;
   return data || [];
@@ -88,9 +92,9 @@ async function fetchEmployeeBadges(employeeId: string): Promise<EmployeeBadge[]>
 
 async function fetchEmployeePoints(employeeId: string): Promise<EmployeePoints | null> {
   const { data, error } = await supabase
-    .from('employee_points')
-    .select('*')
-    .eq('employee_id', employeeId)
+    .from("employee_points")
+    .select("*")
+    .eq("employee_id", employeeId)
     .maybeSingle();
 
   if (error) throw error;
@@ -98,18 +102,26 @@ async function fetchEmployeePoints(employeeId: string): Promise<EmployeePoints |
 }
 
 async function fetchLeaderboard(
-  period: 'week' | 'month' | 'all' = 'month',
+  period: "week" | "month" | "all" = "month",
   limit = 10
 ): Promise<LeaderboardEntry[]> {
+  const pointsColumn =
+    period === "week"
+      ? "current_week_points"
+      : period === "month"
+        ? "current_month_points"
+        : "total_points";
   const { data, error } = await supabase
-    .from('employee_points')
-    .select(`
+    .from("employee_points")
+    .select(
+      `
       employee_id,
       total_points,
       level,
       employee:employees(name)
-    `)
-    .order('total_points', { ascending: false })
+    `
+    )
+    .order(pointsColumn, { ascending: false })
     .limit(limit);
 
   if (error) throw error;
@@ -118,14 +130,14 @@ async function fetchLeaderboard(
   const withRanks = await Promise.all(
     (data || []).map(async (entry: { employee_id: string; total_points: number; level: number; employee: { name: string } | { name: string }[] | null }, index: number) => {
       const { count } = await supabase
-        .from('employee_badges')
-        .select('*', { count: 'exact', head: true })
-        .eq('employee_id', entry.employee_id);
+        .from("employee_badges")
+        .select("*", { count: "exact", head: true })
+        .eq("employee_id", entry.employee_id);
 
       const employeeData = Array.isArray(entry.employee) ? entry.employee[0] : entry.employee;
       return {
         employee_id: entry.employee_id,
-        employee_name: employeeData?.name || 'Unknown',
+        employee_name: employeeData?.name || "Unknown",
         total_points: entry.total_points,
         level: entry.level,
         badges_count: count || 0,
@@ -137,15 +149,12 @@ async function fetchLeaderboard(
   return withRanks;
 }
 
-async function fetchPointTransactions(
-  employeeId: string,
-  limit = 20
-): Promise<PointTransaction[]> {
+async function fetchPointTransactions(employeeId: string, limit = 20): Promise<PointTransaction[]> {
   const { data, error } = await supabase
-    .from('point_transactions')
-    .select('*')
-    .eq('employee_id', employeeId)
-    .order('created_at', { ascending: false })
+    .from("points_history")
+    .select("*")
+    .eq("employee_id", employeeId)
+    .order("created_at", { ascending: false })
     .limit(limit);
 
   if (error) throw error;
@@ -166,7 +175,7 @@ export function useBadges() {
 
 export function useEmployeeBadges(employeeId: string | undefined) {
   return useQuery({
-    queryKey: ['gamification', 'badges', employeeId],
+    queryKey: ["gamification", "badges", employeeId],
     queryFn: () => fetchEmployeeBadges(employeeId!),
     enabled: !!employeeId,
     staleTime: CACHE_TIMES.FREQUENT,
@@ -182,7 +191,7 @@ export function useEmployeePoints(employeeId: string | undefined) {
   });
 }
 
-export function useLeaderboard(period: 'week' | 'month' | 'all' = 'month') {
+export function useLeaderboard(period: "week" | "month" | "all" = "month") {
   return useQuery({
     queryKey: queryKeys.gamification.leaderboard(period),
     queryFn: () => fetchLeaderboard(period),
@@ -192,7 +201,7 @@ export function useLeaderboard(period: 'week' | 'month' | 'all' = 'month') {
 
 export function usePointTransactions(employeeId: string | undefined) {
   return useQuery({
-    queryKey: ['gamification', 'transactions', employeeId],
+    queryKey: ["gamification", "transactions", employeeId],
     queryFn: () => fetchPointTransactions(employeeId!),
     enabled: !!employeeId,
     staleTime: CACHE_TIMES.FREQUENT,
@@ -212,30 +221,25 @@ export function useAwardPoints() {
       employeeId,
       points,
       reason,
-      category = 'manual',
     }: {
       employeeId: string;
       points: number;
       reason: string;
-      category?: string;
     }) => {
-      // Create transaction
-      const { error: transactionError } = await supabase
-        .from('point_transactions')
-        .insert({
-          employee_id: employeeId,
-          points,
-          reason,
-          category,
-        });
+      // Record points history entry
+      const { error: transactionError } = await supabase.from("points_history").insert({
+        employee_id: employeeId,
+        points,
+        reason,
+      });
 
       if (transactionError) throw transactionError;
 
       // Update total points
       const { data: current } = await supabase
-        .from('employee_points')
-        .select('*')
-        .eq('employee_id', employeeId)
+        .from("employee_points")
+        .select("*")
+        .eq("employee_id", employeeId)
         .maybeSingle();
 
       if (current) {
@@ -243,13 +247,13 @@ export function useAwardPoints() {
         const newLevel = calculateLevel(newTotal);
 
         const { data, error } = await supabase
-          .from('employee_points')
+          .from("employee_points")
           .update({
             total_points: newTotal,
             level: newLevel,
             experience: newTotal % 1000,
           })
-          .eq('employee_id', employeeId)
+          .eq("employee_id", employeeId)
           .select()
           .maybeSingle();
 
@@ -257,14 +261,14 @@ export function useAwardPoints() {
         return data;
       } else {
         const { data, error } = await supabase
-          .from('employee_points')
+          .from("employee_points")
           .insert({
             employee_id: employeeId,
             total_points: points,
             level: 1,
             experience: points % 1000,
             current_streak: 0,
-            longest_streak: 0,
+            best_streak: 0,
           })
           .select()
           .maybeSingle();
@@ -274,22 +278,22 @@ export function useAwardPoints() {
       }
     },
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.gamification.points(variables.employeeId) 
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.gamification.points(variables.employeeId),
       });
-      queryClient.invalidateQueries({ 
-        queryKey: queryKeys.gamification.leaderboard('all') 
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.gamification.leaderboard("all"),
       });
       toast({
-        title: 'Pontos concedidos',
+        title: "Pontos concedidos",
         description: `${variables.points} pontos foram adicionados.`,
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao conceder pontos',
+        title: "Erro ao conceder pontos",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -300,32 +304,27 @@ export function useAwardBadge() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({
-      employeeId,
-      badgeId,
-    }: {
-      employeeId: string;
-      badgeId: string;
-    }) => {
+    mutationFn: async ({ employeeId, badgeId }: { employeeId: string; badgeId: string }) => {
       // Check if already has badge
       const { data: existing } = await supabase
-        .from('employee_badges')
-        .select('id')
-        .eq('employee_id', employeeId)
-        .eq('badge_id', badgeId)
+        .from("employee_badges")
+        .select("id")
+        .eq("employee_id", employeeId)
+        .eq("badge_id", badgeId)
         .maybeSingle();
 
       if (existing) {
-        throw new Error('Funcionário já possui este badge');
+        throw new Error("Funcionário já possui este badge");
       }
 
       const { data, error } = await supabase
-        .from('employee_badges')
+        .from("employee_badges")
         .insert({
           employee_id: employeeId,
           badge_id: badgeId,
         })
-        .select(`
+        .select(
+          `
           *,
           badge:badges(*)
         `)
@@ -335,19 +334,19 @@ export function useAwardBadge() {
       return data;
     },
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ 
-        queryKey: ['gamification', 'badges', variables.employeeId] 
+      queryClient.invalidateQueries({
+        queryKey: ["gamification", "badges", variables.employeeId],
       });
       toast({
-        title: '🏆 Badge concedido!',
+        title: "🏆 Badge concedido!",
         description: `Badge "${data.badge?.name}" foi desbloqueado.`,
       });
     },
     onError: (error) => {
       toast({
-        title: 'Erro ao conceder badge',
+        title: "Erro ao conceder badge",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -372,13 +371,19 @@ export function getLevelProgress(currentPoints: number): number {
   return (pointsInLevel / 1000) * 100;
 }
 
-export function getRarityColor(rarity: Badge['rarity']): string {
+export function getRarityColor(rarity: Badge["rarity"]): string {
   switch (rarity) {
-    case 'common': return 'text-gray-500';
-    case 'uncommon': return 'text-green-500';
-    case 'rare': return 'text-blue-500';
-    case 'epic': return 'text-purple-500';
-    case 'legendary': return 'text-yellow-500';
-    default: return 'text-gray-500';
+    case "common":
+      return "text-gray-500";
+    case "uncommon":
+      return "text-green-500";
+    case "rare":
+      return "text-blue-500";
+    case "epic":
+      return "text-purple-500";
+    case "legendary":
+      return "text-yellow-500";
+    default:
+      return "text-gray-500";
   }
 }
