@@ -1,36 +1,43 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets, CACHE_TIMES } from '@/lib/queryClient';
-import { useToast } from '@/hooks/use-toast';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys, queryPresets, CACHE_TIMES } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 // ============================================================
 // TYPES
 // ============================================================
 
+export type ViolationStatus =
+  | "open"
+  | "acknowledged"
+  | "investigating"
+  | "resolved"
+  | "dismissed"
+  | "escalated";
+
 export interface SecurityViolation {
   id: string;
-  employee_id: string;
+  employee_name: string;
+  policy_name: string;
   violation_type: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  status: 'pending' | 'reviewed' | 'resolved' | 'dismissed';
-  description: string;
-  metadata?: unknown;
-  screenshot_url?: string;
+  severity: "low" | "medium" | "high" | "critical";
+  status: ViolationStatus;
+  description: string | null;
+  device: string | null;
+  ip_address: string | null;
+  read: boolean;
+  screenshot_url: string | null;
+  location: string | null;
   created_at: string;
-  updated_at: string;
-  resolved_at?: string;
-  resolved_by?: string;
-  employee?: {
-    id: string;
-    name: string;
-    email: string;
-  };
+  resolved_at: string | null;
+  resolved_by: string | null;
+  assigned_to: string | null;
 }
 
 export interface ViolationFilters {
-  severity?: SecurityViolation['severity'];
-  status?: SecurityViolation['status'];
-  employeeId?: string;
+  severity?: SecurityViolation["severity"];
+  status?: SecurityViolation["status"];
+  employeeName?: string;
   startDate?: string;
   endDate?: string;
 }
@@ -41,27 +48,24 @@ export interface ViolationFilters {
 
 async function fetchViolations(filters?: ViolationFilters): Promise<SecurityViolation[]> {
   let query = supabase
-    .from('security_violations')
-    .select(`
-      *,
-      employee:employees(id, name, email)
-    `)
-    .order('created_at', { ascending: false });
+    .from("security_violations")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   if (filters?.severity) {
-    query = query.eq('severity', filters.severity);
+    query = query.eq("severity", filters.severity);
   }
   if (filters?.status) {
-    query = query.eq('status', filters.status);
+    query = query.eq("status", filters.status);
   }
-  if (filters?.employeeId) {
-    query = query.eq('employee_id', filters.employeeId);
+  if (filters?.employeeName) {
+    query = query.eq("employee_name", filters.employeeName);
   }
   if (filters?.startDate) {
-    query = query.gte('created_at', filters.startDate);
+    query = query.gte("created_at", filters.startDate);
   }
   if (filters?.endDate) {
-    query = query.lte('created_at', filters.endDate);
+    query = query.lte("created_at", filters.endDate);
   }
 
   const { data, error } = await query;
@@ -72,9 +76,9 @@ async function fetchViolations(filters?: ViolationFilters): Promise<SecurityViol
 
 async function fetchUnreadCount(): Promise<number> {
   const { count, error } = await supabase
-    .from('security_violations')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'pending');
+    .from("security_violations")
+    .select("*", { count: "exact", head: true })
+    .eq("read", false);
 
   if (error) throw error;
   return count || 0;
@@ -98,10 +102,7 @@ export function useViolation(id: string | null | undefined) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('security_violations')
-        .select(`
-          *,
-          employee:employees(id, name, email)
-        `)
+        .select('*')
         .eq('id', id)
         .maybeSingle();
 
@@ -123,11 +124,9 @@ export function useUnreadViolationsCount() {
 
 export function useViolationStats() {
   return useQuery({
-    queryKey: ['violations', 'stats'],
+    queryKey: ["violations", "stats"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('security_violations')
-        .select('severity, status');
+      const { data, error } = await supabase.from("security_violations").select("severity, status");
 
       if (error) throw error;
 
@@ -140,8 +139,8 @@ export function useViolationStats() {
           low: data?.filter((v) => v.severity === 'low').length || 0,
         },
         byStatus: {
-          pending: data?.filter((v) => v.status === 'pending').length || 0,
-          reviewed: data?.filter((v) => v.status === 'reviewed').length || 0,
+          open: data?.filter((v) => v.status === 'open').length || 0,
+          investigating: data?.filter((v) => v.status === 'investigating').length || 0,
           resolved: data?.filter((v) => v.status === 'resolved').length || 0,
           dismissed: data?.filter((v) => v.status === 'dismissed').length || 0,
         },
@@ -165,22 +164,21 @@ export function useUpdateViolationStatus() {
     mutationFn: async ({
       id,
       status,
-      notes,
     }: {
       id: string;
-      status: SecurityViolation['status'];
+      status: SecurityViolation["status"];
       notes?: string;
     }) => {
       const updates: Record<string, string> = { status };
 
-      if (status === 'resolved') {
+      if (status === "resolved") {
         updates.resolved_at = new Date().toISOString();
       }
 
       const { data, error } = await supabase
-        .from('security_violations')
+        .from("security_violations")
         .update(updates)
-        .eq('id', id)
+        .eq("id", id)
         .select()
         .maybeSingle();
 
@@ -208,7 +206,7 @@ export function useUpdateViolationStatus() {
               ? {
                   ...v,
                   status,
-                  resolved_at: status === 'resolved' ? new Date().toISOString() : v.resolved_at,
+                  resolved_at: status === "resolved" ? new Date().toISOString() : v.resolved_at,
                 }
               : v
           )
@@ -217,8 +215,11 @@ export function useUpdateViolationStatus() {
 
       // Update unread count optimistically
       const previousUnread = queryClient.getQueryData<number>(queryKeys.violations.unread());
-      if (previousUnread !== undefined && status !== 'pending') {
-        queryClient.setQueryData(queryKeys.violations.unread(), Math.max(0, (previousUnread as number) - 1));
+      if (previousUnread !== undefined && status !== "open") {
+        queryClient.setQueryData(
+          queryKeys.violations.unread(),
+          Math.max(0, (previousUnread as number) - 1)
+        );
       }
 
       return { previousViolations, previousUnread };
@@ -233,22 +234,24 @@ export function useUpdateViolationStatus() {
         queryClient.setQueryData(queryKeys.violations.unread(), context.previousUnread);
       }
       toast({
-        title: 'Erro ao atualizar',
+        title: "Erro ao atualizar",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
 
     onSuccess: (data) => {
-      const statusText = {
-        pending: 'pendente',
-        reviewed: 'revisada',
+      const statusText: Record<ViolationStatus, string> = {
+        open: 'aberta',
+        acknowledged: 'reconhecida',
+        investigating: 'em investigação',
         resolved: 'resolvida',
         dismissed: 'descartada',
+        escalated: 'escalada',
       };
       toast({
-        title: 'Status atualizado',
-        description: `Violação marcada como ${statusText[data.status as keyof typeof statusText]}.`,
+        title: "Status atualizado",
+        description: `Violação marcada como ${statusText[data.status as ViolationStatus] ?? data.status}.`,
       });
     },
 
@@ -263,17 +266,11 @@ export function useBulkUpdateViolations() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({
-      ids,
-      status,
-    }: {
-      ids: string[];
-      status: SecurityViolation['status'];
-    }) => {
+    mutationFn: async ({ ids, status }: { ids: string[]; status: SecurityViolation["status"] }) => {
       const { data, error } = await supabase
-        .from('security_violations')
+        .from("security_violations")
         .update({ status })
-        .in('id', ids)
+        .in("id", ids)
         .select();
 
       if (error) throw error;
@@ -304,15 +301,15 @@ export function useBulkUpdateViolations() {
         queryClient.setQueryData(queryKeys.violations.list(), context.previousViolations);
       }
       toast({
-        title: 'Erro na operação em lote',
+        title: "Erro na operação em lote",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
 
     onSuccess: (data) => {
       toast({
-        title: 'Atualização em lote',
+        title: "Atualização em lote",
         description: `${data.length} violações foram atualizadas.`,
       });
     },
@@ -364,16 +361,16 @@ export function useDeleteViolation() {
         queryClient.setQueryData(queryKeys.violations.list(), context.previousViolations);
       }
       toast({
-        title: 'Erro ao excluir',
+        title: "Erro ao excluir",
         description: err.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
 
     onSuccess: () => {
       toast({
-        title: 'Violação excluída',
-        description: 'O registro foi removido.',
+        title: "Violação excluída",
+        description: "O registro foi removido.",
       });
     },
 

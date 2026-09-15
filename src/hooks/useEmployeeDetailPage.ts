@@ -1,10 +1,10 @@
-import { useParams } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import type { Database } from '@/integrations/supabase/types';
+import { useParams } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import type { Database } from "@/integrations/supabase/types";
 
-type EmployeeUpdate = Database['public']['Tables']['employees']['Update'];
+type EmployeeUpdate = Database["public"]["Tables"]["employees"]["Update"];
 
 export function useEmployeeDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -12,7 +12,7 @@ export function useEmployeeDetailPage() {
   const { toast } = useToast();
 
   const employeeQuery = useQuery({
-    queryKey: ['employee', id],
+    queryKey: ["employee", id],
     queryFn: async () => {
       if (!id) throw new Error('Employee ID required');
       const { data, error } = await supabase
@@ -27,14 +27,15 @@ export function useEmployeeDetailPage() {
   });
 
   const activitiesQuery = useQuery({
-    queryKey: ['employee-activities', id],
+    queryKey: ["employee-activities", id],
     queryFn: async () => {
       if (!id) return [];
       const { data, error } = await supabase
-        .from('activities')
-        .select('*')
-        .eq('employee_id', id)
-        .order('created_at', { ascending: false })
+        .from("activity_logs")
+        .select("*")
+        .eq("entity_type", "employee")
+        .eq("entity_id", id)
+        .order("created_at", { ascending: false })
         .limit(50);
       if (error) throw error;
       return data || [];
@@ -42,37 +43,35 @@ export function useEmployeeDetailPage() {
     enabled: !!id,
   });
 
+  const employeeName = employeeQuery.data?.name;
   const violationsQuery = useQuery({
-    queryKey: ['employee-violations', id],
+    queryKey: ["employee-violations", id, employeeName],
     queryFn: async () => {
-      if (!id) return [];
+      if (!employeeName) return [];
       const { data, error } = await supabase
-        .from('violations')
-        .select('*')
-        .eq('employee_id', id)
-        .order('created_at', { ascending: false })
+        .from("security_violations")
+        .select("*")
+        .eq("employee_name", employeeName)
+        .order("created_at", { ascending: false })
         .limit(20);
       if (error) throw error;
       return data || [];
     },
-    enabled: !!id,
+    enabled: !!id && !!employeeName,
   });
 
   const updateEmployee = useMutation({
     mutationFn: async (updates: EmployeeUpdate) => {
-      if (!id) throw new Error('Employee ID required');
-      const { error } = await supabase
-        .from('employees')
-        .update(updates)
-        .eq('id', id);
+      if (!id) throw new Error("Employee ID required");
+      const { error } = await supabase.from("employees").update(updates).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['employee', id] });
-      toast({ title: 'Funcionário atualizado' });
+      queryClient.invalidateQueries({ queryKey: ["employee", id] });
+      toast({ title: "Funcionário atualizado" });
     },
     onError: (error) => {
-      toast({ title: 'Erro ao atualizar', description: error.message, variant: 'destructive' });
+      toast({ title: "Erro ao atualizar", description: error.message, variant: "destructive" });
     },
   });
 

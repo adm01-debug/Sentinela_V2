@@ -1,5 +1,9 @@
-import { supabase } from '@/integrations/supabase/client';
-import type { EmployeeCreateInput, EmployeeUpdateInput, EmployeeFilters } from '@/hooks/useEmployees';
+import { supabase } from "@/integrations/supabase/client";
+import type {
+  EmployeeCreateInput,
+  EmployeeUpdateInput,
+  EmployeeFilters,
+} from "@/hooks/useEmployees";
 
 export const employeeService = {
   async getEmployees(filters?: EmployeeFilters) {
@@ -18,7 +22,7 @@ export const employeeService = {
   },
 
   async getEmployeeById(id: string) {
-    const { data, error } = await supabase.from('employees').select('*').eq('id', id).maybeSingle();
+    const { data, error } = await supabase.from("employees").select("*").eq("id", id).maybeSingle();
     if (error) throw error;
     return data;
   },
@@ -44,30 +48,40 @@ export const employeeService = {
   },
 
   async deleteEmployee(id: string) {
-    const { error } = await supabase.from('employees').delete().eq('id', id);
+    const { error } = await supabase.from("employees").delete().eq("id", id);
     if (error) throw error;
   },
 
   async getEmployeeStats(id: string, startDate: string, endDate: string) {
+    // keystroke_logs and security_violations reference the employee by name,
+    // not by id, so resolve the name first.
+    const { data: employee, error: employeeError } = await supabase
+      .from("employees")
+      .select("name")
+      .eq("id", id)
+      .maybeSingle();
+    if (employeeError) throw employeeError;
+    const employeeName = employee?.name ?? "";
+
     const [keystrokeLogs, violations, attendance] = await Promise.all([
       supabase
         .from('keystroke_logs')
         .select('recorded_at, keystrokes_count, active_time_seconds, idle_time_seconds')
-        .eq('employee_id', id)
+        .eq('employee_name', employeeName)
         .gte('recorded_at', startDate)
         .lte('recorded_at', endDate),
       supabase
-        .from('security_violations')
-        .select('id', { count: 'exact', head: true })
-        .eq('employee_name', id)
-        .gte('created_at', startDate)
-        .lte('created_at', endDate),
+        .from("security_violations")
+        .select("id", { count: "exact", head: true })
+        .eq("employee_name", employeeName)
+        .gte("created_at", startDate)
+        .lte("created_at", endDate),
       supabase
-        .from('attendance_records')
-        .select('total_worked_minutes, status')
-        .eq('employee_id', id)
-        .gte('date', startDate)
-        .lte('date', endDate)
+        .from("attendance_records")
+        .select("total_worked_minutes, status")
+        .eq("employee_id", id)
+        .gte("date", startDate)
+        .lte("date", endDate),
     ]);
 
     if (keystrokeLogs.error) throw keystrokeLogs.error;
@@ -77,7 +91,7 @@ export const employeeService = {
     return {
       keystrokeLogs: keystrokeLogs.data || [],
       violationCount: violations.count || 0,
-      attendance: attendance.data || []
+      attendance: attendance.data || [],
     };
   },
 
