@@ -39,13 +39,19 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // API requests: Network first, then cache
+  // API requests: Network first, then cache (GET only)
   if (API_PATTERNS.some(p => p.test(url.pathname))) {
+    if (request.method !== 'GET') {
+      event.respondWith(fetch(request));
+      return;
+    }
     event.respondWith(
       fetch(request)
         .then(response => {
           const clone = response.clone();
-          caches.open(API_CACHE).then(cache => cache.put(request, clone));
+          event.waitUntil(
+            caches.open(API_CACHE).then(cache => cache.put(request, clone))
+          );
           return response;
         })
         .catch(() => caches.match(request))
@@ -107,8 +113,10 @@ async function syncPendingData() {
     const response = await cache.match(request);
     if (response) {
       const data = await response.json();
-      await fetch(request, { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } });
-      await cache.delete(request);
+      const syncResponse = await fetch(request, { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } });
+      if (syncResponse.ok) {
+        await cache.delete(request);
+      }
     }
   }));
 }
