@@ -8,13 +8,15 @@
 
 **Repositório:** https://github.com/adm01-debug/sentinela
 **Usuário GitHub:** adm01-debug
-**Token GitHub:** `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`
+**Token GitHub:** `<redacted>`
 
 ### Histórico do Projeto
+
 - **v13.0.0** ✅ CONCLUÍDA - 429 melhorias implementadas (testes, stories, i18n, docs)
 - **v14.0.0** 🔄 EM ANDAMENTO - 500 melhorias planejadas
 
 ### Plano de Implementação
+
 O plano completo está em: `docs/PLANO_MELHORIAS_v14.md`
 URL: https://github.com/adm01-debug/sentinela/blob/main/docs/PLANO_MELHORIAS_v14.md
 
@@ -34,33 +36,33 @@ EXECUTE AS 500 MELHORIAS DO PLANO v14.0.0, SEGUINDO RIGOROSAMENTE:
 
 ## 📊 GAPS IDENTIFICADOS (Resumo)
 
-| Categoria | Total | Gaps | Prioridade |
-|-----------|-------|------|------------|
-| Testes de Páginas | 112 | 112 | 🔴 CRÍTICA |
-| Testes de Hooks | 254 | 117 | 🟠 ALTA |
-| Testes de Componentes | 70 | 37 | 🟠 ALTA |
-| Stories de Componentes | 70 | 33 | 🟡 MÉDIA |
-| Testes Edge Functions | 63 | 61 | 🟠 ALTA |
-| Services/Stores/Contexts | 6 | 6 | 🟡 MÉDIA |
-| Utils/Lib | 14 | 14 | 🟡 MÉDIA |
+| Categoria                | Total | Gaps | Prioridade |
+| ------------------------ | ----- | ---- | ---------- |
+| Testes de Páginas        | 112   | 112  | 🔴 CRÍTICA |
+| Testes de Hooks          | 254   | 117  | 🟠 ALTA    |
+| Testes de Componentes    | 70    | 37   | 🟠 ALTA    |
+| Stories de Componentes   | 70    | 33   | 🟡 MÉDIA   |
+| Testes Edge Functions    | 63    | 61   | 🟠 ALTA    |
+| Services/Stores/Contexts | 6     | 6    | 🟡 MÉDIA   |
+| Utils/Lib                | 14    | 14   | 🟡 MÉDIA   |
 
 ---
 
 ## 🔥 FASES DO PLANO
 
-| Fase | Categoria | Itens | Status |
-|------|-----------|-------|--------|
-| 1 | Arquitetura & Cleanup | 1-20 | ⏳ PENDENTE |
-| 2 | Testes de Páginas | 21-132 | ⏳ PENDENTE |
-| 3 | Testes de Hooks | 133-249 | ⏳ PENDENTE |
-| 4 | Testes de Componentes | 250-286 | ⏳ PENDENTE |
-| 5 | Stories de Componentes | 287-319 | ⏳ PENDENTE |
-| 6 | Testes Edge Functions | 320-380 | ⏳ PENDENTE |
-| 7 | Testes de Infraestrutura | 381-400 | ⏳ PENDENTE |
-| 8 | CI/CD & DevOps | 401-420 | ⏳ PENDENTE |
-| 9 | Documentação | 421-450 | ⏳ PENDENTE |
-| 10 | Performance | 451-480 | ⏳ PENDENTE |
-| 11 | Acessibilidade | 481-500 | ⏳ PENDENTE |
+| Fase | Categoria                | Itens   | Status      |
+| ---- | ------------------------ | ------- | ----------- |
+| 1    | Arquitetura & Cleanup    | 1-20    | ⏳ PENDENTE |
+| 2    | Testes de Páginas        | 21-132  | ⏳ PENDENTE |
+| 3    | Testes de Hooks          | 133-249 | ⏳ PENDENTE |
+| 4    | Testes de Componentes    | 250-286 | ⏳ PENDENTE |
+| 5    | Stories de Componentes   | 287-319 | ⏳ PENDENTE |
+| 6    | Testes Edge Functions    | 320-380 | ⏳ PENDENTE |
+| 7    | Testes de Infraestrutura | 381-400 | ⏳ PENDENTE |
+| 8    | CI/CD & DevOps           | 401-420 | ⏳ PENDENTE |
+| 9    | Documentação             | 421-450 | ⏳ PENDENTE |
+| 10   | Performance              | 451-480 | ⏳ PENDENTE |
+| 11   | Acessibilidade           | 481-500 | ⏳ PENDENTE |
 
 ---
 
@@ -70,7 +72,7 @@ EXECUTE AS 500 MELHORIAS DO PLANO v14.0.0, SEGUINDO RIGOROSAMENTE:
 PROJETO SENTINELA v14.0.0 - CONTINUAÇÃO DAS MELHORIAS
 
 📍 REPOSITÓRIO: https://github.com/adm01-debug/sentinela
-🔑 TOKEN: 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
+🔑 TOKEN: <redacted>
 📋 PLANO: docs/PLANO_MELHORIAS_v14.md
 
 INSTRUÇÕES:
@@ -98,16 +100,19 @@ EXCELÊNCIA E PERFEIÇÃO, SEMPRE!!! 🏆
 ## 📝 EXEMPLO DE USO
 
 ### Para executar a Fase 1:
+
 ```
 [Cole o bloco acima e substitua "[NÚMERO DA FASE]" por "1"]
 ```
 
 ### Para executar múltiplas fases:
+
 ```
 [Cole o bloco acima e substitua por "FASES 1, 2 e 3"]
 ```
 
 ### Para executar itens específicos:
+
 ```
 [Cole o bloco acima e substitua por "ITENS 21 a 50"]
 ```
@@ -117,6 +122,7 @@ EXCELÊNCIA E PERFEIÇÃO, SEMPRE!!! 🏆
 ## 🔧 PADRÕES DO PROJETO
 
 ### Estrutura de Testes
+
 ```typescript
 // src/pages/__tests__/NomeDaPagina.test.tsx
 import { render, screen } from '@testing-library/react';
@@ -132,13 +138,14 @@ describe('NomeDaPagina', () => {
 ```
 
 ### Estrutura de Stories
+
 ```typescript
 // src/components/NomeComponente/NomeComponente.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import { NomeComponente } from './NomeComponente';
+import type { Meta, StoryObj } from "@storybook/react";
+import { NomeComponente } from "./NomeComponente";
 
 const meta: Meta<typeof NomeComponente> = {
-  title: 'Components/NomeComponente',
+  title: "Components/NomeComponente",
   component: NomeComponente,
 };
 
@@ -149,6 +156,7 @@ export const Default: Story = {};
 ```
 
 ### Padrão de Commit
+
 ```
 [N/500] Tipo: Descrição breve
 
@@ -172,7 +180,7 @@ Exemplos:
 ## 🏆 MANTRA
 
 > **"EXCELÊNCIA E PERFEIÇÃO, SEMPRE!!!"**
-> 
+>
 > - Execute sem pausas
 > - Código de produção
 > - Testes funcionais
