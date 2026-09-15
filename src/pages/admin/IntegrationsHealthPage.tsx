@@ -7,7 +7,7 @@ import {
   CheckCircle2,
   HeartPulse,
   MessageSquare,
-  Slack as SlackIcon,
+  Hash as SlackIcon,
   Smartphone,
   XCircle,
 } from 'lucide-react';
