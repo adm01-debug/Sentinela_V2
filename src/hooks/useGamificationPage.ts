@@ -31,33 +31,29 @@ export function useGamificationPage() {
   const leaderboardQuery = useQuery({
     queryKey: queryKeys.gamification.leaderboard(period),
     queryFn: async () => {
-      const pointsColumn =
-        period === "week"
-          ? "current_week_points"
-          : period === "month"
-            ? "current_month_points"
-            : "total_points";
+      // employee_points only has total_points; current_week/month columns don't exist.
+      // Period-specific aggregation requires querying points_history — future work.
       const { data, error } = await supabase
         .from("employee_points")
         .select(
-          "employee_id, total_points, current_month_points, current_week_points, level, badges_count, employee:employees(name, avatar_url)"
+          "employee_id, total_points, level, employee:employees(name, avatar_url)"
         )
-        .order(pointsColumn, { ascending: false })
+        .order("total_points", { ascending: false })
         .limit(20);
       if (error) throw error;
-      return (data || []).map((e: any, i: number) => {
+      return (data || []).map((e, i) => {
         const emp = e.employee as { name?: string; avatar_url?: string } | null;
         return {
           id: e.employee_id,
           employee_id: e.employee_id,
           employee_name: emp?.name || "Unknown",
           avatar_url: emp?.avatar_url ?? null,
-          points: e[pointsColumn] ?? 0,
+          points: e.total_points ?? 0,
           level: e.level ?? 1,
           badges: [],
           rank: i + 1,
-        };
-      }) as LeaderboardEntry[];
+        } satisfies LeaderboardEntry;
+      });
     },
   });
 
