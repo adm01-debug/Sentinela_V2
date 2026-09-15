@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { queryKeys, queryPresets } from '@/lib/queryClient';
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { queryKeys, queryPresets } from "@/lib/queryClient";
 
 export interface SecurityMetrics {
   total_violations: number;
@@ -9,7 +9,7 @@ export interface SecurityMetrics {
   pending_violations: number;
   violations_by_type: { type: string; count: number }[];
   violations_trend: { date: string; count: number }[];
-  top_violators: { employee_id: string; name: string; count: number }[];
+  top_violators: { employee_name: string; count: number }[];
 }
 
 interface ViolationRow {
@@ -17,9 +17,8 @@ interface ViolationRow {
   severity: string | null;
   status: string | null;
   violation_type: string;
-  employee_id: string;
+  employee_name: string | null;
   created_at: string;
-  employee: { full_name?: string } | null;
 }
 
 export function useSecurityMetrics() {
@@ -28,7 +27,7 @@ export function useSecurityMetrics() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('security_violations')
-        .select('id, severity, status, violation_type, employee_id, created_at, employee:employees(full_name)');
+        .select('id, severity, status, violation_type, employee_name, created_at');
 
       if (error) throw error;
       const violations = (data ?? []) as unknown as ViolationRow[];
@@ -37,7 +36,7 @@ export function useSecurityMetrics() {
         total_violations: violations.length,
         critical_violations: violations.filter((v) => v.severity === 'critical').length,
         resolved_violations: violations.filter((v) => v.status === 'resolved').length,
-        pending_violations: violations.filter((v) => v.status === 'pending').length,
+        pending_violations: violations.filter((v) => v.status === 'open').length,
         violations_by_type: [],
         violations_trend: [],
         top_violators: [],
@@ -53,18 +52,13 @@ export function useSecurityMetrics() {
         .sort((a, b) => b.count - a.count);
 
       // Calculate top violators
-      const byEmployee: Record<string, { name: string; count: number }> = {};
+      const byEmployee: Record<string, number> = {};
       violations.forEach((v) => {
-        if (!byEmployee[v.employee_id]) {
-          byEmployee[v.employee_id] = {
-            name: v.employee?.full_name || 'Unknown',
-            count: 0,
-          };
-        }
-        byEmployee[v.employee_id].count++;
+        const name = v.employee_name || 'Unknown';
+        byEmployee[name] = (byEmployee[name] || 0) + 1;
       });
       metrics.top_violators = Object.entries(byEmployee)
-        .map(([employee_id, data]) => ({ employee_id, ...data }))
+        .map(([employee_name, count]) => ({ employee_name, count }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 10);
 
