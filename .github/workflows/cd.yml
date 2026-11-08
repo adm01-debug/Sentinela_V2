@@ -10,6 +10,9 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - run: npm ci
+      # "npm run build" chama "bun scripts/generate-audit-pdf.js" (package.json);
+      # o runner ubuntu-latest não traz bun por padrão.
+      - uses: oven-sh/setup-bun@v2
       - run: npm run build
       - uses: aws-actions/configure-aws-credentials@v4
         with: { aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}, aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}, aws-region: us-east-1 }
