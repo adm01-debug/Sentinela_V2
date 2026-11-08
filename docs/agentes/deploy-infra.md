@@ -28,8 +28,17 @@ delas está comprovadamente funcionando por pipeline. O único caminho com actio
   responde "GitHub couldn't verify an account for commit …" e nenhum preview sai. Commits deste repo
   (e do Zapp) usam `adm01@promobrindes.com.br`; use esse autor, ou o dono conecta o outro e-mail à
   conta Vercel. Não é falha de CI nem do seu código — não "conserte" com empty commit.
-- Estado dos deployments pelo MCP: **não auditável nesta sessão** — `list_deployments` responde `403`
-  e `get_project` `404` com o token disponível. Confirme no dashboard antes de afirmar que um merge subiu.
+- **O deploy de produção está falhando, não só o de preview.** A API de Deployments do GitHub registra
+  o deployment `Production` do HEAD atual da `main` (`239f18a`, 03/10/2026) com
+  `state: failure` — "Deployment has failed" — e o mesmo para os outros deployments de `main`
+  daquele dia. Ou seja: **o que está no ar em `sentinela-v2.vercel.app` não é a `main`**, e um merge
+  não publica nada hoje. Ao dizer "deploy confirmado", confira isto primeiro.
+- Causa provável, não confirmada: a instalação de dependências. A Vercel usa `npm ci` quando há
+  `package-lock.json`, e `npm ci` quebra com ERESOLVE (`docs/agentes/github-ci.md`); depois dela,
+  `npm run build` ainda exigiria `bun`. **NÃO VERIFICADO** — não consegui ler o log de build:
+  `list_deployment_events` e `get_project` respondem `404` e `list_deployments` `403` com o token da
+  sessão. Para confirmar: `npx vercel inspect <dpl_…> --logs` ou o dashboard.
+- Qual foi o último deploy que funcionou: **NÃO VERIFICADO** pelo mesmo motivo.
 - **Nunca** coloque segredo de servidor na Vercel (`SUPABASE_SERVICE_KEY`, `JWT_SECRET`, `SMTP_*`,
   `AWS_*`): não há serverless neste projeto. Toda var `VITE_*` entra no bundle e **é pública**.
 
