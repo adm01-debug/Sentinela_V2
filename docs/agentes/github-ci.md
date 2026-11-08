@@ -65,8 +65,14 @@ Consequências que custam retrabalho se ignoradas:
 4. **`npm run build` exige o binário `bun`** (`package.json:7` roda `bun scripts/generate-audit-pdf.js`
    antes do `vite build`) e **nenhum workflow instala bun** (não há `oven-sh/setup-bun` em
    `.github/workflows/`). É o próximo bloqueio depois do `npm ci`.
-5. `deno-contract-tests` usa `denoland/setup-deno@v1` com `deno-version: v1.x` — 5 arquivos de teste
-   reais em `supabase/functions/`.
+5. **`deno-contract-tests` falha por teste que exige stack local do Supabase.**
+   `supabase/functions/agent-collector/agent-collector_test.ts` faz request HTTP para
+   `http://localhost:54321/functions/v1/agent-collector`; o job nunca sobe `supabase start`, então dá
+   `Connection refused (os error 111)` → `error: Test failed`. Como o step é
+   `find … | xargs -I {} deno test {}`, o `xargs` encerra com **exit 123** mesmo com os outros
+   arquivos passando (os 5 testes de `check-geofence/contract_test.ts` passam). São 5 arquivos de
+   teste em `supabase/functions/`: `send-webhook`, `agent-collector` (2), `mobile-collector`,
+   `check-geofence`. Este job **não** usa `npm ci`, então essa falha é independente do ERESOLVE.
 
 Quando o CI estiver verde de novo, atualize esta seção no mesmo PR.
 
