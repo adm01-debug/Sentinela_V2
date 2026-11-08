@@ -1,0 +1,2605 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "resumo": {
+  "urls": 54,
+  "rotas_http_backend": 12,
+  "vistas_por_id": 0,
+  "itens_menu": 12,
+  "lazy": 81
+ },
+ "urls": [
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/*",
+   "componente": "NotFoundPage",
+   "arquivo": "src/pages/NotFoundPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useTranslation"
+   ],
+   "hooks_locais": [
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 16
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/activities/:id",
+   "componente": "ActivityDetailPage",
+   "arquivo": "src/pages/ActivityDetailPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useActivity",
+    "useNavigate",
+    "useQuery"
+   ],
+   "hooks_locais": [
+    "useActivity",
+    "useQuery"
+   ],
+   "tabelas": [
+    "keystroke_logs"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 68
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/activities/timeline",
+   "componente": "ActivityTimelinePage",
+   "arquivo": "src/pages/ActivityTimelinePage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useActivities",
+    "useEffect",
+    "useEmployees",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useRealtime",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useActivities",
+    "useEmployees",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useRealtime",
+    "useToast"
+   ],
+   "tabelas": [
+    "attendance_records",
+    "employee_devices",
+    "employees",
+    "keystroke_logs",
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [
+    "public:${entity}-changes"
+   ],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 79
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/acknowledgment-report",
+   "componente": "AcknowledgmentReportPage",
+   "arquivo": "src/pages/admin/AcknowledgmentReportPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useAcknowledgmentReport",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useNavigate",
+    "useState"
+   ],
+   "hooks_locais": [
+    "useAcknowledgmentReport"
+   ],
+   "tabelas": [
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 25
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/dispute-escalation-audit",
+   "componente": "DisputeEscalationAuditPage",
+   "arquivo": "src/pages/admin/DisputeEscalationAuditPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useTheme"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useTheme"
+   ],
+   "tabelas": [
+    "alert_notification_settings",
+    "companies",
+    "edge_function_logs",
+    "slack_delivery_events",
+    "slack_integrations",
+    "slack_notification_dlq",
+    "slack_webhook_mttr"
+   ],
+   "rpcs": [],
+   "edges": [
+    "escalate-dispute-sla",
+    "slack-dlq-bulk-replay",
+    "slack-dlq-replay",
+    "slack-fallback-test",
+    "slack-mttr-monitor",
+    "slack-notify",
+    "slack-weekly-digest"
+   ],
+   "canais_realtime": [
+    "slack-dlq-changes",
+    "slack-integrations-changes"
+   ],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 34
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/dispute-metrics",
+   "componente": "DisputeMetricsPage",
+   "arquivo": "src/pages/admin/DisputeMetricsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useChartColors",
+    "useContext",
+    "useCreateDispute",
+    "useDisputeMetrics",
+    "useDisputeSlaAlerts",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQueryClient",
+    "useResolveDispute",
+    "useState",
+    "useTheme",
+    "useViolationDisputes"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useCreateDispute",
+    "useDisputeMetrics",
+    "useDisputeSlaAlerts",
+    "useMutation",
+    "useQueryClient",
+    "useResolveDispute",
+    "useTheme",
+    "useViolationDisputes"
+   ],
+   "tabelas": [
+    "violation_disputes"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 29
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/dlp/incidents",
+   "componente": "DLPIncidentsPage",
+   "arquivo": "src/pages/admin/DLPIncidentsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useState"
+   ],
+   "hooks_locais": [],
+   "tabelas": [
+    "dlp_incidents"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [
+    "dlp-incidents-feed"
+   ],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 13
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/dlp/policies",
+   "componente": "DLPPoliciesPage",
+   "arquivo": "src/pages/admin/DLPPoliciesPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [
+    "dlp_classifiers",
+    "dlp_policies",
+    "user_companies"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 22
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/edge-functions",
+   "componente": "EdgeFunctionDashboard",
+   "arquivo": "src/pages/admin/EdgeFunctionDashboard.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useQuery"
+   ],
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "edge_function_logs"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 13
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "SupervisorGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/file-transfers",
+   "componente": "FileTransfersPage",
+   "arquivo": "src/pages/admin/FileTransfersPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useFileTransfers",
+    "useMemo",
+    "useQuery",
+    "useSearchParams",
+    "useState",
+    "useTheme"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useFileTransfers",
+    "useQuery",
+    "useSearchParams",
+    "useTheme"
+   ],
+   "tabelas": [
+    "file_transfers"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "button"
+   ],
+   "arquivos_puxados": 27
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/ice-diagnostics",
+   "componente": "IceDiagnosticsPage",
+   "arquivo": "src/pages/admin/IceDiagnosticsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useLocation",
+    "useNavigate",
+    "useState"
+   ],
+   "hooks_locais": [],
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "alert"
+   ],
+   "arquivos_puxados": 20
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/integrations-health",
+   "componente": "IntegrationsHealthPage",
+   "arquivo": "src/pages/admin/IntegrationsHealthPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useLocation",
+    "useNavigate",
+    "useQuery"
+   ],
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "edge_function_logs",
+    "mobile_devices",
+    "slack_integrations",
+    "slack_notification_dlq",
+    "slack_webhook_mttr",
+    "whatsapp_message_logs",
+    "whatsapp_notification_settings"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 21
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/live-view-report",
+   "componente": "LiveViewReportPage",
+   "arquivo": "src/pages/admin/LiveViewReportPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useLiveViewReport",
+    "useLocation",
+    "useMemo",
+    "useNavigate",
+    "useQuery",
+    "useState"
+   ],
+   "hooks_locais": [
+    "useLiveViewReport",
+    "useQuery"
+   ],
+   "tabelas": [
+    "agent_keys",
+    "live_view_audit",
+    "live_view_sessions",
+    "profiles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 26
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "SupervisorGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/session-recordings",
+   "componente": "SessionRecordingsPage",
+   "arquivo": "src/pages/admin/SessionRecordingsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useMemo",
+    "useQuery",
+    "useRecordingChunks",
+    "useRecordingSessions",
+    "useRecordingStorageCost",
+    "useRecordingTimeline",
+    "useState",
+    "useTheme"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useQuery",
+    "useRecordingChunks",
+    "useRecordingSessions",
+    "useRecordingStorageCost",
+    "useRecordingTimeline",
+    "useTheme"
+   ],
+   "tabelas": [
+    "companies",
+    "recording_chunks",
+    "recording_sessions",
+    "screen_captures",
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 29
+  },
+  {
+   "protegida": true,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/telemetria",
+   "componente": "AdminTelemetriaPage",
+   "arquivo": "src/pages/AdminTelemetriaPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useMemo",
+    "useTheme"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useTheme"
+   ],
+   "tabelas": [
+    "query_telemetry"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 23
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/ueba",
+   "componente": "UEBADashboardPage",
+   "arquivo": "src/pages/admin/ueba/UEBADashboardPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useLatestRiskScore",
+    "useMemo",
+    "useNavigate",
+    "useRiskScores",
+    "useState",
+    "useTheme",
+    "useTopRiskyUsers"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useLatestRiskScore",
+    "useRiskScores",
+    "useTheme",
+    "useTopRiskyUsers"
+   ],
+   "tabelas": [
+    "user_risk_scores"
+   ],
+   "rpcs": [],
+   "edges": [
+    "risk-score-calculator"
+   ],
+   "canais_realtime": [
+    "risk_scores_${employeeId || "
+   ],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 18
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/ueba/:employeeId",
+   "componente": "EmployeeRiskProfilePage",
+   "arquivo": "src/pages/admin/ueba/EmployeeRiskProfilePage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useBehavioralBaseline",
+    "useCallback",
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useLatestRiskScore",
+    "useMemo",
+    "useMitreTechniques",
+    "useNavigate",
+    "useRiskScores",
+    "useState",
+    "useTheme",
+    "useTopRiskyUsers"
+   ],
+   "hooks_locais": [
+    "useBehavioralBaseline",
+    "useChartColors",
+    "useLatestRiskScore",
+    "useMitreTechniques",
+    "useRiskScores",
+    "useTheme",
+    "useTopRiskyUsers"
+   ],
+   "tabelas": [
+    "behavioral_baselines",
+    "mitre_techniques",
+    "user_risk_scores"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [
+    "risk_scores_${employeeId || "
+   ],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 21
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/ueba/settings",
+   "componente": "UEBASettingsPage",
+   "arquivo": "src/pages/admin/ueba/UEBASettingsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useNavigate",
+    "useState"
+   ],
+   "hooks_locais": [],
+   "tabelas": [
+    "risk_score_factors"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 17
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/agents/:agentId/live",
+   "componente": "LiveViewPage",
+   "arquivo": "src/pages/LiveViewPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useLiveViewSession",
+    "useLocation",
+    "useNavigate"
+   ],
+   "hooks_locais": [
+    "useLiveViewSession"
+   ],
+   "tabelas": [
+    "live_view_audit",
+    "live_view_sessions"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 20
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/agents/onboarding",
+   "componente": "AgentOnboardingPage",
+   "arquivo": "src/pages/AgentOnboardingPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "agent_keys"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "alert"
+   ],
+   "arquivos_puxados": 25
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/ai-analysis",
+   "componente": "AIAnalysisPage",
+   "arquivo": "src/pages/AIAnalysisPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useAIAnalysisPage",
+    "useCallback",
+    "useEffect",
+    "useMemo",
+    "useMutation",
+    "useQuery",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useAIAnalysisPage",
+    "useMutation",
+    "useQuery",
+    "useToast"
+   ],
+   "tabelas": [
+    "ai_analysis_reports",
+    "employees"
+   ],
+   "rpcs": [],
+   "edges": [
+    "analyze-activity"
+   ],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 18
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/alerts/:id",
+   "componente": "AlertDetailPage",
+   "arquivo": "src/pages/AlertDetailPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useAcknowledgeAlert",
+    "useAlert",
+    "useLocation",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "hooks_locais": [
+    "useAcknowledgeAlert",
+    "useAlert",
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "application_rules",
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 20
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/alerts/rules",
+   "componente": "AlertRulesPage",
+   "arquivo": "src/pages/AlertRulesPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useAlertRules",
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "hooks_locais": [
+    "useAlertRules",
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "application_rules",
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 16
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/attendance",
+   "componente": "AttendancePage",
+   "arquivo": "src/pages/AttendancePage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useNavigate",
+    "useQuery",
+    "useState",
+    "useTheme",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useQuery",
+    "useTheme",
+    "useToast"
+   ],
+   "tabelas": [
+    "attendance_records",
+    "time_entries"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 26
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "GuestGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/auth",
+   "componente": "Auth",
+   "arquivo": "src/pages/Auth.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useAuth",
+    "useAuthPage",
+    "useCallback",
+    "useContext",
+    "useEffect",
+    "useMutation",
+    "useNavigate",
+    "useRef",
+    "useState",
+    "useToast",
+    "useTranslation"
+   ],
+   "hooks_locais": [
+    "useAuth",
+    "useAuthPage",
+    "useMutation",
+    "useToast",
+    "useTranslation"
+   ],
+   "tabelas": [
+    "user_roles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "admin",
+    "alert"
+   ],
+   "arquivos_puxados": 23
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/calendar",
+   "componente": "CalendarPage",
+   "arquivo": "src/pages/CalendarPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useState"
+   ],
+   "hooks_locais": [],
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 12
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/compliance",
+   "componente": "CompliancePage",
+   "arquivo": "src/pages/CompliancePage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useChartColors",
+    "useCompliance",
+    "useContext",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useNavigate",
+    "useQuery",
+    "useTheme"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useCompliance",
+    "useQuery",
+    "useTheme"
+   ],
+   "tabelas": [
+    "blocked_ips",
+    "geo_blocking_settings",
+    "monitoring_settings",
+    "policy_acknowledgments",
+    "settings_audit_log",
+    "user_roles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 22
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/dev/chart-simulation",
+   "componente": "ChartSimulationPage",
+   "arquivo": "src/pages/dev/ChartSimulationPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useBulkUpdateViolations",
+    "useChartColors",
+    "useContext",
+    "useDeleteViolation",
+    "useEffect",
+    "useMemo",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useSearchParams",
+    "useSecurityViolations",
+    "useState",
+    "useTheme",
+    "useToast",
+    "useUnreadViolationsCount",
+    "useUpdateViolationStatus",
+    "useViolation",
+    "useViolationStats"
+   ],
+   "hooks_locais": [
+    "useBulkUpdateViolations",
+    "useChartColors",
+    "useDeleteViolation",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useSearchParams",
+    "useSecurityViolations",
+    "useTheme",
+    "useToast",
+    "useUnreadViolationsCount",
+    "useUpdateViolationStatus",
+    "useViolation",
+    "useViolationStats"
+   ],
+   "tabelas": [
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "button",
+    "navigation"
+   ],
+   "arquivos_puxados": 29
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/dev/live-view-simulator",
+   "componente": "LiveViewSimulatorPage",
+   "arquivo": "src/pages/dev/LiveViewSimulatorPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useLocation",
+    "useMemo",
+    "useNavigate",
+    "useState"
+   ],
+   "hooks_locais": [],
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 18
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/dev/verify-simulator",
+   "componente": "VerifyReportSimulatorPage",
+   "arquivo": "src/pages/dev/VerifyReportSimulatorPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useMemo",
+    "useState"
+   ],
+   "hooks_locais": [],
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 12
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/devices",
+   "componente": "DevicesPage",
+   "arquivo": "src/pages/DevicesPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useChartColors",
+    "useContext",
+    "useDevicesPage",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useTheme",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useDevicesPage",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useTheme",
+    "useToast"
+   ],
+   "tabelas": [
+    "devices"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 30
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/docs/api",
+   "componente": "ApiDocsPage",
+   "arquivo": "src/pages/ApiDocsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 13
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/export",
+   "componente": "DataExportPage",
+   "arquivo": "src/pages/DataExportPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useLocation",
+    "useNavigate",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [
+    "export-data"
+   ],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 21
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/gamification",
+   "componente": "GamificationPage",
+   "arquivo": "src/pages/GamificationPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useGamificationPage",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useTheme",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useGamificationPage",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useTheme",
+    "useToast"
+   ],
+   "tabelas": [
+    "badges",
+    "employee_points"
+   ],
+   "rpcs": [],
+   "edges": [
+    "award-gamification-points"
+   ],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 27
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "SupervisorGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/geofencing",
+   "componente": "GeofencingPage",
+   "arquivo": "src/pages/GeofencingPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useGeofenceDashboardStats",
+    "useGeofencingPage",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useRealtime",
+    "useState",
+    "useTheme",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useGeofenceDashboardStats",
+    "useGeofencingPage",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useRealtime",
+    "useTheme",
+    "useToast"
+   ],
+   "tabelas": [
+    "employee_geofences",
+    "geofence_violations",
+    "geofences"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [
+    "public:${entity}-changes"
+   ],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 47
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "SupervisorGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/geofencing/alerts",
+   "componente": "GeofenceViolationsPage",
+   "arquivo": "src/pages/GeofenceViolationsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useGeofenceViolations",
+    "useLocation",
+    "useNavigate",
+    "useQuery",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useGeofenceViolations",
+    "useQuery",
+    "useToast"
+   ],
+   "tabelas": [
+    "geofence_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 30
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/hours-tracking",
+   "componente": "HoursTrackingPage",
+   "arquivo": "src/pages/HoursTrackingPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useNavigate",
+    "useQuery",
+    "useState"
+   ],
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "time_entries"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 19
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/integrations",
+   "componente": "IntegrationsPage",
+   "arquivo": "src/pages/IntegrationsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useIntegrations",
+    "useLocation",
+    "useMemo",
+    "useNavigate",
+    "useQuery"
+   ],
+   "hooks_locais": [
+    "useIntegrations",
+    "useQuery"
+   ],
+   "tabelas": [
+    "alert_notification_settings",
+    "webhooks",
+    "whatsapp_notification_settings"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 19
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/integrations/webhooks",
+   "componente": "WebhooksPage",
+   "arquivo": "src/pages/WebhooksPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useLocation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "monitoring_settings"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 23
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/integrations/whatsapp",
+   "componente": "WhatsAppIntegrationPage",
+   "arquivo": "src/pages/WhatsAppIntegrationPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useLocation",
+    "useNavigate",
+    "useQuery"
+   ],
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "message_templates"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 18
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/internet-access",
+   "componente": "InternetAccessPage",
+   "arquivo": "src/pages/InternetAccessPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useInternetAccessPage",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useInternetAccessPage",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "internet_access_rules",
+    "internet_access_settings"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 27
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/monitoring",
+   "componente": "MonitoringPage",
+   "arquivo": "src/pages/MonitoringPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMonitoringPage",
+    "useNavigate",
+    "useQuery",
+    "useState",
+    "useTheme"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useMonitoringPage",
+    "useQuery",
+    "useTheme"
+   ],
+   "tabelas": [
+    "click_logs",
+    "employees",
+    "keystroke_logs"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 28
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/organization/chart",
+   "componente": "OrgChartPage",
+   "arquivo": "src/pages/OrgChartPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useMemo",
+    "useNavigate",
+    "useState"
+   ],
+   "hooks_locais": [],
+   "tabelas": [
+    "companies",
+    "employees",
+    "teams"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 15
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/projects",
+   "componente": "ProjectsPage",
+   "arquivo": "src/pages/ProjectsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "employees",
+    "projects",
+    "tasks",
+    "time_entries"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 21
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/reports/:id",
+   "componente": "ReportDetailPage",
+   "arquivo": "src/pages/ReportDetailPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useLocation",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useReport"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useReport"
+   ],
+   "tabelas": [
+    "ai_analysis_reports"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 21
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/reports/custom",
+   "componente": "CustomReportsPage",
+   "arquivo": "src/pages/CustomReportsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "ai_analysis_reports"
+   ],
+   "rpcs": [],
+   "edges": [
+    "generate-report"
+   ],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 21
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/reports/scheduled",
+   "componente": "ScheduledReportsPage",
+   "arquivo": "src/pages/ScheduledReportsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useQuery"
+   ],
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "ai_analysis_reports"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 13
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/screenshots/:id",
+   "componente": "ScreenshotDetailPage",
+   "arquivo": "src/pages/ScreenshotDetailPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useScreenshot"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useScreenshot"
+   ],
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 14
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/time-clock",
+   "componente": "TimeClockPage",
+   "arquivo": "src/pages/TimeClockPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "employee_status",
+    "employees",
+    "time_entries"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [
+    "employee-status-changes"
+   ],
+   "flags": [],
+   "papeis": [
+    "button"
+   ],
+   "arquivos_puxados": 17
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/timesheets",
+   "componente": "TimesheetsPage",
+   "arquivo": "src/pages/TimesheetsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "employees",
+    "time_entries",
+    "timesheets"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 18
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/verify-report",
+   "componente": "VerifyReportPage",
+   "arquivo": "src/pages/VerifyReportPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useSearchParams",
+    "useState"
+   ],
+   "hooks_locais": [
+    "useSearchParams"
+   ],
+   "tabelas": [
+    "report_signatures"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [
+    "alert"
+   ],
+   "arquivos_puxados": 15
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/violations",
+   "componente": "ViolationsPage",
+   "arquivo": "src/pages/ViolationsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useChartColors",
+    "useContext",
+    "useEffect",
+    "useMemo",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useRef",
+    "useState",
+    "useTheme",
+    "useToast",
+    "useViolationsPage",
+    "useViolationsRealtime"
+   ],
+   "hooks_locais": [
+    "useChartColors",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useTheme",
+    "useToast",
+    "useViolationsPage",
+    "useViolationsRealtime"
+   ],
+   "tabelas": [
+    "report_signatures",
+    "screen_captures",
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [
+    "violations-realtime"
+   ],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 33
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/violations/:id",
+   "componente": "ViolationDetailPage",
+   "arquivo": "src/pages/ViolationDetailPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useNavigate",
+    "useState"
+   ],
+   "hooks_locais": [],
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 11
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/work-schedules",
+   "componente": "WorkSchedulesPage",
+   "arquivo": "src/pages/WorkSchedulesPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useApproveOvertime",
+    "useCallback",
+    "useCreateWorkSchedule",
+    "useDeleteWorkSchedule",
+    "useEffect",
+    "useEmployeeSchedule",
+    "useEmployees",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useOvertimeNotifications",
+    "useQuery",
+    "useQueryClient",
+    "useRealtime",
+    "useRejectOvertime",
+    "useState",
+    "useToast",
+    "useUpdateWorkSchedule",
+    "useWorkSchedules",
+    "useWorkSchedulesPage"
+   ],
+   "hooks_locais": [
+    "useApproveOvertime",
+    "useCreateWorkSchedule",
+    "useDeleteWorkSchedule",
+    "useEmployeeSchedule",
+    "useEmployees",
+    "useMutation",
+    "useOvertimeNotifications",
+    "useQuery",
+    "useQueryClient",
+    "useRealtime",
+    "useRejectOvertime",
+    "useToast",
+    "useUpdateWorkSchedule",
+    "useWorkSchedules",
+    "useWorkSchedulesPage"
+   ],
+   "tabelas": [
+    "attendance_records",
+    "employee_devices",
+    "employees",
+    "keystroke_logs",
+    "overtime_requests",
+    "security_violations",
+    "work_schedules"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [
+    "public:${entity}-changes"
+   ],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 35
+  }
+ ],
+ "rotas_http_backend": [
+  {
+   "metodo": "GET",
+   "caminho": "/{t}",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "GET",
+   "caminho": "/a",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "GET",
+   "caminho": "/a",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "POST",
+   "caminho": "/b",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "POST",
+   "caminho": "/b",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "DELETE",
+   "caminho": "/c",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "PUT",
+   "caminho": "/d",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "GET",
+   "caminho": "/items",
+   "arquivo": "scripts/ai-context/gerar.unit.mjs",
+   "tabelas": [
+    "contacts",
+    "dashboard_table",
+    "emails",
+    "fixture_table",
+    "ghost_table",
+    "payments",
+    "runtime_table",
+    "tools_runtime"
+   ],
+   "env": [
+    "DB_URL",
+    "RESEND_API_KEY",
+    "VITE_ANON",
+    "VITE_SUPABASE_URL"
+   ]
+  },
+  {
+   "metodo": "GET",
+   "caminho": "/u",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "GET",
+   "caminho": "/users",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "POST",
+   "caminho": "/users/:id",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  },
+  {
+   "metodo": "GET",
+   "caminho": "/x",
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "tabelas": [
+    "a",
+    "fantasma",
+    "so_teste",
+    "t",
+    "t1",
+    "tx"
+   ],
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ]
+  }
+ ],
+ "vistas": [],
+ "menu": [
+  {
+   "rotulo": "Configurações",
+   "destino": "/settings",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": null
+  },
+  {
+   "rotulo": "Configurações",
+   "destino": "settings",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": null
+  },
+  {
+   "rotulo": "Dashboard",
+   "destino": "/",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": null
+  },
+  {
+   "rotulo": "Funcionários",
+   "destino": "/employees",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": null
+  },
+  {
+   "rotulo": "Funcionários",
+   "destino": "employees",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": null
+  },
+  {
+   "rotulo": "Geofencing",
+   "destino": "/geofencing",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": "src/pages/GeofencingPage.tsx"
+  },
+  {
+   "rotulo": "Horários",
+   "destino": "/work-schedules",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": "src/pages/WorkSchedulesPage.tsx"
+  },
+  {
+   "rotulo": "Monitoramento",
+   "destino": "/monitoring",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": "src/pages/MonitoringPage.tsx"
+  },
+  {
+   "rotulo": "Navegação",
+   "destino": "navigation",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": null
+  },
+  {
+   "rotulo": "Relatórios",
+   "destino": "/reports",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": null
+  },
+  {
+   "rotulo": "Relatórios",
+   "destino": "reports",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": null
+  },
+  {
+   "rotulo": "Violações",
+   "destino": "/violations",
+   "grupo": null,
+   "papeis": [],
+   "papeis_nao_resolvidos": null,
+   "definido_em": "src/components/SearchDrawer.tsx",
+   "resolve_para": "src/pages/ViolationsPage.tsx"
+  }
+ ],
+ "lazy": {
+  "AIAnalysisPage": "src/pages/AIAnalysisPage.tsx",
+  "AcknowledgmentReportPage": "src/pages/admin/AcknowledgmentReportPage.tsx",
+  "ActivitiesPage": "src/pages/ActivitiesPage.tsx",
+  "ActivityDetailPage": "src/pages/ActivityDetailPage.tsx",
+  "ActivityTimelinePage": "src/pages/ActivityTimelinePage.tsx",
+  "AdminTelemetriaPage": "src/pages/AdminTelemetriaPage.tsx",
+  "AgentOnboardingPage": "src/pages/AgentOnboardingPage.tsx",
+  "AlertDetailPage": "src/pages/AlertDetailPage.tsx",
+  "AlertRulesPage": "src/pages/AlertRulesPage.tsx",
+  "AlertsPage": "src/pages/AlertsPage.tsx",
+  "AnalyticsApplicationsPage": "src/pages/AnalyticsApplicationsPage.tsx",
+  "AnalyticsPage": "src/pages/AnalyticsPage.tsx",
+  "AnalyticsProductivityPage": "src/pages/AnalyticsProductivityPage.tsx",
+  "AnalyticsTrendsPage": "src/pages/AnalyticsTrendsPage.tsx",
+  "ApiDocsPage": "src/pages/ApiDocsPage.tsx",
+  "ApiKeysPage": "src/pages/ApiKeysPage.tsx",
+  "AttendancePage": "src/pages/AttendancePage.tsx",
+  "AuditLogPage": "src/pages/AuditLogPage.tsx",
+  "Auth": "src/pages/Auth.tsx",
+  "BillingSettingsPage": "src/pages/BillingSettingsPage.tsx",
+  "CalendarPage": "src/pages/CalendarPage.tsx",
+  "ChartSimulationPage": "src/pages/dev/ChartSimulationPage.tsx",
+  "CompliancePage": "src/pages/CompliancePage.tsx",
+  "CustomReportsPage": "src/pages/CustomReportsPage.tsx",
+  "DLPIncidentsPage": "src/pages/admin/DLPIncidentsPage.tsx",
+  "DLPPoliciesPage": "src/pages/admin/DLPPoliciesPage.tsx",
+  "DashboardPage": "src/pages/DashboardPage.tsx",
+  "DataExportPage": "src/pages/DataExportPage.tsx",
+  "DepartmentDetailPage": "src/pages/DepartmentDetailPage.tsx",
+  "DepartmentsPage": "src/pages/DepartmentsPage.tsx",
+  "DevicesPage": "src/pages/DevicesPage.tsx",
+  "DisputeEscalationAuditPage": "src/pages/admin/DisputeEscalationAuditPage.tsx",
+  "DisputeMetricsPage": "src/pages/admin/DisputeMetricsPage.tsx",
+  "EdgeFunctionDashboard": "src/pages/admin/EdgeFunctionDashboard.tsx",
+  "EmployeeCreatePage": "src/pages/EmployeeCreatePage.tsx",
+  "EmployeeDetailPage": "src/pages/EmployeeDetailPage.tsx",
+  "EmployeeRiskProfilePage": "src/pages/admin/ueba/EmployeeRiskProfilePage.tsx",
+  "EmployeesPage": "src/pages/EmployeesPage.tsx",
+  "FileTransfersPage": "src/pages/admin/FileTransfersPage.tsx",
+  "ForgotPasswordPage": "src/pages/ForgotPasswordPage.tsx",
+  "GamificationPage": "src/pages/GamificationPage.tsx",
+  "GeofenceViolationsPage": "src/pages/GeofenceViolationsPage.tsx",
+  "GeofencingPage": "src/pages/GeofencingPage.tsx",
+  "HoursTrackingPage": "src/pages/HoursTrackingPage.tsx",
+  "IceDiagnosticsPage": "src/pages/admin/IceDiagnosticsPage.tsx",
+  "IntegrationSettingsPage": "src/pages/IntegrationSettingsPage.tsx",
+  "IntegrationsHealthPage": "src/pages/admin/IntegrationsHealthPage.tsx",
+  "IntegrationsPage": "src/pages/IntegrationsPage.tsx",
+  "InternetAccessPage": "src/pages/InternetAccessPage.tsx",
+  "LiveViewPage": "src/pages/LiveViewPage.tsx",
+  "LiveViewReportPage": "src/pages/admin/LiveViewReportPage.tsx",
+  "LiveViewSimulatorPage": "src/pages/dev/LiveViewSimulatorPage.tsx",
+  "MonitoringPage": "src/pages/MonitoringPage.tsx",
+  "NotFoundPage": "src/pages/NotFoundPage.tsx",
+  "NotificationSettingsPage": "src/pages/NotificationSettingsPage.tsx",
+  "OrgChartPage": "src/pages/OrgChartPage.tsx",
+  "ProfileSettingsPage": "src/pages/ProfileSettingsPage.tsx",
+  "ProjectsPage": "src/pages/ProjectsPage.tsx",
+  "ReportDetailPage": "src/pages/ReportDetailPage.tsx",
+  "ReportsPage": "src/pages/ReportsPage.tsx",
+  "RolesPage": "src/pages/RolesPage.tsx",
+  "ScheduledReportsPage": "src/pages/ScheduledReportsPage.tsx",
+  "ScreenshotDetailPage": "src/pages/ScreenshotDetailPage.tsx",
+  "ScreenshotsPage": "src/pages/ScreenshotsPage.tsx",
+  "SecuritySettingsPage": "src/pages/SecuritySettingsPage.tsx",
+  "SessionRecordingsPage": "src/pages/admin/SessionRecordingsPage.tsx",
+  "SettingsPage": "src/pages/SettingsPage.tsx",
+  "TeamDetailPage": "src/pages/TeamDetailPage.tsx",
+  "TeamsPage": "src/pages/TeamsPage.tsx",
+  "TimeClockPage": "src/pages/TimeClockPage.tsx",
+  "TimesheetsPage": "src/pages/TimesheetsPage.tsx",
+  "UEBADashboardPage": "src/pages/admin/ueba/UEBADashboardPage.tsx",
+  "UEBASettingsPage": "src/pages/admin/ueba/UEBASettingsPage.tsx",
+  "UsersPage": "src/pages/UsersPage.tsx",
+  "VerifyReportPage": "src/pages/VerifyReportPage.tsx",
+  "VerifyReportSimulatorPage": "src/pages/dev/VerifyReportSimulatorPage.tsx",
+  "ViolationDetailPage": "src/pages/ViolationDetailPage.tsx",
+  "ViolationsPage": "src/pages/ViolationsPage.tsx",
+  "WebhooksPage": "src/pages/WebhooksPage.tsx",
+  "WhatsAppIntegrationPage": "src/pages/WhatsAppIntegrationPage.tsx",
+  "WorkSchedulesPage": "src/pages/WorkSchedulesPage.tsx"
+ }
+}

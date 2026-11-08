@@ -1,0 +1,285 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "total": 27,
+ "scripts": [
+  {
+   "arquivo": "scripts/ai-context/cenarios.mjs",
+   "descricao": "Simulação de cenários do gerador: monta centenas de repositórios sintéticos (variantes de SQL, rotas, menus, edges, workflows, monorepo, Python, arquivos corrompidos, fuzz) e confere:",
+   "linhas": 173,
+   "env": [
+    "A",
+    "K",
+    "NODE_ENV",
+    "SCRIPT_ONLY",
+    "SRK",
+    "SUPABASE_URL",
+    "VITE_A",
+    "VITE_C",
+    "VITE_FEATURE_X",
+    "X"
+   ],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "descricao": "Gera o contexto de projeto para agentes de IA (padrão: inventario/ia/*). Zero dependências. Node >= 18. Genérico: funciona em qualquer repositório.",
+   "linhas": 924,
+   "env": [
+    "AI_CONTEXT_DIR",
+    "AI_CONTEXT_PUBLICACAO",
+    "AI_CONTEXT_ROOT"
+   ],
+   "npm_scripts": [],
+   "workflows": [
+    "contexto.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/analyze-bundle.sh",
+   "descricao": null,
+   "linhas": 5,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/backup.sh",
+   "descricao": null,
+   "linhas": 5,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/build-all.sh",
+   "descricao": null,
+   "linhas": 6,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/check-bundle-size.sh",
+   "descricao": null,
+   "linhas": 11,
+   "env": [],
+   "npm_scripts": [
+    "bundle-check"
+   ],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/ci/check-claude-md-integrity.mjs",
+   "descricao": "* GA02: garante que as instrucoes para agentes nao foram apagadas ou esvaziadas por outra sessao.",
+   "linhas": 122,
+   "env": [
+    "CLAUDE_MD_BASE"
+   ],
+   "npm_scripts": [],
+   "workflows": [
+    "ci.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/clean.sh",
+   "descricao": null,
+   "linhas": 5,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/db-migrate.sh",
+   "descricao": null,
+   "linhas": 5,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/db-seed.sh",
+   "descricao": null,
+   "linhas": 5,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/deploy.sh",
+   "descricao": null,
+   "linhas": 7,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/docker-dev.sh",
+   "descricao": null,
+   "linhas": 5,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/generate-audit-pdf.js",
+   "descricao": null,
+   "linhas": 21,
+   "env": [],
+   "npm_scripts": [
+    "build"
+   ],
+   "workflows": [
+    "cd.yml",
+    "ci.yml",
+    "deploy.yml",
+    "preview.yml",
+    "release.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/health-check.sh",
+   "descricao": "Check API Check database",
+   "linhas": 33,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/init-db.sh",
+   "descricao": "Wait for PostgreSQL Create database if not exists",
+   "linhas": 23,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/inventario/gerar-repo.mjs",
+   "descricao": "Inventario gerado do lado do repositorio (sem acesso ao banco):  - edge functions: linhas, segredos lidos (Deno.env.get) e quem as invoca (src, migrations, outras edges, e2e, CI)",
+   "linhas": 81,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [
+    "inventario-estado-semanal.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/inventario/mudou-conteudo.mjs",
+   "descricao": "* O inventario mudou de verdade? Compara cada arquivo de inventario/estado/ com a versao do",
+   "linhas": 84,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [
+    "inventario-estado-semanal.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/lint-fix.sh",
+   "descricao": null,
+   "linhas": 6,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/migrate.sh",
+   "descricao": null,
+   "linhas": 5,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/pre-commit.sh",
+   "descricao": "Pre-commit hook script Runs linting, type checking, and tests before commit",
+   "linhas": 22,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/release.sh",
+   "descricao": "Release automation script Usage: ./release.sh [major|minor|patch]",
+   "linhas": 37,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": true
+  },
+  {
+   "arquivo": "scripts/restore.sh",
+   "descricao": null,
+   "linhas": 5,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/seed.sh",
+   "descricao": null,
+   "linhas": 5,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/setup.sh",
+   "descricao": null,
+   "linhas": 6,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/update-deps.sh",
+   "descricao": "Dependency Update Script for Sentinela Run this script to update all dependencies",
+   "linhas": 27,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/update-desktop-deps.sh",
+   "descricao": "Desktop Agent Dependency Update Script",
+   "linhas": 13,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/update-mobile-deps.sh",
+   "descricao": "Mobile App Dependency Update Script",
+   "linhas": 15,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [],
+   "orfao": false
+  }
+ ]
+}

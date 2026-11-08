@@ -1,0 +1,606 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "nos": 1326,
+ "arestas": 2678,
+ "hubs": [
+  {
+   "arquivo": "src/integrations/supabase/client.ts",
+   "importado_por": 203
+  },
+  {
+   "arquivo": "src/components/ui/card.tsx",
+   "importado_por": 183
+  },
+  {
+   "arquivo": "src/components/ui/button.tsx",
+   "importado_por": 177
+  },
+  {
+   "arquivo": "src/lib/utils.ts",
+   "importado_por": 170
+  },
+  {
+   "arquivo": "src/components/ui/badge.tsx",
+   "importado_por": 140
+  },
+  {
+   "arquivo": "src/components/ui/input.tsx",
+   "importado_por": 84
+  },
+  {
+   "arquivo": "src/hooks/use-toast.ts",
+   "importado_por": 71
+  },
+  {
+   "arquivo": "src/components/ui/skeleton.tsx",
+   "importado_por": 67
+  },
+  {
+   "arquivo": "src/lib/logger.ts",
+   "importado_por": 59
+  },
+  {
+   "arquivo": "src/components/ui/label.tsx",
+   "importado_por": 56
+  },
+  {
+   "arquivo": "src/components/ui/select.tsx",
+   "importado_por": 54
+  },
+  {
+   "arquivo": "src/components/ui/dialog.tsx",
+   "importado_por": 47
+  },
+  {
+   "arquivo": "src/lib/queryClient.ts",
+   "importado_por": 45
+  },
+  {
+   "arquivo": "src/components/layout/PageHeader.tsx",
+   "importado_por": 42
+  },
+  {
+   "arquivo": "src/hooks/useChartColors.ts",
+   "importado_por": 36
+  },
+  {
+   "arquivo": "src/utils/cn.ts",
+   "importado_por": 26
+  },
+  {
+   "arquivo": "src/components/ui/scroll-area.tsx",
+   "importado_por": 25
+  },
+  {
+   "arquivo": "src/hooks/useAuth.ts",
+   "importado_por": 24
+  },
+  {
+   "arquivo": "src/components/ui/tooltip.tsx",
+   "importado_por": 23
+  },
+  {
+   "arquivo": "src/components/ui/table.tsx",
+   "importado_por": 21
+  },
+  {
+   "arquivo": "supabase/functions/_shared/rateLimiting.ts",
+   "importado_por": 21
+  },
+  {
+   "arquivo": "src/components/ui/dropdown-menu.tsx",
+   "importado_por": 20
+  },
+  {
+   "arquivo": "src/components/ui/alert-dialog.tsx",
+   "importado_por": 19
+  },
+  {
+   "arquivo": "src/components/ui/switch.tsx",
+   "importado_por": 19
+  },
+  {
+   "arquivo": "src/components/ui/avatar.tsx",
+   "importado_por": 17
+  },
+  {
+   "arquivo": "src/components/ui/progress.tsx",
+   "importado_por": 16
+  },
+  {
+   "arquivo": "src/components/ui/popover.tsx",
+   "importado_por": 15
+  },
+  {
+   "arquivo": "src/components/ui/tabs.tsx",
+   "importado_por": 15
+  },
+  {
+   "arquivo": "src/hooks/useEmployees.ts",
+   "importado_por": 15
+  },
+  {
+   "arquivo": "src/components/Skeleton.tsx",
+   "importado_por": 14
+  },
+  {
+   "arquivo": "src/components/ui/textarea.tsx",
+   "importado_por": 14
+  },
+  {
+   "arquivo": "desktop-agent/src/config.ts",
+   "importado_por": 13
+  },
+  {
+   "arquivo": "src/components/layout/PageLayout.tsx",
+   "importado_por": 12
+  },
+  {
+   "arquivo": "src/components/ui/alert.tsx",
+   "importado_por": 12
+  },
+  {
+   "arquivo": "src/types/index.ts",
+   "importado_por": 12
+  },
+  {
+   "arquivo": "src/components/charts/ChartEmptyState.tsx",
+   "importado_por": 11
+  },
+  {
+   "arquivo": "src/components/charts/ChartTooltip.tsx",
+   "importado_por": 11
+  },
+  {
+   "arquivo": "src/components/EmptyState.tsx",
+   "importado_por": 10
+  },
+  {
+   "arquivo": "src/components/skeletons/SkeletonPageLayout.tsx",
+   "importado_por": 10
+  },
+  {
+   "arquivo": "src/providers/ThemeProvider.tsx",
+   "importado_por": 10
+  }
+ ],
+ "ciclos": {
+  "total": 4,
+  "maiores": [
+   {
+    "tamanho": 2,
+    "arquivos": [
+     "src/hooks/useEmployees.ts",
+     "src/services/employeeService.ts"
+    ]
+   },
+   {
+    "tamanho": 2,
+    "arquivos": [
+     "src/hooks/useGeofences.ts",
+     "src/services/geofenceService.ts"
+    ]
+   },
+   {
+    "tamanho": 2,
+    "arquivos": [
+     "src/hooks/useWebhooks.ts",
+     "src/services/webhookService.ts"
+    ]
+   },
+   {
+    "tamanho": 2,
+    "arquivos": [
+     "src/types/billing.ts",
+     "src/types/subscription.ts"
+    ]
+   }
+  ]
+ },
+ "orfaos": [
+  "benchmarks/api-performance.ts",
+  "benchmarks/bundle-size.ts",
+  "benchmarks/render-performance.ts",
+  "desktop-agent/src/main.ts",
+  "desktop-agent/src/preload.ts",
+  "desktop-agent/src/services/fileTransferWatcher.ts",
+  "desktop-agent/src/services/screenRecorder.ts",
+  "docs/source/conf.py",
+  "public/sw-enhanced.js",
+  "public/sw.js",
+  "seed/generate_time_entries.cjs",
+  "src/components/ActivityFeed.tsx",
+  "src/components/ActivityHeatmap.tsx",
+  "src/components/ActivityStatsCards.tsx",
+  "src/components/AlertItem.tsx",
+  "src/components/AlertsChart.tsx",
+  "src/components/ApplicationCard.tsx",
+  "src/components/Cards.tsx",
+  "src/components/Cards/StatsCard.tsx",
+  "src/components/CustomTooltip.tsx",
+  "src/components/DashboardSkeleton.tsx",
+  "src/components/DataTable.tsx",
+  "src/components/EmployeeAlertItem.tsx",
+  "src/components/EmployeeRow.tsx",
+  "src/components/EmployeeViolationsRanking.tsx",
+  "src/components/Forms.tsx",
+  "src/components/HeatmapCalendar.tsx",
+  "src/components/KPIWidget.tsx",
+  "src/components/KeyboardShortcutsHelp.tsx",
+  "src/components/KeystrokeActivityCard.tsx",
+  "src/components/LiveViewCard.tsx",
+  "src/components/LoadingState.tsx",
+  "src/components/MFAVerify.tsx",
+  "src/components/MobileDevicesMap.tsx",
+  "src/components/MonitoringNotice.tsx",
+  "src/components/NavLink.tsx",
+  "src/components/NotificationCenter.tsx",
+  "src/components/NotificationsDropdown.tsx",
+  "src/components/NotificationsPanel.tsx",
+  "src/components/PWAInstallPrompt.tsx",
+  "src/components/PageHeader.tsx",
+  "src/components/PolicyGate.tsx",
+  "src/components/ProductivityCard.tsx",
+  "src/components/RealtimeActivityFilters.tsx",
+  "src/components/RealtimeClicksCard.tsx",
+  "src/components/RealtimeKeystrokesCard.tsx",
+  "src/components/ScreenCapturesCard.tsx",
+  "src/components/SearchDrawer.tsx",
+  "src/components/SecurityMetrics.tsx",
+  "src/components/SessionPlayback.tsx",
+  "src/components/SimulateViolationButton.tsx",
+  "src/components/SuspenseWrapper.tsx",
+  "src/components/TimelineViewer.tsx",
+  "src/components/ViolationCommentsPanel.tsx",
+  "src/components/ViolationsByEmployeeChart.tsx",
+  "src/components/ViolationsRealtimeTable.tsx",
+  "src/components/auth/PermissionGate.tsx",
+  "src/components/auth/index.ts",
+  "src/components/charts/charts.types.ts",
+  "src/components/dashboard/AlertSummaryWidget.tsx",
+  "src/components/dashboard/DashboardSkeleton.tsx",
+  "src/components/dashboard/DistributionWidget.tsx",
+  "src/components/dashboard/GoalProgressWidget.tsx",
+  "src/components/dashboard/HeroMetrics.tsx",
+  "src/components/dashboard/LeaderboardWidget.tsx",
+  "src/components/dashboard/LiveStatWidget.tsx",
+  "src/components/dashboard/NotificationsWidget.tsx",
+  "src/components/dashboard/QuickTasksWidget.tsx",
+  "src/components/dashboard/RecentActivityWidget.tsx",
+  "src/components/dashboard/SystemStatusWidget.tsx",
+  "src/components/dashboard/UpcomingEventsWidget.tsx",
+  "src/components/dashboard/chart-enhancements.tsx",
+  "src/components/dashboard/heatmaps.tsx",
+  "src/components/dashboard/index.ts",
+  "src/components/dashboard/widgets.tsx",
+  "src/components/data-display/DataCalendar.tsx",
+  "src/components/data-display/DataKanban.tsx",
+  "src/components/data-display/DataTimeline.tsx",
+  "src/components/data-display/DataTree.tsx",
+  "src/components/data-display/index.ts",
+  "src/components/employees/index.ts",
+  "src/components/forms/index.tsx",
+  "src/components/index.ts",
+  "src/components/layout/index.ts",
+  "src/components/navigation/index.ts",
+  "src/components/security/SecurityAuditLog.tsx",
+  "src/components/security/index.ts",
+  "src/components/ui/Cards.tsx",
+  "src/components/ui/Combobox.tsx",
+  "src/components/ui/DataState.tsx",
+  "src/components/ui/Dropdown.tsx",
+  "src/components/ui/Feedback.tsx",
+  "src/components/ui/FormItem.tsx",
+  "src/components/ui/FormMessage.tsx",
+  "src/components/ui/GridList.tsx",
+  "src/components/ui/Headers.tsx",
+  "src/components/ui/IconBadge.tsx",
+  "src/components/ui/InfiniteScrollList.tsx",
+  "src/components/ui/InfoCard.tsx",
+  "src/components/ui/LoadingOverlay.tsx",
+  "src/components/ui/LoadingStates.tsx",
+  "src/components/ui/MetricTrend.tsx",
+  "src/components/ui/MicroInteractions.tsx",
+  "src/components/ui/Modal.tsx",
+  "src/components/ui/Overlay.tsx",
+  "src/components/ui/PageContainer.tsx",
+  "src/components/ui/Portal.tsx",
+  "src/components/ui/ProgressIndicator.tsx",
+  "src/components/ui/PullToRefresh.tsx",
+  "src/components/ui/Radio.tsx",
+  "src/components/ui/RichTextEditor.tsx",
+  "src/components/ui/SearchInput.tsx",
+  "src/components/ui/Spinner.tsx",
+  "src/components/ui/StaleDataIndicator.tsx",
+  "src/components/ui/StatusBadge.tsx",
+  "src/components/ui/Text.tsx",
+  "src/components/ui/TimePicker.tsx",
+  "src/components/ui/TreeView.tsx",
+  "src/components/ui/TrendIndicators.tsx",
+  "src/components/ui/VirtualizedList.tsx",
+  "src/components/ui/a11y-button.tsx",
+  "src/components/ui/a11y-input.tsx",
+  "src/components/ui/data-display.tsx",
+  "src/components/ui/loading.tsx",
+  "src/components/ui/responsive.tsx",
+  "src/components/ui/toaster.tsx",
+  "src/components/user/UserMenu.tsx",
+  "src/data/reportData.ts",
+  "src/helpers/date.ts",
+  "src/hooks/api.ts",
+  "src/hooks/useA11y.ts",
+  "src/hooks/useAIInsights.ts",
+  "src/hooks/useAPIKeys.ts",
+  "src/hooks/useAccessControl.ts",
+  "src/hooks/useAccordion.ts",
+  "src/hooks/useActiveEmployees.ts",
+  "src/hooks/useActivityHistory.ts",
+  "src/hooks/useActivitySummary.ts",
+  "src/hooks/useAdvancedFilters.ts",
+  "src/hooks/useAgentKeysPage.ts",
+  "src/hooks/useAggregate.ts",
+  "src/hooks/useAlert.ts",
+  "src/hooks/useAnimation.ts",
+  "src/hooks/useAnnounce.ts",
+  "src/hooks/useAnomalyDetection.ts",
+  "src/hooks/useAppConfig.ts",
+  "src/hooks/useAsync.ts",
+  "src/hooks/useAttachments.ts",
+  "src/hooks/useAudio.ts",
+  "src/hooks/useAuditLogs.ts",
+  "src/hooks/useAutoSaveDraft.ts",
+  "src/hooks/useBackgroundSync.ts",
+  "src/hooks/useBackup.ts",
+  "src/hooks/useBattery.ts",
+  "src/hooks/useBeforeUnload.ts",
+  "src/hooks/useBehaviorPatterns.ts",
+  "src/hooks/useBilling.ts",
+  "src/hooks/useBlockNavigation.ts",
+  "src/hooks/useBoolean.ts",
+  "src/hooks/useBreadcrumbs.ts",
+  "src/hooks/useBreakpoint.ts",
+  "src/hooks/useBroadcastChannel.ts",
+  "src/hooks/useBulkActions.ts",
+  "src/hooks/useBuscaFulltext.ts",
+  "src/hooks/useCache.ts",
+  "src/hooks/useCalendar.ts",
+  "src/hooks/useCamera.ts",
+  "src/hooks/useCarousel.ts",
+  "src/hooks/useCategories.ts",
+  "src/hooks/useChart.ts",
+  "src/hooks/useChartAnnotations.ts",
+  "src/hooks/useChartExport.ts",
+  "src/hooks/useChartZoom.ts",
+  "src/hooks/useClickAway.ts",
+  "src/hooks/useClickOutside.ts",
+  "src/hooks/useClock.ts",
+  "src/hooks/useClone.ts",
+  "src/hooks/useCohortAnalysis.ts",
+  "src/hooks/useCollapse.ts",
+  "src/hooks/useColorBlindMode.tsx",
+  "src/hooks/useColorScheme.ts",
+  "src/hooks/useCommandPalette.ts",
+  "src/hooks/useComments.ts",
+  "src/hooks/useCompare.ts",
+  "src/hooks/useConfirm.ts",
+  "src/hooks/useConnectionQuality.ts",
+  "src/hooks/useConsent.ts",
+  "src/hooks/useConst.ts",
+  "src/hooks/useConstant.ts",
+  "src/hooks/useContextAwareDefaults.ts",
+  "src/hooks/useContextMenu.ts",
+  "src/hooks/useCookie.ts",
+  "src/hooks/useCopyToClipboard.ts",
+  "src/hooks/useCountdown.ts",
+  "src/hooks/useCounter.ts",
+  "src/hooks/useCurrencyFormat.ts",
+  "src/hooks/useDarkMode.ts",
+  "src/hooks/useDashboardPage.ts",
+  "src/hooks/useDataExportPage.ts",
+  "src/hooks/useDataGrid.ts",
+  "src/hooks/useDataRetention.ts",
+  "src/hooks/useDateFormat.ts",
+  "src/hooks/useDebounceCallback.ts",
+  "src/hooks/useDebugValue.ts",
+  "src/hooks/useDeepCompareEffect.ts",
+  "src/hooks/useDeepMerge.ts",
+  "src/hooks/useDeferredValue.ts",
+  "src/hooks/useDenormalize.ts",
+  "src/hooks/useDeviceMotion.ts",
+  "src/hooks/useDeviceOrientation.ts",
+  "src/hooks/useDeviceStats.ts",
+  "src/hooks/useDeviceTrust.ts",
+  "src/hooks/useDialog.ts",
+  "src/hooks/useDiff.ts",
+  "src/hooks/useDisclosure.ts",
+  "src/hooks/useDoubleClick.ts",
+  "src/hooks/useDownload.ts",
+  "src/hooks/useDrag.ts",
+  "src/hooks/useDragAndDrop.ts",
+  "src/hooks/useDrawer.ts",
+  "src/hooks/useDrop.ts",
+  "src/hooks/useDropdown.ts",
+  "src/hooks/useDropzone.ts",
+  "src/hooks/useDuplicate.ts",
+  "src/hooks/useEffectOnce.ts",
+  "src/hooks/useElementSize.ts",
+  "src/hooks/useEmailNotification.ts",
+  "src/hooks/useEmployeeDetailPage.ts",
+  "src/hooks/useErrorBoundary.ts",
+  "src/hooks/useErrorState.ts",
+  "src/hooks/useEvent.ts",
+  "src/hooks/useEventListener.ts",
+  "src/hooks/useEventSource.ts",
+  "src/hooks/useExport.ts",
+  "src/hooks/useFeatureFlags.ts",
+  "src/hooks/useFetch.ts",
+  "src/hooks/useField.ts",
+  "src/hooks/useFieldArray.ts",
+  "src/hooks/useFileDrop.ts",
+  "src/hooks/useFileReader.ts",
+  "src/hooks/useFileUpload.ts",
+  "src/hooks/useFilter.ts",
+  "src/hooks/useFirstMountState.ts",
+  "src/hooks/useFirstRender.ts",
+  "src/hooks/useFocus.ts",
+  "src/hooks/useFocusReturn.ts",
+  "src/hooks/useFocusTrap.ts",
+  "src/hooks/useFocusVisible.ts",
+  "src/hooks/useFocusWithin.ts",
+  "src/hooks/useForceUpdate.ts",
+  "src/hooks/useForm.ts",
+  "src/hooks/useFormContext.ts",
+  "src/hooks/useFormState.ts",
+  "src/hooks/useFormValidation.ts",
+  "src/hooks/useFullscreen.ts",
+  "src/hooks/useFunnelAnalysis.ts",
+  "src/hooks/useGamification.ts",
+  "src/hooks/useGeolocation.ts",
+  "src/hooks/useGeolocationWatch.ts",
+  "src/hooks/useGesture.ts",
+  "src/hooks/useGetSet.ts",
+  "src/hooks/useGetSetState.ts",
+  "src/hooks/useGranularPermissions.ts",
+  "src/hooks/useGroupBy.ts",
+  "src/hooks/useHapticFeedback.ts",
+  "src/hooks/useHash.ts",
+  "src/hooks/useHeatmap.ts",
+  "src/hooks/useHierarchy.ts",
+  "src/hooks/useHighContrast.ts",
+  "src/hooks/useHistory.ts",
+  "src/hooks/useHotkeys.ts",
+  "src/hooks/useHover.ts",
+  "src/hooks/useI18n.ts",
+  "src/hooks/useIdle.ts",
+  "src/hooks/useIdleDetection.ts",
+  "src/hooks/useImage.ts",
+  "src/hooks/useImagePreload.ts",
+  "src/hooks/useImageUpload.ts",
+  "src/hooks/useImmer.ts",
+  "src/hooks/useImport.ts",
+  "src/hooks/useInView.ts",
+  "src/hooks/useIndexedDB.ts",
+  "src/hooks/useInfiniteQuery.ts",
+  "src/hooks/useInfiniteScroll.ts",
+  "src/hooks/useInput.ts",
+  "src/hooks/useInstallPage.ts",
+  "src/hooks/useInternetAccess.ts",
+  "src/hooks/useIntersection.ts",
+  "src/hooks/useIntersectionObserver.ts",
+  "src/hooks/useInterval.ts",
+  "src/hooks/useIsFirstRender.ts",
+  "src/hooks/useIsMounted.ts",
+  "src/hooks/useIsomorphicLayoutEffect.ts",
+  "src/hooks/useKeyDown.ts",
+  "src/hooks/useKeyPress.ts",
+  "src/hooks/useKeyboardShortcut.ts",
+  "src/hooks/useKeyboardShortcuts.ts",
+  "src/hooks/useLatest.ts",
+  "src/hooks/useLazyImage.ts",
+  "src/hooks/useLazyRef.ts"
+ ],
+ "modulos_mais_acoplados": [
+  {
+   "modulo": "hooks",
+   "depende_de": 10,
+   "importado_por": 27
+  },
+  {
+   "modulo": "components/ui",
+   "depende_de": 3,
+   "importado_por": 31
+  },
+  {
+   "modulo": "components",
+   "depende_de": 17,
+   "importado_por": 15
+  },
+  {
+   "modulo": "pages",
+   "depende_de": 24,
+   "importado_por": 1
+  },
+  {
+   "modulo": "lib",
+   "depende_de": 5,
+   "importado_por": 19
+  },
+  {
+   "modulo": "integrations/supabase",
+   "depende_de": 0,
+   "importado_por": 17
+  },
+  {
+   "modulo": "utils",
+   "depende_de": 5,
+   "importado_por": 10
+  },
+  {
+   "modulo": "pages/admin",
+   "depende_de": 12,
+   "importado_por": 2
+  },
+  {
+   "modulo": "providers",
+   "depende_de": 8,
+   "importado_por": 4
+  },
+  {
+   "modulo": "components/layout",
+   "depende_de": 4,
+   "importado_por": 6
+  },
+  {
+   "modulo": "routes",
+   "depende_de": 9,
+   "importado_por": 0
+  },
+  {
+   "modulo": "components/security",
+   "depende_de": 5,
+   "importado_por": 2
+  },
+  {
+   "modulo": "layouts",
+   "depende_de": 6,
+   "importado_por": 1
+  },
+  {
+   "modulo": "components/employees",
+   "depende_de": 4,
+   "importado_por": 2
+  },
+  {
+   "modulo": "components/productivity",
+   "depende_de": 5,
+   "importado_por": 1
+  },
+  {
+   "modulo": "components/timeline",
+   "depende_de": 3,
+   "importado_por": 3
+  },
+  {
+   "modulo": "components/violations",
+   "depende_de": 5,
+   "importado_por": 1
+  },
+  {
+   "modulo": "pages/dev",
+   "depende_de": 5,
+   "importado_por": 1
+  },
+  {
+   "modulo": "components/admin",
+   "depende_de": 3,
+   "importado_por": 2
+  },
+  {
+   "modulo": "components/auth",
+   "depende_de": 4,
+   "importado_por": 1
+  }
+ ],
+ "arestas_em": "docs/contexto/codigo/grafo-arestas.json"
+}

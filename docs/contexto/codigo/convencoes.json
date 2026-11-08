@@ -1,0 +1,94 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "onde_ficam": {
+  "telas": [
+   "src/pages (54)"
+  ],
+  "componentes": [
+   "src/components (356)",
+   "src/pages (88)",
+   "src/providers (8)"
+  ],
+  "hooks": [
+   "src/hooks (477)",
+   "src/stores (33)",
+   "src/lib (5)"
+  ],
+  "servicos_logica": [
+   "src/utils (64)",
+   "src/lib (39)",
+   "src/stores (34)"
+  ],
+  "testes": [
+   "co-localizado (*.test) (43)",
+   "co-localizado (__tests__) (19)",
+   "outro (3)"
+  ],
+  "edge_functions": "supabase/functions",
+  "migrations": "supabase/migrations",
+  "scripts": [
+   "scripts/ai-context (2)",
+   "scripts/inventario (2)",
+   "scripts/analyze-bundle.sh (1)"
+  ],
+  "docs": [
+   "docs (98)",
+   "(raiz) (16)",
+   ".github (2)"
+  ]
+ },
+ "nomenclatura": {
+  "componentes": "PascalCase (87%)",
+  "hooks": "use + PascalCase",
+  "servicos": "camelCase (99%)",
+  "edge_functions": "kebab-case (99%)",
+  "tabelas": "snake_case (88%)"
+ },
+ "barrels_index": 22,
+ "extensao_componentes": [
+  ".tsx (461)"
+ ],
+ "alias_imports": {
+  "desktop-agent/": {},
+  "(raiz)": {
+   "@/": "src/",
+   "@components/": "src/components/",
+   "@constants/": "src/constants/",
+   "@helpers/": "src/helpers/",
+   "@hooks/": "src/hooks/",
+   "@lib/": "src/lib/",
+   "@stores/": "src/stores/",
+   "@types/": "src/types/",
+   "@utils/": "src/utils/",
+   "@validators/": "src/validators/",
+   "~/": "src/"
+  }
+ },
+ "commits": {
+  "convencao": "commitlint",
+  "exemplos": [
+   "chore(scripts): porta do Zapp Web V2 o gerador de contexto e o inventário de estado real (Fase 1) (#92)",
+   "chore(security): remove migrate-helper e scripts com credenciais vazadas (#91)",
+   "fix(ci): destrava npm ci, lint, build e testes de contrato Deno (#90)",
+   "chore(agentes): replica no Sentinela V2 o padrão de instruções do Zapp Web V2 (#89)",
+   "Merge pull request #71 from adm01-debug/dependabot/npm_and_yarn/lint-ce6edfe642"
+  ]
+ },
+ "pr_template": ".github/PULL_REQUEST_TEMPLATE.md",
+ "codeowners": ".github/CODEOWNERS",
+ "contributing": "CONTRIBUTING.md",
+ "instrucoes_agentes": [
+  "AGENTS.md",
+  "CLAUDE.md"
+ ],
+ "typescript": {
+  "strict": true,
+  "noImplicitAny": false,
+  "tsconfigs": [
+   "tsconfig.app.json",
+   "tsconfig.json",
+   "tsconfig.node.json"
+  ]
+ }
+}

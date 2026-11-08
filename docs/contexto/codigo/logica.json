@@ -1,0 +1,4397 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "total": 157,
+ "por_camada": {
+  "data": 4,
+  "helpers": 2,
+  "integrations": 4,
+  "lib": 39,
+  "providers": 1,
+  "services": 8,
+  "stores": 34,
+  "utils": 64,
+  "validators": 1
+ },
+ "arquivos": [
+  {
+   "arquivo": "src/data/employeeDetailData.ts",
+   "camada": "data",
+   "exports": [
+    "ApplicationCategory",
+    "ApplicationUsage",
+    "TimelineActivity",
+    "defaultActivities",
+    "defaultApplications",
+    "employeeActivities",
+    "employeeApplications"
+   ],
+   "export_default": null,
+   "linhas": 51,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "components"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/data/mockData.ts",
+   "camada": "data",
+   "exports": [
+    "Alert",
+    "Employee"
+   ],
+   "export_default": null,
+   "linhas": 23,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 3,
+   "usado_por_modulos": [
+    "components"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/data/reportData.ts",
+   "camada": "data",
+   "exports": [
+    "ReportData",
+    "ReportSeverity"
+   ],
+   "export_default": null,
+   "linhas": 13,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/data/settingsData.ts",
+   "camada": "data",
+   "exports": [
+    "ApplicationRule",
+    "SecurityPolicy",
+    "categoryLabels",
+    "defaultAppRules",
+    "defaultPolicies",
+    "statusLabels"
+   ],
+   "export_default": null,
+   "linhas": 69,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 5,
+   "usado_por_modulos": [
+    "components",
+    "pages"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/helpers/date.ts",
+   "camada": "helpers",
+   "exports": [
+    "formatDate",
+    "formatDateTime",
+    "formatRelative"
+   ],
+   "export_default": null,
+   "linhas": 16,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/helpers/index.ts",
+   "camada": "helpers",
+   "exports": [
+    "camelToKebab",
+    "clamp",
+    "cn",
+    "daysDiff",
+    "escapeHtml",
+    "formatBytes",
+    "formatCurrency",
+    "formatDate",
+    "formatNumber",
+    "formatPercent",
+    "formatRelative",
+    "initials",
+    "isValidDate",
+    "kebabToCamel",
+    "maskEmail",
+    "percentage",
+    "pluralize",
+    "roundTo",
+    "stripHtml",
+    "truncate"
+   ],
+   "export_default": null,
+   "linhas": 8,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "components/Cards"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/integrations/index.ts",
+   "camada": "integrations",
+   "exports": [
+    "supabase"
+   ],
+   "export_default": null,
+   "linhas": 3,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/integrations/lovable/index.ts",
+   "camada": "integrations",
+   "exports": [
+    "lovable"
+   ],
+   "export_default": null,
+   "linhas": 39,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "@lovable.dev/cloud-auth-js"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/integrations/supabase/client.ts",
+   "camada": "integrations",
+   "exports": [
+    "supabase"
+   ],
+   "export_default": null,
+   "linhas": 29,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [
+    "VITE_SUPABASE_PUBLISHABLE_KEY",
+    "VITE_SUPABASE_URL"
+   ],
+   "externos": [
+    "@supabase/supabase-js"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 195,
+   "usado_por_modulos": [
+    "components",
+    "components/admin",
+    "components/productivity",
+    "components/security",
+    "components/timeline",
+    "components/user",
+    "components/violations",
+    "hooks",
+    "integrations",
+    "integrations/lovable",
+    "lib",
+    "pages",
+    "pages/admin",
+    "providers",
+    "services",
+    "stores",
+    "utils"
+   ],
+   "coberto_por_testes": 8,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/integrations/supabase/types.ts",
+   "camada": "integrations",
+   "exports": [
+    "CompositeTypes",
+    "Constants",
+    "Database",
+    "Enums",
+    "Json",
+    "Tables",
+    "TablesInsert",
+    "TablesUpdate"
+   ],
+   "export_default": null,
+   "linhas": 6369,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 3,
+   "usado_por_modulos": [
+    "hooks",
+    "integrations/supabase"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/apiMonitor.ts",
+   "camada": "lib",
+   "exports": [
+    "apiMonitor",
+    "runHealthCheck"
+   ],
+   "export_default": null,
+   "linhas": 159,
+   "tabelas": [
+    "geofences"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "components"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/circuitBreaker.ts",
+   "camada": "lib",
+   "exports": [
+    "CircuitBreaker",
+    "circuitBreakers"
+   ],
+   "export_default": null,
+   "linhas": 89,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 1,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/lib/error-handling/handler.ts",
+   "camada": "lib",
+   "exports": [
+    "AppError",
+    "createError",
+    "handleError",
+    "isAuthError",
+    "isNetworkError"
+   ],
+   "export_default": null,
+   "linhas": 60,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 2,
+   "usado_por_modulos": [
+    "lib/error-handling"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/error-handling/index.ts",
+   "camada": "lib",
+   "exports": [
+    "ErrorBoundary",
+    "createError",
+    "handleError",
+    "isAuthError",
+    "isNetworkError"
+   ],
+   "export_default": null,
+   "linhas": 4,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 2,
+   "usado_por_modulos": [
+    "lib",
+    "providers"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/errorTracker.ts",
+   "camada": "lib",
+   "exports": [
+    "captureError",
+    "errorTracker",
+    "initErrorTracking"
+   ],
+   "export_default": null,
+   "linhas": 238,
+   "tabelas": [
+    "error_reports"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [
+    "MODE",
+    "VITE_SENTRY_DSN"
+   ],
+   "externos": [
+    "@sentry/react"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 2,
+   "usado_por_modulos": [
+    "components/layout"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/exporters/xlsx.ts",
+   "camada": "lib",
+   "exports": [
+    "XlsxSheet",
+    "exportSimpleXlsx",
+    "exportToXlsx"
+   ],
+   "export_default": null,
+   "linhas": 52,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "xlsx"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "components/exports"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/feature-flags/exports.ts",
+   "camada": "lib",
+   "exports": [
+    "FeatureFlagsProvider",
+    "getFeatureFlags",
+    "initFeatureFlags",
+    "isFeatureEnabled",
+    "setFeatureFlag",
+    "useFeature",
+    "useFeatureFlags"
+   ],
+   "export_default": null,
+   "linhas": 3,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/lib/feature-flags/index.ts",
+   "camada": "lib",
+   "exports": [
+    "getFeatureFlags",
+    "initFeatureFlags",
+    "isFeatureEnabled",
+    "setFeatureFlag"
+   ],
+   "export_default": null,
+   "linhas": 10,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 3,
+   "usado_por_modulos": [
+    "lib",
+    "lib/feature-flags"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/featureFlags.ts",
+   "camada": "lib",
+   "exports": [
+    "FEATURE_FLAGS",
+    "FeatureFlag",
+    "isFeatureEnabled",
+    "loadFeatureFlags",
+    "setFeatureFlag"
+   ],
+   "export_default": null,
+   "linhas": 82,
+   "tabelas": [
+    "monitoring_settings"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [
+    "FEATURE_FLAGS"
+   ],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/lib/index.ts",
+   "camada": "lib",
+   "exports": [],
+   "export_default": null,
+   "linhas": 6,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/logger.ts",
+   "camada": "lib",
+   "exports": [
+    "logger"
+   ],
+   "export_default": "logger",
+   "linhas": 94,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 58,
+   "usado_por_modulos": [
+    "components",
+    "components/auth",
+    "components/security",
+    "components/ui",
+    "hooks",
+    "lib",
+    "lib/error-handling",
+    "pages",
+    "providers",
+    "utils"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/mfa/mfaSimulator.ts",
+   "camada": "lib",
+   "exports": [
+    "DEFAULT_CONFIG",
+    "EnrollResult",
+    "FactorStatus",
+    "FactorType",
+    "MFAError",
+    "MFAErrorCode",
+    "MFASimulator",
+    "SimFactor",
+    "SimulatorConfig"
+   ],
+   "export_default": null,
+   "linhas": 233,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 1,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/lib/performanceBudget.ts",
+   "camada": "lib",
+   "exports": [
+    "auditPerformanceBudget",
+    "createRenderTracker",
+    "initPerformanceMonitoring"
+   ],
+   "export_default": null,
+   "linhas": 173,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [
+    "DEV",
+    "PROD"
+   ],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/permissions/exports.ts",
+   "camada": "lib",
+   "exports": [
+    "PermissionsProvider",
+    "getPermissions",
+    "hasPermission",
+    "useCan",
+    "usePermissions"
+   ],
+   "export_default": null,
+   "linhas": 4,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/lib/permissions/index.ts",
+   "camada": "lib",
+   "exports": [
+    "Permission",
+    "Resource",
+    "Role",
+    "getPermissions",
+    "hasPermission"
+   ],
+   "export_default": null,
+   "linhas": 54,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 4,
+   "usado_por_modulos": [
+    "lib",
+    "lib/permissions",
+    "providers"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/queryClient.ts",
+   "camada": "lib",
+   "exports": [
+    "CACHE_TIMES",
+    "REFETCH_INTERVALS",
+    "invalidateRelated",
+    "queryClient",
+    "queryKeys",
+    "queryPresets"
+   ],
+   "export_default": null,
+   "linhas": 192,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "@tanstack/react-query",
+    "sonner"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 45,
+   "usado_por_modulos": [
+    "components/layout",
+    "components/security",
+    "hooks",
+    "providers"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/rateLimiter.ts",
+   "camada": "lib",
+   "exports": [
+    "ClientRateLimiter",
+    "apiRateLimiter",
+    "authRateLimiter",
+    "exportRateLimiter"
+   ],
+   "export_default": null,
+   "linhas": 104,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/lib/requestDedup.ts",
+   "camada": "lib",
+   "exports": [
+    "clearDedup",
+    "dedup",
+    "requestDedup",
+    "withDedup"
+   ],
+   "export_default": null,
+   "linhas": 38,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 1,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/lib/schemas.ts",
+   "camada": "lib",
+   "exports": [
+    "AlertRuleFormData",
+    "EmployeeFormData",
+    "GeofenceFormData",
+    "LoginFormData",
+    "RegisterFormData",
+    "ReportFormData",
+    "SecurityPolicyFormData",
+    "TeamFormData",
+    "WebhookFormData",
+    "WorkScheduleFormData",
+    "alertRuleSchema",
+    "dateSchema",
+    "departmentSchema",
+    "emailSchema",
+    "employeeSchema",
+    "forgotPasswordSchema",
+    "geofenceSchema",
+    "idSchema",
+    "internetAccessRuleSchema",
+    "loginSchema",
+    "nameSchema",
+    "passwordSchema",
+    "phoneSchema",
+    "registerSchema",
+    "reportSchema",
+    "securityPolicySchema",
+    "teamSchema",
+    "webhookSchema",
+    "workScheduleSchema"
+   ],
+   "export_default": null,
+   "linhas": 158,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zod"
+   ],
+   "zod_schemas": 13,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "components/security"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/securityHeaders.ts",
+   "camada": "lib",
+   "exports": [
+    "applySecurityHeaders"
+   ],
+   "export_default": null,
+   "linhas": 51,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/stores.ts",
+   "camada": "lib",
+   "exports": [
+    "useAuthStateStore",
+    "useDashboardLayoutStore",
+    "useGlobalFiltersStore",
+    "useNotificationsStore",
+    "useSidebarStore",
+    "useUserPreferencesStore"
+   ],
+   "export_default": null,
+   "linhas": 248,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/structuredData.ts",
+   "camada": "lib",
+   "exports": [
+    "injectStructuredData"
+   ],
+   "export_default": null,
+   "linhas": 66,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/supabase.ts",
+   "camada": "lib",
+   "exports": [
+    "default",
+    "supabase"
+   ],
+   "export_default": null,
+   "linhas": 4,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 3,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/uebaLevels.ts",
+   "camada": "lib",
+   "exports": [
+    "RISK_LEVEL_ORDER",
+    "RiskLevel",
+    "RiskLevelMeta",
+    "getLevelMeta",
+    "levelFromScore"
+   ],
+   "export_default": null,
+   "linhas": 58,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 3,
+   "usado_por_modulos": [
+    "components/ueba",
+    "hooks",
+    "pages/admin"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils.ts",
+   "camada": "lib",
+   "exports": [
+    "capitalize",
+    "capitalizeWords",
+    "chunk",
+    "clamp",
+    "cn",
+    "copyToClipboard",
+    "debounce",
+    "deepClone",
+    "downloadFile",
+    "formatBytes",
+    "formatCurrency",
+    "formatDate",
+    "formatDateTime",
+    "formatDuration",
+    "formatNumber",
+    "formatPercent",
+    "formatRelativeTime",
+    "generateId",
+    "generateUUID",
+    "getInitials",
+    "getQueryParams",
+    "groupBy",
+    "isEmpty",
+    "isValidEmail",
+    "isValidUUID",
+    "isValidUrl",
+    "maskString",
+    "memoize",
+    "omit",
+    "pick",
+    "retry",
+    "round",
+    "sleep",
+    "slugify",
+    "sortBy",
+    "throttle",
+    "truncate",
+    "uniqueBy"
+   ],
+   "export_default": null,
+   "linhas": 25,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "clsx",
+    "tailwind-merge"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 170,
+   "usado_por_modulos": [
+    "components",
+    "components/auth",
+    "components/dashboard",
+    "components/data-display",
+    "components/employees",
+    "components/forms",
+    "components/layout",
+    "components/recordings",
+    "components/security",
+    "components/ueba",
+    "components/ui",
+    "components/violations",
+    "helpers",
+    "lib",
+    "pages"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/async.ts",
+   "camada": "lib",
+   "exports": [
+    "debounce",
+    "generateId",
+    "generateUUID",
+    "memoize",
+    "retry",
+    "sleep",
+    "throttle"
+   ],
+   "export_default": null,
+   "linhas": 96,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/browser.ts",
+   "camada": "lib",
+   "exports": [
+    "copyToClipboard",
+    "downloadFile",
+    "getQueryParams"
+   ],
+   "export_default": null,
+   "linhas": 56,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/collections.ts",
+   "camada": "lib",
+   "exports": [
+    "chunk",
+    "deepClone",
+    "groupBy",
+    "isEmpty",
+    "omit",
+    "pick",
+    "sortBy",
+    "uniqueBy"
+   ],
+   "export_default": null,
+   "linhas": 98,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/date.ts",
+   "camada": "lib",
+   "exports": [
+    "formatDate",
+    "formatDateTime",
+    "formatRelativeTime"
+   ],
+   "export_default": null,
+   "linhas": 53,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/debounce.ts",
+   "camada": "lib",
+   "exports": [
+    "debounce"
+   ],
+   "export_default": null,
+   "linhas": 5,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib/utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/identity.ts",
+   "camada": "lib",
+   "exports": [
+    "identity"
+   ],
+   "export_default": null,
+   "linhas": 5,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib/utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/index.ts",
+   "camada": "lib",
+   "exports": [],
+   "export_default": null,
+   "linhas": 10,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/noop.ts",
+   "camada": "lib",
+   "exports": [
+    "noop"
+   ],
+   "export_default": null,
+   "linhas": 11,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib/utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/number.ts",
+   "camada": "lib",
+   "exports": [
+    "clamp",
+    "formatBytes",
+    "formatCurrency",
+    "formatDuration",
+    "formatNumber",
+    "formatPercent",
+    "round"
+   ],
+   "export_default": null,
+   "linhas": 84,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/once.ts",
+   "camada": "lib",
+   "exports": [
+    "once"
+   ],
+   "export_default": null,
+   "linhas": 5,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib/utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/string.ts",
+   "camada": "lib",
+   "exports": [
+    "capitalize",
+    "capitalizeWords",
+    "getInitials",
+    "maskString",
+    "slugify",
+    "truncate"
+   ],
+   "export_default": null,
+   "linhas": 61,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/throttle.ts",
+   "camada": "lib",
+   "exports": [
+    "throttle"
+   ],
+   "export_default": null,
+   "linhas": 11,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib/utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/utils/validation.ts",
+   "camada": "lib",
+   "exports": [
+    "isValidEmail",
+    "isValidUUID",
+    "isValidUrl"
+   ],
+   "export_default": null,
+   "linhas": 30,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "lib"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/webVitals.ts",
+   "camada": "lib",
+   "exports": [
+    "getNavigationTiming",
+    "initWebVitals"
+   ],
+   "export_default": null,
+   "linhas": 109,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [
+    "PROD"
+   ],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/providers/TenantThemeProvider.tsx",
+   "camada": "providers",
+   "exports": [
+    "TenantThemeProvider",
+    "useTenantTheme"
+   ],
+   "export_default": null,
+   "linhas": 106,
+   "tabelas": [
+    "companies"
+   ],
+   "rpcs": [
+    "get_user_company_id"
+   ],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "@tanstack/react-query",
+    "react"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "providers"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/services/analyticsService.ts",
+   "camada": "services",
+   "exports": [
+    "analyticsService"
+   ],
+   "export_default": "analyticsService",
+   "linhas": 42,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/services/authService.ts",
+   "camada": "services",
+   "exports": [
+    "authService"
+   ],
+   "export_default": "authService",
+   "linhas": 70,
+   "tabelas": [
+    "user_roles"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "@supabase/supabase-js"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/services/employeeService.ts",
+   "camada": "services",
+   "exports": [
+    "employeeService"
+   ],
+   "export_default": "employeeService",
+   "linhas": 117,
+   "tabelas": [
+    "attendance_records",
+    "employee_devices",
+    "employees",
+    "keystroke_logs",
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/services/geofenceService.ts",
+   "camada": "services",
+   "exports": [
+    "geofenceService"
+   ],
+   "export_default": "geofenceService",
+   "linhas": 113,
+   "tabelas": [
+    "geofences"
+   ],
+   "rpcs": [],
+   "edges": [
+    "check-geofence"
+   ],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/services/notificationService.ts",
+   "camada": "services",
+   "exports": [
+    "notificationService"
+   ],
+   "export_default": "notificationService",
+   "linhas": 30,
+   "tabelas": [
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/services/reportService.ts",
+   "camada": "services",
+   "exports": [
+    "reportService"
+   ],
+   "export_default": "reportService",
+   "linhas": 46,
+   "tabelas": [
+    "ai_analysis_reports"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/services/violationService.ts",
+   "camada": "services",
+   "exports": [
+    "violationService"
+   ],
+   "export_default": "violationService",
+   "linhas": 30,
+   "tabelas": [
+    "security_violations"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/services/webhookService.ts",
+   "camada": "services",
+   "exports": [
+    "webhookService"
+   ],
+   "export_default": "webhookService",
+   "linhas": 98,
+   "tabelas": [
+    "webhook_logs",
+    "webhooks"
+   ],
+   "rpcs": [],
+   "edges": [
+    "send-webhook"
+   ],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/activityStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useActivityStore"
+   ],
+   "export_default": null,
+   "linhas": 39,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/alertStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useAlertStore"
+   ],
+   "export_default": null,
+   "linhas": 53,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/analyticsStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useAnalyticsStore"
+   ],
+   "export_default": null,
+   "linhas": 120,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/appStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useAppStore"
+   ],
+   "export_default": null,
+   "linhas": 30,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/auditStore.ts",
+   "camada": "stores",
+   "exports": [
+    "selectLogsByAction",
+    "selectLogsByUser",
+    "selectRecentLogs",
+    "useAuditStore"
+   ],
+   "export_default": null,
+   "linhas": 69,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/billingStore.ts",
+   "camada": "stores",
+   "exports": [
+    "selectCurrentPlan",
+    "selectUnpaidInvoices",
+    "selectUsagePercentage",
+    "useBillingStore"
+   ],
+   "export_default": null,
+   "linhas": 81,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 2,
+   "usado_por_modulos": [
+    "hooks",
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/breadcrumbStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useBreadcrumbStore"
+   ],
+   "export_default": null,
+   "linhas": 110,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/cacheStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useCacheStore"
+   ],
+   "export_default": null,
+   "linhas": 31,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/clipboardStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useClipboard",
+    "useClipboardStore"
+   ],
+   "export_default": null,
+   "linhas": 149,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/commandStore.ts",
+   "camada": "stores",
+   "exports": [
+    "selectFilteredCommands",
+    "useCommandStore"
+   ],
+   "export_default": null,
+   "linhas": 165,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 2,
+   "usado_por_modulos": [
+    "hooks",
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/dashboardStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useDashboardStore"
+   ],
+   "export_default": null,
+   "linhas": 22,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/departmentStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useDepartmentStore"
+   ],
+   "export_default": "useDepartmentStore",
+   "linhas": 97,
+   "tabelas": [
+    "employees"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/employeeStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useEmployeeStore"
+   ],
+   "export_default": null,
+   "linhas": 44,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/filterStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useFilterStore"
+   ],
+   "export_default": null,
+   "linhas": 38,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/index.ts",
+   "camada": "stores",
+   "exports": [],
+   "export_default": null,
+   "linhas": 45,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "components"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/integrationStore.ts",
+   "camada": "stores",
+   "exports": [
+    "selectActiveIntegrations",
+    "selectIntegrationsByType",
+    "useIntegrationStore"
+   ],
+   "export_default": null,
+   "linhas": 96,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/modalStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useConfirmDialog",
+    "useModal",
+    "useModalStore"
+   ],
+   "export_default": null,
+   "linhas": 123,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/notificationStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useNotificationStore"
+   ],
+   "export_default": null,
+   "linhas": 57,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/paginationStore.ts",
+   "camada": "stores",
+   "exports": [
+    "usePaginationStore"
+   ],
+   "export_default": null,
+   "linhas": 7,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/preferencesStore.ts",
+   "camada": "stores",
+   "exports": [
+    "usePreferencesStore"
+   ],
+   "export_default": null,
+   "linhas": 8,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/projectStore.ts",
+   "camada": "stores",
+   "exports": [
+    "selectActiveProjects",
+    "selectProjectById",
+    "selectProjectsByTeam",
+    "useProjectStore"
+   ],
+   "export_default": null,
+   "linhas": 105,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/reportStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useReportStore"
+   ],
+   "export_default": null,
+   "linhas": 36,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/screenshotStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useScreenshotStore"
+   ],
+   "export_default": null,
+   "linhas": 106,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/searchStore.ts",
+   "camada": "stores",
+   "exports": [
+    "selectGroupedResults",
+    "useSearchStore"
+   ],
+   "export_default": null,
+   "linhas": 169,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/selectionStore.ts",
+   "camada": "stores",
+   "exports": [
+    "createSelectionStore",
+    "useSelection",
+    "useSelectionStore"
+   ],
+   "export_default": null,
+   "linhas": 155,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/settingsStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useSettingsStore"
+   ],
+   "export_default": null,
+   "linhas": 39,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/sidebarStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useSidebarStore"
+   ],
+   "export_default": null,
+   "linhas": 108,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/sortStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useSortStore"
+   ],
+   "export_default": null,
+   "linhas": 7,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/teamStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useTeamStore"
+   ],
+   "export_default": "useTeamStore",
+   "linhas": 139,
+   "tabelas": [
+    "teams"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/themeStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useThemeStore"
+   ],
+   "export_default": null,
+   "linhas": 24,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/toastStore.ts",
+   "camada": "stores",
+   "exports": [
+    "toast",
+    "useToastStore"
+   ],
+   "export_default": null,
+   "linhas": 138,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/uiStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useUIStore"
+   ],
+   "export_default": null,
+   "linhas": 66,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 3,
+   "usado_por_modulos": [
+    "components",
+    "layouts",
+    "stores"
+   ],
+   "coberto_por_testes": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/userStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useUserStore"
+   ],
+   "export_default": null,
+   "linhas": 40,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/stores/websocketStore.ts",
+   "camada": "stores",
+   "exports": [
+    "useWebSocketStore"
+   ],
+   "export_default": null,
+   "linhas": 31,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zustand"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "stores"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/accessibility.ts",
+   "camada": "utils",
+   "exports": [
+    "ARIA_ROLES",
+    "announceToScreenReader",
+    "generateAriaId",
+    "getContrastRatio",
+    "getFocusableElements",
+    "isElementVisible",
+    "meetsWCAGAA",
+    "meetsWCAGAAA",
+    "prefersColorScheme",
+    "prefersHighContrast",
+    "prefersReducedMotion",
+    "trapFocus"
+   ],
+   "export_default": null,
+   "linhas": 110,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/acknowledgmentReportPdf.ts",
+   "camada": "utils",
+   "exports": [
+    "exportAcknowledgmentCsv",
+    "exportAcknowledgmentPdf"
+   ],
+   "export_default": null,
+   "linhas": 225,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages/admin"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/analyticsPdf.ts",
+   "camada": "utils",
+   "exports": [
+    "AnalyticsPdfPayload",
+    "generateAnalyticsPdf"
+   ],
+   "export_default": null,
+   "linhas": 172,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/api-errors.ts",
+   "camada": "utils",
+   "exports": [
+    "ApiErrorResponse",
+    "ValidationErrorDetail",
+    "handleApiError",
+    "isValidationError"
+   ],
+   "export_default": null,
+   "linhas": 41,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "sonner"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "services"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/api.ts",
+   "camada": "utils",
+   "exports": [
+    "ApiError",
+    "buildQueryString",
+    "fetcher",
+    "parseQueryString"
+   ],
+   "export_default": null,
+   "linhas": 25,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/array.ts",
+   "camada": "utils",
+   "exports": [
+    "chunk",
+    "groupBy",
+    "last",
+    "range",
+    "shuffle",
+    "sortBy",
+    "unique"
+   ],
+   "export_default": null,
+   "linhas": 8,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/auth.ts",
+   "camada": "utils",
+   "exports": [
+    "getTokenPayload",
+    "hasPermission",
+    "hasRole",
+    "isTokenExpired"
+   ],
+   "export_default": null,
+   "linhas": 5,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 3,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/browser.ts",
+   "camada": "utils",
+   "exports": [
+    "BrowserInfo",
+    "copyToClipboard",
+    "downloadUrl",
+    "getBrowserInfo",
+    "getLanguage",
+    "getScrollPosition",
+    "getViewport",
+    "isBrowser",
+    "isOnline",
+    "isServer",
+    "openInNewTab",
+    "scrollTo",
+    "scrollToElement",
+    "scrollToTop",
+    "supportsFeature"
+   ],
+   "export_default": null,
+   "linhas": 144,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/chunk.ts",
+   "camada": "utils",
+   "exports": [
+    "chunk"
+   ],
+   "export_default": null,
+   "linhas": 8,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/clipboard.ts",
+   "camada": "utils",
+   "exports": [
+    "copyToClipboard",
+    "readFromClipboard"
+   ],
+   "export_default": null,
+   "linhas": 3,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/cn.ts",
+   "camada": "utils",
+   "exports": [
+    "cn"
+   ],
+   "export_default": null,
+   "linhas": 6,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "clsx",
+    "tailwind-merge"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 26,
+   "usado_por_modulos": [
+    "components",
+    "components/disputes",
+    "components/layout",
+    "components/navigation",
+    "components/ui",
+    "layouts",
+    "utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/color.ts",
+   "camada": "utils",
+   "exports": [
+    "hexToRgb",
+    "rgbToHex"
+   ],
+   "export_default": null,
+   "linhas": 6,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/constants.ts",
+   "camada": "utils",
+   "exports": [
+    "API_BASE_URL",
+    "API_TIMEOUT",
+    "AUTH_REFRESH_KEY",
+    "AUTH_TOKEN_KEY",
+    "AUTH_USER_KEY",
+    "DATETIME_FORMAT",
+    "DATE_FORMAT",
+    "DEFAULT_PAGE_SIZE",
+    "DEPARTMENTS",
+    "EMPLOYEE_STATUSES",
+    "EXPORT_FORMATS",
+    "KEYBOARD_SHORTCUTS",
+    "PAGE_SIZE_OPTIONS",
+    "REPORT_TYPES",
+    "ROUTES",
+    "SESSION_DURATION",
+    "THEMES",
+    "THEME_KEY",
+    "TIME_FORMAT",
+    "VIOLATION_SEVERITIES",
+    "VIOLATION_STATUSES"
+   ],
+   "export_default": null,
+   "linhas": 101,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [
+    "VITE_API_URL"
+   ],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/crypto.ts",
+   "camada": "utils",
+   "exports": [
+    "generateUUID",
+    "randomBytes",
+    "randomString"
+   ],
+   "export_default": null,
+   "linhas": 4,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/currency.ts",
+   "camada": "utils",
+   "exports": [
+    "CURRENCY_CODES",
+    "CurrencyCode",
+    "CurrencyOptions",
+    "calculatePercentageChange",
+    "convertCurrency",
+    "formatCompactCurrency",
+    "formatCurrency",
+    "formatPercentage",
+    "getCurrencySymbol",
+    "parseCurrency",
+    "roundCurrency"
+   ],
+   "export_default": null,
+   "linhas": 97,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/date.ts",
+   "camada": "utils",
+   "exports": [
+    "addDays",
+    "daysDiff",
+    "endOfDay",
+    "endOfMonth",
+    "endOfWeek",
+    "formatDate",
+    "formatRelative",
+    "isValidDate",
+    "startOfDay",
+    "startOfMonth",
+    "startOfWeek",
+    "subDays"
+   ],
+   "export_default": null,
+   "linhas": 7,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "helpers"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/deepClone.ts",
+   "camada": "utils",
+   "exports": [
+    "deepClone",
+    "deepDiff",
+    "deepEqual",
+    "deepFreeze",
+    "deepMerge",
+    "omit",
+    "pick"
+   ],
+   "export_default": null,
+   "linhas": 156,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/disputeMetricsPdf.ts",
+   "camada": "utils",
+   "exports": [
+    "exportDisputeMetricsPdf"
+   ],
+   "export_default": null,
+   "linhas": 187,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages/admin"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/dom.ts",
+   "camada": "utils",
+   "exports": [
+    "$",
+    "$$",
+    "addClass",
+    "createElement",
+    "emptyElement",
+    "getClosest",
+    "getComputedStyle",
+    "getElement",
+    "getIndex",
+    "getOffset",
+    "getParents",
+    "getRect",
+    "getSiblings",
+    "hasClass",
+    "hide",
+    "insertAfter",
+    "insertBefore",
+    "isHidden",
+    "isInViewport",
+    "ready",
+    "removeClass",
+    "removeElement",
+    "replaceElement",
+    "setStyles",
+    "show",
+    "toggleClass"
+   ],
+   "export_default": null,
+   "linhas": 129,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/download.ts",
+   "camada": "utils",
+   "exports": [
+    "downloadBlob",
+    "downloadCSV",
+    "downloadFile",
+    "downloadJSON"
+   ],
+   "export_default": null,
+   "linhas": 5,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/duration.ts",
+   "camada": "utils",
+   "exports": [
+    "Duration",
+    "addDuration",
+    "formatDuration",
+    "formatTimeAgo",
+    "formatTimeRemaining",
+    "fromMilliseconds",
+    "humanReadableDuration",
+    "parseIsoDuration",
+    "subtractDuration",
+    "toMilliseconds"
+   ],
+   "export_default": null,
+   "linhas": 127,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/error.ts",
+   "camada": "utils",
+   "exports": [
+    "AppError",
+    "getErrorMessage",
+    "handleError",
+    "isAppError"
+   ],
+   "export_default": null,
+   "linhas": 6,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/escalationAuditPdf.ts",
+   "camada": "utils",
+   "exports": [
+    "EscalationAuditReport",
+    "exportEscalationAuditPdf"
+   ],
+   "export_default": null,
+   "linhas": 146,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages/admin"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/event.ts",
+   "camada": "utils",
+   "exports": [
+    "EventEmitter",
+    "debounceEvent",
+    "delegate",
+    "emit",
+    "off",
+    "on",
+    "once",
+    "preventDefault",
+    "stopImmediatePropagation",
+    "stopPropagation",
+    "throttleEvent",
+    "waitForEvent"
+   ],
+   "export_default": null,
+   "linhas": 162,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/eventEmitter.ts",
+   "camada": "utils",
+   "exports": [
+    "EventEmitter",
+    "eventBus"
+   ],
+   "export_default": null,
+   "linhas": 33,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/export.ts",
+   "camada": "utils",
+   "exports": [
+    "toCSV",
+    "toJSON"
+   ],
+   "export_default": null,
+   "linhas": 9,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/file.ts",
+   "camada": "utils",
+   "exports": [
+    "FileInfo",
+    "downloadBlob",
+    "downloadFile",
+    "formatFileSize",
+    "getFileExtension",
+    "getFileInfo",
+    "getFileName",
+    "getFileNameWithoutExtension",
+    "getMimeType",
+    "isArchive",
+    "isAudio",
+    "isDocument",
+    "isImage",
+    "isVideo",
+    "readFileAsArrayBuffer",
+    "readFileAsDataURL",
+    "readFileAsText"
+   ],
+   "export_default": null,
+   "linhas": 124,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/flatten.ts",
+   "camada": "utils",
+   "exports": [
+    "flatten"
+   ],
+   "export_default": null,
+   "linhas": 4,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/formatters.ts",
+   "camada": "utils",
+   "exports": [
+    "capitalize",
+    "formatCNPJ",
+    "formatCPF",
+    "formatCompact",
+    "formatCurrency",
+    "formatDate",
+    "formatDateTime",
+    "formatFileSize",
+    "formatNumber",
+    "formatPercent",
+    "formatPhone",
+    "formatRelativeDate",
+    "formatTime",
+    "formatTimeAgo",
+    "slugify",
+    "titleCase",
+    "truncate"
+   ],
+   "export_default": null,
+   "linhas": 84,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/geofenceReport.ts",
+   "camada": "utils",
+   "exports": [
+    "generateGeofencePDFReport"
+   ],
+   "export_default": null,
+   "linhas": 69,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/hash.ts",
+   "camada": "utils",
+   "exports": [
+    "createFingerprint",
+    "deobfuscate",
+    "fileHash",
+    "generateChecksum",
+    "hashCode",
+    "md5",
+    "obfuscate",
+    "sha256",
+    "sha512",
+    "simpleHash",
+    "verifyChecksum"
+   ],
+   "export_default": null,
+   "linhas": 81,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/helpers.ts",
+   "camada": "utils",
+   "exports": [
+    "capitalize",
+    "clamp",
+    "debounce",
+    "isEmpty",
+    "randomId",
+    "sleep",
+    "slugify",
+    "throttle"
+   ],
+   "export_default": null,
+   "linhas": 15,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/image.ts",
+   "camada": "utils",
+   "exports": [
+    "ImageDimensions",
+    "base64ToBlob",
+    "createThumbnail",
+    "cropImage",
+    "getAspectRatio",
+    "getImageDimensions",
+    "imageToBase64",
+    "loadImage",
+    "resizeImage",
+    "rotateImage"
+   ],
+   "export_default": null,
+   "linhas": 132,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/import.ts",
+   "camada": "utils",
+   "exports": [
+    "parseCSV",
+    "parseJSON"
+   ],
+   "export_default": null,
+   "linhas": 11,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/index.ts",
+   "camada": "utils",
+   "exports": [
+    "ApiError",
+    "buildQueryString",
+    "capitalize",
+    "clamp",
+    "cn",
+    "debounce",
+    "fetcher",
+    "formatCNPJ",
+    "formatCPF",
+    "formatCompact",
+    "formatCurrency",
+    "formatDate",
+    "formatDateTime",
+    "formatFileSize",
+    "formatNumber",
+    "formatPercent",
+    "formatPhone",
+    "formatRelativeDate",
+    "formatTime",
+    "formatTimeAgo",
+    "isEmpty",
+    "parseQueryString",
+    "randomId",
+    "sleep",
+    "slugify",
+    "throttle",
+    "titleCase",
+    "truncate"
+   ],
+   "export_default": null,
+   "linhas": 35,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/journeyPdf.ts",
+   "camada": "utils",
+   "exports": [
+    "generateJourneyPdf"
+   ],
+   "export_default": null,
+   "linhas": 163,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/liveViewReportPdf.ts",
+   "camada": "utils",
+   "exports": [
+    "exportLiveViewCsv",
+    "exportLiveViewPdf"
+   ],
+   "export_default": null,
+   "linhas": 178,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages/admin"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/logger.ts",
+   "camada": "utils",
+   "exports": [
+    "logger"
+   ],
+   "export_default": null,
+   "linhas": 7,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 1,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/mask.ts",
+   "camada": "utils",
+   "exports": [
+    "applyMask",
+    "createCustomMask",
+    "isValidCNPJ",
+    "isValidCPF",
+    "maskAlphanumeric",
+    "maskCEP",
+    "maskCNPJ",
+    "maskCPF",
+    "maskCPFCNPJ",
+    "maskCVV",
+    "maskCapitalize",
+    "maskCreditCard",
+    "maskCreditCardExpiry",
+    "maskCurrency",
+    "maskDate",
+    "maskDateTime",
+    "maskDecimal",
+    "maskEmail",
+    "maskLowerCase",
+    "maskNumeric",
+    "maskPercentage",
+    "maskPhone",
+    "maskTime",
+    "maskUpperCase",
+    "removeMask"
+   ],
+   "export_default": null,
+   "linhas": 159,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/memoize.ts",
+   "camada": "utils",
+   "exports": [
+    "MemoCache",
+    "memoize",
+    "memoizeAsync",
+    "memoizeOne"
+   ],
+   "export_default": null,
+   "linhas": 150,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/notificationSound.ts",
+   "camada": "utils",
+   "exports": [
+    "SoundType",
+    "playNotificationSound",
+    "playSoundBySeverity",
+    "testSound"
+   ],
+   "export_default": null,
+   "linhas": 115,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/number.ts",
+   "camada": "utils",
+   "exports": [
+    "clamp",
+    "formatBytes",
+    "formatCurrency",
+    "formatNumber",
+    "formatPercent",
+    "percentage",
+    "roundTo"
+   ],
+   "export_default": null,
+   "linhas": 8,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "helpers"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/object.ts",
+   "camada": "utils",
+   "exports": [
+    "deepClone",
+    "hasKey",
+    "isEmpty",
+    "isEqual",
+    "merge",
+    "omit",
+    "pick"
+   ],
+   "export_default": null,
+   "linhas": 8,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/omit.ts",
+   "camada": "utils",
+   "exports": [
+    "omit"
+   ],
+   "export_default": null,
+   "linhas": 10,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/pdf/pdfHelpers.ts",
+   "camada": "utils",
+   "exports": [
+    "RGB",
+    "chartColors",
+    "colors",
+    "drawAreaChart",
+    "drawHorizontalBarChart",
+    "drawLegend",
+    "drawMetricCard",
+    "drawPieChart",
+    "drawRoundedRect"
+   ],
+   "export_default": null,
+   "linhas": 181,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "jspdf"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 8,
+   "usado_por_modulos": [
+    "utils"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/pdfExport.ts",
+   "camada": "utils",
+   "exports": [
+    "PdfReportData",
+    "generatePDF"
+   ],
+   "export_default": null,
+   "linhas": 176,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/performance.ts",
+   "camada": "utils",
+   "exports": [
+    "PerformanceMetrics",
+    "PerformanceTracker",
+    "debounce",
+    "getPerformanceMetrics",
+    "idleCallback",
+    "measureTime",
+    "measureTimeAsync",
+    "rafThrottle",
+    "throttle",
+    "tracker"
+   ],
+   "export_default": null,
+   "linhas": 167,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/pick.ts",
+   "camada": "utils",
+   "exports": [
+    "pick"
+   ],
+   "export_default": null,
+   "linhas": 6,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/query.ts",
+   "camada": "utils",
+   "exports": [
+    "QueryParams",
+    "clear",
+    "get",
+    "getAll",
+    "has",
+    "merge",
+    "parse",
+    "query",
+    "remove",
+    "set",
+    "stringify",
+    "toObject"
+   ],
+   "export_default": "query",
+   "linhas": 95,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/queue.ts",
+   "camada": "utils",
+   "exports": [
+    "AsyncQueue",
+    "createQueue"
+   ],
+   "export_default": null,
+   "linhas": 33,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/random.ts",
+   "camada": "utils",
+   "exports": [
+    "nanoid",
+    "randomAlphanumeric",
+    "randomBoolean",
+    "randomColor",
+    "randomDate",
+    "randomElement",
+    "randomElements",
+    "randomFloat",
+    "randomHex",
+    "randomInt",
+    "randomRgb",
+    "randomString",
+    "shuffle",
+    "uuid",
+    "weightedRandom"
+   ],
+   "export_default": null,
+   "linhas": 92,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/regex.ts",
+   "camada": "utils",
+   "exports": [
+    "isEmail",
+    "isURL",
+    "isUUID",
+    "patterns"
+   ],
+   "export_default": null,
+   "linhas": 11,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/responsive.ts",
+   "camada": "utils",
+   "exports": [
+    "breakpoints",
+    "getBreakpoint",
+    "isDesktop",
+    "isMobile",
+    "isTablet"
+   ],
+   "export_default": null,
+   "linhas": 6,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/retry.ts",
+   "camada": "utils",
+   "exports": [
+    "RetryError",
+    "RetryOptions",
+    "isRetryable",
+    "retry",
+    "retryUntil",
+    "retryWithFallback",
+    "retryable"
+   ],
+   "export_default": null,
+   "linhas": 137,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/sleep.ts",
+   "camada": "utils",
+   "exports": [
+    "Deferred",
+    "debouncePromise",
+    "delay",
+    "idle",
+    "nextFrame",
+    "nextTick",
+    "sleep",
+    "timeout",
+    "wait",
+    "waitFor"
+   ],
+   "export_default": null,
+   "linhas": 121,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/sorting.ts",
+   "camada": "utils",
+   "exports": [
+    "naturalSort",
+    "sortBy",
+    "sortByMultiple"
+   ],
+   "export_default": null,
+   "linhas": 26,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/storage.ts",
+   "camada": "utils",
+   "exports": [
+    "localStorage",
+    "sessionStorage"
+   ],
+   "export_default": null,
+   "linhas": 14,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/string.ts",
+   "camada": "utils",
+   "exports": [
+    "camelToKebab",
+    "escapeHtml",
+    "initials",
+    "kebabToCamel",
+    "maskEmail",
+    "pluralize",
+    "stripHtml",
+    "truncate"
+   ],
+   "export_default": null,
+   "linhas": 9,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "helpers"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/utils/timezone.ts",
+   "camada": "utils",
+   "exports": [
+    "BRAZIL_TIMEZONES",
+    "COMMON_TIMEZONES",
+    "TimezoneInfo",
+    "convertToTimezone",
+    "formatInTimezone",
+    "formatTimezoneOffset",
+    "getAllTimezones",
+    "getLocalTimezone",
+    "getTimeDifference",
+    "getTimezoneAbbreviation",
+    "getTimezoneOffset",
+    "isDST",
+    "isValidTimezone"
+   ],
+   "export_default": null,
+   "linhas": 95,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/unique.ts",
+   "camada": "utils",
+   "exports": [
+    "unique",
+    "uniqueBy"
+   ],
+   "export_default": null,
+   "linhas": 8,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/url.ts",
+   "camada": "utils",
+   "exports": [
+    "buildUrl",
+    "getDomain",
+    "getPathSegments",
+    "getProtocol",
+    "getQueryParams",
+    "isAbsoluteUrl",
+    "isValidUrl",
+    "joinPaths",
+    "normalizeUrl",
+    "parseUrl",
+    "removeQueryParams",
+    "updateQueryParam"
+   ],
+   "export_default": null,
+   "linhas": 93,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/validation.ts",
+   "camada": "utils",
+   "exports": [
+    "isCNPJ",
+    "isCPF",
+    "isEmail",
+    "isPhone",
+    "isStrongPassword",
+    "isURL"
+   ],
+   "export_default": null,
+   "linhas": 23,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/validators.ts",
+   "camada": "utils",
+   "exports": [
+    "getPasswordStrength",
+    "inRange",
+    "isRequired",
+    "isStrongPassword",
+    "isValidCNPJ",
+    "isValidCPF",
+    "isValidEmail",
+    "isValidPhone",
+    "isValidURL",
+    "maxLength",
+    "minLength"
+   ],
+   "export_default": null,
+   "linhas": 94,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 0,
+   "usado_por_modulos": [],
+   "coberto_por_testes": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/utils/violationsPdf.ts",
+   "camada": "utils",
+   "exports": [
+    "ViolationsPdfPayload",
+    "generateViolationsPdf"
+   ],
+   "export_default": null,
+   "linhas": 572,
+   "tabelas": [
+    "report_signatures",
+    "screen_captures"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable",
+    "qrcode"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages"
+   ],
+   "coberto_por_testes": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/validators/schemas.ts",
+   "camada": "validators",
+   "exports": [
+    "AlertInput",
+    "ApplicationRuleInput",
+    "DateRangeInput",
+    "DeviceCreateInput",
+    "EmployeeCreateInput",
+    "EmployeeUpdateInput",
+    "GeofenceCreateInput",
+    "LoginInput",
+    "PaginationInput",
+    "RegisterInput",
+    "TeamCreateInput",
+    "WorkScheduleCreateInput",
+    "alertSchema",
+    "applicationRuleSchema",
+    "dateRangeSchema",
+    "dateStringSchema",
+    "deviceCreateSchema",
+    "emailSchema",
+    "employeeCreateSchema",
+    "employeeUpdateSchema",
+    "forgotPasswordSchema",
+    "geofenceCreateSchema",
+    "loginSchema",
+    "nonEmptyString",
+    "paginationSchema",
+    "passwordSchema",
+    "phoneSchema",
+    "registerSchema",
+    "teamCreateSchema",
+    "teamUpdateSchema",
+    "uuidSchema",
+    "workScheduleCreateSchema"
+   ],
+   "export_default": null,
+   "linhas": 180,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "zod"
+   ],
+   "zod_schemas": 12,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "hooks"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  }
+ ]
+}

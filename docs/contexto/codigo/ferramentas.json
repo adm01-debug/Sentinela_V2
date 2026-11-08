@@ -1,0 +1,1712 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "stack": {
+  "linguagens": [
+   "TypeScript (1378)",
+   "Markdown (178)",
+   "SQL (106)",
+   "JSON (38)",
+   "YAML (37)",
+   "Shell (21)",
+   "JavaScript (15)",
+   "HTML (4)"
+  ],
+  "linguagem_principal": "TypeScript",
+  "framework": "React",
+  "backend_http": [],
+  "bundler": "Vite",
+  "roteador": "react-router",
+  "banco": "Supabase",
+  "testes": [
+   "vitest",
+   "playwright"
+  ],
+  "ui": [
+   "tailwind",
+   "radix/shadcn"
+  ],
+  "estado": [
+   "react-query",
+   "zustand"
+  ],
+  "gerenciador_pacotes": "bun",
+  "node": "20",
+  "python": null,
+  "deploy": [
+   "docker",
+   "compose/swarm"
+  ],
+  "monorepo": null,
+  "pastas_fonte": [
+   "src"
+  ]
+ },
+ "workspaces": [],
+ "package": {
+  "nome": "sentinela",
+  "versao": "17.0.0",
+  "scripts": {
+   "analyze": "vite-bundle-visualizer",
+   "build": "bun scripts/generate-audit-pdf.js && vite build",
+   "build:dev": "vite build --mode development",
+   "bundle-check": "./scripts/check-bundle-size.sh",
+   "dev": "vite",
+   "format": "prettier --write .",
+   "format:check": "prettier --check .",
+   "lint": "eslint . --ext .ts,.tsx",
+   "lint:fix": "eslint . --ext .ts,.tsx --fix",
+   "prepare": "husky",
+   "preview": "vite preview",
+   "test": "vitest run",
+   "type-check": "tsc --noEmit"
+  },
+  "dependencias": 70,
+  "dev_dependencias": 32,
+  "principais": {
+   "@supabase/supabase-js": "^2.98.0",
+   "@tanstack/react-query": "^5.104.0",
+   "@tanstack/react-table": "^9.2.4",
+   "@tanstack/react-virtual": "^3.14.11",
+   "axios": "^1.19.0",
+   "date-fns": "^4.4.0",
+   "framer-motion": "^13.4.6",
+   "i18next": "^26.3.6",
+   "react": "^19.3.0",
+   "react-day-picker": "^10.0.1",
+   "react-dom": "^19.3.0",
+   "react-hook-form": "^7.85.0",
+   "react-i18next": "^17.0.11",
+   "react-organizational-chart": "^2.2.1",
+   "react-resizable-panels": "^4.12.2",
+   "react-router-dom": "^7.18.4",
+   "recharts": "^3.10.1",
+   "tailwindcss-animate": "^1.0.7",
+   "zod": "^4.4.3",
+   "zustand": "^5.0.15"
+  },
+  "engines": null,
+  "packageManager": null
+ },
+ "python": null,
+ "configs": [
+  ".editorconfig",
+  ".github/CODEOWNERS",
+  ".github/PULL_REQUEST_TEMPLATE.md",
+  ".github/dependabot.yml",
+  ".husky/commit-msg",
+  ".husky/pre-commit",
+  ".nvmrc",
+  ".prettierrc",
+  "Dockerfile",
+  "Makefile",
+  "ai-context.config.json",
+  "commitlint.config.cjs",
+  "components.json",
+  "docker-compose.dev.yml",
+  "docker-compose.prod.yml",
+  "docker-compose.yml",
+  "eslint.config.js",
+  "lint-staged.config.cjs",
+  "package.json",
+  "playwright.config.ts",
+  "postcss.config.cjs",
+  "renovate.json",
+  "supabase/config.toml",
+  "tailwind.config.ts",
+  "tsconfig.app.json",
+  "tsconfig.json",
+  "tsconfig.node.json",
+  "vite.config.ts"
+ ],
+ "workflows": [
+  {
+   "arquivo": ".github/workflows/cd.yml",
+   "nome": "CD",
+   "gatilhos": [
+    "push"
+   ],
+   "crons": [],
+   "branches": [],
+   "jobs": [
+    "deploy"
+   ],
+   "permissoes": [],
+   "scripts_usados": [
+    "scripts/generate-audit-pdf.js"
+   ],
+   "npm_scripts": [
+    "build"
+   ],
+   "secrets": [
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "CLOUDFRONT_ID",
+    "S3_BUCKET"
+   ],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node",
+    "aws-actions/configure-aws-credentials",
+    "oven-sh/setup-bun"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/ci.yml",
+   "nome": "CI",
+   "gatilhos": [
+    "pull_request",
+    "push"
+   ],
+   "crons": [],
+   "branches": [
+    "main"
+   ],
+   "jobs": [
+    "quality",
+    "build",
+    "test",
+    "deno-contract-tests",
+    "agent-instructions-guard"
+   ],
+   "permissoes": [],
+   "scripts_usados": [
+    "scripts/ci/check-claude-md-integrity.mjs",
+    "scripts/generate-audit-pdf.js"
+   ],
+   "npm_scripts": [
+    "build",
+    "bundle-check",
+    "test"
+   ],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node",
+    "actions/upload-artifact",
+    "denoland/setup-deno",
+    "oven-sh/setup-bun"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/contexto.yml",
+   "nome": "Contexto para agentes de IA (30 min)",
+   "gatilhos": [
+    "push",
+    "schedule",
+    "workflow_dispatch"
+   ],
+   "crons": [
+    "7-59/30 * * * *"
+   ],
+   "branches": [
+    "main"
+   ],
+   "jobs": [
+    "publicar"
+   ],
+   "permissoes": [
+    "contents: read"
+   ],
+   "scripts_usados": [
+    "scripts/ai-context/gerar.mjs"
+   ],
+   "npm_scripts": [],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/deploy.yml",
+   "nome": "Deploy",
+   "gatilhos": [
+    "push",
+    "workflow_dispatch"
+   ],
+   "crons": [],
+   "branches": [
+    "main"
+   ],
+   "jobs": [
+    "deploy"
+   ],
+   "permissoes": [],
+   "scripts_usados": [
+    "scripts/generate-audit-pdf.js"
+   ],
+   "npm_scripts": [
+    "build"
+   ],
+   "secrets": [
+    "VERCEL_ORG_ID",
+    "VERCEL_PROJECT_ID",
+    "VERCEL_TOKEN"
+   ],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node",
+    "amondnet/vercel-action",
+    "oven-sh/setup-bun"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/desktop-build.yml",
+   "nome": "Desktop Build",
+   "gatilhos": [
+    "push"
+   ],
+   "crons": [],
+   "branches": [],
+   "jobs": [
+    "build"
+   ],
+   "permissoes": [],
+   "scripts_usados": [],
+   "npm_scripts": [
+    "build"
+   ],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/inventario-estado-semanal.yml",
+   "nome": "Inventário do estado real (semanal)",
+   "gatilhos": [
+    "schedule",
+    "workflow_dispatch"
+   ],
+   "crons": [
+    "31 10 * * 1"
+   ],
+   "branches": [],
+   "jobs": [
+    "inventario"
+   ],
+   "permissoes": [
+    "contents: read"
+   ],
+   "scripts_usados": [
+    "scripts/inventario/gerar-repo.mjs",
+    "scripts/inventario/mudou-conteudo.mjs"
+   ],
+   "npm_scripts": [],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node",
+    "peter-evans/create-pull-request"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/lint.yml",
+   "nome": "Lint",
+   "gatilhos": [
+    "pull_request",
+    "push"
+   ],
+   "crons": [],
+   "branches": [
+    "develop",
+    "main"
+   ],
+   "jobs": [
+    "lint"
+   ],
+   "permissoes": [],
+   "scripts_usados": [],
+   "npm_scripts": [
+    "format:check",
+    "lint",
+    "type-check"
+   ],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/mobile-build.yml",
+   "nome": "Mobile Build",
+   "gatilhos": [
+    "push"
+   ],
+   "crons": [],
+   "branches": [],
+   "jobs": [
+    "build"
+   ],
+   "permissoes": [],
+   "scripts_usados": [],
+   "npm_scripts": [],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "expo/expo-github-action"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/performance.yml",
+   "nome": "Performance",
+   "gatilhos": [
+    "push"
+   ],
+   "crons": [],
+   "branches": [
+    "main"
+   ],
+   "jobs": [
+    "lighthouse"
+   ],
+   "permissoes": [],
+   "scripts_usados": [],
+   "npm_scripts": [],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "treosh/lighthouse-ci-action"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/preview.yml",
+   "nome": "Preview",
+   "gatilhos": [
+    "pull_request"
+   ],
+   "crons": [],
+   "branches": [],
+   "jobs": [
+    "preview"
+   ],
+   "permissoes": [],
+   "scripts_usados": [
+    "scripts/generate-audit-pdf.js"
+   ],
+   "npm_scripts": [
+    "build"
+   ],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node",
+    "oven-sh/setup-bun"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/release.yml",
+   "nome": "Release",
+   "gatilhos": [
+    "push"
+   ],
+   "crons": [],
+   "branches": [],
+   "jobs": [
+    "release"
+   ],
+   "permissoes": [],
+   "scripts_usados": [
+    "scripts/generate-audit-pdf.js"
+   ],
+   "npm_scripts": [
+    "build"
+   ],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node",
+    "oven-sh/setup-bun",
+    "softprops/action-gh-release"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/security-scan.yml",
+   "nome": "Security Scan",
+   "gatilhos": [
+    "push",
+    "schedule"
+   ],
+   "crons": [
+    "0 0 * * *"
+   ],
+   "branches": [
+    "main"
+   ],
+   "jobs": [
+    "scan"
+   ],
+   "permissoes": [],
+   "scripts_usados": [],
+   "npm_scripts": [],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "github/codeql-action/analyze",
+    "github/codeql-action/init"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/security.yml",
+   "nome": "Security Scan",
+   "gatilhos": [
+    "push",
+    "schedule"
+   ],
+   "crons": [
+    "0 0 * * 0"
+   ],
+   "branches": [
+    "main"
+   ],
+   "jobs": [
+    "security"
+   ],
+   "permissoes": [],
+   "scripts_usados": [],
+   "npm_scripts": [],
+   "secrets": [
+    "SNYK_TOKEN"
+   ],
+   "actions": [
+    "actions/checkout",
+    "github/codeql-action/analyze",
+    "github/codeql-action/init",
+    "snyk/actions/node"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/update-deps.yml",
+   "nome": "Update Dependencies",
+   "gatilhos": [
+    "schedule",
+    "workflow_dispatch"
+   ],
+   "crons": [
+    "0 0 * * 0"
+   ],
+   "branches": [],
+   "jobs": [
+    "update"
+   ],
+   "permissoes": [],
+   "scripts_usados": [],
+   "npm_scripts": [],
+   "secrets": [],
+   "actions": [
+    "actions/checkout",
+    "actions/setup-node",
+    "peter-evans/create-pull-request"
+   ]
+  }
+ ],
+ "hooks_git": [
+  {
+   "arquivo": ".husky/commit-msg",
+   "comandos": [
+    ". \"$(dirname -- \"$0\")/_/husky.sh\"",
+    "npx --no -- commitlint --edit \"$1\""
+   ]
+  },
+  {
+   "arquivo": ".husky/pre-commit",
+   "comandos": [
+    ". \"$(dirname -- \"$0\")/_/husky.sh\"",
+    "npx lint-staged"
+   ]
+  }
+ ],
+ "docs_raiz": [
+  {
+   "arquivo": ".github/PULL_REQUEST_TEMPLATE.md",
+   "titulo": null,
+   "linhas": 13
+  },
+  {
+   "arquivo": ".github/pull_request_template.md",
+   "titulo": null,
+   "linhas": 13
+  },
+  {
+   "arquivo": "AGENTS.md",
+   "titulo": "AGENTS.md — Sentinela V2",
+   "linhas": 120
+  },
+  {
+   "arquivo": "AUDITORIA_ENTERPRISE_SENTINELA.md",
+   "titulo": "RELATÓRIO DE AUDITORIA ENTERPRISE - SENTINELA SECURITYWATCH V2",
+   "linhas": 85
+  },
+  {
+   "arquivo": "CHANGELOG.md",
+   "titulo": "Changelog",
+   "linhas": 63
+  },
+  {
+   "arquivo": "CLAUDE.md",
+   "titulo": null,
+   "linhas": 2
+  },
+  {
+   "arquivo": "CODE_OF_CONDUCT.md",
+   "titulo": "Code of Conduct",
+   "linhas": 30
+  },
+  {
+   "arquivo": "CONTRIBUTING.md",
+   "titulo": "Contributing to Sentinela",
+   "linhas": 47
+  },
+  {
+   "arquivo": "DOCUMENTATION_API_CONTRACTS.md",
+   "titulo": "Documentação de Contratos de API - Edge Functions & Webhooks",
+   "linhas": 115
+  },
+  {
+   "arquivo": "DOCUMENTATION_EDGE_FUNCTIONS.md",
+   "titulo": "Documentação Técnica: Edge Functions",
+   "linhas": 51
+  },
+  {
+   "arquivo": "ESTADO_ATUAL.md",
+   "titulo": "ESTADO ATUAL DO SISTEMA — SENTINELA V2",
+   "linhas": 942
+  },
+  {
+   "arquivo": "MIGRATION_PLAN_FOR_CLAUDE_WEB.md",
+   "titulo": "PROMPT PARA CLAUDE WEB — ANÁLISE DE MIGRAÇÃO SENTINELA V2",
+   "linhas": 255
+  },
+  {
+   "arquivo": "README.md",
+   "titulo": "Sentinela",
+   "linhas": 37
+  },
+  {
+   "arquivo": "ROADMAP.md",
+   "titulo": "SENTINELA — Roadmap Executivo 2026",
+   "linhas": 35
+  },
+  {
+   "arquivo": "SECURITY.md",
+   "titulo": "Security Policy",
+   "linhas": 39
+  },
+  {
+   "arquivo": "VERSION.md",
+   "titulo": "Version",
+   "linhas": 34
+  },
+  {
+   "arquivo": "VPAT.md",
+   "titulo": "Voluntary Product Accessibility Template (VPAT)",
+   "linhas": 17
+  },
+  {
+   "arquivo": "audit_report.md",
+   "titulo": "RELATÓRIO DE AUDITORIA ENTERPRISE - SENTINELA SECURITYWATCH V2",
+   "linhas": 85
+  },
+  {
+   "arquivo": "docs/A11Y_AUDIT.md",
+   "titulo": "Accessibility Audit Report",
+   "linhas": 24
+  },
+  {
+   "arquivo": "docs/ACCESSIBILITY.md",
+   "titulo": "Accessibility Guide",
+   "linhas": 22
+  },
+  {
+   "arquivo": "docs/ADMIN_GUIDE.md",
+   "titulo": "Admin Guide",
+   "linhas": 7
+  },
+  {
+   "arquivo": "docs/ADR.md",
+   "titulo": "📐 Architecture Decision Records (ADRs)",
+   "linhas": 58
+  },
+  {
+   "arquivo": "docs/ANALYTICS.md",
+   "titulo": "Analytics & Monitoring",
+   "linhas": 13
+  },
+  {
+   "arquivo": "docs/API.md",
+   "titulo": "API Reference",
+   "linhas": 43
+  },
+  {
+   "arquivo": "docs/API_KEYS.md",
+   "titulo": "API Keys",
+   "linhas": 40
+  },
+  {
+   "arquivo": "docs/API_REFERENCE.md",
+   "titulo": "API Reference",
+   "linhas": 6
+  },
+  {
+   "arquivo": "docs/API_VERSIONING.md",
+   "titulo": "API Versioning Guide",
+   "linhas": 73
+  },
+  {
+   "arquivo": "docs/ARCHITECTURE.md",
+   "titulo": "Architecture",
+   "linhas": 52
+  },
+  {
+   "arquivo": "docs/AUDITORIA_ENTERPRISE_SENTINELA.md",
+   "titulo": "RELATÓRIO DE AUDITORIA ENTERPRISE - SENTINELA SECURITYWATCH V2",
+   "linhas": 85
+  },
+  {
+   "arquivo": "docs/AUDITORIA_FUNCIONALIDADES.md",
+   "titulo": "🔍 AUDITORIA EXAUSTIVA - Sentinela v20",
+   "linhas": 280
+  },
+  {
+   "arquivo": "docs/AUDIT_TRAIL.md",
+   "titulo": "Audit Trail Guide",
+   "linhas": 161
+  },
+  {
+   "arquivo": "docs/AUTHENTICATION.md",
+   "titulo": "Authentication Guide",
+   "linhas": 153
+  },
+  {
+   "arquivo": "docs/AUTHORIZATION.md",
+   "titulo": "Authorization Guide",
+   "linhas": 176
+  },
+  {
+   "arquivo": "docs/BACKUP_RESTORE.md",
+   "titulo": "Backup & Restore Guide",
+   "linhas": 136
+  },
+  {
+   "arquivo": "docs/BRANCHING_STRATEGY.md",
+   "titulo": "Branching Strategy",
+   "linhas": 63
+  },
+  {
+   "arquivo": "docs/CACHING.md",
+   "titulo": "Caching Strategy",
+   "linhas": 126
+  },
+  {
+   "arquivo": "docs/CODE_REVIEW.md",
+   "titulo": "Code Review Guide",
+   "linhas": 73
+  },
+  {
+   "arquivo": "docs/CODE_REVIEW_GUIDELINES.md",
+   "titulo": "Code Review Guidelines — Sentinela",
+   "linhas": 54
+  },
+  {
+   "arquivo": "docs/COMPLIANCE_GUIDE.md",
+   "titulo": "Compliance Guide",
+   "linhas": 60
+  },
+  {
+   "arquivo": "docs/COMPONENTS.md",
+   "titulo": "Sentinela Component Library",
+   "linhas": 199
+  },
+  {
+   "arquivo": "docs/CONFIGURATION.md",
+   "titulo": "Configuration",
+   "linhas": 5
+  },
+  {
+   "arquivo": "docs/CONTEXTS.md",
+   "titulo": "React Contexts",
+   "linhas": 16
+  },
+  {
+   "arquivo": "docs/CONTRIBUTING_DETAILED.md",
+   "titulo": "Contributing",
+   "linhas": 7
+  },
+  {
+   "arquivo": "docs/DATABASE.md",
+   "titulo": "Database Schema",
+   "linhas": 49
+  },
+  {
+   "arquivo": "docs/DATA_PRIVACY.md",
+   "titulo": "Data Privacy Guide",
+   "linhas": 74
+  },
+  {
+   "arquivo": "docs/DEPENDENCY_UPDATES.md",
+   "titulo": "Dependency Update Status",
+   "linhas": 53
+  },
+  {
+   "arquivo": "docs/DEPLOYMENT.md",
+   "titulo": "Deployment Guide",
+   "linhas": 69
+  },
+  {
+   "arquivo": "docs/DESIGN_SYSTEM.md",
+   "titulo": "Sentinela Design System",
+   "linhas": 161
+  },
+  {
+   "arquivo": "docs/DESKTOP_AGENT.md",
+   "titulo": "Sentinela Desktop Agent",
+   "linhas": 13
+  },
+  {
+   "arquivo": "docs/DEVELOPMENT.md",
+   "titulo": "Sentinela Development Guide",
+   "linhas": 225
+  },
+  {
+   "arquivo": "docs/DISASTER_RECOVERY.md",
+   "titulo": "Disaster Recovery Plan",
+   "linhas": 130
+  },
+  {
+   "arquivo": "docs/DOCKER.md",
+   "titulo": "Docker Deployment Guide",
+   "linhas": 28
+  },
+  {
+   "arquivo": "docs/EDGE_FUNCTIONS.md",
+   "titulo": "Supabase Edge Functions",
+   "linhas": 16
+  },
+  {
+   "arquivo": "docs/ENCRYPTION.md",
+   "titulo": "Encryption Guide",
+   "linhas": 150
+  },
+  {
+   "arquivo": "docs/ERROR_HANDLING.md",
+   "titulo": "Error Handling Guide",
+   "linhas": 159
+  },
+  {
+   "arquivo": "docs/FAQ.md",
+   "titulo": "FAQ",
+   "linhas": 43
+  },
+  {
+   "arquivo": "docs/FUNCIONALIDADES_COMPLETAS.md",
+   "titulo": "Sentinela - Levantamento Completo de Funcionalidades",
+   "linhas": 305
+  },
+  {
+   "arquivo": "docs/GAP_ANALYSIS_ENTERPRISE.md",
+   "titulo": "Análise de Gaps — SENTINELA vs. Sistemas Enterprise de Classe Mundial",
+   "linhas": 95
+  },
+  {
+   "arquivo": "docs/GETTING_STARTED.md",
+   "titulo": "Getting Started",
+   "linhas": 38
+  },
+  {
+   "arquivo": "docs/GIT_FLOW.md",
+   "titulo": "Git Flow — Sentinela",
+   "linhas": 49
+  },
+  {
+   "arquivo": "docs/GLOSSARY.md",
+   "titulo": "Glossary",
+   "linhas": 4
+  },
+  {
+   "arquivo": "docs/HOOKS.md",
+   "titulo": "React Hooks Catalog",
+   "linhas": 19
+  },
+  {
+   "arquivo": "docs/HOOKS_GUIDE.md",
+   "titulo": "Hooks Guide",
+   "linhas": 68
+  },
+  {
+   "arquivo": "docs/HOTFIX_GUIDE.md",
+   "titulo": "Hotfix Guide",
+   "linhas": 67
+  },
+  {
+   "arquivo": "docs/I18N.md",
+   "titulo": "Internationalization (i18n)",
+   "linhas": 58
+  },
+  {
+   "arquivo": "docs/IMPLEMENTATION_COMPLETE_v20.md",
+   "titulo": "🎉 SENTINELA v20 - IMPLEMENTAÇÃO COMPLETA",
+   "linhas": 91
+  },
+  {
+   "arquivo": "docs/INCIDENT_RESPONSE.md",
+   "titulo": "Incident Response Guide",
+   "linhas": 152
+  },
+  {
+   "arquivo": "docs/INSTALLATION.md",
+   "titulo": "Installation Guide",
+   "linhas": 45
+  },
+  {
+   "arquivo": "docs/INTEGRATIONS.md",
+   "titulo": "Integrations Guide",
+   "linhas": 14
+  },
+  {
+   "arquivo": "docs/KUBERNETES.md",
+   "titulo": "Kubernetes Deployment",
+   "linhas": 12
+  },
+  {
+   "arquivo": "docs/LOGGING.md",
+   "titulo": "Logging Guide",
+   "linhas": 172
+  },
+  {
+   "arquivo": "docs/MIGRATIONS.md",
+   "titulo": "Database Migrations",
+   "linhas": 3
+  },
+  {
+   "arquivo": "docs/MOBILE_APP.md",
+   "titulo": "Sentinela Mobile App",
+   "linhas": 13
+  },
+  {
+   "arquivo": "docs/MONITORING.md",
+   "titulo": "Monitoring Guide",
+   "linhas": 11
+  },
+  {
+   "arquivo": "docs/MONITORING_GUIDE.md",
+   "titulo": "Monitoring Guide",
+   "linhas": 53
+  },
+  {
+   "arquivo": "docs/ONBOARDING.md",
+   "titulo": "🚀 Guia de Onboarding — Sentinela",
+   "linhas": 70
+  },
+  {
+   "arquivo": "docs/PERFORMANCE.md",
+   "titulo": "Performance Guide",
+   "linhas": 121
+  },
+  {
+   "arquivo": "docs/PERMISSIONS.md",
+   "titulo": "Permissions System",
+   "linhas": 58
+  },
+  {
+   "arquivo": "docs/PLANO_IMPLEMENTACAO_COMPLETO.md",
+   "titulo": "🔍 SENTINELA - ANÁLISE EXAUSTIVA E PLANO DE IMPLEMENTAÇÃO",
+   "linhas": 438
+  },
+  {
+   "arquivo": "docs/PLANO_IMPLEMENTACAO_DEFINITIVO_v18.md",
+   "titulo": "🎯 PLANO DE IMPLEMENTAÇÃO DEFINITIVO - SENTINELA v18",
+   "linhas": 573
+  },
+  {
+   "arquivo": "docs/PLANO_IMPLEMENTACAO_EXAUSTIVO.md",
+   "titulo": "🔍 SENTINELA - ANÁLISE EXAUSTIVA E PLANO DE IMPLEMENTAÇÃO COMPLETO",
+   "linhas": 1017
+  },
+  {
+   "arquivo": "docs/PLANO_IMPLEMENTACAO_v18.md",
+   "titulo": "🎯 PLANO DE IMPLEMENTAÇÃO EXAUSTIVO - SENTINELA v18",
+   "linhas": 343
+  },
+  {
+   "arquivo": "docs/PLANO_MELHORIAS_PENDENTES_v20.md",
+   "titulo": "🎯 SENTINELA v20 - PLANO EXAUSTIVO DE MELHORIAS PENDENTES",
+   "linhas": 675
+  },
+  {
+   "arquivo": "docs/PLANO_MELHORIAS_v14.md",
+   "titulo": "🎯 PLANO DE IMPLEMENTAÇÃO DE MELHORIAS - SENTINELA v14.0.0",
+   "linhas": 975
+  },
+  {
+   "arquivo": "docs/PROMPT_CONTINUACAO_v14.md",
+   "titulo": "🚀 PROMPT DE CONTINUAÇÃO - SENTINELA v14.0.0",
+   "linhas": 196
+  },
+  {
+   "arquivo": "docs/QA-CLEANUP-REPORT.md",
+   "titulo": "🏆 SENTINELA - PHD QA FINAL REPORT",
+   "linhas": 124
+  },
+  {
+   "arquivo": "docs/QA-REPORT.md",
+   "titulo": "🔬 SENTINELA v20 - QA ANALYSIS REPORT",
+   "linhas": 185
+  },
+  {
+   "arquivo": "docs/QA_AUDIT_REPORT_v20.md",
+   "titulo": "🔬 RELATÓRIO DE AUDITORIA QA - SENTINELA v20",
+   "linhas": 143
+  },
+  {
+   "arquivo": "docs/QUICK_START.md",
+   "titulo": "Quick Start Guide",
+   "linhas": 63
+  },
+  {
+   "arquivo": "docs/RATE_LIMITING.md",
+   "titulo": "Rate Limiting Guide",
+   "linhas": 77
+  },
+  {
+   "arquivo": "docs/README.md",
+   "titulo": "Sentinela Documentation",
+   "linhas": 23
+  },
+  {
+   "arquivo": "docs/RELEASE_PROCESS.md",
+   "titulo": "Release Process Guide",
+   "linhas": 69
+  },
+  {
+   "arquivo": "docs/ROADMAP_2026.md",
+   "titulo": "Roadmap 2026 — SENTINELA Enterprise",
+   "linhas": 128
+  },
+  {
+   "arquivo": "docs/ROADMAP_Q1_2026.md",
+   "titulo": "Q1 2026 — Breakdown de User Stories",
+   "linhas": 133
+  },
+  {
+   "arquivo": "docs/RUNBOOK.md",
+   "titulo": "Operations Runbook",
+   "linhas": 140
+  },
+  {
+   "arquivo": "docs/SCALING.md",
+   "titulo": "Scaling Guide",
+   "linhas": 134
+  },
+  {
+   "arquivo": "docs/SECURITY_AUDIT.md",
+   "titulo": "Security Audit Guide",
+   "linhas": 52
+  },
+  {
+   "arquivo": "docs/SECURITY_PRACTICES.md",
+   "titulo": "Security Best Practices",
+   "linhas": 6
+  },
+  {
+   "arquivo": "docs/SELF_HOSTING.md",
+   "titulo": "Self-Hosting Guide",
+   "linhas": 29
+  },
+  {
+   "arquivo": "docs/SERVICES.md",
+   "titulo": "API Services",
+   "linhas": 17
+  },
+  {
+   "arquivo": "docs/SLA.md",
+   "titulo": "Service Level Agreement (SLA)",
+   "linhas": 98
+  },
+  {
+   "arquivo": "docs/SPONSORS.md",
+   "titulo": "Sponsors",
+   "linhas": 8
+  },
+  {
+   "arquivo": "docs/STATE_MANAGEMENT.md",
+   "titulo": "State Management",
+   "linhas": 49
+  },
+  {
+   "arquivo": "docs/STORES.md",
+   "titulo": "State Management",
+   "linhas": 15
+  },
+  {
+   "arquivo": "docs/TROUBLESHOOTING.md",
+   "titulo": "Troubleshooting Guide",
+   "linhas": 51
+  },
+  {
+   "arquivo": "docs/TYPES.md",
+   "titulo": "TypeScript Types",
+   "linhas": 16
+  },
+  {
+   "arquivo": "docs/USER_GUIDE.md",
+   "titulo": "User Guide",
+   "linhas": 7
+  },
+  {
+   "arquivo": "docs/VPAT.md",
+   "titulo": "Voluntary Product Accessibility Template (VPAT)",
+   "linhas": 17
+  },
+  {
+   "arquivo": "docs/WEBHOOKS.md",
+   "titulo": "Webhooks",
+   "linhas": 50
+  },
+  {
+   "arquivo": "docs/api-reference.md",
+   "titulo": "API Reference",
+   "linhas": 91
+  },
+  {
+   "arquivo": "docs/architecture.md",
+   "titulo": "Architecture",
+   "linhas": 52
+  },
+  {
+   "arquivo": "docs/deployment.md",
+   "titulo": "Deployment Guide",
+   "linhas": 69
+  },
+  {
+   "arquivo": "docs/faq.md",
+   "titulo": "FAQ",
+   "linhas": 43
+  },
+  {
+   "arquivo": "docs/installation.md",
+   "titulo": "Installation Guide",
+   "linhas": 45
+  },
+  {
+   "arquivo": "docs/troubleshooting.md",
+   "titulo": "Troubleshooting Guide",
+   "linhas": 51
+  },
+  {
+   "arquivo": "docs/user-guide.md",
+   "titulo": "User Guide",
+   "linhas": 67
+  }
+ ],
+ "docs_em_subpastas": [
+  {
+   "pasta": "docs/guides",
+   "arquivos_md": 10
+  },
+  {
+   "pasta": "docs/tutorials",
+   "arquivos_md": 10
+  },
+  {
+   "pasta": "docs/adr",
+   "arquivos_md": 9
+  },
+  {
+   "pasta": "docs/examples",
+   "arquivos_md": 8
+  },
+  {
+   "pasta": "docs/agentes",
+   "arquivos_md": 7
+  },
+  {
+   "pasta": "docs/agent",
+   "arquivos_md": 1
+  }
+ ],
+ "changelog_topo": "[19.0.0] - 2026-01-13",
+ "env": {
+  "declaradas_no_env_example": [
+   "APP_URL",
+   "AWS_ACCESS_KEY_ID",
+   "AWS_SECRET_ACCESS_KEY",
+   "DATABASE_URL",
+   "JWT_SECRET",
+   "NODE_ENV",
+   "PORT",
+   "REDIS_URL",
+   "S3_BUCKET",
+   "S3_REGION",
+   "SENTRY_DSN",
+   "SESSION_SECRET",
+   "SMTP_HOST",
+   "SMTP_PASS",
+   "SMTP_PORT",
+   "SMTP_USER",
+   "SUPABASE_ANON_KEY",
+   "SUPABASE_SERVICE_KEY",
+   "SUPABASE_URL"
+  ],
+  "usadas_no_front": [
+   "DEV",
+   "MODE",
+   "PROD",
+   "VITE_API_URL",
+   "VITE_SENTRY_DSN",
+   "VITE_SUPABASE_PUBLISHABLE_KEY",
+   "VITE_SUPABASE_URL",
+   "VITE_VAPID_PUBLIC_KEY"
+  ],
+  "usadas_nas_edges": [
+   "APP_URL",
+   "FCM_SERVER_KEY",
+   "FUNCTION_VERSION",
+   "LOVABLE_API_KEY",
+   "MAPBOX_PUBLIC_TOKEN",
+   "MAPBOX_SECRET_TOKEN",
+   "RESEND_API_KEY",
+   "RESEND_FROM_EMAIL",
+   "SITE_URL",
+   "SLACK_WEBHOOK_URL",
+   "SUPABASE_ANON_KEY",
+   "SUPABASE_SERVICE_ROLE_KEY",
+   "SUPABASE_URL",
+   "TURN_CREDENTIALS",
+   "WHATSAPP_ACCESS_TOKEN",
+   "WHATSAPP_PHONE_NUMBER_ID"
+  ],
+  "usadas_no_python": [],
+  "usadas_mas_nao_declaradas": [
+   "DEV",
+   "MODE",
+   "PROD",
+   "VITE_API_URL",
+   "VITE_SENTRY_DSN",
+   "VITE_SUPABASE_PUBLISHABLE_KEY",
+   "VITE_SUPABASE_URL",
+   "VITE_VAPID_PUBLIC_KEY"
+  ],
+  "secrets_em_workflows": [
+   "AWS_ACCESS_KEY_ID",
+   "AWS_SECRET_ACCESS_KEY",
+   "CLOUDFRONT_ID",
+   "S3_BUCKET",
+   "SNYK_TOKEN",
+   "VERCEL_ORG_ID",
+   "VERCEL_PROJECT_ID",
+   "VERCEL_TOKEN"
+  ]
+ },
+ "deploy": {
+  "alvos": [
+   "docker",
+   "compose/swarm"
+  ],
+  "dockerfiles": [
+   {
+    "arquivo": "Dockerfile",
+    "base": [
+     "base",
+     "node:20-alpine"
+    ],
+    "portas": [
+     "3000"
+    ]
+   }
+  ],
+  "compose": [
+   {
+    "arquivo": "docker-compose.dev.yml",
+    "servicos": [
+     "app",
+     "redis",
+     "postgres"
+    ]
+   },
+   {
+    "arquivo": "docker-compose.prod.yml",
+    "servicos": [
+     "app"
+    ]
+   },
+   {
+    "arquivo": "docker-compose.yml",
+    "servicos": [
+     "app",
+     "redis",
+     "postgres",
+     "redis_data",
+     "postgres_data"
+    ]
+   }
+  ],
+  "vercel": null
+ },
+ "integracoes": {
+  "sdks": [
+   {
+    "pacote": "axios",
+    "servico": "HTTP (axios)",
+    "versao": "^1.19.0"
+   },
+   {
+    "pacote": "i18next",
+    "servico": "i18next",
+    "versao": "^26.3.6"
+   },
+   {
+    "pacote": "react-i18next",
+    "servico": "i18next",
+    "versao": "^17.0.11"
+   },
+   {
+    "pacote": "@tanstack/react-query",
+    "servico": "react-query",
+    "versao": "^5.104.0"
+   },
+   {
+    "pacote": "@sentry/react",
+    "servico": "Sentry",
+    "versao": "^10.70.0"
+   },
+   {
+    "pacote": "@supabase/supabase-js",
+    "servico": "Supabase",
+    "versao": "^2.98.0"
+   },
+   {
+    "pacote": "zod",
+    "servico": "zod",
+    "versao": "^4.4.3"
+   }
+  ],
+  "hosts_externos": [
+   {
+    "host": "api.resend.com",
+    "arquivos": 7
+   },
+   {
+    "host": "fcm.googleapis.com",
+    "arquivos": 4
+   },
+   {
+    "host": "api.ipify.org",
+    "arquivos": 2
+   },
+   {
+    "host": "releases.sentinela.app",
+    "arquivos": 2
+   },
+   {
+    "host": "x.supabase.co",
+    "arquivos": 2
+   },
+   {
+    "host": "api.lovable.dev",
+    "arquivos": 1
+   },
+   {
+    "host": "api.mapbox.com",
+    "arquivos": 1
+   },
+   {
+    "host": "api.pwnedpasswords.com",
+    "arquivos": 1
+   },
+   {
+    "host": "api.sentinela.app",
+    "arquivos": 1
+   },
+   {
+    "host": "api.x.com",
+    "arquivos": 1
+   },
+   {
+    "host": "attack.mitre.org",
+    "arquivos": 1
+   },
+   {
+    "host": "cdn.gpteng.co",
+    "arquivos": 1
+   },
+   {
+    "host": "cdnjs.cloudflare.com",
+    "arquivos": 1
+   },
+   {
+    "host": "fonts.googleapis.com",
+    "arquivos": 1
+   },
+   {
+    "host": "fonts.gstatic.com",
+    "arquivos": 1
+   },
+   {
+    "host": "graph.facebook.com",
+    "arquivos": 1
+   },
+   {
+    "host": "hooks.slack.com",
+    "arquivos": 1
+   },
+   {
+    "host": "lovable.dev",
+    "arquivos": 1
+   },
+   {
+    "host": "nominatim.openstreetmap.org",
+    "arquivos": 1
+   },
+   {
+    "host": "placeholder.supabase.co",
+    "arquivos": 1
+   },
+   {
+    "host": "rmiznlzpbwqpbzaiyydw.supabase.co",
+    "arquivos": 1
+   },
+   {
+    "host": "storage.test",
+    "arquivos": 1
+   },
+   {
+    "host": "test.com",
+    "arquivos": 1
+   },
+   {
+    "host": "x.com",
+    "arquivos": 1
+   }
+  ],
+  "env_de_integracao": [
+   "AWS_SECRET_ACCESS_KEY",
+   "JWT_SECRET",
+   "LOVABLE_API_KEY",
+   "MAPBOX_PUBLIC_TOKEN",
+   "MAPBOX_SECRET_TOKEN",
+   "REDIS_URL",
+   "RESEND_API_KEY",
+   "RESEND_FROM_EMAIL",
+   "S3_BUCKET",
+   "S3_REGION",
+   "SENTRY_DSN",
+   "SESSION_SECRET",
+   "SLACK_WEBHOOK_URL",
+   "SMTP_HOST",
+   "SMTP_PASS",
+   "SMTP_PORT",
+   "SMTP_USER",
+   "VITE_SENTRY_DSN",
+   "WHATSAPP_ACCESS_TOKEN",
+   "WHATSAPP_PHONE_NUMBER_ID"
+  ],
+  "webhooks_recebidos": [],
+  "realtime": [
+   "dlp-incidents-feed",
+   "employee-status-changes",
+   "employees",
+   "header-notifications-rt",
+   "live-view-updates",
+   "public:${entity}-changes",
+   "risk_scores_${employeeId || ",
+   "security-violations-realtime",
+   "slack-dlq-changes",
+   "slack-integrations-changes",
+   "test-channel",
+   "violations-realtime"
+  ]
+ },
+ "permissoes": {
+  "papeis_no_codigo": [
+   {
+    "papel": "status",
+    "ocorrencias": 20
+   },
+   {
+    "papel": "alert",
+    "ocorrencias": 13
+   },
+   {
+    "papel": "admin",
+    "ocorrencias": 12
+   },
+   {
+    "papel": "button",
+    "ocorrencias": 7
+   },
+   {
+    "papel": "user",
+    "ocorrencias": 7
+   },
+   {
+    "papel": "combobox",
+    "ocorrencias": 3
+   },
+   {
+    "papel": "list",
+    "ocorrencias": 3
+   },
+   {
+    "papel": "progressbar",
+    "ocorrencias": 3
+   },
+   {
+    "papel": "dialog",
+    "ocorrencias": 2
+   },
+   {
+    "papel": "presentation",
+    "ocorrencias": 2
+   },
+   {
+    "papel": "region",
+    "ocorrencias": 2
+   },
+   {
+    "papel": "Admin",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "agent",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "developer",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "editor",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "group",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "img",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "link",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "listitem",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "main",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "member",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "navigation",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "null",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "object",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "separator",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "sup",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "supervisor",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "tab",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "tablist",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "timer",
+    "ocorrencias": 1
+   },
+   {
+    "papel": "viewer",
+    "ocorrencias": 1
+   }
+  ],
+  "enums_de_papel": [
+   {
+    "enum": "app_role",
+    "valores": [
+     "admin",
+     "user"
+    ]
+   },
+   {
+    "enum": "user_role_type",
+    "valores": [
+     "viewer",
+     "supervisor",
+     "manager",
+     "admin",
+     "super_admin"
+    ]
+   }
+  ],
+  "rpcs_de_autorizacao": [
+   "cleanup_expired_webauthn_challenges",
+   "get_user_permissions",
+   "has_permission",
+   "has_role",
+   "is_ip_blocked"
+  ],
+  "guards": [
+   "src/guards/index.tsx"
+  ],
+  "rotas_protegidas": 14,
+  "rotas_publicas": [
+   "/*",
+   "/activities/:id",
+   "/activities/timeline",
+   "/admin/dlp/incidents",
+   "/admin/dlp/policies",
+   "/admin/edge-functions",
+   "/admin/ueba",
+   "/admin/ueba/:employeeId",
+   "/admin/ueba/settings",
+   "/ai-analysis",
+   "/alerts/:id",
+   "/alerts/rules",
+   "/attendance",
+   "/calendar",
+   "/compliance",
+   "/dev/chart-simulation",
+   "/dev/live-view-simulator",
+   "/dev/verify-simulator",
+   "/devices",
+   "/docs/api",
+   "/export",
+   "/gamification",
+   "/hours-tracking",
+   "/integrations",
+   "/integrations/webhooks",
+   "/integrations/whatsapp",
+   "/internet-access",
+   "/monitoring",
+   "/organization/chart",
+   "/projects",
+   "/reports/:id",
+   "/reports/custom",
+   "/reports/scheduled",
+   "/screenshots/:id",
+   "/time-clock",
+   "/timesheets",
+   "/verify-report",
+   "/violations",
+   "/violations/:id",
+   "/work-schedules"
+  ],
+  "menu_com_papeis": [],
+  "tabelas_sem_rls": []
+ },
+ "feature_flags": {
+  "total": 11,
+  "flags": [
+   {
+    "flag": "FEATURE_FLAGS",
+    "arquivos": 1
+   },
+   {
+    "flag": "FEATURE_KEYS",
+    "arquivos": 1
+   },
+   {
+    "flag": "FEATURE_TO_FACTOR",
+    "arquivos": 1
+   },
+   {
+    "flag": "FEATURE_X",
+    "arquivos": 1
+   },
+   {
+    "flag": "advancedReports",
+    "arquivos": 1
+   },
+   {
+    "flag": "darkMode",
+    "arquivos": 1
+   },
+   {
+    "flag": "exportPDF",
+    "arquivos": 1
+   },
+   {
+    "flag": "mobileApp",
+    "arquivos": 1
+   },
+   {
+    "flag": "newDashboard",
+    "arquivos": 1
+   },
+   {
+    "flag": "nova-tela",
+    "arquivos": 1
+   },
+   {
+    "flag": "novo-inbox",
+    "arquivos": 1
+   }
+  ],
+  "tabelas_de_flag": [
+   "alert_notification_settings",
+   "geo_blocking_settings",
+   "internet_access_settings",
+   "monitoring_settings",
+   "scheduled_report_settings",
+   "settings_audit_log",
+   "whatsapp_notification_settings"
+  ]
+ },
+ "providers": {
+  "entrada": "src/main.tsx",
+  "providers": [
+   "AuthContext.Provider",
+   "AuthProvider",
+   "BrowserRouter",
+   "ErrorBoundary",
+   "FeatureFlagsProvider",
+   "PermissionsProvider",
+   "QueryClientProvider",
+   "TenantThemeProvider",
+   "ThemeProvider",
+   "ThemeProviderContext.Provider",
+   "TooltipProvider"
+  ]
+ },
+ "i18n": {
+  "arquivos": 7,
+  "idiomas": [
+   "de",
+   "en",
+   "es",
+   "fr",
+   "it",
+   "pt"
+  ],
+  "lib": [
+   "i18next"
+  ]
+ }
+}

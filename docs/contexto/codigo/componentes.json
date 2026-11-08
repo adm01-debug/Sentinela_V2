@@ -1,0 +1,7706 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "total": 461,
+ "orfaos": 102,
+ "nomes_duplicados": {
+  "ActivityHeatmap": [
+   "src/components/ActivityHeatmap.tsx",
+   "src/components/dashboard/heatmaps.tsx"
+  ],
+  "AnalyticsProvider": [
+   "src/providers/AnalyticsProvider.tsx",
+   "src/providers/index.tsx"
+  ],
+  "AppProviders": [
+   "src/providers/AppProviders.tsx",
+   "src/providers/index.tsx"
+  ],
+  "AvatarGroup": [
+   "src/components/ui/avatar.tsx",
+   "src/components/ui/UserDisplay.tsx"
+  ],
+  "Breadcrumb": [
+   "src/components/ui/breadcrumb.tsx",
+   "src/components/ui/Headers.tsx"
+  ],
+  "BreadcrumbItem": [
+   "src/components/ui/breadcrumb.tsx",
+   "src/components/ui/Headers.tsx"
+  ],
+  "Breadcrumbs": [
+   "src/components/Breadcrumbs.tsx",
+   "src/components/layout/Breadcrumbs.tsx"
+  ],
+  "Card": [
+   "src/components/Cards.tsx",
+   "src/components/ui/card.tsx"
+  ],
+  "CardContent": [
+   "src/components/Cards.tsx",
+   "src/components/ui/card.tsx"
+  ],
+  "CardDescription": [
+   "src/components/Cards.tsx",
+   "src/components/ui/card.tsx"
+  ],
+  "CardHeader": [
+   "src/components/Cards.tsx",
+   "src/components/ui/card.tsx",
+   "src/components/ui/Headers.tsx"
+  ],
+  "CardTitle": [
+   "src/components/Cards.tsx",
+   "src/components/ui/card.tsx"
+  ],
+  "ChartLegend": [
+   "src/components/dashboard/chart/ChartLegend.tsx",
+   "src/components/ui/chart.tsx"
+  ],
+  "ChartTooltipContent": [
+   "src/components/charts/ChartTooltip.tsx",
+   "src/components/ui/chart.tsx"
+  ],
+  "CircularProgress": [
+   "src/components/ui/progress.tsx",
+   "src/components/ui/progress/CircularProgress.tsx"
+  ],
+  "Column": [
+   "src/components/data-display/DataTable.tsx",
+   "src/components/VirtualizedTable.tsx"
+  ],
+  "ConnectionStatus": [
+   "src/components/PWAInstallPrompt.tsx",
+   "src/components/ui/StatusBadge.tsx"
+  ],
+  "DashboardSkeleton": [
+   "src/components/dashboard/DashboardSkeleton.tsx",
+   "src/components/DashboardSkeleton.tsx",
+   "src/pages/dashboard/DashboardSkeleton.tsx"
+  ],
+  "EmptyState": [
+   "src/components/EmptyState.tsx",
+   "src/components/EmptyStates.tsx",
+   "src/components/ui/data-display.tsx",
+   "src/components/ui/EmptyState.tsx"
+  ],
+  "ErrorBoundary": [
+   "src/components/ui/error-boundary.tsx",
+   "src/lib/error-handling/boundary.tsx"
+  ],
+  "FeatureFlagsProvider": [
+   "src/lib/feature-flags/provider.tsx",
+   "src/providers/FeatureFlagsProvider.tsx",
+   "src/providers/index.tsx"
+  ],
+  "FormField": [
+   "src/components/Forms.tsx",
+   "src/components/ui/form.tsx"
+  ],
+  "FormItem": [
+   "src/components/ui/form.tsx",
+   "src/components/ui/FormItem.tsx"
+  ],
+  "FormMessage": [
+   "src/components/ui/form.tsx",
+   "src/components/ui/FormMessage.tsx"
+  ],
+  "FormSelect": [
+   "src/components/Forms.tsx",
+   "src/components/forms/index.tsx"
+  ],
+  "InfoCard": [
+   "src/components/Cards.tsx",
+   "src/components/ui/InfoCard.tsx"
+  ],
+  "InfoTooltip": [
+   "src/components/CustomTooltip.tsx",
+   "src/components/ui/EnhancedTooltip.tsx"
+  ],
+  "KanbanCard": [
+   "src/components/data-display/DataKanban.tsx",
+   "src/components/ui/KanbanBoard.tsx"
+  ],
+  "KanbanColumn": [
+   "src/components/data-display/DataKanban.tsx",
+   "src/components/ui/KanbanBoard.tsx"
+  ],
+  "LoadingOverlay": [
+   "src/components/ui/loading.tsx",
+   "src/components/ui/LoadingOverlay.tsx",
+   "src/components/ui/LoadingStates.tsx"
+  ],
+  "PageHeader": [
+   "src/components/layout/PageHeader.tsx",
+   "src/components/ui/Headers.tsx"
+  ],
+  "PageLoading": [
+   "src/components/ui/loading.tsx",
+   "src/components/ui/LoadingStates.tsx"
+  ],
+  "PasswordStrengthMeter": [
+   "src/components/security/indicators/PasswordStrengthMeter.tsx",
+   "src/components/ui/PasswordStrengthMeter.tsx"
+  ],
+  "QueryProvider": [
+   "src/providers/index.tsx",
+   "src/providers/QueryProvider.tsx"
+  ],
+  "RadioGroup": [
+   "src/components/ui/radio-group.tsx",
+   "src/components/ui/Radio.tsx"
+  ],
+  "RadioGroupItem": [
+   "src/components/ui/radio-group.tsx",
+   "src/components/ui/Radio.tsx"
+  ],
+  "SearchInput": [
+   "src/components/ui/input.tsx",
+   "src/components/ui/SearchInput.tsx"
+  ],
+  "SectionHeader": [
+   "src/components/ui/data-display.tsx",
+   "src/components/ui/Headers.tsx"
+  ],
+  "SecurityScore": [
+   "src/components/security/indicators/SecurityScore.tsx",
+   "src/components/security/SecurityScoreCard.tsx"
+  ],
+  "Skeleton": [
+   "src/components/Skeleton.tsx",
+   "src/components/ui/skeleton.tsx"
+  ],
+  "SkeletonCard": [
+   "src/components/ui/LoadingStates.tsx",
+   "src/components/ui/skeleton.tsx"
+  ],
+  "Sparkline": [
+   "src/components/charts/Sparkline.tsx",
+   "src/components/dashboard/widgets/Sparkline.tsx"
+  ],
+  "Spinner": [
+   "src/components/LoadingState.tsx",
+   "src/components/ui/loading.tsx",
+   "src/components/ui/LoadingStates.tsx",
+   "src/components/ui/Spinner.tsx"
+  ],
+  "StatCard": [
+   "src/components/StatCard.tsx",
+   "src/components/ui/StatCard.tsx"
+  ],
+  "StatsCard": [
+   "src/components/Cards/StatsCard.tsx",
+   "src/components/ui/data-display.tsx"
+  ],
+  "ThemeProvider": [
+   "src/providers/index.tsx",
+   "src/providers/ThemeProvider.tsx"
+  ],
+  "Toaster": [
+   "src/components/ui/sonner.tsx",
+   "src/components/ui/toaster.tsx"
+  ],
+  "TreeNode": [
+   "src/components/data-display/DataTree.tsx",
+   "src/components/ui/TreeView.tsx"
+  ],
+  "UserAvatar": [
+   "src/components/ui/UserDisplay.tsx",
+   "src/components/user/UserAvatar.tsx"
+  ],
+  "VirtualList": [
+   "src/components/data-display/VirtualList.tsx",
+   "src/components/VirtualList.tsx"
+  ]
+ },
+ "componentes": [
+  {
+   "arquivo": "src/App.tsx",
+   "exports": [
+    "App"
+   ],
+   "export_default": "App",
+   "linhas": 19,
+   "dominio": null,
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ActivityChart.tsx",
+   "exports": [
+    "ActivityChart"
+   ],
+   "export_default": null,
+   "linhas": 60,
+   "dominio": "components",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ActivityFeed.tsx",
+   "exports": [
+    "ActivityFeed",
+    "ActivityItem",
+    "ActivityType",
+    "MiniActivityFeed"
+   ],
+   "export_default": "ActivityFeed",
+   "linhas": 461,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ActivityFilters.tsx",
+   "exports": [
+    "ActivityFilters"
+   ],
+   "export_default": null,
+   "linhas": 60,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ActivityHeatmap.tsx",
+   "exports": [
+    "ActivityHeatmap"
+   ],
+   "export_default": null,
+   "linhas": 118,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ActivityStatsCards.tsx",
+   "exports": [
+    "ActivityStatsCards"
+   ],
+   "export_default": null,
+   "linhas": 74,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ActivityTable.tsx",
+   "exports": [
+    "ActivityTable"
+   ],
+   "export_default": null,
+   "linhas": 60,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ActivityTimeline.tsx",
+   "exports": [
+    "ActivityTimeline"
+   ],
+   "export_default": null,
+   "linhas": 60,
+   "dominio": "components",
+   "hooks_locais": [
+    "useActivityTimeline"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/AddApplicationDialog.tsx",
+   "exports": [
+    "AddApplicationDialog"
+   ],
+   "export_default": null,
+   "linhas": 105,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/AddEmployeeDialog.tsx",
+   "exports": [
+    "AddEmployeeDialog"
+   ],
+   "export_default": null,
+   "linhas": 132,
+   "dominio": "components",
+   "hooks_locais": [
+    "useCreateEmployee"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/ChaosCoverageCard.tsx",
+   "exports": [
+    "ChaosCoverageCard"
+   ],
+   "export_default": null,
+   "linhas": 186,
+   "dominio": "components/admin",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "edge_function_logs"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/SlackDlqCard.tsx",
+   "exports": [
+    "SlackDlqCard"
+   ],
+   "export_default": null,
+   "linhas": 258,
+   "dominio": "components/admin",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "slack_notification_dlq"
+   ],
+   "edges": [
+    "slack-dlq-bulk-replay",
+    "slack-dlq-replay"
+   ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/SlackFallbackHistoryCard.tsx",
+   "exports": [
+    "SlackFallbackHistoryCard"
+   ],
+   "export_default": null,
+   "linhas": 104,
+   "dominio": "components/admin",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "edge_function_logs"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/SlackFallbackSettingsCard.tsx",
+   "exports": [
+    "SlackFallbackSettingsCard"
+   ],
+   "export_default": null,
+   "linhas": 290,
+   "dominio": "components/admin",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "alert_notification_settings",
+    "edge_function_logs"
+   ],
+   "edges": [
+    "slack-fallback-test"
+   ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/SlackIntegrationsCard.tsx",
+   "exports": [
+    "SlackIntegrationsCard"
+   ],
+   "export_default": null,
+   "linhas": 479,
+   "dominio": "components/admin",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "companies",
+    "slack_integrations"
+   ],
+   "edges": [
+    "slack-notify"
+   ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/SlackUptimeHistoryCard.tsx",
+   "exports": [
+    "SlackUptimeHistoryCard"
+   ],
+   "export_default": null,
+   "linhas": 209,
+   "dominio": "components/admin",
+   "hooks_locais": [
+    "useChartColors",
+    "useQuery"
+   ],
+   "tabelas": [
+    "slack_delivery_events",
+    "slack_integrations"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/SlackWebhookMttrCard.tsx",
+   "exports": [
+    "SlackWebhookMttrCard"
+   ],
+   "export_default": null,
+   "linhas": 180,
+   "dominio": "components/admin",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery"
+   ],
+   "tabelas": [
+    "slack_webhook_mttr"
+   ],
+   "edges": [
+    "slack-mttr-monitor",
+    "slack-weekly-digest"
+   ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/admin/telemetry/TelemetryCharts.tsx",
+   "exports": [
+    "TelemetryCharts"
+   ],
+   "export_default": null,
+   "linhas": 209,
+   "dominio": "components/admin",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/AlertFilters.tsx",
+   "exports": [
+    "AlertFilters"
+   ],
+   "export_default": null,
+   "linhas": 80,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/AlertItem.tsx",
+   "exports": [
+    "AlertItem"
+   ],
+   "export_default": null,
+   "linhas": 55,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/AlertList.tsx",
+   "exports": [
+    "AlertList"
+   ],
+   "export_default": null,
+   "linhas": 63,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/AlertsChart.tsx",
+   "exports": [
+    "AlertsChart"
+   ],
+   "export_default": null,
+   "linhas": 41,
+   "dominio": "components",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/AlertSettingsPanel.tsx",
+   "exports": [
+    "AlertSettingsPanel"
+   ],
+   "export_default": null,
+   "linhas": 165,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAlertSettings"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ApplicationBreakdown.tsx",
+   "exports": [
+    "ApplicationBreakdown"
+   ],
+   "export_default": null,
+   "linhas": 30,
+   "dominio": "components",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ApplicationCard.tsx",
+   "exports": [
+    "ApplicationCard"
+   ],
+   "export_default": null,
+   "linhas": 53,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ApplicationRuleRow.tsx",
+   "exports": [
+    "ApplicationRuleRow"
+   ],
+   "export_default": null,
+   "linhas": 139,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/AppSidebar.tsx",
+   "exports": [
+    "AppSidebar"
+   ],
+   "export_default": null,
+   "linhas": 346,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAuth",
+    "useTranslation",
+    "useUIStore"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 4,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/auth/PasswordResetApprovalPanel.tsx",
+   "exports": [
+    "PasswordResetApprovalPanel"
+   ],
+   "export_default": null,
+   "linhas": 409,
+   "dominio": "components/auth",
+   "hooks_locais": [
+    "usePasswordResetRequests"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/auth/PasswordResetRequestForm.tsx",
+   "exports": [
+    "PasswordResetRequestForm"
+   ],
+   "export_default": null,
+   "linhas": 157,
+   "dominio": "components/auth",
+   "hooks_locais": [
+    "usePasswordResetRequests"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/auth/PasswordStrengthChecker.tsx",
+   "exports": [
+    "PasswordStrengthChecker"
+   ],
+   "export_default": "PasswordStrengthChecker",
+   "linhas": 281,
+   "dominio": "components/auth",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/BlockedIPsPanel.tsx",
+   "exports": [
+    "BlockedIPsPanel"
+   ],
+   "export_default": null,
+   "linhas": 460,
+   "dominio": "components",
+   "hooks_locais": [
+    "useBlockedIPs"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/Breadcrumbs.tsx",
+   "exports": [
+    "Breadcrumbs"
+   ],
+   "export_default": null,
+   "linhas": 44,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/Cards.tsx",
+   "exports": [
+    "Card",
+    "CardContent",
+    "CardDescription",
+    "CardHeader",
+    "CardTitle",
+    "InfoCard"
+   ],
+   "export_default": null,
+   "linhas": 23,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/Cards/StatsCard.tsx",
+   "exports": [
+    "StatsCard"
+   ],
+   "export_default": null,
+   "linhas": 132,
+   "dominio": "components/Cards",
+   "hooks_locais": [
+    "useCountUp"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/charts/BaseAreaChart.tsx",
+   "exports": [
+    "AreaSeriesConfig",
+    "BaseAreaChart"
+   ],
+   "export_default": null,
+   "linhas": 109,
+   "dominio": "components/charts",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/BaseBarChart.tsx",
+   "exports": [
+    "BarSeriesConfig",
+    "BaseBarChart"
+   ],
+   "export_default": null,
+   "linhas": 117,
+   "dominio": "components/charts",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/BaseDonutChart.tsx",
+   "exports": [
+    "BaseDonutChart"
+   ],
+   "export_default": null,
+   "linhas": 77,
+   "dominio": "components/charts",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/BaseHeatmap.tsx",
+   "exports": [
+    "BaseHeatmap"
+   ],
+   "export_default": null,
+   "linhas": 94,
+   "dominio": "components/charts",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/BaseLineChart.tsx",
+   "exports": [
+    "BaseLineChart",
+    "LineSeriesConfig"
+   ],
+   "export_default": null,
+   "linhas": 95,
+   "dominio": "components/charts",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/BasePieChart.tsx",
+   "exports": [
+    "BasePieChart"
+   ],
+   "export_default": null,
+   "linhas": 76,
+   "dominio": "components/charts",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/BaseRadarChart.tsx",
+   "exports": [
+    "BaseRadarChart",
+    "RadarSeriesConfig"
+   ],
+   "export_default": null,
+   "linhas": 89,
+   "dominio": "components/charts",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/BaseScatterChart.tsx",
+   "exports": [
+    "BaseScatterChart",
+    "ScatterSeriesConfig"
+   ],
+   "export_default": null,
+   "linhas": 97,
+   "dominio": "components/charts",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/ChartEmptyState.tsx",
+   "exports": [
+    "ChartEmptyState"
+   ],
+   "export_default": null,
+   "linhas": 28,
+   "dominio": "components/charts",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 9,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/ChartTooltip.tsx",
+   "exports": [
+    "ChartTooltipContent"
+   ],
+   "export_default": null,
+   "linhas": 44,
+   "dominio": "components/charts",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 10,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/charts/Sparkline.tsx",
+   "exports": [
+    "Sparkline"
+   ],
+   "export_default": null,
+   "linhas": 38,
+   "dominio": "components/charts",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/CommandPalette.tsx",
+   "exports": [
+    "CommandPalette"
+   ],
+   "export_default": null,
+   "linhas": 127,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ConfirmDialog.tsx",
+   "exports": [
+    "ConfirmDialog"
+   ],
+   "export_default": "ConfirmDialog",
+   "linhas": 71,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/CustomTooltip.tsx",
+   "exports": [
+    "CopyableText",
+    "InfoTooltip",
+    "SimpleTooltip",
+    "TruncatedText"
+   ],
+   "export_default": null,
+   "linhas": 198,
+   "dominio": "components",
+   "hooks_locais": [
+    "useClipboard"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/AIInsights.tsx",
+   "exports": [
+    "AIInsights"
+   ],
+   "export_default": null,
+   "linhas": 146,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/AlertSummaryWidget.tsx",
+   "exports": [
+    "AlertSummaryWidget"
+   ],
+   "export_default": "AlertSummaryWidget",
+   "linhas": 45,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/chart/ChartAnnotations.tsx",
+   "exports": [
+    "ChartAnnotation",
+    "ChartAnnotations",
+    "ChartAnnotationsProps"
+   ],
+   "export_default": null,
+   "linhas": 48,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/chart/ChartControls.tsx",
+   "exports": [
+    "ChartControls",
+    "ChartControlsProps"
+   ],
+   "export_default": null,
+   "linhas": 36,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/chart/ChartLegend.tsx",
+   "exports": [
+    "ChartLegend",
+    "ChartLegendItem",
+    "ChartLegendProps"
+   ],
+   "export_default": null,
+   "linhas": 35,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/chart/ChartTypeSwitcher.tsx",
+   "exports": [
+    "ChartType",
+    "ChartTypeSwitcher",
+    "ChartTypeSwitcherProps"
+   ],
+   "export_default": null,
+   "linhas": 32,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/chart/ChartWrapper.tsx",
+   "exports": [
+    "ChartWrapper",
+    "ChartWrapperProps"
+   ],
+   "export_default": null,
+   "linhas": 50,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/chart/PeriodComparison.tsx",
+   "exports": [
+    "PeriodComparison",
+    "PeriodComparisonProps"
+   ],
+   "export_default": null,
+   "linhas": 37,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/DashboardSkeleton.tsx",
+   "exports": [
+    "ActivityItemSkeleton",
+    "AlertCardSkeleton",
+    "ChartCardSkeleton",
+    "DashboardSkeleton",
+    "StatsCardSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 149,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/DashboardStats.tsx",
+   "exports": [
+    "DashboardStats"
+   ],
+   "export_default": null,
+   "linhas": 89,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/DistributionWidget.tsx",
+   "exports": [
+    "DistributionWidget"
+   ],
+   "export_default": "DistributionWidget",
+   "linhas": 52,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/GoalProgressWidget.tsx",
+   "exports": [
+    "GoalProgressWidget"
+   ],
+   "export_default": "GoalProgressWidget",
+   "linhas": 35,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/heatmaps.tsx",
+   "exports": [
+    "ActivityHeatmap",
+    "ActivityHeatmapData",
+    "ActivityHeatmapProps",
+    "CalendarHeatmap",
+    "CalendarHeatmapData",
+    "CalendarHeatmapProps"
+   ],
+   "export_default": null,
+   "linhas": 316,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/HeroMetrics.tsx",
+   "exports": [
+    "HeroMetrics"
+   ],
+   "export_default": "HeroMetrics",
+   "linhas": 284,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/LeaderboardWidget.tsx",
+   "exports": [
+    "LeaderboardWidget"
+   ],
+   "export_default": "LeaderboardWidget",
+   "linhas": 33,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/LiveStatWidget.tsx",
+   "exports": [
+    "LiveStatWidget"
+   ],
+   "export_default": "LiveStatWidget",
+   "linhas": 29,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/NotificationsWidget.tsx",
+   "exports": [
+    "NotificationsWidget"
+   ],
+   "export_default": "NotificationsWidget",
+   "linhas": 49,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/PresentationMode.tsx",
+   "exports": [
+    "PresentationMode"
+   ],
+   "export_default": null,
+   "linhas": 167,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/QuickTasksWidget.tsx",
+   "exports": [
+    "QuickTasksWidget"
+   ],
+   "export_default": "QuickTasksWidget",
+   "linhas": 40,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/RecentActivity.tsx",
+   "exports": [
+    "RecentActivity"
+   ],
+   "export_default": null,
+   "linhas": 25,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/RecentActivityWidget.tsx",
+   "exports": [
+    "RecentActivityWidget"
+   ],
+   "export_default": "RecentActivityWidget",
+   "linhas": 40,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/RecentViolations.tsx",
+   "exports": [
+    "RecentViolations"
+   ],
+   "export_default": null,
+   "linhas": 27,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/SystemStatusWidget.tsx",
+   "exports": [
+    "SystemStatusWidget"
+   ],
+   "export_default": "SystemStatusWidget",
+   "linhas": 40,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/TopApplicationsCard.tsx",
+   "exports": [
+    "TopApplicationsCard"
+   ],
+   "export_default": "TopApplicationsCard",
+   "linhas": 92,
+   "dominio": "components/dashboard",
+   "hooks_locais": [
+    "useTopApplications"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/UpcomingEventsWidget.tsx",
+   "exports": [
+    "UpcomingEventsWidget"
+   ],
+   "export_default": "UpcomingEventsWidget",
+   "linhas": 36,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/dashboard/widgets/ComparisonCard.tsx",
+   "exports": [
+    "ComparisonCard",
+    "ComparisonCardProps"
+   ],
+   "export_default": null,
+   "linhas": 43,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/widgets/KPICard.tsx",
+   "exports": [
+    "KPICard",
+    "KPICardProps"
+   ],
+   "export_default": null,
+   "linhas": 68,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/widgets/Sparkline.tsx",
+   "exports": [
+    "Sparkline",
+    "SparklineProps"
+   ],
+   "export_default": null,
+   "linhas": 47,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/widgets/StatWithSparkline.tsx",
+   "exports": [
+    "StatWithSparkline",
+    "StatWithSparklineProps"
+   ],
+   "export_default": null,
+   "linhas": 37,
+   "dominio": "components/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/dashboard/widgets/WidgetCard.tsx",
+   "exports": [
+    "WidgetCard",
+    "WidgetCardProps"
+   ],
+   "export_default": null,
+   "linhas": 51,
+   "dominio": "components/dashboard",
+   "hooks_locais": [
+    "useReducedMotion"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/DashboardCustomizer.tsx",
+   "exports": [
+    "DashboardCustomizer"
+   ],
+   "export_default": null,
+   "linhas": 153,
+   "dominio": "components",
+   "hooks_locais": [
+    "useDashboardLayout"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/DashboardSkeleton.tsx",
+   "exports": [
+    "ChartSkeleton",
+    "DashboardSkeleton",
+    "DetailPageSkeleton",
+    "ListPageSkeleton",
+    "ListSkeleton",
+    "MetricsSkeleton",
+    "StatCardSkeleton",
+    "TableSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 271,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/data-display/DataCalendar.tsx",
+   "exports": [
+    "CalendarEvent",
+    "DataCalendar",
+    "DataCalendarProps"
+   ],
+   "export_default": "DataCalendar",
+   "linhas": 35,
+   "dominio": "components/data-display",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/data-display/DataCard.tsx",
+   "exports": [
+    "DataCard"
+   ],
+   "export_default": null,
+   "linhas": 45,
+   "dominio": "components/data-display",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/data-display/DataGrid.tsx",
+   "exports": [
+    "DataGrid",
+    "DataGridProps"
+   ],
+   "export_default": "DataGrid",
+   "linhas": 13,
+   "dominio": "components/data-display",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/data-display/DataKanban.tsx",
+   "exports": [
+    "DataKanban",
+    "DataKanbanProps",
+    "KanbanCard",
+    "KanbanColumn"
+   ],
+   "export_default": "DataKanban",
+   "linhas": 26,
+   "dominio": "components/data-display",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/data-display/DataList.tsx",
+   "exports": [
+    "DataList",
+    "DataListProps"
+   ],
+   "export_default": "DataList",
+   "linhas": 11,
+   "dominio": "components/data-display",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/data-display/DataTable.tsx",
+   "exports": [
+    "Column",
+    "DataTable",
+    "DataTableProps"
+   ],
+   "export_default": "DataTable",
+   "linhas": 31,
+   "dominio": "components/data-display",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/data-display/DataTimeline.tsx",
+   "exports": [
+    "DataTimeline",
+    "DataTimelineProps",
+    "TimelineItem"
+   ],
+   "export_default": "DataTimeline",
+   "linhas": 20,
+   "dominio": "components/data-display",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/data-display/DataTree.tsx",
+   "exports": [
+    "DataTree",
+    "DataTreeProps",
+    "TreeNode"
+   ],
+   "export_default": "DataTree",
+   "linhas": 21,
+   "dominio": "components/data-display",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/data-display/VirtualList.tsx",
+   "exports": [
+    "VirtualList",
+    "VirtualListProps"
+   ],
+   "export_default": "VirtualList",
+   "linhas": 23,
+   "dominio": "components/data-display",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/DateRangePicker.tsx",
+   "exports": [
+    "DateRangePicker"
+   ],
+   "export_default": null,
+   "linhas": 89,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/disputes/DisputeSlaAlertsCard.tsx",
+   "exports": [
+    "DisputeSlaAlertsCard"
+   ],
+   "export_default": null,
+   "linhas": 82,
+   "dominio": "components/disputes",
+   "hooks_locais": [
+    "useDisputeSlaAlerts"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/disputes/SlaAlertsBadge.tsx",
+   "exports": [
+    "SlaAlertsBadge"
+   ],
+   "export_default": null,
+   "linhas": 52,
+   "dominio": "components/disputes",
+   "hooks_locais": [
+    "useDisputeSlaAlerts"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/EditApplicationDialog.tsx",
+   "exports": [
+    "EditApplicationDialog"
+   ],
+   "export_default": null,
+   "linhas": 89,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/EmployeeAlertItem.tsx",
+   "exports": [
+    "EmployeeAlertItem"
+   ],
+   "export_default": null,
+   "linhas": 81,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/EmployeeEditDialog.tsx",
+   "exports": [
+    "EmployeeEditDialog"
+   ],
+   "export_default": null,
+   "linhas": 211,
+   "dominio": "components",
+   "hooks_locais": [
+    "useUpdateEmployee"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/EmployeeHeader.tsx",
+   "exports": [
+    "EmployeeHeader"
+   ],
+   "export_default": null,
+   "linhas": 94,
+   "dominio": "components",
+   "hooks_locais": [
+    "useDeleteEmployee"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/EmployeeRow.tsx",
+   "exports": [
+    "EmployeeRow"
+   ],
+   "export_default": null,
+   "linhas": 64,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/employees/DeviceAssignDialog.tsx",
+   "exports": [
+    "DeviceAssignDialog"
+   ],
+   "export_default": null,
+   "linhas": 116,
+   "dominio": "components/employees",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/employees/EmployeeFilters.tsx",
+   "exports": [
+    "EmployeeFilters"
+   ],
+   "export_default": null,
+   "linhas": 99,
+   "dominio": "components/employees",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/employees/EmployeeFormDialog.tsx",
+   "exports": [
+    "EmployeeFormDialog"
+   ],
+   "export_default": null,
+   "linhas": 199,
+   "dominio": "components/employees",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/employees/EmployeeStats.tsx",
+   "exports": [
+    "EmployeeStats",
+    "EmployeeStatsProps"
+   ],
+   "export_default": null,
+   "linhas": 74,
+   "dominio": "components/employees",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/employees/EmployeeStatsCards.tsx",
+   "exports": [
+    "EmployeeStatsCards"
+   ],
+   "export_default": null,
+   "linhas": 82,
+   "dominio": "components/employees",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/employees/EmployeeTable.tsx",
+   "exports": [
+    "EmployeeTable"
+   ],
+   "export_default": null,
+   "linhas": 321,
+   "dominio": "components/employees",
+   "hooks_locais": [
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/EmployeeViolationsRanking.tsx",
+   "exports": [
+    "EmployeeViolationsRanking"
+   ],
+   "export_default": null,
+   "linhas": 153,
+   "dominio": "components",
+   "hooks_locais": [
+    "useSecurityViolations"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/EmptyState.tsx",
+   "exports": [
+    "EmptyState"
+   ],
+   "export_default": "EmptyState",
+   "linhas": 58,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 10,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/EmptyStates.tsx",
+   "exports": [
+    "ComingSoonEmptyState",
+    "CreateFirstEmptyState",
+    "EmptyState",
+    "EmptyStateType",
+    "ErrorEmptyState",
+    "NoDataEmptyState",
+    "NoPermissionEmptyState",
+    "NoResultsEmptyState",
+    "OfflineEmptyState",
+    "TableEmptyState"
+   ],
+   "export_default": "EmptyState",
+   "linhas": 467,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/exports/XlsxExportButton.tsx",
+   "exports": [
+    "XlsxExportButton"
+   ],
+   "export_default": null,
+   "linhas": 46,
+   "dominio": "components/exports",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 5,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/file-transfers/FileTransferCharts.tsx",
+   "exports": [
+    "FileTransferCharts",
+    "FileTransferChartsProps"
+   ],
+   "export_default": null,
+   "linhas": 163,
+   "dominio": "components/file-transfers",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/file-transfers/FileTransferTable.tsx",
+   "exports": [
+    "FileTransferTable",
+    "FileTransferTableProps"
+   ],
+   "export_default": null,
+   "linhas": 189,
+   "dominio": "components/file-transfers",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/Forms.tsx",
+   "exports": [
+    "FormField",
+    "FormSelect"
+   ],
+   "export_default": null,
+   "linhas": 47,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/forms/index.tsx",
+   "exports": [
+    "FormInput",
+    "FormRow",
+    "FormSection",
+    "FormSelect",
+    "FormSwitch",
+    "FormTextarea"
+   ],
+   "export_default": null,
+   "linhas": 258,
+   "dominio": "components/forms",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/GenerateReportDialog.tsx",
+   "exports": [
+    "GenerateReportDialog"
+   ],
+   "export_default": null,
+   "linhas": 138,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/geofence/GeofenceDashboard.tsx",
+   "exports": [
+    "GeofenceDashboard"
+   ],
+   "export_default": null,
+   "linhas": 96,
+   "dominio": "components/geofence",
+   "hooks_locais": [
+    "useGeofenceDashboardStats"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/geofence/PolygonUpload.tsx",
+   "exports": [
+    "PolygonUpload"
+   ],
+   "export_default": null,
+   "linhas": 195,
+   "dominio": "components/geofence",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/Header.tsx",
+   "exports": [
+    "Header"
+   ],
+   "export_default": "Header",
+   "linhas": 319,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAuth",
+    "useHeaderNotifications",
+    "useTheme",
+    "useTranslation",
+    "useUIStore"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 4,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/HeatmapCalendar.tsx",
+   "exports": [
+    "HeatmapCalendar",
+    "MiniHeatmap"
+   ],
+   "export_default": null,
+   "linhas": 413,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/KeyboardShortcutsDialog.tsx",
+   "exports": [
+    "KeyboardShortcutsDialog"
+   ],
+   "export_default": "KeyboardShortcutsDialog",
+   "linhas": 92,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/KeyboardShortcutsHelp.tsx",
+   "exports": [
+    "KeyboardShortcutsHelp"
+   ],
+   "export_default": "KeyboardShortcutsHelp",
+   "linhas": 152,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/KeyboardShortcutsProvider.tsx",
+   "exports": [
+    "KeyboardShortcutsProvider"
+   ],
+   "export_default": null,
+   "linhas": 69,
+   "dominio": "components",
+   "hooks_locais": [
+    "useGlobalShortcuts"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/KeystrokeActivityCard.tsx",
+   "exports": [
+    "KeystrokeActivityCard"
+   ],
+   "export_default": null,
+   "linhas": 115,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [
+    "keystroke_logs"
+   ],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/KPIWidget.tsx",
+   "exports": [
+    "KPIGrid",
+    "KPIWidget"
+   ],
+   "export_default": null,
+   "linhas": 415,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/LanguageSwitcher.tsx",
+   "exports": [
+    "LanguageSwitcher"
+   ],
+   "export_default": "LanguageSwitcher",
+   "linhas": 56,
+   "dominio": "components",
+   "hooks_locais": [
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/layout/BottomNav.tsx",
+   "exports": [
+    "BottomNav"
+   ],
+   "export_default": "BottomNav",
+   "linhas": 78,
+   "dominio": "components/layout",
+   "hooks_locais": [
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/layout/Breadcrumbs.tsx",
+   "exports": [
+    "Breadcrumbs"
+   ],
+   "export_default": null,
+   "linhas": 121,
+   "dominio": "components/layout",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/layout/PageHeader.tsx",
+   "exports": [
+    "PageHeader"
+   ],
+   "export_default": null,
+   "linhas": 41,
+   "dominio": "components/layout",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 42,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/layout/PageLayout.tsx",
+   "exports": [
+    "PageGrid",
+    "PageLayout",
+    "PageSection"
+   ],
+   "export_default": null,
+   "linhas": 196,
+   "dominio": "components/layout",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 12,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/layout/RouteErrorBoundary.tsx",
+   "exports": [
+    "RouteErrorBoundary"
+   ],
+   "export_default": null,
+   "linhas": 97,
+   "dominio": "components/layout",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/LiveViewCard.tsx",
+   "exports": [
+    "LiveViewCard"
+   ],
+   "export_default": null,
+   "linhas": 214,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [
+    "session_recordings"
+   ],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/LoadingState.tsx",
+   "exports": [
+    "LoadingState",
+    "Spinner"
+   ],
+   "export_default": "LoadingState",
+   "linhas": 11,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/LocationMap.tsx",
+   "exports": [
+    "LocationMap"
+   ],
+   "export_default": "LocationMap",
+   "linhas": 54,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/MFAEnroll.tsx",
+   "exports": [
+    "MFAEnroll"
+   ],
+   "export_default": null,
+   "linhas": 328,
+   "dominio": "components",
+   "hooks_locais": [
+    "useMFA"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/MFASettings.tsx",
+   "exports": [
+    "MFASettings"
+   ],
+   "export_default": null,
+   "linhas": 286,
+   "dominio": "components",
+   "hooks_locais": [
+    "useMFA"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/MFAVerify.tsx",
+   "exports": [
+    "MFAVerify"
+   ],
+   "export_default": null,
+   "linhas": 185,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/MobileDevicesMap.tsx",
+   "exports": [
+    "MobileDevicesMap"
+   ],
+   "export_default": "MobileDevicesMap",
+   "linhas": 35,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/MonitoringNotice.tsx",
+   "exports": [
+    "EmployeeMonitoringWidget",
+    "MonitoringNotice"
+   ],
+   "export_default": null,
+   "linhas": 119,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/navigation/BackButton.tsx",
+   "exports": [
+    "BackButton"
+   ],
+   "export_default": null,
+   "linhas": 57,
+   "dominio": "components/navigation",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/NavLink.tsx",
+   "exports": [
+    "NavLink"
+   ],
+   "export_default": null,
+   "linhas": 29,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/NetworkStatusBanner.tsx",
+   "exports": [
+    "NetworkStatusBanner"
+   ],
+   "export_default": null,
+   "linhas": 49,
+   "dominio": "components",
+   "hooks_locais": [
+    "useNetworkStatus"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/NotificationCenter.tsx",
+   "exports": [
+    "Notification",
+    "NotificationCategory",
+    "NotificationCenter",
+    "NotificationPopover",
+    "NotificationType"
+   ],
+   "export_default": "NotificationCenter",
+   "linhas": 456,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/NotificationsDropdown.tsx",
+   "exports": [
+    "NotificationsDropdown"
+   ],
+   "export_default": null,
+   "linhas": 141,
+   "dominio": "components",
+   "hooks_locais": [
+    "useMarkAllNotificationsAsRead",
+    "useMarkNotificationAsRead",
+    "usePendingNotifications",
+    "useUnreadNotificationsCount"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/NotificationsPanel.tsx",
+   "exports": [
+    "NotificationsPanel"
+   ],
+   "export_default": null,
+   "linhas": 179,
+   "dominio": "components",
+   "hooks_locais": [
+    "useSecurityViolations",
+    "useUpdateViolationStatus"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/onboarding/OnboardingChecklist.tsx",
+   "exports": [
+    "OnboardingChecklist"
+   ],
+   "export_default": null,
+   "linhas": 106,
+   "dominio": "components/onboarding",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/PageTransition.tsx",
+   "exports": [
+    "PageTransition"
+   ],
+   "export_default": null,
+   "linhas": 29,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 9,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/PolicyAcknowledgmentDialog.tsx",
+   "exports": [
+    "PolicyAcknowledgmentDialog"
+   ],
+   "export_default": null,
+   "linhas": 360,
+   "dominio": "components",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [
+    "policy_acknowledgments"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/PolicyGate.tsx",
+   "exports": [
+    "PolicyGate"
+   ],
+   "export_default": null,
+   "linhas": 172,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAuth"
+   ],
+   "tabelas": [
+    "policy_acknowledgments",
+    "policy_exemptions"
+   ],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/PolicyToggle.tsx",
+   "exports": [
+    "PolicyToggle"
+   ],
+   "export_default": null,
+   "linhas": 52,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/productivity/AppCategoryManager.tsx",
+   "exports": [
+    "AppCategoryManager"
+   ],
+   "export_default": null,
+   "linhas": 174,
+   "dominio": "components/productivity",
+   "hooks_locais": [
+    "useAppCategories",
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/productivity/ProductivityCategoryDonut.tsx",
+   "exports": [
+    "ProductivityCategoryDonut"
+   ],
+   "export_default": null,
+   "linhas": 93,
+   "dominio": "components/productivity",
+   "hooks_locais": [
+    "useAppCategories",
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/productivity/ProductivityScoreCard.tsx",
+   "exports": [
+    "ProductivityScoreCard"
+   ],
+   "export_default": null,
+   "linhas": 69,
+   "dominio": "components/productivity",
+   "hooks_locais": [
+    "useAppCategories"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/productivity/WeeklyInsightsCard.tsx",
+   "exports": [
+    "WeeklyInsightsCard"
+   ],
+   "export_default": null,
+   "linhas": 118,
+   "dominio": "components/productivity",
+   "hooks_locais": [
+    "useWeeklyProductivityInsights"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/productivity/WeeklyRankingCard.tsx",
+   "exports": [
+    "WeeklyRankingCard"
+   ],
+   "export_default": null,
+   "linhas": 95,
+   "dominio": "components/productivity",
+   "hooks_locais": [
+    "useWeeklyProductivityRanking"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/productivity/WeeklyTrendCard.tsx",
+   "exports": [
+    "WeeklyTrendCard"
+   ],
+   "export_default": null,
+   "linhas": 150,
+   "dominio": "components/productivity",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "productivity_logs"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ProductivityCard.tsx",
+   "exports": [
+    "ProductivityCard"
+   ],
+   "export_default": null,
+   "linhas": 137,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [
+    "productivity_logs"
+   ],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/PWAInstallPrompt.tsx",
+   "exports": [
+    "ConnectionStatus",
+    "PWAInstallPrompt"
+   ],
+   "export_default": null,
+   "linhas": 135,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/RealtimeActivityFilters.tsx",
+   "exports": [
+    "RealtimeActivityFilters",
+    "RealtimeFilters"
+   ],
+   "export_default": null,
+   "linhas": 191,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/RealtimeClicksCard.tsx",
+   "exports": [
+    "RealtimeClicksCard"
+   ],
+   "export_default": null,
+   "linhas": 100,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/RealtimeKeystrokesCard.tsx",
+   "exports": [
+    "RealtimeKeystrokesCard"
+   ],
+   "export_default": null,
+   "linhas": 96,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/RecentAlerts.tsx",
+   "exports": [
+    "RecentAlerts"
+   ],
+   "export_default": null,
+   "linhas": 81,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAlerts"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/recordings/RecordingEventTimeline.tsx",
+   "exports": [
+    "RecordingEventTimeline"
+   ],
+   "export_default": null,
+   "linhas": 117,
+   "dominio": "components/recordings",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/recordings/RecordingPlayer.tsx",
+   "exports": [
+    "RecordingPlayer"
+   ],
+   "export_default": null,
+   "linhas": 256,
+   "dominio": "components/recordings",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/recordings/RecordingSessionList.tsx",
+   "exports": [
+    "RecordingSessionList"
+   ],
+   "export_default": null,
+   "linhas": 114,
+   "dominio": "components/recordings",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/recordings/RecordingStorageCostCard.tsx",
+   "exports": [
+    "RecordingStorageCostCard"
+   ],
+   "export_default": null,
+   "linhas": 143,
+   "dominio": "components/recordings",
+   "hooks_locais": [
+    "useChartColors",
+    "useRecordingStorageCost"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ReportList.tsx",
+   "exports": [
+    "ReportList"
+   ],
+   "export_default": null,
+   "linhas": 65,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/SavedFiltersBar.tsx",
+   "exports": [
+    "SavedFiltersBar"
+   ],
+   "export_default": null,
+   "linhas": 218,
+   "dominio": "components",
+   "hooks_locais": [
+    "useSavedFilters"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ScreenCapturesCard.tsx",
+   "exports": [
+    "ScreenCapturesCard"
+   ],
+   "export_default": null,
+   "linhas": 474,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [
+    "screen_captures",
+    "violation_rules"
+   ],
+   "edges": [
+    "ocr-screenshot"
+   ],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ScreenshotGallery.tsx",
+   "exports": [
+    "ScreenshotGallery"
+   ],
+   "export_default": null,
+   "linhas": 43,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ScrollToTopButton.tsx",
+   "exports": [
+    "ScrollToTopButton"
+   ],
+   "export_default": null,
+   "linhas": 46,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/SearchDrawer.tsx",
+   "exports": [
+    "SearchDrawer",
+    "SearchTrigger"
+   ],
+   "export_default": null,
+   "linhas": 424,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/security/ChangePasswordForm.tsx",
+   "exports": [
+    "ChangePasswordForm"
+   ],
+   "export_default": null,
+   "linhas": 252,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/GeoBlockingManager.tsx",
+   "exports": [
+    "GeoBlockingManager"
+   ],
+   "export_default": null,
+   "linhas": 476,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useGeoBlocking"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/indicators/DeviceTrustIndicator.tsx",
+   "exports": [
+    "DeviceTrustIndicator"
+   ],
+   "export_default": null,
+   "linhas": 43,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/indicators/EncryptionStatus.tsx",
+   "exports": [
+    "EncryptionStatus"
+   ],
+   "export_default": null,
+   "linhas": 48,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/indicators/PasswordStrengthMeter.tsx",
+   "exports": [
+    "PasswordStrengthMeter"
+   ],
+   "export_default": null,
+   "linhas": 86,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/indicators/RiskAssessment.tsx",
+   "exports": [
+    "RiskAssessment"
+   ],
+   "export_default": null,
+   "linhas": 59,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/indicators/SecurityScore.tsx",
+   "exports": [
+    "SecurityScore"
+   ],
+   "export_default": null,
+   "linhas": 69,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/indicators/SensitiveData.tsx",
+   "exports": [
+    "SensitiveData"
+   ],
+   "export_default": null,
+   "linhas": 35,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/indicators/SessionActivityItem.tsx",
+   "exports": [
+    "SessionActivityItem"
+   ],
+   "export_default": null,
+   "linhas": 90,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/indicators/ThreatLevelBadge.tsx",
+   "exports": [
+    "ThreatLevel",
+    "ThreatLevelBadge"
+   ],
+   "export_default": null,
+   "linhas": 79,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/indicators/TwoFactorStatus.tsx",
+   "exports": [
+    "TwoFactorStatus"
+   ],
+   "export_default": null,
+   "linhas": 54,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/IPWhitelistManager.tsx",
+   "exports": [
+    "IPWhitelistManager"
+   ],
+   "export_default": null,
+   "linhas": 582,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useCreateWhitelistIP",
+    "useDeleteWhitelistIP",
+    "useUpdateWhitelistIP",
+    "useWhitelistedIPs"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/KnownDevicesPanel.tsx",
+   "exports": [
+    "KnownDevicesPanel"
+   ],
+   "export_default": null,
+   "linhas": 251,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useAuth",
+    "useDeviceDetection",
+    "useMutation",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/MFAPhoneEnroll.tsx",
+   "exports": [
+    "MFAPhoneEnroll"
+   ],
+   "export_default": null,
+   "linhas": 232,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useMFAPhone"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/MFAStatusTab.tsx",
+   "exports": [
+    "MFAStatusTab"
+   ],
+   "export_default": null,
+   "linhas": 119,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/NotificationSettings.tsx",
+   "exports": [
+    "NotificationSettings"
+   ],
+   "export_default": null,
+   "linhas": 200,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useSecurityNotifications"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/ReauthDialog.tsx",
+   "exports": [
+    "ReauthDialog"
+   ],
+   "export_default": null,
+   "linhas": 204,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useMFA"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/SecurityAlertsTab.tsx",
+   "exports": [
+    "AlertSeverity",
+    "SecurityAlertsTab"
+   ],
+   "export_default": null,
+   "linhas": 159,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/SecurityAuditLog.tsx",
+   "exports": [
+    "AuditCategory",
+    "AuditLogEntry",
+    "AuditSeverity",
+    "SecurityAuditLog"
+   ],
+   "export_default": "SecurityAuditLog",
+   "linhas": 207,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/security/SecurityBadge.tsx",
+   "exports": [
+    "SecurityBadge"
+   ],
+   "export_default": null,
+   "linhas": 90,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useAuth",
+    "useSecurity"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/SecurityEventCard.tsx",
+   "exports": [
+    "SecurityEventCard"
+   ],
+   "export_default": null,
+   "linhas": 109,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/SecurityScoreCard.tsx",
+   "exports": [
+    "SecurityScore",
+    "SecurityScoreCard"
+   ],
+   "export_default": null,
+   "linhas": 191,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/SecurityStats.tsx",
+   "exports": [
+    "SecurityStats"
+   ],
+   "export_default": null,
+   "linhas": 57,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/SessionHistoryTab.tsx",
+   "exports": [
+    "LoginEvent",
+    "LoginEventType",
+    "SessionHistoryTab"
+   ],
+   "export_default": null,
+   "linhas": 142,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/SessionIndicator.tsx",
+   "exports": [
+    "SessionIndicator",
+    "SessionList"
+   ],
+   "export_default": null,
+   "linhas": 420,
+   "dominio": "components/security",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/SessionTimeoutWarning.tsx",
+   "exports": [
+    "SessionTimeoutWarning"
+   ],
+   "export_default": null,
+   "linhas": 98,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useSecurity"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/UnifiedMFAPanel.tsx",
+   "exports": [
+    "UnifiedMFAPanel"
+   ],
+   "export_default": null,
+   "linhas": 242,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useMFA"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/UnifiedSecurityPanel.tsx",
+   "exports": [
+    "UnifiedSecurityPanel"
+   ],
+   "export_default": null,
+   "linhas": 393,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useBlockedIPs",
+    "useDeviceDetection",
+    "useMFA",
+    "useQuery"
+   ],
+   "tabelas": [
+    "monitoring_settings",
+    "security_violations"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/security/WebAuthnSettings.tsx",
+   "exports": [
+    "WebAuthnSettings"
+   ],
+   "export_default": null,
+   "linhas": 384,
+   "dominio": "components/security",
+   "hooks_locais": [
+    "useWebAuthn"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/SecurityMetrics.tsx",
+   "exports": [
+    "SecurityMetrics"
+   ],
+   "export_default": null,
+   "linhas": 70,
+   "dominio": "components",
+   "hooks_locais": [
+    "useSecurityMetrics"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/SessionPlayback.tsx",
+   "exports": [
+    "SessionPlayback"
+   ],
+   "export_default": null,
+   "linhas": 454,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [
+    "session_recordings"
+   ],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/SettingsAuditLog.tsx",
+   "exports": [
+    "SettingsAuditLog"
+   ],
+   "export_default": null,
+   "linhas": 150,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAuditLog"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/SimulateViolationButton.tsx",
+   "exports": [
+    "SimulateViolationButton"
+   ],
+   "export_default": null,
+   "linhas": 90,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [
+    "security_violations"
+   ],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/Skeleton.tsx",
+   "exports": [
+    "Skeleton"
+   ],
+   "export_default": null,
+   "linhas": 28,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 14,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/DevicesSkeleton.tsx",
+   "exports": [
+    "DevicesSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 65,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/EmployeeDetailSkeleton.tsx",
+   "exports": [
+    "EmployeeDetailSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 72,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/EmployeesSkeleton.tsx",
+   "exports": [
+    "EmployeesSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 90,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/GamificationSkeleton.tsx",
+   "exports": [
+    "GamificationSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 61,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/GeofencingSkeleton.tsx",
+   "exports": [
+    "GeofencingSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 61,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/MonitoringSkeleton.tsx",
+   "exports": [
+    "MonitoringSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 78,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/ReportsSkeleton.tsx",
+   "exports": [
+    "ReportsSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 60,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/SettingsSkeleton.tsx",
+   "exports": [
+    "SettingsSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 41,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/SkeletonPageLayout.tsx",
+   "exports": [
+    "SkeletonPageLayout"
+   ],
+   "export_default": null,
+   "linhas": 17,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 10,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/TeamsSkeleton.tsx",
+   "exports": [
+    "TeamsSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 54,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/skeletons/ViolationsSkeleton.tsx",
+   "exports": [
+    "ViolationsSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 70,
+   "dominio": "components/skeletons",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/StatCard.tsx",
+   "exports": [
+    "StatCard",
+    "StatCardsGrid"
+   ],
+   "export_default": null,
+   "linhas": 185,
+   "dominio": "components",
+   "hooks_locais": [
+    "useCountUp"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/SuspenseWrapper.tsx",
+   "exports": [
+    "SuspenseWrapper"
+   ],
+   "export_default": null,
+   "linhas": 33,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/timeline/DailyJourneyTimeline.tsx",
+   "exports": [
+    "DailyJourneyTimeline",
+    "JourneyEvent"
+   ],
+   "export_default": null,
+   "linhas": 116,
+   "dominio": "components/timeline",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/timeline/ScreenshotViewerDialog.tsx",
+   "exports": [
+    "ScreenshotViewerDialog"
+   ],
+   "export_default": null,
+   "linhas": 87,
+   "dominio": "components/timeline",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "screen_captures"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/timeline/TeamComparisonCard.tsx",
+   "exports": [
+    "TeamComparisonCard"
+   ],
+   "export_default": null,
+   "linhas": 86,
+   "dominio": "components/timeline",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/TimelineViewer.tsx",
+   "exports": [
+    "MiniTimeline",
+    "TimelineViewer"
+   ],
+   "export_default": null,
+   "linhas": 348,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/TopEmployeesList.tsx",
+   "exports": [
+    "TopEmployeesList"
+   ],
+   "export_default": null,
+   "linhas": 63,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ueba/RiskScoreBadge.tsx",
+   "exports": [
+    "RiskScoreBadge"
+   ],
+   "export_default": null,
+   "linhas": 50,
+   "dominio": "components/ueba",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/a11y-button.tsx",
+   "exports": [
+    "A11yButton"
+   ],
+   "export_default": null,
+   "linhas": 26,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/a11y-input.tsx",
+   "exports": [
+    "A11yInput"
+   ],
+   "export_default": null,
+   "linhas": 35,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/accordion.tsx",
+   "exports": [
+    "Accordion",
+    "AccordionContent",
+    "AccordionItem",
+    "AccordionTrigger"
+   ],
+   "export_default": null,
+   "linhas": 53,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/ActionButtons.tsx",
+   "exports": [
+    "ActionButtonGroup",
+    "CopyButton",
+    "ExternalLinkButton",
+    "IconButtonWithBadge",
+    "ToggleVisibilityButton"
+   ],
+   "export_default": "(anônimo)",
+   "linhas": 384,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/alert-dialog.tsx",
+   "exports": [
+    "AlertDialog",
+    "AlertDialogAction",
+    "AlertDialogCancel",
+    "AlertDialogContent",
+    "AlertDialogDescription",
+    "AlertDialogFooter",
+    "AlertDialogHeader",
+    "AlertDialogOverlay",
+    "AlertDialogPortal",
+    "AlertDialogTitle",
+    "AlertDialogTrigger"
+   ],
+   "export_default": null,
+   "linhas": 105,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 19,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/alert.tsx",
+   "exports": [
+    "Alert",
+    "AlertDescription",
+    "AlertTitle",
+    "InlineAlert"
+   ],
+   "export_default": null,
+   "linhas": 120,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 12,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/avatar.tsx",
+   "exports": [
+    "Avatar",
+    "AvatarFallback",
+    "AvatarGroup",
+    "AvatarImage",
+    "AvatarProps"
+   ],
+   "export_default": null,
+   "linhas": 177,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 17,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/badge.tsx",
+   "exports": [
+    "Badge",
+    "BadgeProps"
+   ],
+   "export_default": null,
+   "linhas": 83,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 140,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Blockquote.tsx",
+   "exports": [
+    "Blockquote"
+   ],
+   "export_default": null,
+   "linhas": 25,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/BottomSheet.tsx",
+   "exports": [
+    "BottomSheet"
+   ],
+   "export_default": "BottomSheet",
+   "linhas": 55,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/breadcrumb.tsx",
+   "exports": [
+    "Breadcrumb",
+    "BreadcrumbEllipsis",
+    "BreadcrumbItem",
+    "BreadcrumbLink",
+    "BreadcrumbList",
+    "BreadcrumbPage",
+    "BreadcrumbSeparator"
+   ],
+   "export_default": null,
+   "linhas": 91,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/button.tsx",
+   "exports": [
+    "Button",
+    "ButtonProps"
+   ],
+   "export_default": null,
+   "linhas": 89,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 177,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/calendar.tsx",
+   "exports": [
+    "Calendar",
+    "CalendarProps"
+   ],
+   "export_default": null,
+   "linhas": 55,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 5,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/card.tsx",
+   "exports": [
+    "Card",
+    "CardContent",
+    "CardDescription",
+    "CardFooter",
+    "CardHeader",
+    "CardProps",
+    "CardTitle"
+   ],
+   "export_default": null,
+   "linhas": 120,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 183,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Cards.tsx",
+   "exports": [
+    "ActionCard",
+    "DraggableCard",
+    "ExpandableCard",
+    "MetricCard",
+    "SelectionCard"
+   ],
+   "export_default": "(anônimo)",
+   "linhas": 359,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/carousel.tsx",
+   "exports": [
+    "Carousel",
+    "CarouselContent",
+    "CarouselItem",
+    "CarouselNext",
+    "CarouselPrevious"
+   ],
+   "export_default": null,
+   "linhas": 225,
+   "dominio": "components/ui",
+   "hooks_locais": [
+    "useCarousel"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/chart.tsx",
+   "exports": [
+    "ChartConfig",
+    "ChartContainer",
+    "ChartLegend",
+    "ChartLegendContent",
+    "ChartStyle",
+    "ChartTooltip",
+    "ChartTooltipContent"
+   ],
+   "export_default": null,
+   "linhas": 304,
+   "dominio": "components/ui",
+   "hooks_locais": [
+    "useChart"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/checkbox.tsx",
+   "exports": [
+    "Checkbox"
+   ],
+   "export_default": null,
+   "linhas": 27,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Chip.tsx",
+   "exports": [
+    "Chip"
+   ],
+   "export_default": null,
+   "linhas": 38,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Code.tsx",
+   "exports": [
+    "Code"
+   ],
+   "export_default": null,
+   "linhas": 23,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/ColorPicker.tsx",
+   "exports": [
+    "ColorPicker",
+    "ColorPickerProps"
+   ],
+   "export_default": "ColorPicker",
+   "linhas": 86,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Combobox.tsx",
+   "exports": [
+    "Combobox"
+   ],
+   "export_default": null,
+   "linhas": 57,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/command.tsx",
+   "exports": [
+    "Command",
+    "CommandDialog",
+    "CommandEmpty",
+    "CommandGroup",
+    "CommandInput",
+    "CommandItem",
+    "CommandList",
+    "CommandSeparator",
+    "CommandShortcut"
+   ],
+   "export_default": null,
+   "linhas": 133,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 4,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/ConfirmButton.tsx",
+   "exports": [
+    "ConfirmButton"
+   ],
+   "export_default": null,
+   "linhas": 66,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/context-menu.tsx",
+   "exports": [
+    "ContextMenu",
+    "ContextMenuCheckboxItem",
+    "ContextMenuContent",
+    "ContextMenuGroup",
+    "ContextMenuItem",
+    "ContextMenuLabel",
+    "ContextMenuPortal",
+    "ContextMenuRadioGroup",
+    "ContextMenuRadioItem",
+    "ContextMenuSeparator",
+    "ContextMenuShortcut",
+    "ContextMenuSub",
+    "ContextMenuSubContent",
+    "ContextMenuSubTrigger",
+    "ContextMenuTrigger"
+   ],
+   "export_default": null,
+   "linhas": 179,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/data-display.tsx",
+   "exports": [
+    "DataListItem",
+    "EmptyState",
+    "MetricBadge",
+    "SectionHeader",
+    "StatsCard",
+    "StatusIndicator"
+   ],
+   "export_default": null,
+   "linhas": 269,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/DataState.tsx",
+   "exports": [
+    "DataEmpty",
+    "DataError",
+    "DataLoading",
+    "DataState"
+   ],
+   "export_default": null,
+   "linhas": 161,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/DatePicker.tsx",
+   "exports": [
+    "DatePicker"
+   ],
+   "export_default": null,
+   "linhas": 60,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/dialog.tsx",
+   "exports": [
+    "Dialog",
+    "DialogClose",
+    "DialogContent",
+    "DialogContentProps",
+    "DialogDescription",
+    "DialogFooter",
+    "DialogHeader",
+    "DialogOverlay",
+    "DialogPortal",
+    "DialogTitle",
+    "DialogTrigger"
+   ],
+   "export_default": null,
+   "linhas": 145,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 47,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/drawer.tsx",
+   "exports": [
+    "Drawer",
+    "DrawerClose",
+    "DrawerContent",
+    "DrawerDescription",
+    "DrawerFooter",
+    "DrawerHeader",
+    "DrawerOverlay",
+    "DrawerPortal",
+    "DrawerTitle",
+    "DrawerTrigger"
+   ],
+   "export_default": null,
+   "linhas": 88,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/dropdown-menu.tsx",
+   "exports": [
+    "DropdownMenu",
+    "DropdownMenuCheckboxItem",
+    "DropdownMenuContent",
+    "DropdownMenuGroup",
+    "DropdownMenuItem",
+    "DropdownMenuLabel",
+    "DropdownMenuPortal",
+    "DropdownMenuRadioGroup",
+    "DropdownMenuRadioItem",
+    "DropdownMenuSeparator",
+    "DropdownMenuShortcut",
+    "DropdownMenuSub",
+    "DropdownMenuSubContent",
+    "DropdownMenuSubTrigger",
+    "DropdownMenuTrigger"
+   ],
+   "export_default": null,
+   "linhas": 180,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 20,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Dropdown.tsx",
+   "exports": [
+    "Dropdown",
+    "DropdownItem"
+   ],
+   "export_default": null,
+   "linhas": 35,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/EmptyState.tsx",
+   "exports": [
+    "EmptyState"
+   ],
+   "export_default": null,
+   "linhas": 13,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/EnhancedSystemAlert.tsx",
+   "exports": [
+    "EnhancedSystemAlert",
+    "SystemAlertProps"
+   ],
+   "export_default": "EnhancedSystemAlert",
+   "linhas": 47,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/EnhancedTooltip.tsx",
+   "exports": [
+    "EnhancedTooltip",
+    "HelpTooltip",
+    "InfoTooltip",
+    "LabelWithTooltip"
+   ],
+   "export_default": "(anônimo)",
+   "linhas": 180,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/error-boundary.tsx",
+   "exports": [
+    "ErrorBoundary"
+   ],
+   "export_default": null,
+   "linhas": 70,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/ErrorFallback.tsx",
+   "exports": [
+    "ErrorFallback"
+   ],
+   "export_default": "ErrorFallback",
+   "linhas": 6,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Feedback.tsx",
+   "exports": [
+    "EmojiRating",
+    "FeedbackDialog",
+    "FeedbackForm",
+    "LikeButton",
+    "StarRating",
+    "ThumbsRating"
+   ],
+   "export_default": "(anônimo)",
+   "linhas": 335,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/FilterBar.tsx",
+   "exports": [
+    "FilterBar"
+   ],
+   "export_default": null,
+   "linhas": 92,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/form.tsx",
+   "exports": [
+    "Form",
+    "FormControl",
+    "FormDescription",
+    "FormField",
+    "FormItem",
+    "FormLabel",
+    "FormMessage"
+   ],
+   "export_default": null,
+   "linhas": 130,
+   "dominio": "components/ui",
+   "hooks_locais": [
+    "useFormContext",
+    "useFormField"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/FormItem.tsx",
+   "exports": [
+    "FormItem"
+   ],
+   "export_default": null,
+   "linhas": 10,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/FormMessage.tsx",
+   "exports": [
+    "FormMessage"
+   ],
+   "export_default": null,
+   "linhas": 19,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/GridList.tsx",
+   "exports": [
+    "GridList"
+   ],
+   "export_default": null,
+   "linhas": 44,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/Headers.tsx",
+   "exports": [
+    "Breadcrumb",
+    "BreadcrumbItem",
+    "CardHeader",
+    "Divider",
+    "PageHeader",
+    "SectionHeader"
+   ],
+   "export_default": "(anônimo)",
+   "linhas": 268,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/Heading.tsx",
+   "exports": [
+    "Heading"
+   ],
+   "export_default": null,
+   "linhas": 29,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/hover-card.tsx",
+   "exports": [
+    "HoverCard",
+    "HoverCardContent",
+    "HoverCardTrigger"
+   ],
+   "export_default": null,
+   "linhas": 28,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/IconBadge.tsx",
+   "exports": [
+    "IconBadge",
+    "IconBadgeProps"
+   ],
+   "export_default": "IconBadge",
+   "linhas": 67,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/IconButton.tsx",
+   "exports": [
+    "IconButton"
+   ],
+   "export_default": null,
+   "linhas": 45,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/ImageGallery.tsx",
+   "exports": [
+    "ImageGallery"
+   ],
+   "export_default": null,
+   "linhas": 40,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/InfiniteScrollList.tsx",
+   "exports": [
+    "InfiniteScrollList",
+    "InfiniteScrollListProps"
+   ],
+   "export_default": "InfiniteScrollList",
+   "linhas": 63,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/InfoCard.tsx",
+   "exports": [
+    "Callout",
+    "FeatureCard",
+    "InfoCard",
+    "StatHighlight",
+    "TipCard"
+   ],
+   "export_default": "(anônimo)",
+   "linhas": 296,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/input-otp.tsx",
+   "exports": [
+    "InputOTP",
+    "InputOTPGroup",
+    "InputOTPSeparator",
+    "InputOTPSlot"
+   ],
+   "export_default": null,
+   "linhas": 62,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/input.tsx",
+   "exports": [
+    "Input",
+    "InputProps",
+    "SearchInput"
+   ],
+   "export_default": null,
+   "linhas": 184,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 84,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/KanbanBoard.tsx",
+   "exports": [
+    "KanbanBoard",
+    "KanbanBoardProps",
+    "KanbanCard",
+    "KanbanColumn"
+   ],
+   "export_default": "KanbanBoard",
+   "linhas": 116,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/label.tsx",
+   "exports": [
+    "Label"
+   ],
+   "export_default": null,
+   "linhas": 18,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 56,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Lightbox.tsx",
+   "exports": [
+    "Lightbox"
+   ],
+   "export_default": null,
+   "linhas": 70,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/loading.tsx",
+   "exports": [
+    "LoadingDots",
+    "LoadingOverlay",
+    "PageLoading",
+    "PulseLoader",
+    "Spinner"
+   ],
+   "export_default": null,
+   "linhas": 107,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/LoadingOverlay.tsx",
+   "exports": [
+    "LoadingOverlay"
+   ],
+   "export_default": "LoadingOverlay",
+   "linhas": 6,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/LoadingSpinner.tsx",
+   "exports": [
+    "BrandedSplash",
+    "LoadingSpinner"
+   ],
+   "export_default": null,
+   "linhas": 74,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 8,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/LoadingStates.tsx",
+   "exports": [
+    "ButtonLoading",
+    "InlineLoading",
+    "LoadingOverlay",
+    "PageLoading",
+    "PulseDots",
+    "Shimmer",
+    "SkeletonCard",
+    "Spinner"
+   ],
+   "export_default": null,
+   "linhas": 294,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/menubar.tsx",
+   "exports": [
+    "Menubar",
+    "MenubarCheckboxItem",
+    "MenubarContent",
+    "MenubarGroup",
+    "MenubarItem",
+    "MenubarLabel",
+    "MenubarMenu",
+    "MenubarPortal",
+    "MenubarRadioGroup",
+    "MenubarRadioItem",
+    "MenubarSeparator",
+    "MenubarShortcut",
+    "MenubarSub",
+    "MenubarSubContent",
+    "MenubarSubTrigger",
+    "MenubarTrigger"
+   ],
+   "export_default": null,
+   "linhas": 208,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/MetricTrend.tsx",
+   "exports": [
+    "MetricTrend",
+    "MetricTrendProps"
+   ],
+   "export_default": "MetricTrend",
+   "linhas": 120,
+   "dominio": "components/ui",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/micro/AnimatedButton.tsx",
+   "exports": [
+    "AnimatedButton"
+   ],
+   "export_default": null,
+   "linhas": 59,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/micro/AnimatedEffects.tsx",
+   "exports": [
+    "AnimatedCounter",
+    "AnimatedToggle",
+    "Shake"
+   ],
+   "export_default": null,
+   "linhas": 56,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/micro/Ripple.tsx",
+   "exports": [
+    "Ripple"
+   ],
+   "export_default": null,
+   "linhas": 34,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/micro/VisualEffects.tsx",
+   "exports": [
+    "FadeInView",
+    "GlowEffect",
+    "HoverCardEffect",
+    "PulseIndicator",
+    "SkeletonPulse",
+    "TypingIndicator"
+   ],
+   "export_default": null,
+   "linhas": 63,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Modal.tsx",
+   "exports": [
+    "Modal"
+   ],
+   "export_default": null,
+   "linhas": 40,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/navigation-menu.tsx",
+   "exports": [
+    "NavigationMenu",
+    "NavigationMenuContent",
+    "NavigationMenuIndicator",
+    "NavigationMenuItem",
+    "NavigationMenuLink",
+    "NavigationMenuList",
+    "NavigationMenuTrigger",
+    "NavigationMenuViewport"
+   ],
+   "export_default": null,
+   "linhas": 121,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Overlay.tsx",
+   "exports": [
+    "Overlay"
+   ],
+   "export_default": null,
+   "linhas": 27,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/PageContainer.tsx",
+   "exports": [
+    "PageContainer"
+   ],
+   "export_default": null,
+   "linhas": 18,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/pagination.tsx",
+   "exports": [
+    "Pagination",
+    "PaginationContent",
+    "PaginationEllipsis",
+    "PaginationItem",
+    "PaginationLink",
+    "PaginationNext",
+    "PaginationPrevious"
+   ],
+   "export_default": null,
+   "linhas": 82,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/PasswordStrengthMeter.tsx",
+   "exports": [
+    "PasswordRequirement",
+    "PasswordStrength",
+    "PasswordStrengthMeter",
+    "PasswordStrengthMeterProps"
+   ],
+   "export_default": "PasswordStrengthMeter",
+   "linhas": 135,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/popover.tsx",
+   "exports": [
+    "Popover",
+    "PopoverContent",
+    "PopoverTrigger"
+   ],
+   "export_default": null,
+   "linhas": 30,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 15,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/progress.tsx",
+   "exports": [
+    "CircularProgress",
+    "Progress",
+    "StepsProgress"
+   ],
+   "export_default": null,
+   "linhas": 219,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 16,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/progress/CircularProgress.tsx",
+   "exports": [
+    "CircularProgress"
+   ],
+   "export_default": null,
+   "linhas": 42,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/progress/LinearProgress.tsx",
+   "exports": [
+    "LinearProgress"
+   ],
+   "export_default": null,
+   "linhas": 38,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/progress/RadialProgress.tsx",
+   "exports": [
+    "RadialProgress"
+   ],
+   "export_default": null,
+   "linhas": 58,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/progress/SegmentedProgress.tsx",
+   "exports": [
+    "SegmentedProgress"
+   ],
+   "export_default": null,
+   "linhas": 22,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/progress/StepProgress.tsx",
+   "exports": [
+    "Step",
+    "StepProgress"
+   ],
+   "export_default": null,
+   "linhas": 96,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/PullToRefresh.tsx",
+   "exports": [
+    "PullToRefresh",
+    "PullToRefreshProps"
+   ],
+   "export_default": "PullToRefresh",
+   "linhas": 80,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/radio-group.tsx",
+   "exports": [
+    "RadioGroup",
+    "RadioGroupItem"
+   ],
+   "export_default": null,
+   "linhas": 37,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Radio.tsx",
+   "exports": [
+    "RadioGroup",
+    "RadioGroupItem"
+   ],
+   "export_default": null,
+   "linhas": 33,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/resizable.tsx",
+   "exports": [
+    "ResizableHandle",
+    "ResizablePanel",
+    "ResizablePanelGroup"
+   ],
+   "export_default": null,
+   "linhas": 36,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/responsive.tsx",
+   "exports": [
+    "DesktopOnly",
+    "MobileOnly",
+    "Responsive"
+   ],
+   "export_default": null,
+   "linhas": 31,
+   "dominio": "components/ui",
+   "hooks_locais": [
+    "useMediaQuery"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/RichTextEditor.tsx",
+   "exports": [
+    "RichTextEditor",
+    "RichTextEditorProps"
+   ],
+   "export_default": "RichTextEditor",
+   "linhas": 94,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/scroll-area.tsx",
+   "exports": [
+    "ScrollArea",
+    "ScrollBar"
+   ],
+   "export_default": null,
+   "linhas": 39,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 25,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/SearchAutocomplete.tsx",
+   "exports": [
+    "SearchAutocomplete",
+    "SearchAutocompleteOption",
+    "SearchAutocompleteProps"
+   ],
+   "export_default": "SearchAutocomplete",
+   "linhas": 174,
+   "dominio": "components/ui",
+   "hooks_locais": [
+    "useDebounce"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/SearchInput.tsx",
+   "exports": [
+    "SearchInput"
+   ],
+   "export_default": null,
+   "linhas": 50,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/SecurityScoreDashboard.tsx",
+   "exports": [
+    "SecurityMetric",
+    "SecurityScoreDashboard",
+    "SecurityScoreDashboardProps"
+   ],
+   "export_default": "SecurityScoreDashboard",
+   "linhas": 93,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/select.tsx",
+   "exports": [
+    "Select",
+    "SelectContent",
+    "SelectGroup",
+    "SelectItem",
+    "SelectLabel",
+    "SelectScrollDownButton",
+    "SelectScrollUpButton",
+    "SelectSeparator",
+    "SelectTrigger",
+    "SelectValue"
+   ],
+   "export_default": null,
+   "linhas": 144,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 54,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/separator.tsx",
+   "exports": [
+    "Separator"
+   ],
+   "export_default": null,
+   "linhas": 21,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 8,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/sheet.tsx",
+   "exports": [
+    "Sheet",
+    "SheetClose",
+    "SheetContent",
+    "SheetDescription",
+    "SheetFooter",
+    "SheetHeader",
+    "SheetOverlay",
+    "SheetPortal",
+    "SheetTitle",
+    "SheetTrigger"
+   ],
+   "export_default": null,
+   "linhas": 108,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 6,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/sidebar.tsx",
+   "exports": [
+    "Sidebar",
+    "SidebarContent",
+    "SidebarFooter",
+    "SidebarGroup",
+    "SidebarGroupAction",
+    "SidebarGroupContent",
+    "SidebarGroupLabel",
+    "SidebarHeader",
+    "SidebarInput",
+    "SidebarInset",
+    "SidebarMenu",
+    "SidebarMenuAction",
+    "SidebarMenuBadge",
+    "SidebarMenuButton",
+    "SidebarMenuItem",
+    "SidebarMenuSkeleton",
+    "SidebarMenuSub",
+    "SidebarMenuSubButton",
+    "SidebarMenuSubItem",
+    "SidebarProvider",
+    "SidebarRail",
+    "SidebarSeparator",
+    "SidebarTrigger"
+   ],
+   "export_default": null,
+   "linhas": 638,
+   "dominio": "components/ui",
+   "hooks_locais": [
+    "useIsMobile",
+    "useSidebar"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/SimpleDataTable.tsx",
+   "exports": [
+    "SimpleDataTable"
+   ],
+   "export_default": null,
+   "linhas": 80,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/skeleton.tsx",
+   "exports": [
+    "Skeleton",
+    "SkeletonAvatar",
+    "SkeletonCard",
+    "SkeletonText"
+   ],
+   "export_default": null,
+   "linhas": 75,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 67,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/SkipLinks.tsx",
+   "exports": [
+    "SkipLinks"
+   ],
+   "export_default": null,
+   "linhas": 47,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/slider.tsx",
+   "exports": [
+    "Slider"
+   ],
+   "export_default": null,
+   "linhas": 24,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/sonner.tsx",
+   "exports": [
+    "Toaster"
+   ],
+   "export_default": null,
+   "linhas": 28,
+   "dominio": "components/ui",
+   "hooks_locais": [
+    "useTheme"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Spinner.tsx",
+   "exports": [
+    "Spinner"
+   ],
+   "export_default": null,
+   "linhas": 9,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/StaleDataIndicator.tsx",
+   "exports": [
+    "StaleDataIndicator"
+   ],
+   "export_default": null,
+   "linhas": 51,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/StatCard.tsx",
+   "exports": [
+    "StatCard"
+   ],
+   "export_default": null,
+   "linhas": 48,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/StatusBadge.tsx",
+   "exports": [
+    "ConnectionStatus",
+    "DotIndicator",
+    "StatusBadge",
+    "StatusType"
+   ],
+   "export_default": null,
+   "linhas": 243,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/Stepper.tsx",
+   "exports": [
+    "StepContent",
+    "Stepper"
+   ],
+   "export_default": null,
+   "linhas": 63,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/switch.tsx",
+   "exports": [
+    "Switch"
+   ],
+   "export_default": null,
+   "linhas": 28,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 19,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/table.tsx",
+   "exports": [
+    "Table",
+    "TableBody",
+    "TableCaption",
+    "TableCell",
+    "TableFooter",
+    "TableHead",
+    "TableHeader",
+    "TableRow"
+   ],
+   "export_default": null,
+   "linhas": 77,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 21,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/tabs.tsx",
+   "exports": [
+    "Tabs",
+    "TabsContent",
+    "TabsList",
+    "TabsTrigger"
+   ],
+   "export_default": null,
+   "linhas": 54,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 15,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Tag.tsx",
+   "exports": [
+    "Tag"
+   ],
+   "export_default": null,
+   "linhas": 35,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/Text.tsx",
+   "exports": [
+    "Text"
+   ],
+   "export_default": null,
+   "linhas": 21,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/textarea.tsx",
+   "exports": [
+    "Textarea",
+    "TextareaProps"
+   ],
+   "export_default": null,
+   "linhas": 22,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 14,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/TimePicker.tsx",
+   "exports": [
+    "TimePicker"
+   ],
+   "export_default": null,
+   "linhas": 51,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/toast.tsx",
+   "exports": [
+    "Toast",
+    "ToastAction",
+    "ToastClose",
+    "ToastDescription",
+    "ToastIcon",
+    "ToastProvider",
+    "ToastTitle",
+    "ToastViewport"
+   ],
+   "export_default": null,
+   "linhas": 147,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/toaster.tsx",
+   "exports": [
+    "Toaster"
+   ],
+   "export_default": null,
+   "linhas": 25,
+   "dominio": "components/ui",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/toggle-group.tsx",
+   "exports": [
+    "ToggleGroup",
+    "ToggleGroupItem"
+   ],
+   "export_default": null,
+   "linhas": 50,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/toggle.tsx",
+   "exports": [
+    "Toggle"
+   ],
+   "export_default": null,
+   "linhas": 38,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/tooltip.tsx",
+   "exports": [
+    "Tooltip",
+    "TooltipContent",
+    "TooltipProvider",
+    "TooltipTrigger"
+   ],
+   "export_default": null,
+   "linhas": 29,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 23,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/TreeView.tsx",
+   "exports": [
+    "TreeNode",
+    "TreeView",
+    "TreeViewProps"
+   ],
+   "export_default": "TreeView",
+   "linhas": 91,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/TrendIndicators.tsx",
+   "exports": [
+    "ChangeBadge",
+    "ComparisonIndicator",
+    "MetricComparison",
+    "SparklineTrend",
+    "TrendIndicator"
+   ],
+   "export_default": "(anônimo)",
+   "linhas": 248,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/TwoFactorWizard.tsx",
+   "exports": [
+    "TwoFactorWizard",
+    "TwoFactorWizardProps"
+   ],
+   "export_default": "TwoFactorWizard",
+   "linhas": 139,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/UserDisplay.tsx",
+   "exports": [
+    "AvatarGroup",
+    "UserAvatar",
+    "UserCard",
+    "UserListItem"
+   ],
+   "export_default": "(anônimo)",
+   "linhas": 314,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ui/VirtualizedList.tsx",
+   "exports": [
+    "VirtualizedList",
+    "VirtualizedListProps"
+   ],
+   "export_default": "VirtualizedList",
+   "linhas": 92,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ui/VoiceInput.tsx",
+   "exports": [
+    "VoiceInput",
+    "VoiceInputProps"
+   ],
+   "export_default": "VoiceInput",
+   "linhas": 77,
+   "dominio": "components/ui",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/user/UserAvatar.tsx",
+   "exports": [
+    "UserAvatar"
+   ],
+   "export_default": null,
+   "linhas": 19,
+   "dominio": "components/user",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/user/UserMenu.tsx",
+   "exports": [
+    "UserMenu"
+   ],
+   "export_default": null,
+   "linhas": 43,
+   "dominio": "components/user",
+   "hooks_locais": [
+    "useAuth"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ViolationCommentsPanel.tsx",
+   "exports": [
+    "ViolationCommentsPanel"
+   ],
+   "export_default": null,
+   "linhas": 270,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAuth",
+    "useCreateViolationComment",
+    "useDeleteViolationComment",
+    "useUpdateViolationComment",
+    "useViolationComments"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/violations/ViolationDetailDialog.tsx",
+   "exports": [
+    "ViolationDetailDialog"
+   ],
+   "export_default": null,
+   "linhas": 276,
+   "dominio": "components/violations",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "security_violations"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/violations/ViolationDisputeDialog.tsx",
+   "exports": [
+    "ViolationDisputeDialog"
+   ],
+   "export_default": null,
+   "linhas": 269,
+   "dominio": "components/violations",
+   "hooks_locais": [
+    "useAuth",
+    "useCreateDispute",
+    "useResolveDispute",
+    "useViolationDisputes"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/violations/ViolationTimelineDialog.tsx",
+   "exports": [
+    "ViolationTimelineDialog"
+   ],
+   "export_default": null,
+   "linhas": 523,
+   "dominio": "components/violations",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "screen_captures",
+    "security_violations"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ViolationsByEmployeeChart.tsx",
+   "exports": [
+    "ViolationsByEmployeeChart"
+   ],
+   "export_default": null,
+   "linhas": 79,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ViolationsBySeverityChart.tsx",
+   "exports": [
+    "ViolationsBySeverityChart"
+   ],
+   "export_default": null,
+   "linhas": 113,
+   "dominio": "components",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ViolationsByTypeChart.tsx",
+   "exports": [
+    "ViolationsByTypeChart"
+   ],
+   "export_default": null,
+   "linhas": 106,
+   "dominio": "components",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ViolationsDrilldownDialog.tsx",
+   "exports": [
+    "DrilldownDateRange",
+    "ViolationsDrilldownDialog"
+   ],
+   "export_default": null,
+   "linhas": 318,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/ViolationsRealtimeTable.tsx",
+   "exports": [
+    "ViolationsRealtimeTable"
+   ],
+   "export_default": null,
+   "linhas": 243,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/components/ViolationsTrendChart.tsx",
+   "exports": [
+    "ViolationsTrendChart"
+   ],
+   "export_default": null,
+   "linhas": 222,
+   "dominio": "components",
+   "hooks_locais": [
+    "useChartColors"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/VirtualizedTable.tsx",
+   "exports": [
+    "Column",
+    "VirtualizedTable"
+   ],
+   "export_default": "VirtualizedTable",
+   "linhas": 138,
+   "dominio": "components",
+   "hooks_locais": [
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/VirtualList.tsx",
+   "exports": [
+    "VirtualList"
+   ],
+   "export_default": "VirtualList",
+   "linhas": 84,
+   "dominio": "components",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/WelcomeBanner.tsx",
+   "exports": [
+    "WelcomeBanner"
+   ],
+   "export_default": null,
+   "linhas": 72,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAuth",
+    "useDashboardStats"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/guards/index.tsx",
+   "exports": [
+    "AdminGuard",
+    "AuthGuard",
+    "GuestGuard",
+    "SupervisorGuard"
+   ],
+   "export_default": null,
+   "linhas": 70,
+   "dominio": "guards",
+   "hooks_locais": [
+    "useAuth"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/hooks/useColorBlindMode.tsx",
+   "exports": [
+    "ColorBlindMode",
+    "UseColorBlindModeOptions"
+   ],
+   "export_default": "useColorBlindMode",
+   "linhas": 49,
+   "dominio": "hooks",
+   "hooks_locais": [
+    "useColorBlindMode"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/hooks/useSkipLinks.tsx",
+   "exports": [
+    "SkipLink",
+    "UseSkipLinksOptions"
+   ],
+   "export_default": "useSkipLinks",
+   "linhas": 62,
+   "dominio": "hooks",
+   "hooks_locais": [
+    "useSkipLinks"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/layouts/MainLayout.tsx",
+   "exports": [
+    "MainLayout"
+   ],
+   "export_default": null,
+   "linhas": 115,
+   "dominio": "layouts",
+   "hooks_locais": [
+    "useDocumentTitle",
+    "useReducedMotion",
+    "useUIStore"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/error-handling/boundary.tsx",
+   "exports": [
+    "ErrorBoundary"
+   ],
+   "export_default": null,
+   "linhas": 32,
+   "dominio": "lib/error-handling",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/feature-flags/provider.tsx",
+   "exports": [
+    "FeatureFlagsProvider"
+   ],
+   "export_default": null,
+   "linhas": 17,
+   "dominio": "lib/feature-flags",
+   "hooks_locais": [
+    "useFeatureFlags"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/lib/permissions/provider.tsx",
+   "exports": [
+    "PermissionsProvider"
+   ],
+   "export_default": null,
+   "linhas": 20,
+   "dominio": "lib/permissions",
+   "hooks_locais": [
+    "usePermissions"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ActivitiesPage.tsx",
+   "exports": [
+    "ActivitiesPage"
+   ],
+   "export_default": "ActivitiesPage",
+   "linhas": 57,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useActivities",
+    "useActivitySummary",
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ActivityDetailPage.tsx",
+   "exports": [
+    "ActivityDetailPage"
+   ],
+   "export_default": "ActivityDetailPage",
+   "linhas": 80,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useActivity"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ActivityTimelinePage.tsx",
+   "exports": [
+    "ActivityTimelinePage"
+   ],
+   "export_default": "ActivityTimelinePage",
+   "linhas": 94,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useActivities",
+    "useEmployees"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/AcknowledgmentReportPage.tsx",
+   "exports": [
+    "AcknowledgmentReportPage"
+   ],
+   "export_default": "AcknowledgmentReportPage",
+   "linhas": 208,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useAcknowledgmentReport"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/DisputeEscalationAuditPage.tsx",
+   "exports": [
+    "DisputeEscalationAuditPage"
+   ],
+   "export_default": "DisputeEscalationAuditPage",
+   "linhas": 654,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useChartColors",
+    "useQuery",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "edge_function_logs"
+   ],
+   "edges": [
+    "escalate-dispute-sla"
+   ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/DisputeMetricsPage.tsx",
+   "exports": [
+    "DisputeMetricsPage"
+   ],
+   "export_default": "DisputeMetricsPage",
+   "linhas": 262,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useChartColors",
+    "useDisputeMetrics"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/DLPIncidentsPage.tsx",
+   "exports": [
+    "DLPIncidentsPage"
+   ],
+   "export_default": "DLPIncidentsPage",
+   "linhas": 134,
+   "dominio": "pages/admin",
+   "hooks_locais": [],
+   "tabelas": [
+    "dlp_incidents"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/DLPPoliciesPage.tsx",
+   "exports": [
+    "DLPPoliciesPage"
+   ],
+   "export_default": "DLPPoliciesPage",
+   "linhas": 400,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [
+    "dlp_classifiers",
+    "dlp_policies",
+    "user_companies"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/EdgeFunctionDashboard.tsx",
+   "exports": [
+    "EdgeFunctionDashboard"
+   ],
+   "export_default": "EdgeFunctionDashboard",
+   "linhas": 160,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "edge_function_logs"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/FileTransfersPage.tsx",
+   "exports": [
+    "FileTransfersPage"
+   ],
+   "export_default": "FileTransfersPage",
+   "linhas": 197,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useFileTransfers",
+    "useSearchParams"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/IceDiagnosticsPage.tsx",
+   "exports": [
+    "IceDiagnosticsPage"
+   ],
+   "export_default": "IceDiagnosticsPage",
+   "linhas": 282,
+   "dominio": "pages/admin",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/IntegrationsHealthPage.tsx",
+   "exports": [
+    "IntegrationsHealthPage"
+   ],
+   "export_default": "IntegrationsHealthPage",
+   "linhas": 335,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "edge_function_logs",
+    "mobile_devices",
+    "slack_integrations",
+    "slack_notification_dlq",
+    "slack_webhook_mttr",
+    "whatsapp_message_logs",
+    "whatsapp_notification_settings"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/LiveViewReportPage.tsx",
+   "exports": [
+    "LiveViewReportPage"
+   ],
+   "export_default": "LiveViewReportPage",
+   "linhas": 252,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useLiveViewReport",
+    "useQuery"
+   ],
+   "tabelas": [
+    "agent_keys"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/SessionRecordingsPage.tsx",
+   "exports": [
+    "SessionRecordingsPage"
+   ],
+   "export_default": "SessionRecordingsPage",
+   "linhas": 172,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useRecordingChunks",
+    "useRecordingSessions",
+    "useRecordingTimeline"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/TelemetryComponents.tsx",
+   "exports": [
+    "TelemetryStatsCards",
+    "TopOffendersCard"
+   ],
+   "export_default": null,
+   "linhas": 93,
+   "dominio": "pages/admin",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/TelemetryTable.tsx",
+   "exports": [
+    "TelemetryTable"
+   ],
+   "export_default": null,
+   "linhas": 85,
+   "dominio": "pages/admin",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/ueba/EmployeeRiskProfilePage.tsx",
+   "exports": [
+    "EmployeeRiskProfilePage"
+   ],
+   "export_default": "EmployeeRiskProfilePage",
+   "linhas": 179,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useBehavioralBaseline",
+    "useChartColors",
+    "useMitreTechniques",
+    "useRiskScores"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/ueba/UEBADashboardPage.tsx",
+   "exports": [
+    "UEBADashboardPage"
+   ],
+   "export_default": "UEBADashboardPage",
+   "linhas": 168,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useChartColors",
+    "useTopRiskyUsers"
+   ],
+   "tabelas": [],
+   "edges": [
+    "risk-score-calculator"
+   ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/ueba/UEBASettingsPage.tsx",
+   "exports": [
+    "UEBASettingsPage"
+   ],
+   "export_default": "UEBASettingsPage",
+   "linhas": 156,
+   "dominio": "pages/admin",
+   "hooks_locais": [],
+   "tabelas": [
+    "risk_score_factors"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AdminTelemetriaPage.tsx",
+   "exports": [
+    "AdminTelemetriaPage"
+   ],
+   "export_default": "AdminTelemetriaPage",
+   "linhas": 200,
+   "dominio": "pages",
+   "hooks_locais": [],
+   "tabelas": [
+    "query_telemetry"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AgentOnboardingPage.tsx",
+   "exports": [
+    "AgentOnboardingPage"
+   ],
+   "export_default": "AgentOnboardingPage",
+   "linhas": 445,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "agent_keys"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AIAnalysisPage.tsx",
+   "exports": [
+    "AIAnalysisPage"
+   ],
+   "export_default": "AIAnalysisPage",
+   "linhas": 142,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useAIAnalysisPage"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AlertDetailPage.tsx",
+   "exports": [
+    "AlertDetailPage"
+   ],
+   "export_default": "AlertDetailPage",
+   "linhas": 78,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useAcknowledgeAlert",
+    "useAlert"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AlertRuleCreatePage.tsx",
+   "exports": [
+    "AlertRuleCreatePage"
+   ],
+   "export_default": "AlertRuleCreatePage",
+   "linhas": 97,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useMutation",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "application_rules"
+   ],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AlertRulesPage.tsx",
+   "exports": [
+    "AlertRulesPage"
+   ],
+   "export_default": "AlertRulesPage",
+   "linhas": 95,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useAlertRules",
+    "useMutation",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "application_rules"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AlertsPage.tsx",
+   "exports": [
+    "AlertsPage"
+   ],
+   "export_default": "AlertsPage",
+   "linhas": 132,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useAcknowledgeAlert",
+    "useAcknowledgeAllAlerts",
+    "useAlerts",
+    "useChartColors",
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AnalyticsApplicationsPage.tsx",
+   "exports": [
+    "AnalyticsApplicationsPage"
+   ],
+   "export_default": "AnalyticsApplicationsPage",
+   "linhas": 100,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useApplicationAnalytics"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AnalyticsPage.tsx",
+   "exports": [
+    "AnalyticsPage"
+   ],
+   "export_default": "AnalyticsPage",
+   "linhas": 41,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useAnalytics"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AnalyticsProductivityPage.tsx",
+   "exports": [
+    "AnalyticsProductivityPage"
+   ],
+   "export_default": "AnalyticsProductivityPage",
+   "linhas": 303,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useCompanyAppUsage",
+    "useEmployees",
+    "useProductivityAnalytics",
+    "useWeeklyProductivityRanking"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AnalyticsTrendsPage.tsx",
+   "exports": [
+    "AnalyticsTrendsPage"
+   ],
+   "export_default": "AnalyticsTrendsPage",
+   "linhas": 102,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useTrendsAnalytics"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ApiDocsPage.tsx",
+   "exports": [
+    "ApiDocsPage"
+   ],
+   "export_default": "ApiDocsPage",
+   "linhas": 123,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ApiKeysPage.tsx",
+   "exports": [
+    "ApiKeysPage"
+   ],
+   "export_default": "ApiKeysPage",
+   "linhas": 55,
+   "dominio": "pages",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AttendancePage.tsx",
+   "exports": [
+    "AttendancePage"
+   ],
+   "export_default": "AttendancePage",
+   "linhas": 327,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useQuery"
+   ],
+   "tabelas": [
+    "attendance_records",
+    "time_entries"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/AuditLogPage.tsx",
+   "exports": [
+    "AuditLogPage"
+   ],
+   "export_default": "AuditLogPage",
+   "linhas": 181,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "login_security_events",
+    "settings_audit_log"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/Auth.tsx",
+   "exports": [
+    "Auth"
+   ],
+   "export_default": "Auth",
+   "linhas": 488,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useAuth",
+    "useAuthPage",
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/BillingSettingsPage.tsx",
+   "exports": [
+    "BillingSettingsPage"
+   ],
+   "export_default": "BillingSettingsPage",
+   "linhas": 220,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/CalendarPage.tsx",
+   "exports": [
+    "CalendarPage"
+   ],
+   "export_default": "CalendarPage",
+   "linhas": 50,
+   "dominio": "pages",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/CompliancePage.tsx",
+   "exports": [
+    "CompliancePage"
+   ],
+   "export_default": "CompliancePage",
+   "linhas": 128,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useCompliance"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/CustomReportsPage.tsx",
+   "exports": [
+    "CustomReportsPage"
+   ],
+   "export_default": "CustomReportsPage",
+   "linhas": 78,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "ai_analysis_reports"
+   ],
+   "edges": [
+    "generate-report"
+   ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/dashboard/DashboardCards.tsx",
+   "exports": [
+    "DashboardActivityCard",
+    "DashboardAlertsCard"
+   ],
+   "export_default": null,
+   "linhas": 131,
+   "dominio": "pages/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/dashboard/DashboardCharts.tsx",
+   "exports": [
+    "DashboardChartsRow",
+    "DepartmentPieChart"
+   ],
+   "export_default": null,
+   "linhas": 113,
+   "dominio": "pages/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/dashboard/DashboardSkeleton.tsx",
+   "exports": [
+    "DashboardSkeleton"
+   ],
+   "export_default": null,
+   "linhas": 52,
+   "dominio": "pages/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/dashboard/DashboardTooltip.tsx",
+   "exports": [
+    "DashboardTooltip"
+   ],
+   "export_default": null,
+   "linhas": 26,
+   "dominio": "pages/dashboard",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/DashboardPage.tsx",
+   "exports": [
+    "DashboardPage"
+   ],
+   "export_default": "DashboardPage",
+   "linhas": 212,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useDashboardStats",
+    "useRecentActivity",
+    "useRecentAlerts",
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/DataExportPage.tsx",
+   "exports": [
+    "DataExportPage"
+   ],
+   "export_default": "DataExportPage",
+   "linhas": 77,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [
+    "export-data"
+   ],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/DepartmentDetailPage.tsx",
+   "exports": [
+    "DepartmentDetailPage"
+   ],
+   "export_default": "DepartmentDetailPage",
+   "linhas": 30,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useDepartment"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/DepartmentsPage.tsx",
+   "exports": [
+    "DepartmentsPage"
+   ],
+   "export_default": "DepartmentsPage",
+   "linhas": 46,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useDepartments"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/dev/ChartSimulationPage.tsx",
+   "exports": [
+    "ChartSimulationPage"
+   ],
+   "export_default": "ChartSimulationPage",
+   "linhas": 128,
+   "dominio": "pages/dev",
+   "hooks_locais": [
+    "useSearchParams",
+    "useTheme"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/dev/LiveViewSimulatorPage.tsx",
+   "exports": [
+    "LiveViewSimulatorPage"
+   ],
+   "export_default": "LiveViewSimulatorPage",
+   "linhas": 245,
+   "dominio": "pages/dev",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/dev/VerifyReportSimulatorPage.tsx",
+   "exports": [
+    "VerifyReportSimulatorPage"
+   ],
+   "export_default": "VerifyReportSimulatorPage",
+   "linhas": 410,
+   "dominio": "pages/dev",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/DevicesPage.tsx",
+   "exports": [
+    "DevicesPage"
+   ],
+   "export_default": "DevicesPage",
+   "linhas": 276,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useDevicesPage"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/EmployeeCreatePage.tsx",
+   "exports": [
+    "EmployeeCreatePage"
+   ],
+   "export_default": "EmployeeCreatePage",
+   "linhas": 201,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useCreateEmployee",
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/EmployeeDetailPage.tsx",
+   "exports": [
+    "EmployeeDetailPage"
+   ],
+   "export_default": "EmployeeDetailPage",
+   "linhas": 188,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useDailyJourney",
+    "useEmployee",
+    "useEmployeeStats",
+    "useTeamProductivityAverage"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/EmployeesPage.tsx",
+   "exports": [
+    "EmployeesPage"
+   ],
+   "export_default": "EmployeesPage",
+   "linhas": 181,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useEmployeesPage",
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ForgotPasswordPage.tsx",
+   "exports": [
+    "ForgotPasswordPage"
+   ],
+   "export_default": "ForgotPasswordPage",
+   "linhas": 67,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/GamificationPage.tsx",
+   "exports": [
+    "GamificationPage"
+   ],
+   "export_default": "GamificationPage",
+   "linhas": 171,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useGamificationPage"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/GeofenceViolationsPage.tsx",
+   "exports": [
+    "GeofenceViolationsPage"
+   ],
+   "export_default": "GeofenceViolationsPage",
+   "linhas": 231,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useGeofenceViolations",
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/GeofencingPage.tsx",
+   "exports": [
+    "GeofencingPage"
+   ],
+   "export_default": "GeofencingPage",
+   "linhas": 254,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useGeofencingPage",
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/HoursTrackingPage.tsx",
+   "exports": [
+    "HoursTrackingPage"
+   ],
+   "export_default": "HoursTrackingPage",
+   "linhas": 190,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "time_entries"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/IntegrationSettingsPage.tsx",
+   "exports": [
+    "IntegrationSettingsPage"
+   ],
+   "export_default": "IntegrationSettingsPage",
+   "linhas": 60,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useIntegrations"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/IntegrationsPage.tsx",
+   "exports": [
+    "IntegrationsPage"
+   ],
+   "export_default": "IntegrationsPage",
+   "linhas": 70,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useIntegrations"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/InternetAccessPage.tsx",
+   "exports": [
+    "InternetAccessPage"
+   ],
+   "export_default": "InternetAccessPage",
+   "linhas": 168,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useInternetAccessPage"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/LiveViewPage.tsx",
+   "exports": [
+    "LiveViewPage"
+   ],
+   "export_default": "LiveViewPage",
+   "linhas": 167,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useLiveViewSession"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/MonitoringPage.tsx",
+   "exports": [
+    "MonitoringPage"
+   ],
+   "export_default": "MonitoringPage",
+   "linhas": 296,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useMonitoringPage"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/NotFoundPage.tsx",
+   "exports": [
+    "NotFoundPage"
+   ],
+   "export_default": "NotFoundPage",
+   "linhas": 70,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/NotificationSettingsPage.tsx",
+   "exports": [
+    "NotificationSettingsPage"
+   ],
+   "export_default": "NotificationSettingsPage",
+   "linhas": 59,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "alert_notification_settings"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/OrgChartPage.tsx",
+   "exports": [
+    "OrgChartPage"
+   ],
+   "export_default": "OrgChartPage",
+   "linhas": 252,
+   "dominio": "pages",
+   "hooks_locais": [],
+   "tabelas": [
+    "companies",
+    "employees",
+    "teams"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ProfileSettingsPage.tsx",
+   "exports": [
+    "ProfileSettingsPage"
+   ],
+   "export_default": "ProfileSettingsPage",
+   "linhas": 47,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useAuth",
+    "useToast"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ProjectsPage.tsx",
+   "exports": [
+    "ProjectsPage"
+   ],
+   "export_default": "ProjectsPage",
+   "linhas": 315,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "employees",
+    "projects",
+    "tasks",
+    "time_entries"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ReportDetailPage.tsx",
+   "exports": [
+    "ReportDetailPage"
+   ],
+   "export_default": "ReportDetailPage",
+   "linhas": 92,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useReport"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ReportsPage.tsx",
+   "exports": [
+    "ReportsPage"
+   ],
+   "export_default": "ReportsPage",
+   "linhas": 142,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useReportTemplates",
+    "useReports"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/RolesPage.tsx",
+   "exports": [
+    "RolesPage"
+   ],
+   "export_default": "RolesPage",
+   "linhas": 47,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useRoles"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ScheduledReportsPage.tsx",
+   "exports": [
+    "ScheduledReportsPage"
+   ],
+   "export_default": "ScheduledReportsPage",
+   "linhas": 46,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "ai_analysis_reports"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ScreenshotDetailPage.tsx",
+   "exports": [
+    "ScreenshotDetailPage"
+   ],
+   "export_default": "ScreenshotDetailPage",
+   "linhas": 38,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useScreenshot"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ScreenshotsPage.tsx",
+   "exports": [
+    "ScreenshotsPage"
+   ],
+   "export_default": "ScreenshotsPage",
+   "linhas": 67,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useEmployees",
+    "useScreenshots"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/SecuritySettingsPage.tsx",
+   "exports": [
+    "SecuritySettingsPage"
+   ],
+   "export_default": "SecuritySettingsPage",
+   "linhas": 67,
+   "dominio": "pages",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/Settings.tsx",
+   "exports": [
+    "Settings"
+   ],
+   "export_default": "Settings",
+   "linhas": 273,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useApplicationRules",
+    "usePolicies",
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/TeamDetailPage.tsx",
+   "exports": [
+    "TeamDetailPage"
+   ],
+   "export_default": "TeamDetailPage",
+   "linhas": 318,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useAddTeamMember",
+    "useAvailableEmployees",
+    "useRemoveTeamMember",
+    "useTeam",
+    "useTeamMembers"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/TeamsPage.tsx",
+   "exports": [
+    "TeamsPage"
+   ],
+   "export_default": "TeamsPage",
+   "linhas": 271,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useCreateTeam",
+    "useDeleteTeam",
+    "useTeams",
+    "useTranslation"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/TimeClockPage.tsx",
+   "exports": [
+    "TimeClockPage"
+   ],
+   "export_default": "TimeClockPage",
+   "linhas": 424,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "employee_status",
+    "employees",
+    "time_entries"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/TimesheetsPage.tsx",
+   "exports": [
+    "TimesheetsPage"
+   ],
+   "export_default": "TimesheetsPage",
+   "linhas": 233,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "employees",
+    "time_entries",
+    "timesheets"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/UsersPage.tsx",
+   "exports": [
+    "UsersPage"
+   ],
+   "export_default": "UsersPage",
+   "linhas": 60,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useUsers"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/VerifyReportPage.tsx",
+   "exports": [
+    "VerifyReportPage"
+   ],
+   "export_default": "VerifyReportPage",
+   "linhas": 180,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useSearchParams"
+   ],
+   "tabelas": [
+    "report_signatures"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ViolationDetailPage.tsx",
+   "exports": [
+    "ViolationDetailPage"
+   ],
+   "export_default": "ViolationDetailPage",
+   "linhas": 54,
+   "dominio": "pages",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ViolationsPage.tsx",
+   "exports": [
+    "ViolationsPage"
+   ],
+   "export_default": "ViolationsPage",
+   "linhas": 381,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useChartColors",
+    "useViolationsPage",
+    "useViolationsRealtime"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/WebhooksPage.tsx",
+   "exports": [
+    "WebhooksPage"
+   ],
+   "export_default": "WebhooksPage",
+   "linhas": 74,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "monitoring_settings"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/WhatsAppIntegrationPage.tsx",
+   "exports": [
+    "WhatsAppIntegrationPage"
+   ],
+   "export_default": "WhatsAppIntegrationPage",
+   "linhas": 61,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useQuery"
+   ],
+   "tabelas": [
+    "message_templates"
+   ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/WorkSchedulesPage.tsx",
+   "exports": [
+    "WorkSchedulesPage"
+   ],
+   "export_default": "WorkSchedulesPage",
+   "linhas": 186,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useWorkSchedulesPage"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/providers/AnalyticsProvider.tsx",
+   "exports": [
+    "AnalyticsProvider"
+   ],
+   "export_default": null,
+   "linhas": 19,
+   "dominio": "providers",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/providers/AppProviders.tsx",
+   "exports": [
+    "AppProviders"
+   ],
+   "export_default": null,
+   "linhas": 29,
+   "dominio": "providers",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 2,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/providers/AuthDependentProviders.tsx",
+   "exports": [
+    "AuthDependentProviders"
+   ],
+   "export_default": null,
+   "linhas": 28,
+   "dominio": "providers",
+   "hooks_locais": [
+    "useAuth"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/providers/AuthProvider.tsx",
+   "exports": [
+    "AuthContextType",
+    "AuthProvider",
+    "User"
+   ],
+   "export_default": null,
+   "linhas": 262,
+   "dominio": "providers",
+   "hooks_locais": [],
+   "tabelas": [
+    "user_roles"
+   ],
+   "edges": [],
+   "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/providers/FeatureFlagsProvider.tsx",
+   "exports": [
+    "FeatureFlagsProvider"
+   ],
+   "export_default": null,
+   "linhas": 6,
+   "dominio": "providers",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/providers/index.tsx",
+   "exports": [
+    "AnalyticsProvider",
+    "AppProviders",
+    "FeatureFlagsProvider",
+    "Providers",
+    "QueryProvider",
+    "ThemeProvider"
+   ],
+   "export_default": null,
+   "linhas": 28,
+   "dominio": "providers",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 0,
+   "orfao": true
+  },
+  {
+   "arquivo": "src/providers/QueryProvider.tsx",
+   "exports": [
+    "QueryProvider"
+   ],
+   "export_default": null,
+   "linhas": 7,
+   "dominio": "providers",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/providers/ThemeProvider.tsx",
+   "exports": [
+    "ThemeProvider"
+   ],
+   "export_default": null,
+   "linhas": 33,
+   "dominio": "providers",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 5,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/routes/AppRoutes.tsx",
+   "exports": [
+    "AppRoutes"
+   ],
+   "export_default": null,
+   "linhas": 220,
+   "dominio": "routes",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  }
+ ]
+}

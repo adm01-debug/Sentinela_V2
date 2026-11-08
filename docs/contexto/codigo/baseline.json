@@ -1,0 +1,934 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "git": {
+  "commit": "d4fdbb3e4978b42026367895625699653bdcdfdf",
+  "branch": "main",
+  "data_commit": "2026-11-08T19:43:57-03:00",
+  "remote": "https://github.com/adm01-debug/Sentinela_V2",
+  "ultimos_commits": [
+   {
+    "sha": "d4fdbb3e4",
+    "data": "2026-11-08",
+    "assunto": "chore(scripts): porta do Zapp Web V2 o gerador de contexto e o inventário de estado real (Fase 1) (#92)"
+   },
+   {
+    "sha": "77dac939f",
+    "data": "2026-11-08",
+    "assunto": "chore(security): remove migrate-helper e scripts com credenciais vazadas (#91)"
+   },
+   {
+    "sha": "dcf16f81d",
+    "data": "2026-11-08",
+    "assunto": "fix(ci): destrava npm ci, lint, build e testes de contrato Deno (#90)"
+   },
+   {
+    "sha": "c4770bcbd",
+    "data": "2026-11-08",
+    "assunto": "chore(agentes): replica no Sentinela V2 o padrão de instruções do Zapp Web V2 (#89)"
+   },
+   {
+    "sha": "239f18a59",
+    "data": "2026-10-03",
+    "assunto": "Merge pull request #71 from adm01-debug/dependabot/npm_and_yarn/lint-ce6edfe642"
+   },
+   {
+    "sha": "c2c1585f4",
+    "data": "2026-10-03",
+    "assunto": "build(deps-dev): bump the lint group across 1 directory with 7 updates"
+   },
+   {
+    "sha": "9ee8d7e25",
+    "data": "2026-10-03",
+    "assunto": "Merge pull request #69 from adm01-debug/dependabot/npm_and_yarn/lint-staged-17.5.1"
+   },
+   {
+    "sha": "7ff411692",
+    "data": "2026-10-03",
+    "assunto": "Merge pull request #68 from adm01-debug/dependabot/npm_and_yarn/hookform/resolvers-5.9.1"
+   },
+   {
+    "sha": "f3bbfc7ae",
+    "data": "2026-10-03",
+    "assunto": "Merge pull request #66 from adm01-debug/dependabot/npm_and_yarn/rollup-plugin-visualizer-7.1.1"
+   },
+   {
+    "sha": "3f01a81b7",
+    "data": "2026-10-03",
+    "assunto": "Merge pull request #65 from adm01-debug/dependabot/npm_and_yarn/zustand-5.0.15"
+   },
+   {
+    "sha": "16d43d25e",
+    "data": "2026-10-03",
+    "assunto": "Merge pull request #63 from adm01-debug/dependabot/npm_and_yarn/react-62d074ab17"
+   },
+   {
+    "sha": "5a2bab85e",
+    "data": "2026-10-03",
+    "assunto": "build(deps): bump the react group across 1 directory with 4 updates"
+   },
+   {
+    "sha": "c5f7b2127",
+    "data": "2026-10-03",
+    "assunto": "Merge pull request #64 from adm01-debug/dependabot/npm_and_yarn/types-febceb97ad"
+   },
+   {
+    "sha": "9eee1a5f8",
+    "data": "2026-10-03",
+    "assunto": "build(deps): bump @hookform/resolvers from 3.10.0 to 5.9.1"
+   },
+   {
+    "sha": "185ecebb3",
+    "data": "2026-10-03",
+    "assunto": "build(deps-dev): bump lint-staged from 15.5.2 to 17.6.0"
+   },
+   {
+    "sha": "af094c8b1",
+    "data": "2026-10-03",
+    "assunto": "build(deps-dev): bump rollup-plugin-visualizer from 5.14.0 to 7.1.1"
+   },
+   {
+    "sha": "30ab4f565",
+    "data": "2026-10-03",
+    "assunto": "build(deps-dev): bump @types/node"
+   },
+   {
+    "sha": "71a43e1c3",
+    "data": "2026-10-03",
+    "assunto": "build(deps): bump zustand from 4.5.7 to 5.0.15"
+   },
+   {
+    "sha": "badd9176a",
+    "data": "2026-10-03",
+    "assunto": "Merge pull request #62 from adm01-debug/dependabot/npm_and_yarn/test-bb73365c14"
+   },
+   {
+    "sha": "a8a90f3c8",
+    "data": "2026-09-21",
+    "assunto": "build(deps-dev): bump the test group with 4 updates"
+   },
+   {
+    "sha": "c2def96c6",
+    "data": "2026-09-15",
+    "assunto": "docs: redigir tokens PAT expostos no prompt de continuação"
+   },
+   {
+    "sha": "4b6d8fc5a",
+    "data": "2026-09-15",
+    "assunto": "security(pwa): hardening do service worker"
+   },
+   {
+    "sha": "6def42d5b",
+    "data": "2026-09-15",
+    "assunto": "security(k8s): adicionar securityContext no container web"
+   },
+   {
+    "sha": "f1c1f94bb",
+    "data": "2026-09-15",
+    "assunto": "fix(gamification): remover colunas inexistentes de employee_points"
+   },
+   {
+    "sha": "b4fb4bad7",
+    "data": "2026-09-15",
+    "assunto": "Merge chore/merge-all-prs: PRs #3 #11 #43 #44 #48 #52 #53 #54 #57(parcial) #60"
+   }
+  ],
+  "arquivos_mudados_7d": 66,
+  "pastas_mais_mudadas_30d": [
+   {
+    "pasta": ".agents/skills/sentinela-v2",
+    "mudancas": 2
+   },
+   {
+    "pasta": ".github/workflows/ci.yml",
+    "mudancas": 2
+   },
+   {
+    "pasta": ".claude/skills/sentinela-v2",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".codex/AGENTS.md",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".codex/agents/docs-researcher.toml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".codex/agents/explorer.toml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".codex/agents/reviewer.toml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".codex/config.toml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".github/workflows/cd.yml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".github/workflows/contexto.yml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".github/workflows/deploy.yml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".github/workflows/inventario-estado-semanal.yml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".github/workflows/preview.yml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".github/workflows/release.yml",
+    "mudancas": 1
+   },
+   {
+    "pasta": ".hermes.md",
+    "mudancas": 1
+   }
+  ],
+  "arquivos_mais_mudados_90d": [
+   {
+    "arquivo": "package-lock.json",
+    "mudancas": 26
+   },
+   {
+    "arquivo": "package.json",
+    "mudancas": 26
+   },
+   {
+    "arquivo": "ESTADO_ATUAL.md",
+    "mudancas": 5
+   },
+   {
+    "arquivo": ".github/workflows/ci.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "supabase/config.toml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "AGENTS.md",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "scripts/check-bundle-size.sh",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "src/pages/admin/IntegrationsHealthPage.tsx",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "vite.config.ts",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".claude/skills/sentinela-v2/SKILL.md",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".github/PULL_REQUEST_TEMPLATE.md",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".github/dependabot.yml",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".github/workflows/cd.yml",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".github/workflows/contexto.yml",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".github/workflows/deploy.yml",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".github/workflows/inventario-estado-semanal.yml",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".github/workflows/preview.yml",
+    "mudancas": 1
+   },
+   {
+    "arquivo": ".github/workflows/release.yml",
+    "mudancas": 1
+   },
+   {
+    "arquivo": "CLAUDE.md",
+    "mudancas": 1
+   },
+   {
+    "arquivo": "MIGRATION_PLAN_FOR_CLAUDE_WEB.md",
+    "mudancas": 1
+   },
+   {
+    "arquivo": "_smoke/01_login.png",
+    "mudancas": 1
+   },
+   {
+    "arquivo": "ai-context.config.json",
+    "mudancas": 1
+   },
+   {
+    "arquivo": "bun.lockb",
+    "mudancas": 1
+   },
+   {
+    "arquivo": "docs/ARCHITECTURE.md",
+    "mudancas": 1
+   },
+   {
+    "arquivo": "docs/DEPLOYMENT.md",
+    "mudancas": 1
+   }
+  ],
+  "autores_30d": [
+   {
+    "autor": "adm01-debug",
+    "commits": 4
+   }
+  ]
+ },
+ "contagens": {
+  "arquivos_total": 1818,
+  "arquivos_codigo": 1392,
+  "linhas_codigo": 144092,
+  "rotas": 54,
+  "rotas_http_backend": 12,
+  "vistas_por_id": 0,
+  "itens_menu": 12,
+  "modulos": 56,
+  "componentes": 461,
+  "hooks": 524,
+  "edge_functions": 84,
+  "tabelas": 139,
+  "migrations": 102,
+  "cron_jobs": 1,
+  "testes": 66,
+  "workflows": 14,
+  "scripts": 27,
+  "docs_md": 178
+ },
+ "por_pasta": {
+  "benchmarks/api-performance.ts": {
+   "arquivos": 1,
+   "linhas": 2
+  },
+  "benchmarks/bundle-size.ts": {
+   "arquivos": 1,
+   "linhas": 2
+  },
+  "benchmarks/render-performance.ts": {
+   "arquivos": 1,
+   "linhas": 2
+  },
+  "commitlint.config.cjs": {
+   "arquivos": 1,
+   "linhas": 13
+  },
+  "desktop-agent/src": {
+   "arquivos": 18,
+   "linhas": 2289
+  },
+  "docs/source": {
+   "arquivos": 1,
+   "linhas": 11
+  },
+  "e2e/auth.spec.ts": {
+   "arquivos": 1,
+   "linhas": 16
+  },
+  "eslint.config.js": {
+   "arquivos": 1,
+   "linhas": 67
+  },
+  "lint-staged.config.cjs": {
+   "arquivos": 1,
+   "linhas": 6
+  },
+  "playwright.config.ts": {
+   "arquivos": 1,
+   "linhas": 35
+  },
+  "postcss.config.cjs": {
+   "arquivos": 1,
+   "linhas": 6
+  },
+  "public/sw-enhanced.js": {
+   "arquivos": 1,
+   "linhas": 128
+  },
+  "public/sw.js": {
+   "arquivos": 1,
+   "linhas": 11
+  },
+  "release.config.js": {
+   "arquivos": 1,
+   "linhas": 11
+  },
+  "scripts/ai-context": {
+   "arquivos": 3,
+   "linhas": 1458
+  },
+  "scripts/ci": {
+   "arquivos": 1,
+   "linhas": 122
+  },
+  "scripts/generate-audit-pdf.js": {
+   "arquivos": 1,
+   "linhas": 21
+  },
+  "scripts/inventario": {
+   "arquivos": 2,
+   "linhas": 165
+  },
+  "seed/generate_time_entries.cjs": {
+   "arquivos": 1,
+   "linhas": 65
+  },
+  "src/App.tsx": {
+   "arquivos": 1,
+   "linhas": 19
+  },
+  "src/components": {
+   "arquivos": 388,
+   "linhas": 44527
+  },
+  "src/constants": {
+   "arquivos": 7,
+   "linhas": 257
+  },
+  "src/data": {
+   "arquivos": 4,
+   "linhas": 156
+  },
+  "src/guards": {
+   "arquivos": 1,
+   "linhas": 70
+  },
+  "src/helpers": {
+   "arquivos": 2,
+   "linhas": 24
+  },
+  "src/hooks": {
+   "arquivos": 479,
+   "linhas": 31973
+  },
+  "src/i18n": {
+   "arquivos": 1,
+   "linhas": 49
+  },
+  "src/integrations": {
+   "arquivos": 4,
+   "linhas": 6440
+  },
+  "src/layouts": {
+   "arquivos": 2,
+   "linhas": 117
+  },
+  "src/lib": {
+   "arquivos": 42,
+   "linhas": 2908
+  },
+  "src/main.tsx": {
+   "arquivos": 1,
+   "linhas": 28
+  },
+  "src/pages": {
+   "arquivos": 104,
+   "linhas": 16558
+  },
+  "src/providers": {
+   "arquivos": 9,
+   "linhas": 518
+  },
+  "src/routes": {
+   "arquivos": 1,
+   "linhas": 220
+  },
+  "src/services": {
+   "arquivos": 8,
+   "linhas": 546
+  },
+  "src/stores": {
+   "arquivos": 34,
+   "linhas": 2547
+  },
+  "src/test": {
+   "arquivos": 45,
+   "linhas": 9700
+  },
+  "src/types": {
+   "arquivos": 57,
+   "linhas": 5744
+  },
+  "src/utils": {
+   "arquivos": 64,
+   "linhas": 5234
+  },
+  "src/validators": {
+   "arquivos": 1,
+   "linhas": 180
+  },
+  "supabase/functions": {
+   "arquivos": 96,
+   "linhas": 11665
+  },
+  "tailwind.config.ts": {
+   "arquivos": 1,
+   "linhas": 101
+  },
+  "vite.config.ts": {
+   "arquivos": 1,
+   "linhas": 81
+  }
+ },
+ "maiores_arquivos": [
+  {
+   "arquivo": "src/integrations/supabase/types.ts",
+   "linhas": 6369
+  },
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linhas": 924
+  },
+  {
+   "arquivo": "src/pages/admin/DisputeEscalationAuditPage.tsx",
+   "linhas": 654
+  },
+  {
+   "arquivo": "src/components/ui/sidebar.tsx",
+   "linhas": 638
+  },
+  {
+   "arquivo": "src/components/security/IPWhitelistManager.tsx",
+   "linhas": 582
+  },
+  {
+   "arquivo": "src/utils/violationsPdf.ts",
+   "linhas": 572
+  },
+  {
+   "arquivo": "src/components/violations/ViolationTimelineDialog.tsx",
+   "linhas": 523
+  },
+  {
+   "arquivo": "src/pages/Auth.tsx",
+   "linhas": 488
+  },
+  {
+   "arquivo": "src/components/admin/SlackIntegrationsCard.tsx",
+   "linhas": 479
+  },
+  {
+   "arquivo": "src/components/security/GeoBlockingManager.tsx",
+   "linhas": 476
+  },
+  {
+   "arquivo": "src/components/ScreenCapturesCard.tsx",
+   "linhas": 474
+  },
+  {
+   "arquivo": "src/components/EmptyStates.tsx",
+   "linhas": 467
+  },
+  {
+   "arquivo": "src/components/ActivityFeed.tsx",
+   "linhas": 461
+  },
+  {
+   "arquivo": "src/components/BlockedIPsPanel.tsx",
+   "linhas": 460
+  },
+  {
+   "arquivo": "src/components/NotificationCenter.tsx",
+   "linhas": 456
+  },
+  {
+   "arquivo": "src/components/SessionPlayback.tsx",
+   "linhas": 454
+  },
+  {
+   "arquivo": "src/pages/AgentOnboardingPage.tsx",
+   "linhas": 445
+  },
+  {
+   "arquivo": "src/components/SearchDrawer.tsx",
+   "linhas": 424
+  },
+  {
+   "arquivo": "src/pages/TimeClockPage.tsx",
+   "linhas": 424
+  },
+  {
+   "arquivo": "supabase/functions/slack-notify/index.ts",
+   "linhas": 422
+  },
+  {
+   "arquivo": "src/components/security/SessionIndicator.tsx",
+   "linhas": 420
+  },
+  {
+   "arquivo": "src/components/KPIWidget.tsx",
+   "linhas": 415
+  },
+  {
+   "arquivo": "src/components/HeatmapCalendar.tsx",
+   "linhas": 413
+  },
+  {
+   "arquivo": "src/pages/dev/VerifyReportSimulatorPage.tsx",
+   "linhas": 410
+  },
+  {
+   "arquivo": "src/components/auth/PasswordResetApprovalPanel.tsx",
+   "linhas": 409
+  }
+ ],
+ "qualidade": {
+  "any": 214,
+  "console_log": 36,
+  "ts_ignore": 0,
+  "eslint_disable": 1,
+  "todos": 5,
+  "arquivos_acima_500_linhas": 7
+ },
+ "todos": [
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linha": 188,
+   "tipo": "TODO",
+   "texto": "|FIXME|HACK|XXX)\\b[:\\s-]*([^\\n]{0,100})/.exec(line); if (m) todos.push({ linha: ln, tipo: m[1], text"
+  },
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linha": 222,
+   "tipo": "TODO",
+   "texto": "|FIXME|HACK|XXX)\\b[:\\s-]*([^\\n]{0,100})/.exec(l); return m ? { linha: i + 1, tipo: m[1], texto: m[2]"
+  },
+  {
+   "arquivo": "src/test/gap-audit.test.ts",
+   "linha": 100,
+   "tipo": "TODO",
+   "texto": "stubs\", async () => {"
+  },
+  {
+   "arquivo": "src/test/gap-audit.test.ts",
+   "linha": 103,
+   "tipo": "TODO",
+   "texto": "\");"
+  },
+  {
+   "arquivo": "src/test/improvements-verification.test.ts",
+   "linha": 652,
+   "tipo": "TODO",
+   "texto": "\");"
+  }
+ ],
+ "alertas": {
+  "rotas_sem_arquivo": [],
+  "componentes_ambiguos": [],
+  "menu_sem_destino": [
+   "Configurações -> /settings",
+   "Configurações -> settings",
+   "Dashboard -> /",
+   "Funcionários -> /employees",
+   "Funcionários -> employees",
+   "Navegação -> navigation",
+   "Relatórios -> /reports",
+   "Relatórios -> reports"
+  ],
+  "edges_orfas": [
+   "agent-collector",
+   "archive-data",
+   "audit-export",
+   "auto-categorize",
+   "backup-data",
+   "batch-notifications",
+   "behavioral-baseline-builder",
+   "bulk-update",
+   "calculate-productivity",
+   "cleanup-rate-limit-logs",
+   "cleanup-sessions",
+   "compress-screenshots",
+   "create-monthly-partitions",
+   "daily-summary",
+   "delete-user-data",
+   "dlp-incident-report",
+   "dlp-policy-sync",
+   "expire-recordings",
+   "external-db-bridge",
+   "generate-api-key",
+   "generate-insights",
+   "get-dashboard-stats",
+   "get-employee-schedule",
+   "get-employee-timeline",
+   "get-policies",
+   "health",
+   "health-check",
+   "import-employees",
+   "ingest-file-transfer",
+   "invite-user",
+   "live-view-authorize",
+   "merge-employees",
+   "mobile-collector",
+   "natural-language-query",
+   "notify-dispute-decision",
+   "notify-mobile-violation",
+   "pending-employee-violations",
+   "process-bulk-import",
+   "process-screenshot",
+   "recalculate-metrics",
+   "refresh-tokens",
+   "request-overtime",
+   "reset-password",
+   "rotate-api-keys",
+   "search-activities",
+   "send-rate-limit-alert",
+   "sentiment-analysis",
+   "sync-employee",
+   "sync-teams",
+   "upload-recording-chunk",
+   "validate-agent-key",
+   "validate-license",
+   "verify-email",
+   "webrtc-ice-config",
+   "weekly-report"
+  ],
+  "edges_chamadas_sem_pasta": [
+   "award-gamification-points",
+   "sync-whatsapp-templates"
+  ],
+  "tabelas_sem_rls": [],
+  "tabelas_usadas_sem_definicao": [
+   "activities",
+   "app_config",
+   "backups",
+   "departments",
+   "employee_locations",
+   "feature_flags",
+   "geofence_events",
+   "geofence_states",
+   "health_check",
+   "internet_access_rules",
+   "productivity_metrics",
+   "push_subscriptions",
+   "rate_limit_alerts",
+   "rate_limit_settings",
+   "report_logs",
+   "reports",
+   "scheduled_reports",
+   "screenshots",
+   "sensitive_keywords",
+   "subscriptions",
+   "sync_logs",
+   "user_sessions",
+   "violations",
+   "whatsapp_config",
+   "whatsapp_settings",
+   "whatsapp_templates"
+  ],
+  "tabelas_com_drift_migration_vs_types": [
+   "badges",
+   "employee_badges",
+   "employee_points",
+   "points_history",
+   "policy_acknowledgments",
+   "role_permissions",
+   "saved_filters",
+   "security_violations",
+   "user_roles"
+  ],
+  "rpcs_sem_definicao": [],
+  "componentes_orfaos": [
+   "src/components/ActivityFeed.tsx",
+   "src/components/ActivityHeatmap.tsx",
+   "src/components/ActivityStatsCards.tsx",
+   "src/components/AlertItem.tsx",
+   "src/components/AlertsChart.tsx",
+   "src/components/ApplicationCard.tsx",
+   "src/components/Cards.tsx",
+   "src/components/Cards/StatsCard.tsx",
+   "src/components/CustomTooltip.tsx",
+   "src/components/dashboard/AlertSummaryWidget.tsx",
+   "src/components/dashboard/DashboardSkeleton.tsx",
+   "src/components/dashboard/DistributionWidget.tsx",
+   "src/components/dashboard/GoalProgressWidget.tsx",
+   "src/components/dashboard/heatmaps.tsx",
+   "src/components/dashboard/HeroMetrics.tsx",
+   "src/components/dashboard/LeaderboardWidget.tsx",
+   "src/components/dashboard/LiveStatWidget.tsx",
+   "src/components/dashboard/NotificationsWidget.tsx",
+   "src/components/dashboard/QuickTasksWidget.tsx",
+   "src/components/dashboard/RecentActivityWidget.tsx",
+   "src/components/dashboard/SystemStatusWidget.tsx",
+   "src/components/dashboard/UpcomingEventsWidget.tsx",
+   "src/components/DashboardSkeleton.tsx",
+   "src/components/data-display/DataCalendar.tsx",
+   "src/components/data-display/DataKanban.tsx",
+   "src/components/data-display/DataTimeline.tsx",
+   "src/components/data-display/DataTree.tsx",
+   "src/components/EmployeeAlertItem.tsx",
+   "src/components/EmployeeRow.tsx",
+   "src/components/EmployeeViolationsRanking.tsx",
+   "src/components/Forms.tsx",
+   "src/components/forms/index.tsx",
+   "src/components/HeatmapCalendar.tsx",
+   "src/components/KeyboardShortcutsHelp.tsx",
+   "src/components/KeystrokeActivityCard.tsx",
+   "src/components/KPIWidget.tsx",
+   "src/components/LiveViewCard.tsx",
+   "src/components/LoadingState.tsx",
+   "src/components/MFAVerify.tsx",
+   "src/components/MobileDevicesMap.tsx",
+   "src/components/MonitoringNotice.tsx",
+   "src/components/NavLink.tsx",
+   "src/components/NotificationCenter.tsx",
+   "src/components/NotificationsDropdown.tsx",
+   "src/components/NotificationsPanel.tsx",
+   "src/components/PolicyGate.tsx",
+   "src/components/ProductivityCard.tsx",
+   "src/components/PWAInstallPrompt.tsx",
+   "src/components/RealtimeActivityFilters.tsx",
+   "src/components/RealtimeClicksCard.tsx",
+   "src/components/RealtimeKeystrokesCard.tsx",
+   "src/components/ScreenCapturesCard.tsx",
+   "src/components/SearchDrawer.tsx",
+   "src/components/security/SecurityAuditLog.tsx",
+   "src/components/SecurityMetrics.tsx",
+   "src/components/SessionPlayback.tsx",
+   "src/components/SimulateViolationButton.tsx",
+   "src/components/SuspenseWrapper.tsx",
+   "src/components/TimelineViewer.tsx",
+   "src/components/ui/a11y-button.tsx",
+   "src/components/ui/a11y-input.tsx",
+   "src/components/ui/Cards.tsx",
+   "src/components/ui/Combobox.tsx",
+   "src/components/ui/data-display.tsx",
+   "src/components/ui/DataState.tsx",
+   "src/components/ui/Dropdown.tsx",
+   "src/components/ui/Feedback.tsx",
+   "src/components/ui/FormItem.tsx",
+   "src/components/ui/FormMessage.tsx",
+   "src/components/ui/GridList.tsx",
+   "src/components/ui/Headers.tsx",
+   "src/components/ui/IconBadge.tsx",
+   "src/components/ui/InfiniteScrollList.tsx",
+   "src/components/ui/InfoCard.tsx",
+   "src/components/ui/loading.tsx",
+   "src/components/ui/LoadingOverlay.tsx",
+   "src/components/ui/LoadingStates.tsx",
+   "src/components/ui/MetricTrend.tsx",
+   "src/components/ui/Modal.tsx",
+   "src/components/ui/Overlay.tsx",
+   "src/components/ui/PageContainer.tsx",
+   "src/components/ui/PullToRefresh.tsx",
+   "src/components/ui/Radio.tsx",
+   "src/components/ui/responsive.tsx",
+   "src/components/ui/RichTextEditor.tsx",
+   "src/components/ui/SearchInput.tsx",
+   "src/components/ui/Spinner.tsx",
+   "src/components/ui/StaleDataIndicator.tsx",
+   "src/components/ui/StatusBadge.tsx",
+   "src/components/ui/Text.tsx",
+   "src/components/ui/TimePicker.tsx",
+   "src/components/ui/toaster.tsx",
+   "src/components/ui/TreeView.tsx",
+   "src/components/ui/TrendIndicators.tsx",
+   "src/components/ui/VirtualizedList.tsx",
+   "src/components/user/UserMenu.tsx",
+   "src/components/ViolationCommentsPanel.tsx",
+   "src/components/ViolationsByEmployeeChart.tsx",
+   "src/components/ViolationsRealtimeTable.tsx",
+   "src/hooks/useColorBlindMode.tsx",
+   "src/hooks/useSkipLinks.tsx",
+   "src/providers/index.tsx"
+  ],
+  "componentes_com_nome_duplicado": [
+   "ActivityHeatmap",
+   "AnalyticsProvider",
+   "AppProviders",
+   "AvatarGroup",
+   "Breadcrumb",
+   "BreadcrumbItem",
+   "Breadcrumbs",
+   "Card",
+   "CardContent",
+   "CardDescription",
+   "CardHeader",
+   "CardTitle",
+   "ChartLegend",
+   "ChartTooltipContent",
+   "CircularProgress",
+   "Column",
+   "ConnectionStatus",
+   "DashboardSkeleton",
+   "EmptyState",
+   "ErrorBoundary",
+   "FeatureFlagsProvider",
+   "FormField",
+   "FormItem",
+   "FormMessage",
+   "FormSelect",
+   "InfoCard",
+   "InfoTooltip",
+   "KanbanCard",
+   "KanbanColumn",
+   "LoadingOverlay",
+   "PageHeader",
+   "PageLoading",
+   "PasswordStrengthMeter",
+   "QueryProvider",
+   "RadioGroup",
+   "RadioGroupItem",
+   "SearchInput",
+   "SectionHeader",
+   "SecurityScore",
+   "Skeleton",
+   "SkeletonCard",
+   "Sparkline",
+   "Spinner",
+   "StatCard",
+   "StatsCard",
+   "ThemeProvider",
+   "Toaster",
+   "TreeNode",
+   "UserAvatar",
+   "VirtualList"
+  ],
+  "scripts_orfaos": [
+   "scripts/release.sh"
+  ],
+  "env_usadas_nao_declaradas": [
+   "DEV",
+   "MODE",
+   "PROD",
+   "VITE_API_URL",
+   "VITE_SENTRY_DSN",
+   "VITE_SUPABASE_PUBLISHABLE_KEY",
+   "VITE_SUPABASE_URL",
+   "VITE_VAPID_PUBLIC_KEY"
+  ],
+  "ciclos_de_import": 4,
+  "possiveis_segredos_no_codigo": [
+   "scripts/ai-context/cenarios.mjs:102"
+  ]
+ },
+ "erros_do_gerador": []
+}
