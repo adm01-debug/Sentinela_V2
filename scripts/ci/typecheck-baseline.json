@@ -1,0 +1,2769 @@
+{
+  "schemaVersion": 2,
+  "command": "tsc -b --force",
+  "issues": [
+    {
+      "file": "src/components/admin/ChaosCoverageCard.tsx",
+      "line": 72,
+      "column": 58,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'payload_summary' does not exist on type 'ChaosLog'.",
+      "contextHash": "6a840182330906a535a8dc8f0b35f9d820cf25ef1382707f262c1288daa1181a"
+    },
+    {
+      "file": "src/components/admin/SlackUptimeHistoryCard.tsx",
+      "line": 162,
+      "column": 20,
+      "severity": "error",
+      "code": "TS2304",
+      "message": "Cannot find name 'Badge'.",
+      "contextHash": "ef3d9a7cc1be097444d0e5aae1c569d6d99c1ba0606093e40c1f7ad31ba85ba1"
+    },
+    {
+      "file": "src/components/admin/SlackUptimeHistoryCard.tsx",
+      "line": 164,
+      "column": 21,
+      "severity": "error",
+      "code": "TS2304",
+      "message": "Cannot find name 'Badge'.",
+      "contextHash": "f2f1b36d6ee6bbdc114ee670283267054abc666fce4b25d4b66be4a3e37d1668"
+    },
+    {
+      "file": "src/components/admin/SlackUptimeHistoryCard.tsx",
+      "line": 166,
+      "column": 18,
+      "severity": "error",
+      "code": "TS2304",
+      "message": "Cannot find name 'Badge'.",
+      "contextHash": "c7e5fe7494e3d0beea98a79b2a6a03e52fd01e08eb2db9cbab95a3969de5a05b"
+    },
+    {
+      "file": "src/components/admin/SlackUptimeHistoryCard.tsx",
+      "line": 176,
+      "column": 19,
+      "severity": "error",
+      "code": "TS2304",
+      "message": "Cannot find name 'Badge'.",
+      "contextHash": "76bc05a413ffc290eaaa94fd8c5be8478f45f7afd4e1525c6a97fa23d912df29"
+    },
+    {
+      "file": "src/components/admin/SlackUptimeHistoryCard.tsx",
+      "line": 191,
+      "column": 23,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '(value: number, key: string) => (string | number)[]' is not assignable to type 'Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [...])'. Type '(value: number, key: string) => (string | number)[]' is not assignable to type 'Formatter<ValueType, NameType>'. Types of parameters 'value' and 'value' are incompatible. Type 'ValueType | undefined' is not assignable to type 'number'. Type 'undefined' is not assignable to type 'number'.",
+      "contextHash": "115dba85318cd5421c58c5421dfe6cdfb8dd9539df32114859a6f88455eec49f"
+    },
+    {
+      "file": "src/components/auth/PasswordResetRequestForm.tsx",
+      "line": 33,
+      "column": 20,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'errors' does not exist on type 'ZodError<{ email: string; name?: string | undefined; reason?: string | undefined; }>'.",
+      "contextHash": "4c45fd08aad57f180bc6dd35138048a58c7fa0fc462b97a006f3f58ccec118c0"
+    },
+    {
+      "file": "src/components/charts/__tests__/AreaChart.test.tsx",
+      "line": 28,
+      "column": 56,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c648fdd6f8f4673bc68b0926ca61c2a9ff4e0e990ae033642b4db87dab9bdc8c"
+    },
+    {
+      "file": "src/components/charts/__tests__/AreaChart.test.tsx",
+      "line": 38,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "08a0a9378e4a0a5ea7f46544a07e856119dfe2a2ccc74b58d282c715c2b21e44"
+    },
+    {
+      "file": "src/components/charts/__tests__/Heatmap.test.tsx",
+      "line": 28,
+      "column": 56,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c648fdd6f8f4673bc68b0926ca61c2a9ff4e0e990ae033642b4db87dab9bdc8c"
+    },
+    {
+      "file": "src/components/charts/__tests__/Heatmap.test.tsx",
+      "line": 38,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "08a0a9378e4a0a5ea7f46544a07e856119dfe2a2ccc74b58d282c715c2b21e44"
+    },
+    {
+      "file": "src/components/charts/__tests__/PieChart.test.tsx",
+      "line": 28,
+      "column": 56,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c648fdd6f8f4673bc68b0926ca61c2a9ff4e0e990ae033642b4db87dab9bdc8c"
+    },
+    {
+      "file": "src/components/charts/__tests__/PieChart.test.tsx",
+      "line": 38,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "08a0a9378e4a0a5ea7f46544a07e856119dfe2a2ccc74b58d282c715c2b21e44"
+    },
+    {
+      "file": "src/components/charts/__tests__/RadarChart.test.tsx",
+      "line": 28,
+      "column": 56,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c648fdd6f8f4673bc68b0926ca61c2a9ff4e0e990ae033642b4db87dab9bdc8c"
+    },
+    {
+      "file": "src/components/charts/__tests__/RadarChart.test.tsx",
+      "line": 38,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "08a0a9378e4a0a5ea7f46544a07e856119dfe2a2ccc74b58d282c715c2b21e44"
+    },
+    {
+      "file": "src/components/charts/__tests__/ScatterChart.test.tsx",
+      "line": 28,
+      "column": 56,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c648fdd6f8f4673bc68b0926ca61c2a9ff4e0e990ae033642b4db87dab9bdc8c"
+    },
+    {
+      "file": "src/components/charts/__tests__/ScatterChart.test.tsx",
+      "line": 38,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "08a0a9378e4a0a5ea7f46544a07e856119dfe2a2ccc74b58d282c715c2b21e44"
+    },
+    {
+      "file": "src/components/charts/BaseDonutChart.tsx",
+      "line": 63,
+      "column": 53,
+      "severity": "error",
+      "code": "TS18048",
+      "message": "'percent' is possibly 'undefined'.",
+      "contextHash": "b523f097bb8b2f402ed263e12e2e1c9f35a97fd79856c3cbb225ee024a78d33d"
+    },
+    {
+      "file": "src/components/charts/BasePieChart.tsx",
+      "line": 61,
+      "column": 53,
+      "severity": "error",
+      "code": "TS18048",
+      "message": "'percent' is possibly 'undefined'.",
+      "contextHash": "b523f097bb8b2f402ed263e12e2e1c9f35a97fd79856c3cbb225ee024a78d33d"
+    },
+    {
+      "file": "src/components/DateRangePicker.tsx",
+      "line": 77,
+      "column": 11,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '{ initialFocus: true; mode: \"range\"; defaultMonth: Date | undefined; selected: DateRange | undefined; onSelect: (range: DateRange | undefined) => void; numberOfMonths: number; locale: Locale; }' is not assignable to type 'IntrinsicAttributes & DayPickerProps'. Property 'initialFocus' does not exist on type '(IntrinsicAttributes & PropsBase & PropsRange) | (IntrinsicAttributes & PropsBase & PropsRangeRequired)'.",
+      "contextHash": "a6ee62f3c3cdf0cc88715d0330ebcf7d12a76b3b1b808a83377cce000eb5ff4a"
+    },
+    {
+      "file": "src/components/file-transfers/FileTransferCharts.tsx",
+      "line": 92,
+      "column": 21,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '(v: string) => string' is not assignable to type '((label: ReactNode, payload: readonly Payload<ValueType, NameType>[]) => ReactNode) & ((label: ReactNode, payload: TooltipPayload) => ReactNode)'. Type '(v: string) => string' is not assignable to type '(label: ReactNode, payload: readonly Payload<ValueType, NameType>[]) => ReactNode'. Types of parameters 'v' and 'label' are incompatible. Type 'ReactNode' is not assignable to type 'string'. Type 'undefined' is not assignable to type 'string'.",
+      "contextHash": "79b043bd045b0c59977e9714c2ae392fed722be652e002d07f1f8576465f3267"
+    },
+    {
+      "file": "src/components/file-transfers/FileTransferCharts.tsx",
+      "line": 93,
+      "column": 21,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '(value: number, name: string) => (string | number)[]' is not assignable to type 'Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [...])'. Type '(value: number, name: string) => (string | number)[]' is not assignable to type 'Formatter<ValueType, NameType>'. Types of parameters 'value' and 'value' are incompatible. Type 'ValueType | undefined' is not assignable to type 'number'. Type 'undefined' is not assignable to type 'number'.",
+      "contextHash": "08f3425b1d277058835d45eb04b1d6a901f2f0d6f37d216a47ef5219582fef27"
+    },
+    {
+      "file": "src/components/file-transfers/FileTransferCharts.tsx",
+      "line": 151,
+      "column": 21,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '(value: number) => string' is not assignable to type 'Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [...])'. Type '(value: number) => string' is not assignable to type 'Formatter<ValueType, NameType>'. Types of parameters 'value' and 'value' are incompatible. Type 'ValueType | undefined' is not assignable to type 'number'. Type 'undefined' is not assignable to type 'number'.",
+      "contextHash": "f2c6a61b3752e14ec9f803c32e2b9d3d196954fd2795c1815f936fe55cd7450e"
+    },
+    {
+      "file": "src/components/RealtimeActivityFilters.tsx",
+      "line": 141,
+      "column": 15,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '{ mode: \"single\"; selected: Date | undefined; onSelect: (date: Date | undefined) => void; initialFocus: true; className: string; }' is not assignable to type 'IntrinsicAttributes & DayPickerProps'. Property 'initialFocus' does not exist on type '(IntrinsicAttributes & PropsBase & PropsSingle) | (IntrinsicAttributes & PropsBase & PropsSingleRequired)'.",
+      "contextHash": "044f3350d668a6c20e41b48f672d48283b7aa7f92da81bf601928aac73f97b19"
+    },
+    {
+      "file": "src/components/RealtimeActivityFilters.tsx",
+      "line": 169,
+      "column": 15,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '{ mode: \"single\"; selected: Date | undefined; onSelect: (date: Date | undefined) => void; initialFocus: true; className: string; }' is not assignable to type 'IntrinsicAttributes & DayPickerProps'. Property 'initialFocus' does not exist on type '(IntrinsicAttributes & PropsBase & PropsSingle) | (IntrinsicAttributes & PropsBase & PropsSingleRequired)'.",
+      "contextHash": "99fd543761c849940e0a3a860772a3c5099eb1ae5e8e2d0f1bd524f098b39a99"
+    },
+    {
+      "file": "src/components/recordings/RecordingStorageCostCard.tsx",
+      "line": 108,
+      "column": 21,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '(value: number, name: string) => string' is not assignable to type 'Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [...])'. Type '(value: number, name: string) => string' is not assignable to type 'Formatter<ValueType, NameType>'. Types of parameters 'value' and 'value' are incompatible. Type 'ValueType | undefined' is not assignable to type 'number'. Type 'undefined' is not assignable to type 'number'.",
+      "contextHash": "c342271ea6390f5f2b310cee493faa53a20dc5a07dd050c92c692dab7040b527"
+    },
+    {
+      "file": "src/components/ui/calendar.tsx",
+      "line": 18,
+      "column": 9,
+      "severity": "error",
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'caption' does not exist in type 'Partial<ClassNames>'.",
+      "contextHash": "4c00c7165d51b3628a10faa70bb135c5a981109d016be43c56ca71bfb8f71ec7"
+    },
+    {
+      "file": "src/components/ui/calendar.tsx",
+      "line": 45,
+      "column": 9,
+      "severity": "error",
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'IconLeft' does not exist in type 'Partial<CustomComponents>'.",
+      "contextHash": "3ff5668fc3bb34b58cc7adc827f0f3643bbb4f51d29cc59546077f07b00426c2"
+    },
+    {
+      "file": "src/components/ui/chart.tsx",
+      "line": 111,
+      "column": 7,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'label' does not exist on type 'Omit<Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 24 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }, \"ref\">'.",
+      "contextHash": "5a7e466ee08b1ac8b8dba70a5f68405c5bb7b4d6a2ff0bfd105556276ddbe56e"
+    },
+    {
+      "file": "src/components/ui/chart.tsx",
+      "line": 240,
+      "column": 17,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'length' does not exist on type '{}'.",
+      "contextHash": "3814d85e8b10550d3dae1a38b47953cd271d6f49e0a53e4a8f766492548cb52b"
+    },
+    {
+      "file": "src/components/ui/chart.tsx",
+      "line": 249,
+      "column": 16,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'map' does not exist on type '{}'.",
+      "contextHash": "cd2a4f63e664761279058852150e1d90fd1f9eb02e31bf85fe21d915828e42ec"
+    },
+    {
+      "file": "src/components/ui/chart.tsx",
+      "line": 106,
+      "column": 7,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'payload' does not exist on type 'Omit<Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 24 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }, \"ref\">'.",
+      "contextHash": "d73fe2295f63dd9d87f3410382429144c70fefd765daec7c60d25d1a9216ba93"
+    },
+    {
+      "file": "src/components/ui/chart.tsx",
+      "line": 233,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2344",
+      "message": "Type '\"payload\" | \"verticalAlign\"' does not satisfy the constraint '\"height\" | \"width\" | \"content\" | \"children\" | \"dangerouslySetInnerHTML\" | \"onCopy\" | \"onCopyCapture\" | \"onCut\" | \"onCutCapture\" | \"onPaste\" | \"onPasteCapture\" | \"onCompositionEnd\" | ... 168 more ... | \"onBBoxUpdate\"'. Type '\"payload\"' is not assignable to type '\"height\" | \"width\" | \"content\" | \"children\" | \"dangerouslySetInnerHTML\" | \"onCopy\" | \"onCopyCapture\" | \"onCut\" | \"onCutCapture\" | \"onPaste\" | \"onPasteCapture\" | \"onCompositionEnd\" | ... 168 more ... | \"onBBoxUpdate\"'.",
+      "contextHash": "55a30869d68b830a8afb4d9d614a5bbe8e130f440cadf74c4a13a4e65d056834"
+    },
+    {
+      "file": "src/components/ui/DatePicker.tsx",
+      "line": 37,
+      "column": 13,
+      "severity": "error",
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'caption' does not exist in type 'Partial<ClassNames>'.",
+      "contextHash": "39c0ab38ec1cfb11ea9d5cb376012424373cf51b772d265988070f8872b3894f"
+    },
+    {
+      "file": "src/components/ViolationsBySeverityChart.tsx",
+      "line": 88,
+      "column": 54,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '(payload: { key?: SeverityKey; } | undefined) => void' is not assignable to type 'BarMouseEvent'. Types of parameters 'payload' and 'data' are incompatible. Type 'BarRectangleItem' is not assignable to type '{ key?: \"high\" | \"low\" | \"medium\" | \"critical\" | undefined; }'. Types of property 'key' are incompatible. Type 'Key | null | undefined' is not assignable to type '\"high\" | \"low\" | \"medium\" | \"critical\" | undefined'. Type 'null' is not assignable to type '\"high\" | \"low\" | \"medium\" | \"critical\" | undefined'.",
+      "contextHash": "5b27072a0f3c203732af349a34a591dc2f16e150509abc63c6633e182e0a6c3f"
+    },
+    {
+      "file": "src/components/ViolationsByTypeChart.tsx",
+      "line": 70,
+      "column": 56,
+      "severity": "error",
+      "code": "TS18048",
+      "message": "'percent' is possibly 'undefined'.",
+      "contextHash": "42aeaf4ed95f2d79d4e91c3b4d91091764693c4c59bcf64094717ab46c48f6a8"
+    },
+    {
+      "file": "src/components/ViolationsDrilldownDialog.tsx",
+      "line": 125,
+      "column": 13,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'employee' does not exist on type 'SecurityViolation'.",
+      "contextHash": "9e5264066947bfc27d1393bb35b479a31bb4295c327da3acd3637f550cf35028"
+    },
+    {
+      "file": "src/components/ViolationsDrilldownDialog.tsx",
+      "line": 126,
+      "column": 13,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'employee' does not exist on type 'SecurityViolation'.",
+      "contextHash": "3f829a67573163a9e558b516aba2824d5c450c501051154513b19a369dccf7fc"
+    },
+    {
+      "file": "src/components/ViolationsDrilldownDialog.tsx",
+      "line": 240,
+      "column": 63,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'employee' does not exist on type 'SecurityViolation'.",
+      "contextHash": "5e9645aa5c6bce4c9b58e59fbdbef90d9a10a9859c53a405e540b21a68ffa2c9"
+    },
+    {
+      "file": "src/components/ViolationsDrilldownDialog.tsx",
+      "line": 241,
+      "column": 73,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'employee' does not exist on type 'SecurityViolation'.",
+      "contextHash": "69d151f9a7b2cfbb1eab60a7d56b7182cb0446c1f89a56ce999061d3c10bfd64"
+    },
+    {
+      "file": "src/components/ViolationsDrilldownDialog.tsx",
+      "line": 71,
+      "column": 3,
+      "severity": "error",
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'pending' does not exist in type 'Record<ViolationStatus, string>'.",
+      "contextHash": "7c3887a4c2d114ef8e0918b60bd799636e2c3baef481041471941ccfe5bed161"
+    },
+    {
+      "file": "src/hooks/useAnimation.ts",
+      "line": 5,
+      "column": 22,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "2de0387869b3ce55e57592627064d9597e1512734fc6e5caf7c04e29ceabdfc5"
+    },
+    {
+      "file": "src/hooks/useAutoSaveDraft.ts",
+      "line": 16,
+      "column": 22,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "f42b7ec5fc34cbedb5868fc833aba332edb91e700a5148521a8a168842fad13c"
+    },
+    {
+      "file": "src/hooks/useCountdown.ts",
+      "line": 5,
+      "column": 23,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "5197bb4096f543116f063296ae0e86ff95b8cc72ad34a49a29661fa73bff2dfc"
+    },
+    {
+      "file": "src/hooks/useDebounceCallback.ts",
+      "line": 4,
+      "column": 22,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "92953c7b070a120a5e39784c5b4808f178c5c7e1239b447b0c9effed01142506"
+    },
+    {
+      "file": "src/hooks/useDoubleClick.ts",
+      "line": 9,
+      "column": 17,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "6ee4b154b7ba5d0fbd8431e73534bb4b7d039064e4568319c0a7d6210edaee27"
+    },
+    {
+      "file": "src/hooks/useIdleDetection.ts",
+      "line": 20,
+      "column": 22,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "e25ff1803c6d5ecea73efc7aa20b3f523e9e2d8282bb4dfc12a9aa4af943ec4c"
+    },
+    {
+      "file": "src/hooks/useInfiniteScroll.ts",
+      "line": 192,
+      "column": 5,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type 'RefObject<HTMLDivElement | null>' is not assignable to type 'RefObject<HTMLDivElement>'. Type 'HTMLDivElement | null' is not assignable to type 'HTMLDivElement'. Type 'null' is not assignable to type 'HTMLDivElement'.",
+      "contextHash": "30fd0a52d1b19191c424c088e97d53d42cdc04842cf98880eebf547813f2c7c8"
+    },
+    {
+      "file": "src/hooks/useLiveViewSession.ts",
+      "line": 300,
+      "column": 56,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type 'RefObject<HTMLVideoElement | null>' is not assignable to type 'RefObject<HTMLVideoElement>'. Type 'HTMLVideoElement | null' is not assignable to type 'HTMLVideoElement'. Type 'null' is not assignable to type 'HTMLVideoElement'.",
+      "contextHash": "f9b5b571bd49f9d1dc0845401f6caa0be0592a6d030d1a369cf690bd62ec7bf3"
+    },
+    {
+      "file": "src/hooks/useLongPress.ts",
+      "line": 12,
+      "column": 20,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "571debb43c93444efc85f6034626ce61d7ef72eab7c7d2ca66b257275ed3de3a"
+    },
+    {
+      "file": "src/hooks/useOnClickOutside.ts",
+      "line": 96,
+      "column": 3,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type 'RefObject<T | null>' is not assignable to type 'RefObject<T>'. Type 'T | null' is not assignable to type 'T'. 'T' could be instantiated with an arbitrary type which could be unrelated to 'T | null'.",
+      "contextHash": "6aeeec33f11cf3c85f451a21120c68b6ba85edd59b36b340a8fecb216847c2dc"
+    },
+    {
+      "file": "src/hooks/useOnClickOutside.ts",
+      "line": 95,
+      "column": 21,
+      "severity": "error",
+      "code": "TS2345",
+      "message": "Argument of type 'RefObject<T | null>' is not assignable to parameter of type 'RefObject<HTMLElement>'. Type 'T | null' is not assignable to type 'HTMLElement'. Type 'null' is not assignable to type 'HTMLElement'.",
+      "contextHash": "c43950b437739d31d0a30e9dc66bf718138d296ba4e747729e69f2a16a607a51"
+    },
+    {
+      "file": "src/hooks/usePolling.ts",
+      "line": 11,
+      "column": 20,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "70cd277944eed53cb91cd2868a86d36b31efee3197aab1f3642de527ab2cc00b"
+    },
+    {
+      "file": "src/hooks/usePrevious.ts",
+      "line": 3,
+      "column": 15,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "f5217fcb6d715fd108cba55a10bf6ebb4d980670c94dfbe3e304976fd7aa7bc2"
+    },
+    {
+      "file": "src/hooks/useRaf.ts",
+      "line": 4,
+      "column": 18,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "c8ec8c8b2feb770fe844ac6930f33b7191a49ac12b149a06320cdf8f79aa6b36"
+    },
+    {
+      "file": "src/hooks/useRafState.ts",
+      "line": 5,
+      "column": 18,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "2d80d41c26e3b6795bd09f4930c2dd64847debd0afd698297035a8cc4796d8d4"
+    },
+    {
+      "file": "src/hooks/useSkipLinks.ts",
+      "line": 133,
+      "column": 5,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type 'RefObject<HTMLDivElement | null>' is not assignable to type 'RefObject<HTMLDivElement>'. Type 'HTMLDivElement | null' is not assignable to type 'HTMLDivElement'. Type 'null' is not assignable to type 'HTMLDivElement'.",
+      "contextHash": "346667359eef8857a244246a17776110af7d9b1d06dd89355c743107d8c043c1"
+    },
+    {
+      "file": "src/hooks/useSpring.ts",
+      "line": 7,
+      "column": 18,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "d04b9bced3c638b80bd7c003c32dd75c141bcd528aa108f6b2717f2cbdc0cddc"
+    },
+    {
+      "file": "src/hooks/useStopwatch.ts",
+      "line": 6,
+      "column": 23,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "28184539c7d186b06b3df092a870995a0d8ab27e75aaf606f8e4841b181b0076"
+    },
+    {
+      "file": "src/hooks/useTimer.ts",
+      "line": 6,
+      "column": 23,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "28184539c7d186b06b3df092a870995a0d8ab27e75aaf606f8e4841b181b0076"
+    },
+    {
+      "file": "src/hooks/useTimeTracking.ts",
+      "line": 8,
+      "column": 23,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "376a5458130f01b09be6ba4f24247935d345f8c9c5df65149cade896f4f99211"
+    },
+    {
+      "file": "src/hooks/useWatch.ts",
+      "line": 7,
+      "column": 19,
+      "severity": "error",
+      "code": "TS2554",
+      "message": "Expected 1 arguments, but got 0.",
+      "contextHash": "bcbb800c386fc37fb436bce9fa66a372ea26ed7750af7ac844474dce77ba3208"
+    },
+    {
+      "file": "src/hooks/useWorkSchedulesPage.ts",
+      "line": 250,
+      "column": 37,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'block_outside_hours' does not exist on type 'WorkSchedule'.",
+      "contextHash": "6f32d33fd2cc298bb80c502906cb183ad67e36cb66ad601394fdc0be29848d94"
+    },
+    {
+      "file": "src/hooks/useWorkSchedulesPage.ts",
+      "line": 245,
+      "column": 27,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'break_end' does not exist on type 'WorkSchedule'.",
+      "contextHash": "ddb78521e6137bc487bc44ef49dbdda2a654af936294dca38f48e415ba9084f4"
+    },
+    {
+      "file": "src/hooks/useWorkSchedulesPage.ts",
+      "line": 244,
+      "column": 29,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'break_start' does not exist on type 'WorkSchedule'.",
+      "contextHash": "e8b61f5194eb2e23e6f62615a5db030bf6967ce9aca78a81b4c77d95912622da"
+    },
+    {
+      "file": "src/hooks/useWorkSchedulesPage.ts",
+      "line": 247,
+      "column": 34,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'flexible_minutes' does not exist on type 'WorkSchedule'.",
+      "contextHash": "60d0e52b47b201e353d0f0b0d47416cbb80f40f8324048ca5232e17c80b71ae6"
+    },
+    {
+      "file": "src/hooks/useWorkSchedulesPage.ts",
+      "line": 246,
+      "column": 32,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'flexible_start' does not exist on type 'WorkSchedule'.",
+      "contextHash": "d283f0da295a9305608cf68d5eff6b8c392123691760dda2f45354fdc211fa4e"
+    },
+    {
+      "file": "src/hooks/useWorkSchedulesPage.ts",
+      "line": 248,
+      "column": 34,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'overtime_allowed' does not exist on type 'WorkSchedule'.",
+      "contextHash": "5daafda0d7704acafa80801a2a066ac2be33a9a8a9514cd7be0bcb49029848b0"
+    },
+    {
+      "file": "src/hooks/useWorkSchedulesPage.ts",
+      "line": 249,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'overtime_requires_approval' does not exist on type 'WorkSchedule'.",
+      "contextHash": "cad83bd2345ce9c77450dd8b00a9759830eee3fd7694362616980663d3855895"
+    },
+    {
+      "file": "src/hooks/useZoom.ts",
+      "line": 99,
+      "column": 5,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type 'RefObject<HTMLDivElement | null>' is not assignable to type 'RefObject<HTMLDivElement>'. Type 'HTMLDivElement | null' is not assignable to type 'HTMLDivElement'. Type 'null' is not assignable to type 'HTMLDivElement'.",
+      "contextHash": "445829ca4c01b4ad50d1172e79206a2045c511a02fc6f850f8114de9a47634a5"
+    },
+    {
+      "file": "src/pages/__tests__/Activities.test.tsx",
+      "line": 61,
+      "column": 48,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "ec2098a71d87affb9838aa8682a2997b3519fc73a99df0b3b2032e7e1ab39351"
+    },
+    {
+      "file": "src/pages/__tests__/Activities.test.tsx",
+      "line": 62,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "32b38895a08b20c95ceff98ac494020d416a0fbe79164dfbed3790e75113c69d"
+    },
+    {
+      "file": "src/pages/__tests__/Activities.test.tsx",
+      "line": 63,
+      "column": 50,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "90098e3cd705b74665878879e68295f997bc49c1bfd681d06127091b33fbdb2c"
+    },
+    {
+      "file": "src/pages/__tests__/Activities.test.tsx",
+      "line": 64,
+      "column": 49,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "565d0f9c72cadfa9779a28fe85d54ff29f754445651d579d8758f4969c661760"
+    },
+    {
+      "file": "src/pages/__tests__/Activities.test.tsx",
+      "line": 65,
+      "column": 50,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "9eeb500c73240c5972ac1ac8e9989d33bc07adc3f25456d6761404da50f6a2e0"
+    },
+    {
+      "file": "src/pages/__tests__/Analytics.test.tsx",
+      "line": 69,
+      "column": 43,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "5a9c6e4b633e4f771bde94469bb2355d1a2ac8506676b07d3d40c631582a45f8"
+    },
+    {
+      "file": "src/pages/__tests__/Analytics.test.tsx",
+      "line": 70,
+      "column": 37,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "6989903fdfaf5958d0907559a799ee4a15ff1e597a7a7446a68aaf8f93063eac"
+    },
+    {
+      "file": "src/pages/__tests__/Analytics.test.tsx",
+      "line": 71,
+      "column": 37,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3f8f7597d8ad8e40bf4a29f76f218d08999bd9562e62ebd46d383bcbb38bd004"
+    },
+    {
+      "file": "src/pages/__tests__/Analytics.test.tsx",
+      "line": 72,
+      "column": 36,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "1d53ae62e479f9cd7dd36bb52421f96945f75dfe321ca0f0b395893a850a7d44"
+    },
+    {
+      "file": "src/pages/__tests__/Analytics.test.tsx",
+      "line": 73,
+      "column": 36,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "cdec3aaf9386294b1eb31375a01671c52b269e198a30b90082983f2a8e89de9f"
+    },
+    {
+      "file": "src/pages/__tests__/Analytics.test.tsx",
+      "line": 78,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "00ee2e54a134298d908c2ef8a7a837d4c9e478c3aec41fa4b09f68b8c813f954"
+    },
+    {
+      "file": "src/pages/__tests__/Analytics.test.tsx",
+      "line": 85,
+      "column": 20,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveTextContent' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "2225ce6b4afd44ada0d6dafd393e1cf0bc836d3761872a27b5f0858f33399b02"
+    },
+    {
+      "file": "src/pages/__tests__/AuditLog.test.tsx",
+      "line": 56,
+      "column": 57,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "4d007a4a07f329f6395e02f6b7a4ed55cabde794a10876ecd87d0801eab670c3"
+    },
+    {
+      "file": "src/pages/__tests__/AuditLog.test.tsx",
+      "line": 65,
+      "column": 65,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "35e028088cd64053acdbee7feb6a61f091b64db31a4564a411e347f06c5de648"
+    },
+    {
+      "file": "src/pages/__tests__/AuditLog.test.tsx",
+      "line": 58,
+      "column": 78,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "54dfa19fb2e2c6c0de9497bb8528667266d211667691a00e8c4cd96c1d1bab59"
+    },
+    {
+      "file": "src/pages/__tests__/Auth.test.tsx",
+      "line": 100,
+      "column": 53,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "10fcecc0227d6b301e3a6e60714ec1064cc7e50cbd0aeaadba6fb71990414e41"
+    },
+    {
+      "file": "src/pages/__tests__/Auth.test.tsx",
+      "line": 86,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "31d1c3ecbb925f1e4198c5affa3ccb750e4a31c7b6e045c4b9a5c501ec5ed09c"
+    },
+    {
+      "file": "src/pages/__tests__/Auth.test.tsx",
+      "line": 87,
+      "column": 58,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "cce00251ee977c0e4266e929eaf8db4862e7457c90ec43b5ca38ad752511cf4e"
+    },
+    {
+      "file": "src/pages/__tests__/Auth.test.tsx",
+      "line": 99,
+      "column": 48,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "dbfd586fca8f6996761f4f7f08390bcbcec4c2f9e3a50d4f6d340510705a7eb6"
+    },
+    {
+      "file": "src/pages/__tests__/Dashboard.test.tsx",
+      "line": 123,
+      "column": 62,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "5237a131c150a424b2090e13e5288445e846d45563c2fc6e921e185ad13787b1"
+    },
+    {
+      "file": "src/pages/__tests__/Dashboard.test.tsx",
+      "line": 105,
+      "column": 49,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "862e0f976e2ceb0c3b64c00074b904283197bdc5de9f2fcbf9f2ac0f65efbaef"
+    },
+    {
+      "file": "src/pages/__tests__/Dashboard.test.tsx",
+      "line": 128,
+      "column": 56,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "6aebedb0e434ac8191d5f0f06df72243dc26a7ffc1f02c68fe16a31631f0240d"
+    },
+    {
+      "file": "src/pages/__tests__/Dashboard.test.tsx",
+      "line": 137,
+      "column": 25,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveClass' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "f53e26be2bb3cff85daef22eae4a3bd16891c347dda1f11b62b56c94b24f8294"
+    },
+    {
+      "file": "src/pages/__tests__/Devices.test.tsx",
+      "line": 87,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c10887002b2904b84010aa9375cdd8cd6279b79b8ea0bcec6e903cdb207c7b5d"
+    },
+    {
+      "file": "src/pages/__tests__/Devices.test.tsx",
+      "line": 88,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "96e468f76c7eae33a13df3eb630f7fd77151e80592675236ffd851b945055949"
+    },
+    {
+      "file": "src/pages/__tests__/Devices.test.tsx",
+      "line": 93,
+      "column": 39,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "770ea6d25a8c0466a3826502e68c8c2b3d58efe4348e1216a64bf257ea1ecd3f"
+    },
+    {
+      "file": "src/pages/__tests__/Devices.test.tsx",
+      "line": 97,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3a03825a6300b5f55e2eb15163fe12bcb636f7648f7d87504ea5889099f23531"
+    },
+    {
+      "file": "src/pages/__tests__/Employees.test.tsx",
+      "line": 110,
+      "column": 49,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "45686cda8bfc7411d4774f8e5317f4ec6b9c88c5b1413ec3a0bdd01c6585017b"
+    },
+    {
+      "file": "src/pages/__tests__/Employees.test.tsx",
+      "line": 111,
+      "column": 55,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "65be17369fcc0cc69b98d9a783289c429bf58cf7d877b3ef86160f94212dcc44"
+    },
+    {
+      "file": "src/pages/__tests__/Employees.test.tsx",
+      "line": 112,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c190959f9a62d4555af00144d1dbfe96776d529e6ec5670d245d4d364393f31d"
+    },
+    {
+      "file": "src/pages/__tests__/Employees.test.tsx",
+      "line": 113,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "af8a0954f87243c717fe906c4d2075ae8427346b86048f9af91e57df996aa4bd"
+    },
+    {
+      "file": "src/pages/__tests__/Employees.test.tsx",
+      "line": 114,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "6a9ed0e6744cc54d556d171bbe5577b7beb9665ed12444c50317a0bb4f2ebd90"
+    },
+    {
+      "file": "src/pages/__tests__/Employees.test.tsx",
+      "line": 115,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "85e6dbd2a6195d676aa256e9806d3063b49b639589edfd282a64b2a7ae8ff788"
+    },
+    {
+      "file": "src/pages/__tests__/Employees.test.tsx",
+      "line": 116,
+      "column": 50,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "ca96c37c18401085cb80ffbb27d4d74ee1b850235e1ebd071fe20348ce86475d"
+    },
+    {
+      "file": "src/pages/__tests__/ForgotPassword.test.tsx",
+      "line": 34,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c6f5689f10d85bb9959beab982352431ee218cd386efa00bb984631564e9c77e"
+    },
+    {
+      "file": "src/pages/__tests__/ForgotPassword.test.tsx",
+      "line": 35,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "734d14b7b24ab9734f2c9d2d5a614ea94dbbf0ff836a11312ea45121d00a0561"
+    },
+    {
+      "file": "src/pages/__tests__/ForgotPassword.test.tsx",
+      "line": 36,
+      "column": 72,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "cc95350bf6951f389f8b003b20a90435faaf1183629e7113a90b6f32b27e5173"
+    },
+    {
+      "file": "src/pages/__tests__/ForgotPassword.test.tsx",
+      "line": 53,
+      "column": 50,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "8d6049381b2b0ea732c989d30952a6b6b21d65e9ba1a0dddfae1c23806488576"
+    },
+    {
+      "file": "src/pages/__tests__/Geofencing.test.tsx",
+      "line": 63,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "fdc14657dfb3e68bf92625676ffa6f965b70e3b6978c0c06585c41bf1f3ce924"
+    },
+    {
+      "file": "src/pages/__tests__/Geofencing.test.tsx",
+      "line": 64,
+      "column": 40,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "a62a444f29d115108751f55e14fce288ba7d109239133cf2a273ec26412afbc4"
+    },
+    {
+      "file": "src/pages/__tests__/Geofencing.test.tsx",
+      "line": 65,
+      "column": 38,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "51e21828e68086717cf3a63e308c6ea954d41873602424898b5af60a790caa9e"
+    },
+    {
+      "file": "src/pages/__tests__/Monitoring.test.tsx",
+      "line": 104,
+      "column": 42,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "8f075755f51895e62d7901f8d245198e89c5756b4d005f383ecd1e2bfe091456"
+    },
+    {
+      "file": "src/pages/__tests__/Monitoring.test.tsx",
+      "line": 105,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "43b7160178469c4169f0d37c49e4999c8fe84c24b0fc537410e856cb70822ac2"
+    },
+    {
+      "file": "src/pages/__tests__/Monitoring.test.tsx",
+      "line": 110,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "033c1b926ce07c6515d967c61ac922289565da78cfbf8ac15c9d5f277adeae6d"
+    },
+    {
+      "file": "src/pages/__tests__/Monitoring.test.tsx",
+      "line": 111,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "e81a9f5c1145d00f09116cbcaca1739739eb55efca367aba47926113df56ec70"
+    },
+    {
+      "file": "src/pages/__tests__/Monitoring.test.tsx",
+      "line": 94,
+      "column": 61,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "bc5512a496cbfde34ebf2f4f68edb1f4604991c1b333726d7ae43e0954424e5f"
+    },
+    {
+      "file": "src/pages/__tests__/Monitoring.test.tsx",
+      "line": 99,
+      "column": 35,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "50f9b738d159703af7a2a04f9656a24a06f8882476b2d397ea42a24247295007"
+    },
+    {
+      "file": "src/pages/__tests__/Reports.test.tsx",
+      "line": 67,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "8e55036cfb2f036853ffcbe27df8dc746528f1ad43df36aff50f46b26cf209ba"
+    },
+    {
+      "file": "src/pages/__tests__/Reports.test.tsx",
+      "line": 56,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "2dd4c12ace33780f0ab94a66a94d8f16c75d4b12585283a4696de891a7968211"
+    },
+    {
+      "file": "src/pages/__tests__/Reports.test.tsx",
+      "line": 57,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "4c0677b62f21e7258aed0c38539801736d72e7563a56968611dc9eedf5af8461"
+    },
+    {
+      "file": "src/pages/__tests__/Reports.test.tsx",
+      "line": 58,
+      "column": 53,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3506be86670ed6a7dba8e8e3a2465505952a0aacc0f175bddb74535cddef1da7"
+    },
+    {
+      "file": "src/pages/__tests__/Settings.test.tsx",
+      "line": 162,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "1faaf11164e4fddbc86ef0e99a89fd4cb23d28851065d6132e0237b4307c1db6"
+    },
+    {
+      "file": "src/pages/__tests__/Settings.test.tsx",
+      "line": 128,
+      "column": 53,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "a8dbe5e2f3d3a82cf332ee054341bb91403e019599b87305e3603a384904eee5"
+    },
+    {
+      "file": "src/pages/__tests__/Settings.test.tsx",
+      "line": 129,
+      "column": 57,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "4bc332dd5bb27cf422c46294a21c25981d91e62efb49fad1d6b51260aa7c288c"
+    },
+    {
+      "file": "src/pages/__tests__/Settings.test.tsx",
+      "line": 130,
+      "column": 49,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "09fde36c43fee776dcfe213a2adb259f968167ecb9a27b1ef3b0865febddb44f"
+    },
+    {
+      "file": "src/pages/__tests__/Settings.test.tsx",
+      "line": 131,
+      "column": 48,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "910eed0a00ea6aae91b80e4c44ec4c3da8addf4c700a267c59048f3ed7e6bb26"
+    },
+    {
+      "file": "src/pages/__tests__/Settings.test.tsx",
+      "line": 136,
+      "column": 43,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "ce94f8b7f84e5d3fb8f9c60eef5d2b6ffb654158629f914ba3c5f5da4a28ae77"
+    },
+    {
+      "file": "src/pages/__tests__/Settings.test.tsx",
+      "line": 137,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c4f058aa83176d15c04b4254f203d70c0288bae1766d456efd2a7d1861cc699f"
+    },
+    {
+      "file": "src/pages/__tests__/Settings.test.tsx",
+      "line": 161,
+      "column": 39,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "a1b1b0a9b2be0bd9bb5aa2cb02a63b0d421a3155ab0f8492b0b3b762fee73aa2"
+    },
+    {
+      "file": "src/pages/__tests__/Users.test.tsx",
+      "line": 58,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "38cb10af1489d71f7bad45a99b61788e8ef96fb5d27133075ab2c8eab3932ab2"
+    },
+    {
+      "file": "src/pages/__tests__/Users.test.tsx",
+      "line": 47,
+      "column": 42,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "afa6ecd029f524e9faa1d29950f3bf611b760ce9b081be9c9279a5e065635177"
+    },
+    {
+      "file": "src/pages/__tests__/Users.test.tsx",
+      "line": 48,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "7a236c215fc246853001aebd7fa9b7d00987912ae52240a4d67e525717a5f011"
+    },
+    {
+      "file": "src/pages/__tests__/Users.test.tsx",
+      "line": 49,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "21c55db6a1e37d33dcc2e076f1bc3f8b3789e21010c9e5471b0b6e84eaa0db71"
+    },
+    {
+      "file": "src/pages/__tests__/Users.test.tsx",
+      "line": 57,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "d7279d17eb45dafcc34c4dfea8513a2aba0ef3279c66ee9443bb5b08c0ff758c"
+    },
+    {
+      "file": "src/pages/__tests__/Violations.test.tsx",
+      "line": 101,
+      "column": 56,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "b1e4b7b12d53aa831a1b39cc240d31ecec42dcacaebba365577a11acc480255e"
+    },
+    {
+      "file": "src/pages/__tests__/Violations.test.tsx",
+      "line": 102,
+      "column": 42,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "6dd9bf57668f2522ee0362e3568a52d5c85ddb33f283a57331525e835d866ff1"
+    },
+    {
+      "file": "src/pages/__tests__/Violations.test.tsx",
+      "line": 107,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "99a8f5313e3925fb99c1492e391f741a83e9576c27448f3589246af9f9757375"
+    },
+    {
+      "file": "src/pages/__tests__/Violations.test.tsx",
+      "line": 108,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3c89479b4cbf393bda51d781991544ecbd176aa8b4e3131711dfee40c9972785"
+    },
+    {
+      "file": "src/pages/__tests__/Violations.test.tsx",
+      "line": 109,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c218f1f929e43e72a56f57d86468b2476fc1fb7073e446108428581854ee7e7d"
+    },
+    {
+      "file": "src/pages/admin/DisputeEscalationAuditPage.tsx",
+      "line": 504,
+      "column": 21,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '(value: number) => string[]' is not assignable to type 'Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [...])'. Type '(value: number) => string[]' is not assignable to type 'Formatter<ValueType, NameType>'. Types of parameters 'value' and 'value' are incompatible. Type 'ValueType | undefined' is not assignable to type 'number'. Type 'undefined' is not assignable to type 'number'.",
+      "contextHash": "98408f459afccc6e41cd0c542412b5c72ed5d97bc511374e32e619cd07d7610b"
+    },
+    {
+      "file": "src/pages/AdminTelemetriaPage.tsx",
+      "line": 178,
+      "column": 135,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '{ mode: \"single\"; selected: Date | undefined; onSelect: Dispatch<SetStateAction<Date | undefined>>; disabled: (date: Date) => boolean; initialFocus: true; className: string; }' is not assignable to type 'IntrinsicAttributes & DayPickerProps'. Property 'initialFocus' does not exist on type '(IntrinsicAttributes & PropsBase & PropsSingle) | (IntrinsicAttributes & PropsBase & PropsSingleRequired)'.",
+      "contextHash": "efd018f6901cee6f8e4f6577bbd6f594bcc63dbe196261c5404e5f596c5d0698"
+    },
+    {
+      "file": "src/pages/AdminTelemetriaPage.tsx",
+      "line": 188,
+      "column": 183,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '{ mode: \"single\"; selected: Date | undefined; onSelect: Dispatch<SetStateAction<Date | undefined>>; disabled: (date: Date) => boolean; initialFocus: true; className: string; }' is not assignable to type 'IntrinsicAttributes & DayPickerProps'. Property 'initialFocus' does not exist on type '(IntrinsicAttributes & PropsBase & PropsSingle) | (IntrinsicAttributes & PropsBase & PropsSingleRequired)'.",
+      "contextHash": "592f9d0291a09d67c27ac7386dea12120f6d84c04effc5d5886026a735b3b879"
+    },
+    {
+      "file": "src/pages/WorkSchedulesPage.tsx",
+      "line": 90,
+      "column": 26,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'block_outside_hours' does not exist on type 'WorkSchedule'.",
+      "contextHash": "383ff602b26e14c5e4af038074eb3c7cc978445149c5a6f64d9914fedd1d161f"
+    },
+    {
+      "file": "src/pages/WorkSchedulesPage.tsx",
+      "line": 89,
+      "column": 26,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'overtime_allowed' does not exist on type 'WorkSchedule'.",
+      "contextHash": "e4114f9435a589ee4b335118ac5e3ff9f7f217bff88920507836343511f75765"
+    },
+    {
+      "file": "src/providers/AppProviders.tsx",
+      "line": 15,
+      "column": 24,
+      "severity": "error",
+      "code": "TS2322",
+      "message": "Type '{ children: Element[]; future: { v7_startTransition: boolean; v7_relativeSplatPath: boolean; }; }' is not assignable to type 'IntrinsicAttributes & BrowserRouterProps'. Property 'future' does not exist on type 'IntrinsicAttributes & BrowserRouterProps'.",
+      "contextHash": "aa70b4fa1fa3ccde99af85428ffb9df0beeeb4533bfe7b7a9ab655902d0d3da5"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 47,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "5b01a1d4275a3196cc79b81356fccb66181a5e7676ac7537a7ad64c091b0943b"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 35,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3a92f0c96f409ce6f5aef7b85350cd17f44eac14f7b12a50a1030f79889b971f"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 40,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "eec4ca769e36aa44fb468ce170d0a43a86451c183ebe4db319bab41306913335"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 41,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "6f9419f7cd51579d60d8b4b3ce4b4ae7d5a209d1b5985562deedccce320f364a"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 42,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3ad3d0cf19f00a94a96468beec26d2a03c46b587a4ea2e2f699fd6d19f2211a9"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 61,
+      "column": 43,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "5f13b1367f402450406e9c0c3b305aff36a6b99d2c045bf46c9bcb2db5f5afee"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 66,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "1d4a4f214c55cf5c4b5737f0a647e3630ae7b4c4a30516d3549f64655a49228b"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 54,
+      "column": 22,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveAttribute' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "39e8d3242226446c136823eceb83401875d2888adb23e2619b30f10c4ab6d29f"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 55,
+      "column": 22,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveAttribute' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "4fe09ca446da137528ee803d05920cc363e7af2720505f4d97b1882d22341d46"
+    },
+    {
+      "file": "src/test/base-donut-chart.test.tsx",
+      "line": 56,
+      "column": 22,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveAttribute' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "128ca79e60b8d1f5e8521b3484f902e00c8a0e60233f4caf671f3f87608ddb59"
+    },
+    {
+      "file": "src/test/breadcrumbs.test.tsx",
+      "line": 44,
+      "column": 22,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "210438d50c26b83c6a6b962a3564c67d63f47c9c1de5ff70373e85e2af6c8dbc"
+    },
+    {
+      "file": "src/test/breadcrumbs.test.tsx",
+      "line": 82,
+      "column": 54,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "a2c97413c2bbc1755b8acf3f118210da0f8f47e88a0007f20f92cfacfc6a9b28"
+    },
+    {
+      "file": "src/test/breadcrumbs.test.tsx",
+      "line": 37,
+      "column": 49,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c00826d30e03d669dcdb9285c75fca63a0ac9374da41348450566f830341b619"
+    },
+    {
+      "file": "src/test/breadcrumbs.test.tsx",
+      "line": 38,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "2d3f1723be5e2089d5bc1bee49650eef32cdb492b8d8abf699575f2443ce076f"
+    },
+    {
+      "file": "src/test/breadcrumbs.test.tsx",
+      "line": 62,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "9844d33c7f6b94cfedf8c7aaf32e4f3f6d50d77c7877f06bb68090b8b6bc6cfa"
+    },
+    {
+      "file": "src/test/breadcrumbs.test.tsx",
+      "line": 73,
+      "column": 49,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "fa2a8268c9ee73c33ed8d97a0f4b219db3b9d8bc24a2fca8e780d77e6ab26528"
+    },
+    {
+      "file": "src/test/breadcrumbs.test.tsx",
+      "line": 51,
+      "column": 23,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveClass' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "08fe56e79fe02394efc5dc714324016a0cef3f988a223d081360f5eb03946d18"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 101,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "5661a11997147b41d1bff41323f545cfd275dabeb4422af69ac89e4fbfb44c91"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 90,
+      "column": 17,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "45326181ba6819991471d301e2ab68a28fe064b4596f72490bdd1f15ac348af6"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 102,
+      "column": 38,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "17bee805ac3c5c861ffee575bdd9f6c77d200de6e64a4a2adc6109cd28b488ed"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 31,
+      "column": 40,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "6fa4affbc7580e1ac1ba4025a783357497cfab1090da9e271320f5765307f445"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 43,
+      "column": 50,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "ded0ca5549feecf91133fa89829882e8d5131b48d4c36e9d22dfeb0ea5d13ef1"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 56,
+      "column": 40,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "ce44d5f919e493bd94d752ee42cc06f1a49f15b9b5d3abc23c38483dd0ef57ae"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 57,
+      "column": 38,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "fd8f47fe40320021500dbc70165a5c086b20ecebd2734566331e5b6f75a37290"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 68,
+      "column": 40,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "e34b6108f9b306855ef890c6a5502e5ed0fae535b004a7ff2cbc8c755eefbffb"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 79,
+      "column": 36,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c72eeed42a21ea6c100789035c1040f077b1dfc7e2a97d097db3c9383c61b321"
+    },
+    {
+      "file": "src/test/chart-tooltip.test.tsx",
+      "line": 91,
+      "column": 17,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveStyle' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "755e11076e7aa63f2eea96a6ceb7fca3afae121370b456d09888ef61d42a486f"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 46,
+      "column": 79,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "bd42ca084ed0d5adc8326577cdbfd94ef2a76ec2e02ac80f72e70cd9f69acd2b"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 61,
+      "column": 79,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "bd42ca084ed0d5adc8326577cdbfd94ef2a76ec2e02ac80f72e70cd9f69acd2b"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 76,
+      "column": 79,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "bd42ca084ed0d5adc8326577cdbfd94ef2a76ec2e02ac80f72e70cd9f69acd2b"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 89,
+      "column": 79,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "cd9e707ba846d3dcdfa398c0b18b90d66567d78a3057e07148a239f8bd96628e"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 96,
+      "column": 79,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "6baa831c0c61b91251eec16fcc3f81819079c003050e24223e1a47aec6241a97"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 25,
+      "column": 57,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "57c72abfc3db00b8db52207abbc609980a0a46b9c1734a1e133a569a46582f6f"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 30,
+      "column": 48,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "40a7be245f41876785ad778379ccb3343ad3f5752d26c7151b7c81d4154c92ff"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 31,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "e60671144f2ddca530705f1dd0c3731f93f60a1344b06ad89b3717eb014276b5"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 38,
+      "column": 43,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3f4a38b8e827ddb06539a3b65fa9e56ea620c69d7e846d1c805ae4887bc05f64"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 53,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "7c19eec26286c5298dba3ccc90d387b2f3ce91d546d9dbeade3d60dc10957ec6"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 68,
+      "column": 43,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "8c9315ffd23d86e6b2ba56efa6d03123a9802ae0b1f3afc59345272a70fcc466"
+    },
+    {
+      "file": "src/test/charts.test.tsx",
+      "line": 83,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "653b0d9a8b6000eccd076008a7a547d5c3ef0032649f450b9fce8aa3d1e310f5"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 91,
+      "column": 36,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, ChildNode | null>'.",
+      "contextHash": "c2b68cc4b16a92b280e145eab92d03bd95eaca7dee6dc9573d940a87d7c6c90f"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 102,
+      "column": 25,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "7a0ddfd93667f1811258124a0d8a7a05013ebb25f7c92f8b6ed32eb51de66b00"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 108,
+      "column": 59,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "4b8844541be5d83e2a0cbf07e96064a897d17f062e55ab5df1e9f17161830912"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 109,
+      "column": 59,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "1d6df0ea6f1a70b6f9778712e8fd2d300a92854a682c06d99c4ccdff4c549bb1"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 115,
+      "column": 28,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "4200378f606d31f57e000da6bf9ae2701e324632a34a20b2a9d00f092821e63e"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 121,
+      "column": 31,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "d45c59eea13f99663bfa3032d8638fb36305b605c3ea917286e92d094d3f0e2c"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 126,
+      "column": 62,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "b4090baa5f4810971ab74aaad1dabf267e703a41e34b2babb67a941dda891a7a"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 15,
+      "column": 69,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "110e86ddbcd1400fdf1caeea669b2584904c8299f29dc617a8c7430a798ffe5d"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 20,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "49235955ffb690451838ae6688eee2cc48b072afa3575a74a8a82919176446fa"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 25,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "3197e02de8c10879f31697fc6c11ed659dd6c938673791679425492ff7a6f518"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 30,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "209ab437cb6805e5d028cc234c06022e8ca52fba11bb31574ba70ddf3c55af66"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 35,
+      "column": 53,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "71ca2ec33f5c4f9921943c7037ba16c108b1ee19c7440d78ec19c8e776d3d8f3"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 42,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "2da76d4baa0340bb427ebf224e019f2783310fea90d8889047a55256546b0b18"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 53,
+      "column": 59,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "4ef27fa86879bbec70f93b3798817d650a2809fa0a5b260b363d4801f1c6d6c0"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 60,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "665f41c0d1894634201dadb301c707ff2958f645da6b1606a9e72672bb60f33c"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 65,
+      "column": 54,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "eea97dfa89da84b5e8cd7547d944ca63c090ee8679efb9e8e03bbdd10049dab1"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 66,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "1c0e35572252dda1f8984052f59789a006b93780dc6680f293d27b08443dc36b"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 71,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "54a56a8f3d079d011725e0d1b3363f15b87bb407ab422d19b8891f270a70c38a"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 78,
+      "column": 64,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "e7ee6ab6432f94c01731a2fd5d0d43895e90e72f1b70c85bccf05d81094a4c9f"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 83,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "b4e58214c62ce01e312ecdf804e9fb6dc5871baa966e90c77c157cde120e2046"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 84,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "e7dd4dbc7a81d2f980adb7380778ad617f2944c8db0c38add6968cf2015722a1"
+    },
+    {
+      "file": "src/test/dashboard-skeleton.test.tsx",
+      "line": 96,
+      "column": 48,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "ddc4caa0cbfde948612b0cd60c8aeefe3b08d0b2270e93b152a7aa12e0e684c9"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 87,
+      "column": 38,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, ChildNode | null>'.",
+      "contextHash": "659080bc76c118c5fb6c7db55114024169bf63335090dec4d3821e9d47a54801"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 50,
+      "column": 48,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "7f0b6af0b6c151e1137ac8780a9adde2fdd0cd69257ae1780c49ef25522fd769"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 55,
+      "column": 49,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "f5ba02f72577852602b43876d3ae13861accc9a24aba34bcb8ed8bc900c2c0e0"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 61,
+      "column": 19,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "1ad53b22d240e63d2cd92982b7025bafb97b9bc3c16b1dc506ac3466ba6e0655"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 73,
+      "column": 53,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "cab0bc9084c948614a6c3b7351b2778ca1e0932fca1b6a5065392649395e2e7c"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 100,
+      "column": 64,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3537a0647bf4fe8b81def4446527a15ba650ec2b2adee843ffa99b680391088c"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 113,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "33fc9f1e04c7092d691ed7555488b58a06a00670b34288872652dfe4b37e75cf"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 120,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "c19e692928ecca49b2e8375dc49ed96e4f8eb37e993e8fe3122c2a593ea30426"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 126,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "7d6d41c79b33fbd44351c3af75c6d0265ac6908d5471a39c3cfea3885e690941"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 134,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "90c5defb172181bb22f58fdf25dcbbf1c02f947e08490722f0cc18b832c8c795"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 143,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "607a84706edb75c1dccfb7b79f30f14730cd8353e8363bbf6b2b5e9a3cb8856e"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 144,
+      "column": 74,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "05baa273f863cc671cc2a91b94b502167e4d5ed70be1a5ca70c4311c817e23e5"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 153,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "d7441d57aab387056ef0ee8b8469a489cea811f0bc153e79321d1fed1e7118af"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 160,
+      "column": 58,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "847339b1b0022b2606f92610485ed11bbe28e7534bc76211eb493b4e65aeda56"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 165,
+      "column": 61,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "430f513c8c37db9d7fcaa6ddb261cb7c562fe93c788ff1223597662e05ec2cf3"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 20,
+      "column": 58,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "1410ad187c9ae52c574917e85f562486e08c5030dbaf67603c60c2235031539e"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 25,
+      "column": 48,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "5496ddd1daf3fb253d78af1d3c5da3be88b426aefaf488809070c81e18c40d90"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 26,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "95b402f5a922873676362e565ca8c99aa96e7de430e65f74742f1669d7e07e21"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 68,
+      "column": 48,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "32def470e82dca1f7279a1239da896789bc6bde93640faed72d5325f0a67beab"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 95,
+      "column": 58,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "4ce073b49be03d45ef49c6ff266c4edea9235e6ea0aabcd31e61f4b6d11ce5eb"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 31,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, SVGSVGElement | null>'.",
+      "contextHash": "6333e8493c21845fedd289b9963ceb2e39ccb0095efd4f548ca913d0204471c0"
+    },
+    {
+      "file": "src/test/empty-states.test.tsx",
+      "line": 62,
+      "column": 19,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveAttribute' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "7311eee0a47a042370ffec04d3641fb925ecaa422f63bc8efd468e05fb99292a"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 10,
+      "column": 37,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3b5eab93b7d88bb16dac37cd9a7727496dee10c0e9e024a16590454f17ad515e"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 15,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "a436572cb5f20af261cb7b003cfb12eb918b010719c3d00a40d6eaa96ff1af85"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 21,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "e3be6490671feaaa3280240ed85ac20760470f61b99bc25afae8d15412b0113c"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 28,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "d5aded029a0cf4d383a6376b3c49edb26a7b9987cc80ea549f7b89e94d7f4625"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 36,
+      "column": 42,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "00ab846f827ea8573a025eb46f42607b97a3e1608a5a5eacf41fec0a367e5567"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 43,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "50a991ffba5324d0bfda5b2e7e480dcb19a7eb75bc1e8860bc500bc7fde619ce"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 44,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "93db346c1ef9be075040c96609b6a6f64c47b40b0c7700f90e16a899ecd6edc1"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 55,
+      "column": 40,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "993c48d455ddc478af44ca29f51d6aaba8690b11fb866fa00d867fac64d6abcc"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 56,
+      "column": 44,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "6c7859d5bbfcf4420d7104e3359fb445075ffbe36933114a2cabcf07c7f020c4"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 57,
+      "column": 49,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "58638649e8391d0d8bfc28da56dc1d6552d563ebbedd2062d87ac30efb8efa24"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 69,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "9401d98001284d545b63f5d99e10e450f15962c1ebbdf4406450d4c54825ca75"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 70,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "1ab98945948db411b4e0afb349fcadadf33603bcb00491b2dae2490d42eb020a"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 9,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "b108128e0be8f92786b1a7bd7f583059a0e0e9e3ad0b403b03b5b2722bca0a0b"
+    },
+    {
+      "file": "src/test/forms.test.tsx",
+      "line": 16,
+      "column": 43,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveAttribute' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "289781b972f7c866f9f6d6ed9b637bffe2a3ca3ad3c24ea192fe0a9bb0e88316"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 100,
+      "column": 53,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "55ce8990fc7ad60fbd952cd4afe22fb3b790bd5f620eb8539ff4d6febb371126"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 101,
+      "column": 40,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "a52ce1e3299254c58257413ec2b18312d710e8e36071f937c37287fcfabfb7dc"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 106,
+      "column": 52,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "604059abc68026f42b7ed4f1bb6667f7485c1d8c7158b09fd713dca046335722"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 108,
+      "column": 35,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "ccf7081f07c1b8e571d14a99d06217911b15ce3419e6fe4c7f6f05b7f3a09243"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 113,
+      "column": 36,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "1ec4c97a1dc5b0c07e97be18c4a27ee01388235b682bf0f70f4307cccf849766"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 118,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "f6a74b97a1bff62d653464f6bbb29e1278a7aafd6e3351d9cf555722bebf50f3"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 134,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "9c5fea6841f52896102d72601c62d1feacede78d8fceeeffde46378187e87938"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 135,
+      "column": 65,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "7d27c1f213ffa871bb3d78728a7618a6ea41b84c3f08f8c652bb5c89e51186d1"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 136,
+      "column": 66,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "789d70540e2326fe63fa8723af299b6ed4265b6e486083834fc8f975966caf4e"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 137,
+      "column": 55,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "289e41ae10aa98326f038e788998f048f9dcb04c5b4b36598262005ae4ef8cd1"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 90,
+      "column": 40,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "b26fd1d02cce6f072395ac5c673e58f7b646c5cc2b21701c89807de88c6248f1"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 95,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "e67571ea58744f987d071c651b479c8066a34caede80141d7c819e12ed705985"
+    },
+    {
+      "file": "src/test/header-enhanced.test.tsx",
+      "line": 215,
+      "column": 19,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveAttribute' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "8984fc00d3bf5f13e292d9256fa4345fa7e11b0fbb889fa2f09d38b0ea25991e"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 409,
+      "column": 43,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeDisabled' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "7e6fa4d507376a70703428a04e90e77ebe92892275d2fa5e48a76fd9a58a2062"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 118,
+      "column": 61,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "b7e0fff6c926ca5a0e75d780303ddca0673f4ab7afc93a2b0370dd25b6e4707b"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 131,
+      "column": 61,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "b7e0fff6c926ca5a0e75d780303ddca0673f4ab7afc93a2b0370dd25b6e4707b"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 142,
+      "column": 61,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "b7e0fff6c926ca5a0e75d780303ddca0673f4ab7afc93a2b0370dd25b6e4707b"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 166,
+      "column": 61,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "b7e0fff6c926ca5a0e75d780303ddca0673f4ab7afc93a2b0370dd25b6e4707b"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 190,
+      "column": 61,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "b7e0fff6c926ca5a0e75d780303ddca0673f4ab7afc93a2b0370dd25b6e4707b"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 210,
+      "column": 61,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "b7e0fff6c926ca5a0e75d780303ddca0673f4ab7afc93a2b0370dd25b6e4707b"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 218,
+      "column": 61,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "fab47187f81ca108f15ccb424259cb169e83813018b2a5898ac4be841a0e7dde"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 422,
+      "column": 65,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "2fdd15b715e98bb6bc3dd5c5e84d470d0fd0b217e19c788b9180cae78858c7e7"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 396,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "f023045246dc806496a118b1f16b8b0023936e435bb4597f599abf8c06151298"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 108,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "d6aba01615805c0adcb01b63b6986db06116b770800a4e8bce7d64d6ac44d8d8"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 156,
+      "column": 40,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "de9a8217fb130c227df9ba142cb6681da6c94365df2142929b4ca37fd1f1fcd4"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 180,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "f0b2631c8ee36ac85aa8184e0d4c0bd5f55d8c743b918f6ff7ddf5ec297d45f8"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 198,
+      "column": 45,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "da0e6ee98ed44b8bb0234afd3e53fabb4e8546aff3725beb0c77f695145474f1"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 330,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "da5e4bf087edf30c68e76e6ec5755b41726c6a45334eaeefdcaf62693d95012a"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 343,
+      "column": 37,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "39f26d08859a57339bc75f91cc04c075406fad4105096e40599cabab40f8ed5c"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 356,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "a3324cddf9375e08fecf885c92b14cb26b6bf44711ddcce00f5b08d266692d5c"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 382,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "fda6ce8a0e3c88f32dd3853b1c5be384d7085abf8df0e39e430be208c86908b7"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 437,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "1dafeb2cccd6949ffe196ed8dabf5b33f61d2062b3454972d2872222e1f0b9e3"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 450,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "2322af1e2fec2b6dcacc708137f9403ff9f19298eeae7a3fccfaf96256693e50"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 480,
+      "column": 42,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "633538635c688c00395d05a16d05fff6d293bbde2842916f16f0aa844782ee9b"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 495,
+      "column": 37,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "39f26d08859a57339bc75f91cc04c075406fad4105096e40599cabab40f8ed5c"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 511,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "f12e2001b641ca877b00ad5117e284f35212ecef7706e20548a1a300f50ff6a1"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 512,
+      "column": 42,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "5dccc43be30dc114adabad73e83adb70342caa4f4f3cf589df2b513826741a3a"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 527,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "180d3869ead632db9670818a9be9cbfcd25b3ee1d4f739e9213c404f163ef388"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 528,
+      "column": 40,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "74738711c1cb2451ae793a67b7a72b8c05f13b80744864f9132085aba8b20768"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 529,
+      "column": 41,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "929fc2d86f5f7cd37a51a542874d45c31d4bf224e90ae29db0cfe9e0d53dc097"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 546,
+      "column": 38,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "0dccd805bb713429ec78b95f9be9781004a7aa45df3da6ada4e096e10941b929"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 547,
+      "column": 38,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "a09dbfc30498e501a1f9f4f732e77b9fe3c96f6f5d335aed98be480fe1633e8b"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 71,
+      "column": 57,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "9652bff5d2b1866dcd72f67e6d7152a81a2c53c555803877470b3a57059c8c08"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 78,
+      "column": 9,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "ded293e24f8b94d79009f112927d410489f3198ae9c71e593a28e501a072af62"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 83,
+      "column": 50,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "644eae7c35ac73d04994d3c4575328917655972cd9e3ce36a1de72bcf3d18103"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 88,
+      "column": 54,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "e4da91e78fcb466dfc2ffe7153f7392c0bd3e12e2c29a7dae10cba6d83c843c5"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 369,
+      "column": 43,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveAttribute' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "0c11beae97216d5684ef89cf022ffa9f770d0889c7b5c4a267dc8c25ddb8e912"
+    },
+    {
+      "file": "src/test/improvements-verification.test.ts",
+      "line": 463,
+      "column": 51,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toHaveAttribute' does not exist on type 'Assertion<void, HTMLTextAreaElement | null>'.",
+      "contextHash": "fe1cdc6586609f49bcaa9988812b350f3ab7cbd57587f0555506dadf9989237b"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 103,
+      "column": 18,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "86828137376646346d2b0ddfc20f4ddb7abdf329b7277b738d0d3e97da6c1ccb"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 43,
+      "column": 27,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "63510626d5dde9d042b188c80161cc8d952fcec76219e939abd9a1d5e80022a5"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 85,
+      "column": 21,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, Element | null>'.",
+      "contextHash": "e3f007454b4626bb3db52b919c60e6645489076a19541d25de0ec921486a5316"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 72,
+      "column": 55,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "28d064cfff487cd438046bf48178e818ed0b410692de678a74e3537ea4ccf659"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 77,
+      "column": 55,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement | null>'.",
+      "contextHash": "8a6afc515eb3baa7930a64905235eddaa82f060731ebe8d024e153278ae86273"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 111,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "29ee945014cee7d8449b17772f8261b23cf6850c80a2322014c0af05f5a7600d"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 25,
+      "column": 49,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "3377d8d45a39f195a9a4b51f21075cdb664a5cc8d3cb7e6ff719b317d3d6d3f4"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 30,
+      "column": 36,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "d4d54d7247d32751239d45f523b72b20a6fbe7199b24fd5e5d177cf5fc333211"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 36,
+      "column": 37,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "9284aa5950d99755af68322b76043560fa9d503ec7f5f44300c8eb108e37b050"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 48,
+      "column": 37,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "955de5beabdee04d38d3cfcc8c007a1ab6d117ed3db158b474702d2f898d7db6"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 49,
+      "column": 46,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "838554b02d7c4060df1136b28ee6da2cbfb6c085601ec1fe6cee0bc52dedb7ae"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 54,
+      "column": 36,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "a2c98eb4aa5ee81e33bc83a0da388fc4bcfb60e9a0ad0116a320cf3cd8100f13"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 55,
+      "column": 47,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "d6cc3b482c85e1097b11d9cec2a649d98371835ef9d5cf49f475c175b22db7bb"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 60,
+      "column": 55,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "9d7b6c4c09184317a9361975fac61401d4258b4720e3745b8e63c05b48bace2b"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 66,
+      "column": 56,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "33f5b376f66a4bcfc1ae676887813f49a9fa7a60b894c89bef26cc4624852a35"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 90,
+      "column": 36,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "f8c2c26bf70f87a3d3a24f542e54e35babb0a7dca383b2dff239e096b7d56700"
+    },
+    {
+      "file": "src/test/stats-card.test.tsx",
+      "line": 96,
+      "column": 35,
+      "severity": "error",
+      "code": "TS2339",
+      "message": "Property 'toBeInTheDocument' does not exist on type 'Assertion<void, HTMLElement>'.",
+      "contextHash": "f14db8ab1ee171c87b822b0aa056adf297db524505f31966e8c72ddb798d997b"
+    }
+  ]
+}
