@@ -13,6 +13,9 @@ jobs:
         with:
           node-version: '20'
       - run: npm ci
+      # "npm run build" chama "bun scripts/generate-audit-pdf.js" (package.json);
+      # o runner ubuntu-latest não traz bun por padrão.
+      - uses: oven-sh/setup-bun@v2
       - run: npm run build
       - name: Deploy Preview
         run: echo "Preview deployment would happen here"
