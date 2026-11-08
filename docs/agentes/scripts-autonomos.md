@@ -1,7 +1,7 @@
 # Scripts autônomos — estado real do repositório
 
-Maquinaria portada de `adm01-debug/Zapp_Web_V2`, onde ela existe como **374 scripts executáveis +
-241 suítes unitárias** em 23 pastas de `scripts/`, orquestrados por 22 workflows. O objetivo é um só:
+Maquinaria portada de `adm01-debug/Zapp_Web_V2`, onde ela existe como **733 arquivos em `scripts/`
+(216 executáveis + 453 suítes de teste)** em 23 pastas, orquestrados por 22 workflows. O objetivo é um só:
 manter no repositório um retrato medido do que existe, para que agente de IA não gaste tokens
 redescobrindo o projeto nem trabalhe sobre documentação velha.
 
@@ -17,7 +17,8 @@ Complementos do Zapp: `talkx-status-regen.yml` (placar por PR), `db-live-guard.y
 produção semanal, só leitura, reporta por issue), `settings-guard.yml` (perímetro do GitHub contra baseline
 versionado), `branch-hygiene-audit.yml` (branches podáveis, SLA de code scanning), `auto-update-pr-branch.yml`
 (fila de merge serial), 40 guards/ratchets em `scripts/ci/` com baselines (`eslint-baseline.json` 680 KB,
-`typecheck-baseline.json` 50 KB) e 253 scripts de auditoria de banco em `scripts/db-audit/`.
+`typecheck-baseline.json` 50 KB) e 316 arquivos de auditoria de banco em `scripts/db-audit/` — 209 deles
+provas que sobem um PostgreSQL 17 descartável em Docker, nunca tocando produção.
 
 ## Fase 1 — portada (esta PR)
 
