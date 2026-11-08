@@ -1,0 +1,71 @@
+# docs:
+#   gatilho: segunda 10:31 UTC (07:31 BRT) e workflow_dispatch
+#   prova: regenera inventario/estado/ a partir do código e abre PR se o conteúdo mudou de verdade
+#   falha: se o gerador sair com erro
+#   avisa: abre PR em automation/inventario-estado (nunca empurra em main)
+# nao-e-bug: sem mudança estrutural o run termina verde sem abrir PR.
+name: Inventário do estado real (semanal)
+
+on:
+  schedule:
+    - cron: '31 10 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: inventario-estado
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  inventario:
+    name: Regerar inventario/estado e propor PR
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '20'
+
+      - name: Inventário das edge functions (lado repositório)
+        run: node scripts/inventario/gerar-repo.mjs < /dev/null
+
+      - name: Mudou de verdade? (ignora carimbos de data)
+        id: mudou
+        run: |
+          set -euo pipefail
+          RESULTADO="$(node scripts/inventario/mudou-conteudo.mjs inventario/estado/edges.json)"
+          echo "mudou=${RESULTADO}" >> "$GITHUB_OUTPUT"
+          echo "mudou=${RESULTADO}"
+
+      - name: Abrir PR com o inventário
+        if: steps.mudou.outputs.mudou == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        env:
+          HUSKY: '0' # o hook pre-push do husky bloquearia o push interno da action
+        with:
+          token: ${{ github.token }}
+          base: main
+          branch: automation/inventario-estado
+          delete-branch: true
+          commit-message: 'chore: inventario do estado real [auto]'
+          title: 'chore: inventário do estado real (semanal)'
+          body: |
+            Inventário refeito automaticamente por `.github/workflows/inventario-estado-semanal.yml`
+            a partir do código (sem acesso a banco). Só arquivos em `inventario/estado/`.
+
+            - main de origem: `${{ github.sha }}`
+            - run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          labels: inventario
+          add-paths: |
+            inventario/estado/edges.json
