@@ -18,12 +18,18 @@ delas está comprovadamente funcionando por pipeline. O único caminho com actio
 | `vercel.json` | **não existe no repo** — toda a configuração de build/rotas/headers está só no dashboard |
 | MCP Vercel | `mcp__Vercel__*` — escrita = ação de produção |
 
+- **O deploy real vem da integração nativa Git↔Vercel, não do workflow.** Evidência: o app
+  `vercel[bot]` comenta em PR deste repo com a tabela de deployment do projeto `sentinela-v2`
+  (team `juca1`) — visto na PR #89.
 - O workflow `deploy.yml` roda `amondnet/vercel-action@v25` com `--prod` em **todo push para `main`**,
   sem depender do CI. Mas usa `VERCEL_TOKEN`/`VERCEL_ORG_ID`/`VERCEL_PROJECT_ID`, que **não estão
-  cadastrados** (nem no repo nem nos 3 environments).
-- Se o deploy vem da integração nativa Git↔Vercel (e não do workflow): **NÃO VERIFICADO** — o token
-  da sessão recebe `403` em `list_deployments` e `404` em `get_project`. Confirme no dashboard antes
-  de afirmar que um merge subiu.
+  cadastrados** (nem no repo nem nos 3 environments): é redundante com a integração nativa e inerte.
+- **Commit com e-mail de autor que a Vercel não reconhece = deploy `Blocked`.** O `vercel[bot]`
+  responde "GitHub couldn't verify an account for commit …" e nenhum preview sai. Commits deste repo
+  (e do Zapp) usam `adm01@promobrindes.com.br`; use esse autor, ou o dono conecta o outro e-mail à
+  conta Vercel. Não é falha de CI nem do seu código — não "conserte" com empty commit.
+- Estado dos deployments pelo MCP: **não auditável nesta sessão** — `list_deployments` responde `403`
+  e `get_project` `404` com o token disponível. Confirme no dashboard antes de afirmar que um merge subiu.
 - **Nunca** coloque segredo de servidor na Vercel (`SUPABASE_SERVICE_KEY`, `JWT_SECRET`, `SMTP_*`,
   `AWS_*`): não há serverless neste projeto. Toda var `VITE_*` entra no bundle e **é pública**.
 
