@@ -1,9 +1,10 @@
 # GitHub (perímetro, CI, workflows) — referência para agentes
 
-Ler quando mexer em `.github/`, abrir/mergear PR, ou quando um workflow falhar. Comece pelo fato
-central: **hoje todos os workflows deste repo terminam em `failure`** — CI, Lint, Preview, Deploy, CD,
-Security Scan e Update Dependencies. "Esperar CI verde" não é critério utilizável aqui até que as
-causas abaixo sejam corrigidas.
+Ler quando mexer em `.github/`, abrir/mergear PR, ou quando um workflow falhar. Estado atual (logs reais
+do run em `d4fdbb3`, não suposição): `build`, `deno-contract-tests` e `agent-instructions-guard` passam
+desde #90/#91 (eram os bloqueios de instalação/build). `lint`, `quality`/`test`, `deploy` (workflow),
+`scan` e `lighthouse` continuam vermelhos por débito pré-existente (ver causas atualizadas abaixo) — não
+por falha de instalação. "Esperar CI verde" ainda não é critério utilizável aqui; use "sem erro novo seu".
 
 ## Escrita no GitHub
 
@@ -52,35 +53,35 @@ Consequências que custam retrabalho se ignoradas:
 
 ## Por que está vermelho (causa raiz reproduzida)
 
-1. **`CI` (jobs `quality`, `build`, `test`) morre no passo `npm ci`.** Reproduzido localmente:
-   `npm error code ERESOLVE … Conflicting peer dependency: eslint@9.39.5 … peer eslint@"^2 || … || ^9"
-   from eslint-plugin-import@2.32.0`, contra `eslint@^10.11.0` em `package.json`. Nenhum dos 3 jobs
-   Node passa do passo 4. Workaround local: `npm install --legacy-peer-deps`.
-2. **O mesmo bump de eslint 10 quebra o lint em si**: `npx eslint` aborta com
-   `TypeError: Error while loading rule 'react/display-name': contextOrFilename.getFilename is not a
-   function` (`eslint-plugin-react@7.37.5` não suporta eslint 10). Vale para `ci.yml:27`,
-   `lint.yml:23` e o `pre-commit`.
-3. **`Security Scan` falha com `CodeQL job status was configuration error`** (run de 2026-11-08), além
-   do aviso `Resource not accessible by integration` — coerente com a ausência de `permissions:`.
-4. **`npm run build` exige o binário `bun`** (`package.json:7` roda `bun scripts/generate-audit-pdf.js`
-   antes do `vite build`) e **nenhum workflow instala bun** (não há `oven-sh/setup-bun` em
-   `.github/workflows/`). É o próximo bloqueio depois do `npm ci`.
-5. **`deno-contract-tests` falha por teste que exige stack local do Supabase.**
-   `supabase/functions/agent-collector/agent-collector_test.ts` faz request HTTP para
-   `http://localhost:54321/functions/v1/agent-collector`; o job nunca sobe `supabase start`, então dá
-   `Connection refused (os error 111)` → `error: Test failed`. Como o step é
-   `find … | xargs -I {} deno test {}`, o `xargs` encerra com **exit 123** mesmo com os outros
-   arquivos passando (os 5 testes de `check-geofence/contract_test.ts` passam). São 5 arquivos de
-   teste em `supabase/functions/`: `send-webhook`, `agent-collector` (2), `mobile-collector`,
-   `check-geofence`. Este job **não** usa `npm ci`, então essa falha é independente do ERESOLVE.
+**Corrigidos em #90/#91** (confirmado via log do run `d4fdbb3`, não suposição):
+1. ~~`npm ci` morria com ERESOLVE (`eslint@^10.11.0` × `eslint-plugin-import`)~~ — eslint voltou para
+   `^9.39.5` em `package.json`; `npm ci` e `npx eslint` já rodam.
+2. ~~`npm run build` sem o binário `bun`~~ — `oven-sh/setup-bun@v2` adicionado em `ci.yml`, `cd.yml`,
+   `deploy.yml`, `release.yml`, `preview.yml`.
+3. ~~`deno-contract-tests` morria com `Connection refused` contra `localhost:54321`~~ —
+   `agent-collector_test.ts` ganhou `ignore: !Deno.env.get('SUPABASE_URL')`.
 
-Quando o CI estiver verde de novo, atualize esta seção no mesmo PR.
+**Ainda vermelho, débito real (não é falha de instalação):**
+4. `lint`/`quality` falham no passo `eslint` em si: >1000 erros/avisos reais pré-existentes em
+   `src/`, `supabase/functions/` e configs (`@typescript-eslint/no-unused-vars`, `no-explicit-any`,
+   `no-console`, `import/order` etc. — ver log do job para a lista).
+5. `test` falha com `TypeError: webidl.util.markAsUncloneable is not a function` em `node_modules/undici`
+   — o runner força Node 24 mesmo com `setup-node@v4` pedindo Node 20 (aviso do próprio runner:
+   "Node.js 20 is deprecated... being forced to run on Node.js 24"). Causa é da infra do runner, não do
+   `package.json`.
+6. `deploy` (workflow) falha em `amondnet/vercel-action@v25` com `Input required and not supplied:
+   vercel-token` — secret `VERCEL_TOKEN` não existe no repo (ver tabela de perímetro). O deploy real da
+   `main` acontece pela integração nativa Vercel↔GitHub (commit status `Vercel: success`), independente
+   deste workflow.
+7. `scan`/`lighthouse` não foram reinvestigados nesta rodada — tratar como débito até next check.
+
+Corrigiu algo desta lista → atualize esta seção no mesmo PR.
 
 ## Workflows — 12 arquivos (+ Dependabot e Copilot, dinâmicos)
 
 | Arquivo | `name:` | Gatilho | O que faz | Estado |
 |---|---|---|---|---|
-| `ci.yml` | `CI` | push/PR em `main` | 4 jobs paralelos: `quality` (eslint `src/` max-warnings 0 → `tsc --noEmit` → `npm audit \|\| true` → bundle-check), `build` (+artifact `dist/`), `test` (`vitest run`), `deno-contract-tests` | o mais útil; morre no `npm ci`. `npm audit` neutralizado por `\|\| true` (`:33`) |
+| `ci.yml` | `CI` | push/PR em `main` | 4 jobs paralelos: `quality` (eslint `src/` max-warnings 0 → `tsc --noEmit` → `npm audit \|\| true` → bundle-check), `build` (+artifact `dist/`), `test` (`vitest run`), `deno-contract-tests` | `build`/`deno-contract-tests` passam desde #90/#91; `quality`/`test` ainda vermelhos por débito real (ver causas). `npm audit` neutralizado por `\|\| true` (`:33`) |
 | `lint.yml` | `Lint` | push `main`/`develop`, PR `main` | `npm run lint` + `format:check` + `type-check` | roda justamente o `npm run lint` que o `ci.yml:24-25` abandonou por causa do `--ext`. É o **único** lugar que checa Prettier |
 | `deploy.yml` | `Deploy` | push `main` + dispatch | Vercel `--prod` via `amondnet/vercel-action@v25` | secrets inexistentes; sem gate de CI |
 | `cd.yml` | *(sem `name:`)* | tag `v*` | build + `aws s3 sync dist/` + invalidação CloudFront (`us-east-1` hardcoded) | secrets inexistentes |
@@ -118,11 +119,9 @@ benchmarks, validação de mensagem de commit/título de PR, e nenhum guard que 
 
 ## PRs abertas — conferir antes de começar
 
-Regra: PR aberta tocando os mesmos arquivos → **pare e avise o dono**. Hoje há 11 abertas: 10 do
-Dependabot (todas só `package.json` + `package-lock.json`) e a **#88
-(`claude/chore-agents-texto-mestre-261102-1040`, de 2026-11-02), que toca `AGENTS.md` e `CLAUDE.md`** —
-ela implementa o padrão **anterior** ("texto-mestre, seções 1–7") e foi superada por este. Não
-trabalhe nela nem mergeie as duas.
+Regra: PR aberta tocando os mesmos arquivos → **pare e avise o dono**. Hoje há 10 abertas: 9 do
+Dependabot (`package.json` + `package-lock.json`) e a **#93** (`claude_04/modest-gauss-91jbvo`), que
+mexe em `.github/workflows/` — fica aberta para o dono por regra, não por conflito.
 
 ## Antes de abrir PR
 
@@ -130,5 +129,6 @@ trabalhe nela nem mergeie as duas.
 - `node scripts/ci/check-claude-md-integrity.mjs` se mexer em `AGENTS.md`, `CLAUDE.md` ou
   `docs/agentes/*.md`: exige os 8 cabeçalhos do `AGENTS.md` e barra o conjunto encolher mais de 30%
   (ou qualquer arquivo vigiado encolher mais de 50%).
-- Erro de typecheck/lint **herdado da `main`** (356 erros de `tsc`, eslint abortando) não é seu: vai
-  para "Próximos passos", não para o diff.
+- Erro de lint **herdado da `main`** (jobs `lint`/`quality` com >1000 erros/avisos reais, confirmado via
+  log do CI em `d4fdbb3`; `npm ci`/`eslint` já funcionam desde #90) não é seu: vai para "Próximos passos",
+  não para o diff.
