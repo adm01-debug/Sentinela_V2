@@ -27,9 +27,12 @@ sempre em PT-BR.
 - Diagnóstico antes de patch: logs e estado real, ponto exato (arquivo:linha), causa; várias causas → liste
   todas, corrija a pedida.
 - Antes da PR: lint e teste **do que você tocou** (`npx eslint <arquivos>`, `npx vitest run <caminho>`).
-  Só erro seu conta. Herdado da `main` → "Próximos passos": hoje `npm ci` falha (ERESOLVE do eslint 10),
-  `npx eslint` aborta (`eslint-plugin-react` incompatível), `tsc --noEmit` tem 356 erros e 15 arquivos de
-  teste falham. **Todos os workflows estão vermelhos** — detalhe e causa em `docs/agentes/github-ci.md`.
+  Só erro seu conta. Herdado da `main` (verificado via logs do CI em `d4fdbb3`, não mais por suposição):
+  `npm ci` e `npx eslint` já funcionam (fix em #90/#91), mas os jobs `lint`/`quality` continuam vermelhos
+  com >1000 erros/avisos reais pré-existentes; `test` falha porque o runner força Node 24 mesmo pedindo
+  Node 20 (`undici`/`markAsUncloneable`); `deploy` (workflow) falha por secret `vercel-token` ausente — o
+  deploy real acontece pela integração nativa Vercel↔GitHub, fora desse workflow. Detalhe em
+  `docs/agentes/github-ci.md`.
 - "Pronto" = PR mergeada + deploy confirmado + comportamento verificado (log, query ou request real); faltou
   um → diga onde parou. Aqui "deploy confirmado" exige olhar a Vercel: o workflow de deploy usa secrets que
   não existem (`docs/agentes/deploy-infra.md`).
