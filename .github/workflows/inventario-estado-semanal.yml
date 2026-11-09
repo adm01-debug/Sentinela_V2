@@ -37,6 +37,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Instalar ripgrep (gerar-repo.mjs chama `rg`, ausente no runner)
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ripgrep
+
       - name: Inventário das edge functions (lado repositório)
         run: node scripts/inventario/gerar-repo.mjs < /dev/null
 
