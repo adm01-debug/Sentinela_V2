@@ -5,6 +5,7 @@ Detalhe em `docs/agentes/<tema>.md`; divergiu da realidade → corrija no mesmo 
 sempre em PT-BR.
 
 ## Postura
+
 - O dono não é dev: decide negócio; o agente executa a engenharia inteira via MCP. Nunca passo manual
   do dono nem pedir que ele revise diff.
 - Qualidade + velocidade, mínimo de tokens. Decida como dev sênior; pergunte só com custo, arquitetura,
@@ -24,6 +25,7 @@ sempre em PT-BR.
   ver `docs/agentes/banco.md`. Nunca imprima nem reproduza o valor; cite `arquivo:linha` + tipo.
 
 ## Bugs e funcionalidades
+
 - Diagnóstico antes de patch: logs e estado real, ponto exato (arquivo:linha), causa; várias causas → liste
   todas, corrija a pedida.
 - Antes da PR: lint e teste **do que você tocou** (`npx eslint <arquivos>`, `npx vitest run <caminho>`).
@@ -43,6 +45,7 @@ sempre em PT-BR.
   "quase" sem dizer.
 
 ## Comunicação
+
 - Resultado primeiro, só o que muda decisão do dono. Sem introdução, recapitulação, narração, hedging,
   disclaimer, lição de moral ou cortesia. Efeito no negócio; técnica só se perguntarem. Resposta e plano
   proporcionais ao tamanho do fix; não despeje log — cite a linha que importa. Caminhos, comandos e links
@@ -54,6 +57,7 @@ sempre em PT-BR.
   `Próximos passos: nada pendente neste escopo.`
 
 ## Fluxo Git — detalhe em `docs/agentes/github-ci.md`
+
 - Repo `adm01-debug/Sentinela_V2`, `main`, **privado**. Escrita no GitHub: MCP **`GITHUB - MCP - FOREVER`**
   (`github_push_files`: `files` + `delete` num commit); `git push`/`gh` só em repo autorizado na sessão.
 - Nunca commite em `main`. Só escreva em branch que **você** criou nesta sessão; branch alheia ou já
@@ -70,11 +74,15 @@ sempre em PT-BR.
   **apague a branch**. "CI verde" hoje é impossível: use "sem erro novo seu" como critério e diga isso na PR.
   **Deixe aberta e chame o dono**: DDL/migration em produção; CI/workflows, segredos, Dockerfile, k8s/Helm/
   Terraform; deleção de dado, arquitetura ou custo; conflito com PR de outro agente.
+- **PR de outra sessão** (não criada por você nesta sessão): nunca mergeie sem aprovação explícita do
+  dono no chat — mesmo que pareça pronta, CI verde e sem conflito. Detectou outra sessão que mergeou
+  o que deveria ficar aberto → relate em "Próximos passos" e aguarde o dono, não construa em cima.
 - Conflito: rebase em `main`; `--force-with-lease` só na sua branch.
 - Merge em `main` pode ser produção (Vercel ligada ao repo): confira o deploy e reporte — não conseguiu
   confirmar, diga "não verificado". Fim: link da PR + estado.
 
 ## Banco — ler `docs/agentes/banco.md` antes de SQL, migration, RLS ou deploy de edge function
+
 - Oficial: Supabase Cloud **`jgnmwvzephsozsqmcpzb`** ("Sentinela - V2").
 - **NÃO escrever** em `ybvdtjpyolbnjirjrthe` (está no `supabase/config.toml:1` e é o default do CLI — todo
   comando precisa de `--project-ref jgnmwvzephsozsqmcpzb`) nem em `rmiznlzpbwqpbzaiyydw`
@@ -87,6 +95,7 @@ sempre em PT-BR.
 - Destrutivo, segredos e rotação: só com o dono.
 
 ## Serviços
+
 - **Vercel** — ler `docs/agentes/deploy-infra.md` ao confirmar deploy ou mexer em env/domínio. Projeto
   `sentinela-v2`, team `juca1`; **não há `vercel.json`** no repo. Nunca segredo de servidor na Vercel;
   `VITE_*` é público. Os três `.env*.example` discordam entre si e do código.
@@ -103,6 +112,7 @@ sempre em PT-BR.
   pedido — registre em "Próximos passos".
 
 ## Stack e comandos — detalhe em `docs/agentes/mapa-repo.md`
+
 - Vite + React 19 + TS (`src/`), Supabase (`supabase/functions/` com 85 edges, `supabase/migrations/` com
   102 SQL), Playwright (`e2e/`, 1 spec), Electron (`desktop-agent/`), **npm** (Node 20).
 - `npm install --legacy-peer-deps` (**`npm ci` falha**: ERESOLVE eslint 10 × `eslint-plugin-import`);
@@ -116,6 +126,7 @@ sempre em PT-BR.
   Os 23 scripts soltos em `scripts/` e 11 dos 20 alvos do `Makefile` apontam para alvos inexistentes.
 
 ## Grafo de código
+
 **Não existe grafo de código, inventário gerado nem branch de contexto neste repo** (verificado: nenhuma
 ocorrência de `graphify`, `ai-context`, `inventario` ou `contexto`). O índice é `docs/agentes/mapa-repo.md`:
 leia a tabela "Onde olhar primeiro" e o "Mapa rápido" **antes** de `grep` amplo, e `ESTADO_ATUAL.md` antes
