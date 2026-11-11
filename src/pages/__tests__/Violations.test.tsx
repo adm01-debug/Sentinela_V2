@@ -36,6 +36,7 @@ vi.mock('@/hooks/useViolationsPage', () => ({
     resolutionNotes: '',
     setResolutionNotes: vi.fn(),
     violations: mockViolations,
+    allViolations: mockViolations,
     stats: { total: 1, open: 1, investigating: 0, resolved: 0, bySeverity: { critical: 1, high: 0, medium: 0, low: 0 } },
     isLoading: false,
     isResolving: false,

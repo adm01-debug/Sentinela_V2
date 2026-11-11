@@ -150,10 +150,16 @@ describe('Routes Constants', () => {
     });
   });
 
-  it('no duplicate route values', () => {
+  it('no duplicate route values (TEAMS/DEPARTMENTS aliases allowed)', () => {
     const values = Object.values(ROUTES);
-    const unique = new Set(values);
-    expect(unique.size).toBe(values.length);
+    // TEAMS and DEPARTMENTS are intentional aliases of ADMIN_TEAMS/ADMIN_DEPARTMENTS.
+    const ALLOWED_ALIASES = new Set(['/admin/teams', '/admin/departments']);
+    const accidental = values.filter((v) => {
+      if (ALLOWED_ALIASES.has(v)) return false;
+      const occurrences = values.filter((x) => x === v).length;
+      return occurrences > 1;
+    });
+    expect(accidental).toEqual([]);
   });
 
   it('PUBLIC_ROUTES only contain auth-related paths', () => {

@@ -109,6 +109,6 @@ describe('Auth Page', () => {
       </BrowserRouter>
     );
 
-    expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard', { replace: true });
   });
 });

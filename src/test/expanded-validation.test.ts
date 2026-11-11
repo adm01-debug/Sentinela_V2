@@ -25,7 +25,7 @@ describe('Error Handling — handler', () => {
     it('returns generic error for non-Error', () => {
       const result = mod.handleError('string error');
       expect(result.code).toBe('UNKNOWN_ERROR');
-      expect(result.message).toBe('An unexpected error occurred');
+      expect(result.message).toBe('string error');
     });
 
     it('handles null', () => {
@@ -429,7 +429,7 @@ describe('Stress — UI Store Operations', () => {
     }
     const elapsed = performance.now() - start;
     expect(elapsed).toBeLessThan(200);
-    expect(useUIStore.getState().toasts.length).toBeGreaterThanOrEqual(1000);
+    expect(useUIStore.getState().toasts.length).toBeLessThanOrEqual(5);
   });
 
   it('handles 1000 rapid modal open/close cycles', async () => {

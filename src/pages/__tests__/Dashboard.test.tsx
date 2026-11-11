@@ -24,6 +24,7 @@ vi.mock('@/hooks/useDashboard', () => ({
   }),
   useRecentAlerts: () => ({ data: [], isLoading: false }),
   useRecentActivity: () => ({ data: [], isLoading: false }),
+  useTopApplications: () => ({ data: [], isLoading: false }),
 }));
 
 vi.mock('@/hooks/useChartColors', () => ({
@@ -131,7 +132,7 @@ describe('DashboardPage', () => {
   it('changes period when buttons are clicked', () => {
     renderDashboard();
 
-    const monthButton = screen.getByRole('button', { name: /Mês/i });
+    const monthButton = screen.getByRole('tab', { name: /Mês/i });
     
     fireEvent.click(monthButton);
     expect(monthButton).toHaveClass('bg-primary');
