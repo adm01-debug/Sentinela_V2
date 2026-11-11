@@ -4,7 +4,8 @@ import Settings from '../Settings';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
-import * as useSettingsHook from '@/hooks/useSettings';
+import * as usePoliciesHook from '@/hooks/usePolicies';
+import * as useApplicationRulesHook from '@/hooks/useApplicationRules';
 
 // Mocks
 vi.mock('react-i18next', () => ({
@@ -13,8 +14,12 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
-vi.mock('@/hooks/useSettings', () => ({
-  useSettings: vi.fn(),
+vi.mock('@/hooks/usePolicies', () => ({
+  usePolicies: vi.fn(),
+}));
+
+vi.mock('@/hooks/useApplicationRules', () => ({
+  useApplicationRules: vi.fn(),
 }));
 
 // We must mock the actual implementation of tabs if Radix triggers are not working in the test environment
@@ -98,19 +103,34 @@ const queryClient = new QueryClient({
 describe('Settings Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    
-    vi.mocked(useSettingsHook.useSettings).mockReturnValue({
-      data: {
-        policies: [
-          { id: '1', name: 'USB Block', category: 'device', enabled: true },
-          { id: '2', name: 'Screenshot', category: 'screen', enabled: false },
-        ],
-        appRules: [
-          { id: '1', name: 'Slack', category: 'communication', status: 'allowed' },
-        ],
-      },
+
+    const mockPolicies = [
+      { id: '1', name: 'USB Block', description: '', category: 'device', enabled: true, created_at: '' },
+      { id: '2', name: 'Screenshot', description: '', category: 'screen', enabled: false, created_at: '' },
+    ];
+
+    vi.mocked(usePoliciesHook.usePolicies).mockReturnValue({
+      policies: mockPolicies,
       isLoading: false,
-    } as any);
+      error: null,
+      add: vi.fn(),
+      toggle: vi.fn(),
+      remove: vi.fn(),
+      refetch: vi.fn(),
+    });
+
+    vi.mocked(useApplicationRulesHook.useApplicationRules).mockReturnValue({
+      rules: [
+        { id: '1', name: 'Slack', category: 'communication', status: 'allowed', created_at: '', updated_at: '' },
+      ],
+      isLoading: false,
+      isError: false,
+      error: null,
+      add: vi.fn(),
+      updateStatus: vi.fn(),
+      editRule: vi.fn(),
+      remove: vi.fn(),
+    });
   });
 
   const renderSettings = () => {
@@ -138,16 +158,19 @@ describe('Settings Page', () => {
   });
 
   it('filters applications by search', async () => {
-    vi.mocked(useSettingsHook.useSettings).mockReturnValue({
-      data: {
-        policies: [],
-        appRules: [
-          { id: '1', name: 'Slack', category: 'communication', status: 'allowed' },
-          { id: '2', name: 'Discord', category: 'communication', status: 'allowed' },
-        ],
-      },
+    vi.mocked(useApplicationRulesHook.useApplicationRules).mockReturnValue({
+      rules: [
+        { id: '1', name: 'Slack', category: 'communication', status: 'allowed', created_at: '', updated_at: '' },
+        { id: '2', name: 'Discord', category: 'communication', status: 'allowed', created_at: '', updated_at: '' },
+      ],
       isLoading: false,
-    } as any);
+      isError: false,
+      error: null,
+      add: vi.fn(),
+      updateStatus: vi.fn(),
+      editRule: vi.fn(),
+      remove: vi.fn(),
+    });
     
     renderSettings();
     

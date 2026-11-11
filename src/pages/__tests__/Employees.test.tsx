@@ -23,6 +23,9 @@ vi.mock('react-router-dom', async () => {
 
 vi.mock('@/hooks/useEmployeesPage', () => ({
   useEmployeesPage: () => ({
+    employees: [
+      { id: '1', name: 'Employee One', department: 'IT', status: 'active' },
+    ],
     filteredEmployees: [
       { id: '1', name: 'Employee One', department: 'IT', status: 'active' },
     ],

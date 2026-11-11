@@ -79,7 +79,7 @@ describe("Gap Audit: Route Configuration", () => {
     const fs = await import("fs");
     const routes = fs.readFileSync("src/routes/AppRoutes.tsx", "utf-8");
     expect(routes).toContain("AuthGuard");
-    expect(routes).toContain("ProtectedRoute");
+    expect(routes).toContain("GuestGuard");
   });
 
   it("404 catch-all route exists", async () => {
@@ -150,10 +150,14 @@ describe("Gap Audit: Security", () => {
     const routes = fs.readFileSync("src/routes/AppRoutes.tsx", "utf-8");
     expect(routes).toContain("useAuth");
     expect(routes).not.toContain("localStorage");
-    // Server-side session validation lives in the AuthProvider.
+    // Server-side session validation lives in the AuthProvider (supabase-js handles
+    // the token store; the string 'localStorage' only appears in a code comment there).
     const provider = fs.readFileSync("src/providers/AuthProvider.tsx", "utf-8");
     expect(provider).toContain("supabase.auth.getSession");
-    expect(provider).not.toContain("localStorage");
+    expect(provider).toContain("supabase.auth.onAuthStateChange");
+    // 'localStorage' only appears in code comments (safety-timeout note), never used as a client-side gate
+    const codeLines = provider.split("\n").filter((line) => !line.trim().startsWith("//"));
+    expect(codeLines.join("\n")).not.toContain("localStorage");
   });
 });
 

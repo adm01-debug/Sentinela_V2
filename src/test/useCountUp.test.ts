@@ -5,14 +5,27 @@ import { useCountUp } from '@/hooks/useCountUp';
 describe('useCountUp Hook', () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    // Mock IntersectionObserver to trigger immediately
-    global.IntersectionObserver = vi.fn().mockImplementation((callback) => ({
-      observe: vi.fn(() => {
-        callback([{ isIntersecting: true }]);
-      }),
-      unobserve: vi.fn(),
-      disconnect: vi.fn(),
-    }));
+    // Mock IntersectionObserver to trigger immediately (function, not arrow,
+    // so it stays constructible under vitest 5)
+    global.IntersectionObserver = (function () {
+      const MockIO = function (callback: IntersectionObserverCallback) {
+        const self = {
+          observe: vi.fn(() => {
+            callback(
+              [{ isIntersecting: true }] as IntersectionObserverEntry[],
+              self as unknown as IntersectionObserver
+            );
+          }),
+          unobserve: vi.fn(),
+          disconnect: vi.fn(),
+          root: null,
+          rootMargin: '',
+          thresholds: [],
+        };
+        return self;
+      };
+      return MockIO as unknown as typeof IntersectionObserver;
+    })();
   });
 
   afterEach(() => {

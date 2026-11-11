@@ -7,8 +7,11 @@ import { Header } from '@/components/Header';
 
 // Mock dependencies
 const mockNavigate = vi.fn();
+const mockLocation = { pathname: '/dashboard', search: '', hash: '', state: null, key: 'default' };
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
+  useLocation: () => mockLocation,
+  useSearchParams: () => [new URLSearchParams(), vi.fn()],
 }));
 
 const mockMarkAllRead = vi.fn();
