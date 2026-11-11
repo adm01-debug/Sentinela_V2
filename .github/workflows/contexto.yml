@@ -81,7 +81,7 @@ jobs:
 
           if git ls-remote --exit-code --heads "$REMOTE" "$CONTEXTO_BRANCH" >/dev/null 2>&1; then
             git fetch --depth=1 "$REMOTE" "$CONTEXTO_BRANCH"
-            git checkout -q -B "$CONTEXTO_BRANCH" FETCH_HEAD
+            git checkout -q -f -B "$CONTEXTO_BRANCH" FETCH_HEAD
           else
             git checkout -q --orphan "$CONTEXTO_BRANCH"
             git rm -rq --cached . || true
