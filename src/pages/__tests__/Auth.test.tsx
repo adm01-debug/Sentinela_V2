@@ -1,8 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import Auth from '../Auth';
 import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
+import Auth from '../Auth';
 
 // Mocks
 vi.mock('react-i18next', () => ({
