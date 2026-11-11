@@ -4,12 +4,12 @@
  "stack": {
   "linguagens": [
    "TypeScript (1378)",
-   "Markdown (178)",
+   "Markdown (179)",
    "SQL (106)",
-   "JSON (38)",
+   "JSON (40)",
    "YAML (37)",
+   "JavaScript (21)",
    "Shell (21)",
-   "JavaScript (15)",
    "HTML (4)"
   ],
   "linguagem_principal": "TypeScript",
@@ -172,6 +172,8 @@
    "permissoes": [],
    "scripts_usados": [
     "scripts/ci/check-claude-md-integrity.mjs",
+    "scripts/ci/lint-ratchet.mjs",
+    "scripts/ci/typecheck-ratchet.mjs",
     "scripts/generate-audit-pdf.js"
    ],
    "npm_scripts": [
@@ -318,12 +320,11 @@
     "lint"
    ],
    "permissoes": [],
-   "scripts_usados": [],
-   "npm_scripts": [
-    "format:check",
-    "lint",
-    "type-check"
+   "scripts_usados": [
+    "scripts/ci/lint-ratchet.mjs",
+    "scripts/ci/typecheck-ratchet.mjs"
    ],
+   "npm_scripts": [],
    "secrets": [],
    "actions": [
     "actions/checkout",
@@ -533,7 +534,7 @@
   {
    "arquivo": "AGENTS.md",
    "titulo": "AGENTS.md — Sentinela V2",
-   "linhas": 120
+   "linhas": 134
   },
   {
    "arquivo": "AUDITORIA_ENTERPRISE_SENTINELA.md",

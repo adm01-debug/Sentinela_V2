@@ -755,7 +755,7 @@
    "usado_por_arquivos": [
     "src/pages/Settings.tsx"
    ],
-   "coberto_por_testes": 0
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useAsync.ts",
@@ -6287,7 +6287,7 @@
    "usado_por_arquivos": [
     "src/pages/Settings.tsx"
    ],
-   "coberto_por_testes": 0
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/usePolicyAcknowledgments.ts",
@@ -8070,7 +8070,7 @@
     "src/components/EditApplicationDialog.tsx",
     "src/pages/Settings.tsx"
    ],
-   "coberto_por_testes": 1
+   "coberto_por_testes": 0
   },
   {
    "arquivo": "src/hooks/useShare.ts",

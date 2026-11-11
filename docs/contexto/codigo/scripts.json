@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 27,
+ "total": 30,
  "scripts": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -86,6 +86,30 @@
    "npm_scripts": [],
    "workflows": [
     "ci.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/ci/lint-ratchet.mjs",
+   "descricao": "Artefatos produzidos por testes nao sao fonte do projeto. O ESLint nao le o .gitignore por padrao em todas as versoes/configuracoes, entao o ratchet os",
+   "linhas": 651,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [
+    "ci.yml",
+    "lint.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/ci/typecheck-ratchet.mjs",
+   "descricao": "tsc --noEmit (sem -p/-b) e um no-op nesta config: tsconfig.json tem \"files\": [] e so \"references\" para tsconfig.app.json/tsconfig.node.json. Sem \"--build\", o",
+   "linhas": 373,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [
+    "ci.yml",
+    "lint.yml"
    ],
    "orfao": false
   },
@@ -189,6 +213,17 @@
    "workflows": [
     "inventario-estado-semanal.yml"
    ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/lib/seguranca-processo.mjs",
+   "descricao": "* Utilidades compartilhadas pelos scripts de auditoria/CI.",
+   "linhas": 101,
+   "env": [
+    "PATH"
+   ],
+   "npm_scripts": [],
+   "workflows": [],
    "orfao": false
   },
   {

@@ -5,15 +5,15 @@
   "vitest",
   "playwright"
  ],
- "total": 66,
+ "total": 69,
  "por_tipo": {
   "e2e": 1,
-  "unit": 65
+  "unit": 68
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 43
+   "arquivos": 44
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -21,7 +21,7 @@
   },
   {
    "padrao": "outro",
-   "arquivos": 3
+   "arquivos": 5
   },
   {
    "padrao": "e2e/",
@@ -46,6 +46,34 @@
     "src/routes/AppRoutes.tsx"
    ],
    "casos": 18
+  },
+  {
+   "arquivo": "scripts/ci/lint-ratchet.unit.mjs",
+   "tipo": "unit",
+   "linhas": 731,
+   "testa": [
+    "scripts/ci/lint-ratchet.mjs",
+    "scripts/lib/seguranca-processo.mjs"
+   ],
+   "casos": 36
+  },
+  {
+   "arquivo": "scripts/ci/typecheck-ratchet.unit.mjs",
+   "tipo": "unit",
+   "linhas": 399,
+   "testa": [
+    "scripts/ci/typecheck-ratchet.mjs"
+   ],
+   "casos": 24
+  },
+  {
+   "arquivo": "scripts/lib/seguranca-processo.test.mjs",
+   "tipo": "unit",
+   "linhas": 122,
+   "testa": [
+    "scripts/lib/seguranca-processo.mjs"
+   ],
+   "casos": 10
   },
   {
    "arquivo": "src/components/charts/__tests__/AreaChart.test.tsx",
@@ -136,7 +164,7 @@
   {
    "arquivo": "src/pages/__tests__/Dashboard.test.tsx",
    "tipo": "unit",
-   "linhas": 140,
+   "linhas": 141,
    "testa": [
     "src/pages/DashboardPage.tsx"
    ],
@@ -155,7 +183,7 @@
   {
    "arquivo": "src/pages/__tests__/Employees.test.tsx",
    "tipo": "unit",
-   "linhas": 126,
+   "linhas": 129,
    "testa": [
     "src/pages/EmployeesPage.tsx"
    ],
@@ -203,9 +231,10 @@
   {
    "arquivo": "src/pages/__tests__/Settings.test.tsx",
    "tipo": "unit",
-   "linhas": 165,
+   "linhas": 188,
    "testa": [
-    "src/hooks/useSettings.ts",
+    "src/hooks/useApplicationRules.ts",
+    "src/hooks/usePolicies.ts",
     "src/pages/Settings.tsx"
    ],
    "casos": 3
@@ -223,7 +252,7 @@
   {
    "arquivo": "src/pages/__tests__/Violations.test.tsx",
    "tipo": "unit",
-   "linhas": 119,
+   "linhas": 120,
    "testa": [
     "src/pages/ViolationsPage.tsx"
    ],
@@ -241,7 +270,7 @@
   {
    "arquivo": "src/test/auth.test.ts",
    "tipo": "unit",
-   "linhas": 131,
+   "linhas": 122,
    "testa": [
     "src/integrations/supabase/client.ts"
    ],
@@ -259,7 +288,7 @@
   {
    "arquivo": "src/test/breadcrumbs.test.tsx",
    "tipo": "unit",
-   "linhas": 85,
+   "linhas": 87,
    "testa": [
     "src/components/layout/Breadcrumbs.tsx"
    ],
@@ -300,7 +329,7 @@
   {
    "arquivo": "src/test/comprehensive-validation.test.ts",
    "tipo": "unit",
-   "linhas": 481,
+   "linhas": 487,
    "testa": [
     "src/constants/index.ts",
     "src/constants/routes.ts",
@@ -333,10 +362,8 @@
   {
    "arquivo": "src/test/edge-cases-advanced.test.ts",
    "tipo": "unit",
-   "linhas": 406,
-   "testa": [
-    "src/integrations/supabase/client.ts"
-   ],
+   "linhas": 409,
+   "testa": [],
    "casos": 43
   },
   {
@@ -410,7 +437,7 @@
   {
    "arquivo": "src/test/gap-audit.test.ts",
    "tipo": "unit",
-   "linhas": 180,
+   "linhas": 184,
    "testa": [
     "src/integrations/supabase/client.ts"
    ],
@@ -419,7 +446,7 @@
   {
    "arquivo": "src/test/header-enhanced.test.tsx",
    "tipo": "unit",
-   "linhas": 220,
+   "linhas": 223,
    "testa": [
     "src/components/Header.tsx"
    ],
@@ -456,7 +483,7 @@
   {
    "arquivo": "src/test/improvements-verification.test.ts",
    "tipo": "unit",
-   "linhas": 737,
+   "linhas": 739,
    "testa": [
     "src/components/charts/BaseAreaChart.tsx",
     "src/components/charts/BaseBarChart.tsx",
@@ -559,7 +586,7 @@
   {
    "arquivo": "src/test/setup.ts",
    "tipo": "unit",
-   "linhas": 81,
+   "linhas": 98,
    "testa": [],
    "casos": 0
   },
@@ -608,7 +635,7 @@
   {
    "arquivo": "src/test/useCountUp.test.ts",
    "tipo": "unit",
-   "linhas": 106,
+   "linhas": 118,
    "testa": [
     "src/hooks/useCountUp.ts"
    ],
@@ -617,7 +644,7 @@
   {
    "arquivo": "src/test/useEmployeesPage.test.ts",
    "tipo": "unit",
-   "linhas": 121,
+   "linhas": 120,
    "testa": [
     "src/hooks/useEmployeesPage.ts"
    ],
@@ -660,6 +687,9 @@
  ],
  "sql": [],
  "cobertura_por_arquivo": {
+  "scripts/ci/lint-ratchet.mjs": 1,
+  "scripts/ci/typecheck-ratchet.mjs": 1,
+  "scripts/lib/seguranca-processo.mjs": 2,
   "src/components/Cards/StatsCard.tsx": 1,
   "src/components/EmptyStates.tsx": 1,
   "src/components/Header.tsx": 1,
@@ -683,6 +713,7 @@
   "src/constants/index.ts": 1,
   "src/constants/routes.ts": 2,
   "src/hooks/useAccessControl.ts": 1,
+  "src/hooks/useApplicationRules.ts": 1,
   "src/hooks/useChartColors.ts": 1,
   "src/hooks/useCountUp.ts": 1,
   "src/hooks/useCounter.ts": 1,
@@ -697,14 +728,14 @@
   "src/hooks/useList.ts": 1,
   "src/hooks/useLocalStorage.ts": 1,
   "src/hooks/usePagination.ts": 1,
+  "src/hooks/usePolicies.ts": 1,
   "src/hooks/useReports.ts": 1,
   "src/hooks/useSchema.ts": 1,
-  "src/hooks/useSettings.ts": 1,
   "src/hooks/useSort.ts": 1,
   "src/hooks/useToggle.ts": 1,
   "src/hooks/useUsers.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 8,
+  "src/integrations/supabase/client.ts": 7,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,
@@ -829,7 +860,6 @@
    "src/hooks/useAPIKeys.ts",
    "src/hooks/useAppCategories.ts",
    "src/hooks/useAppConfig.ts",
-   "src/hooks/useApplicationRules.ts",
    "src/hooks/useAsync.ts",
    "src/hooks/useAttachments.ts",
    "src/hooks/useAudio.ts",
@@ -1080,7 +1110,6 @@
    "src/hooks/usePinch.ts",
    "src/hooks/usePinchToZoom.ts",
    "src/hooks/usePointer.ts",
-   "src/hooks/usePolicies.ts",
    "src/hooks/usePolicyAcknowledgments.ts",
    "src/hooks/usePolling.ts",
    "src/hooks/usePopover.ts",
@@ -1161,6 +1190,7 @@
    "src/hooks/useSessionManager.ts",
    "src/hooks/useSessionStorage.ts",
    "src/hooks/useSet.ts",
+   "src/hooks/useSettings.ts",
    "src/hooks/useShare.ts",
    "src/hooks/useShifts.ts",
    "src/hooks/useSingleton.ts",

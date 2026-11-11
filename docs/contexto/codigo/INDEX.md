@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `d4fdbb3e4978b42026367895625699653bdcdfdf` (2026-11-08T19:43:57-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `d69de661939d33202bb0da46bcf2197351631fcc` (2026-11-11T19:45:45-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1378), Markdown (178), SQL (106), JSON (38), YAML (37), Shell (21), JavaScript (15), HTML (4)
+- linguagens: TypeScript (1378), Markdown (179), SQL (106), JSON (40), YAML (37), JavaScript (21), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1818 |
-| arquivos_codigo | 1392 |
-| linhas_codigo | 144092 |
+| arquivos_total | 1827 |
+| arquivos_codigo | 1398 |
+| linhas_codigo | 146545 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,20 +48,20 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 139 |
 | migrations | 102 |
 | cron_jobs | 1 |
-| testes | 66 |
+| testes | 69 |
 | workflows | 14 |
-| scripts | 27 |
-| docs_md | 178 |
+| scripts | 30 |
+| docs_md | 179 |
 
 ## Onde ficam as coisas
 - telas: src/pages (54)
 - componentes: src/components (356), src/pages (88), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (64), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (43), co-localizado (__tests__) (19), outro (3)
+- testes: co-localizado (*.test) (44), co-localizado (__tests__) (19), outro (5)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
-- scripts: scripts/ai-context (2), scripts/inventario (2), scripts/analyze-bundle.sh (1)
+- scripts: scripts/ci (3), scripts/ai-context (2), scripts/inventario (2)
 - docs: docs (98), (raiz) (16), .github (2)
 - nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (99%)","tabelas":"snake_case (88%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
@@ -290,21 +290,21 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - não gerado neste run. uvx --from "graphifyy[sql]" graphify update .  (ou: bun run graph:update); saída em graphify-out/ — graph.json e graph.html NÃO são versionados (dezenas de MB); use `graphify query/path/explain` localmente
 
 ## Hotspots (arquivos mais alterados, 90 dias)
-- package-lock.json (26)
-- package.json (26)
-- ESTADO_ATUAL.md (5)
-- .github/workflows/ci.yml (3)
-- supabase/config.toml (3)
-- AGENTS.md (2)
+- package.json (25)
+- package-lock.json (24)
+- ESTADO_ATUAL.md (6)
+- .github/workflows/ci.yml (4)
+- AGENTS.md (4)
+- src/pages/__tests__/Auth.test.tsx (3)
+- src/pages/__tests__/Settings.test.tsx (3)
+- .github/workflows/cd.yml (2)
+- .github/workflows/contexto.yml (2)
+- .github/workflows/inventario-estado-semanal.yml (2)
+- docs/agentes/github-ci.md (2)
+- eslint.config.js (2)
 - scripts/check-bundle-size.sh (2)
-- src/pages/admin/IntegrationsHealthPage.tsx (2)
-- vite.config.ts (2)
-- .claude/skills/sentinela-v2/SKILL.md (1)
-- .github/PULL_REQUEST_TEMPLATE.md (1)
-- .github/dependabot.yml (1)
-- .github/workflows/cd.yml (1)
-- .github/workflows/contexto.yml (1)
-- .github/workflows/deploy.yml (1)
+- scripts/ci/eslint-baseline.json (2)
+- src/pages/__tests__/Analytics.test.tsx (2)
 
 ## Workflows
 - `cd.yml` — CD (push)
@@ -340,7 +340,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Documentos (raiz e docs/)
 - `.github/PULL_REQUEST_TEMPLATE.md` (13 linhas)
 - `.github/pull_request_template.md` (13 linhas)
-- `AGENTS.md` — AGENTS.md — Sentinela V2 (120 linhas)
+- `AGENTS.md` — AGENTS.md — Sentinela V2 (134 linhas)
 - `AUDITORIA_ENTERPRISE_SENTINELA.md` — RELATÓRIO DE AUDITORIA ENTERPRISE - SENTINELA SECURITYWATCH V2 (85 linhas)
 - `CHANGELOG.md` — Changelog (63 linhas)
 - `CLAUDE.md` (2 linhas)
@@ -458,21 +458,21 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-11 `d69de6619` fix(ci): destrava contexto.yml e Security Scan (#103)
+- 2026-11-11 `726ffbe10` fix: remove unused imports e variaveis nos testes destravando pre-commit (#102)
+- 2026-11-11 `69460cb3c` fix(ci): corrige parse YAML dos workflows cd/security (#101)
+- 2026-11-11 `b2beae8a2` fix(lint): limpa imports e ordem de imports nos testes (#100)
+- 2026-11-11 `04b8469e9` ci(quality): substitui lint/tsc diretos pelos ratchets incrementais no CI (#99)
+- 2026-11-08 `310b7e6b3` fix(lint): globals.node para scripts .mjs/.cjs + baseline 1633→1515
+- 2026-11-08 `185007dd3` chore(docs): adiciona regra explícita sobre PR de outra sessão no AGENTS.md (#97)
+- 2026-11-08 `3cb8038f0` fix(ci) + chore(scripts): ripgrep no inventário + lint/typecheck-ratchet (Fases 1 fix + 3)
+- 2026-11-08 `05a3b2050` chore(docs): remove referência a scripts já removidos em #91 (#96)
+- 2026-11-08 `909fc0e0e` chore(docs): corrige AGENTS.md/github-ci.md com estado real do CI pós #90/#91 (#95)
 - 2026-11-08 `d4fdbb3e4` chore(scripts): porta do Zapp Web V2 o gerador de contexto e o inventário de estado real (Fase 1) (#92)
 - 2026-11-08 `77dac939f` chore(security): remove migrate-helper e scripts com credenciais vazadas (#91)
 - 2026-11-08 `dcf16f81d` fix(ci): destrava npm ci, lint, build e testes de contrato Deno (#90)
 - 2026-11-08 `c4770bcbd` chore(agentes): replica no Sentinela V2 o padrão de instruções do Zapp Web V2 (#89)
 - 2026-10-03 `239f18a59` Merge pull request #71 from adm01-debug/dependabot/npm_and_yarn/lint-ce6edfe642
-- 2026-10-03 `c2c1585f4` build(deps-dev): bump the lint group across 1 directory with 7 updates
-- 2026-10-03 `9ee8d7e25` Merge pull request #69 from adm01-debug/dependabot/npm_and_yarn/lint-staged-17.5.1
-- 2026-10-03 `7ff411692` Merge pull request #68 from adm01-debug/dependabot/npm_and_yarn/hookform/resolvers-5.9.1
-- 2026-10-03 `f3bbfc7ae` Merge pull request #66 from adm01-debug/dependabot/npm_and_yarn/rollup-plugin-visualizer-7.1.1
-- 2026-10-03 `3f01a81b7` Merge pull request #65 from adm01-debug/dependabot/npm_and_yarn/zustand-5.0.15
-- 2026-10-03 `16d43d25e` Merge pull request #63 from adm01-debug/dependabot/npm_and_yarn/react-62d074ab17
-- 2026-10-03 `5a2bab85e` build(deps): bump the react group across 1 directory with 4 updates
-- 2026-10-03 `c5f7b2127` Merge pull request #64 from adm01-debug/dependabot/npm_and_yarn/types-febceb97ad
-- 2026-10-03 `9eee1a5f8` build(deps): bump @hookform/resolvers from 3.10.0 to 5.9.1
-- 2026-10-03 `185ecebb3` build(deps-dev): bump lint-staged from 15.5.2 to 17.6.0
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

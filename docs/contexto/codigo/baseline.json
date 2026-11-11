@@ -2,11 +2,61 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "d4fdbb3e4978b42026367895625699653bdcdfdf",
+  "commit": "d69de661939d33202bb0da46bcf2197351631fcc",
   "branch": "main",
-  "data_commit": "2026-11-08T19:43:57-03:00",
+  "data_commit": "2026-11-11T19:45:45-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "d69de6619",
+    "data": "2026-11-11",
+    "assunto": "fix(ci): destrava contexto.yml e Security Scan (#103)"
+   },
+   {
+    "sha": "726ffbe10",
+    "data": "2026-11-11",
+    "assunto": "fix: remove unused imports e variaveis nos testes destravando pre-commit (#102)"
+   },
+   {
+    "sha": "69460cb3c",
+    "data": "2026-11-11",
+    "assunto": "fix(ci): corrige parse YAML dos workflows cd/security (#101)"
+   },
+   {
+    "sha": "b2beae8a2",
+    "data": "2026-11-11",
+    "assunto": "fix(lint): limpa imports e ordem de imports nos testes (#100)"
+   },
+   {
+    "sha": "04b8469e9",
+    "data": "2026-11-11",
+    "assunto": "ci(quality): substitui lint/tsc diretos pelos ratchets incrementais no CI (#99)"
+   },
+   {
+    "sha": "310b7e6b3",
+    "data": "2026-11-08",
+    "assunto": "fix(lint): globals.node para scripts .mjs/.cjs + baseline 1633→1515"
+   },
+   {
+    "sha": "185007dd3",
+    "data": "2026-11-08",
+    "assunto": "chore(docs): adiciona regra explícita sobre PR de outra sessão no AGENTS.md (#97)"
+   },
+   {
+    "sha": "3cb8038f0",
+    "data": "2026-11-08",
+    "assunto": "fix(ci) + chore(scripts): ripgrep no inventário + lint/typecheck-ratchet (Fases 1 fix + 3)"
+   },
+   {
+    "sha": "05a3b2050",
+    "data": "2026-11-08",
+    "assunto": "chore(docs): remove referência a scripts já removidos em #91 (#96)"
+   },
+   {
+    "sha": "909fc0e0e",
+    "data": "2026-11-08",
+    "assunto": "chore(docs): corrige AGENTS.md/github-ci.md com estado real do CI pós #90/#91 (#95)"
+   },
    {
     "sha": "d4fdbb3e4",
     "data": "2026-11-08",
@@ -81,144 +131,118 @@
     "sha": "185ecebb3",
     "data": "2026-10-03",
     "assunto": "build(deps-dev): bump lint-staged from 15.5.2 to 17.6.0"
-   },
-   {
-    "sha": "af094c8b1",
-    "data": "2026-10-03",
-    "assunto": "build(deps-dev): bump rollup-plugin-visualizer from 5.14.0 to 7.1.1"
-   },
-   {
-    "sha": "30ab4f565",
-    "data": "2026-10-03",
-    "assunto": "build(deps-dev): bump @types/node"
-   },
-   {
-    "sha": "71a43e1c3",
-    "data": "2026-10-03",
-    "assunto": "build(deps): bump zustand from 4.5.7 to 5.0.15"
-   },
-   {
-    "sha": "badd9176a",
-    "data": "2026-10-03",
-    "assunto": "Merge pull request #62 from adm01-debug/dependabot/npm_and_yarn/test-bb73365c14"
-   },
-   {
-    "sha": "a8a90f3c8",
-    "data": "2026-09-21",
-    "assunto": "build(deps-dev): bump the test group with 4 updates"
-   },
-   {
-    "sha": "c2def96c6",
-    "data": "2026-09-15",
-    "assunto": "docs: redigir tokens PAT expostos no prompt de continuação"
-   },
-   {
-    "sha": "4b6d8fc5a",
-    "data": "2026-09-15",
-    "assunto": "security(pwa): hardening do service worker"
-   },
-   {
-    "sha": "6def42d5b",
-    "data": "2026-09-15",
-    "assunto": "security(k8s): adicionar securityContext no container web"
-   },
-   {
-    "sha": "f1c1f94bb",
-    "data": "2026-09-15",
-    "assunto": "fix(gamification): remover colunas inexistentes de employee_points"
-   },
-   {
-    "sha": "b4fb4bad7",
-    "data": "2026-09-15",
-    "assunto": "Merge chore/merge-all-prs: PRs #3 #11 #43 #44 #48 #52 #53 #54 #57(parcial) #60"
    }
   ],
-  "arquivos_mudados_7d": 66,
+  "arquivos_mudados_7d": 118,
   "pastas_mais_mudadas_30d": [
+   {
+    "pasta": "src/pages/__tests__",
+    "mudancas": 23
+   },
+   {
+    "pasta": ".github/workflows/ci.yml",
+    "mudancas": 3
+   },
+   {
+    "pasta": "AGENTS.md",
+    "mudancas": 3
+   },
    {
     "pasta": ".agents/skills/sentinela-v2",
     "mudancas": 2
    },
    {
-    "pasta": ".github/workflows/ci.yml",
+    "pasta": ".github/workflows/cd.yml",
     "mudancas": 2
    },
    {
-    "pasta": ".claude/skills/sentinela-v2",
-    "mudancas": 1
-   },
-   {
-    "pasta": ".codex/AGENTS.md",
-    "mudancas": 1
-   },
-   {
-    "pasta": ".codex/agents/docs-researcher.toml",
-    "mudancas": 1
-   },
-   {
-    "pasta": ".codex/agents/explorer.toml",
-    "mudancas": 1
-   },
-   {
-    "pasta": ".codex/agents/reviewer.toml",
-    "mudancas": 1
-   },
-   {
-    "pasta": ".codex/config.toml",
-    "mudancas": 1
-   },
-   {
-    "pasta": ".github/workflows/cd.yml",
-    "mudancas": 1
-   },
-   {
     "pasta": ".github/workflows/contexto.yml",
-    "mudancas": 1
-   },
-   {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 1
+    "mudancas": 2
    },
    {
     "pasta": ".github/workflows/inventario-estado-semanal.yml",
-    "mudancas": 1
+    "mudancas": 2
    },
    {
-    "pasta": ".github/workflows/preview.yml",
-    "mudancas": 1
+    "pasta": "docs/agentes/github-ci.md",
+    "mudancas": 2
    },
    {
-    "pasta": ".github/workflows/release.yml",
-    "mudancas": 1
+    "pasta": "scripts/ci/eslint-baseline.json",
+    "mudancas": 2
    },
    {
-    "pasta": ".hermes.md",
-    "mudancas": 1
+    "pasta": "src/test/comprehensive-validation.test.ts",
+    "mudancas": 2
+   },
+   {
+    "pasta": "src/test/data-operations.test.ts",
+    "mudancas": 2
+   },
+   {
+    "pasta": "src/test/edge-cases-advanced.test.ts",
+    "mudancas": 2
+   },
+   {
+    "pasta": "src/test/header-enhanced.test.tsx",
+    "mudancas": 2
+   },
+   {
+    "pasta": "src/test/improvements-verification.test.ts",
+    "mudancas": 2
+   },
+   {
+    "pasta": "src/test/stats-card.test.tsx",
+    "mudancas": 2
    }
   ],
   "arquivos_mais_mudados_90d": [
    {
-    "arquivo": "package-lock.json",
-    "mudancas": 26
+    "arquivo": "package.json",
+    "mudancas": 25
    },
    {
-    "arquivo": "package.json",
-    "mudancas": 26
+    "arquivo": "package-lock.json",
+    "mudancas": 24
    },
    {
     "arquivo": "ESTADO_ATUAL.md",
-    "mudancas": 5
+    "mudancas": 6
    },
    {
     "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "supabase/config.toml",
-    "mudancas": 3
+    "mudancas": 4
    },
    {
     "arquivo": "AGENTS.md",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "src/pages/__tests__/Auth.test.tsx",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "src/pages/__tests__/Settings.test.tsx",
+    "mudancas": 3
+   },
+   {
+    "arquivo": ".github/workflows/cd.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/contexto.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/inventario-estado-semanal.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "docs/agentes/github-ci.md",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "eslint.config.js",
     "mudancas": 2
    },
    {
@@ -226,89 +250,65 @@
     "mudancas": 2
    },
    {
-    "arquivo": "src/pages/admin/IntegrationsHealthPage.tsx",
+    "arquivo": "scripts/ci/eslint-baseline.json",
     "mudancas": 2
    },
    {
-    "arquivo": "vite.config.ts",
+    "arquivo": "src/pages/__tests__/Analytics.test.tsx",
     "mudancas": 2
    },
    {
-    "arquivo": ".claude/skills/sentinela-v2/SKILL.md",
-    "mudancas": 1
+    "arquivo": "src/pages/__tests__/AuditLog.test.tsx",
+    "mudancas": 2
    },
    {
-    "arquivo": ".github/PULL_REQUEST_TEMPLATE.md",
-    "mudancas": 1
+    "arquivo": "src/pages/__tests__/Dashboard.test.tsx",
+    "mudancas": 2
    },
    {
-    "arquivo": ".github/dependabot.yml",
-    "mudancas": 1
+    "arquivo": "src/pages/__tests__/Employees.test.tsx",
+    "mudancas": 2
    },
    {
-    "arquivo": ".github/workflows/cd.yml",
-    "mudancas": 1
+    "arquivo": "src/pages/__tests__/Monitoring.test.tsx",
+    "mudancas": 2
    },
    {
-    "arquivo": ".github/workflows/contexto.yml",
-    "mudancas": 1
+    "arquivo": "src/pages/__tests__/Violations.test.tsx",
+    "mudancas": 2
    },
    {
-    "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 1
+    "arquivo": "src/test/comprehensive-validation.test.ts",
+    "mudancas": 2
    },
    {
-    "arquivo": ".github/workflows/inventario-estado-semanal.yml",
-    "mudancas": 1
+    "arquivo": "src/test/data-operations.test.ts",
+    "mudancas": 2
    },
    {
-    "arquivo": ".github/workflows/preview.yml",
-    "mudancas": 1
+    "arquivo": "src/test/edge-cases-advanced.test.ts",
+    "mudancas": 2
    },
    {
-    "arquivo": ".github/workflows/release.yml",
-    "mudancas": 1
+    "arquivo": "src/test/header-enhanced.test.tsx",
+    "mudancas": 2
    },
    {
-    "arquivo": "CLAUDE.md",
-    "mudancas": 1
-   },
-   {
-    "arquivo": "MIGRATION_PLAN_FOR_CLAUDE_WEB.md",
-    "mudancas": 1
-   },
-   {
-    "arquivo": "_smoke/01_login.png",
-    "mudancas": 1
-   },
-   {
-    "arquivo": "ai-context.config.json",
-    "mudancas": 1
-   },
-   {
-    "arquivo": "bun.lockb",
-    "mudancas": 1
-   },
-   {
-    "arquivo": "docs/ARCHITECTURE.md",
-    "mudancas": 1
-   },
-   {
-    "arquivo": "docs/DEPLOYMENT.md",
-    "mudancas": 1
+    "arquivo": "src/test/improvements-verification.test.ts",
+    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 4
+    "commits": 14
    }
   ]
  },
  "contagens": {
-  "arquivos_total": 1818,
-  "arquivos_codigo": 1392,
-  "linhas_codigo": 144092,
+  "arquivos_total": 1827,
+  "arquivos_codigo": 1398,
+  "linhas_codigo": 146545,
   "rotas": 54,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -320,10 +320,10 @@
   "tabelas": 139,
   "migrations": 102,
   "cron_jobs": 1,
-  "testes": 66,
+  "testes": 69,
   "workflows": 14,
-  "scripts": 27,
-  "docs_md": 178
+  "scripts": 30,
+  "docs_md": 179
  },
  "por_pasta": {
   "benchmarks/api-performance.ts": {
@@ -356,7 +356,7 @@
   },
   "eslint.config.js": {
    "arquivos": 1,
-   "linhas": 67
+   "linhas": 76
   },
   "lint-staged.config.cjs": {
    "arquivos": 1,
@@ -387,8 +387,8 @@
    "linhas": 1458
   },
   "scripts/ci": {
-   "arquivos": 1,
-   "linhas": 122
+   "arquivos": 5,
+   "linhas": 2276
   },
   "scripts/generate-audit-pdf.js": {
    "arquivos": 1,
@@ -397,6 +397,10 @@
   "scripts/inventario": {
    "arquivos": 2,
    "linhas": 165
+  },
+  "scripts/lib": {
+   "arquivos": 2,
+   "linhas": 223
   },
   "seed/generate_time_entries.cjs": {
    "arquivos": 1,
@@ -452,7 +456,7 @@
   },
   "src/pages": {
    "arquivos": 104,
-   "linhas": 16558
+   "linhas": 16586
   },
   "src/providers": {
    "arquivos": 9,
@@ -472,7 +476,7 @@
   },
   "src/test": {
    "arquivos": 45,
-   "linhas": 9700
+   "linhas": 9739
   },
   "src/types": {
    "arquivos": 57,
@@ -511,6 +515,10 @@
   {
    "arquivo": "src/pages/admin/DisputeEscalationAuditPage.tsx",
    "linhas": 654
+  },
+  {
+   "arquivo": "scripts/ci/lint-ratchet.mjs",
+   "linhas": 651
   },
   {
    "arquivo": "src/components/ui/sidebar.tsx",
@@ -595,19 +603,15 @@
   {
    "arquivo": "src/pages/dev/VerifyReportSimulatorPage.tsx",
    "linhas": 410
-  },
-  {
-   "arquivo": "src/components/auth/PasswordResetApprovalPanel.tsx",
-   "linhas": 409
   }
  ],
  "qualidade": {
-  "any": 214,
-  "console_log": 36,
+  "any": 211,
+  "console_log": 50,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,
-  "arquivos_acima_500_linhas": 7
+  "arquivos_acima_500_linhas": 8
  },
  "todos": [
   {
