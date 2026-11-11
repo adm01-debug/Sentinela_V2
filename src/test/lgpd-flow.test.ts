@@ -7,8 +7,8 @@
  *   3. Métricas SLA: compliance, backlog, p90, timeline
  *   4. Notificação idempotente (payload determinístico)
  */
-import { describe, it, expect } from 'vitest';
 import { webcrypto } from 'node:crypto';
+import { describe, it, expect } from 'vitest';
 import { computeMetrics, DISPUTE_SLA_HOURS } from '@/hooks/useDisputeMetrics';
 
 const subtle = (globalThis.crypto?.subtle ?? webcrypto.subtle) as SubtleCrypto;
