@@ -122,7 +122,7 @@ describe('Device Management', () => {
         }),
       }),
     });
-    const { data, error } = await supabase.from('devices').insert({ name: 'NEW-PC', device_type: 'desktop' }).select().maybeSingle();
+    const { error } = await supabase.from('devices').insert({ name: 'NEW-PC', device_type: 'desktop' }).select().maybeSingle();
     expect(error).toBeNull();
   });
 });

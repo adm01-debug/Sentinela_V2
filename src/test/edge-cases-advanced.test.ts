@@ -2,8 +2,7 @@
  * SENTINELA - Advanced Edge Cases & Gap Analysis (100+ scenarios)
  * Multi-tenancy, LGPD, concurrency, i18n, date handling, error resilience
  */
-import { describe, it, expect, vi } from 'vitest';
-import { supabase } from '@/integrations/supabase/client';
+import { describe, it, expect } from 'vitest';
 
 // ============================================================
 // MULTI-TENANCY ISOLATION
