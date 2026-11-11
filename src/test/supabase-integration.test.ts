@@ -148,7 +148,7 @@ describe('Storage Operations', () => {
   });
 
   it('should list files', async () => {
-    const { data, error } = await supabase.storage.from('screenshots').list();
+    const { error } = await supabase.storage.from('screenshots').list();
     expect(error).toBeNull();
   });
 

@@ -15,7 +15,7 @@ vi.mock('@/hooks/useCountUp', () => ({
   useCountUp: ({ end, prefix = '', suffix = '', decimals = 0, separator = '' }: any) => ({
     ref: { current: null },
     value: end,
-    formatted: `${prefix}${end.toFixed(decimals)}${suffix}`,
+    formatted: `${prefix}${separator}${end.toFixed(decimals)}${separator}${suffix}`,
   }),
 }));
 

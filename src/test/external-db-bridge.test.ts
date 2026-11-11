@@ -2,7 +2,7 @@
  * SENTINELA - External DB Bridge - Suite de Testes Completa
  * Cobertura: classifySeverity, buildTelemetryPayload, emitTelemetry, validateRequest, edge cases
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 // ============================================================
 // EXTRACTED LOGIC (mirrors edge function exports)
