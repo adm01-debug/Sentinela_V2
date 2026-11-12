@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `d69de661939d33202bb0da46bcf2197351631fcc` (2026-11-11T19:45:45-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `7c7bc08ee5851a78621e867af3784cd28c3e46df` (2026-11-12T08:10:40-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -299,12 +299,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - src/pages/__tests__/Settings.test.tsx (3)
 - .github/workflows/cd.yml (2)
 - .github/workflows/contexto.yml (2)
+- .github/workflows/deploy.yml (2)
 - .github/workflows/inventario-estado-semanal.yml (2)
 - docs/agentes/github-ci.md (2)
 - eslint.config.js (2)
 - scripts/check-bundle-size.sh (2)
 - scripts/ci/eslint-baseline.json (2)
-- src/pages/__tests__/Analytics.test.tsx (2)
 
 ## Workflows
 - `cd.yml` — CD (push)
@@ -458,6 +458,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-12 `7c7bc08ee` ci(deploy): usa vercel CLI atual via npx vercel@latest em vez do action v25 desatualizado (#104)
 - 2026-11-11 `d69de6619` fix(ci): destrava contexto.yml e Security Scan (#103)
 - 2026-11-11 `726ffbe10` fix: remove unused imports e variaveis nos testes destravando pre-commit (#102)
 - 2026-11-11 `69460cb3c` fix(ci): corrige parse YAML dos workflows cd/security (#101)
@@ -472,7 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-08 `77dac939f` chore(security): remove migrate-helper e scripts com credenciais vazadas (#91)
 - 2026-11-08 `dcf16f81d` fix(ci): destrava npm ci, lint, build e testes de contrato Deno (#90)
 - 2026-11-08 `c4770bcbd` chore(agentes): replica no Sentinela V2 o padrão de instruções do Zapp Web V2 (#89)
-- 2026-10-03 `239f18a59` Merge pull request #71 from adm01-debug/dependabot/npm_and_yarn/lint-ce6edfe642
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

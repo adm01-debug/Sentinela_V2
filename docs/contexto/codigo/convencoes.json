@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "ci(deploy): usa vercel CLI atual via npx vercel@latest em vez do action v25 desatualizado (#104)",
    "fix(ci): destrava contexto.yml e Security Scan (#103)",
    "fix: remove unused imports e variaveis nos testes destravando pre-commit (#102)",
    "fix(ci): corrige parse YAML dos workflows cd/security (#101)",
-   "fix(lint): limpa imports e ordem de imports nos testes (#100)",
-   "ci(quality): substitui lint/tsc diretos pelos ratchets incrementais no CI (#99)"
+   "fix(lint): limpa imports e ordem de imports nos testes (#100)"
   ]
  },
  "pr_template": ".github/PULL_REQUEST_TEMPLATE.md",

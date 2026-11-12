@@ -249,7 +249,6 @@
    "actions": [
     "actions/checkout",
     "actions/setup-node",
-    "amondnet/vercel-action",
     "oven-sh/setup-bun"
    ]
   },

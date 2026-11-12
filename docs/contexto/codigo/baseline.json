@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "d69de661939d33202bb0da46bcf2197351631fcc",
+  "commit": "7c7bc08ee5851a78621e867af3784cd28c3e46df",
   "branch": "main",
-  "data_commit": "2026-11-11T19:45:45-03:00",
+  "data_commit": "2026-11-12T08:10:40-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "7c7bc08ee",
+    "data": "2026-11-12",
+    "assunto": "ci(deploy): usa vercel CLI atual via npx vercel@latest em vez do action v25 desatualizado (#104)"
+   },
    {
     "sha": "d69de6619",
     "data": "2026-11-11",
@@ -126,11 +131,6 @@
     "sha": "9eee1a5f8",
     "data": "2026-10-03",
     "assunto": "build(deps): bump @hookform/resolvers from 3.10.0 to 5.9.1"
-   },
-   {
-    "sha": "185ecebb3",
-    "data": "2026-10-03",
-    "assunto": "build(deps-dev): bump lint-staged from 15.5.2 to 17.6.0"
    }
   ],
   "arquivos_mudados_7d": 118,
@@ -157,6 +157,10 @@
    },
    {
     "pasta": ".github/workflows/contexto.yml",
+    "mudancas": 2
+   },
+   {
+    "pasta": ".github/workflows/deploy.yml",
     "mudancas": 2
    },
    {
@@ -189,10 +193,6 @@
    },
    {
     "pasta": "src/test/improvements-verification.test.ts",
-    "mudancas": 2
-   },
-   {
-    "pasta": "src/test/stats-card.test.tsx",
     "mudancas": 2
    }
   ],
@@ -231,6 +231,10 @@
    },
    {
     "arquivo": ".github/workflows/contexto.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 2
    },
    {
@@ -292,16 +296,12 @@
    {
     "arquivo": "src/test/header-enhanced.test.tsx",
     "mudancas": 2
-   },
-   {
-    "arquivo": "src/test/improvements-verification.test.ts",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 14
+    "commits": 15
    }
   ]
  },
