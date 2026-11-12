@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2d707fd3c67384c0a9fa51118e5d630a4e11d153",
+  "commit": "dc7d30c08f0947e24d22fcb252109f4cd8e6fa7b",
   "branch": "main",
-  "data_commit": "2026-11-12T12:45:09-03:00",
+  "data_commit": "2026-11-12T17:42:16-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "dc7d30c08",
+    "data": "2026-11-12",
+    "assunto": "fix: porta hardening de seguranca da branch qa (CNPJ, UTF-8, ReDoS, JWT, rate limit) (#112)"
+   },
    {
     "sha": "2d707fd3c",
     "data": "2026-11-12",
@@ -126,14 +131,9 @@
     "sha": "c4770bcbd",
     "data": "2026-11-08",
     "assunto": "chore(agentes): replica no Sentinela V2 o padrão de instruções do Zapp Web V2 (#89)"
-   },
-   {
-    "sha": "239f18a59",
-    "data": "2026-10-03",
-    "assunto": "Merge pull request #71 from adm01-debug/dependabot/npm_and_yarn/lint-ce6edfe642"
    }
   ],
-  "arquivos_mudados_7d": 119,
+  "arquivos_mudados_7d": 131,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -157,6 +157,10 @@
    },
    {
     "pasta": "AGENTS.md",
+    "mudancas": 3
+   },
+   {
+    "pasta": "desktop-agent/src/services",
     "mudancas": 3
    },
    {
@@ -189,10 +193,6 @@
    },
    {
     "pasta": "src/test/data-operations.test.ts",
-    "mudancas": 2
-   },
-   {
-    "pasta": "src/test/edge-cases-advanced.test.ts",
     "mudancas": 2
    }
   ],
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 19
+    "commits": 20
    },
    {
     "autor": "dependabot[bot]",
@@ -312,7 +312,7 @@
  "contagens": {
   "arquivos_total": 1826,
   "arquivos_codigo": 1397,
-  "linhas_codigo": 146498,
+  "linhas_codigo": 146684,
   "rotas": 54,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -348,7 +348,7 @@
   },
   "desktop-agent/src": {
    "arquivos": 18,
-   "linhas": 2289
+   "linhas": 2348
   },
   "docs/source": {
    "arquivos": 1,
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 387,
-   "linhas": 44480
+   "linhas": 44503
   },
   "src/constants": {
    "arquivos": 7,
@@ -488,7 +488,7 @@
   },
   "src/utils": {
    "arquivos": 64,
-   "linhas": 5234
+   "linhas": 5253
   },
   "src/validators": {
    "arquivos": 1,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 96,
-   "linhas": 11665
+   "linhas": 11750
   },
   "tailwind.config.ts": {
    "arquivos": 1,

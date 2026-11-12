@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1328,
- "arestas": 2676,
+ "arestas": 2678,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -30,7 +30,7 @@
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
-   "importado_por": 71
+   "importado_por": 72
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
@@ -81,11 +81,11 @@
    "importado_por": 23
   },
   {
-   "arquivo": "src/components/ui/table.tsx",
-   "importado_por": 21
+   "arquivo": "supabase/functions/_shared/rateLimiting.ts",
+   "importado_por": 22
   },
   {
-   "arquivo": "supabase/functions/_shared/rateLimiting.ts",
+   "arquivo": "src/components/ui/table.tsx",
    "importado_por": 21
   },
   {

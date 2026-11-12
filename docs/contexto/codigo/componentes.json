@@ -345,7 +345,7 @@
     "AddEmployeeDialog"
    ],
    "export_default": null,
-   "linhas": 132,
+   "linhas": 155,
    "dominio": "components",
    "hooks_locais": [
     "useCreateEmployee"

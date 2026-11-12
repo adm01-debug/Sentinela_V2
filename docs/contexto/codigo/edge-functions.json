@@ -962,7 +962,7 @@
    "nome": "get-mapbox-token",
    "entrada": "supabase/functions/get-mapbox-token/index.ts",
    "arquivos": 1,
-   "linhas": 104,
+   "linhas": 120,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -971,7 +971,9 @@
    "rpcs": [],
    "env": [
     "MAPBOX_PUBLIC_TOKEN",
-    "MAPBOX_SECRET_TOKEN"
+    "MAPBOX_SECRET_TOKEN",
+    "SUPABASE_ANON_KEY",
+    "SUPABASE_URL"
    ],
    "buckets": [],
    "chama_edges": [],
@@ -1280,7 +1282,7 @@
    "nome": "natural-language-query",
    "entrada": "supabase/functions/natural-language-query/index.ts",
    "arquivos": 1,
-   "linhas": 151,
+   "linhas": 209,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1292,6 +1294,7 @@
    ],
    "rpcs": [],
    "env": [
+    "SUPABASE_ANON_KEY",
     "SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_URL"
    ],
@@ -2478,7 +2481,7 @@
    "nome": "validate-agent-key",
    "entrada": "supabase/functions/validate-agent-key/index.ts",
    "arquivos": 1,
-   "linhas": 92,
+   "linhas": 103,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2495,7 +2498,8 @@
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [
-    "logger.ts"
+    "logger.ts",
+    "rateLimiting.ts"
    ],
    "chamada_pelo_front": [],
    "chamada_por_edges": [],

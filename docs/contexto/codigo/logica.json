@@ -3391,7 +3391,7 @@
     "verifyChecksum"
    ],
    "export_default": null,
-   "linhas": 81,
+   "linhas": 88,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -4260,7 +4260,7 @@
     "isURL"
    ],
    "export_default": null,
-   "linhas": 23,
+   "linhas": 35,
    "tabelas": [],
    "rpcs": [],
    "edges": [],

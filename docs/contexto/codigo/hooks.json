@@ -161,8 +161,9 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 71,
+   "usado_por": 72,
    "usado_por_arquivos": [
+    "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
     "src/components/exports/XlsxExportButton.tsx",
     "src/components/geofence/PolygonUpload.tsx",
@@ -191,8 +192,7 @@
     "src/hooks/useMessageTemplates.ts",
     "src/hooks/useMessageTemplatesPage.ts",
     "src/hooks/useMobileDevices.ts",
-    "src/hooks/useMonitoringPoliciesPage.ts",
-    "src/hooks/useMonitoringSettings.ts"
+    "src/hooks/useMonitoringPoliciesPage.ts"
    ],
    "coberto_por_testes": 0
   },
