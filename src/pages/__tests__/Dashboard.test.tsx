@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import DashboardPage from '../DashboardPage';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+import DashboardPage from '../DashboardPage';
 
 // Mocks
 vi.mock('react-i18next', () => ({
@@ -24,6 +24,7 @@ vi.mock('@/hooks/useDashboard', () => ({
   }),
   useRecentAlerts: () => ({ data: [], isLoading: false }),
   useRecentActivity: () => ({ data: [], isLoading: false }),
+  useTopApplications: () => ({ data: [], isLoading: false }),
 }));
 
 vi.mock('@/hooks/useChartColors', () => ({
@@ -131,7 +132,7 @@ describe('DashboardPage', () => {
   it('changes period when buttons are clicked', () => {
     renderDashboard();
 
-    const monthButton = screen.getByRole('button', { name: /Mês/i });
+    const monthButton = screen.getByRole('tab', { name: /Mês/i });
     
     fireEvent.click(monthButton);
     expect(monthButton).toHaveClass('bg-primary');

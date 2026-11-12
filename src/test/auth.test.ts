@@ -3,17 +3,8 @@
  * Tests for useAuth hook - Authentication flows
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
-
 // Import after mock is set up in setup.ts
 import { supabase } from '@/integrations/supabase/client';
-
-const wrapper = ({ children }: { children: React.ReactNode }) => {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return React.createElement(QueryClientProvider, { client: qc }, children);
-};
 
 describe('Authentication System', () => {
   beforeEach(() => { vi.clearAllMocks(); });

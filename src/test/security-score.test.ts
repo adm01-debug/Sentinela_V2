@@ -44,20 +44,20 @@ describe('calculateSecurityScore', () => {
 
 describe('getScoreColor', () => {
   it('returns green for score >= 80', () => {
-    expect(getScoreColor(80)).toContain('green');
-    expect(getScoreColor(100)).toContain('green');
+    expect(getScoreColor(80)).toContain('text-success');
+    expect(getScoreColor(100)).toContain('text-success');
   });
 
   it('returns yellow for 60-79', () => {
-    expect(getScoreColor(60)).toContain('yellow');
+    expect(getScoreColor(60)).toContain('text-warning');
   });
 
   it('returns orange for 40-59', () => {
-    expect(getScoreColor(40)).toContain('orange');
+    expect(getScoreColor(40)).toContain('text-warning');
   });
 
   it('returns red for < 40', () => {
-    expect(getScoreColor(0)).toContain('red');
+    expect(getScoreColor(0)).toContain('text-destructive');
   });
 });
 

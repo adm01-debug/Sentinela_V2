@@ -1,18 +1,31 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { useCountUp } from '@/hooks/useCountUp';
 
 describe('useCountUp Hook', () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    // Mock IntersectionObserver to trigger immediately
-    global.IntersectionObserver = vi.fn().mockImplementation((callback) => ({
-      observe: vi.fn(() => {
-        callback([{ isIntersecting: true }]);
-      }),
-      unobserve: vi.fn(),
-      disconnect: vi.fn(),
-    }));
+    // Mock IntersectionObserver to trigger immediately (function, not arrow,
+    // so it stays constructible under vitest 5)
+    global.IntersectionObserver = (function () {
+      const MockIO = function (callback: IntersectionObserverCallback) {
+        const self = {
+          observe: vi.fn(() => {
+            callback(
+              [{ isIntersecting: true }] as IntersectionObserverEntry[],
+              self as unknown as IntersectionObserver
+            );
+          }),
+          unobserve: vi.fn(),
+          disconnect: vi.fn(),
+          root: null,
+          rootMargin: '',
+          thresholds: [],
+        };
+        return self;
+      };
+      return MockIO as unknown as typeof IntersectionObserver;
+    })();
   });
 
   afterEach(() => {
@@ -82,7 +95,6 @@ describe('useCountUp Hook', () => {
       ({ end }) => useCountUp({ end, duration: 0 }),
       { initialProps: { end: 50 } }
     );
-    const initial = result.current.value;
     rerender({ end: 100 });
     // Value should update (may be instant since hasAnimated is true)
     expect(typeof result.current.value).toBe('number');

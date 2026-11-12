@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
@@ -7,8 +7,11 @@ import { Header } from '@/components/Header';
 
 // Mock dependencies
 const mockNavigate = vi.fn();
+const mockLocation = { pathname: '/dashboard', search: '', hash: '', state: null, key: 'default' };
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
+  useLocation: () => mockLocation,
+  useSearchParams: () => [new URLSearchParams(), vi.fn()],
 }));
 
 const mockMarkAllRead = vi.fn();

@@ -56,14 +56,23 @@ export default defineConfig(({ mode: _mode }) => ({
     sourcemap: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-query': ['@tanstack/react-query'],
-          'vendor-ui': ['framer-motion', '@radix-ui/react-dialog', '@radix-ui/react-popover', '@radix-ui/react-select', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs', '@radix-ui/react-tooltip'],
-          'vendor-charts': ['recharts'],
-          'vendor-supabase': ['@supabase/supabase-js'],
-          'vendor-pdf': ['jspdf', 'jspdf-autotable'],
-          'vendor-i18n': ['i18next', 'react-i18next'],
+        // Vite 8 (rolldown) exige função, não objeto, em manualChunks — mesmos 7
+        // grupos de antes, mesma lista de pacotes por grupo.
+        manualChunks(id: string) {
+          const grupos: Record<string, string[]> = {
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+            'vendor-query': ['@tanstack/react-query'],
+            'vendor-ui': ['framer-motion', '@radix-ui/react-dialog', '@radix-ui/react-popover', '@radix-ui/react-select', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs', '@radix-ui/react-tooltip'],
+            'vendor-charts': ['recharts'],
+            'vendor-supabase': ['@supabase/supabase-js'],
+            'vendor-pdf': ['jspdf', 'jspdf-autotable'],
+            'vendor-i18n': ['i18next', 'react-i18next'],
+          };
+          for (const [chunk, pacotes] of Object.entries(grupos)) {
+            if (pacotes.some((pacote) => id.includes(`/node_modules/${pacote}/`))) {
+              return chunk;
+            }
+          }
         },
       },
     },
