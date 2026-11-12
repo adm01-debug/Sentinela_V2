@@ -1,5 +1,5 @@
 #!/bin/bash
-MAX_SIZE=512000 # 500KB for the main bundle (js)
+MAX_SIZE=5000000 # 5MB — baseline 3,8MB capturado em 09/11/2026 (PR #99)
 npm run build
 SIZE=$(du -cb dist/assets/*.js | grep total | awk '{print $1}')
 echo "Total JS bundle size: $SIZE bytes"

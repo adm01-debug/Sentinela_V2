@@ -801,8 +801,8 @@ Declarado, não escondido:
 6. **Não auditei segurança ofensivamente.** RLS foi verificada por presença/ausência de política,
    **não** por correção das expressões `USING`/`WITH CHECK`. Uma tabela com RLS ativa e política
    permissiva demais apareceria aqui como ✅.
-7. **Não verifiquei `examples/`, `benchmarks/`, `screenshots/`, `_smoke/`, `seed/`** nem os scripts
-   `*.cjs` da raiz (`smoke-test.cjs`, `debug_fail.cjs`, `test_auth.cjs` etc.), que aparentam ser
+7. **Não verifiquei `examples/`, `benchmarks/`, `screenshots/`, `_smoke/`, `seed/`** — removidos em #91
+   por exporem credenciais (`docs/agentes/banco.md`); na época desta auditoria ainda existiam como
    ferramentas de desenvolvimento fora do produto.
 8. **Não confirmei qual ambiente é "produção".** Há dois pipelines de deploy para alvos diferentes
    (§5.7); as medições de runtime referem-se ao **banco Supabase acessível via MCP**.

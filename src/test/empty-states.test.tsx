@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { Users } from 'lucide-react';
 import {
   EmptyState,
   NoDataEmptyState,
@@ -11,7 +12,6 @@ import {
   ComingSoonEmptyState,
   TableEmptyState,
 } from '@/components/EmptyStates';
-import { Users } from 'lucide-react';
 
 describe('EmptyState Component', () => {
   describe('Base EmptyState', () => {

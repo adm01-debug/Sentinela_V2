@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GeofencingPage } from '../GeofencingPage';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+import { GeofencingPage } from '../GeofencingPage';
 import * as useGeofencingPageHook from '@/hooks/useGeofencingPage';
 
 // Mocks

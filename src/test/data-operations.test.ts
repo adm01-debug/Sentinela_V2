@@ -86,7 +86,7 @@ describe('Geofence Operations', () => {
     mockFrom.mockReturnValue({
       insert: vi.fn().mockReturnValue({
         select: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: { id: '3', name: 'New Zone', is_active: true }, error: null }),
+          maybeSingle: vi.fn().mockResolvedValue({ data: { id: '3', name: 'New Zone', is_active: true }, error: null }),
         }),
       }),
     });
@@ -118,11 +118,11 @@ describe('Device Management', () => {
     mockFrom.mockReturnValue({
       insert: vi.fn().mockReturnValue({
         select: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: { id: '3', name: 'NEW-PC', device_type: 'desktop' }, error: null }),
+          maybeSingle: vi.fn().mockResolvedValue({ data: { id: '3', name: 'NEW-PC', device_type: 'desktop' }, error: null }),
         }),
       }),
     });
-    const { data, error } = await supabase.from('devices').insert({ name: 'NEW-PC', device_type: 'desktop' }).select().maybeSingle();
+    const { error } = await supabase.from('devices').insert({ name: 'NEW-PC', device_type: 'desktop' }).select().maybeSingle();
     expect(error).toBeNull();
   });
 });
@@ -217,8 +217,8 @@ describe('Gamification', () => {
   it('should fetch employee points', async () => {
     mockFrom.mockReturnValue({
       select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: { employee_id: '1', total_points: 250, level: 3, current_streak: 5 }, error: null }),
+          eq: vi.fn().mockReturnValue({
+            maybeSingle: vi.fn().mockResolvedValue({ data: { employee_id: '1', total_points: 250, level: 3, current_streak: 5 }, error: null }),
         }),
       }),
     });
@@ -250,8 +250,8 @@ describe('Multi-Tenant Company', () => {
   it('should fetch company by slug', async () => {
     mockFrom.mockReturnValue({
       select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: { id: '1', name: 'Acme Corp', slug: 'acme', plan: 'enterprise', is_active: true }, error: null }),
+          eq: vi.fn().mockReturnValue({
+            maybeSingle: vi.fn().mockResolvedValue({ data: { id: '1', name: 'Acme Corp', slug: 'acme', plan: 'enterprise', is_active: true }, error: null }),
         }),
       }),
     });

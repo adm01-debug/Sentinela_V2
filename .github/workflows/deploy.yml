@@ -15,11 +15,13 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
+      # "npm run build" chama "bun scripts/generate-audit-pdf.js" (package.json);
+      # o runner ubuntu-latest não traz bun por padrão.
+      - uses: oven-sh/setup-bun@v2
       - run: npm run build
       - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: npx vercel@latest deploy --prod --yes --token="$VERCEL_TOKEN"
