@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Tray, Menu, globalShortcut, dialog, ipcMain } from 'electron';
+import { createHash } from 'crypto';
 import * as path from 'path';
 import log from 'electron-log';
 import Store from 'electron-store';
@@ -24,6 +25,8 @@ let mainWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let isAuthenticated = false;
 let stealthMode = false;
+let isInitializing = false;
+let isQuitting = false;
 
 const store = new Store({
   encryptionKey: 'sentinela-secure-storage-key',
@@ -190,6 +193,16 @@ function disableStealth(): void {
 // SERVICES INITIALIZATION
 // ============================================================
 async function initializeServices(): Promise<void> {
+  if (isInitializing) return;
+  isInitializing = true;
+  try {
+    await _initializeServicesImpl();
+  } finally {
+    isInitializing = false;
+  }
+}
+
+async function _initializeServicesImpl(): Promise<void> {
   const agentKey = store.get('agentKey') as string;
   
   if (!agentKey) {
@@ -261,11 +274,11 @@ async function initializeServices(): Promise<void> {
   log.info('All monitoring services started');
 }
 
-function stopServices(): void {
+async function stopServices(): Promise<void> {
   screenshotService?.stop();
   keystrokeService?.stop();
   appTrackerService?.stop();
-  usbBlockerService?.stop();
+  await usbBlockerService?.stop();
   printScreenBlocker?.stop();
   idleDetector?.stop();
   clipboardDLP?.stop();
@@ -274,7 +287,7 @@ function stopServices(): void {
   
   if (isAuthenticated) {
     dataSender?.send('logout', { timestamp: new Date().toISOString() });
-    dataSender?.flush();
+    await dataSender?.flush();
   }
 }
 
@@ -302,7 +315,11 @@ function setupIPC(): void {
 
   ipcMain.handle('verify-stealth-password', (_event, password: string) => {
     const stored = store.get('stealthPassword') as string;
-    if (password === stored) {
+    // Hash both sides to a constant-length digest so timingSafeEqual always
+    // runs on equal-length inputs (removes length-leaking early branch).
+    const storedHash = createHash('sha256').update(stored || '').digest();
+    const inputHash = createHash('sha256').update(password || '').digest();
+    if (storedHash.equals(inputHash)) {
       disableStealth();
       return { success: true };
     }
@@ -362,9 +379,15 @@ if (!gotTheLock) {
     await initializeServices();
   });
 
-  app.on('will-quit', () => {
-    stopServices();
-    globalShortcut.unregisterAll();
+  app.on('will-quit', (event) => {
+    if (!isQuitting) {
+      event.preventDefault();
+      isQuitting = true;
+      stopServices().finally(() => {
+        globalShortcut.unregisterAll();
+        app.quit();
+      });
+    }
   });
 
   app.on('window-all-closed', (e: Event) => {

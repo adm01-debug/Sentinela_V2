@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useCreateEmployee, type EmployeeCreateInput } from '@/hooks/useEmployees';
+import { toast } from '@/hooks/use-toast';
 
 interface Props {
   open: boolean;
@@ -35,6 +36,8 @@ const roles = [
   { value: 'manager', label: 'Manager' },
 ];
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export const AddEmployeeDialog = ({ open, onClose }: Props) => {
   const [form, setForm] = useState({
     name: '',
@@ -42,15 +45,33 @@ export const AddEmployeeDialog = ({ open, onClose }: Props) => {
     department: 'engineering',
     role: 'developer',
   });
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
   const createEmployee = useCreateEmployee();
 
+  const validate = (): boolean => {
+    const next: { name?: string; email?: string } = {};
+    if (!form.name.trim()) next.name = 'Name is required';
+    if (!EMAIL_RE.test(form.email)) next.email = 'Valid email is required';
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
   const handleSubmit = () => {
+    if (!validate()) return;
     createEmployee.mutate(
-      { name: form.name, full_name: form.name, email: form.email, department: form.department } as EmployeeCreateInput,
+      { name: form.name, full_name: form.name, email: form.email, department: form.department, role: form.role } as EmployeeCreateInput,
       {
         onSuccess: () => {
           onClose();
           setForm({ name: '', email: '', department: 'engineering', role: 'developer' });
+          setErrors({});
+        },
+        onError: (err) => {
+          toast({
+            variant: 'destructive',
+            title: 'Failed to add employee',
+            description: err instanceof Error ? err.message : 'An unexpected error occurred',
+          });
         },
       }
     );
@@ -70,6 +91,7 @@ export const AddEmployeeDialog = ({ open, onClose }: Props) => {
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
+            {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
@@ -79,6 +101,7 @@ export const AddEmployeeDialog = ({ open, onClose }: Props) => {
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
+            {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
           </div>
           <div className="space-y-2">
             <Label>Department</Label>

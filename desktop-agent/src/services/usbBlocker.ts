@@ -1,6 +1,9 @@
+import { promisify } from 'util';
 import log from 'electron-log';
 import { exec } from 'child_process';
 import { DataSender } from './dataSender';
+
+const execAsync = promisify(exec);
 
 export class UsbBlockerService {
   private dataSender: DataSender;
@@ -17,12 +20,12 @@ export class UsbBlockerService {
     this.pollTimer = setInterval(() => this.monitorUsb(), 10000); // Check every 10s
   }
 
-  stop(): void {
+  async stop(): Promise<void> {
     if (this.pollTimer) {
       clearInterval(this.pollTimer);
       this.pollTimer = null;
     }
-    this.disableBlock();
+    await this.disableBlock();
     log.info('USB blocker service stopped');
   }
 
@@ -45,19 +48,18 @@ export class UsbBlockerService {
     });
   }
 
-  private disableBlock(): void {
+  private async disableBlock(): Promise<void> {
     if (process.platform !== 'win32') return;
 
     const command = 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR" /v Start /t REG_DWORD /d 3 /f';
-    
-    exec(command, (error) => {
-      if (error) {
-        log.error('Failed to disable USB block:', error.message);
-      } else {
-        this.blocked = false;
-        log.info('USB storage devices unblocked');
-      }
-    });
+
+    try {
+      await execAsync(command);
+      this.blocked = false;
+      log.info('USB storage devices unblocked');
+    } catch (error) {
+      log.error('Failed to disable USB block:', (error as Error).message);
+    }
   }
 
   private monitorUsb(): void {
