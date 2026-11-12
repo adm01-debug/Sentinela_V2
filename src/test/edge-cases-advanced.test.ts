@@ -2,8 +2,7 @@
  * SENTINELA - Advanced Edge Cases & Gap Analysis (100+ scenarios)
  * Multi-tenancy, LGPD, concurrency, i18n, date handling, error resilience
  */
-import { describe, it, expect, vi } from 'vitest';
-import { supabase } from '@/integrations/supabase/client';
+import { describe, it, expect } from 'vitest';
 
 // ============================================================
 // MULTI-TENANCY ISOLATION
@@ -136,9 +135,13 @@ describe('Date & Timezone Handling', () => {
   });
 
   it('should detect weekend', () => {
-    const isWeekend = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
-    expect(isWeekend(new Date('2026-03-15'))).toBe(true); // Sunday
-    expect(isWeekend(new Date('2026-03-16'))).toBe(false); // Monday
+    // Use UTC-based day to avoid runner timezone shifting date-only strings
+    const isWeekend = (d: Date) => {
+      const day = d.getUTCDay();
+      return day === 0 || day === 6;
+    };
+    expect(isWeekend(new Date('2026-03-15T12:00:00Z'))).toBe(true); // Sunday
+    expect(isWeekend(new Date('2026-03-16T12:00:00Z'))).toBe(false); // Monday
   });
 
   it('should calculate days between dates', () => {

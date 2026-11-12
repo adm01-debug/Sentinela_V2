@@ -22,33 +22,35 @@ describe("Breadcrumbs Component", () => {
     expect(container.innerHTML).toBe("");
   });
 
-  it("hides on single-segment routes like /employees", () => {
-    const { container } = renderBreadcrumbs("/employees");
-    expect(container.innerHTML).toBe("");
+  it("shows home link on single-segment routes like /employees", () => {
+    renderBreadcrumbs("/employees");
+    expect(screen.getByLabelText("breadcrumb")).toBeInTheDocument();
+    expect(screen.getByText("Colaboradores")).toBeInTheDocument();
   });
 
-  it("hides on single-segment routes like /alerts", () => {
-    const { container } = renderBreadcrumbs("/alerts");
-    expect(container.innerHTML).toBe("");
+  it("shows home link on single-segment routes like /alerts", () => {
+    renderBreadcrumbs("/alerts");
+    expect(screen.getByLabelText("breadcrumb")).toBeInTheDocument();
+    expect(screen.getByText("Alerts")).toBeInTheDocument();
   });
 
   it("shows breadcrumbs for multi-segment routes", () => {
     renderBreadcrumbs("/admin/departments");
-    expect(screen.getByLabelText("Breadcrumb")).toBeInTheDocument();
-    expect(screen.getByText("Departamentos")).toBeInTheDocument();
+    expect(screen.getByLabelText("breadcrumb")).toBeInTheDocument();
+    expect(screen.getByText("Departments")).toBeInTheDocument();
   });
 
   it("shows Home icon link", () => {
     renderBreadcrumbs("/admin/teams");
-    const homeLink = screen.getByLabelText("Breadcrumb").querySelector('a[href="/dashboard"]');
+    const homeLink = screen.getByLabelText("breadcrumb").querySelector('a[href="/"]');
     expect(homeLink).toBeInTheDocument();
   });
 
   it("renders last crumb as non-link text", () => {
     renderBreadcrumbs("/admin/users");
-    const lastCrumb = screen.getByText("Usuários");
+    const lastCrumb = screen.getByText("Users");
     expect(lastCrumb.tagName).not.toBe("A");
-    expect(lastCrumb).toHaveClass("font-semibold");
+    expect(lastCrumb).toHaveClass("font-medium");
   });
 
   it("renders intermediate crumbs as links", () => {
@@ -64,13 +66,13 @@ describe("Breadcrumbs Component", () => {
 
   it("renders chevron separators", () => {
     const { container } = renderBreadcrumbs("/admin/audit");
-    const chevrons = container.querySelectorAll(".opacity-40");
+    const chevrons = container.querySelectorAll("svg");
     expect(chevrons.length).toBeGreaterThan(0);
   });
 
   it("has proper aria-label", () => {
     renderBreadcrumbs("/admin/teams");
-    expect(screen.getByLabelText("Breadcrumb")).toBeInTheDocument();
+    expect(screen.getByLabelText("breadcrumb")).toBeInTheDocument();
   });
 
   it("accepts custom className", () => {

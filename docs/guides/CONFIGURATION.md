@@ -7,7 +7,7 @@ Complete configuration options for Sentinela.
 ### Required
 ```env
 VITE_SUPABASE_URL=https://xxx.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+VITE_SUPABASE_ANON_KEY=<sua-chave-aqui>
 ```
 
 ### Optional
