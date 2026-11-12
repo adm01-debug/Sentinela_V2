@@ -1270,7 +1270,7 @@
    {
     "pacote": "@sentry/react",
     "servico": "Sentry",
-    "versao": "^10.70.0"
+    "versao": "^11.2.0"
    },
    {
     "pacote": "@supabase/supabase-js",

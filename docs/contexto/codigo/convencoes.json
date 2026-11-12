@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "build(deps): bump @sentry/react from 10.74.0 to 11.2.0 (#77)",
    "build(deps): bump react-hook-form from 7.88.0 to 7.89.0 (#79)",
    "ci(contexto): usa ubuntu-latest no lugar de ubuntu-24.04 para provisionar runner (#105)",
    "ci(deploy): usa vercel CLI atual via npx vercel@latest em vez do action v25 desatualizado (#104)",
-   "fix(ci): destrava contexto.yml e Security Scan (#103)",
-   "fix: remove unused imports e variaveis nos testes destravando pre-commit (#102)"
+   "fix(ci): destrava contexto.yml e Security Scan (#103)"
   ]
  },
  "pr_template": ".github/PULL_REQUEST_TEMPLATE.md",
