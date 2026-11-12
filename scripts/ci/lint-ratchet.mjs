@@ -72,6 +72,16 @@ function normalizeMessage(message, root) {
     }
   }
 
+  // O ESLint embute o path do arquivo na mensagem com o separador do SO: no CI (Linux) usa "/",
+  // no Windows usa "\". Sem normalizar, o mesmo commit gera mensagens diferentes por SO e o
+  // ratchet acusa novas (nao casa com o baseline), mesmo com codigo identico ao do CI. So a
+  // linha que contem o path (marcado com <ROOT>) e normalizada; o code frame com o codigo-fonte
+  // permanece intacto para nao corromper backslashes legitimos (regex, strings).
+  normalized = normalized
+    .split("\n")
+    .map((line) => (line.includes("<ROOT>") ? line.split("\\").join("/") : line))
+    .join("\n");
+
   return normalizeWhitespace(normalized);
 }
 

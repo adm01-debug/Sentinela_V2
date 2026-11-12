@@ -316,6 +316,26 @@ test("mensagens com caminho absoluto sao normalizadas para a raiz", () => {
   }
 });
 
+test("mensagem com path usando backslash normaliza para a raiz e separador invariante", () => {
+  const { root, cleanup } = fixture();
+  try {
+    // No Windows o ESLint embute o path da mensagem com "\". A normalizacao precisa
+    // trocar o separador para "/" e marcar a raiz, para o mesmo commit casar com o
+    // baseline gerado no CI (Linux), que usa "/".
+    const report = [
+      result(root, "src/a.ts", "missing();\n", [
+        message({ message: `Falha em ${path.join(root, "src", "a.ts")}` }),
+      ]),
+    ];
+    const baseline = createBaseline(report, root);
+    const normalized = baseline.issues[0].message;
+    assert.equal(normalized.includes(root), false);
+    assert.equal(normalized.includes("<ROOT>/src/a.ts"), true);
+  } finally {
+    cleanup();
+  }
+});
+
 test("rejeita baseline gerado por comando incompatível", () => {
   const { root, cleanup } = fixture();
   try {
