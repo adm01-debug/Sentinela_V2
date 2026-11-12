@@ -1,6 +1,8 @@
 name: Provision Test
 on:
   workflow_dispatch:
+  push:
+    branches: [claude/diag-provision-*]
 jobs:
   test:
     runs-on: ubuntu-latest
