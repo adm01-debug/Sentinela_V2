@@ -516,8 +516,8 @@ describe("Improvement 3: Reusable Form Components", () => {
   describe("FormSection", () => {
     it("renders title and children", async () => {
       const { FormSection } = await import("@/components/forms");
-      // eslint-disable-next-line react/no-children-prop -- FormSectionProps types children as a required prop
       render(
+        // eslint-disable-next-line react/no-children-prop -- FormSectionProps types children as a required prop
         React.createElement(FormSection, {
           title: "Seção",
           description: "Desc",
@@ -533,8 +533,8 @@ describe("Improvement 3: Reusable Form Components", () => {
   describe("FormRow", () => {
     it("renders children", async () => {
       const { FormRow } = await import("@/components/forms");
-      // eslint-disable-next-line react/no-children-prop -- FormRowProps types children as a required prop
       render(
+        // eslint-disable-next-line react/no-children-prop -- FormRowProps types children as a required prop
         React.createElement(FormRow, {
           cols: 3,
           children: [
@@ -652,11 +652,13 @@ describe("Cross-cutting: Build & Architecture Integrity", () => {
     expect(content).not.toContain("TODO");
   });
 
-  it("useEmployeesPage has real device assign/unassign", async () => {
+  it("employee device assign/unassign use the real employee_devices table", async () => {
     const fs = await import("fs");
-    const content = fs.readFileSync("src/hooks/useEmployeesPage.ts", "utf8");
-    expect(content).toContain("employee_devices");
-    expect(content).not.toMatch(/assignDevice.*=.*async.*\{\s*\}/);
+    // useEmployeesPage.delegate para useEmployees -> employeeService, que é quem
+    // fala com a tabela employee_devices.
+    const service = fs.readFileSync("src/services/employeeService.ts", "utf8");
+    expect(service).toContain("employee_devices");
+    expect(service).not.toMatch(/assignDevice.*=.*async.*\{\s*\}/);
   });
 
   it("Auth flow uses typed Session instead of any", async () => {

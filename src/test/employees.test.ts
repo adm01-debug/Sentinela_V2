@@ -90,7 +90,7 @@ describe('Employee Management', () => {
       mockFrom.mockReturnValue({
         insert: vi.fn().mockReturnValue({
           select: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({ data: { id: '3', ...newEmployee }, error: null }),
+            maybeSingle: vi.fn().mockResolvedValue({ data: { id: '3', ...newEmployee }, error: null }),
           }),
         }),
       });
@@ -104,7 +104,7 @@ describe('Employee Management', () => {
       mockFrom.mockReturnValue({
         insert: vi.fn().mockReturnValue({
           select: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({ data: null, error: { message: 'null value in column "name" violates not-null constraint' } }),
+            maybeSingle: vi.fn().mockResolvedValue({ data: null, error: { message: 'null value in column "name" violates not-null constraint' } }),
           }),
         }),
       });
@@ -120,7 +120,7 @@ describe('Employee Management', () => {
         update: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
             select: vi.fn().mockReturnValue({
-              single: vi.fn().mockResolvedValue({ data: { id: '1', name: 'Updated Name', status: 'active' }, error: null }),
+              maybeSingle: vi.fn().mockResolvedValue({ data: { id: '1', name: 'Updated Name', status: 'active' }, error: null }),
             }),
           }),
         }),

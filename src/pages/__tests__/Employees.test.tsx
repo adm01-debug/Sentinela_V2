@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { EmployeesPage } from '../EmployeesPage';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+import { EmployeesPage } from '../EmployeesPage';
 
 // Mocks
 vi.mock('react-i18next', () => ({
@@ -23,6 +23,9 @@ vi.mock('react-router-dom', async () => {
 
 vi.mock('@/hooks/useEmployeesPage', () => ({
   useEmployeesPage: () => ({
+    employees: [
+      { id: '1', name: 'Employee One', department: 'IT', status: 'active' },
+    ],
     filteredEmployees: [
       { id: '1', name: 'Employee One', department: 'IT', status: 'active' },
     ],

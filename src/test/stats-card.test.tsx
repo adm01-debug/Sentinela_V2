@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { Users, AlertTriangle } from 'lucide-react';
 import { StatsCard } from '@/components/Cards/StatsCard';
-import { Users, Shield, Activity, AlertTriangle } from 'lucide-react';
 
 // Mock recharts to avoid canvas issues
 vi.mock('recharts', () => ({
@@ -15,7 +15,7 @@ vi.mock('@/hooks/useCountUp', () => ({
   useCountUp: ({ end, prefix = '', suffix = '', decimals = 0, separator = '' }: any) => ({
     ref: { current: null },
     value: end,
-    formatted: `${prefix}${end.toFixed(decimals)}${suffix}`,
+    formatted: `${prefix}${separator}${end.toFixed(decimals)}${separator}${suffix}`,
   }),
 }));
 

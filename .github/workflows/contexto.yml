@@ -1,0 +1,105 @@
+# docs:
+#   gatilho: push em main (código/banco/gerador), a cada 30 min e workflow_dispatch
+#   prova: o gerador de contexto roda contra o HEAD de main e publica o retrato na branch `contexto`
+#   falha: se a suíte do gerador reprovar ou a geração sair com erro
+#   avisa: nada — a publicação é silenciosa (commit com [skip ci] na branch gerada)
+# nao-e-bug: a branch `contexto` é gerada; nunca abra PR dela nem a mergeie em main.
+name: Contexto para agentes de IA (30 min)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'supabase/**'
+      - 'scripts/ai-context/**'
+      - 'ai-context.config.json'
+      - 'package.json'
+      - 'tsconfig*.json'
+      - '.github/workflows/contexto.yml'
+  schedule:
+    - cron: '7-59/30 * * * *' # minutos 7 e 37: fora do minuto 0 (fila do GitHub) e dos crons de segurança
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Regenerar e publicar mesmo sem mudança detectada'
+        type: boolean
+        default: false
+
+concurrency:
+  group: contexto-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  CONTEXTO_BRANCH: contexto
+  CONTEXTO_DIR: docs/contexto
+
+jobs:
+  publicar:
+    name: Gerar codigo/ e publicar na branch contexto
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write # empurra a branch gerada `contexto`
+    steps:
+      - name: Checkout (main)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '20'
+
+      - name: Testar o gerador (fail-closed)
+        run: node --test scripts/ai-context/gerar.unit.mjs
+
+      - name: Gerar codigo/
+        run: |
+          set -euo pipefail
+          rm -rf "${CONTEXTO_DIR}/codigo"
+          node scripts/ai-context/gerar.mjs --out "${CONTEXTO_DIR}/codigo" --quiet
+          test -f "${CONTEXTO_DIR}/codigo/INDEX.md"
+
+      - name: Publicar na branch contexto (só se algo mudou)
+        env:
+          FORCE: ${{ inputs.force }}
+        run: |
+          set -euo pipefail
+          HEAD_MAIN="$(git rev-parse HEAD)"
+          TMP="$(mktemp -d)"
+          cp -r "${CONTEXTO_DIR}/codigo" "$TMP/codigo"
+
+          REMOTE="https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          if git ls-remote --exit-code --heads "$REMOTE" "$CONTEXTO_BRANCH" >/dev/null 2>&1; then
+            git fetch --depth=1 "$REMOTE" "$CONTEXTO_BRANCH"
+            git checkout -q -f -B "$CONTEXTO_BRANCH" FETCH_HEAD
+          else
+            git checkout -q --orphan "$CONTEXTO_BRANCH"
+            git rm -rq --cached . || true
+            find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          fi
+
+          mkdir -p "$CONTEXTO_DIR"
+          rm -rf "${CONTEXTO_DIR}/codigo"
+          cp -r "$TMP/codigo" "${CONTEXTO_DIR}/codigo"
+          git add -A "${CONTEXTO_DIR}/codigo"
+
+          # manifest.json carrega a data da geração: mudança só nele não é mudança real
+          ESTRUTURAL="$(git diff --cached --name-only | grep -v '/manifest\.json$' || true)"
+          if [ -z "$ESTRUTURAL" ] && [ "$FORCE" != "true" ]; then
+            echo "Nada estrutural mudou; não publica."
+            exit 0
+          fi
+
+          git commit --quiet -m "chore(contexto): retrato do código @ main ${HEAD_MAIN:0:7} [skip ci]"
+          git push --quiet "$REMOTE" "HEAD:refs/heads/${CONTEXTO_BRANCH}"
+          echo "Publicado em ${CONTEXTO_BRANCH}:${CONTEXTO_DIR}/codigo/"

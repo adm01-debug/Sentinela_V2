@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import UsersPage from '../UsersPage';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+import UsersPage from '../UsersPage';
 import * as useUsersHook from '@/hooks/useUsers';
 
 // Mocks
