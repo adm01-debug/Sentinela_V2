@@ -108,7 +108,7 @@ export const generatePDF = (reportData: PdfReportData) => {
   doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]); doc.setFontSize(12); doc.setFont('helvetica', 'bold');
   doc.text('Detalhamento de Alertas por Tipo', margin, yPos); yPos += 8;
   const totalAlerts = reportData.alertsByType.reduce((sum, a) => sum + a.count, 0);
-  autoTable(doc, { startY: yPos, head: [['Tipo de Alerta', 'Quantidade', 'Percentual']], body: reportData.alertsByType.map(a => [a.type, a.count.toString(), `${((a.count / totalAlerts) * 100).toFixed(1)}%`]), theme: 'striped', headStyles: { fillColor: colors.danger, textColor: 255, fontStyle: 'bold', fontSize: 9 }, bodyStyles: { fontSize: 9 }, alternateRowStyles: { fillColor: colors.light }, margin: { left: margin, right: margin }, columnStyles: { 0: { cellWidth: 80 }, 1: { cellWidth: 40, halign: 'center' }, 2: { cellWidth: 40, halign: 'center' } } });
+  autoTable(doc, { startY: yPos, head: [['Tipo de Alerta', 'Quantidade', 'Percentual']], body: reportData.alertsByType.map(a => [a.type, a.count.toString(), `${totalAlerts > 0 ? ((a.count / totalAlerts) * 100).toFixed(1) : 0}%`]), theme: 'striped', headStyles: { fillColor: colors.danger, textColor: 255, fontStyle: 'bold', fontSize: 9 }, bodyStyles: { fontSize: 9 }, alternateRowStyles: { fillColor: colors.light }, margin: { left: margin, right: margin }, columnStyles: { 0: { cellWidth: 80 }, 1: { cellWidth: 40, halign: 'center' }, 2: { cellWidth: 40, halign: 'center' } } });
   yPos = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 15;
 
   // Productivity table
@@ -152,12 +152,12 @@ export const generatePDF = (reportData: PdfReportData) => {
   doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]); doc.rect(margin, yPos, 4, 50, 'F');
   doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]); doc.text('Insights do Período', margin + 12, yPos + 12);
   doc.setFontSize(9); doc.setFont('helvetica', 'normal'); doc.setTextColor(colors.muted[0], colors.muted[1], colors.muted[2]);
-  const avgProductivity = reportData.dailyActivity.reduce((sum, d) => sum + d.productive, 0) / reportData.dailyActivity.length;
-  const bestDay = reportData.dailyActivity.reduce((best, d) => d.productive > best.productive ? d : best);
-  const worstDay = reportData.dailyActivity.reduce((worst, d) => d.productive < worst.productive ? d : worst);
+  const avgProductivity = reportData.dailyActivity.length > 0 ? reportData.dailyActivity.reduce((sum, d) => sum + d.productive, 0) / reportData.dailyActivity.length : 0;
+  const bestDay = reportData.dailyActivity.length > 0 ? reportData.dailyActivity.reduce((best, d) => d.productive > best.productive ? d : best) : null;
+  const worstDay = reportData.dailyActivity.length > 0 ? reportData.dailyActivity.reduce((worst, d) => d.productive < worst.productive ? d : worst) : null;
   doc.text(`• Média de produtividade no período: ${avgProductivity.toFixed(1)}%`, margin + 12, yPos + 24);
-  doc.text(`• Melhor dia: ${bestDay.date} com ${bestDay.productive}% de tempo produtivo`, margin + 12, yPos + 34);
-  doc.text(`• Dia que requer atenção: ${worstDay.date} com ${worstDay.productive}% de tempo produtivo`, margin + 12, yPos + 44);
+  doc.text(bestDay ? `• Melhor dia: ${bestDay.date} com ${bestDay.productive}% de tempo produtivo` : '• Melhor dia: sem dados disponíveis', margin + 12, yPos + 34);
+  doc.text(worstDay ? `• Dia que requer atenção: ${worstDay.date} com ${worstDay.productive}% de tempo produtivo` : '• Dia que requer atenção: sem dados disponíveis', margin + 12, yPos + 44);
 
   // ==================== FOOTER ====================
   const pageCount = doc.getNumberOfPages();

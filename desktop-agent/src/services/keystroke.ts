@@ -9,6 +9,7 @@ export class KeystrokeService {
   private reportTimer: NodeJS.Timeout | null = null;
   private currentApp = '';
   private currentWindow = '';
+  private windowUpdateTimer: NodeJS.Timeout | null = null;
 
   constructor(dataSender: DataSender) {
     this.dataSender = dataSender;
@@ -24,7 +25,7 @@ export class KeystrokeService {
       
       ioHook.on('keydown', (event: { keycode: number; rawcode: number }) => {
         this.keystrokeCount++;
-        this.updateActiveWindow();
+        this.scheduleWindowUpdate();
       });
 
       ioHook.start();
@@ -42,7 +43,11 @@ export class KeystrokeService {
       clearInterval(this.reportTimer);
       this.reportTimer = null;
     }
-    
+    if (this.windowUpdateTimer) {
+      clearTimeout(this.windowUpdateTimer);
+      this.windowUpdateTimer = null;
+    }
+
     try {
       const ioHook = require('iohook');
       ioHook.stop();
@@ -52,6 +57,14 @@ export class KeystrokeService {
     
     this.report(); // Final report
     log.info('Keystroke service stopped');
+  }
+
+  private scheduleWindowUpdate(): void {
+    if (this.windowUpdateTimer) return;
+    this.windowUpdateTimer = setTimeout(() => {
+      this.windowUpdateTimer = null;
+      this.updateActiveWindow();
+    }, 200);
   }
 
   private async updateActiveWindow(): Promise<void> {

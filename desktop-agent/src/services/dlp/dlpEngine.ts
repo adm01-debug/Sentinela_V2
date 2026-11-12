@@ -108,6 +108,19 @@ function maskPreview(value: string): string {
   return value.slice(0, 2) + '*'.repeat(Math.max(0, value.length - 4)) + value.slice(-2);
 }
 
+// ----- Regex safety guard (ReDoS prevention) -----
+const MAX_PATTERN_LENGTH = 500;
+// Detect nested quantifiers — the canonical source of catastrophic backtracking:
+// groups that themselves contain a quantifier followed by another quantifier.
+// Examples that match: (a+)+  (a|b+)*  (\d*\s*)*
+const NESTED_QUANTIFIER_RE = /\([^)]*[+*?][^)]*\)[+*?{]/;
+
+function isSafeRegex(pattern: string): boolean {
+  if (pattern.length > MAX_PATTERN_LENGTH) return false;
+  if (NESTED_QUANTIFIER_RE.test(pattern)) return false;
+  return true;
+}
+
 // ----- Engine -----
 export class DLPEngine {
   private classifiers = new Map<string, DLPClassifier>();
@@ -119,6 +132,10 @@ export class DLPEngine {
     this.compiled.clear();
     for (const c of list) {
       this.classifiers.set(c.code, c);
+      if (!isSafeRegex(c.pattern)) {
+        log.warn(`DLP: rejected unsafe regex for classifier ${c.code}`);
+        continue;
+      }
       try {
         this.compiled.set(c.code, new RegExp(c.pattern, 'gi'));
       } catch (err) {
@@ -132,10 +149,14 @@ export class DLPEngine {
     for (const p of this.policies) {
       if (p.custom_pattern) {
         const key = `policy:${p.id}`;
-        try {
-          this.compiled.set(key, new RegExp(p.custom_pattern, 'gi'));
-        } catch (err) {
-          log.warn(`DLP: invalid custom regex on policy ${p.id}`, err);
+        if (!isSafeRegex(p.custom_pattern)) {
+          log.warn(`DLP: rejected unsafe custom regex on policy ${p.id}`);
+        } else {
+          try {
+            this.compiled.set(key, new RegExp(p.custom_pattern, 'gi'));
+          } catch (err) {
+            log.warn(`DLP: invalid custom regex on policy ${p.id}`, err);
+          }
         }
       }
     }

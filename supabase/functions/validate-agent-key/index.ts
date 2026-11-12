@@ -1,7 +1,8 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { Logger } from '../_shared/logger.ts';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { Logger } from '../_shared/logger.ts';
+import { checkRateLimit } from '../_shared/rateLimiting.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -25,6 +26,16 @@ serve(async (req) => {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
+    // Rate-limit by IP to prevent brute-force enumeration of agent keys
+    const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await checkRateLimit(clientIP, 'validate-agent-key', 10, 60);
+    if (!rateLimitResult.allowed) {
+      return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const body = await req.json();
     const validation = ValidateKeySchema.safeParse(body);
     

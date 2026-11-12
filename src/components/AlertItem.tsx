@@ -1,4 +1,4 @@
-import { AlertTriangle, Printer, Usb, HardDrive, Eye, AppWindow } from 'lucide-react';
+import { Printer, Usb, HardDrive, Eye, AppWindow, ShieldAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Alert } from '@/data/mockData';
 
@@ -29,7 +29,7 @@ interface AlertItemProps {
 }
 
 export function AlertItem({ alert }: AlertItemProps) {
-  const Icon = alertIcons[alert.type];
+  const Icon = alertIcons[alert.type] ?? ShieldAlert;
   
   return (
     <div className={cn(

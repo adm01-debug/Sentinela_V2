@@ -15,6 +15,8 @@ export async function sha512(message): Promise<string> {
 }
 
 export async function md5(message: string): Promise<string> {
+  // NOTE: this is NOT a true MD5 implementation — it returns the first 32 hex chars of a SHA-256 digest.
+  // Do not compare output against true MD5 values. Use sha256() for integrity checks.
   // Simple MD5 implementation for non-cryptographic purposes
   function md5cycle(x: number[], k: number[]) {
     let a = x[0], b = x[1], c = x[2], d = x[3];
@@ -72,9 +74,14 @@ export function createFingerprint(data): string {
 }
 
 export function obfuscate(str): string {
-  return btoa(str.split('').reverse().join(''));
+  const reversed = str.split('').reverse().join('');
+  const bytes = new TextEncoder().encode(reversed);
+  const binary = String.fromCharCode(...bytes);
+  return btoa(binary);
 }
 
 export function deobfuscate(str): string {
-  return atob(str).split('').reverse().join('');
+  const binary = atob(str);
+  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes).split('').reverse().join('');
 }
