@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "4d5f9474803c53d3e496732f2b022dbf70f5824e",
+  "commit": "9de86acd5bedbe184caa7af3dd7b1cd125beaa89",
   "branch": "main",
-  "data_commit": "2026-11-12T10:20:55-03:00",
+  "data_commit": "2026-11-12T10:44:05-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "9de86acd5",
+    "data": "2026-11-12",
+    "assunto": "build(deps): bump the i18n group across 1 directory with 2 updates (#83)"
+   },
+   {
+    "sha": "7e68d8aa1",
+    "data": "2026-11-12",
+    "assunto": "build(deps): bump @supabase/supabase-js from 2.109.0 to 2.117.2 (#78)"
+   },
    {
     "sha": "4d5f94748",
     "data": "2026-11-12",
@@ -121,16 +131,6 @@
     "sha": "f3bbfc7ae",
     "data": "2026-10-03",
     "assunto": "Merge pull request #66 from adm01-debug/dependabot/npm_and_yarn/rollup-plugin-visualizer-7.1.1"
-   },
-   {
-    "sha": "3f01a81b7",
-    "data": "2026-10-03",
-    "assunto": "Merge pull request #65 from adm01-debug/dependabot/npm_and_yarn/zustand-5.0.15"
-   },
-   {
-    "sha": "16d43d25e",
-    "data": "2026-10-03",
-    "assunto": "Merge pull request #63 from adm01-debug/dependabot/npm_and_yarn/react-62d074ab17"
    }
   ],
   "arquivos_mudados_7d": 118,
@@ -138,6 +138,14 @@
    {
     "pasta": "src/pages/__tests__",
     "mudancas": 23
+   },
+   {
+    "pasta": "package-lock.json",
+    "mudancas": 5
+   },
+   {
+    "pasta": "package.json",
+    "mudancas": 5
    },
    {
     "pasta": ".github/workflows/ci.yml",
@@ -149,14 +157,6 @@
    },
    {
     "pasta": "AGENTS.md",
-    "mudancas": 3
-   },
-   {
-    "pasta": "package-lock.json",
-    "mudancas": 3
-   },
-   {
-    "pasta": "package.json",
     "mudancas": 3
    },
    {
@@ -199,11 +199,11 @@
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "package.json",
-    "mudancas": 27
+    "mudancas": 29
    },
    {
     "arquivo": "package-lock.json",
-    "mudancas": 26
+    "mudancas": 28
    },
    {
     "arquivo": "ESTADO_ATUAL.md",
@@ -305,7 +305,7 @@
    },
    {
     "autor": "dependabot[bot]",
-    "commits": 2
+    "commits": 4
    }
   ]
  },

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `4d5f9474803c53d3e496732f2b022dbf70f5824e` (2026-11-12T10:20:55-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `9de86acd5bedbe184caa7af3dd7b1cd125beaa89` (2026-11-12T10:44:05-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -290,8 +290,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - não gerado neste run. uvx --from "graphifyy[sql]" graphify update .  (ou: bun run graph:update); saída em graphify-out/ — graph.json e graph.html NÃO são versionados (dezenas de MB); use `graphify query/path/explain` localmente
 
 ## Hotspots (arquivos mais alterados, 90 dias)
-- package.json (27)
-- package-lock.json (26)
+- package.json (29)
+- package-lock.json (28)
 - ESTADO_ATUAL.md (6)
 - .github/workflows/ci.yml (4)
 - AGENTS.md (4)
@@ -458,6 +458,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-12 `9de86acd5` build(deps): bump the i18n group across 1 directory with 2 updates (#83)
+- 2026-11-12 `7e68d8aa1` build(deps): bump @supabase/supabase-js from 2.109.0 to 2.117.2 (#78)
 - 2026-11-12 `4d5f94748` build(deps): bump @sentry/react from 10.74.0 to 11.2.0 (#77)
 - 2026-11-12 `d64e52b76` build(deps): bump react-hook-form from 7.88.0 to 7.89.0 (#79)
 - 2026-11-12 `5633fb5cb` ci(contexto): usa ubuntu-latest no lugar de ubuntu-24.04 para provisionar runner (#105)
@@ -471,8 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-08 `185007dd3` chore(docs): adiciona regra explícita sobre PR de outra sessão no AGENTS.md (#97)
 - 2026-11-08 `3cb8038f0` fix(ci) + chore(scripts): ripgrep no inventário + lint/typecheck-ratchet (Fases 1 fix + 3)
 - 2026-11-08 `05a3b2050` chore(docs): remove referência a scripts já removidos em #91 (#96)
-- 2026-11-08 `909fc0e0e` chore(docs): corrige AGENTS.md/github-ci.md com estado real do CI pós #90/#91 (#95)
-- 2026-11-08 `d4fdbb3e4` chore(scripts): porta do Zapp Web V2 o gerador de contexto e o inventário de estado real (Fase 1) (#92)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
