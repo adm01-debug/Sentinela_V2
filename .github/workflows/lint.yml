@@ -20,6 +20,13 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npm run lint
-      - run: npm run format:check
-      - run: npm run type-check
+
+      # Ratchet: falha só se surgir ocorrência nova acima do baseline.
+      # Ver scripts/ci/README.md. Baseline capturado em 08/11/2026 (PR #93).
+      # `tsc --noEmit` era no-op nesta config (references sem --build); o ratchet
+      # usa `tsc -b --force` que respeita as referencias e checa de verdade.
+      - name: Lint (ratchet)
+        run: node scripts/ci/lint-ratchet.mjs
+
+      - name: Type Check (ratchet)
+        run: node scripts/ci/typecheck-ratchet.mjs
