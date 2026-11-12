@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "build(deps-dev): bump @types/node from 26.6.3 to 26.6.6 (#109)",
    "fix: remove src/components/Forms.tsx morto que sombreava o barrel forms/ (#108)",
    "build(deps): bump the test group across 1 directory with 6 updates (#85)",
    "build(deps): bump the react group across 1 directory with 35 updates (#107)",
-   "build(deps): bump the i18n group across 1 directory with 2 updates (#83)",
-   "build(deps): bump @supabase/supabase-js from 2.109.0 to 2.117.2 (#78)"
+   "build(deps): bump the i18n group across 1 directory with 2 updates (#83)"
   ]
  },
  "pr_template": ".github/PULL_REQUEST_TEMPLATE.md",

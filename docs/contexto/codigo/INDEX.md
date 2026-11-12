@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `7e3b22a48bcf1ed30c4abdf3a3c1e0018bab5030` (2026-11-12T12:30:32-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2d707fd3c67384c0a9fa51118e5d630a4e11d153` (2026-11-12T12:45:09-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -290,8 +290,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - não gerado neste run. uvx --from "graphifyy[sql]" graphify update .  (ou: bun run graph:update); saída em graphify-out/ — graph.json e graph.html NÃO são versionados (dezenas de MB); use `graphify query/path/explain` localmente
 
 ## Hotspots (arquivos mais alterados, 90 dias)
-- package.json (31)
-- package-lock.json (30)
+- package.json (32)
+- package-lock.json (31)
 - ESTADO_ATUAL.md (6)
 - .github/workflows/ci.yml (4)
 - AGENTS.md (4)
@@ -458,6 +458,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-12 `2d707fd3c` build(deps-dev): bump @types/node from 26.6.3 to 26.6.6 (#109)
 - 2026-11-12 `7e3b22a48` fix: remove src/components/Forms.tsx morto que sombreava o barrel forms/ (#108)
 - 2026-11-12 `df537774d` build(deps): bump the test group across 1 directory with 6 updates (#85)
 - 2026-11-12 `240a04d0d` build(deps): bump the react group across 1 directory with 35 updates (#107)
@@ -472,7 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-11 `69460cb3c` fix(ci): corrige parse YAML dos workflows cd/security (#101)
 - 2026-11-11 `b2beae8a2` fix(lint): limpa imports e ordem de imports nos testes (#100)
 - 2026-11-11 `04b8469e9` ci(quality): substitui lint/tsc diretos pelos ratchets incrementais no CI (#99)
-- 2026-11-08 `310b7e6b3` fix(lint): globals.node para scripts .mjs/.cjs + baseline 1633→1515
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
