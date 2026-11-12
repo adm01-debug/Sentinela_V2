@@ -3,10 +3,10 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1377)",
+   "TypeScript (1378)",
    "Markdown (179)",
    "SQL (106)",
-   "JSON (40)",
+   "JSON (41)",
    "YAML (37)",
    "JavaScript (21)",
    "Shell (21)",
@@ -261,13 +261,11 @@
    "crons": [],
    "branches": [],
    "jobs": [
-    "build"
+    "typecheck"
    ],
    "permissoes": [],
    "scripts_usados": [],
-   "npm_scripts": [
-    "build"
-   ],
+   "npm_scripts": [],
    "secrets": [],
    "actions": [
     "actions/checkout",

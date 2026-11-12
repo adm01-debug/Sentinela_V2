@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `dc7d30c08f0947e24d22fcb252109f4cd8e6fa7b` (2026-11-12T17:42:16-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `deec5b891f27335de2a3e66012eb536856866621` (2026-11-12T17:43:03-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1377), Markdown (179), SQL (106), JSON (40), YAML (37), JavaScript (21), Shell (21), HTML (4)
+- linguagens: TypeScript (1378), Markdown (179), SQL (106), JSON (41), YAML (37), JavaScript (21), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1826 |
+| arquivos_total | 1828 |
 | arquivos_codigo | 1397 |
 | linhas_codigo | 146684 |
 | rotas | 54 |
@@ -301,10 +301,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - .github/workflows/cd.yml (2)
 - .github/workflows/deploy.yml (2)
 - .github/workflows/inventario-estado-semanal.yml (2)
+- .github/workflows/security.yml (2)
 - docs/agentes/github-ci.md (2)
 - eslint.config.js (2)
 - scripts/check-bundle-size.sh (2)
-- scripts/ci/eslint-baseline.json (2)
 
 ## Workflows
 - `cd.yml` — CD (push)
@@ -458,6 +458,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-12 `deec5b891` fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)
+- 2026-11-12 `69611c177` fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)
+- 2026-11-12 `dada0de0e` fix: security scan tolera audit baseline e snyk sem token (#110)
 - 2026-11-12 `dc7d30c08` fix: porta hardening de seguranca da branch qa (CNPJ, UTF-8, ReDoS, JWT, rate limit) (#112)
 - 2026-11-12 `2d707fd3c` build(deps-dev): bump @types/node from 26.6.3 to 26.6.6 (#109)
 - 2026-11-12 `7e3b22a48` fix: remove src/components/Forms.tsx morto que sombreava o barrel forms/ (#108)
@@ -470,9 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-12 `5633fb5cb` ci(contexto): usa ubuntu-latest no lugar de ubuntu-24.04 para provisionar runner (#105)
 - 2026-11-12 `7c7bc08ee` ci(deploy): usa vercel CLI atual via npx vercel@latest em vez do action v25 desatualizado (#104)
 - 2026-11-11 `d69de6619` fix(ci): destrava contexto.yml e Security Scan (#103)
-- 2026-11-11 `726ffbe10` fix: remove unused imports e variaveis nos testes destravando pre-commit (#102)
-- 2026-11-11 `69460cb3c` fix(ci): corrige parse YAML dos workflows cd/security (#101)
-- 2026-11-11 `b2beae8a2` fix(lint): limpa imports e ordem de imports nos testes (#100)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

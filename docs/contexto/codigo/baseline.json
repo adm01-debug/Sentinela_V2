@@ -2,11 +2,26 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "dc7d30c08f0947e24d22fcb252109f4cd8e6fa7b",
+  "commit": "deec5b891f27335de2a3e66012eb536856866621",
   "branch": "main",
-  "data_commit": "2026-11-12T17:42:16-03:00",
+  "data_commit": "2026-11-12T17:43:03-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "deec5b891",
+    "data": "2026-11-12",
+    "assunto": "fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)"
+   },
+   {
+    "sha": "69611c177",
+    "data": "2026-11-12",
+    "assunto": "fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)"
+   },
+   {
+    "sha": "dada0de0e",
+    "data": "2026-11-12",
+    "assunto": "fix: security scan tolera audit baseline e snyk sem token (#110)"
+   },
    {
     "sha": "dc7d30c08",
     "data": "2026-11-12",
@@ -116,24 +131,9 @@
     "sha": "d4fdbb3e4",
     "data": "2026-11-08",
     "assunto": "chore(scripts): porta do Zapp Web V2 o gerador de contexto e o inventário de estado real (Fase 1) (#92)"
-   },
-   {
-    "sha": "77dac939f",
-    "data": "2026-11-08",
-    "assunto": "chore(security): remove migrate-helper e scripts com credenciais vazadas (#91)"
-   },
-   {
-    "sha": "dcf16f81d",
-    "data": "2026-11-08",
-    "assunto": "fix(ci): destrava npm ci, lint, build e testes de contrato Deno (#90)"
-   },
-   {
-    "sha": "c4770bcbd",
-    "data": "2026-11-08",
-    "assunto": "chore(agentes): replica no Sentinela V2 o padrão de instruções do Zapp Web V2 (#89)"
    }
   ],
-  "arquivos_mudados_7d": 131,
+  "arquivos_mudados_7d": 138,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -148,6 +148,10 @@
     "mudancas": 8
    },
    {
+    "pasta": "desktop-agent/src/services",
+    "mudancas": 4
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 3
    },
@@ -157,10 +161,6 @@
    },
    {
     "pasta": "AGENTS.md",
-    "mudancas": 3
-   },
-   {
-    "pasta": "desktop-agent/src/services",
     "mudancas": 3
    },
    {
@@ -180,6 +180,10 @@
     "mudancas": 2
    },
    {
+    "pasta": ".github/workflows/security.yml",
+    "mudancas": 2
+   },
+   {
     "pasta": "docs/agentes/github-ci.md",
     "mudancas": 2
    },
@@ -189,10 +193,6 @@
    },
    {
     "pasta": "src/test/comprehensive-validation.test.ts",
-    "mudancas": 2
-   },
-   {
-    "pasta": "src/test/data-operations.test.ts",
     "mudancas": 2
    }
   ],
@@ -239,6 +239,10 @@
    },
    {
     "arquivo": ".github/workflows/inventario-estado-semanal.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/security.yml",
     "mudancas": 2
    },
    {
@@ -292,16 +296,12 @@
    {
     "arquivo": "src/test/edge-cases-advanced.test.ts",
     "mudancas": 2
-   },
-   {
-    "arquivo": "src/test/header-enhanced.test.tsx",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 20
+    "commits": 23
    },
    {
     "autor": "dependabot[bot]",
@@ -310,7 +310,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1826,
+  "arquivos_total": 1828,
   "arquivos_codigo": 1397,
   "linhas_codigo": 146684,
   "rotas": 54,
