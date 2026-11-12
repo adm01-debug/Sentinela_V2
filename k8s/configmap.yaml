@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: sentinela-config
-data:
-  API_URL: "https://api.sentinela.com"
-  LOG_LEVEL: "info"
-  NODE_ENV: "production"

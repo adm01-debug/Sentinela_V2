@@ -1,4 +1,0 @@
-[
-  {"id":"57000000-0000-0000-0000-000000000001","company_id":"c0000000-0000-0000-0000-000000000001","name":"Jornada Comercial 8h","description":"Jornada padrão: 8h-17h com 1h de almoço","start_time":"08:00:00","end_time":"17:00:00","lunch_start":"12:00:00","lunch_end":"13:00:00","grace_period_minutes":10,"allow_overtime":true,"auto_block_enabled":false,"work_days":[1,2,3,4,5]},
-  {"id":"57000000-0000-0000-0000-000000000002","company_id":"c0000000-0000-0000-0000-000000000001","name":"Jornada Comercial 9h","description":"Jornada estendida: 9h-18h com 1h de almoço","start_time":"09:00:00","end_time":"18:00:00","lunch_start":"13:00:00","lunch_end":"14:00:00","grace_period_minutes":15,"allow_overtime":true,"auto_block_enabled":false,"work_days":[1,2,3,4,5]}
-]
