@@ -20,7 +20,6 @@
     "electron-store": "^8.2.0",
     "electron-updater": "^6.1.7",
     "iohook": "^0.9.3",
-    "node-usb": "^2.9.0",
     "screenshot-desktop": "^1.15.0",
     "uuid": "^9.0.0"
   },
