@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `7c7bc08ee5851a78621e867af3784cd28c3e46df` (2026-11-12T08:10:40-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `5633fb5cba3f7a1b9bdb44b068329076ba5e6209` (2026-11-12T09:37:19-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -295,10 +295,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - ESTADO_ATUAL.md (6)
 - .github/workflows/ci.yml (4)
 - AGENTS.md (4)
+- .github/workflows/contexto.yml (3)
 - src/pages/__tests__/Auth.test.tsx (3)
 - src/pages/__tests__/Settings.test.tsx (3)
 - .github/workflows/cd.yml (2)
-- .github/workflows/contexto.yml (2)
 - .github/workflows/deploy.yml (2)
 - .github/workflows/inventario-estado-semanal.yml (2)
 - docs/agentes/github-ci.md (2)
@@ -458,6 +458,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-12 `5633fb5cb` ci(contexto): usa ubuntu-latest no lugar de ubuntu-24.04 para provisionar runner (#105)
 - 2026-11-12 `7c7bc08ee` ci(deploy): usa vercel CLI atual via npx vercel@latest em vez do action v25 desatualizado (#104)
 - 2026-11-11 `d69de6619` fix(ci): destrava contexto.yml e Security Scan (#103)
 - 2026-11-11 `726ffbe10` fix: remove unused imports e variaveis nos testes destravando pre-commit (#102)
@@ -472,7 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-08 `d4fdbb3e4` chore(scripts): porta do Zapp Web V2 o gerador de contexto e o inventário de estado real (Fase 1) (#92)
 - 2026-11-08 `77dac939f` chore(security): remove migrate-helper e scripts com credenciais vazadas (#91)
 - 2026-11-08 `dcf16f81d` fix(ci): destrava npm ci, lint, build e testes de contrato Deno (#90)
-- 2026-11-08 `c4770bcbd` chore(agentes): replica no Sentinela V2 o padrão de instruções do Zapp Web V2 (#89)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
