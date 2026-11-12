@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "9de86acd5bedbe184caa7af3dd7b1cd125beaa89",
+  "commit": "240a04d0d6479cb3044a0cf1bb85fefa8a0aff73",
   "branch": "main",
-  "data_commit": "2026-11-12T10:44:05-03:00",
+  "data_commit": "2026-11-12T11:21:57-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "240a04d0d",
+    "data": "2026-11-12",
+    "assunto": "build(deps): bump the react group across 1 directory with 35 updates (#107)"
+   },
    {
     "sha": "9de86acd5",
     "data": "2026-11-12",
@@ -126,11 +131,6 @@
     "sha": "7ff411692",
     "data": "2026-10-03",
     "assunto": "Merge pull request #68 from adm01-debug/dependabot/npm_and_yarn/hookform/resolvers-5.9.1"
-   },
-   {
-    "sha": "f3bbfc7ae",
-    "data": "2026-10-03",
-    "assunto": "Merge pull request #66 from adm01-debug/dependabot/npm_and_yarn/rollup-plugin-visualizer-7.1.1"
    }
   ],
   "arquivos_mudados_7d": 118,
@@ -141,11 +141,11 @@
    },
    {
     "pasta": "package-lock.json",
-    "mudancas": 5
+    "mudancas": 6
    },
    {
     "pasta": "package.json",
-    "mudancas": 5
+    "mudancas": 6
    },
    {
     "pasta": ".github/workflows/ci.yml",
@@ -199,11 +199,11 @@
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "package.json",
-    "mudancas": 29
+    "mudancas": 30
    },
    {
     "arquivo": "package-lock.json",
-    "mudancas": 28
+    "mudancas": 29
    },
    {
     "arquivo": "ESTADO_ATUAL.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 16
+    "commits": 17
    },
    {
     "autor": "dependabot[bot]",

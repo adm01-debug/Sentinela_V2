@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "build(deps): bump the react group across 1 directory with 35 updates (#107)",
    "build(deps): bump the i18n group across 1 directory with 2 updates (#83)",
    "build(deps): bump @supabase/supabase-js from 2.109.0 to 2.117.2 (#78)",
    "build(deps): bump @sentry/react from 10.74.0 to 11.2.0 (#77)",
-   "build(deps): bump react-hook-form from 7.88.0 to 7.89.0 (#79)",
-   "ci(contexto): usa ubuntu-latest no lugar de ubuntu-24.04 para provisionar runner (#105)"
+   "build(deps): bump react-hook-form from 7.88.0 to 7.89.0 (#79)"
   ]
  },
  "pr_template": ".github/PULL_REQUEST_TEMPLATE.md",
