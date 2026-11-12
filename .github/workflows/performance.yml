@@ -10,5 +10,5 @@ jobs:
       - uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
-            https://sentinela.app
+            https://sentinela-v2.vercel.app
           uploadArtifacts: true
