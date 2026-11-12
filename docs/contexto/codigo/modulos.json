@@ -5,13 +5,13 @@
  "modulos": [
   {
    "modulo": "components",
-   "arquivos": 99,
+   "arquivos": 98,
    "testes": 0,
-   "linhas": 14454,
+   "linhas": 14407,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
-   "componentes": 93,
+   "componentes": 92,
    "hooks_locais": [
     "useActivityTimeline",
     "useAddTeamMember",

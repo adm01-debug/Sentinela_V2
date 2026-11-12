@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1329,
- "arestas": 2679,
+ "nos": 1328,
+ "arestas": 2676,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -26,7 +26,7 @@
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 84
+   "importado_por": 83
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
@@ -42,11 +42,11 @@
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 56
+   "importado_por": 55
   },
   {
    "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 54
+   "importado_por": 53
   },
   {
    "arquivo": "src/components/ui/dialog.tsx",
@@ -224,7 +224,6 @@
   "src/components/EmployeeAlertItem.tsx",
   "src/components/EmployeeRow.tsx",
   "src/components/EmployeeViolationsRanking.tsx",
-  "src/components/Forms.tsx",
   "src/components/HeatmapCalendar.tsx",
   "src/components/KPIWidget.tsx",
   "src/components/KeyboardShortcutsHelp.tsx",
@@ -498,7 +497,8 @@
   "src/hooks/useKeyboardShortcuts.ts",
   "src/hooks/useLatest.ts",
   "src/hooks/useLazyImage.ts",
-  "src/hooks/useLazyRef.ts"
+  "src/hooks/useLazyRef.ts",
+  "src/hooks/useLifecycle.ts"
  ],
  "modulos_mais_acoplados": [
   {

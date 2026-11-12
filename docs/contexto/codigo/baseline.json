@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "df537774d633f1ace9d0e774a00d818415de26f8",
+  "commit": "7e3b22a48bcf1ed30c4abdf3a3c1e0018bab5030",
   "branch": "main",
-  "data_commit": "2026-11-12T11:34:05-03:00",
+  "data_commit": "2026-11-12T12:30:32-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "7e3b22a48",
+    "data": "2026-11-12",
+    "assunto": "fix: remove src/components/Forms.tsx morto que sombreava o barrel forms/ (#108)"
+   },
    {
     "sha": "df537774d",
     "data": "2026-11-12",
@@ -126,14 +131,9 @@
     "sha": "c2c1585f4",
     "data": "2026-10-03",
     "assunto": "build(deps-dev): bump the lint group across 1 directory with 7 updates"
-   },
-   {
-    "sha": "9ee8d7e25",
-    "data": "2026-10-03",
-    "assunto": "Merge pull request #69 from adm01-debug/dependabot/npm_and_yarn/lint-staged-17.5.1"
    }
   ],
-  "arquivos_mudados_7d": 118,
+  "arquivos_mudados_7d": 119,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 17
+    "commits": 18
    },
    {
     "autor": "dependabot[bot]",
@@ -310,15 +310,15 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1827,
-  "arquivos_codigo": 1398,
-  "linhas_codigo": 146545,
+  "arquivos_total": 1826,
+  "arquivos_codigo": 1397,
+  "linhas_codigo": 146498,
   "rotas": 54,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 56,
-  "componentes": 461,
+  "componentes": 460,
   "hooks": 524,
   "edge_functions": 84,
   "tabelas": 139,
@@ -415,8 +415,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 388,
-   "linhas": 44527
+   "arquivos": 387,
+   "linhas": 44480
   },
   "src/constants": {
    "arquivos": 7,
@@ -795,7 +795,6 @@
    "src/components/EmployeeAlertItem.tsx",
    "src/components/EmployeeRow.tsx",
    "src/components/EmployeeViolationsRanking.tsx",
-   "src/components/Forms.tsx",
    "src/components/forms/index.tsx",
    "src/components/HeatmapCalendar.tsx",
    "src/components/KeyboardShortcutsHelp.tsx",
@@ -890,10 +889,8 @@
    "EmptyState",
    "ErrorBoundary",
    "FeatureFlagsProvider",
-   "FormField",
    "FormItem",
    "FormMessage",
-   "FormSelect",
    "InfoCard",
    "InfoTooltip",
    "KanbanCard",

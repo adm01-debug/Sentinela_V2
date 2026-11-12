@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 461,
- "orfaos": 102,
+ "total": 460,
+ "orfaos": 101,
  "nomes_duplicados": {
   "ActivityHeatmap": [
    "src/components/ActivityHeatmap.tsx",
@@ -93,10 +93,6 @@
    "src/providers/FeatureFlagsProvider.tsx",
    "src/providers/index.tsx"
   ],
-  "FormField": [
-   "src/components/Forms.tsx",
-   "src/components/ui/form.tsx"
-  ],
   "FormItem": [
    "src/components/ui/form.tsx",
    "src/components/ui/FormItem.tsx"
@@ -104,10 +100,6 @@
   "FormMessage": [
    "src/components/ui/form.tsx",
    "src/components/ui/FormMessage.tsx"
-  ],
-  "FormSelect": [
-   "src/components/Forms.tsx",
-   "src/components/forms/index.tsx"
   ],
   "InfoCard": [
    "src/components/Cards.tsx",
@@ -1928,21 +1920,6 @@
    "edges": [],
    "usado_por": 1,
    "orfao": false
-  },
-  {
-   "arquivo": "src/components/Forms.tsx",
-   "exports": [
-    "FormField",
-    "FormSelect"
-   ],
-   "export_default": null,
-   "linhas": 47,
-   "dominio": "components",
-   "hooks_locais": [],
-   "tabelas": [],
-   "edges": [],
-   "usado_por": 0,
-   "orfao": true
   },
   {
    "arquivo": "src/components/forms/index.tsx",
@@ -4550,7 +4527,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 84,
+   "usado_por": 83,
    "orfao": false
   },
   {
@@ -4581,7 +4558,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 56,
+   "usado_por": 55,
    "orfao": false
   },
   {
@@ -5155,7 +5132,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 54,
+   "usado_por": 53,
    "orfao": false
   },
   {

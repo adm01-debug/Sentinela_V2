@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `df537774d633f1ace9d0e774a00d818415de26f8` (2026-11-12T11:34:05-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `7e3b22a48bcf1ed30c4abdf3a3c1e0018bab5030` (2026-11-12T12:30:32-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1378), Markdown (179), SQL (106), JSON (40), YAML (37), JavaScript (21), Shell (21), HTML (4)
+- linguagens: TypeScript (1377), Markdown (179), SQL (106), JSON (40), YAML (37), JavaScript (21), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,15 +34,15 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1827 |
-| arquivos_codigo | 1398 |
-| linhas_codigo | 146545 |
+| arquivos_total | 1826 |
+| arquivos_codigo | 1397 |
+| linhas_codigo | 146498 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 56 |
-| componentes | 461 |
+| componentes | 460 |
 | hooks | 524 |
 | edge_functions | 84 |
 | tabelas | 139 |
@@ -55,7 +55,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Onde ficam as coisas
 - telas: src/pages (54)
-- componentes: src/components (356), src/pages (88), src/providers (8)
+- componentes: src/components (355), src/pages (88), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (64), src/lib (39), src/stores (34)
 - testes: co-localizado (*.test) (44), co-localizado (__tests__) (19), outro (5)
@@ -69,7 +69,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Módulos (menu → domínio)
 | módulo | itens de menu | telas/rotas | arquivos | hooks locais | edges | tabelas |
 |---|---|---|---|---|---|---|
-| components | 0 | 0 | 99 | 84 | 1 | 22 |
+| components | 0 | 0 | 98 | 84 | 1 | 22 |
 | components/admin | 0 | 0 | 8 | 5 | 6 | 7 |
 | components/auth | 0 | 0 | 5 | 9 | 1 | 3 |
 | components/charts | 0 | 0 | 13 | 2 | 0 | 0 |
@@ -279,8 +279,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - tabelas_usadas_sem_definicao: 26 — ex.: activities, app_config, backups
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
-- componentes_orfaos: 102 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
-- componentes_com_nome_duplicado: 50 — ex.: ActivityHeatmap, AnalyticsProvider, AppProviders
+- componentes_orfaos: 101 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
+- componentes_com_nome_duplicado: 48 — ex.: ActivityHeatmap, AnalyticsProvider, AppProviders
 - scripts_orfaos: 1 — ex.: scripts/release.sh
 - env_usadas_nao_declaradas: 8 — ex.: DEV, MODE, PROD
 - ciclos_de_import: 4
@@ -458,6 +458,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-12 `7e3b22a48` fix: remove src/components/Forms.tsx morto que sombreava o barrel forms/ (#108)
 - 2026-11-12 `df537774d` build(deps): bump the test group across 1 directory with 6 updates (#85)
 - 2026-11-12 `240a04d0d` build(deps): bump the react group across 1 directory with 35 updates (#107)
 - 2026-11-12 `9de86acd5` build(deps): bump the i18n group across 1 directory with 2 updates (#83)
@@ -472,7 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-11 `b2beae8a2` fix(lint): limpa imports e ordem de imports nos testes (#100)
 - 2026-11-11 `04b8469e9` ci(quality): substitui lint/tsc diretos pelos ratchets incrementais no CI (#99)
 - 2026-11-08 `310b7e6b3` fix(lint): globals.node para scripts .mjs/.cjs + baseline 1633→1515
-- 2026-11-08 `185007dd3` chore(docs): adiciona regra explícita sobre PR de outra sessão no AGENTS.md (#97)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
