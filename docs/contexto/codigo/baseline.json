@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "5633fb5cba3f7a1b9bdb44b068329076ba5e6209",
+  "commit": "d64e52b76826c62d55f38c6152e4eb2d6616bdc1",
   "branch": "main",
-  "data_commit": "2026-11-12T09:37:19-03:00",
+  "data_commit": "2026-11-12T10:10:24-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "d64e52b76",
+    "data": "2026-11-12",
+    "assunto": "build(deps): bump react-hook-form from 7.88.0 to 7.89.0 (#79)"
+   },
    {
     "sha": "5633fb5cb",
     "data": "2026-11-12",
@@ -126,11 +131,6 @@
     "sha": "5a2bab85e",
     "data": "2026-10-03",
     "assunto": "build(deps): bump the react group across 1 directory with 4 updates"
-   },
-   {
-    "sha": "c5f7b2127",
-    "data": "2026-10-03",
-    "assunto": "Merge pull request #64 from adm01-debug/dependabot/npm_and_yarn/types-febceb97ad"
    }
   ],
   "arquivos_mudados_7d": 118,
@@ -172,6 +172,14 @@
     "mudancas": 2
    },
    {
+    "pasta": "package-lock.json",
+    "mudancas": 2
+   },
+   {
+    "pasta": "package.json",
+    "mudancas": 2
+   },
+   {
     "pasta": "scripts/ci/eslint-baseline.json",
     "mudancas": 2
    },
@@ -186,24 +194,16 @@
    {
     "pasta": "src/test/edge-cases-advanced.test.ts",
     "mudancas": 2
-   },
-   {
-    "pasta": "src/test/header-enhanced.test.tsx",
-    "mudancas": 2
-   },
-   {
-    "pasta": "src/test/improvements-verification.test.ts",
-    "mudancas": 2
    }
   ],
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "package.json",
-    "mudancas": 25
+    "mudancas": 26
    },
    {
     "arquivo": "package-lock.json",
-    "mudancas": 24
+    "mudancas": 25
    },
    {
     "arquivo": "ESTADO_ATUAL.md",
@@ -302,6 +302,10 @@
    {
     "autor": "adm01-debug",
     "commits": 16
+   },
+   {
+    "autor": "dependabot[bot]",
+    "commits": 1
    }
   ]
  },
