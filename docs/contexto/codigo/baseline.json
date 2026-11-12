@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "240a04d0d6479cb3044a0cf1bb85fefa8a0aff73",
+  "commit": "df537774d633f1ace9d0e774a00d818415de26f8",
   "branch": "main",
-  "data_commit": "2026-11-12T11:21:57-03:00",
+  "data_commit": "2026-11-12T11:34:05-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "df537774d",
+    "data": "2026-11-12",
+    "assunto": "build(deps): bump the test group across 1 directory with 6 updates (#85)"
+   },
    {
     "sha": "240a04d0d",
     "data": "2026-11-12",
@@ -126,11 +131,6 @@
     "sha": "9ee8d7e25",
     "data": "2026-10-03",
     "assunto": "Merge pull request #69 from adm01-debug/dependabot/npm_and_yarn/lint-staged-17.5.1"
-   },
-   {
-    "sha": "7ff411692",
-    "data": "2026-10-03",
-    "assunto": "Merge pull request #68 from adm01-debug/dependabot/npm_and_yarn/hookform/resolvers-5.9.1"
    }
   ],
   "arquivos_mudados_7d": 118,
@@ -141,11 +141,11 @@
    },
    {
     "pasta": "package-lock.json",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "pasta": "package.json",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "pasta": ".github/workflows/ci.yml",
@@ -199,11 +199,11 @@
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "package.json",
-    "mudancas": 30
+    "mudancas": 31
    },
    {
     "arquivo": "package-lock.json",
-    "mudancas": 29
+    "mudancas": 30
    },
    {
     "arquivo": "ESTADO_ATUAL.md",
@@ -305,7 +305,7 @@
    },
    {
     "autor": "dependabot[bot]",
-    "commits": 4
+    "commits": 5
    }
   ]
  },
