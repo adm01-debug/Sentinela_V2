@@ -30,3 +30,9 @@ jobs:
 
       - name: Type Check (ratchet)
         run: node scripts/ci/typecheck-ratchet.mjs
+
+      # Format: falha se um arquivo novo (fora do baseline) entrar fora do
+      # padrão do Prettier. Baseline tem 1555 arquivos herdados; ver
+      # scripts/ci/README.md.
+      - name: Format (ratchet)
+        run: node scripts/ci/format-ratchet.mjs
