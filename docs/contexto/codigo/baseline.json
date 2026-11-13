@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "8ca0b6508a8c7965e6727fbaac76c50b6c44ddd9",
+  "commit": "bd97547c8d8b438b7e54576daf0acfb1e432500f",
   "branch": "main",
-  "data_commit": "2026-11-13T09:18:17-03:00",
+  "data_commit": "2026-11-13T09:41:01-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "bd97547c8",
+    "data": "2026-11-13",
+    "assunto": "chore: baixa baselines do lint/format-ratchet apos limpeza (#117)"
+   },
    {
     "sha": "8ca0b6508",
     "data": "2026-11-13",
@@ -126,11 +131,6 @@
     "sha": "185007dd3",
     "data": "2026-11-08",
     "assunto": "chore(docs): adiciona regra explícita sobre PR de outra sessão no AGENTS.md (#97)"
-   },
-   {
-    "sha": "3cb8038f0",
-    "data": "2026-11-08",
-    "assunto": "fix(ci) + chore(scripts): ripgrep no inventário + lint/typecheck-ratchet (Fases 1 fix + 3)"
    }
   ],
   "arquivos_mudados_7d": 187,
@@ -164,6 +164,10 @@
     "mudancas": 3
    },
    {
+    "pasta": "scripts/ci/eslint-baseline.json",
+    "mudancas": 3
+   },
+   {
     "pasta": "src/test/improvements-verification.test.ts",
     "mudancas": 3
    },
@@ -190,10 +194,6 @@
    {
     "pasta": ".github/workflows/security.yml",
     "mudancas": 2
-   },
-   {
-    "pasta": "docs/agentes/github-ci.md",
-    "mudancas": 2
    }
   ],
   "arquivos_mais_mudados_90d": [
@@ -219,6 +219,10 @@
    },
    {
     "arquivo": ".github/workflows/contexto.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "scripts/ci/eslint-baseline.json",
     "mudancas": 3
    },
    {
@@ -270,15 +274,15 @@
     "mudancas": 2
    },
    {
-    "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 2
-   },
-   {
     "arquivo": "scripts/ci/lint-ratchet.mjs",
     "mudancas": 2
    },
    {
     "arquivo": "scripts/ci/lint-ratchet.unit.mjs",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "scripts/ci/prettier-baseline.json",
     "mudancas": 2
    },
    {
@@ -292,16 +296,12 @@
    {
     "arquivo": "src/pages/__tests__/Dashboard.test.tsx",
     "mudancas": 2
-   },
-   {
-    "arquivo": "src/pages/__tests__/Employees.test.tsx",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 26
+    "commits": 27
    },
    {
     "autor": "dependabot[bot]",
