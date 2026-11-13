@@ -4,7 +4,7 @@
  * Capitalize first letter
  */
 export function capitalize(str): string {
-  if (!str) return '';
+  if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
@@ -12,13 +12,13 @@ export function capitalize(str): string {
  * Capitalize each word
  */
 export function capitalizeWords(str): string {
-  return str.split(' ').map(capitalize).join(' ');
+  return str.split(" ").map(capitalize).join(" ");
 }
 
 /**
  * Truncate string with ellipsis
  */
-export function truncate(str: string, length: number, suffix = '...'): string {
+export function truncate(str: string, length: number, suffix = "..."): string {
   if (!str || str.length <= length) return str;
   return str.slice(0, length - suffix.length) + suffix;
 }
@@ -27,12 +27,16 @@ export function truncate(str: string, length: number, suffix = '...'): string {
  * Slugify a string
  */
 export function slugify(str): string {
-  return str
+  const normalized = String(str)
     .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+  return (
+    normalized
+      .split(/[^a-z0-9]+/)
+      .filter(Boolean)
+      .join("-") || "n-a"
+  );
 }
 
 /**
@@ -40,18 +44,18 @@ export function slugify(str): string {
  */
 export function getInitials(name: string, maxLength = 2): string {
   return name
-    .split(' ')
-    .map(word => word[0])
+    .split(" ")
+    .map((word) => word[0])
     .filter(Boolean)
     .slice(0, maxLength)
-    .join('')
+    .join("")
     .toUpperCase();
 }
 
 /**
  * Mask sensitive data
  */
-export function maskString(str: string, visibleStart = 4, visibleEnd = 4, maskChar = '*'): string {
+export function maskString(str: string, visibleStart = 4, visibleEnd = 4, maskChar = "*"): string {
   if (str.length <= visibleStart + visibleEnd) return str;
   const start = str.slice(0, visibleStart);
   const end = str.slice(-visibleEnd);
