@@ -23,19 +23,19 @@
   "testes": [
    "co-localizado (*.test) (44)",
    "co-localizado (__tests__) (19)",
-   "outro (5)"
+   "outro (6)"
   ],
   "edge_functions": "supabase/functions",
   "migrations": "supabase/migrations",
   "scripts": [
-   "scripts/ci (3)",
+   "scripts/ci (4)",
    "scripts/ai-context (2)",
    "scripts/inventario (2)"
   ],
   "docs": [
-   "docs (98)",
+   "docs (93)",
    "(raiz) (16)",
-   ".github (2)"
+   ".github (1)"
   ]
  },
  "nomenclatura": {
@@ -68,14 +68,14 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "ci: adiciona format-ratchet incremental (Prettier) (#115)",
    "fix: limpa unused imports/vars do baseline em src/pages (#116)",
    "fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)",
    "fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)",
-   "fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)",
-   "fix: security scan tolera audit baseline e snyk sem token (#110)"
+   "fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)"
   ]
  },
- "pr_template": ".github/PULL_REQUEST_TEMPLATE.md",
+ "pr_template": ".github/pull_request_template.md",
  "codeowners": ".github/CODEOWNERS",
  "contributing": "CONTRIBUTING.md",
  "instrucoes_agentes": [

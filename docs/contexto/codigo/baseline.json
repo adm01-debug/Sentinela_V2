@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "b689fb4be88a3e0519ee7abdd36b41e858051487",
+  "commit": "8ca0b6508a8c7965e6727fbaac76c50b6c44ddd9",
   "branch": "main",
-  "data_commit": "2026-11-13T08:46:18-03:00",
+  "data_commit": "2026-11-13T09:18:17-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "8ca0b6508",
+    "data": "2026-11-13",
+    "assunto": "ci: adiciona format-ratchet incremental (Prettier) (#115)"
+   },
    {
     "sha": "b689fb4be",
     "data": "2026-11-13",
@@ -126,14 +131,9 @@
     "sha": "3cb8038f0",
     "data": "2026-11-08",
     "assunto": "fix(ci) + chore(scripts): ripgrep no inventário + lint/typecheck-ratchet (Fases 1 fix + 3)"
-   },
-   {
-    "sha": "05a3b2050",
-    "data": "2026-11-08",
-    "assunto": "chore(docs): remove referência a scripts já removidos em #91 (#96)"
    }
   ],
-  "arquivos_mudados_7d": 172,
+  "arquivos_mudados_7d": 187,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -184,15 +184,15 @@
     "mudancas": 2
    },
    {
+    "pasta": ".github/workflows/lint.yml",
+    "mudancas": 2
+   },
+   {
     "pasta": ".github/workflows/security.yml",
     "mudancas": 2
    },
    {
     "pasta": "docs/agentes/github-ci.md",
-    "mudancas": 2
-   },
-   {
-    "pasta": "scripts/ci/eslint-baseline.json",
     "mudancas": 2
    }
   ],
@@ -246,6 +246,10 @@
     "mudancas": 2
    },
    {
+    "arquivo": ".github/workflows/lint.yml",
+    "mudancas": 2
+   },
+   {
     "arquivo": ".github/workflows/security.yml",
     "mudancas": 2
    },
@@ -259,6 +263,10 @@
    },
    {
     "arquivo": "scripts/check-bundle-size.sh",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "scripts/ci/README.md",
     "mudancas": 2
    },
    {
@@ -288,20 +296,12 @@
    {
     "arquivo": "src/pages/__tests__/Employees.test.tsx",
     "mudancas": 2
-   },
-   {
-    "arquivo": "src/pages/__tests__/Monitoring.test.tsx",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "src/pages/__tests__/Violations.test.tsx",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 25
+    "commits": 26
    },
    {
     "autor": "dependabot[bot]",
@@ -310,9 +310,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1828,
-  "arquivos_codigo": 1397,
-  "linhas_codigo": 146653,
+  "arquivos_total": 1825,
+  "arquivos_codigo": 1399,
+  "linhas_codigo": 146988,
   "rotas": 54,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -324,10 +324,10 @@
   "tabelas": 139,
   "migrations": 102,
   "cron_jobs": 1,
-  "testes": 69,
+  "testes": 70,
   "workflows": 14,
-  "scripts": 30,
-  "docs_md": 179
+  "scripts": 31,
+  "docs_md": 173
  },
  "por_pasta": {
   "benchmarks/api-performance.ts": {
@@ -391,8 +391,8 @@
    "linhas": 1458
   },
   "scripts/ci": {
-   "arquivos": 5,
-   "linhas": 2306
+   "arquivos": 7,
+   "linhas": 2641
   },
   "scripts/generate-audit-pdf.js": {
    "arquivos": 1,
@@ -611,7 +611,7 @@
  ],
  "qualidade": {
   "any": 206,
-  "console_log": 50,
+  "console_log": 55,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,

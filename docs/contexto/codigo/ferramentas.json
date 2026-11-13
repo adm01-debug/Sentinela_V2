@@ -4,11 +4,11 @@
  "stack": {
   "linguagens": [
    "TypeScript (1378)",
-   "Markdown (179)",
+   "Markdown (173)",
    "SQL (106)",
-   "JSON (41)",
+   "JSON (42)",
    "YAML (37)",
-   "JavaScript (21)",
+   "JavaScript (23)",
    "Shell (21)",
    "HTML (4)"
   ],
@@ -92,7 +92,6 @@
  "configs": [
   ".editorconfig",
   ".github/CODEOWNERS",
-  ".github/PULL_REQUEST_TEMPLATE.md",
   ".github/dependabot.yml",
   ".husky/commit-msg",
   ".husky/pre-commit",
@@ -318,6 +317,7 @@
    ],
    "permissoes": [],
    "scripts_usados": [
+    "scripts/ci/format-ratchet.mjs",
     "scripts/ci/lint-ratchet.mjs",
     "scripts/ci/typecheck-ratchet.mjs"
    ],
@@ -519,14 +519,9 @@
  ],
  "docs_raiz": [
   {
-   "arquivo": ".github/PULL_REQUEST_TEMPLATE.md",
-   "titulo": null,
-   "linhas": 13
-  },
-  {
    "arquivo": ".github/pull_request_template.md",
    "titulo": null,
-   "linhas": 13
+   "linhas": 17
   },
   {
    "arquivo": "AGENTS.md",
@@ -654,11 +649,6 @@
    "linhas": 73
   },
   {
-   "arquivo": "docs/ARCHITECTURE.md",
-   "titulo": "Architecture",
-   "linhas": 52
-  },
-  {
    "arquivo": "docs/AUDITORIA_ENTERPRISE_SENTINELA.md",
    "titulo": "RELATÓRIO DE AUDITORIA ENTERPRISE - SENTINELA SECURITYWATCH V2",
    "linhas": 85
@@ -749,11 +739,6 @@
    "linhas": 53
   },
   {
-   "arquivo": "docs/DEPLOYMENT.md",
-   "titulo": "Deployment Guide",
-   "linhas": 69
-  },
-  {
    "arquivo": "docs/DESIGN_SYSTEM.md",
    "titulo": "Sentinela Design System",
    "linhas": 161
@@ -792,11 +777,6 @@
    "arquivo": "docs/ERROR_HANDLING.md",
    "titulo": "Error Handling Guide",
    "linhas": 159
-  },
-  {
-   "arquivo": "docs/FAQ.md",
-   "titulo": "FAQ",
-   "linhas": 43
   },
   {
    "arquivo": "docs/FUNCIONALIDADES_COMPLETAS.md",
@@ -852,11 +832,6 @@
    "arquivo": "docs/INCIDENT_RESPONSE.md",
    "titulo": "Incident Response Guide",
    "linhas": 152
-  },
-  {
-   "arquivo": "docs/INSTALLATION.md",
-   "titulo": "Installation Guide",
-   "linhas": 45
   },
   {
    "arquivo": "docs/INTEGRATIONS.md",
@@ -1039,11 +1014,6 @@
    "linhas": 15
   },
   {
-   "arquivo": "docs/TROUBLESHOOTING.md",
-   "titulo": "Troubleshooting Guide",
-   "linhas": 51
-  },
-  {
    "arquivo": "docs/TYPES.md",
    "titulo": "TypeScript Types",
    "linhas": 16
@@ -1071,27 +1041,27 @@
   {
    "arquivo": "docs/architecture.md",
    "titulo": "Architecture",
-   "linhas": 52
+   "linhas": 61
   },
   {
    "arquivo": "docs/deployment.md",
    "titulo": "Deployment Guide",
-   "linhas": 69
+   "linhas": 81
   },
   {
    "arquivo": "docs/faq.md",
    "titulo": "FAQ",
-   "linhas": 43
+   "linhas": 52
   },
   {
    "arquivo": "docs/installation.md",
    "titulo": "Installation Guide",
-   "linhas": 45
+   "linhas": 53
   },
   {
    "arquivo": "docs/troubleshooting.md",
    "titulo": "Troubleshooting Guide",
-   "linhas": 51
+   "linhas": 60
   },
   {
    "arquivo": "docs/user-guide.md",

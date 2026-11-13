@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `b689fb4be88a3e0519ee7abdd36b41e858051487` (2026-11-13T08:46:18-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `8ca0b6508a8c7965e6727fbaac76c50b6c44ddd9` (2026-11-13T09:18:17-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1378), Markdown (179), SQL (106), JSON (41), YAML (37), JavaScript (21), Shell (21), HTML (4)
+- linguagens: TypeScript (1378), Markdown (173), SQL (106), JSON (42), YAML (37), JavaScript (23), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1828 |
-| arquivos_codigo | 1397 |
-| linhas_codigo | 146653 |
+| arquivos_total | 1825 |
+| arquivos_codigo | 1399 |
+| linhas_codigo | 146988 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,21 +48,21 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 139 |
 | migrations | 102 |
 | cron_jobs | 1 |
-| testes | 69 |
+| testes | 70 |
 | workflows | 14 |
-| scripts | 30 |
-| docs_md | 179 |
+| scripts | 31 |
+| docs_md | 173 |
 
 ## Onde ficam as coisas
 - telas: src/pages (54)
 - componentes: src/components (355), src/pages (88), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (64), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (44), co-localizado (__tests__) (19), outro (5)
+- testes: co-localizado (*.test) (44), co-localizado (__tests__) (19), outro (6)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
-- scripts: scripts/ci (3), scripts/ai-context (2), scripts/inventario (2)
-- docs: docs (98), (raiz) (16), .github (2)
+- scripts: scripts/ci (4), scripts/ai-context (2), scripts/inventario (2)
+- docs: docs (93), (raiz) (16), .github (1)
 - nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (99%)","tabelas":"snake_case (88%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
 
@@ -302,9 +302,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - .github/workflows/cd.yml (2)
 - .github/workflows/deploy.yml (2)
 - .github/workflows/inventario-estado-semanal.yml (2)
+- .github/workflows/lint.yml (2)
 - .github/workflows/security.yml (2)
 - docs/agentes/github-ci.md (2)
-- eslint.config.js (2)
 
 ## Workflows
 - `cd.yml` — CD (push)
@@ -338,8 +338,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `bundle-check`: `./scripts/check-bundle-size.sh`
 
 ## Documentos (raiz e docs/)
-- `.github/PULL_REQUEST_TEMPLATE.md` (13 linhas)
-- `.github/pull_request_template.md` (13 linhas)
+- `.github/pull_request_template.md` (17 linhas)
 - `AGENTS.md` — AGENTS.md — Sentinela V2 (134 linhas)
 - `AUDITORIA_ENTERPRISE_SENTINELA.md` — RELATÓRIO DE AUDITORIA ENTERPRISE - SENTINELA SECURITYWATCH V2 (85 linhas)
 - `CHANGELOG.md` — Changelog (63 linhas)
@@ -365,7 +364,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `docs/API_KEYS.md` — API Keys (40 linhas)
 - `docs/API_REFERENCE.md` — API Reference (6 linhas)
 - `docs/API_VERSIONING.md` — API Versioning Guide (73 linhas)
-- `docs/ARCHITECTURE.md` — Architecture (52 linhas)
 - `docs/AUDITORIA_ENTERPRISE_SENTINELA.md` — RELATÓRIO DE AUDITORIA ENTERPRISE - SENTINELA SECURITYWATCH V2 (85 linhas)
 - `docs/AUDITORIA_FUNCIONALIDADES.md` — 🔍 AUDITORIA EXAUSTIVA - Sentinela v20 (280 linhas)
 - `docs/AUDIT_TRAIL.md` — Audit Trail Guide (161 linhas)
@@ -384,7 +382,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `docs/DATABASE.md` — Database Schema (49 linhas)
 - `docs/DATA_PRIVACY.md` — Data Privacy Guide (74 linhas)
 - `docs/DEPENDENCY_UPDATES.md` — Dependency Update Status (53 linhas)
-- `docs/DEPLOYMENT.md` — Deployment Guide (69 linhas)
 - `docs/DESIGN_SYSTEM.md` — Sentinela Design System (161 linhas)
 - `docs/DESKTOP_AGENT.md` — Sentinela Desktop Agent (13 linhas)
 - `docs/DEVELOPMENT.md` — Sentinela Development Guide (225 linhas)
@@ -393,7 +390,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `docs/EDGE_FUNCTIONS.md` — Supabase Edge Functions (16 linhas)
 - `docs/ENCRYPTION.md` — Encryption Guide (150 linhas)
 - `docs/ERROR_HANDLING.md` — Error Handling Guide (159 linhas)
-- `docs/FAQ.md` — FAQ (43 linhas)
 - `docs/FUNCIONALIDADES_COMPLETAS.md` — Sentinela - Levantamento Completo de Funcionalidades (305 linhas)
 - `docs/GAP_ANALYSIS_ENTERPRISE.md` — Análise de Gaps — SENTINELA vs. Sistemas Enterprise de Classe Mundial (95 linhas)
 - `docs/GETTING_STARTED.md` — Getting Started (38 linhas)
@@ -405,7 +401,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `docs/I18N.md` — Internationalization (i18n) (58 linhas)
 - `docs/IMPLEMENTATION_COMPLETE_v20.md` — 🎉 SENTINELA v20 - IMPLEMENTAÇÃO COMPLETA (91 linhas)
 - `docs/INCIDENT_RESPONSE.md` — Incident Response Guide (152 linhas)
-- `docs/INSTALLATION.md` — Installation Guide (45 linhas)
 - `docs/INTEGRATIONS.md` — Integrations Guide (14 linhas)
 - `docs/KUBERNETES.md` — Kubernetes Deployment (12 linhas)
 - `docs/LOGGING.md` — Logging Guide (172 linhas)
@@ -442,22 +437,22 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `docs/SPONSORS.md` — Sponsors (8 linhas)
 - `docs/STATE_MANAGEMENT.md` — State Management (49 linhas)
 - `docs/STORES.md` — State Management (15 linhas)
-- `docs/TROUBLESHOOTING.md` — Troubleshooting Guide (51 linhas)
 - `docs/TYPES.md` — TypeScript Types (16 linhas)
 - `docs/USER_GUIDE.md` — User Guide (7 linhas)
 - `docs/VPAT.md` — Voluntary Product Accessibility Template (VPAT) (17 linhas)
 - `docs/WEBHOOKS.md` — Webhooks (50 linhas)
 - `docs/api-reference.md` — API Reference (91 linhas)
-- `docs/architecture.md` — Architecture (52 linhas)
-- `docs/deployment.md` — Deployment Guide (69 linhas)
-- `docs/faq.md` — FAQ (43 linhas)
-- `docs/installation.md` — Installation Guide (45 linhas)
-- `docs/troubleshooting.md` — Troubleshooting Guide (51 linhas)
+- `docs/architecture.md` — Architecture (61 linhas)
+- `docs/deployment.md` — Deployment Guide (81 linhas)
+- `docs/faq.md` — FAQ (52 linhas)
+- `docs/installation.md` — Installation Guide (53 linhas)
+- `docs/troubleshooting.md` — Troubleshooting Guide (60 linhas)
 - `docs/user-guide.md` — User Guide (67 linhas)
 - subpastas de docs/: docs/guides (10), docs/tutorials (10), docs/adr (9), docs/examples (8), docs/agentes (7), docs/agent (1)
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `8ca0b6508` ci: adiciona format-ratchet incremental (Prettier) (#115)
 - 2026-11-13 `b689fb4be` fix: limpa unused imports/vars do baseline em src/pages (#116)
 - 2026-11-12 `40ca83394` fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)
 - 2026-11-12 `deec5b891` fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)
@@ -472,7 +467,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-12 `7e68d8aa1` build(deps): bump @supabase/supabase-js from 2.109.0 to 2.117.2 (#78)
 - 2026-11-12 `4d5f94748` build(deps): bump @sentry/react from 10.74.0 to 11.2.0 (#77)
 - 2026-11-12 `d64e52b76` build(deps): bump react-hook-form from 7.88.0 to 7.89.0 (#79)
-- 2026-11-12 `5633fb5cb` ci(contexto): usa ubuntu-latest no lugar de ubuntu-24.04 para provisionar runner (#105)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

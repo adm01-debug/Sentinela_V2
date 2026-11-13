@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 30,
+ "total": 31,
  "scripts": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -86,6 +86,17 @@
    "npm_scripts": [],
    "workflows": [
     "ci.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/ci/format-ratchet.mjs",
+   "descricao": "Gate de formatacao incremental no padrao do lint-ratchet.mjs: congela a divida de formatacao de HOJE em um baseline e falha so se um arquivo NOVO",
+   "linhas": 263,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [
+    "lint.yml"
    ],
    "orfao": false
   },

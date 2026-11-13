@@ -5,10 +5,10 @@
   "vitest",
   "playwright"
  ],
- "total": 69,
+ "total": 70,
  "por_tipo": {
   "e2e": 1,
-  "unit": 68
+  "unit": 69
  },
  "onde_ficam": [
   {
@@ -21,7 +21,7 @@
   },
   {
    "padrao": "outro",
-   "arquivos": 5
+   "arquivos": 6
   },
   {
    "padrao": "e2e/",
@@ -46,6 +46,15 @@
     "src/routes/AppRoutes.tsx"
    ],
    "casos": 18
+  },
+  {
+   "arquivo": "scripts/ci/format-ratchet.unit.mjs",
+   "tipo": "unit",
+   "linhas": 72,
+   "testa": [
+    "scripts/ci/format-ratchet.mjs"
+   ],
+   "casos": 6
   },
   {
    "arquivo": "scripts/ci/lint-ratchet.unit.mjs",
@@ -687,6 +696,7 @@
  ],
  "sql": [],
  "cobertura_por_arquivo": {
+  "scripts/ci/format-ratchet.mjs": 1,
   "scripts/ci/lint-ratchet.mjs": 1,
   "scripts/ci/typecheck-ratchet.mjs": 1,
   "scripts/lib/seguranca-processo.mjs": 2,
