@@ -109,10 +109,6 @@
       "sha256": "9f615c21b8e3eb334a0f99695e12906e4838569d093a561819a4e1badc2278c6"
     },
     {
-      "path": "src/components/admin/SlackUptimeHistoryCard.tsx",
-      "sha256": "cc2ce7e5b9565a1d07473adf159c3cf2aeb4cc9a15aaec7b93d01b1811590f19"
-    },
-    {
       "path": "src/components/admin/telemetry/TelemetryCharts.tsx",
       "sha256": "db8d2582f76e9d5b8aa61c69196ed091836124eaa44f31ec9aa50eaa4325e011"
     },
@@ -138,7 +134,7 @@
     },
     {
       "path": "src/components/auth/PasswordResetRequestForm.tsx",
-      "sha256": "368e590e46cce5db65804d358ff64adb4dc107720cf4f7bc46ab3b83df11ce16"
+      "sha256": "6b0621ae33dd8f99229aeec5686b8314ddcecb15e12de3253bd2872de8d4eb02"
     },
     {
       "path": "src/components/auth/PasswordStrengthChecker.tsx",
@@ -182,7 +178,7 @@
     },
     {
       "path": "src/components/charts/BaseDonutChart.tsx",
-      "sha256": "1900d68b01b7c81c90d011e1536ad99d8b23123e79d5e61cb07648ee4c5cf96b"
+      "sha256": "98e0cf84de798a6d95f5979fd650e2afe162aa8529f7366ac64fa491ac66d90a"
     },
     {
       "path": "src/components/charts/BaseHeatmap.tsx",
@@ -194,7 +190,7 @@
     },
     {
       "path": "src/components/charts/BasePieChart.tsx",
-      "sha256": "8dc914f383ceaa52bf5fcdcd973e631e396107835d28d96b8fe3be06e0427c28"
+      "sha256": "90168cf012f4c4408f94085d71665c674febad9f0f66b7ad514575d9acc9c37f"
     },
     {
       "path": "src/components/charts/BaseRadarChart.tsx",
@@ -346,7 +342,7 @@
     },
     {
       "path": "src/components/DateRangePicker.tsx",
-      "sha256": "a1263b97881813bd496ff7c16b7cf89099f1d1dc96cf9e5d475b1097e942f8d6"
+      "sha256": "444e4b948203e5785a2f7750034fb5dee1da6ba95db9fd78795685f5f1907463"
     },
     {
       "path": "src/components/EditApplicationDialog.tsx",
@@ -370,7 +366,7 @@
     },
     {
       "path": "src/components/file-transfers/FileTransferCharts.tsx",
-      "sha256": "0111b3f224f5854d451b0781eb397560009a6ee051def32e384c0768a86058f5"
+      "sha256": "70f750acdebe19e9a8a4e0029f9664b251f41c31d403d994b5c277a241cf5272"
     },
     {
       "path": "src/components/file-transfers/FileTransferTable.tsx",
@@ -510,7 +506,7 @@
     },
     {
       "path": "src/components/RealtimeActivityFilters.tsx",
-      "sha256": "a24c215e34afb59cc7fd62e2552801a6a1eef284cb7671c81ac94825436d6eb5"
+      "sha256": "9cf22acd0fafdbdeea4021f5b3f3a670a307d4003814e2e14dd437703e17352a"
     },
     {
       "path": "src/components/RealtimeClicksCard.tsx",
@@ -538,7 +534,7 @@
     },
     {
       "path": "src/components/recordings/RecordingStorageCostCard.tsx",
-      "sha256": "a7e315fb11de62ebc359d16f7d0b0ad0f374bef3b0ca99524bc77dbefb04af95"
+      "sha256": "c2742d69169afcb8f68c461476391d15deb5c9c2f96ad85172a9b7214e6c6f0c"
     },
     {
       "path": "src/components/ReportList.tsx",
@@ -806,7 +802,7 @@
     },
     {
       "path": "src/components/ui/DatePicker.tsx",
-      "sha256": "4da0f3fb43a7ef4c9e516157219a2d94508c288ae05702ed23988a9d1f3b66ef"
+      "sha256": "3be44f475e791c91127c692fdb31868d18dbc21a691768a91e27b57856fa8d5d"
     },
     {
       "path": "src/components/ui/Dropdown.tsx",
@@ -1006,15 +1002,15 @@
     },
     {
       "path": "src/components/ViolationsBySeverityChart.tsx",
-      "sha256": "2f221260baddfa8b33fac2b5953b42825218277f2c9232088f2b10913ae186fd"
+      "sha256": "0a72a16c2ac3c0fe2d7de0941ea9c97d34bb58d882a446dc200030295f088535"
     },
     {
       "path": "src/components/ViolationsByTypeChart.tsx",
-      "sha256": "932444213754d3a6643d91c171a850b1b3d08eb59ac943b1b09cd4816b87e6e5"
+      "sha256": "c48724c6d6a3467a223436e5c8b94bc274f8f490c5feae98d1d1327478b70ab0"
     },
     {
       "path": "src/components/ViolationsDrilldownDialog.tsx",
-      "sha256": "18709717cd681d866837c1f2c6e0e22af53f66cb738f8621d3ac32712d556ac0"
+      "sha256": "9b64ac6947ef6523de426c55023223ac567f576ea51c31c8d84bb90fa11cd002"
     },
     {
       "path": "src/components/ViolationsTrendChart.tsx",
@@ -1090,7 +1086,7 @@
     },
     {
       "path": "src/hooks/useAutoSaveDraft.ts",
-      "sha256": "9f02900dafc661718b06a83c5a73f019baaefb7c64a15ef247a24388b5380d34"
+      "sha256": "c90695a2fc6f9afbafb244ed5ef7b7d4c229cbe7d74fe0b2f304d25253b4b9ca"
     },
     {
       "path": "src/hooks/useBackgroundSync.ts",
@@ -1186,7 +1182,7 @@
     },
     {
       "path": "src/hooks/useCountdown.ts",
-      "sha256": "114dabf65c53e8dc9a51a0efb3c3c9ba33f16bfa348de915965175bc72982759"
+      "sha256": "7b4923c05dbecb678918fd6e556891a0fa2079e99e7c2e0cfd74a2faf7178ccf"
     },
     {
       "path": "src/hooks/useDashboardLayout.ts",
@@ -1206,7 +1202,7 @@
     },
     {
       "path": "src/hooks/useDebounceCallback.ts",
-      "sha256": "15a3c0b45ddc9bd8ed32311d4d2aa810c02163ca94a177720fa188f2267f457e"
+      "sha256": "11d338879b0cf61c08bd99627abc063d0beac910f05e7d5cb9db483c6641c26b"
     },
     {
       "path": "src/hooks/useDeepCompareEffect.ts",
@@ -1330,7 +1326,7 @@
     },
     {
       "path": "src/hooks/useIdleDetection.ts",
-      "sha256": "ce60bc06363f7d9cefe686888fd15e1ef18bb5c666a801c680b83dc8c80b813e"
+      "sha256": "1f75cc9fd16f7b0c96fc5db27329d9535d782302fdfcd0e758006dc7317fa6ce"
     },
     {
       "path": "src/hooks/useImage.ts",
@@ -1338,7 +1334,7 @@
     },
     {
       "path": "src/hooks/useInfiniteScroll.ts",
-      "sha256": "7aa1a1fac65de974c16633f837cb66fad9abb826c7fbd5b243e6efbc0007054f"
+      "sha256": "b86b290322c4cb19d8973e30bc3479247245aa50622b1a05d84038eb6e585fa7"
     },
     {
       "path": "src/hooks/useInstallPage.ts",
@@ -1446,7 +1442,7 @@
     },
     {
       "path": "src/hooks/usePolling.ts",
-      "sha256": "43434973ec1e772f94d6620e8b41546c100094e5e20f9483326ac07b22ed6d0e"
+      "sha256": "ec5ef1505f22abc6ea2344aac3818a29df0818dc614ae3079fdb73e4d6daed65"
     },
     {
       "path": "src/hooks/usePortal.ts",
@@ -1454,7 +1450,7 @@
     },
     {
       "path": "src/hooks/usePrevious.ts",
-      "sha256": "5f568df4c15a8c1d7129902782abc7006243ae6e65e3c61ff278664a6155b728"
+      "sha256": "94afbdff7c58333bd8341319d7f7736324ad186221ead9956796f81d7741c773"
     },
     {
       "path": "src/hooks/usePrivacy.ts",
@@ -1478,7 +1474,7 @@
     },
     {
       "path": "src/hooks/useRaf.ts",
-      "sha256": "e595ce3c8e339035c69bb5370109db787476e644633fa8cf82ac7c948148f651"
+      "sha256": "6e86f41559d730a9aeea7e688f77220f14dc7d1bbe901e0b48f64e4bc3dade02"
     },
     {
       "path": "src/hooks/useRealTimeMonitor.ts",
@@ -1582,7 +1578,7 @@
     },
     {
       "path": "src/hooks/useSpring.ts",
-      "sha256": "edacd5c4d6edd72b28e8cd5d41bef250bb7f179feef76b5145ce8ea6afc2fb99"
+      "sha256": "57a367eee9acbf7295abcc4ce6473fee4c9e24e2189cfe9f4f92f1dc43a08a70"
     },
     {
       "path": "src/hooks/useStateHistory.ts",
@@ -1758,7 +1754,7 @@
     },
     {
       "path": "src/pages/admin/DisputeEscalationAuditPage.tsx",
-      "sha256": "def2d58273422b3f2de82bce3eb7b8784e0be6e83f33d63b5b054a5f84e048e6"
+      "sha256": "2a0d21ea434bc2eeccd9e178a46732027a3b3128a5cf5442c233a79aefa29988"
     },
     {
       "path": "src/pages/admin/DisputeMetricsPage.tsx",
@@ -1810,7 +1806,7 @@
     },
     {
       "path": "src/pages/AdminTelemetriaPage.tsx",
-      "sha256": "2052f6f1fca42d23a8cba4cd6869bb857e12e22f3d7a47fa69556757157ef1c4"
+      "sha256": "490cf6fa3c3ff5f7bf6ae3af4b7434227c85e527c22fbae79106e299a125542e"
     },
     {
       "path": "src/pages/AgentOnboardingPage.tsx",
@@ -1962,7 +1958,7 @@
     },
     {
       "path": "src/providers/AppProviders.tsx",
-      "sha256": "5898f8f2e63bd2e1f3097513b503b571511d765df7f53db6a2633091b969732e"
+      "sha256": "b2e568cfb9f26fc295b48367de82cdaa9b90bfebb046ce86bd3e30ca772085e4"
     },
     {
       "path": "src/providers/AuthDependentProviders.tsx",
@@ -3389,34 +3385,6 @@
       "spanHash": "73a03b63f0567364916593d98d30ee6cab8bd77cbf2062b7ed3c7257d1e8fd48",
       "lineHash": "4459e1f5e217710c905e958108de2af4b598db41cdce62d3875dda4c8b34bccb",
       "contextHash": "14f1a740279b90e96c24d91d528ec7f701f1f2868387634de991d368d8b80afb"
-    },
-    {
-      "file": "src/components/admin/SlackUptimeHistoryCard.tsx",
-      "line": 162,
-      "column": 20,
-      "endLine": 162,
-      "endColumn": 25,
-      "severity": 2,
-      "ruleId": "react/jsx-no-undef",
-      "messageId": "undefined",
-      "message": "'Badge' is not defined.",
-      "spanHash": "002474e368210827e5f71950ba7cb0b2cafa82d71b047c356f46d37dd276a5f3",
-      "lineHash": "8bdaaa19e97f98e44213db5fe0d489313e8a26b85a4433550089a53dbfb664e9",
-      "contextHash": "ef3d9a7cc1be097444d0e5aae1c569d6d99c1ba0606093e40c1f7ad31ba85ba1"
-    },
-    {
-      "file": "src/components/admin/SlackUptimeHistoryCard.tsx",
-      "line": 166,
-      "column": 18,
-      "endLine": 166,
-      "endColumn": 23,
-      "severity": 2,
-      "ruleId": "react/jsx-no-undef",
-      "messageId": "undefined",
-      "message": "'Badge' is not defined.",
-      "spanHash": "002474e368210827e5f71950ba7cb0b2cafa82d71b047c356f46d37dd276a5f3",
-      "lineHash": "7c4e270c3fba254df79350b6678c6950d36e5942e0ed886ca76b8d53e00f1260",
-      "contextHash": "c7e5fe7494e3d0beea98a79b2a6a03e52fd01e08eb2db9cbab95a3969de5a05b"
     },
     {
       "file": "src/components/admin/telemetry/TelemetryCharts.tsx",
@@ -10616,28 +10584,28 @@
     },
     {
       "file": "src/components/ViolationsDrilldownDialog.tsx",
-      "line": 102,
+      "line": 104,
       "column": 7,
-      "endLine": 102,
+      "endLine": 104,
       "endColumn": 18,
       "severity": 2,
       "ruleId": "react-hooks/set-state-in-effect",
       "messageId": null,
-      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/components/ViolationsDrilldownDialog.tsx:102:7 100 | useEffect(() => { 101 | if (open) { > 102 | setSeverity(initialSeverity ?? 'all'); | ^^^^^^^^^^^ Avoid calling setState() directly within an effect 103 | setStatus('all'); 104 | setSearch(''); 105 | setPage(1);",
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/components/ViolationsDrilldownDialog.tsx:104:7 102 | useEffect(() => { 103 | if (open) { > 104 | setSeverity(initialSeverity ?? 'all'); | ^^^^^^^^^^^ Avoid calling setState() directly within an effect 105 | setStatus('all'); 106 | setSearch(''); 107 | setPage(1);",
       "spanHash": "f33994df8b81fe807d5d06d48a25b53a3b6fc5b4d8429edb28f168097a43cfaf",
       "lineHash": "381a2130d0c8ee5bcd8dbd9e897d2c6443acce1252e4e82831261ff5eb22fed9",
       "contextHash": "b59b4e526d740c9677c74be11dffb8fd8725bbcacce0dbe0b98c14eb281005fb"
     },
     {
       "file": "src/components/ViolationsDrilldownDialog.tsx",
-      "line": 144,
+      "line": 145,
       "column": 5,
-      "endLine": 144,
+      "endLine": 145,
       "endColumn": 12,
       "severity": 2,
       "ruleId": "react-hooks/set-state-in-effect",
       "messageId": null,
-      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/components/ViolationsDrilldownDialog.tsx:144:5 142 | 143 | useEffect(() => { > 144 | setPage(1); | ^^^^^^^ Avoid calling setState() directly within an effect 145 | }, [severity, status, search]); 146 | 147 | const title = useMemo(() => {",
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/components/ViolationsDrilldownDialog.tsx:145:5 143 | 144 | useEffect(() => { > 145 | setPage(1); | ^^^^^^^ Avoid calling setState() directly within an effect 146 | }, [severity, status, search]); 147 | 148 | const title = useMemo(() => {",
       "spanHash": "6a854c4be2bf65f3bfe3a097d3ccd2444468567dd01f67d2406b8517a3d36647",
       "lineHash": "27e2e23abcac2aecce357526ff04e69359c4b859c4b38e7fb4ba8ee4a86573b4",
       "contextHash": "3ba58b4e1dcc00edcaf5cf036b293777189a1ae6b318bd4d30ca6f40d773182d"
@@ -12569,10 +12537,10 @@
       "severity": 2,
       "ruleId": "react-hooks/purity",
       "messageId": null,
-      "message": "Error: Cannot call impure function during render `Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent). <ROOT>/src/hooks/useIdleDetection.ts:19:52 17 | 18 | const [isIdle, setIsIdle] = useState(false); > 19 | const [lastActivity, setLastActivity] = useState(Date.now()); | ^^^^^^^^^^ Cannot call impure function 20 | const timeoutRef = useRef<NodeJS.Timeout>(); 21 | 22 | const resetTimer = useCallback(() => {",
+      "message": "Error: Cannot call impure function during render `Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent). <ROOT>/src/hooks/useIdleDetection.ts:19:52 17 | 18 | const [isIdle, setIsIdle] = useState(false); > 19 | const [lastActivity, setLastActivity] = useState(Date.now()); | ^^^^^^^^^^ Cannot call impure function 20 | const timeoutRef = useRef<NodeJS.Timeout>(null!); 21 | 22 | const resetTimer = useCallback(() => {",
       "spanHash": "d8171d118e19556010680eb7b3001365c6aed91869027eb5edd26dca0c6c2609",
       "lineHash": "97744aedc71ce26c17d92a65be0050c6a1748efa17c96f449d169a572e093d99",
-      "contextHash": "f85e3753b3212b399ae5e3b8603a93f4a797221f1562cebabdf3a1188ca7948d"
+      "contextHash": "4105d5d643999343d04c8a063e4ef12401a67c0f041442d979741b0e47b63b7e"
     },
     {
       "file": "src/hooks/useIdleDetection.ts",
@@ -13325,7 +13293,7 @@
       "severity": 2,
       "ruleId": "react-hooks/refs",
       "messageId": null,
-      "message": "Error: Cannot access refs during render React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef). <ROOT>/src/hooks/usePrevious.ts:5:10 3 | const ref = useRef<T>(); 4 | useEffect(() => { ref.current = value; }, [value]); > 5 | return ref.current; | ^^^^^^^^^^^ Cannot access ref value during render 6 | };",
+      "message": "Error: Cannot access refs during render React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef). <ROOT>/src/hooks/usePrevious.ts:5:10 3 | const ref = useRef<T | undefined>(undefined); 4 | useEffect(() => { ref.current = value; }, [value]); > 5 | return ref.current; | ^^^^^^^^^^^ Cannot access ref value during render 6 | };",
       "spanHash": "89f092b2065fbc36105ed2c7c9d8c3190da081bf270105c704d7732f4665e78b",
       "lineHash": "98fd166e8fbffd63a115c2007cf5a6c55c46aa77c219bcc93e10cedfc895b93e",
       "contextHash": "26c0cca41fd0efc34b70a4c1c0de720b6a0f94c1d757d39380d298652d26670e"
@@ -14025,7 +13993,7 @@
       "severity": 2,
       "ruleId": "react-hooks/immutability",
       "messageId": null,
-      "message": "Error: Cannot access variable before it is declared `animate` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time. <ROOT>/src/hooks/useSpring.ts:18:46 16 | 17 | if (Math.abs(displacement) > 0.01 || Math.abs(velocityRef.current) > 0.01) { > 18 | rafRef.current = requestAnimationFrame(animate); | ^^^^^^^ `animate` accessed before it is declared 19 | } 20 | }, [value, config]); 21 | <ROOT>/src/hooks/useSpring.ts:9:3 7 | const rafRef = useRef<number>(); 8 | > 9 | const animate = useCallback(() => { | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ > 10 | const { stiffness, damping } = config; | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ > 11 | const displacement = targetRef.current - value; … | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ > 19 | } | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ > 20 | }, [value, config]); | ^^^^^^^^^^^^^^^^^^^^^^^ `animate` is declared here 21 | 22 | const set = useCallback((target: number) => { 23 | targetRef.current = target;",
+      "message": "Error: Cannot access variable before it is declared `animate` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time. <ROOT>/src/hooks/useSpring.ts:18:46 16 | 17 | if (Math.abs(displacement) > 0.01 || Math.abs(velocityRef.current) > 0.01) { > 18 | rafRef.current = requestAnimationFrame(animate); | ^^^^^^^ `animate` accessed before it is declared 19 | } 20 | }, [value, config]); 21 | <ROOT>/src/hooks/useSpring.ts:9:3 7 | const rafRef = useRef<number | null>(null); 8 | > 9 | const animate = useCallback(() => { | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ > 10 | const { stiffness, damping } = config; | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ > 11 | const displacement = targetRef.current - value; … | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ > 19 | } | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ > 20 | }, [value, config]); | ^^^^^^^^^^^^^^^^^^^^^^^ `animate` is declared here 21 | 22 | const set = useCallback((target: number) => { 23 | targetRef.current = target;",
       "spanHash": "696af3693f3ba07202da50b178b7fb9139a3c1f0f634efa90a9f556271c85a4e",
       "lineHash": "2d8f3664cda8fefc4860b1ae6de566c5700b626bb90df77f60106916afda0943",
       "contextHash": "8eb185b5add9706203de0996de93400939b89875b407b7ef107f53616bcd3e9f"
