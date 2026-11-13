@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `b7c5ffa8af706c525b294039207181db1f61abe8` (2026-11-13T18:53:49-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `9954e10a866c8ce922150ec11ce44c31db41d66c` (2026-11-13T20:31:01-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1378), Markdown (173), SQL (106), JSON (42), YAML (36), JavaScript (23), Shell (21), HTML (4)
+- linguagens: TypeScript (1378), Markdown (173), SQL (106), JSON (42), YAML (35), JavaScript (23), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1824 |
+| arquivos_total | 1823 |
 | arquivos_codigo | 1399 |
 | linhas_codigo | 147202 |
 | rotas | 54 |
@@ -49,7 +49,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | migrations | 102 |
 | cron_jobs | 1 |
 | testes | 70 |
-| workflows | 13 |
+| workflows | 12 |
 | scripts | 31 |
 | docs_md | 173 |
 
@@ -313,7 +313,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `desktop-build.yml` — Desktop Build (push)
 - `inventario-estado-semanal.yml` — Inventário do estado real (semanal) (schedule, workflow_dispatch; cron 31 10 * * 1)
 - `lint.yml` — Lint (pull_request, push)
-- `mobile-build.yml` — Mobile Build (push)
 - `performance.yml` — Performance (push)
 - `preview.yml` — Preview (pull_request)
 - `release.yml` — Release (push)
@@ -451,6 +450,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `9954e10a8` chore: remove workflow orfao mobile-build (#130)
+- 2026-11-13 `ac5e159ae` ci: sobe update-deps p/ node 22 e usa create-pull-request v7 (#129)
 - 2026-11-13 `b7c5ffa8a` chore: inventario do estado real [auto] (#128)
 - 2026-11-13 `60779c3b9` ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)
 - 2026-11-13 `8044b0050` fix(security): sanitiza erros em edge functions do slack e remove no-op (#125)
@@ -464,8 +465,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-13 `870573781` fix: resolve binarios via PATHEXT e evita short-names no Windows (#118)
 - 2026-11-13 `bd97547c8` chore: baixa baselines do lint/format-ratchet apos limpeza (#117)
 - 2026-11-13 `8ca0b6508` ci: adiciona format-ratchet incremental (Prettier) (#115)
-- 2026-11-13 `b689fb4be` fix: limpa unused imports/vars do baseline em src/pages (#116)
-- 2026-11-12 `40ca83394` fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

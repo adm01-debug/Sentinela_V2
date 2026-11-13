@@ -7,7 +7,7 @@
    "Markdown (173)",
    "SQL (106)",
    "JSON (42)",
-   "YAML (36)",
+   "YAML (35)",
    "JavaScript (23)",
    "Shell (21)",
    "HTML (4)"
@@ -303,28 +303,6 @@
    "actions": [
     "actions/checkout",
     "actions/setup-node"
-   ]
-  },
-  {
-   "arquivo": ".github/workflows/mobile-build.yml",
-   "nome": "Mobile Build",
-   "gatilhos": [
-    "push"
-   ],
-   "crons": [],
-   "branches": [],
-   "jobs": [
-    "build"
-   ],
-   "permissoes": [
-    "contents: read"
-   ],
-   "scripts_usados": [],
-   "npm_scripts": [],
-   "secrets": [],
-   "actions": [
-    "actions/checkout",
-    "expo/expo-github-action"
    ]
   },
   {

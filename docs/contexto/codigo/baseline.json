@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "b7c5ffa8af706c525b294039207181db1f61abe8",
+  "commit": "9954e10a866c8ce922150ec11ce44c31db41d66c",
   "branch": "main",
-  "data_commit": "2026-11-13T18:53:49-03:00",
+  "data_commit": "2026-11-13T20:31:01-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "9954e10a8",
+    "data": "2026-11-13",
+    "assunto": "chore: remove workflow orfao mobile-build (#130)"
+   },
+   {
+    "sha": "ac5e159ae",
+    "data": "2026-11-13",
+    "assunto": "ci: sobe update-deps p/ node 22 e usa create-pull-request v7 (#129)"
+   },
    {
     "sha": "b7c5ffa8a",
     "data": "2026-11-13",
@@ -121,16 +131,6 @@
     "sha": "240a04d0d",
     "data": "2026-11-12",
     "assunto": "build(deps): bump the react group across 1 directory with 35 updates (#107)"
-   },
-   {
-    "sha": "9de86acd5",
-    "data": "2026-11-12",
-    "assunto": "build(deps): bump the i18n group across 1 directory with 2 updates (#83)"
-   },
-   {
-    "sha": "7e68d8aa1",
-    "data": "2026-11-12",
-    "assunto": "build(deps): bump @supabase/supabase-js from 2.109.0 to 2.117.2 (#78)"
    }
   ],
   "arquivos_mudados_7d": 237,
@@ -274,6 +274,10 @@
     "mudancas": 2
    },
    {
+    "arquivo": ".github/workflows/update-deps.yml",
+    "mudancas": 2
+   },
+   {
     "arquivo": "desktop-agent/src/main.ts",
     "mudancas": 2
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": "scripts/ai-context/gerar.mjs",
     "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/check-bundle-size.sh",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 37
+    "commits": 39
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1824,
+  "arquivos_total": 1823,
   "arquivos_codigo": 1399,
   "linhas_codigo": 147202,
   "rotas": 54,
@@ -329,7 +329,7 @@
   "migrations": 102,
   "cron_jobs": 1,
   "testes": 70,
-  "workflows": 13,
+  "workflows": 12,
   "scripts": 31,
   "docs_md": 173
  },
