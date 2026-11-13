@@ -50,12 +50,12 @@
   {
    "arquivo": "scripts/ci/lint-ratchet.unit.mjs",
    "tipo": "unit",
-   "linhas": 731,
+   "linhas": 751,
    "testa": [
     "scripts/ci/lint-ratchet.mjs",
     "scripts/lib/seguranca-processo.mjs"
    ],
-   "casos": 36
+   "casos": 37
   },
   {
    "arquivo": "scripts/ci/typecheck-ratchet.unit.mjs",
