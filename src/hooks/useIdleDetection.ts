@@ -17,7 +17,7 @@ export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
 
   const [isIdle, setIsIdle] = useState(false);
   const [lastActivity, setLastActivity] = useState(Date.now());
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout>(null!);
 
   const resetTimer = useCallback(() => {
     if (timeoutRef.current) {

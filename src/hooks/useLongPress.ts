@@ -9,7 +9,7 @@ export interface UseLongPressOptions {
 
 export function useLongPress(options: UseLongPressOptions) {
   const { onLongPress, onClick, delay = 500, shouldPreventDefault = true } = options;
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<NodeJS.Timeout>(null!);
   const isLongPress = useRef(false);
   const targetRef = useRef<EventTarget | null>(null);
 

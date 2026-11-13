@@ -105,8 +105,8 @@ export function RecordingStorageCostCard({ className }: RecordingStorageCostCard
                       borderRadius: 8,
                       color: colors.foreground,
                     }}
-                    formatter={(value: number, name: string) =>
-                      name === 'custo' ? formatBRL(value) : `${value} GB`
+                    formatter={(value, name) =>
+                      name === 'custo' ? formatBRL(Number(value ?? 0)) : `${value} GB`
                     }
                   />
                   <Bar dataKey="gb" name="gb" fill={colors.primary} radius={[4, 4, 0, 0]} />

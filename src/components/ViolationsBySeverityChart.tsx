@@ -55,8 +55,8 @@ export function ViolationsBySeverityChart({
     }));
   }, [violations, severityColors]);
 
-  const handleClick = (payload: { key?: SeverityKey } | undefined) => {
-    const key = payload?.key;
+  const handleClick: (data: { payload?: { key?: SeverityKey } } | undefined) => void = (data) => {
+    const key = (data?.payload as { key?: SeverityKey } | undefined)?.key;
     if (!key) return;
     onSeveritySelect?.(key);
     if (!disableInternalDrilldown) {

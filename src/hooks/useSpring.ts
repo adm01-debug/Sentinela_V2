@@ -4,7 +4,7 @@ export function useSpring(initialValue: number, config = { stiffness: 100, dampi
   const [value, setValue] = useState(initialValue);
   const targetRef = useRef(initialValue);
   const velocityRef = useRef(0);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | null>(null);
 
   const animate = useCallback(() => {
     const { stiffness, damping } = config;

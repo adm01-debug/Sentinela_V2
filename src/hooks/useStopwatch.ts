@@ -3,7 +3,7 @@ import { useState, useRef, useCallback } from "react";
 export function useStopwatch() {
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout>(null!);
 
   const start = useCallback(() => {
     if (running) return;

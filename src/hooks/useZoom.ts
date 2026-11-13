@@ -17,7 +17,7 @@ interface UseZoomReturn {
   isMinZoom: boolean;
   isMaxZoom: boolean;
   zoomPercentage: string;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   handleWheel: (e: WheelEvent) => void;
   handlePinch: (scale: number) => void;
 }

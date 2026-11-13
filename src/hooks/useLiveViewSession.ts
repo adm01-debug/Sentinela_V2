@@ -39,7 +39,7 @@ export interface UseLiveViewSession {
   error: string | null;
   metrics: LiveViewMetrics;
   consent: ConsentInfo;
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
   start: () => Promise<void>;
   stop: (reason?: string) => Promise<void>;
   snapshot: () => string | null;

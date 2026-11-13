@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from "react";
 
 export function useRafState<T>(initialValue: T): [T, (value: T) => void] {
   const [state, setState] = useState(initialValue);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | null>(null);
 
   const setRafState = useCallback((value: T) => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);

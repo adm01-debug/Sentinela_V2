@@ -68,10 +68,12 @@ const SEVERITY_TOKEN: Record<Severity, string> = {
 };
 
 const STATUS_TOKEN: Record<Status, string> = {
-  pending: 'bg-warning/15 text-warning border-warning/30',
-  reviewed: 'bg-info/15 text-info border-info/30',
+  open: 'bg-warning/15 text-warning border-warning/30',
+  acknowledged: 'bg-info/15 text-info border-info/30',
+  investigating: 'bg-destructive/15 text-destructive border-destructive/30',
   resolved: 'bg-success/15 text-success border-success/30',
   dismissed: 'bg-muted text-muted-foreground border-border',
+  escalated: 'bg-destructive/15 text-destructive border-destructive/30',
 };
 
 const SEVERITY_LABEL: Record<Severity, string> = {
@@ -122,8 +124,7 @@ export function ViolationsDrilldownDialog({
       if (term) {
         const haystack = [
           v.description,
-          v.employee?.name ?? '',
-          v.employee?.email ?? '',
+          v.employee_name ?? '',
         ]
           .join(' ')
           .toLowerCase();
@@ -203,8 +204,9 @@ export function ViolationsDrilldownDialog({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todos</SelectItem>
-                <SelectItem value="pending">Pendente</SelectItem>
-                <SelectItem value="reviewed">Em análise</SelectItem>
+                <SelectItem value="open">Aberto</SelectItem>
+                <SelectItem value="acknowledged">Reconhecido</SelectItem>
+                <SelectItem value="investigating">Em investigação</SelectItem>
                 <SelectItem value="resolved">Resolvido</SelectItem>
                 <SelectItem value="dismissed">Descartado</SelectItem>
               </SelectContent>
@@ -237,8 +239,7 @@ export function ViolationsDrilldownDialog({
                       {format(new Date(v.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}
                     </TableCell>
                     <TableCell>
-                      <div className="text-sm font-medium">{v.employee?.name ?? '—'}</div>
-                      <div className="text-xs text-muted-foreground">{v.employee?.email ?? ''}</div>
+                      <div className="text-sm font-medium">{v.employee_name ?? '—'}</div>
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className={SEVERITY_TOKEN[v.severity]}>

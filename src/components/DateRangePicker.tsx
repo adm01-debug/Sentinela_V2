@@ -74,7 +74,8 @@ export function DateRangePicker({
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
-          initialFocus
+          // eslint-disable-next-line jsx-a11y/no-autofocus -- dia-picker v10 exige autoFocus p/ focar dia ativo ao abrir
+          autoFocus
           mode="range"
           defaultMonth={date?.from}
           selected={date}

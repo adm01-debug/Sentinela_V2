@@ -89,8 +89,8 @@ export function FileTransferCharts({
                       borderRadius: 8,
                       color: colors.foreground,
                     }}
-                    labelFormatter={(v: string) => formatDay(String(v))}
-                    formatter={(value: number, name: string) => [
+                    labelFormatter={(v) => formatDay(String(v))}
+                    formatter={(value, name) => [
                       value,
                       CHANNEL_LABELS[name as TransferChannel] ?? name,
                     ]}
@@ -148,7 +148,7 @@ export function FileTransferCharts({
                       borderRadius: 8,
                       color: colors.foreground,
                     }}
-                    formatter={(value: number) => formatBytes(value)}
+                    formatter={(value) => formatBytes(Number(value ?? 0))}
                   />
                   <Bar dataKey="bytes" name="Volume" fill={colors.primary} radius={[4, 4, 0, 0]} />
                 </BarChart>

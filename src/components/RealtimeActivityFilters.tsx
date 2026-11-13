@@ -138,7 +138,8 @@ export const RealtimeActivityFilters = ({
               mode="single"
               selected={filters.dateFrom}
               onSelect={(date) => onFiltersChange({ ...filters, dateFrom: date })}
-              initialFocus
+              // eslint-disable-next-line jsx-a11y/no-autofocus -- dia-picker v10 exige autoFocus
+              autoFocus
               className={cn("p-3 pointer-events-auto")}
             />
           </PopoverContent>
@@ -166,7 +167,8 @@ export const RealtimeActivityFilters = ({
               mode="single"
               selected={filters.dateTo}
               onSelect={(date) => onFiltersChange({ ...filters, dateTo: date })}
-              initialFocus
+              // eslint-disable-next-line jsx-a11y/no-autofocus -- dia-picker v10 exige autoFocus
+              autoFocus
               className={cn("p-3 pointer-events-auto")}
             />
           </PopoverContent>

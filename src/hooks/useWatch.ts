@@ -4,7 +4,7 @@ export function useWatch<T>(
   value: T,
   callback: (value: T, previous: T | undefined) => void
 ) {
-  const prevRef = useRef<T>();
+  const prevRef = useRef<T | undefined>(undefined);
 
   useEffect(() => {
     callback(value, prevRef.current);
