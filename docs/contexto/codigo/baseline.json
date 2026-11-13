@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "870573781f585af296a04af860313361f1c08d40",
+  "commit": "775d830f9a4526aa734f44d662a48300e44018b9",
   "branch": "main",
-  "data_commit": "2026-11-13T10:52:32-03:00",
+  "data_commit": "2026-11-13T11:36:29-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "775d830f9",
+    "data": "2026-11-13",
+    "assunto": "fix: zera divida de typecheck (recharts 3 / day-picker 10 / React 19) (#119)"
+   },
    {
     "sha": "870573781",
     "data": "2026-11-13",
@@ -126,14 +131,9 @@
     "sha": "04b8469e9",
     "data": "2026-11-11",
     "assunto": "ci(quality): substitui lint/tsc diretos pelos ratchets incrementais no CI (#99)"
-   },
-   {
-    "sha": "310b7e6b3",
-    "data": "2026-11-08",
-    "assunto": "fix(lint): globals.node para scripts .mjs/.cjs + baseline 1633→1515"
    }
   ],
-  "arquivos_mudados_7d": 187,
+  "arquivos_mudados_7d": 227,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -152,6 +152,10 @@
     "mudancas": 4
    },
    {
+    "pasta": "scripts/ci/eslint-baseline.json",
+    "mudancas": 4
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 3
    },
@@ -164,7 +168,11 @@
     "mudancas": 3
    },
    {
-    "pasta": "scripts/ci/eslint-baseline.json",
+    "pasta": "src/components/ui",
+    "mudancas": 3
+   },
+   {
+    "pasta": "src/pages/admin",
     "mudancas": 3
    },
    {
@@ -185,14 +193,6 @@
    },
    {
     "pasta": ".github/workflows/inventario-estado-semanal.yml",
-    "mudancas": 2
-   },
-   {
-    "pasta": ".github/workflows/lint.yml",
-    "mudancas": 2
-   },
-   {
-    "pasta": ".github/workflows/security.yml",
     "mudancas": 2
    }
   ],
@@ -218,11 +218,11 @@
     "mudancas": 4
    },
    {
-    "arquivo": ".github/workflows/contexto.yml",
-    "mudancas": 3
+    "arquivo": "scripts/ci/eslint-baseline.json",
+    "mudancas": 4
    },
    {
-    "arquivo": "scripts/ci/eslint-baseline.json",
+    "arquivo": ".github/workflows/contexto.yml",
     "mudancas": 3
    },
    {
@@ -286,22 +286,22 @@
     "mudancas": 2
    },
    {
+    "arquivo": "scripts/ci/typecheck-baseline.json",
+    "mudancas": 2
+   },
+   {
     "arquivo": "scripts/lib/seguranca-processo.mjs",
     "mudancas": 2
    },
    {
     "arquivo": "src/pages/__tests__/Analytics.test.tsx",
     "mudancas": 2
-   },
-   {
-    "arquivo": "src/pages/__tests__/AuditLog.test.tsx",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 28
+    "commits": 29
    },
    {
     "autor": "dependabot[bot]",
@@ -312,7 +312,7 @@
  "contagens": {
   "arquivos_total": 1825,
   "arquivos_codigo": 1399,
-  "linhas_codigo": 146996,
+  "linhas_codigo": 147036,
   "rotas": 54,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 387,
-   "linhas": 44503
+   "linhas": 44520
   },
   "src/constants": {
    "arquivos": 7,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 31973
+   "linhas": 31980
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 104,
-   "linhas": 16512
+   "linhas": 16528
   },
   "src/providers": {
    "arquivos": 9,

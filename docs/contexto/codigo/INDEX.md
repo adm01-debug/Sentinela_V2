@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `870573781f585af296a04af860313361f1c08d40` (2026-11-13T10:52:32-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `775d830f9a4526aa734f44d662a48300e44018b9` (2026-11-13T11:36:29-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1825 |
 | arquivos_codigo | 1399 |
-| linhas_codigo | 146996 |
+| linhas_codigo | 147036 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -295,8 +295,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - ESTADO_ATUAL.md (6)
 - .github/workflows/ci.yml (4)
 - AGENTS.md (4)
+- scripts/ci/eslint-baseline.json (4)
 - .github/workflows/contexto.yml (3)
-- scripts/ci/eslint-baseline.json (3)
 - src/pages/__tests__/Auth.test.tsx (3)
 - src/pages/__tests__/Settings.test.tsx (3)
 - src/test/improvements-verification.test.ts (3)
@@ -452,6 +452,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `775d830f9` fix: zera divida de typecheck (recharts 3 / day-picker 10 / React 19) (#119)
 - 2026-11-13 `870573781` fix: resolve binarios via PATHEXT e evita short-names no Windows (#118)
 - 2026-11-13 `bd97547c8` chore: baixa baselines do lint/format-ratchet apos limpeza (#117)
 - 2026-11-13 `8ca0b6508` ci: adiciona format-ratchet incremental (Prettier) (#115)
@@ -466,7 +467,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-12 `df537774d` build(deps): bump the test group across 1 directory with 6 updates (#85)
 - 2026-11-12 `240a04d0d` build(deps): bump the react group across 1 directory with 35 updates (#107)
 - 2026-11-12 `9de86acd5` build(deps): bump the i18n group across 1 directory with 2 updates (#83)
-- 2026-11-12 `7e68d8aa1` build(deps): bump @supabase/supabase-js from 2.109.0 to 2.117.2 (#78)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

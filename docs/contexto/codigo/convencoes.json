@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: zera divida de typecheck (recharts 3 / day-picker 10 / React 19) (#119)",
    "fix: resolve binarios via PATHEXT e evita short-names no Windows (#118)",
    "chore: baixa baselines do lint/format-ratchet apos limpeza (#117)",
    "ci: adiciona format-ratchet incremental (Prettier) (#115)",
-   "fix: limpa unused imports/vars do baseline em src/pages (#116)",
-   "fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)"
+   "fix: limpa unused imports/vars do baseline em src/pages (#116)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

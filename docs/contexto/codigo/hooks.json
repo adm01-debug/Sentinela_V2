@@ -10114,7 +10114,7 @@
     "useUpdateWorkSchedule",
     "useWorkSchedules"
    ],
-   "linhas": 127,
+   "linhas": 134,
    "dominio": "hooks",
    "tabelas": [
     "work_schedules"

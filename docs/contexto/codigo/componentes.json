@@ -361,7 +361,7 @@
     "ChaosCoverageCard"
    ],
    "export_default": null,
-   "linhas": 186,
+   "linhas": 187,
    "dominio": "components/admin",
    "hooks_locais": [
     "useQuery"
@@ -466,7 +466,7 @@
     "SlackUptimeHistoryCard"
    ],
    "export_default": null,
-   "linhas": 209,
+   "linhas": 210,
    "dominio": "components/admin",
    "hooks_locais": [
     "useChartColors",
@@ -1619,7 +1619,7 @@
     "DateRangePicker"
    ],
    "export_default": null,
-   "linhas": 89,
+   "linhas": 90,
    "dominio": "components",
    "hooks_locais": [],
    "tabelas": [],
@@ -2621,7 +2621,7 @@
     "RealtimeFilters"
    ],
    "export_default": null,
-   "linhas": 191,
+   "linhas": 193,
    "dominio": "components",
    "hooks_locais": [],
    "tabelas": [],
@@ -3764,7 +3764,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 138,
+   "usado_por": 139,
    "orfao": false
   },
   {
@@ -3837,7 +3837,7 @@
     "CalendarProps"
    ],
    "export_default": null,
-   "linhas": 55,
+   "linhas": 65,
    "dominio": "components/ui",
    "hooks_locais": [],
    "tabelas": [],
@@ -3915,7 +3915,7 @@
     "ChartTooltipContent"
    ],
    "export_default": null,
-   "linhas": 304,
+   "linhas": 306,
    "dominio": "components/ui",
    "hooks_locais": [
     "useChart"
@@ -4102,7 +4102,7 @@
     "DatePicker"
    ],
    "export_default": null,
-   "linhas": 60,
+   "linhas": 59,
    "dominio": "components/ui",
    "hooks_locais": [],
    "tabelas": [],
@@ -5807,7 +5807,7 @@
     "ViolationsDrilldownDialog"
    ],
    "export_default": null,
-   "linhas": 318,
+   "linhas": 319,
    "dominio": "components",
    "hooks_locais": [],
    "tabelas": [],
@@ -6351,7 +6351,7 @@
     "AdminTelemetriaPage"
    ],
    "export_default": "AdminTelemetriaPage",
-   "linhas": 200,
+   "linhas": 216,
    "dominio": "pages",
    "hooks_locais": [],
    "tabelas": [

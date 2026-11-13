@@ -687,6 +687,7 @@
    "src/integrations/supabase/client.ts"
   ],
   "src/components/admin/SlackUptimeHistoryCard.tsx": [
+   "src/components/ui/badge.tsx",
    "src/components/ui/card.tsx",
    "src/hooks/useChartColors.ts",
    "src/integrations/supabase/client.ts"
