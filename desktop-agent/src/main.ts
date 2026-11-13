@@ -1,22 +1,23 @@
-import { createHash } from 'crypto';
-import * as path from 'path';
-import { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain } from 'electron';
-import log from 'electron-log';
-import Store from 'electron-store';
-import AutoLaunch from 'auto-launch';
-import { CONFIG } from './config';
-import { AuthService } from './services/auth';
-import { ScreenshotService } from './services/screenshot';
-import { KeystrokeService } from './services/keystroke';
-import { AppTrackerService } from './services/appTracker';
-import { UsbBlockerService } from './services/usbBlocker';
-import { PrintScreenBlocker } from './services/printScreenBlocker';
-import { DataSender } from './services/dataSender';
-import { AutoUpdaterService } from './services/autoUpdater';
-import { IdleDetector } from './services/idleDetector';
-import { ClipboardDLP } from './services/dlp/clipboardDLP';
-import { PolicySync } from './services/dlp/policySync';
-import { ViolationNotifier } from './services/violationNotifier';
+import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
+import * as path from "path";
+import * as os from "os";
+import { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain } from "electron";
+import log from "electron-log";
+import Store from "electron-store";
+import AutoLaunch from "auto-launch";
+import { CONFIG } from "./config";
+import { AuthService } from "./services/auth";
+import { ScreenshotService } from "./services/screenshot";
+import { KeystrokeService } from "./services/keystroke";
+import { AppTrackerService } from "./services/appTracker";
+import { UsbBlockerService } from "./services/usbBlocker";
+import { PrintScreenBlocker } from "./services/printScreenBlocker";
+import { DataSender } from "./services/dataSender";
+import { AutoUpdaterService } from "./services/autoUpdater";
+import { IdleDetector } from "./services/idleDetector";
+import { ClipboardDLP } from "./services/dlp/clipboardDLP";
+import { PolicySync } from "./services/dlp/policySync";
+import { ViolationNotifier } from "./services/violationNotifier";
 
 // ============================================================
 // GLOBALS
@@ -29,12 +30,12 @@ let isInitializing = false;
 let isQuitting = false;
 
 const store = new Store({
-  encryptionKey: 'sentinela-secure-storage-key',
+  encryptionKey: "sentinela-secure-storage-key",
   schema: {
-    agentKey: { type: 'string', default: '' },
-    deviceName: { type: 'string', default: '' },
-    stealthMode: { type: 'boolean', default: false },
-    stealthPassword: { type: 'string', default: '' },
+    agentKey: { type: "string", default: "" },
+    deviceName: { type: "string", default: "" },
+    stealthMode: { type: "boolean", default: false },
+    stealthPassword: { type: "string", default: "" },
   },
 });
 
@@ -54,7 +55,7 @@ let violationNotifier: ViolationNotifier;
 
 // Auto-launch
 const autoLauncher = new AutoLaunch({
-  name: 'Sentinela Agent',
+  name: "Sentinela Agent",
   isHidden: true,
 });
 
@@ -72,22 +73,22 @@ function createWindow(): void {
     show: false,
     skipTaskbar: stealthMode,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
       contextIsolation: true,
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
+  mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
 
-  mainWindow.on('close', (event) => {
-    if (stealthMode && store.get('stealthMode')) {
+  mainWindow.on("close", (event) => {
+    if (stealthMode && store.get("stealthMode")) {
       event.preventDefault();
       mainWindow?.hide();
     }
   });
 
-  mainWindow.on('ready-to-show', () => {
+  mainWindow.on("ready-to-show", () => {
     if (!stealthMode) {
       mainWindow?.show();
     }
@@ -98,12 +99,12 @@ function createWindow(): void {
 // TRAY
 // ============================================================
 function createTray(): void {
-  const iconPath = path.join(__dirname, '../resources/tray-icon.png');
+  const iconPath = path.join(__dirname, "../resources/tray-icon.png");
   tray = new Tray(iconPath);
 
   updateTrayMenu();
 
-  tray.on('double-click', () => {
+  tray.on("double-click", () => {
     if (!stealthMode) {
       mainWindow?.show();
     }
@@ -120,23 +121,23 @@ function updateTrayMenu(): void {
           label: `Sentinela Agent v${app.getVersion()}`,
           enabled: false,
         },
-        { type: 'separator' },
+        { type: "separator" },
         {
-          label: isAuthenticated ? '🟢 Conectado' : '🔴 Desconectado',
+          label: isAuthenticated ? "🟢 Conectado" : "🔴 Desconectado",
           enabled: false,
         },
-        { type: 'separator' },
+        { type: "separator" },
         {
-          label: 'Abrir Painel',
+          label: "Abrir Painel",
           click: () => mainWindow?.show(),
         },
         {
-          label: 'Verificar Atualizações',
+          label: "Verificar Atualizações",
           click: () => autoUpdaterService?.checkForUpdates(),
         },
-        { type: 'separator' },
+        { type: "separator" },
         {
-          label: 'Sair',
+          label: "Sair",
           click: () => {
             app.quit();
           },
@@ -144,19 +145,67 @@ function updateTrayMenu(): void {
       ]);
 
   tray.setContextMenu(contextMenu);
-  tray.setToolTip(isAuthenticated ? 'Sentinela - Conectado' : 'Sentinela - Desconectado');
+  tray.setToolTip(isAuthenticated ? "Sentinela - Conectado" : "Sentinela - Desconectado");
 }
 
 // ============================================================
 // STEALTH MODE
 // ============================================================
+const PASSCONFIG_VERSION = 1;
+
+interface PassConfig {
+  version: number;
+  salt: string;
+  hash: string;
+}
+
+function hashPassphrase(passphrase: string, salt: Buffer): Buffer {
+  return scryptSync(passphrase, salt, 64);
+}
+
+function storePassphrase(passphrase: string): void {
+  const salt = randomBytes(16);
+  const config: PassConfig = {
+    version: PASSCONFIG_VERSION,
+    salt: salt.toString("hex"),
+    hash: hashPassphrase(passphrase, salt).toString("hex"),
+  };
+  store.set("stealthPassword", JSON.stringify(config));
+}
+
+function verifyStoredPassphrase(passphrase: string): boolean {
+  const stored = store.get("stealthPassword") as string;
+  if (!stored) return false;
+
+  // Migra registro legado (texto puro) para scrypt na primeira verificacao.
+  if (!stored.startsWith('{"version"')) {
+    const plainA = Buffer.from(stored);
+    const plainB = Buffer.from(passphrase);
+    const legacyOk = plainA.length === plainB.length && timingSafeEqual(plainA, plainB);
+    if (legacyOk) storePassphrase(passphrase);
+    return legacyOk;
+  }
+
+  try {
+    const config = JSON.parse(stored) as PassConfig;
+    if (config.version !== PASSCONFIG_VERSION) return false;
+    const expected = Buffer.from(config.hash, "hex");
+    const actual = hashPassphrase(passphrase, Buffer.from(config.salt, "hex"));
+    return expected.length === actual.length && timingSafeEqual(expected, actual);
+  } catch {
+    return false;
+  }
+}
+
+function hasStoredPassphrase(): boolean {
+  return Boolean(store.get("stealthPassword") as string);
+}
+
 function toggleStealthMode(): void {
-  const password = store.get('stealthPassword') as string;
-  
   if (stealthMode) {
     // Exiting stealth - require password
-    if (password) {
-      mainWindow?.webContents.send('request-stealth-password');
+    if (hasStoredPassphrase()) {
+      mainWindow?.webContents.send("request-stealth-password");
     } else {
       disableStealth();
     }
@@ -167,26 +216,26 @@ function toggleStealthMode(): void {
 
 function enableStealth(): void {
   stealthMode = true;
-  store.set('stealthMode', true);
+  store.set("stealthMode", true);
   mainWindow?.hide();
   mainWindow?.setSkipTaskbar(true);
-  
+
   if (tray) {
     tray.destroy();
     tray = null;
   }
-  
-  log.info('Stealth mode enabled');
+
+  log.info("Stealth mode enabled");
 }
 
 function disableStealth(): void {
   stealthMode = false;
-  store.set('stealthMode', false);
+  store.set("stealthMode", false);
   mainWindow?.setSkipTaskbar(false);
   mainWindow?.show();
   createTray();
-  
-  log.info('Stealth mode disabled');
+
+  log.info("Stealth mode disabled");
 }
 
 // ============================================================
@@ -203,10 +252,10 @@ async function initializeServices(): Promise<void> {
 }
 
 async function _initializeServicesImpl(): Promise<void> {
-  const agentKey = store.get('agentKey') as string;
-  
+  const agentKey = store.get("agentKey") as string;
+
   if (!agentKey) {
-    log.info('No agent key configured, showing setup window');
+    log.info("No agent key configured, showing setup window");
     mainWindow?.show();
     return;
   }
@@ -214,18 +263,18 @@ async function _initializeServicesImpl(): Promise<void> {
   // Auth
   authService = new AuthService(agentKey);
   const authResult = await authService.validate();
-  
+
   if (!authResult.valid) {
-    log.error('Agent key validation failed:', authResult.error);
-    mainWindow?.webContents.send('auth-error', authResult.error);
+    log.error("Agent key validation failed:", authResult.error);
+    mainWindow?.webContents.send("auth-error", authResult.error);
     mainWindow?.show();
     return;
   }
 
   isAuthenticated = true;
   updateTrayMenu();
-  mainWindow?.webContents.send('auth-success', authResult);
-  log.info('Agent authenticated successfully');
+  mainWindow?.webContents.send("auth-success", authResult);
+  log.info("Agent authenticated successfully");
 
   // Data sender (must be first - other services depend on it)
   dataSender = new DataSender(agentKey);
@@ -261,7 +310,7 @@ async function _initializeServicesImpl(): Promise<void> {
   clipboardDLP.start();
 
   // Violation notifier — LGPD real-time awareness overlay
-  violationNotifier = new ViolationNotifier(agentKey, require('os').hostname());
+  violationNotifier = new ViolationNotifier(agentKey, os.hostname());
   violationNotifier.start();
 
   // Auto-updater
@@ -269,9 +318,9 @@ async function _initializeServicesImpl(): Promise<void> {
   autoUpdaterService.start();
 
   // Send login event
-  dataSender.send('login', { timestamp: new Date().toISOString() });
+  dataSender.send("login", { timestamp: new Date().toISOString() });
 
-  log.info('All monitoring services started');
+  log.info("All monitoring services started");
 }
 
 async function stopServices(): Promise<void> {
@@ -284,9 +333,9 @@ async function stopServices(): Promise<void> {
   clipboardDLP?.stop();
   policySync?.stop();
   violationNotifier?.stop();
-  
+
   if (isAuthenticated) {
-    dataSender?.send('logout', { timestamp: new Date().toISOString() });
+    dataSender?.send("logout", { timestamp: new Date().toISOString() });
     await dataSender?.flush();
   }
 }
@@ -295,39 +344,35 @@ async function stopServices(): Promise<void> {
 // IPC HANDLERS
 // ============================================================
 function setupIPC(): void {
-  ipcMain.handle('get-status', () => ({
+  ipcMain.handle("get-status", () => ({
     authenticated: isAuthenticated,
     stealthMode,
     version: app.getVersion(),
-    agentKey: store.get('agentKey') ? '****' + (store.get('agentKey') as string).slice(-4) : '',
+    agentKey: store.get("agentKey") ? "****" + (store.get("agentKey") as string).slice(-4) : "",
   }));
 
-  ipcMain.handle('set-agent-key', async (_event, key: string) => {
-    store.set('agentKey', key);
+  ipcMain.handle("set-agent-key", async (_event, key: string) => {
+    store.set("agentKey", key);
     await initializeServices();
     return { success: isAuthenticated };
   });
 
-  ipcMain.handle('toggle-stealth', () => {
+  ipcMain.handle("toggle-stealth", () => {
     toggleStealthMode();
     return { stealthMode };
   });
 
-  ipcMain.handle('verify-stealth-password', (_event, password: string) => {
-    const stored = store.get('stealthPassword') as string;
-    // Hash both sides to a constant-length digest so timingSafeEqual always
-    // runs on equal-length inputs (removes length-leaking early branch).
-    const storedHash = createHash('sha256').update(stored || '').digest();
-    const inputHash = createHash('sha256').update(password || '').digest();
-    if (storedHash.equals(inputHash)) {
+  ipcMain.handle("verify-stealth-password", (_event, password: string) => {
+    if (verifyStoredPassphrase(password)) {
       disableStealth();
       return { success: true };
     }
     return { success: false };
   });
 
-  ipcMain.handle('set-stealth-password', (_event, password: string) => {
-    store.set('stealthPassword', password);
+  ipcMain.handle("set-stealth-password", (_event, password: string) => {
+    if (!password) return { success: false, error: "Senha vazia" };
+    storePassphrase(password);
     return { success: true };
   });
 }
@@ -340,7 +385,7 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
 } else {
-  app.on('second-instance', () => {
+  app.on("second-instance", () => {
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore();
       mainWindow.show();
@@ -350,7 +395,7 @@ if (!gotTheLock) {
 
   app.whenReady().then(async () => {
     log.info(`Sentinela Agent v${app.getVersion()} starting...`);
-    
+
     // Setup auto-launch
     try {
       const isEnabled = await autoLauncher.isEnabled();
@@ -358,18 +403,18 @@ if (!gotTheLock) {
         await autoLauncher.enable();
       }
     } catch (err) {
-      log.error('Auto-launch setup failed:', err);
+      log.error("Auto-launch setup failed:", err);
     }
 
     // Stealth mode from store
-    stealthMode = store.get('stealthMode') as boolean;
+    stealthMode = store.get("stealthMode") as boolean;
 
     createWindow();
-    
+
     if (!stealthMode) {
       createTray();
     }
-    
+
     setupIPC();
 
     // Register stealth shortcut
@@ -379,7 +424,7 @@ if (!gotTheLock) {
     await initializeServices();
   });
 
-  app.on('will-quit', (event) => {
+  app.on("will-quit", (event) => {
     if (!isQuitting) {
       event.preventDefault();
       isQuitting = true;
@@ -390,7 +435,7 @@ if (!gotTheLock) {
     }
   });
 
-  app.on('window-all-closed', (e: Event) => {
+  app.on("window-all-closed", (e: Event) => {
     e.preventDefault(); // Keep running in tray
   });
 }
