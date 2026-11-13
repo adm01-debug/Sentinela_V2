@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "bd97547c8d8b438b7e54576daf0acfb1e432500f",
+  "commit": "870573781f585af296a04af860313361f1c08d40",
   "branch": "main",
-  "data_commit": "2026-11-13T09:41:01-03:00",
+  "data_commit": "2026-11-13T10:52:32-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "870573781",
+    "data": "2026-11-13",
+    "assunto": "fix: resolve binarios via PATHEXT e evita short-names no Windows (#118)"
+   },
    {
     "sha": "bd97547c8",
     "data": "2026-11-13",
@@ -126,11 +131,6 @@
     "sha": "310b7e6b3",
     "data": "2026-11-08",
     "assunto": "fix(lint): globals.node para scripts .mjs/.cjs + baseline 1633→1515"
-   },
-   {
-    "sha": "185007dd3",
-    "data": "2026-11-08",
-    "assunto": "chore(docs): adiciona regra explícita sobre PR de outra sessão no AGENTS.md (#97)"
    }
   ],
   "arquivos_mudados_7d": 187,
@@ -286,22 +286,22 @@
     "mudancas": 2
    },
    {
+    "arquivo": "scripts/lib/seguranca-processo.mjs",
+    "mudancas": 2
+   },
+   {
     "arquivo": "src/pages/__tests__/Analytics.test.tsx",
     "mudancas": 2
    },
    {
     "arquivo": "src/pages/__tests__/AuditLog.test.tsx",
     "mudancas": 2
-   },
-   {
-    "arquivo": "src/pages/__tests__/Dashboard.test.tsx",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 27
+    "commits": 28
    },
    {
     "autor": "dependabot[bot]",
@@ -312,7 +312,7 @@
  "contagens": {
   "arquivos_total": 1825,
   "arquivos_codigo": 1399,
-  "linhas_codigo": 146988,
+  "linhas_codigo": 146996,
   "rotas": 54,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -404,7 +404,7 @@
   },
   "scripts/lib": {
    "arquivos": 2,
-   "linhas": 223
+   "linhas": 231
   },
   "seed/generate_time_entries.cjs": {
    "arquivos": 1,

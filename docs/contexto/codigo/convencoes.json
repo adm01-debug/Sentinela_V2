@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: resolve binarios via PATHEXT e evita short-names no Windows (#118)",
    "chore: baixa baselines do lint/format-ratchet apos limpeza (#117)",
    "ci: adiciona format-ratchet incremental (Prettier) (#115)",
    "fix: limpa unused imports/vars do baseline em src/pages (#116)",
-   "fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)",
-   "fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)"
+   "fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
