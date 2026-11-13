@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { AlertTriangle, Clock, User, CheckCircle } from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { Clock, User, CheckCircle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
@@ -24,7 +24,6 @@ interface AlertData {
 
 export default function AlertDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const { data: rawAlert, isLoading } = useAlert(id!);
   const acknowledge = useAcknowledgeAlert();
 

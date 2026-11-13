@@ -1,6 +1,12 @@
 import { useMemo } from 'react';
+import { Search, Monitor, Wifi, WifiOff, Clock, Users, Grid, List, Keyboard, MousePointer2 } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import {
+  PieChart, Pie, Cell, BarChart, Bar,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
 import { EmptyState } from '@/components/EmptyState';
-import { Search, Monitor, Wifi, WifiOff, Clock, Users, Grid, List, RefreshCw, Keyboard, MousePointer2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,14 +18,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
-import { useMonitoringPage, type MonitoringEmployee } from '@/hooks/useMonitoringPage';
+import { useMonitoringPage } from '@/hooks/useMonitoringPage';
 import { useChartColors } from '@/hooks/useChartColors';
-import { formatDistanceToNow } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import {
-  PieChart, Pie, Cell, BarChart, Bar,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
 
 const statusColors: Record<string, string> = {
   online: 'bg-success',

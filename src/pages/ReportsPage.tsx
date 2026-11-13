@@ -1,10 +1,10 @@
-import { useReports, useReportTemplates } from '@/hooks/useReports';
+import { Loader2, Plus, FileText, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useReports } from '@/hooks/useReports';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Plus, FileText, AlertCircle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
 
 
@@ -33,7 +33,6 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | '
 export const ReportsPage = () => {
   const navigate = useNavigate();
   const { data: reportsData, isLoading, isError, error } = useReports();
-  const { data: templates } = useReportTemplates();
 
   const reports: ReportItem[] = Array.isArray(reportsData)
     ? reportsData

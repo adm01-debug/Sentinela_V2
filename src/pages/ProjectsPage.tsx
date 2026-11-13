@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Plus, Clock, ListTodo, Search, CheckCircle2, Circle, Timer } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -9,11 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FolderKanban, Plus, Clock, Users, ListTodo, Search, MoreHorizontal, CheckCircle2, Circle, Timer } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 const statusColors: Record<string, string> = {
   active: 'bg-success/10 text-success',
@@ -70,15 +67,6 @@ function ProjectsPage() {
     queryKey: ['project-time-entries'],
     queryFn: async () => {
       const { data, error } = await supabase.from('time_entries').select('project_id, duration_minutes').not('duration_minutes', 'is', null);
-      if (error) throw error;
-      return data || [];
-    },
-  });
-
-  const { data: employees = [] } = useQuery({
-    queryKey: ['employees-for-tasks'],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('employees').select('id, name').eq('status', 'active').order('name');
       if (error) throw error;
       return data || [];
     },

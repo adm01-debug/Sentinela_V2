@@ -1,15 +1,14 @@
 import { useState, useMemo } from 'react';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { useQuery } from '@tanstack/react-query';
+import { Clock, TrendingUp, Users, Target, Search, BarChart3 } from 'lucide-react';
+import { format, subDays, startOfWeek, endOfWeek, eachDayOfInterval, startOfMonth, endOfMonth } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line, Legend } from 'recharts';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Clock, TrendingUp, Users, Target, Search, BarChart3 } from 'lucide-react';
-import { format, subDays, startOfWeek, endOfWeek, eachDayOfInterval, startOfMonth, endOfMonth } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 
 function HoursTrackingPage() {
   const [period, setPeriod] = useState('week');

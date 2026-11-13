@@ -59,7 +59,6 @@ function buildScenarios(): Scenario[] {
     'consent_pending_timeout',
   ] as const;
   const scenarios: Scenario[] = [];
-  let n = 0;
   for (const cat of categories) {
     for (let i = 0; i < 25; i++) {
       const input: Scenario['input'] = {
@@ -125,7 +124,6 @@ function buildScenarios(): Scenario[] {
         input,
         expected,
       });
-      n++;
     }
   }
   // Extra: cross-product stress cases
@@ -143,7 +141,6 @@ function buildScenarios(): Scenario[] {
     };
     const expected = evaluate(input);
     scenarios.push({ id: `stress-${i}`, name: `stress #${i}`, category: 'stress', input, expected });
-    n++;
   }
   return scenarios;
 }

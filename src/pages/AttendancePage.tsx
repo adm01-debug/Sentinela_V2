@@ -1,7 +1,14 @@
 import { useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Search, CalendarDays, UserCheck, UserX, AlertTriangle, TrendingUp } from 'lucide-react';
+import { format, subDays, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import {
+  BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
-import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,14 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Search, CalendarDays, UserCheck, UserX, Clock, AlertTriangle, TrendingUp } from 'lucide-react';
-import { format, subDays, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { useChartColors } from '@/hooks/useChartColors';
-import {
-  BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   present: { label: 'Presente', color: 'bg-success/10 text-success' },

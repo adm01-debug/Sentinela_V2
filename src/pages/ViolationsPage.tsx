@@ -1,9 +1,14 @@
 import { useMemo, useState } from 'react';
-import { ViolationTimelineDialog } from '@/components/violations/ViolationTimelineDialog';
-import { EmptyState } from '@/components/EmptyState';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Search, ShieldAlert, AlertTriangle, CheckCircle, Clock, Eye, XCircle } from 'lucide-react';
+import { FileDown, Users } from 'lucide-react';
+import {
+  BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
+import { ViolationTimelineDialog } from '@/components/violations/ViolationTimelineDialog';
+import { EmptyState } from '@/components/EmptyState';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,19 +18,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
-import { useViolationsPage, type Violation, type ViolationStatus } from '@/hooks/useViolationsPage';
+import { useViolationsPage, type ViolationStatus } from '@/hooks/useViolationsPage';
 import { useViolationsRealtime } from '@/hooks/useViolationsRealtime';
 import { generateViolationsPdf } from '@/utils/violationsPdf';
-import { FileDown, Users } from 'lucide-react';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
 import { useChartColors } from '@/hooks/useChartColors';
-import {
-  BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
 
 const severityColors: Record<string, string> = {
   critical: 'bg-destructive/10 text-destructive border-destructive/20',

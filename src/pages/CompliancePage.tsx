@@ -1,16 +1,16 @@
 import { useMemo } from 'react';
+import { CheckCircle, AlertTriangle } from 'lucide-react';
+import {
+  PieChart, Pie, Cell, BarChart, Bar,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from 'recharts';
 import { PageHeader } from '@/components/layout/PageHeader';
-import { Shield, CheckCircle, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCompliance } from '@/hooks/useCompliance';
 import { useChartColors } from '@/hooks/useChartColors';
-import {
-  PieChart, Pie, Cell, BarChart, Bar,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
 
 export default function CompliancePage() {
   const { rules, checking, compliancePercentage } = useCompliance();

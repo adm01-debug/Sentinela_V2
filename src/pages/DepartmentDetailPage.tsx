@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { Building, Users, TrendingUp } from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { Users, TrendingUp } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/Skeleton';
@@ -7,7 +7,6 @@ import { useDepartment } from '@/hooks/useDepartments';
 
 export default function DepartmentDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const { data: dept, isLoading } = useDepartment(id!);
 
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;

@@ -1,7 +1,7 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Download, Calendar, User, FileText } from 'lucide-react';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { format } from 'date-fns';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -33,7 +33,6 @@ interface ReportData {
 
 export default function ReportDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const { data: report, isLoading } = useReport(id!);
 
   if (isLoading) return <div className="p-6"><Skeleton className="h-96" /></div>;

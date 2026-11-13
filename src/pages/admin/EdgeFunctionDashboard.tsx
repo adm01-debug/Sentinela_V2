@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import { Loader2, Activity, AlertCircle, Clock, Zap } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Activity, AlertCircle, Clock, Zap } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 
 const EdgeFunctionDashboard = () => {
   const { data: logs, isLoading } = useQuery({
@@ -23,7 +23,6 @@ const EdgeFunctionDashboard = () => {
   });
 
   // Remove specific RPC for now and use logs data
-  const stats = null;
 
   if (isLoading) {
     return (

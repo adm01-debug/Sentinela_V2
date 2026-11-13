@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useScreenshot, type Screenshot } from '@/hooks/useScreenshots';
+import { useScreenshot } from '@/hooks/useScreenshots';
 
 export default function ScreenshotDetailPage() {
   const { id } = useParams<{ id: string }>();
