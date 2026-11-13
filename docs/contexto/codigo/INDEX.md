@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `60779c3b93b5e2004d7ad95cd8bdcff973a9a726` (2026-11-13T18:02:51-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `b7c5ffa8af706c525b294039207181db1f61abe8` (2026-11-13T18:53:49-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -451,6 +451,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `b7c5ffa8a` chore: inventario do estado real [auto] (#128)
 - 2026-11-13 `60779c3b9` ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)
 - 2026-11-13 `8044b0050` fix(security): sanitiza erros em edge functions do slack e remove no-op (#125)
 - 2026-11-13 `09097cc94` fix: escapa barra invertida no regex de extracao de roles (CodeQL sanitization) (#127)
@@ -465,7 +466,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-13 `8ca0b6508` ci: adiciona format-ratchet incremental (Prettier) (#115)
 - 2026-11-13 `b689fb4be` fix: limpa unused imports/vars do baseline em src/pages (#116)
 - 2026-11-12 `40ca83394` fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)
-- 2026-11-12 `deec5b891` fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

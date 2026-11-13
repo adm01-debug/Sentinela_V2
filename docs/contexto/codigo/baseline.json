@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "60779c3b93b5e2004d7ad95cd8bdcff973a9a726",
+  "commit": "b7c5ffa8af706c525b294039207181db1f61abe8",
   "branch": "main",
-  "data_commit": "2026-11-13T18:02:51-03:00",
+  "data_commit": "2026-11-13T18:53:49-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "b7c5ffa8a",
+    "data": "2026-11-13",
+    "assunto": "chore: inventario do estado real [auto] (#128)"
+   },
    {
     "sha": "60779c3b9",
     "data": "2026-11-13",
@@ -126,11 +131,6 @@
     "sha": "7e68d8aa1",
     "data": "2026-11-12",
     "assunto": "build(deps): bump @supabase/supabase-js from 2.109.0 to 2.117.2 (#78)"
-   },
-   {
-    "sha": "4d5f94748",
-    "data": "2026-11-12",
-    "assunto": "build(deps): bump @sentry/react from 10.74.0 to 11.2.0 (#77)"
    }
   ],
   "arquivos_mudados_7d": 237,
@@ -286,15 +286,15 @@
     "mudancas": 2
    },
    {
+    "arquivo": "inventario/estado/edges.json",
+    "mudancas": 2
+   },
+   {
     "arquivo": "scripts/ai-context/gerar.mjs",
     "mudancas": 2
    },
    {
     "arquivo": "scripts/check-bundle-size.sh",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/ci/README.md",
     "mudancas": 2
    }
   ],
@@ -306,6 +306,10 @@
    {
     "autor": "dependabot[bot]",
     "commits": 5
+   },
+   {
+    "autor": "github-actions[bot]",
+    "commits": 1
    }
   ]
  },
