@@ -6,7 +6,7 @@ export function useDoubleClick(
   delay = 250
 ) {
   const clickCount = useRef(0);
-  const timer = useRef<NodeJS.Timeout>();
+  const timer = useRef<NodeJS.Timeout>(null!);
 
   const handleClick = useCallback(() => {
     clickCount.current++;

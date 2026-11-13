@@ -36,7 +36,7 @@ export interface UseInfiniteScrollResult<T> {
   refetch: () => void;
   totalCount: number;
   loadedCount: number;
-  loadMoreRef: React.RefObject<HTMLDivElement>;
+  loadMoreRef: React.RefObject<HTMLDivElement | null>;
   error: Error | null;
 }
 

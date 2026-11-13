@@ -21,6 +21,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useChartColors } from '@/hooks/useChartColors';
+import { Badge } from '@/components/ui/badge';
 
 interface DeliveryEvent {
   integration_id: string | null;
@@ -188,7 +189,7 @@ export function SlackUptimeHistoryCard() {
                         borderRadius: 6,
                         fontSize: 12,
                       }}
-                      formatter={(value: number, key: string) => [
+                      formatter={(value, key) => [
                         value,
                         key === 'success' ? 'Sucesso' : 'Falha',
                       ]}

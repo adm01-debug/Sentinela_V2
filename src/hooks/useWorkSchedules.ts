@@ -12,6 +12,13 @@ export interface WorkSchedule {
   end_time: string;
   lunch_start?: string;
   lunch_end?: string;
+  break_start?: string;
+  break_end?: string;
+  flexible_start?: boolean;
+  flexible_minutes?: number;
+  overtime_allowed?: boolean;
+  overtime_requires_approval?: boolean;
+  block_outside_hours?: boolean;
   allow_overtime?: boolean;
   auto_block_enabled?: boolean;
   grace_period_minutes?: number;

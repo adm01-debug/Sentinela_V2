@@ -501,7 +501,7 @@ export default function DisputeEscalationAuditPage() {
                       borderRadius: 8,
                       color: chartColors.foreground,
                     }}
-                    formatter={(value: number) => [`${value} execuções`, 'Quantidade']}
+                    formatter={(value) => [`${value} execuções`, 'Quantidade']}
                   />
                   <Bar dataKey="count" fill={chartColors.primary} radius={[4, 4, 0, 0]} />
                 </BarChart>

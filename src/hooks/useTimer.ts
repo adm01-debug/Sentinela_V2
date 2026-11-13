@@ -3,7 +3,7 @@ import { useState, useRef, useCallback } from "react";
 export function useTimer(initialTime = 0) {
   const [time, setTime] = useState(initialTime);
   const [running, setRunning] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout>(null!);
 
   const start = useCallback(() => {
     if (running || time <= 0) return;

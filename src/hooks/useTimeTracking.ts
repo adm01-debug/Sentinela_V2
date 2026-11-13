@@ -5,7 +5,7 @@ interface TimeEntry { id: string; task: string; start: Date; end?: Date; duratio
 export function useTimeTracking() {
   const [entries, setEntries] = useState<TimeEntry[]>([]);
   const [active, setActive] = useState<TimeEntry | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout>(null!);
 
   const start = useCallback((task) => {
     if (active) return;

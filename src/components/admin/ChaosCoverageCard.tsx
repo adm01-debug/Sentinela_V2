@@ -34,6 +34,7 @@ interface ChaosLog {
   duration_ms: number | null;
   error_message: string | null;
   metadata: Record<string, unknown> | null;
+  payload_summary: Record<string, unknown> | null;
 }
 
 interface ScenarioResult {

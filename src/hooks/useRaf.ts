@@ -1,7 +1,7 @@
 import { useRef, useCallback, useEffect } from "react";
 
 export function useRaf(callback: (deltaTime: number) => void, active = true) {
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
 
   const loop = useCallback((time: number) => {

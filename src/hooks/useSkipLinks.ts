@@ -22,7 +22,7 @@ interface UseSkipLinksReturn {
   removeLink: (id: string) => void;
   isVisible: boolean;
   setVisible: (visible: boolean) => void;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   handleKeyDown: (e: KeyboardEvent) => void;
 }
 

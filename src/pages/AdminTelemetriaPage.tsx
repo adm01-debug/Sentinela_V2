@@ -175,7 +175,15 @@ export default function AdminTelemetriaPage() {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" selected={customDateFrom} onSelect={setCustomDateFrom} disabled={(date) => date > new Date()} initialFocus className={cn("p-3 pointer-events-auto")} />
+                <Calendar
+                  mode="single"
+                  selected={customDateFrom}
+                  onSelect={setCustomDateFrom}
+                  disabled={(date) => date > new Date()}
+                  // eslint-disable-next-line jsx-a11y/no-autofocus -- dia-picker v10 exige autoFocus
+                  autoFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
               </PopoverContent>
             </Popover>
             <Popover>
@@ -185,7 +193,15 @@ export default function AdminTelemetriaPage() {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" selected={customDateTo} onSelect={setCustomDateTo} disabled={(date) => date > new Date() || (customDateFrom ? date < customDateFrom : false)} initialFocus className={cn("p-3 pointer-events-auto")} />
+                <Calendar
+                  mode="single"
+                  selected={customDateTo}
+                  onSelect={setCustomDateTo}
+                  disabled={(date) => date > new Date() || (customDateFrom ? date < customDateFrom : false)}
+                  // eslint-disable-next-line jsx-a11y/no-autofocus -- dia-picker v10 exige autoFocus
+                  autoFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
               </PopoverContent>
             </Popover>
           </>

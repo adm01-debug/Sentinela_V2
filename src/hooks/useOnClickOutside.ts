@@ -13,7 +13,7 @@ type Handler = (event: MouseEvent | TouchEvent) => void;
  * @param enabled - Whether the listener is enabled (default: true)
  */
 export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
-  ref: RefObject<T>,
+  ref: RefObject<T | null>,
   handler: Handler,
   enabled = true
 ): void {
@@ -50,7 +50,7 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
  * Useful for dropdowns with portaled content
  */
 export function useOnClickOutsideMultiple<T extends HTMLElement = HTMLElement>(
-  refs: RefObject<T>[],
+  refs: RefObject<T | null>[],
   handler: Handler,
   enabled = true
 ): void {
@@ -90,8 +90,8 @@ export function useOnClickOutsideMultiple<T extends HTMLElement = HTMLElement>(
 export function useClickOutsideRef<T extends HTMLElement = HTMLElement>(
   handler: Handler,
   enabled = true
-): RefObject<T> {
-  const ref = useRef<T>(null);
+): RefObject<T | null> {
+  const ref = useRef<T | null>(null);
   useOnClickOutside(ref, handler, enabled);
   return ref;
 }

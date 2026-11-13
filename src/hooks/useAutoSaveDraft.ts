@@ -13,7 +13,7 @@ export function useAutoSaveDraft<T>(options: UseAutoSaveDraftOptions<T>) {
   const { key, data, delay = 2000, onSave, onRestore } = options;
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [hasDraft, setHasDraft] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout>(null!);
   const initialLoadRef = useRef(true);
 
   useEffect(() => {
