@@ -10,11 +10,11 @@
     },
     {
       "path": "desktop-agent/src/main.ts",
-      "sha256": "53cc484e23d5b9e5715e2ae1315b50900b044081bfee2fdeaa7d86f932cdbcc4"
+      "sha256": "54a671643e967f0615f3771151568d1ec9f8365740dfa159020c82d8efec6909"
     },
     {
       "path": "desktop-agent/src/services/auth.ts",
-      "sha256": "9df7702756cf5e28c38ca198e947b641bc7207aee221e4b67e59e16ad3d98894"
+      "sha256": "22af79b06b28ced3723dc1d865678e10014a9e5662b0327eced0232f9c2e3e67"
     },
     {
       "path": "desktop-agent/src/services/dataSender.ts",
@@ -22,7 +22,7 @@
     },
     {
       "path": "desktop-agent/src/services/keystroke.ts",
-      "sha256": "84ee9a760e1088ec2b468ee36e3a19934f2d446b05844524030cab87ee4834b6"
+      "sha256": "20ce3d6f5269016f487317a7cce591abd541d3c8526dc02217551c0b794a08e7"
     },
     {
       "path": "desktop-agent/src/services/printScreenBlocker.ts",
@@ -30,7 +30,7 @@
     },
     {
       "path": "desktop-agent/src/services/usbBlocker.ts",
-      "sha256": "df517a28eae677d3c320b96de4af73d16f385d5fd11b6be692a9dddfc3a58147"
+      "sha256": "c599b26515382b0b796d41ac1f6c7bca048fe19b4aadb680fb5b01b6707ddec2"
     },
     {
       "path": "desktop-agent/src/services/violationNotifier.ts",
@@ -58,7 +58,7 @@
     },
     {
       "path": "scripts/ci/lint-ratchet.unit.mjs",
-      "sha256": "0d05558ad647506245f94c34d7c5c71de325af462375e7da74fd4121d5a8dd84"
+      "sha256": "c51dcf4fbd3ea0f4de079a43885b0b86592074ba301713e49f5f31606fdf4628"
     },
     {
       "path": "scripts/generate-audit-pdf.js",
@@ -119,10 +119,6 @@
     {
       "path": "src/components/AlertFilters.tsx",
       "sha256": "2d33a83a56e6daab763e68faef0f9b63b54788f1891da7ab3738997c13f50188"
-    },
-    {
-      "path": "src/components/AlertItem.tsx",
-      "sha256": "44b08a82a06e231a2c4aaada1f8a288552440358727a9f619074f6c2729db9d4"
     },
     {
       "path": "src/components/AlertList.tsx",
@@ -1709,44 +1705,36 @@
       "sha256": "6e7ac02693d816e1393cff7a3e6154d85ef3c2a220cc98fbe8f59904de5067b1"
     },
     {
-      "path": "src/pages/__tests__/Activities.test.tsx",
-      "sha256": "2762086137f4103e170e16fdc8ac532f5ec1c3ebf0a265e2af3bdc2af873e5e5"
-    },
-    {
       "path": "src/pages/__tests__/Analytics.test.tsx",
-      "sha256": "4d972464e4445f08206f7ab9f610c0cb45551241053ede6f8a129274670387e2"
-    },
-    {
-      "path": "src/pages/__tests__/AuditLog.test.tsx",
-      "sha256": "b56df90783813abc3c4c8eedae03816b63edfa8b4e5e193cc48037223e3fcee1"
+      "sha256": "1e96939876e8f3b205a6317c41454c1f1d50d72e3baf262c07fd0df61fcfb4e8"
     },
     {
       "path": "src/pages/__tests__/Auth.test.tsx",
-      "sha256": "9db427c08bb8077f8fb1c117ac9c2905bed0fdf0cbfec2ee5be6fcfeeac13f45"
+      "sha256": "7d68c79f4dc4d330b8514a193df14484fcab1a2ebe8a2c70916d44b5e0758f28"
     },
     {
       "path": "src/pages/__tests__/Dashboard.test.tsx",
-      "sha256": "49ba9e2a710b6d7f6bd33f7579daa5edc6c7df919e1c73800c961c4a42c7f8de"
+      "sha256": "7f59914fbeb0e013008ec25afd66644137e25d820e1982bce62a1a85587a5d0c"
     },
     {
       "path": "src/pages/__tests__/Devices.test.tsx",
-      "sha256": "cab55579cfd3043de7a32466a6eb78c18f4d5cbdb9a4d4e0c479f124086c758d"
+      "sha256": "ca26017042536cd7d4bdb462670024cab1b89bd59cc616cad8735b37950b472a"
     },
     {
       "path": "src/pages/__tests__/Employees.test.tsx",
-      "sha256": "3b88221bedb5b7b6f15d647623273bcfe7e51ae1ca5e2557f1efb98557d41350"
+      "sha256": "8345dda57fffb4cc672a87737fd58e0ec9bde04eed3d1d8e73004f10de4e096d"
     },
     {
       "path": "src/pages/__tests__/ForgotPassword.test.tsx",
-      "sha256": "3b319cb3533bda19d9a588df7e5e5f5af5aae2b32832a784f43e9f332e5392fa"
+      "sha256": "16276aa7ecc1d5523a6e6efb5ce9ba9894c9a2db40379bb99a208cf1bcd25048"
     },
     {
       "path": "src/pages/__tests__/Geofencing.test.tsx",
-      "sha256": "5aa837c720f12730a5580b6cdeae02902d43ab641e3a65ede1304eaa96869b5c"
+      "sha256": "1374416c0a655ff024cd37231ad53ce4bfac3e6bf22caa52b12e86d85e8eecbb"
     },
     {
       "path": "src/pages/__tests__/Monitoring.test.tsx",
-      "sha256": "a8542d0389963e3be9625286ab4a0168c48a2be5264ccb6f5c2e3e9c2676f14e"
+      "sha256": "b6ac633a8c1c28201153307aa569ccc80c167e5827295b8862993ce798db9ea1"
     },
     {
       "path": "src/pages/__tests__/Reports.test.tsx",
@@ -1754,15 +1742,15 @@
     },
     {
       "path": "src/pages/__tests__/Settings.test.tsx",
-      "sha256": "3a633108fd3dcee8779ce2b08618f034d78fece6e54c816069a083d749c97e21"
+      "sha256": "a458b83fab5447d86f4736c3f053651040e1e8c1e79937d1cc80f08105f397d9"
     },
     {
       "path": "src/pages/__tests__/Users.test.tsx",
-      "sha256": "3e3256867757467025304f8dc09be8b8ff428e2f85ebe2974ee491ca28884fc8"
+      "sha256": "7ced53dcc8ef19127d985dba3f6bd0600dcaa3145e26957aa603cb235ab3a900"
     },
     {
       "path": "src/pages/__tests__/Violations.test.tsx",
-      "sha256": "24ff92a89776d7e315fff50d03102315a95283518f5412b6d50765e3dfee0f26"
+      "sha256": "cadeaa62462b8c2cfb70f9e9597683697d2118c3f72a60fe369c5b79e1c33b09"
     },
     {
       "path": "src/pages/ActivitiesPage.tsx",
@@ -1785,20 +1773,12 @@
       "sha256": "cd3d425412eb39e4f0c67e0c22a75572e77c81b5c71ac99626ae6c659a69c785"
     },
     {
-      "path": "src/pages/admin/EdgeFunctionDashboard.tsx",
-      "sha256": "690687a74d6fd46c934da82947df7d2d0192eaff4be10f4dba7f6d6fb985a46b"
-    },
-    {
       "path": "src/pages/admin/FileTransfersPage.tsx",
       "sha256": "6393dd1d867fdb31b688d9a74a40885ce20307c2e22a84ce7a5993d355def180"
     },
     {
       "path": "src/pages/admin/IceDiagnosticsPage.tsx",
       "sha256": "32884fbccd63d7f6186ab53e2294a706e1d8db26f3952ac53d4227f060eb8bf0"
-    },
-    {
-      "path": "src/pages/admin/IntegrationsHealthPage.tsx",
-      "sha256": "cc4dc034f3dd8e1d412eb21dd9523815d386bb00759f4b468c07cb7da64635c0"
     },
     {
       "path": "src/pages/admin/LiveViewReportPage.tsx",
@@ -1842,15 +1822,11 @@
     },
     {
       "path": "src/pages/AlertDetailPage.tsx",
-      "sha256": "f1d82e9c75947e87df0db7500256d81d725cfe8f7b0c3e7727955ba0c08ed46d"
+      "sha256": "8e8e6c965391fd6bbf85d522847729e3ba8c20183e3167628149ae9610135b12"
     },
     {
       "path": "src/pages/AlertRuleCreatePage.tsx",
       "sha256": "98da6eec97058a91184b55e8aa5b6a53d371b1e389d3aeeebbd78de1cbe42d06"
-    },
-    {
-      "path": "src/pages/AlertRulesPage.tsx",
-      "sha256": "a48d0063e28411b53de8661369d9b2a7492a96298c34fcc1df4899abfea9cb88"
     },
     {
       "path": "src/pages/AlertsPage.tsx",
@@ -1877,36 +1853,16 @@
       "sha256": "0a6d70751cec0b739cc5992fd839233d165dfcdb4c24ed093f01dae6423028aa"
     },
     {
-      "path": "src/pages/ApiKeysPage.tsx",
-      "sha256": "9e2cf943eb8cc145d4d78f531d86b50cf0c86461e9cd4392275073746866fef5"
-    },
-    {
       "path": "src/pages/AttendancePage.tsx",
-      "sha256": "398ac10e3bc86c002322e9a9f899ec592318bfe28802c081b71488ddf7a41d13"
+      "sha256": "2d266f5839f9c5bcf54c90e58267f92c201bf1143f629cba794730d6a4224792"
     },
     {
       "path": "src/pages/AuditLogPage.tsx",
-      "sha256": "49fadb0786798f35abd9cf2d590f849d20138519943eefdd82ce99c7e87fbb26"
-    },
-    {
-      "path": "src/pages/Auth.tsx",
-      "sha256": "c8ce3ac73889996c5eac5b7a1c274e3e5e75a195b5ed23061dda6477d7e97c8d"
+      "sha256": "ab4914f8f46c3fc057ab2c80b02eeabba8e154edbdd65fd073ae466296134f96"
     },
     {
       "path": "src/pages/BillingSettingsPage.tsx",
       "sha256": "53c12e2c39939526bbfb8e218d9c51f6b1334350bbaf3db6193f88d0423dc76e"
-    },
-    {
-      "path": "src/pages/CalendarPage.tsx",
-      "sha256": "58e4ef436c73424618387db2b68ad7769f8bfc0d6d9f86104cdd8c11f7c18058"
-    },
-    {
-      "path": "src/pages/CompliancePage.tsx",
-      "sha256": "06317f9c7dd886994661b0e404a23cfa081e66ef3e8924fb2f31627b2773ad01"
-    },
-    {
-      "path": "src/pages/CustomReportsPage.tsx",
-      "sha256": "73700aa1a587f280fa982b2ba5fca237147020cc568fe4950ce21ccbb80b0085"
     },
     {
       "path": "src/pages/dashboard/DashboardCards.tsx",
@@ -1921,24 +1877,12 @@
       "sha256": "0331f46b8b23d62c3245b74d201e30e8964ecd15476b682fe3a20cf48cf921f8"
     },
     {
-      "path": "src/pages/DataExportPage.tsx",
-      "sha256": "bc3f9650b5373781edb868f1838ad265ad7c30456020e0ddceeded0d5d536834"
-    },
-    {
-      "path": "src/pages/DepartmentDetailPage.tsx",
-      "sha256": "004327e24a646c98e6a3197bd79fbc50af23364c8157f716976f0d24ff1539c6"
-    },
-    {
       "path": "src/pages/DepartmentsPage.tsx",
       "sha256": "7ca90a6fbd3a46cb05d81a359099f8a5d2a81868034a88ecafdb2a8ab995c18a"
     },
     {
-      "path": "src/pages/dev/ChartSimulationPage.tsx",
-      "sha256": "675856b3bd237b7eefa7f2d43b9b685837a89f0451c0446f668ce814cc350f71"
-    },
-    {
       "path": "src/pages/dev/LiveViewSimulatorPage.tsx",
-      "sha256": "ac6c5f1ca95301702b3fa318a0b3a32e28eadbad48869c65294cb4445a00e201"
+      "sha256": "dfbdc2aecf4400debdc88bd1d7a9ef7434402d6945d260a7d3ad34785bbf6ef7"
     },
     {
       "path": "src/pages/dev/VerifyReportSimulatorPage.tsx",
@@ -1947,10 +1891,6 @@
     {
       "path": "src/pages/DevicesPage.tsx",
       "sha256": "8815572e859e66efd5bd51725aef00c2db9a96aadbfcd4b22702a06ef1555414"
-    },
-    {
-      "path": "src/pages/EmployeeCreatePage.tsx",
-      "sha256": "19e09d897af611c9a324ca41e4a01a84ce38eb0c622d4a7acd6985758f6107f9"
     },
     {
       "path": "src/pages/EmployeeDetailPage.tsx",
@@ -1970,19 +1910,11 @@
     },
     {
       "path": "src/pages/GeofencingPage.tsx",
-      "sha256": "054144f8ec3aceef2e4df943a0fe1d7f993fa5bb79ef7488f48e95b83ae29d76"
-    },
-    {
-      "path": "src/pages/HoursTrackingPage.tsx",
-      "sha256": "e215f0c7c10bc49a6231b32d78ce6fcc66a476f376d6b1e3c3a26a646e797364"
-    },
-    {
-      "path": "src/pages/IntegrationsPage.tsx",
-      "sha256": "90b64f6f2c1dc8ae1a8ba4186f2015340a03e932a624049537f3ad3f51afb772"
+      "sha256": "1f65722f6f59c12679c96b62046f2a97d91cbaa635bb8d662a4f7cdb21b7fe3c"
     },
     {
       "path": "src/pages/InternetAccessPage.tsx",
-      "sha256": "3169ff75843306fa9950908e5b25d17f001a8d6f3513990f9e24f7917592dd0c"
+      "sha256": "a8bd05c669c82e225d66108e386908efdba263f3995b3b65f0bde0afeea0d241"
     },
     {
       "path": "src/pages/LiveViewPage.tsx",
@@ -1990,7 +1922,7 @@
     },
     {
       "path": "src/pages/MonitoringPage.tsx",
-      "sha256": "8106bf99f1e91607cc7bdcb5f5b8c7d51a54db188dd37811d4bb3976a24df7a5"
+      "sha256": "08cfb548290ee99a232ab8357fee17cf6ff17aeaf1a846bac840bc16ec41863a"
     },
     {
       "path": "src/pages/NotFoundPage.tsx",
@@ -2005,38 +1937,6 @@
       "sha256": "e5a21e128676302138bae8969b073dd3fc9ed7094067d08850aae5cfb881f28d"
     },
     {
-      "path": "src/pages/ProfileSettingsPage.tsx",
-      "sha256": "b7c1c833a5406fab37d6f57856994fb67b5a24d5af19ccc024692074941fd0d3"
-    },
-    {
-      "path": "src/pages/ProjectsPage.tsx",
-      "sha256": "952f83c4cff75eb06cd2e7a78981cedbb7a68313e34de2d812b357e9a7ec5787"
-    },
-    {
-      "path": "src/pages/ReportDetailPage.tsx",
-      "sha256": "53e08e7c3692602738a537f98ae28ac4f4985164037ac679bf559ac36e7ad61f"
-    },
-    {
-      "path": "src/pages/ReportsPage.tsx",
-      "sha256": "32488c3211b5c55df6e5826669d29bcb4edacc4b4ffceff773cb0d5bcfed106c"
-    },
-    {
-      "path": "src/pages/ScheduledReportsPage.tsx",
-      "sha256": "dc8cca8409058a0bd1ba142a147be321febacf63bc4a45fac84b3e92f705970b"
-    },
-    {
-      "path": "src/pages/ScreenshotDetailPage.tsx",
-      "sha256": "724b21d995fa4883628c74d43bb479ed8154bb5d6be8f2f44c37d63fbfa1fe70"
-    },
-    {
-      "path": "src/pages/ScreenshotsPage.tsx",
-      "sha256": "71633f5e861e0dd23ced492ca2c39cbd18677fe2fd60e18688b8c551b41d8af0"
-    },
-    {
-      "path": "src/pages/Settings.tsx",
-      "sha256": "cbe091256fc9ce771aafc8c09e2d25c813cb787e0ac51da47e806dfc18dfb529"
-    },
-    {
       "path": "src/pages/TeamDetailPage.tsx",
       "sha256": "f6fc12d544aec83e14e40613e8f5c1c26721e6943b79b147144dcaf991363484"
     },
@@ -2049,28 +1949,12 @@
       "sha256": "04c8e5ec22d066328b8308113ca539a07132e6490c19b4f024706862354f1ee4"
     },
     {
-      "path": "src/pages/TimesheetsPage.tsx",
-      "sha256": "29476e600437890ec0a77cfe74509f78ea4681d4e71044e8966c9a0f9af46657"
-    },
-    {
       "path": "src/pages/VerifyReportPage.tsx",
       "sha256": "9c962391ffde3fc97205618f20c40d1bf46bf5c92232af90a8ec75c3a7a0f8be"
     },
     {
-      "path": "src/pages/ViolationDetailPage.tsx",
-      "sha256": "24ff1f09e5b8d940a069d052fb1580b97535d00c6af38fd50f234c1093654563"
-    },
-    {
       "path": "src/pages/ViolationsPage.tsx",
-      "sha256": "dbd5e43b2aecf69616a0b4e66a764b9f20f07cf69f536c78f86eabfe6981aedf"
-    },
-    {
-      "path": "src/pages/WebhooksPage.tsx",
-      "sha256": "01febfa6939a4bcd1dba94e3ab1beaa1c897d956ad432d9de32dce957e2963f1"
-    },
-    {
-      "path": "src/pages/WhatsAppIntegrationPage.tsx",
-      "sha256": "13492410f54db28cf9f24d9bde2352561918b998a2e2fa05a61572a44ce2d057"
+      "sha256": "b3fd6841c904407d4a22a919d09d57a2418c7dd6b81633ba556efc19176ca88b"
     },
     {
       "path": "src/pages/WorkSchedulesPage.tsx",
@@ -2122,23 +2006,19 @@
     },
     {
       "path": "src/test/auth.test.ts",
-      "sha256": "87dff7276f9a7bcae4fc2b7ff31a694338408aa7dee2fcb406911243b0ecdbd4"
+      "sha256": "05bd4abb4ff41c84284ddb7a5101965abf08406f1f9bda28ebdb4d2757cce995"
     },
     {
       "path": "src/test/base-donut-chart.test.tsx",
       "sha256": "ffcc5a047e1a65a787d185c7a13a40d4bce313924e853a57042289641f32faaa"
     },
     {
-      "path": "src/test/comprehensive-validation.test.ts",
-      "sha256": "7e5881eaff530a18a1357f625ed5cb1f0aea7097025726e94bd84df8cf45ad3f"
-    },
-    {
       "path": "src/test/data-operations.test.ts",
-      "sha256": "8a94d0b012f7aa3168ac5f9c94a9bc85bfe1d6c63c36e859f394bea2a20c42bf"
+      "sha256": "17faf70bc45fc2233a506d1b471199abe28e9a93ef5b472a59828be1f1ee49c9"
     },
     {
       "path": "src/test/edge-cases-advanced.test.ts",
-      "sha256": "05099badccaf7865091fc39b64bdd129b83a230c4a22b3ce971af84c031e6eaf"
+      "sha256": "19842ac340237813a9002e712cceb6733f840612931dee08e66e452b0b0c70dc"
     },
     {
       "path": "src/test/edge-functions.test.ts",
@@ -2146,35 +2026,19 @@
     },
     {
       "path": "src/test/employees.test.ts",
-      "sha256": "f4a83ab615089ad4d79ef9746391060094c8dd92bf24171ba9eb02e04175ef96"
-    },
-    {
-      "path": "src/test/empty-states.test.tsx",
-      "sha256": "29bfa7c942b90f14f7585ab6709082ef358226a197a8f55e3679fd2d88850cf7"
-    },
-    {
-      "path": "src/test/error-tracker.test.ts",
-      "sha256": "b26cb66f32f3acf8dbc1fe6bbcee15704caebb5e59d21ea9b869f5d48b0e3ce5"
+      "sha256": "a5a6c446343dcd625d21d96593a978f1ecfbc9a15d233b20b72f34312f3bdb70"
     },
     {
       "path": "src/test/expanded-validation.test.ts",
-      "sha256": "384dfd0539ba48edf799fad45d9b0140875d602263478d52d480759d402f1f11"
+      "sha256": "7905dfbc16ab4b68f58bb53e6c0233a956d4642e0eba6567bbac3747233e6ba3"
     },
     {
       "path": "src/test/external-db-bridge.test.ts",
-      "sha256": "23843e6943eebaf964f541f42fddef0d7051a1cbf3ea8620d7c69c358e9febcb"
-    },
-    {
-      "path": "src/test/forms.test.tsx",
-      "sha256": "95e4ee1b1b0f209adb3464ab434884c5d49f44e435a4cdbc8ac6a71d5cc1c31b"
+      "sha256": "9f9932760c33f1ab21835472bbcaa33f203db587d087a224795c3ac48a180a73"
     },
     {
       "path": "src/test/gap-audit.test.ts",
-      "sha256": "f31b6cab742f42497801daea02121568874cde3dbebdfae6e38981275abd235c"
-    },
-    {
-      "path": "src/test/header-enhanced.test.tsx",
-      "sha256": "99804cf4bb89183ba564cf6342e869a2a8f2a82c5e6d22bfbcfcc623e409eb90"
+      "sha256": "0e4f2c1370f56b17673a7325fe297f769e2f5eef8de86137e07f40510d048974"
     },
     {
       "path": "src/test/hooks-core.test.ts",
@@ -2185,44 +2049,16 @@
       "sha256": "aa0d4b806034b3e0b8fa0ddc3428a1c2ae987760f4a321e9e3cb4d22a1f49715"
     },
     {
-      "path": "src/test/improvements-verification.test.ts",
-      "sha256": "cec7b29adfcbe53ba1e1040131dac7bde9acf24bf541a7e8f604e71dd1e97e5d"
-    },
-    {
-      "path": "src/test/lgpd-flow.test.ts",
-      "sha256": "dfbaa6a4205b6ce3d24bf7b4677b7f90c1d1f2496ea6b87acfdccf8c2816fa1a"
-    },
-    {
-      "path": "src/test/performance-budget.test.ts",
-      "sha256": "6929ec9eef6ce539a89fd5525af2f922c0643d514c00c61267877b9405c2ffe6"
-    },
-    {
-      "path": "src/test/request-dedup.test.ts",
-      "sha256": "ae52218516618a341523d129d4ef0656ecf040382183fa4f27d63978413a9578"
-    },
-    {
       "path": "src/test/security-extended.test.ts",
       "sha256": "df4d94d7d17580a432d16f007a0ee9427170680553a20322d877a03d5578693b"
     },
     {
       "path": "src/test/stats-card.test.tsx",
-      "sha256": "d62470a77739096313344f7f74280b823f412e5abbbe9a832b55e16c8693b264"
+      "sha256": "21cc6d5a3b7c8363f0203b18dd9a5f21ac445fd1f7d030843b91e17cfeda5202"
     },
     {
       "path": "src/test/supabase-integration.test.ts",
-      "sha256": "9291003a47a6fdbe7729fb993e82654bc52b7323ca1cc646e43199293fd6bc21"
-    },
-    {
-      "path": "src/test/telemetry.test.ts",
-      "sha256": "c22e27460a0a465fc2ba166a960f14f503046360637fd48572b59b4f6b1efa73"
-    },
-    {
-      "path": "src/test/useCountUp.test.ts",
-      "sha256": "2c825cad8ac2bb814fad5b2ba0de907e8107012539d3b74004d69c963fa6e7f6"
-    },
-    {
-      "path": "src/test/useEmployeesPage.test.ts",
-      "sha256": "0c35d538c21c63d3f68d80af54e3edd8443eaee45526dbc840160931e27b24d5"
+      "sha256": "95c2d6c85ddeca2c7c73d8937c56a456b3169625169cb6f998f73e178d29f04d"
     },
     {
       "path": "src/test/utils.test.ts",
@@ -2278,7 +2114,7 @@
     },
     {
       "path": "src/utils/hash.ts",
-      "sha256": "2ed4316e22b96ede001a42c4081a66fa16ecbf916f3272f6b89a69feac6ee6bb"
+      "sha256": "ae7a58c451f06b8fd2ca055b3fc406eeb2a790cfb1fe7894f95fdf84ee9c8297"
     },
     {
       "path": "src/utils/logger.ts",
@@ -2294,7 +2130,7 @@
     },
     {
       "path": "src/utils/validation.ts",
-      "sha256": "35b8bc65e3724877720d8d92cec2793aa45ec51342f68b79aaee2b0e716831b0"
+      "sha256": "5cf1dd4e73d8739a623364a7359e8cfef741b46fa1eb0fa30e1cc59417366e4c"
     },
     {
       "path": "supabase/functions/_shared/logger.ts",
@@ -2346,7 +2182,7 @@
     },
     {
       "path": "supabase/functions/get-mapbox-token/index.ts",
-      "sha256": "ead7c080d3df0debac6a8c46a3af125de47332931660738eec3b762aadafae01"
+      "sha256": "dbcb3c38b5a12cc2472ef8bf3ff54ce4c3fe45773754b8cfbe3baec82f85e454"
     },
     {
       "path": "supabase/functions/live-view-authorize/index.ts",
@@ -2358,7 +2194,7 @@
     },
     {
       "path": "supabase/functions/natural-language-query/index.ts",
-      "sha256": "02ff854e106e140f1674db71eda65af52b82fd8ba419e22150d5f0edd34e2871"
+      "sha256": "a916ff1ed9ae9e7dc0e53c5e04f5dcb5b825b59a2ca8fb7a21f127ab1d17ed4e"
     },
     {
       "path": "supabase/functions/notify-dispute-decision/index.ts",
@@ -2422,7 +2258,7 @@
     },
     {
       "path": "supabase/functions/validate-agent-key/index.ts",
-      "sha256": "18bea38e3c63c191b0465d1afc707c32e46fffa869c54bce7954a344fee52721"
+      "sha256": "66cda4152ce76979d6a27d565c562f534ed4e2ee4b5ee09820b8021f4d550350"
     },
     {
       "path": "tailwind.config.ts",
@@ -2450,37 +2286,9 @@
     },
     {
       "file": "desktop-agent/src/main.ts",
-      "line": 1,
-      "column": 58,
-      "endLine": 1,
-      "endColumn": 64,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'dialog' is defined but never used.",
-      "spanHash": "694018943365710520803a9970c20af0f484590aa6b3e41ccf69882b20a27d20",
-      "lineHash": "d4a23f3bfaef294fa1d695e2e27851588b18e3aafe404bfd845dcf5e3ea42fd8",
-      "contextHash": "f19b9d69dbe3905d8ea5bf3d4766255374939d590a7e77d1dcae68304db8c392"
-    },
-    {
-      "file": "desktop-agent/src/main.ts",
-      "line": 2,
-      "column": 1,
-      "endLine": 2,
-      "endColumn": 30,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`path` import should occur before import of `electron`",
-      "spanHash": "9182775d2bfbff816edb4f4dd6e3af7396dd6c9265ae6120c41d24e9e8e0f944",
-      "lineHash": "9182775d2bfbff816edb4f4dd6e3af7396dd6c9265ae6120c41d24e9e8e0f944",
-      "contextHash": "4d7ca1fb1bb929dd774a062dc17fb75d2e4b9432a0c7aa5d5c57fb10ab02a54c"
-    },
-    {
-      "file": "desktop-agent/src/main.ts",
-      "line": 251,
+      "line": 264,
       "column": 55,
-      "endLine": 251,
+      "endLine": 264,
       "endColumn": 68,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-require-imports",
@@ -2534,9 +2342,9 @@
     },
     {
       "file": "desktop-agent/src/services/keystroke.ts",
-      "line": 23,
+      "line": 24,
       "column": 22,
-      "endLine": 23,
+      "endLine": 24,
       "endColumn": 39,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-require-imports",
@@ -2548,9 +2356,9 @@
     },
     {
       "file": "desktop-agent/src/services/keystroke.ts",
-      "line": 25,
+      "line": 26,
       "column": 29,
-      "endLine": 25,
+      "endLine": 26,
       "endColumn": 34,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-unused-vars",
@@ -2562,9 +2370,9 @@
     },
     {
       "file": "desktop-agent/src/services/keystroke.ts",
-      "line": 47,
+      "line": 52,
       "column": 22,
-      "endLine": 47,
+      "endLine": 52,
       "endColumn": 39,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-require-imports",
@@ -2590,9 +2398,9 @@
     },
     {
       "file": "desktop-agent/src/services/usbBlocker.ts",
-      "line": 2,
+      "line": 3,
       "column": 1,
-      "endLine": 2,
+      "endLine": 3,
       "endColumn": 38,
       "severity": 2,
       "ruleId": "import/order",
@@ -3637,20 +3445,6 @@
       "spanHash": "63858c3f5ddd140f15f188e3bf032523a0761e0ca97534c80afae6c4de68a7d9",
       "lineHash": "63858c3f5ddd140f15f188e3bf032523a0761e0ca97534c80afae6c4de68a7d9",
       "contextHash": "cff1af97cf407377330321cebb035fe1b04a573bddc50be1fd175d3ccf0e421f"
-    },
-    {
-      "file": "src/components/AlertItem.tsx",
-      "line": 1,
-      "column": 10,
-      "endLine": 1,
-      "endColumn": 23,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'AlertTriangle' is defined but never used.",
-      "spanHash": "fdc541c793e31d9d9dabaf6f8b20c685d9ec1305012871680ead0521c2a765fc",
-      "lineHash": "e630ea296cdbd138f4287576a991a761774ee12434a3edc18a87f23c088575dc",
-      "contextHash": "5014ad6fc8044a9cb5951c4961ce5700dcc23863a8ae38da32fa94da9e9be4d7"
     },
     {
       "file": "src/components/AlertList.tsx",
@@ -15119,76 +14913,6 @@
       "contextHash": "b4d63b295c8351c46691ecb5e3eee4e3257bc4391e14a447b30cddce8798901c"
     },
     {
-      "file": "src/pages/__tests__/Activities.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../ActivitiesPage` import should occur after import of `react`",
-      "spanHash": "f43b21e9e80a4d0f27d2a8603cf0b299ffc41546ca174265ee3a5e030f8de9c9",
-      "lineHash": "f43b21e9e80a4d0f27d2a8603cf0b299ffc41546ca174265ee3a5e030f8de9c9",
-      "contextHash": "a62af049a439507e9189337e94f65da36550f8af960ea532294e01b9e0c81c11"
-    },
-    {
-      "file": "src/pages/__tests__/Analytics.test.tsx",
-      "line": 1,
-      "column": 26,
-      "endLine": 1,
-      "endColumn": 35,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'fireEvent' is defined but never used.",
-      "spanHash": "2e6b8dc0af05d7c5a3c08e6c410e50e6579a76088c50b08548f253cb2accf768",
-      "lineHash": "3db6c86480867ed4f0768fdebb18687fb61a209ccb929827b218dd19b2fd8ed0",
-      "contextHash": "eea1b310200ad7ffeba61ba5c21c3032ced4d354cd3098abb47ddba6f76aad62"
-    },
-    {
-      "file": "src/pages/__tests__/Analytics.test.tsx",
-      "line": 16,
-      "column": 20,
-      "endLine": 16,
-      "endColumn": 26,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'period' is defined but never used. Allowed unused args must match /^_/u.",
-      "spanHash": "514cb13f603464f97849ba88d2d4f9698003a9323de9b7a3d162ef76f6998122",
-      "lineHash": "abc912aac148d54aea40ca75f36ec4acd344718cab05306439779302ac587ac0",
-      "contextHash": "a30b051c7cd1a85e3d9350bd7379ff7e5d1a69f7b7e33e49328cd720cdfdd03c"
-    },
-    {
-      "file": "src/pages/__tests__/Analytics.test.tsx",
-      "line": 16,
-      "column": 30,
-      "endLine": 16,
-      "endColumn": 33,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "abc912aac148d54aea40ca75f36ec4acd344718cab05306439779302ac587ac0",
-      "contextHash": "a30b051c7cd1a85e3d9350bd7379ff7e5d1a69f7b7e33e49328cd720cdfdd03c"
-    },
-    {
-      "file": "src/pages/__tests__/Analytics.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 46,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../AnalyticsPage` import should occur after import of `react`",
-      "spanHash": "7794e6edac080dddf88750a94c771fff8b132e48195bbd8d3be835af24fadf04",
-      "lineHash": "7794e6edac080dddf88750a94c771fff8b132e48195bbd8d3be835af24fadf04",
-      "contextHash": "c0d8c7277b5866729442696d6a8ba97763f069cacbc753c92e20cca60fc45a68"
-    },
-    {
       "file": "src/pages/__tests__/Analytics.test.tsx",
       "line": 30,
       "column": 39,
@@ -15215,62 +14939,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "016a59ea2ee2161014141587fb5653bdada8d8ee716cc0f43de59e52973718d3",
       "contextHash": "7afb3a414f55d4cce9d946887e781393d55f439bd7549642a578668ccaf8dea4"
-    },
-    {
-      "file": "src/pages/__tests__/AuditLog.test.tsx",
-      "line": 1,
-      "column": 26,
-      "endLine": 1,
-      "endColumn": 35,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'fireEvent' is defined but never used.",
-      "spanHash": "2e6b8dc0af05d7c5a3c08e6c410e50e6579a76088c50b08548f253cb2accf768",
-      "lineHash": "06c7b4d56b01b1f0212a6e5c97436d2287dec2edd68451528eae598eba8b99e9",
-      "contextHash": "57f6825482892d2391439af3f0edfdb6af83ececa6ef62888a71a79adf897cb5"
-    },
-    {
-      "file": "src/pages/__tests__/AuditLog.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../AuditLogPage` import should occur after import of `react`",
-      "spanHash": "6a0689bd7b7f2e7e0da190a88a2bb95df10ab151b4b606ce34d09e2c140d9ce0",
-      "lineHash": "6a0689bd7b7f2e7e0da190a88a2bb95df10ab151b4b606ce34d09e2c140d9ce0",
-      "contextHash": "f9a3f043835bdaf1f8a4e2dcde9fc436558199e7ddad98f4ed124ea0ade12850"
-    },
-    {
-      "file": "src/pages/__tests__/Auth.test.tsx",
-      "line": 1,
-      "column": 26,
-      "endLine": 1,
-      "endColumn": 35,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'fireEvent' is defined but never used.",
-      "spanHash": "2e6b8dc0af05d7c5a3c08e6c410e50e6579a76088c50b08548f253cb2accf768",
-      "lineHash": "06c7b4d56b01b1f0212a6e5c97436d2287dec2edd68451528eae598eba8b99e9",
-      "contextHash": "57f6825482892d2391439af3f0edfdb6af83ececa6ef62888a71a79adf897cb5"
-    },
-    {
-      "file": "src/pages/__tests__/Auth.test.tsx",
-      "line": 1,
-      "column": 37,
-      "endLine": 1,
-      "endColumn": 44,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'waitFor' is defined but never used.",
-      "spanHash": "5dddfdd33a3e1f23c41df59fe974a3751aaae0d0961a1b94733ace2c5d422ac9",
-      "lineHash": "06c7b4d56b01b1f0212a6e5c97436d2287dec2edd68451528eae598eba8b99e9",
-      "contextHash": "57f6825482892d2391439af3f0edfdb6af83ececa6ef62888a71a79adf897cb5"
     },
     {
       "file": "src/pages/__tests__/Auth.test.tsx",
@@ -15316,20 +14984,6 @@
     },
     {
       "file": "src/pages/__tests__/Auth.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 28,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../Auth` import should occur after import of `react`",
-      "spanHash": "7b4490d3687a0fdb92ce625772965f23afdffac53a64837b809a6be49f65b00c",
-      "lineHash": "7b4490d3687a0fdb92ce625772965f23afdffac53a64837b809a6be49f65b00c",
-      "contextHash": "cd30bc4d83f7ccc88504ce9bb7f42195a8706d956145285f9726e34ff5cae183"
-    },
-    {
-      "file": "src/pages/__tests__/Auth.test.tsx",
       "line": 30,
       "column": 34,
       "endLine": 30,
@@ -15372,23 +15026,9 @@
     },
     {
       "file": "src/pages/__tests__/Dashboard.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 46,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../DashboardPage` import should occur after import of `react`",
-      "spanHash": "5e73f06300a468a7b3a61d3d5acd57cead6f387d1c47b83f49ab4073917364fa",
-      "lineHash": "5e73f06300a468a7b3a61d3d5acd57cead6f387d1c47b83f49ab4073917364fa",
-      "contextHash": "202b331d380aafe9c808c5dc648dbb206f3f545f7e7b829f5b6723f45bf8ce9a"
-    },
-    {
-      "file": "src/pages/__tests__/Dashboard.test.tsx",
-      "line": 41,
+      "line": 42,
       "column": 32,
-      "endLine": 41,
+      "endLine": 42,
       "endColumn": 35,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15400,9 +15040,9 @@
     },
     {
       "file": "src/pages/__tests__/Dashboard.test.tsx",
-      "line": 47,
+      "line": 48,
       "column": 33,
-      "endLine": 47,
+      "endLine": 48,
       "endColumn": 36,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15414,9 +15054,9 @@
     },
     {
       "file": "src/pages/__tests__/Dashboard.test.tsx",
-      "line": 55,
+      "line": 56,
       "column": 34,
-      "endLine": 55,
+      "endLine": 56,
       "endColumn": 37,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15425,20 +15065,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "016a59ea2ee2161014141587fb5653bdada8d8ee716cc0f43de59e52973718d3",
       "contextHash": "7afb3a414f55d4cce9d946887e781393d55f439bd7549642a578668ccaf8dea4"
-    },
-    {
-      "file": "src/pages/__tests__/Devices.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 46,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../DevicesPage` import should occur after import of `react`",
-      "spanHash": "7020acde649c2781d3eaf96983760f573176cf9517c90efbe39f021e7534df40",
-      "lineHash": "7020acde649c2781d3eaf96983760f573176cf9517c90efbe39f021e7534df40",
-      "contextHash": "8740af79e266e4f6e1d97444e74e76b6b30d7ae32846c3934e7f51d91a3f700a"
     },
     {
       "file": "src/pages/__tests__/Devices.test.tsx",
@@ -15498,23 +15124,9 @@
     },
     {
       "file": "src/pages/__tests__/Employees.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../EmployeesPage` import should occur after import of `react`",
-      "spanHash": "445d1c494760c549bb2823df671bf5d4c30b4248e42b5a1781276c7a13458339",
-      "lineHash": "445d1c494760c549bb2823df671bf5d4c30b4248e42b5a1781276c7a13458339",
-      "contextHash": "979684e3764b44fcf4defbce55051777933345f941f0b09826ac005f932b66bd"
-    },
-    {
-      "file": "src/pages/__tests__/Employees.test.tsx",
-      "line": 57,
+      "line": 60,
       "column": 39,
-      "endLine": 57,
+      "endLine": 60,
       "endColumn": 42,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15526,9 +15138,9 @@
     },
     {
       "file": "src/pages/__tests__/Employees.test.tsx",
-      "line": 58,
+      "line": 61,
       "column": 28,
-      "endLine": 58,
+      "endLine": 61,
       "endColumn": 31,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15540,9 +15152,9 @@
     },
     {
       "file": "src/pages/__tests__/Employees.test.tsx",
-      "line": 64,
+      "line": 67,
       "column": 28,
-      "endLine": 64,
+      "endLine": 67,
       "endColumn": 31,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15554,9 +15166,9 @@
     },
     {
       "file": "src/pages/__tests__/Employees.test.tsx",
-      "line": 70,
+      "line": 73,
       "column": 34,
-      "endLine": 70,
+      "endLine": 73,
       "endColumn": 37,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15565,20 +15177,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "016a59ea2ee2161014141587fb5653bdada8d8ee716cc0f43de59e52973718d3",
       "contextHash": "7afb3a414f55d4cce9d946887e781393d55f439bd7549642a578668ccaf8dea4"
-    },
-    {
-      "file": "src/pages/__tests__/ForgotPassword.test.tsx",
-      "line": 4,
-      "column": 1,
-      "endLine": 4,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`react-router-dom` import should occur before import of `../ForgotPasswordPage`",
-      "spanHash": "a052635c4b7ebc9ca706858d5d26530b2b36447ac82a39c1b661f0e10100325c",
-      "lineHash": "a052635c4b7ebc9ca706858d5d26530b2b36447ac82a39c1b661f0e10100325c",
-      "contextHash": "b9687820054ff58759aaadf58c53fe11a8f8e5f8bf5b30ef50931dbf886ef7e4"
     },
     {
       "file": "src/pages/__tests__/ForgotPassword.test.tsx",
@@ -15596,20 +15194,6 @@
     },
     {
       "file": "src/pages/__tests__/Geofencing.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 52,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../GeofencingPage` import should occur after import of `react`",
-      "spanHash": "ea2a812b4c6a53f7546b8140a6e5cab23c6976f6675d6b7d6d413526f52a59b6",
-      "lineHash": "ea2a812b4c6a53f7546b8140a6e5cab23c6976f6675d6b7d6d413526f52a59b6",
-      "contextHash": "4c14604d8dbfabdd054cd6a2a4d014886c2f3eeb0a20c241e72b1cdf7f8c49d5"
-    },
-    {
-      "file": "src/pages/__tests__/Geofencing.test.tsx",
       "line": 48,
       "column": 10,
       "endLine": 48,
@@ -15621,34 +15205,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "954a1cf68b648e6b61733bee270e665d518a56aa0e27a14bdb9d3d35e1d40c50",
       "contextHash": "be9f1942e71367ba8ac987f4118a922e21d77780041e935687e46e0eb6a02084"
-    },
-    {
-      "file": "src/pages/__tests__/Monitoring.test.tsx",
-      "line": 1,
-      "column": 26,
-      "endLine": 1,
-      "endColumn": 35,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'fireEvent' is defined but never used.",
-      "spanHash": "2e6b8dc0af05d7c5a3c08e6c410e50e6579a76088c50b08548f253cb2accf768",
-      "lineHash": "3db6c86480867ed4f0768fdebb18687fb61a209ccb929827b218dd19b2fd8ed0",
-      "contextHash": "eea1b310200ad7ffeba61ba5c21c3032ced4d354cd3098abb47ddba6f76aad62"
-    },
-    {
-      "file": "src/pages/__tests__/Monitoring.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../MonitoringPage` import should occur after import of `react`",
-      "spanHash": "dfec222a6102d7341799e99b3ff5d0865d8ac07d3d9c8b62d54bf61caf469d1f",
-      "lineHash": "dfec222a6102d7341799e99b3ff5d0865d8ac07d3d9c8b62d54bf61caf469d1f",
-      "contextHash": "cab78a09fd9f265280bd7796dbdfd51935edee40e603d0843a41cc91c2625519"
     },
     {
       "file": "src/pages/__tests__/Monitoring.test.tsx",
@@ -15736,51 +15292,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 1,
-      "column": 37,
-      "endLine": 1,
-      "endColumn": 44,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'waitFor' is defined but never used.",
-      "spanHash": "5dddfdd33a3e1f23c41df59fe974a3751aaae0d0961a1b94733ace2c5d422ac9",
-      "lineHash": "06c7b4d56b01b1f0212a6e5c97436d2287dec2edd68451528eae598eba8b99e9",
-      "contextHash": "57f6825482892d2391439af3f0edfdb6af83ececa6ef62888a71a79adf897cb5"
-    },
-    {
-      "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 113,
-      "column": 10,
-      "endLine": 113,
-      "endColumn": 13,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "954a1cf68b648e6b61733bee270e665d518a56aa0e27a14bdb9d3d35e1d40c50",
-      "contextHash": "701a8d981d6dae670b42f7a1a97aa9453b0dfb227dbd05d20cc86f3e2dfce5ce"
-    },
-    {
-      "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 150,
-      "column": 10,
-      "endLine": 150,
-      "endColumn": 13,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "954a1cf68b648e6b61733bee270e665d518a56aa0e27a14bdb9d3d35e1d40c50",
-      "contextHash": "224a8b59381a1997256f375dfa39e5cadd6612d54ebae68f7782b7ac338a2da5"
-    },
-    {
-      "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 24,
+      "line": 29,
       "column": 44,
-      "endLine": 24,
+      "endLine": 29,
       "endColumn": 47,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15792,23 +15306,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 36,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../Settings` import should occur after import of `react`",
-      "spanHash": "bd4eb829972f283ff13d576bfea57c7cf98d56319596d6922180a39094475756",
-      "lineHash": "bd4eb829972f283ff13d576bfea57c7cf98d56319596d6922180a39094475756",
-      "contextHash": "508577da7434a4812ef7ee94abac5f4e59ff05e6e1c7862aa5a366ac30ca87d1"
-    },
-    {
-      "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 30,
+      "line": 35,
       "column": 83,
-      "endLine": 30,
+      "endLine": 35,
       "endColumn": 86,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15820,9 +15320,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 37,
+      "line": 42,
       "column": 58,
-      "endLine": 37,
+      "endLine": 42,
       "endColumn": 61,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15834,9 +15334,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 41,
+      "line": 46,
       "column": 79,
-      "endLine": 41,
+      "endLine": 46,
       "endColumn": 82,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15848,9 +15348,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 42,
+      "line": 47,
       "column": 67,
-      "endLine": 42,
+      "endLine": 47,
       "endColumn": 70,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15862,9 +15362,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 43,
+      "line": 48,
       "column": 72,
-      "endLine": 43,
+      "endLine": 48,
       "endColumn": 75,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15876,9 +15376,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 50,
+      "line": 55,
       "column": 46,
-      "endLine": 50,
+      "endLine": 55,
       "endColumn": 49,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15890,9 +15390,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 51,
+      "line": 56,
       "column": 55,
-      "endLine": 51,
+      "endLine": 56,
       "endColumn": 58,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15904,9 +15404,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 56,
+      "line": 61,
       "column": 30,
-      "endLine": 56,
+      "endLine": 61,
       "endColumn": 33,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15918,9 +15418,9 @@
     },
     {
       "file": "src/pages/__tests__/Settings.test.tsx",
-      "line": 60,
+      "line": 65,
       "column": 34,
-      "endLine": 60,
+      "endLine": 65,
       "endColumn": 37,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15929,20 +15429,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "1527a34094303f84ed2ed6aca800b013068d95098e0dc7b3df9a8017094557f6",
       "contextHash": "65757040c7e99b87b85f0f48247729ccf73b59ecd3f03f8c03fe6d5195ddd220"
-    },
-    {
-      "file": "src/pages/__tests__/Users.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 38,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../UsersPage` import should occur after import of `react`",
-      "spanHash": "c41ae37a1466e244b929f190dfddb4946c90e91e843a296252c8bba72dca649f",
-      "lineHash": "c41ae37a1466e244b929f190dfddb4946c90e91e843a296252c8bba72dca649f",
-      "contextHash": "25fe0451df1245b9e69f9e0eca598062f838ffcba3ed426b159b16cd6b035e51"
     },
     {
       "file": "src/pages/__tests__/Users.test.tsx",
@@ -15960,23 +15446,9 @@
     },
     {
       "file": "src/pages/__tests__/Violations.test.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 52,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`../ViolationsPage` import should occur after import of `react`",
-      "spanHash": "780afd696b34f24c8b76fcdb9b4bdcf1ab1ae795357454d5b268d33c0463d9fe",
-      "lineHash": "780afd696b34f24c8b76fcdb9b4bdcf1ab1ae795357454d5b268d33c0463d9fe",
-      "contextHash": "0b15a50211dbf77eb1503f8279796349823aa6c11b20a24c7f491c2790d41032"
-    },
-    {
-      "file": "src/pages/__tests__/Violations.test.tsx",
-      "line": 62,
+      "line": 63,
       "column": 39,
-      "endLine": 62,
+      "endLine": 63,
       "endColumn": 42,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -15988,9 +15460,9 @@
     },
     {
       "file": "src/pages/__tests__/Violations.test.tsx",
-      "line": 63,
+      "line": 64,
       "column": 29,
-      "endLine": 63,
+      "endLine": 64,
       "endColumn": 32,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -16002,9 +15474,9 @@
     },
     {
       "file": "src/pages/__tests__/Violations.test.tsx",
-      "line": 69,
+      "line": 70,
       "column": 28,
-      "endLine": 69,
+      "endLine": 70,
       "endColumn": 31,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -16016,9 +15488,9 @@
     },
     {
       "file": "src/pages/__tests__/Violations.test.tsx",
-      "line": 71,
+      "line": 72,
       "column": 28,
-      "endLine": 71,
+      "endLine": 72,
       "endColumn": 31,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -16225,48 +15697,6 @@
       "contextHash": "93d28ba7f06fc5a32b1af52bae4cc2d31abf99606ca5eb234b96569530943f30"
     },
     {
-      "file": "src/pages/admin/EdgeFunctionDashboard.tsx",
-      "line": 26,
-      "column": 9,
-      "endLine": 26,
-      "endColumn": 14,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'stats' is assigned a value but never used.",
-      "spanHash": "4b5af442229cf356a6868a3b8791ffaa70e0135ef8af2eb4898bddbeb0e0b0b0",
-      "lineHash": "e527999fda91e87c7980768c39f3992cd6bc7c56d0b4390e4e01e781cca13f80",
-      "contextHash": "143594652509774a952b368c4b6102e8d13421ffdfe72093d495fef005fdeb22"
-    },
-    {
-      "file": "src/pages/admin/EdgeFunctionDashboard.tsx",
-      "line": 6,
-      "column": 1,
-      "endLine": 6,
-      "endColumn": 75,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "81f81480c87d79b8f64401cdb89213eb2ce3181964ec43c996f95ee968a49155",
-      "lineHash": "81f81480c87d79b8f64401cdb89213eb2ce3181964ec43c996f95ee968a49155",
-      "contextHash": "64dc7eba40f1605456ed7f6de0f0bf3be43bab8079a83abee47ac859ee81443c"
-    },
-    {
-      "file": "src/pages/admin/EdgeFunctionDashboard.tsx",
-      "line": 7,
-      "column": 1,
-      "endLine": 7,
-      "endColumn": 118,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`recharts` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "d75baa7f1d40ff2afd4b725f5d2f638cb74f00309b70cfc3bd108cd00b1f708e",
-      "lineHash": "d75baa7f1d40ff2afd4b725f5d2f638cb74f00309b70cfc3bd108cd00b1f708e",
-      "contextHash": "1c5607840e1597e13fdb330e505ed0cfbd62050dc03c8464fcd04af5e09a3773"
-    },
-    {
       "file": "src/pages/admin/FileTransfersPage.tsx",
       "line": 14,
       "column": 1,
@@ -16307,20 +15737,6 @@
       "spanHash": "175b5b2b5fd81b285359ee9bb696181533d50f19e73c79ce72dfd9b3eb5e4f1a",
       "lineHash": "4be9cc30bd8e24c5c2fbacb82b0f903abb58c3311550c5bf13a036e930f7cfe5",
       "contextHash": "d2c4b4fa20431cccd8631f72641da4be50ea4608c0b4820553b5c8a0aa99d83d"
-    },
-    {
-      "file": "src/pages/admin/IntegrationsHealthPage.tsx",
-      "line": 8,
-      "column": 3,
-      "endLine": 8,
-      "endColumn": 13,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'HeartPulse' is defined but never used.",
-      "spanHash": "9b7e146953df6a095781c9d3404b24d9bcef727e6dbb1277a9be161b8d00cd64",
-      "lineHash": "9eaf9977e1ec7bf35f6c5ae71ac5dba42c23443e30803c315791c97086350160",
-      "contextHash": "dc2eb22a4ff5f4762766487326b7b6304fcebaca4639c2567d634e7732dd9421"
     },
     {
       "file": "src/pages/admin/LiveViewReportPage.tsx",
@@ -16674,34 +16090,6 @@
     },
     {
       "file": "src/pages/AlertDetailPage.tsx",
-      "line": 2,
-      "column": 10,
-      "endLine": 2,
-      "endColumn": 23,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'AlertTriangle' is defined but never used.",
-      "spanHash": "fdc541c793e31d9d9dabaf6f8b20c685d9ec1305012871680ead0521c2a765fc",
-      "lineHash": "a85a5a0aebba8a55378e613220c1052f32cdc80f8bb93f4b16f7264504def161",
-      "contextHash": "26d03aabfb1c74b16e25c5350264709f8e0110645fdd650da19885cf471f1f5b"
-    },
-    {
-      "file": "src/pages/AlertDetailPage.tsx",
-      "line": 27,
-      "column": 9,
-      "endLine": 27,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'navigate' is assigned a value but never used.",
-      "spanHash": "d0cda6559bb347db706f6fa92a5b2491658e0c1e5bda98bb14e3c8a711b8fa33",
-      "lineHash": "c2fcff8bc91bcb3ee2ba6014ed4f15e2cb0d1067e6c0b3286af849d533706818",
-      "contextHash": "7f0ec96f3f0658760c7c8faa280eb5ccf0d14b0acce7882361fde52dcaeb4ef7"
-    },
-    {
-      "file": "src/pages/AlertDetailPage.tsx",
       "line": 4,
       "column": 1,
       "endLine": 4,
@@ -16741,34 +16129,6 @@
       "spanHash": "609a32546a76cf0dd684f6e0de0844b540fe300b1eedf90d40f6c86238af64c6",
       "lineHash": "609a32546a76cf0dd684f6e0de0844b540fe300b1eedf90d40f6c86238af64c6",
       "contextHash": "ba814e5fc3a38081a5f7c084521a6b5d409e909e9cea92753c1c0c2df497624a"
-    },
-    {
-      "file": "src/pages/AlertRulesPage.tsx",
-      "line": 10,
-      "column": 1,
-      "endLine": 10,
-      "endColumn": 69,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`@tanstack/react-query` import should occur before import of `@/components/ui/button`",
-      "spanHash": "609a32546a76cf0dd684f6e0de0844b540fe300b1eedf90d40f6c86238af64c6",
-      "lineHash": "609a32546a76cf0dd684f6e0de0844b540fe300b1eedf90d40f6c86238af64c6",
-      "contextHash": "7ca21f27324b9dea6900c4c01ae90e6b78ef35b78149163672b8ed47ec910598"
-    },
-    {
-      "file": "src/pages/AlertRulesPage.tsx",
-      "line": 3,
-      "column": 16,
-      "endLine": 3,
-      "endColumn": 20,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Edit' is defined but never used.",
-      "spanHash": "464c4ffd019e1e9691dcf0537c797353ef2b1c1d4833d3d463e5b74ae4547344",
-      "lineHash": "3efe926b76aeab12aa949ca7628e493ecd9ce63fc98f833a978cf35574b3e0ef",
-      "contextHash": "4c94054797f744cd25c609b203745b01fbae092971955ec3d4014538d787bd97"
     },
     {
       "file": "src/pages/AlertsPage.tsx",
@@ -16939,118 +16299,6 @@
       "contextHash": "8717c4d8844a7e07bba65042b7c6d5622bf4c1959c930927bdc871b82091e60c"
     },
     {
-      "file": "src/pages/ApiKeysPage.tsx",
-      "line": 10,
-      "column": 21,
-      "endLine": 10,
-      "endColumn": 33,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'setIsLoading' is assigned a value but never used.",
-      "spanHash": "f4c53e9c2756b64e09a7b71ace5bcefcf30b9044da81f142b98fba03631870af",
-      "lineHash": "9760fda46512a2da779de5a92a35966d95efd1fb0d1ee6778d2fd21927f5e26b",
-      "contextHash": "9544dfdfafe17ec4192fed6fd06ea301995d7c8cdaaab2950c87fd52bd0a8abc"
-    },
-    {
-      "file": "src/pages/ApiKeysPage.tsx",
-      "line": 5,
-      "column": 10,
-      "endLine": 5,
-      "endColumn": 20,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Breadcrumb' is defined but never used.",
-      "spanHash": "2bd873d6c734e63ea80e163a6a643f75bf87a3d24e3164987d176a2e3e5c567e",
-      "lineHash": "3bbee49ace7346f767e49cf8595e3b10414beb0a3024351e47d3f23f983537bc",
-      "contextHash": "43c078fd1a3fd826254e88e245d9837dce9ce66665a940609bc0e48fb41b7d51"
-    },
-    {
-      "file": "src/pages/AttendancePage.tsx",
-      "line": 12,
-      "column": 1,
-      "endLine": 12,
-      "endColumn": 105,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "2246e4dd22c94bb2320e15b16d5b878b34a208cc0fd822112c0d5fc206ad0837",
-      "lineHash": "2246e4dd22c94bb2320e15b16d5b878b34a208cc0fd822112c0d5fc206ad0837",
-      "contextHash": "f2c7f4550faab7e6b3962f8d2da0f9fa0d15990f843d1faa477c69c7dff7b0ef"
-    },
-    {
-      "file": "src/pages/AttendancePage.tsx",
-      "line": 12,
-      "column": 50,
-      "endLine": 12,
-      "endColumn": 55,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Clock' is defined but never used.",
-      "spanHash": "93ff9273de4b131b4cc3187f9d59229bf3e2c50626cbc733f6e44e3cd7b47d25",
-      "lineHash": "2246e4dd22c94bb2320e15b16d5b878b34a208cc0fd822112c0d5fc206ad0837",
-      "contextHash": "f2c7f4550faab7e6b3962f8d2da0f9fa0d15990f843d1faa477c69c7dff7b0ef"
-    },
-    {
-      "file": "src/pages/AttendancePage.tsx",
-      "line": 13,
-      "column": 1,
-      "endLine": 13,
-      "endColumn": 89,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "0d6ef25e028e7d7c4413a285767ed6f780b9676a70015258e3f0fd582325d25c",
-      "lineHash": "0d6ef25e028e7d7c4413a285767ed6f780b9676a70015258e3f0fd582325d25c",
-      "contextHash": "237a873fd730dcd1d23eba435d3d3d2685bb84d6dda3880e91e1330fbae7dbe0"
-    },
-    {
-      "file": "src/pages/AttendancePage.tsx",
-      "line": 14,
-      "column": 1,
-      "endLine": 14,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns/locale` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "lineHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "contextHash": "36486f8357824afe4dda408186c3b6182f04af5d3750531744dc290e66dc5fe6"
-    },
-    {
-      "file": "src/pages/AttendancePage.tsx",
-      "line": 16,
-      "column": 1,
-      "endLine": 19,
-      "endColumn": 19,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`recharts` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "73d174ba995bbfc0a113725b37470afb1d5842a8c953b5684520d1be5d258265",
-      "lineHash": "e0cbdab303939db3db5ed1394f8cc7d9c814984d13f730431eb0cabd77c9e204",
-      "contextHash": "59e3153c58dad98cd5a7a764e864804f6349d96e8767241f5477053dc417f246"
-    },
-    {
-      "file": "src/pages/AttendancePage.tsx",
-      "line": 4,
-      "column": 1,
-      "endLine": 4,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`@tanstack/react-query` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "94dbd3d2474e117d03e1439b1cd9bfd1d88cac8c8394955f4fe21cce6b751f01",
-      "lineHash": "94dbd3d2474e117d03e1439b1cd9bfd1d88cac8c8394955f4fe21cce6b751f01",
-      "contextHash": "beb8a792f993504b1e193b93631c1d5473441d1dd58daaf5229b573602dd1c79"
-    },
-    {
       "file": "src/pages/AttendancePage.tsx",
       "line": 94,
       "column": 9,
@@ -17066,20 +16314,6 @@
     },
     {
       "file": "src/pages/AuditLogPage.tsx",
-      "line": 11,
-      "column": 16,
-      "endLine": 11,
-      "endColumn": 27,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'TabsContent' is defined but never used.",
-      "spanHash": "7a5adc6634b15da3ccd10c1cbcf8a3e41a6d4229694182b320b8352781716458",
-      "lineHash": "41256866d7df8435fbadf6a16183884e2cc1d27da43de31a7e6c20e5f8667330",
-      "contextHash": "d058d6f33083fc514b8babe1ff16bf4f8b85956fbd3cc97656809ee5901ea435"
-    },
-    {
-      "file": "src/pages/AuditLogPage.tsx",
       "line": 12,
       "column": 1,
       "endLine": 12,
@@ -17090,7 +16324,7 @@
       "message": "`date-fns` import should occur before import of `@/integrations/supabase/client`",
       "spanHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
       "lineHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "contextHash": "40be758be4ca26075bc89337aa5fd422c19e7710e07f43fc1895af630096260b"
+      "contextHash": "1aef2385349b27cd179fac1b21a498a765ed800773c7964d506264b579df4eca"
     },
     {
       "file": "src/pages/AuditLogPage.tsx",
@@ -17163,76 +16397,6 @@
       "contextHash": "f04d2516669fa2df7214c229659e02c5c7b754c60e828f26399b87771ed1919d"
     },
     {
-      "file": "src/pages/Auth.tsx",
-      "line": 1,
-      "column": 28,
-      "endLine": 1,
-      "endColumn": 36,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'useState' is defined but never used.",
-      "spanHash": "2d15bcb160433286d6e0a1f858bc932a0b63e5715c0b9fe595e6b33cabe088ae",
-      "lineHash": "cf165b1cd3e32dff7e7c887aa5146916df79964872264a55b932da2aaa42f881",
-      "contextHash": "ceea6eef214bd4332727b6fb20348fb67073ba95421aa094f1fb4deada474497"
-    },
-    {
-      "file": "src/pages/Auth.tsx",
-      "line": 12,
-      "column": 1,
-      "endLine": 12,
-      "endColumn": 57,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`framer-motion` import should occur before import of `@/hooks/useAuthPage`",
-      "spanHash": "61090be30dbcbf5da41d051a6cd676b26c469f9c595ff32a0309f26318ce57c5",
-      "lineHash": "61090be30dbcbf5da41d051a6cd676b26c469f9c595ff32a0309f26318ce57c5",
-      "contextHash": "2afe77cc6ea8514e43342abc4144a9415fcd3ac46a2aa8c584580b81e8626983"
-    },
-    {
-      "file": "src/pages/Auth.tsx",
-      "line": 22,
-      "column": 11,
-      "endLine": 22,
-      "endColumn": 12,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'t' is assigned a value but never used.",
-      "spanHash": "e3b98a4da31a127d4bde6e43033f66ba274cab0eb7eb1c70ec41402bf6273dd8",
-      "lineHash": "e731aadc7974fcb0f7808fc3ec1de88b27e6eef0058d34669e94737337b4ae19",
-      "contextHash": "6721fb98054813764049775b43909907f4bb7d89fe9b9530615f57d873fd4a69"
-    },
-    {
-      "file": "src/pages/Auth.tsx",
-      "line": 27,
-      "column": 10,
-      "endLine": 27,
-      "endColumn": 25,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'passwordIsValid' is assigned a value but never used.",
-      "spanHash": "fd149d5d7646629c91cfd8e4cb8fa8ab70bc157351d68c808e116a0a70c0e079",
-      "lineHash": "d293b23769fd33e797327f8f535af6b9309c6225816700336229f6378ffd9ae4",
-      "contextHash": "2285544a1b4be342aa4177f6c9f2b46dafdfa68edfdccb0e353b5f19b1b3a828"
-    },
-    {
-      "file": "src/pages/Auth.tsx",
-      "line": 9,
-      "column": 1,
-      "endLine": 9,
-      "endColumn": 131,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/hooks/useAuthPage`",
-      "spanHash": "e2bd05e08648b3c524a05e99ff33a0ccb7c0b38fe2a75be4a9656be99b5c9093",
-      "lineHash": "e2bd05e08648b3c524a05e99ff33a0ccb7c0b38fe2a75be4a9656be99b5c9093",
-      "contextHash": "d02623d5c1493d41eb6fdd2ca089501cb05a127e6d9810babc6a8ab440163d91"
-    },
-    {
       "file": "src/pages/BillingSettingsPage.tsx",
       "line": 6,
       "column": 1,
@@ -17245,202 +16409,6 @@
       "spanHash": "cd8197fa56c832f6187d81548cba9647060efe5a66e60db9f7596c6beeb97489",
       "lineHash": "cd8197fa56c832f6187d81548cba9647060efe5a66e60db9f7596c6beeb97489",
       "contextHash": "ab38049beaa966fd53bfaf41601b4099dd486f0e0d8c22d47882697664cf7693"
-    },
-    {
-      "file": "src/pages/CalendarPage.tsx",
-      "line": 2,
-      "column": 1,
-      "endLine": 2,
-      "endColumn": 84,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/PageTransition`",
-      "spanHash": "6c9b82c68473b1bbf4911adec7f1e8f0d6650d591e468fef861a5736099c4c2c",
-      "lineHash": "6c9b82c68473b1bbf4911adec7f1e8f0d6650d591e468fef861a5736099c4c2c",
-      "contextHash": "6d04a191606685b14367afd0f83e69d867fe97c72bb1bb52cff2bfbfdb9d5960"
-    },
-    {
-      "file": "src/pages/CalendarPage.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 34,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`react` import should occur before import of `@/components/PageTransition`",
-      "spanHash": "34aeebe8414c0af971926555e4c33f2bd6273ae093fd91452a5c41625562d808",
-      "lineHash": "34aeebe8414c0af971926555e4c33f2bd6273ae093fd91452a5c41625562d808",
-      "contextHash": "2a96260c49b51c48e87e83ff7fa8759dae3d9b59b1386c73d0532f2722e536ed"
-    },
-    {
-      "file": "src/pages/CalendarPage.tsx",
-      "line": 5,
-      "column": 29,
-      "endLine": 5,
-      "endColumn": 39,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardHeader' is defined but never used.",
-      "spanHash": "be50e900a73e29c6befba6b65752799e9ddfd4159414b22fdb9e4832685690cf",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "5c50d73e89749e7c4820de09072afc19f438f3e4c75d8fb1876081cfc65255a5"
-    },
-    {
-      "file": "src/pages/CalendarPage.tsx",
-      "line": 5,
-      "column": 41,
-      "endLine": 5,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardTitle' is defined but never used.",
-      "spanHash": "a683178436f997e766dbc7c84c3b653859b31b9c6271c28ebe876910a50d5800",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "5c50d73e89749e7c4820de09072afc19f438f3e4c75d8fb1876081cfc65255a5"
-    },
-    {
-      "file": "src/pages/CalendarPage.tsx",
-      "line": 6,
-      "column": 10,
-      "endLine": 6,
-      "endColumn": 15,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Badge' is defined but never used.",
-      "spanHash": "002474e368210827e5f71950ba7cb0b2cafa82d71b047c356f46d37dd276a5f3",
-      "lineHash": "1a5eaf82b9fe538f5c52ae1c57372d2b90f81d68b2c8d7045da2ecf63b8128e7",
-      "contextHash": "21a643941bd75b20fe100384aef2ec26d5e5a425067c8679b5182352dc213eb1"
-    },
-    {
-      "file": "src/pages/CalendarPage.tsx",
-      "line": 7,
-      "column": 1,
-      "endLine": 7,
-      "endColumn": 130,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/components/PageTransition`",
-      "spanHash": "68d562413182ee1c379e868b55216c92fc66bb1917df59c7546629300bd58052",
-      "lineHash": "68d562413182ee1c379e868b55216c92fc66bb1917df59c7546629300bd58052",
-      "contextHash": "74dc1ac94b0d6ae235fe39852e5ff3f9457a9493a04184a32de740481d6ab401"
-    },
-    {
-      "file": "src/pages/CalendarPage.tsx",
-      "line": 7,
-      "column": 63,
-      "endLine": 7,
-      "endColumn": 72,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'isSameDay' is defined but never used.",
-      "spanHash": "3a80c002d642c626a00915a0ee05c70a5499fe02197e7bc10e653983edb7e1e8",
-      "lineHash": "68d562413182ee1c379e868b55216c92fc66bb1917df59c7546629300bd58052",
-      "contextHash": "74dc1ac94b0d6ae235fe39852e5ff3f9457a9493a04184a32de740481d6ab401"
-    },
-    {
-      "file": "src/pages/CalendarPage.tsx",
-      "line": 8,
-      "column": 1,
-      "endLine": 8,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns/locale` import should occur before import of `@/components/PageTransition`",
-      "spanHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "lineHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "contextHash": "e696f36fac2bbd71f3e8a1e34e05bde9872fc59fb3b3a09959a77ace499819f0"
-    },
-    {
-      "file": "src/pages/CompliancePage.tsx",
-      "line": 10,
-      "column": 1,
-      "endLine": 13,
-      "endColumn": 19,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`recharts` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "9250877d099b33f7b1117345635d44492e2463b2e6adc97e8bfb9f4992ea2be4",
-      "lineHash": "e0cbdab303939db3db5ed1394f8cc7d9c814984d13f730431eb0cabd77c9e204",
-      "contextHash": "eaf26571940a770fcd4c9cc11b6294de23149b06c32b5196011e8c6c5bab17e2"
-    },
-    {
-      "file": "src/pages/CompliancePage.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 67,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "68988a251d19ba9d02df474b413ff769899c16f7d4113cc2399f30c22bc9399f",
-      "lineHash": "68988a251d19ba9d02df474b413ff769899c16f7d4113cc2399f30c22bc9399f",
-      "contextHash": "cc99d70aa89a32fbea03db408aa72624d7e157f666c84fc47663fb834f149a09"
-    },
-    {
-      "file": "src/pages/CompliancePage.tsx",
-      "line": 3,
-      "column": 10,
-      "endLine": 3,
-      "endColumn": 16,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Shield' is defined but never used.",
-      "spanHash": "480d4be7d61fe52bc31768ffaaffea7ad5db66ba8b699d30623c4726704cc646",
-      "lineHash": "68988a251d19ba9d02df474b413ff769899c16f7d4113cc2399f30c22bc9399f",
-      "contextHash": "cc99d70aa89a32fbea03db408aa72624d7e157f666c84fc47663fb834f149a09"
-    },
-    {
-      "file": "src/pages/CustomReportsPage.tsx",
-      "line": 5,
-      "column": 1,
-      "endLine": 5,
-      "endColumn": 56,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "94d5a747899a71e81901752ce12b2eef21c3e34122971001540dbeec69e94489",
-      "lineHash": "94d5a747899a71e81901752ce12b2eef21c3e34122971001540dbeec69e94489",
-      "contextHash": "d31da3ff06a63a5706c80c02dd6d2f824946037521b654203a1e6603f6f213e5"
-    },
-    {
-      "file": "src/pages/CustomReportsPage.tsx",
-      "line": 7,
-      "column": 29,
-      "endLine": 7,
-      "endColumn": 39,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardHeader' is defined but never used.",
-      "spanHash": "be50e900a73e29c6befba6b65752799e9ddfd4159414b22fdb9e4832685690cf",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "5c50d73e89749e7c4820de09072afc19f438f3e4c75d8fb1876081cfc65255a5"
-    },
-    {
-      "file": "src/pages/CustomReportsPage.tsx",
-      "line": 7,
-      "column": 41,
-      "endLine": 7,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardTitle' is defined but never used.",
-      "spanHash": "a683178436f997e766dbc7c84c3b653859b31b9c6271c28ebe876910a50d5800",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "5c50d73e89749e7c4820de09072afc19f438f3e4c75d8fb1876081cfc65255a5"
     },
     {
       "file": "src/pages/dashboard/DashboardCards.tsx",
@@ -17527,48 +16495,6 @@
       "contextHash": "d8a919c9a9f34d3225d1fdf2b4a34b960b6a17c1692167506ef710f2fdad438e"
     },
     {
-      "file": "src/pages/DataExportPage.tsx",
-      "line": 32,
-      "column": 15,
-      "endLine": 32,
-      "endColumn": 19,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'data' is assigned a value but never used.",
-      "spanHash": "3a6eb0790f39ac87c94f3856b2dd2c5d110e6811602261a9a923d3bb23adc8b7",
-      "lineHash": "46f74d0f04967777733b50ba358d8e4c6edc093824b89a551e925417c55abbe7",
-      "contextHash": "91ccb8d6160084baddb5afaa502fb86f47f8c0e2cd28c8267a5c0d1b0adb25ce"
-    },
-    {
-      "file": "src/pages/DepartmentDetailPage.tsx",
-      "line": 10,
-      "column": 9,
-      "endLine": 10,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'navigate' is assigned a value but never used.",
-      "spanHash": "d0cda6559bb347db706f6fa92a5b2491658e0c1e5bda98bb14e3c8a711b8fa33",
-      "lineHash": "c2fcff8bc91bcb3ee2ba6014ed4f15e2cb0d1067e6c0b3286af849d533706818",
-      "contextHash": "70d5f9757da678db09d42d344020a654410cac92ecb1f0a296391479e3698125"
-    },
-    {
-      "file": "src/pages/DepartmentDetailPage.tsx",
-      "line": 2,
-      "column": 10,
-      "endLine": 2,
-      "endColumn": 18,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Building' is defined but never used.",
-      "spanHash": "87c5912f2cefdf9d7d1913611187fa8ab653a89a8d4b65f574812f899834e8b1",
-      "lineHash": "4479125326d9dd6399ddb5c0d1a39b829f39ffe4ce5de6f82b4386ea05f12d17",
-      "contextHash": "6046c0845667bf96402595a31e134b17f3180bedf4afa4e11c1d30f0d022a80c"
-    },
-    {
       "file": "src/pages/DepartmentsPage.tsx",
       "line": 1,
       "column": 1,
@@ -17583,43 +16509,15 @@
       "contextHash": "5b4dbeae0286e2eb7a680d74eece54060d66dc6883360381c94f53e2e55e8565"
     },
     {
-      "file": "src/pages/dev/ChartSimulationPage.tsx",
-      "line": 39,
-      "column": 7,
-      "endLine": 39,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "usedOnlyAsType",
-      "message": "'SEVERITIES' is assigned a value but only used as a type.",
-      "spanHash": "5ffc284ce59c3efbedfc6a44d0e7e4114c4e92dd38f55295370ea3b66aa97dfd",
-      "lineHash": "ff56fdd4cdb502b7e955e2d188d995c01dbe2a174888dcbc62f4b75a1d0b66e5",
-      "contextHash": "0cb7e779fd41321c1b79ed3c5eda4fac5e0a741e9bec4faeef95a2e99c06c416"
-    },
-    {
       "file": "src/pages/dev/LiveViewSimulatorPage.tsx",
-      "line": 146,
-      "column": 5,
-      "endLine": 146,
-      "endColumn": 6,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'n' is assigned a value but never used.",
-      "spanHash": "1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9",
-      "lineHash": "e41360b7a541aa4b35bfb3f1068f1ba1304f00894609e66983cca6bab4bea05b",
-      "contextHash": "aa84c36f647c2276574e152a853530ab3fbb9c7efad45f7357972e99981a25f6"
-    },
-    {
-      "file": "src/pages/dev/LiveViewSimulatorPage.tsx",
-      "line": 155,
+      "line": 152,
       "column": 29,
-      "endLine": 155,
+      "endLine": 152,
       "endColumn": 43,
       "severity": 2,
       "ruleId": "react-hooks/use-memo",
       "messageId": null,
-      "message": "Error: Expected the first argument to be an inline function expression Expected the first argument to be an inline function expression. <ROOT>/src/pages/dev/LiveViewSimulatorPage.tsx:155:29 153 | const [progress, setProgress] = useState(0); 154 | const [results, setResults] = useState<Result[]>([]); > 155 | const scenarios = useMemo(buildScenarios, []); | ^^^^^^^^^^^^^^ Expected the first argument to be an inline function expression 156 | 157 | const run = async () => { 158 | setRunning(true);",
+      "message": "Error: Expected the first argument to be an inline function expression Expected the first argument to be an inline function expression. <ROOT>/src/pages/dev/LiveViewSimulatorPage.tsx:152:29 150 | const [progress, setProgress] = useState(0); 151 | const [results, setResults] = useState<Result[]>([]); > 152 | const scenarios = useMemo(buildScenarios, []); | ^^^^^^^^^^^^^^ Expected the first argument to be an inline function expression 153 | 154 | const run = async () => { 155 | setRunning(true);",
       "spanHash": "a472b94f3b16d7c9dab68a78d3bc8a94741a7e43a4e4f007405ae46deab769ed",
       "lineHash": "70fa233aa341c41c478f006a341d2f2423f54ec2d0434e6ad17e7099da403c8e",
       "contextHash": "38aac1db964335d7c2acc438ccb469e97b32893ec0e360bd9b727cea37eefa30"
@@ -17807,34 +16705,6 @@
       "contextHash": "58bccad74127b9d83bd5092ca420c41130f18f8d1cea4acb20634e9f595dca28"
     },
     {
-      "file": "src/pages/EmployeeCreatePage.tsx",
-      "line": 12,
-      "column": 1,
-      "endLine": 12,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`react-i18next` import should occur before import of `@/components/ui/button`",
-      "spanHash": "c8e08111877e0a7aeb109194bc59419680ebe24e82d5f38b7be60207ea04c08c",
-      "lineHash": "c8e08111877e0a7aeb109194bc59419680ebe24e82d5f38b7be60207ea04c08c",
-      "contextHash": "91478126a08a5047b48b39ef180183594de151545083d79254cdec7e0ca7349a"
-    },
-    {
-      "file": "src/pages/EmployeeCreatePage.tsx",
-      "line": 55,
-      "column": 14,
-      "endLine": 55,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'err' is defined but never used.",
-      "spanHash": "d9eb253e06987fa74a5d3189f73d9f7a8104cca786fafbb52bc9555972f5477f",
-      "lineHash": "e1be4fdef0777b6419a857a596ee0e6d60ee93858aea1ea66fe44ad2252f708e",
-      "contextHash": "843cfddbbcb87b9dfdccda6ab6dc837675b1e17035878b012405eee4acfce5c3"
-    },
-    {
       "file": "src/pages/EmployeeDetailPage.tsx",
       "line": 18,
       "column": 1,
@@ -18004,21 +16874,7 @@
     },
     {
       "file": "src/pages/GeofencingPage.tsx",
-      "line": 2,
-      "column": 45,
-      "endLine": 2,
-      "endColumn": 51,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Search' is defined but never used.",
-      "spanHash": "49c266baaaa70981ea188fa714d5c40cf13830d786a861c9943ae0d26a7f3fe9",
-      "lineHash": "501fd676f3a4bbb025399dda85d109810105ac5812ca8f3787e649320eb9a199",
-      "contextHash": "6383184dcd9664a793d626a859caf7e0ab8cd2f9350e9cc926d2cebeb60a45df"
-    },
-    {
-      "file": "src/pages/GeofencingPage.tsx",
-      "line": 241,
+      "line": 239,
       "column": 106,
       "endLine": 0,
       "endColumn": 0,
@@ -18032,7 +16888,7 @@
     },
     {
       "file": "src/pages/GeofencingPage.tsx",
-      "line": 241,
+      "line": 239,
       "column": 81,
       "endLine": 0,
       "endColumn": 0,
@@ -18043,146 +16899,6 @@
       "spanHash": null,
       "lineHash": "a467428ff68edd9cb36b4a4b80e017b9575bfe3b2ad80f36be024977416f90f8",
       "contextHash": "5bc17b1bda5282c657defd69a0a746f4c3373ba0ea8c768ef49643dab730d170"
-    },
-    {
-      "file": "src/pages/GeofencingPage.tsx",
-      "line": 32,
-      "column": 11,
-      "endLine": 32,
-      "endColumn": 16,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'toast' is assigned a value but never used.",
-      "spanHash": "a60ec1cf58f49cd2fab6d9e760ff1365f6a25dca50c09e9cfc553ce737a2af60",
-      "lineHash": "ad96a560dfbd5aed2e2eacd8f7d71a7700c22a1817f151e2bdb20329887ecd81",
-      "contextHash": "f66e327c8c6b493252a49fb12c29e0ccd83d5dbf88347c27fa9b4ab0b9e58747"
-    },
-    {
-      "file": "src/pages/HoursTrackingPage.tsx",
-      "line": 10,
-      "column": 1,
-      "endLine": 10,
-      "endColumn": 113,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "fa810ce37fee6486ccd2a006343e1708d87e28138dfc679b6aea624424246090",
-      "lineHash": "fa810ce37fee6486ccd2a006343e1708d87e28138dfc679b6aea624424246090",
-      "contextHash": "0236b7b47a44022d73370f535bdc44babbff5d439d1f558520d33151adf27b90"
-    },
-    {
-      "file": "src/pages/HoursTrackingPage.tsx",
-      "line": 11,
-      "column": 1,
-      "endLine": 11,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns/locale` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "lineHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "contextHash": "ca841aab88e137d37ec34f39cae2178e92c97b7e8a5a554663017408d163203f"
-    },
-    {
-      "file": "src/pages/HoursTrackingPage.tsx",
-      "line": 12,
-      "column": 1,
-      "endLine": 12,
-      "endColumn": 126,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`recharts` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "d14e9edc4c5509250e9b6801e26cb77db1558c50977361ab9f298d91e40752b0",
-      "lineHash": "d14e9edc4c5509250e9b6801e26cb77db1558c50977361ab9f298d91e40752b0",
-      "contextHash": "49e15a50f7647286c9f262b933a608973ca6d3b8b94534ea25c1a9e5ac082e67"
-    },
-    {
-      "file": "src/pages/HoursTrackingPage.tsx",
-      "line": 12,
-      "column": 84,
-      "endLine": 12,
-      "endColumn": 93,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'LineChart' is defined but never used.",
-      "spanHash": "0830d4f36c8f2450d009d454a2d09b7764827dca12d9360cfd010e97675fdc00",
-      "lineHash": "d14e9edc4c5509250e9b6801e26cb77db1558c50977361ab9f298d91e40752b0",
-      "contextHash": "49e15a50f7647286c9f262b933a608973ca6d3b8b94534ea25c1a9e5ac082e67"
-    },
-    {
-      "file": "src/pages/HoursTrackingPage.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`@tanstack/react-query` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "94dbd3d2474e117d03e1439b1cd9bfd1d88cac8c8394955f4fe21cce6b751f01",
-      "lineHash": "94dbd3d2474e117d03e1439b1cd9bfd1d88cac8c8394955f4fe21cce6b751f01",
-      "contextHash": "918d18eead854f8a749f361baa7ed1a5302098c3cba1efc598919c767e0ba4f7"
-    },
-    {
-      "file": "src/pages/HoursTrackingPage.tsx",
-      "line": 8,
-      "column": 10,
-      "endLine": 8,
-      "endColumn": 15,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Badge' is defined but never used.",
-      "spanHash": "002474e368210827e5f71950ba7cb0b2cafa82d71b047c356f46d37dd276a5f3",
-      "lineHash": "1a5eaf82b9fe538f5c52ae1c57372d2b90f81d68b2c8d7045da2ecf63b8128e7",
-      "contextHash": "1123075a09e203734e582af10d3f2782a8b35307b73ddb83dae5e9ee94ec9a63"
-    },
-    {
-      "file": "src/pages/HoursTrackingPage.tsx",
-      "line": 9,
-      "column": 1,
-      "endLine": 9,
-      "endColumn": 84,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "c4de3fe1e2ff5fbcb2e471a4eae1ffabf55eb740fdc28d8fd7b67d3619cf7377",
-      "lineHash": "c4de3fe1e2ff5fbcb2e471a4eae1ffabf55eb740fdc28d8fd7b67d3619cf7377",
-      "contextHash": "f43111e611fc86fc7e757faca013b8bf95c9e98e18239473f6aa8e1aa3eec381"
-    },
-    {
-      "file": "src/pages/IntegrationsPage.tsx",
-      "line": 1,
-      "column": 10,
-      "endLine": 1,
-      "endColumn": 14,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Plug' is defined but never used.",
-      "spanHash": "01153ebe8ba1daf3331067d7e464a8c60de77312be2c34b675c91c98c1cc72b9",
-      "lineHash": "856d1c77a6ea61ade92801f15a45c0bc476c8ff70d69c50fcbcbb7fee58e67d7",
-      "contextHash": "761be7664c77f45b3fb8a820014b667a058919ae4446e34a416b46f69a908880"
-    },
-    {
-      "file": "src/pages/IntegrationsPage.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`react-router-dom` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "7d51bbacee6187e218310fe8dd35b8426e216419fab7a94027f809aaa2f26911",
-      "lineHash": "7d51bbacee6187e218310fe8dd35b8426e216419fab7a94027f809aaa2f26911",
-      "contextHash": "751dabd0a9a505c45e4f85d392dec220b19030a09956f21a88c697680fd7daf0"
     },
     {
       "file": "src/pages/InternetAccessPage.tsx",
@@ -18213,34 +16929,6 @@
       "contextHash": "07d3b4a2b6cd7b4790d4f79af5341cb7fae96d06452fb70e1c64c843cb17222c"
     },
     {
-      "file": "src/pages/InternetAccessPage.tsx",
-      "line": 4,
-      "column": 29,
-      "endLine": 4,
-      "endColumn": 39,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardHeader' is defined but never used.",
-      "spanHash": "be50e900a73e29c6befba6b65752799e9ddfd4159414b22fdb9e4832685690cf",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "5c50d73e89749e7c4820de09072afc19f438f3e4c75d8fb1876081cfc65255a5"
-    },
-    {
-      "file": "src/pages/InternetAccessPage.tsx",
-      "line": 4,
-      "column": 41,
-      "endLine": 4,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardTitle' is defined but never used.",
-      "spanHash": "a683178436f997e766dbc7c84c3b653859b31b9c6271c28ebe876910a50d5800",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "5c50d73e89749e7c4820de09072afc19f438f3e4c75d8fb1876081cfc65255a5"
-    },
-    {
       "file": "src/pages/LiveViewPage.tsx",
       "line": 10,
       "column": 1,
@@ -18253,62 +16941,6 @@
       "spanHash": "eefe38ce8f75278dc1de094f18b00762de703a69ea47c7ddb4468d1e0f10ad29",
       "lineHash": "eefe38ce8f75278dc1de094f18b00762de703a69ea47c7ddb4468d1e0f10ad29",
       "contextHash": "6c60ca1103d3b71923358e4a4ce641b8c6ab004638a48ca45ac76d4b3709f59a"
-    },
-    {
-      "file": "src/pages/MonitoringPage.tsx",
-      "line": 15,
-      "column": 34,
-      "endLine": 15,
-      "endColumn": 52,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'MonitoringEmployee' is defined but never used.",
-      "spanHash": "71ae0904566c5a13261fbee3ad6d91c3f0e8afa3ee7c6e192e0a385c77ca1168",
-      "lineHash": "0c197b41b731dc7c634d348533a99811eb8a3a665081ccb6c413cb1e0078e9a4",
-      "contextHash": "2cfe68b21ebef6d9a6ae40d4d4a32bf3615fd41494ca507c6eaad21804d3a789"
-    },
-    {
-      "file": "src/pages/MonitoringPage.tsx",
-      "line": 17,
-      "column": 1,
-      "endLine": 17,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/components/EmptyState`",
-      "spanHash": "d47a9981aece1dccb0bcbceb49bf3589c93c2ff9d5d9cbb0d838f69eaf00c399",
-      "lineHash": "d47a9981aece1dccb0bcbceb49bf3589c93c2ff9d5d9cbb0d838f69eaf00c399",
-      "contextHash": "6aaaf813285e9541fa00534c5bf68cff3bafa3cc0f14558edbb1785f2c60b550"
-    },
-    {
-      "file": "src/pages/MonitoringPage.tsx",
-      "line": 18,
-      "column": 1,
-      "endLine": 18,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns/locale` import should occur before import of `@/components/EmptyState`",
-      "spanHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "lineHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "contextHash": "d6ec4da14136de799f3cbfbd094d5d5090f777a6af7b2889841364b69702435d"
-    },
-    {
-      "file": "src/pages/MonitoringPage.tsx",
-      "line": 19,
-      "column": 1,
-      "endLine": 22,
-      "endColumn": 19,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`recharts` import should occur before import of `@/components/EmptyState`",
-      "spanHash": "9250877d099b33f7b1117345635d44492e2463b2e6adc97e8bfb9f4992ea2be4",
-      "lineHash": "e0cbdab303939db3db5ed1394f8cc7d9c814984d13f730431eb0cabd77c9e204",
-      "contextHash": "e8151a243ca14f28f2043a9295f428250e33d2e96509ae0edb4409362778647c"
     },
     {
       "file": "src/pages/MonitoringPage.tsx",
@@ -18337,34 +16969,6 @@
       "spanHash": "f503d7dfdebcbf4dab81a07873f5035f0c7acbfcc9d35e0efc3de1da0e5179a3",
       "lineHash": "f503d7dfdebcbf4dab81a07873f5035f0c7acbfcc9d35e0efc3de1da0e5179a3",
       "contextHash": "553dd1d77fe6b4e803c67703a3ba3c418b93d40d4010c878ed59b7f6288bbfe5"
-    },
-    {
-      "file": "src/pages/MonitoringPage.tsx",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 125,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/EmptyState`",
-      "spanHash": "70f16474501ca73d3a4cece82d60671bd5c90627f6497de07bd22b0f81137381",
-      "lineHash": "70f16474501ca73d3a4cece82d60671bd5c90627f6497de07bd22b0f81137381",
-      "contextHash": "c8cd091b2cf7004ab769a06b1b047dea19f4eaa4a91a102de21d3730e3fb5ec0"
-    },
-    {
-      "file": "src/pages/MonitoringPage.tsx",
-      "line": 3,
-      "column": 68,
-      "endLine": 3,
-      "endColumn": 77,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'RefreshCw' is defined but never used.",
-      "spanHash": "4d7db600db6bcd2d364a05b6230c26f6af416551622126c1a726cd50ccec4c40",
-      "lineHash": "70f16474501ca73d3a4cece82d60671bd5c90627f6497de07bd22b0f81137381",
-      "contextHash": "c8cd091b2cf7004ab769a06b1b047dea19f4eaa4a91a102de21d3730e3fb5ec0"
     },
     {
       "file": "src/pages/NotFoundPage.tsx",
@@ -18435,482 +17039,6 @@
       "spanHash": "c5b6abad2ad4a06467f1e59c3bb339591d931d9e8c942a864dbdec79efe3a264",
       "lineHash": "c5b6abad2ad4a06467f1e59c3bb339591d931d9e8c942a864dbdec79efe3a264",
       "contextHash": "53059c770d89487b555ad1a13392171e348ef7525a4fbd29de5115cb1266b86e"
-    },
-    {
-      "file": "src/pages/ProfileSettingsPage.tsx",
-      "line": 2,
-      "column": 16,
-      "endLine": 2,
-      "endColumn": 20,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Mail' is defined but never used.",
-      "spanHash": "07ed6ccf6bf6393d18684d1d4f774639d44c7d2d2895fd30491ccc50614ed4ea",
-      "lineHash": "10a59d4aa4d19472cc995f72aa3063fa09657b203fc20a649e4549905977c53b",
-      "contextHash": "aaaefbb7e5636bf5bdd5d96f90624a9f9387827affebda237fb18b5a79f77a1e"
-    },
-    {
-      "file": "src/pages/ProfileSettingsPage.tsx",
-      "line": 2,
-      "column": 22,
-      "endLine": 2,
-      "endColumn": 27,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Phone' is defined but never used.",
-      "spanHash": "63dceb8800b2dd4af9567a1f54f03b7c3dbdc27fac4799091ebfcc4928899ee5",
-      "lineHash": "10a59d4aa4d19472cc995f72aa3063fa09657b203fc20a649e4549905977c53b",
-      "contextHash": "aaaefbb7e5636bf5bdd5d96f90624a9f9387827affebda237fb18b5a79f77a1e"
-    },
-    {
-      "file": "src/pages/ProfileSettingsPage.tsx",
-      "line": 2,
-      "column": 29,
-      "endLine": 2,
-      "endColumn": 38,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Building2' is defined but never used.",
-      "spanHash": "a24ff5ebd6503cb0f31042c7dd45ee49c4b381bcd84e291df521171b271494cf",
-      "lineHash": "10a59d4aa4d19472cc995f72aa3063fa09657b203fc20a649e4549905977c53b",
-      "contextHash": "aaaefbb7e5636bf5bdd5d96f90624a9f9387827affebda237fb18b5a79f77a1e"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 12,
-      "column": 10,
-      "endLine": 12,
-      "endColumn": 14,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Tabs' is defined but never used.",
-      "spanHash": "8e5ea509893e6dfd39126d7fb98c5237b273db19f11df5be8bca227fc11fe08a",
-      "lineHash": "41256866d7df8435fbadf6a16183884e2cc1d27da43de31a7e6c20e5f8667330",
-      "contextHash": "a4bec870ceb4a40bd5c2399689688c6f7d2b4b7a55348b4f6e3a31b910302840"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 12,
-      "column": 16,
-      "endLine": 12,
-      "endColumn": 27,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'TabsContent' is defined but never used.",
-      "spanHash": "7a5adc6634b15da3ccd10c1cbcf8a3e41a6d4229694182b320b8352781716458",
-      "lineHash": "41256866d7df8435fbadf6a16183884e2cc1d27da43de31a7e6c20e5f8667330",
-      "contextHash": "a4bec870ceb4a40bd5c2399689688c6f7d2b4b7a55348b4f6e3a31b910302840"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 12,
-      "column": 29,
-      "endLine": 12,
-      "endColumn": 37,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'TabsList' is defined but never used.",
-      "spanHash": "13c62dcd2118c3690f83b995442168af5f41291f4c815dd3f6d9d0392d2e0ff3",
-      "lineHash": "41256866d7df8435fbadf6a16183884e2cc1d27da43de31a7e6c20e5f8667330",
-      "contextHash": "a4bec870ceb4a40bd5c2399689688c6f7d2b4b7a55348b4f6e3a31b910302840"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 12,
-      "column": 39,
-      "endLine": 12,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'TabsTrigger' is defined but never used.",
-      "spanHash": "cb526257aa0027f1b93dfded8d6892b04021be317ed9f1a0fff89b6729da9f13",
-      "lineHash": "41256866d7df8435fbadf6a16183884e2cc1d27da43de31a7e6c20e5f8667330",
-      "contextHash": "a4bec870ceb4a40bd5c2399689688c6f7d2b4b7a55348b4f6e3a31b910302840"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 13,
-      "column": 1,
-      "endLine": 13,
-      "endColumn": 128,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "5ded4eee29f647bd946da3324b6939486100e7e385e0df9c972b7b3395e3f540",
-      "lineHash": "5ded4eee29f647bd946da3324b6939486100e7e385e0df9c972b7b3395e3f540",
-      "contextHash": "ab34502a398ad5dbd5b1229595191b80355e13ff5e85bda45ab1a0bcf220b9e0"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 13,
-      "column": 10,
-      "endLine": 13,
-      "endColumn": 22,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'FolderKanban' is defined but never used.",
-      "spanHash": "bbffc471dbb5dba9c048fe74233afcbe12774cd8708a40126fa042b67b5e1f09",
-      "lineHash": "5ded4eee29f647bd946da3324b6939486100e7e385e0df9c972b7b3395e3f540",
-      "contextHash": "ab34502a398ad5dbd5b1229595191b80355e13ff5e85bda45ab1a0bcf220b9e0"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 13,
-      "column": 37,
-      "endLine": 13,
-      "endColumn": 42,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Users' is defined but never used.",
-      "spanHash": "6b0cc904d081a8c11cfdaec667f05132cbfa8a57f5040d27d5fc0f2fc50d0dc6",
-      "lineHash": "5ded4eee29f647bd946da3324b6939486100e7e385e0df9c972b7b3395e3f540",
-      "contextHash": "ab34502a398ad5dbd5b1229595191b80355e13ff5e85bda45ab1a0bcf220b9e0"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 13,
-      "column": 62,
-      "endLine": 13,
-      "endColumn": 76,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'MoreHorizontal' is defined but never used.",
-      "spanHash": "338e09cb6abe76fbc3cfc056f2df071c374407f1e44344104f6c307ddad7b415",
-      "lineHash": "5ded4eee29f647bd946da3324b6939486100e7e385e0df9c972b7b3395e3f540",
-      "contextHash": "ab34502a398ad5dbd5b1229595191b80355e13ff5e85bda45ab1a0bcf220b9e0"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 15,
-      "column": 1,
-      "endLine": 15,
-      "endColumn": 35,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "lineHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "contextHash": "733b978dce78c268f23744e03b96e94d18319ab4a444a43580bb7efc44dffb4e"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 15,
-      "column": 10,
-      "endLine": 15,
-      "endColumn": 16,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'format' is defined but never used.",
-      "spanHash": "e904c9ccfa425ff0b055d2c533462314d35a529b055e8abe41d49bb46d827427",
-      "lineHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "contextHash": "733b978dce78c268f23744e03b96e94d18319ab4a444a43580bb7efc44dffb4e"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 16,
-      "column": 1,
-      "endLine": 16,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns/locale` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "lineHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "contextHash": "0d936bf4bc23e6b255d9026e6f89438a2e5d8509b4fa0152f89881c4cd1f8d83"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 16,
-      "column": 10,
-      "endLine": 16,
-      "endColumn": 14,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'ptBR' is defined but never used.",
-      "spanHash": "d7fea84e62585e9bb64db85559c8c736c75ee998f8752c437e23b36fa936dd12",
-      "lineHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "contextHash": "0d936bf4bc23e6b255d9026e6f89438a2e5d8509b4fa0152f89881c4cd1f8d83"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 4,
-      "column": 29,
-      "endLine": 4,
-      "endColumn": 39,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardHeader' is defined but never used.",
-      "spanHash": "be50e900a73e29c6befba6b65752799e9ddfd4159414b22fdb9e4832685690cf",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "b953a80b34ffcc0a456daf08b3e7eccfd72b813112128a982e58c21267275bbc"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 4,
-      "column": 41,
-      "endLine": 4,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardTitle' is defined but never used.",
-      "spanHash": "a683178436f997e766dbc7c84c3b653859b31b9c6271c28ebe876910a50d5800",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "b953a80b34ffcc0a456daf08b3e7eccfd72b813112128a982e58c21267275bbc"
-    },
-    {
-      "file": "src/pages/ProjectsPage.tsx",
-      "line": 78,
-      "column": 17,
-      "endLine": 78,
-      "endColumn": 26,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'employees' is assigned a value but never used.",
-      "spanHash": "c49de3d265fb1d97d0fc104bbc54411ff3784bb1be48c5ce3a4f31a76f223469",
-      "lineHash": "5a069c618f1b18a07c99573067bda890c4c4c52fd32bc4ed81a60ae2f6c41bfe",
-      "contextHash": "31ede7a1a3d238a68f17e37e66d7dd3e1fbb86209b6824a4fd5f57b3a14ac84d"
-    },
-    {
-      "file": "src/pages/ReportDetailPage.tsx",
-      "line": 36,
-      "column": 9,
-      "endLine": 36,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'navigate' is assigned a value but never used.",
-      "spanHash": "d0cda6559bb347db706f6fa92a5b2491658e0c1e5bda98bb14e3c8a711b8fa33",
-      "lineHash": "c2fcff8bc91bcb3ee2ba6014ed4f15e2cb0d1067e6c0b3286af849d533706818",
-      "contextHash": "c43cff04ed00f1ae734cd2a60b795cf293545159d4e5b7c7d5a3c65580f360ee"
-    },
-    {
-      "file": "src/pages/ReportDetailPage.tsx",
-      "line": 4,
-      "column": 1,
-      "endLine": 4,
-      "endColumn": 35,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/components/layout/PageHeader`",
-      "spanHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "lineHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "contextHash": "ac2190f0de8812c0916a1cfd3bad45fc54c42ccbdc8ef3beb345baa19ec60b3c"
-    },
-    {
-      "file": "src/pages/ReportsPage.tsx",
-      "line": 36,
-      "column": 17,
-      "endLine": 36,
-      "endColumn": 26,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'templates' is assigned a value but never used.",
-      "spanHash": "9c6641c1f9cfb0c678ea58b1a913a5d0d528e98047e04827dcf28e9d6e51e8ee",
-      "lineHash": "92873c3b80b83ae43cf8e39d1dee3aba99e53b7c66778ccf6c55317f7ed4cf63",
-      "contextHash": "86aa895375f586341690ebc40f0342ec9596398318b7fcef9171d1f958d36457"
-    },
-    {
-      "file": "src/pages/ReportsPage.tsx",
-      "line": 4,
-      "column": 1,
-      "endLine": 4,
-      "endColumn": 69,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/hooks/useReports`",
-      "spanHash": "12e5c86d6534c267df06d5e31fd99bc98ce8d24ae5ec1e09b2e5acfcff0efd15",
-      "lineHash": "12e5c86d6534c267df06d5e31fd99bc98ce8d24ae5ec1e09b2e5acfcff0efd15",
-      "contextHash": "d7af4830ea62db3e9bb1d345d0d7bffe25f2b5f872371811d5c21231463e42d8"
-    },
-    {
-      "file": "src/pages/ReportsPage.tsx",
-      "line": 7,
-      "column": 1,
-      "endLine": 7,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`react-router-dom` import should occur before import of `@/hooks/useReports`",
-      "spanHash": "7d51bbacee6187e218310fe8dd35b8426e216419fab7a94027f809aaa2f26911",
-      "lineHash": "7d51bbacee6187e218310fe8dd35b8426e216419fab7a94027f809aaa2f26911",
-      "contextHash": "a201075f10d88eb00ad4113b5d6702ad0850cacdb6b64894fc2eea6f7a572af5"
-    },
-    {
-      "file": "src/pages/ScheduledReportsPage.tsx",
-      "line": 1,
-      "column": 10,
-      "endLine": 1,
-      "endColumn": 18,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'useState' is defined but never used.",
-      "spanHash": "2d15bcb160433286d6e0a1f858bc932a0b63e5715c0b9fe595e6b33cabe088ae",
-      "lineHash": "34aeebe8414c0af971926555e4c33f2bd6273ae093fd91452a5c41625562d808",
-      "contextHash": "c3fd4d629d624f2f7b6786dfbaf543d01d22dac2d2b2d77f5eb75ac3742cbe6a"
-    },
-    {
-      "file": "src/pages/ScheduledReportsPage.tsx",
-      "line": 4,
-      "column": 1,
-      "endLine": 4,
-      "endColumn": 54,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "c1b827ac7f983f3c13144004e0a427a5533fc6d03a33bc393f4c1d761910c7ac",
-      "lineHash": "c1b827ac7f983f3c13144004e0a427a5533fc6d03a33bc393f4c1d761910c7ac",
-      "contextHash": "3a9c28c8db78aecfcd9aaed5ad50c25cd9a6951021b7d0bdecb9242b41d02aea"
-    },
-    {
-      "file": "src/pages/ScheduledReportsPage.tsx",
-      "line": 5,
-      "column": 29,
-      "endLine": 5,
-      "endColumn": 39,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardHeader' is defined but never used.",
-      "spanHash": "be50e900a73e29c6befba6b65752799e9ddfd4159414b22fdb9e4832685690cf",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "c32b11f335b2808de01c2bc2df9ec5e87633f8c239e2f47512e67c0562def825"
-    },
-    {
-      "file": "src/pages/ScheduledReportsPage.tsx",
-      "line": 5,
-      "column": 41,
-      "endLine": 5,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardTitle' is defined but never used.",
-      "spanHash": "a683178436f997e766dbc7c84c3b653859b31b9c6271c28ebe876910a50d5800",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "c32b11f335b2808de01c2bc2df9ec5e87633f8c239e2f47512e67c0562def825"
-    },
-    {
-      "file": "src/pages/ScreenshotDetailPage.tsx",
-      "line": 7,
-      "column": 30,
-      "endLine": 7,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Screenshot' is defined but never used.",
-      "spanHash": "029320ad166c1807cd70230b908d6552a5f4bc8054449a58856a31a2c765c5c4",
-      "lineHash": "71a5c17475bf47a2d3a70771111ee5c3f923211ba9fc5d1a9fe804fd726b6f72",
-      "contextHash": "1c9bbf3da460fc1e1ec2ec31e9a40aaf825437d20fd3617238880093922b51c7"
-    },
-    {
-      "file": "src/pages/ScreenshotsPage.tsx",
-      "line": 13,
-      "column": 11,
-      "endLine": 13,
-      "endColumn": 25,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'ScreenshotItem' is defined but never used.",
-      "spanHash": "c2e008718dbafd77dedde14086d36f44fa01742b17b5115cda2e264e1cb17eb0",
-      "lineHash": "f756286d91ddc31dfddd96d39f03f97b1d5c98c3e9c5c34b6d1217389fc51ea6",
-      "contextHash": "2c124b53e93220edba4242d1079989c597f3d42018b43eb6ad87ec60c48fa43d"
-    },
-    {
-      "file": "src/pages/Settings.tsx",
-      "line": 17,
-      "column": 25,
-      "endLine": 17,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'useSettingsHook' is defined but never used.",
-      "spanHash": "df93429a748c9210068996a132bee08426cc1092ecb33ccb9dc5a6f013b829e5",
-      "lineHash": "8c3b53f50f9a5aa087d642539361aab26756b4214a529e8846b6136bbd005123",
-      "contextHash": "2d53461328231be6738e576056cd8b498f76cbb1b972d2c2489c0b5c6ce98f00"
-    },
-    {
-      "file": "src/pages/Settings.tsx",
-      "line": 22,
-      "column": 1,
-      "endLine": 22,
-      "endColumn": 82,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/ui/error-boundary`",
-      "spanHash": "1bb88bf2b36068229ad3203939fb5b60518e1c458326653a37075c5abb957114",
-      "lineHash": "1bb88bf2b36068229ad3203939fb5b60518e1c458326653a37075c5abb957114",
-      "contextHash": "858e66db796439c94e2b0da72684eba61da5f66e680b4ebd7f6ad4d2f832e556"
-    },
-    {
-      "file": "src/pages/Settings.tsx",
-      "line": 22,
-      "column": 52,
-      "endLine": 22,
-      "endColumn": 59,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Loader2' is defined but never used.",
-      "spanHash": "c1253deeff7cabc9c8b991d9c8b3b07818d5068b8aa0622ba5e3dc86a14f9c2c",
-      "lineHash": "1bb88bf2b36068229ad3203939fb5b60518e1c458326653a37075c5abb957114",
-      "contextHash": "858e66db796439c94e2b0da72684eba61da5f66e680b4ebd7f6ad4d2f832e556"
-    },
-    {
-      "file": "src/pages/Settings.tsx",
-      "line": 26,
-      "column": 9,
-      "endLine": 26,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'navigate' is assigned a value but never used.",
-      "spanHash": "d0cda6559bb347db706f6fa92a5b2491658e0c1e5bda98bb14e3c8a711b8fa33",
-      "lineHash": "c2fcff8bc91bcb3ee2ba6014ed4f15e2cb0d1067e6c0b3286af849d533706818",
-      "contextHash": "47d5726d71b35810ebcd3447867e864a8817e92b03552607e06fed0aad316739"
-    },
-    {
-      "file": "src/pages/Settings.tsx",
-      "line": 5,
-      "column": 1,
-      "endLine": 5,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`react-router-dom` import should occur before import of `@/components/ui/error-boundary`",
-      "spanHash": "7d51bbacee6187e218310fe8dd35b8426e216419fab7a94027f809aaa2f26911",
-      "lineHash": "7d51bbacee6187e218310fe8dd35b8426e216419fab7a94027f809aaa2f26911",
-      "contextHash": "a0d4652b2437927817b4cd56a1bac2691edacc3afcd15e99b66775ad5d5a4c9e"
     },
     {
       "file": "src/pages/TeamDetailPage.tsx",
@@ -19067,146 +17195,6 @@
       "contextHash": "8e4766e1967be07c3f15f9bc305cf986771f838f4ed68b6a609dafc7c02ae9ba"
     },
     {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 10,
-      "column": 1,
-      "endLine": 10,
-      "endColumn": 97,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "3202896c21a8a1fe46f87d9faf0c3c65549a70b0d75f04631e5510695b24096f",
-      "lineHash": "3202896c21a8a1fe46f87d9faf0c3c65549a70b0d75f04631e5510695b24096f",
-      "contextHash": "da5b0e0e94f3cfdc0d8258ef1903d278d80562417663ded9af20ddffdafd21ee"
-    },
-    {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 10,
-      "column": 10,
-      "endLine": 10,
-      "endColumn": 18,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'FileText' is defined but never used.",
-      "spanHash": "70d4fc964b1560bc618cc7f7114c9634a30bbb279ac3f8bd6edbb2cc0de394d7",
-      "lineHash": "3202896c21a8a1fe46f87d9faf0c3c65549a70b0d75f04631e5510695b24096f",
-      "contextHash": "da5b0e0e94f3cfdc0d8258ef1903d278d80562417663ded9af20ddffdafd21ee"
-    },
-    {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 10,
-      "column": 20,
-      "endLine": 10,
-      "endColumn": 28,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Download' is defined but never used.",
-      "spanHash": "d6eafe82359100423c93c5ce53c352c1b51ca1e699215fcec3f5c5dd9bf12d24",
-      "lineHash": "3202896c21a8a1fe46f87d9faf0c3c65549a70b0d75f04631e5510695b24096f",
-      "contextHash": "da5b0e0e94f3cfdc0d8258ef1903d278d80562417663ded9af20ddffdafd21ee"
-    },
-    {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 10,
-      "column": 43,
-      "endLine": 10,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Clock' is defined but never used.",
-      "spanHash": "93ff9273de4b131b4cc3187f9d59229bf3e2c50626cbc733f6e44e3cd7b47d25",
-      "lineHash": "3202896c21a8a1fe46f87d9faf0c3c65549a70b0d75f04631e5510695b24096f",
-      "contextHash": "da5b0e0e94f3cfdc0d8258ef1903d278d80562417663ded9af20ddffdafd21ee"
-    },
-    {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 10,
-      "column": 58,
-      "endLine": 10,
-      "endColumn": 64,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Filter' is defined but never used.",
-      "spanHash": "638e249f4a15ebb84957da130701d138a6e06d88dceeaa2e6dcd91db70cc1381",
-      "lineHash": "3202896c21a8a1fe46f87d9faf0c3c65549a70b0d75f04631e5510695b24096f",
-      "contextHash": "da5b0e0e94f3cfdc0d8258ef1903d278d80562417663ded9af20ddffdafd21ee"
-    },
-    {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 12,
-      "column": 1,
-      "endLine": 12,
-      "endColumn": 95,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "fafa49969046fb7e842771b46642fdd1ae5bcd95e515b21ba6219a239624f453",
-      "lineHash": "fafa49969046fb7e842771b46642fdd1ae5bcd95e515b21ba6219a239624f453",
-      "contextHash": "11f9718c368165e755f48d6851a18d5f6601952b3f60d336bd94a57759f1069a"
-    },
-    {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 13,
-      "column": 1,
-      "endLine": 13,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns/locale` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "lineHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "contextHash": "1ee1b808332e78f4f7cb5b51d9501f46e81ef41a0c8d03b46dfafe5d56a60e95"
-    },
-    {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 39,
-      "column": 17,
-      "endLine": 39,
-      "endColumn": 26,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'employees' is assigned a value but never used.",
-      "spanHash": "c49de3d265fb1d97d0fc104bbc54411ff3784bb1be48c5ce3a4f31a76f223469",
-      "lineHash": "5a069c618f1b18a07c99573067bda890c4c4c52fd32bc4ed81a60ae2f6c41bfe",
-      "contextHash": "09e8721005e5ad8a8001e239b8374e7c837faa3074f212cfea17c173fa2a95ae"
-    },
-    {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 4,
-      "column": 29,
-      "endLine": 4,
-      "endColumn": 39,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardHeader' is defined but never used.",
-      "spanHash": "be50e900a73e29c6befba6b65752799e9ddfd4159414b22fdb9e4832685690cf",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "b953a80b34ffcc0a456daf08b3e7eccfd72b813112128a982e58c21267275bbc"
-    },
-    {
-      "file": "src/pages/TimesheetsPage.tsx",
-      "line": 4,
-      "column": 41,
-      "endLine": 4,
-      "endColumn": 50,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'CardTitle' is defined but never used.",
-      "spanHash": "a683178436f997e766dbc7c84c3b653859b31b9c6271c28ebe876910a50d5800",
-      "lineHash": "a84d4824193549cc64e11dcfa87388967d2fa26e66fb82bbe0dde5a007d2679d",
-      "contextHash": "b953a80b34ffcc0a456daf08b3e7eccfd72b813112128a982e58c21267275bbc"
-    },
-    {
       "file": "src/pages/VerifyReportPage.tsx",
       "line": 12,
       "column": 1,
@@ -19261,62 +17249,6 @@
       "spanHash": "f8204e105d35f7a6ff0daa1ee2ba1448824bb9f80809650ac0a4b093a7e8469e",
       "lineHash": "22067e8a314c5f00aa06c1a8a263d5fde57c4235d4cf230d0b01664b1bcb4a1c",
       "contextHash": "50f32eda49820a01e7c10a74ade56b57c044e57e61401539274e8f8fa2ec3a07"
-    },
-    {
-      "file": "src/pages/ViolationDetailPage.tsx",
-      "line": 9,
-      "column": 21,
-      "endLine": 9,
-      "endColumn": 33,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'setIsLoading' is assigned a value but never used.",
-      "spanHash": "f4c53e9c2756b64e09a7b71ace5bcefcf30b9044da81f142b98fba03631870af",
-      "lineHash": "9760fda46512a2da779de5a92a35966d95efd1fb0d1ee6778d2fd21927f5e26b",
-      "contextHash": "9544dfdfafe17ec4192fed6fd06ea301995d7c8cdaaab2950c87fd52bd0a8abc"
-    },
-    {
-      "file": "src/pages/ViolationsPage.tsx",
-      "line": 16,
-      "column": 34,
-      "endLine": 16,
-      "endColumn": 43,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Violation' is defined but never used.",
-      "spanHash": "12b80b3b248acf1be6af9a462dcf4ff8265fd718744cf7415400872e6b314985",
-      "lineHash": "754ad0fea3aa0a61064647d2573f39cc986dde81c85ec073e2a241a0bde9b3db",
-      "contextHash": "e99b78a85d4d02b42efb4b341cb8f0d834d8696102ef65d4177d8546287d9dda"
-    },
-    {
-      "file": "src/pages/ViolationsPage.tsx",
-      "line": 19,
-      "column": 1,
-      "endLine": 19,
-      "endColumn": 48,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/violations/ViolationTimelineDialog`",
-      "spanHash": "aaa47e8e20a79e11aa6680b1ce48d6777ba41669e3a64d173ac0a78b4195138e",
-      "lineHash": "aaa47e8e20a79e11aa6680b1ce48d6777ba41669e3a64d173ac0a78b4195138e",
-      "contextHash": "a1d466513aa46ecc02dc371c550310d8ea0d2b3d36bc1b7ddb1c55ad415201be"
-    },
-    {
-      "file": "src/pages/ViolationsPage.tsx",
-      "line": 25,
-      "column": 1,
-      "endLine": 28,
-      "endColumn": 19,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`recharts` import should occur before import of `@/components/violations/ViolationTimelineDialog`",
-      "spanHash": "cbe118f0c69fdc91d2d3558adbddf26745cd069166c744406f66120ec2d5686c",
-      "lineHash": "e0cbdab303939db3db5ed1394f8cc7d9c814984d13f730431eb0cabd77c9e204",
-      "contextHash": "bd5069ec235d3461df8565212f40f10083e809c70b2b1b6f0255343602fc1b07"
     },
     {
       "file": "src/pages/ViolationsPage.tsx",
@@ -19429,146 +17361,6 @@
       "spanHash": "7874f87d2830485f8650a7bdaec17e96c20a1187a4e0ca65cba1a658016c164a",
       "lineHash": "61afb2a91c981659b87f4956b3d6eddbe32d0614c77a611a5c2c0f5eac7887ca",
       "contextHash": "920709b51eb0dbf5f196cc12571f435765ea1d6607d9fa7768fc24b2a88aa447"
-    },
-    {
-      "file": "src/pages/ViolationsPage.tsx",
-      "line": 4,
-      "column": 1,
-      "endLine": 4,
-      "endColumn": 35,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/components/violations/ViolationTimelineDialog`",
-      "spanHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "lineHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "contextHash": "6d42b32920281d80409b8bd27c9279ef4a14f52bf33350ec7fdfbf659f3a0275"
-    },
-    {
-      "file": "src/pages/ViolationsPage.tsx",
-      "line": 5,
-      "column": 1,
-      "endLine": 5,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns/locale` import should occur before import of `@/components/violations/ViolationTimelineDialog`",
-      "spanHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "lineHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "contextHash": "3af73ef09fbea3ff4300eed1e663bbf114634ff619a008a1b5a86e50b72ab8f0"
-    },
-    {
-      "file": "src/pages/ViolationsPage.tsx",
-      "line": 6,
-      "column": 1,
-      "endLine": 6,
-      "endColumn": 101,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/violations/ViolationTimelineDialog`",
-      "spanHash": "9b3784335dee43c417a495d9992a6259e81664ae5d0a01a892d31b5bebddba95",
-      "lineHash": "9b3784335dee43c417a495d9992a6259e81664ae5d0a01a892d31b5bebddba95",
-      "contextHash": "640a49491ecaa413fc38273cbd0b718714e17ac80dfd49603c0bb6f35a053887"
-    },
-    {
-      "file": "src/pages/WebhooksPage.tsx",
-      "line": 1,
-      "column": 39,
-      "endLine": 1,
-      "endColumn": 45,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Trash2' is defined but never used.",
-      "spanHash": "ce6a4c9e6371b0dcb27f6c2ec274d2d79e8035dc6b9d2a08dbbddbaf258878bf",
-      "lineHash": "b846fea223845c85cf8b0022679d2d7c822b61354eef947e330ac6c7fd53952b",
-      "contextHash": "d21bf76bad03e93ebc636e59714d36b1c0004c45a6f6ba2688ffdeebe53ff4c9"
-    },
-    {
-      "file": "src/pages/WebhooksPage.tsx",
-      "line": 16,
-      "column": 11,
-      "endLine": 16,
-      "endColumn": 16,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'toast' is assigned a value but never used.",
-      "spanHash": "a60ec1cf58f49cd2fab6d9e760ff1365f6a25dca50c09e9cfc553ce737a2af60",
-      "lineHash": "ad96a560dfbd5aed2e2eacd8f7d71a7700c22a1817f151e2bdb20329887ecd81",
-      "contextHash": "dacb2b8bddb2261e31045fdaa515209f81496ecc6d4d844dd01737798dcfcae6"
-    },
-    {
-      "file": "src/pages/WebhooksPage.tsx",
-      "line": 17,
-      "column": 9,
-      "endLine": 17,
-      "endColumn": 20,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'queryClient' is assigned a value but never used.",
-      "spanHash": "9b1c9947eef94b252c490f8ce4068e16fedd8cfa6177835bd46705b3c5068422",
-      "lineHash": "2987229726586e561fc2ffe3b2376dd349ee54d88c52d9ef0f76b06e133d8695",
-      "contextHash": "e73b5a01fe49938183bc6bc121088d0b401ac1e09b0187d539fb1cc2a6a8e3a5"
-    },
-    {
-      "file": "src/pages/WebhooksPage.tsx",
-      "line": 2,
-      "column": 1,
-      "endLine": 2,
-      "endColumn": 61,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`@/components/layout/PageHeader` import should occur after import of `@tanstack/react-query`",
-      "spanHash": "6998afe5a467cdc98843a1da7ff9aad8a7307f516e33b1b3c6f5a6105ed9586a",
-      "lineHash": "6998afe5a467cdc98843a1da7ff9aad8a7307f516e33b1b3c6f5a6105ed9586a",
-      "contextHash": "27f499a13eac08e0cb662cc7125e7808a7653cd1469316e4f7d137b83d292fe2"
-    },
-    {
-      "file": "src/pages/WebhooksPage.tsx",
-      "line": 4,
-      "column": 20,
-      "endLine": 4,
-      "endColumn": 31,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'useMutation' is defined but never used.",
-      "spanHash": "e6789051f77c4652578146dbb9f8fe158186ae07be5020a98b9b08d8c207bc7b",
-      "lineHash": "ca0ffe73f77c01bf02c8dfbec33ceb07cbdaa636a60ce47679f89beca4d3e3bd",
-      "contextHash": "b11af0ea60acd4e1e55e539c6b3b8d851c51956add7d53566acbbb9fc3520c17"
-    },
-    {
-      "file": "src/pages/WhatsAppIntegrationPage.tsx",
-      "line": 2,
-      "column": 1,
-      "endLine": 2,
-      "endColumn": 61,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`@/components/layout/PageHeader` import should occur after import of `@tanstack/react-query`",
-      "spanHash": "6998afe5a467cdc98843a1da7ff9aad8a7307f516e33b1b3c6f5a6105ed9586a",
-      "lineHash": "6998afe5a467cdc98843a1da7ff9aad8a7307f516e33b1b3c6f5a6105ed9586a",
-      "contextHash": "585af98ea9b550f0501b4c7f7fe9f0420ed5cabdb850f028ed37f50d8102f3f0"
-    },
-    {
-      "file": "src/pages/WhatsAppIntegrationPage.tsx",
-      "line": 3,
-      "column": 10,
-      "endLine": 3,
-      "endColumn": 18,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'useState' is defined but never used.",
-      "spanHash": "2d15bcb160433286d6e0a1f858bc932a0b63e5715c0b9fe595e6b33cabe088ae",
-      "lineHash": "34aeebe8414c0af971926555e4c33f2bd6273ae093fd91452a5c41625562d808",
-      "contextHash": "65749c99b0a5f248817af68d40d875f5697a08f503f09d870a0d8844105ad1fb"
     },
     {
       "file": "src/pages/WorkSchedulesPage.tsx",
@@ -19796,23 +17588,9 @@
     },
     {
       "file": "src/test/auth.test.ts",
-      "line": 103,
-      "column": 68,
-      "endLine": 103,
-      "endColumn": 71,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "44a4b3387e8326be7d2869a164580c5c578635b1d666cd0deb8e00edfb56f243",
-      "contextHash": "b38e3298dada07d4da2e2b7e8fd6e1ad7adf6d4d9f25787049f7eda109b204da"
-    },
-    {
-      "file": "src/test/auth.test.ts",
-      "line": 111,
+      "line": 102,
       "column": 92,
-      "endLine": 111,
+      "endLine": 102,
       "endColumn": 95,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19824,23 +17602,9 @@
     },
     {
       "file": "src/test/auth.test.ts",
-      "line": 13,
-      "column": 7,
-      "endLine": 13,
-      "endColumn": 14,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'wrapper' is assigned a value but never used.",
-      "spanHash": "a622b10ddc23c8c9e9ec39d4833ae9b7b772ef40cb430425cb1689b76ec3490c",
-      "lineHash": "5e6a970b1e2a3f16a58dbcbc6f9136ee0084eb098dc9b44c2c0de716b9276a34",
-      "contextHash": "6444744d440ac40b6a721bc365a03c1983a0fda9684754faddd527e896c02860"
-    },
-    {
-      "file": "src/test/auth.test.ts",
-      "line": 24,
+      "line": 15,
       "column": 125,
-      "endLine": 24,
+      "endLine": 15,
       "endColumn": 128,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19852,9 +17616,9 @@
     },
     {
       "file": "src/test/auth.test.ts",
-      "line": 32,
+      "line": 23,
       "column": 132,
-      "endLine": 32,
+      "endLine": 23,
       "endColumn": 135,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19866,9 +17630,9 @@
     },
     {
       "file": "src/test/auth.test.ts",
-      "line": 40,
+      "line": 31,
       "column": 132,
-      "endLine": 40,
+      "endLine": 31,
       "endColumn": 135,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19880,9 +17644,9 @@
     },
     {
       "file": "src/test/auth.test.ts",
-      "line": 48,
+      "line": 39,
       "column": 132,
-      "endLine": 48,
+      "endLine": 39,
       "endColumn": 135,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19894,37 +17658,9 @@
     },
     {
       "file": "src/test/auth.test.ts",
-      "line": 6,
-      "column": 10,
-      "endLine": 6,
-      "endColumn": 20,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'renderHook' is defined but never used.",
-      "spanHash": "adb49b1684e0097d85957f7a0c98ecf8f351da44f6bf42c374316e7db1b2dcaa",
-      "lineHash": "d8b2bb98dcca25b30d615462323901e174da234b0206d50ab9234ee64044bddf",
-      "contextHash": "d24ebe6144aeb2faec504cef26c5727705042923f07af654392a20a450892b4d"
-    },
-    {
-      "file": "src/test/auth.test.ts",
-      "line": 6,
-      "column": 22,
-      "endLine": 6,
-      "endColumn": 25,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'act' is defined but never used.",
-      "spanHash": "f83f07be16e270186d35b876916c461995ebc3af5b1798f898c33285a1847dbc",
-      "lineHash": "d8b2bb98dcca25b30d615462323901e174da234b0206d50ab9234ee64044bddf",
-      "contextHash": "d24ebe6144aeb2faec504cef26c5727705042923f07af654392a20a450892b4d"
-    },
-    {
-      "file": "src/test/auth.test.ts",
-      "line": 65,
+      "line": 56,
       "column": 126,
-      "endLine": 65,
+      "endLine": 56,
       "endColumn": 129,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19936,9 +17672,9 @@
     },
     {
       "file": "src/test/auth.test.ts",
-      "line": 74,
+      "line": 65,
       "column": 147,
-      "endLine": 74,
+      "endLine": 65,
       "endColumn": 150,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19950,9 +17686,9 @@
     },
     {
       "file": "src/test/auth.test.ts",
-      "line": 82,
+      "line": 73,
       "column": 130,
-      "endLine": 82,
+      "endLine": 73,
       "endColumn": 133,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19964,9 +17700,9 @@
     },
     {
       "file": "src/test/auth.test.ts",
-      "line": 92,
+      "line": 83,
       "column": 60,
-      "endLine": 92,
+      "endLine": 83,
       "endColumn": 63,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19975,6 +17711,20 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "3ef8363c95d71d6803771e0a1495f5228b9e60043d224d7f0d7c123adc9e567c",
       "contextHash": "a772425e41ffc63bd77aa6702cf79bd0ad42d1201e3546795bb5d32a1e02be37"
+    },
+    {
+      "file": "src/test/auth.test.ts",
+      "line": 94,
+      "column": 68,
+      "endLine": 94,
+      "endColumn": 71,
+      "severity": 1,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "messageId": "unexpectedAny",
+      "message": "Unexpected any. Specify a different type.",
+      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
+      "lineHash": "44a4b3387e8326be7d2869a164580c5c578635b1d666cd0deb8e00edfb56f243",
+      "contextHash": "b38e3298dada07d4da2e2b7e8fd6e1ad7adf6d4d9f25787049f7eda109b204da"
     },
     {
       "file": "src/test/base-donut-chart.test.tsx",
@@ -20061,20 +17811,6 @@
       "contextHash": "9a37cbd8b3474b4dd7e49fc6b432630a88f935e31a50751b1d753c726939cf18"
     },
     {
-      "file": "src/test/comprehensive-validation.test.ts",
-      "line": 1,
-      "column": 32,
-      "endLine": 1,
-      "endColumn": 34,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'vi' is defined but never used.",
-      "spanHash": "c0ff93ea8927a7366db0331e5fd9d19f438614c305b66cd24d7c873f77b63b7b",
-      "lineHash": "c1b1737616e27ead0e05ab093cd17fa7e66927a1c8aa87560103891926ef3ef7",
-      "contextHash": "1bf96f30c400d3517623ac86089a7146cabe866cfb6e968897af5bc6effdf0e2"
-    },
-    {
       "file": "src/test/data-operations.test.ts",
       "line": 100,
       "column": 17,
@@ -20087,20 +17823,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "bc4e385fbf25a5d9c669f6a9016192a48c108694f82cc8f4ebdc111cb477bf0d",
       "contextHash": "7d7cac772a985943c70f546d5887ef9341a3bb7cffbda7c4af0106d4e31adf93"
-    },
-    {
-      "file": "src/test/data-operations.test.ts",
-      "line": 125,
-      "column": 13,
-      "endLine": 125,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'data' is assigned a value but never used.",
-      "spanHash": "3a6eb0790f39ac87c94f3856b2dd2c5d110e6811602261a9a923d3bb23adc8b7",
-      "lineHash": "f2c63c549585786e96af3b1a5ba637a5db2e4b89f1a71a409891eec62a6b9337",
-      "contextHash": "4f948a0df526a31e0f414e58ccaf4e4766e58fd1e38e7cab84a658c043550343"
     },
     {
       "file": "src/test/data-operations.test.ts",
@@ -20258,9 +17980,9 @@
     },
     {
       "file": "src/test/edge-cases-advanced.test.ts",
-      "line": 213,
+      "line": 216,
       "column": 14,
-      "endLine": 213,
+      "endLine": 216,
       "endColumn": 17,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20272,9 +17994,9 @@
     },
     {
       "file": "src/test/edge-cases-advanced.test.ts",
-      "line": 220,
+      "line": 223,
       "column": 34,
-      "endLine": 220,
+      "endLine": 223,
       "endColumn": 37,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20286,9 +18008,9 @@
     },
     {
       "file": "src/test/edge-cases-advanced.test.ts",
-      "line": 357,
+      "line": 360,
       "column": 56,
-      "endLine": 357,
+      "endLine": 360,
       "endColumn": 59,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20300,9 +18022,9 @@
     },
     {
       "file": "src/test/edge-cases-advanced.test.ts",
-      "line": 357,
+      "line": 360,
       "column": 74,
-      "endLine": 357,
+      "endLine": 360,
       "endColumn": 77,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20311,34 +18033,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "4a42a26f87971ce2915b468184a4832a38b4879b70f0d05a5d37d67fb9abf42c",
       "contextHash": "1adc5fa65997963012a67b0bbc35e17bedf72f02b7150de3945f525bfa3278b1"
-    },
-    {
-      "file": "src/test/edge-cases-advanced.test.ts",
-      "line": 5,
-      "column": 32,
-      "endLine": 5,
-      "endColumn": 34,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'vi' is defined but never used.",
-      "spanHash": "c0ff93ea8927a7366db0331e5fd9d19f438614c305b66cd24d7c873f77b63b7b",
-      "lineHash": "825129b5728e38022688927e788e1e5d6115330c2471df987a9bf055bc3d0ba6",
-      "contextHash": "f1867ad06a0f4320a78c5d1473ae0277348fbe656bcade181f8e50faaef32fa4"
-    },
-    {
-      "file": "src/test/edge-cases-advanced.test.ts",
-      "line": 6,
-      "column": 10,
-      "endLine": 6,
-      "endColumn": 18,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'supabase' is defined but never used.",
-      "spanHash": "4d7594e57f7d03f35ede2d316cda4cdb7df66b28963738e836a2f16d9fc9eb4d",
-      "lineHash": "88aba2a3242ff46e1adcfff272394b9d139f514f7979d49b8b4ead0ea66278cb",
-      "contextHash": "e7f13580469f4d743d0853b6b9acd84f2d97c08e62f822999e00b0ddafc1e65f"
     },
     {
       "file": "src/test/edge-functions.test.ts",
@@ -20367,34 +18061,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "bc4e385fbf25a5d9c669f6a9016192a48c108694f82cc8f4ebdc111cb477bf0d",
       "contextHash": "e84b305d7ed61416eae1eee838bc22d1d7887de949fe638a8e5b0cf40e68fd41"
-    },
-    {
-      "file": "src/test/empty-states.test.tsx",
-      "line": 14,
-      "column": 1,
-      "endLine": 14,
-      "endColumn": 38,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/EmptyStates`",
-      "spanHash": "dd852cf3a80c84f2391210786a9e6383a6cdbf54c2ee5c7318cfeb9933f87d8b",
-      "lineHash": "dd852cf3a80c84f2391210786a9e6383a6cdbf54c2ee5c7318cfeb9933f87d8b",
-      "contextHash": "8635219a3656da1853387e7e6b3edc57d6a0fb0d83df75079ec2d26b0f06dd79"
-    },
-    {
-      "file": "src/test/error-tracker.test.ts",
-      "line": 5,
-      "column": 36,
-      "endLine": 5,
-      "endColumn": 46,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'beforeEach' is defined but never used.",
-      "spanHash": "a6cef53e28c7ad53d768af42a224ce896b17b0bf62f13fc28569951813c716d1",
-      "lineHash": "c1b1737616e27ead0e05ab093cd17fa7e66927a1c8aa87560103891926ef3ef7",
-      "contextHash": "22c956665c84e323b4be13bac9b8ea47be57f2caea2cbe7b4e66dfeb5f86e887"
     },
     {
       "file": "src/test/expanded-validation.test.ts",
@@ -20510,20 +18176,6 @@
     },
     {
       "file": "src/test/external-db-bridge.test.ts",
-      "line": 5,
-      "column": 36,
-      "endLine": 5,
-      "endColumn": 46,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'beforeEach' is defined but never used.",
-      "spanHash": "a6cef53e28c7ad53d768af42a224ce896b17b0bf62f13fc28569951813c716d1",
-      "lineHash": "c1b1737616e27ead0e05ab093cd17fa7e66927a1c8aa87560103891926ef3ef7",
-      "contextHash": "3277fd6bd6aa0e6fb04aefdb4e75a07c37b90b2ebf9a8f07e7670d3c306f3507"
-    },
-    {
-      "file": "src/test/external-db-bridge.test.ts",
       "line": 50,
       "column": 15,
       "endLine": 50,
@@ -20565,20 +18217,6 @@
       "contextHash": "fa54bf662516ef2b0228204c134509098b2d6f95f7653d8cdeda8f9610dcd9d3"
     },
     {
-      "file": "src/test/forms.test.tsx",
-      "line": 2,
-      "column": 26,
-      "endLine": 2,
-      "endColumn": 35,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'fireEvent' is defined but never used.",
-      "spanHash": "2e6b8dc0af05d7c5a3c08e6c410e50e6579a76088c50b08548f253cb2accf768",
-      "lineHash": "3db6c86480867ed4f0768fdebb18687fb61a209ccb929827b218dd19b2fd8ed0",
-      "contextHash": "5b258d450a515fd5e4a6b147bc68aea376a5c0314456cda83e56493be55016c5"
-    },
-    {
       "file": "src/test/gap-audit.test.ts",
       "line": 31,
       "column": 10,
@@ -20605,20 +18243,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "954a1cf68b648e6b61733bee270e665d518a56aa0e27a14bdb9d3d35e1d40c50",
       "contextHash": "15a6ec9d020b84a5a368465198ff814c68102c89b847bc3532c1b9bc807c2757"
-    },
-    {
-      "file": "src/test/header-enhanced.test.tsx",
-      "line": 2,
-      "column": 37,
-      "endLine": 2,
-      "endColumn": 43,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'within' is defined but never used.",
-      "spanHash": "f106376011688eda079ceb77accc1e24b0761bc383f6d209d1065e709aa056f2",
-      "lineHash": "d1135579af8756c165a4062f8a9c6e5a1b4e36ec0a0dc4b98cfbe7d7243d7784",
-      "contextHash": "9c11f73b894f9f219b4019396f638d66d0aa3f40044716fc4bbf2d928582065b"
     },
     {
       "file": "src/test/hooks-core.test.ts",
@@ -20661,118 +18285,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "b6b914d4c16c88d9908ef73fed5401904a839f3c42946311c1deb14e60c41d2b",
       "contextHash": "532c2e7c83929a1b8fe691628eb28f6bb9d4f087bf3ed99104c1df368fbb3059"
-    },
-    {
-      "file": "src/test/improvements-verification.test.ts",
-      "line": 519,
-      "column": 7,
-      "endLine": 0,
-      "endColumn": 0,
-      "severity": 1,
-      "ruleId": null,
-      "messageId": null,
-      "message": "Unused eslint-disable directive (no problems were reported from 'react/no-children-prop').",
-      "spanHash": null,
-      "lineHash": "51c65d5af57cf68f921a41e0ed8bc76dea11f1c7c32ef1fc023c7d01440c1055",
-      "contextHash": "071a643b3be544f12e73c26a7c9da4014d64c8ddae198565f5cab854229ddc9b"
-    },
-    {
-      "file": "src/test/improvements-verification.test.ts",
-      "line": 521,
-      "column": 9,
-      "endLine": 525,
-      "endColumn": 11,
-      "severity": 2,
-      "ruleId": "react/no-children-prop",
-      "messageId": "passChildrenAsArgs",
-      "message": "Do not pass children as props. Instead, pass them as additional arguments to React.createElement.",
-      "spanHash": "f676aa7df3640ea1fa39ff9ceb8810c6b2b44043a5a03d695caba0a86e993324",
-      "lineHash": "765668997fda7b8edf08f727daa0a8c9167e95e834c3bb098bd352608b303aac",
-      "contextHash": "3ea50f148700dc6b4e7e850c4e65de81c0a3ed730ffb61dee6e3bbc025b77834"
-    },
-    {
-      "file": "src/test/improvements-verification.test.ts",
-      "line": 536,
-      "column": 7,
-      "endLine": 0,
-      "endColumn": 0,
-      "severity": 1,
-      "ruleId": null,
-      "messageId": null,
-      "message": "Unused eslint-disable directive (no problems were reported from 'react/no-children-prop').",
-      "spanHash": null,
-      "lineHash": "6458b6036d10f926f00a004ba1dab2fbed1f084249de2bcd760ec8b0edf268e0",
-      "contextHash": "1a1f668daf007582de2dac1db42e4b083c1440d94c6c81e5b3c8d0c4b6771ff1"
-    },
-    {
-      "file": "src/test/improvements-verification.test.ts",
-      "line": 538,
-      "column": 9,
-      "endLine": 544,
-      "endColumn": 11,
-      "severity": 2,
-      "ruleId": "react/no-children-prop",
-      "messageId": "passChildrenAsArgs",
-      "message": "Do not pass children as props. Instead, pass them as additional arguments to React.createElement.",
-      "spanHash": "92786abca76990602b4d4b65ece7a5f1f9c134237d409886cfd7ec30e063ded7",
-      "lineHash": "94900228dcdd4b1987d96eaec67ece9b31eba14e6b450c1885dafc02d4f09709",
-      "contextHash": "7108942c1e439b9fc2de02d651a891ebe4d65daf352af2ffe021ea98c8b88f18"
-    },
-    {
-      "file": "src/test/lgpd-flow.test.ts",
-      "line": 11,
-      "column": 1,
-      "endLine": 11,
-      "endColumn": 41,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`node:crypto` import should occur before import of `vitest`",
-      "spanHash": "3b6843d5a7c9ce897a5b59455b46401368800a20c1051c3714c21f487b61971a",
-      "lineHash": "3b6843d5a7c9ce897a5b59455b46401368800a20c1051c3714c21f487b61971a",
-      "contextHash": "03614b7b6ddbb399efd84ace4734120891171ac3b5199015efc64076ec982fce"
-    },
-    {
-      "file": "src/test/performance-budget.test.ts",
-      "line": 1,
-      "column": 32,
-      "endLine": 1,
-      "endColumn": 34,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'vi' is defined but never used.",
-      "spanHash": "c0ff93ea8927a7366db0331e5fd9d19f438614c305b66cd24d7c873f77b63b7b",
-      "lineHash": "c1b1737616e27ead0e05ab093cd17fa7e66927a1c8aa87560103891926ef3ef7",
-      "contextHash": "74cefc9370c91342200cfc9639ac3102c9469da0009e71dc43d297847fb6c637"
-    },
-    {
-      "file": "src/test/performance-budget.test.ts",
-      "line": 1,
-      "column": 36,
-      "endLine": 1,
-      "endColumn": 46,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'beforeEach' is defined but never used.",
-      "spanHash": "a6cef53e28c7ad53d768af42a224ce896b17b0bf62f13fc28569951813c716d1",
-      "lineHash": "c1b1737616e27ead0e05ab093cd17fa7e66927a1c8aa87560103891926ef3ef7",
-      "contextHash": "74cefc9370c91342200cfc9639ac3102c9469da0009e71dc43d297847fb6c637"
-    },
-    {
-      "file": "src/test/request-dedup.test.ts",
-      "line": 1,
-      "column": 32,
-      "endLine": 1,
-      "endColumn": 34,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'vi' is defined but never used.",
-      "spanHash": "c0ff93ea8927a7366db0331e5fd9d19f438614c305b66cd24d7c873f77b63b7b",
-      "lineHash": "c1b1737616e27ead0e05ab093cd17fa7e66927a1c8aa87560103891926ef3ef7",
-      "contextHash": "3d1a9a781a68a1166609758216863166caa0cbf3ac8a9865a52412af196262cd"
     },
     {
       "file": "src/test/security-extended.test.ts",
@@ -20819,20 +18331,6 @@
     {
       "file": "src/test/stats-card.test.tsx",
       "line": 15,
-      "column": 63,
-      "endLine": 15,
-      "endColumn": 72,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'separator' is assigned a value but never used. Allowed unused args must match /^_/u.",
-      "spanHash": "080856f98d1eb14b814733d0c19b1af3161009c39e8e44ac79fe80a05b94f425",
-      "lineHash": "7c9125888a50c95c914991de89129b8c1c63911c40a5071581ba524b0f521a34",
-      "contextHash": "202499aa6ec1355967a88e9a25a0e79e929022a5bef044deb555690517465cfb"
-    },
-    {
-      "file": "src/test/stats-card.test.tsx",
-      "line": 15,
       "column": 81,
       "endLine": 15,
       "endColumn": 84,
@@ -20843,48 +18341,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "7c9125888a50c95c914991de89129b8c1c63911c40a5071581ba524b0f521a34",
       "contextHash": "202499aa6ec1355967a88e9a25a0e79e929022a5bef044deb555690517465cfb"
-    },
-    {
-      "file": "src/test/stats-card.test.tsx",
-      "line": 4,
-      "column": 1,
-      "endLine": 4,
-      "endColumn": 71,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/Cards/StatsCard`",
-      "spanHash": "7a162e0762ba7eb7d7bc2398dbd2511e8cd3ccf8d1658826f1a98984d3592260",
-      "lineHash": "7a162e0762ba7eb7d7bc2398dbd2511e8cd3ccf8d1658826f1a98984d3592260",
-      "contextHash": "bf18da9226a1ef875d327e109c133b65c8545fabce4c19cd6aeeda599bd1ad32"
-    },
-    {
-      "file": "src/test/stats-card.test.tsx",
-      "line": 4,
-      "column": 17,
-      "endLine": 4,
-      "endColumn": 23,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Shield' is defined but never used.",
-      "spanHash": "480d4be7d61fe52bc31768ffaaffea7ad5db66ba8b699d30623c4726704cc646",
-      "lineHash": "7a162e0762ba7eb7d7bc2398dbd2511e8cd3ccf8d1658826f1a98984d3592260",
-      "contextHash": "bf18da9226a1ef875d327e109c133b65c8545fabce4c19cd6aeeda599bd1ad32"
-    },
-    {
-      "file": "src/test/stats-card.test.tsx",
-      "line": 4,
-      "column": 25,
-      "endLine": 4,
-      "endColumn": 33,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'Activity' is defined but never used.",
-      "spanHash": "38da1505ca8373288489495101b14f24ac95078f520ad64df18272aa6054f750",
-      "lineHash": "7a162e0762ba7eb7d7bc2398dbd2511e8cd3ccf8d1658826f1a98984d3592260",
-      "contextHash": "bf18da9226a1ef875d327e109c133b65c8545fabce4c19cd6aeeda599bd1ad32"
     },
     {
       "file": "src/test/stats-card.test.tsx",
@@ -21000,20 +18456,6 @@
     },
     {
       "file": "src/test/supabase-integration.test.ts",
-      "line": 151,
-      "column": 13,
-      "endLine": 151,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'data' is assigned a value but never used.",
-      "spanHash": "3a6eb0790f39ac87c94f3856b2dd2c5d110e6811602261a9a923d3bb23adc8b7",
-      "lineHash": "31a3c113a5015efdde8b1161af12b23fe8377159e5dd76821a1e67a9f17aa8b9",
-      "contextHash": "12faefc928413a889ccd4ef3b70c32cdbfbd0686d6080d31a1ba2c34d81cec54"
-    },
-    {
-      "file": "src/test/supabase-integration.test.ts",
       "line": 34,
       "column": 8,
       "endLine": 34,
@@ -21081,90 +18523,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "3767035a4f42befe60f1b710fce11dfa7ac133a18e6aa204fbdfb2bbf27a4a5c",
       "contextHash": "561c9185e02d953ce4eaadd1910db717f1373591749b15b3b5a12106ac8def8d"
-    },
-    {
-      "file": "src/test/telemetry.test.ts",
-      "line": 5,
-      "column": 32,
-      "endLine": 5,
-      "endColumn": 34,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'vi' is defined but never used.",
-      "spanHash": "c0ff93ea8927a7366db0331e5fd9d19f438614c305b66cd24d7c873f77b63b7b",
-      "lineHash": "c1b1737616e27ead0e05ab093cd17fa7e66927a1c8aa87560103891926ef3ef7",
-      "contextHash": "3277fd6bd6aa0e6fb04aefdb4e75a07c37b90b2ebf9a8f07e7670d3c306f3507"
-    },
-    {
-      "file": "src/test/useCountUp.test.ts",
-      "line": 2,
-      "column": 22,
-      "endLine": 2,
-      "endColumn": 25,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'act' is defined but never used.",
-      "spanHash": "f83f07be16e270186d35b876916c461995ebc3af5b1798f898c33285a1847dbc",
-      "lineHash": "d8b2bb98dcca25b30d615462323901e174da234b0206d50ab9234ee64044bddf",
-      "contextHash": "ea75a3ff064b1675ea6e74af250f4531cee572d09ab4a4ec7c5103fc4f08563d"
-    },
-    {
-      "file": "src/test/useCountUp.test.ts",
-      "line": 85,
-      "column": 11,
-      "endLine": 85,
-      "endColumn": 18,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'initial' is assigned a value but never used.",
-      "spanHash": "ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149",
-      "lineHash": "593142fdff5479182deb5162aefa26cd8ce7f905f21653e584a0cf2a16286481",
-      "contextHash": "dd2f33a76e7fcd523ee0d649b38bdc1713f8370a95c7e24f6459cd239bda8f0b"
-    },
-    {
-      "file": "src/test/useEmployeesPage.test.ts",
-      "line": 1,
-      "column": 32,
-      "endLine": 1,
-      "endColumn": 34,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'vi' is defined but never used.",
-      "spanHash": "c0ff93ea8927a7366db0331e5fd9d19f438614c305b66cd24d7c873f77b63b7b",
-      "lineHash": "825129b5728e38022688927e788e1e5d6115330c2471df987a9bf055bc3d0ba6",
-      "contextHash": "ede762aed844c05f6752c8c585305790d6a1f148678016ff3289d054ca5da9d6"
-    },
-    {
-      "file": "src/test/useEmployeesPage.test.ts",
-      "line": 2,
-      "column": 10,
-      "endLine": 2,
-      "endColumn": 20,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'renderHook' is defined but never used.",
-      "spanHash": "adb49b1684e0097d85957f7a0c98ecf8f351da44f6bf42c374316e7db1b2dcaa",
-      "lineHash": "d8b2bb98dcca25b30d615462323901e174da234b0206d50ab9234ee64044bddf",
-      "contextHash": "0bb060ff82b16cb3cee2a4bc6c9df478ca9fe609f2ff47aebbb2682e7bf53b52"
-    },
-    {
-      "file": "src/test/useEmployeesPage.test.ts",
-      "line": 2,
-      "column": 22,
-      "endLine": 2,
-      "endColumn": 25,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'act' is defined but never used.",
-      "spanHash": "f83f07be16e270186d35b876916c461995ebc3af5b1798f898c33285a1847dbc",
-      "lineHash": "d8b2bb98dcca25b30d615462323901e174da234b0206d50ab9234ee64044bddf",
-      "contextHash": "0bb060ff82b16cb3cee2a4bc6c9df478ca9fe609f2ff47aebbb2682e7bf53b52"
     },
     {
       "file": "src/test/utils.test.ts",
@@ -21896,9 +19254,9 @@
     },
     {
       "file": "src/utils/hash.ts",
-      "line": 19,
+      "line": 21,
       "column": 12,
-      "endLine": 19,
+      "endLine": 21,
       "endColumn": 20,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-unused-vars",
@@ -21991,20 +19349,6 @@
       "spanHash": "5c022ffb48a537cbf1e0b4e4148f00429a13984326d5b8d59ebd0e98d3e446fd",
       "lineHash": "d60c1478f5ee89305cc5125685d9ed0c91e5128e7b880c671326e3eb850172c2",
       "contextHash": "63390d53c375e9e38e63961c7d184c0c93cb97a4545c64eddb27d114f02bd7ea"
-    },
-    {
-      "file": "src/utils/validation.ts",
-      "line": 18,
-      "column": 34,
-      "endLine": 18,
-      "endColumn": 44,
-      "severity": 2,
-      "ruleId": "no-control-regex",
-      "messageId": "unexpected",
-      "message": "Unexpected control character(s) in regular expression: \\x01.",
-      "spanHash": "d1e7f1a021b61a7475fbee08482e424975269726b5a0902f0f72c996e80d2eca",
-      "lineHash": "77aa707ffbb939e4cc1675b468f16bbed16ba781fb848581adf8bde0cf801a14",
-      "contextHash": "724dd4075b8fb7024c6d432997c01a45bd9554ba92211e65800a073bb9db8eb2"
     },
     {
       "file": "src/utils/validation.ts",
@@ -22526,9 +19870,9 @@
     },
     {
       "file": "supabase/functions/get-mapbox-token/index.ts",
-      "line": 67,
+      "line": 83,
       "column": 9,
-      "endLine": 67,
+      "endLine": 83,
       "endColumn": 63,
       "severity": 2,
       "ruleId": "no-case-declarations",
@@ -22680,17 +20024,31 @@
     },
     {
       "file": "supabase/functions/natural-language-query/index.ts",
-      "line": 110,
+      "line": 113,
+      "column": 32,
+      "endLine": 113,
+      "endColumn": 35,
+      "severity": 1,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "messageId": "unexpectedAny",
+      "message": "Unexpected any. Specify a different type.",
+      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
+      "lineHash": "35febae300845926386babef210e1c5f6226d896cf7012a46b0eb60558997a2e",
+      "contextHash": "ec90eda4ac2c0c326cf4f65dc33fb468d40ba42a967c80e0c81fbd1cf813aca3"
+    },
+    {
+      "file": "supabase/functions/natural-language-query/index.ts",
+      "line": 144,
       "column": 33,
-      "endLine": 110,
+      "endLine": 144,
       "endColumn": 36,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
       "messageId": "unexpectedAny",
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "d87a2486ac54477c8ca391e83a29343f5859141860dd56c78ea02525bd16d7de",
-      "contextHash": "9fe0928b9138cc60879da1534f5da150eb63bf707d29474a6485c7b193282076"
+      "lineHash": "20cedb063e990aa95f4985603b7aca8748c94e1b2b6189e572677a8626cb93f5",
+      "contextHash": "e406e68d94dc5b3b3a8ad853561b7d4dc1398ec27f03571e1d89f7a63aa9b4b2"
     },
     {
       "file": "supabase/functions/natural-language-query/index.ts",
@@ -22708,6 +20066,20 @@
     },
     {
       "file": "supabase/functions/natural-language-query/index.ts",
+      "line": 171,
+      "column": 33,
+      "endLine": 171,
+      "endColumn": 36,
+      "severity": 1,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "messageId": "unexpectedAny",
+      "message": "Unexpected any. Specify a different type.",
+      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
+      "lineHash": "d87a2486ac54477c8ca391e83a29343f5859141860dd56c78ea02525bd16d7de",
+      "contextHash": "9fe0928b9138cc60879da1534f5da150eb63bf707d29474a6485c7b193282076"
+    },
+    {
+      "file": "supabase/functions/natural-language-query/index.ts",
       "line": 18,
       "column": 7,
       "endLine": 18,
@@ -22719,34 +20091,6 @@
       "spanHash": "eb9fb12caae04ee420314e2c29ca852fb85c4872af92304829a6fdacfc4ac1ac",
       "lineHash": "6d0f3aa96b6ad630d6b16dd3a3b2240d3da9e443aee38dd89a28f9a8341271e9",
       "contextHash": "f64f0ffc5972240a11b74641a8b14c8efb6102c1a82d97bf268f1091b3860435"
-    },
-    {
-      "file": "supabase/functions/natural-language-query/index.ts",
-      "line": 56,
-      "column": 32,
-      "endLine": 56,
-      "endColumn": 35,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "35febae300845926386babef210e1c5f6226d896cf7012a46b0eb60558997a2e",
-      "contextHash": "ec90eda4ac2c0c326cf4f65dc33fb468d40ba42a967c80e0c81fbd1cf813aca3"
-    },
-    {
-      "file": "supabase/functions/natural-language-query/index.ts",
-      "line": 83,
-      "column": 33,
-      "endLine": 83,
-      "endColumn": 36,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "20cedb063e990aa95f4985603b7aca8748c94e1b2b6189e572677a8626cb93f5",
-      "contextHash": "e406e68d94dc5b3b3a8ad853561b7d4dc1398ec27f03571e1d89f7a63aa9b4b2"
     },
     {
       "file": "supabase/functions/notify-dispute-decision/index.ts",
@@ -23576,9 +20920,9 @@
     },
     {
       "file": "supabase/functions/validate-agent-key/index.ts",
-      "line": 39,
+      "line": 50,
       "column": 23,
-      "endLine": 39,
+      "endLine": 50,
       "endColumn": 33,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-unused-vars",
@@ -23590,23 +20934,9 @@
     },
     {
       "file": "supabase/functions/validate-agent-key/index.ts",
-      "line": 4,
-      "column": 1,
-      "endLine": 4,
-      "endColumn": 60,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`https://deno.land/x/zod@v3.22.4/mod.ts` import should occur before import of `../_shared/logger.ts`",
-      "spanHash": "9f841f9092cebe84ba66ff65cb2bc73ab778e293816cad55cb1b53cd40ce3d43",
-      "lineHash": "9f841f9092cebe84ba66ff65cb2bc73ab778e293816cad55cb1b53cd40ce3d43",
-      "contextHash": "7e0e34c518933276c49beaf05f226fa4cbb095e3768cd6a26071c5d6a1c8ce4b"
-    },
-    {
-      "file": "supabase/functions/validate-agent-key/index.ts",
-      "line": 84,
+      "line": 95,
       "column": 19,
-      "endLine": 84,
+      "endLine": 95,
       "endColumn": 22,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
