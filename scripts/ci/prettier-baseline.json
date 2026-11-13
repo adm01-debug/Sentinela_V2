@@ -6,7 +6,6 @@
   "files": [
     ".github/ISSUE_TEMPLATE/bug_report.md",
     ".github/ISSUE_TEMPLATE/feature_request.md",
-    ".github/workflows/cd.yml",
     ".github/workflows/contexto.yml",
     ".github/workflows/deploy.yml",
     ".github/workflows/desktop-build.yml",
