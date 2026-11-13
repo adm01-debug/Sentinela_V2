@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "576d84a8144406b48258869b9757dc4cf6810e24",
+  "commit": "c92e7413be2c69ee58b97d52193adb0dc9a4485b",
   "branch": "main",
-  "data_commit": "2026-11-13T13:16:20-03:00",
+  "data_commit": "2026-11-13T15:25:07-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "c92e7413b",
+    "data": "2026-11-13",
+    "assunto": "fix: parseCurrency ignora separador de milhar (regex literal quebrada) (#123)"
+   },
    {
     "sha": "576d84a81",
     "data": "2026-11-13",
@@ -126,14 +131,9 @@
     "sha": "726ffbe10",
     "data": "2026-11-11",
     "assunto": "fix: remove unused imports e variaveis nos testes destravando pre-commit (#102)"
-   },
-   {
-    "sha": "69460cb3c",
-    "data": "2026-11-11",
-    "assunto": "fix(ci): corrige parse YAML dos workflows cd/security (#101)"
    }
   ],
-  "arquivos_mudados_7d": 227,
+  "arquivos_mudados_7d": 228,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 31
+    "commits": 32
    },
    {
     "autor": "dependabot[bot]",
@@ -312,7 +312,7 @@
  "contagens": {
   "arquivos_total": 1824,
   "arquivos_codigo": 1399,
-  "linhas_codigo": 147036,
+  "linhas_codigo": 147030,
   "rotas": 54,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -488,7 +488,7 @@
   },
   "src/utils": {
    "arquivos": 64,
-   "linhas": 5253
+   "linhas": 5247
   },
   "src/validators": {
    "arquivos": 1,

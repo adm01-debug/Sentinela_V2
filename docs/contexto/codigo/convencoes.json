@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: parseCurrency ignora separador de milhar (regex literal quebrada) (#123)",
    "chore: baixa baseline do format-ratchet apos merges #119/#120 (#121)",
    "chore: remove workflow CD (S3/CloudFront) - projeto nao usa AWS (#120)",
    "fix: zera divida de typecheck (recharts 3 / day-picker 10 / React 19) (#119)",
-   "fix: resolve binarios via PATHEXT e evita short-names no Windows (#118)",
-   "chore: baixa baselines do lint/format-ratchet apos limpeza (#117)"
+   "fix: resolve binarios via PATHEXT e evita short-names no Windows (#118)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

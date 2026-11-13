@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `576d84a8144406b48258869b9757dc4cf6810e24` (2026-11-13T13:16:20-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c92e7413be2c69ee58b97d52193adb0dc9a4485b` (2026-11-13T15:25:07-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1824 |
 | arquivos_codigo | 1399 |
-| linhas_codigo | 147036 |
+| linhas_codigo | 147030 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -451,6 +451,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `c92e7413b` fix: parseCurrency ignora separador de milhar (regex literal quebrada) (#123)
 - 2026-11-13 `576d84a81` chore: baixa baseline do format-ratchet apos merges #119/#120 (#121)
 - 2026-11-13 `cd6ef0692` chore: remove workflow CD (S3/CloudFront) - projeto nao usa AWS (#120)
 - 2026-11-13 `775d830f9` fix: zera divida de typecheck (recharts 3 / day-picker 10 / React 19) (#119)
@@ -465,7 +466,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-12 `dc7d30c08` fix: porta hardening de seguranca da branch qa (CNPJ, UTF-8, ReDoS, JWT, rate limit) (#112)
 - 2026-11-12 `2d707fd3c` build(deps-dev): bump @types/node from 26.6.3 to 26.6.6 (#109)
 - 2026-11-12 `7e3b22a48` fix: remove src/components/Forms.tsx morto que sombreava o barrel forms/ (#108)
-- 2026-11-12 `df537774d` build(deps): bump the test group across 1 directory with 6 updates (#85)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
