@@ -2,6 +2,8 @@ name: Mobile Build
 on:
   push:
     paths: ['mobile-app/**']
+permissions:
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest

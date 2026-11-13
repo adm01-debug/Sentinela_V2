@@ -2,6 +2,8 @@ name: Desktop Build
 on:
   push:
     paths: ['desktop-agent/**']
+permissions:
+  contents: read
 jobs:
   # The desktop agent depends on native modules (iohook, screenshot-desktop,
   # active-win) and is packaged with electron-builder --win, none of which can
