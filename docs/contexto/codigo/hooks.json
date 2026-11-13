@@ -161,7 +161,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 72,
+   "usado_por": 70,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",

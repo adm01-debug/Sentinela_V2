@@ -3764,7 +3764,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 140,
+   "usado_por": 138,
    "orfao": false
   },
   {
@@ -3812,7 +3812,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 3,
+   "usado_por": 2,
    "orfao": false
   },
   {
@@ -4619,7 +4619,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 8,
+   "usado_por": 6,
    "orfao": false
   },
   {
@@ -5409,7 +5409,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 15,
+   "usado_por": 14,
    "orfao": false
   },
   {
@@ -6158,7 +6158,7 @@
     "EdgeFunctionDashboard"
    ],
    "export_default": "EdgeFunctionDashboard",
-   "linhas": 160,
+   "linhas": 159,
    "dominio": "pages/admin",
    "hooks_locais": [
     "useQuery"
@@ -6207,7 +6207,7 @@
     "IntegrationsHealthPage"
    ],
    "export_default": "IntegrationsHealthPage",
-   "linhas": 335,
+   "linhas": 334,
    "dominio": "pages/admin",
    "hooks_locais": [
     "useQuery"
@@ -6404,7 +6404,7 @@
     "AlertDetailPage"
    ],
    "export_default": "AlertDetailPage",
-   "linhas": 78,
+   "linhas": 77,
    "dominio": "pages",
    "hooks_locais": [
     "useAcknowledgeAlert",
@@ -6563,7 +6563,7 @@
     "ApiKeysPage"
    ],
    "export_default": "ApiKeysPage",
-   "linhas": 55,
+   "linhas": 43,
    "dominio": "pages",
    "hooks_locais": [],
    "tabelas": [],
@@ -6616,12 +6616,11 @@
     "Auth"
    ],
    "export_default": "Auth",
-   "linhas": 488,
+   "linhas": 486,
    "dominio": "pages",
    "hooks_locais": [
     "useAuth",
-    "useAuthPage",
-    "useTranslation"
+    "useAuthPage"
    ],
    "tabelas": [],
    "edges": [],
@@ -6650,7 +6649,7 @@
     "CalendarPage"
    ],
    "export_default": "CalendarPage",
-   "linhas": 50,
+   "linhas": 49,
    "dominio": "pages",
    "hooks_locais": [],
    "tabelas": [],
@@ -6800,7 +6799,7 @@
     "DepartmentDetailPage"
    ],
    "export_default": "DepartmentDetailPage",
-   "linhas": 30,
+   "linhas": 29,
    "dominio": "pages",
    "hooks_locais": [
     "useDepartment"
@@ -6832,7 +6831,7 @@
     "ChartSimulationPage"
    ],
    "export_default": "ChartSimulationPage",
-   "linhas": 128,
+   "linhas": 127,
    "dominio": "pages/dev",
    "hooks_locais": [
     "useSearchParams",
@@ -6849,7 +6848,7 @@
     "LiveViewSimulatorPage"
    ],
    "export_default": "LiveViewSimulatorPage",
-   "linhas": 245,
+   "linhas": 242,
    "dominio": "pages/dev",
    "hooks_locais": [],
    "tabelas": [],
@@ -6998,11 +6997,10 @@
     "GeofencingPage"
    ],
    "export_default": "GeofencingPage",
-   "linhas": 254,
+   "linhas": 252,
    "dominio": "pages",
    "hooks_locais": [
-    "useGeofencingPage",
-    "useToast"
+    "useGeofencingPage"
    ],
    "tabelas": [],
    "edges": [],
@@ -7015,7 +7013,7 @@
     "HoursTrackingPage"
    ],
    "export_default": "HoursTrackingPage",
-   "linhas": 190,
+   "linhas": 189,
    "dominio": "pages",
    "hooks_locais": [
     "useQuery"
@@ -7186,7 +7184,7 @@
     "ProjectsPage"
    ],
    "export_default": "ProjectsPage",
-   "linhas": 315,
+   "linhas": 303,
    "dominio": "pages",
    "hooks_locais": [
     "useMutation",
@@ -7195,7 +7193,6 @@
     "useToast"
    ],
    "tabelas": [
-    "employees",
     "projects",
     "tasks",
     "time_entries"
@@ -7210,7 +7207,7 @@
     "ReportDetailPage"
    ],
    "export_default": "ReportDetailPage",
-   "linhas": 92,
+   "linhas": 91,
    "dominio": "pages",
    "hooks_locais": [
     "useReport"
@@ -7226,10 +7223,9 @@
     "ReportsPage"
    ],
    "export_default": "ReportsPage",
-   "linhas": 142,
+   "linhas": 141,
    "dominio": "pages",
    "hooks_locais": [
-    "useReportTemplates",
     "useReports"
    ],
    "tabelas": [],
@@ -7259,7 +7255,7 @@
     "ScheduledReportsPage"
    ],
    "export_default": "ScheduledReportsPage",
-   "linhas": 46,
+   "linhas": 45,
    "dominio": "pages",
    "hooks_locais": [
     "useQuery"
@@ -7293,7 +7289,7 @@
     "ScreenshotsPage"
    ],
    "export_default": "ScreenshotsPage",
-   "linhas": 67,
+   "linhas": 60,
    "dominio": "pages",
    "hooks_locais": [
     "useEmployees",
@@ -7324,7 +7320,7 @@
     "Settings"
    ],
    "export_default": "Settings",
-   "linhas": 273,
+   "linhas": 271,
    "dominio": "pages",
    "hooks_locais": [
     "useApplicationRules",
@@ -7405,7 +7401,7 @@
     "TimesheetsPage"
    ],
    "export_default": "TimesheetsPage",
-   "linhas": 233,
+   "linhas": 224,
    "dominio": "pages",
    "hooks_locais": [
     "useMutation",
@@ -7414,7 +7410,6 @@
     "useToast"
    ],
    "tabelas": [
-    "employees",
     "time_entries",
     "timesheets"
    ],
@@ -7462,7 +7457,7 @@
     "ViolationDetailPage"
    ],
    "export_default": "ViolationDetailPage",
-   "linhas": 54,
+   "linhas": 43,
    "dominio": "pages",
    "hooks_locais": [],
    "tabelas": [],
@@ -7494,12 +7489,10 @@
     "WebhooksPage"
    ],
    "export_default": "WebhooksPage",
-   "linhas": 74,
+   "linhas": 71,
    "dominio": "pages",
    "hooks_locais": [
-    "useQuery",
-    "useQueryClient",
-    "useToast"
+    "useQuery"
    ],
    "tabelas": [
     "monitoring_settings"
@@ -7514,7 +7507,7 @@
     "WhatsAppIntegrationPage"
    ],
    "export_default": "WhatsAppIntegrationPage",
-   "linhas": 61,
+   "linhas": 60,
    "dominio": "pages",
    "hooks_locais": [
     "useQuery"

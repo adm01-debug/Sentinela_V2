@@ -4969,7 +4969,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 19,
+   "usada_no_front": 17,
    "usada_em_edges": [
     "agent-collector",
     "behavioral-baseline-builder",

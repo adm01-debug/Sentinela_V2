@@ -483,7 +483,7 @@
   {
    "arquivo": "src/test/improvements-verification.test.ts",
    "tipo": "unit",
-   "linhas": 739,
+   "linhas": 752,
    "testa": [
     "src/components/charts/BaseAreaChart.tsx",
     "src/components/charts/BaseBarChart.tsx",
@@ -496,7 +496,7 @@
     "src/hooks/useChartColors.ts",
     "src/hooks/useEmployees.ts"
    ],
-   "casos": 78
+   "casos": 80
   },
   {
    "arquivo": "src/test/lgpd-flow.test.ts",

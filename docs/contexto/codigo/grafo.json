@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1328,
- "arestas": 2678,
+ "arestas": 2670,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -22,7 +22,7 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 140
+   "importado_por": 138
   },
   {
    "arquivo": "src/components/ui/input.tsx",
@@ -30,7 +30,7 @@
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
-   "importado_por": 72
+   "importado_por": 70
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
@@ -113,15 +113,15 @@
    "importado_por": 15
   },
   {
-   "arquivo": "src/components/ui/tabs.tsx",
-   "importado_por": 15
-  },
-  {
    "arquivo": "src/hooks/useEmployees.ts",
    "importado_por": 15
   },
   {
    "arquivo": "src/components/Skeleton.tsx",
+   "importado_por": 14
+  },
+  {
+   "arquivo": "src/components/ui/tabs.tsx",
    "importado_por": 14
   },
   {

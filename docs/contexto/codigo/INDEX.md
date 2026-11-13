@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `40ca833946ffa4c2b2b46f064782f090a92ebff1` (2026-11-12T20:37:33-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `b689fb4be88a3e0519ee7abdd36b41e858051487` (2026-11-13T08:46:18-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1828 |
 | arquivos_codigo | 1397 |
-| linhas_codigo | 146714 |
+| linhas_codigo | 146653 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 494 | 19 | 84 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 37 | 66 | 117 | 4 | 54 |
+| pages | 4 | 37 | 66 | 116 | 4 | 54 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
 | pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
@@ -298,13 +298,13 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - .github/workflows/contexto.yml (3)
 - src/pages/__tests__/Auth.test.tsx (3)
 - src/pages/__tests__/Settings.test.tsx (3)
+- src/test/improvements-verification.test.ts (3)
 - .github/workflows/cd.yml (2)
 - .github/workflows/deploy.yml (2)
 - .github/workflows/inventario-estado-semanal.yml (2)
 - .github/workflows/security.yml (2)
 - docs/agentes/github-ci.md (2)
 - eslint.config.js (2)
-- scripts/check-bundle-size.sh (2)
 
 ## Workflows
 - `cd.yml` — CD (push)
@@ -458,6 +458,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `b689fb4be` fix: limpa unused imports/vars do baseline em src/pages (#116)
 - 2026-11-12 `40ca83394` fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)
 - 2026-11-12 `deec5b891` fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)
 - 2026-11-12 `69611c177` fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)
@@ -472,7 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-12 `4d5f94748` build(deps): bump @sentry/react from 10.74.0 to 11.2.0 (#77)
 - 2026-11-12 `d64e52b76` build(deps): bump react-hook-form from 7.88.0 to 7.89.0 (#79)
 - 2026-11-12 `5633fb5cb` ci(contexto): usa ubuntu-latest no lugar de ubuntu-24.04 para provisionar runner (#105)
-- 2026-11-12 `7c7bc08ee` ci(deploy): usa vercel CLI atual via npx vercel@latest em vez do action v25 desatualizado (#104)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -969,15 +969,13 @@
     "useNavigate",
     "useRef",
     "useState",
-    "useToast",
-    "useTranslation"
+    "useToast"
    ],
    "hooks_locais": [
     "useAuth",
     "useAuthPage",
     "useMutation",
-    "useToast",
-    "useTranslation"
+    "useToast"
    ],
    "tabelas": [
     "user_roles"
@@ -1014,7 +1012,7 @@
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 12
+   "arquivos_puxados": 11
   },
   {
    "protegida": false,
@@ -1455,7 +1453,7 @@
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 19
+   "arquivos_puxados": 18
   },
   {
    "protegida": false,
@@ -1509,14 +1507,10 @@
     "useLocation",
     "useNavigate",
     "useQuery",
-    "useQueryClient",
-    "useState",
-    "useToast"
+    "useState"
    ],
    "hooks_locais": [
-    "useQuery",
-    "useQueryClient",
-    "useToast"
+    "useQuery"
    ],
    "tabelas": [
     "monitoring_settings"
@@ -1526,7 +1520,7 @@
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 23
+   "arquivos_puxados": 21
   },
   {
    "protegida": false,
@@ -1702,7 +1696,6 @@
     "useToast"
    ],
    "tabelas": [
-    "employees",
     "projects",
     "tasks",
     "time_entries"
@@ -1712,7 +1705,7 @@
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 21
+   "arquivos_puxados": 20
   },
   {
    "protegida": false,
@@ -1918,7 +1911,6 @@
     "useToast"
    ],
    "tabelas": [
-    "employees",
     "time_entries",
     "timesheets"
    ],
@@ -2027,8 +2019,7 @@
    "definida_em": "src/routes/AppRoutes.tsx",
    "redireciona": null,
    "hooks": [
-    "useNavigate",
-    "useState"
+    "useNavigate"
    ],
    "hooks_locais": [],
    "tabelas": [],
@@ -2037,7 +2028,7 @@
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 11
+   "arquivos_puxados": 10
   },
   {
    "protegida": false,

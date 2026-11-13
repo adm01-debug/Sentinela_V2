@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: limpa unused imports/vars do baseline em src/pages (#116)",
    "fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)",
    "fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)",
    "fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)",
-   "fix: security scan tolera audit baseline e snyk sem token (#110)",
-   "fix: porta hardening de seguranca da branch qa (CNPJ, UTF-8, ReDoS, JWT, rate limit) (#112)"
+   "fix: security scan tolera audit baseline e snyk sem token (#110)"
   ]
  },
  "pr_template": ".github/PULL_REQUEST_TEMPLATE.md",
