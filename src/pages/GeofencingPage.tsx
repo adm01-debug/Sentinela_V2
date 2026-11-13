@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapPin, Plus, Edit, Trash2, Users, Search, Bell, LayoutDashboard, Upload, CheckCircle2, AlertCircle } from 'lucide-react';
+import { MapPin, Plus, Edit, Trash2, Users, Bell, LayoutDashboard, Upload, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useGeofencingPage } from '@/hooks/useGeofencingPage';
 import { GeofenceDashboard } from '@/components/geofence/GeofenceDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/hooks/use-toast';
 
 import { PolygonUpload } from '@/components/geofence/PolygonUpload';
 
@@ -29,7 +28,6 @@ const parseNumField = (raw: string, fallback = 0, isInt = false): number => {
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
 export default function GeofencingPage() {
-  const { toast } = useToast();
   const navigate = useNavigate();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const {

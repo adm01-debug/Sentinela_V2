@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { CheckCircle, Search, Calendar } from 'lucide-react';
+import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subWeeks } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { FileText, Download, CheckCircle, Clock, Search, Filter, Calendar } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subWeeks } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 const statusConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'outline' | 'destructive' }> = {
   pending: { label: 'Pendente', variant: 'outline' },
@@ -31,15 +31,6 @@ function TimesheetsPage() {
         .from('timesheets')
         .select('*, employees(name, department)')
         .order('period_start', { ascending: false });
-      if (error) throw error;
-      return data || [];
-    },
-  });
-
-  const { data: employees = [] } = useQuery({
-    queryKey: ['employees-for-timesheets'],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('employees').select('id, name').eq('status', 'active').order('name');
       if (error) throw error;
       return data || [];
     },

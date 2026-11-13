@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Shield, Loader2, Eye, EyeOff, AlertTriangle, Lock, Mail, User, Building2, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthPage } from '@/hooks/useAuthPage';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Shield, Loader2, Eye, EyeOff, AlertTriangle, Lock, Mail, User, Building2, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { PasswordStrengthChecker } from '@/components/auth/PasswordStrengthChecker';
-import { motion, AnimatePresence } from 'framer-motion';
 import { lovable } from '@/integrations/lovable/index';
 
 const features = [
@@ -19,12 +18,11 @@ const features = [
 ];
 
 const AuthContent = React.memo(function AuthContent() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [showPassword, setShowPassword] = React.useState(false);
   const [validationErrors, setValidationErrors] = React.useState<string[]>([]);
-  const [passwordIsValid, setPasswordIsValid] = React.useState(false);
+  const [, setPasswordIsValid] = React.useState(false);
   const [passwordIsLeaked, setPasswordIsLeaked] = React.useState(false);
   
   const { 

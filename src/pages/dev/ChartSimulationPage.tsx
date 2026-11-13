@@ -36,7 +36,6 @@ const VIOLATION_TYPES = [
   'geofence_breach',
   'idle_timeout_bypass',
 ];
-const SEVERITIES = ['low', 'medium', 'high', 'critical'] as const;
 
 function generateViolations(seed: number, count: number): SecurityViolation[] {
   const rnd = mulberry32(seed);
@@ -53,7 +52,7 @@ function generateViolations(seed: number, count: number): SecurityViolation[] {
       company_id: 'sim',
       employee_id: `emp-${Math.floor(rnd() * 40)}`,
       violation_type: typeSubset[Math.floor(rnd() * typeSubset.length)],
-      severity: severity as (typeof SEVERITIES)[number],
+      severity: severity as SecurityViolation['severity'],
       description: 'simulation',
       status: 'open',
       metadata: {},

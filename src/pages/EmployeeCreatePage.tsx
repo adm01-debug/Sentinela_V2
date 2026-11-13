@@ -3,13 +3,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Save, X, Briefcase, Mail, Building2, User, Phone, FileText } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '@/components/ui/card';
 import { useCreateEmployee } from '@/hooks/useEmployees';
-import { useTranslation } from 'react-i18next';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageTransition } from '@/components/PageTransition';
 import { ROUTES } from '@/constants/routes';
@@ -52,7 +52,7 @@ export default function EmployeeCreatePage() {
         hire_date: new Date().toISOString() 
       });
       navigate(ROUTES.EMPLOYEES);
-    } catch (err) {
+    } catch {
       // Error handled by mutation toast
     }
   };

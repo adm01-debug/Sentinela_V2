@@ -5,7 +5,6 @@ import {
   Activity,
   AlertTriangle,
   CheckCircle2,
-  HeartPulse,
   MessageSquare,
   Hash as SlackIcon,
   Smartphone,

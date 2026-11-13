@@ -29,7 +29,7 @@ export default function DataExportPage() {
   const handleExport = async () => {
     setIsExporting(true);
     try {
-      const { data, error } = await supabase.functions.invoke('export-data', {
+      const { error } = await supabase.functions.invoke('export-data', {
         body: { type: dataType, format, date_from: dateFrom || undefined, date_to: dateTo || undefined },
       });
       if (error) throw error;
