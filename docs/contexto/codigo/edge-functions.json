@@ -1686,7 +1686,7 @@
    "nome": "reset-password",
    "entrada": "supabase/functions/reset-password/index.ts",
    "arquivos": 1,
-   "linhas": 43,
+   "linhas": 56,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2116,7 +2116,7 @@
    "nome": "slack-dlq-replay",
    "entrada": "supabase/functions/slack-dlq-replay/index.ts",
    "arquivos": 1,
-   "linhas": 190,
+   "linhas": 202,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2150,7 +2150,7 @@
    "nome": "slack-fallback-test",
    "entrada": "supabase/functions/slack-fallback-test/index.ts",
    "arquivos": 1,
-   "linhas": 228,
+   "linhas": 242,
    "verify_jwt": true,
    "metodos": [
     "GET",
@@ -2220,7 +2220,7 @@
    "nome": "slack-notify",
    "entrada": "supabase/functions/slack-notify/index.ts",
    "arquivos": 1,
-   "linhas": 422,
+   "linhas": 489,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"

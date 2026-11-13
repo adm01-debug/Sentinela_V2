@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `09097cc94fab5dc1b69cf7a669bc2003bcc68ed7` (2026-11-13T16:07:04-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `8044b0050427ebe1572b3f5be93a6a60fbafdda2` (2026-11-13T16:45:51-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1824 |
 | arquivos_codigo | 1399 |
-| linhas_codigo | 147096 |
+| linhas_codigo | 147202 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -451,6 +451,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `8044b0050` fix(security): sanitiza erros em edge functions do slack e remove no-op (#125)
 - 2026-11-13 `09097cc94` fix: escapa barra invertida no regex de extracao de roles (CodeQL sanitization) (#127)
 - 2026-11-13 `db206d2bf` fix(security): troca sha256 por scrypt com salt na senha do stealth mode (#126)
 - 2026-11-13 `844873d1c` fix: remove ReDoS e sanitizacao incompleta em utils e useSecurity (#124)
@@ -465,7 +466,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-12 `40ca83394` fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)
 - 2026-11-12 `deec5b891` fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)
 - 2026-11-12 `69611c177` fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)
-- 2026-11-12 `dada0de0e` fix: security scan tolera audit baseline e snyk sem token (#110)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
