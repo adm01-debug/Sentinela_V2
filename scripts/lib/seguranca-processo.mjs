@@ -41,14 +41,22 @@ export const RAIZES_PERMITIDAS = [RAIZ_REPO, path.resolve(os.tmpdir()), path.res
  * binario silenciosamente.
  */
 export function resolverExecutavel(comando) {
+  const extensoes = process.platform === 'win32'
+    ? (process.env.PATHEXT || '.COM;.EXE;.BAT;.CMD').split(';').filter(Boolean)
+    : [''];
   const diretorios = (process.env.PATH || '').split(path.delimiter).filter(Boolean);
   for (const diretorio of diretorios) {
-    const candidato = path.join(diretorio, comando);
-    try {
-      fs.accessSync(candidato, fs.constants.X_OK);
-      return candidato;
-    } catch {
-      // Nao esta neste diretorio: segue a busca, igual ao shell.
+    // No Windows o shell tenta o nome puro e depois cada PATHEXT (node -> node.exe).
+    const candidatos = path.extname(comando)
+      ? [path.join(diretorio, comando)]
+      : extensoes.map((ext) => path.join(diretorio, comando + ext));
+    for (const candidato of candidatos) {
+      try {
+        fs.accessSync(candidato, fs.constants.X_OK);
+        return candidato;
+      } catch {
+        // Nao esta neste diretorio: segue a busca, igual ao shell.
+      }
     }
   }
   throw new Error('comando nao encontrado no PATH: ' + comando);
@@ -81,7 +89,7 @@ function caminhoRealMesmoSeAusente(caminho) {
     existente = pai;
   }
 
-  const baseReal = fs.realpathSync.native(existente);
+  const baseReal = fs.realpathSync(existente);
   return path.resolve(baseReal, ...ausentes);
 }
 
