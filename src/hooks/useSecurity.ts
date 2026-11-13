@@ -1,15 +1,21 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { logger } from '@/lib/logger';
+import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { logger } from "@/lib/logger";
 
 // ============================================================
 // TYPES
 // ============================================================
 
 interface SecurityEvent {
-  type: 'login' | 'logout' | 'failed_login' | 'password_change' | 'session_expired' | 'suspicious_activity';
+  type:
+    | "login"
+    | "logout"
+    | "failed_login"
+    | "password_change"
+    | "session_expired"
+    | "suspicious_activity";
   timestamp: Date;
   details?: string;
   ip?: string;
@@ -29,14 +35,22 @@ interface SecurityState {
 
 const IDLE_TIMEOUT = 15 * 60 * 1000; // 15 minutes
 const SESSION_WARNING = 5 * 60 * 1000; // 5 minutes before timeout
-const ACTIVITY_EVENTS = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+const ACTIVITY_EVENTS = ["mousedown", "keydown", "scroll", "touchstart"];
 
 // ============================================================
 // HOOK
 // ============================================================
 
 export function useSecurity() {
-  const { user, session, logout: signOut } = useAuth() as { user: { id: string; email: string } | null; session: unknown; logout: () => Promise<void> };
+  const {
+    user,
+    session,
+    logout: signOut,
+  } = useAuth() as {
+    user: { id: string; email: string } | null;
+    session: unknown;
+    logout: () => Promise<void>;
+  };
   const { toast } = useToast();
   const [securityState, setSecurityState] = useState<SecurityState>({
     lastActivity: new Date(),
@@ -51,7 +65,7 @@ export function useSecurity() {
   // ============================================================
 
   const updateActivity = useCallback(() => {
-    setSecurityState(prev => ({
+    setSecurityState((prev) => ({
       ...prev,
       lastActivity: new Date(),
       isIdle: false,
@@ -63,12 +77,12 @@ export function useSecurity() {
   useEffect(() => {
     if (!user) return;
 
-    ACTIVITY_EVENTS.forEach(event => {
+    ACTIVITY_EVENTS.forEach((event) => {
       window.addEventListener(event, updateActivity, { passive: true });
     });
 
     return () => {
-      ACTIVITY_EVENTS.forEach(event => {
+      ACTIVITY_EVENTS.forEach((event) => {
         window.removeEventListener(event, updateActivity);
       });
     };
@@ -89,20 +103,20 @@ export function useSecurity() {
       if (timeSinceActivity >= IDLE_TIMEOUT - SESSION_WARNING && !securityState.isIdle) {
         setShowIdleWarning(true);
         toast({
-          title: 'Sessão expirando',
-          description: 'Você será desconectado por inatividade em 5 minutos',
-          variant: 'destructive',
+          title: "Sessão expirando",
+          description: "Você será desconectado por inatividade em 5 minutos",
+          variant: "destructive",
         });
       }
 
       // Auto logout after idle timeout
       if (timeSinceActivity >= IDLE_TIMEOUT) {
-        setSecurityState(prev => ({ ...prev, isIdle: true }));
+        setSecurityState((prev) => ({ ...prev, isIdle: true }));
         signOut();
         toast({
-          title: 'Sessão expirada',
-          description: 'Você foi desconectado por inatividade',
-          variant: 'destructive',
+          title: "Sessão expirada",
+          description: "Você foi desconectado por inatividade",
+          variant: "destructive",
         });
       }
     }, 60000); // Check every minute
@@ -120,7 +134,7 @@ export function useSecurity() {
 
     try {
       const { data, error } = await supabase.auth.getSession();
-      
+
       if (error || !data.session) {
         return false;
       }
@@ -141,9 +155,9 @@ export function useSecurity() {
   const logSecurityEvent = useCallback(async (event: SecurityEvent) => {
     // In production, you would send this to your security logs
     if (import.meta.env.DEV) {
-      logger.info('[Security Event]', event);
+      logger.info("[Security Event]", event);
     }
-    
+
     // Could also be sent to an edge function for logging
   }, []);
 
@@ -154,7 +168,7 @@ export function useSecurity() {
   const generateCSRFToken = useCallback((): string => {
     const array = new Uint8Array(32);
     crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join("");
   }, []);
 
   // ============================================================
@@ -162,15 +176,17 @@ export function useSecurity() {
   // ============================================================
 
   const sanitizeInput = useCallback((input: unknown): string => {
-    return String(input ?? '')
-      .replace(/[<>]/g, '') // Remove HTML brackets
-      .replace(/javascript:/gi, '') // Remove javascript protocol
-      .replace(/on\w+=/gi, '') // Remove event handlers
+    return String(input ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;")
       .trim();
   }, []);
 
   const sanitizeHTML = useCallback((html: string): string => {
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     div.textContent = html;
     return div.innerHTML;
   }, []);
@@ -200,7 +216,7 @@ export function useSecurity() {
  * Check if request is from a secure context
  */
 export function isSecureContext(): boolean {
-  return window.isSecureContext ?? window.location.protocol === 'https:';
+  return window.isSecureContext ?? window.location.protocol === "https:";
 }
 
 /**
@@ -215,21 +231,21 @@ export function validatePasswordStrength(password: string): {
   let score = 0;
 
   if (password.length >= 8) score++;
-  else errors.push('Mínimo 8 caracteres');
+  else errors.push("Mínimo 8 caracteres");
 
   if (password.length >= 12) score++;
 
   if (/[a-z]/.test(password)) score++;
-  else errors.push('Precisa de letra minúscula');
+  else errors.push("Precisa de letra minúscula");
 
   if (/[A-Z]/.test(password)) score++;
-  else errors.push('Precisa de letra maiúscula');
+  else errors.push("Precisa de letra maiúscula");
 
   if (/[0-9]/.test(password)) score++;
-  else errors.push('Precisa de número');
+  else errors.push("Precisa de número");
 
   if (/[^a-zA-Z0-9]/.test(password)) score++;
-  else errors.push('Recomenda-se caractere especial');
+  else errors.push("Recomenda-se caractere especial");
 
   return {
     isValid: errors.length <= 1 && password.length >= 8,
@@ -244,7 +260,7 @@ export function validatePasswordStrength(password: string): {
 export function generateSecureRandom(length = 32): string {
   const array = new Uint8Array(length);
   crypto.getRandomValues(array);
-  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
 /**
@@ -253,7 +269,7 @@ export function generateSecureRandom(length = 32): string {
 export async function hashData(data: string): Promise<string> {
   const encoder = new TextEncoder();
   const dataBuffer = encoder.encode(data);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", dataBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+  return hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
