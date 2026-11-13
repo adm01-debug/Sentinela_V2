@@ -2,11 +2,26 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c92e7413be2c69ee58b97d52193adb0dc9a4485b",
+  "commit": "09097cc94fab5dc1b69cf7a669bc2003bcc68ed7",
   "branch": "main",
-  "data_commit": "2026-11-13T15:25:07-03:00",
+  "data_commit": "2026-11-13T16:07:04-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "09097cc94",
+    "data": "2026-11-13",
+    "assunto": "fix: escapa barra invertida no regex de extracao de roles (CodeQL sanitization) (#127)"
+   },
+   {
+    "sha": "db206d2bf",
+    "data": "2026-11-13",
+    "assunto": "fix(security): troca sha256 por scrypt com salt na senha do stealth mode (#126)"
+   },
+   {
+    "sha": "844873d1c",
+    "data": "2026-11-13",
+    "assunto": "fix: remove ReDoS e sanitizacao incompleta em utils e useSecurity (#124)"
+   },
    {
     "sha": "c92e7413b",
     "data": "2026-11-13",
@@ -116,24 +131,9 @@
     "sha": "5633fb5cb",
     "data": "2026-11-12",
     "assunto": "ci(contexto): usa ubuntu-latest no lugar de ubuntu-24.04 para provisionar runner (#105)"
-   },
-   {
-    "sha": "7c7bc08ee",
-    "data": "2026-11-12",
-    "assunto": "ci(deploy): usa vercel CLI atual via npx vercel@latest em vez do action v25 desatualizado (#104)"
-   },
-   {
-    "sha": "d69de6619",
-    "data": "2026-11-11",
-    "assunto": "fix(ci): destrava contexto.yml e Security Scan (#103)"
-   },
-   {
-    "sha": "726ffbe10",
-    "data": "2026-11-11",
-    "assunto": "fix: remove unused imports e variaveis nos testes destravando pre-commit (#102)"
    }
   ],
-  "arquivos_mudados_7d": 228,
+  "arquivos_mudados_7d": 231,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -258,11 +258,19 @@
     "mudancas": 2
    },
    {
+    "arquivo": "desktop-agent/src/main.ts",
+    "mudancas": 2
+   },
+   {
     "arquivo": "docs/agentes/github-ci.md",
     "mudancas": 2
    },
    {
     "arquivo": "eslint.config.js",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "scripts/ai-context/gerar.mjs",
     "mudancas": 2
    },
    {
@@ -288,20 +296,12 @@
    {
     "arquivo": "scripts/lib/seguranca-processo.mjs",
     "mudancas": 2
-   },
-   {
-    "arquivo": "src/pages/__tests__/Analytics.test.tsx",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "src/pages/__tests__/AuditLog.test.tsx",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 32
+    "commits": 35
    },
    {
     "autor": "dependabot[bot]",
@@ -312,7 +312,7 @@
  "contagens": {
   "arquivos_total": 1824,
   "arquivos_codigo": 1399,
-  "linhas_codigo": 147030,
+  "linhas_codigo": 147096,
   "rotas": 54,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -348,7 +348,7 @@
   },
   "desktop-agent/src": {
    "arquivos": 18,
-   "linhas": 2348
+   "linhas": 2393
   },
   "docs/source": {
    "arquivos": 1,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 31980
+   "linhas": 31996
   },
   "src/i18n": {
    "arquivos": 1,
@@ -452,7 +452,7 @@
   },
   "src/lib": {
    "arquivos": 42,
-   "linhas": 2908
+   "linhas": 2913
   },
   "src/main.tsx": {
    "arquivos": 1,
@@ -581,6 +581,10 @@
    "linhas": 445
   },
   {
+   "arquivo": "desktop-agent/src/main.ts",
+   "linhas": 442
+  },
+  {
    "arquivo": "src/components/SearchDrawer.tsx",
    "linhas": 424
   },
@@ -603,10 +607,6 @@
   {
    "arquivo": "src/components/HeatmapCalendar.tsx",
    "linhas": 413
-  },
-  {
-   "arquivo": "src/pages/dev/VerifyReportSimulatorPage.tsx",
-   "linhas": 410
   }
  ],
  "qualidade": {

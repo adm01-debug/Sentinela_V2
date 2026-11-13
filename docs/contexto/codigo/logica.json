@@ -1309,7 +1309,7 @@
     "truncate"
    ],
    "export_default": null,
-   "linhas": 61,
+   "linhas": 65,
    "tabelas": [],
    "rpcs": [],
    "edges": [],
@@ -1357,7 +1357,7 @@
     "isValidUrl"
    ],
    "export_default": null,
-   "linhas": 30,
+   "linhas": 31,
    "tabelas": [],
    "rpcs": [],
    "edges": [],

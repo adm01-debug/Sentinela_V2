@@ -7686,7 +7686,7 @@
    "hooks_exportados": [
     "useSecurity"
    ],
-   "linhas": 260,
+   "linhas": 276,
    "dominio": "hooks",
    "tabelas": [],
    "rpcs": [],

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c92e7413be2c69ee58b97d52193adb0dc9a4485b` (2026-11-13T15:25:07-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `09097cc94fab5dc1b69cf7a669bc2003bcc68ed7` (2026-11-13T16:07:04-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1824 |
 | arquivos_codigo | 1399 |
-| linhas_codigo | 147030 |
+| linhas_codigo | 147096 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -451,6 +451,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `09097cc94` fix: escapa barra invertida no regex de extracao de roles (CodeQL sanitization) (#127)
+- 2026-11-13 `db206d2bf` fix(security): troca sha256 por scrypt com salt na senha do stealth mode (#126)
+- 2026-11-13 `844873d1c` fix: remove ReDoS e sanitizacao incompleta em utils e useSecurity (#124)
 - 2026-11-13 `c92e7413b` fix: parseCurrency ignora separador de milhar (regex literal quebrada) (#123)
 - 2026-11-13 `576d84a81` chore: baixa baseline do format-ratchet apos merges #119/#120 (#121)
 - 2026-11-13 `cd6ef0692` chore: remove workflow CD (S3/CloudFront) - projeto nao usa AWS (#120)
@@ -463,9 +466,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-12 `deec5b891` fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)
 - 2026-11-12 `69611c177` fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)
 - 2026-11-12 `dada0de0e` fix: security scan tolera audit baseline e snyk sem token (#110)
-- 2026-11-12 `dc7d30c08` fix: porta hardening de seguranca da branch qa (CNPJ, UTF-8, ReDoS, JWT, rate limit) (#112)
-- 2026-11-12 `2d707fd3c` build(deps-dev): bump @types/node from 26.6.3 to 26.6.6 (#109)
-- 2026-11-12 `7e3b22a48` fix: remove src/components/Forms.tsx morto que sombreava o barrel forms/ (#108)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
