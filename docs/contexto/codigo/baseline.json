@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "775d830f9a4526aa734f44d662a48300e44018b9",
+  "commit": "576d84a8144406b48258869b9757dc4cf6810e24",
   "branch": "main",
-  "data_commit": "2026-11-13T11:36:29-03:00",
+  "data_commit": "2026-11-13T13:16:20-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "576d84a81",
+    "data": "2026-11-13",
+    "assunto": "chore: baixa baseline do format-ratchet apos merges #119/#120 (#121)"
+   },
+   {
+    "sha": "cd6ef0692",
+    "data": "2026-11-13",
+    "assunto": "chore: remove workflow CD (S3/CloudFront) - projeto nao usa AWS (#120)"
+   },
    {
     "sha": "775d830f9",
     "data": "2026-11-13",
@@ -121,16 +131,6 @@
     "sha": "69460cb3c",
     "data": "2026-11-11",
     "assunto": "fix(ci): corrige parse YAML dos workflows cd/security (#101)"
-   },
-   {
-    "sha": "b2beae8a2",
-    "data": "2026-11-11",
-    "assunto": "fix(lint): limpa imports e ordem de imports nos testes (#100)"
-   },
-   {
-    "sha": "04b8469e9",
-    "data": "2026-11-11",
-    "assunto": "ci(quality): substitui lint/tsc diretos pelos ratchets incrementais no CI (#99)"
    }
   ],
   "arquivos_mudados_7d": 227,
@@ -156,6 +156,10 @@
     "mudancas": 4
    },
    {
+    "pasta": ".github/workflows/cd.yml",
+    "mudancas": 3
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 3
    },
@@ -165,6 +169,10 @@
    },
    {
     "pasta": "AGENTS.md",
+    "mudancas": 3
+   },
+   {
+    "pasta": "scripts/ci/prettier-baseline.json",
     "mudancas": 3
    },
    {
@@ -184,15 +192,7 @@
     "mudancas": 2
    },
    {
-    "pasta": ".github/workflows/cd.yml",
-    "mudancas": 2
-   },
-   {
     "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 2
-   },
-   {
-    "pasta": ".github/workflows/inventario-estado-semanal.yml",
     "mudancas": 2
    }
   ],
@@ -226,6 +226,10 @@
     "mudancas": 3
    },
    {
+    "arquivo": "scripts/ci/prettier-baseline.json",
+    "mudancas": 3
+   },
+   {
     "arquivo": "src/pages/__tests__/Auth.test.tsx",
     "mudancas": 3
    },
@@ -236,10 +240,6 @@
    {
     "arquivo": "src/test/improvements-verification.test.ts",
     "mudancas": 3
-   },
-   {
-    "arquivo": ".github/workflows/cd.yml",
-    "mudancas": 2
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
@@ -282,10 +282,6 @@
     "mudancas": 2
    },
    {
-    "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 2
-   },
-   {
     "arquivo": "scripts/ci/typecheck-baseline.json",
     "mudancas": 2
    },
@@ -296,12 +292,16 @@
    {
     "arquivo": "src/pages/__tests__/Analytics.test.tsx",
     "mudancas": 2
+   },
+   {
+    "arquivo": "src/pages/__tests__/AuditLog.test.tsx",
+    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 29
+    "commits": 31
    },
    {
     "autor": "dependabot[bot]",
@@ -310,7 +310,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1825,
+  "arquivos_total": 1824,
   "arquivos_codigo": 1399,
   "linhas_codigo": 147036,
   "rotas": 54,
@@ -325,7 +325,7 @@
   "migrations": 102,
   "cron_jobs": 1,
   "testes": 70,
-  "workflows": 14,
+  "workflows": 13,
   "scripts": 31,
   "docs_md": 173
  },

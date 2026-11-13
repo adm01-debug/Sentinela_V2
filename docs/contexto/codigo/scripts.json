@@ -178,7 +178,6 @@
     "build"
    ],
    "workflows": [
-    "cd.yml",
     "ci.yml",
     "deploy.yml",
     "preview.yml",

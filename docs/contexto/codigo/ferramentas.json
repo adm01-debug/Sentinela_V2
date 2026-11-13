@@ -7,7 +7,7 @@
    "Markdown (173)",
    "SQL (106)",
    "JSON (42)",
-   "YAML (37)",
+   "YAML (36)",
    "JavaScript (23)",
    "Shell (21)",
    "HTML (4)"
@@ -119,37 +119,6 @@
   "vite.config.ts"
  ],
  "workflows": [
-  {
-   "arquivo": ".github/workflows/cd.yml",
-   "nome": "CD",
-   "gatilhos": [
-    "push"
-   ],
-   "crons": [],
-   "branches": [],
-   "jobs": [
-    "deploy"
-   ],
-   "permissoes": [],
-   "scripts_usados": [
-    "scripts/generate-audit-pdf.js"
-   ],
-   "npm_scripts": [
-    "build"
-   ],
-   "secrets": [
-    "AWS_ACCESS_KEY_ID",
-    "AWS_SECRET_ACCESS_KEY",
-    "CLOUDFRONT_ID",
-    "S3_BUCKET"
-   ],
-   "actions": [
-    "actions/checkout",
-    "actions/setup-node",
-    "aws-actions/configure-aws-credentials",
-    "oven-sh/setup-bun"
-   ]
-  },
   {
    "arquivo": ".github/workflows/ci.yml",
    "nome": "CI",
@@ -1158,10 +1127,6 @@
    "VITE_VAPID_PUBLIC_KEY"
   ],
   "secrets_em_workflows": [
-   "AWS_ACCESS_KEY_ID",
-   "AWS_SECRET_ACCESS_KEY",
-   "CLOUDFRONT_ID",
-   "S3_BUCKET",
    "SNYK_TOKEN",
    "VERCEL_ORG_ID",
    "VERCEL_PROJECT_ID",

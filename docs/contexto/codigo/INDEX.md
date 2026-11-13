@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `775d830f9a4526aa734f44d662a48300e44018b9` (2026-11-13T11:36:29-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `576d84a8144406b48258869b9757dc4cf6810e24` (2026-11-13T13:16:20-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1378), Markdown (173), SQL (106), JSON (42), YAML (37), JavaScript (23), Shell (21), HTML (4)
+- linguagens: TypeScript (1378), Markdown (173), SQL (106), JSON (42), YAML (36), JavaScript (23), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1825 |
+| arquivos_total | 1824 |
 | arquivos_codigo | 1399 |
 | linhas_codigo | 147036 |
 | rotas | 54 |
@@ -49,7 +49,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | migrations | 102 |
 | cron_jobs | 1 |
 | testes | 70 |
-| workflows | 14 |
+| workflows | 13 |
 | scripts | 31 |
 | docs_md | 173 |
 
@@ -297,17 +297,16 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - AGENTS.md (4)
 - scripts/ci/eslint-baseline.json (4)
 - .github/workflows/contexto.yml (3)
+- scripts/ci/prettier-baseline.json (3)
 - src/pages/__tests__/Auth.test.tsx (3)
 - src/pages/__tests__/Settings.test.tsx (3)
 - src/test/improvements-verification.test.ts (3)
-- .github/workflows/cd.yml (2)
 - .github/workflows/deploy.yml (2)
 - .github/workflows/inventario-estado-semanal.yml (2)
 - .github/workflows/lint.yml (2)
 - .github/workflows/security.yml (2)
 
 ## Workflows
-- `cd.yml` — CD (push)
 - `ci.yml` — CI (pull_request, push)
 - `contexto.yml` — Contexto para agentes de IA (30 min) (push, schedule, workflow_dispatch; cron 7-59/30 * * * *)
 - `deploy.yml` — Deploy (push, workflow_dispatch)
@@ -452,6 +451,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `576d84a81` chore: baixa baseline do format-ratchet apos merges #119/#120 (#121)
+- 2026-11-13 `cd6ef0692` chore: remove workflow CD (S3/CloudFront) - projeto nao usa AWS (#120)
 - 2026-11-13 `775d830f9` fix: zera divida de typecheck (recharts 3 / day-picker 10 / React 19) (#119)
 - 2026-11-13 `870573781` fix: resolve binarios via PATHEXT e evita short-names no Windows (#118)
 - 2026-11-13 `bd97547c8` chore: baixa baselines do lint/format-ratchet apos limpeza (#117)
@@ -465,8 +466,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-12 `2d707fd3c` build(deps-dev): bump @types/node from 26.6.3 to 26.6.6 (#109)
 - 2026-11-12 `7e3b22a48` fix: remove src/components/Forms.tsx morto que sombreava o barrel forms/ (#108)
 - 2026-11-12 `df537774d` build(deps): bump the test group across 1 directory with 6 updates (#85)
-- 2026-11-12 `240a04d0d` build(deps): bump the react group across 1 directory with 35 updates (#107)
-- 2026-11-12 `9de86acd5` build(deps): bump the i18n group across 1 directory with 2 updates (#83)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
