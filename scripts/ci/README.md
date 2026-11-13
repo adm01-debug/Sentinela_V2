@@ -7,6 +7,7 @@ se surgir ocorrência **nova** — permite destravar CI sem corrigir tudo de uma
 | ------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------- |
 | `lint-ratchet.mjs`              | ESLint (`eslint . --format json`)                                              | `eslint-baseline.json` (1633 ocorrências, 08/11/2026)   |
 | `typecheck-ratchet.mjs`         | `tsc -b --force` (`tsc --noEmit` sozinho é no-op nesta config de `references`) | `typecheck-baseline.json` (307 ocorrências, 08/11/2026) |
+| `format-ratchet.mjs`            | Prettier (`--list-different --ignore-unknown`)                                 | `prettier-baseline.json` (1555 arquivos, 13/11/2026)    |
 | `check-claude-md-integrity.mjs` | integridade do AGENTS.md/CLAUDE.md/docs/agentes                                | — (git, sem baseline)                                   |
 
 Uso:
@@ -15,10 +16,12 @@ Uso:
 node scripts/ci/lint-ratchet.mjs            # falha só com ocorrência nova
 node scripts/ci/lint-ratchet.mjs --staged   # só os arquivos do commit (pre-commit)
 node scripts/ci/typecheck-ratchet.mjs
+node scripts/ci/format-ratchet.mjs          # falha só com arquivo novo fora do padrão
 
 # atualizar baseline só com aprovação explícita, depois de revisar toda a diferença:
 node scripts/ci/lint-ratchet.mjs --update-baseline
 node scripts/ci/typecheck-ratchet.mjs --update-baseline
+node scripts/ci/format-ratchet.mjs --update-baseline
 git diff -- scripts/ci/eslint-baseline.json scripts/ci/typecheck-baseline.json
 ```
 
