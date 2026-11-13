@@ -1,6 +1,29 @@
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import React from "react";
+
+// Portavel (Windows/Linux): replica `grep -rn "..." | grep -v ".test." | wc -l`
+// sem depender de binarios Unix.
+function countAnyInDir(dir: string): number {
+  let total = 0;
+  const visit = (current: string) => {
+    for (const entry of readdirSync(current)) {
+      const full = join(current, entry);
+      if (statSync(full).isDirectory()) {
+        visit(full);
+      } else if (/\.tsx?$/.test(entry) && !entry.includes(".test.")) {
+        const content = readFileSync(full, "utf8");
+        total += content
+          .split("\n")
+          .filter((line) => /:\s*any\b|as\s+any\b|<any>/.test(line)).length;
+      }
+    }
+  };
+  visit(dir);
+  return total;
+}
 
 // ============================================================
 // IMPROVEMENT VERIFICATION SUITE
@@ -264,24 +287,14 @@ describe("Improvement 2: Type Safety (any elimination)", () => {
   }
 
   it("any count in hooks/ does not regress", async () => {
-    const { execSync } = await import("child_process");
-    const result = execSync(
-      'grep -rn ": any\\|as any\\|<any>" src/hooks/ --include="*.ts" --include="*.tsx" 2>/dev/null | grep -v ".test." | wc -l'
-    )
-      .toString()
-      .trim();
+    const anyCount = await countAnyInDir("src/hooks");
     // Regression ceiling: keeps the current `any` usage in hooks from growing.
-    expect(Number(result)).toBeLessThanOrEqual(223);
+    expect(anyCount).toBeLessThanOrEqual(223);
   });
 
   it("Total any count in pages/ is 0", async () => {
-    const { execSync } = await import("child_process");
-    const result = execSync(
-      'grep -rn ": any\\|as any\\|<any>" src/pages/ --include="*.ts" --include="*.tsx" 2>/dev/null | grep -v ".test." | wc -l'
-    )
-      .toString()
-      .trim();
-    expect(Number(result)).toBe(0);
+    const anyCount = await countAnyInDir("src/pages");
+    expect(anyCount).toBe(0);
   });
 });
 
