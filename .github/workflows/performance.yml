@@ -2,6 +2,8 @@ name: Performance
 on:
   push:
     branches: [main]
+permissions:
+  contents: read
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
