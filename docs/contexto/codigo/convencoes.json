@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)",
    "fix(security): sanitiza erros em edge functions do slack e remove no-op (#125)",
    "fix: escapa barra invertida no regex de extracao de roles (CodeQL sanitization) (#127)",
    "fix(security): troca sha256 por scrypt com salt na senha do stealth mode (#126)",
-   "fix: remove ReDoS e sanitizacao incompleta em utils e useSecurity (#124)",
-   "fix: parseCurrency ignora separador de milhar (regex literal quebrada) (#123)"
+   "fix: remove ReDoS e sanitizacao incompleta em utils e useSecurity (#124)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

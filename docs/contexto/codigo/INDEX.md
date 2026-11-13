@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `8044b0050427ebe1572b3f5be93a6a60fbafdda2` (2026-11-13T16:45:51-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `60779c3b93b5e2004d7ad95cd8bdcff973a9a726` (2026-11-13T18:02:51-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -293,18 +293,18 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package.json (32)
 - package-lock.json (31)
 - ESTADO_ATUAL.md (6)
-- .github/workflows/ci.yml (4)
+- .github/workflows/ci.yml (5)
 - AGENTS.md (4)
 - scripts/ci/eslint-baseline.json (4)
 - .github/workflows/contexto.yml (3)
+- .github/workflows/deploy.yml (3)
+- .github/workflows/lint.yml (3)
 - scripts/ci/prettier-baseline.json (3)
 - src/pages/__tests__/Auth.test.tsx (3)
 - src/pages/__tests__/Settings.test.tsx (3)
 - src/test/improvements-verification.test.ts (3)
-- .github/workflows/deploy.yml (2)
+- .github/workflows/desktop-build.yml (2)
 - .github/workflows/inventario-estado-semanal.yml (2)
-- .github/workflows/lint.yml (2)
-- .github/workflows/security.yml (2)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -451,6 +451,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-13 `60779c3b9` ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)
 - 2026-11-13 `8044b0050` fix(security): sanitiza erros em edge functions do slack e remove no-op (#125)
 - 2026-11-13 `09097cc94` fix: escapa barra invertida no regex de extracao de roles (CodeQL sanitization) (#127)
 - 2026-11-13 `db206d2bf` fix(security): troca sha256 por scrypt com salt na senha do stealth mode (#126)
@@ -465,7 +466,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-13 `b689fb4be` fix: limpa unused imports/vars do baseline em src/pages (#116)
 - 2026-11-12 `40ca83394` fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)
 - 2026-11-12 `deec5b891` fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)
-- 2026-11-12 `69611c177` fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

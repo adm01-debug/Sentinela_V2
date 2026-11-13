@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "8044b0050427ebe1572b3f5be93a6a60fbafdda2",
+  "commit": "60779c3b93b5e2004d7ad95cd8bdcff973a9a726",
   "branch": "main",
-  "data_commit": "2026-11-13T16:45:51-03:00",
+  "data_commit": "2026-11-13T18:02:51-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "60779c3b9",
+    "data": "2026-11-13",
+    "assunto": "ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)"
+   },
    {
     "sha": "8044b0050",
     "data": "2026-11-13",
@@ -126,14 +131,9 @@
     "sha": "4d5f94748",
     "data": "2026-11-12",
     "assunto": "build(deps): bump @sentry/react from 10.74.0 to 11.2.0 (#77)"
-   },
-   {
-    "sha": "d64e52b76",
-    "data": "2026-11-12",
-    "assunto": "build(deps): bump react-hook-form from 7.88.0 to 7.89.0 (#79)"
    }
   ],
-  "arquivos_mudados_7d": 235,
+  "arquivos_mudados_7d": 237,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -148,6 +148,10 @@
     "mudancas": 8
    },
    {
+    "pasta": ".github/workflows/ci.yml",
+    "mudancas": 4
+   },
+   {
     "pasta": "desktop-agent/src/services",
     "mudancas": 4
    },
@@ -160,11 +164,15 @@
     "mudancas": 3
    },
    {
-    "pasta": ".github/workflows/ci.yml",
+    "pasta": ".github/workflows/contexto.yml",
     "mudancas": 3
    },
    {
-    "pasta": ".github/workflows/contexto.yml",
+    "pasta": ".github/workflows/deploy.yml",
+    "mudancas": 3
+   },
+   {
+    "pasta": ".github/workflows/lint.yml",
     "mudancas": 3
    },
    {
@@ -186,14 +194,6 @@
    {
     "pasta": "src/test/improvements-verification.test.ts",
     "mudancas": 3
-   },
-   {
-    "pasta": ".agents/skills/sentinela-v2",
-    "mudancas": 2
-   },
-   {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 2
    }
   ],
   "arquivos_mais_mudados_90d": [
@@ -211,7 +211,7 @@
    },
    {
     "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 4
+    "mudancas": 5
    },
    {
     "arquivo": "AGENTS.md",
@@ -223,6 +223,14 @@
    },
    {
     "arquivo": ".github/workflows/contexto.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": ".github/workflows/deploy.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": ".github/workflows/lint.yml",
     "mudancas": 3
    },
    {
@@ -242,7 +250,7 @@
     "mudancas": 3
    },
    {
-    "arquivo": ".github/workflows/deploy.yml",
+    "arquivo": ".github/workflows/desktop-build.yml",
     "mudancas": 2
    },
    {
@@ -250,7 +258,15 @@
     "mudancas": 2
    },
    {
-    "arquivo": ".github/workflows/lint.yml",
+    "arquivo": ".github/workflows/performance.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/preview.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/release.yml",
     "mudancas": 2
    },
    {
@@ -280,28 +296,12 @@
    {
     "arquivo": "scripts/ci/README.md",
     "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/ci/lint-ratchet.mjs",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/ci/lint-ratchet.unit.mjs",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/ci/typecheck-baseline.json",
-    "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/lib/seguranca-processo.mjs",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 36
+    "commits": 37
    },
    {
     "autor": "dependabot[bot]",

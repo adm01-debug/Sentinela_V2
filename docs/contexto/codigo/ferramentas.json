@@ -137,7 +137,9 @@
     "deno-contract-tests",
     "agent-instructions-guard"
    ],
-   "permissoes": [],
+   "permissoes": [
+    "contents: read"
+   ],
    "scripts_usados": [
     "scripts/ci/check-claude-md-integrity.mjs",
     "scripts/ci/lint-ratchet.mjs",
@@ -202,7 +204,9 @@
    "jobs": [
     "deploy"
    ],
-   "permissoes": [],
+   "permissoes": [
+    "contents: read"
+   ],
    "scripts_usados": [
     "scripts/generate-audit-pdf.js"
    ],
@@ -231,7 +235,9 @@
    "jobs": [
     "typecheck"
    ],
-   "permissoes": [],
+   "permissoes": [
+    "contents: read"
+   ],
    "scripts_usados": [],
    "npm_scripts": [],
    "secrets": [],
@@ -284,7 +290,9 @@
    "jobs": [
     "lint"
    ],
-   "permissoes": [],
+   "permissoes": [
+    "contents: read"
+   ],
    "scripts_usados": [
     "scripts/ci/format-ratchet.mjs",
     "scripts/ci/lint-ratchet.mjs",
@@ -308,7 +316,9 @@
    "jobs": [
     "build"
    ],
-   "permissoes": [],
+   "permissoes": [
+    "contents: read"
+   ],
    "scripts_usados": [],
    "npm_scripts": [],
    "secrets": [],
@@ -330,7 +340,9 @@
    "jobs": [
     "lighthouse"
    ],
-   "permissoes": [],
+   "permissoes": [
+    "contents: read"
+   ],
    "scripts_usados": [],
    "npm_scripts": [],
    "secrets": [],
@@ -350,7 +362,9 @@
    "jobs": [
     "preview"
    ],
-   "permissoes": [],
+   "permissoes": [
+    "contents: read"
+   ],
    "scripts_usados": [
     "scripts/generate-audit-pdf.js"
    ],
@@ -375,7 +389,9 @@
    "jobs": [
     "release"
    ],
-   "permissoes": [],
+   "permissoes": [
+    "contents: write"
+   ],
    "scripts_usados": [
     "scripts/generate-audit-pdf.js"
    ],
@@ -459,7 +475,10 @@
    "jobs": [
     "update"
    ],
-   "permissoes": [],
+   "permissoes": [
+    "contents: write",
+    "pull-requests: write"
+   ],
    "scripts_usados": [],
    "npm_scripts": [],
    "secrets": [],
