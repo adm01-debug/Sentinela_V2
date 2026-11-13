@@ -1,12 +1,11 @@
-// deno-lint-ignore-file no-explicit-any
 /**
  * slack-dlq-replay
  * Reenvia uma mensagem previamente falha da fila slack_notification_dlq.
- * Só pode ser invocada por administradores autenticados.
+ * SÃƒÆ’Ã‚Â³ pode ser invocada por administradores autenticados.
  *
  * Body: { dlq_id: string, target_integration_id?: string }
  *   - Se target_integration_id for informado, tenta enviar para esse webhook.
- *   - Caso contrário usa o integration_id original (se ainda existir e estiver ativo).
+ *   - Caso contrÃƒÆ’Ã‚Â¡rio usa o integration_id original (se ainda existir e estiver ativo).
  */
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -36,7 +35,7 @@ Deno.serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-  // Valida o usuário via anon client + JWT do caller
+  // Valida o usuÃƒÆ’Ã‚Â¡rio via anon client + JWT do caller
   const userClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
     global: { headers: { Authorization: `Bearer ${token}` } },
   });
@@ -50,7 +49,7 @@ Deno.serve(async (req) => {
   });
   if (!isAdmin) return json({ error: "forbidden" }, 403);
 
-  let body: any;
+  let body: { dlq_id?: string; target_integration_id?: string } | undefined;
   try {
     body = await req.json();
   } catch {
@@ -83,7 +82,10 @@ Deno.serve(async (req) => {
   if (!integration) return json({ error: "integration_not_found" }, 404);
   if (!integration.is_active || integration.auto_paused_at) {
     return json(
-      { error: "integration_inactive", hint: "Reative a integração antes de reenviar." },
+      {
+        error: "integration_inactive",
+        hint: "Reative a integraÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Â£o antes de reenviar.",
+      },
       409
     );
   }
@@ -137,7 +139,7 @@ Deno.serve(async (req) => {
             elements: [
               {
                 type: "mrkdwn",
-                text: `SecureWatch • replay manual • ${new Date().toISOString()}`,
+                text: `SecureWatch ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ replay manual ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ${new Date().toISOString()}`,
               },
             ],
           },
@@ -165,7 +167,7 @@ Deno.serve(async (req) => {
       const text = await res.text().catch(() => "");
       errMsg = `HTTP ${res.status} ${text.slice(0, 200)}`;
     }
-  } catch (e: any) {
+  } catch (e: unknown) {
     errMsg = safeError(e);
   }
 
