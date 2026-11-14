@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "92050abe8e7b3961ba0511226c2ecf09274fa97e",
+  "commit": "4301538a25c107e2dc738d6dc69a3d87702bcca8",
   "branch": "main",
-  "data_commit": "2026-11-14T08:30:52-03:00",
+  "data_commit": "2026-11-14T08:50:14-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "4301538a2",
+    "data": "2026-11-14",
+    "assunto": "ci: torna npm audit fix tolerante no update-deps para destravar o PR semanal (#132)"
+   },
    {
     "sha": "92050abe8",
     "data": "2026-11-14",
@@ -126,11 +131,6 @@
     "sha": "dada0de0e",
     "data": "2026-11-12",
     "assunto": "fix: security scan tolera audit baseline e snyk sem token (#110)"
-   },
-   {
-    "sha": "dc7d30c08",
-    "data": "2026-11-12",
-    "assunto": "fix: porta hardening de seguranca da branch qa (CNPJ, UTF-8, ReDoS, JWT, rate limit) (#112)"
    }
   ],
   "arquivos_mudados_7d": 238,
@@ -176,6 +176,10 @@
     "mudancas": 3
    },
    {
+    "pasta": ".github/workflows/update-deps.yml",
+    "mudancas": 3
+   },
+   {
     "pasta": "AGENTS.md",
     "mudancas": 3
    },
@@ -189,10 +193,6 @@
    },
    {
     "pasta": "src/components/ui",
-    "mudancas": 3
-   },
-   {
-    "pasta": "src/pages/admin",
     "mudancas": 3
    }
   ],
@@ -231,6 +231,10 @@
    },
    {
     "arquivo": ".github/workflows/lint.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": ".github/workflows/update-deps.yml",
     "mudancas": 3
    },
    {
@@ -278,10 +282,6 @@
     "mudancas": 2
    },
    {
-    "arquivo": ".github/workflows/update-deps.yml",
-    "mudancas": 2
-   },
-   {
     "arquivo": "desktop-agent/src/main.ts",
     "mudancas": 2
    },
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 43
+    "commits": 44
    },
    {
     "autor": "dependabot[bot]",
