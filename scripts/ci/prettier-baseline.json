@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "command": "prettier --list-different --ignore-unknown .",
-  "prettierVersion": "3.9.9",
+  "prettierVersion": "3.10.1",
   "configSha256": "85fdcf8df951ae9204c0a1a4558350048325cc487bf6aeae7860f173a809a5fd",
   "files": [
     ".github/ISSUE_TEMPLATE/bug_report.md",
