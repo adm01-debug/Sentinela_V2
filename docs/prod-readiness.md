@@ -1,8 +1,8 @@
 # Sentinela_V2 — Prontidão de Produção
 
-> Linha de base gerada no main `b7c5ffa8` (merge da PR #128). Documento vivo: cada item é OK (com prova) ou BLOQUEADO (com erro exato). Esta lista é a base de "sem perda de funcionalidade".
+> Linha de base atualizada: main `9954e10a866` (após merges #130/#129). Documento vivo: cada item é OK (com prova) ou BLOQUEADO (com erro exato). Esta lista é a base de "sem perda de funcionalidade".
 
-## 1. Qualidade (build/typecheck/lint/tests) — rodado local no main `b7c5ffa8`
+## 1. Qualidade (build/typecheck/lint/tests) — rodado local no main `b7c5ffa8` e confirmado no CI do main `9954e10a866`
 
 | Gate                | Comando do CI                           | Resultado     | Evidência                                                                                           |
 | ------------------- | --------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------- |
@@ -10,6 +10,8 @@
 | Lint (ratchet)      | `node scripts/ci/lint-ratchet.mjs`      | **OK** exit 0 | baseline=1334, atual=1325, novas=0 (9 ocorrências do baseline já pagas, aviso para baixar baseline) |
 | Testes              | `npm test` (vitest run)                 | **OK** exit 0 | 1767 passed / 62 arquivos                                                                           |
 | Build               | `npm run build`                         | **OK** exit 0 | vite build em 5.08s                                                                                 |
+
+**Confirmação CI no main `9954e10a866`** (check-runs do commit real, via GitHub API): `lint` success, `build` success, `test` success, `quality` success, `deno-contract-tests` success, `agent-instructions-guard` success, CodeQL `Analyze (actions)` success, e `Gerar codigo/ e publicar na branch contexto` success (22 runs).
 
 **Nota sobre o `npm run lint` direto (eslint):** 1028 erros/297 warnings existem no baseline, mas o CI **não** usa o eslint direto — usa o `lint-ratchet.mjs` que só falha em _novos_ erros. O gate real está verde. Dívida do baseline é rastreada pelo ratchet.
 
@@ -36,12 +38,25 @@ Listadas em anexo abaixo. Incluem: agent-collector, process-screenshot, analyze-
 - **121** verificações de `enable row level security` e **364** `create policy` nas migrations.
 - **BLOQUEADO** (item 6): validar RLS ativa + policies no banco real exige acesso ao Supabase (ver seção 6).
 
-### 2.4 Workflows do main (13 arquivos)
+### 2.4 Workflows do main (12 arquivos — `mobile-build.yml` removido pelo merge #130)
 
-Amostra de triggers em `.github/workflows/`:
-`ci.yml` (push), `contexto.yml` (push/schedule/dispatch), `deploy.yml` (push/dispatch), `desktop-build.yml` (push), `inventario-estado-semanal.yml` (schedule/dispatch), `lint.yml` (push), `mobile-build.yml` (push, órfão — PR #130), `performance.yml` (push), `release.yml` (push), `security-scan.yml` (push/schedule), `security.yml` (push/schedule), `update-deps.yml` (schedule/dispatch).
+> Último run de cada workflow ativo no main (via `gh run list`, conferido em 2026-11-14):
 
-**BLOQUEADO (item 4)**: estado das últimas execuções de cada workflow precisa ser conferido via API do GitHub (rate limit atingiu 0/5000 no momento da geração; revalidar quando resetar).
+| Workflow                            | Último run               | Resultado                                                                                                                      |
+| ----------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| CI                                  | `9954e10` (push)         | **success**                                                                                                                    |
+| Lint                                | `9954e10` (push)         | **success**                                                                                                                    |
+| Performance                         | `9954e10` (push)         | **success**                                                                                                                    |
+| Deploy                              | `9954e10` (push)         | **success**                                                                                                                    |
+| Security Scan                       | `576d84a` (push)         | **success**                                                                                                                    |
+| Security                            | `576d84a` (push)         | **success**                                                                                                                    |
+| Desktop Build                       | `db206d2` (push)         | **success**                                                                                                                    |
+| Contexto para agentes de IA         | `9954e10` (schedule)     | **success** (runs 30/30 min)                                                                                                   |
+| Preview                             | `0aa9307` (pull_request) | **success**                                                                                                                    |
+| Inventário do estado real (semanal) | `60779c3` (dispatch)     | **success**                                                                                                                    |
+| Update Dependencies                 | `60779c3` (dispatch)     | **failure** (falha do npm arborist `edgesOut` em node 20) — fix #129 (node 22) mergeado; revalidação em andamento via dispatch |
+
+**BLOQUEADO/Aguardando**: revalidação do Update Dependencies após o fix do #129 (dispatch aceito run `43588140619`, status queued).
 
 ### 2.5 Integrações (`.env.example`)
 
@@ -49,14 +64,13 @@ Supabase (URL/anon/service), Redis (REDIS_URL), JWT, SESSION_SECRET, SMTP (email
 
 ## 3. Itens BLOQUEADOS e por quê
 
-1. **RLS/policies no banco real** (req 6) — falta credencial/acesso ao Supabase atual.
+1. **RLS/policies no banco real** (req 6) — falta credencial/acesso ao Supabase atual (projeto `ybvdtjpyolbnjirjrthe` do config; tokens `sb_*` passados retornaram 401 e não batem com o projeto).
 2. **Fluxos no ar** (req 7) — falta acesso ao projeto de produção para testar edge functions/banco.
-3. **Estado de todas as execuções dos workflows** (req 4) — rate limit da API GitHub (0/5000) no momento da geração.
+3. **Update Dependencies verde** (req 4) — fix #129 mergeado; aguarda resposta do dispatch (run `43588140619`).
 
 ## 4. PRs abertas aguardando decisão (regra 8)
 
-- **PR #130** — `chore: remove workflow orfao mobile-build` (remover `mobile-build.yml`, path removido do main).
-- **PR #129** — `ci: sobe update-deps para node 22 e usa create-pull-request v7` (corrige falha `edgesOut` do npm arborist no runner).
+- Nenhuma aberta neste momento. **#129** (update-deps node 22) e **#130** (remover mobile-build) já foram mergeadas no main `9954e10a866`.
 
 ## ANEXO 1 — Edge functions (87)
 
