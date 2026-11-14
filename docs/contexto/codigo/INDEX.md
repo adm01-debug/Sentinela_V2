@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `4301538a25c107e2dc738d6dc69a3d87702bcca8` (2026-11-14T08:50:14-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `155e979e6df7b85e043d270fa00b190b8cc12e6a` (2026-11-14T09:18:51-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -296,12 +296,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - .github/workflows/ci.yml (5)
 - scripts/ci/eslint-baseline.json (5)
 - AGENTS.md (4)
+- scripts/ci/prettier-baseline.json (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/deploy.yml (3)
 - .github/workflows/lint.yml (3)
 - .github/workflows/update-deps.yml (3)
 - docs/prod-readiness.md (3)
-- scripts/ci/prettier-baseline.json (3)
 - src/pages/__tests__/Auth.test.tsx (3)
 - src/pages/__tests__/Settings.test.tsx (3)
 - src/test/improvements-verification.test.ts (3)
@@ -451,6 +451,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-14 `155e979e6` chore: baixa baseline do format-ratchet apos 9 dividas pagas (#137)
 - 2026-11-14 `4301538a2` ci: torna npm audit fix tolerante no update-deps para destravar o PR semanal (#132)
 - 2026-11-14 `92050abe8` chore: baixa baseline do lint-ratchet apos 9 dividas pagas (#135)
 - 2026-11-14 `99dd6fc22` docs: consolida main 61048d99f e revalidacao do update-deps no prod-readiness (#134)
@@ -465,7 +466,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-13 `db206d2bf` fix(security): troca sha256 por scrypt com salt na senha do stealth mode (#126)
 - 2026-11-13 `844873d1c` fix: remove ReDoS e sanitizacao incompleta em utils e useSecurity (#124)
 - 2026-11-13 `c92e7413b` fix: parseCurrency ignora separador de milhar (regex literal quebrada) (#123)
-- 2026-11-13 `576d84a81` chore: baixa baseline do format-ratchet apos merges #119/#120 (#121)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

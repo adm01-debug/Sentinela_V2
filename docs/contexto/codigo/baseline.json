@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "4301538a25c107e2dc738d6dc69a3d87702bcca8",
+  "commit": "155e979e6df7b85e043d270fa00b190b8cc12e6a",
   "branch": "main",
-  "data_commit": "2026-11-14T08:50:14-03:00",
+  "data_commit": "2026-11-14T09:18:51-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "155e979e6",
+    "data": "2026-11-14",
+    "assunto": "chore: baixa baseline do format-ratchet apos 9 dividas pagas (#137)"
+   },
    {
     "sha": "4301538a2",
     "data": "2026-11-14",
@@ -126,11 +131,6 @@
     "sha": "69611c177",
     "data": "2026-11-12",
     "assunto": "fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)"
-   },
-   {
-    "sha": "dada0de0e",
-    "data": "2026-11-12",
-    "assunto": "fix: security scan tolera audit baseline e snyk sem token (#110)"
    }
   ],
   "arquivos_mudados_7d": 238,
@@ -160,6 +160,10 @@
     "mudancas": 4
    },
    {
+    "pasta": "scripts/ci/prettier-baseline.json",
+    "mudancas": 4
+   },
+   {
     "pasta": ".github/workflows/cd.yml",
     "mudancas": 3
    },
@@ -185,10 +189,6 @@
    },
    {
     "pasta": "docs/prod-readiness.md",
-    "mudancas": 3
-   },
-   {
-    "pasta": "scripts/ci/prettier-baseline.json",
     "mudancas": 3
    },
    {
@@ -222,6 +222,10 @@
     "mudancas": 4
    },
    {
+    "arquivo": "scripts/ci/prettier-baseline.json",
+    "mudancas": 4
+   },
+   {
     "arquivo": ".github/workflows/contexto.yml",
     "mudancas": 3
    },
@@ -239,10 +243,6 @@
    },
    {
     "arquivo": "docs/prod-readiness.md",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "scripts/ci/prettier-baseline.json",
     "mudancas": 3
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 44
+    "commits": 45
    },
    {
     "autor": "dependabot[bot]",
