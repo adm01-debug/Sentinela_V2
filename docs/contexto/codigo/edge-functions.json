@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "pasta": "supabase/functions",
- "total": 84,
+ "total": 85,
  "verify_jwt_false": [],
  "shared": [
   "supabase/functions/_shared/auth.ts",
@@ -197,6 +197,39 @@
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
    "orfa": true,
+   "testes": 0
+  },
+  {
+   "nome": "award-gamification-points",
+   "entrada": "supabase/functions/award-gamification-points/index.ts",
+   "arquivos": 1,
+   "linhas": 142,
+   "verify_jwt": true,
+   "metodos": [
+    "OPTIONS"
+   ],
+   "tabelas": [
+    "employee_points",
+    "points_history",
+    "user_roles"
+   ],
+   "rpcs": [],
+   "env": [
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL"
+   ],
+   "buckets": [],
+   "chama_edges": [],
+   "hosts_externos": [],
+   "usa_shared": [
+    "rateLimiting.ts"
+   ],
+   "chamada_pelo_front": [
+    "src/hooks/useGamificationPage.ts"
+   ],
+   "chamada_por_edges": [],
+   "chamada_por_sql_ou_cron": false,
+   "orfa": false,
    "testes": 0
   },
   {
@@ -2625,7 +2658,6 @@
   }
  ],
  "chamadas_sem_pasta": [
-  "award-gamification-points",
   "sync-whatsapp-templates"
  ]
 }

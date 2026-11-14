@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: edge function award-gamification-points (desbloqueia conceder pontos) (#139)",
    "fix(supabase): alinha config.toml ao projeto de producao (jgnmwvzephsozsqmcpzb) (#138)",
    "chore: update dependencies (#136)",
    "chore: baixa baseline do format-ratchet apos 9 dividas pagas (#137)",
-   "ci: torna npm audit fix tolerante no update-deps para destravar o PR semanal (#132)",
-   "chore: baixa baseline do lint-ratchet apos 9 dividas pagas (#135)"
+   "ci: torna npm audit fix tolerante no update-deps para destravar o PR semanal (#132)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

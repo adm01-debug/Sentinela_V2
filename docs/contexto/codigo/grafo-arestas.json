@@ -4012,6 +4012,9 @@
   "supabase/functions/analyze-activity/index.ts": [
    "supabase/functions/_shared/rateLimiting.ts"
   ],
+  "supabase/functions/award-gamification-points/index.ts": [
+   "supabase/functions/_shared/rateLimiting.ts"
+  ],
   "supabase/functions/check-geofence/contract_test.ts": [
    "supabase/functions/_shared/schemas.ts"
   ],

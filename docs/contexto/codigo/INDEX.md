@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c1b5b145995851673b40b27a92690ab3a67dc0ec` (2026-11-14T10:13:00-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `32e53f2b279b4014438816ead212de054057971a` (2026-11-14T10:21:06-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1378), Markdown (174), SQL (106), JSON (42), YAML (35), JavaScript (23), Shell (21), HTML (4)
+- linguagens: TypeScript (1379), Markdown (174), SQL (106), JSON (42), YAML (35), JavaScript (23), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1824 |
-| arquivos_codigo | 1399 |
-| linhas_codigo | 147202 |
+| arquivos_total | 1825 |
+| arquivos_codigo | 1400 |
+| linhas_codigo | 147344 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -44,7 +44,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | modulos | 56 |
 | componentes | 460 |
 | hooks | 524 |
-| edge_functions | 84 |
+| edge_functions | 85 |
 | tabelas | 139 |
 | migrations | 102 |
 | cron_jobs | 1 |
@@ -175,6 +175,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `archive-data` — tabelas: click_logs, keystroke_logs, productivity_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `audit-export` — tabelas: login_security_events, settings_audit_log; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `auto-categorize` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `award-gamification-points` — tabelas: employee_points, points_history, user_roles; chamada por 1 arquivo(s) do front
 - `backup-data` — tabelas: backups; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `batch-notifications` — tabelas: webhooks; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `behavior-pattern` — tabelas: activities; chamada por 1 arquivo(s) do front
@@ -274,7 +275,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes_ambiguos: 0
 - menu_sem_destino: 8 — ex.: Configurações -> /settings, Configurações -> settings, Dashboard -> /
 - edges_orfas: 55 — ex.: agent-collector, archive-data, audit-export
-- edges_chamadas_sem_pasta: 2 — ex.: award-gamification-points, sync-whatsapp-templates
+- edges_chamadas_sem_pasta: 1 — ex.: sync-whatsapp-templates
 - tabelas_sem_rls: 0
 - tabelas_usadas_sem_definicao: 26 — ex.: activities, app_config, backups
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
@@ -451,6 +452,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-14 `32e53f2b2` feat: edge function award-gamification-points (desbloqueia conceder pontos) (#139)
 - 2026-11-14 `c1b5b1459` fix(supabase): alinha config.toml ao projeto de producao (jgnmwvzephsozsqmcpzb) (#138)
 - 2026-11-14 `f53b8cc95` chore: update dependencies (#136)
 - 2026-11-14 `155e979e6` chore: baixa baseline do format-ratchet apos 9 dividas pagas (#137)
@@ -465,7 +467,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-13 `60779c3b9` ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)
 - 2026-11-13 `8044b0050` fix(security): sanitiza erros em edge functions do slack e remove no-op (#125)
 - 2026-11-13 `09097cc94` fix: escapa barra invertida no regex de extracao de roles (CodeQL sanitization) (#127)
-- 2026-11-13 `db206d2bf` fix(security): troca sha256 por scrypt com salt na senha do stealth mode (#126)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

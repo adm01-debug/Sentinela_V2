@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c1b5b145995851673b40b27a92690ab3a67dc0ec",
+  "commit": "32e53f2b279b4014438816ead212de054057971a",
   "branch": "main",
-  "data_commit": "2026-11-14T10:13:00-03:00",
+  "data_commit": "2026-11-14T10:21:06-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "32e53f2b2",
+    "data": "2026-11-14",
+    "assunto": "feat: edge function award-gamification-points (desbloqueia conceder pontos) (#139)"
+   },
    {
     "sha": "c1b5b1459",
     "data": "2026-11-14",
@@ -126,14 +131,9 @@
     "sha": "b689fb4be",
     "data": "2026-11-13",
     "assunto": "fix: limpa unused imports/vars do baseline em src/pages (#116)"
-   },
-   {
-    "sha": "40ca83394",
-    "data": "2026-11-12",
-    "assunto": "fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)"
    }
   ],
-  "arquivos_mudados_7d": 238,
+  "arquivos_mudados_7d": 239,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 46
+    "commits": 47
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1824,
-  "arquivos_codigo": 1399,
-  "linhas_codigo": 147202,
+  "arquivos_total": 1825,
+  "arquivos_codigo": 1400,
+  "linhas_codigo": 147344,
   "rotas": 54,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -324,7 +324,7 @@
   "modulos": 56,
   "componentes": 460,
   "hooks": 524,
-  "edge_functions": 84,
+  "edge_functions": 85,
   "tabelas": 139,
   "migrations": 102,
   "cron_jobs": 1,
@@ -499,8 +499,8 @@
    "linhas": 180
   },
   "supabase/functions": {
-   "arquivos": 96,
-   "linhas": 11856
+   "arquivos": 97,
+   "linhas": 11998
   },
   "tailwind.config.ts": {
    "arquivos": 1,
@@ -724,7 +724,6 @@
    "weekly-report"
   ],
   "edges_chamadas_sem_pasta": [
-   "award-gamification-points",
    "sync-whatsapp-templates"
   ],
   "tabelas_sem_rls": [],
