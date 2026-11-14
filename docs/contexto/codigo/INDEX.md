@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `32e53f2b279b4014438816ead212de054057971a` (2026-11-14T10:21:06-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `7721af1d2fbb0cef4037028e56d4ad8ad52d455c` (2026-11-14T10:25:24-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -204,7 +204,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `get-mapbox-token` — tabelas: -; chamada por 1 arquivo(s) do front
 - `get-policies` — tabelas: policy_acknowledgments, security_policies; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `health` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `health-check` — tabelas: health_check, screenshots; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `health-check` — tabelas: employees, screenshots; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `import-employees` — tabelas: employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `ingest-file-transfer` — tabelas: agent_keys, dlp_incidents, dlp_policies, employees, file_transfers; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `invite-user` — tabelas: user_companies, user_roles; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -277,7 +277,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - edges_orfas: 55 — ex.: agent-collector, archive-data, audit-export
 - edges_chamadas_sem_pasta: 1 — ex.: sync-whatsapp-templates
 - tabelas_sem_rls: 0
-- tabelas_usadas_sem_definicao: 26 — ex.: activities, app_config, backups
+- tabelas_usadas_sem_definicao: 25 — ex.: activities, app_config, backups
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 101 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
@@ -452,6 +452,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-14 `7721af1d2` fix(health-check): troca check de banco de health_check (tabela inexistente) para employees (#140)
 - 2026-11-14 `32e53f2b2` feat: edge function award-gamification-points (desbloqueia conceder pontos) (#139)
 - 2026-11-14 `c1b5b1459` fix(supabase): alinha config.toml ao projeto de producao (jgnmwvzephsozsqmcpzb) (#138)
 - 2026-11-14 `f53b8cc95` chore: update dependencies (#136)
@@ -466,7 +467,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-13 `b7c5ffa8a` chore: inventario do estado real [auto] (#128)
 - 2026-11-13 `60779c3b9` ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)
 - 2026-11-13 `8044b0050` fix(security): sanitiza erros em edge functions do slack e remove no-op (#125)
-- 2026-11-13 `09097cc94` fix: escapa barra invertida no regex de extracao de roles (CodeQL sanitization) (#127)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

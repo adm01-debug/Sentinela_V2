@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "32e53f2b279b4014438816ead212de054057971a",
+  "commit": "7721af1d2fbb0cef4037028e56d4ad8ad52d455c",
   "branch": "main",
-  "data_commit": "2026-11-14T10:21:06-03:00",
+  "data_commit": "2026-11-14T10:25:24-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "7721af1d2",
+    "data": "2026-11-14",
+    "assunto": "fix(health-check): troca check de banco de health_check (tabela inexistente) para employees (#140)"
+   },
    {
     "sha": "32e53f2b2",
     "data": "2026-11-14",
@@ -126,14 +131,9 @@
     "sha": "8ca0b6508",
     "data": "2026-11-13",
     "assunto": "ci: adiciona format-ratchet incremental (Prettier) (#115)"
-   },
-   {
-    "sha": "b689fb4be",
-    "data": "2026-11-13",
-    "assunto": "fix: limpa unused imports/vars do baseline em src/pages (#116)"
    }
   ],
-  "arquivos_mudados_7d": 239,
+  "arquivos_mudados_7d": 240,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 47
+    "commits": 48
    },
    {
     "autor": "dependabot[bot]",
@@ -736,7 +736,6 @@
    "feature_flags",
    "geofence_events",
    "geofence_states",
-   "health_check",
    "internet_access_rules",
    "productivity_metrics",
    "push_subscriptions",
