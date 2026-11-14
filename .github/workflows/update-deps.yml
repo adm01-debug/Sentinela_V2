@@ -17,7 +17,10 @@ jobs:
         with:
           node-version: '22'
       - run: npm update
-      - run: npm audit fix
+        # npm audit fix sai com exit 1 quando há vulnerabilidades sem fix automático
+        # (xlsx/sheetjs não tem correção; @typescript-eslint/minimatch/postcss exigem --force = breaking).
+        # O objetivo do workflow é abrir o PR de update revisável; o gate real de segurança é o npm audit no ci.yml.
+      - run: npm audit fix || true
       - uses: peter-evans/create-pull-request@v7
         with:
           title: 'chore: update dependencies'
