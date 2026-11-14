@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "chore: baixa baseline do lint-ratchet apos 9 dividas pagas (#135)",
+   "docs: consolida main 61048d99f e revalidacao do update-deps no prod-readiness (#134)",
+   "docs: evidencia de producao no ar e diagnostico update-deps no prod-readiness (#133)",
    "docs: inventario de prontidao de producao (prod-readiness) (#131)",
-   "chore: remove workflow orfao mobile-build (#130)",
-   "ci: sobe update-deps p/ node 22 e usa create-pull-request v7 (#129)",
-   "chore: inventario do estado real [auto] (#128)",
-   "ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)"
+   "chore: remove workflow orfao mobile-build (#130)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

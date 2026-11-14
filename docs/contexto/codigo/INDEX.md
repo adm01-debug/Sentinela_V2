@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `fcb31ffd54bcc33997309e255306f86b05a8e16c` (2026-11-14T08:07:20-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `92050abe8e7b3961ba0511226c2ecf09274fa97e` (2026-11-14T08:30:52-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -294,17 +294,17 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package-lock.json (31)
 - ESTADO_ATUAL.md (6)
 - .github/workflows/ci.yml (5)
+- scripts/ci/eslint-baseline.json (5)
 - AGENTS.md (4)
-- scripts/ci/eslint-baseline.json (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/deploy.yml (3)
 - .github/workflows/lint.yml (3)
+- docs/prod-readiness.md (3)
 - scripts/ci/prettier-baseline.json (3)
 - src/pages/__tests__/Auth.test.tsx (3)
 - src/pages/__tests__/Settings.test.tsx (3)
 - src/test/improvements-verification.test.ts (3)
 - .github/workflows/desktop-build.yml (2)
-- .github/workflows/inventario-estado-semanal.yml (2)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -444,13 +444,16 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `docs/deployment.md` — Deployment Guide (81 linhas)
 - `docs/faq.md` — FAQ (52 linhas)
 - `docs/installation.md` — Installation Guide (53 linhas)
-- `docs/prod-readiness.md` — Sentinela_V2 — Prontidão de Produção (95 linhas)
+- `docs/prod-readiness.md` — Sentinela_V2 — Prontidão de Produção (113 linhas)
 - `docs/troubleshooting.md` — Troubleshooting Guide (60 linhas)
 - `docs/user-guide.md` — User Guide (67 linhas)
 - subpastas de docs/: docs/guides (10), docs/tutorials (10), docs/adr (9), docs/examples (8), docs/agentes (7), docs/agent (1)
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-14 `92050abe8` chore: baixa baseline do lint-ratchet apos 9 dividas pagas (#135)
+- 2026-11-14 `99dd6fc22` docs: consolida main 61048d99f e revalidacao do update-deps no prod-readiness (#134)
+- 2026-11-14 `61048d99f` docs: evidencia de producao no ar e diagnostico update-deps no prod-readiness (#133)
 - 2026-11-14 `fcb31ffd5` docs: inventario de prontidao de producao (prod-readiness) (#131)
 - 2026-11-13 `9954e10a8` chore: remove workflow orfao mobile-build (#130)
 - 2026-11-13 `ac5e159ae` ci: sobe update-deps p/ node 22 e usa create-pull-request v7 (#129)
@@ -463,9 +466,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-13 `c92e7413b` fix: parseCurrency ignora separador de milhar (regex literal quebrada) (#123)
 - 2026-11-13 `576d84a81` chore: baixa baseline do format-ratchet apos merges #119/#120 (#121)
 - 2026-11-13 `cd6ef0692` chore: remove workflow CD (S3/CloudFront) - projeto nao usa AWS (#120)
-- 2026-11-13 `775d830f9` fix: zera divida de typecheck (recharts 3 / day-picker 10 / React 19) (#119)
-- 2026-11-13 `870573781` fix: resolve binarios via PATHEXT e evita short-names no Windows (#118)
-- 2026-11-13 `bd97547c8` chore: baixa baselines do lint/format-ratchet apos limpeza (#117)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

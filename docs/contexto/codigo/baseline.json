@@ -2,11 +2,26 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "fcb31ffd54bcc33997309e255306f86b05a8e16c",
+  "commit": "92050abe8e7b3961ba0511226c2ecf09274fa97e",
   "branch": "main",
-  "data_commit": "2026-11-14T08:07:20-03:00",
+  "data_commit": "2026-11-14T08:30:52-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "92050abe8",
+    "data": "2026-11-14",
+    "assunto": "chore: baixa baseline do lint-ratchet apos 9 dividas pagas (#135)"
+   },
+   {
+    "sha": "99dd6fc22",
+    "data": "2026-11-14",
+    "assunto": "docs: consolida main 61048d99f e revalidacao do update-deps no prod-readiness (#134)"
+   },
+   {
+    "sha": "61048d99f",
+    "data": "2026-11-14",
+    "assunto": "docs: evidencia de producao no ar e diagnostico update-deps no prod-readiness (#133)"
+   },
    {
     "sha": "fcb31ffd5",
     "data": "2026-11-14",
@@ -116,21 +131,6 @@
     "sha": "dc7d30c08",
     "data": "2026-11-12",
     "assunto": "fix: porta hardening de seguranca da branch qa (CNPJ, UTF-8, ReDoS, JWT, rate limit) (#112)"
-   },
-   {
-    "sha": "2d707fd3c",
-    "data": "2026-11-12",
-    "assunto": "build(deps-dev): bump @types/node from 26.6.3 to 26.6.6 (#109)"
-   },
-   {
-    "sha": "7e3b22a48",
-    "data": "2026-11-12",
-    "assunto": "fix: remove src/components/Forms.tsx morto que sombreava o barrel forms/ (#108)"
-   },
-   {
-    "sha": "df537774d",
-    "data": "2026-11-12",
-    "assunto": "build(deps): bump the test group across 1 directory with 6 updates (#85)"
    }
   ],
   "arquivos_mudados_7d": 238,
@@ -148,15 +148,15 @@
     "mudancas": 8
    },
    {
+    "pasta": "scripts/ci/eslint-baseline.json",
+    "mudancas": 5
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 4
    },
    {
     "pasta": "desktop-agent/src/services",
-    "mudancas": 4
-   },
-   {
-    "pasta": "scripts/ci/eslint-baseline.json",
     "mudancas": 4
    },
    {
@@ -180,6 +180,10 @@
     "mudancas": 3
    },
    {
+    "pasta": "docs/prod-readiness.md",
+    "mudancas": 3
+   },
+   {
     "pasta": "scripts/ci/prettier-baseline.json",
     "mudancas": 3
    },
@@ -189,10 +193,6 @@
    },
    {
     "pasta": "src/pages/admin",
-    "mudancas": 3
-   },
-   {
-    "pasta": "src/test/improvements-verification.test.ts",
     "mudancas": 3
    }
   ],
@@ -214,11 +214,11 @@
     "mudancas": 5
    },
    {
-    "arquivo": "AGENTS.md",
-    "mudancas": 4
+    "arquivo": "scripts/ci/eslint-baseline.json",
+    "mudancas": 5
    },
    {
-    "arquivo": "scripts/ci/eslint-baseline.json",
+    "arquivo": "AGENTS.md",
     "mudancas": 4
    },
    {
@@ -231,6 +231,10 @@
    },
    {
     "arquivo": ".github/workflows/lint.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "docs/prod-readiness.md",
     "mudancas": 3
    },
    {
@@ -292,16 +296,12 @@
    {
     "arquivo": "inventario/estado/edges.json",
     "mudancas": 2
-   },
-   {
-    "arquivo": "scripts/ai-context/gerar.mjs",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 40
+    "commits": 43
    },
    {
     "autor": "dependabot[bot]",
