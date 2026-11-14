@@ -1,4 +1,4 @@
-# Sentinela_V2 — Prontidão de Produção
+﻿# Sentinela_V2 — Prontidão de Produção
 
 > Linha de base atualizada: main `9954e10a866` (após merges #130/#129). Documento vivo: cada item é OK (com prova) ou BLOQUEADO (com erro exato). Esta lista é a base de "sem perda de funcionalidade".
 
@@ -36,7 +36,7 @@ Listadas em anexo abaixo. Incluem: agent-collector, process-screenshot, analyze-
 - 102 arquivos de migration em `supabase/migrations`.
 - ~90 tabelas `create table` (anexo 2).
 - **121** verificações de `enable row level security` e **364** `create policy` nas migrations.
-- **BLOQUEADO** (item 6): validar RLS ativa + policies no banco real exige acesso ao Supabase (ver seção 6).
+- **OK** (item 6, validado 2026-11-14 via Supabase Management API): **158 tabelas em public, 100% com RLS habilitado (0 sem RLS), 391 RLS policies ativas** em 158 tabelas. REST com Accept-Profile: public responde 200 com dados reais (profiles, companies).
 
 ### 2.4 Workflows do main (12 arquivos — `mobile-build.yml` removido pelo merge #130)
 
@@ -82,7 +82,7 @@ _shared, acknowledge-violation, agent-collector, analyze-activity, archive-data,
 - **Config do repo**: `supabase/config.toml` → `project_id = "ybvdtjpyolbnjirjrthe"`.
 - **Secrets presentes no repo**: SUPABASE_ACCESS_TOKEN, SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_KEY, VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
 - **Deploy Vercel no main `60779c3b9` (merge #122)** foi SUCCESS (evidência de contexto anterior).
-- **BLOQUEADO**: validar edge functions/banco no ar exige token `sbp_...` de acesso (as `sb_secret_`/`sb_publishable_` passadas retornaram 401 em `rest/v1` e `auth/v1/health` do projeto `jgnmwvzephsozsqmcpzb`; esse projeto não bate com o `ybvdtjpyolbnjirjrthe` do config).
+- **VALIDADO (2026-11-14) com token `sbp_`**: project `jgnmwvzephsozsqmcpzb` é o real do repo (config corrigido na #138). Banco: 158 tabelas public 100% RLS / 391 policies. Edge functions: 35 deployadas (9 originais + 26 recém-deployadas); `health-check` respondeu HTTP 200. Vercel: produção HTTP 200.
 
 ## ANEXO 4 — Estados de qualidade e gate no CI
 
