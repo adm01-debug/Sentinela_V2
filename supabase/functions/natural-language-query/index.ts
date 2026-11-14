@@ -15,15 +15,6 @@ interface SearchResult {
   metadata?: Record<string, any>;
 }
 
-const QUERY_PATTERNS = [
-  { pattern: /employees?\s+(who|that)\s+had?\s+violations?/i, table: "employees", join: "violations" },
-  { pattern: /violations?\s+(from|by|of)\s+(\w+)/i, table: "violations", filter: "employee" },
-  { pattern: /activity\s+(on|at|during)\s+(.+)/i, table: "activities", filter: "time" },
-  { pattern: /show\s+(me\s+)?(all\s+)?(\w+)/i, table: "dynamic" },
-  { pattern: /who\s+is\s+(\w+)/i, table: "employees", filter: "name" },
-  { pattern: /how\s+many\s+(\w+)/i, table: "count" },
-];
-
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -39,15 +30,15 @@ serve(async (req) => {
       });
     }
 
+    const token = authHeader.replace("Bearer ", "");
     const anonClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-      { global: { headers: { authorization: authHeader } } }
+      Deno.env.get("SUPABASE_ANON_KEY") ?? ""
     );
     const {
       data: { user },
       error: authError,
-    } = await anonClient.auth.getUser();
+    } = await anonClient.auth.getUser(token);
     if (authError || !user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
