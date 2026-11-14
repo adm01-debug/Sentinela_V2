@@ -9,10 +9,6 @@
       "sha256": "fa8afa29c64b15b273922a3ba2ebdac425105efdc27ed13e027e58ef61ac035b"
     },
     {
-      "path": "desktop-agent/src/main.ts",
-      "sha256": "54a671643e967f0615f3771151568d1ec9f8365740dfa159020c82d8efec6909"
-    },
-    {
       "path": "desktop-agent/src/services/auth.ts",
       "sha256": "22af79b06b28ced3723dc1d865678e10014a9e5662b0327eced0232f9c2e3e67"
     },
@@ -54,7 +50,7 @@
     },
     {
       "path": "scripts/ai-context/gerar.mjs",
-      "sha256": "fc0d624060ebd3c47ddf26f79d65451729794408240b791e2e8b797d3f9c2b25"
+      "sha256": "b01344023725c516868adcc54004730e9354910735d25cd61ffc2042658e567f"
     },
     {
       "path": "scripts/ci/lint-ratchet.unit.mjs",
@@ -2089,10 +2085,6 @@
       "sha256": "01d04ec9b287d36b3295b1788b65f5743e4560016d8c7dce9735cb30c414f511"
     },
     {
-      "path": "src/utils/currency.ts",
-      "sha256": "21aa89d505bbb50fccce4bc127db1d48d618c1fc4fa71ffc15bea0d0ad34e3cc"
-    },
-    {
       "path": "src/utils/event.ts",
       "sha256": "af7f40247addb821010e78909d2457abfdadc1d8b8170d51ff073a1172d051d6"
     },
@@ -2229,14 +2221,6 @@
       "sha256": "fd9491f4be58c0cbda9b198bc5b14ec7f23bdd25669de5eb9995d396c1f472f6"
     },
     {
-      "path": "supabase/functions/slack-dlq-replay/index.ts",
-      "sha256": "3ec9a254908239031adbca1d20a01cd95ffd2ecc3ca6f3222872a475a2694e41"
-    },
-    {
-      "path": "supabase/functions/slack-notify/index.ts",
-      "sha256": "3694481ad334ab815ff7276bd2874602d9a9614a7b238766b8d4f586b4541a98"
-    },
-    {
       "path": "supabase/functions/slack-weekly-digest/index.ts",
       "sha256": "b31146f19962042a86eda144f0ce546b5ec6b8c6cbea46165189d3f668ddbf14"
     },
@@ -2279,20 +2263,6 @@
       "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
       "lineHash": "3102955bb06132a6bbf85d75702d6d0bc79db622ada4adceaf0b7cd01de0ef2b",
       "contextHash": "a7e8b7baed4b8367f945329d4c9e30c78353f852fb8bf4a563f65175a16eca72"
-    },
-    {
-      "file": "desktop-agent/src/main.ts",
-      "line": 264,
-      "column": 55,
-      "endLine": 264,
-      "endColumn": 68,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-require-imports",
-      "messageId": "noRequireImports",
-      "message": "A `require()` style import is forbidden.",
-      "spanHash": "df40633702ab241e67583ba57ce2f396b576c74dc024b1d20715fb6bb8f84e2e",
-      "lineHash": "7aaf8082f524cdb859d5e0e4b81f39b96ec6addcb7ca32fbcbba225c76064c1e",
-      "contextHash": "45a8946285a5526739e53fb3307d540fc57d64af96693aecb87bd15bd78d6c38"
     },
     {
       "file": "desktop-agent/src/services/auth.ts",
@@ -18927,20 +18897,6 @@
       "contextHash": "7574880ff53d2292bb4b171d305f6e0ef4308ac84cbfe1fe29d0ff90748ce894"
     },
     {
-      "file": "src/utils/currency.ts",
-      "line": 34,
-      "column": 9,
-      "endLine": 34,
-      "endColumn": 27,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'thousandsSeparator' is assigned a value but never used.",
-      "spanHash": "97b19aae02e68175c69e36bc063eb508b7fa53fecd8f48ff1e31919283ea1472",
-      "lineHash": "67d73c133babde4ea5d67a986995945c9f87300efe5952c9fb2e88432a7107a5",
-      "contextHash": "6ada02c8305bcf5778e3330fc80ea842dfe3dfdf73c581c29e813f3d145e3ef9"
-    },
-    {
       "file": "src/utils/event.ts",
       "line": 11,
       "column": 17,
@@ -20493,104 +20449,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "ab4d0f9ee3a54103efb99e11fd3fdad8641d7ed2652c2cff1de99332e51ce8db",
       "contextHash": "8d3249340bb3d6895c5ea161c062f06c177199c303d0e759d285264e35a66787"
-    },
-    {
-      "file": "supabase/functions/slack-dlq-replay/index.ts",
-      "line": 158,
-      "column": 15,
-      "endLine": 158,
-      "endColumn": 18,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "3869298a4657284d7b05d6f4173ed60b4ada61afbce01ea292d93a2b0508b064",
-      "contextHash": "035298ac16d06d681bfd39a5b732ddd530113389d2970390a69d27022acf10ab"
-    },
-    {
-      "file": "supabase/functions/slack-dlq-replay/index.ts",
-      "line": 46,
-      "column": 13,
-      "endLine": 46,
-      "endColumn": 16,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "7b9c51c07899d7b1c323d34b26c5eb90a66dded4f1164a1adc6a2ff08878a7bd",
-      "contextHash": "90663622955f267a4fd4a03aea5ca3bb8dd26a698abd3de8aa78faf2e38626ae"
-    },
-    {
-      "file": "supabase/functions/slack-notify/index.ts",
-      "line": 182,
-      "column": 19,
-      "endLine": 182,
-      "endColumn": 22,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "3869298a4657284d7b05d6f4173ed60b4ada61afbce01ea292d93a2b0508b064",
-      "contextHash": "5c114ad8f474d8f3f9c4b0a8780287152e32b4daeb647cbc8857e471a26a23fe"
-    },
-    {
-      "file": "supabase/functions/slack-notify/index.ts",
-      "line": 195,
-      "column": 35,
-      "endLine": 195,
-      "endColumn": 38,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "4272c2bbc3bf3a13f91591743122d90b50811c2d09316f421d865b2d9b99bf8f",
-      "contextHash": "459b29dd6193f0db202fd1c04bf9337d6a1340904e4ae2f3469228d86418f70e"
-    },
-    {
-      "file": "supabase/functions/slack-notify/index.ts",
-      "line": 37,
-      "column": 16,
-      "endLine": 37,
-      "endColumn": 19,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "259770beff91f7164bfc7484167391202fd4eb598bdcbe470254f09c29bbe7ab",
-      "contextHash": "c46b4c4c0ab8f9f3cab009803ec29d5356658c9c3065570325cdfe80a68d4fea"
-    },
-    {
-      "file": "supabase/functions/slack-notify/index.ts",
-      "line": 386,
-      "column": 21,
-      "endLine": 386,
-      "endColumn": 24,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "3869298a4657284d7b05d6f4173ed60b4ada61afbce01ea292d93a2b0508b064",
-      "contextHash": "1e10b5cd92d5af7a881d3e62f8d1b37180fa8326292fda6603d30f7d0deebee7"
-    },
-    {
-      "file": "supabase/functions/slack-notify/index.ts",
-      "line": 76,
-      "column": 51,
-      "endLine": 76,
-      "endColumn": 54,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "48edebbedf9930e13ead439843902ab63311da266b0fe81a5df498ce83d52648",
-      "contextHash": "16c6a658e3b47297e43674bbf9612cceb415ff05d76398619a8253d59e427a5f"
     },
     {
       "file": "supabase/functions/slack-weekly-digest/index.ts",
