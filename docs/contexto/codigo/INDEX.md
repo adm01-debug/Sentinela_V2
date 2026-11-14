@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `155e979e6df7b85e043d270fa00b190b8cc12e6a` (2026-11-14T09:18:51-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c1b5b145995851673b40b27a92690ab3a67dc0ec` (2026-11-14T10:13:00-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -290,18 +290,18 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - não gerado neste run. uvx --from "graphifyy[sql]" graphify update .  (ou: bun run graph:update); saída em graphify-out/ — graph.json e graph.html NÃO são versionados (dezenas de MB); use `graphify query/path/explain` localmente
 
 ## Hotspots (arquivos mais alterados, 90 dias)
+- package-lock.json (32)
 - package.json (32)
-- package-lock.json (31)
 - ESTADO_ATUAL.md (6)
 - .github/workflows/ci.yml (5)
 - scripts/ci/eslint-baseline.json (5)
+- scripts/ci/prettier-baseline.json (5)
 - AGENTS.md (4)
-- scripts/ci/prettier-baseline.json (4)
+- docs/prod-readiness.md (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/deploy.yml (3)
 - .github/workflows/lint.yml (3)
 - .github/workflows/update-deps.yml (3)
-- docs/prod-readiness.md (3)
 - src/pages/__tests__/Auth.test.tsx (3)
 - src/pages/__tests__/Settings.test.tsx (3)
 - src/test/improvements-verification.test.ts (3)
@@ -444,13 +444,15 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `docs/deployment.md` — Deployment Guide (81 linhas)
 - `docs/faq.md` — FAQ (52 linhas)
 - `docs/installation.md` — Installation Guide (53 linhas)
-- `docs/prod-readiness.md` — Sentinela_V2 — Prontidão de Produção (113 linhas)
+- `docs/prod-readiness.md` (113 linhas)
 - `docs/troubleshooting.md` — Troubleshooting Guide (60 linhas)
 - `docs/user-guide.md` — User Guide (67 linhas)
 - subpastas de docs/: docs/guides (10), docs/tutorials (10), docs/adr (9), docs/examples (8), docs/agentes (7), docs/agent (1)
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-14 `c1b5b1459` fix(supabase): alinha config.toml ao projeto de producao (jgnmwvzephsozsqmcpzb) (#138)
+- 2026-11-14 `f53b8cc95` chore: update dependencies (#136)
 - 2026-11-14 `155e979e6` chore: baixa baseline do format-ratchet apos 9 dividas pagas (#137)
 - 2026-11-14 `4301538a2` ci: torna npm audit fix tolerante no update-deps para destravar o PR semanal (#132)
 - 2026-11-14 `92050abe8` chore: baixa baseline do lint-ratchet apos 9 dividas pagas (#135)
@@ -464,8 +466,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-13 `8044b0050` fix(security): sanitiza erros em edge functions do slack e remove no-op (#125)
 - 2026-11-13 `09097cc94` fix: escapa barra invertida no regex de extracao de roles (CodeQL sanitization) (#127)
 - 2026-11-13 `db206d2bf` fix(security): troca sha256 por scrypt com salt na senha do stealth mode (#126)
-- 2026-11-13 `844873d1c` fix: remove ReDoS e sanitizacao incompleta em utils e useSecurity (#124)
-- 2026-11-13 `c92e7413b` fix: parseCurrency ignora separador de milhar (regex literal quebrada) (#123)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "155e979e6df7b85e043d270fa00b190b8cc12e6a",
+  "commit": "c1b5b145995851673b40b27a92690ab3a67dc0ec",
   "branch": "main",
-  "data_commit": "2026-11-14T09:18:51-03:00",
+  "data_commit": "2026-11-14T10:13:00-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "c1b5b1459",
+    "data": "2026-11-14",
+    "assunto": "fix(supabase): alinha config.toml ao projeto de producao (jgnmwvzephsozsqmcpzb) (#138)"
+   },
+   {
+    "sha": "f53b8cc95",
+    "data": "2026-11-14",
+    "assunto": "chore: update dependencies (#136)"
+   },
    {
     "sha": "155e979e6",
     "data": "2026-11-14",
@@ -121,16 +131,6 @@
     "sha": "40ca83394",
     "data": "2026-11-12",
     "assunto": "fix(ci): normaliza separador de path do Windows no lint-ratchet (#114)"
-   },
-   {
-    "sha": "deec5b891",
-    "data": "2026-11-12",
-    "assunto": "fix(desktop): valida desktop-agent por typecheck no CI em vez de electron-builder (#113)"
-   },
-   {
-    "sha": "69611c177",
-    "data": "2026-11-12",
-    "assunto": "fix(ci): performance testa URL de producao correta (sentinela-v2.vercel.app) (#111)"
    }
   ],
   "arquivos_mudados_7d": 238,
@@ -141,7 +141,7 @@
    },
    {
     "pasta": "package-lock.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "pasta": "package.json",
@@ -149,6 +149,10 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
+    "mudancas": 5
+   },
+   {
+    "pasta": "scripts/ci/prettier-baseline.json",
     "mudancas": 5
    },
    {
@@ -160,7 +164,7 @@
     "mudancas": 4
    },
    {
-    "pasta": "scripts/ci/prettier-baseline.json",
+    "pasta": "docs/prod-readiness.md",
     "mudancas": 4
    },
    {
@@ -188,22 +192,18 @@
     "mudancas": 3
    },
    {
-    "pasta": "docs/prod-readiness.md",
-    "mudancas": 3
-   },
-   {
     "pasta": "src/components/ui",
     "mudancas": 3
    }
   ],
   "arquivos_mais_mudados_90d": [
    {
-    "arquivo": "package.json",
+    "arquivo": "package-lock.json",
     "mudancas": 32
    },
    {
-    "arquivo": "package-lock.json",
-    "mudancas": 31
+    "arquivo": "package.json",
+    "mudancas": 32
    },
    {
     "arquivo": "ESTADO_ATUAL.md",
@@ -218,11 +218,15 @@
     "mudancas": 5
    },
    {
+    "arquivo": "scripts/ci/prettier-baseline.json",
+    "mudancas": 5
+   },
+   {
     "arquivo": "AGENTS.md",
     "mudancas": 4
    },
    {
-    "arquivo": "scripts/ci/prettier-baseline.json",
+    "arquivo": "docs/prod-readiness.md",
     "mudancas": 4
    },
    {
@@ -242,10 +246,6 @@
     "mudancas": 3
    },
    {
-    "arquivo": "docs/prod-readiness.md",
-    "mudancas": 3
-   },
-   {
     "arquivo": "src/pages/__tests__/Auth.test.tsx",
     "mudancas": 3
    },
@@ -255,6 +255,10 @@
    },
    {
     "arquivo": "src/test/improvements-verification.test.ts",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "supabase/config.toml",
     "mudancas": 3
    },
    {
@@ -292,16 +296,12 @@
    {
     "arquivo": "eslint.config.js",
     "mudancas": 2
-   },
-   {
-    "arquivo": "inventario/estado/edges.json",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 45
+    "commits": 46
    },
    {
     "autor": "dependabot[bot]",
@@ -309,7 +309,7 @@
    },
    {
     "autor": "github-actions[bot]",
-    "commits": 1
+    "commits": 2
    }
   ]
  },
