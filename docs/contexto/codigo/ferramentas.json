@@ -4,7 +4,7 @@
  "stack": {
   "linguagens": [
    "TypeScript (1378)",
-   "Markdown (173)",
+   "Markdown (174)",
    "SQL (106)",
    "JSON (42)",
    "YAML (35)",
@@ -1023,6 +1023,11 @@
    "arquivo": "docs/installation.md",
    "titulo": "Installation Guide",
    "linhas": 53
+  },
+  {
+   "arquivo": "docs/prod-readiness.md",
+   "titulo": "Sentinela_V2 — Prontidão de Produção",
+   "linhas": 95
   },
   {
    "arquivo": "docs/troubleshooting.md",

@@ -33,7 +33,7 @@
    "scripts/inventario (2)"
   ],
   "docs": [
-   "docs (93)",
+   "docs (94)",
    "(raiz) (16)",
    ".github (1)"
   ]
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "docs: inventario de prontidao de producao (prod-readiness) (#131)",
    "chore: remove workflow orfao mobile-build (#130)",
    "ci: sobe update-deps p/ node 22 e usa create-pull-request v7 (#129)",
    "chore: inventario do estado real [auto] (#128)",
-   "ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)",
-   "fix(security): sanitiza erros em edge functions do slack e remove no-op (#125)"
+   "ci: adiciona permissions minimas nos workflows (CodeQL missing-workflow-permissions) (#122)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "9954e10a866c8ce922150ec11ce44c31db41d66c",
+  "commit": "fcb31ffd54bcc33997309e255306f86b05a8e16c",
   "branch": "main",
-  "data_commit": "2026-11-13T20:31:01-03:00",
+  "data_commit": "2026-11-14T08:07:20-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "fcb31ffd5",
+    "data": "2026-11-14",
+    "assunto": "docs: inventario de prontidao de producao (prod-readiness) (#131)"
+   },
    {
     "sha": "9954e10a8",
     "data": "2026-11-13",
@@ -126,14 +131,9 @@
     "sha": "df537774d",
     "data": "2026-11-12",
     "assunto": "build(deps): bump the test group across 1 directory with 6 updates (#85)"
-   },
-   {
-    "sha": "240a04d0d",
-    "data": "2026-11-12",
-    "assunto": "build(deps): bump the react group across 1 directory with 35 updates (#107)"
    }
   ],
-  "arquivos_mudados_7d": 237,
+  "arquivos_mudados_7d": 238,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 39
+    "commits": 40
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1823,
+  "arquivos_total": 1824,
   "arquivos_codigo": 1399,
   "linhas_codigo": 147202,
   "rotas": 54,
@@ -331,7 +331,7 @@
   "testes": 70,
   "workflows": 12,
   "scripts": 31,
-  "docs_md": 173
+  "docs_md": 174
  },
  "por_pasta": {
   "benchmarks/api-performance.ts": {
