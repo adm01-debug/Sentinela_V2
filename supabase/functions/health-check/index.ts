@@ -88,7 +88,7 @@ serve(async (req) => {
         if (detailed || include_db) {
           const dbStart = Date.now();
           try {
-            const { error } = await supabase.from('health_check').select('id').limit(1);
+            const { error } = await supabase.from('employees').select('id').limit(1);
             healthStatus.checks.database = {
               status: error ? 'unhealthy' : 'healthy',
               latency_ms: Date.now() - dbStart,
