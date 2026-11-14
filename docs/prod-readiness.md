@@ -56,7 +56,7 @@ Listadas em anexo abaixo. Incluem: agent-collector, process-screenshot, analyze-
 | Inventário do estado real (semanal) | `60779c3` (dispatch)     | **success**                                                                                                                                              |
 | Update Dependencies                 | dispatch (revalidação)   | **failure** (12 vulns sem fix: xlsx sem correção + @typescript-eslint/minimatch/postcss exigem --force breaking) → **PR #132** aberta com `npm audit fix |     | true` |
 
-**BLOQUEADO/Aguardando**: revalidação do Update Dependencies após o fix do #129 (dispatch aceito run `43588140619`, status queued).
+**SITUAÇÃO**: revalidação no main (run `43588991065`) reprodou a mesma falha no `npm audit fix` — fix pendente na **PR #132** (regra 8).
 
 ### 2.5 Integrações (`.env.example`)
 
@@ -90,12 +90,12 @@ _shared, acknowledge-violation, agent-collector, analyze-activity, archive-data,
 - Jobs do `ci.yml`: quality (lint+typecheck ratchets, node 22), build (vite), test (vitest), deno-contract-tests (edge functions).
 - `npm audit --audit-level=high || true` no CI (não bloqueia).
 
-## ANEXO 5 — Prova de produção (req 7), main `fcb31ffd5` em 2026-11-14
+## ANEXO 5 — Prova de produção (req 7), main `61048d99f` em 2026-11-14
 
-- **Check-runs do main `fcb31ffd54bcc33997309e255306f86b05a8e16c`** (via API): todos `success` (10/10): `analyze (js/ts)`, `analyze (actions)`, `lint`, `build`, `quality`, `deno-contract-tests`, `test`, `agent-instructions-guard`, `deploy` (Vercel), `lighthouse`.
-- **Deploy run** `43588503162` → `Deploy to Vercel` success; produção alias `https://sentinela-v2.vercel.app`, preview `https://sentinela-v2-itjsj11um-juca1.vercel.app`.
-- **Request real**: `GET https://sentinela-v2.vercel.app` → **HTTP 200**, `text/html; charset=utf-8`, `<title>Sentinela - Monitoramento Corporativo</title>`, `<html lang="pt-BR">`. Ciclo merge → deploy → verificado fechado.
-- **Composição do main**: `fcb31ffd5` = #131 (prod-readiness) sobre `9954e10a8` = #130 (remove mobile-build) sobre `ac5e159a` = #129 (update-deps node 22).
+- **Check-runs do main `fcb31ffd5`** (via API): todos `success` (10/10): `analyze (js/ts)`, `analyze (actions)`, `lint`, `build`, `quality`, `deno-contract-tests`, `test`, `agent-instructions-guard`, `deploy` (Vercel), `lighthouse`.
+- **Deploy do main final `61048d99f`**: run `43588969437` → **success** (`Deploy to Vercel`); produção alias `https://sentinela-v2.vercel.app`, preview `https://sentinela-v2-itjsj11um-juca1.vercel.app`.
+- **Request real (após deploy do main final)**: `GET https://sentinela-v2.vercel.app` → **HTTP 200**, `text/html; charset=utf-8`, `<title>Sentinela - Monitoramento Corporativo</title>`, `<html lang="pt-BR">`. Ciclo merge → deploy → verificado fechado.
+- **Composição do main**: `61048d99f` = #133 (docs, este relatório) sobre `fcb31ffd5` = #131 sobre `9954e10a8` = #130 sobre `ac5e159a` = #129.
 
 ## ANEXO 6 — Update Dependencies pós-#129 (diagnóstico real, run `43588140619`)
 
@@ -104,7 +104,8 @@ _shared, acknowledge-violation, agent-collector, analyze-activity, archive-data,
   - `xlsx`/sheetjs (Prototype Pollution GHSA-4r6h-8v6p-xvw6 + ReDoS GHSA-5pgg-2g8v-p4x9): **No fix available**.
   - `@typescript-eslint/*` → minimatch (GHSA-g3hv-75wg-m249): fix exige `npm audit fix --force` = breaking.
   - `postcss-selector-parser` via `@tailwindcss/typography` (GHSA-rj75-hqrm-r3gf): fix `--force` = breaking.
-- **Ação**: PR **#132** torna o step tolerante (`npm audit fix || true`) para destravar o PR semanal de update. As vulns **continuam sinalizadas** no `npm audit` do CI (moderate) — não são escondidas.
+- **Confirmação no main**: redispatch pós-merge #133 (run `43588991065`) falhou no MESMO step (`Run npm audit fix` → `Process completed with exit code 1`) — o fix ainda está na **PR #132** (aberta, regra 8).
+- **Ação**: mergir a **PR #132** (`npm audit fix || true`) e redespachar o update-deps para validar verde. As vulns **continuam sinalizadas** no `npm audit` do CI (moderate) — não são escondidas.
 
 ## ANEXO 2 — Tabelas (create table nas migrations)
 
