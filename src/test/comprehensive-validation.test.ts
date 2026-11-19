@@ -189,7 +189,7 @@ describe('Routes Constants', () => {
 
   it('generateRoute produces correct team path', async () => {
     const { generateRoute } = await import('@/constants/routes');
-    expect(generateRoute.team('t1')).toBe('/teams/t1');
+    expect(generateRoute.team('t1')).toBe('/admin/teams/t1');
   });
 });
 
