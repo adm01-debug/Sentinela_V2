@@ -116,14 +116,27 @@ describe("Type Safety: Zero any remaining", () => {
   }
 
   it("any count in src/ does not regress (excluding types.ts and tests)", async () => {
-    const { execSync } = await import("child_process");
-    const result = execSync(
-      'grep -rn ": any\\|as any\\|<any>" src/ --include="*.ts" --include="*.tsx" | grep -v node_modules | grep -v ".test." | grep -v "types.ts" | wc -l'
-    )
-      .toString()
-      .trim();
+    const { readdirSync, readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    // Portavel (Windows/Linux): replica `grep -rn ": any|as any|<any>" src/`
+    // sem depender de binarios Unix.
+    let total = 0;
+    const walk = (dir: string): void => {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        const filePath = join(dir, entry.name);
+        if (entry.isDirectory()) {
+          if (entry.name !== "node_modules") walk(filePath);
+          continue;
+        }
+        if (!entry.name.endsWith(".ts") && !entry.name.endsWith(".tsx")) continue;
+        if (entry.name.includes(".test.") || entry.name.endsWith("types.ts")) continue;
+        const lines = readFileSync(filePath, "utf8").split("\n");
+        total += lines.filter((line) => /:\s*any\b|as\s+any\b|<any>/.test(line)).length;
+      }
+    };
+    walk("src");
     // Regression ceiling: keeps the current `any` usage from growing.
-    expect(Number(result)).toBeLessThanOrEqual(240);
+    expect(total).toBeLessThanOrEqual(240);
   });
 });
 
