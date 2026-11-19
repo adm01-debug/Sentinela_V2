@@ -148,6 +148,13 @@ export function validateRequest(req: BridgeRequest): string | null {
   }
   if (req.limit && (req.limit < 1 || req.limit > 1000)) return 'Limit must be 1-1000';
   if (req.offset && req.offset < 0) return 'Offset must be >= 0';
+  // Require at least one filter for mutating operations to prevent full-table changes
+  if (
+    (req.action === 'update' || req.action === 'delete') &&
+    (!req.filters || Object.keys(req.filters).length === 0)
+  ) {
+    return `${req.action} requires at least one filter`;
+  }
   return null;
 }
 
