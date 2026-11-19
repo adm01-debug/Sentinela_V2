@@ -29,7 +29,14 @@ let stealthMode = false;
 let isInitializing = false;
 let isQuitting = false;
 
-const store = new Store({
+interface StoreSchema {
+  agentKey: string;
+  deviceName: string;
+  stealthMode: boolean;
+  stealthPassword: string;
+}
+
+const store = new Store<StoreSchema>({
   encryptionKey: "sentinela-secure-storage-key",
   schema: {
     agentKey: { type: "string", default: "" },
@@ -174,7 +181,7 @@ function storePassphrase(passphrase: string): void {
 }
 
 function verifyStoredPassphrase(passphrase: string): boolean {
-  const stored = store.get("stealthPassword") as string;
+  const stored = store.get("stealthPassword");
   if (!stored) return false;
 
   // Migra registro legado (texto puro) para scrypt na primeira verificacao.
@@ -198,7 +205,7 @@ function verifyStoredPassphrase(passphrase: string): boolean {
 }
 
 function hasStoredPassphrase(): boolean {
-  return Boolean(store.get("stealthPassword") as string);
+  return Boolean(store.get("stealthPassword"));
 }
 
 function toggleStealthMode(): void {
@@ -252,7 +259,7 @@ async function initializeServices(): Promise<void> {
 }
 
 async function _initializeServicesImpl(): Promise<void> {
-  const agentKey = store.get("agentKey") as string;
+  const agentKey = store.get("agentKey");
 
   if (!agentKey) {
     log.info("No agent key configured, showing setup window");
@@ -352,7 +359,7 @@ function setupIPC(): void {
     authenticated: isAuthenticated,
     stealthMode,
     version: app.getVersion(),
-    agentKey: store.get("agentKey") ? "****" + (store.get("agentKey") as string).slice(-4) : "",
+    agentKey: store.get("agentKey") ? "****" + store.get("agentKey").slice(-4) : "",
   }));
 
   ipcMain.handle("set-agent-key", async (_event, key: string) => {
@@ -426,7 +433,7 @@ if (!gotTheLock) {
     }
 
     // Stealth mode from store
-    stealthMode = store.get("stealthMode") as boolean;
+    stealthMode = store.get("stealthMode");
 
     createWindow();
 

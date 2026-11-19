@@ -9,7 +9,7 @@ Enterprises require security events to be forwarded to their SIEM (Splunk, Micro
 ## Decision
 - **Mechanism:** Use DB triggers on security-critical tables to enqueue events in a `siem_event_outbox`.
 - **Dispatcher:** A dedicated edge function processes the outbox with exponential backoff retry.
-- **Encryption:** Encryption keys for conector tokens are managed via Lovable Secrets and Web Crypto API.
+- **Encryption:** Encryption keys for connector tokens are managed via Lovable Secrets and Web Crypto API.
 - **Normalization:** Format events using CEF (Common Event Format) for standard compatibility.
 
 ## Consequences
