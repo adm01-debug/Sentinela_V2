@@ -33,7 +33,7 @@ export default function DepartmentsPage() {
           <Card key={dept.id}>
             <CardHeader className="flex-row items-center justify-between space-y-0">
               <div><CardTitle className="flex items-center gap-2"><Building className="h-5 w-5" />{dept.name}</CardTitle><CardDescription>{dept.employee_count || 0} funcionários</CardDescription></div>
-              <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem asChild><Link to={`/departments/${dept.id}`}><Edit className="mr-2 h-4 w-4" />Editar</Link></DropdownMenuItem><DropdownMenuItem className="text-destructive" onClick={() => deleteDepartment.mutate(dept.id)}><Trash2 className="mr-2 h-4 w-4" />Excluir</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
+              <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem asChild><Link to={`/admin/departments/${dept.id}`}><Edit className="mr-2 h-4 w-4" />Editar</Link></DropdownMenuItem><DropdownMenuItem className="text-destructive" onClick={() => deleteDepartment.mutate(dept.id)}><Trash2 className="mr-2 h-4 w-4" />Excluir</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
             </CardHeader>
             <CardContent><p className="text-sm text-muted-foreground">{dept.description}</p></CardContent>
           </Card>

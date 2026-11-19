@@ -85,8 +85,8 @@ export const generateRoute = {
   activity: (id: string) => `/activities/${id}`,
   alert: (id: string) => `/alerts/${id}`,
   report: (id: string) => `/reports/${id}`,
-  team: (id: string) => `/teams/${id}`,
-  department: (id: string) => `/departments/${id}`,
+  team: (id: string) => `/admin/teams/${id}`,
+  department: (id: string) => `/admin/departments/${id}`,
 };
 
 // Route groups for access control
