@@ -20,6 +20,32 @@ serve(async (req) => {
   }
 
   try {
+    // Authenticate the caller — reject unauthenticated requests
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ error: 'Missing or invalid authorization header' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Verify the JWT and retrieve the authenticated user
+    const anonClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { authorization: authHeader } } }
+    );
+    const {
+      data: { user },
+      error: authError,
+    } = await anonClient.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
     const rateLimitResult = await checkRateLimit(clientIP, 'send-report', 5, 60);
     
