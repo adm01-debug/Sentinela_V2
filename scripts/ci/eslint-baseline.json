@@ -86,7 +86,7 @@
     },
     {
       "path": "src/components/AddApplicationDialog.tsx",
-      "sha256": "c7cdc258ce01332cc87598e8ad82d787a2409242ef8d79c84ada3afa50db18e7"
+      "sha256": "f068d06f969731d365cd833ec207e382d9f27cc602c725150a55ab9ec6bcd345"
     },
     {
       "path": "src/components/admin/SlackDlqCard.tsx",
@@ -917,10 +917,6 @@
       "sha256": "c5ecb3c52f5067fa97400b9ffe99e24e2165ce8a8bdd7ed52c4d921cb2d5a8cf"
     },
     {
-      "path": "src/components/ui/sidebar.tsx",
-      "sha256": "5754b54ecb6151d7a138426a44a1057a4937ac5a173dfbd1f596a6c9d75b851b"
-    },
-    {
       "path": "src/components/ui/SimpleDataTable.tsx",
       "sha256": "2a3d5879c3c563e094ceacb7f1368a3d8d982f5f7d36cea38db0323df6f3ff93"
     },
@@ -1633,10 +1629,6 @@
       "sha256": "37e370b9a520480f5599608cb516de5fb055c9efe67687caf9fdd6fe4b4d08d9"
     },
     {
-      "path": "src/hooks/useVersions.ts",
-      "sha256": "4cccfd52a53c9646a5398375cc284024d62578a97a23a4e23d9aff60ecb9e1f1"
-    },
-    {
       "path": "src/hooks/useViolationComments.ts",
       "sha256": "d9284ac913cc174fbd3a640c6149c86ef5f0914ff21f0bbd9893e131e40cbd90"
     },
@@ -1870,7 +1862,7 @@
     },
     {
       "path": "src/pages/DepartmentsPage.tsx",
-      "sha256": "7ca90a6fbd3a46cb05d81a359099f8a5d2a81868034a88ecafdb2a8ab995c18a"
+      "sha256": "08576fac95f271b2ec7e3a2253f18d84e1c51dde488399327244f01e45bc0dfa"
     },
     {
       "path": "src/pages/dev/LiveViewSimulatorPage.tsx",
@@ -1883,10 +1875,6 @@
     {
       "path": "src/pages/DevicesPage.tsx",
       "sha256": "8815572e859e66efd5bd51725aef00c2db9a96aadbfcd4b22702a06ef1555414"
-    },
-    {
-      "path": "src/pages/EmployeeDetailPage.tsx",
-      "sha256": "4af8f424fa4dd3f32d8867d99f9693b0c39b5b7ea2867c63e32f1e6902535d6e"
     },
     {
       "path": "src/pages/EmployeesPage.tsx",
@@ -2162,15 +2150,11 @@
     },
     {
       "path": "supabase/functions/external-db-bridge/index.ts",
-      "sha256": "04be8a3b7bf020cf18c753d5bac8b653d7ad98648a3111c2ba0eef1cadab94e0"
+      "sha256": "e14c2981883bae8181dd0fc167201740ab3d2a9cc8685f4297830ef590db3a02"
     },
     {
       "path": "supabase/functions/generate-insights/index.ts",
-      "sha256": "0b7dd6a6960afd32484fa1fb17c00bd58a73a1ab86cd49815767cbaaaf48520d"
-    },
-    {
-      "path": "supabase/functions/get-mapbox-token/index.ts",
-      "sha256": "dbcb3c38b5a12cc2472ef8bf3ff54ce4c3fe45773754b8cfbe3baec82f85e454"
+      "sha256": "d123df6772af701fe0f0399b6249a5fd8293081469431e27e9070618c3d756a4"
     },
     {
       "path": "supabase/functions/live-view-authorize/index.ts",
@@ -2182,7 +2166,7 @@
     },
     {
       "path": "supabase/functions/natural-language-query/index.ts",
-      "sha256": "a916ff1ed9ae9e7dc0e53c5e04f5dcb5b825b59a2ca8fb7a21f127ab1d17ed4e"
+      "sha256": "15d853ed2d0be050dc243dfd5a3e2223460b7bf451e4a9616fa85f7cffc99785"
     },
     {
       "path": "supabase/functions/notify-dispute-decision/index.ts",
@@ -2210,7 +2194,7 @@
     },
     {
       "path": "supabase/functions/send-scheduled-report/index.ts",
-      "sha256": "c9df991dad68ff745789c8aff8b28d9c77d0dc876af85be18e6a54da67c26d8b"
+      "sha256": "48f460298605bffc1b5ad5c236aa6bdba02c097df4b21013403a4bcb7f01ce31"
     },
     {
       "path": "supabase/functions/send-webhook/index.ts",
@@ -2239,14 +2223,6 @@
     {
       "path": "supabase/functions/validate-agent-key/index.ts",
       "sha256": "66cda4152ce76979d6a27d565c562f534ed4e2ee4b5ee09820b8021f4d550350"
-    },
-    {
-      "path": "tailwind.config.ts",
-      "sha256": "e9e818aa7df8acb05ed09d7ec1a69d6e1e6c2b319458a29d478e3bfc9983c205"
-    },
-    {
-      "path": "vite.config.ts",
-      "sha256": "20ec5f7094bfce72d92167f446e177d23a79c4b308389345c27980344d0e8017"
     }
   ],
   "issues": [
@@ -9909,34 +9885,6 @@
       "contextHash": "bbb9b5335a5e9631c18f7283b542e05521df3d5928a874524b2c7f7c779a8d18"
     },
     {
-      "file": "src/components/ui/sidebar.tsx",
-      "line": 32,
-      "column": 7,
-      "endLine": 32,
-      "endColumn": 21,
-      "severity": 2,
-      "ruleId": "no-redeclare",
-      "messageId": "redeclared",
-      "message": "'SidebarContext' is already defined.",
-      "spanHash": "7432b231259cf1299a142e927fdc98b6399ca5aa98fc0f48756b88703cf05258",
-      "lineHash": "e5013f307bba5f49f65d7ed90b93d98e6c7dbf18c97b7f4e1b5fd75973876d14",
-      "contextHash": "5498c05c83d3832f1216ae9e64286d673d7662e5118db39549aa627fba3aa678"
-    },
-    {
-      "file": "src/components/ui/sidebar.tsx",
-      "line": 536,
-      "column": 26,
-      "endLine": 536,
-      "endColumn": 39,
-      "severity": 2,
-      "ruleId": "react-hooks/purity",
-      "messageId": null,
-      "message": "Error: Cannot call impure function during render `Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent). <ROOT>/src/components/ui/sidebar.tsx:536:26 534 | // Random width between 50 to 90%. 535 | const width = React.useMemo(() => { > 536 | return `${Math.floor(Math.random() * 40) + 50}%`; | ^^^^^^^^^^^^^ Cannot call impure function 537 | }, []); 538 | 539 | return (",
-      "spanHash": "70e9d248688717df77bfb739b2384e84959ac43eb35ff5df19415eb1ca72c7be",
-      "lineHash": "78cebcdaa01b795838d4d37cb547ec2d23367cadb2cb6a7ba59b034f80f1c1b6",
-      "contextHash": "d738b72f2d49f7972ec78cbfac550282eb49661c0f32b25766e4e9db16f0834b"
-    },
-    {
       "file": "src/components/ui/SimpleDataTable.tsx",
       "line": 13,
       "column": 1,
@@ -14277,34 +14225,6 @@
       "contextHash": "9831272c0ba1752739a9f012a1677b5434859359699013defed79fb58a01caa7"
     },
     {
-      "file": "src/hooks/useVersions.ts",
-      "line": 47,
-      "column": 7,
-      "endLine": 47,
-      "endColumn": 19,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'mockVersions' is assigned a value but never used.",
-      "spanHash": "43176c00c1c809f7c865c8543bdbf06a208230ea8528fb5e725ed9e196ec473e",
-      "lineHash": "e138405f35a5498fd044be8baeff7aa082fcb8878c16965cd2380144efd6dc7e",
-      "contextHash": "7ef5fec71c660d7dc44c7effb5b5193fa568b97d4972bd2d96b7f2c2ba2d9fa6"
-    },
-    {
-      "file": "src/hooks/useVersions.ts",
-      "line": 8,
-      "column": 1,
-      "endLine": 8,
-      "endColumn": 32,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`sonner` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "eefe38ce8f75278dc1de094f18b00762de703a69ea47c7ddb4468d1e0f10ad29",
-      "lineHash": "eefe38ce8f75278dc1de094f18b00762de703a69ea47c7ddb4468d1e0f10ad29",
-      "contextHash": "3c4e1471ed494bd008c55275a40e2d970dc75bf429691dc35781145470dcc633"
-    },
-    {
       "file": "src/hooks/useViolationComments.ts",
       "line": 4,
       "column": 35,
@@ -16641,34 +16561,6 @@
       "spanHash": "e36cb0d308739f27e66baa02ccf546f3e65056ee12080fbd279d46d458ffab96",
       "lineHash": "e36cb0d308739f27e66baa02ccf546f3e65056ee12080fbd279d46d458ffab96",
       "contextHash": "58bccad74127b9d83bd5092ca420c41130f18f8d1cea4acb20634e9f595dca28"
-    },
-    {
-      "file": "src/pages/EmployeeDetailPage.tsx",
-      "line": 18,
-      "column": 1,
-      "endLine": 18,
-      "endColumn": 63,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/hooks/useEmployees`",
-      "spanHash": "cc40bd14e5021665581bf78adb09ff44350269de344e54ed5936ffdfa8647e7f",
-      "lineHash": "cc40bd14e5021665581bf78adb09ff44350269de344e54ed5936ffdfa8647e7f",
-      "contextHash": "85841a4b635ca03caa8db33b53bf5915bf5dc260b9305876219355d282c1c572"
-    },
-    {
-      "file": "src/pages/EmployeeDetailPage.tsx",
-      "line": 19,
-      "column": 1,
-      "endLine": 19,
-      "endColumn": 68,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/hooks/useEmployees`",
-      "spanHash": "afa8ce70b70177d3a82c587aa5214beddb24273f0c1a5bd328adefb581ff4983",
-      "lineHash": "afa8ce70b70177d3a82c587aa5214beddb24273f0c1a5bd328adefb581ff4983",
-      "contextHash": "57977d3dc4db1e7057d237226154a081cfc73a3150282e59051ae61723dd604f"
     },
     {
       "file": "src/pages/EmployeesPage.tsx",
@@ -19654,9 +19546,51 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 110,
+      "line": 102,
+      "column": 56,
+      "endLine": 102,
+      "endColumn": 59,
+      "severity": 1,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "messageId": "unexpectedAny",
+      "message": "Unexpected any. Specify a different type.",
+      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
+      "lineHash": "c1dc6595d81883369e111771829f781b9ee28f697d7fa3345bffc6e881008510",
+      "contextHash": "5119ede2aeea4ef47293700ff2a6d83ef58c01ca5234e3c0a728f5c0eac5a4b9"
+    },
+    {
+      "file": "supabase/functions/generate-insights/index.ts",
+      "line": 120,
+      "column": 56,
+      "endLine": 120,
+      "endColumn": 59,
+      "severity": 1,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "messageId": "unexpectedAny",
+      "message": "Unexpected any. Specify a different type.",
+      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
+      "lineHash": "12ff2d219b7cd86215e69c14ec815995b420f3360d4518db6c7e006d429cbcea",
+      "contextHash": "5ff02ef43a9fcaf304f41a7af580cb65c7834c4a17c50cfe00fdb3141f931a07"
+    },
+    {
+      "file": "supabase/functions/generate-insights/index.ts",
+      "line": 121,
+      "column": 54,
+      "endLine": 121,
+      "endColumn": 57,
+      "severity": 1,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "messageId": "unexpectedAny",
+      "message": "Unexpected any. Specify a different type.",
+      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
+      "lineHash": "2086d1b5c2ae4b4a2f41d22775f5c0eda8e003e9eb7c88487874f1e11d3113b6",
+      "contextHash": "412298707b863e4e7074e55947dfa4c0c83ffe031a63d129d842d2969679641f"
+    },
+    {
+      "file": "supabase/functions/generate-insights/index.ts",
+      "line": 137,
       "column": 66,
-      "endLine": 110,
+      "endLine": 137,
       "endColumn": 69,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19682,9 +19616,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 32,
+      "line": 59,
       "column": 13,
-      "endLine": 32,
+      "endLine": 59,
       "endColumn": 23,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-unused-vars",
@@ -19696,9 +19630,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 32,
+      "line": 59,
       "column": 25,
-      "endLine": 32,
+      "endLine": 59,
       "endColumn": 33,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-unused-vars",
@@ -19710,9 +19644,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 36,
+      "line": 63,
       "column": 56,
-      "endLine": 36,
+      "endLine": 63,
       "endColumn": 67,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-unused-vars",
@@ -19724,9 +19658,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 50,
+      "line": 77,
       "column": 43,
-      "endLine": 50,
+      "endLine": 77,
       "endColumn": 46,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19738,9 +19672,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 51,
+      "line": 78,
       "column": 47,
-      "endLine": 51,
+      "endLine": 78,
       "endColumn": 50,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19749,62 +19683,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "f2f3fd9cfbb79e293a06fb2c8d98f37b2645b77cb9c9adf03ac90f2436d6b6a6",
       "contextHash": "e81aa7e642689e2ad23ff753d4a940e0bd14d547011325a89b32b93a00440185"
-    },
-    {
-      "file": "supabase/functions/generate-insights/index.ts",
-      "line": 75,
-      "column": 56,
-      "endLine": 75,
-      "endColumn": 59,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "c1dc6595d81883369e111771829f781b9ee28f697d7fa3345bffc6e881008510",
-      "contextHash": "5119ede2aeea4ef47293700ff2a6d83ef58c01ca5234e3c0a728f5c0eac5a4b9"
-    },
-    {
-      "file": "supabase/functions/generate-insights/index.ts",
-      "line": 93,
-      "column": 56,
-      "endLine": 93,
-      "endColumn": 59,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "12ff2d219b7cd86215e69c14ec815995b420f3360d4518db6c7e006d429cbcea",
-      "contextHash": "5ff02ef43a9fcaf304f41a7af580cb65c7834c4a17c50cfe00fdb3141f931a07"
-    },
-    {
-      "file": "supabase/functions/generate-insights/index.ts",
-      "line": 94,
-      "column": 54,
-      "endLine": 94,
-      "endColumn": 57,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "2086d1b5c2ae4b4a2f41d22775f5c0eda8e003e9eb7c88487874f1e11d3113b6",
-      "contextHash": "412298707b863e4e7074e55947dfa4c0c83ffe031a63d129d842d2969679641f"
-    },
-    {
-      "file": "supabase/functions/get-mapbox-token/index.ts",
-      "line": 83,
-      "column": 9,
-      "endLine": 83,
-      "endColumn": 63,
-      "severity": 2,
-      "ruleId": "no-case-declarations",
-      "messageId": "unexpected",
-      "message": "Unexpected lexical declaration in case block.",
-      "spanHash": "32382e8dd2c6f235fdb15c32bcfa7dfdbdd38f5b3cb1aea1256ee7dda74780af",
-      "lineHash": "32382e8dd2c6f235fdb15c32bcfa7dfdbdd38f5b3cb1aea1256ee7dda74780af",
-      "contextHash": "edcb5cc9e8093708c8a83fd523c116a3d82be23132b5713f4fbe6155ce05ad89"
     },
     {
       "file": "supabase/functions/live-view-authorize/index.ts",
@@ -19948,9 +19826,9 @@
     },
     {
       "file": "supabase/functions/natural-language-query/index.ts",
-      "line": 113,
+      "line": 104,
       "column": 32,
-      "endLine": 113,
+      "endLine": 104,
       "endColumn": 35,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19962,9 +19840,9 @@
     },
     {
       "file": "supabase/functions/natural-language-query/index.ts",
-      "line": 144,
+      "line": 135,
       "column": 33,
-      "endLine": 144,
+      "endLine": 135,
       "endColumn": 36,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19990,9 +19868,9 @@
     },
     {
       "file": "supabase/functions/natural-language-query/index.ts",
-      "line": 171,
+      "line": 162,
       "column": 33,
-      "endLine": 171,
+      "endLine": 162,
       "endColumn": 36,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20001,20 +19879,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "d87a2486ac54477c8ca391e83a29343f5859141860dd56c78ea02525bd16d7de",
       "contextHash": "9fe0928b9138cc60879da1534f5da150eb63bf707d29474a6485c7b193282076"
-    },
-    {
-      "file": "supabase/functions/natural-language-query/index.ts",
-      "line": 18,
-      "column": 7,
-      "endLine": 18,
-      "endColumn": 21,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'QUERY_PATTERNS' is assigned a value but never used.",
-      "spanHash": "eb9fb12caae04ee420314e2c29ca852fb85c4872af92304829a6fdacfc4ac1ac",
-      "lineHash": "6d0f3aa96b6ad630d6b16dd3a3b2240d3da9e443aee38dd89a28f9a8341271e9",
-      "contextHash": "f64f0ffc5972240a11b74641a8b14c8efb6102c1a82d97bf268f1091b3860435"
     },
     {
       "file": "supabase/functions/notify-dispute-decision/index.ts",
@@ -20368,9 +20232,9 @@
     },
     {
       "file": "supabase/functions/send-scheduled-report/index.ts",
-      "line": 74,
+      "line": 100,
       "column": 9,
-      "endLine": 77,
+      "endLine": 103,
       "endColumn": 88,
       "severity": 2,
       "ruleId": "no-case-declarations",
@@ -20382,9 +20246,9 @@
     },
     {
       "file": "supabase/functions/send-scheduled-report/index.ts",
-      "line": 81,
+      "line": 107,
       "column": 9,
-      "endLine": 84,
+      "endLine": 110,
       "endColumn": 64,
       "severity": 2,
       "ruleId": "no-case-declarations",
@@ -20771,34 +20635,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "b9ef169b83f8df5c1478e0728e53923ed30ad9a5cc689d612eb82400ae6ad76d",
       "contextHash": "c0ca545de6a53a8c863acea5f17d8358d3f953a0ca7047e2c43260a185f9c31b"
-    },
-    {
-      "file": "tailwind.config.ts",
-      "line": 97,
-      "column": 13,
-      "endLine": 97,
-      "endColumn": 43,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-require-imports",
-      "messageId": "noRequireImports",
-      "message": "A `require()` style import is forbidden.",
-      "spanHash": "290c6d6331892851796afe8e0bb146cd7bfc69d6bcadd90dabac6637578341aa",
-      "lineHash": "ad2cf92e670ae291fcebc8e5eba416d4bec7023e47979eca755ee1ee4a2c218b",
-      "contextHash": "54d1ac5fb7f20c33060a611b16ba717b96014d737043f0aac1c9b11e9a5b167a"
-    },
-    {
-      "file": "vite.config.ts",
-      "line": 2,
-      "column": 1,
-      "endLine": 2,
-      "endColumn": 25,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`path` import should occur before import of `@vitejs/plugin-react`",
-      "spanHash": "3fc2db591253a5d5acbb45ce37e34c57cbcb690b7c33a70cc7a64af267238fc8",
-      "lineHash": "3fc2db591253a5d5acbb45ce37e34c57cbcb690b7c33a70cc7a64af267238fc8",
-      "contextHash": "9a54a83f9810fbe320898b125396432c19ee376eb09a417633ff1f801e535301"
     }
   ]
 }
