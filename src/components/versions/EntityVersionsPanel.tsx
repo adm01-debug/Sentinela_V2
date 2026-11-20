@@ -44,10 +44,10 @@ function DiffRow({ diff }: { diff: VersionDiff }) {
         </Badge>
       </div>
       <div className="grid grid-cols-2 gap-2 text-xs">
-        <div className="rounded bg-muted p-2 text-muted-foreground line-through">
+        <div className="bg-muted text-muted-foreground rounded p-2 line-through">
           {formatData(diff.oldValue)}
         </div>
-        <div className="rounded bg-muted/60 p-2">{formatData(diff.newValue)}</div>
+        <div className="bg-muted/60 rounded p-2">{formatData(diff.newValue)}</div>
       </div>
     </div>
   );
@@ -111,7 +111,7 @@ export function EntityVersionsPanel({
       <CardContent className="space-y-4">
         <div>
           <div className="mb-2 text-sm font-medium">Versao atual</div>
-          <div className="rounded-lg border bg-card p-4">
+          <div className="bg-card rounded-lg border p-4">
             <VersionRow
               version={versions[0]}
               isLatest
@@ -148,7 +148,7 @@ export function EntityVersionsPanel({
                 <DiffRow key={i} diff={diff} />
               ))
             ) : (
-              <p className="text-sm text-muted-foreground">Sem diferencas.</p>
+              <p className="text-muted-foreground text-sm">Sem diferencas.</p>
             )}
           </div>
           <DialogFooter />
@@ -206,7 +206,7 @@ export function EntityVersionsPanel({
             </Badge>
           )}
         </div>
-        <div className="min-w-0 flex-1 text-sm text-muted-foreground">
+        <div className="text-muted-foreground min-w-0 flex-1 text-sm">
           <span className="block truncate">{version.change_summary ?? "Sem resumo"}</span>
           <span className="text-xs">
             {author} ·{" "}

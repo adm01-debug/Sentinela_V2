@@ -42,7 +42,7 @@ export function ViolationsByEmployeeChart({ violations }: ViolationsByEmployeeCh
 
   if (data.length === 0) {
     return (
-      <div className="flex h-[250px] items-center justify-center text-muted-foreground">
+      <div className="text-muted-foreground flex h-[250px] items-center justify-center">
         Nenhuma violação registrada
       </div>
     );
