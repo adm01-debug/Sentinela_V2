@@ -1,0 +1,933 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "git": {
+  "commit": "1edcf58fad31eed2cb048c7a4a452cc0c398c97b",
+  "branch": "main",
+  "data_commit": "2026-11-20T11:14:47-03:00",
+  "remote": "https://github.com/adm01-debug/Sentinela_V2",
+  "ultimos_commits": [
+   {
+    "sha": "1edcf58fa",
+    "data": "2026-11-20",
+    "assunto": "chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)"
+   },
+   {
+    "sha": "239acde75",
+    "data": "2026-11-20",
+    "assunto": "fix: remove assert de clock do teste 9.05 (elimina flake de CI) (#165)"
+   },
+   {
+    "sha": "8ade29737",
+    "data": "2026-11-20",
+    "assunto": "fix: marca *.pdf como binary no gitattributes (#164)"
+   },
+   {
+    "sha": "1a092d773",
+    "data": "2026-11-20",
+    "assunto": "feat: converte utilities restantes para @utility (Tailwind v4) (#163)"
+   },
+   {
+    "sha": "b8db7aa24",
+    "data": "2026-11-20",
+    "assunto": "feat: converte .glass e .stat-number para @utility (Tailwind v4) (#162)"
+   },
+   {
+    "sha": "a8dc1d0ef",
+    "data": "2026-11-20",
+    "assunto": "chore: baixa baselines dos ratchets (divida paga) (#161)"
+   },
+   {
+    "sha": "3b1357e67",
+    "data": "2026-11-20",
+    "assunto": "feat: converte bg-stripes para @utility (Tailwind v4) (#160)"
+   },
+   {
+    "sha": "d8e871c5e",
+    "data": "2026-11-20",
+    "assunto": "fix: limpa lint herdado do sidebar (no-redeclare, react-hooks/purity) (#159)"
+   },
+   {
+    "sha": "e9528ffc5",
+    "data": "2026-11-20",
+    "assunto": "feat: migra Tailwind v4 (CSS-first) e substitui tailwindcss-animate por tw-animate-css (#158)"
+   },
+   {
+    "sha": "fe0a8e494",
+    "data": "2026-11-20",
+    "assunto": "fix: resolve colisao de versao nas migrations 20260102 (#157)"
+   },
+   {
+    "sha": "1c02ee885",
+    "data": "2026-11-20",
+    "assunto": "fix: alinha timestamps das migrations com as versoes aplicadas no Supabase (#156)"
+   },
+   {
+    "sha": "e99261ad9",
+    "data": "2026-11-19",
+    "assunto": "feat: completa entity_versions com painel de histórico no EmployeeDetailPage (#155)"
+   },
+   {
+    "sha": "d51a91c94",
+    "data": "2026-11-19",
+    "assunto": "build(deps): bump @sentry/vite-plugin from 5.4.1 to 11.12.0 (#148)"
+   },
+   {
+    "sha": "4b84c49d6",
+    "data": "2026-11-19",
+    "assunto": "build(deps): bump @sentry/browser from 10.78.0 to 11.12.0 (#147)"
+   },
+   {
+    "sha": "926097ee9",
+    "data": "2026-11-19",
+    "assunto": "build(deps): bump @hookform/resolvers from 5.9.2 to 7.0.6 (#146)"
+   },
+   {
+    "sha": "16ebabdea",
+    "data": "2026-11-19",
+    "assunto": "fix(agent): aponta API_URL do desktop para o backend real (Sentinela_V2) (#154)"
+   },
+   {
+    "sha": "bd79b1aa6",
+    "data": "2026-11-19",
+    "assunto": "fix: porta residuais da branch qa (StoreSchema, docs ADR/README) (#153)"
+   },
+   {
+    "sha": "d1dfd4a6b",
+    "data": "2026-11-19",
+    "assunto": "fix: porta hardening de seguranca da qa (pr 12) (#152)"
+   },
+   {
+    "sha": "94cde9b53",
+    "data": "2026-11-19",
+    "assunto": "fix(tests): remove dependencia de grep/shell Unix do observability test (#144)"
+   },
+   {
+    "sha": "f6da0a5bf",
+    "data": "2026-11-19",
+    "assunto": "fix: rotas de equipe/departamento apontam para /admin (#150)"
+   },
+   {
+    "sha": "5097236f0",
+    "data": "2026-11-19",
+    "assunto": "fix: ignora keywords vazias no DLP engine (#151)"
+   },
+   {
+    "sha": "312c717dd",
+    "data": "2026-11-14",
+    "assunto": "docs: registra fix do 401 nas edge functions no prod-readiness (#142) (#143)"
+   },
+   {
+    "sha": "63db491f0",
+    "data": "2026-11-14",
+    "assunto": "fix(edge-functions): passa JWT explicito ao getUser nas functions que davam 401 (#142)"
+   },
+   {
+    "sha": "9900a90d4",
+    "data": "2026-11-14",
+    "assunto": "docs: registra estado do Deploy Vercel (secrets com scope errado) no prod-readiness (#141)"
+   },
+   {
+    "sha": "7721af1d2",
+    "data": "2026-11-14",
+    "assunto": "fix(health-check): troca check de banco de health_check (tabela inexistente) para employees (#140)"
+   }
+  ],
+  "arquivos_mudados_7d": 140,
+  "pastas_mais_mudadas_30d": [
+   {
+    "pasta": "src/pages/__tests__",
+    "mudancas": 23
+   },
+   {
+    "pasta": "package-lock.json",
+    "mudancas": 13
+   },
+   {
+    "pasta": "package.json",
+    "mudancas": 12
+   },
+   {
+    "pasta": "scripts/ci/eslint-baseline.json",
+    "mudancas": 7
+   },
+   {
+    "pasta": "scripts/ci/prettier-baseline.json",
+    "mudancas": 7
+   },
+   {
+    "pasta": "docs/prod-readiness.md",
+    "mudancas": 6
+   },
+   {
+    "pasta": "src/components/ui",
+    "mudancas": 6
+   },
+   {
+    "pasta": "desktop-agent/src/services",
+    "mudancas": 5
+   },
+   {
+    "pasta": ".github/workflows/ci.yml",
+    "mudancas": 4
+   },
+   {
+    "pasta": "desktop-agent/src/main.ts",
+    "mudancas": 4
+   },
+   {
+    "pasta": "src/index.css",
+    "mudancas": 4
+   },
+   {
+    "pasta": ".github/workflows/cd.yml",
+    "mudancas": 3
+   },
+   {
+    "pasta": ".github/workflows/contexto.yml",
+    "mudancas": 3
+   },
+   {
+    "pasta": ".github/workflows/deploy.yml",
+    "mudancas": 3
+   },
+   {
+    "pasta": ".github/workflows/lint.yml",
+    "mudancas": 3
+   }
+  ],
+  "arquivos_mais_mudados_90d": [
+   {
+    "arquivo": "package-lock.json",
+    "mudancas": 24
+   },
+   {
+    "arquivo": "package.json",
+    "mudancas": 24
+   },
+   {
+    "arquivo": "scripts/ci/eslint-baseline.json",
+    "mudancas": 7
+   },
+   {
+    "arquivo": "scripts/ci/prettier-baseline.json",
+    "mudancas": 7
+   },
+   {
+    "arquivo": "docs/prod-readiness.md",
+    "mudancas": 6
+   },
+   {
+    "arquivo": ".github/workflows/ci.yml",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "desktop-agent/src/main.ts",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "src/index.css",
+    "mudancas": 4
+   },
+   {
+    "arquivo": ".github/workflows/contexto.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": ".github/workflows/deploy.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": ".github/workflows/lint.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": ".github/workflows/update-deps.yml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "AGENTS.md",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "src/pages/__tests__/Auth.test.tsx",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "src/pages/__tests__/Settings.test.tsx",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "src/test/comprehensive-validation.test.ts",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "src/test/improvements-verification.test.ts",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "supabase/config.toml",
+    "mudancas": 3
+   },
+   {
+    "arquivo": ".github/workflows/desktop-build.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/inventario-estado-semanal.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/performance.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/preview.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/release.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": ".github/workflows/security.yml",
+    "mudancas": 2
+   },
+   {
+    "arquivo": "desktop-agent/src/services/dlp/dlpEngine.ts",
+    "mudancas": 2
+   }
+  ],
+  "autores_30d": [
+   {
+    "autor": "adm01-debug",
+    "commits": 69
+   },
+   {
+    "autor": "dependabot[bot]",
+    "commits": 8
+   },
+   {
+    "autor": "github-actions[bot]",
+    "commits": 2
+   }
+  ]
+ },
+ "contagens": {
+  "arquivos_total": 1823,
+  "arquivos_codigo": 1399,
+  "linhas_codigo": 147821,
+  "rotas": 54,
+  "rotas_http_backend": 12,
+  "vistas_por_id": 0,
+  "itens_menu": 12,
+  "modulos": 57,
+  "componentes": 461,
+  "hooks": 524,
+  "edge_functions": 85,
+  "tabelas": 139,
+  "migrations": 102,
+  "cron_jobs": 1,
+  "testes": 70,
+  "workflows": 12,
+  "scripts": 31,
+  "docs_md": 174
+ },
+ "por_pasta": {
+  "benchmarks/api-performance.ts": {
+   "arquivos": 1,
+   "linhas": 2
+  },
+  "benchmarks/bundle-size.ts": {
+   "arquivos": 1,
+   "linhas": 2
+  },
+  "benchmarks/render-performance.ts": {
+   "arquivos": 1,
+   "linhas": 2
+  },
+  "commitlint.config.cjs": {
+   "arquivos": 1,
+   "linhas": 13
+  },
+  "desktop-agent/src": {
+   "arquivos": 18,
+   "linhas": 2422
+  },
+  "docs/source": {
+   "arquivos": 1,
+   "linhas": 11
+  },
+  "e2e/auth.spec.ts": {
+   "arquivos": 1,
+   "linhas": 16
+  },
+  "eslint.config.js": {
+   "arquivos": 1,
+   "linhas": 76
+  },
+  "lint-staged.config.cjs": {
+   "arquivos": 1,
+   "linhas": 6
+  },
+  "playwright.config.ts": {
+   "arquivos": 1,
+   "linhas": 35
+  },
+  "public/sw-enhanced.js": {
+   "arquivos": 1,
+   "linhas": 128
+  },
+  "public/sw.js": {
+   "arquivos": 1,
+   "linhas": 11
+  },
+  "release.config.js": {
+   "arquivos": 1,
+   "linhas": 11
+  },
+  "scripts/ai-context": {
+   "arquivos": 3,
+   "linhas": 1458
+  },
+  "scripts/ci": {
+   "arquivos": 7,
+   "linhas": 2641
+  },
+  "scripts/generate-audit-pdf.js": {
+   "arquivos": 1,
+   "linhas": 21
+  },
+  "scripts/inventario": {
+   "arquivos": 2,
+   "linhas": 165
+  },
+  "scripts/lib": {
+   "arquivos": 2,
+   "linhas": 231
+  },
+  "seed/generate_time_entries.cjs": {
+   "arquivos": 1,
+   "linhas": 65
+  },
+  "src/App.tsx": {
+   "arquivos": 1,
+   "linhas": 19
+  },
+  "src/components": {
+   "arquivos": 388,
+   "linhas": 44847
+  },
+  "src/constants": {
+   "arquivos": 7,
+   "linhas": 257
+  },
+  "src/data": {
+   "arquivos": 4,
+   "linhas": 156
+  },
+  "src/guards": {
+   "arquivos": 1,
+   "linhas": 70
+  },
+  "src/helpers": {
+   "arquivos": 2,
+   "linhas": 24
+  },
+  "src/hooks": {
+   "arquivos": 479,
+   "linhas": 31959
+  },
+  "src/i18n": {
+   "arquivos": 1,
+   "linhas": 49
+  },
+  "src/integrations": {
+   "arquivos": 4,
+   "linhas": 6440
+  },
+  "src/layouts": {
+   "arquivos": 2,
+   "linhas": 117
+  },
+  "src/lib": {
+   "arquivos": 42,
+   "linhas": 2913
+  },
+  "src/main.tsx": {
+   "arquivos": 1,
+   "linhas": 28
+  },
+  "src/pages": {
+   "arquivos": 104,
+   "linhas": 16564
+  },
+  "src/providers": {
+   "arquivos": 9,
+   "linhas": 518
+  },
+  "src/routes": {
+   "arquivos": 1,
+   "linhas": 220
+  },
+  "src/services": {
+   "arquivos": 8,
+   "linhas": 546
+  },
+  "src/stores": {
+   "arquivos": 34,
+   "linhas": 2547
+  },
+  "src/test": {
+   "arquivos": 45,
+   "linhas": 9923
+  },
+  "src/types": {
+   "arquivos": 57,
+   "linhas": 5744
+  },
+  "src/utils": {
+   "arquivos": 64,
+   "linhas": 5247
+  },
+  "src/validators": {
+   "arquivos": 1,
+   "linhas": 180
+  },
+  "supabase/functions": {
+   "arquivos": 97,
+   "linhas": 12047
+  },
+  "vite.config.ts": {
+   "arquivos": 1,
+   "linhas": 90
+  }
+ },
+ "maiores_arquivos": [
+  {
+   "arquivo": "src/integrations/supabase/types.ts",
+   "linhas": 6369
+  },
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linhas": 924
+  },
+  {
+   "arquivo": "src/components/ui/sidebar.tsx",
+   "linhas": 733
+  },
+  {
+   "arquivo": "scripts/ci/lint-ratchet.mjs",
+   "linhas": 661
+  },
+  {
+   "arquivo": "src/pages/admin/DisputeEscalationAuditPage.tsx",
+   "linhas": 654
+  },
+  {
+   "arquivo": "src/components/security/IPWhitelistManager.tsx",
+   "linhas": 582
+  },
+  {
+   "arquivo": "src/utils/violationsPdf.ts",
+   "linhas": 572
+  },
+  {
+   "arquivo": "src/components/violations/ViolationTimelineDialog.tsx",
+   "linhas": 523
+  },
+  {
+   "arquivo": "supabase/functions/slack-notify/index.ts",
+   "linhas": 489
+  },
+  {
+   "arquivo": "src/pages/Auth.tsx",
+   "linhas": 486
+  },
+  {
+   "arquivo": "src/components/admin/SlackIntegrationsCard.tsx",
+   "linhas": 479
+  },
+  {
+   "arquivo": "src/components/security/GeoBlockingManager.tsx",
+   "linhas": 476
+  },
+  {
+   "arquivo": "src/components/ScreenCapturesCard.tsx",
+   "linhas": 474
+  },
+  {
+   "arquivo": "desktop-agent/src/main.ts",
+   "linhas": 468
+  },
+  {
+   "arquivo": "src/components/EmptyStates.tsx",
+   "linhas": 467
+  },
+  {
+   "arquivo": "src/components/ActivityFeed.tsx",
+   "linhas": 461
+  },
+  {
+   "arquivo": "src/components/BlockedIPsPanel.tsx",
+   "linhas": 460
+  },
+  {
+   "arquivo": "src/components/NotificationCenter.tsx",
+   "linhas": 456
+  },
+  {
+   "arquivo": "src/components/SessionPlayback.tsx",
+   "linhas": 454
+  },
+  {
+   "arquivo": "src/pages/AgentOnboardingPage.tsx",
+   "linhas": 445
+  },
+  {
+   "arquivo": "src/components/SearchDrawer.tsx",
+   "linhas": 424
+  },
+  {
+   "arquivo": "src/pages/TimeClockPage.tsx",
+   "linhas": 424
+  },
+  {
+   "arquivo": "src/components/security/SessionIndicator.tsx",
+   "linhas": 420
+  },
+  {
+   "arquivo": "src/components/KPIWidget.tsx",
+   "linhas": 415
+  },
+  {
+   "arquivo": "src/components/HeatmapCalendar.tsx",
+   "linhas": 413
+  }
+ ],
+ "qualidade": {
+  "any": 197,
+  "console_log": 55,
+  "ts_ignore": 0,
+  "eslint_disable": 1,
+  "todos": 5,
+  "arquivos_acima_500_linhas": 8
+ },
+ "todos": [
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linha": 188,
+   "tipo": "TODO",
+   "texto": "|FIXME|HACK|XXX)\\b[:\\s-]*([^\\n]{0,100})/.exec(line); if (m) todos.push({ linha: ln, tipo: m[1], text"
+  },
+  {
+   "arquivo": "scripts/ai-context/gerar.mjs",
+   "linha": 222,
+   "tipo": "TODO",
+   "texto": "|FIXME|HACK|XXX)\\b[:\\s-]*([^\\n]{0,100})/.exec(l); return m ? { linha: i + 1, tipo: m[1], texto: m[2]"
+  },
+  {
+   "arquivo": "src/test/gap-audit.test.ts",
+   "linha": 100,
+   "tipo": "TODO",
+   "texto": "stubs\", async () => {"
+  },
+  {
+   "arquivo": "src/test/gap-audit.test.ts",
+   "linha": 103,
+   "tipo": "TODO",
+   "texto": "\");"
+  },
+  {
+   "arquivo": "src/test/improvements-verification.test.ts",
+   "linha": 665,
+   "tipo": "TODO",
+   "texto": "\");"
+  }
+ ],
+ "alertas": {
+  "rotas_sem_arquivo": [],
+  "componentes_ambiguos": [],
+  "menu_sem_destino": [
+   "Configurações -> /settings",
+   "Configurações -> settings",
+   "Dashboard -> /",
+   "Funcionários -> /employees",
+   "Funcionários -> employees",
+   "Navegação -> navigation",
+   "Relatórios -> /reports",
+   "Relatórios -> reports"
+  ],
+  "edges_orfas": [
+   "agent-collector",
+   "archive-data",
+   "audit-export",
+   "auto-categorize",
+   "backup-data",
+   "batch-notifications",
+   "behavioral-baseline-builder",
+   "bulk-update",
+   "calculate-productivity",
+   "cleanup-rate-limit-logs",
+   "cleanup-sessions",
+   "compress-screenshots",
+   "create-monthly-partitions",
+   "daily-summary",
+   "delete-user-data",
+   "dlp-incident-report",
+   "dlp-policy-sync",
+   "expire-recordings",
+   "external-db-bridge",
+   "generate-api-key",
+   "generate-insights",
+   "get-dashboard-stats",
+   "get-employee-schedule",
+   "get-employee-timeline",
+   "get-policies",
+   "health",
+   "health-check",
+   "import-employees",
+   "ingest-file-transfer",
+   "invite-user",
+   "live-view-authorize",
+   "merge-employees",
+   "mobile-collector",
+   "natural-language-query",
+   "notify-dispute-decision",
+   "notify-mobile-violation",
+   "pending-employee-violations",
+   "process-bulk-import",
+   "process-screenshot",
+   "recalculate-metrics",
+   "refresh-tokens",
+   "request-overtime",
+   "reset-password",
+   "rotate-api-keys",
+   "search-activities",
+   "send-rate-limit-alert",
+   "sentiment-analysis",
+   "sync-employee",
+   "sync-teams",
+   "upload-recording-chunk",
+   "validate-agent-key",
+   "validate-license",
+   "verify-email",
+   "webrtc-ice-config",
+   "weekly-report"
+  ],
+  "edges_chamadas_sem_pasta": [
+   "sync-whatsapp-templates"
+  ],
+  "tabelas_sem_rls": [],
+  "tabelas_usadas_sem_definicao": [
+   "activities",
+   "app_config",
+   "backups",
+   "departments",
+   "employee_locations",
+   "feature_flags",
+   "geofence_events",
+   "geofence_states",
+   "internet_access_rules",
+   "productivity_metrics",
+   "push_subscriptions",
+   "rate_limit_alerts",
+   "rate_limit_settings",
+   "report_logs",
+   "reports",
+   "scheduled_reports",
+   "screenshots",
+   "sensitive_keywords",
+   "subscriptions",
+   "sync_logs",
+   "user_sessions",
+   "violations",
+   "whatsapp_config",
+   "whatsapp_settings",
+   "whatsapp_templates"
+  ],
+  "tabelas_com_drift_migration_vs_types": [
+   "badges",
+   "employee_badges",
+   "employee_points",
+   "points_history",
+   "policy_acknowledgments",
+   "role_permissions",
+   "saved_filters",
+   "security_violations",
+   "user_roles"
+  ],
+  "rpcs_sem_definicao": [],
+  "componentes_orfaos": [
+   "src/components/ActivityFeed.tsx",
+   "src/components/ActivityHeatmap.tsx",
+   "src/components/ActivityStatsCards.tsx",
+   "src/components/AlertItem.tsx",
+   "src/components/AlertsChart.tsx",
+   "src/components/ApplicationCard.tsx",
+   "src/components/Cards.tsx",
+   "src/components/Cards/StatsCard.tsx",
+   "src/components/CustomTooltip.tsx",
+   "src/components/dashboard/AlertSummaryWidget.tsx",
+   "src/components/dashboard/DashboardSkeleton.tsx",
+   "src/components/dashboard/DistributionWidget.tsx",
+   "src/components/dashboard/GoalProgressWidget.tsx",
+   "src/components/dashboard/heatmaps.tsx",
+   "src/components/dashboard/HeroMetrics.tsx",
+   "src/components/dashboard/LeaderboardWidget.tsx",
+   "src/components/dashboard/LiveStatWidget.tsx",
+   "src/components/dashboard/NotificationsWidget.tsx",
+   "src/components/dashboard/QuickTasksWidget.tsx",
+   "src/components/dashboard/RecentActivityWidget.tsx",
+   "src/components/dashboard/SystemStatusWidget.tsx",
+   "src/components/dashboard/UpcomingEventsWidget.tsx",
+   "src/components/DashboardSkeleton.tsx",
+   "src/components/data-display/DataCalendar.tsx",
+   "src/components/data-display/DataKanban.tsx",
+   "src/components/data-display/DataTimeline.tsx",
+   "src/components/data-display/DataTree.tsx",
+   "src/components/EmployeeAlertItem.tsx",
+   "src/components/EmployeeRow.tsx",
+   "src/components/EmployeeViolationsRanking.tsx",
+   "src/components/forms/index.tsx",
+   "src/components/HeatmapCalendar.tsx",
+   "src/components/KeyboardShortcutsHelp.tsx",
+   "src/components/KeystrokeActivityCard.tsx",
+   "src/components/KPIWidget.tsx",
+   "src/components/LiveViewCard.tsx",
+   "src/components/LoadingState.tsx",
+   "src/components/MFAVerify.tsx",
+   "src/components/MobileDevicesMap.tsx",
+   "src/components/MonitoringNotice.tsx",
+   "src/components/NavLink.tsx",
+   "src/components/NotificationCenter.tsx",
+   "src/components/NotificationsDropdown.tsx",
+   "src/components/NotificationsPanel.tsx",
+   "src/components/PolicyGate.tsx",
+   "src/components/ProductivityCard.tsx",
+   "src/components/PWAInstallPrompt.tsx",
+   "src/components/RealtimeActivityFilters.tsx",
+   "src/components/RealtimeClicksCard.tsx",
+   "src/components/RealtimeKeystrokesCard.tsx",
+   "src/components/ScreenCapturesCard.tsx",
+   "src/components/SearchDrawer.tsx",
+   "src/components/security/SecurityAuditLog.tsx",
+   "src/components/SecurityMetrics.tsx",
+   "src/components/SessionPlayback.tsx",
+   "src/components/SimulateViolationButton.tsx",
+   "src/components/SuspenseWrapper.tsx",
+   "src/components/TimelineViewer.tsx",
+   "src/components/ui/a11y-button.tsx",
+   "src/components/ui/a11y-input.tsx",
+   "src/components/ui/Cards.tsx",
+   "src/components/ui/Combobox.tsx",
+   "src/components/ui/data-display.tsx",
+   "src/components/ui/DataState.tsx",
+   "src/components/ui/Dropdown.tsx",
+   "src/components/ui/Feedback.tsx",
+   "src/components/ui/FormItem.tsx",
+   "src/components/ui/FormMessage.tsx",
+   "src/components/ui/GridList.tsx",
+   "src/components/ui/Headers.tsx",
+   "src/components/ui/IconBadge.tsx",
+   "src/components/ui/InfiniteScrollList.tsx",
+   "src/components/ui/InfoCard.tsx",
+   "src/components/ui/loading.tsx",
+   "src/components/ui/LoadingOverlay.tsx",
+   "src/components/ui/LoadingStates.tsx",
+   "src/components/ui/MetricTrend.tsx",
+   "src/components/ui/Modal.tsx",
+   "src/components/ui/Overlay.tsx",
+   "src/components/ui/PageContainer.tsx",
+   "src/components/ui/PullToRefresh.tsx",
+   "src/components/ui/Radio.tsx",
+   "src/components/ui/responsive.tsx",
+   "src/components/ui/RichTextEditor.tsx",
+   "src/components/ui/SearchInput.tsx",
+   "src/components/ui/Spinner.tsx",
+   "src/components/ui/StaleDataIndicator.tsx",
+   "src/components/ui/StatusBadge.tsx",
+   "src/components/ui/Text.tsx",
+   "src/components/ui/TimePicker.tsx",
+   "src/components/ui/toaster.tsx",
+   "src/components/ui/TreeView.tsx",
+   "src/components/ui/TrendIndicators.tsx",
+   "src/components/ui/VirtualizedList.tsx",
+   "src/components/user/UserMenu.tsx",
+   "src/components/ViolationCommentsPanel.tsx",
+   "src/components/ViolationsByEmployeeChart.tsx",
+   "src/components/ViolationsRealtimeTable.tsx",
+   "src/hooks/useColorBlindMode.tsx",
+   "src/hooks/useSkipLinks.tsx",
+   "src/providers/index.tsx"
+  ],
+  "componentes_com_nome_duplicado": [
+   "ActivityHeatmap",
+   "AnalyticsProvider",
+   "AppProviders",
+   "AvatarGroup",
+   "Breadcrumb",
+   "BreadcrumbItem",
+   "Breadcrumbs",
+   "Card",
+   "CardContent",
+   "CardDescription",
+   "CardHeader",
+   "CardTitle",
+   "ChartLegend",
+   "ChartTooltipContent",
+   "CircularProgress",
+   "Column",
+   "ConnectionStatus",
+   "DashboardSkeleton",
+   "EmptyState",
+   "ErrorBoundary",
+   "FeatureFlagsProvider",
+   "FormItem",
+   "FormMessage",
+   "InfoCard",
+   "InfoTooltip",
+   "KanbanCard",
+   "KanbanColumn",
+   "LoadingOverlay",
+   "PageHeader",
+   "PageLoading",
+   "PasswordStrengthMeter",
+   "QueryProvider",
+   "RadioGroup",
+   "RadioGroupItem",
+   "SearchInput",
+   "SectionHeader",
+   "SecurityScore",
+   "Skeleton",
+   "SkeletonCard",
+   "Sparkline",
+   "Spinner",
+   "StatCard",
+   "StatsCard",
+   "ThemeProvider",
+   "Toaster",
+   "TreeNode",
+   "UserAvatar",
+   "VirtualList"
+  ],
+  "scripts_orfaos": [
+   "scripts/release.sh"
+  ],
+  "env_usadas_nao_declaradas": [
+   "DEV",
+   "MODE",
+   "PROD",
+   "VITE_API_URL",
+   "VITE_SENTRY_DSN",
+   "VITE_SUPABASE_PUBLISHABLE_KEY",
+   "VITE_SUPABASE_URL",
+   "VITE_VAPID_PUBLIC_KEY"
+  ],
+  "ciclos_de_import": 4,
+  "possiveis_segredos_no_codigo": [
+   "scripts/ai-context/cenarios.mjs:102"
+  ]
+ },
+ "erros_do_gerador": []
+}

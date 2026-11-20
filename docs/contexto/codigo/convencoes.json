@@ -1,0 +1,94 @@
+{
+ "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
+ "format_version": 2,
+ "onde_ficam": {
+  "telas": [
+   "src/pages (54)"
+  ],
+  "componentes": [
+   "src/components (356)",
+   "src/pages (88)",
+   "src/providers (8)"
+  ],
+  "hooks": [
+   "src/hooks (477)",
+   "src/stores (33)",
+   "src/lib (5)"
+  ],
+  "servicos_logica": [
+   "src/utils (64)",
+   "src/lib (39)",
+   "src/stores (34)"
+  ],
+  "testes": [
+   "co-localizado (*.test) (44)",
+   "co-localizado (__tests__) (19)",
+   "outro (6)"
+  ],
+  "edge_functions": "supabase/functions",
+  "migrations": "supabase/migrations",
+  "scripts": [
+   "scripts/ci (4)",
+   "scripts/ai-context (2)",
+   "scripts/inventario (2)"
+  ],
+  "docs": [
+   "docs (94)",
+   "(raiz) (16)",
+   ".github (1)"
+  ]
+ },
+ "nomenclatura": {
+  "componentes": "PascalCase (87%)",
+  "hooks": "use + PascalCase",
+  "servicos": "camelCase (99%)",
+  "edge_functions": "kebab-case (99%)",
+  "tabelas": "snake_case (88%)"
+ },
+ "barrels_index": 22,
+ "extensao_componentes": [
+  ".tsx (461)"
+ ],
+ "alias_imports": {
+  "desktop-agent/": {},
+  "(raiz)": {
+   "@/": "src/",
+   "@components/": "src/components/",
+   "@constants/": "src/constants/",
+   "@helpers/": "src/helpers/",
+   "@hooks/": "src/hooks/",
+   "@lib/": "src/lib/",
+   "@stores/": "src/stores/",
+   "@types/": "src/types/",
+   "@utils/": "src/utils/",
+   "@validators/": "src/validators/",
+   "~/": "src/"
+  }
+ },
+ "commits": {
+  "convencao": "commitlint",
+  "exemplos": [
+   "chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)",
+   "fix: remove assert de clock do teste 9.05 (elimina flake de CI) (#165)",
+   "fix: marca *.pdf como binary no gitattributes (#164)",
+   "feat: converte utilities restantes para @utility (Tailwind v4) (#163)",
+   "feat: converte .glass e .stat-number para @utility (Tailwind v4) (#162)"
+  ]
+ },
+ "pr_template": ".github/pull_request_template.md",
+ "codeowners": ".github/CODEOWNERS",
+ "contributing": "CONTRIBUTING.md",
+ "instrucoes_agentes": [
+  "AGENTS.md",
+  "CLAUDE.md"
+ ],
+ "typescript": {
+  "strict": true,
+  "noImplicitAny": false,
+  "tsconfigs": [
+   "tsconfig.app.json",
+   "tsconfig.json",
+   "tsconfig.node.json"
+  ]
+ }
+}
