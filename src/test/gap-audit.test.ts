@@ -146,9 +146,12 @@ describe("Gap Audit: Security", () => {
 
   it("auth uses server-side validation via supabase", async () => {
     const fs = await import("fs");
-    // Route guards delegate to the useAuth hook (no client-side localStorage gate).
+    // Route guards live in src/guards/index.tsx and delegate to the useAuth hook
+    // (no client-side localStorage gate); AppRoutes consumes those guards.
+    const guards = fs.readFileSync("src/guards/index.tsx", "utf-8");
+    expect(guards).toContain("useAuth");
     const routes = fs.readFileSync("src/routes/AppRoutes.tsx", "utf-8");
-    expect(routes).toContain("useAuth");
+    expect(routes).toContain("guards");
     expect(routes).not.toContain("localStorage");
     // Server-side session validation lives in the AuthProvider (supabase-js handles
     // the token store; the string 'localStorage' only appears in a code comment there).

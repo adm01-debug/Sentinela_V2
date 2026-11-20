@@ -676,10 +676,13 @@ describe("Cross-cutting: Build & Architecture Integrity", () => {
 
   it("Auth flow uses typed Session instead of any", async () => {
     const fs = await import("fs");
-    // AppRoutes consumes auth via the useAuth hook and stays free of `any`.
+    // Route guards (src/guards/index.tsx) consume auth via the useAuth hook;
+    // AppRoutes imports those guards and stays free of `any`.
+    const guards = fs.readFileSync("src/guards/index.tsx", "utf8");
+    expect(guards).not.toContain(": any");
+    expect(guards).toContain("useAuth");
     const routes = fs.readFileSync("src/routes/AppRoutes.tsx", "utf8");
     expect(routes).not.toContain(": any");
-    expect(routes).toContain("useAuth");
     // The typed Supabase Session now lives in the AuthProvider.
     const provider = fs.readFileSync("src/providers/AuthProvider.tsx", "utf8");
     expect(provider).not.toContain(": any");
