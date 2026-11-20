@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)",
    "feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)",
    "chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)",
    "fix: remove assert de clock do teste 9.05 (elimina flake de CI) (#165)",
-   "fix: marca *.pdf como binary no gitattributes (#164)",
-   "feat: converte utilities restantes para @utility (Tailwind v4) (#163)"
+   "fix: marca *.pdf como binary no gitattributes (#164)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

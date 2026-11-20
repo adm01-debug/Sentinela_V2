@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "53a2f04c4efaecde90250e432038a59b88d9c968",
+  "commit": "bb0f05de52d59b49349820a2cf6bf48e7f1bd86d",
   "branch": "main",
-  "data_commit": "2026-11-20T11:57:38-03:00",
+  "data_commit": "2026-11-20T13:59:11-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "bb0f05de5",
+    "data": "2026-11-20",
+    "assunto": "fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)"
+   },
    {
     "sha": "53a2f04c4",
     "data": "2026-11-20",
@@ -126,14 +131,9 @@
     "sha": "63db491f0",
     "data": "2026-11-14",
     "assunto": "fix(edge-functions): passa JWT explicito ao getUser nas functions que davam 401 (#142)"
-   },
-   {
-    "sha": "9900a90d4",
-    "data": "2026-11-14",
-    "assunto": "docs: registra estado do Deploy Vercel (secrets com scope errado) no prod-readiness (#141)"
    }
   ],
-  "arquivos_mudados_7d": 98,
+  "arquivos_mudados_7d": 99,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -242,6 +242,10 @@
     "mudancas": 3
    },
    {
+    "arquivo": ".github/workflows/release.yml",
+    "mudancas": 3
+   },
+   {
     "arquivo": ".github/workflows/update-deps.yml",
     "mudancas": 3
    },
@@ -286,10 +290,6 @@
     "mudancas": 2
    },
    {
-    "arquivo": ".github/workflows/release.yml",
-    "mudancas": 2
-   },
-   {
     "arquivo": ".github/workflows/security.yml",
     "mudancas": 2
    },
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 70
+    "commits": 71
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1823,
+  "arquivos_total": 1824,
   "arquivos_codigo": 1399,
   "linhas_codigo": 147821,
   "rotas": 54,
@@ -326,7 +326,7 @@
   "hooks": 524,
   "edge_functions": 85,
   "tabelas": 139,
-  "migrations": 102,
+  "migrations": 103,
   "cron_jobs": 1,
   "testes": 70,
   "workflows": 12,

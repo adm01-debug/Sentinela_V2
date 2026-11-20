@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `53a2f04c4efaecde90250e432038a59b88d9c968` (2026-11-20T11:57:38-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `bb0f05de52d59b49349820a2cf6bf48e7f1bd86d` (2026-11-20T13:59:11-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1379), Markdown (174), SQL (106), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1379), Markdown (174), SQL (107), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1823 |
+| arquivos_total | 1824 |
 | arquivos_codigo | 1399 |
 | linhas_codigo | 147821 |
 | rotas | 54 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 524 |
 | edge_functions | 85 |
 | tabelas | 139 |
-| migrations | 102 |
+| migrations | 103 |
 | cron_jobs | 1 |
 | testes | 70 |
 | workflows | 12 |
@@ -302,10 +302,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - .github/workflows/contexto.yml (3)
 - .github/workflows/deploy.yml (3)
 - .github/workflows/lint.yml (3)
+- .github/workflows/release.yml (3)
 - .github/workflows/update-deps.yml (3)
 - AGENTS.md (3)
 - src/pages/__tests__/Auth.test.tsx (3)
-- src/pages/__tests__/Settings.test.tsx (3)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -452,6 +452,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-20 `bb0f05de5` fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)
 - 2026-11-20 `53a2f04c4` feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)
 - 2026-11-20 `1edcf58fa` chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)
 - 2026-11-20 `239acde75` fix: remove assert de clock do teste 9.05 (elimina flake de CI) (#165)
@@ -466,7 +467,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `1c02ee885` fix: alinha timestamps das migrations com as versoes aplicadas no Supabase (#156)
 - 2026-11-19 `e99261ad9` feat: completa entity_versions com painel de histórico no EmployeeDetailPage (#155)
 - 2026-11-19 `d51a91c94` build(deps): bump @sentry/vite-plugin from 5.4.1 to 11.12.0 (#148)
-- 2026-11-19 `4b84c49d6` build(deps): bump @sentry/browser from 10.78.0 to 11.12.0 (#147)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 102,
+ "migrations": 103,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -196,6 +196,13 @@
    "evento": "update",
    "tabela": "employees",
    "funcao": "update_updated_at_column"
+  },
+  {
+   "nome": "version_employees",
+   "quando": "before",
+   "evento": "update",
+   "tabela": "employees",
+   "funcao": "create_entity_version"
   },
   {
    "nome": "update_file_transfers_updated_at",
@@ -4996,7 +5003,8 @@
    ],
    "triggers": [
     "audit_employees",
-    "update_employees_updated_at"
+    "update_employees_updated_at",
+    "version_employees"
    ],
    "sem_rls": false,
    "nao_usada": false
