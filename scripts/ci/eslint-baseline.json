@@ -1682,7 +1682,7 @@
     },
     {
       "path": "src/lib/queryClient.ts",
-      "sha256": "69ab3226f5b1460441d77887d325f1666e30b27d9ff0661a731cd3bcdae19b27"
+      "sha256": "928e17905501ef04eb1449fe9aa9d2b4ff024c80c8818cd681fab7ed6882afac"
     },
     {
       "path": "src/lib/stores.ts",
@@ -1953,10 +1953,6 @@
       "sha256": "2b2cc882606eee10952b0cf117c032a116220d240146d5b59cfb9c6ad2af1145"
     },
     {
-      "path": "src/routes/AppRoutes.tsx",
-      "sha256": "c7d1c87f9d9c0de6984c311319809de598cae7b39027ae3349be33a70140bb1f"
-    },
-    {
       "path": "src/services/analyticsService.ts",
       "sha256": "bf0674c6cb04dc1aebdfddc98a3c31f39a247b6042e9f18e845fb81a348a651f"
     },
@@ -2018,7 +2014,7 @@
     },
     {
       "path": "src/test/gap-audit.test.ts",
-      "sha256": "0e4f2c1370f56b17673a7325fe297f769e2f5eef8de86137e07f40510d048974"
+      "sha256": "d3869d5f81e279a69b6240540611b41a63b873cf7142d85ac4a983519956724f"
     },
     {
       "path": "src/test/hooks-core.test.ts",
@@ -14730,9 +14726,9 @@
     },
     {
       "file": "src/lib/queryClient.ts",
-      "line": 191,
+      "line": 205,
       "column": 6,
-      "endLine": 191,
+      "endLine": 205,
       "endColumn": 9,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -14740,21 +14736,7 @@
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "e144071732b8927d9bb1a14f4c306af0262369110f18fa8c6813063748fcfcc4",
-      "contextHash": "73e0a42eab4e1ca9ac8b4a28a55901d9cc72a87e5f7c490f301925ab029e551d"
-    },
-    {
-      "file": "src/lib/queryClient.ts",
-      "line": 3,
-      "column": 1,
-      "endLine": 3,
-      "endColumn": 32,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`sonner` import should occur before import of `@/lib/logger`",
-      "spanHash": "eefe38ce8f75278dc1de094f18b00762de703a69ea47c7ddb4468d1e0f10ad29",
-      "lineHash": "eefe38ce8f75278dc1de094f18b00762de703a69ea47c7ddb4468d1e0f10ad29",
-      "contextHash": "eb8292f9186cbea75b194f8e0326200ca91022b34167e65135b956a4730ad8aa"
+      "contextHash": "82d4da183482c651af93ea42e59962dae71b6ba1fcad42eb380646b7b39d06cf"
     },
     {
       "file": "src/lib/stores.ts",
@@ -17261,20 +17243,6 @@
       "spanHash": "b7159769c82f859afa2625fe4f94415705219821a707d50fa28f24747eecaf3d",
       "lineHash": "b7159769c82f859afa2625fe4f94415705219821a707d50fa28f24747eecaf3d",
       "contextHash": "d5d2e3ee4c694d4186345fd5594c190fb73c60fe474ba231565a9359de73e0d2"
-    },
-    {
-      "file": "src/routes/AppRoutes.tsx",
-      "line": 7,
-      "column": 10,
-      "endLine": 7,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'useAuth' is defined but never used.",
-      "spanHash": "9f56fe55fcbb095046c2b61e1fe74c52bd6b04befc16ac8c0d0b16fe628c6202",
-      "lineHash": "6be3aa5a97b1f5d2ffe3f9c53a6877177f7b3fe314d14cce864d4e79817740da",
-      "contextHash": "7589412e2520dcb485656893a85e0e88b01fe37daf3dbb33b02fcd369912e37b"
     },
     {
       "file": "src/services/analyticsService.ts",
