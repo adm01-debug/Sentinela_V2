@@ -1017,7 +1017,7 @@ html {
 }
 
 /* Glass morphism panel (non-layer winning version: blur 12px, no shadow) */
-.glass {
+@utility glass {
   background: hsl(var(--card) / 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -1025,7 +1025,7 @@ html {
 }
 
 /* Stat card number animation */
-.stat-number {
+@utility stat-number {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }
