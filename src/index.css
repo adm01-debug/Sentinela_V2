@@ -1002,7 +1002,7 @@ html {
 }
 
 /* Striped progress bar fill (LinearProgress striped variant) */
-.bg-stripes {
+@utility bg-stripes {
   background-image: linear-gradient(
     45deg,
     hsl(var(--background) / 0.3) 25%,
