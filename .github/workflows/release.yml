@@ -16,7 +16,7 @@ jobs:
       # o runner ubuntu-latest não traz bun por padrão.
       - uses: oven-sh/setup-bun@v2
       - run: npm run build
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           files: dist/*
           generate_release_notes: true
