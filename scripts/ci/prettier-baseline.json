@@ -1295,7 +1295,6 @@
     "src/test/empty-states.test.tsx",
     "src/test/error-tracker.test.ts",
     "src/test/expanded-validation.test.ts",
-    "src/test/external-db-bridge.test.ts",
     "src/test/forms.test.tsx",
     "src/test/header-enhanced.test.tsx",
     "src/test/hooks-core.test.ts",
