@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "gerado_em": "2026-11-20T14:57:54.016Z",
+ "gerado_em": "2026-11-20T16:16:01.300Z",
  "commit": "53a2f04c4efaecde90250e432038a59b88d9c968",
  "branch": "main",
  "gerador": "scripts/ai-context/gerar.mjs",
@@ -9,7 +9,7 @@
  "arquivos": {
   "INDEX.md": "beea69144822fc28",
   "banco.json": "7f1d353d3a06f0c2",
-  "baseline.json": "03517630b7899c70",
+  "baseline.json": "71071344d526205a",
   "componentes.json": "994f494563571f1a",
   "convencoes.json": "9ee23d296d6abf8b",
   "edge-functions.json": "b705b96002b98783",
