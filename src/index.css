@@ -101,6 +101,7 @@ html {
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-progress-stripes: progress-stripes 1s linear infinite;
 }
 
 @layer base {
@@ -1000,6 +1001,21 @@ html {
   background-clip: text;
 }
 
+/* Striped progress bar fill (LinearProgress striped variant) */
+.bg-stripes {
+  background-image: linear-gradient(
+    45deg,
+    hsl(var(--background) / 0.3) 25%,
+    transparent 25%,
+    transparent 50%,
+    hsl(var(--background) / 0.3) 50%,
+    hsl(var(--background) / 0.3) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+}
+
 /* Glass morphism panel (non-layer winning version: blur 12px, no shadow) */
 .glass {
   background: hsl(var(--card) / 0.8);
@@ -1061,6 +1077,45 @@ html {
   }
   to {
     height: 0;
+  }
+}
+
+@keyframes progress-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 1rem 0;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes ripple {
+  from {
+    transform: scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(4);
+    opacity: 0;
   }
 }
 
