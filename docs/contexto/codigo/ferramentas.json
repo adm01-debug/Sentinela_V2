@@ -1521,6 +1521,7 @@
    "/ai-analysis",
    "/alerts/:id",
    "/alerts/rules",
+   "/alerts/rules/new",
    "/attendance",
    "/calendar",
    "/compliance",

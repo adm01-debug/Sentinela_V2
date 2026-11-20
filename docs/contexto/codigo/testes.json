@@ -446,7 +446,7 @@
   {
    "arquivo": "src/test/gap-audit.test.ts",
    "tipo": "unit",
-   "linhas": 184,
+   "linhas": 187,
    "testa": [
     "src/integrations/supabase/client.ts"
    ],
@@ -492,7 +492,7 @@
   {
    "arquivo": "src/test/improvements-verification.test.ts",
    "tipo": "unit",
-   "linhas": 752,
+   "linhas": 755,
    "testa": [
     "src/components/charts/BaseAreaChart.tsx",
     "src/components/charts/BaseBarChart.tsx",
@@ -796,6 +796,7 @@
    "src/pages/AdminTelemetriaPage.tsx",
    "src/pages/AgentOnboardingPage.tsx",
    "src/pages/AlertDetailPage.tsx",
+   "src/pages/AlertRuleCreatePage.tsx",
    "src/pages/AlertRulesPage.tsx",
    "src/pages/ApiDocsPage.tsx",
    "src/pages/AttendancePage.tsx",

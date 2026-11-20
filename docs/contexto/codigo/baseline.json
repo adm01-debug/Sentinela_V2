@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "65766c2840b58c067ab1e8a8d34fe1b78e923229",
+  "commit": "f53194fe23de72e74116e058b0cd9d1cb844b500",
   "branch": "main",
-  "data_commit": "2026-11-20T16:23:48-03:00",
+  "data_commit": "2026-11-20T16:37:10-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "f53194fe2",
+    "data": "2026-11-20",
+    "assunto": "fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)"
+   },
    {
     "sha": "65766c284",
     "data": "2026-11-20",
@@ -126,14 +131,9 @@
     "sha": "5097236f0",
     "data": "2026-11-19",
     "assunto": "fix: ignora keywords vazias no DLP engine (#151)"
-   },
-   {
-    "sha": "312c717dd",
-    "data": "2026-11-14",
-    "assunto": "docs: registra fix do 401 nas edge functions no prod-readiness (#142) (#143)"
    }
   ],
-  "arquivos_mudados_7d": 94,
+  "arquivos_mudados_7d": 97,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -180,6 +180,10 @@
     "mudancas": 4
    },
    {
+    "pasta": "src/test/improvements-verification.test.ts",
+    "mudancas": 4
+   },
+   {
     "pasta": ".github/workflows/cd.yml",
     "mudancas": 3
    },
@@ -189,10 +193,6 @@
    },
    {
     "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 3
-   },
-   {
-    "pasta": ".github/workflows/lint.yml",
     "mudancas": 3
    }
   ],
@@ -227,6 +227,10 @@
    },
    {
     "arquivo": "desktop-agent/src/main.ts",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "src/test/improvements-verification.test.ts",
     "mudancas": 4
    },
    {
@@ -266,10 +270,6 @@
     "mudancas": 3
    },
    {
-    "arquivo": "src/test/improvements-verification.test.ts",
-    "mudancas": 3
-   },
-   {
     "arquivo": "supabase/config.toml",
     "mudancas": 3
    },
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 72
+    "commits": 73
    },
    {
     "autor": "dependabot[bot]",
@@ -316,8 +316,8 @@
  "contagens": {
   "arquivos_total": 1824,
   "arquivos_codigo": 1399,
-  "linhas_codigo": 147823,
-  "rotas": 54,
+  "linhas_codigo": 147931,
+  "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 220
+   "linhas": 322
   },
   "src/services": {
    "arquivos": 8,
@@ -480,7 +480,7 @@
   },
   "src/test": {
    "arquivos": 45,
-   "linhas": 9925
+   "linhas": 9931
   },
   "src/types": {
    "arquivos": 57,
@@ -606,7 +606,7 @@
   }
  ],
  "qualidade": {
-  "any": 197,
+  "any": 198,
   "console_log": 55,
   "ts_ignore": 0,
   "eslint_disable": 1,

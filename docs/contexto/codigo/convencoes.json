@@ -3,7 +3,7 @@
  "format_version": 2,
  "onde_ficam": {
   "telas": [
-   "src/pages (54)"
+   "src/pages (55)"
   ],
   "componentes": [
    "src/components (356)",
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)",
    "fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)",
    "fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)",
    "feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)",
-   "chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)",
-   "fix: remove assert de clock do teste 9.05 (elimina flake de CI) (#165)"
+   "chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

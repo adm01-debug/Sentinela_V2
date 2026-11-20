@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 54,
+  "urls": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 81
+  "lazy": 82
  },
  "urls": [
   {
@@ -903,6 +903,39 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 16
+  },
+  {
+   "protegida": false,
+   "wrappers": [],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/alerts/rules/new",
+   "componente": "AlertRuleCreatePage",
+   "arquivo": "src/pages/AlertRuleCreatePage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useEffect",
+    "useMutation",
+    "useNavigate",
+    "useQueryClient",
+    "useState"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQueryClient"
+   ],
+   "tabelas": [
+    "application_rules"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 15
   },
   {
    "protegida": false,
@@ -2519,6 +2552,7 @@
   "AdminTelemetriaPage": "src/pages/AdminTelemetriaPage.tsx",
   "AgentOnboardingPage": "src/pages/AgentOnboardingPage.tsx",
   "AlertDetailPage": "src/pages/AlertDetailPage.tsx",
+  "AlertRuleCreatePage": "src/pages/AlertRuleCreatePage.tsx",
   "AlertRulesPage": "src/pages/AlertRulesPage.tsx",
   "AlertsPage": "src/pages/AlertsPage.tsx",
   "AnalyticsApplicationsPage": "src/pages/AnalyticsApplicationsPage.tsx",

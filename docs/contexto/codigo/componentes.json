@@ -6447,7 +6447,7 @@
     "application_rules"
    ],
    "edges": [],
-   "usado_por": 0,
+   "usado_por": 1,
    "orfao": false
   },
   {
@@ -7680,7 +7680,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 220,
+   "linhas": 322,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

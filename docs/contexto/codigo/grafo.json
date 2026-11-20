@@ -73,11 +73,11 @@
    "importado_por": 25
   },
   {
-   "arquivo": "src/hooks/useAuth.ts",
-   "importado_por": 24
+   "arquivo": "src/components/ui/tooltip.tsx",
+   "importado_por": 23
   },
   {
-   "arquivo": "src/components/ui/tooltip.tsx",
+   "arquivo": "src/hooks/useAuth.ts",
    "importado_por": 23
   },
   {
@@ -504,7 +504,7 @@
   {
    "modulo": "hooks",
    "depende_de": 10,
-   "importado_por": 28
+   "importado_por": 27
   },
   {
    "modulo": "components/ui",
@@ -553,7 +553,7 @@
   },
   {
    "modulo": "routes",
-   "depende_de": 9,
+   "depende_de": 8,
    "importado_por": 0
   },
   {

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `65766c2840b58c067ab1e8a8d34fe1b78e923229` (2026-11-20T16:23:48-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `f53194fe23de72e74116e058b0cd9d1cb844b500` (2026-11-20T16:37:10-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,8 +36,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1824 |
 | arquivos_codigo | 1399 |
-| linhas_codigo | 147823 |
-| rotas | 54 |
+| linhas_codigo | 147931 |
+| rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
@@ -54,7 +54,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | docs_md | 174 |
 
 ## Onde ficam as coisas
-- telas: src/pages (54)
+- telas: src/pages (55)
 - componentes: src/components (356), src/pages (88), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (64), src/lib (39), src/stores (34)
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 494 | 19 | 84 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 37 | 66 | 118 | 4 | 55 |
+| pages | 4 | 38 | 66 | 118 | 4 | 55 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
 | pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
@@ -119,6 +119,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `/ai-analysis` [tela] → src/pages/AIAnalysisPage.tsx
 - `/alerts/:id` [tela] → src/pages/AlertDetailPage.tsx
 - `/alerts/rules` [tela] → src/pages/AlertRulesPage.tsx
+- `/alerts/rules/new` [tela] → src/pages/AlertRuleCreatePage.tsx
 - `/attendance` [tela] → src/pages/AttendancePage.tsx
 - `/auth` [tela] → src/pages/Auth.tsx (protegida)
 - `/calendar` [tela] → src/pages/CalendarPage.tsx
@@ -267,7 +268,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Permissões / papéis
 - papéis no código: status (20), alert (13), admin (12), button (7), user (7), combobox (3), list (3), progressbar (3), dialog (2), presentation (2), region (2), Admin (1), agent (1), developer (1), editor (1), group (1), img (1), link (1), listitem (1), main (1), member (1), navigation (1), null (1), object (1), separator (1), sup (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
 - enums de papel: app_role: admin|user; user_role_type: viewer|supervisor|manager|admin|super_admin
-- guards: src/guards/index.tsx · rotas protegidas: 14 · públicas: /*, /activities/:id, /activities/timeline, /admin/dlp/incidents, /admin/dlp/policies, /admin/edge-functions, /admin/ueba, /admin/ueba/:employeeId, /admin/ueba/settings, /ai-analysis, /alerts/:id, /alerts/rules, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /reports/scheduled, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
+- guards: src/guards/index.tsx · rotas protegidas: 14 · públicas: /*, /activities/:id, /activities/timeline, /admin/dlp/incidents, /admin/dlp/policies, /admin/edge-functions, /admin/ueba, /admin/ueba/:employeeId, /admin/ueba/settings, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /reports/scheduled, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
 - feature flags: FEATURE_FLAGS, FEATURE_KEYS, FEATURE_TO_FACTOR, FEATURE_X, advancedReports, darkMode, exportPDF, mobileApp, newDashboard, nova-tela, novo-inbox
 
 ## Alertas (baseline.json → alertas)
@@ -299,13 +300,13 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - src/index.css (5)
 - .github/workflows/ci.yml (4)
 - desktop-agent/src/main.ts (4)
+- src/test/improvements-verification.test.ts (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/deploy.yml (3)
 - .github/workflows/lint.yml (3)
 - .github/workflows/release.yml (3)
 - .github/workflows/update-deps.yml (3)
 - AGENTS.md (3)
-- src/pages/__tests__/Auth.test.tsx (3)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -452,6 +453,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-20 `f53194fe2` fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)
 - 2026-11-20 `65766c284` fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)
 - 2026-11-20 `bb0f05de5` fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)
 - 2026-11-20 `53a2f04c4` feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)
@@ -466,7 +468,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `e9528ffc5` feat: migra Tailwind v4 (CSS-first) e substitui tailwindcss-animate por tw-animate-css (#158)
 - 2026-11-20 `fe0a8e494` fix: resolve colisao de versao nas migrations 20260102 (#157)
 - 2026-11-20 `1c02ee885` fix: alinha timestamps das migrations com as versoes aplicadas no Supabase (#156)
-- 2026-11-19 `e99261ad9` feat: completa entity_versions com painel de histórico no EmployeeDetailPage (#155)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
