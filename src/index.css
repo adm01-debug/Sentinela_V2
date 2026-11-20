@@ -945,40 +945,43 @@ html {
  * ============================================================ */
 
 /* Card hover lift effect (css-var wrapper; utility generated in @theme) */
-.card-hover {
+@utility card-hover {
   transition:
     transform 250ms cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1),
     border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 8px 25px -8px hsl(var(--primary) / 0.15),
-    0 0 0 1px hsl(var(--primary) / 0.06);
-  border-color: hsl(var(--primary) / 0.15);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 8px 25px -8px hsl(var(--primary) / 0.15),
+      0 0 0 1px hsl(var(--primary) / 0.06);
+    border-color: hsl(var(--primary) / 0.15);
+  }
 }
 
 /* Table row hover */
-.table-row-hover {
+@utility table-row-hover {
   transition: background-color 150ms ease;
-}
-.table-row-hover:hover {
-  background-color: hsl(var(--muted) / 0.5);
+
+  &:hover {
+    background-color: hsl(var(--muted) / 0.5);
+  }
 }
 
 /* Focus visible ring for accessibility */
-.focus-ring {
+@utility focus-ring {
   outline: none;
-}
-.focus-ring:focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
+
+  &:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
 }
 
 /* Smooth page transitions */
-.page-enter {
+@utility page-enter {
   animation: page-fade-in 300ms ease forwards;
 }
 
@@ -994,7 +997,7 @@ html {
 }
 
 /* Gradient text utility (non-layer winning version) */
-.text-gradient {
+@utility text-gradient {
   background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1031,19 +1034,20 @@ html {
 }
 
 /* Active indicator pill */
-.nav-active-pill {
+@utility nav-active-pill {
   position: relative;
-}
-.nav-active-pill::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 3px;
-  border-radius: 9999px;
-  background-color: hsl(var(--primary));
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    border-radius: 9999px;
+    background-color: hsl(var(--primary));
+  }
 }
 
 /* Print styles for reports */
