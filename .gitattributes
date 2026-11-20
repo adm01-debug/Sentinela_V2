@@ -9,6 +9,7 @@
 *.ico binary
 *.woff binary
 *.woff2 binary
+*.pdf binary
 
 *.ts linguist-detectable=true
 *.tsx linguist-detectable=true
