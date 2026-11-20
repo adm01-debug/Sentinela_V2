@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `bb0f05de52d59b49349820a2cf6bf48e7f1bd86d` (2026-11-20T13:59:11-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `65766c2840b58c067ab1e8a8d34fe1b78e923229` (2026-11-20T16:23:48-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1824 |
 | arquivos_codigo | 1399 |
-| linhas_codigo | 147821 |
+| linhas_codigo | 147823 |
 | rotas | 54 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -452,6 +452,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-20 `65766c284` fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)
 - 2026-11-20 `bb0f05de5` fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)
 - 2026-11-20 `53a2f04c4` feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)
 - 2026-11-20 `1edcf58fa` chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)
@@ -466,7 +467,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `fe0a8e494` fix: resolve colisao de versao nas migrations 20260102 (#157)
 - 2026-11-20 `1c02ee885` fix: alinha timestamps das migrations com as versoes aplicadas no Supabase (#156)
 - 2026-11-19 `e99261ad9` feat: completa entity_versions com painel de histórico no EmployeeDetailPage (#155)
-- 2026-11-19 `d51a91c94` build(deps): bump @sentry/vite-plugin from 5.4.1 to 11.12.0 (#148)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

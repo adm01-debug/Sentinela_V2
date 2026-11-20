@@ -528,7 +528,7 @@
   {
    "arquivo": "src/test/observability.test.ts",
    "tipo": "unit",
-   "linhas": 171,
+   "linhas": 173,
    "testa": [
     "src/lib/logger.ts",
     "src/lib/webVitals.ts"
