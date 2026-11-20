@@ -3406,8 +3406,16 @@
    "src/integrations/supabase/client.ts"
   ],
   "src/pages/ViolationDetailPage.tsx": [
+   "src/components/Skeleton.tsx",
+   "src/components/ViolationCommentsPanel.tsx",
+   "src/components/layout/PageHeader.tsx",
+   "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
-   "src/components/ui/card.tsx"
+   "src/components/ui/card.tsx",
+   "src/components/violations/ViolationDisputeDialog.tsx",
+   "src/components/violations/ViolationTimelineDialog.tsx",
+   "src/hooks/useSecurityViolations.ts",
+   "src/hooks/useViolationDisputes.ts"
   ],
   "src/pages/ViolationsPage.tsx": [
    "src/components/EmptyState.tsx",

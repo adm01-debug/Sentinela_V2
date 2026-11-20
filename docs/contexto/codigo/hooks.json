@@ -7847,7 +7847,7 @@
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 9,
+   "usado_por": 10,
    "usado_por_arquivos": [
     "src/components/EmployeeViolationsRanking.tsx",
     "src/components/NotificationsPanel.tsx",
@@ -7857,6 +7857,7 @@
     "src/components/ViolationsDrilldownDialog.tsx",
     "src/components/ViolationsRealtimeTable.tsx",
     "src/components/ViolationsTrendChart.tsx",
+    "src/pages/ViolationDetailPage.tsx",
     "src/pages/dev/ChartSimulationPage.tsx"
    ],
    "coberto_por_testes": 0
@@ -9524,11 +9525,12 @@
     "useQueryClient"
    ],
    "canais_realtime": [],
-   "usado_por": 5,
+   "usado_por": 6,
    "usado_por_arquivos": [
     "src/components/violations/ViolationDetailDialog.tsx",
     "src/components/violations/ViolationDisputeDialog.tsx",
     "src/hooks/useDisputeMetrics.ts",
+    "src/pages/ViolationDetailPage.tsx",
     "src/pages/admin/DisputeMetricsPage.tsx",
     "src/utils/disputeMetricsPdf.ts"
    ],

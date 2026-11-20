@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `f53194fe23de72e74116e058b0cd9d1cb844b500` (2026-11-20T16:37:10-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `433ff6041433b0eb7a98b74a813dbabdde68341b` (2026-11-20T16:37:18-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1824 |
 | arquivos_codigo | 1399 |
-| linhas_codigo | 147931 |
+| linhas_codigo | 148165 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 494 | 19 | 84 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 66 | 118 | 4 | 55 |
+| pages | 4 | 38 | 66 | 129 | 4 | 56 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
 | pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
@@ -281,7 +281,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - tabelas_usadas_sem_definicao: 25 — ex.: activities, app_config, backups
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
-- componentes_orfaos: 101 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
+- componentes_orfaos: 100 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
 - componentes_com_nome_duplicado: 48 — ex.: ActivityHeatmap, AnalyticsProvider, AppProviders
 - scripts_orfaos: 1 — ex.: scripts/release.sh
 - env_usadas_nao_declaradas: 8 — ex.: DEV, MODE, PROD
@@ -453,6 +453,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-20 `433ff6041` feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)
 - 2026-11-20 `f53194fe2` fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)
 - 2026-11-20 `65766c284` fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)
 - 2026-11-20 `bb0f05de5` fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)
@@ -467,7 +468,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `d8e871c5e` fix: limpa lint herdado do sidebar (no-redeclare, react-hooks/purity) (#159)
 - 2026-11-20 `e9528ffc5` feat: migra Tailwind v4 (CSS-first) e substitui tailwindcss-animate por tw-animate-css (#158)
 - 2026-11-20 `fe0a8e494` fix: resolve colisao de versao nas migrations 20260102 (#157)
-- 2026-11-20 `1c02ee885` fix: alinha timestamps das migrations com as versoes aplicadas no Supabase (#156)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
