@@ -133,7 +133,7 @@
     "assunto": "fix(edge-functions): passa JWT explicito ao getUser nas functions que davam 401 (#142)"
    }
   ],
-  "arquivos_mudados_7d": 99,
+  "arquivos_mudados_7d": 98,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
