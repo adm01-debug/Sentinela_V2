@@ -93,7 +93,7 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative min-w-[200px] flex-1">
           <Search
-            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+            className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2"
             aria-hidden="true"
           />
           <Input
@@ -159,12 +159,12 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
         </Select>
       </div>
 
-      <div className="text-sm text-muted-foreground">
+      <div className="text-muted-foreground text-sm">
         {filteredViolations.length} violações encontradas
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-lg border border-border">
+      <div className="border-border overflow-hidden rounded-lg border">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50">
@@ -181,7 +181,7 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
           <TableBody>
             {filteredViolations.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="py-8 text-center text-muted-foreground">
+                <TableCell colSpan={8} className="text-muted-foreground py-8 text-center">
                   Nenhuma violação encontrada
                 </TableCell>
               </TableRow>
@@ -194,13 +194,13 @@ function ViolationsRealtimeTableBase({ violations, onMarkAsRead }: ViolationsRea
                 return (
                   <TableRow
                     key={violation.id}
-                    className={`${!read ? "bg-primary/5" : ""} transition-colors hover:bg-muted/50`}
+                    className={`${!read ? "bg-primary/5" : ""} hover:bg-muted/50 transition-colors`}
                   >
                     <TableCell>
                       {read ? (
                         <CheckCircle className="h-4 w-4 text-green-500" />
                       ) : (
-                        <div className="h-2 w-2 animate-pulse rounded-full bg-primary" />
+                        <div className="bg-primary h-2 w-2 animate-pulse rounded-full" />
                       )}
                     </TableCell>
                     <TableCell>

@@ -49,7 +49,7 @@ export function EmployeeViolationsRanking() {
     if (index === 0) return <Trophy className="h-5 w-5 text-yellow-500" />;
     if (index === 1) return <Medal className="h-5 w-5 text-gray-400" />;
     if (index === 2) return <Award className="h-5 w-5 text-amber-600" />;
-    return <span className="w-5 text-center text-sm text-muted-foreground">{index + 1}</span>;
+    return <span className="text-muted-foreground w-5 text-center text-sm">{index + 1}</span>;
   };
 
   const getInitials = (name: string) => {
@@ -66,14 +66,14 @@ export function EmployeeViolationsRanking() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-destructive" />
+            <AlertTriangle className="text-destructive h-5 w-5" />
             Ranking de Violações
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-12 animate-pulse rounded-lg bg-muted" />
+              <div key={i} className="bg-muted h-12 animate-pulse rounded-lg" />
             ))}
           </div>
         </CardContent>
@@ -86,12 +86,12 @@ export function EmployeeViolationsRanking() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-destructive" />
+            <AlertTriangle className="text-destructive h-5 w-5" />
             Ranking de Violações
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="py-8 text-center text-muted-foreground">Nenhuma violação registrada</p>
+          <p className="text-muted-foreground py-8 text-center">Nenhuma violação registrada</p>
         </CardContent>
       </Card>
     );
@@ -101,7 +101,7 @@ export function EmployeeViolationsRanking() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <AlertTriangle className="h-5 w-5 text-destructive" />
+          <AlertTriangle className="text-destructive h-5 w-5" />
           Ranking de Violações
         </CardTitle>
       </CardHeader>
@@ -110,12 +110,12 @@ export function EmployeeViolationsRanking() {
           {ranking.map((employee, index) => (
             <div
               key={employee.name}
-              className="flex items-center gap-3 rounded-lg bg-muted/50 p-3 transition-colors hover:bg-muted"
+              className="bg-muted/50 hover:bg-muted flex items-center gap-3 rounded-lg p-3 transition-colors"
             >
               <div className="flex w-6 items-center justify-center">{getRankIcon(index)}</div>
 
               <Avatar className="h-9 w-9">
-                <AvatarFallback className="bg-primary/10 text-xs text-primary">
+                <AvatarFallback className="bg-primary/10 text-primary text-xs">
                   {getInitials(employee.name)}
                 </AvatarFallback>
               </Avatar>
@@ -140,8 +140,8 @@ export function EmployeeViolationsRanking() {
               </div>
 
               <div className="text-right">
-                <p className="text-2xl font-bold text-destructive">{employee.totalViolations}</p>
-                <p className="text-xs text-muted-foreground">violações</p>
+                <p className="text-destructive text-2xl font-bold">{employee.totalViolations}</p>
+                <p className="text-muted-foreground text-xs">violações</p>
               </div>
             </div>
           ))}

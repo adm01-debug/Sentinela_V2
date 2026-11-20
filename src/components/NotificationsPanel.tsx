@@ -58,7 +58,7 @@ function ViolationItem({
   return (
     <div
       className={cn(
-        "border-b border-border p-3 transition-colors last:border-b-0",
+        "border-border border-b p-3 transition-colors last:border-b-0",
         !isRead && "bg-primary/5"
       )}
     >
@@ -76,16 +76,16 @@ function ViolationItem({
               {config.label}
             </Badge>
           </div>
-          <p className="mt-0.5 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-0.5 text-sm">
             {violation.employee_name || "Unknown"} - {violation.violation_type}
           </p>
           {violation.description && (
-            <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">
               {violation.description}
             </p>
           )}
           <div className="mt-2 flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               {formatDistanceToNow(new Date(violation.created_at), {
                 addSuffix: true,
                 locale: ptBR,
@@ -132,17 +132,17 @@ export function NotificationsPanel() {
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-medium text-destructive-foreground">
+            <span className="bg-destructive text-destructive-foreground absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-medium">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-96 p-0" align="end">
-        <div className="flex items-center justify-between border-b border-border p-4">
+        <div className="border-border flex items-center justify-between border-b p-4">
           <div>
             <h3 className="font-semibold">Notificações</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {unreadCount > 0 ? `${unreadCount} não lidas` : "Todas lidas"}
             </p>
           </div>
@@ -156,9 +156,9 @@ export function NotificationsPanel() {
 
         <ScrollArea className="h-[400px]">
           {isLoading ? (
-            <div className="p-8 text-center text-muted-foreground">Carregando...</div>
+            <div className="text-muted-foreground p-8 text-center">Carregando...</div>
           ) : violations.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground">
+            <div className="text-muted-foreground p-8 text-center">
               <Bell className="mx-auto mb-2 h-12 w-12 opacity-20" />
               <p>Nenhuma notificação</p>
             </div>
