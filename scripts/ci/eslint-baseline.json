@@ -2014,7 +2014,7 @@
     },
     {
       "path": "src/test/external-db-bridge.test.ts",
-      "sha256": "9f9932760c33f1ab21835472bbcaa33f203db587d087a224795c3ac48a180a73"
+      "sha256": "1bc2a5f5bbfad4c2ad2f62e6b6449db26a5ee1e8d801ed125e1952979b9189c6"
     },
     {
       "path": "src/test/gap-audit.test.ts",
@@ -18002,7 +18002,7 @@
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "dee084d2bb4a2c23057d09756102da5799aa90139945c1f0e54bfde66ba3319a",
-      "contextHash": "d953995f28cf0357a867efb4b46366d056d597b98d19601d93fbac3fb1f3dc3c"
+      "contextHash": "928015a8031850c118c769fda0b1d69e1376ae13826885375cc4c54db328076d"
     },
     {
       "file": "src/test/external-db-bridge.test.ts",
@@ -18020,31 +18020,31 @@
     },
     {
       "file": "src/test/external-db-bridge.test.ts",
-      "line": 508,
+      "line": 609,
       "column": 50,
-      "endLine": 508,
+      "endLine": 609,
       "endColumn": 53,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
       "messageId": "unexpectedAny",
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "961d68ab80dd4c849c8a7e4747421f8dd32dc57e17dfbf741cd146191c7b30ed",
-      "contextHash": "18d5ee74b6d7364ebb0ede217882d013be36fc0e21c2668d7c5839fb7e16f9d8"
+      "lineHash": "d0bb29dd7139d558e2acea409e12527605fb029e60324021b2a2b3deb201a9ad",
+      "contextHash": "dd7c2f1f00500b97b580951d2250de73001838ec810a15bf5b0fb3a02b5acb05"
     },
     {
       "file": "src/test/external-db-bridge.test.ts",
-      "line": 761,
+      "line": 896,
       "column": 46,
-      "endLine": 761,
+      "endLine": 896,
       "endColumn": 49,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
       "messageId": "unexpectedAny",
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "6001f5508329df2cf3387137823ef36a958c859ff226bd44801aed171285c82f",
-      "contextHash": "fa54bf662516ef2b0228204c134509098b2d6f95f7653d8cdeda8f9610dcd9d3"
+      "lineHash": "968c3b19c1dbf1e4736c22254db8bae0f2b81bb88ab0ed0f47f1ab2d7fbf98b3",
+      "contextHash": "02ec4b672321ad6551ff6eb092950b7eb7476658b2dfd54873dd76a77e8d76bc"
     },
     {
       "file": "src/test/gap-audit.test.ts",
