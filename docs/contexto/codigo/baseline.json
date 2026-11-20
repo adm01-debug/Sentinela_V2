@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "433ff6041433b0eb7a98b74a813dbabdde68341b",
+  "commit": "a243473b2f66ae515d7dec417d5d07f482493a91",
   "branch": "main",
-  "data_commit": "2026-11-20T16:37:18-03:00",
+  "data_commit": "2026-11-20T16:58:11-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "a243473b2",
+    "data": "2026-11-20",
+    "assunto": "feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)"
+   },
    {
     "sha": "433ff6041",
     "data": "2026-11-20",
@@ -126,14 +131,9 @@
     "sha": "94cde9b53",
     "data": "2026-11-19",
     "assunto": "fix(tests): remove dependencia de grep/shell Unix do observability test (#144)"
-   },
-   {
-    "sha": "f6da0a5bf",
-    "data": "2026-11-19",
-    "assunto": "fix: rotas de equipe/departamento apontam para /admin (#150)"
    }
   ],
-  "arquivos_mudados_7d": 98,
+  "arquivos_mudados_7d": 97,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -149,11 +149,11 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "pasta": "docs/prod-readiness.md",
@@ -207,11 +207,11 @@
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "docs/prod-readiness.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 74
+    "commits": 75
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1824,
+  "arquivos_total": 1825,
   "arquivos_codigo": 1399,
-  "linhas_codigo": 148165,
+  "linhas_codigo": 148545,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -331,7 +331,7 @@
   "testes": 70,
   "workflows": 12,
   "scripts": 31,
-  "docs_md": 174
+  "docs_md": 175
  },
  "por_pasta": {
   "benchmarks/api-performance.ts": {
@@ -452,7 +452,7 @@
   },
   "src/lib": {
    "arquivos": 42,
-   "linhas": 2913
+   "linhas": 2927
   },
   "src/main.tsx": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 104,
-   "linhas": 16798
+   "linhas": 17164
   },
   "src/providers": {
    "arquivos": 9,

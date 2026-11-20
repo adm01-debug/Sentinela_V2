@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1329,
- "arestas": 2689,
+ "arestas": 2698,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -22,11 +22,11 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 141
+   "importado_por": 142
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 83
+   "importado_por": 84
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
@@ -34,7 +34,7 @@
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
-   "importado_por": 67
+   "importado_por": 68
   },
   {
    "arquivo": "src/lib/logger.ts",
@@ -42,15 +42,15 @@
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 55
+   "importado_por": 56
   },
   {
    "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 53
+   "importado_por": 54
   },
   {
    "arquivo": "src/components/ui/dialog.tsx",
-   "importado_por": 48
+   "importado_por": 49
   },
   {
    "arquivo": "src/lib/queryClient.ts",
@@ -58,7 +58,7 @@
   },
   {
    "arquivo": "src/components/layout/PageHeader.tsx",
-   "importado_por": 43
+   "importado_por": 44
   },
   {
    "arquivo": "src/hooks/useChartColors.ts",
@@ -89,12 +89,12 @@
    "importado_por": 21
   },
   {
-   "arquivo": "src/components/ui/dropdown-menu.tsx",
+   "arquivo": "src/components/ui/alert-dialog.tsx",
    "importado_por": 20
   },
   {
-   "arquivo": "src/components/ui/alert-dialog.tsx",
-   "importado_por": 19
+   "arquivo": "src/components/ui/dropdown-menu.tsx",
+   "importado_por": 20
   },
   {
    "arquivo": "src/components/ui/switch.tsx",
@@ -336,7 +336,6 @@
   "src/hooks/useActivityHistory.ts",
   "src/hooks/useActivitySummary.ts",
   "src/hooks/useAdvancedFilters.ts",
-  "src/hooks/useAgentKeysPage.ts",
   "src/hooks/useAggregate.ts",
   "src/hooks/useAlert.ts",
   "src/hooks/useAnimation.ts",
@@ -498,7 +497,8 @@
   "src/hooks/useLazyImage.ts",
   "src/hooks/useLazyRef.ts",
   "src/hooks/useLifecycle.ts",
-  "src/hooks/useList.ts"
+  "src/hooks/useList.ts",
+  "src/hooks/useLoadingState.ts"
  ],
  "modulos_mais_acoplados": [
   {
