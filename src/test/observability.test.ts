@@ -137,7 +137,9 @@ describe("Type Safety: Zero any remaining", () => {
     walk("src");
     // Regression ceiling: keeps the current `any` usage from growing.
     expect(total).toBeLessThanOrEqual(240);
-  });
+    // Full-suite runs share the filesystem/CPU with 60+ other test files;
+    // the recursive walk of src/ can exceed the default 5s timeout under load.
+  }, 30_000);
 });
 
 // ============================================================
