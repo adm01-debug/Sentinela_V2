@@ -133,7 +133,7 @@
     "assunto": "fix(health-check): troca check de banco de health_check (tabela inexistente) para employees (#140)"
    }
   ],
-  "arquivos_mudados_7d": 140,
+  "arquivos_mudados_7d": 99,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
