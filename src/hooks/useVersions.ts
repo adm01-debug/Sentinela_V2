@@ -3,10 +3,10 @@
 // Versionamento e histórico de alterações de entidades
 // ============================================================
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { logger } from '@/lib/logger';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 // ============================================================
 // TYPES
@@ -31,7 +31,7 @@ export interface VersionDiff {
   field: string;
   oldValue: unknown;
   newValue: unknown;
-  type: 'added' | 'removed' | 'changed';
+  type: "added" | "removed" | "changed";
 }
 
 interface UseVersionsOptions {
@@ -41,29 +41,12 @@ interface UseVersionsOptions {
 }
 
 // ============================================================
-// MOCK DATA
-// ============================================================
-
-const mockVersions: EntityVersion[] = [
-  {
-    id: 'mock-v1',
-    entity_type: 'default',
-    entity_id: 'mock-entity',
-    version_number: 1,
-    data: { name: 'Versão Inicial', status: 'active' },
-    changed_by: null,
-    changed_at: new Date().toISOString(),
-    change_summary: 'Criação inicial',
-  },
-];
-
-// ============================================================
 // MAIN HOOK
 // ============================================================
 
 export function useVersions({ entityType, entityId, enabled = true }: UseVersionsOptions) {
   const queryClient = useQueryClient();
-  const queryKey = ['versions', entityType, entityId];
+  const queryKey = ["versions", entityType, entityId];
 
   // ============================================================
   // QUERY - Listar versões
@@ -75,23 +58,22 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   } = useQuery({
     queryKey,
     queryFn: async (): Promise<EntityVersion[]> => {
-      // Ready to fetch
-
-
       const { data, error } = await supabase
-        .from('entity_versions')
-        .select(`
+        .from("entity_versions")
+        .select(
+          `
           *,
           user:changed_by(full_name, email)
-        `)
-        .eq('entity_type', entityType)
-        .eq('entity_id', entityId)
-        .order('version_number', { ascending: false });
+        `
+        )
+        .eq("entity_type", entityType)
+        .eq("entity_id", entityId)
+        .order("version_number", { ascending: false });
 
       if (error) {
         // Tabela não existe
-        if (error.code === '42P01') {
-          logger.warn('[Versions] Tabela não existe');
+        if (error.code === "42P01") {
+          logger.warn("[Versions] Tabela não existe");
           return [];
         }
         throw error;
@@ -103,23 +85,24 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
     staleTime: 30 * 1000,
   });
 
+  const nextVersionNumber = () => {
+    const latest = versions[0];
+    return latest ? latest.version_number + 1 : 1;
+  };
+
   // ============================================================
   // MUTATION - Criar versão manualmente
   // ============================================================
   const createVersionMutation = useMutation({
     mutationFn: async (params: { data: unknown; summary?: string }) => {
-      // Proceed to create
-
-
       const { data: userData } = await supabase.auth.getUser();
-      const nextVersion = versions.length > 0 ? versions[0].version_number + 1 : 1;
 
       const { data, error } = await supabase
-        .from('entity_versions')
+        .from("entity_versions")
         .insert({
           entity_type: entityType,
           entity_id: entityId,
-          version_number: nextVersion,
+          version_number: nextVersionNumber(),
           data: params.data,
           changed_by: userData.user?.id,
           change_summary: params.summary,
@@ -132,11 +115,11 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
-      toast.success('Versão salva');
+      toast.success("Versão salva");
     },
     onError: (error: Error) => {
-      logger.error('[Versions] Erro ao criar versão:', error);
-      toast.error('Erro ao salvar versão');
+      logger.error("[Versions] Erro ao criar versão:", error);
+      toast.error("Erro ao salvar versão");
     },
   });
 
@@ -145,35 +128,15 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   // ============================================================
   const restoreVersionMutation = useMutation({
     mutationFn: async (versionId: string) => {
-      const version = versions.find((v: { id: string; version_number: number }) => v.id === versionId);
-      if (!version) throw new Error('Versão não encontrada');
+      const version = versions.find((v) => v.id === versionId);
+      if (!version) throw new Error("Versão não encontrada");
 
-      // Proceed to restore
-
-
-      // Criar nova versão com os dados antigos
-      const { data: userData } = await supabase.auth.getUser();
-      const nextVersion = versions[0].version_number + 1;
-
-      // Salvar versão atual antes de restaurar
-      const { error: versionError } = await supabase
-        .from('entity_versions')
-        .insert({
-          entity_type: entityType,
-          entity_id: entityId,
-          version_number: nextVersion,
-          data: version.data,
-          changed_by: userData.user?.id,
-          change_summary: `Restaurado da versão ${version.version_number}`,
-        });
-
-      if (versionError) throw versionError;
-
-      // Atualizar entidade original
+      // A tabela possui trigger (create_entity_version) que registra o
+      // snapshot do estado atual antes do UPDATE, preservando o histórico.
       const { error: updateError } = await supabase
         .from(entityType)
         .update(version.data)
-        .eq('id', entityId);
+        .eq("id", entityId);
 
       if (updateError) throw updateError;
 
@@ -182,11 +145,11 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey: [entityType, entityId] });
-      toast.success('Versão restaurada');
+      toast.success("Versão restaurada");
     },
     onError: (error: Error) => {
-      logger.error('[Versions] Erro ao restaurar:', error);
-      toast.error('Erro ao restaurar versão');
+      logger.error("[Versions] Erro ao restaurar:", error);
+      toast.error("Erro ao restaurar versão");
     },
   });
 
@@ -206,11 +169,11 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
       const newVal = v2.data[key];
 
       if (oldVal === undefined && newVal !== undefined) {
-        diffs.push({ field: key, oldValue: oldVal, newValue: newVal, type: 'added' });
+        diffs.push({ field: key, oldValue: oldVal, newValue: newVal, type: "added" });
       } else if (oldVal !== undefined && newVal === undefined) {
-        diffs.push({ field: key, oldValue: oldVal, newValue: newVal, type: 'removed' });
+        diffs.push({ field: key, oldValue: oldVal, newValue: newVal, type: "removed" });
       } else if (JSON.stringify(oldVal) !== JSON.stringify(newVal)) {
-        diffs.push({ field: key, oldValue: oldVal, newValue: newVal, type: 'changed' });
+        diffs.push({ field: key, oldValue: oldVal, newValue: newVal, type: "changed" });
       }
     });
 
@@ -220,8 +183,8 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
   /**
    * Obtém versão específica
    */
-  const getVersion = (versionNumber): EntityVersion | undefined => {
-    return versions.find((v: { id: string; version_number: number }) => v.version_number === versionNumber);
+  const getVersion = (versionNumber: number): EntityVersion | undefined => {
+    return versions.find((v) => v.version_number === versionNumber);
   };
 
   /**
