@@ -133,7 +133,7 @@
     "assunto": "fix(tests): remove dependencia de grep/shell Unix do observability test (#144)"
    }
   ],
-  "arquivos_mudados_7d": 97,
+  "arquivos_mudados_7d": 91,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
