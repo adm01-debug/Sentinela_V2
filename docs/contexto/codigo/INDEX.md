@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1edcf58fad31eed2cb048c7a4a452cc0c398c97b` (2026-11-20T11:14:47-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `53a2f04c4efaecde90250e432038a59b88d9c968` (2026-11-20T11:57:38-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -296,9 +296,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/eslint-baseline.json (7)
 - scripts/ci/prettier-baseline.json (7)
 - docs/prod-readiness.md (6)
+- src/index.css (5)
 - .github/workflows/ci.yml (4)
 - desktop-agent/src/main.ts (4)
-- src/index.css (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/deploy.yml (3)
 - .github/workflows/lint.yml (3)
@@ -452,6 +452,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-20 `53a2f04c4` feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)
 - 2026-11-20 `1edcf58fa` chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)
 - 2026-11-20 `239acde75` fix: remove assert de clock do teste 9.05 (elimina flake de CI) (#165)
 - 2026-11-20 `8ade29737` fix: marca *.pdf como binary no gitattributes (#164)
@@ -466,7 +467,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-19 `e99261ad9` feat: completa entity_versions com painel de histórico no EmployeeDetailPage (#155)
 - 2026-11-19 `d51a91c94` build(deps): bump @sentry/vite-plugin from 5.4.1 to 11.12.0 (#148)
 - 2026-11-19 `4b84c49d6` build(deps): bump @sentry/browser from 10.78.0 to 11.12.0 (#147)
-- 2026-11-19 `926097ee9` build(deps): bump @hookform/resolvers from 5.9.2 to 7.0.6 (#146)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

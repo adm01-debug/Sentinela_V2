@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1edcf58fad31eed2cb048c7a4a452cc0c398c97b",
+  "commit": "53a2f04c4efaecde90250e432038a59b88d9c968",
   "branch": "main",
-  "data_commit": "2026-11-20T11:14:47-03:00",
+  "data_commit": "2026-11-20T11:57:38-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "53a2f04c4",
+    "data": "2026-11-20",
+    "assunto": "feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)"
+   },
    {
     "sha": "1edcf58fa",
     "data": "2026-11-20",
@@ -126,11 +131,6 @@
     "sha": "9900a90d4",
     "data": "2026-11-14",
     "assunto": "docs: registra estado do Deploy Vercel (secrets com scope errado) no prod-readiness (#141)"
-   },
-   {
-    "sha": "7721af1d2",
-    "data": "2026-11-14",
-    "assunto": "fix(health-check): troca check de banco de health_check (tabela inexistente) para employees (#140)"
    }
   ],
   "arquivos_mudados_7d": 99,
@@ -168,15 +168,15 @@
     "mudancas": 5
    },
    {
+    "pasta": "src/index.css",
+    "mudancas": 5
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 4
    },
    {
     "pasta": "desktop-agent/src/main.ts",
-    "mudancas": 4
-   },
-   {
-    "pasta": "src/index.css",
     "mudancas": 4
    },
    {
@@ -218,15 +218,15 @@
     "mudancas": 6
    },
    {
+    "arquivo": "src/index.css",
+    "mudancas": 5
+   },
+   {
     "arquivo": ".github/workflows/ci.yml",
     "mudancas": 4
    },
    {
     "arquivo": "desktop-agent/src/main.ts",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "src/index.css",
     "mudancas": 4
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 69
+    "commits": 70
    },
    {
     "autor": "dependabot[bot]",
