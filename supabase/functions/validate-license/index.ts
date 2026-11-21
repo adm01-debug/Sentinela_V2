@@ -21,7 +21,7 @@ serve(async (req) => {
     if (!user) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
     // Get user's company to validate license/plan
-    const { data: companyId } = await supabase.rpc('get_user_company_id', { p_user_id: user.id });
+    const { data: companyId } = await supabase.rpc('get_user_company_id', { _user_id: user.id });
     
     if (!companyId) {
       return new Response(JSON.stringify({ valid: false, error: 'No company associated' }), 
