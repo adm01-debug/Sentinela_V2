@@ -1657,10 +1657,6 @@
       "sha256": "b2aa9579c7e2925b84dc3929ada85575c663021acf38c263722ea18f3954d0fa"
     },
     {
-      "path": "src/hooks/useWhatsAppIntegrationPage.ts",
-      "sha256": "d734413b593b0f8050e3efd7f3800d50b23eba37c4d2cda1d5a6cd4ebc19ec82"
-    },
-    {
       "path": "src/hooks/useWorkHours.ts",
       "sha256": "c8c1f983bd479fa093a5e82a167566fb8b6f08c42b84c8348af61263c0b323c9"
     },
@@ -1879,10 +1875,6 @@
     {
       "path": "src/pages/EmployeesPage.tsx",
       "sha256": "e61b16c0175fdd5d76872cba83959f367a8eb6b2004c8b64f46f9e3b714d0f0f"
-    },
-    {
-      "path": "src/pages/GamificationPage.tsx",
-      "sha256": "bdf875d9235bdd29cfd5b7b0e383f6e7ea3d12285a7e302d298ccaeba96f5737"
     },
     {
       "path": "src/pages/GeofenceViolationsPage.tsx",
@@ -14361,20 +14353,6 @@
       "contextHash": "ea40753a9252c89b4b08ed2f1f5f985e480807c7b7156837c3e2dcc00ec7cbb3"
     },
     {
-      "file": "src/hooks/useWhatsAppIntegrationPage.ts",
-      "line": 215,
-      "column": 7,
-      "endLine": 215,
-      "endColumn": 20,
-      "severity": 2,
-      "ruleId": "react-hooks/set-state-in-effect",
-      "messageId": null,
-      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/hooks/useWhatsAppIntegrationPage.ts:215:7 213 | useEffect(() => { 214 | if (config) { > 215 | setConfigData({ | ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect 216 | phone_number_id: config.phone_number_id, 217 | business_account_id: config.business_account_id, 218 | access_token: config.access_token,",
-      "spanHash": "dc5abd0d3356990b77945c38d02353e0c4f554f1214ec02a65cfc3db462e8975",
-      "lineHash": "946302c9441399266aa17fefa24184dc3cf11ca9debeb9780816b567ed0827d7",
-      "contextHash": "8f68d75568ef0988e49cd1319838aa6eaea7ee93f08f0422261f16c162c94fbc"
-    },
-    {
       "file": "src/hooks/useWorkHours.ts",
       "line": 18,
       "column": 21,
@@ -16585,20 +16563,6 @@
       "spanHash": "73e55234f5a780d8012b280393c9b752271ceea9179f6900d30a25082901fe0f",
       "lineHash": "8cc12076dd266eee2655d7127c20cba7e988745698f4918fe68b42d42234d146",
       "contextHash": "b5c1b7f5ca66e9f33759248cf6d338d0ba6fac17dad737d2f40eebf6ed9b630f"
-    },
-    {
-      "file": "src/pages/GamificationPage.tsx",
-      "line": 12,
-      "column": 1,
-      "endLine": 15,
-      "endColumn": 19,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`recharts` import should occur before import of `@/components/ui/card`",
-      "spanHash": "791be21a136d524ad346e487cadbdc4a4b31f4c46be588b3c41710bf0aa20a5a",
-      "lineHash": "e0cbdab303939db3db5ed1394f8cc7d9c814984d13f730431eb0cabd77c9e204",
-      "contextHash": "dd10f7db073a97c89beeeca860be1d2325c98149563ab43db03b74a7c269bcbb"
     },
     {
       "file": "src/pages/GeofenceViolationsPage.tsx",
