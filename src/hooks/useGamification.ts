@@ -34,7 +34,7 @@ export interface EmployeePoints {
   level: number;
   experience: number;
   current_streak: number;
-  best_streak: number;
+  longest_streak: number;
   last_activity_date: string;
   updated_at: string;
 }
@@ -52,7 +52,7 @@ export interface PointTransaction {
   id: string;
   employee_id: string;
   points: number;
-  reason: string;
+  action_type: string;
   description: string | null;
   reference_type: string | null;
   reference_id: string | null;
@@ -68,7 +68,7 @@ async function fetchBadges(): Promise<Badge[]> {
     .from("badges")
     .select("*")
     .eq("is_active", true)
-    .order("points");
+    .order("points_required");
 
   if (error) throw error;
   return data || [];
@@ -102,15 +102,10 @@ async function fetchEmployeePoints(employeeId: string): Promise<EmployeePoints |
 }
 
 async function fetchLeaderboard(
-  period: "week" | "month" | "all" = "month",
+  _period: "week" | "month" | "all" = "month",
   limit = 10
 ): Promise<LeaderboardEntry[]> {
-  const pointsColumn =
-    period === "week"
-      ? "current_week_points"
-      : period === "month"
-        ? "current_month_points"
-        : "total_points";
+  // `employee_points` só mantém acumulados totais; períodos são derivados de `points_history`.
   const { data, error } = await supabase
     .from("employee_points")
     .select(
@@ -121,7 +116,7 @@ async function fetchLeaderboard(
       employee:employees(name)
     `
     )
-    .order(pointsColumn, { ascending: false })
+    .order("total_points", { ascending: false })
     .limit(limit);
 
   if (error) throw error;
@@ -230,7 +225,8 @@ export function useAwardPoints() {
       const { error: transactionError } = await supabase.from("points_history").insert({
         employee_id: employeeId,
         points,
-        reason,
+        action_type: reason,
+        description: reason,
       });
 
       if (transactionError) throw transactionError;
@@ -268,7 +264,7 @@ export function useAwardPoints() {
             level: 1,
             experience: points % 1000,
             current_streak: 0,
-            best_streak: 0,
+            longest_streak: 0,
           })
           .select()
           .maybeSingle();

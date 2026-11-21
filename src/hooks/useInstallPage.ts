@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -27,7 +27,7 @@ export function useInstallPage() {
       const key = crypto.randomUUID();
       const { error } = await supabase
         .from('agent_keys')
-        .insert({ key, name: 'New Agent Key' });
+        .insert({ agent_key: key, key_name: 'New Agent Key' });
       if (error) throw error;
       setAgentKey(key);
       toast({ title: 'Chave gerada com sucesso' });

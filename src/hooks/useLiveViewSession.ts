@@ -71,6 +71,24 @@ export function useLiveViewSession(agentId: string | undefined): UseLiveViewSess
     frames: 0,
   });
 
+  const logAudit = useCallback(
+    async (targetSessionId: string, event: string, payload: Record<string, unknown>) => {
+      const { data } = await supabase
+        .from('live_view_sessions')
+        .select('company_id')
+        .eq('id', targetSessionId)
+        .maybeSingle();
+      if (!data?.company_id) return;
+      await supabase.from('live_view_audit').insert({
+        session_id: targetSessionId,
+        company_id: data.company_id,
+        event,
+        payload,
+      } as never);
+    },
+    [],
+  );
+
   const cleanup = useCallback(() => {
     if (metricsTimerRef.current) {
       window.clearInterval(metricsTimerRef.current);
@@ -101,15 +119,10 @@ export function useLiveViewSession(agentId: string | undefined): UseLiveViewSess
           .from('live_view_sessions')
           .update({ status: 'ended', ended_at: new Date().toISOString(), end_reason: reason })
           .eq('id', sessionId);
-        await supabase.from('live_view_audit').insert({
-          session_id: sessionId,
-          company_id: (await supabase.from('live_view_sessions').select('company_id').eq('id', sessionId).maybeSingle()).data?.company_id,
-          event: 'session.ended',
-          payload: { reason },
-        } as never);
+        await logAudit(sessionId, 'session.ended', { reason });
       }
     },
-    [cleanup, sessionId],
+    [cleanup, logAudit, sessionId],
   );
 
   const start = useCallback(async () => {
@@ -195,12 +208,7 @@ export function useLiveViewSession(agentId: string | undefined): UseLiveViewSess
               consent_granted: state === 'granted' || state === 'not_required',
             })
             .eq('id', data.session_id);
-          await supabase.from('live_view_audit').insert({
-            session_id: data.session_id,
-            company_id: null as unknown as string,
-            event: `consent.${state}`,
-            payload: { reason, decided_at: decidedAt },
-          } as never);
+          await logAudit(data.session_id, `consent.${state}`, { reason, decided_at: decidedAt });
         }
 
         if (state === 'denied') {
@@ -238,12 +246,7 @@ export function useLiveViewSession(agentId: string | undefined): UseLiveViewSess
               consent_state: 'timeout',
               consent_decided_at: decidedAt,
             }).eq('id', data.session_id);
-            void supabase.from('live_view_audit').insert({
-              session_id: data.session_id,
-              company_id: null as unknown as string,
-              event: 'consent.timeout',
-              payload: { decided_at: decidedAt },
-            } as never);
+            void logAudit(data.session_id, 'consent.timeout', { decided_at: decidedAt });
             setError('consent_timeout');
             setStatus('ended');
             cleanup();
@@ -283,7 +286,7 @@ export function useLiveViewSession(agentId: string | undefined): UseLiveViewSess
         bytesReceived: bytes,
       });
     }, 1500);
-  }, [agentId, cleanup, stop]);
+  }, [agentId, cleanup, logAudit, stop]);
 
   const snapshot = useCallback(() => {
     const v = videoRef.current;

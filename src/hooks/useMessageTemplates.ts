@@ -10,31 +10,39 @@ import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 export interface MessageTemplate {
   id: string;
   name: string;
-  type: 'email' | 'whatsapp' | 'sms' | 'push';
-  subject?: string;
-  content: string;
-  variables: string[];
+  template_type: string;
+  channel: 'email' | 'whatsapp' | 'sms' | 'push' | string;
+  subject: string | null;
+  body: string;
+  variables: string[] | null;
   is_active: boolean;
+  description: string | null;
+  is_default: boolean;
   created_at: string;
   updated_at: string;
 }
 
 export interface CreateMessageTemplateInput {
   name: string;
-  type: 'email' | 'whatsapp' | 'sms' | 'push';
-  subject?: string;
-  content: string;
+  template_type?: string;
+  channel: 'email' | 'whatsapp' | 'sms' | 'push' | string;
+  subject?: string | null;
+  body: string;
   variables?: string[];
   is_active?: boolean;
+  description?: string | null;
 }
 
 export interface UpdateMessageTemplateInput {
   id: string;
   name?: string;
-  subject?: string;
-  content?: string;
+  template_type?: string;
+  channel?: string;
+  subject?: string | null;
+  body?: string;
   variables?: string[];
   is_active?: boolean;
+  description?: string | null;
 }
 
 // ============================================================
@@ -84,7 +92,7 @@ export function useMessageTemplatesByType(type: string) {
       const { data, error } = await supabase
         .from('message_templates')
         .select('*')
-        .eq('type', type)
+        .eq('template_type', type)
         .eq('is_active', true)
         .order('name', { ascending: true });
 
@@ -247,10 +255,11 @@ export function useDuplicateMessageTemplate() {
         .from('message_templates')
         .insert({
           name: `${template.name} (Cópia)`,
-          type: template.type,
+          template_type: template.template_type,
+          channel: template.channel,
           subject: template.subject,
-          content: template.content,
-          variables: template.variables,
+          body: template.body,
+          variables: template.variables ?? undefined,
           is_active: false,
         })
         .select()
