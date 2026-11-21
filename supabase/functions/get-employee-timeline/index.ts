@@ -14,7 +14,13 @@ serve(async (req) => {
     if (!authHeader) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-    const { employeeId, employeeName, date } = await req.json();
+    const body = await req.json().catch(() => ({}));
+    const { employeeId, employeeName } = body ?? {};
+    const date = body?.date ?? body?.day ?? new Date().toISOString().slice(0, 10);
+
+    if (Number.isNaN(new Date(date).getTime())) {
+      return new Response(JSON.stringify({ error: 'invalid date' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
