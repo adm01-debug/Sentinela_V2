@@ -4527,7 +4527,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 85,
+   "usado_por": 86,
    "orfao": false
   },
   {
@@ -4558,7 +4558,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 57,
+   "usado_por": 58,
    "orfao": false
   },
   {
@@ -5371,7 +5371,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 19,
+   "usado_por": 20,
    "orfao": false
   },
   {
@@ -5409,7 +5409,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 14,
+   "usado_por": 15,
    "orfao": false
   },
   {
@@ -7529,14 +7529,12 @@
     "WhatsAppIntegrationPage"
    ],
    "export_default": "WhatsAppIntegrationPage",
-   "linhas": 60,
+   "linhas": 312,
    "dominio": "pages",
    "hooks_locais": [
-    "useQuery"
+    "useWhatsAppIntegrationPage"
    ],
-   "tabelas": [
-    "message_templates"
-   ],
+   "tabelas": [],
    "edges": [],
    "usado_por": 1,
    "orfao": false

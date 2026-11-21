@@ -3464,8 +3464,12 @@
    "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
+   "src/components/ui/input.tsx",
+   "src/components/ui/label.tsx",
    "src/components/ui/skeleton.tsx",
-   "src/integrations/supabase/client.ts"
+   "src/components/ui/switch.tsx",
+   "src/components/ui/tabs.tsx",
+   "src/hooks/useWhatsAppIntegrationPage.ts"
   ],
   "src/pages/WorkSchedulesPage.tsx": [
    "src/components/layout/PageHeader.tsx",

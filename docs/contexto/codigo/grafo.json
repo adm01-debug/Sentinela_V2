@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1330,
- "arestas": 2705,
+ "arestas": 2709,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 202
+   "importado_por": 201
   },
   {
    "arquivo": "src/components/ui/card.tsx",
@@ -26,7 +26,7 @@
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 85
+   "importado_por": 86
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
@@ -42,7 +42,7 @@
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 57
+   "importado_por": 58
   },
   {
    "arquivo": "src/components/ui/select.tsx",
@@ -98,7 +98,7 @@
   },
   {
    "arquivo": "src/components/ui/switch.tsx",
-   "importado_por": 19
+   "importado_por": 20
   },
   {
    "arquivo": "src/components/ui/avatar.tsx",
@@ -117,12 +117,12 @@
    "importado_por": 15
   },
   {
-   "arquivo": "src/hooks/useEmployees.ts",
+   "arquivo": "src/components/ui/tabs.tsx",
    "importado_por": 15
   },
   {
-   "arquivo": "src/components/ui/tabs.tsx",
-   "importado_por": 14
+   "arquivo": "src/hooks/useEmployees.ts",
+   "importado_por": 15
   },
   {
    "arquivo": "src/components/ui/textarea.tsx",

@@ -1765,7 +1765,7 @@
    "modulo": "hooks",
    "arquivos": 479,
    "testes": 0,
-   "linhas": 31959,
+   "linhas": 31976,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -3762,7 +3762,7 @@
    "modulo": "pages",
    "arquivos": 66,
    "testes": 0,
-   "linhas": 11035,
+   "linhas": 11287,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -3940,6 +3940,7 @@
     "useViolationsRealtime",
     "useWeeklyProductivityInsights",
     "useWeeklyProductivityRanking",
+    "useWhatsAppIntegrationPage",
     "useWorkSchedules",
     "useWorkSchedulesPage"
    ],
@@ -3948,7 +3949,9 @@
     "analyze-activity",
     "award-gamification-points",
     "export-data",
-    "generate-report"
+    "generate-report",
+    "send-whatsapp",
+    "sync-whatsapp-templates"
    ],
    "tabelas": [
     "agent_keys",
@@ -3979,7 +3982,6 @@
     "live_view_audit",
     "live_view_sessions",
     "login_security_events",
-    "message_templates",
     "monitoring_settings",
     "overtime_requests",
     "permissions",
@@ -4005,7 +4007,10 @@
     "violation_comments",
     "violation_disputes",
     "webhooks",
+    "whatsapp_config",
+    "whatsapp_message_logs",
     "whatsapp_notification_settings",
+    "whatsapp_templates",
     "work_schedules"
    ],
    "rpcs": [],
@@ -4055,7 +4060,6 @@
      "employee_status",
      "employees",
      "login_security_events",
-     "message_templates",
      "monitoring_settings",
      "projects",
      "query_telemetry",
@@ -4637,6 +4641,7 @@
     "useViolationsRealtime",
     "useWeeklyProductivityInsights",
     "useWeeklyProductivityRanking",
+    "useWhatsAppIntegrationPage",
     "useWorkSchedules",
     "useWorkSchedulesPage"
    ],
@@ -4648,12 +4653,14 @@
     "export-data",
     "generate-report",
     "risk-score-calculator",
+    "send-whatsapp",
     "slack-dlq-bulk-replay",
     "slack-dlq-replay",
     "slack-fallback-test",
     "slack-mttr-monitor",
     "slack-notify",
-    "slack-weekly-digest"
+    "slack-weekly-digest",
+    "sync-whatsapp-templates"
    ],
    "tabelas": [
     "agent_keys",
@@ -4691,7 +4698,6 @@
     "live_view_audit",
     "live_view_sessions",
     "login_security_events",
-    "message_templates",
     "mitre_techniques",
     "mobile_devices",
     "monitoring_settings",
@@ -4727,8 +4733,10 @@
     "violation_comments",
     "violation_disputes",
     "webhooks",
+    "whatsapp_config",
     "whatsapp_message_logs",
     "whatsapp_notification_settings",
+    "whatsapp_templates",
     "work_schedules"
    ],
    "rpcs": [],

@@ -9941,12 +9941,11 @@
    "hooks_exportados": [
     "useWhatsAppIntegrationPage"
    ],
-   "linhas": 255,
+   "linhas": 272,
    "dominio": "hooks",
    "tabelas": [
     "whatsapp_config",
     "whatsapp_message_logs",
-    "whatsapp_notification_settings",
     "whatsapp_templates"
    ],
    "rpcs": [],
@@ -9956,7 +9955,6 @@
    ],
    "hooks_internos": [
     "useCallback",
-    "useEffect",
     "useMemo",
     "useMutation",
     "useQuery",
@@ -9965,8 +9963,10 @@
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/WhatsAppIntegrationPage.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {

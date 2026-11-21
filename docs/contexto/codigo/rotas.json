@@ -1575,22 +1575,39 @@
    "definida_em": "src/routes/AppRoutes.tsx",
    "redireciona": null,
    "hooks": [
+    "useCallback",
+    "useEffect",
     "useLocation",
+    "useMemo",
+    "useMutation",
     "useNavigate",
-    "useQuery"
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast",
+    "useWhatsAppIntegrationPage"
    ],
    "hooks_locais": [
-    "useQuery"
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast",
+    "useWhatsAppIntegrationPage"
    ],
    "tabelas": [
-    "message_templates"
+    "whatsapp_config",
+    "whatsapp_message_logs",
+    "whatsapp_templates"
    ],
    "rpcs": [],
-   "edges": [],
+   "edges": [
+    "send-whatsapp",
+    "sync-whatsapp-templates"
+   ],
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 18
+   "arquivos_puxados": 25
   },
   {
    "protegida": false,

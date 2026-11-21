@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)",
+   "chore: corrige shellcheck (SC2146) no deno test e atualiza linha de base (#177)",
+   "chore: linka projeto Vercel antes do deploy (#176)",
    "chore: revoga EXECUTE public/anon das RPCs de permissao (#175)",
-   "chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)",
-   "feat: whatsapp templates/config completos + UI de concessao de pontos (#173)",
-   "feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)",
-   "feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)"
+   "chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

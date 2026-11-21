@@ -2,11 +2,26 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1484634c0208e1e8410d51401ffddea2c3718e6a",
+  "commit": "c479f3b0669cc1afed56ed3d22b604fe8ff81ff6",
   "branch": "main",
-  "data_commit": "2026-11-21T11:49:43-03:00",
+  "data_commit": "2026-11-21T11:50:22-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "c479f3b06",
+    "data": "2026-11-21",
+    "assunto": "feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)"
+   },
+   {
+    "sha": "a79bc565b",
+    "data": "2026-11-21",
+    "assunto": "chore: corrige shellcheck (SC2146) no deno test e atualiza linha de base (#177)"
+   },
+   {
+    "sha": "1c4237a93",
+    "data": "2026-11-21",
+    "assunto": "chore: linka projeto Vercel antes do deploy (#176)"
+   },
    {
     "sha": "1484634c0",
     "data": "2026-11-21",
@@ -116,24 +131,9 @@
     "sha": "d51a91c94",
     "data": "2026-11-19",
     "assunto": "build(deps): bump @sentry/vite-plugin from 5.4.1 to 11.12.0 (#148)"
-   },
-   {
-    "sha": "4b84c49d6",
-    "data": "2026-11-19",
-    "assunto": "build(deps): bump @sentry/browser from 10.78.0 to 11.12.0 (#147)"
-   },
-   {
-    "sha": "926097ee9",
-    "data": "2026-11-19",
-    "assunto": "build(deps): bump @hookform/resolvers from 5.9.2 to 7.0.6 (#146)"
-   },
-   {
-    "sha": "16ebabdea",
-    "data": "2026-11-19",
-    "assunto": "fix(agent): aponta API_URL do desktop para o backend real (Sentinela_V2) (#154)"
    }
   ],
-  "arquivos_mudados_7d": 91,
+  "arquivos_mudados_7d": 96,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -149,11 +149,11 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 8
+    "mudancas": 10
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "pasta": "docs/prod-readiness.md",
@@ -164,6 +164,10 @@
     "mudancas": 6
    },
    {
+    "pasta": ".github/workflows/ci.yml",
+    "mudancas": 5
+   },
+   {
     "pasta": "desktop-agent/src/services",
     "mudancas": 5
    },
@@ -172,7 +176,7 @@
     "mudancas": 5
    },
    {
-    "pasta": ".github/workflows/ci.yml",
+    "pasta": ".github/workflows/deploy.yml",
     "mudancas": 4
    },
    {
@@ -190,10 +194,6 @@
    {
     "pasta": ".github/workflows/contexto.yml",
     "mudancas": 3
-   },
-   {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 3
    }
   ],
   "arquivos_mais_mudados_90d": [
@@ -207,22 +207,26 @@
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 8
+    "mudancas": 10
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "docs/prod-readiness.md",
     "mudancas": 6
    },
    {
+    "arquivo": ".github/workflows/ci.yml",
+    "mudancas": 5
+   },
+   {
     "arquivo": "src/index.css",
     "mudancas": 5
    },
    {
-    "arquivo": ".github/workflows/ci.yml",
+    "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 4
    },
    {
@@ -235,10 +239,6 @@
    },
    {
     "arquivo": ".github/workflows/contexto.yml",
-    "mudancas": 3
-   },
-   {
-    "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 3
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 78
+    "commits": 81
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1829,
+  "arquivos_total": 1830,
   "arquivos_codigo": 1400,
-  "linhas_codigo": 148853,
+  "linhas_codigo": 149122,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -326,7 +326,7 @@
   "hooks": 524,
   "edge_functions": 86,
   "tabelas": 141,
-  "migrations": 105,
+  "migrations": 106,
   "cron_jobs": 1,
   "testes": 70,
   "workflows": 12,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 31959
+   "linhas": 31976
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 104,
-   "linhas": 17354
+   "linhas": 17606
   },
   "src/providers": {
    "arquivos": 9,

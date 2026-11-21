@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1484634c0208e1e8410d51401ffddea2c3718e6a` (2026-11-21T11:49:43-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c479f3b0669cc1afed56ed3d22b604fe8ff81ff6` (2026-11-21T11:50:22-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1380), Markdown (176), SQL (109), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1380), Markdown (176), SQL (110), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1829 |
+| arquivos_total | 1830 |
 | arquivos_codigo | 1400 |
-| linhas_codigo | 148853 |
+| linhas_codigo | 149122 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 524 |
 | edge_functions | 86 |
 | tabelas | 141 |
-| migrations | 105 |
+| migrations | 106 |
 | cron_jobs | 1 |
 | testes | 70 |
 | workflows | 12 |
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 494 | 19 | 84 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 66 | 130 | 4 | 56 |
+| pages | 4 | 38 | 66 | 131 | 6 | 58 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
 | pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
@@ -295,15 +295,15 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (24)
 - package.json (24)
-- scripts/ci/eslint-baseline.json (8)
-- scripts/ci/prettier-baseline.json (8)
+- scripts/ci/eslint-baseline.json (10)
+- scripts/ci/prettier-baseline.json (9)
 - docs/prod-readiness.md (6)
+- .github/workflows/ci.yml (5)
 - src/index.css (5)
-- .github/workflows/ci.yml (4)
+- .github/workflows/deploy.yml (4)
 - desktop-agent/src/main.ts (4)
 - src/test/improvements-verification.test.ts (4)
 - .github/workflows/contexto.yml (3)
-- .github/workflows/deploy.yml (3)
 - .github/workflows/lint.yml (3)
 - .github/workflows/release.yml (3)
 - .github/workflows/update-deps.yml (3)
@@ -454,6 +454,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `c479f3b06` feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)
+- 2026-11-21 `a79bc565b` chore: corrige shellcheck (SC2146) no deno test e atualiza linha de base (#177)
+- 2026-11-21 `1c4237a93` chore: linka projeto Vercel antes do deploy (#176)
 - 2026-11-21 `1484634c0` chore: revoga EXECUTE public/anon das RPCs de permissao (#175)
 - 2026-11-21 `ac48782a5` chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)
 - 2026-11-21 `eec8439ad` feat: whatsapp templates/config completos + UI de concessao de pontos (#173)
@@ -466,9 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `1edcf58fa` chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)
 - 2026-11-20 `239acde75` fix: remove assert de clock do teste 9.05 (elimina flake de CI) (#165)
 - 2026-11-20 `8ade29737` fix: marca *.pdf como binary no gitattributes (#164)
-- 2026-11-20 `1a092d773` feat: converte utilities restantes para @utility (Tailwind v4) (#163)
-- 2026-11-20 `b8db7aa24` feat: converte .glass e .stat-number para @utility (Tailwind v4) (#162)
-- 2026-11-20 `a8dc1d0ef` chore: baixa baselines dos ratchets (divida paga) (#161)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
