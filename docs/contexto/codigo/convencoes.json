@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)",
    "feat: whatsapp templates/config completos + UI de concessao de pontos (#173)",
    "feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)",
    "feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)",
-   "fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)",
-   "fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)"
+   "fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

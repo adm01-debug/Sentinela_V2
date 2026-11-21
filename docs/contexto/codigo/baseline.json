@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "eec8439ad30e77977a0fef8981483fdb29241202",
+  "commit": "ac48782a53d09769277044583850a2f25563d9c4",
   "branch": "main",
-  "data_commit": "2026-11-21T08:51:23-03:00",
+  "data_commit": "2026-11-21T10:25:59-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "ac48782a5",
+    "data": "2026-11-21",
+    "assunto": "chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)"
+   },
    {
     "sha": "eec8439ad",
     "data": "2026-11-21",
@@ -126,11 +131,6 @@
     "sha": "bd79b1aa6",
     "data": "2026-11-19",
     "assunto": "fix: porta residuais da branch qa (StoreSchema, docs ADR/README) (#153)"
-   },
-   {
-    "sha": "d1dfd4a6b",
-    "data": "2026-11-19",
-    "assunto": "fix: porta hardening de seguranca da qa (pr 12) (#152)"
    }
   ],
   "arquivos_mudados_7d": 90,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 76
+    "commits": 77
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1827,
+  "arquivos_total": 1828,
   "arquivos_codigo": 1400,
   "linhas_codigo": 148853,
   "rotas": 55,
@@ -331,7 +331,7 @@
   "testes": 70,
   "workflows": 12,
   "scripts": 31,
-  "docs_md": 175
+  "docs_md": 176
  },
  "por_pasta": {
   "benchmarks/api-performance.ts": {

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `eec8439ad30e77977a0fef8981483fdb29241202` (2026-11-21T08:51:23-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `ac48782a53d09769277044583850a2f25563d9c4` (2026-11-21T10:25:59-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1380), Markdown (175), SQL (108), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1380), Markdown (176), SQL (108), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1827 |
+| arquivos_total | 1828 |
 | arquivos_codigo | 1400 |
 | linhas_codigo | 148853 |
 | rotas | 55 |
@@ -51,7 +51,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | testes | 70 |
 | workflows | 12 |
 | scripts | 31 |
-| docs_md | 175 |
+| docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (55)
@@ -450,10 +450,11 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `docs/prod-readiness.md` (121 linhas)
 - `docs/troubleshooting.md` — Troubleshooting Guide (60 linhas)
 - `docs/user-guide.md` — User Guide (67 linhas)
-- subpastas de docs/: docs/guides (10), docs/tutorials (10), docs/adr (9), docs/examples (8), docs/agentes (7), docs/agent (1), docs/pendencias (1)
+- subpastas de docs/: docs/guides (10), docs/tutorials (10), docs/adr (9), docs/examples (8), docs/agentes (7), docs/pendencias (2), docs/agent (1)
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `ac48782a5` chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)
 - 2026-11-21 `eec8439ad` feat: whatsapp templates/config completos + UI de concessao de pontos (#173)
 - 2026-11-20 `a243473b2` feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)
 - 2026-11-20 `433ff6041` feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `b8db7aa24` feat: converte .glass e .stat-number para @utility (Tailwind v4) (#162)
 - 2026-11-20 `a8dc1d0ef` chore: baixa baselines dos ratchets (divida paga) (#161)
 - 2026-11-20 `3b1357e67` feat: converte bg-stripes para @utility (Tailwind v4) (#160)
-- 2026-11-20 `d8e871c5e` fix: limpa lint herdado do sidebar (no-redeclare, react-hooks/purity) (#159)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
