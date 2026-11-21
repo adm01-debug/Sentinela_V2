@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `05761095f25b94ac0d41060022dc151d26d1f996` (2026-11-21T19:50:00-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `78fb326d771d10e9971547746c7b884ccbf07c1c` (2026-11-21T19:58:37-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -194,7 +194,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `dlp-policy-sync` — tabelas: agent_keys, dlp_classifiers, dlp_policies; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `escalate-dispute-sla` — tabelas: edge_function_logs, mobile_devices, user_roles, violation_disputes; chamada por 1 arquivo(s) do front
 - `expire-recordings` — tabelas: data_retention_policies, file_transfers, recording_chunks, recording_sessions; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `export-data` — tabelas: profiles; chamada por 1 arquivo(s) do front
+- `export-data` — tabelas: user_companies; chamada por 1 arquivo(s) do front
 - `external-db-bridge` — tabelas: query_telemetry; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-api-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-insights` — tabelas: activity_logs, employees, violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `78fb326d7` fix: export-data resolve company do usuario em user_companies (profiles nao tem company_id) (#197)
 - 2026-11-21 `05761095f` fix: OrgChartPage para de pedir departments.company_id (coluna inexistente) (#195)
 - 2026-11-21 `6bd2f5ca7` fix: alinha writes do front a colunas reais do banco (#193)
 - 2026-11-21 `d7546801b` fix: alinha 4 selects do front a colunas reais do banco (#192)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `c8e3b4986` fix: fecha INSERT anonimo em entity_versions e remove backdoor dos guards (#179)
 - 2026-11-21 `c479f3b06` feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)
 - 2026-11-21 `a79bc565b` chore: corrige shellcheck (SC2146) no deno test e atualiza linha de base (#177)
-- 2026-11-21 `1c4237a93` chore: linka projeto Vercel antes do deploy (#176)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

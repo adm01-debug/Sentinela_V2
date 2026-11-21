@@ -9331,9 +9331,7 @@
     "so_no_types": []
    },
    "usada_no_front": 3,
-   "usada_em_edges": [
-    "export-data"
-   ],
+   "usada_em_edges": [],
    "triggers": [
     "update_profiles_updated_at"
    ],
@@ -13825,6 +13823,7 @@
    },
    "usada_no_front": 3,
    "usada_em_edges": [
+    "export-data",
     "invite-user"
    ],
    "triggers": [],
