@@ -328,6 +328,7 @@
    ],
    "tabelas": [
     "password_reset_requests",
+    "role_permissions",
     "roles",
     "user_roles"
    ],
@@ -1765,7 +1766,7 @@
    "modulo": "hooks",
    "arquivos": 479,
    "testes": 0,
-   "linhas": 32061,
+   "linhas": 32094,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],

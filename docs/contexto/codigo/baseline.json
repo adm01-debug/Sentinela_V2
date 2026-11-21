@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "e96b8cce373467ed848920f07c4a95c7d763e770",
+  "commit": "732a562321e27806baeda25f4cad62eb7abe483f",
   "branch": "main",
-  "data_commit": "2026-11-21T20:37:46-03:00",
+  "data_commit": "2026-11-21T20:56:38-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "732a56232",
+    "data": "2026-11-21",
+    "assunto": "fix(permissoes): usePermissions buscava embed inexistente e zerava as permissoes de todos (#205)"
+   },
    {
     "sha": "e96b8cce3",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "eec8439ad",
     "data": "2026-11-21",
     "assunto": "feat: whatsapp templates/config completos + UI de concessao de pontos (#173)"
-   },
-   {
-    "sha": "a243473b2",
-    "data": "2026-11-20",
-    "assunto": "feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)"
    }
   ],
-  "arquivos_mudados_7d": 122,
+  "arquivos_mudados_7d": 124,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 99
+    "commits": 100
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1834,
   "arquivos_codigo": 1402,
-  "linhas_codigo": 149690,
+  "linhas_codigo": 149723,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32061
+   "linhas": 32094
   },
   "src/i18n": {
    "arquivos": 1,

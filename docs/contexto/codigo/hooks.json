@@ -6188,9 +6188,10 @@
     "useRoles",
     "useUserPermissions"
    ],
-   "linhas": 110,
+   "linhas": 142,
    "dominio": "hooks",
    "tabelas": [
+    "role_permissions",
     "roles",
     "user_roles"
    ],
@@ -6199,6 +6200,7 @@
    "hooks_internos": [
     "useAuth",
     "useCallback",
+    "useMemo",
     "useQuery"
    ],
    "canais_realtime": [],
@@ -7229,7 +7231,7 @@
    "hooks_exportados": [
     "useRoles"
    ],
-   "linhas": 86,
+   "linhas": 87,
    "dominio": "hooks",
    "tabelas": [
     "permissions",
