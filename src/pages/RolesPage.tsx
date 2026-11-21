@@ -9,7 +9,7 @@ export default function RolesPage() {
 
   if (isLoading) return <div className="p-6 space-y-4">{Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-32 w-full" />)}</div>;
 
-  // fallback so para quando o RLS/banco nao devolve nenhum perfil\n  const displayRoles = roles.length > 0 ? roles : [
+  const displayRoles = roles.length > 0 ? roles : [
     { id: '1', name: 'Admin', description: 'Acesso total ao sistema', permissions: ['*'], userCount: 0, is_active: true, created_at: '' },
     { id: '2', name: 'Manager', description: 'Gerencia funcionários e relatórios', permissions: ['read', 'write'], userCount: 0, is_active: true, created_at: '' },
     { id: '3', name: 'Analyst', description: 'Acesso a relatórios e analytics', permissions: ['read'], userCount: 0, is_active: true, created_at: '' },
