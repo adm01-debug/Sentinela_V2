@@ -104,7 +104,8 @@ serve(async (req) => {
         if (detailed || include_storage) {
           const storageStart = Date.now();
           try {
-            const { error } = await supabase.storage.from('screenshots').list('', { limit: 1 });
+            const bucket = Deno.env.get('HEALTH_STORAGE_BUCKET') ?? 'violation-screenshots';
+            const { error } = await supabase.storage.from(bucket).list('', { limit: 1 });
             healthStatus.checks.storage = {
               status: error ? 'unhealthy' : 'healthy',
               latency_ms: Date.now() - storageStart,
