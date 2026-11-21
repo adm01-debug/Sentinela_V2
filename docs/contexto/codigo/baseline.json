@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2e71982d007dafc5537e3372edb0011a200847df",
+  "commit": "15ca0e8d21b09c0c41cd76ff744de9ee9511bc97",
   "branch": "main",
-  "data_commit": "2026-11-21T18:02:29-03:00",
+  "data_commit": "2026-11-21T18:16:22-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "15ca0e8d2",
+    "data": "2026-11-21",
+    "assunto": "fix: edges get-employee-timeline e notify-new-device validam payload em vez de 500 (#191)"
+   },
    {
     "sha": "2e71982d0",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "1a092d773",
     "data": "2026-11-20",
     "assunto": "feat: converte utilities restantes para @utility (Tailwind v4) (#163)"
-   },
-   {
-    "sha": "b8db7aa24",
-    "data": "2026-11-20",
-    "assunto": "feat: converte .glass e .stat-number para @utility (Tailwind v4) (#162)"
    }
   ],
-  "arquivos_mudados_7d": 106,
+  "arquivos_mudados_7d": 107,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 89
+    "commits": 90
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1834,
   "arquivos_codigo": 1402,
-  "linhas_codigo": 149605,
+  "linhas_codigo": 149620,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 100,
-   "linhas": 12547
+   "linhas": 12562
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -607,7 +607,7 @@
  ],
  "qualidade": {
   "any": 198,
-  "console_log": 55,
+  "console_log": 54,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,

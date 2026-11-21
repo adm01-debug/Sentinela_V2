@@ -970,7 +970,7 @@
    "nome": "get-employee-timeline",
    "entrada": "supabase/functions/get-employee-timeline/index.ts",
    "arquivos": 1,
-   "linhas": 62,
+   "linhas": 68,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1418,7 +1418,7 @@
    "nome": "notify-new-device",
    "entrada": "supabase/functions/notify-new-device/index.ts",
    "arquivos": 1,
-   "linhas": 178,
+   "linhas": 187,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
