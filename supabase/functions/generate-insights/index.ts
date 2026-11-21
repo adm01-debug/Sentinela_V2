@@ -33,17 +33,15 @@ serve(async (req) => {
       });
     }
 
-    // Verify the JWT and retrieve the authenticated user
-    const anonClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-      { global: { headers: { authorization: authHeader } } }
-    );
-    const {
-      data: { user },
-      error: authError,
-    } = await anonClient.auth.getUser();
-    if (authError || !user) {
+    // Verify the JWT against the Auth API (getUser sem token nao autentica)
+    const userRes = await fetch(`${Deno.env.get("SUPABASE_URL") ?? ""}/auth/v1/user`, {
+      headers: {
+        Authorization: authHeader,
+        apikey: Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+      },
+    });
+    const user = userRes.ok ? await userRes.json() : null;
+    if (!user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
