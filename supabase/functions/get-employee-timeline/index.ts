@@ -39,8 +39,8 @@ serve(async (req) => {
         .gte('created_at', startOfDay.toISOString())
         .lte('created_at', endOfDay.toISOString())
         .order('created_at'),
-      supabase.from('screen_captures').select('id, captured_at, thumbnail_url')
-        .eq('employee_id', employeeId)
+      supabase.from('screen_captures').select('id, captured_at, capture_url, app_name, window_title')
+        .eq('employee_name', name)
         .gte('captured_at', startOfDay.toISOString())
         .lte('captured_at', endOfDay.toISOString())
         .order('captured_at').limit(50),
@@ -55,6 +55,7 @@ serve(async (req) => {
       screenshots: screenshots.data ?? [],
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    const message = err instanceof Error ? err.message : String(err);
+    return new Response(JSON.stringify({ error: message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 });

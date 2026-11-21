@@ -124,17 +124,21 @@ serve(async (req) => {
     if (tables.includes("violations")) {
       const { data: violations } = await supabase
         .from("violations")
-        .select("id, type, severity, description, employee_id, created_at")
+        .select("id, violation_type, policy_name, severity, description, employee_name, created_at")
         .or(
           keywords
-            .map((k: string) => `type.ilike.%${k}%,description.ilike.%${k}%,severity.ilike.%${k}%`)
+            .map(
+              (k: string) =>
+                `violation_type.ilike.%${k}%,policy_name.ilike.%${k}%,description.ilike.%${k}%,severity.ilike.%${k}%`
+            )
             .join(",")
         )
         .limit(maxResults);
 
       violations?.forEach((vio: any) => {
         const score = keywords.reduce((s: number, k: string) => {
-          if (vio.type?.toLowerCase().includes(k)) s += 0.4;
+          if (vio.violation_type?.toLowerCase().includes(k)) s += 0.4;
+          if (vio.policy_name?.toLowerCase().includes(k)) s += 0.3;
           if (vio.description?.toLowerCase().includes(k)) s += 0.3;
           if (vio.severity?.toLowerCase().includes(k)) s += 0.2;
           return s;
@@ -143,7 +147,7 @@ serve(async (req) => {
         results.push({
           id: vio.id,
           type: "violation",
-          title: vio.type,
+          title: vio.violation_type,
           description: `${vio.severity} - ${vio.description?.substring(0, 100)}`,
           score: Math.min(score, 1),
           metadata: vio,
@@ -155,22 +159,30 @@ serve(async (req) => {
     if (tables.includes("activities")) {
       const { data: activities } = await supabase
         .from("activities")
-        .select("id, type, application, employee_id, created_at")
-        .or(keywords.map((k: string) => `type.ilike.%${k}%,application.ilike.%${k}%`).join(","))
+        .select("id, activity_type, description, entity_type, employee_id, created_at")
+        .or(
+          keywords
+            .map(
+              (k: string) =>
+                `activity_type.ilike.%${k}%,description.ilike.%${k}%,entity_type.ilike.%${k}%`
+            )
+            .join(",")
+        )
         .limit(maxResults);
 
       activities?.forEach((act: any) => {
         const score = keywords.reduce((s: number, k: string) => {
-          if (act.type?.toLowerCase().includes(k)) s += 0.3;
-          if (act.application?.toLowerCase().includes(k)) s += 0.4;
+          if (act.activity_type?.toLowerCase().includes(k)) s += 0.3;
+          if (act.description?.toLowerCase().includes(k)) s += 0.4;
+          if (act.entity_type?.toLowerCase().includes(k)) s += 0.2;
           return s;
         }, 0.1);
 
         results.push({
           id: act.id,
           type: "activity",
-          title: act.application || act.type,
-          description: `Activity: ${act.type}`,
+          title: act.description || act.activity_type,
+          description: `Activity: ${act.activity_type}`,
           score: Math.min(score, 1),
           metadata: act,
         });

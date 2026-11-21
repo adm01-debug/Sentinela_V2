@@ -45,7 +45,8 @@ serve(async (req) => {
     // Analyze violation patterns for policy recommendations
     const violationTypes: Record<string, number> = {};
     violations.forEach((v: any) => {
-      violationTypes[v.type] = (violationTypes[v.type] || 0) + 1;
+      const key = v.violation_type || v.policy_name || "sem_classificacao";
+      violationTypes[key] = (violationTypes[key] || 0) + 1;
     });
 
     const topViolationType = Object.entries(violationTypes).sort((a, b) => b[1] - a[1])[0];

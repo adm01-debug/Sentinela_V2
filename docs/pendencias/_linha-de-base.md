@@ -20,11 +20,13 @@ parcial e continuado ou registrado com dono.
 
 ## Edge functions
 
-| Item                      | Estado                                             | Evidencia                              |
-| ------------------------- | -------------------------------------------------- | -------------------------------------- |
-| send-whatsapp             | DEPLOYADA v2 (roteador dual Meta/Evolution)        | invoke POST: resposta do codigo novo   |
-| sync-whatsapp-templates   | DEPLOYADA (46 no total)                            | invoke antes 404 -> agora 401 sem auth |
-| award-gamification-points | DEPLOYADA (versao main, valida reason/description) | Restaurada de origin/main; sem alterar |
+| Item                        | Estado                                             | Evidencia                                               |
+| --------------------------- | -------------------------------------------------- | ------------------------------------------------------- |
+| send-whatsapp               | DEPLOYADA v2 (roteador dual Meta/Evolution)        | invoke POST: resposta do codigo novo                    |
+| sync-whatsapp-templates     | DEPLOYADA (46 no total)                            | invoke antes 404 -> agora 401 sem auth                  |
+| award-gamification-points   | DEPLOYADA (versao main, valida reason/description) | Restaurada de origin/main; sem alterar                  |
+| Contrato de colunas (views) | CORRIGIDO (7 edges, PR #188)                       | 156 pares tabela/coluna cruzados com information_schema |
+| generate-insights           | CORRIGIDA (401 em 100% das chamadas)               | getUser() sem token -> valida em /auth/v1/user; 200     |
 
 ## Deploy / producao
 
