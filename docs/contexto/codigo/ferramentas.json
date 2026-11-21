@@ -5,7 +5,7 @@
   "linguagens": [
    "TypeScript (1382)",
    "Markdown (176)",
-   "SQL (111)",
+   "SQL (112)",
    "JSON (42)",
    "YAML (35)",
    "JavaScript (22)",
@@ -1279,6 +1279,10 @@
    },
    {
     "host": "cdnjs.cloudflare.com",
+    "arquivos": 1
+   },
+   {
+    "host": "evolution-go-rxj2.srv1481814.hstgr.cloud",
     "arquivos": 1
    },
    {

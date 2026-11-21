@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "262f1b389d5fdb1b5c69d6d44f538649472cd7c1",
+  "commit": "be9b6b46886cddf6d0fc89824d9440a2c4061a44",
   "branch": "main",
-  "data_commit": "2026-11-21T12:10:41-03:00",
+  "data_commit": "2026-11-21T13:01:34-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "be9b6b468",
+    "data": "2026-11-21",
+    "assunto": "feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)"
+   },
+   {
+    "sha": "859b7decb",
+    "data": "2026-11-21",
+    "assunto": "fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)"
+   },
    {
     "sha": "262f1b389",
     "data": "2026-11-21",
@@ -121,19 +131,9 @@
     "sha": "e9528ffc5",
     "data": "2026-11-20",
     "assunto": "feat: migra Tailwind v4 (CSS-first) e substitui tailwindcss-animate por tw-animate-css (#158)"
-   },
-   {
-    "sha": "fe0a8e494",
-    "data": "2026-11-20",
-    "assunto": "fix: resolve colisao de versao nas migrations 20260102 (#157)"
-   },
-   {
-    "sha": "1c02ee885",
-    "data": "2026-11-20",
-    "assunto": "fix: alinha timestamps das migrations com as versoes aplicadas no Supabase (#156)"
    }
   ],
-  "arquivos_mudados_7d": 101,
+  "arquivos_mudados_7d": 102,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -168,16 +168,16 @@
     "mudancas": 5
    },
    {
+    "pasta": ".github/workflows/deploy.yml",
+    "mudancas": 5
+   },
+   {
     "pasta": "desktop-agent/src/services",
     "mudancas": 5
    },
    {
     "pasta": "src/index.css",
     "mudancas": 5
-   },
-   {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 4
    },
    {
     "pasta": "desktop-agent/src/main.ts",
@@ -222,12 +222,12 @@
     "mudancas": 5
    },
    {
-    "arquivo": "src/index.css",
+    "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 5
    },
    {
-    "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 4
+    "arquivo": "src/index.css",
+    "mudancas": 5
    },
    {
     "arquivo": "desktop-agent/src/main.ts",
@@ -255,6 +255,10 @@
    },
    {
     "arquivo": "AGENTS.md",
+    "mudancas": 3
+   },
+   {
+    "arquivo": "src/pages/WhatsAppIntegrationPage.tsx",
     "mudancas": 3
    },
    {
@@ -292,16 +296,12 @@
    {
     "arquivo": ".github/workflows/security.yml",
     "mudancas": 2
-   },
-   {
-    "arquivo": "desktop-agent/src/services/dlp/dlpEngine.ts",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 83
+    "commits": 85
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1833,
+  "arquivos_total": 1834,
   "arquivos_codigo": 1402,
-  "linhas_codigo": 149333,
+  "linhas_codigo": 149489,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -326,7 +326,7 @@
   "hooks": 524,
   "edge_functions": 86,
   "tabelas": 141,
-  "migrations": 107,
+  "migrations": 108,
   "cron_jobs": 1,
   "testes": 70,
   "workflows": 12,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 31976
+   "linhas": 31996
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 104,
-   "linhas": 17606
+   "linhas": 17687
   },
   "src/providers": {
    "arquivos": 9,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 100,
-   "linhas": 12376
+   "linhas": 12431
   },
   "vite.config.ts": {
    "arquivos": 1,

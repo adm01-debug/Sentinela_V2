@@ -2064,18 +2064,22 @@
    "nome": "send-whatsapp",
    "entrada": "supabase/functions/send-whatsapp/index.ts",
    "arquivos": 2,
-   "linhas": 317,
+   "linhas": 372,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
-   "tabelas": [],
+   "tabelas": [
+    "whatsapp_config"
+   ],
    "rpcs": [],
    "env": [
     "EVOLUTION_API_KEY",
     "EVOLUTION_API_URL",
     "EVOLUTION_INSTANCE_NAME",
     "EVOLUTION_INSTANCE_TOKEN",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL",
     "WHATSAPP_ACCESS_TOKEN",
     "WHATSAPP_PHONE_NUMBER_ID",
     "WHATSAPP_PROVIDER"

@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 107,
+ "migrations": 108,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -15475,6 +15475,27 @@
      "default": "now()",
      "ref": null
     },
+    "evolution_api_url": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "evolution_instance_name": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": "'PRINCIPAL'",
+     "ref": null
+    },
+    "evolution_instance_token": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
     "id": {
      "tipo": "uuid",
      "nn": true,
@@ -15494,6 +15515,13 @@
      "nn": false,
      "pk": false,
      "default": null,
+     "ref": null
+    },
+    "provider": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": "'meta'",
      "ref": null
     },
     "updated_at": {
@@ -15537,6 +15565,7 @@
    "criada_em": "20261121120000_whatsapp_templates_and_config.sql",
    "usada_no_front": 1,
    "usada_em_edges": [
+    "send-whatsapp",
     "sync-whatsapp-templates"
    ],
    "triggers": [

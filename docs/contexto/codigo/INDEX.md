@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `262f1b389d5fdb1b5c69d6d44f538649472cd7c1` (2026-11-21T12:10:41-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `be9b6b46886cddf6d0fc89824d9440a2c4061a44` (2026-11-21T13:01:34-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1382), Markdown (176), SQL (111), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1382), Markdown (176), SQL (112), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1833 |
+| arquivos_total | 1834 |
 | arquivos_codigo | 1402 |
-| linhas_codigo | 149333 |
+| linhas_codigo | 149489 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 524 |
 | edge_functions | 86 |
 | tabelas | 141 |
-| migrations | 107 |
+| migrations | 108 |
 | cron_jobs | 1 |
 | testes | 70 |
 | workflows | 12 |
@@ -236,7 +236,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `send-scheduled-report` — tabelas: productivity_metrics, report_logs, scheduled_reports, security_violations; chamada por 1 arquivo(s) do front
 - `send-slack-notification` — tabelas: -; chamada por 1 arquivo(s) do front
 - `send-webhook` — tabelas: webhook_logs, webhooks; chamada por 1 arquivo(s) do front
-- `send-whatsapp` — tabelas: -; chamada por 2 arquivo(s) do front
+- `send-whatsapp` — tabelas: whatsapp_config; chamada por 2 arquivo(s) do front
 - `sentiment-analysis` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `slack-dlq-bulk-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
 - `slack-dlq-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
@@ -262,7 +262,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Integrações externas
 - SDKs: HTTP (axios), Sentry, Supabase, i18next, react-query, zod
-- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, attack.mitre.org, cdn.gpteng.co, cdnjs.cloudflare.com, fonts.googleapis.com
+- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, attack.mitre.org, cdn.gpteng.co, cdnjs.cloudflare.com, evolution-go-rxj2.srv1481814.hstgr.cloud
 - webhooks recebidos: nenhum
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
@@ -299,8 +299,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/prettier-baseline.json (9)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
+- .github/workflows/deploy.yml (5)
 - src/index.css (5)
-- .github/workflows/deploy.yml (4)
 - desktop-agent/src/main.ts (4)
 - src/test/improvements-verification.test.ts (4)
 - .github/workflows/contexto.yml (3)
@@ -454,6 +454,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `be9b6b468` feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)
+- 2026-11-21 `859b7decb` fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)
 - 2026-11-21 `262f1b389` feat: roteador Evolution API no send-whatsapp (homologacao WhatsApp via Zapp) (#180)
 - 2026-11-21 `c8e3b4986` fix: fecha INSERT anonimo em entity_versions e remove backdoor dos guards (#179)
 - 2026-11-21 `c479f3b06` feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)
@@ -467,8 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `f53194fe2` fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)
 - 2026-11-20 `65766c284` fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)
 - 2026-11-20 `bb0f05de5` fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)
-- 2026-11-20 `53a2f04c4` feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)
-- 2026-11-20 `1edcf58fa` chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

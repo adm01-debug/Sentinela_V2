@@ -5132,7 +5132,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 54,
+   "usado_por": 55,
    "orfao": false
   },
   {
@@ -7529,7 +7529,7 @@
     "WhatsAppIntegrationPage"
    ],
    "export_default": "WhatsAppIntegrationPage",
-   "linhas": 312,
+   "linhas": 393,
    "dominio": "pages",
    "hooks_locais": [
     "useWhatsAppIntegrationPage"

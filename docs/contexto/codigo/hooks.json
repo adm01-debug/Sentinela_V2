@@ -9941,7 +9941,7 @@
    "hooks_exportados": [
     "useWhatsAppIntegrationPage"
    ],
-   "linhas": 272,
+   "linhas": 292,
    "dominio": "hooks",
    "tabelas": [
     "whatsapp_config",
