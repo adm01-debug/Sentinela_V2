@@ -44,7 +44,7 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    console.log(`Processing new device notification for user: ${userId}`);
+    console.warn(`Processing new device notification for user: ${userId}`);
 
     // Log the security event
     await supabase.from("login_security_events").insert({
