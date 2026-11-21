@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: generate-report aceita os 3 contratos que o front envia (#190)",
    "fix: export-data aceita o contrato do front e exige autenticacao (#189)",
    "fix: corrige contratos de coluna das edges (activities/violations sao views) (#188)",
    "chore: linha de base registra estado real (deploy Vercel, whatsapp Evolution, RLS #179/#182) (#183)",
-   "feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)",
-   "fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)"
+   "feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

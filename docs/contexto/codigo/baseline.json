@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "160a35cf55dd43d8f485b557cf44bf82c9484730",
+  "commit": "2e71982d007dafc5537e3372edb0011a200847df",
   "branch": "main",
-  "data_commit": "2026-11-21T18:02:25-03:00",
+  "data_commit": "2026-11-21T18:02:29-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2e71982d0",
+    "data": "2026-11-21",
+    "assunto": "fix: generate-report aceita os 3 contratos que o front envia (#190)"
+   },
    {
     "sha": "160a35cf5",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "b8db7aa24",
     "data": "2026-11-20",
     "assunto": "feat: converte .glass e .stat-number para @utility (Tailwind v4) (#162)"
-   },
-   {
-    "sha": "a8dc1d0ef",
-    "data": "2026-11-20",
-    "assunto": "chore: baixa baselines dos ratchets (divida paga) (#161)"
    }
   ],
-  "arquivos_mudados_7d": 105,
+  "arquivos_mudados_7d": 106,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 88
+    "commits": 89
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1834,
   "arquivos_codigo": 1402,
-  "linhas_codigo": 149563,
+  "linhas_codigo": 149605,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 100,
-   "linhas": 12505
+   "linhas": 12547
   },
   "vite.config.ts": {
    "arquivos": 1,

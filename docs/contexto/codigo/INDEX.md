@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `160a35cf55dd43d8f485b557cf44bf82c9484730` (2026-11-21T18:02:25-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2e71982d007dafc5537e3372edb0011a200847df` (2026-11-21T18:02:29-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1834 |
 | arquivos_codigo | 1402 |
-| linhas_codigo | 149563 |
+| linhas_codigo | 149605 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -198,7 +198,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `external-db-bridge` — tabelas: query_telemetry; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-api-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-insights` — tabelas: activity_logs, employees, violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `generate-report` — tabelas: ai_analysis_reports, keystroke_logs, productivity_logs, security_violations; chamada por 3 arquivo(s) do front
+- `generate-report` — tabelas: ai_analysis_reports, keystroke_logs, productivity_logs, reports, security_violations; chamada por 3 arquivo(s) do front
 - `get-dashboard-stats` — tabelas: employees, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-employee-schedule` — tabelas: employee_schedules; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-employee-timeline` — tabelas: click_logs, keystroke_logs, screen_captures, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `2e71982d0` fix: generate-report aceita os 3 contratos que o front envia (#190)
 - 2026-11-21 `160a35cf5` fix: export-data aceita o contrato do front e exige autenticacao (#189)
 - 2026-11-21 `7b8f3781d` fix: corrige contratos de coluna das edges (activities/violations sao views) (#188)
 - 2026-11-21 `3845f9582` chore: linha de base registra estado real (deploy Vercel, whatsapp Evolution, RLS #179/#182) (#183)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `ac48782a5` chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)
 - 2026-11-21 `eec8439ad` feat: whatsapp templates/config completos + UI de concessao de pontos (#173)
 - 2026-11-20 `a243473b2` feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)
-- 2026-11-20 `433ff6041` feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
