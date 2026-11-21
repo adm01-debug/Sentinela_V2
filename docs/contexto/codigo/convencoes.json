@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "chore: linha de base registra estado real (deploy Vercel, whatsapp Evolution, RLS #179/#182) (#183)",
    "feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)",
    "fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)",
    "feat: roteador Evolution API no send-whatsapp (homologacao WhatsApp via Zapp) (#180)",
-   "fix: fecha INSERT anonimo em entity_versions e remove backdoor dos guards (#179)",
-   "feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)"
+   "fix: fecha INSERT anonimo em entity_versions e remove backdoor dos guards (#179)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

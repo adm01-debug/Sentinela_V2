@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "be9b6b46886cddf6d0fc89824d9440a2c4061a44",
+  "commit": "3845f9582c50dc86affcbdbc7869b578f461a5ac",
   "branch": "main",
-  "data_commit": "2026-11-21T13:01:34-03:00",
+  "data_commit": "2026-11-21T13:22:51-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "3845f9582",
+    "data": "2026-11-21",
+    "assunto": "chore: linha de base registra estado real (deploy Vercel, whatsapp Evolution, RLS #179/#182) (#183)"
+   },
    {
     "sha": "be9b6b468",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "d8e871c5e",
     "data": "2026-11-20",
     "assunto": "fix: limpa lint herdado do sidebar (no-redeclare, react-hooks/purity) (#159)"
-   },
-   {
-    "sha": "e9528ffc5",
-    "data": "2026-11-20",
-    "assunto": "feat: migra Tailwind v4 (CSS-first) e substitui tailwindcss-animate por tw-animate-css (#158)"
    }
   ],
-  "arquivos_mudados_7d": 102,
+  "arquivos_mudados_7d": 99,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -258,6 +258,10 @@
     "mudancas": 3
    },
    {
+    "arquivo": "docs/pendencias/_linha-de-base.md",
+    "mudancas": 3
+   },
+   {
     "arquivo": "src/pages/WhatsAppIntegrationPage.tsx",
     "mudancas": 3
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": ".github/workflows/preview.yml",
     "mudancas": 2
-   },
-   {
-    "arquivo": ".github/workflows/security.yml",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 85
+    "commits": 86
    },
    {
     "autor": "dependabot[bot]",

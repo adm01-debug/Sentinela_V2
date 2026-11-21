@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `be9b6b46886cddf6d0fc89824d9440a2c4061a44` (2026-11-21T13:01:34-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `3845f9582c50dc86affcbdbc7869b578f461a5ac` (2026-11-21T13:22:51-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `3845f9582` chore: linha de base registra estado real (deploy Vercel, whatsapp Evolution, RLS #179/#182) (#183)
 - 2026-11-21 `be9b6b468` feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)
 - 2026-11-21 `859b7decb` fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)
 - 2026-11-21 `262f1b389` feat: roteador Evolution API no send-whatsapp (homologacao WhatsApp via Zapp) (#180)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `433ff6041` feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)
 - 2026-11-20 `f53194fe2` fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)
 - 2026-11-20 `65766c284` fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)
-- 2026-11-20 `bb0f05de5` fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
