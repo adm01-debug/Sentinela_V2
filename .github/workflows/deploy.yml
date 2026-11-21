@@ -31,18 +31,32 @@ jobs:
         run: |
           set -euo pipefail
           echo "Commit: $SHA"
-          deployments=$(gh api "repos/$REPO/deployments?sha=$SHA&per_page=100")
-          count=$(echo "$deployments" | jq '[.[] | select(.environment == "Production")] | length')
-          echo "Deployments de producao encontrados: $count"
-          if [ "$count" -eq 0 ]; then
+          # A integracao Vercel <-> GitHub registra o deployment alguns segundos
+          # depois do push. Este job espera ate ~6 min antes de declarar ausencia,
+          # para nao falhar por corrida com a Vercel.
+          latest=""
+          for i in $(seq 1 18); do
+            deployments=$(gh api "repos/$REPO/deployments?sha=$SHA&per_page=100")
+            latest=$(echo "$deployments" | jq -r '[.[] | select(.environment == "Production")][0].id // empty')
+            if [ -n "$latest" ]; then
+              echo "Deployment de producao encontrado: $latest (tentativa $i)"
+              break
+            fi
+            echo "Nenhum deployment de producao ainda (tentativa $i/18), aguardando 20s..."
+            sleep 20
+          done
+          if [ -z "$latest" ]; then
             echo "::error::Nenhum deployment de producao para $SHA. O deploy automatico da Vercel nao rodou."
             exit 1
           fi
-          latest=$(echo "$deployments" | jq -r '[.[] | select(.environment == "Production")][0].id')
-          state=$(gh api "repos/$REPO/deployments/$latest/statuses" | jq -r '.[0].state')
-          echo "Deployment $latest -> $state"
-          if [ "$state" != "success" ]; then
-            echo "::error::Deployment $latest terminou com estado '$state'."
-            exit 1
-          fi
-          echo "Deploy de producao confirmado para $SHA ($state)."
+          for i in $(seq 1 24); do
+            state=$(gh api "repos/$REPO/deployments/$latest/statuses" | jq -r '.[0].state // empty')
+            echo "Deployment $latest -> ${state:-sem status} (tentativa $i)"
+            case "$state" in
+              success) echo "Deploy de producao confirmado para $SHA ($state)."; exit 0 ;;
+              failure|error|inactive) echo "::error::Deployment $latest terminou com estado '$state'."; exit 1 ;;
+            esac
+            sleep 20
+          done
+          echo "::error::Deployment $latest nao concluiu em ~8 min (ultimo estado: ${state:-vazio})."
+          exit 1
