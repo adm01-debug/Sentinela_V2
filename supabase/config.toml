@@ -1,1 +1,7 @@
 project_id = "jgnmwvzephsozsqmcpzb"
+
+[functions.send-scheduled-report]
+verify_jwt = true
+
+[functions.health-check]
+verify_jwt = false

@@ -32,13 +32,12 @@ serve(async (req) => {
     // Verify the JWT and retrieve the authenticated user
     const anonClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { authorization: authHeader } } }
+      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     );
     const {
       data: { user },
       error: authError,
-    } = await anonClient.auth.getUser();
+    } = await anonClient.auth.getUser(authHeader.replace('Bearer ', ''));
     if (authError || !user) {
       return new Response(
         JSON.stringify({ error: 'Unauthorized' }),
@@ -126,7 +125,7 @@ serve(async (req) => {
     // Update last_run
     await supabase
       .from('scheduled_reports')
-      .update({ last_run: new Date().toISOString() })
+      .update({ last_run_at: new Date().toISOString() })
       .eq('id', report_id);
 
     return new Response(
