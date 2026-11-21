@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -130,6 +137,28 @@ export default function WhatsAppIntegrationPage() {
         <TabsContent value="config" className="space-y-4 pt-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="space-y-2">
+              <Label htmlFor="provider">Provedor de envio</Label>
+              <Select
+                value={configData.provider}
+                onValueChange={(v) =>
+                  setConfigData({ ...configData, provider: v as "meta" | "evolution" })
+                }
+              >
+                <SelectTrigger id="provider">
+                  <SelectValue placeholder="Selecione o provedor" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="meta">Meta WhatsApp Business (Graph API)</SelectItem>
+                  <SelectItem value="evolution">Evolution API (via Zapp)</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-muted-foreground text-xs">
+                {configData.provider === "evolution"
+                  ? "Envia via Evolution GO (instância do Zapp)"
+                  : "Envia via Graph API do WhatsApp Business"}
+              </p>
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="phone_number_id">Phone Number ID</Label>
               <Input
                 id="phone_number_id"
@@ -181,6 +210,58 @@ export default function WhatsAppIntegrationPage() {
                 placeholder="Token de verificação do webhook"
               />
             </div>
+            {configData.provider === "evolution" && (
+              <>
+                <div className="col-span-full space-y-2">
+                  <Label htmlFor="evolution_api_url">Evolution API URL</Label>
+                  <Input
+                    id="evolution_api_url"
+                    value={configData.evolution_api_url}
+                    onChange={(e) =>
+                      setConfigData({ ...configData, evolution_api_url: e.target.value })
+                    }
+                    placeholder="Ex.: https://evolution-go-rxj2.srv1481814.hstgr.cloud"
+                  />
+                </div>
+                <div className="col-span-full space-y-2">
+                  <Label htmlFor="evolution_instance_token">Token da instância (apikey)</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="evolution_instance_token"
+                      type={showSecret ? "text" : "password"}
+                      value={configData.evolution_instance_token}
+                      onChange={(e) =>
+                        setConfigData({
+                          ...configData,
+                          evolution_instance_token: e.target.value,
+                        })
+                      }
+                      placeholder="Token da instância PRINCIPAL"
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="h-9 shrink-0"
+                      onClick={() => setShowSecret((v) => !v)}
+                    >
+                      {showSecret ? "Ocultar" : "Mostrar"}
+                    </Button>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="evolution_instance_name">Instância</Label>
+                  <Input
+                    id="evolution_instance_name"
+                    value={configData.evolution_instance_name}
+                    onChange={(e) =>
+                      setConfigData({ ...configData, evolution_instance_name: e.target.value })
+                    }
+                    placeholder="PRINCIPAL"
+                  />
+                </div>
+              </>
+            )}
             <div className="col-span-full flex items-center gap-2">
               <Switch
                 id="is_active"

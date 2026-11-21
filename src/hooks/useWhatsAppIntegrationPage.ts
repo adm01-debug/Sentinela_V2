@@ -5,19 +5,27 @@ import { useToast } from "@/hooks/use-toast";
 
 export interface WhatsAppConfig {
   id: string;
+  provider: "meta" | "evolution";
   phone_number_id: string;
   business_account_id: string;
   access_token: string;
   webhook_verify_token: string;
+  evolution_api_url: string;
+  evolution_instance_token: string;
+  evolution_instance_name: string;
   is_active: boolean;
   created_at: string;
 }
 
 type WhatsAppConfigInput = {
+  provider: "meta" | "evolution";
   phone_number_id: string;
   business_account_id: string;
   access_token: string;
   webhook_verify_token: string;
+  evolution_api_url: string;
+  evolution_instance_token: string;
+  evolution_instance_name: string;
   is_active: boolean;
 };
 
@@ -42,10 +50,14 @@ export interface WhatsAppTemplate {
 }
 
 const initialConfig: WhatsAppConfigInput = {
+  provider: "meta",
   phone_number_id: "",
   business_account_id: "",
   access_token: "",
   webhook_verify_token: "",
+  evolution_api_url: "",
+  evolution_instance_token: "",
+  evolution_instance_name: "PRINCIPAL",
   is_active: false,
 };
 
@@ -69,10 +81,14 @@ export function useWhatsAppIntegrationPage() {
       if (!data) return null;
       return {
         id: data.id,
+        provider: data.provider === "evolution" ? "evolution" : "meta",
         phone_number_id: data.phone_number_id || "",
         business_account_id: data.business_account_id || "",
         access_token: data.access_token || "",
         webhook_verify_token: data.webhook_verify_token || "",
+        evolution_api_url: data.evolution_api_url || "",
+        evolution_instance_token: data.evolution_instance_token || "",
+        evolution_instance_name: data.evolution_instance_name || "PRINCIPAL",
         is_active: data.is_active,
         created_at: data.created_at,
       } as WhatsAppConfig;
@@ -230,10 +246,14 @@ export function useWhatsAppIntegrationPage() {
     setPrevConfig(config);
     if (config) {
       setConfigData({
+        provider: config.provider,
         phone_number_id: config.phone_number_id,
         business_account_id: config.business_account_id,
         access_token: config.access_token,
         webhook_verify_token: config.webhook_verify_token,
+        evolution_api_url: config.evolution_api_url,
+        evolution_instance_token: config.evolution_instance_token,
+        evolution_instance_name: config.evolution_instance_name,
         is_active: config.is_active,
       });
     }
