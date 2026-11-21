@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "e30a885cf19e8f042686618053e3543b2d025f9b",
+  "commit": "e96b8cce373467ed848920f07c4a95c7d763e770",
   "branch": "main",
-  "data_commit": "2026-11-21T20:31:50-03:00",
+  "data_commit": "2026-11-21T20:37:46-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "e96b8cce3",
+    "data": "2026-11-21",
+    "assunto": "fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)"
+   },
    {
     "sha": "e30a885cf",
     "data": "2026-11-21",
@@ -126,11 +131,6 @@
     "sha": "a243473b2",
     "data": "2026-11-20",
     "assunto": "feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)"
-   },
-   {
-    "sha": "433ff6041",
-    "data": "2026-11-20",
-    "assunto": "feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)"
    }
   ],
   "arquivos_mudados_7d": 122,
@@ -157,7 +157,7 @@
    },
    {
     "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "pasta": "docs/prod-readiness.md",
@@ -215,7 +215,7 @@
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "arquivo": "docs/prod-readiness.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 98
+    "commits": 99
    },
    {
     "autor": "dependabot[bot]",

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `e30a885cf19e8f042686618053e3543b2d025f9b` (2026-11-21T20:31:50-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `e96b8cce373467ed848920f07c4a95c7d763e770` (2026-11-21T20:37:46-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -297,7 +297,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package.json (24)
 - scripts/ci/eslint-baseline.json (11)
 - scripts/ci/prettier-baseline.json (10)
-- .github/workflows/deploy.yml (6)
+- .github/workflows/deploy.yml (7)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
 - docs/pendencias/_linha-de-base.md (5)
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `e96b8cce3` fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)
 - 2026-11-21 `e30a885cf` fix(edges): corrige nome do parametro de get_user_company_id (p_user_id -> _user_id) (#203)
 - 2026-11-21 `59d2e0ef5` chore(test): eleva timeout do vitest de 5s para 20s (#201)
 - 2026-11-21 `5e64e99e6` fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `7b8f3781d` fix: corrige contratos de coluna das edges (activities/violations sao views) (#188)
 - 2026-11-21 `3845f9582` chore: linha de base registra estado real (deploy Vercel, whatsapp Evolution, RLS #179/#182) (#183)
 - 2026-11-21 `be9b6b468` feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)
-- 2026-11-21 `859b7decb` fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
