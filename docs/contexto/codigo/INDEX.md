@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `5e64e99e6e1f08a5c0bb80d534f535d580f86cf3` (2026-11-21T20:12:50-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `e30a885cf19e8f042686618053e3543b2d025f9b` (2026-11-21T20:31:50-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1834 |
 | arquivos_codigo | 1402 |
-| linhas_codigo | 149686 |
+| linhas_codigo | 149690 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -454,6 +454,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `e30a885cf` fix(edges): corrige nome do parametro de get_user_company_id (p_user_id -> _user_id) (#203)
+- 2026-11-21 `59d2e0ef5` chore(test): eleva timeout do vitest de 5s para 20s (#201)
 - 2026-11-21 `5e64e99e6` fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)
 - 2026-11-21 `39e4070c0` docs: linha de base registra contratos front-banco, Deploy e pendencias de regra 8 (#196)
 - 2026-11-21 `78fb326d7` fix: export-data resolve company do usuario em user_companies (profiles nao tem company_id) (#197)
@@ -467,8 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `3845f9582` chore: linha de base registra estado real (deploy Vercel, whatsapp Evolution, RLS #179/#182) (#183)
 - 2026-11-21 `be9b6b468` feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)
 - 2026-11-21 `859b7decb` fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)
-- 2026-11-21 `262f1b389` feat: roteador Evolution API no send-whatsapp (homologacao WhatsApp via Zapp) (#180)
-- 2026-11-21 `c8e3b4986` fix: fecha INSERT anonimo em entity_versions e remove backdoor dos guards (#179)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

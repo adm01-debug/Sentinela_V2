@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "5e64e99e6e1f08a5c0bb80d534f535d580f86cf3",
+  "commit": "e30a885cf19e8f042686618053e3543b2d025f9b",
   "branch": "main",
-  "data_commit": "2026-11-21T20:12:50-03:00",
+  "data_commit": "2026-11-21T20:31:50-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "e30a885cf",
+    "data": "2026-11-21",
+    "assunto": "fix(edges): corrige nome do parametro de get_user_company_id (p_user_id -> _user_id) (#203)"
+   },
+   {
+    "sha": "59d2e0ef5",
+    "data": "2026-11-21",
+    "assunto": "chore(test): eleva timeout do vitest de 5s para 20s (#201)"
+   },
    {
     "sha": "5e64e99e6",
     "data": "2026-11-21",
@@ -121,19 +131,9 @@
     "sha": "433ff6041",
     "data": "2026-11-20",
     "assunto": "feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)"
-   },
-   {
-    "sha": "f53194fe2",
-    "data": "2026-11-20",
-    "assunto": "fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)"
-   },
-   {
-    "sha": "65766c284",
-    "data": "2026-11-20",
-    "assunto": "fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)"
    }
   ],
-  "arquivos_mudados_7d": 118,
+  "arquivos_mudados_7d": 122,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -286,22 +286,22 @@
     "mudancas": 3
    },
    {
+    "arquivo": "vite.config.ts",
+    "mudancas": 3
+   },
+   {
     "arquivo": ".github/workflows/desktop-build.yml",
     "mudancas": 2
    },
    {
     "arquivo": ".github/workflows/inventario-estado-semanal.yml",
     "mudancas": 2
-   },
-   {
-    "arquivo": ".github/workflows/performance.yml",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 96
+    "commits": 98
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1834,
   "arquivos_codigo": 1402,
-  "linhas_codigo": 149686,
+  "linhas_codigo": 149690,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -500,7 +500,7 @@
   },
   "vite.config.ts": {
    "arquivos": 1,
-   "linhas": 90
+   "linhas": 94
   }
  },
  "maiores_arquivos": [
