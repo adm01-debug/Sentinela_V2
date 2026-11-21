@@ -3527,7 +3527,7 @@
     "useLeaderboard",
     "usePointTransactions"
    ],
-   "linhas": 390,
+   "linhas": 386,
    "dominio": "hooks",
    "tabelas": [
     "badges",
@@ -4737,7 +4737,7 @@
    "hooks_exportados": [
     "useLiveViewSession"
    ],
-   "linhas": 302,
+   "linhas": 305,
    "dominio": "hooks",
    "tabelas": [
     "live_view_audit",
@@ -5041,7 +5041,7 @@
     "useToggleMessageTemplate",
     "useUpdateMessageTemplate"
    ],
-   "linhas": 278,
+   "linhas": 287,
    "dominio": "hooks",
    "tabelas": [
     "message_templates"
@@ -9334,10 +9334,11 @@
    "hooks_exportados": [
     "useUserManagementPage"
    ],
-   "linhas": 243,
+   "linhas": 305,
    "dominio": "hooks",
    "tabelas": [
-    "profiles"
+    "profiles",
+    "user_roles"
    ],
    "rpcs": [],
    "edges": [],
@@ -9365,7 +9366,7 @@
     "useUser",
     "useUsers"
    ],
-   "linhas": 101,
+   "linhas": 99,
    "dominio": "hooks",
    "tabelas": [
     "profiles"
