@@ -82,7 +82,10 @@ export function usePermissions(): UsePermissionsReturn {
     ...queryPresets.config,
   });
 
-  const permissions = Array.isArray(permissionsRaw) ? (permissionsRaw as string[]) : [];
+  const permissions = useMemo(
+    () => (Array.isArray(permissionsRaw) ? (permissionsRaw as string[]) : []),
+    [permissionsRaw],
+  );
 
   const hasPermission = useCallback((permission: string): boolean => {
     return permissions.includes(permission) || permissions.includes('admin') || permissions.includes('*');
