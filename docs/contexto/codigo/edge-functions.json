@@ -759,14 +759,17 @@
    "nome": "export-data",
    "entrada": "supabase/functions/export-data/index.ts",
    "arquivos": 1,
-   "linhas": 59,
+   "linhas": 120,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
-   "tabelas": [],
+   "tabelas": [
+    "profiles"
+   ],
    "rpcs": [],
    "env": [
+    "SUPABASE_ANON_KEY",
     "SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_URL"
    ],
