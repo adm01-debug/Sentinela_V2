@@ -17,7 +17,39 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { type, startDate, endDate } = await req.json();
+    const body = await req.json();
+    // Contratos do front: { reportId } (useReportsPage), { report_id } (useScheduledReportsPage),
+    // { name, type, description } (CustomReportsPage) e o legado { type, startDate, endDate }.
+    let type: string | undefined = body.type;
+    let startDate: string | undefined = body.startDate;
+    let endDate: string | undefined = body.endDate;
+    const reportId: string | undefined = body.reportId ?? body.report_id;
+
+    if (reportId && !type) {
+      const { data: row, error: rowError } = await supabase
+        .from('reports')
+        .select('type')
+        .eq('id', reportId)
+        .maybeSingle();
+      if (rowError) throw rowError;
+      type = row?.type ?? undefined;
+    }
+
+    if (!type) {
+      return new Response(
+        JSON.stringify({ error: 'Informe type ou um reportId/report_id valido' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!startDate) {
+      const d = new Date();
+      d.setDate(d.getDate() - 30);
+      startDate = d.toISOString();
+    }
+    if (!endDate) {
+      endDate = new Date().toISOString();
+    }
 
     const reportData: Record<string, unknown> = {};
 
@@ -46,7 +78,7 @@ serve(async (req) => {
 
       reportData.totalViolations = count || 0;
       reportData.violations = data;
-    } else if (type === 'activity') {
+    } else if (type === 'activity' || type === 'keystroke') {
       const { data, count } = await supabase
         .from('keystroke_logs')
         .select('employee_name, keystrokes_count, active_time_seconds, idle_time_seconds', { count: 'exact' })
@@ -60,7 +92,9 @@ serve(async (req) => {
 
     const report = {
       report_type: type,
-      summary: `Relatório ${type} de ${startDate} a ${endDate}`,
+      summary: body.name
+        ? `Relatório ${body.name} (${type}) de ${startDate} a ${endDate}`
+        : `Relatório ${type} de ${startDate} a ${endDate}`,
       insights: reportData,
       analysis_period_start: startDate,
       analysis_period_end: endDate,
@@ -69,8 +103,16 @@ serve(async (req) => {
     const { error } = await supabase.from('ai_analysis_reports').insert(report);
     if (error) throw error;
 
+    if (reportId) {
+      const { error: updateError } = await supabase
+        .from('reports')
+        .update({ status: 'completed' })
+        .eq('id', reportId);
+      if (updateError) throw updateError;
+    }
+
     return new Response(
-      JSON.stringify(report),
+      JSON.stringify({ ...report, report_id: reportId ?? null, status: 'completed' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
