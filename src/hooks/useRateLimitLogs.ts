@@ -9,15 +9,11 @@ import { queryKeys, queryPresets } from '@/lib/queryClient';
 export interface RateLimitLog {
   id: string;
   endpoint: string;
-  ip_address: string;
-  user_id?: string;
+  identifier: string;
+  identifier_type: string;
   request_count: number;
-  blocked: boolean;
-  blocked_at?: string;
+  window_start: string;
   created_at: string;
-  user?: {
-    email: string;
-  };
 }
 
 export interface RateLimitStats {
@@ -31,41 +27,37 @@ export interface RateLimitStats {
 // ============================================================
 // QUERIES
 // ============================================================
-
 export function useRateLimitLogs(filters?: {
   endpoint?: string;
-  blocked?: boolean;
+  identifier?: string;
   startDate?: string;
   endDate?: string;
 }) {
   return useQuery({
-    queryKey: queryKeys.rateLimiting.logs(),
+    queryKey: [...queryKeys.rateLimiting.logs(), filters],
     queryFn: async () => {
       let query = supabase
         .from('rate_limit_logs')
-        .select(`
-          *,
-          user:users(email)
-        `)
-        .order('created_at', { ascending: false })
+        .select('id, endpoint, identifier, identifier_type, request_count, window_start, created_at')
+        .order('window_start', { ascending: false })
         .limit(500);
 
       if (filters?.endpoint) {
         query = query.eq('endpoint', filters.endpoint);
       }
-      if (filters?.blocked !== undefined) {
-        query = query.eq('blocked', filters.blocked);
+      if (filters?.identifier) {
+        query = query.ilike('identifier', `%${filters.identifier}%`);
       }
       if (filters?.startDate) {
-        query = query.gte('created_at', filters.startDate);
+        query = query.gte('window_start', filters.startDate);
       }
       if (filters?.endDate) {
-        query = query.lte('created_at', filters.endDate);
+        query = query.lte('window_start', filters.endDate);
       }
 
       const { data, error } = await query;
       if (error) throw error;
-      return data as RateLimitLog[];
+      return (data ?? []) as RateLimitLog[];
     },
     ...queryPresets.list,
   });
@@ -78,36 +70,45 @@ export function useRateLimitStats() {
       // Get logs from last 24 hours
       const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-      const { data, error } = await supabase
-        .from('rate_limit_logs')
-        .select('endpoint, ip_address, blocked')
-        .gte('created_at', since);
+      const [{ data: logs, error: logsError }, { data: alerts, error: alertsError }] =
+        await Promise.all([
+          supabase
+            .from('rate_limit_logs')
+            .select('endpoint, identifier, identifier_type, request_count')
+            .gte('window_start', since),
+          supabase
+            .from('rate_limit_alerts')
+            .select('ip')
+            .gte('alerted_at', since),
+        ]);
 
-      if (error) throw error;
+      if (logsError) throw logsError;
+      if (alertsError) throw alertsError;
 
-      // Calculate stats
+      const rows = (logs ?? []) as RateLimitLog[];
+      const ipRows = rows.filter((d) => d.identifier_type === 'ip');
+
       const stats: RateLimitStats = {
-        total_requests: data.length,
-        blocked_requests: data.filter((d: RateLimitLog) => d.blocked).length,
-        unique_ips: new Set(data.map((d: RateLimitLog) => d.ip_address)).size,
+        total_requests: rows.reduce((sum, d) => sum + (d.request_count ?? 0), 0),
+        // rate_limit_logs não registra bloqueio: a evidência de estouro fica em rate_limit_alerts
+        blocked_requests: alerts?.length ?? 0,
+        unique_ips: new Set(ipRows.map((d) => d.identifier)).size,
         top_endpoints: [],
         top_ips: [],
       };
 
-      // Calculate top endpoints
       const endpointCounts: Record<string, number> = {};
-      data.forEach((d: RateLimitLog) => {
-        endpointCounts[d.endpoint] = (endpointCounts[d.endpoint] || 0) + 1;
+      rows.forEach((d) => {
+        endpointCounts[d.endpoint] = (endpointCounts[d.endpoint] || 0) + (d.request_count ?? 0);
       });
       stats.top_endpoints = Object.entries(endpointCounts)
         .map(([endpoint, count]) => ({ endpoint, count }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 5);
 
-      // Calculate top IPs
       const ipCounts: Record<string, number> = {};
-      data.forEach((d: RateLimitLog) => {
-        ipCounts[d.ip_address] = (ipCounts[d.ip_address] || 0) + 1;
+      ipRows.forEach((d) => {
+        ipCounts[d.identifier] = (ipCounts[d.identifier] || 0) + (d.request_count ?? 0);
       });
       stats.top_ips = Object.entries(ipCounts)
         .map(([ip, count]) => ({ ip, count }))
@@ -120,31 +121,28 @@ export function useRateLimitStats() {
   });
 }
 
-export function useBlockedIPs() {
+export interface RateLimitAlert {
+  id: string;
+  ip: string;
+  endpoint: string;
+  request_count: number;
+  threshold: number;
+  window_seconds: number;
+  alerted_at: string;
+}
+
+export function useRateLimitAlerts() {
   return useQuery({
     queryKey: queryKeys.rateLimiting.blockedIPs(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('rate_limit_logs')
-        .select('ip_address, blocked_at')
-        .eq('blocked', true)
-        .not('blocked_at', 'is', null)
-        .order('blocked_at', { ascending: false });
+        .from('rate_limit_alerts')
+        .select('id, ip, endpoint, request_count, threshold, window_seconds, alerted_at')
+        .order('alerted_at', { ascending: false })
+        .limit(200);
 
       if (error) throw error;
-
-      // Get unique IPs with their last block time
-      const ipMap = new Map<string, string>();
-      data.forEach((d: RateLimitLog) => {
-        if (!ipMap.has(d.ip_address)) {
-          ipMap.set(d.ip_address, d.blocked_at!);
-        }
-      });
-
-      return Array.from(ipMap.entries()).map(([ip, blocked_at]) => ({
-        ip_address: ip,
-        blocked_at,
-      }));
+      return (data ?? []) as RateLimitAlert[];
     },
     ...queryPresets.list,
   });

@@ -14,7 +14,7 @@ export interface DeviceStats {
 
 interface EmployeeDeviceStatsRow {
   device_type: string | null;
-  is_active: boolean | null;
+  is_primary: boolean | null;
 }
 
 interface MobileDeviceStatsRow {
@@ -26,7 +26,7 @@ async function fetchDeviceStats(): Promise<DeviceStats> {
   // Buscar dispositivos dos funcionários
   const { data: devices, error: devicesError } = await supabase
     .from('employee_devices')
-    .select('device_type, is_active');
+    .select('device_type, is_primary');
 
   if (devicesError) {
     logger.error('Erro ao buscar devices:', devicesError);
@@ -68,8 +68,8 @@ async function fetchDeviceStats(): Promise<DeviceStats> {
     d.last_seen_at && new Date(d.last_seen_at as string) > fiveMinutesAgo
   ).length;
   
-  // Para desktops, considerar is_active
-  const onlineDesktop = employeeDevices.filter((d: EmployeeDeviceStatsRow) => d.is_active).length;
+  // `employee_devices` nÃ£o tem is_active: tratar device primÃ¡rio como online
+  const onlineDesktop = employeeDevices.filter((d: EmployeeDeviceStatsRow) => d.is_primary).length;
   const online = onlineDesktop + onlineMobile;
 
   return {

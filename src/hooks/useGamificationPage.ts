@@ -62,9 +62,9 @@ export function useGamificationPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("badges")
-        .select("id, name, description, icon, points")
+        .select("id, name, description, icon, points_required")
         .eq("is_active", true)
-        .order("points", { ascending: false });
+        .order("points_required", { ascending: false });
       if (error) throw error;
       return (data || []).map((b) => ({ ...b, unlocked_count: 0 })) as Achievement[];
     },

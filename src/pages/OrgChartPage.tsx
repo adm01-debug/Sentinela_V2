@@ -81,7 +81,7 @@ export default function OrgChartPage() {
         const [{ data: companies }, { data: depts }, { data: teams }, { data: emps }] =
           await Promise.all([
             supabase.from('companies').select('id, name').limit(1),
-            supabase.from('teams').select('id, name, department, company_id').limit(500),
+            supabase.from('departments').select('id, name, company_id').limit(500),
             supabase.from('teams').select('id, name, company_id').limit(500),
             supabase.from('employees').select('id, name, team_id, department, company_id').limit(2000),
           ]);
@@ -95,7 +95,7 @@ export default function OrgChartPage() {
         // Build hierarchy: company -> department -> team -> employee
         const deptMap = new Map<string, Node>();
         for (const t of depts ?? []) {
-          const deptName = (t.department as string) || 'Sem departamento';
+          const deptName = (t.name as string) || 'Sem departamento';
           if (!deptMap.has(deptName)) {
             deptMap.set(deptName, {
               id: `dept-${deptName}`,
