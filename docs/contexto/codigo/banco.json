@@ -473,7 +473,7 @@
   {
    "nome": "screenshots",
    "criado_em_sql": false,
-   "usado_em": 2
+   "usado_em": 1
   },
   {
    "nome": "violation-screenshots",
@@ -16244,7 +16244,6 @@
   "report_logs",
   "reports",
   "scheduled_reports",
-  "screenshots",
   "sensitive_keywords",
   "subscriptions",
   "sync_logs",

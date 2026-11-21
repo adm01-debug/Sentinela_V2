@@ -1087,24 +1087,22 @@
    "nome": "health-check",
    "entrada": "supabase/functions/health-check/index.ts",
    "arquivos": 1,
-   "linhas": 154,
+   "linhas": 155,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "employees",
-    "screenshots"
+    "employees"
    ],
    "rpcs": [],
    "env": [
     "FUNCTION_VERSION",
+    "HEALTH_STORAGE_BUCKET",
     "SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_URL"
    ],
-   "buckets": [
-    "screenshots"
-   ],
+   "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [

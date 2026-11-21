@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)",
+   "docs: linha de base registra contratos front-banco, Deploy e pendencias de regra 8 (#196)",
    "fix: export-data resolve company do usuario em user_companies (profiles nao tem company_id) (#197)",
    "fix: OrgChartPage para de pedir departments.company_id (coluna inexistente) (#195)",
-   "fix: alinha writes do front a colunas reais do banco (#193)",
-   "fix: alinha 4 selects do front a colunas reais do banco (#192)",
-   "fix: edges get-employee-timeline e notify-new-device validam payload em vez de 500 (#191)"
+   "fix: alinha writes do front a colunas reais do banco (#193)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "78fb326d771d10e9971547746c7b884ccbf07c1c",
+  "commit": "5e64e99e6e1f08a5c0bb80d534f535d580f86cf3",
   "branch": "main",
-  "data_commit": "2026-11-21T19:58:37-03:00",
+  "data_commit": "2026-11-21T20:12:50-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "5e64e99e6",
+    "data": "2026-11-21",
+    "assunto": "fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)"
+   },
+   {
+    "sha": "39e4070c0",
+    "data": "2026-11-21",
+    "assunto": "docs: linha de base registra contratos front-banco, Deploy e pendencias de regra 8 (#196)"
+   },
    {
     "sha": "78fb326d7",
     "data": "2026-11-21",
@@ -121,19 +131,9 @@
     "sha": "65766c284",
     "data": "2026-11-20",
     "assunto": "fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)"
-   },
-   {
-    "sha": "bb0f05de5",
-    "data": "2026-11-20",
-    "assunto": "fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)"
-   },
-   {
-    "sha": "53a2f04c4",
-    "data": "2026-11-20",
-    "assunto": "feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)"
    }
   ],
-  "arquivos_mudados_7d": 117,
+  "arquivos_mudados_7d": 118,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -176,15 +176,15 @@
     "mudancas": 5
    },
    {
+    "pasta": "docs/pendencias/_linha-de-base.md",
+    "mudancas": 5
+   },
+   {
     "pasta": "src/index.css",
     "mudancas": 5
    },
    {
     "pasta": "desktop-agent/src/main.ts",
-    "mudancas": 4
-   },
-   {
-    "pasta": "docs/pendencias/_linha-de-base.md",
     "mudancas": 4
    },
    {
@@ -226,15 +226,15 @@
     "mudancas": 5
    },
    {
+    "arquivo": "docs/pendencias/_linha-de-base.md",
+    "mudancas": 5
+   },
+   {
     "arquivo": "src/index.css",
     "mudancas": 5
    },
    {
     "arquivo": "desktop-agent/src/main.ts",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "docs/pendencias/_linha-de-base.md",
     "mudancas": 4
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 94
+    "commits": 96
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1834,
   "arquivos_codigo": 1402,
-  "linhas_codigo": 149685,
+  "linhas_codigo": 149686,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 100,
-   "linhas": 12562
+   "linhas": 12563
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -734,7 +734,6 @@
    "report_logs",
    "reports",
    "scheduled_reports",
-   "screenshots",
    "sensitive_keywords",
    "subscriptions",
    "sync_logs",

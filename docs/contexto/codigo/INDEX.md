@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `78fb326d771d10e9971547746c7b884ccbf07c1c` (2026-11-21T19:58:37-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `5e64e99e6e1f08a5c0bb80d534f535d580f86cf3` (2026-11-21T20:12:50-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1834 |
 | arquivos_codigo | 1402 |
-| linhas_codigo | 149685 |
+| linhas_codigo | 149686 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -205,7 +205,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `get-mapbox-token` — tabelas: -; chamada por 1 arquivo(s) do front
 - `get-policies` — tabelas: policy_acknowledgments, security_policies; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `health` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `health-check` — tabelas: employees, screenshots; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `health-check` — tabelas: employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `import-employees` — tabelas: employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `ingest-file-transfer` — tabelas: agent_keys, dlp_incidents, dlp_policies, employees, file_transfers; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `invite-user` — tabelas: user_companies, user_roles; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -264,7 +264,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - SDKs: HTTP (axios), Sentry, Supabase, i18next, react-query, zod
 - hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, attack.mitre.org, cdn.gpteng.co, cdnjs.cloudflare.com, evolution-go-rxj2.srv1481814.hstgr.cloud
 - webhooks recebidos: nenhum
-- env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
+- env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
 ## Permissões / papéis
 - papéis no código: status (20), alert (13), admin (12), button (7), user (7), combobox (3), list (3), progressbar (3), dialog (2), presentation (2), region (2), Admin (1), agent (1), developer (1), editor (1), group (1), img (1), link (1), listitem (1), main (1), member (1), navigation (1), null (1), object (1), separator (1), sup (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
@@ -279,7 +279,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - edges_orfas: 55 — ex.: agent-collector, archive-data, audit-export
 - edges_chamadas_sem_pasta: 0
 - tabelas_sem_rls: 0
-- tabelas_usadas_sem_definicao: 23 — ex.: activities, app_config, backups
+- tabelas_usadas_sem_definicao: 22 — ex.: activities, app_config, backups
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 100 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
@@ -300,9 +300,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - .github/workflows/deploy.yml (6)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
+- docs/pendencias/_linha-de-base.md (5)
 - src/index.css (5)
 - desktop-agent/src/main.ts (4)
-- docs/pendencias/_linha-de-base.md (4)
 - src/test/improvements-verification.test.ts (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/lint.yml (3)
@@ -454,6 +454,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `5e64e99e6` fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)
+- 2026-11-21 `39e4070c0` docs: linha de base registra contratos front-banco, Deploy e pendencias de regra 8 (#196)
 - 2026-11-21 `78fb326d7` fix: export-data resolve company do usuario em user_companies (profiles nao tem company_id) (#197)
 - 2026-11-21 `05761095f` fix: OrgChartPage para de pedir departments.company_id (coluna inexistente) (#195)
 - 2026-11-21 `6bd2f5ca7` fix: alinha writes do front a colunas reais do banco (#193)
@@ -467,8 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `859b7decb` fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)
 - 2026-11-21 `262f1b389` feat: roteador Evolution API no send-whatsapp (homologacao WhatsApp via Zapp) (#180)
 - 2026-11-21 `c8e3b4986` fix: fecha INSERT anonimo em entity_versions e remove backdoor dos guards (#179)
-- 2026-11-21 `c479f3b06` feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)
-- 2026-11-21 `a79bc565b` chore: corrige shellcheck (SC2146) no deno test e atualiza linha de base (#177)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
