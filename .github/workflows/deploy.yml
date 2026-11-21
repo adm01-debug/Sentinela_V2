@@ -1,5 +1,15 @@
 name: Deploy
 
+# O deploy de producao do Sentinela_V2 e feito pela integracao Vercel <-> GitHub
+# (app `vercel[bot]`, deployment de `Production` em cada push para `main`).
+# Este workflow apenas AUDITA esse deploy: confirma que existe deployment de
+# producao para o commit e falha se nao houver. Ele nao publica nada, para nao
+# duplicar/competir com a integracao nativa.
+#
+# Historico: ate 261121 este job rodava `npx vercel deploy` e falhava em todo
+# push com "Could not retrieve Project Settings" porque o runner nao tem o
+# diretorio .vercel (nao versionado), e sem vercel pull/link o CLI nao sabe qual projeto usar.
+
 on:
   push:
     branches: [main]
@@ -7,24 +17,32 @@ on:
 
 permissions:
   contents: read
+  deployments: read
 
 jobs:
-  deploy:
+  verify-production-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - run: npm ci
-      # "npm run build" chama "bun scripts/generate-audit-pdf.js" (package.json);
-      # o runner ubuntu-latest não traz bun por padrão.
-      - uses: oven-sh/setup-bun@v2
-      - run: npm run build
-      - name: Deploy to Vercel
+      - name: Confirma deployment de producao para o commit
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: npx vercel@latest deploy --prod --yes --token="$VERCEL_TOKEN"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          echo "Commit: $SHA"
+          deployments=$(gh api "repos/$REPO/deployments?sha=$SHA&per_page=100")
+          count=$(echo "$deployments" | jq '[.[] | select(.environment == "Production")] | length')
+          echo "Deployments de producao encontrados: $count"
+          if [ "$count" -eq 0 ]; then
+            echo "::error::Nenhum deployment de producao para $SHA. O deploy automatico da Vercel nao rodou."
+            exit 1
+          fi
+          latest=$(echo "$deployments" | jq -r '[.[] | select(.environment == "Production")][0].id')
+          state=$(gh api "repos/$REPO/deployments/$latest/statuses" | jq -r '.[0].state')
+          echo "Deployment $latest -> $state"
+          if [ "$state" != "success" ]; then
+            echo "::error::Deployment $latest terminou com estado '$state'."
+            exit 1
+          fi
+          echo "Deploy de producao confirmado para $SHA ($state)."
