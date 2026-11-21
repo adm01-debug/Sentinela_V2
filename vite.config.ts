@@ -45,6 +45,10 @@ export default defineConfig(({ mode: _mode }) => ({
       environment: "jsdom",
       setupFiles: "./src/test/setup.ts",
       include: ["src/**/*.{test,spec}.{ts,tsx}"],
+      // A suíte completa roda 62 arquivos e leva ~295s. Sob carga, testes que
+      // fazem `await import()` davam timeout de 5000ms sem nenhum bug real.
+      testTimeout: 20000,
+      hookTimeout: 20000,
     },
   } as Record<string, unknown>),
   server: {
