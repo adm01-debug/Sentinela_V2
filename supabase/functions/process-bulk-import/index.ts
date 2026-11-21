@@ -26,7 +26,7 @@ serve(async (req) => {
     }
 
     // Get user's company
-    const { data: companyId } = await supabase.rpc('get_user_company_id', { p_user_id: user.id });
+    const { data: companyId } = await supabase.rpc('get_user_company_id', { _user_id: user.id });
 
     const results = { success: 0, failed: 0, errors: [] as string[], imported: [] as string[] };
 

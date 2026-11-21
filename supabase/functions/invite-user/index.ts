@@ -42,7 +42,7 @@ serve(async (req) => {
     }
 
     // Associate with same company
-    const { data: companyId } = await supabase.rpc('get_user_company_id', { p_user_id: user.id });
+    const { data: companyId } = await supabase.rpc('get_user_company_id', { _user_id: user.id });
     if (companyId) {
       await supabase.from('user_companies').insert({ user_id: inviteData.user.id, company_id: companyId });
     }

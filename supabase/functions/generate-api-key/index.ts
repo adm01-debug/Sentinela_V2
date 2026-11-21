@@ -27,7 +27,7 @@ serve(async (req) => {
     const agentKey = 'ak_' + crypto.randomUUID().replace(/-/g, '');
 
     // Get user's company
-    const { data: companyId } = await supabase.rpc('get_user_company_id', { p_user_id: user.id });
+    const { data: companyId } = await supabase.rpc('get_user_company_id', { _user_id: user.id });
 
     const { data, error } = await supabase.from('agent_keys').insert({
       key_name,
