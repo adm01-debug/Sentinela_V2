@@ -1,6 +1,6 @@
-﻿# Linha de base â€” estado real de Sentinela_V2
+﻿# Linha de base - estado real de Sentinela_V2
 
-Atualizado em 2026-11-??. Todo item listado foi verificado com evidencia real
+Atualizado em 2026-11-21. Todo item listado foi verificado com evidencia real
 (banco, RPC, edge function ou merge). Estrategia: nenhum trabalho parcial de
 agente de IA e descartado; item parcial e continuado ou registrado com dono.
 
@@ -10,8 +10,8 @@ agente de IA e descartado; item parcial e continuado ou registrado com dono.
 | ------------------------------------------------------- | ------------------------ | ---------------------------------------------------------------- |
 | Migration #168 entity_versions (view latest_versions)   | APLICADA e validada      | View existe; anon sem leitura; SELECT autenticado OK             |
 | whatsapp_templates + whatsapp_config (RLS ON, triggers) | APLICADA e validada      | CRUD real (insert/update/delete) OK; REST 404 -> 200             |
-| supabase_migrations.schema_migrations                   | 104/104 alinhado ao repo | Registradas 20261120133000 e 20261121120000                      |
-| get_user_permissions / has_permission / has_role        | EXISTEM no banco         | has_permission e get_user_permissions com EXECUTE anon (risco)   |
+| supabase_migrations.schema_migrations                   | 105/105 alinhado ao repo | Registradas 20261120133000, 20261121120000 e 20261121103305      |
+| get_user_permissions / has_permission / has_role        | EXISTEM no banco         | EXECUTE anon REVOGADO (PR #175); authenticated/service_role OK   |
 | check_permission                                        | NAO existe (0)           | Migration granular_roles nunca aplicada (ou drop); front nao usa |
 
 ## Edge functions
@@ -25,8 +25,6 @@ agente de IA e descartado; item parcial e continuado ou registrado com dono.
 
 - Credenciais Meta reais (phone_number_id + access_token) para homologar WhatsApp
   de ponta a ponta: nao existem na organizacao; secrets do projeto sem WHATSAPP_*.
-- Permissoes: has_permission/get_user_permissions executaveis por anon em funcoes
-  sensiveis (SECURITY DEFINER) â€” gap de seguranca a endurecer com aval.
 - Guards do front (src/guards) liberam por email @securitywatch.com (backdoor
   documentado em docs/agentes/regras-dominio.md); nao remover sem plano de
   migracao dos usuarios reais.
@@ -39,5 +37,5 @@ agente de IA e descartado; item parcial e continuado ou registrado com dono.
 ## Proximos passos registrados
 
 1. Obter credenciais Meta e homologar WhatsApp E2E (preencher whatsapp_config).
-2. Endurecer permissao (REVOKE EXECUTE anon) e decidir destino dos guards.
+2. Decidir destino dos guards (@securitywatch.com) com plano de migracao real.
 3. Bancos de rota: manter ratchets dos CI zerados a cada merge.

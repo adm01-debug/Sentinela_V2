@@ -86,7 +86,7 @@ jobs:
           deno-version: v1.x
       - name: Run Contract Tests
         run: |
-          find supabase/functions -name "*_test.ts" -o -name "*.test.ts" | xargs -I {} deno test --allow-env --allow-net {}
+          find supabase/functions \( -name "*_test.ts" -o -name "*.test.ts" \) -print0 | xargs -0 -I {} deno test --allow-env --allow-net {}
 
   # Guard das instruções para agentes (AGENTS.md + CLAUDE.md + docs/agentes/*.md).
   # Job próprio e sem `npm ci` de propósito: o script é node puro, sem dependências,
