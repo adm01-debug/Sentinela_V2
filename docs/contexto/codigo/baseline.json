@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c479f3b0669cc1afed56ed3d22b604fe8ff81ff6",
+  "commit": "c8e3b49865393e5743b43b87da453df8cfda871c",
   "branch": "main",
-  "data_commit": "2026-11-21T11:50:22-03:00",
+  "data_commit": "2026-11-21T11:50:33-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "c8e3b4986",
+    "data": "2026-11-21",
+    "assunto": "fix: fecha INSERT anonimo em entity_versions e remove backdoor dos guards (#179)"
+   },
    {
     "sha": "c479f3b06",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "e99261ad9",
     "data": "2026-11-19",
     "assunto": "feat: completa entity_versions com painel de histórico no EmployeeDetailPage (#155)"
-   },
-   {
-    "sha": "d51a91c94",
-    "data": "2026-11-19",
-    "assunto": "build(deps): bump @sentry/vite-plugin from 5.4.1 to 11.12.0 (#148)"
    }
   ],
-  "arquivos_mudados_7d": 96,
+  "arquivos_mudados_7d": 98,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -149,7 +149,7 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
@@ -207,7 +207,7 @@
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 81
+    "commits": 82
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1830,
+  "arquivos_total": 1831,
   "arquivos_codigo": 1400,
   "linhas_codigo": 149122,
   "rotas": 55,
@@ -326,7 +326,7 @@
   "hooks": 524,
   "edge_functions": 86,
   "tabelas": 141,
-  "migrations": 106,
+  "migrations": 107,
   "cron_jobs": 1,
   "testes": 70,
   "workflows": 12,

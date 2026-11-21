@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c479f3b0669cc1afed56ed3d22b604fe8ff81ff6` (2026-11-21T11:50:22-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c8e3b49865393e5743b43b87da453df8cfda871c` (2026-11-21T11:50:33-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1380), Markdown (176), SQL (110), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1380), Markdown (176), SQL (111), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1830 |
+| arquivos_total | 1831 |
 | arquivos_codigo | 1400 |
 | linhas_codigo | 149122 |
 | rotas | 55 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 524 |
 | edge_functions | 86 |
 | tabelas | 141 |
-| migrations | 106 |
+| migrations | 107 |
 | cron_jobs | 1 |
 | testes | 70 |
 | workflows | 12 |
@@ -295,7 +295,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (24)
 - package.json (24)
-- scripts/ci/eslint-baseline.json (10)
+- scripts/ci/eslint-baseline.json (11)
 - scripts/ci/prettier-baseline.json (9)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `c8e3b4986` fix: fecha INSERT anonimo em entity_versions e remove backdoor dos guards (#179)
 - 2026-11-21 `c479f3b06` feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)
 - 2026-11-21 `a79bc565b` chore: corrige shellcheck (SC2146) no deno test e atualiza linha de base (#177)
 - 2026-11-21 `1c4237a93` chore: linka projeto Vercel antes do deploy (#176)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `53a2f04c4` feat: extrai duracoes de transicao das utilities para tokens (Design System) (#167)
 - 2026-11-20 `1edcf58fa` chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)
 - 2026-11-20 `239acde75` fix: remove assert de clock do teste 9.05 (elimina flake de CI) (#165)
-- 2026-11-20 `8ade29737` fix: marca *.pdf como binary no gitattributes (#164)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
