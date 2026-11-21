@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `ac48782a53d09769277044583850a2f25563d9c4` (2026-11-21T10:25:59-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1484634c0208e1e8410d51401ffddea2c3718e6a` (2026-11-21T11:49:43-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1380), Markdown (176), SQL (108), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1380), Markdown (176), SQL (109), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1828 |
+| arquivos_total | 1829 |
 | arquivos_codigo | 1400 |
 | linhas_codigo | 148853 |
 | rotas | 55 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 524 |
 | edge_functions | 86 |
 | tabelas | 141 |
-| migrations | 104 |
+| migrations | 105 |
 | cron_jobs | 1 |
 | testes | 70 |
 | workflows | 12 |
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `1484634c0` chore: revoga EXECUTE public/anon das RPCs de permissao (#175)
 - 2026-11-21 `ac48782a5` chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)
 - 2026-11-21 `eec8439ad` feat: whatsapp templates/config completos + UI de concessao de pontos (#173)
 - 2026-11-20 `a243473b2` feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `1a092d773` feat: converte utilities restantes para @utility (Tailwind v4) (#163)
 - 2026-11-20 `b8db7aa24` feat: converte .glass e .stat-number para @utility (Tailwind v4) (#162)
 - 2026-11-20 `a8dc1d0ef` chore: baixa baselines dos ratchets (divida paga) (#161)
-- 2026-11-20 `3b1357e67` feat: converte bg-stripes para @utility (Tailwind v4) (#160)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

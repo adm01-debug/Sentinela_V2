@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "ac48782a53d09769277044583850a2f25563d9c4",
+  "commit": "1484634c0208e1e8410d51401ffddea2c3718e6a",
   "branch": "main",
-  "data_commit": "2026-11-21T10:25:59-03:00",
+  "data_commit": "2026-11-21T11:49:43-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "1484634c0",
+    "data": "2026-11-21",
+    "assunto": "chore: revoga EXECUTE public/anon das RPCs de permissao (#175)"
+   },
    {
     "sha": "ac48782a5",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "16ebabdea",
     "data": "2026-11-19",
     "assunto": "fix(agent): aponta API_URL do desktop para o backend real (Sentinela_V2) (#154)"
-   },
-   {
-    "sha": "bd79b1aa6",
-    "data": "2026-11-19",
-    "assunto": "fix: porta residuais da branch qa (StoreSchema, docs ADR/README) (#153)"
    }
   ],
-  "arquivos_mudados_7d": 90,
+  "arquivos_mudados_7d": 91,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 77
+    "commits": 78
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1828,
+  "arquivos_total": 1829,
   "arquivos_codigo": 1400,
   "linhas_codigo": 148853,
   "rotas": 55,
@@ -326,7 +326,7 @@
   "hooks": 524,
   "edge_functions": 86,
   "tabelas": 141,
-  "migrations": 104,
+  "migrations": 105,
   "cron_jobs": 1,
   "testes": 70,
   "workflows": 12,
