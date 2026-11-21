@@ -133,7 +133,7 @@
     "assunto": "fix: porta hardening de seguranca da qa (pr 12) (#152)"
    }
   ],
-  "arquivos_mudados_7d": 91,
+  "arquivos_mudados_7d": 90,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
