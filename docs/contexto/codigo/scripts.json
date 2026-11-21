@@ -179,7 +179,6 @@
    ],
    "workflows": [
     "ci.yml",
-    "deploy.yml",
     "preview.yml",
     "release.yml"
    ],

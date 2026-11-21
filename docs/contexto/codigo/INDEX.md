@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `6bd2f5ca7d9a82143149ade36d4a75624adacd9e` (2026-11-21T19:14:36-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `05761095f25b94ac0d41060022dc151d26d1f996` (2026-11-21T19:50:00-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -297,9 +297,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package.json (24)
 - scripts/ci/eslint-baseline.json (11)
 - scripts/ci/prettier-baseline.json (10)
+- .github/workflows/deploy.yml (6)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
-- .github/workflows/deploy.yml (5)
 - src/index.css (5)
 - desktop-agent/src/main.ts (4)
 - docs/pendencias/_linha-de-base.md (4)
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `05761095f` fix: OrgChartPage para de pedir departments.company_id (coluna inexistente) (#195)
 - 2026-11-21 `6bd2f5ca7` fix: alinha writes do front a colunas reais do banco (#193)
 - 2026-11-21 `d7546801b` fix: alinha 4 selects do front a colunas reais do banco (#192)
 - 2026-11-21 `15ca0e8d2` fix: edges get-employee-timeline e notify-new-device validam payload em vez de 500 (#191)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `c479f3b06` feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)
 - 2026-11-21 `a79bc565b` chore: corrige shellcheck (SC2146) no deno test e atualiza linha de base (#177)
 - 2026-11-21 `1c4237a93` chore: linka projeto Vercel antes do deploy (#176)
-- 2026-11-21 `1484634c0` chore: revoga EXECUTE public/anon das RPCs de permissao (#175)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

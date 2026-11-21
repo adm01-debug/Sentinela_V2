@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: OrgChartPage para de pedir departments.company_id (coluna inexistente) (#195)",
    "fix: alinha writes do front a colunas reais do banco (#193)",
    "fix: alinha 4 selects do front a colunas reais do banco (#192)",
    "fix: edges get-employee-timeline e notify-new-device validam payload em vez de 500 (#191)",
-   "fix: generate-report aceita os 3 contratos que o front envia (#190)",
-   "fix: export-data aceita o contrato do front e exige autenticacao (#189)"
+   "fix: generate-report aceita os 3 contratos que o front envia (#190)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

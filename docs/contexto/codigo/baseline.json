@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "6bd2f5ca7d9a82143149ade36d4a75624adacd9e",
+  "commit": "05761095f25b94ac0d41060022dc151d26d1f996",
   "branch": "main",
-  "data_commit": "2026-11-21T19:14:36-03:00",
+  "data_commit": "2026-11-21T19:50:00-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "05761095f",
+    "data": "2026-11-21",
+    "assunto": "fix: OrgChartPage para de pedir departments.company_id (coluna inexistente) (#195)"
+   },
    {
     "sha": "6bd2f5ca7",
     "data": "2026-11-21",
@@ -126,11 +131,6 @@
     "sha": "1edcf58fa",
     "data": "2026-11-20",
     "assunto": "chore: baixa baseline do format-ratchet (1528 -> 1527) (#166)"
-   },
-   {
-    "sha": "239acde75",
-    "data": "2026-11-20",
-    "assunto": "fix: remove assert de clock do teste 9.05 (elimina flake de CI) (#165)"
    }
   ],
   "arquivos_mudados_7d": 117,
@@ -156,6 +156,10 @@
     "mudancas": 10
    },
    {
+    "pasta": ".github/workflows/deploy.yml",
+    "mudancas": 6
+   },
+   {
     "pasta": "docs/prod-readiness.md",
     "mudancas": 6
    },
@@ -165,10 +169,6 @@
    },
    {
     "pasta": ".github/workflows/ci.yml",
-    "mudancas": 5
-   },
-   {
-    "pasta": ".github/workflows/deploy.yml",
     "mudancas": 5
    },
    {
@@ -214,15 +214,15 @@
     "mudancas": 10
    },
    {
+    "arquivo": ".github/workflows/deploy.yml",
+    "mudancas": 6
+   },
+   {
     "arquivo": "docs/prod-readiness.md",
     "mudancas": 6
    },
    {
     "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 5
-   },
-   {
-    "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 5
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 92
+    "commits": 93
    },
    {
     "autor": "dependabot[bot]",
