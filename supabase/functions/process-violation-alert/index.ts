@@ -97,7 +97,7 @@ serve(async (req) => {
         if (shouldNotify && alertSettings.recipient_emails?.length) {
           // Send email notification
           try {
-            await supabase.functions.invoke('send-email-notification', {
+            const { error: notifyError } = await supabase.functions.invoke('send-email-notification', {
               body: {
                 to: alertSettings.recipient_emails,
                 subject: `🚨 Violação ${severity.toUpperCase()}: ${violation_type}`,
@@ -108,6 +108,7 @@ serve(async (req) => {
                        <p>${description || ''}</p>`,
               },
             });
+            if (notifyError) throw notifyError;
             notificationsSent++;
           } catch (e) {
             console.error('Email notification error:', e);
@@ -115,10 +116,12 @@ serve(async (req) => {
         }
       }
 
-      // Mark as notified
-      await supabase.from('security_violations')
-        .update({ notified_admin: true })
-        .eq('id', violation.id);
+      // Mark as notified only when at least one notification actually went out
+      if (notificationsSent > 0) {
+        await supabase.from('security_violations')
+          .update({ notified_admin: true })
+          .eq('id', violation.id);
+      }
     }
 
     // Log to settings_audit_log (real table)
