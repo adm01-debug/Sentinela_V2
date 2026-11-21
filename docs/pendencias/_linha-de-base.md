@@ -7,16 +7,16 @@ parcial e continuado ou registrado com dono.
 
 ## Banco de dados (projeto jgnmwvzephsozsqmcpzb)
 
-| Item                                                       | Estado                   | Evidencia                                                       |
-| ---------------------------------------------------------- | ------------------------ | ---------------------------------------------------------------- |
-| Migration #168 entity_versions (view latest_versions)      | APLICADA e validada      | View existe; anon sem leitura; SELECT autenticado OK             |
-| whatsapp_templates + whatsapp_config (RLS ON, triggers)    | APLICADA e validada      | CRUD real (insert/update/delete) OK; REST 404 -> 200              |
-| Migration #182 whatsapp_config provider Evolution (aditiva)| APLICADA e validada      | Colunas provider/evolution_api_url/evolution_instance_* existem   |
-| RLS whatsapp_config (3 policies admin)                     | VIGENTE                  | pg_policies: INSERT/UPDATE/SELECT so has_role(admin)              |
-| supabase_migrations.schema_migrations                      | 105/105 alinhado ao repo | Registradas 20261120133000, 20261121120000 e 20261121103305       |
-| get_user_permissions / has_permission / has_role           | EXISTEM no banco         | EXECUTE anon REVOGADO (PR #175); authenticated/service_role OK    |
-| entity_versions INSERT endurecido (PR #179)                 | APLICADO e validado      | anon 401; autenticado 201; changed_by alheio 403                  |
-| check_permission                                           | NAO existe (0)           | Migration granular_roles nunca aplicada (ou drop); front nao usa   |
+| Item                                                        | Estado                   | Evidencia                                                        |
+| ----------------------------------------------------------- | ------------------------ | ---------------------------------------------------------------- |
+| Migration #168 entity_versions (view latest_versions)       | APLICADA e validada      | View existe; anon sem leitura; SELECT autenticado OK             |
+| whatsapp_templates + whatsapp_config (RLS ON, triggers)     | APLICADA e validada      | CRUD real (insert/update/delete) OK; REST 404 -> 200             |
+| Migration #182 whatsapp_config provider Evolution (aditiva) | APLICADA e validada      | Colunas provider/evolution_api_url/evolution_instance_* existem  |
+| RLS whatsapp_config (3 policies admin)                      | VIGENTE                  | pg_policies: INSERT/UPDATE/SELECT so has_role(admin)             |
+| supabase_migrations.schema_migrations                       | 105/105 alinhado ao repo | Registradas 20261120133000, 20261121120000 e 20261121103305      |
+| get_user_permissions / has_permission / has_role            | EXISTEM no banco         | EXECUTE anon REVOGADO (PR #175); authenticated/service_role OK   |
+| entity_versions INSERT endurecido (PR #179)                 | APLICADO e validado      | anon 401; autenticado 201; changed_by alheio 403                 |
+| check_permission                                            | NAO existe (0)           | Migration granular_roles nunca aplicada (ou drop); front nao usa |
 
 ## Edge functions
 
@@ -28,11 +28,11 @@ parcial e continuado ou registrado com dono.
 
 ## Deploy / producao
 
-| Item                            | Estado                                        | Evidencia                                          |
-| ------------------------------- | --------------------------------------------- | --------------------------------------------------- |
-| Site sentinela-v2.vercel.app    | NO AR (200)                                   | Deploy nativo Git<->Vercel entrega main be9b6b468  |
-| Workflow Actions "Deploy"       | VERMELHO (causa externa)                      | "Could not retrieve Project Settings" em todo run  |
-| Erro Deploy (diagnostico)       | Token/identidade Vercel do Actions invalida   | mesmo YAML verde 11:52 -> falha 13:29 em commit docs|
+| Item                         | Estado                                      | Evidencia                                            |
+| ---------------------------- | ------------------------------------------- | ---------------------------------------------------- |
+| Site sentinela-v2.vercel.app | NO AR (200)                                 | Deploy nativo Git<->Vercel entrega main be9b6b468    |
+| Workflow Actions "Deploy"    | VERMELHO (causa externa)                    | "Could not retrieve Project Settings" em todo run    |
+| Erro Deploy (diagnostico)    | Token/identidade Vercel do Actions invalida | mesmo YAML verde 11:52 -> falha 13:29 em commit docs |
 
 ## Faltantes / bloqueios
 
