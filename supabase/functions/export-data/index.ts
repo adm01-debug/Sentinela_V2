@@ -68,16 +68,16 @@ serve(async (req) => {
       );
     }
 
-    const { data: profile } = await supabase
-      .from('profiles')
+    const { data: membership } = await supabase
+      .from('user_companies')
       .select('company_id')
-      .eq('id', user.id)
+      .eq('user_id', user.id)
       .maybeSingle();
 
     let query = supabase.from(resource).select('*');
 
-    if (COMPANY_SCOPED.has(resource) && profile?.company_id) {
-      query = query.eq('company_id', profile.company_id);
+    if (COMPANY_SCOPED.has(resource) && membership?.company_id) {
+      query = query.eq('company_id', membership.company_id);
     }
 
     for (const [key, value] of Object.entries(filters)) {
