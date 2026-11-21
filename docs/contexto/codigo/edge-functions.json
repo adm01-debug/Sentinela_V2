@@ -11,7 +11,8 @@
   "supabase/functions/_shared/logger.ts",
   "supabase/functions/_shared/rateLimiting.ts",
   "supabase/functions/_shared/schemas.ts",
-  "supabase/functions/_shared/validation.ts"
+  "supabase/functions/_shared/validation.ts",
+  "supabase/functions/_shared/whatsapp-evolution.ts"
  ],
  "edges": [
   {
@@ -2062,8 +2063,8 @@
   {
    "nome": "send-whatsapp",
    "entrada": "supabase/functions/send-whatsapp/index.ts",
-   "arquivos": 1,
-   "linhas": 200,
+   "arquivos": 2,
+   "linhas": 317,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2071,8 +2072,13 @@
    "tabelas": [],
    "rpcs": [],
    "env": [
+    "EVOLUTION_API_KEY",
+    "EVOLUTION_API_URL",
+    "EVOLUTION_INSTANCE_NAME",
+    "EVOLUTION_INSTANCE_TOKEN",
     "WHATSAPP_ACCESS_TOKEN",
-    "WHATSAPP_PHONE_NUMBER_ID"
+    "WHATSAPP_PHONE_NUMBER_ID",
+    "WHATSAPP_PROVIDER"
    ],
    "buckets": [],
    "chama_edges": [],
@@ -2080,7 +2086,8 @@
     "graph.facebook.com"
    ],
    "usa_shared": [
-    "rateLimiting.ts"
+    "rateLimiting.ts",
+    "whatsapp-evolution.ts"
    ],
    "chamada_pelo_front": [
     "src/hooks/useWhatsAppIntegrationPage.ts",

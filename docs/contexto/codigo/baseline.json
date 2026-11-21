@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c8e3b49865393e5743b43b87da453df8cfda871c",
+  "commit": "262f1b389d5fdb1b5c69d6d44f538649472cd7c1",
   "branch": "main",
-  "data_commit": "2026-11-21T11:50:33-03:00",
+  "data_commit": "2026-11-21T12:10:41-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "262f1b389",
+    "data": "2026-11-21",
+    "assunto": "feat: roteador Evolution API no send-whatsapp (homologacao WhatsApp via Zapp) (#180)"
+   },
    {
     "sha": "c8e3b4986",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "1c02ee885",
     "data": "2026-11-20",
     "assunto": "fix: alinha timestamps das migrations com as versoes aplicadas no Supabase (#156)"
-   },
-   {
-    "sha": "e99261ad9",
-    "data": "2026-11-19",
-    "assunto": "feat: completa entity_versions com painel de histórico no EmployeeDetailPage (#155)"
    }
   ],
-  "arquivos_mudados_7d": 98,
+  "arquivos_mudados_7d": 101,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 82
+    "commits": 83
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1831,
-  "arquivos_codigo": 1400,
-  "linhas_codigo": 149122,
+  "arquivos_total": 1833,
+  "arquivos_codigo": 1402,
+  "linhas_codigo": 149333,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -495,8 +495,8 @@
    "linhas": 180
   },
   "supabase/functions": {
-   "arquivos": 98,
-   "linhas": 12165
+   "arquivos": 100,
+   "linhas": 12376
   },
   "vite.config.ts": {
    "arquivos": 1,

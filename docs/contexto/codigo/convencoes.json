@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: roteador Evolution API no send-whatsapp (homologacao WhatsApp via Zapp) (#180)",
    "fix: fecha INSERT anonimo em entity_versions e remove backdoor dos guards (#179)",
    "feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)",
    "chore: corrige shellcheck (SC2146) no deno test e atualiza linha de base (#177)",
-   "chore: linka projeto Vercel antes do deploy (#176)",
-   "chore: revoga EXECUTE public/anon das RPCs de permissao (#175)"
+   "chore: linka projeto Vercel antes do deploy (#176)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

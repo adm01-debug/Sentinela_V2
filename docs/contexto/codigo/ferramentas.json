@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1380)",
+   "TypeScript (1382)",
    "Markdown (176)",
    "SQL (111)",
    "JSON (42)",
@@ -1102,6 +1102,10 @@
   ],
   "usadas_nas_edges": [
    "APP_URL",
+   "EVOLUTION_API_KEY",
+   "EVOLUTION_API_URL",
+   "EVOLUTION_INSTANCE_NAME",
+   "EVOLUTION_INSTANCE_TOKEN",
    "FCM_SERVER_KEY",
    "FUNCTION_VERSION",
    "LOVABLE_API_KEY",
@@ -1116,7 +1120,8 @@
    "SUPABASE_URL",
    "TURN_CREDENTIALS",
    "WHATSAPP_ACCESS_TOKEN",
-   "WHATSAPP_PHONE_NUMBER_ID"
+   "WHATSAPP_PHONE_NUMBER_ID",
+   "WHATSAPP_PROVIDER"
   ],
   "usadas_no_python": [],
   "usadas_mas_nao_declaradas": [
@@ -1319,6 +1324,10 @@
   ],
   "env_de_integracao": [
    "AWS_SECRET_ACCESS_KEY",
+   "EVOLUTION_API_KEY",
+   "EVOLUTION_API_URL",
+   "EVOLUTION_INSTANCE_NAME",
+   "EVOLUTION_INSTANCE_TOKEN",
    "JWT_SECRET",
    "LOVABLE_API_KEY",
    "MAPBOX_PUBLIC_TOKEN",
@@ -1337,7 +1346,8 @@
    "SMTP_USER",
    "VITE_SENTRY_DSN",
    "WHATSAPP_ACCESS_TOKEN",
-   "WHATSAPP_PHONE_NUMBER_ID"
+   "WHATSAPP_PHONE_NUMBER_ID",
+   "WHATSAPP_PROVIDER"
   ],
   "webhooks_recebidos": [],
   "realtime": [
