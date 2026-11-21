@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "a243473b2f66ae515d7dec417d5d07f482493a91",
+  "commit": "eec8439ad30e77977a0fef8981483fdb29241202",
   "branch": "main",
-  "data_commit": "2026-11-20T16:58:11-03:00",
+  "data_commit": "2026-11-21T08:51:23-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "eec8439ad",
+    "data": "2026-11-21",
+    "assunto": "feat: whatsapp templates/config completos + UI de concessao de pontos (#173)"
+   },
    {
     "sha": "a243473b2",
     "data": "2026-11-20",
@@ -126,14 +131,9 @@
     "sha": "d1dfd4a6b",
     "data": "2026-11-19",
     "assunto": "fix: porta hardening de seguranca da qa (pr 12) (#152)"
-   },
-   {
-    "sha": "94cde9b53",
-    "data": "2026-11-19",
-    "assunto": "fix(tests): remove dependencia de grep/shell Unix do observability test (#144)"
    }
   ],
-  "arquivos_mudados_7d": 89,
+  "arquivos_mudados_7d": 91,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 75
+    "commits": 76
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1825,
-  "arquivos_codigo": 1399,
-  "linhas_codigo": 148545,
+  "arquivos_total": 1827,
+  "arquivos_codigo": 1400,
+  "linhas_codigo": 148853,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -324,9 +324,9 @@
   "modulos": 57,
   "componentes": 461,
   "hooks": 524,
-  "edge_functions": 85,
-  "tabelas": 139,
-  "migrations": 103,
+  "edge_functions": 86,
+  "tabelas": 141,
+  "migrations": 104,
   "cron_jobs": 1,
   "testes": 70,
   "workflows": 12,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 104,
-   "linhas": 17164
+   "linhas": 17354
   },
   "src/providers": {
    "arquivos": 9,
@@ -495,8 +495,8 @@
    "linhas": 180
   },
   "supabase/functions": {
-   "arquivos": 97,
-   "linhas": 12047
+   "arquivos": 98,
+   "linhas": 12165
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -715,9 +715,7 @@
    "webrtc-ice-config",
    "weekly-report"
   ],
-  "edges_chamadas_sem_pasta": [
-   "sync-whatsapp-templates"
-  ],
+  "edges_chamadas_sem_pasta": [],
   "tabelas_sem_rls": [],
   "tabelas_usadas_sem_definicao": [
    "activities",
@@ -742,9 +740,7 @@
    "sync_logs",
    "user_sessions",
    "violations",
-   "whatsapp_config",
-   "whatsapp_settings",
-   "whatsapp_templates"
+   "whatsapp_settings"
   ],
   "tabelas_com_drift_migration_vs_types": [
    "badges",

@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 103,
+ "migrations": 104,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -422,10 +422,24 @@
    "funcao": "update_updated_at_column"
   },
   {
+   "nome": "update_whatsapp_config_updated_at",
+   "quando": "before",
+   "evento": "update",
+   "tabela": "whatsapp_config",
+   "funcao": "update_updated_at_column"
+  },
+  {
    "nome": "update_whatsapp_notification_settings_updated_at",
    "quando": "before",
    "evento": "update",
    "tabela": "whatsapp_notification_settings",
+   "funcao": "update_updated_at_column"
+  },
+  {
+   "nome": "update_whatsapp_templates_updated_at",
+   "quando": "before",
+   "evento": "update",
+   "tabela": "whatsapp_templates",
    "funcao": "update_updated_at_column"
   },
   {
@@ -15438,6 +15452,99 @@
    "sem_rls": false,
    "nao_usada": false
   },
+  "whatsapp_config": {
+   "colunas": {
+    "access_token": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "business_account_id": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "created_at": {
+     "tipo": "timestamp with time zone",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "id": {
+     "tipo": "uuid",
+     "nn": true,
+     "pk": true,
+     "default": "gen_random_uuid()",
+     "ref": null
+    },
+    "is_active": {
+     "tipo": "boolean",
+     "nn": true,
+     "pk": false,
+     "default": "false",
+     "ref": null
+    },
+    "phone_number_id": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "updated_at": {
+     "tipo": "timestamp with time zone",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "webhook_verify_token": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    }
+   },
+   "rls": true,
+   "policies": [
+    {
+     "nome": "Users can insert whatsapp config",
+     "comando": "insert",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "Users can update whatsapp config",
+     "comando": "update",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "Users can view whatsapp config",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [],
+   "fks": [],
+   "criada_em": "20261121120000_whatsapp_templates_and_config.sql",
+   "usada_no_front": 1,
+   "usada_em_edges": [
+    "sync-whatsapp-templates"
+   ],
+   "triggers": [
+    "update_whatsapp_config_updated_at"
+   ],
+   "sem_rls": false,
+   "nao_usada": false
+  },
   "whatsapp_message_logs": {
    "colunas": {
     "created_at": {
@@ -15672,6 +15779,100 @@
    "usada_em_edges": [],
    "triggers": [
     "update_whatsapp_notification_settings_updated_at"
+   ],
+   "sem_rls": false,
+   "nao_usada": false
+  },
+  "whatsapp_templates": {
+   "colunas": {
+    "body": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "category": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "created_at": {
+     "tipo": "timestamp with time zone",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "id": {
+     "tipo": "uuid",
+     "nn": true,
+     "pk": true,
+     "default": "gen_random_uuid()",
+     "ref": null
+    },
+    "language": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": "'pt_BR'",
+     "ref": null
+    },
+    "name": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "status": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": "'pending'",
+     "ref": null
+    },
+    "template_id": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "updated_at": {
+     "tipo": "timestamp with time zone",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    }
+   },
+   "rls": true,
+   "policies": [
+    {
+     "nome": "System can upsert whatsapp templates",
+     "comando": "all",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "Users can view whatsapp templates",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [],
+   "fks": [],
+   "criada_em": "20261121120000_whatsapp_templates_and_config.sql",
+   "usada_no_front": 1,
+   "usada_em_edges": [
+    "sync-whatsapp-templates"
+   ],
+   "triggers": [
+    "update_whatsapp_templates_updated_at"
    ],
    "sem_rls": false,
    "nao_usada": false
@@ -16015,9 +16216,7 @@
   "sync_logs",
   "user_sessions",
   "violations",
-  "whatsapp_config",
-  "whatsapp_settings",
-  "whatsapp_templates"
+  "whatsapp_settings"
  ],
  "rpcs_usadas_no_codigo": [
   {

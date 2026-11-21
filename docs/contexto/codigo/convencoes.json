@@ -43,7 +43,7 @@
   "hooks": "use + PascalCase",
   "servicos": "camelCase (99%)",
   "edge_functions": "kebab-case (99%)",
-  "tabelas": "snake_case (88%)"
+  "tabelas": "snake_case (89%)"
  },
  "barrels_index": 22,
  "extensao_componentes": [
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: whatsapp templates/config completos + UI de concessao de pontos (#173)",
    "feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)",
    "feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)",
    "fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)",
-   "fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)",
-   "fix: completa entity_versions com trigger corrigido e bump action-gh-release v2 (#168)"
+   "fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -879,7 +879,7 @@
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 23,
+   "usado_por": 24,
    "usado_por_arquivos": [
     "src/components/AppSidebar.tsx",
     "src/components/Header.tsx",
@@ -901,6 +901,7 @@
     "src/hooks/useSecurity.ts",
     "src/hooks/useSubscription.ts",
     "src/pages/Auth.tsx",
+    "src/pages/GamificationPage.tsx",
     "src/pages/ProfileSettingsPage.tsx",
     "src/providers/AuthDependentProviders.tsx",
     "src/providers/TenantThemeProvider.tsx"

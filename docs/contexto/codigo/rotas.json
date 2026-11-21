@@ -1324,6 +1324,7 @@
    "definida_em": "src/routes/AppRoutes.tsx",
    "redireciona": null,
    "hooks": [
+    "useAuth",
     "useCallback",
     "useChartColors",
     "useContext",
@@ -1335,10 +1336,13 @@
     "useNavigate",
     "useQuery",
     "useQueryClient",
+    "useRef",
+    "useState",
     "useTheme",
     "useToast"
    ],
    "hooks_locais": [
+    "useAuth",
     "useChartColors",
     "useGamificationPage",
     "useMutation",
@@ -1349,7 +1353,8 @@
    ],
    "tabelas": [
     "badges",
-    "employee_points"
+    "employee_points",
+    "user_roles"
    ],
    "rpcs": [],
    "edges": [
@@ -1357,8 +1362,10 @@
    ],
    "canais_realtime": [],
    "flags": [],
-   "papeis": [],
-   "arquivos_puxados": 27
+   "papeis": [
+    "admin"
+   ],
+   "arquivos_puxados": 32
   },
   {
    "protegida": true,

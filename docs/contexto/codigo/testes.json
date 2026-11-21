@@ -1418,6 +1418,7 @@
    "summarize-activity",
    "sync-employee",
    "sync-teams",
+   "sync-whatsapp-templates",
    "trend-forecasting",
    "upload-recording-chunk",
    "validate-agent-key",

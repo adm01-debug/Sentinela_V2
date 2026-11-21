@@ -3,9 +3,9 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1379)",
+   "TypeScript (1380)",
    "Markdown (175)",
-   "SQL (107)",
+   "SQL (108)",
    "JSON (42)",
    "YAML (35)",
    "JavaScript (22)",
@@ -1233,6 +1233,10 @@
     "arquivos": 2
    },
    {
+    "host": "graph.facebook.com",
+    "arquivos": 2
+   },
+   {
     "host": "releases.sentinela.app",
     "arquivos": 2
    },
@@ -1278,10 +1282,6 @@
    },
    {
     "host": "fonts.gstatic.com",
-    "arquivos": 1
-   },
-   {
-    "host": "graph.facebook.com",
     "arquivos": 1
    },
    {

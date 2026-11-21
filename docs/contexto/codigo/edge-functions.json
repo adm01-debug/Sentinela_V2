@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "pasta": "supabase/functions",
- "total": 85,
+ "total": 86,
  "verify_jwt_false": [],
  "shared": [
   "supabase/functions/_shared/auth.ts",
@@ -2447,6 +2447,42 @@
    "testes": 0
   },
   {
+   "nome": "sync-whatsapp-templates",
+   "entrada": "supabase/functions/sync-whatsapp-templates/index.ts",
+   "arquivos": 1,
+   "linhas": 118,
+   "verify_jwt": true,
+   "metodos": [],
+   "tabelas": [
+    "whatsapp_config",
+    "whatsapp_templates"
+   ],
+   "rpcs": [],
+   "env": [
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL",
+    "WHATSAPP_ACCESS_TOKEN",
+    "WHATSAPP_PHONE_NUMBER_ID"
+   ],
+   "buckets": [],
+   "chama_edges": [],
+   "hosts_externos": [
+    "graph.facebook.com"
+   ],
+   "usa_shared": [
+    "auth.ts",
+    "cors.ts",
+    "rateLimiting.ts"
+   ],
+   "chamada_pelo_front": [
+    "src/hooks/useWhatsAppIntegrationPage.ts"
+   ],
+   "chamada_por_edges": [],
+   "chamada_por_sql_ou_cron": false,
+   "orfa": false,
+   "testes": 0
+  },
+  {
    "nome": "trend-forecasting",
    "entrada": "supabase/functions/trend-forecasting/index.ts",
    "arquivos": 1,
@@ -2659,7 +2695,5 @@
    "testes": 0
   }
  ],
- "chamadas_sem_pasta": [
-  "sync-whatsapp-templates"
- ]
+ "chamadas_sem_pasta": []
 }

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `a243473b2f66ae515d7dec417d5d07f482493a91` (2026-11-20T16:58:11-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `eec8439ad30e77977a0fef8981483fdb29241202` (2026-11-21T08:51:23-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1379), Markdown (175), SQL (107), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1380), Markdown (175), SQL (108), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1825 |
-| arquivos_codigo | 1399 |
-| linhas_codigo | 148545 |
+| arquivos_total | 1827 |
+| arquivos_codigo | 1400 |
+| linhas_codigo | 148853 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -44,9 +44,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | modulos | 57 |
 | componentes | 461 |
 | hooks | 524 |
-| edge_functions | 85 |
-| tabelas | 139 |
-| migrations | 103 |
+| edge_functions | 86 |
+| tabelas | 141 |
+| migrations | 104 |
 | cron_jobs | 1 |
 | testes | 70 |
 | workflows | 12 |
@@ -63,7 +63,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - migrations: supabase/migrations
 - scripts: scripts/ci (4), scripts/ai-context (2), scripts/inventario (2)
 - docs: docs (94), (raiz) (16), .github (1)
-- nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (99%)","tabelas":"snake_case (88%)"}
+- nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (99%)","tabelas":"snake_case (89%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
 
 ## Módulos (menu → domínio)
@@ -248,6 +248,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `summarize-activity` — tabelas: activities, violations; chamada por 1 arquivo(s) do front
 - `sync-employee` — tabelas: employees, sync_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `sync-teams` — tabelas: employees, team_members, teams; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `sync-whatsapp-templates` — tabelas: whatsapp_config, whatsapp_templates; chamada por 1 arquivo(s) do front
 - `trend-forecasting` — tabelas: activities, violations; chamada por 1 arquivo(s) do front
 - `upload-recording-chunk` — tabelas: agent_keys, data_retention_policies, employees, recording_chunks, recording_sessions; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `validate-agent-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -261,7 +262,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Integrações externas
 - SDKs: HTTP (axios), Sentry, Supabase, i18next, react-query, zod
-- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, attack.mitre.org, cdn.gpteng.co, cdnjs.cloudflare.com, fonts.googleapis.com, fonts.gstatic.com
+- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, attack.mitre.org, cdn.gpteng.co, cdnjs.cloudflare.com, fonts.googleapis.com
 - webhooks recebidos: nenhum
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID
 
@@ -276,9 +277,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes_ambiguos: 0
 - menu_sem_destino: 8 — ex.: Configurações -> /settings, Configurações -> settings, Dashboard -> /
 - edges_orfas: 55 — ex.: agent-collector, archive-data, audit-export
-- edges_chamadas_sem_pasta: 1 — ex.: sync-whatsapp-templates
+- edges_chamadas_sem_pasta: 0
 - tabelas_sem_rls: 0
-- tabelas_usadas_sem_definicao: 25 — ex.: activities, app_config, backups
+- tabelas_usadas_sem_definicao: 23 — ex.: activities, app_config, backups
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 100 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
@@ -453,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `eec8439ad` feat: whatsapp templates/config completos + UI de concessao de pontos (#173)
 - 2026-11-20 `a243473b2` feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)
 - 2026-11-20 `433ff6041` feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)
 - 2026-11-20 `f53194fe2` fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)
@@ -467,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `a8dc1d0ef` chore: baixa baselines dos ratchets (divida paga) (#161)
 - 2026-11-20 `3b1357e67` feat: converte bg-stripes para @utility (Tailwind v4) (#160)
 - 2026-11-20 `d8e871c5e` fix: limpa lint herdado do sidebar (no-redeclare, react-hooks/purity) (#159)
-- 2026-11-20 `e9528ffc5` feat: migra Tailwind v4 (CSS-first) e substitui tailwindcss-animate por tw-animate-css (#158)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

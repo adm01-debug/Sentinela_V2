@@ -4131,7 +4131,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 49,
+   "usado_por": 50,
    "orfao": false
   },
   {
@@ -4527,7 +4527,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 84,
+   "usado_por": 85,
    "orfao": false
   },
   {
@@ -4558,7 +4558,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 56,
+   "usado_por": 57,
    "orfao": false
   },
   {
@@ -6981,9 +6981,10 @@
     "GamificationPage"
    ],
    "export_default": "GamificationPage",
-   "linhas": 171,
+   "linhas": 361,
    "dominio": "pages",
    "hooks_locais": [
+    "useAuth",
     "useChartColors",
     "useGamificationPage"
    ],
