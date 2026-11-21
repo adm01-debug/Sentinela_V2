@@ -33,7 +33,16 @@ const handler = async (req: Request): Promise<Response> => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { userId, email, deviceInfo, loginTime }: NewDeviceNotification = await req.json();
+    const body = await req.json().catch(() => ({}));
+    const { userId, email, loginTime = new Date().toISOString() } = (body ?? {}) as Partial<NewDeviceNotification>;
+    const deviceInfo = ((body ?? {}) as Partial<NewDeviceNotification>).deviceInfo ?? ({} as NewDeviceNotification["deviceInfo"]);
+
+    if (!userId || !email) {
+      return new Response(
+        JSON.stringify({ error: "userId e email são obrigatórios" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
     console.log(`Processing new device notification for user: ${userId}`);
 
