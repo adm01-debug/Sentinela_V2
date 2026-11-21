@@ -34,26 +34,58 @@ export function usePermissions(): UsePermissionsReturn {
     queryFn: async () => {
       if (!user?.id) return [];
       
-      const { data, error } = await supabase
+      // user_roles.role e um enum app_role sem FK para roles: o embed roles(...)
+      // retorna PGRST200. O vinculo real e role_permissions -> permissions.
+      const { data: userRoles, error: rolesError } = await supabase
         .from('user_roles')
-        .select('role:roles(permissions)')
+        .select('role')
         .eq('user_id', user.id);
 
-      if (error) throw error;
-      
+      if (rolesError) throw rolesError;
+
+      // roles.name usa PascalCase (Admin/User): normalizamos o enum para casar.
+      const roleNames = Array.from(
+        new Set(
+          (userRoles ?? [])
+            .map((ur: { role: string | null }) => ur.role)
+            .filter((r): r is string => !!r)
+            .map((r) => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase()),
+        ),
+      );
+
+      if (roleNames.length === 0) return [];
+
+      const { data: roleRows, error: matchError } = await supabase
+        .from('roles')
+        .select('id, name')
+        .in('name', roleNames);
+
+      if (matchError) throw matchError;
+      if (!roleRows || roleRows.length === 0) return [];
+
+      const { data: rolePerms, error: permsError } = await supabase
+        .from('role_permissions')
+        .select('permission:permissions(name)')
+        .in('role_id', roleRows.map((r: { id: string }) => r.id));
+
+      if (permsError) throw permsError;
+
       const perms = new Set<string>();
-      data?.forEach((ur: { role?: { permissions?: string[] } }) => {
-        const role = ur.role as { permissions?: string[] } | null;
-        role?.permissions?.forEach((p: string) => perms.add(p));
+      (rolePerms ?? []).forEach((rp: { permission?: { name?: string } | null }) => {
+        const name = rp.permission?.name;
+        if (name) perms.add(name);
       });
-      
+
       return Array.from(perms);
     },
     enabled: !!user?.id,
     ...queryPresets.config,
   });
 
-  const permissions = Array.isArray(permissionsRaw) ? (permissionsRaw as string[]) : [];
+  const permissions = useMemo(
+    () => (Array.isArray(permissionsRaw) ? (permissionsRaw as string[]) : []),
+    [permissionsRaw],
+  );
 
   const hasPermission = useCallback((permission: string): boolean => {
     return permissions.includes(permission) || permissions.includes('admin') || permissions.includes('*');
