@@ -32,4 +32,10 @@ begin
     perform cron.unschedule('escalate-dispute-sla-every-15min');
     perform cron.schedule('escalate-dispute-sla-every-15min', '*/15 * * * *', v_cmd);
   end if;
+  -- cleanup-slack-dlq-daily dividia as 03:00 com cleanup-edge-function-logs-daily
+  if exists (select 1 from cron.job where jobname = 'cleanup-slack-dlq-daily') then
+    select command into v_cmd from cron.job where jobname='cleanup-slack-dlq-daily';
+    perform cron.unschedule('cleanup-slack-dlq-daily');
+    perform cron.schedule('cleanup-slack-dlq-daily', '10 3 * * *', v_cmd);
+  end if;
 end $blk$;
