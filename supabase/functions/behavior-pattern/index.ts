@@ -64,13 +64,14 @@ serve(async (req) => {
       affectedMetrics: ["work_hours", "availability"],
     });
 
-    // Analyze application usage patterns
+    // Analyze application usage patterns (a aplicacao vive em metadata; a view activities nao expoe coluna propria)
     const appUsage: Record<string, { count: number; totalTime: number }> = {};
     activities.forEach((a: any) => {
-      if (a.application) {
-        if (!appUsage[a.application]) appUsage[a.application] = { count: 0, totalTime: 0 };
-        appUsage[a.application].count++;
-        appUsage[a.application].totalTime += a.duration || 0;
+      const app = a.metadata?.application ?? a.metadata?.app_name ?? a.entity_type;
+      if (app) {
+        if (!appUsage[app]) appUsage[app] = { count: 0, totalTime: 0 };
+        appUsage[app].count++;
+        appUsage[app].totalTime += a.metadata?.duration || 0;
       }
     });
 

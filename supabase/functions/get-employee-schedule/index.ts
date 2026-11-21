@@ -56,8 +56,8 @@ serve(async (req) => {
       .from('employee_schedules')
       .select('*, work_schedules(*)')
       .eq('employee_id', employee_id)
-      .lte('effective_date', targetDate)
-      .order('effective_date', { ascending: false })
+      .lte('effective_from', targetDate)
+      .order('effective_from', { ascending: false })
       .limit(1)
       .single();
 
@@ -78,7 +78,7 @@ serve(async (req) => {
         schedule: {
           ...schedule,
           is_work_day: isWorkDay,
-          effective_date: assignment.effective_date,
+          effective_date: assignment.effective_from,
         },
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

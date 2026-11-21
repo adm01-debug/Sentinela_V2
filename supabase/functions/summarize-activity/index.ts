@@ -46,10 +46,11 @@ serve(async (req) => {
     const totalActivities = activities?.length || 0;
     const uniqueUsers = new Set(activities?.map((a: any) => a.employee_id)).size;
 
-    // Top applications
+    // Top applications (a aplicacao vive em metadata; a view activities nao expoe coluna propria)
     const appCounts: Record<string, number> = {};
     activities?.forEach((a: any) => {
-      if (a.application) appCounts[a.application] = (appCounts[a.application] || 0) + 1;
+      const app = a.metadata?.application ?? a.metadata?.app_name ?? a.entity_type;
+      if (app) appCounts[app] = (appCounts[app] || 0) + 1;
     });
     const topApplications = Object.entries(appCounts)
       .sort((a, b) => b[1] - a[1])

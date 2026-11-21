@@ -60,11 +60,10 @@ serve(async (req) => {
     const insights: Insight[] = [];
 
     // Fetch data for analysis
-    const [activitiesRes, violationsRes, employeesRes, profilesRes] = await Promise.all([
+    const [activitiesRes, violationsRes, employeesRes] = await Promise.all([
       supabase.from("activity_logs").select("*").order("created_at", { ascending: false }).limit(500),
       supabase.from("violations").select("*").order("created_at", { ascending: false }).limit(100),
       supabase.from("employees").select("*").eq("status", "active"),
-      supabase.from("profiles").select("id, user_id")
     ]);
 
     const activities = activitiesRes.data || [];
