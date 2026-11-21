@@ -1194,7 +1194,6 @@
     "src/pages/EmployeeDetailPage.tsx",
     "src/pages/EmployeesPage.tsx",
     "src/pages/ForgotPasswordPage.tsx",
-    "src/pages/GamificationPage.tsx",
     "src/pages/GeofenceViolationsPage.tsx",
     "src/pages/GeofencingPage.tsx",
     "src/pages/HoursTrackingPage.tsx",
