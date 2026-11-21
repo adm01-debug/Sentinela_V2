@@ -47,7 +47,8 @@ export function useRoles(userRoles: string[] = []) {
         const { count } = await supabase
           .from('user_roles')
           .select('id', { count: 'exact', head: true })
-          .eq('role', role.name);
+          // user_roles.role e o enum app_role (lowercase); roles.name e PascalCase.
+          .eq('role', role.name.toLowerCase() as never);
 
         roles.push({
           id: role.id,
