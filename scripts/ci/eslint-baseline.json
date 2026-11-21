@@ -1657,10 +1657,6 @@
       "sha256": "b2aa9579c7e2925b84dc3929ada85575c663021acf38c263722ea18f3954d0fa"
     },
     {
-      "path": "src/hooks/useWhatsAppIntegrationPage.ts",
-      "sha256": "d734413b593b0f8050e3efd7f3800d50b23eba37c4d2cda1d5a6cd4ebc19ec82"
-    },
-    {
       "path": "src/hooks/useWorkHours.ts",
       "sha256": "c8c1f983bd479fa093a5e82a167566fb8b6f08c42b84c8348af61263c0b323c9"
     },
@@ -14355,20 +14351,6 @@
       "spanHash": "5a638a128ca67348f1073ba0aed26d85905a29128cbd71b250c9cf4e598c7f0d",
       "lineHash": "bd93ad61299b4239785211fa84e0656842b5d2fae7fcef2424c87988f0e5b1bf",
       "contextHash": "ea40753a9252c89b4b08ed2f1f5f985e480807c7b7156837c3e2dcc00ec7cbb3"
-    },
-    {
-      "file": "src/hooks/useWhatsAppIntegrationPage.ts",
-      "line": 215,
-      "column": 7,
-      "endLine": 215,
-      "endColumn": 20,
-      "severity": 2,
-      "ruleId": "react-hooks/set-state-in-effect",
-      "messageId": null,
-      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/hooks/useWhatsAppIntegrationPage.ts:215:7 213 | useEffect(() => { 214 | if (config) { > 215 | setConfigData({ | ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect 216 | phone_number_id: config.phone_number_id, 217 | business_account_id: config.business_account_id, 218 | access_token: config.access_token,",
-      "spanHash": "dc5abd0d3356990b77945c38d02353e0c4f554f1214ec02a65cfc3db462e8975",
-      "lineHash": "946302c9441399266aa17fefa24184dc3cf11ca9debeb9780816b567ed0827d7",
-      "contextHash": "8f68d75568ef0988e49cd1319838aa6eaea7ee93f08f0422261f16c162c94fbc"
     },
     {
       "file": "src/hooks/useWorkHours.ts",
