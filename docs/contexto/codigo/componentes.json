@@ -7173,6 +7173,7 @@
    "hooks_locais": [],
    "tabelas": [
     "companies",
+    "departments",
     "employees",
     "teams"
    ],

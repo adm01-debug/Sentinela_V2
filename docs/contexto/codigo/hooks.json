@@ -6745,13 +6745,14 @@
   {
    "arquivo": "src/hooks/useRateLimitLogs.ts",
    "hooks_exportados": [
-    "useBlockedIPs",
+    "useRateLimitAlerts",
     "useRateLimitLogs",
     "useRateLimitStats"
    ],
-   "linhas": 152,
+   "linhas": 149,
    "dominio": "hooks",
    "tabelas": [
+    "rate_limit_alerts",
     "rate_limit_logs"
    ],
    "rpcs": [],

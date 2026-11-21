@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `15ca0e8d21b09c0c41cd76ff744de9ee9511bc97` (2026-11-21T18:16:22-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `d7546801bf1b08a663e7d2310ec904df64e0d842` (2026-11-21T18:37:44-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1834 |
 | arquivos_codigo | 1402 |
-| linhas_codigo | 149620 |
+| linhas_codigo | 149617 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -82,7 +82,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | components/skeletons | 0 | 0 | 11 | 15 | 0 | 5 |
 | components/ui | 0 | 0 | 127 | 11 | 0 | 0 |
 | constants | 0 | 0 | 7 | 0 | 0 | 0 |
-| hooks | 0 | 0 | 479 | 494 | 19 | 84 |
+| hooks | 0 | 0 | 479 | 495 | 19 | 85 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
 | pages | 4 | 38 | 66 | 131 | 6 | 58 |
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `d7546801b` fix: alinha 4 selects do front a colunas reais do banco (#192)
 - 2026-11-21 `15ca0e8d2` fix: edges get-employee-timeline e notify-new-device validam payload em vez de 500 (#191)
 - 2026-11-21 `2e71982d0` fix: generate-report aceita os 3 contratos que o front envia (#190)
 - 2026-11-21 `160a35cf5` fix: export-data aceita o contrato do front e exige autenticacao (#189)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `1c4237a93` chore: linka projeto Vercel antes do deploy (#176)
 - 2026-11-21 `1484634c0` chore: revoga EXECUTE public/anon das RPCs de permissao (#175)
 - 2026-11-21 `ac48782a5` chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)
-- 2026-11-21 `eec8439ad` feat: whatsapp templates/config completos + UI de concessao de pontos (#173)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
