@@ -34,14 +34,14 @@ parcial e continuado ou registrado com dono.
 Cruzamento dos **332 selects** do front (`src/**/*.{ts,tsx}`) e dos **writes**
 contra `pg_class`/`pg_attribute`/`pg_attrdef` do projeto `jgnmwvzephsozsqmcpzb`.
 
-| Correcao                                                      | Estado               | Evidencia                                                        |
-| ------------------------------------------------------------- | -------------------- | ---------------------------------------------------------------- |
-| export-data aceita contrato do front e exige auth (#189)      | MERGEADA             | CI verde; 401 sem token, 200 com token                           |
-| generate-report aceita os 3 contratos do front (#190)         | MERGEADA             | CI verde; status generating/completed/failed                     |
-| get-employee-timeline e notify-new-device validam payload(#191)| MERGEADA            | 400 com payload invalido em vez de 500                           |
-| 4 selects do front alinhados ao schema (#192)                 | MERGEADA             | useDeviceStats/useGamificationPage/useRateLimitLogs/OrgChart     |
-| 6 hooks de write alinhados ao schema (#193)                   | MERGEADA             | points_history/employee_points/agent_keys/message_templates/live_view_audit |
-| OrgChartPage departments.company_id removido (#195)           | ABERTA (CI rodando)  | `departments` nao tem company_id; pagina dava 400 no load        |
+| Correcao                                                        | Estado              | Evidencia                                                                   |
+| --------------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------- |
+| export-data aceita contrato do front e exige auth (#189)        | MERGEADA            | CI verde; 401 sem token, 200 com token                                      |
+| generate-report aceita os 3 contratos do front (#190)           | MERGEADA            | CI verde; status generating/completed/failed                                |
+| get-employee-timeline e notify-new-device validam payload(#191) | MERGEADA            | 400 com payload invalido em vez de 500                                      |
+| 4 selects do front alinhados ao schema (#192)                   | MERGEADA            | useDeviceStats/useGamificationPage/useRateLimitLogs/OrgChart                |
+| 6 hooks de write alinhados ao schema (#193)                     | MERGEADA            | points_history/employee_points/agent_keys/message_templates/live_view_audit |
+| OrgChartPage departments.company_id removido (#195)             | ABERTA (CI rodando) | `departments` nao tem company_id; pagina dava 400 no load                   |
 
 Semantica real confirmada (nao existe no banco):
 
@@ -69,11 +69,11 @@ com diretorio em `supabase/functions`).
 
 ## Deploy / producao
 
-| Item                         | Estado                                      | Evidencia                                            |
-| ---------------------------- | ------------------------------------------- | ---------------------------------------------------- |
-| Site sentinela-v2.vercel.app | NO AR (200)                                 | Deploy nativo Git<->Vercel entrega main a cada push  |
-| Workflow Actions "Deploy"    | VERMELHO (16 runs seguidos)                 | "Could not retrieve Project Settings": runner sem `.vercel` |
-| Correcao do Deploy (#194)    | ABERTA (regra 8)                            | Passa a auditar o deployment Production em vez de publicar |
+| Item                         | Estado                      | Evidencia                                                   |
+| ---------------------------- | --------------------------- | ----------------------------------------------------------- |
+| Site sentinela-v2.vercel.app | NO AR (200)                 | Deploy nativo Git<->Vercel entrega main a cada push         |
+| Workflow Actions "Deploy"    | VERMELHO (16 runs seguidos) | "Could not retrieve Project Settings": runner sem `.vercel` |
+| Correcao do Deploy (#194)    | ABERTA (regra 8)            | Passa a auditar o deployment Production em vez de publicar  |
 
 ## Faltantes / bloqueios
 
