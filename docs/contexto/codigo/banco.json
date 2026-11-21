@@ -9331,9 +9331,7 @@
     "so_no_types": []
    },
    "usada_no_front": 3,
-   "usada_em_edges": [
-    "generate-insights"
-   ],
+   "usada_em_edges": [],
    "triggers": [
     "update_profiles_updated_at"
    ],

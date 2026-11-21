@@ -294,7 +294,7 @@
    "nome": "behavior-pattern",
    "entrada": "supabase/functions/behavior-pattern/index.ts",
    "arquivos": 1,
-   "linhas": 177,
+   "linhas": 178,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -845,7 +845,7 @@
    "nome": "generate-insights",
    "entrada": "supabase/functions/generate-insights/index.ts",
    "arquivos": 1,
-   "linhas": 172,
+   "linhas": 169,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -853,7 +853,6 @@
    "tabelas": [
     "activity_logs",
     "employees",
-    "profiles",
     "violations"
    ],
    "rpcs": [],
@@ -967,7 +966,7 @@
    "nome": "get-employee-timeline",
    "entrada": "supabase/functions/get-employee-timeline/index.ts",
    "arquivos": 1,
-   "linhas": 61,
+   "linhas": 62,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1317,7 +1316,7 @@
    "nome": "natural-language-query",
    "entrada": "supabase/functions/natural-language-query/index.ts",
    "arquivos": 1,
-   "linhas": 200,
+   "linhas": 212,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2343,7 +2342,7 @@
    "nome": "smart-recommendations",
    "entrada": "supabase/functions/smart-recommendations/index.ts",
    "arquivos": 1,
-   "linhas": 169,
+   "linhas": 170,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2374,7 +2373,7 @@
    "nome": "summarize-activity",
    "entrada": "supabase/functions/summarize-activity/index.ts",
    "arquivos": 1,
-   "linhas": 136,
+   "linhas": 137,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"

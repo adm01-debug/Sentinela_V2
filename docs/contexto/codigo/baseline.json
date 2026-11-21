@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "3845f9582c50dc86affcbdbc7869b578f461a5ac",
+  "commit": "7b8f3781d92de6b3b7b4abf2f0c0d094a51ad94d",
   "branch": "main",
-  "data_commit": "2026-11-21T13:22:51-03:00",
+  "data_commit": "2026-11-21T17:55:06-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "7b8f3781d",
+    "data": "2026-11-21",
+    "assunto": "fix: corrige contratos de coluna das edges (activities/violations sao views) (#188)"
+   },
    {
     "sha": "3845f9582",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "3b1357e67",
     "data": "2026-11-20",
     "assunto": "feat: converte bg-stripes para @utility (Tailwind v4) (#160)"
-   },
-   {
-    "sha": "d8e871c5e",
-    "data": "2026-11-20",
-    "assunto": "fix: limpa lint herdado do sidebar (no-redeclare, react-hooks/purity) (#159)"
    }
   ],
-  "arquivos_mudados_7d": 98,
+  "arquivos_mudados_7d": 104,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -153,7 +153,7 @@
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "pasta": "docs/prod-readiness.md",
@@ -184,15 +184,15 @@
     "mudancas": 4
    },
    {
+    "pasta": "docs/pendencias/_linha-de-base.md",
+    "mudancas": 4
+   },
+   {
     "pasta": "src/test/improvements-verification.test.ts",
     "mudancas": 4
    },
    {
     "pasta": ".github/workflows/cd.yml",
-    "mudancas": 3
-   },
-   {
-    "pasta": ".github/workflows/contexto.yml",
     "mudancas": 3
    }
   ],
@@ -211,7 +211,7 @@
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "docs/prod-readiness.md",
@@ -231,6 +231,10 @@
    },
    {
     "arquivo": "desktop-agent/src/main.ts",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "docs/pendencias/_linha-de-base.md",
     "mudancas": 4
    },
    {
@@ -258,10 +262,6 @@
     "mudancas": 3
    },
    {
-    "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 3
-   },
-   {
     "arquivo": "src/pages/WhatsAppIntegrationPage.tsx",
     "mudancas": 3
    },
@@ -282,6 +282,10 @@
     "mudancas": 3
    },
    {
+    "arquivo": "supabase/functions/natural-language-query/index.ts",
+    "mudancas": 3
+   },
+   {
     "arquivo": ".github/workflows/desktop-build.yml",
     "mudancas": 2
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": ".github/workflows/performance.yml",
     "mudancas": 2
-   },
-   {
-    "arquivo": ".github/workflows/preview.yml",
-    "mudancas": 2
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 86
+    "commits": 87
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1834,
   "arquivos_codigo": 1402,
-  "linhas_codigo": 149489,
+  "linhas_codigo": 149502,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 100,
-   "linhas": 12431
+   "linhas": 12444
   },
   "vite.config.ts": {
    "arquivos": 1,

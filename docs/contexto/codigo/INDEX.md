@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `3845f9582c50dc86affcbdbc7869b578f461a5ac` (2026-11-21T13:22:51-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `7b8f3781d92de6b3b7b4abf2f0c0d094a51ad94d` (2026-11-21T17:55:06-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1834 |
 | arquivos_codigo | 1402 |
-| linhas_codigo | 149489 |
+| linhas_codigo | 149502 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -197,7 +197,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `export-data` — tabelas: -; chamada por 1 arquivo(s) do front
 - `external-db-bridge` — tabelas: query_telemetry; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-api-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `generate-insights` — tabelas: activity_logs, employees, profiles, violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `generate-insights` — tabelas: activity_logs, employees, violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-report` — tabelas: ai_analysis_reports, keystroke_logs, productivity_logs, security_violations; chamada por 3 arquivo(s) do front
 - `get-dashboard-stats` — tabelas: employees, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-employee-schedule` — tabelas: employee_schedules; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -296,18 +296,18 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package-lock.json (24)
 - package.json (24)
 - scripts/ci/eslint-baseline.json (11)
-- scripts/ci/prettier-baseline.json (9)
+- scripts/ci/prettier-baseline.json (10)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
 - .github/workflows/deploy.yml (5)
 - src/index.css (5)
 - desktop-agent/src/main.ts (4)
+- docs/pendencias/_linha-de-base.md (4)
 - src/test/improvements-verification.test.ts (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/lint.yml (3)
 - .github/workflows/release.yml (3)
 - .github/workflows/update-deps.yml (3)
-- AGENTS.md (3)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `7b8f3781d` fix: corrige contratos de coluna das edges (activities/violations sao views) (#188)
 - 2026-11-21 `3845f9582` chore: linha de base registra estado real (deploy Vercel, whatsapp Evolution, RLS #179/#182) (#183)
 - 2026-11-21 `be9b6b468` feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)
 - 2026-11-21 `859b7decb` fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-20 `a243473b2` feat(pages): implementa ApiKeysPage completa + registro de pendencias da sessao (#172)
 - 2026-11-20 `433ff6041` feat(pages): implementa ViolationDetailPage com timeline, comentarios e disputa (#171)
 - 2026-11-20 `f53194fe2` fix(routes): registra rota /alerts/rules/new (AlertRuleCreatePage) e remove import morto (#170)
-- 2026-11-20 `65766c284` fix(tests): elimina flake do observability test (timeout da varredura de any) (#169)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
