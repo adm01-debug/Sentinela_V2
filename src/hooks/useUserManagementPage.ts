@@ -18,6 +18,18 @@ interface User {
   mfa_enabled: boolean;
 }
 
+interface UserRoleRow {
+  user_id: string;
+  role: string;
+}
+
+interface ProfileListRow {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  created_at: string;
+}
+
 interface CreateUserData {
   email: string;
   name: string;
@@ -31,6 +43,8 @@ interface UpdateUserData {
   role?: UserRole;
   is_active?: boolean;
 }
+
+const ROLES: readonly UserRole[] = ['admin', 'manager', 'viewer'] as const;
 
 export function useUserManagementPage() {
   const { toast } = useToast();
@@ -47,24 +61,50 @@ export function useUserManagementPage() {
   const usersQuery = useQuery({
     queryKey: [...queryKeys.users.lists(), { search, role: roleFilter, status: statusFilter }],
     queryFn: async () => {
-      let query = supabase
+      const { data: profiles, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('id, email, full_name, created_at')
         .order('created_at', { ascending: false });
 
-      if (roleFilter !== 'all') {
-        query = query.eq('role', roleFilter);
-      }
-      if (statusFilter !== 'all') {
-        query = query.eq('is_active', statusFilter === 'active');
-      }
-      if (search) {
-        query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%`);
-      }
-
-      const { data, error } = await query;
       if (error) throw error;
-      return data as User[];
+
+      const { data: roleRows, error: roleError } = await supabase
+        .from('user_roles')
+        .select('user_id, role');
+
+      if (roleError) throw roleError;
+
+      const roleByUser = new Map<string, UserRole>();
+      (roleRows as UserRoleRow[] | null)?.forEach((r) => {
+        if (!roleByUser.has(r.user_id) && (ROLES as readonly string[]).includes(r.role)) {
+          roleByUser.set(r.user_id, r.role as UserRole);
+        }
+      });
+
+      const mapped: User[] = ((profiles ?? []) as ProfileListRow[]).map((p) => ({
+        id: p.id,
+        email: p.email ?? '',
+        name: p.full_name ?? p.email?.split('@')[0] ?? '',
+        role: roleByUser.get(p.id) ?? 'viewer',
+        // profiles não guarda estado de conta nem MFA; o dado vem do auth.users via admin API.
+        is_active: true,
+        mfa_enabled: false,
+        last_login_at: null,
+        avatar_url: null,
+        created_at: p.created_at,
+      }));
+
+      return mapped.filter((u) => {
+        if (roleFilter !== 'all' && u.role !== roleFilter) return false;
+        if (statusFilter !== 'all' && u.is_active !== (statusFilter === 'active')) return false;
+        if (search) {
+          const needle = search.toLowerCase();
+          if (!u.name.toLowerCase().includes(needle) && !u.email.toLowerCase().includes(needle)) {
+            return false;
+          }
+        }
+        return true;
+      });
     },
   });
 
@@ -92,9 +132,14 @@ export function useUserManagementPage() {
 
       const { error } = await supabase
         .from('profiles')
-        .update({ name: data.name, role: data.role })
+        .update({ full_name: data.name })
         .eq('id', authData.user.id);
       if (error) throw error;
+
+      const { error: roleError } = await supabase
+        .from('user_roles')
+        .insert({ user_id: authData.user.id, role: data.role });
+      if (roleError) throw roleError;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
@@ -109,19 +154,36 @@ export function useUserManagementPage() {
   // Update user mutation
   const updateMutation = useMutation({
     mutationFn: async (data: UpdateUserData) => {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ name: data.name, role: data.role, is_active: data.is_active })
-        .eq('id', data.id);
-      if (error) throw error;
+      if (data.name !== undefined) {
+        const { error } = await supabase
+          .from('profiles')
+          .update({ full_name: data.name })
+          .eq('id', data.id);
+        if (error) throw error;
+      }
+
+      if (data.role) {
+        const { error } = await supabase
+          .from('user_roles')
+          .upsert({ user_id: data.id, role: data.role }, { onConflict: 'user_id' });
+        if (error) throw error;
+      }
+
+      // `is_active` e MFA vivem em auth.users, fora do alcance do client: a alteração
+      // de status precisa passar por operação administrativa com service_role.
+      if (data.is_active !== undefined) {
+        throw new Error(
+          'Ativar/desativar usuário exige operação administrativa de auth (service_role), indisponível no client.',
+        );
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
       toast({ title: 'Usuário atualizado com sucesso' });
       setIsEditDialogOpen(false);
     },
-    onError: () => {
-      toast({ title: 'Erro ao atualizar usuário', variant: 'destructive' });
+    onError: (error: Error) => {
+      toast({ title: 'Erro ao atualizar usuário', description: error.message, variant: 'destructive' });
     },
   });
 

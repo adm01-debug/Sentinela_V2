@@ -14,14 +14,12 @@ interface ProfileRow {
   id: string;
   full_name?: string | null;
   email?: string | null;
-  avatar_url?: string | null;
   created_at: string;
 }
 
 interface UpdateUserData {
   full_name?: string;
   email?: string;
-  avatar_url?: string;
 }
 
 const mapProfileToUser = (p: ProfileRow): UserProfile => ({
@@ -29,7 +27,7 @@ const mapProfileToUser = (p: ProfileRow): UserProfile => ({
   name: p.full_name || p.email?.split('@')[0] || 'Unknown',
   email: p.email || '',
   role: 'user',
-  avatar: p.avatar_url || null,
+  avatar: null,
   createdAt: p.created_at,
 });
 
