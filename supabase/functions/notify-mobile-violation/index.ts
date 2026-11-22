@@ -128,7 +128,7 @@ Deno.serve(async (req) => {
     action: 'mobile_violation_notification_sent',
     entity_type: 'security_violations',
     entity_id: violation.id,
-    metadata: {
+    new_value: {
       delivered,
       total_devices: devices.length,
       results,

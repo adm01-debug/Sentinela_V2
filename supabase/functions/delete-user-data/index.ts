@@ -28,22 +28,30 @@ serve(async (req) => {
     const { employeeId } = await req.json();
     if (!employeeId) return new Response(JSON.stringify({ error: 'employeeId required' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
+    // As tabelas de telemetria guardam o nome do funcionário, não o id.
+    const { data: employee } = await supabase
+      .from('employees')
+      .select('name')
+      .eq('id', employeeId)
+      .maybeSingle();
+    const employeeName = employee?.name ?? employeeId;
+
     // Delete from all related tables (LGPD compliance - right to be forgotten)
     const deletions = await Promise.allSettled([
-      supabase.from('keystroke_logs').delete().eq('employee_name', employeeId),
-      supabase.from('keystroke_details').delete().eq('employee_name', employeeId),
-      supabase.from('click_logs').delete().eq('employee_name', employeeId),
-      supabase.from('screen_captures').delete().eq('employee_id', employeeId),
-      supabase.from('session_recordings').delete().eq('employee_id', employeeId),
-      supabase.from('security_violations').delete().eq('employee_id', employeeId),
-      supabase.from('mobile_activity_logs').delete().eq('employee_name', employeeId),
+      supabase.from('keystroke_logs').delete().eq('employee_name', employeeName),
+      supabase.from('keystroke_details').delete().eq('employee_name', employeeName),
+      supabase.from('click_logs').delete().eq('employee_name', employeeName),
+      supabase.from('screen_captures').delete().eq('employee_name', employeeName),
+      supabase.from('session_recordings').delete().eq('employee_name', employeeName),
+      supabase.from('security_violations').delete().eq('employee_name', employeeName),
+      supabase.from('mobile_activity_logs').delete().eq('employee_name', employeeName),
       supabase.from('employee_badges').delete().eq('employee_id', employeeId),
       supabase.from('employee_points').delete().eq('employee_id', employeeId),
       supabase.from('employee_geofences').delete().eq('employee_id', employeeId),
       supabase.from('employee_schedules').delete().eq('employee_id', employeeId),
       supabase.from('employee_devices').delete().eq('employee_id', employeeId),
-      supabase.from('internet_access_settings').delete().eq('employee_name', employeeId),
-      supabase.from('geofence_violations').delete().eq('employee_name', employeeId),
+      supabase.from('internet_access_settings').delete().eq('employee_name', employeeName),
+      supabase.from('geofence_violations').delete().eq('employee_name', employeeName),
       supabase.from('employees').delete().eq('id', employeeId),
     ]);
 

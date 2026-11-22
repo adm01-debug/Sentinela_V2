@@ -87,24 +87,18 @@ Deno.serve(async (req) => {
   }
 
   // 3) Fetch admin push tokens (once).
+  // mobile_devices não tem vínculo com usuário (apenas employee_name), então os
+  // tokens de push são coletados de todos os dispositivos ativos.
   let adminTokens: string[] = [];
   if (FCM_SERVER_KEY) {
-    const { data: adminRoles } = await supabase
-      .from('user_roles')
-      .select('user_id')
-      .eq('role', 'admin');
-    const adminIds = (adminRoles as any[] | null)?.map((r) => r.user_id) ?? [];
-    if (adminIds.length > 0) {
-      const { data: devices } = await supabase
-        .from('mobile_devices')
-        .select('push_token')
-        .in('user_id', adminIds)
-        .eq('is_active', true)
-        .not('push_token', 'is', null);
-      adminTokens = ((devices as any[]) ?? [])
-        .map((d) => d.push_token as string)
-        .filter(Boolean);
-    }
+    const { data: devices } = await supabase
+      .from('mobile_devices')
+      .select('push_token')
+      .eq('is_active', true)
+      .not('push_token', 'is', null);
+    adminTokens = ((devices as any[]) ?? [])
+      .map((d) => d.push_token as string)
+      .filter(Boolean);
   }
 
   let escalated = 0;
@@ -193,7 +187,6 @@ Deno.serve(async (req) => {
       duration_ms: Date.now() - startedAt,
       error_message: d.severity === 'breached' ? title : null,
       payload_summary: {
-        title,
         dedup_key: dedupKey,
         dispute_id: d.id,
         violation_id: d.violation_id,

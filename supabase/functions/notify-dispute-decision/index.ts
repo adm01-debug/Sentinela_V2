@@ -105,7 +105,7 @@ Deno.serve(async (req) => {
     action: 'dispute_decision_notification_sent',
     entity_type: 'violation_disputes',
     entity_id: dispute.id,
-    metadata: {
+    new_value: {
       status: dispute.status,
       violation_id: dispute.violation_id,
       delivered,

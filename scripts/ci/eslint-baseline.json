@@ -2126,7 +2126,7 @@
     },
     {
       "path": "supabase/functions/escalate-dispute-sla/index.ts",
-      "sha256": "a0d2d8015e967ba42e91de1c20558b0ddaf1af87237ef7a334ee299f9d41b212"
+      "sha256": "78e4478d61d703010cbeb2623bf9ae449eaf0cad2ba7bc7c446afe0067a23d2f"
     },
     {
       "path": "supabase/functions/external-db-bridge/index.ts",
@@ -2150,11 +2150,11 @@
     },
     {
       "path": "supabase/functions/notify-dispute-decision/index.ts",
-      "sha256": "b511eb50a901f7d2793570f62a61b71d6a2496221c218043c3882682cf8a3048"
+      "sha256": "996d32912fb44524d654b39352b0b6819690b502d69a50cb90074a5e5fd88607"
     },
     {
       "path": "supabase/functions/notify-mobile-violation/index.ts",
-      "sha256": "9c95f1a688ff8e4e111bfb4614b8ae39a7e09f564287b9131a05140970bced8c"
+      "sha256": "4ec5888b289bea3f1bad814951b674f1ec33adb0598a23c1c3ac2180fb931197"
     },
     {
       "path": "supabase/functions/notify-new-device/index.ts",
@@ -2174,7 +2174,7 @@
     },
     {
       "path": "supabase/functions/send-scheduled-report/index.ts",
-      "sha256": "48f460298605bffc1b5ad5c236aa6bdba02c097df4b21013403a4bcb7f01ce31"
+      "sha256": "369d745ae13939920c683e5900871abaa8bb42dd1fa5b4d07a931e87bcc6e3fe"
     },
     {
       "path": "supabase/functions/send-webhook/index.ts",
@@ -19330,20 +19330,6 @@
     },
     {
       "file": "supabase/functions/escalate-dispute-sla/index.ts",
-      "line": 104,
-      "column": 34,
-      "endLine": 104,
-      "endColumn": 37,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "5d7259378b980e199635cc1c2bfebed888802ddb19d61e57470d1e3647ad7d71",
-      "contextHash": "e18eeb3d8630ea2f45d6293f2b116027e0fac21d2756eac29efad61a108c13fd"
-    },
-    {
-      "file": "supabase/functions/escalate-dispute-sla/index.ts",
       "line": 84,
       "column": 30,
       "endLine": 84,
@@ -19358,17 +19344,17 @@
     },
     {
       "file": "supabase/functions/escalate-dispute-sla/index.ts",
-      "line": 96,
-      "column": 37,
-      "endLine": 96,
-      "endColumn": 40,
+      "line": 99,
+      "column": 32,
+      "endLine": 99,
+      "endColumn": 35,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
       "messageId": "unexpectedAny",
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "117627768a07b8d0d15fbf44ebccbaf227e501ffc27eb45f0cdf750471f975ad",
-      "contextHash": "99aa4402588581c6d6368911b94443ada214a67fbbab7843250226e8632731c6"
+      "lineHash": "5d7259378b980e199635cc1c2bfebed888802ddb19d61e57470d1e3647ad7d71",
+      "contextHash": "e18eeb3d8630ea2f45d6293f2b116027e0fac21d2756eac29efad61a108c13fd"
     },
     {
       "file": "supabase/functions/external-db-bridge/index.ts",
