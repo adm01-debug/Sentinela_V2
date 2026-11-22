@@ -1,20 +1,22 @@
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
+  let currentReportId: string | undefined;
+
   try {
     const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
     const body = await req.json();
@@ -51,43 +53,101 @@ serve(async (req) => {
       endDate = new Date().toISOString();
     }
 
+    currentReportId = reportId;
+    if (reportId) {
+      await supabase.from('reports').update({ status: 'generating' }).eq('id', reportId);
+    }
+
     const reportData: Record<string, unknown> = {};
 
-    if (type === 'productivity') {
+    if (type === "productivity") {
       const { data, count } = await supabase
-        .from('productivity_logs')
-        .select('employee_name, productive_time_seconds, unproductive_time_seconds, neutral_time_seconds, apps_used', { count: 'exact' })
-        .gte('recorded_date', startDate)
-        .lte('recorded_date', endDate);
+        .from("productivity_logs")
+        .select(
+          "employee_name, productive_time_seconds, unproductive_time_seconds, neutral_time_seconds, apps_used",
+          { count: "exact" }
+        )
+        .gte("recorded_date", startDate)
+        .lte("recorded_date", endDate);
 
       const totalProductive = data?.reduce((s, r) => s + (r.productive_time_seconds || 0), 0) || 0;
-      const totalUnproductive = data?.reduce((s, r) => s + (r.unproductive_time_seconds || 0), 0) || 0;
+      const totalUnproductive =
+        data?.reduce((s, r) => s + (r.unproductive_time_seconds || 0), 0) || 0;
 
       reportData.records = count || 0;
       reportData.total_productive_seconds = totalProductive;
       reportData.total_unproductive_seconds = totalUnproductive;
-      reportData.productivity_ratio = totalProductive + totalUnproductive > 0
-        ? Math.round((totalProductive / (totalProductive + totalUnproductive)) * 100)
-        : 0;
-    } else if (type === 'violations') {
+      reportData.productivity_ratio =
+        totalProductive + totalUnproductive > 0
+          ? Math.round((totalProductive / (totalProductive + totalUnproductive)) * 100)
+          : 0;
+    } else if (type === "violations") {
       const { data, count } = await supabase
-        .from('security_violations')
-        .select('*', { count: 'exact' })
-        .gte('created_at', startDate)
-        .lte('created_at', endDate);
+        .from("security_violations")
+        .select("*", { count: "exact" })
+        .gte("created_at", startDate)
+        .lte("created_at", endDate);
 
       reportData.totalViolations = count || 0;
       reportData.violations = data;
     } else if (type === 'activity' || type === 'keystroke') {
       const { data, count } = await supabase
-        .from('keystroke_logs')
-        .select('employee_name, keystrokes_count, active_time_seconds, idle_time_seconds', { count: 'exact' })
-        .gte('recorded_at', startDate)
-        .lte('recorded_at', endDate);
+        .from("keystroke_logs")
+        .select("employee_name, keystrokes_count, active_time_seconds, idle_time_seconds", {
+          count: "exact",
+        })
+        .gte("recorded_at", startDate)
+        .lte("recorded_at", endDate);
 
       reportData.records = count || 0;
       reportData.total_keystrokes = data?.reduce((s, r) => s + (r.keystrokes_count || 0), 0) || 0;
-      reportData.total_active_seconds = data?.reduce((s, r) => s + (r.active_time_seconds || 0), 0) || 0;
+      reportData.total_active_seconds =
+        data?.reduce((s, r) => s + (r.active_time_seconds || 0), 0) || 0;
+    } else if (type === "attendance") {
+      const { data, count } = await supabase
+        .from("attendance_records")
+        .select(
+          "employee_id, actual_start, actual_end, status, late_minutes, total_worked_minutes",
+          { count: "exact" }
+        )
+        .gte("date", startDate)
+        .lte("date", endDate);
+
+      reportData.records = count || 0;
+      reportData.attendance = data;
+    } else if (type === "summary") {
+      const [productivity, violations, keystrokes] = await Promise.all([
+        supabase
+          .from("productivity_logs")
+          .select("productive_time_seconds, unproductive_time_seconds", { count: "exact" })
+          .gte("recorded_date", startDate)
+          .lte("recorded_date", endDate),
+        supabase
+          .from("security_violations")
+          .select("id", { count: "exact" })
+          .gte("created_at", startDate)
+          .lte("created_at", endDate),
+        supabase
+          .from("keystroke_logs")
+          .select("keystrokes_count", { count: "exact" })
+          .gte("recorded_at", startDate)
+          .lte("recorded_at", endDate),
+      ]);
+
+      const prod = productivity.data ?? [];
+      const totalProductive = prod.reduce((s, r) => s + (r.productive_time_seconds || 0), 0);
+      const totalUnproductive = prod.reduce((s, r) => s + (r.unproductive_time_seconds || 0), 0);
+
+      reportData.productivity_records = productivity.count || 0;
+      reportData.productivity_ratio =
+        totalProductive + totalUnproductive > 0
+          ? Math.round((totalProductive / (totalProductive + totalUnproductive)) * 100)
+          : 0;
+      reportData.total_violations = violations.count || 0;
+      reportData.total_keystrokes = (keystrokes.data ?? []).reduce(
+        (s, r) => s + (r.keystrokes_count || 0),
+        0
+      );
     }
 
     const report = {
@@ -100,13 +160,13 @@ serve(async (req) => {
       analysis_period_end: endDate,
     };
 
-    const { error } = await supabase.from('ai_analysis_reports').insert(report);
+    const { error } = await supabase.from("ai_analysis_reports").insert(report);
     if (error) throw error;
 
     if (reportId) {
       const { error: updateError } = await supabase
         .from('reports')
-        .update({ status: 'completed' })
+        .update({ status: 'completed', file_url: null, error_message: null })
         .eq('id', reportId);
       if (updateError) throw updateError;
     }
@@ -116,10 +176,24 @@ serve(async (req) => {
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    const message = error instanceof Error ? error.message : "Unknown error";
+    if (currentReportId) {
+      try {
+        const admin = createClient(
+          Deno.env.get("SUPABASE_URL") ?? "",
+          Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+        );
+        await admin
+          .from("reports")
+          .update({ status: "failed", error_message: message })
+          .eq("id", currentReportId);
+      } catch {
+        // best-effort
+      }
+    }
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });
