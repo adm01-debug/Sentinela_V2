@@ -1,7 +1,101 @@
 project_id = "jgnmwvzephsozsqmcpzb"
+# verify_jwt de CADA function como esta em producao (consultado na Management API).
+# O default do CLI e true; declarar aqui garante que o deploy nao altere o
+# nivel de autenticacao de nenhuma function por omissao.
 
+[functions.acknowledge-violation]
+verify_jwt = false
+[functions.agent-collector]
+verify_jwt = true
+[functions.analyze-activity]
+verify_jwt = true
+[functions.award-gamification-points]
+verify_jwt = true
+[functions.behavior-pattern]
+verify_jwt = true
+[functions.check-geofence]
+verify_jwt = true
+[functions.dlp-incident-report]
+verify_jwt = false
+[functions.dlp-policy-sync]
+verify_jwt = false
+[functions.escalate-dispute-sla]
+verify_jwt = true
+[functions.expire-recordings]
+verify_jwt = true
+[functions.export-data]
+verify_jwt = true
+[functions.generate-insights]
+verify_jwt = true
+[functions.generate-report]
+verify_jwt = false
+[functions.get-employee-schedule]
+verify_jwt = true
+[functions.get-employee-timeline]
+verify_jwt = true
+[functions.get-mapbox-token]
+verify_jwt = true
+[functions.health-check]
+verify_jwt = false
+[functions.ingest-file-transfer]
+verify_jwt = false
+[functions.live-view-authorize]
+verify_jwt = false
+[functions.mobile-collector]
+verify_jwt = true
+[functions.natural-language-query]
+verify_jwt = true
+[functions.notify-dispute-decision]
+verify_jwt = true
+[functions.notify-new-device]
+verify_jwt = true
+[functions.ocr-screenshot]
+verify_jwt = true
+[functions.pending-employee-violations]
+verify_jwt = false
+[functions.predict-anomaly]
+verify_jwt = true
+[functions.process-violation-alert]
+verify_jwt = false
+[functions.risk-score-calculator]
+verify_jwt = true
+[functions.send-email-notification]
+verify_jwt = true
+[functions.send-password-reset]
+verify_jwt = true
+[functions.send-push-notification]
+verify_jwt = true
 [functions.send-scheduled-report]
 verify_jwt = true
-
-[functions.health-check]
+[functions.send-slack-notification]
+verify_jwt = true
+[functions.send-webhook]
+verify_jwt = true
+[functions.send-whatsapp]
+verify_jwt = false
+[functions.slack-dlq-bulk-replay]
+verify_jwt = true
+[functions.slack-dlq-replay]
+verify_jwt = true
+[functions.slack-fallback-test]
+verify_jwt = true
+[functions.slack-mttr-monitor]
+verify_jwt = true
+[functions.slack-notify]
+verify_jwt = true
+[functions.slack-weekly-digest]
+verify_jwt = true
+[functions.smart-recommendations]
+verify_jwt = true
+[functions.summarize-activity]
+verify_jwt = true
+[functions.sync-whatsapp-templates]
+verify_jwt = true
+[functions.trend-forecasting]
+verify_jwt = true
+[functions.upload-recording-chunk]
+verify_jwt = false
+[functions.validate-agent-key]
+verify_jwt = true
+[functions.webrtc-ice-config]
 verify_jwt = false
