@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "a52cd2c5867764a04aa1e92913fa94a3daa70b43",
+  "commit": "ed7e2aa98040750b026daea3694c80ffd857c372",
   "branch": "main",
-  "data_commit": "2026-11-22T14:16:35-03:00",
+  "data_commit": "2026-11-22T14:27:14-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "ed7e2aa98",
+    "data": "2026-11-22",
+    "assunto": "docs: registra o estado real do PolicyGate na linha de base (#242)"
+   },
    {
     "sha": "a52cd2c58",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "45e3668e3",
     "data": "2026-11-22",
     "assunto": "fix(seguranca): view violations vazava sem token e 9 policies SELECT eram true (#202)"
-   },
-   {
-    "sha": "8731d4e14",
-    "data": "2026-11-22",
-    "assunto": "fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)"
    }
   ],
   "arquivos_mudados_7d": 195,
@@ -161,7 +161,7 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "pasta": "src/components/ui",
@@ -219,7 +219,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 140
+    "commits": 141
    },
    {
     "autor": "dependabot[bot]",
