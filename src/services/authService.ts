@@ -42,7 +42,10 @@ export const authService = {
       email: supaUser.email || '',
       name: supaUser.user_metadata?.full_name || supaUser.user_metadata?.name || supaUser.email?.split('@')[0],
       avatar: supaUser.user_metadata?.avatar_url,
-      role: supaUser.user_metadata?.role || 'user',
+      // Role de UI comeca sempre como 'user' e a promocao para admin vem
+      // exclusivamente de user_roles (AuthProvider). user_metadata e editavel
+      // pelo proprio usuario via auth.updateUser, entao nao pode conceder acesso.
+      role: 'user',
       isAdmin: false,
       createdAt: supaUser.created_at,
     };
