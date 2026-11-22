@@ -62,8 +62,7 @@ export function useVersions({ entityType, entityId, enabled = true }: UseVersion
         .from("entity_versions")
         .select(
           `
-          *,
-          user:changed_by(full_name, email)
+          *
         `
         )
         .eq("entity_type", entityType)

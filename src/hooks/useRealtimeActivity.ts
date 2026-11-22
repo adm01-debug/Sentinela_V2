@@ -4,15 +4,14 @@ import { queryKeys, queryPresets, REFETCH_INTERVALS } from '@/lib/queryClient';
 
 export interface RealtimeActivity {
   id: string;
-  employee_id: string;
+  user_id: string | null;
   activity_type: string;
-  application_name?: string;
-  window_title?: string;
-  url?: string;
-  keystroke_count?: number;
-  mouse_clicks?: number;
+  description: string;
+  entity_type: string;
+  entity_id: string;
   created_at: string;
-  employee?: { full_name: string };
+  metadata?: unknown;
+  employee?: { name: string };
 }
 
 export function useRealtimeActivity(limit = 50) {
@@ -21,35 +20,35 @@ export function useRealtimeActivity(limit = 50) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('activity_logs')
-        .select('*, employee:employees(full_name)')
+        .select('*')
         .order('created_at', { ascending: false })
         .limit(limit);
 
       if (error) throw error;
-      return data as RealtimeActivity[];
+      return data as unknown as RealtimeActivity[];
     },
     ...queryPresets.realtime,
     refetchInterval: REFETCH_INTERVALS.REALTIME,
   });
 }
 
-export function useEmployeeActivity(employeeId: string | undefined) {
+export function useEmployeeActivity(entityId: string | undefined) {
   return useQuery({
-    queryKey: queryKeys.activity.employee(employeeId || ''),
+    queryKey: queryKeys.activity.employee(entityId || ''),
     queryFn: async () => {
-      if (!employeeId) return [];
-      
+      if (!entityId) return [];
+
       const { data, error } = await supabase
         .from('activity_logs')
         .select('*')
-        .eq('employee_id', employeeId)
+        .eq('entity_id', entityId)
         .order('created_at', { ascending: false })
         .limit(100);
 
       if (error) throw error;
-      return data as RealtimeActivity[];
+      return data as unknown as RealtimeActivity[];
     },
-    enabled: !!employeeId,
+    enabled: !!entityId,
     ...queryPresets.list,
   });
 }

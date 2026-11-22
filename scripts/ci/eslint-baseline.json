@@ -122,7 +122,7 @@
     },
     {
       "path": "src/components/AppSidebar.tsx",
-      "sha256": "a49f1c31b560d64296ca8ba9adcfb9a406dabbd22bd5f754356bd4264c834a7a"
+      "sha256": "6230cf1c305883a8bf23d6a4cf1e2e27135257bfbac4f4a4c04b1a1f507c59d5"
     },
     {
       "path": "src/components/auth/PasswordResetApprovalPanel.tsx",
@@ -1038,7 +1038,7 @@
     },
     {
       "path": "src/hooks/useActivityHistory.ts",
-      "sha256": "465ebe4ff5c5047ef2c94d574106c7975020d078405f99b07494e51e08c31b34"
+      "sha256": "d184fb022b8331cff5eda902196d3c29b9676c66266bd99540225f24c0d062b5"
     },
     {
       "path": "src/hooks/useActivityTimeline.ts",
@@ -1058,7 +1058,7 @@
     },
     {
       "path": "src/hooks/useAppConfig.ts",
-      "sha256": "efaf45c5dff305ac51b5b6b6bd8435ae9fad84c210192c7c3af083da45cb9046"
+      "sha256": "bad4adac21c3a2ebeba495c96bd5c68c68191275698ade9cd87da83df51e79a5"
     },
     {
       "path": "src/hooks/useApplicationRules.ts",
@@ -1329,10 +1329,6 @@
       "sha256": "b86b290322c4cb19d8973e30bc3479247245aa50622b1a05d84038eb6e585fa7"
     },
     {
-      "path": "src/hooks/useInstallPage.ts",
-      "sha256": "224edcd39bdc04b447753e3159981cfc4bed75f7f6a7a534fbbfd22ab8a4f8ae"
-    },
-    {
       "path": "src/hooks/useIntegrations.ts",
       "sha256": "c6c4a64e45623207dd97bdab80d96661cdafc5a4e3e25dceb9d4698b76dfc4f6"
     },
@@ -1425,10 +1421,6 @@
       "sha256": "aa686b71074eb540e3c12172e39f0091844b770b58de2f95c16e191eacb7d84a"
     },
     {
-      "path": "src/hooks/usePermissions.ts",
-      "sha256": "541e6f5f013ba429b8fbececd8ac040e9b3d7b9f72fa0feea194b323b13c1c74"
-    },
-    {
       "path": "src/hooks/usePolicies.ts",
       "sha256": "3fa0c0c8c5be09ddcaf7cf3d9c8f970ced6a457ec242339f88769980aad4c0e0"
     },
@@ -1494,7 +1486,7 @@
     },
     {
       "path": "src/hooks/useRoles.ts",
-      "sha256": "622ef2694f3bf5c6391f0acd53b88805f836b2deb89ac6176e52897d84edc7ce"
+      "sha256": "ba15f8fec3c6bdce82e9512228e6170ca779bd8b437d2d1bda386f7c8d61d1b7"
     },
     {
       "path": "src/hooks/useRouteParams.ts",
@@ -1586,7 +1578,7 @@
     },
     {
       "path": "src/hooks/useSubscription.ts",
-      "sha256": "799d1902efff0397b8844e52838ab774a3ae818b820e3f6037328f6f6bbf7c7f"
+      "sha256": "35b124f265d1933f3c0a5314344c00fdc6b873c86025c86bc087a99f4f3bbfd2"
     },
     {
       "path": "src/hooks/useTags.ts",
@@ -1630,7 +1622,7 @@
     },
     {
       "path": "src/hooks/useViolationComments.ts",
-      "sha256": "d9284ac913cc174fbd3a640c6149c86ef5f0914ff21f0bbd9893e131e40cbd90"
+      "sha256": "b2feb5d2ce66dd800cdc6161b7c1c39a22d46bf5b24d4f7a4b70b8a08fbeccba"
     },
     {
       "path": "src/hooks/useViolations.ts",
@@ -1678,7 +1670,7 @@
     },
     {
       "path": "src/lib/queryClient.ts",
-      "sha256": "928e17905501ef04eb1449fe9aa9d2b4ff024c80c8818cd681fab7ed6882afac"
+      "sha256": "9c9f0c0464adc0854ebed8561e98dfb4446587203f61e4b5bda16191c99e90c7"
     },
     {
       "path": "src/lib/stores.ts",
@@ -1842,7 +1834,7 @@
     },
     {
       "path": "src/pages/BillingSettingsPage.tsx",
-      "sha256": "53c12e2c39939526bbfb8e218d9c51f6b1334350bbaf3db6193f88d0423dc76e"
+      "sha256": "25efb620c93877e38536db227169e748b7a7acbb0dea156bc64cb69d8e7940cd"
     },
     {
       "path": "src/pages/dashboard/DashboardCards.tsx",
@@ -1906,7 +1898,7 @@
     },
     {
       "path": "src/pages/OrgChartPage.tsx",
-      "sha256": "e5a21e128676302138bae8969b073dd3fc9ed7094067d08850aae5cfb881f28d"
+      "sha256": "e11b020707d49a6bfc5fa67aa51c2e83a823ac51178a7dbd191809c0425ece32"
     },
     {
       "path": "src/pages/TeamDetailPage.tsx",
@@ -2118,7 +2110,7 @@
     },
     {
       "path": "supabase/functions/behavior-pattern/index.ts",
-      "sha256": "5e9ddf846ce22e95075141b07770c835bcdf78dc7e79d221673446566d8e2dec"
+      "sha256": "06f14b6e399293404964a4712967faa0d561cd9d81aa27709acf829e7b792594"
     },
     {
       "path": "supabase/functions/create-monthly-partitions/index.ts",
@@ -2142,7 +2134,7 @@
     },
     {
       "path": "supabase/functions/generate-insights/index.ts",
-      "sha256": "d123df6772af701fe0f0399b6249a5fd8293081469431e27e9070618c3d756a4"
+      "sha256": "07453c5a9ecf6ecf88326b0ea9e22305143e17c65d164592570de4d89c04c407"
     },
     {
       "path": "supabase/functions/live-view-authorize/index.ts",
@@ -2154,7 +2146,7 @@
     },
     {
       "path": "supabase/functions/natural-language-query/index.ts",
-      "sha256": "15d853ed2d0be050dc243dfd5a3e2223460b7bf451e4a9616fa85f7cffc99785"
+      "sha256": "d5a24df0fa200230d21620bfe22b0f15ab3a0e29fe09dc625259e0bb9981d3ad"
     },
     {
       "path": "supabase/functions/notify-dispute-decision/index.ts",
@@ -2166,7 +2158,7 @@
     },
     {
       "path": "supabase/functions/notify-new-device/index.ts",
-      "sha256": "a22369fb3ddb5de7cb5a5d9df6987528beb76c76638a545d1230277f340d8611"
+      "sha256": "0135f28cd0b1e4e8770dfb7ce87b4a0a4e7262956d69eddd6ff1c1ee788c8c07"
     },
     {
       "path": "supabase/functions/ocr-screenshot/index.ts",
@@ -2198,11 +2190,11 @@
     },
     {
       "path": "supabase/functions/smart-recommendations/index.ts",
-      "sha256": "5ac63380453a3e3e0731d8427197a8bbb418cf7923adcf6ef2fda584a9e75859"
+      "sha256": "89b9242531032d339376f5d0a2dab2e24022d2915dd4ddc91bf47b19c8bd4d1e"
     },
     {
       "path": "supabase/functions/summarize-activity/index.ts",
-      "sha256": "e15166e055defede879d6efc3f347a52aa7a823b48e94d11a67f4b1873a8ccc9"
+      "sha256": "5fe9658670eae2ab98aaf3e8b3742bf60278367b18f610ade068f75c5c99f117"
     },
     {
       "path": "supabase/functions/trend-forecasting/index.ts",
@@ -3430,7 +3422,7 @@
       "message": "'LogOut' is defined but never used.",
       "spanHash": "a20081366ea0106a7e59a1056349c7782000a696f5f8558bac7cbe9bbe2e12cc",
       "lineHash": "b1d52df0793c8a49b5187e8d160eb0bad7c0d45a783544fd55505f1797e3faee",
-      "contextHash": "c952a27cb040b68b25e609d2ce7e84ad3b5405714ef8acec26917d4232c6527a"
+      "contextHash": "c7caa5530a20c3533dc8baa2f711817c102773d644521e2eb12f0091ae14c4f7"
     },
     {
       "file": "src/components/auth/PasswordResetApprovalPanel.tsx",
@@ -10882,14 +10874,14 @@
     },
     {
       "file": "src/hooks/useAppConfig.ts",
-      "line": 70,
+      "line": 122,
       "column": 5,
-      "endLine": 70,
+      "endLine": 122,
       "endColumn": 16,
       "severity": 2,
       "ruleId": "react-hooks/set-state-in-effect",
       "messageId": null,
-      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/hooks/useAppConfig.ts:70:5 68 | 69 | useEffect(() => { > 70 | fetchConfig(); | ^^^^^^^^^^^ Avoid calling setState() directly within an effect 71 | }, [fetchConfig]); 72 | 73 | const updateConfig = useCallback(async (updates: Partial<AppConfig>) => {",
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/hooks/useAppConfig.ts:122:5 120 | 121 | useEffect(() => { > 122 | fetchConfig(); | ^^^^^^^^^^^ Avoid calling setState() directly within an effect 123 | }, [fetchConfig]); 124 | 125 | const updateConfig = useCallback(async (updates: Partial<AppConfig>) => {",
       "spanHash": "f83896c0236daa4a8f1fbdf9a5786b463e47093d632daab2b85b291d6fd0950c",
       "lineHash": "953265243615f36946b76bc64011863c6a3d13b8ea2df88d3f7ec794f28ee4a6",
       "contextHash": "c9dca8cfa7bb92b6ec0ae0e5786c545352b798ca075a3036e04e2b1b4f11de52"
@@ -12533,20 +12525,6 @@
       "contextHash": "e3090fc55e53b0c7200512d829f2730f7979b0c682ff0485c329b033b24024eb"
     },
     {
-      "file": "src/hooks/useInstallPage.ts",
-      "line": 1,
-      "column": 20,
-      "endLine": 1,
-      "endColumn": 29,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'useEffect' is defined but never used.",
-      "spanHash": "b6e70b1b405eb57370e5e306072a25c1eb49b94b04e1246eb388a66216efcc81",
-      "lineHash": "0f8ac8f1900ea6c3ea52e580a7473bde357b0898f66bafc4ef785085dbe7b2f2",
-      "contextHash": "1ec6299081a1b13caf393a4ed2521d1109b78474e895263f03ac82690aa711be"
-    },
-    {
       "file": "src/hooks/useIntegrations.ts",
       "line": 3,
       "column": 1,
@@ -13091,62 +13069,6 @@
       "spanHash": "0ee5d327e4f3db2278738e15cac884a4d1419ed97464bdab7daad77a3fcaf7fc",
       "lineHash": "9411eb738e4912d02697a57cbd92e99f4f4a6ccefb4e9d5a667861698f5764a9",
       "contextHash": "2fd2bf55beeee999c7c9a19bb1ce6cb98c994709e89f5cf06ffe26c45b584aea"
-    },
-    {
-      "file": "src/hooks/usePermissions.ts",
-      "line": 2,
-      "column": 23,
-      "endLine": 2,
-      "endColumn": 30,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'useMemo' is defined but never used.",
-      "spanHash": "c2840b6e27d4d6166b548e02cfc32f12d53a6f554303e08da607d9653783299f",
-      "lineHash": "92948d9f9595854934963d4bb3639694d482f212adf1b101cf096b04c3531902",
-      "contextHash": "09f35cbbd184b7482cd25b451246c427cc030e1ddc65d17936a01d1226e3bb82"
-    },
-    {
-      "file": "src/hooks/usePermissions.ts",
-      "line": 56,
-      "column": 9,
-      "endLine": 56,
-      "endColumn": 88,
-      "severity": 1,
-      "ruleId": "react-hooks/exhaustive-deps",
-      "messageId": null,
-      "message": "The 'permissions' conditional could make the dependencies of useCallback Hook (at line 60) change on every render. To fix this, wrap the initialization of 'permissions' in its own useMemo() Hook.",
-      "spanHash": "7bde175e2e02c4ad3e6473322d8b76811114af30afa794c880cc665392836a39",
-      "lineHash": "6cf883132099d73a5348ebfbc0c2737966dbd98203b9afa5013f22c37895ac0e",
-      "contextHash": "be336a8135d4f917cff48737ff363b706adf9e3d954d4fc441376537ffe3e757"
-    },
-    {
-      "file": "src/hooks/usePermissions.ts",
-      "line": 56,
-      "column": 9,
-      "endLine": 56,
-      "endColumn": 88,
-      "severity": 1,
-      "ruleId": "react-hooks/exhaustive-deps",
-      "messageId": null,
-      "message": "The 'permissions' conditional could make the dependencies of useCallback Hook (at line 65) change on every render. To fix this, wrap the initialization of 'permissions' in its own useMemo() Hook.",
-      "spanHash": "7bde175e2e02c4ad3e6473322d8b76811114af30afa794c880cc665392836a39",
-      "lineHash": "6cf883132099d73a5348ebfbc0c2737966dbd98203b9afa5013f22c37895ac0e",
-      "contextHash": "be336a8135d4f917cff48737ff363b706adf9e3d954d4fc441376537ffe3e757"
-    },
-    {
-      "file": "src/hooks/usePermissions.ts",
-      "line": 56,
-      "column": 9,
-      "endLine": 56,
-      "endColumn": 88,
-      "severity": 1,
-      "ruleId": "react-hooks/exhaustive-deps",
-      "messageId": null,
-      "message": "The 'permissions' conditional could make the dependencies of useCallback Hook (at line 70) change on every render. To fix this, wrap the initialization of 'permissions' in its own useMemo() Hook.",
-      "spanHash": "7bde175e2e02c4ad3e6473322d8b76811114af30afa794c880cc665392836a39",
-      "lineHash": "6cf883132099d73a5348ebfbc0c2737966dbd98203b9afa5013f22c37895ac0e",
-      "contextHash": "be336a8135d4f917cff48737ff363b706adf9e3d954d4fc441376537ffe3e757"
     },
     {
       "file": "src/hooks/usePolicies.ts",
@@ -14704,9 +14626,9 @@
     },
     {
       "file": "src/lib/queryClient.ts",
-      "line": 205,
+      "line": 319,
       "column": 6,
-      "endLine": 205,
+      "endLine": 319,
       "endColumn": 9,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -16216,9 +16138,9 @@
     },
     {
       "file": "src/pages/BillingSettingsPage.tsx",
-      "line": 6,
+      "line": 5,
       "column": 1,
-      "endLine": 6,
+      "endLine": 5,
       "endColumn": 47,
       "severity": 2,
       "ruleId": "import/order",
@@ -19268,9 +19190,9 @@
     },
     {
       "file": "supabase/functions/behavior-pattern/index.ts",
-      "line": 133,
+      "line": 134,
       "column": 28,
-      "endLine": 133,
+      "endLine": 134,
       "endColumn": 31,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19306,13 +19228,13 @@
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "d177f601175953f298d3bf493dfa8ca4fe42dc84a6be022c04763d3a038933a3",
-      "contextHash": "f03ffd15eb0f0ed360f2972b56493e61d4e123b9fad90e0d74619886e409fa7b"
+      "contextHash": "78b4fe88e2a35c6045c5a67c47ea7eccb6307d360a98ffaeb33302dfa96085c9"
     },
     {
       "file": "supabase/functions/behavior-pattern/index.ts",
-      "line": 94,
+      "line": 95,
       "column": 28,
-      "endLine": 94,
+      "endLine": 95,
       "endColumn": 31,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19478,23 +19400,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 102,
+      "line": 117,
       "column": 56,
-      "endLine": 102,
-      "endColumn": 59,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "c1dc6595d81883369e111771829f781b9ee28f697d7fa3345bffc6e881008510",
-      "contextHash": "5119ede2aeea4ef47293700ff2a6d83ef58c01ca5234e3c0a728f5c0eac5a4b9"
-    },
-    {
-      "file": "supabase/functions/generate-insights/index.ts",
-      "line": 120,
-      "column": 56,
-      "endLine": 120,
+      "endLine": 117,
       "endColumn": 59,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19506,9 +19414,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 121,
+      "line": 118,
       "column": 54,
-      "endLine": 121,
+      "endLine": 118,
       "endColumn": 57,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19520,9 +19428,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 137,
+      "line": 134,
       "column": 66,
-      "endLine": 137,
+      "endLine": 134,
       "endColumn": 69,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19548,9 +19456,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 59,
+      "line": 57,
       "column": 13,
-      "endLine": 59,
+      "endLine": 57,
       "endColumn": 23,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-unused-vars",
@@ -19562,9 +19470,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 59,
+      "line": 57,
       "column": 25,
-      "endLine": 59,
+      "endLine": 57,
       "endColumn": 33,
       "severity": 2,
       "ruleId": "@typescript-eslint/no-unused-vars",
@@ -19576,23 +19484,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 63,
-      "column": 56,
-      "endLine": 63,
-      "endColumn": 67,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'profilesRes' is assigned a value but never used.",
-      "spanHash": "53072ef89b26455d20198a86931c8b24a37453d9db41588df3110c2ef743364c",
-      "lineHash": "f99092f0d7634a62bd35c5cd7b52bcf8a59ca489373a60193d78604b54779677",
-      "contextHash": "1da51f2cc37554d547a0649cf0bdea5be822318007bebca4f30357796fc522d2"
-    },
-    {
-      "file": "supabase/functions/generate-insights/index.ts",
-      "line": 77,
+      "line": 74,
       "column": 43,
-      "endLine": 77,
+      "endLine": 74,
       "endColumn": 46,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19604,9 +19498,9 @@
     },
     {
       "file": "supabase/functions/generate-insights/index.ts",
-      "line": 78,
+      "line": 75,
       "column": 47,
-      "endLine": 78,
+      "endLine": 75,
       "endColumn": 50,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19615,6 +19509,20 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "f2f3fd9cfbb79e293a06fb2c8d98f37b2645b77cb9c9adf03ac90f2436d6b6a6",
       "contextHash": "e81aa7e642689e2ad23ff753d4a940e0bd14d547011325a89b32b93a00440185"
+    },
+    {
+      "file": "supabase/functions/generate-insights/index.ts",
+      "line": 99,
+      "column": 56,
+      "endLine": 99,
+      "endColumn": 59,
+      "severity": 1,
+      "ruleId": "@typescript-eslint/no-explicit-any",
+      "messageId": "unexpectedAny",
+      "message": "Unexpected any. Specify a different type.",
+      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
+      "lineHash": "c1dc6595d81883369e111771829f781b9ee28f697d7fa3345bffc6e881008510",
+      "contextHash": "5119ede2aeea4ef47293700ff2a6d83ef58c01ca5234e3c0a728f5c0eac5a4b9"
     },
     {
       "file": "supabase/functions/live-view-authorize/index.ts",
@@ -19772,9 +19680,9 @@
     },
     {
       "file": "supabase/functions/natural-language-query/index.ts",
-      "line": 135,
+      "line": 138,
       "column": 33,
-      "endLine": 135,
+      "endLine": 138,
       "endColumn": 36,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19800,9 +19708,9 @@
     },
     {
       "file": "supabase/functions/natural-language-query/index.ts",
-      "line": 162,
+      "line": 173,
       "column": 33,
-      "endLine": 162,
+      "endLine": 173,
       "endColumn": 36,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19884,9 +19792,9 @@
     },
     {
       "file": "supabase/functions/notify-new-device/index.ts",
-      "line": 156,
+      "line": 165,
       "column": 5,
-      "endLine": 156,
+      "endLine": 165,
       "endColumn": 16,
       "severity": 1,
       "ruleId": "no-console",
@@ -19898,9 +19806,9 @@
     },
     {
       "file": "supabase/functions/notify-new-device/index.ts",
-      "line": 165,
+      "line": 174,
       "column": 19,
-      "endLine": 165,
+      "endLine": 174,
       "endColumn": 22,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -19909,20 +19817,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "b9ef169b83f8df5c1478e0728e53923ed30ad9a5cc689d612eb82400ae6ad76d",
       "contextHash": "db5639ef7f4e8a974e4c86e58f39379f87f625fb29d56e93ec646dfdc0e8cb27"
-    },
-    {
-      "file": "supabase/functions/notify-new-device/index.ts",
-      "line": 38,
-      "column": 5,
-      "endLine": 38,
-      "endColumn": 16,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
-      "lineHash": "1c71446776bacdc2662bf1f9e4e682923fc7022c8851a6d2868f96e25e4b473c",
-      "contextHash": "e87eaf4dad2c26a97fee96695026b0b33eb6cbaf2c79f3b4868992a1bc7cb9c6"
     },
     {
       "file": "supabase/functions/ocr-screenshot/index.ts",
@@ -20290,9 +20184,9 @@
     },
     {
       "file": "supabase/functions/smart-recommendations/index.ts",
-      "line": 117,
+      "line": 118,
       "column": 59,
-      "endLine": 117,
+      "endLine": 118,
       "endColumn": 62,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20304,9 +20198,9 @@
     },
     {
       "file": "supabase/functions/smart-recommendations/index.ts",
-      "line": 118,
+      "line": 119,
       "column": 51,
-      "endLine": 118,
+      "endLine": 119,
       "endColumn": 54,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20342,13 +20236,13 @@
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "cc58eaa4e07c68d2cc92ff7bf7d8bbe099df5e23f6699bce51b07bfc487a1b13",
-      "contextHash": "77b1aad57e8bf61f44ed0e44122b399c5ea528dcb5aeb8e12d5706fb8005821d"
+      "contextHash": "4629427a2ff5ae71e4747b202e92f4b338f1731d142611f2bcf220ddfa134fb5"
     },
     {
       "file": "supabase/functions/smart-recommendations/index.ts",
-      "line": 71,
+      "line": 72,
       "column": 54,
-      "endLine": 71,
+      "endLine": 72,
       "endColumn": 57,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20360,9 +20254,9 @@
     },
     {
       "file": "supabase/functions/smart-recommendations/index.ts",
-      "line": 71,
+      "line": 72,
       "column": 92,
-      "endLine": 71,
+      "endLine": 72,
       "endColumn": 95,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20374,9 +20268,9 @@
     },
     {
       "file": "supabase/functions/smart-recommendations/index.ts",
-      "line": 94,
+      "line": 95,
       "column": 54,
-      "endLine": 94,
+      "endLine": 95,
       "endColumn": 57,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20388,9 +20282,9 @@
     },
     {
       "file": "supabase/functions/smart-recommendations/index.ts",
-      "line": 95,
+      "line": 96,
       "column": 50,
-      "endLine": 95,
+      "endLine": 96,
       "endColumn": 53,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20426,7 +20320,7 @@
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "9f1219eeceff70d49a008e2109d9e5f34c8d891ab48ac2dfd89e30ad65b6e543",
-      "contextHash": "87de480cdc48ce36f721a3bebf3868d8c01e686b890c58feaf5fa42f034219da"
+      "contextHash": "2dad4f3e1bbcc65ae3a60849d815cdb5c2b11e81ea61d36426c802cb1c7aacca"
     },
     {
       "file": "supabase/functions/summarize-activity/index.ts",
@@ -20440,13 +20334,13 @@
       "message": "Unexpected any. Specify a different type.",
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "a1b298625472cb2381a169bf6120721a9f8e7b5154091c0a73c85e1894981860",
-      "contextHash": "ab817f3233e5722858013134297c117cdc7609371458749ca6422c2e7e11d06b"
+      "contextHash": "ed46ef384b5f05c498201c015859b876c8d3fb9effba6e6a55f9be897b907a68"
     },
     {
       "file": "supabase/functions/summarize-activity/index.ts",
-      "line": 64,
+      "line": 65,
       "column": 55,
-      "endLine": 64,
+      "endLine": 65,
       "endColumn": 58,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20458,9 +20352,9 @@
     },
     {
       "file": "supabase/functions/summarize-activity/index.ts",
-      "line": 64,
+      "line": 65,
       "column": 93,
-      "endLine": 64,
+      "endLine": 65,
       "endColumn": 96,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20472,9 +20366,9 @@
     },
     {
       "file": "supabase/functions/summarize-activity/index.ts",
-      "line": 71,
+      "line": 72,
       "column": 29,
-      "endLine": 71,
+      "endLine": 72,
       "endColumn": 32,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -20486,9 +20380,9 @@
     },
     {
       "file": "supabase/functions/summarize-activity/index.ts",
-      "line": 82,
+      "line": 83,
       "column": 29,
-      "endLine": 82,
+      "endLine": 83,
       "endColumn": 32,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",

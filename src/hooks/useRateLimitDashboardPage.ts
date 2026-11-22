@@ -6,12 +6,12 @@ import { queryKeys } from "@/lib/queryClient";
 
 interface RateLimitLog {
   id: string;
-  ip_address: string;
+  identifier: string;
+  identifier_type: string;
   endpoint: string;
   request_count: number;
-  blocked: boolean;
+  window_start: string;
   created_at: string;
-  company_id: string;
 }
 
 interface RateLimitSettings {
@@ -20,12 +20,12 @@ interface RateLimitSettings {
   max_requests: number;
   window_seconds: number;
   block_duration_seconds: number;
-  enabled: boolean;
+  is_active: boolean;
 }
 
 interface FilterState {
   endpoint: string;
-  blocked: string;
+  identifierType: string;
   search: string;
   dateRange: { from: Date | null; to: Date | null };
 }
@@ -36,7 +36,7 @@ export function useRateLimitDashboardPage() {
 
   const [filters, setFilters] = useState<FilterState>({
     endpoint: "all",
-    blocked: "all",
+    identifierType: "all",
     search: "",
     dateRange: { from: null, to: null },
   });
@@ -54,11 +54,11 @@ export function useRateLimitDashboardPage() {
       if (filters.endpoint !== "all") {
         query = query.eq("endpoint", filters.endpoint);
       }
-      if (filters.blocked !== "all") {
-        query = query.eq("blocked", filters.blocked === "true");
+      if (filters.identifierType !== "all") {
+        query = query.eq("identifier_type", filters.identifierType);
       }
       if (filters.search) {
-        query = query.ilike("ip_address", `%${filters.search}%`);
+        query = query.ilike("identifier", `%${filters.search}%`);
       }
       if (filters.dateRange.from) {
         query = query.gte("created_at", filters.dateRange.from.toISOString());
@@ -102,12 +102,15 @@ export function useRateLimitDashboardPage() {
   // Stats computation
   const stats = useMemo(() => {
     const logs = logsQuery.data || [];
-    const totalRequests = logs.reduce((sum, log) => sum + log.request_count, 0);
-    const blockedRequests = logs.filter((l) => l.blocked).length;
-    const uniqueIPs = new Set(logs.map((l) => l.ip_address)).size;
+    const totalRequests = logs.reduce((sum, log) => sum + (log.request_count ?? 0), 0);
+    const windowedRequests = logs.reduce(
+      (sum, log) => sum + (log.request_count ?? 0),
+      0
+    );
+    const uniqueIdentifiers = new Set(logs.map((l) => l.identifier)).size;
     const topEndpoints = logs.reduce(
       (acc, log) => {
-        acc[log.endpoint] = (acc[log.endpoint] || 0) + log.request_count;
+        acc[log.endpoint] = (acc[log.endpoint] || 0) + (log.request_count ?? 0);
         return acc;
       },
       {} as Record<string, number>
@@ -115,9 +118,8 @@ export function useRateLimitDashboardPage() {
 
     return {
       totalRequests,
-      blockedRequests,
-      blockedPercentage: logs.length > 0 ? ((blockedRequests / logs.length) * 100).toFixed(1) : "0",
-      uniqueIPs,
+      windowedRequests,
+      uniqueIPs: uniqueIdentifiers,
       topEndpoints: Object.entries(topEndpoints)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5),
