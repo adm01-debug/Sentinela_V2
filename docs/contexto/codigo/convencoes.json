@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)",
    "docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)",
    "fix(deploy): db push --yes para nao abortar com migration pendente (#244)",
    "feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)",
-   "feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)",
-   "docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)"
+   "feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `b657b3e12253d1869bbf41a112153cdd9952cee6` (2026-11-22T15:11:18-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `316357320bf29dcbb5abcc078a701f21c0d721ec` (2026-11-22T16:26:49-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1394), Markdown (176), SQL (127), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1394), Markdown (176), SQL (127), JSON (43), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -27,14 +27,14 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - gerenciador_pacotes: bun
 - node: 20
 - python: n/d
-- deploy: docker, compose/swarm
+- deploy: vercel, docker, compose/swarm
 - monorepo: n/d
 - pastas_fonte: src
 
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1861 |
+| arquivos_total | 1862 |
 | arquivos_codigo | 1414 |
 | linhas_codigo | 151825 |
 | rotas | 55 |
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `316357320` fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)
 - 2026-11-22 `b657b3e12` docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)
 - 2026-11-22 `76f78d12d` fix(deploy): db push --yes para nao abortar com migration pendente (#244)
 - 2026-11-22 `1ff674904` feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `c59b91588` fix(dashboard): personalizador de widgets passa a valer na tela (#234)
 - 2026-11-22 `2dc3b6c74` infra(ci): deploya edge functions no pipeline de producao (#233)
 - 2026-11-22 `ac0d438c7` [create-pull-request] automated change (#208)
-- 2026-11-22 `e39e224c6` fix(ci): fixa a versao do Supabase CLI no deploy (#230)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

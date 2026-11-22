@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "b657b3e12253d1869bbf41a112153cdd9952cee6",
+  "commit": "316357320bf29dcbb5abcc078a701f21c0d721ec",
   "branch": "main",
-  "data_commit": "2026-11-22T15:11:18-03:00",
+  "data_commit": "2026-11-22T16:26:49-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "316357320",
+    "data": "2026-11-22",
+    "assunto": "fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)"
+   },
    {
     "sha": "b657b3e12",
     "data": "2026-11-22",
@@ -126,14 +131,9 @@
     "sha": "9fefa2a60",
     "data": "2026-11-22",
     "assunto": "fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)"
-   },
-   {
-    "sha": "29c45202b",
-    "data": "2026-11-22",
-    "assunto": "feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)"
    }
   ],
-  "arquivos_mudados_7d": 199,
+  "arquivos_mudados_7d": 200,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 146
+    "commits": 147
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1861,
+  "arquivos_total": 1862,
   "arquivos_codigo": 1414,
   "linhas_codigo": 151825,
   "rotas": 55,

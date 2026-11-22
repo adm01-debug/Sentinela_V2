@@ -6,7 +6,7 @@
    "TypeScript (1394)",
    "Markdown (176)",
    "SQL (127)",
-   "JSON (42)",
+   "JSON (43)",
    "YAML (35)",
    "JavaScript (22)",
    "Shell (21)",
@@ -34,6 +34,7 @@
   "node": "20",
   "python": null,
   "deploy": [
+   "vercel",
    "docker",
    "compose/swarm"
   ],
@@ -113,6 +114,7 @@
   "tsconfig.app.json",
   "tsconfig.json",
   "tsconfig.node.json",
+  "vercel.json",
   "vite.config.ts"
  ],
  "workflows": [
@@ -1143,6 +1145,7 @@
  },
  "deploy": {
   "alvos": [
+   "vercel",
    "docker",
    "compose/swarm"
   ],
@@ -1184,7 +1187,15 @@
     ]
    }
   ],
-  "vercel": null
+  "vercel": {
+   "framework": null,
+   "build": null,
+   "rewrites": 1,
+   "redirects": 0,
+   "headers": 0,
+   "ignore_command": null,
+   "crons": []
+  }
  },
  "integracoes": {
   "sdks": [
@@ -1310,7 +1321,7 @@
     "arquivos": 1
    },
    {
-    "host": "sentinela-v2-juca1.vercel.app",
+    "host": "sentinela-v2.vercel.app",
     "arquivos": 1
    },
    {
