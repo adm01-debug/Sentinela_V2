@@ -454,7 +454,7 @@
     },
     {
       "path": "src/components/PolicyGate.tsx",
-      "sha256": "bae2c5ac695f6b78c633eedbf4fd720325dec09f87144c835962fdfac754e3bb"
+      "sha256": "8a42055fd0b5c06cdbd6e56d516243eb3af50ac488a3c14fe934dcf0098acc82"
     },
     {
       "path": "src/components/PolicyToggle.tsx",
@@ -1010,7 +1010,7 @@
     },
     {
       "path": "src/guards/index.tsx",
-      "sha256": "e54a8de9483eccd3e0eb712e0b076f737c7fdefd74046a212240eeed99c38af5"
+      "sha256": "7e5d3a19366005439419e06f357b84a72d344804e51e105ee2307bc6c4a30dae"
     },
     {
       "path": "src/hooks/api.ts",
@@ -1170,7 +1170,7 @@
     },
     {
       "path": "src/hooks/useDashboardLayout.ts",
-      "sha256": "74be5464ee08948f69de49680629801945813e757a5e5b833f49daf2d7b604b9"
+      "sha256": "b84481e9f7ecc8d4547448854ee1aea4b2c7bc7cfb3ca163b3e780395037a533"
     },
     {
       "path": "src/hooks/useDashboardPage.ts",
@@ -1678,7 +1678,7 @@
     },
     {
       "path": "src/pages/__tests__/Dashboard.test.tsx",
-      "sha256": "7f59914fbeb0e013008ec25afd66644137e25d820e1982bce62a1a85587a5d0c"
+      "sha256": "63835cdc5d1f26fd8c0c5640cf87d0aac9845df2a4c5013c52e2509d94e82cbc"
     },
     {
       "path": "src/pages/__tests__/Devices.test.tsx",
@@ -1838,7 +1838,7 @@
     },
     {
       "path": "src/pages/DashboardPage.tsx",
-      "sha256": "0331f46b8b23d62c3245b74d201e30e8964ecd15476b682fe3a20cf48cf921f8"
+      "sha256": "e5c513117d0774f7c3b5029110b529cf2b916e3c9d5f437e36e88bc0e661d5f3"
     },
     {
       "path": "src/pages/DepartmentsPage.tsx",
@@ -1922,7 +1922,7 @@
     },
     {
       "path": "src/providers/AuthProvider.tsx",
-      "sha256": "2b2cc882606eee10952b0cf117c032a116220d240146d5b59cfb9c6ad2af1145"
+      "sha256": "747609f3a9a57dc517c66b55fb3fd4cb8ff0732fc7e9f685efddcbffc7b03f2a"
     },
     {
       "path": "src/services/analyticsService.ts",
@@ -6130,45 +6130,17 @@
     },
     {
       "file": "src/components/PolicyGate.tsx",
-      "line": 5,
+      "line": 7,
       "column": 1,
-      "endLine": 5,
+      "endLine": 7,
       "endColumn": 75,
       "severity": 2,
       "ruleId": "import/order",
       "messageId": null,
-      "message": "`./PolicyAcknowledgmentDialog` import should occur before import of `@/integrations/supabase/client`",
-      "spanHash": "79310c456d9b761664f5a6f66d67eb4ade473ea45c774eba37b6da288727f3d0",
-      "lineHash": "79310c456d9b761664f5a6f66d67eb4ade473ea45c774eba37b6da288727f3d0",
-      "contextHash": "afb5751a3a4a19213412fab25b99bea6a9da809a3f2d0369466c30e8d45d7ca2"
-    },
-    {
-      "file": "src/components/PolicyGate.tsx",
-      "line": 93,
-      "column": 5,
-      "endLine": 93,
-      "endColumn": 24,
-      "severity": 2,
-      "ruleId": "react-hooks/set-state-in-effect",
-      "messageId": null,
-      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/components/PolicyGate.tsx:93:5 91 | 92 | useEffect(() => { > 93 | checkAcknowledgment(); | ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect 94 | }, [employeeName]); 95 | 96 | const handleAcknowledged = () => {",
-      "spanHash": "8d5ea48e7e3595b01cbe950ed2d5ef585dd742ca39f954c93a89b9df10dc28f0",
-      "lineHash": "68c6053d0cbb62890aae865e0538ec70ed624bc3226e29ba0a16ceb10956edf3",
-      "contextHash": "40aa1d7c5d6896e52ff2b153fd673f90c06f0fac7d994d93173c1491d14c9e60"
-    },
-    {
-      "file": "src/components/PolicyGate.tsx",
-      "line": 94,
-      "column": 6,
-      "endLine": 94,
-      "endColumn": 20,
-      "severity": 1,
-      "ruleId": "react-hooks/exhaustive-deps",
-      "messageId": null,
-      "message": "React Hook useEffect has a missing dependency: 'checkAcknowledgment'. Either include it or remove the dependency array.",
-      "spanHash": "eab46057685c1c9db0b33780174d1b33a7e238261238996f24149f8ed188e6c8",
-      "lineHash": "9e198a93b633d0d4324dc842a43edac33c1e324b63e13baf064ea813a3b23e04",
-      "contextHash": "21633e2891fad43f1768859eb7a6e5cb4cca50a69a1347da99c2a59629ebeb9e"
+      "message": "`./PolicyAcknowledgmentDialog` import should occur before import of `@/components/ui/card`",
+      "spanHash": "5b2978d8b099803d9fd98a97150dda558661b2cad6706a2f9ed9afbe590b4b75",
+      "lineHash": "5b2978d8b099803d9fd98a97150dda558661b2cad6706a2f9ed9afbe590b4b75",
+      "contextHash": "54c27385a517fff514d31724c93f70ee073b043eee9f06f7162a9197146c538d"
     },
     {
       "file": "src/components/PolicyToggle.tsx",
@@ -14684,9 +14656,9 @@
     },
     {
       "file": "src/pages/__tests__/Dashboard.test.tsx",
-      "line": 42,
+      "line": 57,
       "column": 32,
-      "endLine": 42,
+      "endLine": 57,
       "endColumn": 35,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -14698,9 +14670,9 @@
     },
     {
       "file": "src/pages/__tests__/Dashboard.test.tsx",
-      "line": 48,
+      "line": 63,
       "column": 33,
-      "endLine": 48,
+      "endLine": 63,
       "endColumn": 36,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",
@@ -14712,9 +14684,9 @@
     },
     {
       "file": "src/pages/__tests__/Dashboard.test.tsx",
-      "line": 56,
+      "line": 71,
       "column": 34,
-      "endLine": 56,
+      "endLine": 71,
       "endColumn": 37,
       "severity": 1,
       "ruleId": "@typescript-eslint/no-explicit-any",

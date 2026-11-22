@@ -6189,6 +6189,14 @@ export type Database = {
       is_country_blocked: { Args: { p_country_code: string }; Returns: boolean }
       is_ip_blocked: { Args: { p_ip_address: string }; Returns: boolean }
       is_ip_whitelisted: { Args: { p_ip_address: string }; Returns: boolean }
+      my_policy_acknowledgment_status: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          has_acknowledged_today: boolean
+          last_acknowledged_at: string
+          is_exempt: boolean
+        }[]
+      }
       user_in_company: {
         Args: { _company_id: string; _user_id: string }
         Returns: boolean
