@@ -36,9 +36,14 @@ jobs:
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
+      # Versao fixada: `latest` faz o setup-cli resolver a release pela API do
+      # GitHub, e o rate limit do runner derrubou o job migrate em 261122
+      # ("Failed to resolve latest Supabase CLI release: rate limit exceeded").
+      # Pinar tambem torna o deploy reproduzivel. Atualizar junto com o
+      # `supabase` local (package.json) quando houver motivo.
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 3.2.0
       - name: Aplicar migrations pendentes
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
