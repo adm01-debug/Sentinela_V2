@@ -2158,7 +2158,7 @@
     },
     {
       "path": "supabase/functions/send-password-reset/index.ts",
-      "sha256": "b599230675320c3c563acb1791b29134154c40c2a54c93d01f520aab759c10b9"
+      "sha256": "565440c471cef0e98ff62d1247b0471666dad768a2080e3d3f371662143e1d8f"
     },
     {
       "path": "supabase/functions/send-scheduled-report/index.ts",
@@ -19878,34 +19878,6 @@
     },
     {
       "file": "supabase/functions/send-password-reset/index.ts",
-      "line": 141,
-      "column": 5,
-      "endLine": 141,
-      "endColumn": 16,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
-      "lineHash": "a5328cd84107b195e888592e1db9c2e8acc768bca60c35de1af7a49022f857d6",
-      "contextHash": "101549e00bc18be532997b31ada127628113b387980427d68f8ae10df7efb438"
-    },
-    {
-      "file": "supabase/functions/send-password-reset/index.ts",
-      "line": 147,
-      "column": 19,
-      "endLine": 147,
-      "endColumn": 22,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "b9ef169b83f8df5c1478e0728e53923ed30ad9a5cc689d612eb82400ae6ad76d",
-      "contextHash": "88b5c41bc57c96d0143c5ab17cccf88f7de5dfba162be616513bfe6ce09a31f8"
-    },
-    {
-      "file": "supabase/functions/send-password-reset/index.ts",
       "line": 16,
       "column": 3,
       "endLine": 16,
@@ -19931,20 +19903,6 @@
       "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
       "lineHash": "81bf708ec9f5489c021ee0a0bf45135d87ce45c0af6aa613406b3257b1880ece",
       "contextHash": "75e583d87e5f54ae603484ab44db8deb53d2d1b755830a3c1b987dff29757ae0"
-    },
-    {
-      "file": "supabase/functions/send-password-reset/index.ts",
-      "line": 70,
-      "column": 5,
-      "endLine": 70,
-      "endColumn": 16,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
-      "lineHash": "af4551bb03a7669f9ee3c5a30e979d6adff2349f108f2f859cabcf437d1d1555",
-      "contextHash": "7de9e61bb9827c4c5bc23dca9652ed9bed0cab45f3c0ab215ec3259ed03aa259"
     },
     {
       "file": "supabase/functions/send-scheduled-report/index.ts",
