@@ -6809,10 +6809,11 @@
     "DashboardPage"
    ],
    "export_default": "DashboardPage",
-   "linhas": 212,
+   "linhas": 223,
    "dominio": "pages",
    "hooks_locais": [
     "useChartColors",
+    "useDashboardLayout",
     "useDashboardStats",
     "useRecentActivity",
     "useRecentAlerts",

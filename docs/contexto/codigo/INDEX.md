@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2dc3b6c744e021c06f6cca339de592a5d6de8bb6` (2026-11-22T12:02:37-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c59b915880a00605a9a578a6b7b15ac0fed46edb` (2026-11-22T12:19:03-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1855 |
 | arquivos_codigo | 1409 |
-| linhas_codigo | 151169 |
+| linhas_codigo | 151209 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `c59b91588` fix(dashboard): personalizador de widgets passa a valer na tela (#234)
 - 2026-11-22 `2dc3b6c74` infra(ci): deploya edge functions no pipeline de producao (#233)
 - 2026-11-22 `ac0d438c7` [create-pull-request] automated change (#208)
 - 2026-11-22 `e39e224c6` fix(ci): fixa a versao do Supabase CLI no deploy (#230)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `9fefa2a60` fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)
 - 2026-11-22 `29c45202b` feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)
 - 2026-11-22 `2659aa0ff` fix(admin): protege 7 rotas /admin com AdminGuard e liga as paginas no menu (#221)
-- 2026-11-22 `f8968d297` chore(db): torna idempotentes as migrations recuperadas do backlog (#220)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(dashboard): personalizador de widgets passa a valer na tela (#234)",
    "infra(ci): deploya edge functions no pipeline de producao (#233)",
    "[create-pull-request] automated change (#208)",
    "fix(ci): fixa a versao do Supabase CLI no deploy (#230)",
-   "feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)",
-   "docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)"
+   "feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

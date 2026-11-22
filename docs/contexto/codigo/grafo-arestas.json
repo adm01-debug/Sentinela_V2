@@ -3047,6 +3047,7 @@
    "src/components/ui/select.tsx",
    "src/hooks/useChartColors.ts",
    "src/hooks/useDashboard.ts",
+   "src/hooks/useDashboardLayout.ts",
    "src/pages/dashboard/DashboardCards.tsx",
    "src/pages/dashboard/DashboardCharts.tsx",
    "src/pages/dashboard/DashboardSkeleton.tsx",

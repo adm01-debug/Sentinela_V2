@@ -2102,7 +2102,7 @@
     "useDashboardLayout",
     "useSaveDashboardLayout"
    ],
-   "linhas": 171,
+   "linhas": 174,
    "dominio": "hooks",
    "tabelas": [
     "dashboard_layouts"
@@ -2119,9 +2119,10 @@
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 1,
+   "usado_por": 2,
    "usado_por_arquivos": [
-    "src/components/DashboardCustomizer.tsx"
+    "src/components/DashboardCustomizer.tsx",
+    "src/pages/DashboardPage.tsx"
    ],
    "coberto_por_testes": 0
   },

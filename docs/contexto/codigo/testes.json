@@ -173,11 +173,11 @@
   {
    "arquivo": "src/pages/__tests__/Dashboard.test.tsx",
    "tipo": "unit",
-   "linhas": 141,
+   "linhas": 167,
    "testa": [
     "src/pages/DashboardPage.tsx"
    ],
-   "casos": 3
+   "casos": 4
   },
   {
    "arquivo": "src/pages/__tests__/Devices.test.tsx",
