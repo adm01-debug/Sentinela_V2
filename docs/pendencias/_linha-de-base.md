@@ -75,11 +75,31 @@ com diretorio em `supabase/functions`).
 | Workflow Actions "Deploy"    | VERMELHO (16 runs seguidos) | "Could not retrieve Project Settings": runner sem `.vercel` |
 | Correcao do Deploy (#194)    | ABERTA (regra 8)            | Passa a auditar o deployment Production em vez de publicar  |
 
+## Edge functions e crons (auditoria 2026-11-21, PR #187)
+
+| Item                                     | Estado                           | Evidencia                                                                                                                                                       |
+| ---------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 5 tabelas usadas por edges ativas        | CRIADAS (RLS ON, anon bloqueado) | sensitive_keywords/productivity_metrics/report_logs/rate_limit_alerts/sync_logs: REST 200 com service key, 42501 com anon                                       |
+| health-check bucket                      | CORRIGIDO                        | usava bucket `screenshots` (inexistente) -> `violation-screenshots`; status `degraded` -> `healthy`                                                             |
+| send-scheduled-report                    | CORRIGIDO                        | coluna inexistente `last_run` -> `last_run_at`; falta de token no `getUser()` + `verify_jwt` -> E2E `{"success":true}`                                          |
+| process-violation-alert notified_admin   | CORRIGIDO                        | marcava `true` mesmo com envio de e-mail falhando; agora so com envio OK (violacao de teste ficou `false`)                                                      |
+| Crons slack-mttr-monitor / weekly-digest | CORRIGIDO                        | auth ausente no cron -> 12x401/24h; recriados com `Authorization`; manual -> 200                                                                                |
+| Colisao de slot nos crons                | CORRIGIDO                        | 3 jobs em todo `:15`; expire-recordings estourava timeout de 5000ms. Escalonado (5,35 / 20 / */15) com timeout 30s. Ciclo real `20:15`/`20:20` -> 200, zero 401 |
+
 ## Faltantes / bloqueios
 
-- Homologar WhatsApp E2E: whatsapp_config vazia em producao; precisa do token da
-  instancia Evolution GO (vive no Vault do Zapp via get_instance_token) OU
-  credenciais Meta reais (nao existem na organizacao).
+- Rodar `whatsapp_config`: tabela existe e RLS vigente, mas sem credenciais reais
+  (Meta ou Evolution GO) nao ha prova de envio ao vivo.
+- Secrets ausentes no projeto: `RESEND_API_KEY`, `SLACK_WEBHOOK_URL`,
+  `LOVABLE_API_KEY`, `MAPBOX_PUBLIC_TOKEN`, `FCM_SERVER_KEY`, `TURN_CREDENTIALS`.
+  Sem eles os canais correspondentes falham (e-mail de alerta, Slack, OCR de
+  screenshot, mapa, push mobile, TURN).
+- Anon key legada (JWT) embutida inline nos comandos de `cron.job`: se a chave for
+  rotacionada, todos os crons passam a levar 401.
+- Codigo morto (hooks sem consumidor): useWhatsAppSettings, useRateLimitSettings,
+  useSubscription, useAppConfig, useScheduledReports, useSessionManager,
+  usePWAPushNotifications; tabelas `subscriptions`, `feature_flags`, `app_config`,
+  `rate_limit_settings`, `whatsapp_settings` nao existem e nao sao usadas em runtime.
 - Rotacionar VERCEL_TOKEN do GitHub Actions (owner do projeto sentinela-v2) para
   o workflow Deploy voltar a verde.
 - Deploy das migrations/edge por PR futura conforme regra 8 (DDL/deploy).
