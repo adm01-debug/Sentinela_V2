@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1e41729eb3d95df1631ed835a887336ac6174774",
+  "commit": "05eebe835b8e40a6001f5e34011b346925b99afc",
   "branch": "main",
-  "data_commit": "2026-11-22T12:56:58-03:00",
+  "data_commit": "2026-11-22T13:11:47-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "05eebe835",
+    "data": "2026-11-22",
+    "assunto": "fix(compliance): registra o aceite de politicas pela pagina de Compliance (#237)"
+   },
    {
     "sha": "1e41729eb",
     "data": "2026-11-22",
@@ -126,14 +131,9 @@
     "sha": "a9bdf6484",
     "data": "2026-11-22",
     "assunto": "fix(infra): cria 5 tabelas usadas por edges ativas e corrige auth de crons e edges (#187)"
-   },
-   {
-    "sha": "37f86916b",
-    "data": "2026-11-22",
-    "assunto": "fix(infra): cron expire-recordings envia Authorization e para de dar 401 (#186)"
    }
   ],
-  "arquivos_mudados_7d": 193,
+  "arquivos_mudados_7d": 195,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 137
+    "commits": 138
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1858,
-  "arquivos_codigo": 1412,
-  "linhas_codigo": 151549,
+  "arquivos_total": 1859,
+  "arquivos_codigo": 1413,
+  "linhas_codigo": 151628,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,7 +328,7 @@
   "tabelas": 159,
   "migrations": 122,
   "cron_jobs": 5,
-  "testes": 75,
+  "testes": 76,
   "workflows": 12,
   "scripts": 31,
   "docs_md": 176
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 106,
-   "linhas": 18261
+   "linhas": 18284
   },
   "src/providers": {
    "arquivos": 9,
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 50,
-   "linhas": 10352
+   "arquivos": 51,
+   "linhas": 10408
   },
   "src/types": {
    "arquivos": 57,

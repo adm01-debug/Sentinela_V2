@@ -3773,7 +3773,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 11916,
+   "linhas": 11939,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -5084,7 +5084,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 50,
+   "testes": 51,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

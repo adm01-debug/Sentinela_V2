@@ -1074,6 +1074,8 @@
    "definida_em": "src/routes/AppRoutes.tsx",
    "redireciona": null,
    "hooks": [
+    "useAuth",
+    "useCallback",
     "useChartColors",
     "useCompliance",
     "useContext",
@@ -1082,13 +1084,20 @@
     "useMemo",
     "useNavigate",
     "useQuery",
-    "useTheme"
+    "useQueryClient",
+    "useRef",
+    "useState",
+    "useTheme",
+    "useToast"
    ],
    "hooks_locais": [
+    "useAuth",
     "useChartColors",
     "useCompliance",
     "useQuery",
-    "useTheme"
+    "useQueryClient",
+    "useTheme",
+    "useToast"
    ],
    "tabelas": [
     "blocked_ips",
@@ -1102,8 +1111,10 @@
    "edges": [],
    "canais_realtime": [],
    "flags": [],
-   "papeis": [],
-   "arquivos_puxados": 22
+   "papeis": [
+    "admin"
+   ],
+   "arquivos_puxados": 29
   },
   {
    "protegida": false,

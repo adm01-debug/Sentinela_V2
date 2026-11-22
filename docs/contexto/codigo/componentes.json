@@ -2448,7 +2448,7 @@
     "policy_acknowledgments"
    ],
    "edges": [],
-   "usado_por": 1,
+   "usado_por": 2,
    "orfao": false
   },
   {
@@ -6711,11 +6711,13 @@
     "CompliancePage"
    ],
    "export_default": "CompliancePage",
-   "linhas": 128,
+   "linhas": 151,
    "dominio": "pages",
    "hooks_locais": [
+    "useAuth",
     "useChartColors",
-    "useCompliance"
+    "useCompliance",
+    "useQueryClient"
    ],
    "tabelas": [],
    "edges": [],

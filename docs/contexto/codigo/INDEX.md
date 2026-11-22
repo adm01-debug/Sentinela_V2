@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1e41729eb3d95df1631ed835a887336ac6174774` (2026-11-22T12:56:58-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `05eebe835b8e40a6001f5e34011b346925b99afc` (2026-11-22T13:11:47-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1392), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1393), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1858 |
-| arquivos_codigo | 1412 |
-| linhas_codigo | 151549 |
+| arquivos_total | 1859 |
+| arquivos_codigo | 1413 |
+| linhas_codigo | 151628 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,7 +48,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 159 |
 | migrations | 122 |
 | cron_jobs | 5 |
-| testes | 75 |
+| testes | 76 |
 | workflows | 12 |
 | scripts | 31 |
 | docs_md | 176 |
@@ -58,7 +58,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (356), src/pages (90), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (49), co-localizado (__tests__) (19), outro (6)
+- testes: co-localizado (*.test) (50), co-localizado (__tests__) (19), outro (6)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (4), scripts/ai-context (2), scripts/inventario (2)
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `05eebe835` fix(compliance): registra o aceite de politicas pela pagina de Compliance (#237)
 - 2026-11-22 `1e41729eb` feat(reports): botao Baixar do relatorio passa a gerar o PDF (#236)
 - 2026-11-22 `c0cba9a37` fix(security): SupervisorGuard deixa de confiar no papel do user_metadata (#235)
 - 2026-11-22 `c59b91588` fix(dashboard): personalizador de widgets passa a valer na tela (#234)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `e2dc03c0b` infra(ci): aplica migrations pendentes no deploy de producao (#222)
 - 2026-11-22 `de8c511c7` fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)
 - 2026-11-22 `6341704bb` docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)
-- 2026-11-22 `9fefa2a60` fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -5,15 +5,15 @@
   "vitest",
   "playwright"
  ],
- "total": 75,
+ "total": 76,
  "por_tipo": {
   "e2e": 1,
-  "unit": 74
+  "unit": 75
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 49
+   "arquivos": 50
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -343,6 +343,15 @@
     "src/lib/circuitBreaker.ts"
    ],
    "casos": 6
+  },
+  {
+   "arquivo": "src/test/compliance-policy-gate.test.tsx",
+   "tipo": "unit",
+   "linhas": 56,
+   "testa": [
+    "src/pages/CompliancePage.tsx"
+   ],
+   "casos": 2
   },
   {
    "arquivo": "src/test/comprehensive-validation.test.ts",
@@ -821,6 +830,7 @@
   "src/pages/AnalyticsPage.tsx": 1,
   "src/pages/AuditLogPage.tsx": 1,
   "src/pages/Auth.tsx": 1,
+  "src/pages/CompliancePage.tsx": 1,
   "src/pages/DashboardPage.tsx": 1,
   "src/pages/DevicesPage.tsx": 1,
   "src/pages/EmployeesPage.tsx": 1,
@@ -853,7 +863,6 @@
    "src/pages/ApiDocsPage.tsx",
    "src/pages/AttendancePage.tsx",
    "src/pages/CalendarPage.tsx",
-   "src/pages/CompliancePage.tsx",
    "src/pages/CustomReportsPage.tsx",
    "src/pages/DataExportPage.tsx",
    "src/pages/GamificationPage.tsx",

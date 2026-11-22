@@ -3012,11 +3012,13 @@
    "src/components/ui/card.tsx"
   ],
   "src/pages/CompliancePage.tsx": [
+   "src/components/PolicyAcknowledgmentDialog.tsx",
    "src/components/layout/PageHeader.tsx",
    "src/components/ui/badge.tsx",
    "src/components/ui/card.tsx",
    "src/components/ui/progress.tsx",
    "src/components/ui/skeleton.tsx",
+   "src/hooks/useAuth.ts",
    "src/hooks/useChartColors.ts",
    "src/hooks/useCompliance.ts"
   ],
