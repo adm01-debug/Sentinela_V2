@@ -159,15 +159,19 @@ function PolicyAcknowledgmentDialogBase({
 
       if (uploadError) throw uploadError;
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
+      // O bucket e privado: getPublicUrl devolveria uma URL que nao abre.
+      // A policy de SELECT exige a pasta do proprio usuario, entao a URL
+      // assinada de 1 ano e a unica forma de a foto continuar legivel.
+      const { data: urlData, error: urlError } = await supabase.storage
         .from("acknowledgment-photos")
-        .getPublicUrl(fileName);
+        .createSignedUrl(fileName, 60 * 60 * 24 * 365);
+
+      if (urlError) throw urlError;
 
       // Insert acknowledgment record
       const { error: insertError } = await supabase.from("policy_acknowledgments").insert({
         employee_name: employeeName,
-        photo_url: urlData.publicUrl,
+        photo_url: urlData.signedUrl,
         latitude: location.lat,
         longitude: location.lng,
         location_address: location.address,
