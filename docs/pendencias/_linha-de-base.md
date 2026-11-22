@@ -1,7 +1,9 @@
 # Linha de base - estado real de Sentinela_V2
 
-Atualizado em 2026-11-21 (sessao autopilot - contratos front<->banco #189-#193,
-varredura dos 332 selects, auditoria do Deploy #194, OrgChart #195).
+Atualizado em 2026-11-22 (sessao autopilot - migrations automaticas no deploy
+#222/#227/#228, MFAGuard #229, orfaos #223, mcp-query sem proxy admin #221).
+Antes: 2026-11-21 (contratos front<->banco #189-#193, varredura dos 332 selects,
+auditoria do Deploy #194, OrgChart #195).
 Todo item listado foi verificado com evidencia real (banco, RPC, edge function ou
 merge). Estrategia: nenhum trabalho parcial de agente de IA e descartado; item
 parcial e continuado ou registrado com dono.
@@ -14,7 +16,7 @@ parcial e continuado ou registrado com dono.
 | whatsapp_templates + whatsapp_config (RLS ON, triggers)     | APLICADA e validada      | CRUD real (insert/update/delete) OK; REST 404 -> 200             |
 | Migration #182 whatsapp_config provider Evolution (aditiva) | APLICADA e validada      | Colunas provider/evolution_api_url/evolution_instance_* existem  |
 | RLS whatsapp_config (3 policies admin)                      | VIGENTE                  | pg_policies: INSERT/UPDATE/SELECT so has_role(admin)             |
-| supabase_migrations.schema_migrations                       | 105/105 alinhado ao repo | Registradas 20261120133000, 20261121120000 e 20261121103305      |
+| supabase_migrations.schema_migrations                       | 122/122 alinhado ao repo | Zero divergencia nas duas direcoes (auditoria 2026-11-22)        |
 | get_user_permissions / has_permission / has_role            | EXISTEM no banco         | EXECUTE anon REVOGADO (PR #175); authenticated/service_role OK   |
 | entity_versions INSERT endurecido (PR #179)                 | APLICADO e validado      | anon 401; autenticado 201; changed_by alheio 403                 |
 | check_permission                                            | NAO existe (0)           | Migration granular_roles nunca aplicada (ou drop); front nao usa |
@@ -69,11 +71,33 @@ com diretorio em `supabase/functions`).
 
 ## Deploy / producao
 
-| Item                         | Estado                      | Evidencia                                                   |
-| ---------------------------- | --------------------------- | ----------------------------------------------------------- |
-| Site sentinela-v2.vercel.app | NO AR (200)                 | Deploy nativo Git<->Vercel entrega main a cada push         |
-| Workflow Actions "Deploy"    | VERMELHO (16 runs seguidos) | "Could not retrieve Project Settings": runner sem `.vercel` |
-| Correcao do Deploy (#194)    | ABERTA (regra 8)            | Passa a auditar o deployment Production em vez de publicar  |
+| Item                         | Estado                    | Evidencia                                                        |
+| ---------------------------- | ------------------------- | ---------------------------------------------------------------- |
+| Site sentinela-v2.vercel.app | NO AR (200)               | Deploy nativo Git<->Vercel entrega main a cada push              |
+| Workflow Actions "Deploy"    | VERDE (auditoria)         | #194: passa a auditar o deployment Production em vez de publicar |
+| Job `migrate` do Deploy      | VERDE, aplica DDL sozinho | #222 + #227 + #228: `supabase db push --remote --include-all`    |
+
+### Migrations automaticas no deploy (fechado em 261122)
+
+O merge que toca banco **nao fica mais so no GitHub**. O job `migrate` do
+`Deploy` roda em todo push para `main`, aplica o que falta e registra em
+`supabase_migrations.schema_migrations`.
+
+Secrets criados nesta rodada: `SUPABASE_ACCESS_TOKEN` (Management API) e
+`SUPABASE_DB_PASSWORD`.
+
+Duas correcoes depois do merge, ambas provadas em producao:
+
+1. `db push` sem flag ia para o **stack local** (`127.0.0.1:54322`) e morria com
+   `ECONNREFUSED`. Corrigido com `--remote` (#228). `--linked` tambem funciona
+   mas emite deprecacao para a v4.
+2. `setup-cli` com `version: latest` consulta a API do GitHub e o runner
+   estourou rate limit ("Failed to resolve latest Supabase CLI release"). A
+   versao agora e fixada no workflow (#230).
+
+Prova: run `45027956442`, job `migrate: success`, log
+`Remote database is up to date.` Repo e banco: 122 migrations de cada lado,
+zero divergencia nas duas direcoes.
 
 ## Edge functions e crons (auditoria 2026-11-21, PR #187)
 
@@ -132,7 +156,7 @@ As 3 paginas antes tratadas como orfas **nao sao**:
 | Componente                | Por que nao foi integrado                                      |
 | ------------------------- | -------------------------------------------------------------- |
 | `UserMenu`                | Duplica o menu do `Header`; dois menus na mesma tela           |
-| `MFAVerify`               | Sub-fluxo de MFA que nenhum fluxo de login chama               |
+| `MFAVerify`               | **INTEGRADO** via `MFAGuard` no login (PR #229)                |
 | `SessionPlayback`         | Duplica `SessionRecordingsPage`, que ja esta em rota           |
 | `SimulateViolationButton` | Semeia violacao de demonstracao; nao deve existir em producao  |
 | `LiveViewCard`            | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223) |
@@ -163,15 +187,33 @@ tem 0 ocorrencias de `body.admin` e `admin.path` (antes tinham 17 ocorrencias de
 `admin`); POST sem header e com header errado retornam 401, inclusive no
 payload `{"admin":{...}}`.
 
+## Seguranca / 2FA (fechado em 261122)
+
+`MFAVerify.tsx` e `useMFAStatus()` existiam e funcionavam, mas **nenhum codigo
+checava o AAL da sessao**. Na pratica: quem cadastrava um fator continuava
+entrando so com a senha. Agora `src/guards/MFAGuard.tsx` envolve o `MainLayout`
+e pede o codigo quando `nextLevel === 'aal2'` e `currentLevel !== 'aal2'`.
+
+- `auth.mfa_factors` = **0 linhas** em producao: ninguem tem fator, o guard
+  libera todo mundo. Risco de lockout ao religar: zero.
+- Falha **aberta** em erro da Auth API (documentado no codigo): prender todos
+  por indisponibilidade e pior que o risco coberto, e o RLS continua valendo.
+- Testes: `src/test/mfa-guard.test.tsx`, 4 casos (sem fator, AAL1 com fator,
+  AAL2, erro da API).
+
+Divida conhecida de seguranca (baixa prioridade, `anon` sem EXECUTE):
+`log_activity`, `auto_log_activity` e `record_violation_action` sao
+`SECURITY DEFINER` sem `SET search_path`.
+
 ## Proximos passos registrados
 
 1. Homologar WhatsApp E2E: falta `EVOLUTION_INSTANCE_TOKEN` (GO do Zapp) ou
    credenciais Meta reais em `whatsapp_config`; sem isso o envio real nao pode
    ser provado.
-2. Avaliar as PRs de regra 8 (DDL/deploy): #184 (revoga exec_sql anon), #186
-   (auth do cron expire-recordings), #187 (5 tabelas de edges), #185 (5 tabelas
-   do front + contrato generate-report) e #194 (auditoria do Deploy).
+2. As 38 edge functions que existem no repo e **nao** existem em producao sao
+   codigo morto: nenhuma aparece em `functions.invoke()` do front e nenhuma em
+   pg_cron. As 34 que o front chama estao todas deployadas. Decidir se remove
+   ou se mantem como plano futuro.
 3. Bancos de rota: manter ratchets dos CI zerados a cada merge.
-4. **#222 (migrations no deploy) aguarda o secret `SUPABASE_DB_PASSWORD`** no
-   GitHub. O job `migrate` esta escrito e validado por `actionlint`, e hoje
-   nasce verde porque repo e producao tem as mesmas 122 migrations (0 pendentes).
+4. `PolicyGate` segue desmontado (trancava todo o sistema, #225). Religar exige
+   caminho de liberacao para admin — o upload do aceite ja foi corrigido (#226).
