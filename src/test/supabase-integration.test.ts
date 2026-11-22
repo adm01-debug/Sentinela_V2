@@ -137,23 +137,23 @@ describe('Realtime Subscriptions', () => {
 
 describe('Storage Operations', () => {
   it('should upload file', async () => {
-    const { data, error } = await supabase.storage.from('screenshots').upload('test.png', new Blob());
+    const { data, error } = await supabase.storage.from('violation-screenshots').upload('test.png', new Blob());
     expect(error).toBeNull();
     expect(data?.path).toBe('test.png');
   });
 
   it('should get public URL', () => {
-    const { data } = supabase.storage.from('screenshots').getPublicUrl('test.png');
+    const { data } = supabase.storage.from('violation-screenshots').getPublicUrl('test.png');
     expect(data.publicUrl).toContain('test.png');
   });
 
   it('should list files', async () => {
-    const { error } = await supabase.storage.from('screenshots').list();
+    const { error } = await supabase.storage.from('violation-screenshots').list();
     expect(error).toBeNull();
   });
 
   it('should delete file', async () => {
-    const { error } = await supabase.storage.from('screenshots').remove(['test.png']);
+    const { error } = await supabase.storage.from('violation-screenshots').remove(['test.png']);
     expect(error).toBeNull();
   });
 });
