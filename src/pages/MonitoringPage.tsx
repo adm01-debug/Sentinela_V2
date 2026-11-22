@@ -20,6 +20,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { useMonitoringPage } from '@/hooks/useMonitoringPage';
 import { useChartColors } from '@/hooks/useChartColors';
+import { KeystrokeActivityCard } from '@/components/KeystrokeActivityCard';
+import { ProductivityCard } from '@/components/ProductivityCard';
+import { LiveViewCard } from '@/components/LiveViewCard';
+import { ScreenCapturesCard } from '@/components/ScreenCapturesCard';
 
 const statusColors: Record<string, string> = {
   online: 'bg-success',
@@ -288,6 +292,17 @@ export default function MonitoringPage() {
           )}
         </SheetContent>
       </Sheet>
+
+      {/* Atividade, produtividade e capturas da equipe */}
+      <section className="mt-8 space-y-4">
+        <h3 className="text-lg font-semibold">Atividade e produtividade da equipe</h3>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <LiveViewCard />
+          <KeystrokeActivityCard />
+          <ProductivityCard />
+          <ScreenCapturesCard />
+        </div>
+      </section>
     </div>
   );
 }
