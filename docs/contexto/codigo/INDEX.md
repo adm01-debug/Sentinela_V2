@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `d5ef6cbbb8052313fb66e607a389caaf6a580344` (2026-11-22T14:56:46-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1ff6749043f26d42a689919f9a93d35e504e0397` (2026-11-22T14:57:03-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1861 |
 | arquivos_codigo | 1414 |
-| linhas_codigo | 151818 |
+| linhas_codigo | 151825 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -287,7 +287,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - tabelas_usadas_sem_definicao: 5 — ex.: activities, backups, employee_locations
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
-- componentes_orfaos: 95 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
+- componentes_orfaos: 94 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
 - componentes_com_nome_duplicado: 48 — ex.: ActivityHeatmap, AnalyticsProvider, AppProviders
 - scripts_orfaos: 1 — ex.: scripts/release.sh
 - env_usadas_nao_declaradas: 8 — ex.: DEV, MODE, PROD
@@ -304,7 +304,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (12)
 - docs/pendencias/_linha-de-base.md (10)
-- src/routes/AppRoutes.tsx (7)
+- src/routes/AppRoutes.tsx (8)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
 - src/index.css (5)
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `1ff674904` feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)
 - 2026-11-22 `d5ef6cbbb` feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)
 - 2026-11-22 `5ec7ddcb9` docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)
 - 2026-11-22 `ed7e2aa98` docs: registra o estado real do PolicyGate na linha de base (#242)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `e39e224c6` fix(ci): fixa a versao do Supabase CLI no deploy (#230)
 - 2026-11-22 `9659a9396` feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)
 - 2026-11-22 `6a84684c1` docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)
-- 2026-11-22 `faa3948a7` feat(seguranca): exige o segundo fator quando a conta tem MFA cadastrado (#229)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

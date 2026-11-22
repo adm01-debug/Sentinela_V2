@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)",
    "feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)",
    "docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)",
    "docs: registra o estado real do PolicyGate na linha de base (#242)",
-   "fix(rotas): ROUTES.ADMIN_TELEMETRY aponta para a rota real /admin/telemetria (#241)",
-   "fix(compliance): foto do aceite usa URL assinada em bucket privado (#238)"
+   "fix(rotas): ROUTES.ADMIN_TELEMETRY aponta para a rota real /admin/telemetria (#241)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

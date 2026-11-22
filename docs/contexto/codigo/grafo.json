@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1337,
- "arestas": 2749,
+ "arestas": 2750,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -235,7 +235,6 @@
   "src/components/NotificationsDropdown.tsx",
   "src/components/NotificationsPanel.tsx",
   "src/components/PWAInstallPrompt.tsx",
-  "src/components/PolicyGate.tsx",
   "src/components/RealtimeActivityFilters.tsx",
   "src/components/RealtimeClicksCard.tsx",
   "src/components/RealtimeKeystrokesCard.tsx",
@@ -498,7 +497,8 @@
   "src/hooks/useLongPress.ts",
   "src/hooks/useMap.ts",
   "src/hooks/useMapbox.ts",
-  "src/hooks/useMeasure.ts"
+  "src/hooks/useMeasure.ts",
+  "src/hooks/useMediaDevices.ts"
  ],
  "modulos_mais_acoplados": [
   {
@@ -507,14 +507,14 @@
    "importado_por": 27
   },
   {
+   "modulo": "components",
+   "depende_de": 17,
+   "importado_por": 18
+  },
+  {
    "modulo": "components/ui",
    "depende_de": 3,
    "importado_por": 32
-  },
-  {
-   "modulo": "components",
-   "depende_de": 17,
-   "importado_por": 17
   },
   {
    "modulo": "lib",
@@ -553,7 +553,7 @@
   },
   {
    "modulo": "routes",
-   "depende_de": 8,
+   "depende_de": 9,
    "importado_por": 0
   },
   {

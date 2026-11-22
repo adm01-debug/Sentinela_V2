@@ -188,7 +188,8 @@
     "pages/admin",
     "pages/dashboard",
     "pages/dev",
-    "providers"
+    "providers",
+    "routes"
    ],
    "depende_de_modulos": [
     "components/data-display",
@@ -4548,7 +4549,7 @@
    "modulo": "routes",
    "arquivos": 1,
    "testes": 0,
-   "linhas": 387,
+   "linhas": 394,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -4834,7 +4835,8 @@
    "rpcs": [
     "get_ip_whitelist_info",
     "get_user_permissions",
-    "has_permission"
+    "has_permission",
+    "my_policy_acknowledgment_status"
    ],
    "buckets": [],
    "canais_realtime": [
@@ -4887,6 +4889,7 @@
    },
    "importado_por_outros_modulos": [],
    "depende_de_modulos": [
+    "components",
     "components/layout",
     "components/ui",
     "constants",

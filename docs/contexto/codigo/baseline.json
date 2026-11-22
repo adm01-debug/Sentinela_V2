@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "d5ef6cbbb8052313fb66e607a389caaf6a580344",
+  "commit": "1ff6749043f26d42a689919f9a93d35e504e0397",
   "branch": "main",
-  "data_commit": "2026-11-22T14:56:46-03:00",
+  "data_commit": "2026-11-22T14:57:03-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "1ff674904",
+    "data": "2026-11-22",
+    "assunto": "feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)"
+   },
    {
     "sha": "d5ef6cbbb",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "f8968d297",
     "data": "2026-11-22",
     "assunto": "chore(db): torna idempotentes as migrations recuperadas do backlog (#220)"
-   },
-   {
-    "sha": "4867d1935",
-    "data": "2026-11-22",
-    "assunto": "fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)"
    }
   ],
   "arquivos_mudados_7d": 199,
@@ -164,11 +164,11 @@
     "mudancas": 10
    },
    {
-    "pasta": "src/components/ui",
-    "mudancas": 7
+    "pasta": "src/routes/AppRoutes.tsx",
+    "mudancas": 8
    },
    {
-    "pasta": "src/routes/AppRoutes.tsx",
+    "pasta": "src/components/ui",
     "mudancas": 7
    },
    {
@@ -223,7 +223,7 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "docs/prod-readiness.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 143
+    "commits": 144
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1861,
   "arquivos_codigo": 1414,
-  "linhas_codigo": 151818,
+  "linhas_codigo": 151825,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 387
+   "linhas": 394
   },
   "src/services": {
    "arquivos": 8,
@@ -770,7 +770,6 @@
    "src/components/NotificationCenter.tsx",
    "src/components/NotificationsDropdown.tsx",
    "src/components/NotificationsPanel.tsx",
-   "src/components/PolicyGate.tsx",
    "src/components/PWAInstallPrompt.tsx",
    "src/components/RealtimeActivityFilters.tsx",
    "src/components/RealtimeClicksCard.tsx",

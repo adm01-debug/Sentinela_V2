@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "total": 464,
- "orfaos": 95,
+ "orfaos": 94,
  "nomes_duplicados": {
   "ActivityHeatmap": [
    "src/components/ActivityHeatmap.tsx",
@@ -2464,8 +2464,8 @@
    ],
    "tabelas": [],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/PolicyToggle.tsx",
@@ -7735,7 +7735,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 387,
+   "linhas": 394,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],
