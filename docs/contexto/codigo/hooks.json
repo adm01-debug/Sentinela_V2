@@ -10324,7 +10324,7 @@
    "hooks_exportados": [
     "useAuth"
    ],
-   "linhas": 262,
+   "linhas": 269,
    "dominio": "providers",
    "tabelas": [
     "user_roles"

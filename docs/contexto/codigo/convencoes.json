@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (47)",
+   "co-localizado (*.test) (48)",
    "co-localizado (__tests__) (19)",
    "outro (6)"
   ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(security): SupervisorGuard deixa de confiar no papel do user_metadata (#235)",
    "fix(dashboard): personalizador de widgets passa a valer na tela (#234)",
    "infra(ci): deploya edge functions no pipeline de producao (#233)",
    "[create-pull-request] automated change (#208)",
-   "fix(ci): fixa a versao do Supabase CLI no deploy (#230)",
-   "feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)"
+   "fix(ci): fixa a versao do Supabase CLI no deploy (#230)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

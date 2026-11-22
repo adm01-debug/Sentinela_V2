@@ -5,15 +5,15 @@
   "vitest",
   "playwright"
  ],
- "total": 73,
+ "total": 74,
  "por_tipo": {
   "e2e": 1,
-  "unit": 72
+  "unit": 73
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 47
+   "arquivos": 48
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -657,6 +657,15 @@
    "casos": 14
   },
   {
+   "arquivo": "src/test/supervisor-guard.test.tsx",
+   "tipo": "unit",
+   "linhas": 88,
+   "testa": [
+    "src/guards/index.tsx"
+   ],
+   "casos": 4
+  },
+  {
    "arquivo": "src/test/telemetry.test.ts",
    "tipo": "unit",
    "linhas": 1242,
@@ -753,6 +762,7 @@
   "src/constants/index.ts": 1,
   "src/constants/routes.ts": 2,
   "src/guards/MFAGuard.tsx": 1,
+  "src/guards/index.tsx": 1,
   "src/hooks/useAccessControl.ts": 1,
   "src/hooks/useApplicationRules.ts": 1,
   "src/hooks/useChartColors.ts": 1,

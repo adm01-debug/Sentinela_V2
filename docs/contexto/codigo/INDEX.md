@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c59b915880a00605a9a578a6b7b15ac0fed46edb` (2026-11-22T12:19:03-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c0cba9a379c4c643adb316d05a845304d65faa19` (2026-11-22T12:34:20-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1389), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1390), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1855 |
-| arquivos_codigo | 1409 |
-| linhas_codigo | 151209 |
+| arquivos_total | 1856 |
+| arquivos_codigo | 1410 |
+| linhas_codigo | 151311 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,7 +48,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 159 |
 | migrations | 122 |
 | cron_jobs | 5 |
-| testes | 73 |
+| testes | 74 |
 | workflows | 12 |
 | scripts | 31 |
 | docs_md | 176 |
@@ -58,7 +58,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (356), src/pages (90), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (64), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (47), co-localizado (__tests__) (19), outro (6)
+- testes: co-localizado (*.test) (48), co-localizado (__tests__) (19), outro (6)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (4), scripts/ai-context (2), scripts/inventario (2)
@@ -272,7 +272,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, MCP_SECRET, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
 ## Permissões / papéis
-- papéis no código: status (20), admin (13), alert (13), user (8), button (7), combobox (3), list (3), progressbar (3), dialog (2), presentation (2), region (2), Admin (1), agent (1), developer (1), editor (1), group (1), img (1), link (1), listitem (1), main (1), navigation (1), null (1), object (1), separator (1), sup (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
+- papéis no código: status (20), admin (14), alert (13), user (9), button (7), combobox (3), list (3), progressbar (3), dialog (2), presentation (2), region (2), Admin (1), agent (1), developer (1), editor (1), group (1), img (1), link (1), listitem (1), main (1), navigation (1), null (1), object (1), separator (1), sup (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
 - enums de papel: app_role: admin|user; user_role_type: viewer|supervisor|manager|admin|super_admin
 - guards: src/guards/MFAGuard.tsx, src/guards/index.tsx · rotas protegidas: 20 · públicas: /*, /activities/:id, /activities/timeline, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /reports/scheduled, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
 - feature flags: FEATURE_FLAGS, FEATURE_KEYS, FEATURE_TO_FACTOR, FEATURE_X, advancedReports, darkMode, exportPDF, mobileApp, newDashboard, nova-tela, novo-inbox
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `c0cba9a37` fix(security): SupervisorGuard deixa de confiar no papel do user_metadata (#235)
 - 2026-11-22 `c59b91588` fix(dashboard): personalizador de widgets passa a valer na tela (#234)
 - 2026-11-22 `2dc3b6c74` infra(ci): deploya edge functions no pipeline de producao (#233)
 - 2026-11-22 `ac0d438c7` [create-pull-request] automated change (#208)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `6341704bb` docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)
 - 2026-11-22 `9fefa2a60` fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)
 - 2026-11-22 `29c45202b` feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)
-- 2026-11-22 `2659aa0ff` fix(admin): protege 7 rotas /admin com AdminGuard e liga as paginas no menu (#221)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

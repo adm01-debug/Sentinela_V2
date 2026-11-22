@@ -1687,7 +1687,7 @@
    "modulo": "guards",
    "arquivos": 2,
    "testes": 0,
-   "linhas": 138,
+   "linhas": 145,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -1710,8 +1710,7 @@
    "flags": [],
    "papeis": [
     "admin",
-    "alert",
-    "supervisor"
+    "alert"
    ],
    "diretos": {
     "edges": [],
@@ -4473,7 +4472,7 @@
    "modulo": "providers",
    "arquivos": 9,
    "testes": 0,
-   "linhas": 518,
+   "linhas": 525,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -4875,7 +4874,6 @@
     "progressbar",
     "region",
     "status",
-    "supervisor",
     "tab",
     "tablist",
     "user"
@@ -5086,7 +5084,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 48,
+   "testes": 49,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

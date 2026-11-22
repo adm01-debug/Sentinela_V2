@@ -5919,7 +5919,7 @@
     "SupervisorGuard"
    ],
    "export_default": null,
-   "linhas": 70,
+   "linhas": 77,
    "dominio": "guards",
    "hooks_locais": [
     "useAuth"
@@ -7659,7 +7659,7 @@
     "User"
    ],
    "export_default": null,
-   "linhas": 262,
+   "linhas": 269,
    "dominio": "providers",
    "hooks_locais": [],
    "tabelas": [
