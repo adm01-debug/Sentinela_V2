@@ -86,7 +86,7 @@ const handler = async (req: Request): Promise<Response> => {
       type: "recovery",
       email: email,
       options: {
-        redirectTo: `${(Deno.env.get("SITE_URL") || "https://sentinela-v2-juca1.vercel.app").replace(/\/$/, "")}/reset-password`,
+        redirectTo: `${(Deno.env.get("SITE_URL") || "https://sentinela-v2.vercel.app").replace(/\/$/, "")}/reset-password`,
       },
     });
 
@@ -113,7 +113,7 @@ const handler = async (req: Request): Promise<Response> => {
     // (external_email_enabled), entao caimos nele via resetPasswordForEmail,
     // que usa o template de recuperacao e o mesmo redirectTo.
     if (!RESEND_API_KEY) {
-      const siteUrl = (Deno.env.get("SITE_URL") || "https://sentinela-v2-juca1.vercel.app").replace(
+      const siteUrl = (Deno.env.get("SITE_URL") || "https://sentinela-v2.vercel.app").replace(
         /\/$/,
         ""
       );
