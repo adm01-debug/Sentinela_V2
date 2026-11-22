@@ -14,6 +14,8 @@ export interface User {
   role?: string;
   avatar?: string;
   isAdmin?: boolean;
+  /** true quando role veio de user_roles; metadata nunca conta como papel. */
+  roleFromDb?: boolean;
   onboardingCompleted?: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -93,18 +95,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       let queryDone = false;
       let resolvedIsAdmin = false;
+      let resolvedRole = 'user';
 
       supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', mapped.id)
-        .eq('role', 'admin')
+        .in('role', ['admin', 'supervisor'])
         .maybeSingle()
         .then((res) => {
           if (res.error && res.error.code !== 'PGRST116') {
             logger.warn(`[AuthProvider] Role check warning for ${mapped.id}:`, res.error.message);
           }
-          resolvedIsAdmin = !!res.data;
+          resolvedIsAdmin = res.data?.role === 'admin';
+          resolvedRole = res.data?.role ?? 'user';
         })
         .catch((err) => {
           logger.error('[AuthProvider] checkAdminRole failed:', err);
@@ -119,7 +123,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             return {
               ...current,
               isAdmin: resolvedIsAdmin,
-              role: resolvedIsAdmin ? 'admin' : (current.role === 'admin' ? 'user' : current.role || 'user'),
+              roleFromDb: true,
+              // user_metadata e editavel pelo proprio usuario (updateUser), entao
+              // o papel NUNCA pode ser herdado dele: so user_roles decide.
+              role: resolvedRole,
             };
           });
           // Only flip isRoleLoading if the timeout hasn't already done it.
