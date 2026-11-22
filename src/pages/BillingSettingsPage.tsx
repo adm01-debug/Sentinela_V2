@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Check, X, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useSubscription } from '@/hooks/useSubscription';
 
-type PlanKey = 'basic' | 'silver' | 'gold' | 'enterprise';
+type PlanKey = 'free' | 'starter' | 'professional' | 'enterprise';
 
 interface Plan {
   key: PlanKey;
@@ -33,8 +33,8 @@ const FEATURE_KEYS: Array<{ key: string; label: string }> = [
 
 const PLANS: Plan[] = [
   {
-    key: 'basic',
-    name: 'Basic',
+    key: 'free',
+    name: 'Free',
     tagline: 'Para times pequenos',
     retention: '30 dias',
     screenshotRetention: '1 dia',
@@ -52,8 +52,8 @@ const PLANS: Plan[] = [
     },
   },
   {
-    key: 'silver',
-    name: 'Silver',
+    key: 'starter',
+    name: 'Starter',
     tagline: 'Times em crescimento',
     retention: '60 dias',
     screenshotRetention: '3 dias',
@@ -71,8 +71,8 @@ const PLANS: Plan[] = [
     },
   },
   {
-    key: 'gold',
-    name: 'Gold',
+    key: 'professional',
+    name: 'Professional',
     tagline: 'Recursos avançados',
     retention: '90 dias',
     screenshotRetention: '5 dias',
@@ -111,8 +111,17 @@ const PLANS: Plan[] = [
   },
 ];
 
+const PLAN_STATUS_LABEL: Record<string, string> = {
+  active: 'Ativo',
+  trialing: 'Em teste',
+  past_due: 'Pagamento pendente',
+  cancelled: 'Cancelado',
+  inactive: 'Inativo',
+};
+
 export default function BillingSettingsPage() {
-  const [currentPlan] = useState<PlanKey>('gold');
+  const { subscription, isLoading } = useSubscription();
+  const currentPlan: PlanKey | null = subscription ? (subscription.plan as PlanKey) : null;
   const { toast } = useToast();
 
   const handleUpgrade = (planName: string) => {
@@ -128,6 +137,44 @@ export default function BillingSettingsPage() {
         <h1 className="text-2xl font-bold">Planos e Cobrança</h1>
         <p className="text-muted-foreground">Compare os planos disponíveis e escolha o que atende sua operação.</p>
       </div>
+
+      {isLoading ? (
+        <p className="text-sm text-muted-foreground">Carregando assinatura...</p>
+      ) : !subscription ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Sem assinatura registrada</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground">
+            Nenhuma assinatura encontrada para este usuário. Os planos abaixo mostram o que está disponível; solicite contato para ativar.
+          </CardContent>
+        </Card>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              Plano atual
+              <Badge variant={subscription.status === 'active' ? 'default' : 'outline'}>
+                {PLAN_STATUS_LABEL[subscription.status]}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-1 text-sm">
+            <p className="font-medium capitalize">{subscription.plan}</p>
+            {subscription.currentPeriodEnd && (
+              <p className="text-muted-foreground">
+                Período atual até {new Date(subscription.currentPeriodEnd).toLocaleDateString('pt-BR')}
+                {subscription.cancelAtPeriodEnd && ' (não renova)'}
+              </p>
+            )}
+            <p className="text-muted-foreground">
+              {subscription.features.length > 0
+                ? `${subscription.features.length} recursos inclusos`
+                : 'Nenhum recurso extra incluso'}
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {PLANS.map((plan) => (
