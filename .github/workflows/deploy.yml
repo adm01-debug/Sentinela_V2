@@ -51,7 +51,11 @@ jobs:
         run: |
           set -euo pipefail
           supabase link --project-ref jgnmwvzephsozsqmcpzb
-          supabase db push --remote --include-all
+          # --yes e obrigatorio: com migration pendente o CLI pede confirmacao
+          # e, sem terminal, aborta com "Confirmation required ... Nothing was
+          # changed". O job ficava vermelho e a migration nao era aplicada
+          # (aconteceu no deploy de 261122, run 45052256730).
+          supabase db push --remote --include-all --yes
 
   # Publica em producao TODAS as edge functions versionadas em supabase/functions.
   # Antes disto o workflow so aplicava migrations: uma correcao de edge function
