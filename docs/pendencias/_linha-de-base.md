@@ -215,7 +215,7 @@ Divida conhecida de seguranca (baixa prioridade, `anon` sem EXECUTE):
    pg_cron. As 34 que o front chama estao todas deployadas. Decidir se remove
    ou se mantem como plano futuro.
 3. Bancos de rota: manter ratchets dos CI zerados a cada merge.
-4. `PolicyGate` — **RESOLVIDO no banco, montagem aguarda aval (regra 8)**.
+4. PolicyGate — **RESOLVIDO E NO AR** (banco + codigo na main).
 
    Por que trancava (PR #223, revert 75596b2b5): a RLS de SELECT de
    `policy_acknowledgments` e `has_role(auth.uid(),'admin')` e a tabela **nao
@@ -233,10 +233,11 @@ Divida conhecida de seguranca (baixa prioridade, `anon` sem EXECUTE):
    excecao, retorno vazio ou `uid` nulo liberam o acesso. Um gate de
    conformidade nunca pode virar lockout.
 
-   Pendencias: PRs **#239** (migration + componente) e **#240** (remontagem em
-   `AppRoutes.tsx`) abertas, CI verde, aguardando aval por serem DDL.
-   **Ordem obrigatoria: #239 antes da #240** — mergear a #240 sozinha
-   reinstala o gate antigo e repete o lockout.
+   **Mergeado e no ar**: #239 (`d5ef6cbbb`) + #240 (`1ff674904`), deploy
+   45052923004 com os 3 jobs verdes. Homologado E2E na main final com JWT de
+   usuario comum: RPC `false` -> INSERT `201` -> RPC `true`
+   (`last_acknowledged_at: 2026-11-22T18:06:22`). Banco restaurado depois
+   (0 aceites, 2 usuarios).
 
    Bug corrigido na #239 (commit 2be63c533): o `PolicyAcknowledgmentDialog` inseria
    o aceite **sem `user_id`**, mas a RPC filtra por ele. O funcionario aceitava,
