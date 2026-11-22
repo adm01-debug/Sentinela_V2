@@ -11,6 +11,7 @@ import { RouteErrorBoundary } from "@/components/layout/RouteErrorBoundary";
 
 const Auth = lazy(() => import("@/pages/Auth"));
 const ForgotPasswordPage = lazy(() => import("@/pages/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(() => import("@/pages/ResetPasswordPage"));
 const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
 const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 const EmployeesPage = lazy(() => import("@/pages/EmployeesPage"));
@@ -133,6 +134,9 @@ export const AppRoutes = () => (
             </GuestGuard>
           }
         />
+        {/* Sem GuestGuard: a sessao de recovery conta como autenticada e o
+            GuestGuard mandaria o usuario para /dashboard sem trocar a senha. */}
+        <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />} />
 
         {/* Protected */}
         <Route

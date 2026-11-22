@@ -22,13 +22,13 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const { email }: PasswordResetRequest = await req.json();
-    
+
     if (!email) {
       console.error("Email is required");
-      return new Response(
-        JSON.stringify({ error: "Email is required" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: "Email is required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
     }
 
     console.log("Processing password reset for:", email);
@@ -40,12 +40,53 @@ const handler = async (req: Request): Promise<Response> => {
       { auth: { autoRefreshToken: false, persistSession: false } }
     );
 
+    // Esta function gera um link de recuperacao para QUALQUER email usando a
+    // service_role: sem checar quem chama, qualquer conta logada (ou o anon,
+    // se verify_jwt ja passou) dispararia reset para o email que quisesse.
+    // Exige admin — e o unico caller legitimo e a aprovacao no painel.
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    const userClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const {
+      data: { user },
+      error: userError,
+    } = await userClient.auth.getUser();
+    if (userError || !user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    const { data: isAdmin } = await supabaseAdmin.rpc("has_role", {
+      _user_id: user.id,
+      _role: "admin",
+    });
+
+    if (!isAdmin) {
+      return new Response(JSON.stringify({ error: "Admin access required" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
     // Generate password reset link using Supabase Admin API
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: "recovery",
       email: email,
       options: {
-        redirectTo: `${Deno.env.get("SITE_URL") || "https://lovable.dev"}/auth?mode=reset`,
+        redirectTo: `${(Deno.env.get("SITE_URL") || "https://sentinela-v2-juca1.vercel.app").replace(/\/$/, "")}/reset-password`,
       },
     });
 
@@ -58,16 +99,46 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const resetLink = linkData?.properties?.action_link;
-    
+
     if (!resetLink) {
       console.error("No reset link generated");
-      return new Response(
-        JSON.stringify({ error: "Failed to generate reset link" }),
-        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: "Failed to generate reset link" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
     }
 
-    console.log("Reset link generated successfully");
+    // Sem RESEND_API_KEY o Resend responde 401 e a solicitacao aprovada nunca
+    // chegava ao usuario. O SMTP nativo do Supabase Auth esta habilitado
+    // (external_email_enabled), entao caimos nele via resetPasswordForEmail,
+    // que usa o template de recuperacao e o mesmo redirectTo.
+    if (!RESEND_API_KEY) {
+      const siteUrl = (Deno.env.get("SITE_URL") || "https://sentinela-v2-juca1.vercel.app").replace(
+        /\/$/,
+        ""
+      );
+
+      const { error: mailError } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
+        redirectTo: `${siteUrl}/reset-password`,
+      });
+
+      if (mailError) {
+        console.error("Supabase native reset email error:", mailError);
+        return new Response(
+          JSON.stringify({ error: "Failed to send reset email", details: mailError.message }),
+          { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message: "Password reset email sent",
+          provider: "supabase",
+        }),
+        { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
     // Send email via Resend REST API
     const emailHtml = `
@@ -120,7 +191,7 @@ const handler = async (req: Request): Promise<Response> => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
         from: "Sistema <onboarding@resend.dev>",
@@ -136,20 +207,22 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error(`Failed to send email: ${errorData}`);
     }
 
-    const emailResult = await emailResponse.json();
-
-    console.log("Email sent successfully:", emailResult);
+    await emailResponse.json();
 
     return new Response(
-      JSON.stringify({ success: true, message: "Password reset email sent" }),
-      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      JSON.stringify({ success: true, message: "Password reset email sent", provider: "resend" }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      }
     );
-  } catch (error: any) {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
     console.error("Error in send-password-reset function:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
-    );
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
   }
 };
 

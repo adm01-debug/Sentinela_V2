@@ -1917,10 +1917,6 @@
       "sha256": "b6966105f118b9e5b22df15e90d089d452ed1be093a6b0a2909f5db943293c42"
     },
     {
-      "path": "src/providers/AppProviders.tsx",
-      "sha256": "b2e568cfb9f26fc295b48367de82cdaa9b90bfebb046ce86bd3e30ca772085e4"
-    },
-    {
       "path": "src/providers/AuthDependentProviders.tsx",
       "sha256": "ba29df18481675e95744369e2d3073c68f03c9ca4692c14be674ff97f98e86ca"
     },
@@ -2162,7 +2158,7 @@
     },
     {
       "path": "supabase/functions/send-password-reset/index.ts",
-      "sha256": "2d473f59a83133d15ad76792e70caaeb70f23cb685b202f2670486249939ca88"
+      "sha256": "565440c471cef0e98ff62d1247b0471666dad768a2080e3d3f371662143e1d8f"
     },
     {
       "path": "supabase/functions/send-scheduled-report/index.ts",
@@ -17011,20 +17007,6 @@
       "contextHash": "fdd58454fd87c4e1c910c28daf6b100b14c3ce7c7c81e9d9a25fe5c8cd2d973b"
     },
     {
-      "file": "src/providers/AppProviders.tsx",
-      "line": 2,
-      "column": 10,
-      "endLine": 2,
-      "endColumn": 21,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'QueryClient' is defined but never used.",
-      "spanHash": "f6c260cb251554888dd3db9f5995518e9b8ae3f9b32275345da4c5bd0ed334ff",
-      "lineHash": "1f6c3fa67698d88e4f4012de938790340a6c1e548c901c88b3a25fd8e25cecb9",
-      "contextHash": "6834b0855bfb969adcb53aa9a90490f4bd27c247f1bb5e7d18982bf09a2018a0"
-    },
-    {
       "file": "src/providers/AuthDependentProviders.tsx",
       "line": 6,
       "column": 1,
@@ -19896,34 +19878,6 @@
     },
     {
       "file": "supabase/functions/send-password-reset/index.ts",
-      "line": 141,
-      "column": 5,
-      "endLine": 141,
-      "endColumn": 16,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
-      "lineHash": "a5328cd84107b195e888592e1db9c2e8acc768bca60c35de1af7a49022f857d6",
-      "contextHash": "586cafa197444051e3522ca9ccb5ea1ad50d78c3958fe5f8ad84d200554192d1"
-    },
-    {
-      "file": "supabase/functions/send-password-reset/index.ts",
-      "line": 147,
-      "column": 19,
-      "endLine": 147,
-      "endColumn": 22,
-      "severity": 1,
-      "ruleId": "@typescript-eslint/no-explicit-any",
-      "messageId": "unexpectedAny",
-      "message": "Unexpected any. Specify a different type.",
-      "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
-      "lineHash": "b9ef169b83f8df5c1478e0728e53923ed30ad9a5cc689d612eb82400ae6ad76d",
-      "contextHash": "fea574a84f625e8b925dab40948dd22262c249b11ceb745cddd81c143c1b5cf2"
-    },
-    {
-      "file": "supabase/functions/send-password-reset/index.ts",
       "line": 16,
       "column": 3,
       "endLine": 16,
@@ -19949,20 +19903,6 @@
       "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
       "lineHash": "81bf708ec9f5489c021ee0a0bf45135d87ce45c0af6aa613406b3257b1880ece",
       "contextHash": "75e583d87e5f54ae603484ab44db8deb53d2d1b755830a3c1b987dff29757ae0"
-    },
-    {
-      "file": "supabase/functions/send-password-reset/index.ts",
-      "line": 70,
-      "column": 5,
-      "endLine": 70,
-      "endColumn": 16,
-      "severity": 1,
-      "ruleId": "no-console",
-      "messageId": "limited",
-      "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
-      "spanHash": "3b549ed051f07d14ca03241c68ed10f3e8647f5d0e18d315e47534f2ba5c1e3b",
-      "lineHash": "af4551bb03a7669f9ee3c5a30e979d6adff2349f108f2f859cabcf437d1d1555",
-      "contextHash": "7de9e61bb9827c4c5bc23dca9652ed9bed0cab45f3c0ab215ec3259ed03aa259"
     },
     {
       "file": "supabase/functions/send-scheduled-report/index.ts",
