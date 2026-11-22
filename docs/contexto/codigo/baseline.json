@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "4e3e61ccb50b41f69c1d1c9de472631123df6d53",
+  "commit": "7e613e68a502b92fc626bac84faac72a70751f2b",
   "branch": "main",
-  "data_commit": "2026-11-21T23:01:54-03:00",
+  "data_commit": "2026-11-21T23:17:38-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "7e613e68a",
+    "data": "2026-11-21",
+    "assunto": "fix(auth): role de UI nao vem mais de user_metadata (#217)"
+   },
    {
     "sha": "4e3e61ccb",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "859b7decb",
     "data": "2026-11-21",
     "assunto": "fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)"
-   },
-   {
-    "sha": "262f1b389",
-    "data": "2026-11-21",
-    "assunto": "feat: roteador Evolution API no send-whatsapp (homologacao WhatsApp via Zapp) (#180)"
    }
   ],
-  "arquivos_mudados_7d": 152,
+  "arquivos_mudados_7d": 153,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 107
+    "commits": 108
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1835,
   "arquivos_codigo": 1403,
-  "linhas_codigo": 150135,
+  "linhas_codigo": 150138,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -472,7 +472,7 @@
   },
   "src/services": {
    "arquivos": 8,
-   "linhas": 546
+   "linhas": 549
   },
   "src/stores": {
    "arquivos": 34,

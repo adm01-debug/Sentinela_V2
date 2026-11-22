@@ -1459,7 +1459,7 @@
     "authService"
    ],
    "export_default": "authService",
-   "linhas": 70,
+   "linhas": 73,
    "tabelas": [
     "user_roles"
    ],
@@ -1471,7 +1471,9 @@
    ],
    "zod_schemas": 0,
    "flags": [],
-   "papeis": [],
+   "papeis": [
+    "user"
+   ],
    "usado_por": 0,
    "usado_por_modulos": [],
    "coberto_por_testes": 0,

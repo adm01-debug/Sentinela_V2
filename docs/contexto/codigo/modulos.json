@@ -4883,7 +4883,7 @@
    "modulo": "services",
    "arquivos": 8,
    "testes": 0,
-   "linhas": 546,
+   "linhas": 549,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -4939,7 +4939,8 @@
    ],
    "flags": [],
    "papeis": [
-    "admin"
+    "admin",
+    "user"
    ],
    "diretos": {
     "edges": [

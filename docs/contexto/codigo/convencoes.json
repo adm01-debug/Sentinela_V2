@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(auth): role de UI nao vem mais de user_metadata (#217)",
    "fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)",
    "fix: alinha hooks ao schema real (employee_status, activity_logs, rate_limit_logs) (#213)",
    "fix: alinha planos de cobranca ao contrato real do banco (#212)",
-   "feat: RolesPage com matriz de permissoes editavel (#211)",
-   "feat: expoe painel unificado de seguranca em /admin/security (#210)"
+   "feat: RolesPage com matriz de permissoes editavel (#211)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
