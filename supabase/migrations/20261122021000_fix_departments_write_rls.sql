@@ -34,3 +34,4 @@ CREATE POLICY "departments_delete_auth"
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.departments TO authenticated;
 REVOKE ALL ON public.departments FROM anon;
+REVOKE REFERENCES, TRIGGER, TRUNCATE ON public.departments FROM authenticated;
