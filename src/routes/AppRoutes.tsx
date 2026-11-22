@@ -4,7 +4,6 @@ import { ROUTES } from "@/constants";
 import { MainLayout } from "@/layouts/MainLayout";
 import { BrandedSplash } from "@/components/ui/LoadingSpinner";
 import { RouteErrorBoundary } from "@/components/layout/RouteErrorBoundary";
-import { PolicyGate } from "@/components/PolicyGate";
 
 // ============================================================
 // LAZY LOADED PAGES
@@ -138,9 +137,7 @@ export const AppRoutes = () => (
         <Route
           element={
             <AuthGuard>
-              <PolicyGate>
-                <MainLayout />
-              </PolicyGate>
+              <MainLayout />
             </AuthGuard>
           }
         >
