@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "05eebe835b8e40a6001f5e34011b346925b99afc",
+  "commit": "2e72aa8f7d2d22c9b4bb293fa2a7b9f3f4982e61",
   "branch": "main",
-  "data_commit": "2026-11-22T13:11:47-03:00",
+  "data_commit": "2026-11-22T13:33:38-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2e72aa8f7",
+    "data": "2026-11-22",
+    "assunto": "fix(compliance): foto do aceite usa URL assinada em bucket privado (#238)"
+   },
    {
     "sha": "05eebe835",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "c4e613ba4",
     "data": "2026-11-22",
     "assunto": "fix(seguranca): fecha escrita anonima em whatsapp_templates, file_transfers, geofence_events e audit_logs (#198)"
-   },
-   {
-    "sha": "a9bdf6484",
-    "data": "2026-11-22",
-    "assunto": "fix(infra): cria 5 tabelas usadas por edges ativas e corrige auth de crons e edges (#187)"
    }
   ],
   "arquivos_mudados_7d": 195,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 138
+    "commits": 139
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1859,
   "arquivos_codigo": 1413,
-  "linhas_codigo": 151628,
+  "linhas_codigo": 151683,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44895
+   "linhas": 44899
   },
   "src/constants": {
    "arquivos": 7,
@@ -480,7 +480,7 @@
   },
   "src/test": {
    "arquivos": 51,
-   "linhas": 10408
+   "linhas": 10459
   },
   "src/types": {
    "arquivos": 57,

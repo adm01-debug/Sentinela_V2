@@ -2438,7 +2438,7 @@
     "PolicyAcknowledgmentDialog"
    ],
    "export_default": null,
-   "linhas": 368,
+   "linhas": 372,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",

@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(compliance): foto do aceite usa URL assinada em bucket privado (#238)",
    "fix(compliance): registra o aceite de politicas pela pagina de Compliance (#237)",
    "feat(reports): botao Baixar do relatorio passa a gerar o PDF (#236)",
    "fix(security): SupervisorGuard deixa de confiar no papel do user_metadata (#235)",
-   "fix(dashboard): personalizador de widgets passa a valer na tela (#234)",
-   "infra(ci): deploya edge functions no pipeline de producao (#233)"
+   "fix(dashboard): personalizador de widgets passa a valer na tela (#234)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

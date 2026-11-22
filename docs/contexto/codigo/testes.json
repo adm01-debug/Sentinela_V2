@@ -575,11 +575,11 @@
   {
    "arquivo": "src/test/policy-acknowledgment-upload.test.tsx",
    "tipo": "unit",
-   "linhas": 85,
+   "linhas": 136,
    "testa": [
     "src/components/PolicyAcknowledgmentDialog.tsx"
    ],
-   "casos": 1
+   "casos": 2
   },
   {
    "arquivo": "src/test/request-dedup.test.ts",
