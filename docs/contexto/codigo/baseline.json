@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c54f5f8b0e9cdcf07ff4ebb1197d919b0ab81a2d",
+  "commit": "e7fe0e9acf2fd7df8c3bd07eee725f996448b03b",
   "branch": "main",
-  "data_commit": "2026-11-21T21:03:55-03:00",
+  "data_commit": "2026-11-21T21:40:31-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "e7fe0e9ac",
+    "data": "2026-11-21",
+    "assunto": "fix: completa queryKeys e invalidateRelated (46 chaves + 11 métodos que quebravam mutations em 22 hooks) (#209)"
+   },
    {
     "sha": "c54f5f8b0",
     "data": "2026-11-21",
@@ -126,11 +131,6 @@
     "sha": "1484634c0",
     "data": "2026-11-21",
     "assunto": "chore: revoga EXECUTE public/anon das RPCs de permissao (#175)"
-   },
-   {
-    "sha": "ac48782a5",
-    "data": "2026-11-21",
-    "assunto": "chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)"
    }
   ],
   "arquivos_mudados_7d": 126,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 101
+    "commits": 102
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1834,
   "arquivos_codigo": 1402,
-  "linhas_codigo": 149800,
+  "linhas_codigo": 149914,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -452,7 +452,7 @@
   },
   "src/lib": {
    "arquivos": 42,
-   "linhas": 2927
+   "linhas": 3041
   },
   "src/main.tsx": {
    "arquivos": 1,

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c54f5f8b0e9cdcf07ff4ebb1197d919b0ab81a2d` (2026-11-21T21:03:55-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `e7fe0e9acf2fd7df8c3bd07eee725f996448b03b` (2026-11-21T21:40:31-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1834 |
 | arquivos_codigo | 1402 |
-| linhas_codigo | 149800 |
+| linhas_codigo | 149914 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `e7fe0e9ac` fix: completa queryKeys e invalidateRelated (46 chaves + 11 métodos que quebravam mutations em 22 hooks) (#209)
 - 2026-11-21 `c54f5f8b0` fix(config): mapeia snake_case do banco para camelCase em useAppConfig e useSubscription (#207)
 - 2026-11-21 `732a56232` fix(permissoes): usePermissions buscava embed inexistente e zerava as permissoes de todos (#205)
 - 2026-11-21 `e96b8cce3` fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `15ca0e8d2` fix: edges get-employee-timeline e notify-new-device validam payload em vez de 500 (#191)
 - 2026-11-21 `2e71982d0` fix: generate-report aceita os 3 contratos que o front envia (#190)
 - 2026-11-21 `160a35cf5` fix: export-data aceita o contrato do front e exige autenticacao (#189)
-- 2026-11-21 `7b8f3781d` fix: corrige contratos de coluna das edges (activities/violations sao views) (#188)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
