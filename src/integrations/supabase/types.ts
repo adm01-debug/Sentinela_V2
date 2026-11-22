@@ -3527,6 +3527,7 @@ export type Database = {
           longitude: number | null
           photo_url: string | null
           policy_version: string | null
+          user_id: string | null
         }
         Insert: {
           acknowledged_at?: string
@@ -3539,6 +3540,7 @@ export type Database = {
           longitude?: number | null
           photo_url?: string | null
           policy_version?: string | null
+          user_id?: string | null
         }
         Update: {
           acknowledged_at?: string
@@ -3551,6 +3553,7 @@ export type Database = {
           longitude?: number | null
           photo_url?: string | null
           policy_version?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }

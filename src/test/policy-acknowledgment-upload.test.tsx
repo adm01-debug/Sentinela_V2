@@ -132,4 +132,51 @@ describe("PolicyAcknowledgmentDialog - caminho do upload", () => {
     expect(registro.photo_url).toBe("https://cdn/x.jpg?sig=abc");
     expect(createSignedUrl).toHaveBeenCalled();
   });
+
+  it("grava o user_id do funcionario, senao o aceite fica anonimo e o gate nunca destrava", async () => {
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: { getUserMedia: vi.fn().mockResolvedValue({ getTracks: () => [{ stop: vi.fn() }] }) },
+    });
+    Object.defineProperty(navigator, "geolocation", {
+      configurable: true,
+      value: {
+        getCurrentPosition: (ok: (p: unknown) => void) =>
+          ok({ coords: { latitude: -23.5, longitude: -46.6 } }),
+      },
+    });
+    HTMLVideoElement.prototype.play = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(HTMLVideoElement.prototype, "videoWidth", {
+      configurable: true,
+      get: () => 120,
+    });
+    Object.defineProperty(HTMLVideoElement.prototype, "videoHeight", {
+      configurable: true,
+      get: () => 120,
+    });
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
+      drawImage: vi.fn(),
+    })) as unknown as typeof HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.toDataURL = vi.fn(() => "data:image/jpeg;base64,AAAA");
+    global.fetch = vi.fn().mockResolvedValue({
+      blob: () => Promise.resolve(new Blob(["x"])),
+    }) as unknown as typeof globalThis.fetch;
+
+    render(<PolicyAcknowledgmentDialog employeeName="TI Suporte" />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Aceitar Pol/i }));
+    fireEvent.click(await screen.findByRole("button", { name: /Iniciar Captura/i }));
+    await waitFor(() => expect(screen.getByText(/Posicione seu rosto/i)).toBeTruthy());
+    fireEvent.click(await screen.findByRole("button", { name: /Capturar Foto/i }));
+    await waitFor(() => expect(screen.getByText(/Verifique os dados/i)).toBeTruthy(), {
+      timeout: 4000,
+    });
+    fireEvent.click(screen.getByRole("button", { name: /Confirmar Aceita/i }));
+
+    await waitFor(() => expect(insert).toHaveBeenCalled(), { timeout: 4000 });
+
+    const registro = insert.mock.calls[0][0] as { user_id?: string; employee_name: string };
+    expect(registro.user_id).toBe(UID);
+    expect(registro.employee_name).toBe("TI Suporte");
+  });
 });

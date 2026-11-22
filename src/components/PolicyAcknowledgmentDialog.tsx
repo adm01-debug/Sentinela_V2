@@ -168,9 +168,13 @@ function PolicyAcknowledgmentDialogBase({
 
       if (urlError) throw urlError;
 
-      // Insert acknowledgment record
+      // Insert acknowledgment record.
+      // user_id e o que liga o aceite ao funcionario: a RPC do gate le por
+      // ele. Sem gravar, o aceite fica anonimo e o gate nunca destrava.
+      // A policy de INSERT exige user_id = auth.uid() quando ha sessao.
       const { error: insertError } = await supabase.from("policy_acknowledgments").insert({
         employee_name: employeeName,
+        user_id: user.id,
         photo_url: urlData.signedUrl,
         latitude: location.lat,
         longitude: location.lng,
