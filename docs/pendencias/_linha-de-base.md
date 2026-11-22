@@ -238,6 +238,17 @@ Divida conhecida de seguranca (baixa prioridade, `anon` sem EXECUTE):
    **Ordem obrigatoria: #239 antes da #240** — mergear a #240 sozinha
    reinstala o gate antigo e repete o lockout.
 
+   Bug corrigido na #239 (commit 2be63c533): o `PolicyAcknowledgmentDialog` inseria
+   o aceite **sem `user_id`**, mas a RPC filtra por ele. O funcionario aceitava,
+   o registro ficava anonimo e o gate continuava bloqueando para sempre. Agora o
+   insert grava `user_id: user.id`, e ha teste de regressao que falha sem o fix.
+
+   Homologado E2E em producao com JWT real de usuario comum (usuario temporario
+   sem role admin, criado e removido na mesma sessao): RPC `false` antes, INSERT
+   `201`, INSERT com `user_id` alheio `403`, RPC `true` depois
+   (`last_acknowledged_at: 2026-11-22T17:33:16`). Banco restaurado:
+   0 aceites, 2 usuarios.
+
    Bug corrigido de passagem: a foto do aceite usava `getPublicUrl()` num bucket
    privado (`acknowledgment-photos`), gravando URL que nunca abria — agora
    `createSignedUrl` (#238, ja na main).
