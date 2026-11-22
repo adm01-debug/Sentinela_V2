@@ -185,7 +185,8 @@
     "pages/admin",
     "pages/dashboard",
     "pages/dev",
-    "providers"
+    "providers",
+    "routes"
    ],
    "depende_de_modulos": [
     "components/data-display",
@@ -3767,7 +3768,7 @@
    "modulo": "pages",
    "arquivos": 67,
    "testes": 0,
-   "linhas": 11575,
+   "linhas": 11590,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -3978,6 +3979,7 @@
     "export-data",
     "generate-report",
     "notify-new-device",
+    "ocr-screenshot",
     "send-whatsapp",
     "sync-whatsapp-templates"
    ],
@@ -4026,6 +4028,7 @@
     "screen_captures",
     "security_policies",
     "security_violations",
+    "session_recordings",
     "settings_audit_log",
     "subscriptions",
     "tasks",
@@ -4037,6 +4040,7 @@
     "user_roles",
     "violation_comments",
     "violation_disputes",
+    "violation_rules",
     "webauthn_challenges",
     "webauthn_credentials",
     "webhooks",
@@ -4056,6 +4060,7 @@
    "canais_realtime": [
     "employee-status-changes",
     "header-notifications-rt",
+    "live-view-updates",
     "public:${entity}-changes",
     "security-violations-realtime",
     "violations-realtime"
@@ -4533,7 +4538,7 @@
    "modulo": "routes",
    "arquivos": 1,
    "testes": 0,
-   "linhas": 380,
+   "linhas": 383,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -4717,6 +4722,7 @@
     "export-data",
     "generate-report",
     "notify-new-device",
+    "ocr-screenshot",
     "risk-score-calculator",
     "send-whatsapp",
     "slack-dlq-bulk-replay",
@@ -4770,6 +4776,7 @@
     "overtime_requests",
     "permissions",
     "policy_acknowledgments",
+    "policy_exemptions",
     "productivity_logs",
     "profiles",
     "projects",
@@ -4784,6 +4791,7 @@
     "screen_captures",
     "security_policies",
     "security_violations",
+    "session_recordings",
     "settings_audit_log",
     "slack_delivery_events",
     "slack_integrations",
@@ -4800,6 +4808,7 @@
     "user_roles",
     "violation_comments",
     "violation_disputes",
+    "violation_rules",
     "webauthn_challenges",
     "webauthn_credentials",
     "webhooks",
@@ -4820,6 +4829,7 @@
     "dlp-incidents-feed",
     "employee-status-changes",
     "header-notifications-rt",
+    "live-view-updates",
     "public:${entity}-changes",
     "risk_scores_${employeeId || ",
     "security-violations-realtime",
@@ -4866,6 +4876,7 @@
    },
    "importado_por_outros_modulos": [],
    "depende_de_modulos": [
+    "components",
     "components/layout",
     "components/ui",
     "constants",

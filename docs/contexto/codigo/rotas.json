@@ -1700,14 +1700,22 @@
    "tabelas": [
     "click_logs",
     "employees",
-    "keystroke_logs"
+    "keystroke_logs",
+    "productivity_logs",
+    "screen_captures",
+    "session_recordings",
+    "violation_rules"
    ],
    "rpcs": [],
-   "edges": [],
-   "canais_realtime": [],
+   "edges": [
+    "ocr-screenshot"
+   ],
+   "canais_realtime": [
+    "live-view-updates"
+   ],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 28
+   "arquivos_puxados": 36
   },
   {
    "protegida": false,

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2659aa0ffbedcbcff872b8b8ca3373f24067ae61` (2026-11-22T09:39:15-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `29c45202bf6f837d1e7f51b4a0f1c754628ab09c` (2026-11-22T09:42:34-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1850 |
 | arquivos_codigo | 1404 |
-| linhas_codigo | 150396 |
+| linhas_codigo | 150414 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 495 | 19 | 86 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 67 | 153 | 7 | 64 |
+| pages | 4 | 38 | 67 | 153 | 8 | 66 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
 | pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
@@ -287,7 +287,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - tabelas_usadas_sem_definicao: 5 — ex.: activities, backups, employee_locations
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
-- componentes_orfaos: 100 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
+- componentes_orfaos: 95 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
 - componentes_com_nome_duplicado: 48 — ex.: ActivityHeatmap, AnalyticsProvider, AppProviders
 - scripts_orfaos: 1 — ex.: scripts/release.sh
 - env_usadas_nao_declaradas: 8 — ex.: DEV, MODE, PROD
@@ -309,10 +309,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - src/index.css (5)
 - supabase/config.toml (5)
 - desktop-agent/src/main.ts (4)
+- src/routes/AppRoutes.tsx (4)
 - src/test/improvements-verification.test.ts (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/lint.yml (3)
-- .github/workflows/release.yml (3)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `29c45202b` feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)
 - 2026-11-22 `2659aa0ff` fix(admin): protege 7 rotas /admin com AdminGuard e liga as paginas no menu (#221)
 - 2026-11-22 `f8968d297` chore(db): torna idempotentes as migrations recuperadas do backlog (#220)
 - 2026-11-22 `4867d1935` fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `31e061387` fix(seguranca): revoga EXECUTE de funcoes de trigger expostas a anon (#218)
 - 2026-11-22 `e502b2151` fix(infra): cria bucket de backup e alinha teste de storage (#216)
 - 2026-11-22 `601c993b4` fix(rls): libera escrita de departamentos para o tenant (#215)
-- 2026-11-21 `7e613e68a` fix(auth): role de UI nao vem mais de user_metadata (#217)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2659aa0ffbedcbcff872b8b8ca3373f24067ae61",
+  "commit": "29c45202bf6f837d1e7f51b4a0f1c754628ab09c",
   "branch": "main",
-  "data_commit": "2026-11-22T09:39:15-03:00",
+  "data_commit": "2026-11-22T09:42:34-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "29c45202b",
+    "data": "2026-11-22",
+    "assunto": "feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)"
+   },
    {
     "sha": "2659aa0ff",
     "data": "2026-11-22",
@@ -126,14 +131,9 @@
     "sha": "e96b8cce3",
     "data": "2026-11-21",
     "assunto": "fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)"
-   },
-   {
-    "sha": "e30a885cf",
-    "data": "2026-11-21",
-    "assunto": "fix(edges): corrige nome do parametro de get_user_company_id (p_user_id -> _user_id) (#203)"
    }
   ],
-  "arquivos_mudados_7d": 173,
+  "arquivos_mudados_7d": 174,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -188,11 +188,11 @@
     "mudancas": 4
    },
    {
-    "pasta": "src/test/improvements-verification.test.ts",
+    "pasta": "src/routes/AppRoutes.tsx",
     "mudancas": 4
    },
    {
-    "pasta": "supabase/config.toml",
+    "pasta": "src/test/improvements-verification.test.ts",
     "mudancas": 4
    }
   ],
@@ -242,6 +242,10 @@
     "mudancas": 4
    },
    {
+    "arquivo": "src/routes/AppRoutes.tsx",
+    "mudancas": 4
+   },
+   {
     "arquivo": "src/test/improvements-verification.test.ts",
     "mudancas": 4
    },
@@ -278,10 +282,6 @@
     "mudancas": 3
    },
    {
-    "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 3
-   },
-   {
     "arquivo": "src/test/comprehensive-validation.test.ts",
     "mudancas": 3
    },
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 122
+    "commits": 123
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1850,
   "arquivos_codigo": 1404,
-  "linhas_codigo": 150396,
+  "linhas_codigo": 150414,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 105,
-   "linhas": 17894
+   "linhas": 17909
   },
   "src/providers": {
    "arquivos": 9,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 380
+   "linhas": 383
   },
   "src/services": {
    "arquivos": 8,
@@ -762,9 +762,7 @@
    "src/components/forms/index.tsx",
    "src/components/HeatmapCalendar.tsx",
    "src/components/KeyboardShortcutsHelp.tsx",
-   "src/components/KeystrokeActivityCard.tsx",
    "src/components/KPIWidget.tsx",
-   "src/components/LiveViewCard.tsx",
    "src/components/LoadingState.tsx",
    "src/components/MFAVerify.tsx",
    "src/components/MobileDevicesMap.tsx",
@@ -773,13 +771,10 @@
    "src/components/NotificationCenter.tsx",
    "src/components/NotificationsDropdown.tsx",
    "src/components/NotificationsPanel.tsx",
-   "src/components/PolicyGate.tsx",
-   "src/components/ProductivityCard.tsx",
    "src/components/PWAInstallPrompt.tsx",
    "src/components/RealtimeActivityFilters.tsx",
    "src/components/RealtimeClicksCard.tsx",
    "src/components/RealtimeKeystrokesCard.tsx",
-   "src/components/ScreenCapturesCard.tsx",
    "src/components/SearchDrawer.tsx",
    "src/components/security/SecurityAuditLog.tsx",
    "src/components/SecurityMetrics.tsx",

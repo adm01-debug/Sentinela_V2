@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "total": 462,
- "orfaos": 100,
+ "orfaos": 95,
  "nomes_duplicados": {
   "ActivityHeatmap": [
    "src/components/ActivityHeatmap.tsx",
@@ -2078,8 +2078,8 @@
     "keystroke_logs"
    ],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/KPIWidget.tsx",
@@ -2199,8 +2199,8 @@
     "session_recordings"
    ],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/LoadingState.tsx",
@@ -2466,8 +2466,8 @@
     "policy_exemptions"
    ],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/PolicyToggle.tsx",
@@ -2596,8 +2596,8 @@
     "productivity_logs"
    ],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/PWAInstallPrompt.tsx",
@@ -2778,8 +2778,8 @@
    "edges": [
     "ocr-screenshot"
    ],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/ScreenshotGallery.tsx",
@@ -7129,7 +7129,7 @@
     "MonitoringPage"
    ],
    "export_default": "MonitoringPage",
-   "linhas": 296,
+   "linhas": 311,
    "dominio": "pages",
    "hooks_locais": [
     "useChartColors",
@@ -7703,7 +7703,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 380,
+   "linhas": 383,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

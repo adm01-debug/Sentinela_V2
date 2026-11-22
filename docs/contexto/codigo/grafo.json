@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1334,
- "arestas": 2719,
+ "arestas": 2724,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -227,8 +227,6 @@
   "src/components/HeatmapCalendar.tsx",
   "src/components/KPIWidget.tsx",
   "src/components/KeyboardShortcutsHelp.tsx",
-  "src/components/KeystrokeActivityCard.tsx",
-  "src/components/LiveViewCard.tsx",
   "src/components/LoadingState.tsx",
   "src/components/MFAVerify.tsx",
   "src/components/MobileDevicesMap.tsx",
@@ -238,12 +236,9 @@
   "src/components/NotificationsDropdown.tsx",
   "src/components/NotificationsPanel.tsx",
   "src/components/PWAInstallPrompt.tsx",
-  "src/components/PolicyGate.tsx",
-  "src/components/ProductivityCard.tsx",
   "src/components/RealtimeActivityFilters.tsx",
   "src/components/RealtimeClicksCard.tsx",
   "src/components/RealtimeKeystrokesCard.tsx",
-  "src/components/ScreenCapturesCard.tsx",
   "src/components/SearchDrawer.tsx",
   "src/components/SecurityMetrics.tsx",
   "src/components/SessionPlayback.tsx",
@@ -498,7 +493,12 @@
   "src/hooks/useList.ts",
   "src/hooks/useLoadingState.ts",
   "src/hooks/useLocale.ts",
-  "src/hooks/useLockBodyScroll.ts"
+  "src/hooks/useLockBodyScroll.ts",
+  "src/hooks/useLogger.ts",
+  "src/hooks/useLongPress.ts",
+  "src/hooks/useMap.ts",
+  "src/hooks/useMapbox.ts",
+  "src/hooks/useMeasure.ts"
  ],
  "modulos_mais_acoplados": [
   {
@@ -514,7 +514,7 @@
   {
    "modulo": "components",
    "depende_de": 17,
-   "importado_por": 16
+   "importado_por": 17
   },
   {
    "modulo": "pages",
@@ -553,7 +553,7 @@
   },
   {
    "modulo": "routes",
-   "depende_de": 8,
+   "depende_de": 9,
    "importado_por": 0
   },
   {
