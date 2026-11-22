@@ -6,7 +6,7 @@
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 82
+  "lazy": 83
  },
  "urls": [
   {
@@ -2628,6 +2628,7 @@
   "ActivitiesPage": "src/pages/ActivitiesPage.tsx",
   "ActivityDetailPage": "src/pages/ActivityDetailPage.tsx",
   "ActivityTimelinePage": "src/pages/ActivityTimelinePage.tsx",
+  "AdminSecurityPage": "src/pages/AdminSecurityPage.tsx",
   "AdminTelemetriaPage": "src/pages/AdminTelemetriaPage.tsx",
   "AgentOnboardingPage": "src/pages/AgentOnboardingPage.tsx",
   "AlertDetailPage": "src/pages/AlertDetailPage.tsx",

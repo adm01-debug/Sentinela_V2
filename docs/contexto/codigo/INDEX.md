@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `e7fe0e9acf2fd7df8c3bd07eee725f996448b03b` (2026-11-21T21:40:31-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `4d022e774013fcb69e3c94d017157ed9d5d2116a` (2026-11-21T21:51:45-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1382), Markdown (176), SQL (112), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1383), Markdown (176), SQL (112), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,15 +34,15 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1834 |
-| arquivos_codigo | 1402 |
-| linhas_codigo | 149914 |
+| arquivos_total | 1835 |
+| arquivos_codigo | 1403 |
+| linhas_codigo | 149950 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 57 |
-| componentes | 461 |
+| componentes | 462 |
 | hooks | 524 |
 | edge_functions | 86 |
 | tabelas | 141 |
@@ -55,7 +55,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Onde ficam as coisas
 - telas: src/pages (55)
-- componentes: src/components (356), src/pages (88), src/providers (8)
+- componentes: src/components (356), src/pages (89), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (64), src/lib (39), src/stores (34)
 - testes: co-localizado (*.test) (44), co-localizado (__tests__) (19), outro (6)
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 495 | 19 | 85 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 66 | 131 | 6 | 58 |
+| pages | 4 | 38 | 67 | 140 | 7 | 63 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
 | pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `4d022e774` feat: expoe painel unificado de seguranca em /admin/security (#210)
 - 2026-11-21 `e7fe0e9ac` fix: completa queryKeys e invalidateRelated (46 chaves + 11 métodos que quebravam mutations em 22 hooks) (#209)
 - 2026-11-21 `c54f5f8b0` fix(config): mapeia snake_case do banco para camelCase em useAppConfig e useSubscription (#207)
 - 2026-11-21 `732a56232` fix(permissoes): usePermissions buscava embed inexistente e zerava as permissoes de todos (#205)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `d7546801b` fix: alinha 4 selects do front a colunas reais do banco (#192)
 - 2026-11-21 `15ca0e8d2` fix: edges get-employee-timeline e notify-new-device validam payload em vez de 500 (#191)
 - 2026-11-21 `2e71982d0` fix: generate-report aceita os 3 contratos que o front envia (#190)
-- 2026-11-21 `160a35cf5` fix: export-data aceita o contrato do front e exige autenticacao (#189)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 461,
+ "total": 462,
  "orfaos": 100,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -642,7 +642,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 346,
+   "linhas": 347,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -3258,7 +3258,7 @@
     "security_violations"
    ],
    "edges": [],
-   "usado_por": 1,
+   "usado_por": 2,
    "orfao": false
   },
   {
@@ -6362,6 +6362,20 @@
    "orfao": false
   },
   {
+   "arquivo": "src/pages/AdminSecurityPage.tsx",
+   "exports": [
+    "AdminSecurityPage"
+   ],
+   "export_default": "AdminSecurityPage",
+   "linhas": 24,
+   "dominio": "pages",
+   "hooks_locais": [],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/pages/AdminTelemetriaPage.tsx",
    "exports": [
     "AdminTelemetriaPage"
@@ -7685,7 +7699,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 322,
+   "linhas": 331,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

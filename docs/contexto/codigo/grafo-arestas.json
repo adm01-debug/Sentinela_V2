@@ -2835,6 +2835,9 @@
    "src/hooks/useActivities.ts",
    "src/hooks/useEmployees.ts"
   ],
+  "src/pages/AdminSecurityPage.tsx": [
+   "src/components/security/UnifiedSecurityPanel.tsx"
+  ],
   "src/pages/AdminTelemetriaPage.tsx": [
    "src/components/admin/telemetry/TelemetryCharts.tsx",
    "src/components/ui/button.tsx",
@@ -3743,6 +3746,7 @@
    "src/pages/ActivitiesPage.tsx",
    "src/pages/ActivityDetailPage.tsx",
    "src/pages/ActivityTimelinePage.tsx",
+   "src/pages/AdminSecurityPage.tsx",
    "src/pages/AdminTelemetriaPage.tsx",
    "src/pages/AgentOnboardingPage.tsx",
    "src/pages/AlertDetailPage.tsx",

@@ -7,7 +7,7 @@
   ],
   "componentes": [
    "src/components (356)",
-   "src/pages (88)",
+   "src/pages (89)",
    "src/providers (8)"
   ],
   "hooks": [
@@ -47,7 +47,7 @@
  },
  "barrels_index": 22,
  "extensao_componentes": [
-  ".tsx (461)"
+  ".tsx (462)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: expoe painel unificado de seguranca em /admin/security (#210)",
    "fix: completa queryKeys e invalidateRelated (46 chaves + 11 métodos que quebravam mutations em 22 hooks) (#209)",
    "fix(config): mapeia snake_case do banco para camelCase em useAppConfig e useSubscription (#207)",
    "fix(permissoes): usePermissions buscava embed inexistente e zerava as permissoes de todos (#205)",
-   "fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)",
-   "fix(edges): corrige nome do parametro de get_user_company_id (p_user_id -> _user_id) (#203)"
+   "fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
