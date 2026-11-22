@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `e2dc03c0b57fcfab609a82886d25fccbc64dbc2e` (2026-11-22T10:12:34-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `09fee0333d804a0d959db71c29beb43f6da5bd05` (2026-11-22T10:31:43-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -302,7 +302,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package.json (24)
 - scripts/ci/eslint-baseline.json (15)
 - scripts/ci/prettier-baseline.json (13)
-- .github/workflows/deploy.yml (8)
+- .github/workflows/deploy.yml (10)
 - docs/pendencias/_linha-de-base.md (7)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
@@ -459,6 +459,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `09fee0333` fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)
+- 2026-11-22 `68d4328da` fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)
 - 2026-11-22 `e2dc03c0b` infra(ci): aplica migrations pendentes no deploy de producao (#222)
 - 2026-11-22 `de8c511c7` fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)
 - 2026-11-22 `6341704bb` docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)
@@ -472,8 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `8731d4e14` fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)
 - 2026-11-22 `c4e613ba4` fix(seguranca): fecha escrita anonima em whatsapp_templates, file_transfers, geofence_events e audit_logs (#198)
 - 2026-11-22 `a9bdf6484` fix(infra): cria 5 tabelas usadas por edges ativas e corrige auth de crons e edges (#187)
-- 2026-11-22 `37f86916b` fix(infra): cron expire-recordings envia Authorization e para de dar 401 (#186)
-- 2026-11-22 `d9c629b9c` feat: cria 5 tabelas usadas pelo front e fecha contrato do generate-report (#185)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

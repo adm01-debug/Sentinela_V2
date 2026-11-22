@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)",
+   "fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)",
    "infra(ci): aplica migrations pendentes no deploy de producao (#222)",
    "fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)",
-   "docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)",
-   "fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)",
-   "feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)"
+   "docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

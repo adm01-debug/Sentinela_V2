@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "e2dc03c0b57fcfab609a82886d25fccbc64dbc2e",
+  "commit": "09fee0333d804a0d959db71c29beb43f6da5bd05",
   "branch": "main",
-  "data_commit": "2026-11-22T10:12:34-03:00",
+  "data_commit": "2026-11-22T10:31:43-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "09fee0333",
+    "data": "2026-11-22",
+    "assunto": "fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)"
+   },
+   {
+    "sha": "68d4328da",
+    "data": "2026-11-22",
+    "assunto": "fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)"
+   },
    {
     "sha": "e2dc03c0b",
     "data": "2026-11-22",
@@ -121,16 +131,6 @@
     "sha": "151e025fe",
     "data": "2026-11-21",
     "assunto": "fix: alinha planos de cobranca ao contrato real do banco (#212)"
-   },
-   {
-    "sha": "7fab455bb",
-    "data": "2026-11-21",
-    "assunto": "feat: RolesPage com matriz de permissoes editavel (#211)"
-   },
-   {
-    "sha": "4d022e774",
-    "data": "2026-11-21",
-    "assunto": "feat: expoe painel unificado de seguranca em /admin/security (#210)"
    }
   ],
   "arquivos_mudados_7d": 176,
@@ -157,7 +157,7 @@
    },
    {
     "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 8
+    "mudancas": 10
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
@@ -215,7 +215,7 @@
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 8
+    "mudancas": 10
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 127
+    "commits": 129
    },
    {
     "autor": "dependabot[bot]",
