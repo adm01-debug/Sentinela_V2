@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(config): mapeia snake_case do banco para camelCase em useAppConfig e useSubscription (#207)",
    "fix(permissoes): usePermissions buscava embed inexistente e zerava as permissoes de todos (#205)",
    "fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)",
    "fix(edges): corrige nome do parametro de get_user_company_id (p_user_id -> _user_id) (#203)",
-   "chore(test): eleva timeout do vitest de 5s para 20s (#201)",
-   "fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)"
+   "chore(test): eleva timeout do vitest de 5s para 20s (#201)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

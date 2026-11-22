@@ -717,7 +717,7 @@
    "hooks_exportados": [
     "useAppConfig"
    ],
-   "linhas": 92,
+   "linhas": 145,
    "dominio": "hooks",
    "tabelas": [
     "app_config"
@@ -8603,7 +8603,7 @@
    "hooks_exportados": [
     "useSubscription"
    ],
-   "linhas": 83,
+   "linhas": 107,
    "dominio": "hooks",
    "tabelas": [
     "subscriptions"

@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "732a562321e27806baeda25f4cad62eb7abe483f",
+  "commit": "c54f5f8b0e9cdcf07ff4ebb1197d919b0ab81a2d",
   "branch": "main",
-  "data_commit": "2026-11-21T20:56:38-03:00",
+  "data_commit": "2026-11-21T21:03:55-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "c54f5f8b0",
+    "data": "2026-11-21",
+    "assunto": "fix(config): mapeia snake_case do banco para camelCase em useAppConfig e useSubscription (#207)"
+   },
    {
     "sha": "732a56232",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "ac48782a5",
     "data": "2026-11-21",
     "assunto": "chore: registra linha de base de pendencias (#173, #168, whatsapp, permissoes) (#174)"
-   },
-   {
-    "sha": "eec8439ad",
-    "data": "2026-11-21",
-    "assunto": "feat: whatsapp templates/config completos + UI de concessao de pontos (#173)"
    }
   ],
-  "arquivos_mudados_7d": 124,
+  "arquivos_mudados_7d": 126,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 100
+    "commits": 101
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1834,
   "arquivos_codigo": 1402,
-  "linhas_codigo": 149723,
+  "linhas_codigo": 149800,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32094
+   "linhas": 32171
   },
   "src/i18n": {
    "arquivos": 1,
