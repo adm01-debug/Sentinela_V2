@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "9fefa2a6057781b5ef62e3e07f00b1697e2b3e2a",
+  "commit": "de8c511c75dc9169c6345764e0888ab2a4c7fb3e",
   "branch": "main",
-  "data_commit": "2026-11-22T10:06:48-03:00",
+  "data_commit": "2026-11-22T10:10:19-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "de8c511c7",
+    "data": "2026-11-22",
+    "assunto": "fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)"
+   },
+   {
+    "sha": "6341704bb",
+    "data": "2026-11-22",
+    "assunto": "docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)"
+   },
    {
     "sha": "9fefa2a60",
     "data": "2026-11-22",
@@ -121,19 +131,9 @@
     "sha": "e7fe0e9ac",
     "data": "2026-11-21",
     "assunto": "fix: completa queryKeys e invalidateRelated (46 chaves + 11 métodos que quebravam mutations em 22 hooks) (#209)"
-   },
-   {
-    "sha": "c54f5f8b0",
-    "data": "2026-11-21",
-    "assunto": "fix(config): mapeia snake_case do banco para camelCase em useAppConfig e useSubscription (#207)"
-   },
-   {
-    "sha": "732a56232",
-    "data": "2026-11-21",
-    "assunto": "fix(permissoes): usePermissions buscava embed inexistente e zerava as permissoes de todos (#205)"
    }
   ],
-  "arquivos_mudados_7d": 174,
+  "arquivos_mudados_7d": 176,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -141,18 +141,18 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "pasta": "package-lock.json",
     "mudancas": 13
    },
    {
-    "pasta": "package.json",
-    "mudancas": 12
+    "pasta": "scripts/ci/prettier-baseline.json",
+    "mudancas": 13
    },
    {
-    "pasta": "scripts/ci/prettier-baseline.json",
+    "pasta": "package.json",
     "mudancas": 12
    },
    {
@@ -161,7 +161,7 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "pasta": "docs/prod-readiness.md",
@@ -207,11 +207,11 @@
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
@@ -219,7 +219,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "arquivo": "docs/prod-readiness.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 124
+    "commits": 126
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1850,
-  "arquivos_codigo": 1404,
-  "linhas_codigo": 150411,
+  "arquivos_total": 1851,
+  "arquivos_codigo": 1405,
+  "linhas_codigo": 150504,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,7 +328,7 @@
   "tabelas": 159,
   "migrations": 122,
   "cron_jobs": 5,
-  "testes": 70,
+  "testes": 71,
   "workflows": 12,
   "scripts": 31,
   "docs_md": 176
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44854
+   "linhas": 44862
   },
   "src/constants": {
    "arquivos": 7,
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 45,
-   "linhas": 9931
+   "arquivos": 46,
+   "linhas": 10016
   },
   "src/types": {
    "arquivos": 57,

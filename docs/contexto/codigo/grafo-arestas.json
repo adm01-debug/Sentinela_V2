@@ -448,6 +448,7 @@
    "src/components/ui/button.tsx",
    "src/components/ui/dialog.tsx",
    "src/hooks/use-toast.ts",
+   "src/hooks/useAuth.ts",
    "src/integrations/supabase/client.ts",
    "src/lib/logger.ts"
   ],

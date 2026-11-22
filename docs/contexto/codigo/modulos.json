@@ -7,7 +7,7 @@
    "modulo": "components",
    "arquivos": 98,
    "testes": 0,
-   "linhas": 14443,
+   "linhas": 14451,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -5073,7 +5073,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 45,
+   "testes": 46,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (44)",
+   "co-localizado (*.test) (45)",
    "co-localizado (__tests__) (19)",
    "outro (6)"
   ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)",
+   "docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)",
    "fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)",
    "feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)",
-   "fix(admin): protege 7 rotas /admin com AdminGuard e liga as paginas no menu (#221)",
-   "chore(db): torna idempotentes as migrations recuperadas do backlog (#220)",
-   "fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)"
+   "fix(admin): protege 7 rotas /admin com AdminGuard e liga as paginas no menu (#221)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

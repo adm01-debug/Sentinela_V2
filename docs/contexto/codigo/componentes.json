@@ -2438,9 +2438,10 @@
     "PolicyAcknowledgmentDialog"
    ],
    "export_default": null,
-   "linhas": 360,
+   "linhas": 368,
    "dominio": "components",
    "hooks_locais": [
+    "useAuth",
     "useToast"
    ],
    "tabelas": [

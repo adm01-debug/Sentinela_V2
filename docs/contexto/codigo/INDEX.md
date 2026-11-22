@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `9fefa2a6057781b5ef62e3e07f00b1697e2b3e2a` (2026-11-22T10:06:48-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `de8c511c75dc9169c6345764e0888ab2a4c7fb3e` (2026-11-22T10:10:19-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1384), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1385), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1850 |
-| arquivos_codigo | 1404 |
-| linhas_codigo | 150411 |
+| arquivos_total | 1851 |
+| arquivos_codigo | 1405 |
+| linhas_codigo | 150504 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,7 +48,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 159 |
 | migrations | 122 |
 | cron_jobs | 5 |
-| testes | 70 |
+| testes | 71 |
 | workflows | 12 |
 | scripts | 31 |
 | docs_md | 176 |
@@ -58,7 +58,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (356), src/pages (89), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (64), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (44), co-localizado (__tests__) (19), outro (6)
+- testes: co-localizado (*.test) (45), co-localizado (__tests__) (19), outro (6)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (4), scripts/ai-context (2), scripts/inventario (2)
@@ -300,10 +300,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (24)
 - package.json (24)
-- scripts/ci/eslint-baseline.json (14)
-- scripts/ci/prettier-baseline.json (12)
+- scripts/ci/eslint-baseline.json (15)
+- scripts/ci/prettier-baseline.json (13)
 - .github/workflows/deploy.yml (7)
-- docs/pendencias/_linha-de-base.md (6)
+- docs/pendencias/_linha-de-base.md (7)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
 - src/index.css (5)
@@ -459,6 +459,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `de8c511c7` fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)
+- 2026-11-22 `6341704bb` docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)
 - 2026-11-22 `9fefa2a60` fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)
 - 2026-11-22 `29c45202b` feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)
 - 2026-11-22 `2659aa0ff` fix(admin): protege 7 rotas /admin com AdminGuard e liga as paginas no menu (#221)
@@ -472,8 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `37f86916b` fix(infra): cron expire-recordings envia Authorization e para de dar 401 (#186)
 - 2026-11-22 `d9c629b9c` feat: cria 5 tabelas usadas pelo front e fecha contrato do generate-report (#185)
 - 2026-11-22 `e26144877` fix(seguranca): revoga exec_sql e RPCs de enumeracao de anon (#184)
-- 2026-11-22 `31e061387` fix(seguranca): revoga EXECUTE de funcoes de trigger expostas a anon (#218)
-- 2026-11-22 `e502b2151` fix(infra): cria bucket de backup e alinha teste de storage (#216)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

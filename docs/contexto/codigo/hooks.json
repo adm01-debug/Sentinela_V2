@@ -880,10 +880,11 @@
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 25,
+   "usado_por": 26,
    "usado_por_arquivos": [
     "src/components/AppSidebar.tsx",
     "src/components/Header.tsx",
+    "src/components/PolicyAcknowledgmentDialog.tsx",
     "src/components/PolicyGate.tsx",
     "src/components/ViolationCommentsPanel.tsx",
     "src/components/WelcomeBanner.tsx",
