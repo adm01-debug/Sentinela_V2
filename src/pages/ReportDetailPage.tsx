@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/Skeleton';
 import { useReport } from '@/hooks/useReports';
+import { exportAnalysisReportPdf } from '@/utils/analysisReportPdf';
 
 interface ReportData {
   id: string;
@@ -48,7 +49,9 @@ export default function ReportDetailPage() {
         actions={
           <div className="flex items-center gap-2">
             <Badge variant={r.status === 'completed' ? 'default' : 'secondary'}>{r.status || 'pending'}</Badge>
-            <Button className="h-9 gap-2"><Download className="h-4 w-4" />Baixar</Button>
+            <Button className="h-9 gap-2" onClick={() => exportAnalysisReportPdf(r)}>
+              <Download className="h-4 w-4" />Baixar
+            </Button>
           </div>
         }
       />
