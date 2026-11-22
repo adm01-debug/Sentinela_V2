@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+﻿import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -25,6 +25,21 @@ vi.mock('@/hooks/useDashboard', () => ({
   useRecentAlerts: () => ({ data: [], isLoading: false }),
   useRecentActivity: () => ({ data: [], isLoading: false }),
   useTopApplications: () => ({ data: [], isLoading: false }),
+}));
+
+const ALL_WIDGETS = [
+  { id: 'stats', type: 'stats', title: 'Indicadores', visible: true },
+  { id: 'insights', type: 'custom', title: 'Insights de IA', visible: true },
+  { id: 'charts', type: 'chart', title: 'Tendencias', visible: true },
+  { id: 'alerts', type: 'alerts', title: 'Alertas', visible: true },
+  { id: 'activity', type: 'security', title: 'Atividade', visible: true },
+  { id: 'department', type: 'ranking', title: 'Departamentos', visible: true },
+  { id: 'apps', type: 'employees', title: 'Aplicacoes', visible: true },
+];
+let mockedWidgets = ALL_WIDGETS;
+
+vi.mock('@/hooks/useDashboardLayout', () => ({
+  useDashboardLayout: () => ({ widgets: mockedWidgets }),
 }));
 
 vi.mock('@/hooks/useChartColors', () => ({
@@ -129,10 +144,21 @@ describe('DashboardPage', () => {
     expect(screen.getByText('Todos os departamentos')).toBeInTheDocument();
   });
 
+  it('esconde os widgets desmarcados no personalizador', () => {
+    mockedWidgets = ALL_WIDGETS.map((w) =>
+      w.id === 'stats' ? { ...w, visible: false } : w
+    );
+
+    renderDashboard();
+
+    expect(screen.queryAllByTestId('stat-title')).toHaveLength(0);
+    mockedWidgets = ALL_WIDGETS;
+  });
+
   it('changes period when buttons are clicked', () => {
     renderDashboard();
 
-    const monthButton = screen.getByRole('tab', { name: /Mês/i });
+    const monthButton = screen.getByRole('tab', { name: /MÃªs/i });
     
     fireEvent.click(monthButton);
     expect(monthButton).toHaveClass('bg-primary');
