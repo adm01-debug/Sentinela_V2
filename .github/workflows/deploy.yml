@@ -20,6 +20,34 @@ permissions:
   deployments: read
 
 jobs:
+  # Aplica as migrations pendentes do repositorio no banco de PRODUCAO.
+  # Antes disto o repo e o banco viviam divergindo: o merge quebrava nada, mas
+  # a feature so funcionava depois de alguem rodar o SQL a mao. Causa raiz dos
+  # incidentes de 21-22/11 (departments sem policy de escrita, bucket de
+  # backup inexistente, 6 funcoes expostas a anon, 10 tabelas consumidas pelo
+  # front sem existir no banco).
+  # Idempotente: o Supabase CLI registra o que ja aplicou em
+  # supabase_migrations.schema_migrations e so roda o que falta. Toda migration
+  # nova precisa ser reaplicavel (DROP ... IF EXISTS antes de CREATE).
+  migrate:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: supabase-migrate-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: Aplicar migrations pendentes
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set -euo pipefail
+          supabase link --project-ref jgnmwvzephsozsqmcpzb
+          supabase db push --include-all
+
   verify-production-deploy:
     runs-on: ubuntu-latest
     steps:
