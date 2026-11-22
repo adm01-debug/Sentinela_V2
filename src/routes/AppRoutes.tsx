@@ -98,6 +98,7 @@ const FileTransfersPage = lazy(() => import("@/pages/admin/FileTransfersPage"));
 // ROUTE GUARDS
 // ============================================================
 import { AuthGuard, GuestGuard, AdminGuard, SupervisorGuard } from "@/guards";
+import { MFAGuard } from "@/guards/MFAGuard";
 
 const PageLoader = () => <BrandedSplash />;
 
@@ -137,7 +138,9 @@ export const AppRoutes = () => (
         <Route
           element={
             <AuthGuard>
-              <MainLayout />
+              <MFAGuard>
+                <MainLayout />
+              </MFAGuard>
             </AuthGuard>
           }
         >
