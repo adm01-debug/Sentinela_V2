@@ -215,5 +215,29 @@ Divida conhecida de seguranca (baixa prioridade, `anon` sem EXECUTE):
    pg_cron. As 34 que o front chama estao todas deployadas. Decidir se remove
    ou se mantem como plano futuro.
 3. Bancos de rota: manter ratchets dos CI zerados a cada merge.
-4. `PolicyGate` segue desmontado (trancava todo o sistema, #225). Religar exige
-   caminho de liberacao para admin — o upload do aceite ja foi corrigido (#226).
+4. `PolicyGate` — **RESOLVIDO no banco, montagem aguarda aval (regra 8)**.
+
+   Por que trancava (PR #223, revert 75596b2b5): a RLS de SELECT de
+   `policy_acknowledgments` e `has_role(auth.uid(),'admin')` e a tabela **nao
+   tinha `user_id`** — so `employee_name`, texto livre. Usuario comum
+   consultava, recebia vazio, caia em "Acesso Bloqueado".
+
+   Aplicado em producao nesta sessao (migration `20261122140000`):
+   - coluna `user_id` + indice `(user_id, acknowledged_at desc)`;
+   - backfill dos registros antigos por email/nome;
+   - RPC `my_policy_acknowledgment_status()` `security definer`, `search_path`
+     fixo, EXECUTE so para `authenticated` — **anon recebe 401** (verificado);
+   - insert passa a exigir `user_id = auth.uid()` quando ha sessao.
+
+   `PolicyGate.tsx` foi reescrito para consultar a RPC e e **fail-open**: erro,
+   excecao, retorno vazio ou `uid` nulo liberam o acesso. Um gate de
+   conformidade nunca pode virar lockout.
+
+   Pendencias: PRs **#239** (migration + componente) e **#240** (remontagem em
+   `AppRoutes.tsx`) abertas, CI verde, aguardando aval por serem DDL.
+   **Ordem obrigatoria: #239 antes da #240** — mergear a #240 sozinha
+   reinstala o gate antigo e repete o lockout.
+
+   Bug corrigido de passagem: a foto do aceite usava `getPublicUrl()` num bucket
+   privado (`acknowledgment-photos`), gravando URL que nunca abria — agora
+   `createSignedUrl` (#238, ja na main).
