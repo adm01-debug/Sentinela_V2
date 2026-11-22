@@ -5,7 +5,7 @@
   "linguagens": [
    "TypeScript (1383)",
    "Markdown (176)",
-   "SQL (116)",
+   "SQL (123)",
    "JSON (42)",
    "YAML (35)",
    "JavaScript (22)",
@@ -1344,7 +1344,9 @@
    "WHATSAPP_PHONE_NUMBER_ID",
    "WHATSAPP_PROVIDER"
   ],
-  "webhooks_recebidos": [],
+  "webhooks_recebidos": [
+   "health-check"
+  ],
   "realtime": [
    "dlp-incidents-feed",
    "employee-status-changes",

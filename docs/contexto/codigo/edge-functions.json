@@ -3,7 +3,9 @@
  "format_version": 2,
  "pasta": "supabase/functions",
  "total": 86,
- "verify_jwt_false": [],
+ "verify_jwt_false": [
+  "health-check"
+ ],
  "shared": [
   "supabase/functions/_shared/auth.ts",
   "supabase/functions/_shared/cors.ts",
@@ -750,8 +752,8 @@
    ],
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
-   "chamada_por_sql_ou_cron": false,
-   "orfa": true,
+   "chamada_por_sql_ou_cron": true,
+   "orfa": false,
    "testes": 0
   },
   {
@@ -877,13 +879,14 @@
    "nome": "generate-report",
    "entrada": "supabase/functions/generate-report/index.ts",
    "arquivos": 1,
-   "linhas": 126,
+   "linhas": 200,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
     "ai_analysis_reports",
+    "attendance_records",
     "keystroke_logs",
     "productivity_logs",
     "reports",
@@ -1088,7 +1091,7 @@
    "entrada": "supabase/functions/health-check/index.ts",
    "arquivos": 1,
    "linhas": 155,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -1111,7 +1114,7 @@
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
-   "orfa": true,
+   "orfa": false,
    "testes": 0
   },
   {
@@ -1599,7 +1602,7 @@
    "nome": "process-violation-alert",
    "entrada": "supabase/functions/process-violation-alert/index.ts",
    "arquivos": 1,
-   "linhas": 177,
+   "linhas": 180,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1969,7 +1972,7 @@
    "nome": "send-scheduled-report",
    "entrada": "supabase/functions/send-scheduled-report/index.ts",
    "arquivos": 1,
-   "linhas": 144,
+   "linhas": 143,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2259,7 +2262,7 @@
     "src/components/admin/SlackWebhookMttrCard.tsx"
    ],
    "chamada_por_edges": [],
-   "chamada_por_sql_ou_cron": false,
+   "chamada_por_sql_ou_cron": true,
    "orfa": false,
    "testes": 0
   },
@@ -2336,7 +2339,7 @@
     "src/components/admin/SlackWebhookMttrCard.tsx"
    ],
    "chamada_por_edges": [],
-   "chamada_por_sql_ou_cron": false,
+   "chamada_por_sql_ou_cron": true,
    "orfa": false,
    "testes": 0
   },

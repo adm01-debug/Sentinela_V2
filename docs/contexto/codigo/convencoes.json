@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
-   "fix(seguranca): revoga exec_sql e RPCs de enumeracao de anon (#184)",
-   "fix(seguranca): revoga EXECUTE de funcoes de trigger expostas a anon (#218)",
-   "fix(infra): cria bucket de backup e alinha teste de storage (#216)",
-   "fix(rls): libera escrita de departamentos para o tenant (#215)",
-   "fix(auth): role de UI nao vem mais de user_metadata (#217)"
+   "fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)",
+   "fix(seguranca): fecha escrita anonima em whatsapp_templates, file_transfers, geofence_events e audit_logs (#198)",
+   "fix(infra): cria 5 tabelas usadas por edges ativas e corrige auth de crons e edges (#187)",
+   "fix(infra): cron expire-recordings envia Authorization e para de dar 401 (#186)",
+   "feat: cria 5 tabelas usadas pelo front e fecha contrato do generate-report (#185)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

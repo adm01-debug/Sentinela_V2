@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `e261448777bd31a1ec6d465ad1a81bffe05bfeb8` (2026-11-22T08:49:21-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `8731d4e143cdf10f817442dd10bc82fadbd743e9` (2026-11-22T08:49:43-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1383), Markdown (176), SQL (116), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1383), Markdown (176), SQL (123), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1839 |
+| arquivos_total | 1846 |
 | arquivos_codigo | 1403 |
-| linhas_codigo | 150138 |
+| linhas_codigo | 150250 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -45,9 +45,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | componentes | 462 |
 | hooks | 524 |
 | edge_functions | 86 |
-| tabelas | 142 |
-| migrations | 112 |
-| cron_jobs | 1 |
+| tabelas | 153 |
+| migrations | 119 |
+| cron_jobs | 5 |
 | testes | 70 |
 | workflows | 12 |
 | scripts | 31 |
@@ -193,19 +193,19 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `dlp-incident-report` — tabelas: agent_keys, dlp_incidents, dlp_redaction_log; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `dlp-policy-sync` — tabelas: agent_keys, dlp_classifiers, dlp_policies; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `escalate-dispute-sla` — tabelas: edge_function_logs, mobile_devices, violation_disputes; chamada por 1 arquivo(s) do front
-- `expire-recordings` — tabelas: data_retention_policies, file_transfers, recording_chunks, recording_sessions; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `expire-recordings` — tabelas: data_retention_policies, file_transfers, recording_chunks, recording_sessions; chamada por 0 arquivo(s) do front, por SQL/cron
 - `export-data` — tabelas: user_companies; chamada por 1 arquivo(s) do front
 - `external-db-bridge` — tabelas: query_telemetry; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-api-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-insights` — tabelas: activity_logs, employees, violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `generate-report` — tabelas: ai_analysis_reports, keystroke_logs, productivity_logs, reports, security_violations; chamada por 3 arquivo(s) do front
+- `generate-report` — tabelas: ai_analysis_reports, attendance_records, keystroke_logs, productivity_logs, reports, security_violations; chamada por 3 arquivo(s) do front
 - `get-dashboard-stats` — tabelas: employees, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-employee-schedule` — tabelas: employee_schedules; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-employee-timeline` — tabelas: click_logs, employees, keystroke_logs, screen_captures, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-mapbox-token` — tabelas: -; chamada por 1 arquivo(s) do front
 - `get-policies` — tabelas: policy_acknowledgments, security_policies; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `health` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `health-check` — tabelas: employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `health-check` (verify_jwt=false) — tabelas: employees; chamada por 0 arquivo(s) do front
 - `import-employees` — tabelas: employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `ingest-file-transfer` — tabelas: agent_keys, dlp_incidents, dlp_policies, employees, file_transfers; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `invite-user` — tabelas: user_companies, user_roles; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -241,9 +241,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `slack-dlq-bulk-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
 - `slack-dlq-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
 - `slack-fallback-test` — tabelas: alert_notification_settings, edge_function_logs; chamada por 1 arquivo(s) do front
-- `slack-mttr-monitor` — tabelas: edge_function_logs, slack_webhook_mttr; chamada por 1 arquivo(s) do front
+- `slack-mttr-monitor` — tabelas: edge_function_logs, slack_webhook_mttr; chamada por 1 arquivo(s) do front, por SQL/cron
 - `slack-notify` — tabelas: alert_notification_settings, edge_function_logs, slack_delivery_events, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
-- `slack-weekly-digest` — tabelas: edge_function_logs, security_violations, slack_integrations, slack_notification_dlq, slack_webhook_mttr, violation_disputes; chamada por 1 arquivo(s) do front
+- `slack-weekly-digest` — tabelas: edge_function_logs, security_violations, slack_integrations, slack_notification_dlq, slack_webhook_mttr, violation_disputes; chamada por 1 arquivo(s) do front, por SQL/cron
 - `smart-recommendations` — tabelas: activities, employees, violations; chamada por 1 arquivo(s) do front
 - `summarize-activity` — tabelas: activities, violations; chamada por 1 arquivo(s) do front
 - `sync-employee` — tabelas: employees, sync_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -259,11 +259,15 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Cron jobs (pg_cron / vercel)
 - `cleanup-slack-dlq-daily` 0 3 * * * (20260723160924_fcd89e01-e870-403c-92ff-9f0d7cebf3a9.sql)
+- `escalate-dispute-sla-every-15min` */15 * * * * (20261121201500_schedule_cron_no_collision.sql)
+- `expire-recordings-hourly` 15 * * * * → edge expire-recordings (20261121190000_fix_expire_recordings_cron_auth.sql)
+- `slack-mttr-monitor-hourly` 15 * * * * → edge slack-mttr-monitor (20261121200500_fix_slack_cron_auth.sql)
+- `slack-weekly-digest-monday` 0 9 * * 1 → edge slack-weekly-digest (20261121200500_fix_slack_cron_auth.sql)
 
 ## Integrações externas
 - SDKs: HTTP (axios), Sentry, Supabase, i18next, react-query, zod
 - hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, attack.mitre.org, cdn.gpteng.co, cdnjs.cloudflare.com, evolution-go-rxj2.srv1481814.hstgr.cloud
-- webhooks recebidos: nenhum
+- webhooks recebidos: health-check
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
 ## Permissões / papéis
@@ -276,10 +280,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - rotas_sem_arquivo: 0
 - componentes_ambiguos: 0
 - menu_sem_destino: 8 — ex.: Configurações -> /settings, Configurações -> settings, Dashboard -> /
-- edges_orfas: 55 — ex.: agent-collector, archive-data, audit-export
+- edges_orfas: 53 — ex.: agent-collector, archive-data, audit-export
 - edges_chamadas_sem_pasta: 0
 - tabelas_sem_rls: 0
-- tabelas_usadas_sem_definicao: 21 — ex.: activities, app_config, backups
+- tabelas_usadas_sem_definicao: 10 — ex.: activities, app_config, backups
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 100 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
@@ -298,16 +302,16 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/eslint-baseline.json (14)
 - scripts/ci/prettier-baseline.json (11)
 - .github/workflows/deploy.yml (7)
+- docs/pendencias/_linha-de-base.md (6)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
-- docs/pendencias/_linha-de-base.md (5)
 - src/index.css (5)
 - desktop-agent/src/main.ts (4)
 - src/test/improvements-verification.test.ts (4)
+- supabase/config.toml (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/lint.yml (3)
 - .github/workflows/release.yml (3)
-- .github/workflows/update-deps.yml (3)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -454,6 +458,11 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `8731d4e14` fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)
+- 2026-11-22 `c4e613ba4` fix(seguranca): fecha escrita anonima em whatsapp_templates, file_transfers, geofence_events e audit_logs (#198)
+- 2026-11-22 `a9bdf6484` fix(infra): cria 5 tabelas usadas por edges ativas e corrige auth de crons e edges (#187)
+- 2026-11-22 `37f86916b` fix(infra): cron expire-recordings envia Authorization e para de dar 401 (#186)
+- 2026-11-22 `d9c629b9c` feat: cria 5 tabelas usadas pelo front e fecha contrato do generate-report (#185)
 - 2026-11-22 `e26144877` fix(seguranca): revoga exec_sql e RPCs de enumeracao de anon (#184)
 - 2026-11-22 `31e061387` fix(seguranca): revoga EXECUTE de funcoes de trigger expostas a anon (#218)
 - 2026-11-22 `e502b2151` fix(infra): cria bucket de backup e alinha teste de storage (#216)
@@ -464,11 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `151e025fe` fix: alinha planos de cobranca ao contrato real do banco (#212)
 - 2026-11-21 `7fab455bb` feat: RolesPage com matriz de permissoes editavel (#211)
 - 2026-11-21 `4d022e774` feat: expoe painel unificado de seguranca em /admin/security (#210)
-- 2026-11-21 `e7fe0e9ac` fix: completa queryKeys e invalidateRelated (46 chaves + 11 métodos que quebravam mutations em 22 hooks) (#209)
-- 2026-11-21 `c54f5f8b0` fix(config): mapeia snake_case do banco para camelCase em useAppConfig e useSubscription (#207)
-- 2026-11-21 `732a56232` fix(permissoes): usePermissions buscava embed inexistente e zerava as permissoes de todos (#205)
-- 2026-11-21 `e96b8cce3` fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)
-- 2026-11-21 `e30a885cf` fix(edges): corrige nome do parametro de get_user_company_id (p_user_id -> _user_id) (#203)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
