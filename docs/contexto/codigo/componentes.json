@@ -2438,7 +2438,7 @@
     "PolicyAcknowledgmentDialog"
    ],
    "export_default": null,
-   "linhas": 372,
+   "linhas": 376,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -2457,15 +2457,12 @@
     "PolicyGate"
    ],
    "export_default": null,
-   "linhas": 172,
+   "linhas": 152,
    "dominio": "components",
    "hooks_locais": [
     "useAuth"
    ],
-   "tabelas": [
-    "policy_acknowledgments",
-    "policy_exemptions"
-   ],
+   "tabelas": [],
    "edges": [],
    "usado_por": 0,
    "orfao": true

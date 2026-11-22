@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 122,
+ "migrations": 123,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -90,6 +90,7 @@
   "is_ip_blocked",
   "is_ip_whitelisted",
   "log_activity",
+  "my_policy_acknowledgment_status",
   "record_violation_action",
   "set_sensitive_keywords_updated_at",
   "sync_violation_dispute_status",
@@ -9128,19 +9129,34 @@
      "pk": false,
      "default": null,
      "ref": null
+    },
+    "user_id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "auth"
     }
    },
    "rls": false,
    "policies": [
     {
-     "nome": "Allow public inserts for employee confirmations",
+     "nome": "Allow employee confirmations with own user_id",
      "comando": "insert",
      "para": "anon, authenticated",
      "tipo": "permissive"
     }
    ],
-   "indices": [],
-   "fks": [],
+   "indices": [
+    {
+     "nome": "policy_acknowledgments_user_id_acknowledged_at_idx",
+     "colunas": "user_id, acknowledged_at desc",
+     "unico": false
+    }
+   ],
+   "fks": [
+    "user_id->auth"
+   ],
    "criada_em": null,
    "colunas_types": {
     "acknowledged_at": "string",
@@ -9152,7 +9168,8 @@
     "location_address": "string | null",
     "longitude": "number | null",
     "photo_url": "string | null",
-    "policy_version": "string | null"
+    "policy_version": "string | null",
+    "user_id": "string | null"
    },
    "drift": {
     "so_na_migration": [],
@@ -9165,7 +9182,7 @@
      "policy_version"
     ]
    },
-   "usada_no_front": 4,
+   "usada_no_front": 3,
    "usada_em_edges": [
     "get-policies"
    ],
@@ -9268,11 +9285,11 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 1,
+   "usada_no_front": 0,
    "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": false
+   "nao_usada": true
   },
   "productivity_logs": {
    "colunas": {
@@ -17902,6 +17919,11 @@
   },
   {
    "nome": "is_ip_blocked",
+   "definida": true,
+   "usada_em": 1
+  },
+  {
+   "nome": "my_policy_acknowledgment_status",
    "definida": true,
    "usada_em": 1
   },

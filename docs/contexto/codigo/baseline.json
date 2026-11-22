@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "ed7e2aa98040750b026daea3694c80ffd857c372",
+  "commit": "d5ef6cbbb8052313fb66e607a389caaf6a580344",
   "branch": "main",
-  "data_commit": "2026-11-22T14:27:14-03:00",
+  "data_commit": "2026-11-22T14:56:46-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "d5ef6cbbb",
+    "data": "2026-11-22",
+    "assunto": "feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)"
+   },
+   {
+    "sha": "5ec7ddcb9",
+    "data": "2026-11-22",
+    "assunto": "docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)"
+   },
    {
     "sha": "ed7e2aa98",
     "data": "2026-11-22",
@@ -121,19 +131,9 @@
     "sha": "4867d1935",
     "data": "2026-11-22",
     "assunto": "fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)"
-   },
-   {
-    "sha": "326c1c5b1",
-    "data": "2026-11-22",
-    "assunto": "feat(db): cria tabelas de configuracao ausentes consumidas pelos hooks (#206)"
-   },
-   {
-    "sha": "45e3668e3",
-    "data": "2026-11-22",
-    "assunto": "fix(seguranca): view violations vazava sem token e 9 policies SELECT eram true (#202)"
    }
   ],
-  "arquivos_mudados_7d": 195,
+  "arquivos_mudados_7d": 199,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -141,11 +141,11 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "pasta": "package-lock.json",
@@ -161,7 +161,7 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "pasta": "src/components/ui",
@@ -207,11 +207,11 @@
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
@@ -219,7 +219,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 9
+    "mudancas": 10
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
@@ -270,6 +270,10 @@
     "mudancas": 3
    },
    {
+    "arquivo": "src/components/PolicyAcknowledgmentDialog.tsx",
+    "mudancas": 3
+   },
+   {
     "arquivo": "src/constants/routes.ts",
     "mudancas": 3
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": "src/test/comprehensive-validation.test.ts",
     "mudancas": 3
-   },
-   {
-    "arquivo": "supabase/functions/award-gamification-points/index.ts",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 141
+    "commits": 143
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1859,
-  "arquivos_codigo": 1413,
-  "linhas_codigo": 151683,
+  "arquivos_total": 1861,
+  "arquivos_codigo": 1414,
+  "linhas_codigo": 151818,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -326,9 +326,9 @@
   "hooks": 524,
   "edge_functions": 87,
   "tabelas": 159,
-  "migrations": 122,
+  "migrations": 123,
   "cron_jobs": 5,
-  "testes": 76,
+  "testes": 77,
   "workflows": 12,
   "scripts": 31,
   "docs_md": 176
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44899
+   "linhas": 44883
   },
   "src/constants": {
    "arquivos": 7,
@@ -444,7 +444,7 @@
   },
   "src/integrations": {
    "arquivos": 4,
-   "linhas": 6440
+   "linhas": 6451
   },
   "src/layouts": {
    "arquivos": 2,
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 51,
-   "linhas": 10459
+   "arquivos": 52,
+   "linhas": 10599
   },
   "src/types": {
    "arquivos": 57,
@@ -506,7 +506,7 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 6369
+   "linhas": 6380
   },
   {
    "arquivo": "scripts/ai-context/gerar.mjs",

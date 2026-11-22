@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `ed7e2aa98040750b026daea3694c80ffd857c372` (2026-11-22T14:27:14-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `d5ef6cbbb8052313fb66e607a389caaf6a580344` (2026-11-22T14:56:46-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1393), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1394), Markdown (176), SQL (127), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1859 |
-| arquivos_codigo | 1413 |
-| linhas_codigo | 151683 |
+| arquivos_total | 1861 |
+| arquivos_codigo | 1414 |
+| linhas_codigo | 151818 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -46,9 +46,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 524 |
 | edge_functions | 87 |
 | tabelas | 159 |
-| migrations | 122 |
+| migrations | 123 |
 | cron_jobs | 5 |
-| testes | 76 |
+| testes | 77 |
 | workflows | 12 |
 | scripts | 31 |
 | docs_md | 176 |
@@ -58,7 +58,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (356), src/pages (90), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (50), co-localizado (__tests__) (19), outro (6)
+- testes: co-localizado (*.test) (51), co-localizado (__tests__) (19), outro (6)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (4), scripts/ai-context (2), scripts/inventario (2)
@@ -69,7 +69,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Módulos (menu → domínio)
 | módulo | itens de menu | telas/rotas | arquivos | hooks locais | edges | tabelas |
 |---|---|---|---|---|---|---|
-| components | 0 | 0 | 98 | 84 | 1 | 22 |
+| components | 0 | 0 | 98 | 84 | 1 | 21 |
 | components/admin | 0 | 0 | 8 | 5 | 6 | 7 |
 | components/auth | 0 | 0 | 5 | 9 | 1 | 4 |
 | components/charts | 0 | 0 | 13 | 2 | 0 | 0 |
@@ -300,10 +300,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (25)
 - package.json (24)
-- scripts/ci/eslint-baseline.json (16)
-- scripts/ci/prettier-baseline.json (15)
+- scripts/ci/eslint-baseline.json (17)
+- scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (12)
-- docs/pendencias/_linha-de-base.md (9)
+- docs/pendencias/_linha-de-base.md (10)
 - src/routes/AppRoutes.tsx (7)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
@@ -459,6 +459,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `d5ef6cbbb` feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)
+- 2026-11-22 `5ec7ddcb9` docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)
 - 2026-11-22 `ed7e2aa98` docs: registra o estado real do PolicyGate na linha de base (#242)
 - 2026-11-22 `a52cd2c58` fix(rotas): ROUTES.ADMIN_TELEMETRY aponta para a rota real /admin/telemetria (#241)
 - 2026-11-22 `2e72aa8f7` fix(compliance): foto do aceite usa URL assinada em bucket privado (#238)
@@ -472,8 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `9659a9396` feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)
 - 2026-11-22 `6a84684c1` docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)
 - 2026-11-22 `faa3948a7` feat(seguranca): exige o segundo fator quando a conta tem MFA cadastrado (#229)
-- 2026-11-22 `09fee0333` fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)
-- 2026-11-22 `68d4328da` fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -7,7 +7,7 @@
    "modulo": "components",
    "arquivos": 98,
    "testes": 0,
-   "linhas": 14455,
+   "linhas": 14439,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -113,7 +113,6 @@
     "geofences",
     "keystroke_logs",
     "policy_acknowledgments",
-    "policy_exemptions",
     "productivity_logs",
     "saved_filters",
     "screen_captures",
@@ -126,7 +125,9 @@
     "violation_disputes",
     "violation_rules"
    ],
-   "rpcs": [],
+   "rpcs": [
+    "my_policy_acknowledgment_status"
+   ],
    "buckets": [],
    "canais_realtime": [
     "header-notifications-rt",
@@ -160,14 +161,15 @@
     "tabelas": [
      "keystroke_logs",
      "policy_acknowledgments",
-     "policy_exemptions",
      "productivity_logs",
      "screen_captures",
      "security_violations",
      "session_recordings",
      "violation_rules"
     ],
-    "rpcs": []
+    "rpcs": [
+     "my_policy_acknowledgment_status"
+    ]
    },
    "importado_por_outros_modulos": [
     "components/dashboard",
@@ -3356,7 +3358,7 @@
    "modulo": "integrations/supabase",
    "arquivos": 2,
    "testes": 0,
-   "linhas": 6398,
+   "linhas": 6409,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -5084,7 +5086,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 51,
+   "testes": 52,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],
