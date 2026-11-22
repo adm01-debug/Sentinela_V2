@@ -57,6 +57,7 @@ export const ROUTES = {
   ADMIN_DEPARTMENTS: '/admin/departments',
   ADMIN_TEAMS: '/admin/teams',
   ADMIN_AUDIT: '/admin/audit',
+  ADMIN_SECURITY: '/admin/security',
   ADMIN_TELEMETRY: '/admin/telemetry',
   
   // Organization routes
@@ -105,6 +106,7 @@ export const ADMIN_ROUTES = [
   ROUTES.ADMIN_DEPARTMENTS,
   ROUTES.ADMIN_TEAMS,
   ROUTES.ADMIN_AUDIT,
+  ROUTES.ADMIN_SECURITY,
 ] as const;
 
 export const SETTINGS_ROUTES = [

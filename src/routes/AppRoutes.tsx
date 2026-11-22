@@ -48,6 +48,7 @@ const TeamDetailPage = lazy(() => import("@/pages/TeamDetailPage"));
 const DepartmentsPage = lazy(() => import("@/pages/DepartmentsPage"));
 const DepartmentDetailPage = lazy(() => import("@/pages/DepartmentDetailPage"));
 const AuditLogPage = lazy(() => import("@/pages/AuditLogPage"));
+const AdminSecurityPage = lazy(() => import("@/pages/AdminSecurityPage"));
 const DevicesPage = lazy(() => import("@/pages/DevicesPage"));
 const ScreenshotsPage = lazy(() => import("@/pages/ScreenshotsPage"));
 const ScreenshotDetailPage = lazy(() => import("@/pages/ScreenshotDetailPage"));
@@ -184,6 +185,14 @@ export const AppRoutes = () => (
           <Route path={ROUTES.ADMIN_DEPARTMENTS} element={<DepartmentsPage />} />
           <Route path={ROUTES.DEPARTMENT_DETAIL} element={<DepartmentDetailPage />} />
           <Route path={ROUTES.ADMIN_AUDIT} element={<AuditLogPage />} />
+          <Route
+            path={ROUTES.ADMIN_SECURITY}
+            element={
+              <AdminGuard>
+                <AdminSecurityPage />
+              </AdminGuard>
+            }
+          />
 
           <Route path="/devices" element={<DevicesPage />} />
           <Route path={ROUTES.SCREENSHOTS} element={<ScreenshotsPage />} />

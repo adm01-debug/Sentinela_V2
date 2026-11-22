@@ -7,7 +7,7 @@ import {
   Building2, UserCog, ScrollText, Smartphone, MapPin, Clock, Download,
   Key, Webhook, MessageSquare, Brain, FolderKanban, Timer, ClipboardList,
   UserCheck, BarChart, ChevronDown, LogOut, Link2, ShieldCheck, FileCheck, DownloadCloud,
-  Gavel, ClipboardCheck, Video, FileSymlink
+  Gavel, ClipboardCheck, Video, FileSymlink, Lock
 } from 'lucide-react';
 import { useUIStore } from '@/stores';
 import { useAuth } from '@/hooks/useAuth';
@@ -104,6 +104,7 @@ const navSections: NavSection[] = [
       { icon: UserCog, labelKey: 'nav.users', path: ROUTES.ADMIN_USERS },
       { icon: ShieldCheck, labelKey: 'nav.roles', path: ROUTES.ADMIN_ROLES },
       { icon: ScrollText, labelKey: 'nav.audit', path: ROUTES.ADMIN_AUDIT },
+      { icon: Lock, labelKey: 'nav.security', path: ROUTES.ADMIN_SECURITY },
       { icon: FileCheck, labelKey: 'nav.compliance', path: '/compliance' },
       { icon: ClipboardCheck, labelKey: 'Relatório de Ciência LGPD', path: '/admin/acknowledgment-report' },
       { icon: Gavel, labelKey: 'Métricas de Contestação', path: '/admin/dispute-metrics' },
