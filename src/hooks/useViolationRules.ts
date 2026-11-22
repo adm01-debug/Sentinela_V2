@@ -52,7 +52,7 @@ export function useViolationRules() {
         .from('violation_rules')
         .select('*')
         .order('severity', { ascending: false })
-        .order('name', { ascending: true });
+        .order('rule_type', { ascending: true });
 
       if (error) throw error;
       return data as ViolationRule[];

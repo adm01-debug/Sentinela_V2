@@ -45,10 +45,7 @@ export function useViolationComments(violationId: string | undefined) {
       
       const { data, error } = await supabase
         .from('violation_comments')
-        .select(`
-          *,
-          user:users(id, email, full_name)
-        `)
+        .select('*')
         .eq('violation_id', violationId)
         .order('created_at', { ascending: true });
 
@@ -79,10 +76,7 @@ export function useCreateViolationComment() {
           ...input,
           user_id: user.id,
         })
-        .select(`
-          *,
-          user:users(id, email, full_name)
-        `)
+        .select()
         .maybeSingle();
 
       if (error) throw error;

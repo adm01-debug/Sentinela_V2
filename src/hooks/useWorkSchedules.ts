@@ -29,18 +29,26 @@ export interface WorkSchedule {
 }
 
 export interface CreateWorkScheduleInput {
-  employee_id: string;
-  day_of_week: number;
+  name: string;
   start_time: string;
   end_time: string;
-  is_active?: boolean;
+  work_days?: number[];
+  description?: string;
+  allow_overtime?: boolean;
+  auto_block_enabled?: boolean;
+  grace_period_minutes?: number;
 }
 
 export interface UpdateWorkScheduleInput {
   id: string;
+  name?: string;
   start_time?: string;
   end_time?: string;
-  is_active?: boolean;
+  work_days?: number[];
+  description?: string;
+  allow_overtime?: boolean;
+  auto_block_enabled?: boolean;
+  grace_period_minutes?: number;
 }
 
 export function useWorkSchedules() {
@@ -58,21 +66,20 @@ export function useWorkSchedules() {
   });
 }
 
-export function useEmployeeSchedule(employeeId: string | undefined) {
+export function useEmployeeSchedule(_employeeId: string | undefined) {
+  // work_schedules é um catálogo de turnos por empresa; não existe vínculo
+  // direto com employees nas tabelas atuais. Retorna o catálogo ativo.
   return useQuery({
-    queryKey: queryKeys.workSchedules.employee(employeeId || ''),
+    queryKey: queryKeys.workSchedules.lists(),
     queryFn: async () => {
-      if (!employeeId) return [];
       const { data, error } = await supabase
         .from('work_schedules')
         .select('*')
-        .eq('employee_id', employeeId)
-        .eq('is_active', true);
+        .order('name', { ascending: true });
       if (error) throw error;
       return data as WorkSchedule[];
     },
-    enabled: !!employeeId,
-    ...queryPresets.detail,
+    ...queryPresets.list,
   });
 }
 
