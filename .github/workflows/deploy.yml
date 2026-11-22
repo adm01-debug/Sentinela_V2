@@ -53,6 +53,34 @@ jobs:
           supabase link --project-ref jgnmwvzephsozsqmcpzb
           supabase db push --remote --include-all
 
+  # Publica em producao TODAS as edge functions versionadas em supabase/functions.
+  # Antes disto o workflow so aplicava migrations: uma correcao de edge function
+  # mergeada na main ficava no GitHub e a producao continuava rodando o bundle
+  # antigo (foi o que aconteceu com send-password-reset, que precisou de deploy
+  # manual em 261122).
+  deploy-functions:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: supabase-functions-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 3.2.0
+      - name: Publicar edge functions
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          set -euo pipefail
+          supabase link --project-ref jgnmwvzephsozsqmcpzb
+          # --yes: o runner e nao interativo; sem isto o CLI aborta pedindo
+          # confirmacao da mutacao em producao.
+          # --use-api: empacota no servidor, sem Docker no runner.
+          # Sem nome de funcao o CLI publica todas as de supabase/functions.
+          supabase functions deploy --yes --use-api
+
   verify-production-deploy:
     runs-on: ubuntu-latest
     steps:
