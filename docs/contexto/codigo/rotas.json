@@ -6,7 +6,7 @@
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 83
+  "lazy": 84
  },
  "urls": [
   {
@@ -2707,6 +2707,7 @@
   "ProjectsPage": "src/pages/ProjectsPage.tsx",
   "ReportDetailPage": "src/pages/ReportDetailPage.tsx",
   "ReportsPage": "src/pages/ReportsPage.tsx",
+  "ResetPasswordPage": "src/pages/ResetPasswordPage.tsx",
   "RolesPage": "src/pages/RolesPage.tsx",
   "ScheduledReportsPage": "src/pages/ScheduledReportsPage.tsx",
   "ScreenshotDetailPage": "src/pages/ScreenshotDetailPage.tsx",

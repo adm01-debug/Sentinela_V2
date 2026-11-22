@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `6a84684c128701b41c7563ebd3519e4dec8952de` (2026-11-22T11:00:08-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `9659a9396b66d33c88a4cfbb989a78f60c1d42d3` (2026-11-22T11:49:21-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1387), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1389), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,31 +34,31 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1853 |
-| arquivos_codigo | 1407 |
-| linhas_codigo | 150653 |
+| arquivos_total | 1855 |
+| arquivos_codigo | 1409 |
+| linhas_codigo | 151169 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 57 |
-| componentes | 463 |
+| componentes | 464 |
 | hooks | 524 |
 | edge_functions | 87 |
 | tabelas | 159 |
 | migrations | 122 |
 | cron_jobs | 5 |
-| testes | 72 |
+| testes | 73 |
 | workflows | 12 |
 | scripts | 31 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (55)
-- componentes: src/components (356), src/pages (89), src/providers (8)
+- componentes: src/components (356), src/pages (90), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (64), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (46), co-localizado (__tests__) (19), outro (6)
+- testes: co-localizado (*.test) (47), co-localizado (__tests__) (19), outro (6)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (4), scripts/ai-context (2), scripts/inventario (2)
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 495 | 19 | 86 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 67 | 153 | 8 | 66 |
+| pages | 4 | 38 | 68 | 154 | 9 | 67 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
 | pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
@@ -300,12 +300,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (24)
 - package.json (24)
-- scripts/ci/eslint-baseline.json (15)
-- scripts/ci/prettier-baseline.json (13)
+- scripts/ci/eslint-baseline.json (16)
+- scripts/ci/prettier-baseline.json (14)
 - .github/workflows/deploy.yml (10)
 - docs/pendencias/_linha-de-base.md (8)
+- src/routes/AppRoutes.tsx (7)
 - docs/prod-readiness.md (6)
-- src/routes/AppRoutes.tsx (6)
 - .github/workflows/ci.yml (5)
 - src/index.css (5)
 - supabase/config.toml (5)
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `9659a9396` feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)
 - 2026-11-22 `6a84684c1` docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)
 - 2026-11-22 `faa3948a7` feat(seguranca): exige o segundo fator quando a conta tem MFA cadastrado (#229)
 - 2026-11-22 `09fee0333` fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `4867d1935` fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)
 - 2026-11-22 `326c1c5b1` feat(db): cria tabelas de configuracao ausentes consumidas pelos hooks (#206)
 - 2026-11-22 `45e3668e3` fix(seguranca): view violations vazava sem token e 9 policies SELECT eram true (#202)
-- 2026-11-22 `8731d4e14` fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 463,
+ "total": 464,
  "orfaos": 95,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -667,7 +667,7 @@
    ],
    "tabelas": [],
    "edges": [],
-   "usado_por": 1,
+   "usado_por": 2,
    "orfao": false
   },
   {
@@ -683,7 +683,7 @@
    ],
    "tabelas": [],
    "edges": [],
-   "usado_por": 1,
+   "usado_por": 2,
    "orfao": false
   },
   {
@@ -697,7 +697,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 2,
+   "usado_por": 3,
    "orfao": false
   },
   {
@@ -3732,7 +3732,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 12,
+   "usado_por": 13,
    "orfao": false
   },
   {
@@ -3823,12 +3823,12 @@
     "ButtonProps"
    ],
    "export_default": null,
-   "linhas": 89,
+   "linhas": 122,
    "dominio": "components/ui",
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 179,
+   "usado_por": 180,
    "orfao": false
   },
   {
@@ -3863,7 +3863,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 184,
+   "usado_por": 185,
    "orfao": false
   },
   {
@@ -4528,7 +4528,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 86,
+   "usado_por": 87,
    "orfao": false
   },
   {
@@ -4559,7 +4559,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 58,
+   "usado_por": 59,
    "orfao": false
   },
   {
@@ -5284,7 +5284,7 @@
    ],
    "tabelas": [],
    "edges": [],
-   "usado_por": 2,
+   "usado_por": 3,
    "orfao": false
   },
   {
@@ -5410,7 +5410,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 15,
+   "usado_por": 16,
    "orfao": false
   },
   {
@@ -6382,7 +6382,7 @@
     "AdminSecurityPage"
    ],
    "export_default": "AdminSecurityPage",
-   "linhas": 24,
+   "linhas": 51,
    "dominio": "pages",
    "hooks_locais": [],
    "tabelas": [],
@@ -6995,7 +6995,7 @@
     "ForgotPasswordPage"
    ],
    "export_default": "ForgotPasswordPage",
-   "linhas": 67,
+   "linhas": 106,
    "dominio": "pages",
    "hooks_locais": [
     "useToast"
@@ -7277,6 +7277,23 @@
    "dominio": "pages",
    "hooks_locais": [
     "useReports"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/ResetPasswordPage.tsx",
+   "exports": [
+    "ResetPasswordPage"
+   ],
+   "export_default": "ResetPasswordPage",
+   "linhas": 246,
+   "dominio": "pages",
+   "hooks_locais": [
+    "useAuth",
+    "useToast"
    ],
    "tabelas": [],
    "edges": [],
@@ -7718,7 +7735,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 383,
+   "linhas": 387,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

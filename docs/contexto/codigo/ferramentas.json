@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1387)",
+   "TypeScript (1389)",
    "Markdown (176)",
    "SQL (126)",
    "JSON (42)",
@@ -1301,15 +1301,15 @@
     "arquivos": 1
    },
    {
-    "host": "lovable.dev",
-    "arquivos": 1
-   },
-   {
     "host": "nominatim.openstreetmap.org",
     "arquivos": 1
    },
    {
     "host": "placeholder.supabase.co",
+    "arquivos": 1
+   },
+   {
+    "host": "sentinela-v2-juca1.vercel.app",
     "arquivos": 1
    },
    {

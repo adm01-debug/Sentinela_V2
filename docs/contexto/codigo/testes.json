@@ -5,15 +5,15 @@
   "vitest",
   "playwright"
  ],
- "total": 72,
+ "total": 73,
  "por_tipo": {
   "e2e": 1,
-  "unit": 71
+  "unit": 72
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 46
+   "arquivos": 47
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -573,6 +573,16 @@
    "casos": 5
   },
   {
+   "arquivo": "src/test/reset-password-page.test.tsx",
+   "tipo": "unit",
+   "linhas": 93,
+   "testa": [
+    "src/integrations/supabase/client.ts",
+    "src/pages/ResetPasswordPage.tsx"
+   ],
+   "casos": 4
+  },
+  {
    "arquivo": "src/test/roles.test.ts",
    "tipo": "unit",
    "linhas": 67,
@@ -614,7 +624,7 @@
   {
    "arquivo": "src/test/setup.ts",
    "tipo": "unit",
-   "linhas": 98,
+   "linhas": 99,
    "testa": [],
    "casos": 0
   },
@@ -766,7 +776,7 @@
   "src/hooks/useToggle.ts": 1,
   "src/hooks/useUsers.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 8,
+  "src/integrations/supabase/client.ts": 9,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,
@@ -799,6 +809,7 @@
   "src/pages/GeofencingPage.tsx": 1,
   "src/pages/MonitoringPage.tsx": 1,
   "src/pages/ReportsPage.tsx": 1,
+  "src/pages/ResetPasswordPage.tsx": 1,
   "src/pages/Settings.tsx": 1,
   "src/pages/UsersPage.tsx": 1,
   "src/pages/ViolationsPage.tsx": 1,

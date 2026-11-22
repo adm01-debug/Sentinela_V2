@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "6a84684c128701b41c7563ebd3519e4dec8952de",
+  "commit": "9659a9396b66d33c88a4cfbb989a78f60c1d42d3",
   "branch": "main",
-  "data_commit": "2026-11-22T11:00:08-03:00",
+  "data_commit": "2026-11-22T11:49:21-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "9659a9396",
+    "data": "2026-11-22",
+    "assunto": "feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)"
+   },
    {
     "sha": "6a84684c1",
     "data": "2026-11-22",
@@ -126,14 +131,9 @@
     "sha": "7e613e68a",
     "data": "2026-11-21",
     "assunto": "fix(auth): role de UI nao vem mais de user_metadata (#217)"
-   },
-   {
-    "sha": "4e3e61ccb",
-    "data": "2026-11-21",
-    "assunto": "fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)"
    }
   ],
-  "arquivos_mudados_7d": 178,
+  "arquivos_mudados_7d": 185,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -141,14 +141,14 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 15
-   },
-   {
-    "pasta": "package-lock.json",
-    "mudancas": 13
+    "mudancas": 16
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
+    "mudancas": 14
+   },
+   {
+    "pasta": "package-lock.json",
     "mudancas": 13
    },
    {
@@ -164,15 +164,15 @@
     "mudancas": 8
    },
    {
-    "pasta": "docs/prod-readiness.md",
-    "mudancas": 6
-   },
-   {
     "pasta": "src/components/ui",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
+    "mudancas": 7
+   },
+   {
+    "pasta": "docs/prod-readiness.md",
     "mudancas": 6
    },
    {
@@ -207,11 +207,11 @@
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 13
+    "mudancas": 14
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
@@ -222,11 +222,11 @@
     "mudancas": 8
    },
    {
-    "arquivo": "docs/prod-readiness.md",
-    "mudancas": 6
+    "arquivo": "src/routes/AppRoutes.tsx",
+    "mudancas": 7
    },
    {
-    "arquivo": "src/routes/AppRoutes.tsx",
+    "arquivo": "docs/prod-readiness.md",
     "mudancas": 6
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 131
+    "commits": 132
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1853,
-  "arquivos_codigo": 1407,
-  "linhas_codigo": 150653,
+  "arquivos_total": 1855,
+  "arquivos_codigo": 1409,
+  "linhas_codigo": 151169,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 57,
-  "componentes": 463,
+  "componentes": 464,
   "hooks": 524,
   "edge_functions": 87,
   "tabelas": 159,
   "migrations": 122,
   "cron_jobs": 5,
-  "testes": 72,
+  "testes": 73,
   "workflows": 12,
   "scripts": 31,
   "docs_md": 176
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44862
+   "linhas": 44895
   },
   "src/constants": {
    "arquivos": 7,
@@ -459,8 +459,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 105,
-   "linhas": 17909
+   "arquivos": 106,
+   "linhas": 18221
   },
   "src/providers": {
    "arquivos": 9,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 383
+   "linhas": 387
   },
   "src/services": {
    "arquivos": 8,
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 47,
-   "linhas": 10094
+   "arquivos": 48,
+   "linhas": 10188
   },
   "src/types": {
    "arquivos": 57,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 101,
-   "linhas": 12756
+   "linhas": 12829
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -606,8 +606,8 @@
   }
  ],
  "qualidade": {
-  "any": 197,
-  "console_log": 54,
+  "any": 196,
+  "console_log": 52,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,

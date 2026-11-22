@@ -1917,16 +1917,19 @@
    "nome": "send-password-reset",
    "entrada": "supabase/functions/send-password-reset/index.ts",
    "arquivos": 1,
-   "linhas": 157,
+   "linhas": 230,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [],
-   "rpcs": [],
+   "rpcs": [
+    "has_role"
+   ],
    "env": [
     "RESEND_API_KEY",
     "SITE_URL",
+    "SUPABASE_ANON_KEY",
     "SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_URL"
    ],
@@ -1934,7 +1937,7 @@
    "chama_edges": [],
    "hosts_externos": [
     "api.resend.com",
-    "lovable.dev"
+    "sentinela-v2-juca1.vercel.app"
    ],
    "usa_shared": [],
    "chamada_pelo_front": [

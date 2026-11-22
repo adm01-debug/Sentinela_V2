@@ -1,20 +1,20 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1335,
- "arestas": 2729,
+ "nos": 1336,
+ "arestas": 2744,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 203
+   "importado_por": 205
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 184
+   "importado_por": 185
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 179
+   "importado_por": 180
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -26,11 +26,11 @@
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 86
+   "importado_por": 87
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
-   "importado_por": 70
+   "importado_por": 71
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
@@ -42,7 +42,7 @@
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 58
+   "importado_por": 59
   },
   {
    "arquivo": "src/components/ui/select.tsx",
@@ -66,7 +66,7 @@
   },
   {
    "arquivo": "src/hooks/useAuth.ts",
-   "importado_por": 26
+   "importado_por": 27
   },
   {
    "arquivo": "src/utils/cn.ts",
@@ -113,11 +113,11 @@
    "importado_por": 16
   },
   {
-   "arquivo": "src/components/ui/popover.tsx",
-   "importado_por": 15
+   "arquivo": "src/components/ui/tabs.tsx",
+   "importado_por": 16
   },
   {
-   "arquivo": "src/components/ui/tabs.tsx",
+   "arquivo": "src/components/ui/popover.tsx",
    "importado_por": 15
   },
   {
@@ -133,11 +133,11 @@
    "importado_por": 13
   },
   {
-   "arquivo": "src/components/layout/PageLayout.tsx",
-   "importado_por": 12
+   "arquivo": "src/components/ui/alert.tsx",
+   "importado_por": 13
   },
   {
-   "arquivo": "src/components/ui/alert.tsx",
+   "arquivo": "src/components/layout/PageLayout.tsx",
    "importado_por": 12
   },
   {

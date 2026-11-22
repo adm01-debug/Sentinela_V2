@@ -7,7 +7,7 @@
   ],
   "componentes": [
    "src/components (356)",
-   "src/pages (89)",
+   "src/pages (90)",
    "src/providers (8)"
   ],
   "hooks": [
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (46)",
+   "co-localizado (*.test) (47)",
    "co-localizado (__tests__) (19)",
    "outro (6)"
   ],
@@ -47,7 +47,7 @@
  },
  "barrels_index": 22,
  "extensao_componentes": [
-  ".tsx (463)"
+  ".tsx (464)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)",
    "docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)",
    "feat(seguranca): exige o segundo fator quando a conta tem MFA cadastrado (#229)",
    "fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)",
-   "fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)",
-   "infra(ci): aplica migrations pendentes no deploy de producao (#222)"
+   "fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

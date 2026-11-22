@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 70,
+   "usado_por": 71,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -880,7 +880,7 @@
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 26,
+   "usado_por": 27,
    "usado_por_arquivos": [
     "src/components/AppSidebar.tsx",
     "src/components/Header.tsx",
@@ -905,6 +905,7 @@
     "src/pages/Auth.tsx",
     "src/pages/GamificationPage.tsx",
     "src/pages/ProfileSettingsPage.tsx",
+    "src/pages/ResetPasswordPage.tsx",
     "src/pages/RolesPage.tsx",
     "src/providers/AuthDependentProviders.tsx",
     "src/providers/TenantThemeProvider.tsx"
