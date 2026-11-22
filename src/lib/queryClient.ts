@@ -133,8 +133,7 @@ export const queryKeys = {
       [...queryKeys.gamification.all, "leaderboard", period] as const,
     achievements: () => [...queryKeys.gamification.all, "achievements"] as const,
     badges: () => [...queryKeys.gamification.all, "badges"] as const,
-    points: (employeeId: string) =>
-      [...queryKeys.gamification.all, "points", employeeId] as const,
+    points: (employeeId: string) => [...queryKeys.gamification.all, "points", employeeId] as const,
   },
   activity: {
     all: ["activity"] as const,
