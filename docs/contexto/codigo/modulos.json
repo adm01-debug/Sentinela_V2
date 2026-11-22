@@ -180,6 +180,7 @@
     "components/timeline",
     "components/versions",
     "components/violations",
+    "guards",
     "layouts",
     "pages",
     "pages/admin",
@@ -1684,13 +1685,13 @@
   },
   {
    "modulo": "guards",
-   "arquivos": 1,
+   "arquivos": 2,
    "testes": 0,
-   "linhas": 70,
+   "linhas": 138,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
-   "componentes": 1,
+   "componentes": 2,
    "hooks_locais": [
     "useAuth"
    ],
@@ -1709,6 +1710,7 @@
    "flags": [],
    "papeis": [
     "admin",
+    "alert",
     "supervisor"
    ],
    "diretos": {
@@ -1720,8 +1722,11 @@
     "routes"
    ],
    "depende_de_modulos": [
+    "components",
     "components/ui",
-    "hooks"
+    "hooks",
+    "integrations/supabase",
+    "lib"
    ],
    "pacotes_externos": [
     "react-router-dom"
@@ -3383,6 +3388,7 @@
     "components/timeline",
     "components/user",
     "components/violations",
+    "guards",
     "hooks",
     "integrations",
     "integrations/lovable",
@@ -3539,6 +3545,7 @@
     "components/ui",
     "components/versions",
     "components/violations",
+    "guards",
     "helpers",
     "hooks",
     "lib/error-handling",
@@ -4537,7 +4544,7 @@
    "modulo": "routes",
    "arquivos": 1,
    "testes": 0,
-   "linhas": 380,
+   "linhas": 383,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -5073,7 +5080,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 46,
+   "testes": 47,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

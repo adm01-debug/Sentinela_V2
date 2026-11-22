@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1385)",
+   "TypeScript (1387)",
    "Markdown (176)",
    "SQL (126)",
    "JSON (42)",
@@ -1533,6 +1533,7 @@
    "is_ip_blocked"
   ],
   "guards": [
+   "src/guards/MFAGuard.tsx",
    "src/guards/index.tsx"
   ],
   "rotas_protegidas": 20,

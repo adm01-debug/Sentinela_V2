@@ -2079,6 +2079,12 @@
    "src/constants/routes.ts",
    "src/constants/status.ts"
   ],
+  "src/guards/MFAGuard.tsx": [
+   "src/components/MFAVerify.tsx",
+   "src/components/ui/LoadingSpinner.tsx",
+   "src/integrations/supabase/client.ts",
+   "src/lib/logger.ts"
+  ],
   "src/guards/index.tsx": [
    "src/components/ui/LoadingSpinner.tsx",
    "src/hooks/useAuth.ts"
@@ -3750,6 +3756,7 @@
    "src/components/layout/RouteErrorBoundary.tsx",
    "src/components/ui/LoadingSpinner.tsx",
    "src/constants/index.ts",
+   "src/guards/MFAGuard.tsx",
    "src/guards/index.tsx",
    "src/layouts/MainLayout.tsx",
    "src/pages/AIAnalysisPage.tsx",

@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "09fee0333d804a0d959db71c29beb43f6da5bd05",
+  "commit": "faa3948a7a03a89a884901871c79de0518352809",
   "branch": "main",
-  "data_commit": "2026-11-22T10:31:43-03:00",
+  "data_commit": "2026-11-22T10:49:25-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "faa3948a7",
+    "data": "2026-11-22",
+    "assunto": "feat(seguranca): exige o segundo fator quando a conta tem MFA cadastrado (#229)"
+   },
    {
     "sha": "09fee0333",
     "data": "2026-11-22",
@@ -126,14 +131,9 @@
     "sha": "14364f0d2",
     "data": "2026-11-21",
     "assunto": "fix: alinha hooks ao schema real (employee_status, activity_logs, rate_limit_logs) (#213)"
-   },
-   {
-    "sha": "151e025fe",
-    "data": "2026-11-21",
-    "assunto": "fix: alinha planos de cobranca ao contrato real do banco (#212)"
    }
   ],
-  "arquivos_mudados_7d": 176,
+  "arquivos_mudados_7d": 178,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -172,6 +172,10 @@
     "mudancas": 6
    },
    {
+    "pasta": "src/routes/AppRoutes.tsx",
+    "mudancas": 6
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 5
    },
@@ -181,10 +185,6 @@
    },
    {
     "pasta": "src/index.css",
-    "mudancas": 5
-   },
-   {
-    "pasta": "src/routes/AppRoutes.tsx",
     "mudancas": 5
    },
    {
@@ -226,15 +226,15 @@
     "mudancas": 6
    },
    {
+    "arquivo": "src/routes/AppRoutes.tsx",
+    "mudancas": 6
+   },
+   {
     "arquivo": ".github/workflows/ci.yml",
     "mudancas": 5
    },
    {
     "arquivo": "src/index.css",
-    "mudancas": 5
-   },
-   {
-    "arquivo": "src/routes/AppRoutes.tsx",
     "mudancas": 5
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 129
+    "commits": 130
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1851,
-  "arquivos_codigo": 1405,
-  "linhas_codigo": 150504,
+  "arquivos_total": 1853,
+  "arquivos_codigo": 1407,
+  "linhas_codigo": 150653,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 57,
-  "componentes": 462,
+  "componentes": 463,
   "hooks": 524,
   "edge_functions": 87,
   "tabelas": 159,
   "migrations": 122,
   "cron_jobs": 5,
-  "testes": 71,
+  "testes": 72,
   "workflows": 12,
   "scripts": 31,
   "docs_md": 176
@@ -427,8 +427,8 @@
    "linhas": 156
   },
   "src/guards": {
-   "arquivos": 1,
-   "linhas": 70
+   "arquivos": 2,
+   "linhas": 138
   },
   "src/helpers": {
    "arquivos": 2,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 380
+   "linhas": 383
   },
   "src/services": {
    "arquivos": 8,
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 46,
-   "linhas": 10016
+   "arquivos": 47,
+   "linhas": 10094
   },
   "src/types": {
    "arquivos": 57,
@@ -764,7 +764,6 @@
    "src/components/KeyboardShortcutsHelp.tsx",
    "src/components/KPIWidget.tsx",
    "src/components/LoadingState.tsx",
-   "src/components/MFAVerify.tsx",
    "src/components/MobileDevicesMap.tsx",
    "src/components/MonitoringNotice.tsx",
    "src/components/NavLink.tsx",

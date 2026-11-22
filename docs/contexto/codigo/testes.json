@@ -5,15 +5,15 @@
   "vitest",
   "playwright"
  ],
- "total": 71,
+ "total": 72,
  "por_tipo": {
   "e2e": 1,
-  "unit": 70
+  "unit": 71
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 45
+   "arquivos": 46
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -517,6 +517,16 @@
    "casos": 12
   },
   {
+   "arquivo": "src/test/mfa-guard.test.tsx",
+   "tipo": "unit",
+   "linhas": 78,
+   "testa": [
+    "src/guards/MFAGuard.tsx",
+    "src/integrations/supabase/client.ts"
+   ],
+   "casos": 4
+  },
+  {
    "arquivo": "src/test/mfa-simulator.test.ts",
    "tipo": "unit",
    "linhas": 298,
@@ -732,6 +742,7 @@
   "src/components/ui/index.ts": 1,
   "src/constants/index.ts": 1,
   "src/constants/routes.ts": 2,
+  "src/guards/MFAGuard.tsx": 1,
   "src/hooks/useAccessControl.ts": 1,
   "src/hooks/useApplicationRules.ts": 1,
   "src/hooks/useChartColors.ts": 1,
@@ -755,7 +766,7 @@
   "src/hooks/useToggle.ts": 1,
   "src/hooks/useUsers.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 7,
+  "src/integrations/supabase/client.ts": 8,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,

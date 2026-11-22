@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 462,
- "orfaos": 96,
+ "total": 463,
+ "orfaos": 95,
  "nomes_duplicados": {
   "ActivityHeatmap": [
    "src/components/ActivityHeatmap.tsx",
@@ -2274,8 +2274,8 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 0,
-   "orfao": true
+   "usado_por": 1,
+   "orfao": false
   },
   {
    "arquivo": "src/components/MobileDevicesMap.tsx",
@@ -4620,7 +4620,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 6,
+   "usado_por": 7,
    "orfao": false
   },
   {
@@ -5924,6 +5924,20 @@
    "hooks_locais": [
     "useAuth"
    ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/guards/MFAGuard.tsx",
+   "exports": [
+    "MFAGuard"
+   ],
+   "export_default": null,
+   "linhas": 68,
+   "dominio": "guards",
+   "hooks_locais": [],
    "tabelas": [],
    "edges": [],
    "usado_por": 1,
@@ -7704,7 +7718,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 380,
+   "linhas": 383,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],
