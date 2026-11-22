@@ -73,9 +73,34 @@ com diretorio em `supabase/functions`).
 
 | Item                         | Estado                    | Evidencia                                                        |
 | ---------------------------- | ------------------------- | ---------------------------------------------------------------- |
-| Site sentinela-v2.vercel.app | NO AR (200)               | Deploy nativo Git<->Vercel entrega main a cada push              |
+| Site sentinela-v2.vercel.app | NO AR, todas as rotas 200 | Rewrite do SPA no `vercel.json` (#246); antes so `/` abria       |
 | Workflow Actions "Deploy"    | VERDE (auditoria)         | #194: passa a auditar o deployment Production em vez de publicar |
 | Job `migrate` do Deploy      | VERDE, aplica DDL sozinho | #222 + #227 + #228: `supabase db push --remote --include-all`    |
+| Deployment Protection Vercel | DESLIGADA                 | sso/password/fork protection off; o dominio servia login Vercel  |
+| Variaveis `VITE_*` da Vercel | CRIADAS em Production     | `VITE_SUPABASE_URL` + `VITE_SUPABASE_PUBLISHABLE_KEY` (#246)     |
+| Secret `SITE_URL` Supabase   | CRIADO                    | Sem ele o fallback hardcoded era a unica fonte                   |
+
+### Producao estava quebrada e ninguem sabia (fechado em 261122, #246)
+
+Tres falhas independentes deixavam o app inutilizavel no ar, todas invisiveis
+para o CI porque o CI builda local com `.env`, nao em producao:
+
+1. **Nenhuma rota alem da home abria.** Sem `vercel.json`, a Vercel tratava
+   `/login`, `/reset-password` e `/dashboard` como arquivos estaticos e
+   devolvia **404**. O link de recuperacao de senha do e-mail caia em 404.
+   Corrigido com `rewrites` para `/index.html`.
+2. **O bundle usava `placeholder.supabase.co`.** O projeto Vercel nao tinha
+   nenhuma variavel `VITE_*`, entao `client.ts` caia no fallback e o app nao
+   autenticava nem consultava. Corrigido criando as duas variaveis.
+3. **O dominio principal servia a tela de login da Vercel.** O
+   `sentinela-v2-juca1.vercel.app` estava com Deployment Protection ligada —
+   e era ele o `site_url` do Auth e o fallback do `send-password-reset`.
+
+Prova depois do fix: `/`, `/login`, `/reset-password`, `/dashboard`,
+`/employees`, `/compliance`, `/admin/users` -> **200**; chunk `client` contem
+`jgnmwvzephsozsqmcpzb` e **zero** `placeholder.supabase.co`; `POST /auth/v1/recover`
+com `redirectTo` canonico -> **200**; deploy run `45060799459`, jobs
+`migrate`/`deploy-functions`/`verify-production-deploy` **success**.
 
 ### Migrations automaticas no deploy (fechado em 261122)
 
