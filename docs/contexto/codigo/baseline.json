@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "316357320bf29dcbb5abcc078a701f21c0d721ec",
+  "commit": "40eb25ac48d784b7d8df41c2fedcbdeb3a5daf25",
   "branch": "main",
-  "data_commit": "2026-11-22T16:26:49-03:00",
+  "data_commit": "2026-11-22T16:37:58-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "40eb25ac4",
+    "data": "2026-11-22",
+    "assunto": "docs: registra que producao estava quebrada e o que foi corrigido (#247)"
+   },
    {
     "sha": "316357320",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "6341704bb",
     "data": "2026-11-22",
     "assunto": "docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)"
-   },
-   {
-    "sha": "9fefa2a60",
-    "data": "2026-11-22",
-    "assunto": "fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)"
    }
   ],
   "arquivos_mudados_7d": 200,
@@ -156,12 +156,12 @@
     "mudancas": 13
    },
    {
-    "pasta": "package.json",
+    "pasta": "docs/pendencias/_linha-de-base.md",
     "mudancas": 12
    },
    {
-    "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 11
+    "pasta": "package.json",
+    "mudancas": 12
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
@@ -219,7 +219,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 11
+    "mudancas": 12
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 147
+    "commits": 148
    },
    {
     "autor": "dependabot[bot]",

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `316357320bf29dcbb5abcc078a701f21c0d721ec` (2026-11-22T16:26:49-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `40eb25ac48d784b7d8df41c2fedcbdeb3a5daf25` (2026-11-22T16:37:58-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -303,7 +303,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/eslint-baseline.json (17)
 - scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (13)
-- docs/pendencias/_linha-de-base.md (11)
+- docs/pendencias/_linha-de-base.md (12)
 - src/routes/AppRoutes.tsx (8)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `40eb25ac4` docs: registra que producao estava quebrada e o que foi corrigido (#247)
 - 2026-11-22 `316357320` fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)
 - 2026-11-22 `b657b3e12` docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)
 - 2026-11-22 `76f78d12d` fix(deploy): db push --yes para nao abortar com migration pendente (#244)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `c0cba9a37` fix(security): SupervisorGuard deixa de confiar no papel do user_metadata (#235)
 - 2026-11-22 `c59b91588` fix(dashboard): personalizador de widgets passa a valer na tela (#234)
 - 2026-11-22 `2dc3b6c74` infra(ci): deploya edge functions no pipeline de producao (#233)
-- 2026-11-22 `ac0d438c7` [create-pull-request] automated change (#208)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
