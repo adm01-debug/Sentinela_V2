@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "4867d1935979e0b9e0e0649870cadf71b8f7ba31",
+  "commit": "f8968d297efe597b8c386ab6d465f21e84b30496",
   "branch": "main",
-  "data_commit": "2026-11-22T08:50:17-03:00",
+  "data_commit": "2026-11-22T08:59:21-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "f8968d297",
+    "data": "2026-11-22",
+    "assunto": "chore(db): torna idempotentes as migrations recuperadas do backlog (#220)"
+   },
    {
     "sha": "4867d1935",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "59d2e0ef5",
     "data": "2026-11-21",
     "assunto": "chore(test): eleva timeout do vitest de 5s para 20s (#201)"
-   },
-   {
-    "sha": "5e64e99e6",
-    "data": "2026-11-21",
-    "assunto": "fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)"
    }
   ],
   "arquivos_mudados_7d": 172,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 120
+    "commits": 121
    },
    {
     "autor": "dependabot[bot]",

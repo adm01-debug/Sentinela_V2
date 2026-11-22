@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `4867d1935979e0b9e0e0649870cadf71b8f7ba31` (2026-11-22T08:50:17-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `f8968d297efe597b8c386ab6d465f21e84b30496` (2026-11-22T08:59:21-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -458,6 +458,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `f8968d297` chore(db): torna idempotentes as migrations recuperadas do backlog (#220)
 - 2026-11-22 `4867d1935` fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)
 - 2026-11-22 `326c1c5b1` feat(db): cria tabelas de configuracao ausentes consumidas pelos hooks (#206)
 - 2026-11-22 `45e3668e3` fix(seguranca): view violations vazava sem token e 9 policies SELECT eram true (#202)
@@ -472,7 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `601c993b4` fix(rls): libera escrita de departamentos para o tenant (#215)
 - 2026-11-21 `7e613e68a` fix(auth): role de UI nao vem mais de user_metadata (#217)
 - 2026-11-21 `4e3e61ccb` fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)
-- 2026-11-21 `14364f0d2` fix: alinha hooks ao schema real (employee_status, activity_logs, rate_limit_logs) (#213)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

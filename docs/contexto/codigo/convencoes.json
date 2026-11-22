@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "chore(db): torna idempotentes as migrations recuperadas do backlog (#220)",
    "fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)",
    "feat(db): cria tabelas de configuracao ausentes consumidas pelos hooks (#206)",
    "fix(seguranca): view violations vazava sem token e 9 policies SELECT eram true (#202)",
-   "fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)",
-   "fix(seguranca): fecha escrita anonima em whatsapp_templates, file_transfers, geofence_events e audit_logs (#198)"
+   "fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
