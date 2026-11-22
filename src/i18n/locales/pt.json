@@ -74,7 +74,8 @@
     "webhooks": "Webhooks",
     "whatsapp": "WhatsApp",
     "settings": "Configurações",
-    "apiKeys": "Chaves API"
+    "apiKeys": "Chaves API",
+    "security": "Segurança"
   },
   "sections": {
     "main": "Principal",
