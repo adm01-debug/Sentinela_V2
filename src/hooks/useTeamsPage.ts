@@ -6,43 +6,33 @@ import { useToast } from '@/hooks/use-toast';
 export interface Team {
   id: string;
   name: string;
-  description?: string;
-  manager_id?: string;
-  manager_name?: string;
-  parent_team_id?: string;
-  is_active: boolean;
+  description?: string | null;
+  leader_id?: string | null;
+  leader_name?: string | null;
+  parent_team_id?: string | null;
   created_at: string;
+  updated_at: string;
   members_count: number;
 }
 
 export interface TeamMember {
   id: string;
-  employee_id: string;
   team_id: string;
-  role: 'member' | 'lead' | 'manager';
+  employee_name: string;
+  role: string | null;
   joined_at: string;
-  employee: {
-    id: string;
-    name: string;
-    email: string;
-    position?: string;
-  };
 }
 
 export interface TeamFormData {
   name: string;
   description: string;
-  manager_id?: string;
   parent_team_id?: string;
-  is_active: boolean;
 }
 
 const initialFormData: TeamFormData = {
   name: '',
   description: '',
-  manager_id: undefined,
   parent_team_id: undefined,
-  is_active: true,
 };
 
 export function useTeamsPage() {
@@ -64,17 +54,13 @@ export function useTeamsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('teams')
-        .select('*, employees!teams_manager_id_fkey(name)')
+        .select('*')
         .order('name');
       if (error) throw error;
-      return data.map((row) => {
-        const t = row as Record<string, unknown> & { employees?: { name?: string }; members_count?: number };
-        return {
-          ...t,
-          manager_name: t.employees?.name,
-          members_count: t.members_count || 0,
-        };
-      }) as Team[];
+      return (data || []).map((row) => ({
+        ...(row as Team),
+        members_count: 0,
+      })) as Team[];
     },
   });
 
@@ -97,7 +83,7 @@ export function useTeamsPage() {
       if (!selectedTeam) return [];
       const { data, error } = await supabase
         .from('team_members')
-        .select('*, employees(id, name, email, position)')
+        .select('*')
         .eq('team_id', selectedTeam.id);
       if (error) throw error;
       return data as TeamMember[];
@@ -156,18 +142,19 @@ export function useTeamsPage() {
       const matchesSearch = !searchTerm || 
         team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         team.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      const hasMembers = (team.members_count ?? 0) > 0;
       const matchesStatus = statusFilter === 'all' ||
-        (statusFilter === 'active' && team.is_active) ||
-        (statusFilter === 'inactive' && !team.is_active);
+        (statusFilter === 'active' && hasMembers) ||
+        (statusFilter === 'inactive' && !hasMembers);
       return matchesSearch && matchesStatus;
     });
   }, [teams, searchTerm, statusFilter]);
 
   const stats = useMemo(() => ({
     total: teams.length,
-    active: teams.filter(t => t.is_active).length,
-    totalMembers: teams.reduce((sum, t) => sum + t.members_count, 0),
-    withManager: teams.filter(t => t.manager_id).length,
+    active: teams.filter(t => (t.members_count ?? 0) > 0).length,
+    totalMembers: teams.reduce((sum, t) => sum + (t.members_count ?? 0), 0),
+    withManager: teams.filter(t => t.leader_id).length,
   }), [teams]);
 
   const handleOpenCreate = useCallback(() => {
@@ -181,9 +168,7 @@ export function useTeamsPage() {
     setFormData({
       name: team.name,
       description: team.description || '',
-      manager_id: team.manager_id,
-      parent_team_id: team.parent_team_id,
-      is_active: team.is_active,
+      parent_team_id: team.parent_team_id ?? undefined,
     });
     setIsDialogOpen(true);
   }, []);

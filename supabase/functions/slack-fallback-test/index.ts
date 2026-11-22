@@ -189,7 +189,7 @@ Deno.serve(async (req) => {
     await supabase.from("edge_function_logs").insert({
       function_name: "slack-fallback-test",
       status: success ? "success" : "error",
-      metadata: {
+      payload_summary: {
         triggered_by: userData.user.email,
         user_id: userData.user.id,
         mode,

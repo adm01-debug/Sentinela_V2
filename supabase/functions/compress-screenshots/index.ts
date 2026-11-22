@@ -21,15 +21,19 @@ serve(async (req) => {
       const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       const { data: uncompressed } = await supabase
         .from('screen_captures')
-        .select('id')
+        .select('id, capture_url')
         .lt('captured_at', cutoff)
-        .is('compressed', null)
+        .is('ocr_processed_at', null)
+        .not('capture_url', 'is', null)
         .limit(100);
 
-      if (uncompressed && uncompressed.length > 0) {
-        const ids = uncompressed.map(s => s.id);
-        await supabase.from('screen_captures').update({ compressed: true }).in('id', ids);
-        return new Response(JSON.stringify({ success: true, compressed: ids.length }), 
+      const images = (uncompressed || []).filter((s) => s.capture_url);
+      if (images.length > 0) {
+        await supabase
+          .from('screen_captures')
+          .update({ ocr_processed_at: new Date().toISOString() })
+          .in('id', images.map((s) => s.id));
+        return new Response(JSON.stringify({ success: true, compressed: images.length }), 
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
 
@@ -50,7 +54,10 @@ serve(async (req) => {
     if (!screenshot) return new Response(JSON.stringify({ error: 'Screenshot not found' }), 
       { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
-    await supabase.from('screen_captures').update({ compressed: true }).eq('id', screenshotId);
+    await supabase
+      .from('screen_captures')
+      .update({ ocr_processed_at: new Date().toISOString() })
+      .eq('id', screenshotId);
 
     return new Response(JSON.stringify({ success: true, screenshotId }), 
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });

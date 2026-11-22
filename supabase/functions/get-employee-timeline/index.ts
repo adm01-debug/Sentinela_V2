@@ -27,7 +27,19 @@ serve(async (req) => {
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
-    const name = employeeName || employeeId;
+    // As tabelas de telemetria vinculam por employee_name (não há FK para employees).
+    let name = employeeName as string | undefined;
+    if (!name && employeeId) {
+      const { data: emp } = await supabase
+        .from('employees')
+        .select('name')
+        .eq('id', employeeId)
+        .maybeSingle();
+      name = emp?.name ?? employeeId;
+    }
+    if (!name) {
+      return new Response(JSON.stringify({ error: 'employeeId or employeeName required' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
     const [keystrokes, clicks, violations, screenshots] = await Promise.all([
       supabase.from('keystroke_logs').select('*')
@@ -41,7 +53,7 @@ serve(async (req) => {
         .lte('recorded_at', endOfDay.toISOString())
         .order('recorded_at').limit(100),
       supabase.from('security_violations').select('*')
-        .eq('employee_id', employeeId)
+        .eq('employee_name', name)
         .gte('created_at', startOfDay.toISOString())
         .lte('created_at', endOfDay.toISOString())
         .order('created_at'),

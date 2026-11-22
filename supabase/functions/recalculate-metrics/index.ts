@@ -41,7 +41,7 @@ serve(async (req) => {
     // Count violations
     const { count: totalViolations } = await supabase.from('security_violations')
       .select('id', { count: 'exact' })
-      .eq('employee_id', employeeId)
+      .eq('employee_name', employee.name)
       .gte('created_at', since);
 
     const productivityScore = totalActiveTime > 0 

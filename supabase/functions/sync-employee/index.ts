@@ -41,13 +41,6 @@ serve(async (req) => {
 
     if (logError) console.error('Sync log error:', logError);
 
-    const { error: updateError } = await supabase
-      .from('employees')
-      .update({ last_synced_at: new Date().toISOString() })
-      .eq('id', employeeId);
-
-    if (updateError) throw updateError;
-
     return new Response(
       JSON.stringify({ success: true, employee, syncedAt: syncData.synced_at }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

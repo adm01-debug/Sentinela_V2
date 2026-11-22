@@ -67,12 +67,25 @@ serve(async (req) => {
 
     if (recentAlerts && recentAlerts.length >= 5) {
       // Auto-block IP
-      await supabase.from('blocked_ips').upsert({
-        ip,
+      const { data: existing } = await supabase
+        .from('blocked_ips')
+        .select('id')
+        .eq('ip_address', ip)
+        .eq('is_active', true)
+        .maybeSingle();
+
+      const blockData = {
+        ip_address: ip,
         reason: 'Automatic block due to repeated rate limit violations',
-        blocked_at: new Date().toISOString(),
-        blocked_until: new Date(Date.now() + 24 * 3600000).toISOString(),
-      }, { onConflict: 'ip' });
+        expires_at: new Date(Date.now() + 24 * 3600000).toISOString(),
+        is_active: true,
+      };
+
+      if (existing) {
+        await supabase.from('blocked_ips').update(blockData).eq('id', existing.id);
+      } else {
+        await supabase.from('blocked_ips').insert(blockData);
+      }
     }
 
     return new Response(

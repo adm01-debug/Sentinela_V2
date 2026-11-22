@@ -9,39 +9,27 @@ import { queryKeys, queryPresets, invalidateRelated } from '@/lib/queryClient';
 
 export interface MobileDevice {
   id: string;
-  employee_id: string;
-  device_name: string;
-  device_type: 'android' | 'ios';
-  os_version: string;
-  app_version: string;
+  device_id: string;
+  employee_name: string;
+  device_model?: string;
+  os_type: string;
+  os_version?: string;
+  app_version?: string;
   push_token?: string;
-  last_location?: {
-    latitude: number;
-    longitude: number;
-    accuracy: number;
-    timestamp: string;
-  };
-  battery_level?: number;
+  last_location_lat?: number;
+  last_location_lng?: number;
   is_active: boolean;
-  last_seen_at: string;
+  last_seen_at?: string;
   created_at: string;
   updated_at: string;
-  employee?: {
-    id: string;
-    full_name: string;
-  };
 }
 
 export interface DeviceLocation {
   device_id: string;
+  employee_name: string;
   latitude: number;
   longitude: number;
-  accuracy: number;
   timestamp: string;
-  employee?: {
-    id: string;
-    full_name: string;
-  };
 }
 
 // ============================================================
@@ -54,10 +42,7 @@ export function useMobileDevices() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('mobile_devices')
-        .select(`
-          *,
-          employee:employees(id, full_name)
-        `)
+        .select('*')
         .order('last_seen_at', { ascending: false });
 
       if (error) throw error;
@@ -73,21 +58,18 @@ export function useMobileDeviceLocations() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('mobile_devices')
-        .select(`
-          id,
-          last_location,
-          last_seen_at,
-          employee:employees(id, full_name)
-        `)
+        .select('id, device_id, employee_name, last_location_lat, last_location_lng, last_seen_at')
         .eq('is_active', true)
-        .not('last_location', 'is', null);
+        .not('last_location_lat', 'is', null);
 
       if (error) throw error;
-      
-      return data?.map((d: { id: string; last_location: object | null; employee: unknown }) => ({
-        device_id: d.id,
-        ...(d.last_location as object),
-        employee: d.employee,
+
+      return (data || []).map((d) => ({
+        device_id: d.device_id,
+        employee_name: d.employee_name,
+        latitude: d.last_location_lat ?? 0,
+        longitude: d.last_location_lng ?? 0,
+        timestamp: d.last_seen_at ?? '',
       })) as DeviceLocation[];
     },
     ...queryPresets.realtime,
@@ -102,10 +84,7 @@ export function useMobileDevice(id: string | null | undefined) {
       
       const { data, error } = await supabase
         .from('mobile_devices')
-        .select(`
-          *,
-          employee:employees(id, full_name)
-        `)
+        .select('*')
         .eq('id', id)
         .maybeSingle();
 

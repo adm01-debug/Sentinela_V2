@@ -113,7 +113,7 @@ serve(async (req) => {
     const { error: historyError } = await supabase.from("points_history").insert({
       employee_id: payload.employee_id,
       points: payload.points,
-      reason: payload.reason,
+      action_type: payload.reason,
       description: payload.description ?? null,
     });
 
