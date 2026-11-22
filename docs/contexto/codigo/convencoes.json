@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)",
    "feat(seguranca): exige o segundo fator quando a conta tem MFA cadastrado (#229)",
    "fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)",
    "fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)",
-   "infra(ci): aplica migrations pendentes no deploy de producao (#222)",
-   "fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)"
+   "infra(ci): aplica migrations pendentes no deploy de producao (#222)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `faa3948a7a03a89a884901871c79de0518352809` (2026-11-22T10:49:25-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `6a84684c128701b41c7563ebd3519e4dec8952de` (2026-11-22T11:00:08-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -303,7 +303,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/eslint-baseline.json (15)
 - scripts/ci/prettier-baseline.json (13)
 - .github/workflows/deploy.yml (10)
-- docs/pendencias/_linha-de-base.md (7)
+- docs/pendencias/_linha-de-base.md (8)
 - docs/prod-readiness.md (6)
 - src/routes/AppRoutes.tsx (6)
 - .github/workflows/ci.yml (5)
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `6a84684c1` docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)
 - 2026-11-22 `faa3948a7` feat(seguranca): exige o segundo fator quando a conta tem MFA cadastrado (#229)
 - 2026-11-22 `09fee0333` fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)
 - 2026-11-22 `68d4328da` fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `326c1c5b1` feat(db): cria tabelas de configuracao ausentes consumidas pelos hooks (#206)
 - 2026-11-22 `45e3668e3` fix(seguranca): view violations vazava sem token e 9 policies SELECT eram true (#202)
 - 2026-11-22 `8731d4e14` fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)
-- 2026-11-22 `c4e613ba4` fix(seguranca): fecha escrita anonima em whatsapp_templates, file_transfers, geofence_events e audit_logs (#198)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

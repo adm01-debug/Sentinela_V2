@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "faa3948a7a03a89a884901871c79de0518352809",
+  "commit": "6a84684c128701b41c7563ebd3519e4dec8952de",
   "branch": "main",
-  "data_commit": "2026-11-22T10:49:25-03:00",
+  "data_commit": "2026-11-22T11:00:08-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "6a84684c1",
+    "data": "2026-11-22",
+    "assunto": "docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)"
+   },
    {
     "sha": "faa3948a7",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "4e3e61ccb",
     "data": "2026-11-21",
     "assunto": "fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)"
-   },
-   {
-    "sha": "14364f0d2",
-    "data": "2026-11-21",
-    "assunto": "fix: alinha hooks ao schema real (employee_status, activity_logs, rate_limit_logs) (#213)"
    }
   ],
   "arquivos_mudados_7d": 178,
@@ -161,7 +161,7 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "pasta": "docs/prod-readiness.md",
@@ -219,7 +219,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "docs/prod-readiness.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 130
+    "commits": 131
    },
    {
     "autor": "dependabot[bot]",
