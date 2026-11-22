@@ -504,7 +504,7 @@
    "nome": "compress-screenshots",
    "entrada": "supabase/functions/compress-screenshots/index.ts",
    "arquivos": 1,
-   "linhas": 61,
+   "linhas": 68,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -588,7 +588,7 @@
    "nome": "delete-user-data",
    "entrada": "supabase/functions/delete-user-data/index.ts",
    "arquivos": 1,
-   "linhas": 62,
+   "linhas": 70,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -690,7 +690,7 @@
    "nome": "escalate-dispute-sla",
    "entrada": "supabase/functions/escalate-dispute-sla/index.ts",
    "arquivos": 1,
-   "linhas": 220,
+   "linhas": 213,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -698,7 +698,6 @@
    "tabelas": [
     "edge_function_logs",
     "mobile_devices",
-    "user_roles",
     "violation_disputes"
    ],
    "rpcs": [],
@@ -970,13 +969,14 @@
    "nome": "get-employee-timeline",
    "entrada": "supabase/functions/get-employee-timeline/index.ts",
    "arquivos": 1,
-   "linhas": 68,
+   "linhas": 80,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
     "click_logs",
+    "employees",
     "keystroke_logs",
     "screen_captures",
     "security_violations"
@@ -1939,7 +1939,7 @@
    "nome": "send-rate-limit-alert",
    "entrada": "supabase/functions/send-rate-limit-alert/index.ts",
    "arquivos": 1,
-   "linhas": 90,
+   "linhas": 103,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2405,7 +2405,7 @@
    "nome": "sync-employee",
    "entrada": "supabase/functions/sync-employee/index.ts",
    "arquivos": 1,
-   "linhas": 63,
+   "linhas": 56,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"

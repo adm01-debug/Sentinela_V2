@@ -5216,7 +5216,7 @@
     "useSendPushNotification",
     "useUpdateMobileDevice"
    ],
-   "linhas": 257,
+   "linhas": 236,
    "dominio": "hooks",
    "tabelas": [
     "mobile_devices"
@@ -8838,7 +8838,7 @@
    "hooks_exportados": [
     "useTeamsPage"
    ],
-   "linhas": 233,
+   "linhas": 218,
    "dominio": "hooks",
    "tabelas": [
     "employees",
