@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "7fab455bb2892265f1dea18e978980c42e81d51b",
+  "commit": "151e025fe5d93292af71267215881a3664298cae",
   "branch": "main",
-  "data_commit": "2026-11-21T22:26:51-03:00",
+  "data_commit": "2026-11-21T22:30:42-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "151e025fe",
+    "data": "2026-11-21",
+    "assunto": "fix: alinha planos de cobranca ao contrato real do banco (#212)"
+   },
    {
     "sha": "7fab455bb",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "c479f3b06",
     "data": "2026-11-21",
     "assunto": "feat: completa integracao WhatsApp (pagina + hook alinhado ao schema + RLS hardening) (#178)"
-   },
-   {
-    "sha": "a79bc565b",
-    "data": "2026-11-21",
-    "assunto": "chore: corrige shellcheck (SC2146) no deno test e atualiza linha de base (#177)"
    }
   ],
-  "arquivos_mudados_7d": 132,
+  "arquivos_mudados_7d": 133,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -149,7 +149,7 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 11
+    "mudancas": 12
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
@@ -207,7 +207,7 @@
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 11
+    "mudancas": 12
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 104
+    "commits": 105
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1835,
   "arquivos_codigo": 1403,
-  "linhas_codigo": 150086,
+  "linhas_codigo": 150133,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 105,
-   "linhas": 17847
+   "linhas": 17894
   },
   "src/providers": {
    "arquivos": 9,

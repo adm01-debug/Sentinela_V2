@@ -6665,9 +6665,10 @@
     "BillingSettingsPage"
    ],
    "export_default": "BillingSettingsPage",
-   "linhas": 220,
+   "linhas": 267,
    "dominio": "pages",
    "hooks_locais": [
+    "useSubscription",
     "useToast"
    ],
    "tabelas": [],

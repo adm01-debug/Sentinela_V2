@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: alinha planos de cobranca ao contrato real do banco (#212)",
    "feat: RolesPage com matriz de permissoes editavel (#211)",
    "feat: expoe painel unificado de seguranca em /admin/security (#210)",
    "fix: completa queryKeys e invalidateRelated (46 chaves + 11 métodos que quebravam mutations em 22 hooks) (#209)",
-   "fix(config): mapeia snake_case do banco para camelCase em useAppConfig e useSubscription (#207)",
-   "fix(permissoes): usePermissions buscava embed inexistente e zerava as permissoes de todos (#205)"
+   "fix(config): mapeia snake_case do banco para camelCase em useAppConfig e useSubscription (#207)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

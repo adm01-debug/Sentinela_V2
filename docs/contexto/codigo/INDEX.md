@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `7fab455bb2892265f1dea18e978980c42e81d51b` (2026-11-21T22:26:51-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `151e025fe5d93292af71267215881a3664298cae` (2026-11-21T22:30:42-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1835 |
 | arquivos_codigo | 1403 |
-| linhas_codigo | 150086 |
+| linhas_codigo | 150133 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 495 | 19 | 85 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 67 | 152 | 7 | 63 |
+| pages | 4 | 38 | 67 | 153 | 7 | 64 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
 | pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
@@ -295,7 +295,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (24)
 - package.json (24)
-- scripts/ci/eslint-baseline.json (11)
+- scripts/ci/eslint-baseline.json (12)
 - scripts/ci/prettier-baseline.json (10)
 - .github/workflows/deploy.yml (7)
 - docs/prod-readiness.md (6)
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-21 `151e025fe` fix: alinha planos de cobranca ao contrato real do banco (#212)
 - 2026-11-21 `7fab455bb` feat: RolesPage com matriz de permissoes editavel (#211)
 - 2026-11-21 `4d022e774` feat: expoe painel unificado de seguranca em /admin/security (#210)
 - 2026-11-21 `e7fe0e9ac` fix: completa queryKeys e invalidateRelated (46 chaves + 11 métodos que quebravam mutations em 22 hooks) (#209)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `05761095f` fix: OrgChartPage para de pedir departments.company_id (coluna inexistente) (#195)
 - 2026-11-21 `6bd2f5ca7` fix: alinha writes do front a colunas reais do banco (#193)
 - 2026-11-21 `d7546801b` fix: alinha 4 selects do front a colunas reais do banco (#192)
-- 2026-11-21 `15ca0e8d2` fix: edges get-employee-timeline e notify-new-device validam payload em vez de 500 (#191)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

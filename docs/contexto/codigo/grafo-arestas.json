@@ -2994,7 +2994,8 @@
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
    "src/components/ui/table.tsx",
-   "src/hooks/use-toast.ts"
+   "src/hooks/use-toast.ts",
+   "src/hooks/useSubscription.ts"
   ],
   "src/pages/CalendarPage.tsx": [
    "src/components/PageTransition.tsx",
