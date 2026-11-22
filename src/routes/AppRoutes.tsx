@@ -99,6 +99,7 @@ const FileTransfersPage = lazy(() => import("@/pages/admin/FileTransfersPage"));
 // ROUTE GUARDS
 // ============================================================
 import { AuthGuard, GuestGuard, AdminGuard, SupervisorGuard } from "@/guards";
+import { PolicyGate } from "@/components/PolicyGate";
 import { MFAGuard } from "@/guards/MFAGuard";
 
 const PageLoader = () => <BrandedSplash />;
@@ -143,7 +144,13 @@ export const AppRoutes = () => (
           element={
             <AuthGuard>
               <MFAGuard>
-                <MainLayout />
+                {/* O PolicyGate fica DENTRO do AuthGuard: ele depende de
+                    auth.uid() e nunca pode rodar para visitante. E fail-open,
+                    entao uma falha de consulta libera o acesso em vez de
+                    trancar o sistema (o lockout da PR #223). */}
+                <PolicyGate>
+                  <MainLayout />
+                </PolicyGate>
               </MFAGuard>
             </AuthGuard>
           }
