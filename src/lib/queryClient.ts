@@ -44,17 +44,25 @@ export const queryKeys = {
     details: () => [...queryKeys.employees.all, "detail"] as const,
     detail: (id: string) => [...queryKeys.employees.details(), id] as const,
     stats: (id: string) => [...queryKeys.employees.all, "stats", id] as const,
+    active: () => [...queryKeys.employees.all, "active"] as const,
+    online: () => [...queryKeys.employees.all, "online"] as const,
   },
   teams: {
     all: ["teams"] as const,
     lists: () => [...queryKeys.teams.all, "list"] as const,
     list: (filters?: unknown) => [...queryKeys.teams.lists(), filters] as const,
+    details: () => [...queryKeys.teams.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.teams.details(), id] as const,
   },
   violations: {
     all: ["security_violations"] as const,
     lists: () => [...queryKeys.violations.all, "list"] as const,
     list: (filters?: unknown) => [...queryKeys.violations.lists(), filters] as const,
+    details: () => [...queryKeys.violations.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.violations.details(), id] as const,
     unread: () => [...queryKeys.violations.all, "unread"] as const,
+    comments: (violationId: string) =>
+      [...queryKeys.violations.all, "comments", violationId] as const,
   },
   dashboard: {
     all: ["dashboard"] as const,
@@ -69,6 +77,8 @@ export const queryKeys = {
   settings: {
     all: ["settings"] as const,
     alerts: () => [...queryKeys.settings.all, "alerts"] as const,
+    monitoring: () => [...queryKeys.settings.all, "monitoring"] as const,
+    whatsapp: () => [...queryKeys.settings.all, "whatsapp"] as const,
   },
   security: {
     all: ["security"] as const,
@@ -83,12 +93,24 @@ export const queryKeys = {
   notifications: {
     all: ["notifications"] as const,
     overtime: () => [...queryKeys.notifications.all, "overtime"] as const,
+    pending: () => [...queryKeys.notifications.all, "pending"] as const,
+    unread: () => [...queryKeys.notifications.all, "unread"] as const,
   },
   geofences: {
     all: ["geofences"] as const,
+    lists: () => [...queryKeys.geofences.all, "list"] as const,
+    list: (filters?: unknown) => [...queryKeys.geofences.lists(), filters] as const,
+    details: () => [...queryKeys.geofences.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.geofences.details(), id] as const,
+    active: () => [...queryKeys.geofences.all, "active"] as const,
   },
   mobileDevices: {
     all: ["mobile-devices"] as const,
+    lists: () => [...queryKeys.mobileDevices.all, "list"] as const,
+    list: (filters?: unknown) => [...queryKeys.mobileDevices.lists(), filters] as const,
+    details: () => [...queryKeys.mobileDevices.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.mobileDevices.details(), id] as const,
+    locations: () => [...queryKeys.mobileDevices.all, "locations"] as const,
   },
   devices: {
     all: ["devices"] as const,
@@ -110,9 +132,64 @@ export const queryKeys = {
     leaderboard: (period?: string) =>
       [...queryKeys.gamification.all, "leaderboard", period] as const,
     achievements: () => [...queryKeys.gamification.all, "achievements"] as const,
+    badges: () => [...queryKeys.gamification.all, "badges"] as const,
+    points: (employeeId: string) => [...queryKeys.gamification.all, "points", employeeId] as const,
   },
   activity: {
     all: ["activity"] as const,
+    realtime: () => [...queryKeys.activity.all, "realtime"] as const,
+    employee: (id: string) => [...queryKeys.activity.all, "employee", id] as const,
+  },
+  internetAccess: {
+    all: ["internet-access"] as const,
+    rules: () => [...queryKeys.internetAccess.all, "rules"] as const,
+  },
+  messageTemplates: {
+    all: ["message-templates"] as const,
+    lists: () => [...queryKeys.messageTemplates.all, "list"] as const,
+    list: (filters?: unknown) => [...queryKeys.messageTemplates.lists(), filters] as const,
+    details: () => [...queryKeys.messageTemplates.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.messageTemplates.details(), id] as const,
+    byType: (type: string) => [...queryKeys.messageTemplates.all, "type", type] as const,
+  },
+  rateLimiting: {
+    all: ["rate-limiting"] as const,
+    logs: (filters?: unknown) => [...queryKeys.rateLimiting.all, "logs", filters] as const,
+    stats: () => [...queryKeys.rateLimiting.all, "stats"] as const,
+    blockedIPs: () => [...queryKeys.rateLimiting.all, "blocked-ips"] as const,
+    settings: () => [...queryKeys.rateLimiting.all, "settings"] as const,
+  },
+  reports: {
+    all: ["reports"] as const,
+    history: () => [...queryKeys.reports.all, "history"] as const,
+    details: () => [...queryKeys.reports.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.reports.details(), id] as const,
+    scheduled: () => [...queryKeys.reports.all, "scheduled"] as const,
+  },
+  securityMetrics: {
+    all: ["security-metrics"] as const,
+    overview: () => [...queryKeys.securityMetrics.all, "overview"] as const,
+  },
+  users: {
+    all: ["users"] as const,
+    lists: () => [...queryKeys.users.all, "list"] as const,
+    list: (filters?: unknown) => [...queryKeys.users.lists(), filters] as const,
+  },
+  violationRules: {
+    all: ["violation-rules"] as const,
+    lists: () => [...queryKeys.violationRules.all, "list"] as const,
+    list: (filters?: unknown) => [...queryKeys.violationRules.lists(), filters] as const,
+    details: () => [...queryKeys.violationRules.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.violationRules.details(), id] as const,
+    active: () => [...queryKeys.violationRules.all, "active"] as const,
+  },
+  webhooks: {
+    all: ["webhooks"] as const,
+    lists: () => [...queryKeys.webhooks.all, "list"] as const,
+    list: (filters?: unknown) => [...queryKeys.webhooks.lists(), filters] as const,
+    details: () => [...queryKeys.webhooks.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.webhooks.details(), id] as const,
+    logs: (webhookId: string) => [...queryKeys.webhooks.all, "logs", webhookId] as const,
   },
   auditLogs: {
     all: ["audit-logs"] as const,
@@ -201,5 +278,42 @@ export const invalidateRelated = {
   },
   settings: (client: QueryClient) => {
     client.invalidateQueries({ queryKey: queryKeys.settings.all });
+  },
+  teams: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.teams.all });
+    client.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
+  },
+  geofences: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.geofences.all });
+    client.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
+  },
+  internetAccess: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.internetAccess.all });
+  },
+  messageTemplates: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.messageTemplates.all });
+  },
+  mobileDevices: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.mobileDevices.all });
+  },
+  notifications: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.notifications.all });
+  },
+  rateLimiting: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.rateLimiting.all });
+  },
+  reports: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.reports.all });
+  },
+  violationRules: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.violationRules.all });
+    client.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
+  },
+  webhooks: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.webhooks.all });
+  },
+  workSchedules: (client: QueryClient) => {
+    client.invalidateQueries({ queryKey: queryKeys.workSchedules.all });
+    client.invalidateQueries({ queryKey: queryKeys.dashboard.stats() });
   },
 } as any;
