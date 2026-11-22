@@ -12,6 +12,30 @@ interface Subscription {
   features: string[];
 }
 
+type SubscriptionRow = {
+  id: string;
+  plan: string;
+  status: string;
+  current_period_start: string;
+  current_period_end: string;
+  cancel_at_period_end: boolean;
+  features: string[] | null;
+};
+
+// O banco guarda snake_case; a interface do hook e camelCase. Mapear evita
+// current_period_end/cancel_at_period_end chegando undefined no consumidor.
+function rowToSubscription(row: SubscriptionRow): Subscription {
+  return {
+    id: row.id,
+    plan: row.plan as Subscription['plan'],
+    status: row.status as Subscription['status'],
+    currentPeriodStart: row.current_period_start,
+    currentPeriodEnd: row.current_period_end,
+    cancelAtPeriodEnd: row.cancel_at_period_end,
+    features: row.features ?? [],
+  };
+}
+
 interface UseSubscriptionReturn {
   subscription: Subscription | null;
   isLoading: boolean;
@@ -46,7 +70,7 @@ export function useSubscription(): UseSubscriptionReturn {
         .maybeSingle();
       
       if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
-      setSubscription(data);
+      setSubscription(data ? rowToSubscription(data as SubscriptionRow) : null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch subscription');
     } finally {
