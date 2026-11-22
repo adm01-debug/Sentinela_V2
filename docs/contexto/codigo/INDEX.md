@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1ff6749043f26d42a689919f9a93d35e504e0397` (2026-11-22T14:57:03-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `b657b3e12253d1869bbf41a112153cdd9952cee6` (2026-11-22T15:11:18-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -302,8 +302,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package.json (24)
 - scripts/ci/eslint-baseline.json (17)
 - scripts/ci/prettier-baseline.json (16)
-- .github/workflows/deploy.yml (12)
-- docs/pendencias/_linha-de-base.md (10)
+- .github/workflows/deploy.yml (13)
+- docs/pendencias/_linha-de-base.md (11)
 - src/routes/AppRoutes.tsx (8)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
@@ -459,6 +459,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `b657b3e12` docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)
+- 2026-11-22 `76f78d12d` fix(deploy): db push --yes para nao abortar com migration pendente (#244)
 - 2026-11-22 `1ff674904` feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)
 - 2026-11-22 `d5ef6cbbb` feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)
 - 2026-11-22 `5ec7ddcb9` docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)
@@ -472,8 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `2dc3b6c74` infra(ci): deploya edge functions no pipeline de producao (#233)
 - 2026-11-22 `ac0d438c7` [create-pull-request] automated change (#208)
 - 2026-11-22 `e39e224c6` fix(ci): fixa a versao do Supabase CLI no deploy (#230)
-- 2026-11-22 `9659a9396` feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)
-- 2026-11-22 `6a84684c1` docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

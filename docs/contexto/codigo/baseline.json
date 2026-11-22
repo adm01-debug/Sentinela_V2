@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1ff6749043f26d42a689919f9a93d35e504e0397",
+  "commit": "b657b3e12253d1869bbf41a112153cdd9952cee6",
   "branch": "main",
-  "data_commit": "2026-11-22T14:57:03-03:00",
+  "data_commit": "2026-11-22T15:11:18-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "b657b3e12",
+    "data": "2026-11-22",
+    "assunto": "docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)"
+   },
+   {
+    "sha": "76f78d12d",
+    "data": "2026-11-22",
+    "assunto": "fix(deploy): db push --yes para nao abortar com migration pendente (#244)"
+   },
    {
     "sha": "1ff674904",
     "data": "2026-11-22",
@@ -121,16 +131,6 @@
     "sha": "29c45202b",
     "data": "2026-11-22",
     "assunto": "feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)"
-   },
-   {
-    "sha": "2659aa0ff",
-    "data": "2026-11-22",
-    "assunto": "fix(admin): protege 7 rotas /admin com AdminGuard e liga as paginas no menu (#221)"
-   },
-   {
-    "sha": "f8968d297",
-    "data": "2026-11-22",
-    "assunto": "chore(db): torna idempotentes as migrations recuperadas do backlog (#220)"
    }
   ],
   "arquivos_mudados_7d": 199,
@@ -153,7 +153,7 @@
    },
    {
     "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "pasta": "package.json",
@@ -161,7 +161,7 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
@@ -215,11 +215,11 @@
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 144
+    "commits": 146
    },
    {
     "autor": "dependabot[bot]",
