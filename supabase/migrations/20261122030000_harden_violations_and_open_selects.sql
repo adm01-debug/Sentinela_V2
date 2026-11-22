@@ -20,6 +20,7 @@ REVOKE ALL ON public.violations FROM anon;
 -- 2. Dados de negocio por empresa.
 -- ---------------------------------------------------------------------------
 DROP POLICY IF EXISTS gamification_select_auth ON public.gamification_leaderboard;
+DROP POLICY IF EXISTS gamification_select_company ON public.gamification_leaderboard;
 CREATE POLICY gamification_select_company ON public.gamification_leaderboard
   FOR SELECT TO authenticated
   USING (
@@ -31,6 +32,7 @@ CREATE POLICY gamification_select_company ON public.gamification_leaderboard
   );
 
 DROP POLICY IF EXISTS productivity_metrics_select_auth ON public.productivity_metrics;
+DROP POLICY IF EXISTS productivity_metrics_select_company ON public.productivity_metrics;
 CREATE POLICY productivity_metrics_select_company ON public.productivity_metrics
   FOR SELECT TO authenticated
   USING (
@@ -42,6 +44,7 @@ CREATE POLICY productivity_metrics_select_company ON public.productivity_metrics
   );
 
 DROP POLICY IF EXISTS "Anyone can view employee badges" ON public.employee_badges;
+DROP POLICY IF EXISTS employee_badges_select_company ON public.employee_badges;
 CREATE POLICY employee_badges_select_company ON public.employee_badges
   FOR SELECT TO authenticated
   USING (
@@ -53,6 +56,7 @@ CREATE POLICY employee_badges_select_company ON public.employee_badges
   );
 
 DROP POLICY IF EXISTS sync_logs_select_auth ON public.sync_logs;
+DROP POLICY IF EXISTS sync_logs_select_company ON public.sync_logs;
 CREATE POLICY sync_logs_select_company ON public.sync_logs
   FOR SELECT TO authenticated
   USING (
@@ -64,11 +68,13 @@ CREATE POLICY sync_logs_select_company ON public.sync_logs
   );
 
 DROP POLICY IF EXISTS report_logs_select_auth ON public.report_logs;
+DROP POLICY IF EXISTS report_logs_select_admin ON public.report_logs;
 CREATE POLICY report_logs_select_admin ON public.report_logs
   FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin'::public.app_role));
 
 DROP POLICY IF EXISTS "Users can view violation comments" ON public.violation_comments;
+DROP POLICY IF EXISTS violation_comments_select_company ON public.violation_comments;
 CREATE POLICY violation_comments_select_company ON public.violation_comments
   FOR SELECT TO authenticated
   USING (
@@ -80,6 +86,7 @@ CREATE POLICY violation_comments_select_company ON public.violation_comments
   );
 
 DROP POLICY IF EXISTS "Users can view violation actions" ON public.violation_actions;
+DROP POLICY IF EXISTS violation_actions_select_company ON public.violation_actions;
 CREATE POLICY violation_actions_select_company ON public.violation_actions
   FOR SELECT TO authenticated
   USING (
@@ -94,6 +101,7 @@ CREATE POLICY violation_actions_select_company ON public.violation_actions
 -- 3. Configuracao sensivel - passa a exigir admin.
 -- ---------------------------------------------------------------------------
 DROP POLICY IF EXISTS "Authenticated can verify by report_id/signature" ON public.report_signatures;
+DROP POLICY IF EXISTS report_signatures_select_company ON public.report_signatures;
 CREATE POLICY report_signatures_select_company ON public.report_signatures
   FOR SELECT TO authenticated
   USING (
@@ -102,11 +110,13 @@ CREATE POLICY report_signatures_select_company ON public.report_signatures
   );
 
 DROP POLICY IF EXISTS sensitive_keywords_select_auth ON public.sensitive_keywords;
+DROP POLICY IF EXISTS sensitive_keywords_select_admin ON public.sensitive_keywords;
 CREATE POLICY sensitive_keywords_select_admin ON public.sensitive_keywords
   FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin'::public.app_role));
 
 DROP POLICY IF EXISTS "Users can view whatsapp templates" ON public.whatsapp_templates;
+DROP POLICY IF EXISTS whatsapp_templates_select_admin ON public.whatsapp_templates;
 CREATE POLICY whatsapp_templates_select_admin ON public.whatsapp_templates
   FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin'::public.app_role));

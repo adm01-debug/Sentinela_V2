@@ -92,45 +92,55 @@ ALTER TABLE public.rate_limit_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.whatsapp_settings ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Admins can view app config" ON public.app_config;
 CREATE POLICY "Admins can view app config"
   ON public.app_config FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin')
          OR company_id IS NOT DISTINCT FROM public.get_user_company_id(auth.uid()));
+DROP POLICY IF EXISTS "Admins can manage app config" ON public.app_config;
 CREATE POLICY "Admins can manage app config"
   ON public.app_config FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Authenticated can view feature flags" ON public.feature_flags;
 CREATE POLICY "Authenticated can view feature flags"
   ON public.feature_flags FOR SELECT TO authenticated
   USING (company_id IS NULL
          OR company_id IS NOT DISTINCT FROM public.get_user_company_id(auth.uid()));
+DROP POLICY IF EXISTS "Admins can manage feature flags" ON public.feature_flags;
 CREATE POLICY "Admins can manage feature flags"
   ON public.feature_flags FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Admins can view rate limit settings" ON public.rate_limit_settings;
 CREATE POLICY "Admins can view rate limit settings"
   ON public.rate_limit_settings FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin')
          OR company_id IS NOT DISTINCT FROM public.get_user_company_id(auth.uid()));
+DROP POLICY IF EXISTS "Admins can manage rate limit settings" ON public.rate_limit_settings;
 CREATE POLICY "Admins can manage rate limit settings"
   ON public.rate_limit_settings FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Users can view own subscription" ON public.subscriptions;
 CREATE POLICY "Users can view own subscription"
   ON public.subscriptions FOR SELECT TO authenticated
   USING (user_id = auth.uid());
+DROP POLICY IF EXISTS "Admins can manage subscriptions" ON public.subscriptions;
 CREATE POLICY "Admins can manage subscriptions"
   ON public.subscriptions FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Admins can view whatsapp settings" ON public.whatsapp_settings;
 CREATE POLICY "Admins can view whatsapp settings"
   ON public.whatsapp_settings FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin')
          OR company_id IS NOT DISTINCT FROM public.get_user_company_id(auth.uid()));
+DROP POLICY IF EXISTS "Admins can manage whatsapp settings" ON public.whatsapp_settings;
 CREATE POLICY "Admins can manage whatsapp settings"
   ON public.whatsapp_settings FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))

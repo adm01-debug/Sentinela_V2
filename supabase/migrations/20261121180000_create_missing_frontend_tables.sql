@@ -99,53 +99,66 @@ ALTER TABLE public.scheduled_reports ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_sessions ENABLE ROW LEVEL SECURITY;
 
 -- internet_access_rules: admin gerencia (padrao de internet_access_settings).
+DROP POLICY IF EXISTS "Admins can view internet access rules" ON public.internet_access_rules;
 CREATE POLICY "Admins can view internet access rules"
   ON public.internet_access_rules FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin'));
+DROP POLICY IF EXISTS "Admins can manage internet access rules" ON public.internet_access_rules;
 CREATE POLICY "Admins can manage internet access rules"
   ON public.internet_access_rules FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
 -- push_subscriptions: cada usuario so ve/gerencia a propria subscription.
+DROP POLICY IF EXISTS "Users can view own push subscriptions" ON public.push_subscriptions;
 CREATE POLICY "Users can view own push subscriptions"
   ON public.push_subscriptions FOR SELECT TO authenticated
   USING (user_id = auth.uid());
+DROP POLICY IF EXISTS "Users can insert own push subscriptions" ON public.push_subscriptions;
 CREATE POLICY "Users can insert own push subscriptions"
   ON public.push_subscriptions FOR INSERT TO authenticated
   WITH CHECK (user_id = auth.uid() OR user_id IS NULL);
+DROP POLICY IF EXISTS "Users can update own push subscriptions" ON public.push_subscriptions;
 CREATE POLICY "Users can update own push subscriptions"
   ON public.push_subscriptions FOR UPDATE TO authenticated
   USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+DROP POLICY IF EXISTS "Users can delete own push subscriptions" ON public.push_subscriptions;
 CREATE POLICY "Users can delete own push subscriptions"
   ON public.push_subscriptions FOR DELETE TO authenticated
   USING (user_id = auth.uid());
 
 -- reports: admin ve todos; o solicitante ve os proprios.
+DROP POLICY IF EXISTS "Admins can manage reports" ON public.reports;
 CREATE POLICY "Admins can manage reports"
   ON public.reports FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
+DROP POLICY IF EXISTS "Users can view own reports" ON public.reports;
 CREATE POLICY "Users can view own reports"
   ON public.reports FOR SELECT TO authenticated
   USING (requested_by = auth.uid());
 
 -- scheduled_reports: admin gerencia (agendamento afeta a organizacao).
+DROP POLICY IF EXISTS "Admins can manage scheduled reports" ON public.scheduled_reports;
 CREATE POLICY "Admins can manage scheduled reports"
   ON public.scheduled_reports FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
 -- user_sessions: cada usuario gerencia apenas as proprias sessoes.
+DROP POLICY IF EXISTS "Users can view own sessions" ON public.user_sessions;
 CREATE POLICY "Users can view own sessions"
   ON public.user_sessions FOR SELECT TO authenticated
   USING (user_id = auth.uid());
+DROP POLICY IF EXISTS "Users can insert own sessions" ON public.user_sessions;
 CREATE POLICY "Users can insert own sessions"
   ON public.user_sessions FOR INSERT TO authenticated
   WITH CHECK (user_id = auth.uid());
+DROP POLICY IF EXISTS "Users can update own sessions" ON public.user_sessions;
 CREATE POLICY "Users can update own sessions"
   ON public.user_sessions FOR UPDATE TO authenticated
   USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+DROP POLICY IF EXISTS "Users can delete own sessions" ON public.user_sessions;
 CREATE POLICY "Users can delete own sessions"
   ON public.user_sessions FOR DELETE TO authenticated
   USING (user_id = auth.uid());

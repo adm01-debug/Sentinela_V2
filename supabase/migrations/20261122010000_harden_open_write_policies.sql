@@ -30,6 +30,7 @@
 -- 1. whatsapp_templates: escrita apenas por admin
 DROP POLICY IF EXISTS "System can upsert whatsapp templates" ON public.whatsapp_templates;
 
+DROP POLICY IF EXISTS "Admins can manage whatsapp templates" ON public.whatsapp_templates;
 CREATE POLICY "Admins can manage whatsapp templates"
   ON public.whatsapp_templates FOR ALL
   TO authenticated
@@ -39,6 +40,7 @@ CREATE POLICY "Admins can manage whatsapp templates"
 -- 2. file_transfers: INSERT somente via service_role (edge function)
 DROP POLICY IF EXISTS "Edge functions can insert file_transfers" ON public.file_transfers;
 
+DROP POLICY IF EXISTS "Service role inserts file_transfers" ON public.file_transfers;
 CREATE POLICY "Service role inserts file_transfers"
   ON public.file_transfers FOR INSERT
   TO service_role
@@ -47,6 +49,7 @@ CREATE POLICY "Service role inserts file_transfers"
 -- 3. geofence_events: INSERT somente via service_role (edge function)
 DROP POLICY IF EXISTS "Edge functions insert geofence_events" ON public.geofence_events;
 
+DROP POLICY IF EXISTS "Service role inserts geofence_events" ON public.geofence_events;
 CREATE POLICY "Service role inserts geofence_events"
   ON public.geofence_events FOR INSERT
   TO service_role
@@ -55,6 +58,7 @@ CREATE POLICY "Service role inserts geofence_events"
 -- 4. audit_logs: INSERT somente via service_role (edge functions/triggers)
 DROP POLICY IF EXISTS "System can insert audit logs" ON public.audit_logs;
 
+DROP POLICY IF EXISTS "Service role inserts audit logs" ON public.audit_logs;
 CREATE POLICY "Service role inserts audit logs"
   ON public.audit_logs FOR INSERT
   TO service_role
