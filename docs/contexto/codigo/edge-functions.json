@@ -2,9 +2,20 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "pasta": "supabase/functions",
- "total": 86,
+ "total": 87,
  "verify_jwt_false": [
-  "health-check"
+  "acknowledge-violation",
+  "dlp-incident-report",
+  "dlp-policy-sync",
+  "generate-report",
+  "health-check",
+  "ingest-file-transfer",
+  "live-view-authorize",
+  "pending-employee-violations",
+  "process-violation-alert",
+  "send-whatsapp",
+  "upload-recording-chunk",
+  "webrtc-ice-config"
  ],
  "shared": [
   "supabase/functions/_shared/auth.ts",
@@ -22,7 +33,7 @@
    "entrada": "supabase/functions/acknowledge-violation/index.ts",
    "arquivos": 1,
    "linhas": 153,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -635,7 +646,7 @@
    "entrada": "supabase/functions/dlp-incident-report/index.ts",
    "arquivos": 1,
    "linhas": 100,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -656,7 +667,7 @@
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
-   "orfa": true,
+   "orfa": false,
    "testes": 0
   },
   {
@@ -664,7 +675,7 @@
    "entrada": "supabase/functions/dlp-policy-sync/index.ts",
    "arquivos": 1,
    "linhas": 118,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -685,7 +696,7 @@
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
-   "orfa": true,
+   "orfa": false,
    "testes": 0
   },
   {
@@ -880,7 +891,7 @@
    "entrada": "supabase/functions/generate-report/index.ts",
    "arquivos": 1,
    "linhas": 200,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -1149,7 +1160,7 @@
    "entrada": "supabase/functions/ingest-file-transfer/index.ts",
    "arquivos": 1,
    "linhas": 306,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS",
     "POST"
@@ -1177,7 +1188,7 @@
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
-   "orfa": true,
+   "orfa": false,
    "testes": 0
   },
   {
@@ -1217,7 +1228,7 @@
    "entrada": "supabase/functions/live-view-authorize/index.ts",
    "arquivos": 1,
    "linhas": 129,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -1235,6 +1246,33 @@
     "SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_URL",
     "TURN_CREDENTIALS"
+   ],
+   "buckets": [],
+   "chama_edges": [],
+   "hosts_externos": [],
+   "usa_shared": [],
+   "chamada_pelo_front": [],
+   "chamada_por_edges": [],
+   "chamada_por_sql_ou_cron": false,
+   "orfa": false,
+   "testes": 0
+  },
+  {
+   "nome": "mcp-query",
+   "entrada": "supabase/functions/mcp-query/index.ts",
+   "arquivos": 1,
+   "linhas": 91,
+   "verify_jwt": true,
+   "metodos": [
+    "OPTIONS",
+    "POST"
+   ],
+   "tabelas": [],
+   "rpcs": [],
+   "env": [
+    "MCP_SECRET",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL"
    ],
    "buckets": [],
    "chama_edges": [],
@@ -1489,7 +1527,7 @@
    "entrada": "supabase/functions/pending-employee-violations/index.ts",
    "arquivos": 1,
    "linhas": 72,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -1509,7 +1547,7 @@
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
-   "orfa": true,
+   "orfa": false,
    "testes": 0
   },
   {
@@ -1603,7 +1641,7 @@
    "entrada": "supabase/functions/process-violation-alert/index.ts",
    "arquivos": 1,
    "linhas": 180,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -2069,7 +2107,7 @@
    "entrada": "supabase/functions/send-whatsapp/index.ts",
    "arquivos": 2,
    "linhas": 372,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -2532,7 +2570,7 @@
    "entrada": "supabase/functions/upload-recording-chunk/index.ts",
    "arquivos": 1,
    "linhas": 290,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS",
     "POST"
@@ -2560,7 +2598,7 @@
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
-   "orfa": true,
+   "orfa": false,
    "testes": 0
   },
   {
@@ -2654,7 +2692,7 @@
    "entrada": "supabase/functions/webrtc-ice-config/index.ts",
    "arquivos": 1,
    "linhas": 65,
-   "verify_jwt": true,
+   "verify_jwt": false,
    "metodos": [
     "OPTIONS"
    ],
@@ -2675,7 +2713,7 @@
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
-   "orfa": true,
+   "orfa": false,
    "testes": 0
   },
   {

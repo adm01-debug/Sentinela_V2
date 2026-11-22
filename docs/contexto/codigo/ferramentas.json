@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1383)",
+   "TypeScript (1384)",
    "Markdown (176)",
    "SQL (126)",
    "JSON (42)",
@@ -1103,6 +1103,7 @@
    "LOVABLE_API_KEY",
    "MAPBOX_PUBLIC_TOKEN",
    "MAPBOX_SECRET_TOKEN",
+   "MCP_SECRET",
    "RESEND_API_KEY",
    "RESEND_FROM_EMAIL",
    "SITE_URL",
@@ -1327,6 +1328,7 @@
    "LOVABLE_API_KEY",
    "MAPBOX_PUBLIC_TOKEN",
    "MAPBOX_SECRET_TOKEN",
+   "MCP_SECRET",
    "REDIS_URL",
    "RESEND_API_KEY",
    "RESEND_FROM_EMAIL",
@@ -1345,7 +1347,18 @@
    "WHATSAPP_PROVIDER"
   ],
   "webhooks_recebidos": [
-   "health-check"
+   "acknowledge-violation",
+   "dlp-incident-report",
+   "dlp-policy-sync",
+   "generate-report",
+   "health-check",
+   "ingest-file-transfer",
+   "live-view-authorize",
+   "pending-employee-violations",
+   "process-violation-alert",
+   "send-whatsapp",
+   "upload-recording-chunk",
+   "webrtc-ice-config"
   ],
   "realtime": [
    "dlp-incidents-feed",
@@ -1514,17 +1527,11 @@
   "guards": [
    "src/guards/index.tsx"
   ],
-  "rotas_protegidas": 14,
+  "rotas_protegidas": 20,
   "rotas_publicas": [
    "/*",
    "/activities/:id",
    "/activities/timeline",
-   "/admin/dlp/incidents",
-   "/admin/dlp/policies",
-   "/admin/edge-functions",
-   "/admin/ueba",
-   "/admin/ueba/:employeeId",
-   "/admin/ueba/settings",
    "/ai-analysis",
    "/alerts/:id",
    "/alerts/rules",

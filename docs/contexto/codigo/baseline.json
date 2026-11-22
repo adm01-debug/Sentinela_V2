@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "f8968d297efe597b8c386ab6d465f21e84b30496",
+  "commit": "2659aa0ffbedcbcff872b8b8ca3373f24067ae61",
   "branch": "main",
-  "data_commit": "2026-11-22T08:59:21-03:00",
+  "data_commit": "2026-11-22T09:39:15-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2659aa0ff",
+    "data": "2026-11-22",
+    "assunto": "fix(admin): protege 7 rotas /admin com AdminGuard e liga as paginas no menu (#221)"
+   },
    {
     "sha": "f8968d297",
     "data": "2026-11-22",
@@ -126,14 +131,9 @@
     "sha": "e30a885cf",
     "data": "2026-11-21",
     "assunto": "fix(edges): corrige nome do parametro de get_user_company_id (p_user_id -> _user_id) (#203)"
-   },
-   {
-    "sha": "59d2e0ef5",
-    "data": "2026-11-21",
-    "assunto": "chore(test): eleva timeout do vitest de 5s para 20s (#201)"
    }
   ],
-  "arquivos_mudados_7d": 172,
+  "arquivos_mudados_7d": 173,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -153,7 +153,7 @@
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
-    "mudancas": 11
+    "mudancas": 12
    },
    {
     "pasta": ".github/workflows/deploy.yml",
@@ -192,8 +192,8 @@
     "mudancas": 4
    },
    {
-    "pasta": ".github/workflows/cd.yml",
-    "mudancas": 3
+    "pasta": "supabase/config.toml",
+    "mudancas": 4
    }
   ],
   "arquivos_mais_mudados_90d": [
@@ -211,7 +211,7 @@
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 11
+    "mudancas": 12
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
@@ -234,15 +234,15 @@
     "mudancas": 5
    },
    {
+    "arquivo": "supabase/config.toml",
+    "mudancas": 5
+   },
+   {
     "arquivo": "desktop-agent/src/main.ts",
     "mudancas": 4
    },
    {
     "arquivo": "src/test/improvements-verification.test.ts",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "supabase/config.toml",
     "mudancas": 4
    },
    {
@@ -278,6 +278,10 @@
     "mudancas": 3
    },
    {
+    "arquivo": "src/routes/AppRoutes.tsx",
+    "mudancas": 3
+   },
+   {
     "arquivo": "src/test/comprehensive-validation.test.ts",
     "mudancas": 3
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": "supabase/functions/natural-language-query/index.ts",
     "mudancas": 3
-   },
-   {
-    "arquivo": "vite.config.ts",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 121
+    "commits": 122
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1849,
-  "arquivos_codigo": 1403,
-  "linhas_codigo": 150250,
+  "arquivos_total": 1850,
+  "arquivos_codigo": 1404,
+  "linhas_codigo": 150396,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -324,7 +324,7 @@
   "modulos": 57,
   "componentes": 462,
   "hooks": 524,
-  "edge_functions": 86,
+  "edge_functions": 87,
   "tabelas": 159,
   "migrations": 122,
   "cron_jobs": 5,
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44848
+   "linhas": 44854
   },
   "src/constants": {
    "arquivos": 7,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 331
+   "linhas": 380
   },
   "src/services": {
    "arquivos": 8,
@@ -495,8 +495,8 @@
    "linhas": 180
   },
   "supabase/functions": {
-   "arquivos": 100,
-   "linhas": 12665
+   "arquivos": 101,
+   "linhas": 12756
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -674,8 +674,6 @@
    "create-monthly-partitions",
    "daily-summary",
    "delete-user-data",
-   "dlp-incident-report",
-   "dlp-policy-sync",
    "external-db-bridge",
    "generate-api-key",
    "generate-insights",
@@ -685,15 +683,13 @@
    "get-policies",
    "health",
    "import-employees",
-   "ingest-file-transfer",
    "invite-user",
-   "live-view-authorize",
+   "mcp-query",
    "merge-employees",
    "mobile-collector",
    "natural-language-query",
    "notify-dispute-decision",
    "notify-mobile-violation",
-   "pending-employee-violations",
    "process-bulk-import",
    "process-screenshot",
    "recalculate-metrics",
@@ -706,11 +702,9 @@
    "sentiment-analysis",
    "sync-employee",
    "sync-teams",
-   "upload-recording-chunk",
    "validate-agent-key",
    "validate-license",
    "verify-email",
-   "webrtc-ice-config",
    "weekly-report"
   ],
   "edges_chamadas_sem_pasta": [],

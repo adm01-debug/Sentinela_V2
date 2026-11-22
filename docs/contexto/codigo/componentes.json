@@ -642,7 +642,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 347,
+   "linhas": 353,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -7703,7 +7703,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 331,
+   "linhas": 380,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

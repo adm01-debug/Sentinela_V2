@@ -1380,6 +1380,7 @@
    "ingest-file-transfer",
    "invite-user",
    "live-view-authorize",
+   "mcp-query",
    "merge-employees",
    "mobile-collector",
    "natural-language-query",
