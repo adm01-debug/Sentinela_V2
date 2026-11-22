@@ -6,16 +6,17 @@ import {
   BarChart3, Shield, Monitor, Camera, Globe, Calendar, Gamepad2,
   Building2, UserCog, ScrollText, Smartphone, MapPin, Clock, Download,
   Key, Webhook, MessageSquare, Brain, FolderKanban, Timer, ClipboardList,
-  UserCheck, BarChart, ChevronDown, LogOut, Link2, ShieldCheck, FileCheck, DownloadCloud,
-  Gavel, ClipboardCheck, Video, FileSymlink, Lock
+  UserCheck, BarChart, ChevronDown, Link2, ShieldCheck, FileCheck, DownloadCloud,
+  Gavel, ClipboardCheck, Video, FileSymlink, Lock,
+  Gauge, ShieldAlert, AlertOctagon, Fingerprint, Zap
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '@/stores';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/utils/cn';
 import { ROUTES, APP_NAME } from '@/constants';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { motion, AnimatePresence } from 'framer-motion';
 import { SlaAlertsBadge } from '@/components/disputes/SlaAlertsBadge';
 
 const DISPUTE_METRICS_PATH = '/admin/dispute-metrics';
@@ -110,6 +111,11 @@ const navSections: NavSection[] = [
       { icon: Gavel, labelKey: 'Métricas de Contestação', path: '/admin/dispute-metrics' },
       { icon: Activity, labelKey: 'Auditoria de Escalações', path: '/admin/dispute-escalation-audit' },
       { icon: Activity, labelKey: 'Saúde de Integrações', path: '/admin/integrations-health' },
+      { icon: Gauge, labelKey: 'Telemetria de Queries', path: '/admin/telemetria' },
+      { icon: ShieldAlert, labelKey: 'Politicas DLP', path: '/admin/dlp/policies' },
+      { icon: AlertOctagon, labelKey: 'Incidentes DLP', path: '/admin/dlp/incidents' },
+      { icon: Fingerprint, labelKey: 'Analise de Comportamento (UEBA)', path: '/admin/ueba' },
+      { icon: Zap, labelKey: 'Edge Functions', path: '/admin/edge-functions' },
       { icon: Video, labelKey: 'Relatório Live View', path: '/admin/live-view-report' },
       { icon: Download, labelKey: 'nav.exportData', path: '/export' },
     ],

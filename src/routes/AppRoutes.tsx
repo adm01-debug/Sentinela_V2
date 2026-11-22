@@ -231,13 +231,62 @@ export const AppRoutes = () => (
           <Route path="/timesheets" element={<TimesheetsPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/hours-tracking" element={<HoursTrackingPage />} />
-          <Route path="/admin/telemetria" element={<AdminTelemetriaPage />} />
-          <Route path="/admin/dlp/policies" element={<DLPPoliciesPage />} />
-          <Route path="/admin/dlp/incidents" element={<DLPIncidentsPage />} />
-          <Route path="/admin/ueba" element={<UEBADashboardPage />} />
-          <Route path="/admin/ueba/settings" element={<UEBASettingsPage />} />
-          <Route path="/admin/ueba/:employeeId" element={<EmployeeRiskProfilePage />} />
-          <Route path="/admin/edge-functions" element={<EdgeFunctionDashboard />} />
+          <Route
+            path="/admin/telemetria"
+            element={
+              <AdminGuard>
+                <AdminTelemetriaPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/dlp/policies"
+            element={
+              <AdminGuard>
+                <DLPPoliciesPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/dlp/incidents"
+            element={
+              <AdminGuard>
+                <DLPIncidentsPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/ueba"
+            element={
+              <AdminGuard>
+                <UEBADashboardPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/ueba/settings"
+            element={
+              <AdminGuard>
+                <UEBASettingsPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/ueba/:employeeId"
+            element={
+              <AdminGuard>
+                <EmployeeRiskProfilePage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/edge-functions"
+            element={
+              <AdminGuard>
+                <EdgeFunctionDashboard />
+              </AdminGuard>
+            }
+          />
           <Route path="/organization/chart" element={<OrgChartPage />} />
           <Route path="/docs/api" element={<ApiDocsPage />} />
           <Route path="/verify-report" element={<VerifyReportPage />} />
