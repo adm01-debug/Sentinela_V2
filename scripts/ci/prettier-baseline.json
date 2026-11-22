@@ -409,7 +409,6 @@
     "src/components/PageHeader.tsx",
     "src/components/PageSkeletons.tsx",
     "src/components/PageTransition.tsx",
-    "src/components/PolicyGate.tsx",
     "src/components/PolicyToggle.tsx",
     "src/components/productivity/AppCategoryManager.tsx",
     "src/components/productivity/ProductivityCategoryDonut.tsx",
