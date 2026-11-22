@@ -17,7 +17,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { tables = ['employees', 'violations', 'activity_logs'] } = await req.json();
+    const { tables = ['employees', 'security_violations', 'activity_logs'] } = await req.json();
     const backup: Record<string, unknown[]> = {};
 
     for (const table of tables) {
