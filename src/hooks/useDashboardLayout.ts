@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+﻿import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { queryKeys, queryPresets } from '@/lib/queryClient';
@@ -23,10 +23,13 @@ export interface DashboardLayout {
 }
 
 const DEFAULT_WIDGETS: DashboardWidget[] = [
-  { id: 'employees', type: 'employees', title: 'Funcionários', position: { x: 0, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
-  { id: 'alerts', type: 'alerts', title: 'Alertas', position: { x: 1, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
-  { id: 'stats', type: 'stats', title: 'Produtividade', position: { x: 2, y: 0, w: 1, h: 1 }, visible: true, size: 'medium' },
-  { id: 'activity', type: 'chart', title: 'Atividade', position: { x: 0, y: 1, w: 2, h: 1 }, visible: true, size: 'large' },
+  { id: 'stats', type: 'stats', title: 'Indicadores', position: { x: 0, y: 0, w: 1, h: 1 }, visible: true, size: 'full' },
+  { id: 'insights', type: 'custom', title: 'Insights de IA', position: { x: 0, y: 1, w: 2, h: 1 }, visible: true, size: 'full' },
+  { id: 'charts', type: 'chart', title: 'Tendencias', position: { x: 0, y: 2, w: 2, h: 1 }, visible: true, size: 'full' },
+  { id: 'alerts', type: 'alerts', title: 'Alertas', position: { x: 0, y: 3, w: 1, h: 1 }, visible: true, size: 'medium' },
+  { id: 'activity', type: 'security', title: 'Atividade', position: { x: 1, y: 3, w: 1, h: 1 }, visible: true, size: 'medium' },
+  { id: 'department', type: 'ranking', title: 'Departamentos', position: { x: 0, y: 4, w: 1, h: 1 }, visible: true, size: 'medium' },
+  { id: 'apps', type: 'employees', title: 'Aplicacoes', position: { x: 1, y: 4, w: 1, h: 1 }, visible: true, size: 'medium' },
 ];
 
 export function useDashboardLayout() {
