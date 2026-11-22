@@ -282,9 +282,10 @@
     "useActiveEmployees",
     "useOnlineEmployeesCount"
    ],
-   "linhas": 59,
+   "linhas": 73,
    "dominio": "hooks",
    "tabelas": [
+    "employee_status",
     "employees"
    ],
    "rpcs": [],
@@ -328,7 +329,7 @@
    "hooks_exportados": [
     "useActivityHistory"
    ],
-   "linhas": 251,
+   "linhas": 248,
    "dominio": "hooks",
    "tabelas": [
     "activity_logs"
@@ -6725,7 +6726,7 @@
    "hooks_exportados": [
     "useRateLimitDashboardPage"
    ],
-   "linhas": 214,
+   "linhas": 216,
    "dominio": "hooks",
    "tabelas": [
     "blocked_ips",
@@ -6825,7 +6826,7 @@
     "useEmployeeActivity",
     "useRealtimeActivity"
    ],
-   "linhas": 56,
+   "linhas": 55,
    "dominio": "hooks",
    "tabelas": [
     "activity_logs"
@@ -9414,7 +9415,7 @@
     "useEntityVersions",
     "useVersions"
    ],
-   "linhas": 233,
+   "linhas": 232,
    "dominio": "hooks",
    "tabelas": [
     "entity_versions"
@@ -9496,7 +9497,7 @@
     "useUpdateViolationComment",
     "useViolationComments"
    ],
-   "linhas": 236,
+   "linhas": 230,
    "dominio": "hooks",
    "tabelas": [
     "violation_comments"
@@ -10126,7 +10127,7 @@
     "useUpdateWorkSchedule",
     "useWorkSchedules"
    ],
-   "linhas": 134,
+   "linhas": 141,
    "dominio": "hooks",
    "tabelas": [
     "work_schedules"
