@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `601c993b4d8ea8ac91dcd8547201bd92338cbc4c` (2026-11-22T08:41:57-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `31e06138729d62c2d662dd42bab583103f6cd659` (2026-11-22T08:42:06-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1383), Markdown (176), SQL (113), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1383), Markdown (176), SQL (115), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1836 |
+| arquivos_total | 1838 |
 | arquivos_codigo | 1403 |
 | linhas_codigo | 150138 |
 | rotas | 55 |
@@ -46,7 +46,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 524 |
 | edge_functions | 86 |
 | tabelas | 142 |
-| migrations | 109 |
+| migrations | 111 |
 | cron_jobs | 1 |
 | testes | 70 |
 | workflows | 12 |
@@ -454,6 +454,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `31e061387` fix(seguranca): revoga EXECUTE de funcoes de trigger expostas a anon (#218)
+- 2026-11-22 `e502b2151` fix(infra): cria bucket de backup e alinha teste de storage (#216)
 - 2026-11-22 `601c993b4` fix(rls): libera escrita de departamentos para o tenant (#215)
 - 2026-11-21 `7e613e68a` fix(auth): role de UI nao vem mais de user_metadata (#217)
 - 2026-11-21 `4e3e61ccb` fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)
@@ -467,8 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `e96b8cce3` fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)
 - 2026-11-21 `e30a885cf` fix(edges): corrige nome do parametro de get_user_company_id (p_user_id -> _user_id) (#203)
 - 2026-11-21 `59d2e0ef5` chore(test): eleva timeout do vitest de 5s para 20s (#201)
-- 2026-11-21 `5e64e99e6` fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)
-- 2026-11-21 `39e4070c0` docs: linha de base registra contratos front-banco, Deploy e pendencias de regra 8 (#196)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

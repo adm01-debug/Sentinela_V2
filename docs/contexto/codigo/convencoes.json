@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(seguranca): revoga EXECUTE de funcoes de trigger expostas a anon (#218)",
+   "fix(infra): cria bucket de backup e alinha teste de storage (#216)",
    "fix(rls): libera escrita de departamentos para o tenant (#215)",
    "fix(auth): role de UI nao vem mais de user_metadata (#217)",
-   "fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)",
-   "fix: alinha hooks ao schema real (employee_status, activity_logs, rate_limit_logs) (#213)",
-   "fix: alinha planos de cobranca ao contrato real do banco (#212)"
+   "fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

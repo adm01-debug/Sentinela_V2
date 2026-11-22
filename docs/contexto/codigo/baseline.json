@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "601c993b4d8ea8ac91dcd8547201bd92338cbc4c",
+  "commit": "31e06138729d62c2d662dd42bab583103f6cd659",
   "branch": "main",
-  "data_commit": "2026-11-22T08:41:57-03:00",
+  "data_commit": "2026-11-22T08:42:06-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "31e061387",
+    "data": "2026-11-22",
+    "assunto": "fix(seguranca): revoga EXECUTE de funcoes de trigger expostas a anon (#218)"
+   },
+   {
+    "sha": "e502b2151",
+    "data": "2026-11-22",
+    "assunto": "fix(infra): cria bucket de backup e alinha teste de storage (#216)"
+   },
    {
     "sha": "601c993b4",
     "data": "2026-11-22",
@@ -121,19 +131,9 @@
     "sha": "7b8f3781d",
     "data": "2026-11-21",
     "assunto": "fix: corrige contratos de coluna das edges (activities/violations sao views) (#188)"
-   },
-   {
-    "sha": "3845f9582",
-    "data": "2026-11-21",
-    "assunto": "chore: linha de base registra estado real (deploy Vercel, whatsapp Evolution, RLS #179/#182) (#183)"
-   },
-   {
-    "sha": "be9b6b468",
-    "data": "2026-11-21",
-    "assunto": "feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)"
    }
   ],
-  "arquivos_mudados_7d": 154,
+  "arquivos_mudados_7d": 158,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 109
+    "commits": 111
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1836,
+  "arquivos_total": 1838,
   "arquivos_codigo": 1403,
   "linhas_codigo": 150138,
   "rotas": 55,
@@ -326,7 +326,7 @@
   "hooks": 524,
   "edge_functions": 86,
   "tabelas": 142,
-  "migrations": 109,
+  "migrations": 111,
   "cron_jobs": 1,
   "testes": 70,
   "workflows": 12,
