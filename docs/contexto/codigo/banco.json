@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 119,
+ "migrations": 122,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -1209,6 +1209,147 @@
    "triggers": [
     "trg_app_categories_updated_at"
    ],
+   "sem_rls": false,
+   "nao_usada": false
+  },
+  "app_config": {
+   "colunas": {
+    "allowed_ips": {
+     "tipo": "text[]",
+     "nn": false,
+     "pk": false,
+     "default": "'{}'::text[]",
+     "ref": null
+    },
+    "company_id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "companies"
+    },
+    "created_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "default_language": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": "'pt-BR'",
+     "ref": null
+    },
+    "features": {
+     "tipo": "jsonb",
+     "nn": true,
+     "pk": false,
+     "default": "'{}'::jsonb",
+     "ref": null
+    },
+    "id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": true,
+     "default": "gen_random_uuid()",
+     "ref": null
+    },
+    "maintenance_message": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "maintenance_mode": {
+     "tipo": "boolean",
+     "nn": true,
+     "pk": false,
+     "default": "false",
+     "ref": null
+    },
+    "max_upload_size": {
+     "tipo": "integer",
+     "nn": true,
+     "pk": false,
+     "default": "10485760",
+     "ref": null
+    },
+    "mfa_required": {
+     "tipo": "boolean",
+     "nn": true,
+     "pk": false,
+     "default": "false",
+     "ref": null
+    },
+    "session_timeout": {
+     "tipo": "integer",
+     "nn": true,
+     "pk": false,
+     "default": "3600",
+     "ref": null
+    },
+    "supported_languages": {
+     "tipo": "text[]",
+     "nn": true,
+     "pk": false,
+     "default": "'{pt-BR",
+     "ref": null
+    },
+    "theme": {
+     "tipo": "jsonb",
+     "nn": true,
+     "pk": false,
+     "default": "'{\"primaryColor\":\"#1890ff\"",
+     "ref": null
+    },
+    "updated_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "updated_by": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "auth"
+    }
+   },
+   "rls": true,
+   "policies": [
+    {
+     "nome": "Admins can manage app config",
+     "comando": "all",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "Admins can view app config",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [
+    {
+     "nome": "app_config_company_uniq",
+     "colunas": "company_id",
+     "unico": true
+    }
+   ],
+   "fks": [
+    "company_id->companies",
+    "updated_by->auth"
+   ],
+   "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "usada_no_front": 1,
+   "usada_em_edges": [],
+   "triggers": [],
    "sem_rls": false,
    "nao_usada": false
   },
@@ -4196,7 +4337,7 @@
      "tipo": "permissive"
     },
     {
-     "nome": "Anyone can view employee badges",
+     "nome": "employee_badges_select_company",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -5314,6 +5455,97 @@
    "sem_rls": false,
    "nao_usada": false
   },
+  "feature_flags": {
+   "colunas": {
+    "company_id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "companies"
+    },
+    "conditions": {
+     "tipo": "jsonb",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "created_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "description": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "enabled": {
+     "tipo": "boolean",
+     "nn": true,
+     "pk": false,
+     "default": "false",
+     "ref": null
+    },
+    "id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": true,
+     "default": "gen_random_uuid()",
+     "ref": null
+    },
+    "name": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "updated_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    }
+   },
+   "rls": true,
+   "policies": [
+    {
+     "nome": "Admins can manage feature flags",
+     "comando": "all",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "Authenticated can view feature flags",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [
+    {
+     "nome": "feature_flags_company_name_uniq",
+     "colunas": "company_id, name",
+     "unico": true
+    }
+   ],
+   "fks": [
+    "company_id->companies"
+   ],
+   "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "usada_no_front": 1,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": false
+  },
   "file_transfers": {
    "colunas": {
     "application": {
@@ -5618,6 +5850,26 @@
    ],
    "sem_rls": false,
    "nao_usada": false
+  },
+  "gamification_leaderboard": {
+   "colunas": {},
+   "rls": false,
+   "policies": [
+    {
+     "nome": "gamification_select_company",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
   },
   "geo_blocking_settings": {
    "colunas": {},
@@ -9529,7 +9781,7 @@
    "rls": true,
    "policies": [
     {
-     "nome": "productivity_metrics_select_auth",
+     "nome": "productivity_metrics_select_company",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -10248,6 +10500,104 @@
    "sem_rls": false,
    "nao_usada": false
   },
+  "rate_limit_settings": {
+   "colunas": {
+    "block_duration_seconds": {
+     "tipo": "integer",
+     "nn": true,
+     "pk": false,
+     "default": "300",
+     "ref": null
+    },
+    "company_id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "companies"
+    },
+    "created_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "endpoint": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": true,
+     "default": "gen_random_uuid()",
+     "ref": null
+    },
+    "is_active": {
+     "tipo": "boolean",
+     "nn": true,
+     "pk": false,
+     "default": "true",
+     "ref": null
+    },
+    "max_requests": {
+     "tipo": "integer",
+     "nn": true,
+     "pk": false,
+     "default": "60",
+     "ref": null
+    },
+    "updated_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "window_seconds": {
+     "tipo": "integer",
+     "nn": true,
+     "pk": false,
+     "default": "60",
+     "ref": null
+    }
+   },
+   "rls": true,
+   "policies": [
+    {
+     "nome": "Admins can manage rate limit settings",
+     "comando": "all",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "Admins can view rate limit settings",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [
+    {
+     "nome": "rate_limit_settings_company_endpoint_uniq",
+     "colunas": "company_id, endpoint",
+     "unico": true
+    }
+   ],
+   "fks": [
+    "company_id->companies"
+   ],
+   "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "usada_no_front": 2,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": false
+  },
   "recording_chunks": {
    "colunas": {
     "app_name": {
@@ -10699,7 +11049,7 @@
    "rls": true,
    "policies": [
     {
-     "nome": "report_logs_select_auth",
+     "nome": "report_logs_select_admin",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -10800,7 +11150,7 @@
    "rls": true,
    "policies": [
     {
-     "nome": "Authenticated can verify by report_id/signature",
+     "nome": "report_signatures_select_company",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -12399,7 +12749,7 @@
      "tipo": "permissive"
     },
     {
-     "nome": "sensitive_keywords_select_auth",
+     "nome": "sensitive_keywords_select_admin",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -13842,6 +14192,119 @@
    "sem_rls": false,
    "nao_usada": true
   },
+  "subscriptions": {
+   "colunas": {
+    "cancel_at_period_end": {
+     "tipo": "boolean",
+     "nn": true,
+     "pk": false,
+     "default": "false",
+     "ref": null
+    },
+    "company_id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "companies"
+    },
+    "created_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "current_period_end": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now() + interval '30 days'",
+     "ref": null
+    },
+    "current_period_start": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "features": {
+     "tipo": "text[]",
+     "nn": true,
+     "pk": false,
+     "default": "'{}'::text[]",
+     "ref": null
+    },
+    "id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": true,
+     "default": "gen_random_uuid()",
+     "ref": null
+    },
+    "plan": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": "'free'",
+     "ref": null
+    },
+    "status": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": "'active'",
+     "ref": null
+    },
+    "updated_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "user_id": {
+     "tipo": "uuid",
+     "nn": true,
+     "pk": false,
+     "default": null,
+     "ref": "auth"
+    }
+   },
+   "rls": true,
+   "policies": [
+    {
+     "nome": "Admins can manage subscriptions",
+     "comando": "all",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "Users can view own subscription",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [
+    {
+     "nome": "subscriptions_user_uniq",
+     "colunas": "user_id",
+     "unico": true
+    }
+   ],
+   "fks": [
+    "company_id->companies",
+    "user_id->auth"
+   ],
+   "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "usada_no_front": 1,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": false
+  },
   "sync_logs": {
    "colunas": {
     "created_at": {
@@ -13904,7 +14367,7 @@
    "rls": true,
    "policies": [
     {
-     "nome": "sync_logs_select_auth",
+     "nome": "sync_logs_select_company",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -15404,7 +15867,7 @@
      "tipo": "permissive"
     },
     {
-     "nome": "Users can view violation actions",
+     "nome": "violation_actions_select_company",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -15536,7 +15999,7 @@
      "tipo": "permissive"
     },
     {
-     "nome": "Users can view violation comments",
+     "nome": "violation_comments_select_company",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -16876,6 +17339,104 @@
    "sem_rls": false,
    "nao_usada": false
   },
+  "whatsapp_settings": {
+   "colunas": {
+    "access_token": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "business_account_id": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "company_id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": "companies"
+    },
+    "created_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "id": {
+     "tipo": "uuid",
+     "nn": false,
+     "pk": true,
+     "default": "gen_random_uuid()",
+     "ref": null
+    },
+    "is_active": {
+     "tipo": "boolean",
+     "nn": true,
+     "pk": false,
+     "default": "true",
+     "ref": null
+    },
+    "phone_number_id": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    },
+    "updated_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "webhook_verify_token": {
+     "tipo": "text",
+     "nn": false,
+     "pk": false,
+     "default": null,
+     "ref": null
+    }
+   },
+   "rls": true,
+   "policies": [
+    {
+     "nome": "Admins can manage whatsapp settings",
+     "comando": "all",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "Admins can view whatsapp settings",
+     "comando": "select",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [
+    {
+     "nome": "whatsapp_settings_company_uniq",
+     "colunas": "company_id",
+     "unico": true
+    }
+   ],
+   "fks": [
+    "company_id->companies"
+   ],
+   "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "usada_no_front": 1,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": false
+  },
   "whatsapp_templates": {
    "colunas": {
     "body": {
@@ -16951,7 +17512,7 @@
      "tipo": "permissive"
     },
     {
-     "nome": "Users can view whatsapp templates",
+     "nome": "whatsapp_templates_select_admin",
      "comando": "select",
      "para": "authenticated",
      "tipo": "permissive"
@@ -17288,15 +17849,10 @@
  },
  "tabelas_usadas_no_codigo_sem_definicao": [
   "activities",
-  "app_config",
   "backups",
   "employee_locations",
-  "feature_flags",
   "geofence_states",
-  "rate_limit_settings",
-  "subscriptions",
-  "violations",
-  "whatsapp_settings"
+  "violations"
  ],
  "rpcs_usadas_no_codigo": [
   {

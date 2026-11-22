@@ -5,7 +5,7 @@
   "linguagens": [
    "TypeScript (1383)",
    "Markdown (176)",
-   "SQL (123)",
+   "SQL (126)",
    "JSON (42)",
    "YAML (35)",
    "JavaScript (22)",
@@ -1611,12 +1611,15 @@
   ],
   "tabelas_de_flag": [
    "alert_notification_settings",
+   "feature_flags",
    "geo_blocking_settings",
    "internet_access_settings",
    "monitoring_settings",
+   "rate_limit_settings",
    "scheduled_report_settings",
    "settings_audit_log",
-   "whatsapp_notification_settings"
+   "whatsapp_notification_settings",
+   "whatsapp_settings"
   ]
  },
  "providers": {

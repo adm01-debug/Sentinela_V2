@@ -2,11 +2,26 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "8731d4e143cdf10f817442dd10bc82fadbd743e9",
+  "commit": "4867d1935979e0b9e0e0649870cadf71b8f7ba31",
   "branch": "main",
-  "data_commit": "2026-11-22T08:49:43-03:00",
+  "data_commit": "2026-11-22T08:50:17-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "4867d1935",
+    "data": "2026-11-22",
+    "assunto": "fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)"
+   },
+   {
+    "sha": "326c1c5b1",
+    "data": "2026-11-22",
+    "assunto": "feat(db): cria tabelas de configuracao ausentes consumidas pelos hooks (#206)"
+   },
+   {
+    "sha": "45e3668e3",
+    "data": "2026-11-22",
+    "assunto": "fix(seguranca): view violations vazava sem token e 9 policies SELECT eram true (#202)"
+   },
    {
     "sha": "8731d4e14",
     "data": "2026-11-22",
@@ -116,24 +131,9 @@
     "sha": "5e64e99e6",
     "data": "2026-11-21",
     "assunto": "fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)"
-   },
-   {
-    "sha": "39e4070c0",
-    "data": "2026-11-21",
-    "assunto": "docs: linha de base registra contratos front-banco, Deploy e pendencias de regra 8 (#196)"
-   },
-   {
-    "sha": "78fb326d7",
-    "data": "2026-11-21",
-    "assunto": "fix: export-data resolve company do usuario em user_companies (profiles nao tem company_id) (#197)"
-   },
-   {
-    "sha": "05761095f",
-    "data": "2026-11-21",
-    "assunto": "fix: OrgChartPage para de pedir departments.company_id (coluna inexistente) (#195)"
    }
   ],
-  "arquivos_mudados_7d": 169,
+  "arquivos_mudados_7d": 172,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 117
+    "commits": 120
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1846,
+  "arquivos_total": 1849,
   "arquivos_codigo": 1403,
   "linhas_codigo": 150250,
   "rotas": 55,
@@ -325,8 +325,8 @@
   "componentes": 462,
   "hooks": 524,
   "edge_functions": 86,
-  "tabelas": 153,
-  "migrations": 119,
+  "tabelas": 159,
+  "migrations": 122,
   "cron_jobs": 5,
   "testes": 70,
   "workflows": 12,
@@ -717,15 +717,10 @@
   "tabelas_sem_rls": [],
   "tabelas_usadas_sem_definicao": [
    "activities",
-   "app_config",
    "backups",
    "employee_locations",
-   "feature_flags",
    "geofence_states",
-   "rate_limit_settings",
-   "subscriptions",
-   "violations",
-   "whatsapp_settings"
+   "violations"
   ],
   "tabelas_com_drift_migration_vs_types": [
    "badges",

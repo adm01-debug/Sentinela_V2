@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `8731d4e143cdf10f817442dd10bc82fadbd743e9` (2026-11-22T08:49:43-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `4867d1935979e0b9e0e0649870cadf71b8f7ba31` (2026-11-22T08:50:17-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1383), Markdown (176), SQL (123), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1383), Markdown (176), SQL (126), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1846 |
+| arquivos_total | 1849 |
 | arquivos_codigo | 1403 |
 | linhas_codigo | 150250 |
 | rotas | 55 |
@@ -45,8 +45,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | componentes | 462 |
 | hooks | 524 |
 | edge_functions | 86 |
-| tabelas | 153 |
-| migrations | 119 |
+| tabelas | 159 |
+| migrations | 122 |
 | cron_jobs | 5 |
 | testes | 70 |
 | workflows | 12 |
@@ -283,7 +283,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - edges_orfas: 53 — ex.: agent-collector, archive-data, audit-export
 - edges_chamadas_sem_pasta: 0
 - tabelas_sem_rls: 0
-- tabelas_usadas_sem_definicao: 10 — ex.: activities, app_config, backups
+- tabelas_usadas_sem_definicao: 5 — ex.: activities, backups, employee_locations
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 100 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
@@ -458,6 +458,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `4867d1935` fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)
+- 2026-11-22 `326c1c5b1` feat(db): cria tabelas de configuracao ausentes consumidas pelos hooks (#206)
+- 2026-11-22 `45e3668e3` fix(seguranca): view violations vazava sem token e 9 policies SELECT eram true (#202)
 - 2026-11-22 `8731d4e14` fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)
 - 2026-11-22 `c4e613ba4` fix(seguranca): fecha escrita anonima em whatsapp_templates, file_transfers, geofence_events e audit_logs (#198)
 - 2026-11-22 `a9bdf6484` fix(infra): cria 5 tabelas usadas por edges ativas e corrige auth de crons e edges (#187)
@@ -470,9 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `7e613e68a` fix(auth): role de UI nao vem mais de user_metadata (#217)
 - 2026-11-21 `4e3e61ccb` fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)
 - 2026-11-21 `14364f0d2` fix: alinha hooks ao schema real (employee_status, activity_logs, rate_limit_logs) (#213)
-- 2026-11-21 `151e025fe` fix: alinha planos de cobranca ao contrato real do banco (#212)
-- 2026-11-21 `7fab455bb` feat: RolesPage com matriz de permissoes editavel (#211)
-- 2026-11-21 `4d022e774` feat: expoe painel unificado de seguranca em /admin/security (#210)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
