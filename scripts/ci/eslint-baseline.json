@@ -121,10 +121,6 @@
       "sha256": "fa7ccdba09b96dca5a3890799d46d10bb6d4f6d36939ccad5ea50bc6a26e3e32"
     },
     {
-      "path": "src/components/AppSidebar.tsx",
-      "sha256": "6230cf1c305883a8bf23d6a4cf1e2e27135257bfbac4f4a4c04b1a1f507c59d5"
-    },
-    {
       "path": "src/components/auth/PasswordResetApprovalPanel.tsx",
       "sha256": "44b31ac684fff006fd1d449c41e4a95fea7c44b69c2abf0aa61ee1b776f054cb"
     },
@@ -455,10 +451,6 @@
     {
       "path": "src/components/onboarding/OnboardingChecklist.tsx",
       "sha256": "d00831e1e7e59134e67a6dd17f64ab7a2b20a2de0c3d88e0e56c5c50470ddfec"
-    },
-    {
-      "path": "src/components/PolicyAcknowledgmentDialog.tsx",
-      "sha256": "73c4fc22648288c3c773ed0c92e1e762a3833ee69586884a305cd766c7149482"
     },
     {
       "path": "src/components/PolicyGate.tsx",
@@ -1886,7 +1878,7 @@
     },
     {
       "path": "src/pages/MonitoringPage.tsx",
-      "sha256": "08cfb548290ee99a232ab8357fee17cf6ff17aeaf1a846bac840bc16ec41863a"
+      "sha256": "25cb7310365fd7ac6fa60a21b04ec025c36fb244c4723f266d8f890bdd47f793"
     },
     {
       "path": "src/pages/NotFoundPage.tsx",
@@ -1942,7 +1934,7 @@
     },
     {
       "path": "src/services/authService.ts",
-      "sha256": "6ee7583b5a51a4632de95f70adecf58645250b20f18df972cf2585839abe1dbe"
+      "sha256": "b805736fa064501cab83eb001240efbe0a04f023bba022dad43748925ac83fc6"
     },
     {
       "path": "src/stores/modalStore.ts",
@@ -2018,7 +2010,7 @@
     },
     {
       "path": "src/test/supabase-integration.test.ts",
-      "sha256": "95c2d6c85ddeca2c7c73d8937c56a456b3169625169cb6f998f73e178d29f04d"
+      "sha256": "ce33eb7fb17c029fe8f97aa7ba51ce710c25c4b3829d98e44295013f81bdef01"
     },
     {
       "path": "src/test/utils.test.ts",
@@ -2174,7 +2166,7 @@
     },
     {
       "path": "supabase/functions/send-scheduled-report/index.ts",
-      "sha256": "369d745ae13939920c683e5900871abaa8bb42dd1fa5b4d07a931e87bcc6e3fe"
+      "sha256": "076bcba8215092dc3b96881dbe59495e3a512bd14775ed86c6f97be64e752b87"
     },
     {
       "path": "supabase/functions/send-webhook/index.ts",
@@ -3395,34 +3387,6 @@
       "spanHash": "7776cb5b69202ffe879d1cac44b0af97509c4b9e8625c8f2267cebfb0403df76",
       "lineHash": "7776cb5b69202ffe879d1cac44b0af97509c4b9e8625c8f2267cebfb0403df76",
       "contextHash": "55bd6bd906b8ab1c327fc09b8c7bc6195cd5a58ae04e05f4d185eee83cf563f7"
-    },
-    {
-      "file": "src/components/AppSidebar.tsx",
-      "line": 18,
-      "column": 1,
-      "endLine": 18,
-      "endColumn": 57,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`framer-motion` import should occur before import of `@/stores`",
-      "spanHash": "61090be30dbcbf5da41d051a6cd676b26c469f9c595ff32a0309f26318ce57c5",
-      "lineHash": "61090be30dbcbf5da41d051a6cd676b26c469f9c595ff32a0309f26318ce57c5",
-      "contextHash": "2a7bc1f95d220992c4d55ee43cff2205357ddcc6e944d7890df82b800b70638b"
-    },
-    {
-      "file": "src/components/AppSidebar.tsx",
-      "line": 9,
-      "column": 37,
-      "endLine": 9,
-      "endColumn": 43,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'LogOut' is defined but never used.",
-      "spanHash": "a20081366ea0106a7e59a1056349c7782000a696f5f8558bac7cbe9bbe2e12cc",
-      "lineHash": "b1d52df0793c8a49b5187e8d160eb0bad7c0d45a783544fd55505f1797e3faee",
-      "contextHash": "c7caa5530a20c3533dc8baa2f711817c102773d644521e2eb12f0091ae14c4f7"
     },
     {
       "file": "src/components/auth/PasswordResetApprovalPanel.tsx",
@@ -6167,48 +6131,6 @@
       "spanHash": "ebc39785eb6bedddda67e34cbc73fbab3f991cb6949acd8b5b5b321fe5716976",
       "lineHash": "ebc39785eb6bedddda67e34cbc73fbab3f991cb6949acd8b5b5b321fe5716976",
       "contextHash": "210bcada0a65f95f2ce20f9988e1706be06ab19f7dfec470d1658f84aea5db97"
-    },
-    {
-      "file": "src/components/PolicyAcknowledgmentDialog.tsx",
-      "line": 12,
-      "column": 1,
-      "endLine": 12,
-      "endColumn": 87,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`lucide-react` import should occur before import of `@/components/ui/button`",
-      "spanHash": "88883f2e44b29b0dc40d56f7e20b89858e379535be1cfb5bc936e9a30dec990d",
-      "lineHash": "88883f2e44b29b0dc40d56f7e20b89858e379535be1cfb5bc936e9a30dec990d",
-      "contextHash": "49a218f0010d805b997e4558a7b40a9a73fc675a0a8fe47ac1419f24850e7018"
-    },
-    {
-      "file": "src/components/PolicyAcknowledgmentDialog.tsx",
-      "line": 145,
-      "column": 21,
-      "endLine": 145,
-      "endColumn": 31,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'uploadData' is assigned a value but never used.",
-      "spanHash": "387863630d5508def5f98d39cbbfe05cc32c93a6578c0b30ae870e09114b4890",
-      "lineHash": "f8b5da8621425a03c6520309bdd6b673f5d52140402f31167df15869855fe50a",
-      "contextHash": "4c82d141cc55b7320b78ed4ed106b1d90fd8b4c295d461fcb275002c27d9d45a"
-    },
-    {
-      "file": "src/components/PolicyAcknowledgmentDialog.tsx",
-      "line": 198,
-      "column": 7,
-      "endLine": 198,
-      "endColumn": 14,
-      "severity": 2,
-      "ruleId": "react-hooks/set-state-in-effect",
-      "messageId": null,
-      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/components/PolicyAcknowledgmentDialog.tsx:198:7 196 | if (!open) { 197 | stopCamera(); > 198 | setStep('intro'); | ^^^^^^^ Avoid calling setState() directly within an effect 199 | setPhotoData(null); 200 | setLocation(null); 201 | setCameraError(null);",
-      "spanHash": "ff2bf7479b79ec07a277299906c94918651632c155e77a4662ea47627bf790d5",
-      "lineHash": "0b30d58e099292208666275efa82670177f4fddc642f08bb91441cd8febcd66f",
-      "contextHash": "53ff2972f126d25156ff8de67a5a2916775bdd8a5dbbb0846785c326cecc9347"
     },
     {
       "file": "src/components/PolicyGate.tsx",
@@ -16642,9 +16564,9 @@
     },
     {
       "file": "src/pages/MonitoringPage.tsx",
-      "line": 239,
+      "line": 243,
       "column": 15,
-      "endLine": 239,
+      "endLine": 243,
       "endColumn": 159,
       "severity": 2,
       "ruleId": "jsx-a11y/click-events-have-key-events",
@@ -16656,9 +16578,9 @@
     },
     {
       "file": "src/pages/MonitoringPage.tsx",
-      "line": 239,
+      "line": 243,
       "column": 15,
-      "endLine": 239,
+      "endLine": 243,
       "endColumn": 159,
       "severity": 2,
       "ruleId": "jsx-a11y/no-static-element-interactions",
@@ -20044,23 +19966,9 @@
     },
     {
       "file": "supabase/functions/send-scheduled-report/index.ts",
-      "line": 100,
+      "line": 106,
       "column": 9,
-      "endLine": 103,
-      "endColumn": 88,
-      "severity": 2,
-      "ruleId": "no-case-declarations",
-      "messageId": "unexpected",
-      "message": "Unexpected lexical declaration in case block.",
-      "spanHash": "7f93257b3cc8c08f0c2f2c94b1159f8385ba634c86f3a70a8f18eb1de2cfc701",
-      "lineHash": "8f9afdd5d67b1b5efb375421a157f5e495a800e49c24bb0a322c9f19f2481b31",
-      "contextHash": "599458fe1bd35e489935555899e58f7cd50915e27dd46baa8f479a7b7880e517"
-    },
-    {
-      "file": "supabase/functions/send-scheduled-report/index.ts",
-      "line": 107,
-      "column": 9,
-      "endLine": 110,
+      "endLine": 109,
       "endColumn": 64,
       "severity": 2,
       "ruleId": "no-case-declarations",
@@ -20069,6 +19977,20 @@
       "spanHash": "b1ae339425458c72542649f4982c153bba5a3e95ebe70eff8768cb702b3eee9c",
       "lineHash": "fe51b793d9741efc6fedcaa9e546c6d303ca9c2bef21fa774e56a437be15f1b2",
       "contextHash": "b4bd0b1e61d117f0fe57b81f0c255d5b0fc6395143c677897306dd6bcd8df2d7"
+    },
+    {
+      "file": "supabase/functions/send-scheduled-report/index.ts",
+      "line": 99,
+      "column": 9,
+      "endLine": 102,
+      "endColumn": 88,
+      "severity": 2,
+      "ruleId": "no-case-declarations",
+      "messageId": "unexpected",
+      "message": "Unexpected lexical declaration in case block.",
+      "spanHash": "7f93257b3cc8c08f0c2f2c94b1159f8385ba634c86f3a70a8f18eb1de2cfc701",
+      "lineHash": "8f9afdd5d67b1b5efb375421a157f5e495a800e49c24bb0a322c9f19f2481b31",
+      "contextHash": "599458fe1bd35e489935555899e58f7cd50915e27dd46baa8f479a7b7880e517"
     },
     {
       "file": "supabase/functions/send-webhook/index.ts",
