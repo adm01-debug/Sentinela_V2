@@ -109,6 +109,60 @@ com diretorio em `supabase/functions`).
 - sql/create_missing_rpcs.sql: nao referenciado por codigo/script; funcionalidade
   (has_role) ja existe em producao. Pode ser descartado ou movido para docs.
 
+## Orfaos com destino definido (2026-11-22)
+
+Varredura de `src/components` + `src/pages` contra as rotas e imports de
+`src/routes/AppRoutes.tsx`. Numero real: **132 componentes** sem import (o
+inventario anterior de 226 estava inflado) e **1 pagina** sem rota.
+
+### Paginas
+
+| Arquivo                            | Situacao             | Destino                            |
+| ---------------------------------- | -------------------- | ---------------------------------- |
+| `pages/dashboard/DashboardTooltip` | Sem rota, sem import | Manter como auxiliar de tipografia |
+
+As 3 paginas antes tratadas como orfas **nao sao**:
+
+- `/admin/telemetria` -> `AdminTelemetriaPage` renderiza `TelemetryComponents`
+  e `TelemetryTable`.
+- `SettingsPage` e alias de `Settings`.
+
+### Componentes com acesso a dados
+
+| Componente                | Por que nao foi integrado                                      |
+| ------------------------- | -------------------------------------------------------------- |
+| `UserMenu`                | Duplica o menu do `Header`; dois menus na mesma tela           |
+| `MFAVerify`               | Sub-fluxo de MFA que nenhum fluxo de login chama               |
+| `SessionPlayback`         | Duplica `SessionRecordingsPage`, que ja esta em rota           |
+| `SimulateViolationButton` | Semeia violacao de demonstracao; nao deve existir em producao  |
+| `LiveViewCard`            | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223) |
+| `KeystrokeActivityCard`   | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223) |
+| `ProductivityCard`        | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223) |
+| `ScreenCapturesCard`      | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223) |
+
+Os 4 cards foram colocados numa secao de equipe, e nao dentro do painel de um
+funcionario, porque consultam os ultimos registros de todos os funcionarios
+(`limit(10)` sem filtro de nome).
+
+Restam 123 componentes de apresentacao sem import. Nenhum acessa dados; sao
+blocos de UI (cards, badges, skeletons) que nao foram ligados a nenhuma tela.
+Ficam no repositorio como biblioteca, sem impacto em producao.
+
+## mcp-query (resolvido 2026-11-22)
+
+| Item                         | Estado                                                           |
+| ---------------------------- | ---------------------------------------------------------------- |
+| Codigo-fonte versionado      | SIM - `supabase/functions/mcp-query/index.ts` (PR #221)          |
+| Proxy `admin` (service_role) | **REMOVIDO do bundle em producao** (deploy 2026-11-22)           |
+| Auth                         | Header `x-mcp-secret` = env `MCP_SECRET`; 401 em todos os demais |
+| Bloqueio de SQL destrutivo   | `DROP                                                            | TRUNCATE | ALTER SYSTEM | RESET ALL` -> 400 |
+| `exec_sql`                   | EXECUTE so para service_role                                     |
+
+Prova do deploy: bundle de `functions/mcp-query/body` extraido em 22/11/2026
+tem 0 ocorrencias de `body.admin` e `admin.path` (antes tinham 17 ocorrencias de
+`admin`); POST sem header e com header errado retornam 401, inclusive no
+payload `{"admin":{...}}`.
+
 ## Proximos passos registrados
 
 1. Homologar WhatsApp E2E: falta `EVOLUTION_INSTANCE_TOKEN` (GO do Zapp) ou
@@ -118,3 +172,6 @@ com diretorio em `supabase/functions`).
    (auth do cron expire-recordings), #187 (5 tabelas de edges), #185 (5 tabelas
    do front + contrato generate-report) e #194 (auditoria do Deploy).
 3. Bancos de rota: manter ratchets dos CI zerados a cada merge.
+4. **#222 (migrations no deploy) aguarda o secret `SUPABASE_DB_PASSWORD`** no
+   GitHub. O job `migrate` esta escrito e validado por `actionlint`, e hoje
+   nasce verde porque repo e producao tem as mesmas 122 migrations (0 pendentes).
