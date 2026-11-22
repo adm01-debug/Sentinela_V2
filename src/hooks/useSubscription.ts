@@ -5,7 +5,7 @@ import { useAuth } from './useAuth';
 interface Subscription {
   id: string;
   plan: 'free' | 'starter' | 'professional' | 'enterprise';
-  status: 'active' | 'inactive' | 'cancelled' | 'past_due';
+  status: 'active' | 'inactive' | 'cancelled' | 'past_due' | 'trialing';
   currentPeriodStart: string;
   currentPeriodEnd: string;
   cancelAtPeriodEnd: boolean;
@@ -40,8 +40,8 @@ interface UseSubscriptionReturn {
   subscription: Subscription | null;
   isLoading: boolean;
   error: string | null;
-  isPlan: (plan) => boolean;
-  hasFeature: (feature) => boolean;
+  isPlan: (plan: Subscription['plan']) => boolean;
+  hasFeature: (feature: string) => boolean;
   isActive: boolean;
   refresh: () => Promise<void>;
 }
@@ -82,15 +82,15 @@ export function useSubscription(): UseSubscriptionReturn {
     fetchSubscription();
   }, [fetchSubscription]);
 
-  const isPlan = useCallback((plan): boolean => {
+  const isPlan = useCallback((plan: Subscription['plan']): boolean => {
     return subscription?.plan === plan;
   }, [subscription]);
 
-  const hasFeature = useCallback((feature): boolean => {
+  const hasFeature = useCallback((feature: string): boolean => {
     return subscription?.features?.includes(feature) ?? false;
   }, [subscription]);
 
-  const isActive = subscription?.status === 'active';
+  const isActive = subscription?.status === 'active' || subscription?.status === 'trialing';
 
   return {
     subscription,
