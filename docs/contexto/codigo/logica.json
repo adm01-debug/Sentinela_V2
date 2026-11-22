@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 157,
+ "total": 158,
  "por_camada": {
   "data": 4,
   "helpers": 2,
@@ -10,7 +10,7 @@
   "providers": 1,
   "services": 8,
   "stores": 34,
-  "utils": 64,
+  "utils": 65,
   "validators": 1
  },
  "arquivos": [
@@ -2574,6 +2574,35 @@
    "orfao": false
   },
   {
+   "arquivo": "src/utils/analysisReportPdf.ts",
+   "camada": "utils",
+   "exports": [
+    "AnalysisReportPdfData",
+    "analysisReportPdf",
+    "exportAnalysisReportPdf"
+   ],
+   "export_default": null,
+   "linhas": 159,
+   "tabelas": [],
+   "rpcs": [],
+   "edges": [],
+   "env": [],
+   "externos": [
+    "date-fns",
+    "jspdf",
+    "jspdf-autotable"
+   ],
+   "zod_schemas": 0,
+   "flags": [],
+   "papeis": [],
+   "usado_por": 1,
+   "usado_por_modulos": [
+    "pages"
+   ],
+   "coberto_por_testes": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/utils/analyticsPdf.ts",
    "camada": "utils",
    "exports": [
@@ -3812,7 +3841,7 @@
    "zod_schemas": 0,
    "flags": [],
    "papeis": [],
-   "usado_por": 8,
+   "usado_por": 9,
    "usado_por_modulos": [
     "utils"
    ],

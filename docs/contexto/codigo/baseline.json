@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c0cba9a379c4c643adb316d05a845304d65faa19",
+  "commit": "1e41729eb3d95df1631ed835a887336ac6174774",
   "branch": "main",
-  "data_commit": "2026-11-22T12:34:20-03:00",
+  "data_commit": "2026-11-22T12:56:58-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "1e41729eb",
+    "data": "2026-11-22",
+    "assunto": "feat(reports): botao Baixar do relatorio passa a gerar o PDF (#236)"
+   },
    {
     "sha": "c0cba9a37",
     "data": "2026-11-22",
@@ -126,14 +131,9 @@
     "sha": "37f86916b",
     "data": "2026-11-22",
     "assunto": "fix(infra): cron expire-recordings envia Authorization e para de dar 401 (#186)"
-   },
-   {
-    "sha": "d9c629b9c",
-    "data": "2026-11-22",
-    "assunto": "feat: cria 5 tabelas usadas pelo front e fecha contrato do generate-report (#185)"
    }
   ],
-  "arquivos_mudados_7d": 190,
+  "arquivos_mudados_7d": 193,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 136
+    "commits": 137
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1856,
-  "arquivos_codigo": 1410,
-  "linhas_codigo": 151311,
+  "arquivos_total": 1858,
+  "arquivos_codigo": 1412,
+  "linhas_codigo": 151549,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,7 +328,7 @@
   "tabelas": 159,
   "migrations": 122,
   "cron_jobs": 5,
-  "testes": 74,
+  "testes": 75,
   "workflows": 12,
   "scripts": 31,
   "docs_md": 176
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 106,
-   "linhas": 18258
+   "linhas": 18261
   },
   "src/providers": {
    "arquivos": 9,
@@ -479,16 +479,16 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 49,
-   "linhas": 10276
+   "arquivos": 50,
+   "linhas": 10352
   },
   "src/types": {
    "arquivos": 57,
    "linhas": 5744
   },
   "src/utils": {
-   "arquivos": 64,
-   "linhas": 5247
+   "arquivos": 65,
+   "linhas": 5406
   },
   "src/validators": {
    "arquivos": 1,

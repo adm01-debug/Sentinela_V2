@@ -3303,7 +3303,8 @@
    "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
-   "src/hooks/useReports.ts"
+   "src/hooks/useReports.ts",
+   "src/utils/analysisReportPdf.ts"
   ],
   "src/pages/ReportsPage.tsx": [
    "src/components/exports/XlsxExportButton.tsx",
@@ -4028,6 +4029,9 @@
   ],
   "src/utils/acknowledgmentReportPdf.ts": [
    "src/hooks/useAcknowledgmentReport.ts",
+   "src/utils/pdf/pdfHelpers.ts"
+  ],
+  "src/utils/analysisReportPdf.ts": [
    "src/utils/pdf/pdfHelpers.ts"
   ],
   "src/utils/analyticsPdf.ts": [

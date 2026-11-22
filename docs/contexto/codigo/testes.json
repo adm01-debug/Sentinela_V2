@@ -5,15 +5,15 @@
   "vitest",
   "playwright"
  ],
- "total": 74,
+ "total": 75,
  "por_tipo": {
   "e2e": 1,
-  "unit": 73
+  "unit": 74
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 48
+   "arquivos": 49
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -264,6 +264,15 @@
    "linhas": 120,
    "testa": [
     "src/pages/ViolationsPage.tsx"
+   ],
+   "casos": 3
+  },
+  {
+   "arquivo": "src/test/analysis-report-pdf.test.ts",
+   "tipo": "unit",
+   "linhas": 76,
+   "testa": [
+    "src/utils/analysisReportPdf.ts"
    ],
    "casos": 3
   },
@@ -826,6 +835,7 @@
   "src/providers/ThemeProvider.tsx": 5,
   "src/routes/AppRoutes.tsx": 1,
   "src/stores/uiStore.ts": 2,
+  "src/utils/analysisReportPdf.ts": 1,
   "src/utils/auth.ts": 3,
   "src/utils/logger.ts": 1,
   "src/validators/schemas.ts": 1

@@ -7258,7 +7258,7 @@
     "ReportDetailPage"
    ],
    "export_default": "ReportDetailPage",
-   "linhas": 91,
+   "linhas": 94,
    "dominio": "pages",
    "hooks_locais": [
     "useReport"
