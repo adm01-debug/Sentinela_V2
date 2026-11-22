@@ -200,6 +200,7 @@
    ],
    "jobs": [
     "migrate",
+    "deploy-functions",
     "verify-production-deploy"
    ],
    "permissoes": [

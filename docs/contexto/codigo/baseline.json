@@ -2,11 +2,26 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "9659a9396b66d33c88a4cfbb989a78f60c1d42d3",
+  "commit": "2dc3b6c744e021c06f6cca339de592a5d6de8bb6",
   "branch": "main",
-  "data_commit": "2026-11-22T11:49:21-03:00",
+  "data_commit": "2026-11-22T12:02:37-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2dc3b6c74",
+    "data": "2026-11-22",
+    "assunto": "infra(ci): deploya edge functions no pipeline de producao (#233)"
+   },
+   {
+    "sha": "ac0d438c7",
+    "data": "2026-11-22",
+    "assunto": "[create-pull-request] automated change (#208)"
+   },
+   {
+    "sha": "e39e224c6",
+    "data": "2026-11-22",
+    "assunto": "fix(ci): fixa a versao do Supabase CLI no deploy (#230)"
+   },
    {
     "sha": "9659a9396",
     "data": "2026-11-22",
@@ -116,21 +131,6 @@
     "sha": "31e061387",
     "data": "2026-11-22",
     "assunto": "fix(seguranca): revoga EXECUTE de funcoes de trigger expostas a anon (#218)"
-   },
-   {
-    "sha": "e502b2151",
-    "data": "2026-11-22",
-    "assunto": "fix(infra): cria bucket de backup e alinha teste de storage (#216)"
-   },
-   {
-    "sha": "601c993b4",
-    "data": "2026-11-22",
-    "assunto": "fix(rls): libera escrita de departamentos para o tenant (#215)"
-   },
-   {
-    "sha": "7e613e68a",
-    "data": "2026-11-21",
-    "assunto": "fix(auth): role de UI nao vem mais de user_metadata (#217)"
    }
   ],
   "arquivos_mudados_7d": 185,
@@ -145,19 +145,19 @@
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "pasta": "package-lock.json",
-    "mudancas": 13
+    "mudancas": 14
+   },
+   {
+    "pasta": ".github/workflows/deploy.yml",
+    "mudancas": 12
    },
    {
     "pasta": "package.json",
     "mudancas": 12
-   },
-   {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 10
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
@@ -199,7 +199,7 @@
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "package-lock.json",
-    "mudancas": 24
+    "mudancas": 25
    },
    {
     "arquivo": "package.json",
@@ -211,11 +211,11 @@
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 10
+    "mudancas": 12
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 132
+    "commits": 134
    },
    {
     "autor": "dependabot[bot]",
@@ -309,7 +309,7 @@
    },
    {
     "autor": "github-actions[bot]",
-    "commits": 2
+    "commits": 3
    }
   ]
  },
