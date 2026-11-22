@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2e72aa8f7d2d22c9b4bb293fa2a7b9f3f4982e61` (2026-11-22T13:33:38-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `a52cd2c5867764a04aa1e92913fa94a3daa70b43` (2026-11-22T14:16:35-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `a52cd2c58` fix(rotas): ROUTES.ADMIN_TELEMETRY aponta para a rota real /admin/telemetria (#241)
 - 2026-11-22 `2e72aa8f7` fix(compliance): foto do aceite usa URL assinada em bucket privado (#238)
 - 2026-11-22 `05eebe835` fix(compliance): registra o aceite de politicas pela pagina de Compliance (#237)
 - 2026-11-22 `1e41729eb` feat(reports): botao Baixar do relatorio passa a gerar o PDF (#236)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `09fee0333` fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)
 - 2026-11-22 `68d4328da` fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)
 - 2026-11-22 `e2dc03c0b` infra(ci): aplica migrations pendentes no deploy de producao (#222)
-- 2026-11-22 `de8c511c7` fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

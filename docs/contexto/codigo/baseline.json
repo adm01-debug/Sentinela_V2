@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2e72aa8f7d2d22c9b4bb293fa2a7b9f3f4982e61",
+  "commit": "a52cd2c5867764a04aa1e92913fa94a3daa70b43",
   "branch": "main",
-  "data_commit": "2026-11-22T13:33:38-03:00",
+  "data_commit": "2026-11-22T14:16:35-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "a52cd2c58",
+    "data": "2026-11-22",
+    "assunto": "fix(rotas): ROUTES.ADMIN_TELEMETRY aponta para a rota real /admin/telemetria (#241)"
+   },
    {
     "sha": "2e72aa8f7",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "8731d4e14",
     "data": "2026-11-22",
     "assunto": "fix(rls): user_in_company ignora user_companies e permissoes sempre vazias (#199)"
-   },
-   {
-    "sha": "c4e613ba4",
-    "data": "2026-11-22",
-    "assunto": "fix(seguranca): fecha escrita anonima em whatsapp_templates, file_transfers, geofence_events e audit_logs (#198)"
    }
   ],
   "arquivos_mudados_7d": 195,
@@ -270,6 +270,10 @@
     "mudancas": 3
    },
    {
+    "arquivo": "src/constants/routes.ts",
+    "mudancas": 3
+   },
+   {
     "arquivo": "src/pages/WhatsAppIntegrationPage.tsx",
     "mudancas": 3
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": "supabase/functions/award-gamification-points/index.ts",
     "mudancas": 3
-   },
-   {
-    "arquivo": "supabase/functions/get-employee-timeline/index.ts",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 139
+    "commits": 140
    },
    {
     "autor": "dependabot[bot]",
