@@ -117,9 +117,9 @@ inventario anterior de 226 estava inflado) e **1 pagina** sem rota.
 
 ### Paginas
 
-| Arquivo                          | Situacao                                | Destino                             |
-| -------------------------------- | --------------------------------------- | ----------------------------------- |
-| `pages/dashboard/DashboardTooltip` | Sem rota, sem import                  | Manter como auxiliar de tipografia  |
+| Arquivo                            | Situacao             | Destino                            |
+| ---------------------------------- | -------------------- | ---------------------------------- |
+| `pages/dashboard/DashboardTooltip` | Sem rota, sem import | Manter como auxiliar de tipografia |
 
 As 3 paginas antes tratadas como orfas **nao sao**:
 
@@ -129,16 +129,16 @@ As 3 paginas antes tratadas como orfas **nao sao**:
 
 ### Componentes com acesso a dados
 
-| Componente                   | Por que nao foi integrado                                            |
-| ---------------------------- | -------------------------------------------------------------------- |
-| `UserMenu`                   | Duplica o menu do `Header`; dois menus na mesma tela                 |
-| `MFAVerify`                  | Sub-fluxo de MFA que nenhum fluxo de login chama                    |
-| `SessionPlayback`            | Duplica `SessionRecordingsPage`, que ja esta em rota                 |
-| `SimulateViolationButton`    | Semeia violacao de demonstracao; nao deve existir em producao        |
-| `LiveViewCard`               | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223)       |
-| `KeystrokeActivityCard`      | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223)       |
-| `ProductivityCard`           | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223)       |
-| `ScreenCapturesCard`         | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223)       |
+| Componente                | Por que nao foi integrado                                      |
+| ------------------------- | -------------------------------------------------------------- |
+| `UserMenu`                | Duplica o menu do `Header`; dois menus na mesma tela           |
+| `MFAVerify`               | Sub-fluxo de MFA que nenhum fluxo de login chama               |
+| `SessionPlayback`         | Duplica `SessionRecordingsPage`, que ja esta em rota           |
+| `SimulateViolationButton` | Semeia violacao de demonstracao; nao deve existir em producao  |
+| `LiveViewCard`            | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223) |
+| `KeystrokeActivityCard`   | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223) |
+| `ProductivityCard`        | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223) |
+| `ScreenCapturesCard`      | **INTEGRADO** na secao de equipe de `MonitoringPage` (PR #223) |
 
 Os 4 cards foram colocados numa secao de equipe, e nao dentro do painel de um
 funcionario, porque consultam os ultimos registros de todos os funcionarios
@@ -150,13 +150,13 @@ Ficam no repositorio como biblioteca, sem impacto em producao.
 
 ## mcp-query (resolvido 2026-11-22)
 
-| Item                              | Estado                                                        |
-| --------------------------------- | ------------------------------------------------------------- |
-| Codigo-fonte versionado           | SIM - `supabase/functions/mcp-query/index.ts` (PR #221)       |
-| Proxy `admin` (service_role)      | **REMOVIDO do bundle em producao** (deploy 2026-11-22)        |
-| Auth                              | Header `x-mcp-secret` = env `MCP_SECRET`; 401 em todos os demais |
-| Bloqueio de SQL destrutivo        | `DROP|TRUNCATE|ALTER SYSTEM|RESET ALL` -> 400                 |
-| `exec_sql`                        | EXECUTE so para service_role                                  |
+| Item                         | Estado                                                           |
+| ---------------------------- | ---------------------------------------------------------------- |
+| Codigo-fonte versionado      | SIM - `supabase/functions/mcp-query/index.ts` (PR #221)          |
+| Proxy `admin` (service_role) | **REMOVIDO do bundle em producao** (deploy 2026-11-22)           |
+| Auth                         | Header `x-mcp-secret` = env `MCP_SECRET`; 401 em todos os demais |
+| Bloqueio de SQL destrutivo   | `DROP                                                            | TRUNCATE | ALTER SYSTEM | RESET ALL` -> 400 |
+| `exec_sql`                   | EXECUTE so para service_role                                     |
 
 Prova do deploy: bundle de `functions/mcp-query/body` extraido em 22/11/2026
 tem 0 ocorrencias de `body.admin` e `admin.path` (antes tinham 17 ocorrencias de
