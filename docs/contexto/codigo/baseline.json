@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "29c45202bf6f837d1e7f51b4a0f1c754628ab09c",
+  "commit": "9fefa2a6057781b5ef62e3e07f00b1697e2b3e2a",
   "branch": "main",
-  "data_commit": "2026-11-22T09:42:34-03:00",
+  "data_commit": "2026-11-22T10:06:48-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "9fefa2a60",
+    "data": "2026-11-22",
+    "assunto": "fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)"
+   },
    {
     "sha": "29c45202b",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "732a56232",
     "data": "2026-11-21",
     "assunto": "fix(permissoes): usePermissions buscava embed inexistente e zerava as permissoes de todos (#205)"
-   },
-   {
-    "sha": "e96b8cce3",
-    "data": "2026-11-21",
-    "assunto": "fix(infra): Deploy espera o deployment da Vercel em vez de falhar na corrida (#204)"
    }
   ],
   "arquivos_mudados_7d": 174,
@@ -184,11 +184,11 @@
     "mudancas": 5
    },
    {
-    "pasta": "desktop-agent/src/main.ts",
-    "mudancas": 4
+    "pasta": "src/routes/AppRoutes.tsx",
+    "mudancas": 5
    },
    {
-    "pasta": "src/routes/AppRoutes.tsx",
+    "pasta": "desktop-agent/src/main.ts",
     "mudancas": 4
    },
    {
@@ -234,15 +234,15 @@
     "mudancas": 5
    },
    {
+    "arquivo": "src/routes/AppRoutes.tsx",
+    "mudancas": 5
+   },
+   {
     "arquivo": "supabase/config.toml",
     "mudancas": 5
    },
    {
     "arquivo": "desktop-agent/src/main.ts",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "src/routes/AppRoutes.tsx",
     "mudancas": 4
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 123
+    "commits": 124
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1850,
   "arquivos_codigo": 1404,
-  "linhas_codigo": 150414,
+  "linhas_codigo": 150411,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 383
+   "linhas": 380
   },
   "src/services": {
    "arquivos": 8,
@@ -771,6 +771,7 @@
    "src/components/NotificationCenter.tsx",
    "src/components/NotificationsDropdown.tsx",
    "src/components/NotificationsPanel.tsx",
+   "src/components/PolicyGate.tsx",
    "src/components/PWAInstallPrompt.tsx",
    "src/components/RealtimeActivityFilters.tsx",
    "src/components/RealtimeClicksCard.tsx",

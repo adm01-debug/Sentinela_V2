@@ -3746,7 +3746,6 @@
    "src/providers/ThemeProvider.tsx"
   ],
   "src/routes/AppRoutes.tsx": [
-   "src/components/PolicyGate.tsx",
    "src/components/layout/RouteErrorBoundary.tsx",
    "src/components/ui/LoadingSpinner.tsx",
    "src/constants/index.ts",

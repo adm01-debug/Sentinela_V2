@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(rotas): desativa o PolicyGate, que trancava todo o sistema (#225)",
    "feat(monitoramento): integra cards de atividade da equipe e ativa o gate LGPD (#223)",
    "fix(admin): protege 7 rotas /admin com AdminGuard e liga as paginas no menu (#221)",
    "chore(db): torna idempotentes as migrations recuperadas do backlog (#220)",
-   "fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)",
-   "feat(db): cria tabelas de configuracao ausentes consumidas pelos hooks (#206)"
+   "fix(seguranca): separa policies de admin das policies publicas de INSERT (#219)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

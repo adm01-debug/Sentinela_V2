@@ -185,8 +185,7 @@
     "pages/admin",
     "pages/dashboard",
     "pages/dev",
-    "providers",
-    "routes"
+    "providers"
    ],
    "depende_de_modulos": [
     "components/data-display",
@@ -4538,7 +4537,7 @@
    "modulo": "routes",
    "arquivos": 1,
    "testes": 0,
-   "linhas": 383,
+   "linhas": 380,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -4776,7 +4775,6 @@
     "overtime_requests",
     "permissions",
     "policy_acknowledgments",
-    "policy_exemptions",
     "productivity_logs",
     "profiles",
     "projects",
@@ -4876,7 +4874,6 @@
    },
    "importado_por_outros_modulos": [],
    "depende_de_modulos": [
-    "components",
     "components/layout",
     "components/ui",
     "constants",
