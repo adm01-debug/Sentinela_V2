@@ -1,9 +1,9 @@
-import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/vitest';
-import { vi } from 'vitest';
+import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
+import { vi } from "vitest";
 
 // Mock Supabase client
-vi.mock('@/integrations/supabase/client', () => ({
+vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: vi.fn(() => ({
       select: vi.fn().mockReturnThis(),
@@ -27,6 +27,7 @@ vi.mock('@/integrations/supabase/client', () => ({
       signOut: vi.fn().mockResolvedValue({ error: null }),
       onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
       resetPasswordForEmail: vi.fn().mockResolvedValue({ error: null }),
+      updateUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
     },
     channel: vi.fn(() => ({
       on: vi.fn().mockReturnThis(),
@@ -40,8 +41,8 @@ vi.mock('@/integrations/supabase/client', () => ({
     },
     storage: {
       from: vi.fn(() => ({
-        upload: vi.fn().mockResolvedValue({ data: { path: 'test.png' }, error: null }),
-        getPublicUrl: vi.fn(() => ({ data: { publicUrl: 'https://test.com/test.png' } })),
+        upload: vi.fn().mockResolvedValue({ data: { path: "test.png" }, error: null }),
+        getPublicUrl: vi.fn(() => ({ data: { publicUrl: "https://test.com/test.png" } })),
         remove: vi.fn().mockResolvedValue({ data: null, error: null }),
         list: vi.fn().mockResolvedValue({ data: [], error: null }),
       })),
@@ -50,9 +51,9 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 // Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -72,7 +73,7 @@ global.IntersectionObserver = (function () {
       unobserve: vi.fn(),
       disconnect: vi.fn(),
       root: null,
-      rootMargin: '',
+      rootMargin: "",
       thresholds: [],
     };
   };
@@ -92,6 +93,6 @@ global.ResizeObserver = (function () {
 })();
 
 // Mock crypto.randomUUID
-Object.defineProperty(global, 'crypto', {
-  value: { randomUUID: () => 'test-uuid-' + Math.random().toString(36).substr(2, 9) },
+Object.defineProperty(global, "crypto", {
+  value: { randomUUID: () => "test-uuid-" + Math.random().toString(36).substr(2, 9) },
 });
