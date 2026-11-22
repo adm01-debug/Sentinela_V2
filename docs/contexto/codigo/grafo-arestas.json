@@ -3298,10 +3298,14 @@
    "src/hooks/useReports.ts"
   ],
   "src/pages/RolesPage.tsx": [
+   "src/components/PageHeader.tsx",
    "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",
+   "src/components/ui/checkbox.tsx",
    "src/components/ui/skeleton.tsx",
-   "src/hooks/useRoles.ts"
+   "src/hooks/useAuth.ts",
+   "src/hooks/useGranularPermissions.ts"
   ],
   "src/pages/ScheduledReportsPage.tsx": [
    "src/components/ui/badge.tsx",

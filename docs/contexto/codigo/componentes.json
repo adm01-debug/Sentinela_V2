@@ -3827,7 +3827,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 178,
+   "usado_por": 179,
    "orfao": false
   },
   {
@@ -3936,7 +3936,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 3,
+   "usado_por": 4,
    "orfao": false
   },
   {
@@ -7273,10 +7273,13 @@
     "RolesPage"
    ],
    "export_default": "RolesPage",
-   "linhas": 47,
+   "linhas": 183,
    "dominio": "pages",
    "hooks_locais": [
-    "useRoles"
+    "useAuth",
+    "useBulkUpdateRolePermissions",
+    "usePermissionsByModule",
+    "useRolesWithPermissions"
    ],
    "tabelas": [],
    "edges": [],

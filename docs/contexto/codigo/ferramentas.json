@@ -1367,12 +1367,12 @@
     "ocorrencias": 20
    },
    {
-    "papel": "alert",
+    "papel": "admin",
     "ocorrencias": 13
    },
    {
-    "papel": "admin",
-    "ocorrencias": 12
+    "papel": "alert",
+    "ocorrencias": 13
    },
    {
     "papel": "button",

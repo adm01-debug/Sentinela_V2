@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1333,
- "arestas": 2714,
+ "arestas": 2718,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -14,7 +14,7 @@
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 178
+   "importado_por": 179
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -74,7 +74,7 @@
   },
   {
    "arquivo": "src/hooks/useAuth.ts",
-   "importado_por": 24
+   "importado_por": 25
   },
   {
    "arquivo": "supabase/functions/_shared/rateLimiting.ts",
@@ -238,7 +238,6 @@
   "src/components/NotificationsDropdown.tsx",
   "src/components/NotificationsPanel.tsx",
   "src/components/PWAInstallPrompt.tsx",
-  "src/components/PageHeader.tsx",
   "src/components/PolicyGate.tsx",
   "src/components/ProductivityCard.tsx",
   "src/components/RealtimeActivityFilters.tsx",
@@ -458,7 +457,6 @@
   "src/hooks/useGesture.ts",
   "src/hooks/useGetSet.ts",
   "src/hooks/useGetSetState.ts",
-  "src/hooks/useGranularPermissions.ts",
   "src/hooks/useGroupBy.ts",
   "src/hooks/useHapticFeedback.ts",
   "src/hooks/useHash.ts",
@@ -498,7 +496,9 @@
   "src/hooks/useLazyRef.ts",
   "src/hooks/useLifecycle.ts",
   "src/hooks/useList.ts",
-  "src/hooks/useLoadingState.ts"
+  "src/hooks/useLoadingState.ts",
+  "src/hooks/useLocale.ts",
+  "src/hooks/useLockBodyScroll.ts"
  ],
  "modulos_mais_acoplados": [
   {

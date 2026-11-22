@@ -879,7 +879,7 @@
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 24,
+   "usado_por": 25,
    "usado_por_arquivos": [
     "src/components/AppSidebar.tsx",
     "src/components/Header.tsx",
@@ -903,6 +903,7 @@
     "src/pages/Auth.tsx",
     "src/pages/GamificationPage.tsx",
     "src/pages/ProfileSettingsPage.tsx",
+    "src/pages/RolesPage.tsx",
     "src/providers/AuthDependentProviders.tsx",
     "src/providers/TenantThemeProvider.tsx"
    ],
@@ -3861,8 +3862,10 @@
     "useQueryClient"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/RolesPage.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {
@@ -7247,10 +7250,8 @@
     "useQueryClient"
    ],
    "canais_realtime": [],
-   "usado_por": 1,
-   "usado_por_arquivos": [
-    "src/pages/RolesPage.tsx"
-   ],
+   "usado_por": 0,
+   "usado_por_arquivos": [],
    "coberto_por_testes": 0
   },
   {
