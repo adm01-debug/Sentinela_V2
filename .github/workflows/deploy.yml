@@ -46,7 +46,7 @@ jobs:
         run: |
           set -euo pipefail
           supabase link --project-ref jgnmwvzephsozsqmcpzb
-          supabase db push --linked --include-all
+          supabase db push --remote --include-all
 
   verify-production-deploy:
     runs-on: ubuntu-latest
