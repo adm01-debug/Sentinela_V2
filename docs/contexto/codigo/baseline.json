@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "7e613e68a502b92fc626bac84faac72a70751f2b",
+  "commit": "601c993b4d8ea8ac91dcd8547201bd92338cbc4c",
   "branch": "main",
-  "data_commit": "2026-11-21T23:17:38-03:00",
+  "data_commit": "2026-11-22T08:41:57-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "601c993b4",
+    "data": "2026-11-22",
+    "assunto": "fix(rls): libera escrita de departamentos para o tenant (#215)"
+   },
    {
     "sha": "7e613e68a",
     "data": "2026-11-21",
@@ -126,14 +131,9 @@
     "sha": "be9b6b468",
     "data": "2026-11-21",
     "assunto": "feat: provider Evolution na UI do WhatsApp com runtime config dual (#182)"
-   },
-   {
-    "sha": "859b7decb",
-    "data": "2026-11-21",
-    "assunto": "fix(ci): remove 'vercel pull' do deploy.yml que quebra o deploy em todo push de main (#181)"
    }
   ],
-  "arquivos_mudados_7d": 153,
+  "arquivos_mudados_7d": 154,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 108
+    "commits": 109
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1835,
+  "arquivos_total": 1836,
   "arquivos_codigo": 1403,
   "linhas_codigo": 150138,
   "rotas": 55,
@@ -325,8 +325,8 @@
   "componentes": 462,
   "hooks": 524,
   "edge_functions": 86,
-  "tabelas": 141,
-  "migrations": 108,
+  "tabelas": 142,
+  "migrations": 109,
   "cron_jobs": 1,
   "testes": 70,
   "workflows": 12,
@@ -721,7 +721,6 @@
    "activities",
    "app_config",
    "backups",
-   "departments",
    "employee_locations",
    "feature_flags",
    "geofence_events",

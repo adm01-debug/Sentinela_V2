@@ -43,7 +43,7 @@
   "hooks": "use + PascalCase",
   "servicos": "camelCase (99%)",
   "edge_functions": "kebab-case (99%)",
-  "tabelas": "snake_case (89%)"
+  "tabelas": "snake_case (88%)"
  },
  "barrels_index": 22,
  "extensao_componentes": [
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(rls): libera escrita de departamentos para o tenant (#215)",
    "fix(auth): role de UI nao vem mais de user_metadata (#217)",
    "fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)",
    "fix: alinha hooks ao schema real (employee_status, activity_logs, rate_limit_logs) (#213)",
-   "fix: alinha planos de cobranca ao contrato real do banco (#212)",
-   "feat: RolesPage com matriz de permissoes editavel (#211)"
+   "fix: alinha planos de cobranca ao contrato real do banco (#212)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

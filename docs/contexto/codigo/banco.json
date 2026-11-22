@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 108,
+ "migrations": 109,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -2967,6 +2967,38 @@
    "triggers": [
     "trg_retention_updated_at"
    ],
+   "sem_rls": false,
+   "nao_usada": false
+  },
+  "departments": {
+   "colunas": {},
+   "rls": true,
+   "policies": [
+    {
+     "nome": "departments_delete_auth",
+     "comando": "delete",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "departments_insert_auth",
+     "comando": "insert",
+     "para": "authenticated",
+     "tipo": "permissive"
+    },
+    {
+     "nome": "departments_update_auth",
+     "comando": "update",
+     "para": "authenticated",
+     "tipo": "permissive"
+    }
+   ],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "usada_no_front": 2,
+   "usada_em_edges": [],
+   "triggers": [],
    "sem_rls": false,
    "nao_usada": false
   },
@@ -16231,7 +16263,6 @@
   "activities",
   "app_config",
   "backups",
-  "departments",
   "employee_locations",
   "feature_flags",
   "geofence_events",

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `7e613e68a502b92fc626bac84faac72a70751f2b` (2026-11-21T23:17:38-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `601c993b4d8ea8ac91dcd8547201bd92338cbc4c` (2026-11-22T08:41:57-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1383), Markdown (176), SQL (112), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1383), Markdown (176), SQL (113), JSON (42), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1835 |
+| arquivos_total | 1836 |
 | arquivos_codigo | 1403 |
 | linhas_codigo | 150138 |
 | rotas | 55 |
@@ -45,8 +45,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | componentes | 462 |
 | hooks | 524 |
 | edge_functions | 86 |
-| tabelas | 141 |
-| migrations | 108 |
+| tabelas | 142 |
+| migrations | 109 |
 | cron_jobs | 1 |
 | testes | 70 |
 | workflows | 12 |
@@ -63,7 +63,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - migrations: supabase/migrations
 - scripts: scripts/ci (4), scripts/ai-context (2), scripts/inventario (2)
 - docs: docs (94), (raiz) (16), .github (1)
-- nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (99%)","tabelas":"snake_case (89%)"}
+- nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (99%)","tabelas":"snake_case (88%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
 
 ## Módulos (menu → domínio)
@@ -279,7 +279,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - edges_orfas: 55 — ex.: agent-collector, archive-data, audit-export
 - edges_chamadas_sem_pasta: 0
 - tabelas_sem_rls: 0
-- tabelas_usadas_sem_definicao: 22 — ex.: activities, app_config, backups
+- tabelas_usadas_sem_definicao: 21 — ex.: activities, app_config, backups
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 100 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
@@ -454,6 +454,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-22 `601c993b4` fix(rls): libera escrita de departamentos para o tenant (#215)
 - 2026-11-21 `7e613e68a` fix(auth): role de UI nao vem mais de user_metadata (#217)
 - 2026-11-21 `4e3e61ccb` fix: alinha hooks e edges ao schema real (employee_name, mobile_devices, teams) (#214)
 - 2026-11-21 `14364f0d2` fix: alinha hooks ao schema real (employee_status, activity_logs, rate_limit_logs) (#213)
@@ -468,7 +469,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-21 `59d2e0ef5` chore(test): eleva timeout do vitest de 5s para 20s (#201)
 - 2026-11-21 `5e64e99e6` fix(health-check): checa bucket existente (screenshots nunca existiu) (#200)
 - 2026-11-21 `39e4070c0` docs: linha de base registra contratos front-banco, Deploy e pendencias de regra 8 (#196)
-- 2026-11-21 `78fb326d7` fix: export-data resolve company do usuario em user_companies (profiles nao tem company_id) (#197)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
