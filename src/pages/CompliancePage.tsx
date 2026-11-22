@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { CheckCircle, AlertTriangle } from 'lucide-react';
 import {
   PieChart, Pie, Cell, BarChart, Bar,
@@ -11,11 +12,19 @@ import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCompliance } from '@/hooks/useCompliance';
 import { useChartColors } from '@/hooks/useChartColors';
+import { useAuth } from '@/hooks/useAuth';
+import { PolicyAcknowledgmentDialog } from '@/components/PolicyAcknowledgmentDialog';
 
 export default function CompliancePage() {
   const { rules, checking, compliancePercentage } = useCompliance();
   const compliant = rules.filter(i => i.status === 'compliant').length;
   const colors = useChartColors();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const employeeName = user?.name || user?.email || 'Funcionário';
+  const handleAcknowledged = () => {
+    queryClient.invalidateQueries({ queryKey: ['compliance-status'] });
+  };
 
   // Status pie
   const statusData = useMemo(() => [
@@ -57,6 +66,20 @@ export default function CompliancePage() {
               <Progress value={compliancePercentage} className="h-3" />
             </div>
             <div className="text-center"><p className="text-3xl font-bold text-success">{compliant}/{rules.length}</p><p className="text-xs text-muted-foreground">Itens conformes</p></div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p className="font-medium">Termo de ciência das políticas de monitoramento</p>
+              <p className="text-sm text-muted-foreground">
+                Registre seu aceite para a regra LGPD - Consentimento sair de parcial para conforme.
+              </p>
+            </div>
+            <PolicyAcknowledgmentDialog employeeName={employeeName} onAcknowledged={handleAcknowledged} />
           </div>
         </CardContent>
       </Card>
