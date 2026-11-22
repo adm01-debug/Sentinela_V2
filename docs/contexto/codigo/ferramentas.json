@@ -199,6 +199,7 @@
     "main"
    ],
    "jobs": [
+    "migrate",
     "verify-production-deploy"
    ],
    "permissoes": [
@@ -208,9 +209,14 @@
    "scripts_usados": [],
    "npm_scripts": [],
    "secrets": [
-    "GITHUB_TOKEN"
+    "GITHUB_TOKEN",
+    "SUPABASE_ACCESS_TOKEN",
+    "SUPABASE_DB_PASSWORD"
    ],
-   "actions": []
+   "actions": [
+    "actions/checkout",
+    "supabase/setup-cli"
+   ]
   },
   {
    "arquivo": ".github/workflows/desktop-build.yml",
@@ -1129,7 +1135,9 @@
   ],
   "secrets_em_workflows": [
    "GITHUB_TOKEN",
-   "SNYK_TOKEN"
+   "SNYK_TOKEN",
+   "SUPABASE_ACCESS_TOKEN",
+   "SUPABASE_DB_PASSWORD"
   ]
  },
  "deploy": {

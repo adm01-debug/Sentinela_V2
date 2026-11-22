@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "de8c511c75dc9169c6345764e0888ab2a4c7fb3e",
+  "commit": "e2dc03c0b57fcfab609a82886d25fccbc64dbc2e",
   "branch": "main",
-  "data_commit": "2026-11-22T10:10:19-03:00",
+  "data_commit": "2026-11-22T10:12:34-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "e2dc03c0b",
+    "data": "2026-11-22",
+    "assunto": "infra(ci): aplica migrations pendentes no deploy de producao (#222)"
+   },
    {
     "sha": "de8c511c7",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "4d022e774",
     "data": "2026-11-21",
     "assunto": "feat: expoe painel unificado de seguranca em /admin/security (#210)"
-   },
-   {
-    "sha": "e7fe0e9ac",
-    "data": "2026-11-21",
-    "assunto": "fix: completa queryKeys e invalidateRelated (46 chaves + 11 métodos que quebravam mutations em 22 hooks) (#209)"
    }
   ],
   "arquivos_mudados_7d": 176,
@@ -157,7 +157,7 @@
    },
    {
     "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
@@ -215,7 +215,7 @@
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 126
+    "commits": 127
    },
    {
     "autor": "dependabot[bot]",
