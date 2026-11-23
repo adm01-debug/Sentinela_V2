@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "163389560c1fd0805c987af755f7edd306f66fee",
+  "commit": "61b2323c65056567be01208beaae3d0d91b89c75",
   "branch": "main",
-  "data_commit": "2026-11-23T17:36:22-03:00",
+  "data_commit": "2026-11-23T17:55:53-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "61b2323c6",
+    "data": "2026-11-23",
+    "assunto": "fix: reconhece service_role pelo probe da API admin no gate das edges (#262)"
+   },
    {
     "sha": "163389560",
     "data": "2026-11-23",
@@ -126,11 +131,6 @@
     "sha": "05eebe835",
     "data": "2026-11-22",
     "assunto": "fix(compliance): registra o aceite de politicas pela pagina de Compliance (#237)"
-   },
-   {
-    "sha": "1e41729eb",
-    "data": "2026-11-22",
-    "assunto": "feat(reports): botao Baixar do relatorio passa a gerar o PDF (#236)"
    }
   ],
   "arquivos_mudados_7d": 220,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 159
+    "commits": 160
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1414,
-  "linhas_codigo": 155766,
+  "linhas_codigo": 155780,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 102,
-   "linhas": 13109
+   "linhas": 13123
   },
   "vite.config.ts": {
    "arquivos": 1,
