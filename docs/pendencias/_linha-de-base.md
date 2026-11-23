@@ -284,6 +284,7 @@ Divida conhecida de seguranca (baixa prioridade, `anon` sem EXECUTE):
 ## Auditoria de hooks e rotas orfaos (23/11)
 
 ### Bug real corrigido — regras de alerta usavam a tabela errada
+
 `AlertRulesPage`, `AlertRuleCreatePage` e `useAlertRules` operavam sobre
 `application_rules`, que e o **catalogo de aplicativos** (`name`, `category`
 productivity|communication|entertainment|development|other, `status`
@@ -300,21 +301,23 @@ O mesmo PR implementou o download real em `ReportList` (antes um
 `toast.info('sera implementado em breve')`).
 
 ### Hooks `use*Page.ts` orfaos — escritos contra schema inexistente
+
 15 hooks de pagina nao sao importados por nenhuma pagina. A causa nao e
 esquecimento: foram escritos de um plano de melhorias que nunca existiu no banco,
 entao **ligar em UI produz 400/PGRST204 do Postgres**.
 
-| Hook | Divergencia |
-| --- | --- |
-| `useViolationRulesPage` | enum proprio `app/url/keyword/time/geofence/idle/usb/print`; o enum real nao tem `geofence`/`idle`/`usb`/`print` |
-| `useMessageTemplatesPage` | categorias `notification/alert/reminder/...`; `template_type` e consumido por `sync-whatsapp-templates` no vocabulario WhatsApp — sobrescrever quebraria a sync |
-| `useMonitoringPoliciesPage` | inventa modelo "policy"; `monitoring_settings` e chave/valor (`setting_key UNIQUE` + `setting_value jsonb`, 4 linhas seed) |
+| Hook                        | Divergencia                                                                                                                                                                            |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `useViolationRulesPage`     | enum proprio `app/url/keyword/time/geofence/idle/usb/print`; o enum real nao tem `geofence`/`idle`/`usb`/`print`                                                                       |
+| `useMessageTemplatesPage`   | categorias `notification/alert/reminder/...`; `template_type` e consumido por `sync-whatsapp-templates` no vocabulario WhatsApp — sobrescrever quebraria a sync                        |
+| `useMonitoringPoliciesPage` | inventa modelo "policy"; `monitoring_settings` e chave/valor (`setting_key UNIQUE` + `setting_value jsonb`, 4 linhas seed)                                                             |
 | `useRateLimitDashboardPage` | `rate_limit_logs` tem policy `"Service role only" USING (false)` — admin nao le, dashboard mostraria zero para sempre. `rate_limit_settings` existe na migration mas nao em `types.ts` |
 
 Decisao: **nao ligar** nenhum deles sem antes portar o hook para o schema real.
 Varios exigem DDL (regra 8).
 
 ### Falsos orfaos confirmados
+
 - `useDashboardPage`, `useReportsPage`, `useSecurityPage`, `useTeamsPage`,
   `useUserManagementPage`, `useDataExportPage`, `useEmployeeDetailPage`,
   `useInstallPage`, `useMobileMonitoringPage` — a pagina consome um hook de nome
@@ -325,6 +328,7 @@ Varios exigem DDL (regra 8).
   reexporta (`export { default } from '@/pages/Settings'`).
 
 ### Tabelas usadas pelo front e ausentes de `types.ts`
+
 13 tabelas: `activity_logs`, `app_config`, `departments`, `feature_flags`,
 `internet_access_rules`, `push_subscriptions`, `rate_limit_alerts`,
 `rate_limit_settings`, `scheduled_reports`, `subscriptions`, `user_sessions`,
@@ -344,15 +348,18 @@ que nenhuma migration deste repo cria — ou seja, ela existe em producao mas o
 DDL de origem esta fora do repo.
 
 ### Edge functions
+
 87 pastas com `index.ts`, todas publicadas pelo deploy (`supabase functions
 deploy --yes --use-api`); 48 tem bloco `[functions.X]` no `config.toml`. As 39
 sem bloco usam os defaults (`verify_jwt = true`), que e o desejado.
 
 ### Deploy automatico — falhas reais observadas
+
 Run `45195328319` (commit `ac2d34c`):
+
 - `migrate`: success.
 - `deploy-functions`: falhou com `unexpected deploy status 500: Failed to check
-  user auth status` — erro transitorio da API da Supabase. Rerun do job passou.
+user auth status` — erro transitorio da API da Supabase. Rerun do job passou.
 - `verify-production-deploy`: falhou **mesmo com o deployment confirmado**. O log
   mostra `Deployment 8001597727 -> success (tentativa 1)` e logo em seguida
   `nao concluiu em ~8 min (ultimo estado: success)`. Causa: o `break` esta dentro
