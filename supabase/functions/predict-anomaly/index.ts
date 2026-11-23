@@ -6,6 +6,12 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+interface KeystrokeRow {
+  employee_name: string | null;
+  recorded_at: string | null;
+  created_at: string | null;
+}
+
 interface AnomalyPrediction {
   id: string;
   type: string;
@@ -34,7 +40,7 @@ serve(async (req) => {
     const hoursAgo = timeRange === "24h" ? 24 : timeRange === "7d" ? 168 : 720;
     const since = new Date(Date.now() - hoursAgo * 60 * 60 * 1000).toISOString();
 
-    const { data: activities, error } = await supabase
+    const { data: activitiesRaw, error } = await supabase
       .from("keystroke_logs")
       .select("*")
       .gte("recorded_at", since)
@@ -42,13 +48,14 @@ serve(async (req) => {
       .limit(1000);
 
     if (error) throw error;
+    const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
     // Analyze patterns and detect anomalies
     const predictions: AnomalyPrediction[] = [];
 
     // Group activities by hour
     const hourlyGroups: Record<number, number> = {};
-    activities?.forEach((a: any) => {
+    activities.forEach((a) => {
       const hour = new Date(a.recorded_at ?? a.created_at).getHours();
       hourlyGroups[hour] = (hourlyGroups[hour] || 0) + 1;
     });
@@ -85,7 +92,7 @@ serve(async (req) => {
 
     // Check for behavioral anomalies
     const userGroups: Record<string, number> = {};
-    activities?.forEach((a: any) => {
+    activities.forEach((a) => {
       if (a.employee_name) userGroups[a.employee_name] = (userGroups[a.employee_name] || 0) + 1;
     });
 

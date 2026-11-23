@@ -6,6 +6,18 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+interface KeystrokeRow {
+  active_time_seconds: number | null;
+  idle_time_seconds: number | null;
+  recorded_at: string | null;
+  created_at: string | null;
+}
+
+interface ViolationRow {
+  created_at: string;
+  severity: string | null;
+}
+
 interface TrendForecast {
   metric: string;
   currentValue: number;
@@ -35,14 +47,15 @@ serve(async (req) => {
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     if (metrics.includes("activity")) {
-      const { data: activities } = await supabase
+      const { data: activitiesRaw } = await supabase
         .from("keystroke_logs")
         .select("recorded_at")
         .gte("recorded_at", thirtyDaysAgo);
+      const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
       // Group by day
       const dailyCounts: Record<string, number> = {};
-      activities?.forEach((a: any) => {
+      activities.forEach((a) => {
         const date = (a.recorded_at ?? a.created_at).split("T")[0];
         dailyCounts[date] = (dailyCounts[date] || 0) + 1;
       });
@@ -78,13 +91,14 @@ serve(async (req) => {
     }
 
     if (metrics.includes("violations")) {
-      const { data: violations } = await supabase
+      const { data: violationsRaw } = await supabase
         .from("security_violations")
         .select("created_at, severity")
         .gte("created_at", thirtyDaysAgo);
+      const violations = (violationsRaw ?? []) as ViolationRow[];
 
       const dailyCounts: Record<string, number> = {};
-      violations?.forEach((v: any) => {
+      violations.forEach((v) => {
         const date = v.created_at.split("T")[0];
         dailyCounts[date] = (dailyCounts[date] || 0) + 1;
       });
@@ -119,14 +133,15 @@ serve(async (req) => {
     }
 
     if (metrics.includes("productivity")) {
-      const { data: activities } = await supabase
+      const { data: activitiesRaw } = await supabase
         .from("keystroke_logs")
         .select("recorded_at, active_time_seconds, idle_time_seconds")
         .gte("recorded_at", thirtyDaysAgo)
         .not("active_time_seconds", "is", null);
+      const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
       const dailyScores: Record<string, { sum: number; count: number }> = {};
-      activities?.forEach((a: any) => {
+      activities.forEach((a) => {
         const date = (a.recorded_at ?? a.created_at).split("T")[0];
         const active = Number(a.active_time_seconds ?? 0);
         const idle = Number(a.idle_time_seconds ?? 0);

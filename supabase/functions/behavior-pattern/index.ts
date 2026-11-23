@@ -6,6 +6,14 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+interface KeystrokeRow {
+  app_name: string | null;
+  active_time_seconds: number | null;
+  idle_time_seconds: number | null;
+  recorded_at: string | null;
+  created_at: string | null;
+}
+
 interface BehaviorPattern {
   id: string;
   type: "routine" | "deviation" | "trend" | "anomaly";
@@ -33,7 +41,8 @@ serve(async (req) => {
     // Fetch activities
     let query = supabase.from("keystroke_logs").select("*").gte("recorded_at", since);
     if (employeeId) query = query.eq("employee_name", employeeId);
-    const { data: activities } = await query.order("recorded_at", { ascending: true });
+    const { data: activitiesRaw } = await query.order("recorded_at", { ascending: true });
+    const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
     const patterns: BehaviorPattern[] = [];
 
@@ -46,7 +55,7 @@ serve(async (req) => {
 
     // Analyze work hour patterns
     const hourDistribution: Record<number, number> = {};
-    activities.forEach((a: any) => {
+    activities.forEach((a) => {
       const hour = new Date(a.recorded_at ?? a.created_at).getHours();
       hourDistribution[hour] = (hourDistribution[hour] || 0) + 1;
     });
@@ -68,7 +77,7 @@ serve(async (req) => {
 
     // Analyze application usage patterns
     const appUsage: Record<string, { count: number; totalTime: number }> = {};
-    activities.forEach((a: any) => {
+    activities.forEach((a) => {
       const app = a.app_name;
       if (app) {
         if (!appUsage[app]) appUsage[app] = { count: 0, totalTime: 0 };
@@ -94,7 +103,7 @@ serve(async (req) => {
 
     // Detect productivity trends
     const dailyProductivity: Record<string, number[]> = {};
-    activities.forEach((a: any) => {
+    activities.forEach((a) => {
       const active = Number(a.active_time_seconds ?? 0);
       const idle = Number(a.idle_time_seconds ?? 0);
       if (active + idle > 0) {
@@ -138,7 +147,7 @@ serve(async (req) => {
 
     // Detect unusual patterns (deviations)
     const dayOfWeekActivity: Record<number, number> = {};
-    activities.forEach((a: any) => {
+    activities.forEach((a) => {
       const dow = new Date(a.created_at).getDay();
       dayOfWeekActivity[dow] = (dayOfWeekActivity[dow] || 0) + 1;
     });
