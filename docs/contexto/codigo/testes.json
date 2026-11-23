@@ -251,7 +251,7 @@
   {
    "arquivo": "src/pages/__tests__/Users.test.tsx",
    "tipo": "unit",
-   "linhas": 61,
+   "linhas": 62,
    "testa": [
     "src/hooks/useUsers.ts",
     "src/pages/UsersPage.tsx"

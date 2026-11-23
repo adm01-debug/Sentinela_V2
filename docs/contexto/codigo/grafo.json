@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1337,
- "arestas": 2755,
+ "arestas": 2769,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 206
+   "importado_por": 205
   },
   {
    "arquivo": "src/components/ui/card.tsx",
@@ -14,7 +14,7 @@
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 180
+   "importado_por": 181
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -26,35 +26,35 @@
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 87
+   "importado_por": 88
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
-   "importado_por": 71
+   "importado_por": 73
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
    "importado_por": 69
   },
   {
+   "arquivo": "src/components/ui/label.tsx",
+   "importado_por": 60
+  },
+  {
    "arquivo": "src/lib/logger.ts",
    "importado_por": 60
   },
   {
-   "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 59
-  },
-  {
    "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 55
+   "importado_por": 56
   },
   {
    "arquivo": "src/components/ui/dialog.tsx",
-   "importado_por": 50
+   "importado_por": 51
   },
   {
    "arquivo": "src/components/layout/PageHeader.tsx",
-   "importado_por": 45
+   "importado_por": 46
   },
   {
    "arquivo": "src/lib/queryClient.ts",
@@ -77,6 +77,10 @@
    "importado_por": 25
   },
   {
+   "arquivo": "src/components/ui/alert-dialog.tsx",
+   "importado_por": 24
+  },
+  {
    "arquivo": "supabase/functions/_shared/rateLimiting.ts",
    "importado_por": 24
   },
@@ -85,19 +89,15 @@
    "importado_por": 23
   },
   {
+   "arquivo": "src/components/ui/switch.tsx",
+   "importado_por": 22
+  },
+  {
    "arquivo": "src/components/ui/table.tsx",
    "importado_por": 21
   },
   {
-   "arquivo": "src/components/ui/alert-dialog.tsx",
-   "importado_por": 20
-  },
-  {
    "arquivo": "src/components/ui/dropdown-menu.tsx",
-   "importado_por": 20
-  },
-  {
-   "arquivo": "src/components/ui/switch.tsx",
    "importado_por": 20
   },
   {

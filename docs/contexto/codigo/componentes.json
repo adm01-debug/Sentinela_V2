@@ -2153,7 +2153,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 45,
+   "usado_por": 46,
    "orfao": false
   },
   {
@@ -3712,7 +3712,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 20,
+   "usado_por": 24,
    "orfao": false
   },
   {
@@ -3825,7 +3825,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 180,
+   "usado_por": 181,
    "orfao": false
   },
   {
@@ -4129,7 +4129,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 50,
+   "usado_por": 51,
    "orfao": false
   },
   {
@@ -4525,7 +4525,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 87,
+   "usado_por": 88,
    "orfao": false
   },
   {
@@ -4556,7 +4556,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 59,
+   "usado_por": 60,
    "orfao": false
   },
   {
@@ -5130,7 +5130,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 55,
+   "usado_por": 56,
    "orfao": false
   },
   {
@@ -5369,7 +5369,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 20,
+   "usado_por": 22,
    "orfao": false
   },
   {
@@ -7033,7 +7033,7 @@
     "GeofenceViolationsPage"
    ],
    "export_default": "GeofenceViolationsPage",
-   "linhas": 231,
+   "linhas": 243,
    "dominio": "pages",
    "hooks_locais": [
     "useGeofenceViolations",
@@ -7221,11 +7221,12 @@
     "ProfileSettingsPage"
    ],
    "export_default": "ProfileSettingsPage",
-   "linhas": 47,
+   "linhas": 89,
    "dominio": "pages",
    "hooks_locais": [
     "useAuth",
-    "useToast"
+    "useToast",
+    "useUpdateProfile"
    ],
    "tabelas": [],
    "edges": [],
@@ -7238,7 +7239,7 @@
     "ProjectsPage"
    ],
    "export_default": "ProjectsPage",
-   "linhas": 303,
+   "linhas": 751,
    "dominio": "pages",
    "hooks_locais": [
     "useMutation",
@@ -7329,14 +7330,12 @@
     "ScheduledReportsPage"
    ],
    "export_default": "ScheduledReportsPage",
-   "linhas": 45,
+   "linhas": 406,
    "dominio": "pages",
    "hooks_locais": [
-    "useQuery"
+    "useScheduledReportsPage"
    ],
-   "tabelas": [
-    "ai_analysis_reports"
-   ],
+   "tabelas": [],
    "edges": [],
    "usado_por": 1,
    "orfao": false
@@ -7497,9 +7496,11 @@
     "UsersPage"
    ],
    "export_default": "UsersPage",
-   "linhas": 60,
+   "linhas": 165,
    "dominio": "pages",
    "hooks_locais": [
+    "useDeleteUser",
+    "useToast",
     "useUsers"
    ],
    "tabelas": [],
@@ -7566,13 +7567,15 @@
     "WebhooksPage"
    ],
    "export_default": "WebhooksPage",
-   "linhas": 71,
+   "linhas": 266,
    "dominio": "pages",
    "hooks_locais": [
-    "useQuery"
+    "useMutation",
+    "useQueryClient",
+    "useToast"
    ],
    "tabelas": [
-    "monitoring_settings"
+    "webhooks"
    ],
    "edges": [],
    "usado_por": 1,
@@ -7739,7 +7742,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 394,
+   "linhas": 403,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

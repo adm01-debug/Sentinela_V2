@@ -1333,6 +1333,10 @@
     "arquivos": 1
    },
    {
+    "host": "www.google.com",
+    "arquivos": 1
+   },
+   {
     "host": "x.com",
     "arquivos": 1
    }
@@ -1426,15 +1430,15 @@
     "ocorrencias": 3
    },
    {
+    "papel": "presentation",
+    "ocorrencias": 3
+   },
+   {
     "papel": "progressbar",
     "ocorrencias": 3
    },
    {
     "papel": "dialog",
-    "ocorrencias": 2
-   },
-   {
-    "papel": "presentation",
     "ocorrencias": 2
    },
    {
@@ -1548,7 +1552,7 @@
    "src/guards/MFAGuard.tsx",
    "src/guards/index.tsx"
   ],
-  "rotas_protegidas": 20,
+  "rotas_protegidas": 21,
   "rotas_publicas": [
    "/*",
    "/activities/:id",
@@ -1577,7 +1581,6 @@
    "/projects",
    "/reports/:id",
    "/reports/custom",
-   "/reports/scheduled",
    "/screenshots/:id",
    "/time-clock",
    "/timesheets",

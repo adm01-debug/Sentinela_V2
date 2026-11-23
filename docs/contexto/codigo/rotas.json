@@ -1579,22 +1579,26 @@
    "hooks": [
     "useEffect",
     "useLocation",
+    "useMutation",
     "useNavigate",
-    "useQuery",
-    "useState"
+    "useQueryClient",
+    "useState",
+    "useToast"
    ],
    "hooks_locais": [
-    "useQuery"
+    "useMutation",
+    "useQueryClient",
+    "useToast"
    ],
    "tabelas": [
-    "monitoring_settings"
+    "webhooks"
    ],
    "rpcs": [],
    "edges": [],
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 21
+   "arquivos_puxados": 25
   },
   {
    "protegida": false,
@@ -1804,8 +1808,10 @@
    "edges": [],
    "canais_realtime": [],
    "flags": [],
-   "papeis": [],
-   "arquivos_puxados": 20
+   "papeis": [
+    "presentation"
+   ],
+   "arquivos_puxados": 21
   },
   {
    "protegida": false,
@@ -1882,8 +1888,10 @@
    "arquivos_puxados": 21
   },
   {
-   "protegida": false,
-   "wrappers": [],
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
    "pai": null,
    "indice": false,
    "lazy": true,
@@ -1894,20 +1902,36 @@
    "definida_em": "src/routes/AppRoutes.tsx",
    "redireciona": null,
    "hooks": [
-    "useQuery"
+    "useCallback",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useScheduledReportsPage",
+    "useState",
+    "useToast"
    ],
    "hooks_locais": [
-    "useQuery"
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useScheduledReportsPage",
+    "useToast"
    ],
    "tabelas": [
-    "ai_analysis_reports"
+    "scheduled_reports"
    ],
    "rpcs": [],
-   "edges": [],
+   "edges": [
+    "send-scheduled-report"
+   ],
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 13
+   "arquivos_puxados": 27
   },
   {
    "protegida": false,

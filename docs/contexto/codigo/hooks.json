@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 71,
+   "usado_por": 73,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -7435,15 +7435,14 @@
    "hooks_exportados": [
     "useScheduledReportsPage"
    ],
-   "linhas": 238,
+   "linhas": 298,
    "dominio": "hooks",
    "tabelas": [
-    "scheduled_report_settings",
     "scheduled_reports"
    ],
    "rpcs": [],
    "edges": [
-    "generate-report"
+    "send-scheduled-report"
    ],
    "hooks_internos": [
     "useCallback",
@@ -7455,8 +7454,10 @@
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/ScheduledReportsPage.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {

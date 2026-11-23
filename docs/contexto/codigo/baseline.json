@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "dfd0acde78f475785073c6c476c2f2e2ac5cef9a",
+  "commit": "83496a32405c4be325aec91301298431895df5ad",
   "branch": "main",
-  "data_commit": "2026-11-23T08:47:50-03:00",
+  "data_commit": "2026-11-23T11:00:04-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "83496a324",
+    "data": "2026-11-23",
+    "assunto": "feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios"
+   },
    {
     "sha": "dfd0acde7",
     "data": "2026-11-23",
@@ -126,18 +131,13 @@
     "sha": "6a84684c1",
     "data": "2026-11-22",
     "assunto": "docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)"
-   },
-   {
-    "sha": "faa3948a7",
-    "data": "2026-11-22",
-    "assunto": "feat(seguranca): exige o segundo fator quando a conta tem MFA cadastrado (#229)"
    }
   ],
-  "arquivos_mudados_7d": 202,
+  "arquivos_mudados_7d": 210,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
-    "mudancas": 24
+    "mudancas": 25
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
@@ -165,7 +165,7 @@
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "pasta": "src/components/ui",
@@ -223,7 +223,7 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 8
+    "mudancas": 9
    },
    {
     "arquivo": "docs/prod-readiness.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 151
+    "commits": 152
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1414,
-  "linhas_codigo": 152084,
+  "linhas_codigo": 153317,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32186
+   "linhas": 32246
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 106,
-   "linhas": 18474
+   "linhas": 19638
   },
   "src/providers": {
    "arquivos": 9,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 394
+   "linhas": 403
   },
   "src/services": {
    "arquivos": 8,
@@ -511,6 +511,10 @@
   {
    "arquivo": "scripts/ai-context/gerar.mjs",
    "linhas": 924
+  },
+  {
+   "arquivo": "src/pages/ProjectsPage.tsx",
+   "linhas": 751
   },
   {
    "arquivo": "src/components/ui/sidebar.tsx",
@@ -599,10 +603,6 @@
   {
    "arquivo": "src/components/security/SessionIndicator.tsx",
    "linhas": 420
-  },
-  {
-   "arquivo": "src/components/KPIWidget.tsx",
-   "linhas": 415
   }
  ],
  "qualidade": {
@@ -611,7 +611,7 @@
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,
-  "arquivos_acima_500_linhas": 8
+  "arquivos_acima_500_linhas": 9
  },
  "todos": [
   {

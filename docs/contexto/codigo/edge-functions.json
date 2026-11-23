@@ -914,7 +914,6 @@
    "usa_shared": [],
    "chamada_pelo_front": [
     "src/hooks/useReportsPage.ts",
-    "src/hooks/useScheduledReportsPage.ts",
     "src/pages/CustomReportsPage.tsx"
    ],
    "chamada_por_edges": [],
@@ -2037,7 +2036,8 @@
     "rateLimiting.ts"
    ],
    "chamada_pelo_front": [
-    "src/hooks/useScheduledReports.ts"
+    "src/hooks/useScheduledReports.ts",
+    "src/hooks/useScheduledReportsPage.ts"
    ],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
