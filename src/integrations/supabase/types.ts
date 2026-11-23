@@ -14,6 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          points: number | null
+          unlocked_count: number | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          points?: number | null
+          unlocked_count?: number | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          points?: number | null
+          unlocked_count?: number | null
+        }
+        Relationships: []
+      }
+      activity_logs: {
+        Row: {
+          activity_type: string
+          changes: Json | null
+          created_at: string | null
+          description: string
+          entity_id: string
+          entity_type: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          activity_type: string
+          changes?: Json | null
+          created_at?: string | null
+          description: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          activity_type?: string
+          changes?: Json | null
+          created_at?: string | null
+          description?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       agent_keys: {
         Row: {
           agent_key: string
@@ -192,6 +270,68 @@ export type Database = {
           },
         ]
       }
+      app_config: {
+        Row: {
+          allowed_ips: string[] | null
+          company_id: string | null
+          created_at: string
+          default_language: string
+          features: Json
+          id: string
+          maintenance_message: string | null
+          maintenance_mode: boolean
+          max_upload_size: number
+          mfa_required: boolean
+          session_timeout: number
+          supported_languages: string[]
+          theme: Json
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          allowed_ips?: string[] | null
+          company_id?: string | null
+          created_at?: string
+          default_language?: string
+          features?: Json
+          id?: string
+          maintenance_message?: string | null
+          maintenance_mode?: boolean
+          max_upload_size?: number
+          mfa_required?: boolean
+          session_timeout?: number
+          supported_languages?: string[]
+          theme?: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          allowed_ips?: string[] | null
+          company_id?: string | null
+          created_at?: string
+          default_language?: string
+          features?: Json
+          id?: string
+          maintenance_message?: string | null
+          maintenance_mode?: boolean
+          max_upload_size?: number
+          mfa_required?: boolean
+          session_timeout?: number
+          supported_languages?: string[]
+          theme?: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_config_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       application_rules: {
         Row: {
           category: string
@@ -280,6 +420,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string
+          description: string | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string
+          id: string
+          ip_address: unknown
+          module: string | null
+          new_values: Json | null
+          old_values: Json | null
+          request_id: string | null
+          severity: string | null
+          user_agent: string | null
+          user_email: string | null
+          user_id: string | null
+          user_role: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string
+          description?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type: string
+          id?: string
+          ip_address?: unknown
+          module?: string | null
+          new_values?: Json | null
+          old_values?: Json | null
+          request_id?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string
+          description?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string
+          id?: string
+          ip_address?: unknown
+          module?: string | null
+          new_values?: Json | null
+          old_values?: Json | null
+          request_id?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Relationships: []
       }
       badges: {
         Row: {
@@ -435,6 +638,7 @@ export type Database = {
         Row: {
           app_name: string | null
           click_type: string
+          company_id: string | null
           created_at: string
           device: string | null
           employee_name: string
@@ -449,6 +653,7 @@ export type Database = {
         Insert: {
           app_name?: string | null
           click_type?: string
+          company_id?: string | null
           created_at?: string
           device?: string | null
           employee_name: string
@@ -463,6 +668,7 @@ export type Database = {
         Update: {
           app_name?: string | null
           click_type?: string
+          company_id?: string | null
           created_at?: string
           device?: string | null
           employee_name?: string
@@ -881,6 +1087,231 @@ export type Database = {
         }
         Relationships: []
       }
+      click_logs_partitioned_2026_08: {
+        Row: {
+          app_name: string | null
+          click_type: string
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          recorded_at: string
+          target_element: string | null
+          url: string | null
+          window_title: string | null
+          x_position: number | null
+          y_position: number | null
+        }
+        Insert: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Update: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Relationships: []
+      }
+      click_logs_partitioned_2026_09: {
+        Row: {
+          app_name: string | null
+          click_type: string
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          recorded_at: string
+          target_element: string | null
+          url: string | null
+          window_title: string | null
+          x_position: number | null
+          y_position: number | null
+        }
+        Insert: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Update: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Relationships: []
+      }
+      click_logs_partitioned_2026_10: {
+        Row: {
+          app_name: string | null
+          click_type: string
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          recorded_at: string
+          target_element: string | null
+          url: string | null
+          window_title: string | null
+          x_position: number | null
+          y_position: number | null
+        }
+        Insert: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Update: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Relationships: []
+      }
+      click_logs_partitioned_2026_11: {
+        Row: {
+          app_name: string | null
+          click_type: string
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          recorded_at: string
+          target_element: string | null
+          url: string | null
+          window_title: string | null
+          x_position: number | null
+          y_position: number | null
+        }
+        Insert: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Update: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Relationships: []
+      }
+      click_logs_partitioned_2026_12: {
+        Row: {
+          app_name: string | null
+          click_type: string
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          recorded_at: string
+          target_element: string | null
+          url: string | null
+          window_title: string | null
+          x_position: number | null
+          y_position: number | null
+        }
+        Insert: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Update: {
+          app_name?: string | null
+          click_type?: string
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          recorded_at?: string
+          target_element?: string | null
+          url?: string | null
+          window_title?: string | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           created_at: string
@@ -981,6 +1412,44 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      departments: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          manager_id: string | null
+          name: string
+          parent_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          manager_id?: string | null
+          name: string
+          parent_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          manager_id?: string | null
+          name?: string
+          parent_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
             referencedColumns: ["id"]
           },
         ]
@@ -1420,21 +1889,27 @@ export type Database = {
       employee_badges: {
         Row: {
           badge_id: string
+          context: Json | null
           earned_at: string
           employee_id: string
           id: string
+          notified: boolean
         }
         Insert: {
           badge_id: string
+          context?: Json | null
           earned_at?: string
           employee_id: string
           id?: string
+          notified?: boolean
         }
         Update: {
           badge_id?: string
+          context?: Json | null
           earned_at?: string
           employee_id?: string
           id?: string
+          notified?: boolean
         }
         Relationships: [
           {
@@ -1536,6 +2011,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      employee_locations: {
+        Row: {
+          accuracy: number | null
+          device_id: string
+          employee_id: string
+          latitude: number
+          longitude: number
+          recorded_at: string
+          updated_at: string
+        }
+        Insert: {
+          accuracy?: number | null
+          device_id: string
+          employee_id: string
+          latitude: number
+          longitude: number
+          recorded_at?: string
+          updated_at?: string
+        }
+        Update: {
+          accuracy?: number | null
+          device_id?: string
+          employee_id?: string
+          latitude?: number
+          longitude?: number
+          recorded_at?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       employee_points: {
         Row: {
@@ -1745,6 +2250,39 @@ export type Database = {
           },
         ]
       }
+      entity_versions: {
+        Row: {
+          change_summary: string | null
+          changed_at: string | null
+          changed_by: string | null
+          data: Json
+          entity_id: string
+          entity_type: string
+          id: string
+          version_number: number
+        }
+        Insert: {
+          change_summary?: string | null
+          changed_at?: string | null
+          changed_by?: string | null
+          data: Json
+          entity_id: string
+          entity_type: string
+          id?: string
+          version_number: number
+        }
+        Update: {
+          change_summary?: string | null
+          changed_at?: string | null
+          changed_by?: string | null
+          data?: Json
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          version_number?: number
+        }
+        Relationships: []
+      }
       error_reports: {
         Row: {
           component: string | null
@@ -1783,6 +2321,47 @@ export type Database = {
           user_agent?: string | null
         }
         Relationships: []
+      }
+      feature_flags: {
+        Row: {
+          company_id: string | null
+          conditions: Json | null
+          created_at: string
+          description: string | null
+          enabled: boolean
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          company_id?: string | null
+          conditions?: Json | null
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string | null
+          conditions?: Json | null
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feature_flags_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       file_transfers: {
         Row: {
@@ -1922,6 +2501,54 @@ export type Database = {
             referencedRelation: "security_violations"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "file_transfers_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gamification_leaderboard: {
+        Row: {
+          avatar_url: string | null
+          badges: Json | null
+          employee_id: string | null
+          employee_name: string
+          id: string
+          level: number | null
+          points: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          badges?: Json | null
+          employee_id?: string | null
+          employee_name: string
+          id?: string
+          level?: number | null
+          points?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          badges?: Json | null
+          employee_id?: string | null
+          employee_name?: string
+          id?: string
+          level?: number | null
+          points?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gamification_leaderboard_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
         ]
       }
       geo_blocking_settings: {
@@ -1999,6 +2626,63 @@ export type Database = {
           reason?: string | null
           region?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      geofence_events: {
+        Row: {
+          created_at: string | null
+          device_id: string
+          employee_id: string
+          event_type: string
+          geofence_id: string
+          id: string
+          location: Json | null
+          occurred_at: string
+        }
+        Insert: {
+          created_at?: string | null
+          device_id: string
+          employee_id: string
+          event_type: string
+          geofence_id: string
+          id?: string
+          location?: Json | null
+          occurred_at: string
+        }
+        Update: {
+          created_at?: string | null
+          device_id?: string
+          employee_id?: string
+          event_type?: string
+          geofence_id?: string
+          id?: string
+          location?: Json | null
+          occurred_at?: string
+        }
+        Relationships: []
+      }
+      geofence_states: {
+        Row: {
+          device_id: string
+          employee_id: string
+          geofence_id: string
+          is_inside: boolean
+          last_checked: string | null
+        }
+        Insert: {
+          device_id: string
+          employee_id: string
+          geofence_id: string
+          is_inside?: boolean
+          last_checked?: string | null
+        }
+        Update: {
+          device_id?: string
+          employee_id?: string
+          geofence_id?: string
+          is_inside?: boolean
+          last_checked?: string | null
         }
         Relationships: []
       }
@@ -2168,6 +2852,48 @@ export type Database = {
           },
         ]
       }
+      internet_access_rules: {
+        Row: {
+          applies_to: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          name: string
+          pattern: string
+          pattern_type: string
+          rule_type: string
+          target_ids: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          applies_to?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          pattern: string
+          pattern_type?: string
+          rule_type: string
+          target_ids?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          applies_to?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          pattern?: string
+          pattern_type?: string
+          rule_type?: string
+          target_ids?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       internet_access_settings: {
         Row: {
           access_level: string
@@ -2265,6 +2991,7 @@ export type Database = {
         Row: {
           active_time_seconds: number
           app_name: string | null
+          company_id: string | null
           created_at: string
           device: string | null
           employee_name: string
@@ -2276,6 +3003,7 @@ export type Database = {
         Insert: {
           active_time_seconds?: number
           app_name?: string | null
+          company_id?: string | null
           created_at?: string
           device?: string | null
           employee_name: string
@@ -2287,6 +3015,7 @@ export type Database = {
         Update: {
           active_time_seconds?: number
           app_name?: string | null
+          company_id?: string | null
           created_at?: string
           device?: string | null
           employee_name?: string
@@ -2586,6 +3315,150 @@ export type Database = {
         Relationships: []
       }
       keystroke_logs_partitioned_2026_07: {
+        Row: {
+          active_time_seconds: number
+          app_name: string | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          idle_time_seconds: number
+          keystrokes_count: number
+          recorded_at: string
+        }
+        Insert: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Update: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      keystroke_logs_partitioned_2026_08: {
+        Row: {
+          active_time_seconds: number
+          app_name: string | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          idle_time_seconds: number
+          keystrokes_count: number
+          recorded_at: string
+        }
+        Insert: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Update: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      keystroke_logs_partitioned_2026_09: {
+        Row: {
+          active_time_seconds: number
+          app_name: string | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          idle_time_seconds: number
+          keystrokes_count: number
+          recorded_at: string
+        }
+        Insert: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Update: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      keystroke_logs_partitioned_2026_10: {
+        Row: {
+          active_time_seconds: number
+          app_name: string | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          idle_time_seconds: number
+          keystrokes_count: number
+          recorded_at: string
+        }
+        Insert: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Update: {
+          active_time_seconds?: number
+          app_name?: string | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          idle_time_seconds?: number
+          keystrokes_count?: number
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      keystroke_logs_partitioned_2026_11: {
         Row: {
           active_time_seconds: number
           app_name: string | null
@@ -3283,6 +4156,174 @@ export type Database = {
         }
         Relationships: []
       }
+      mobile_activity_logs_partitioned_2026_08: {
+        Row: {
+          activity_type: string
+          app_name: string | null
+          created_at: string
+          device_id: string | null
+          duration_seconds: number | null
+          employee_name: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          recorded_at: string
+        }
+        Insert: {
+          activity_type: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Update: {
+          activity_type?: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      mobile_activity_logs_partitioned_2026_09: {
+        Row: {
+          activity_type: string
+          app_name: string | null
+          created_at: string
+          device_id: string | null
+          duration_seconds: number | null
+          employee_name: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          recorded_at: string
+        }
+        Insert: {
+          activity_type: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Update: {
+          activity_type?: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      mobile_activity_logs_partitioned_2026_10: {
+        Row: {
+          activity_type: string
+          app_name: string | null
+          created_at: string
+          device_id: string | null
+          duration_seconds: number | null
+          employee_name: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          recorded_at: string
+        }
+        Insert: {
+          activity_type: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Update: {
+          activity_type?: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      mobile_activity_logs_partitioned_2026_11: {
+        Row: {
+          activity_type: string
+          app_name: string | null
+          created_at: string
+          device_id: string | null
+          duration_seconds: number | null
+          employee_name: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          recorded_at: string
+        }
+        Insert: {
+          activity_type: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Update: {
+          activity_type?: string
+          app_name?: string | null
+          created_at?: string
+          device_id?: string | null
+          duration_seconds?: number | null
+          employee_name?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          recorded_at?: string
+        }
+        Relationships: []
+      }
       mobile_devices: {
         Row: {
           app_version: string | null
@@ -3587,6 +4628,7 @@ export type Database = {
       productivity_logs: {
         Row: {
           apps_used: Json | null
+          company_id: string | null
           created_at: string
           device: string | null
           employee_name: string
@@ -3598,6 +4640,7 @@ export type Database = {
         }
         Insert: {
           apps_used?: Json | null
+          company_id?: string | null
           created_at?: string
           device?: string | null
           employee_name: string
@@ -3609,6 +4652,7 @@ export type Database = {
         }
         Update: {
           apps_used?: Json | null
+          company_id?: string | null
           created_at?: string
           device?: string | null
           employee_name?: string
@@ -3944,6 +4988,191 @@ export type Database = {
         }
         Relationships: []
       }
+      productivity_logs_partitioned_2026_08: {
+        Row: {
+          apps_used: Json | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          neutral_time_seconds: number
+          productive_time_seconds: number
+          recorded_date: string
+          unproductive_time_seconds: number
+        }
+        Insert: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Update: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Relationships: []
+      }
+      productivity_logs_partitioned_2026_09: {
+        Row: {
+          apps_used: Json | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          neutral_time_seconds: number
+          productive_time_seconds: number
+          recorded_date: string
+          unproductive_time_seconds: number
+        }
+        Insert: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Update: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Relationships: []
+      }
+      productivity_logs_partitioned_2026_10: {
+        Row: {
+          apps_used: Json | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          neutral_time_seconds: number
+          productive_time_seconds: number
+          recorded_date: string
+          unproductive_time_seconds: number
+        }
+        Insert: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Update: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Relationships: []
+      }
+      productivity_logs_partitioned_2026_11: {
+        Row: {
+          apps_used: Json | null
+          created_at: string
+          device: string | null
+          employee_name: string
+          id: string
+          neutral_time_seconds: number
+          productive_time_seconds: number
+          recorded_date: string
+          unproductive_time_seconds: number
+        }
+        Insert: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Update: {
+          apps_used?: Json | null
+          created_at?: string
+          device?: string | null
+          employee_name?: string
+          id?: string
+          neutral_time_seconds?: number
+          productive_time_seconds?: number
+          recorded_date?: string
+          unproductive_time_seconds?: number
+        }
+        Relationships: []
+      }
+      productivity_metrics: {
+        Row: {
+          active_minutes: number
+          created_at: string
+          date: string
+          employee_id: string | null
+          id: string
+          idle_minutes: number
+          productivity_score: number | null
+          total_minutes: number
+        }
+        Insert: {
+          active_minutes?: number
+          created_at?: string
+          date?: string
+          employee_id?: string | null
+          id?: string
+          idle_minutes?: number
+          productivity_score?: number | null
+          total_minutes?: number
+        }
+        Update: {
+          active_minutes?: number
+          created_at?: string
+          date?: string
+          employee_id?: string | null
+          id?: string
+          idle_minutes?: number
+          productivity_score?: number | null
+          total_minutes?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "productivity_metrics_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -4024,6 +5253,36 @@ export type Database = {
           },
         ]
       }
+      push_subscriptions: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: string
+          subscription: Json
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: string
+          subscription: Json
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: string
+          subscription?: Json
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       query_telemetry: {
         Row: {
           count_mode: string | null
@@ -4072,6 +5331,36 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_alerts: {
+        Row: {
+          alerted_at: string
+          endpoint: string | null
+          id: string
+          ip: string
+          request_count: number
+          threshold: number
+          window_seconds: number
+        }
+        Insert: {
+          alerted_at?: string
+          endpoint?: string | null
+          id?: string
+          ip: string
+          request_count?: number
+          threshold?: number
+          window_seconds?: number
+        }
+        Update: {
+          alerted_at?: string
+          endpoint?: string | null
+          id?: string
+          ip?: string
+          request_count?: number
+          threshold?: number
+          window_seconds?: number
+        }
+        Relationships: []
+      }
       rate_limit_logs: {
         Row: {
           created_at: string
@@ -4101,6 +5390,50 @@ export type Database = {
           window_start?: string
         }
         Relationships: []
+      }
+      rate_limit_settings: {
+        Row: {
+          block_duration_seconds: number
+          company_id: string | null
+          created_at: string
+          endpoint: string
+          id: string
+          is_active: boolean
+          max_requests: number
+          updated_at: string
+          window_seconds: number
+        }
+        Insert: {
+          block_duration_seconds?: number
+          company_id?: string | null
+          created_at?: string
+          endpoint: string
+          id?: string
+          is_active?: boolean
+          max_requests?: number
+          updated_at?: string
+          window_seconds?: number
+        }
+        Update: {
+          block_duration_seconds?: number
+          company_id?: string | null
+          created_at?: string
+          endpoint?: string
+          id?: string
+          is_active?: boolean
+          max_requests?: number
+          updated_at?: string
+          window_seconds?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rate_limit_settings_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       recording_chunks: {
         Row: {
@@ -4253,6 +5586,47 @@ export type Database = {
           },
         ]
       }
+      report_logs: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          executed_at: string
+          id: string
+          manual: boolean
+          records_count: number
+          report_id: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          executed_at?: string
+          id?: string
+          manual?: boolean
+          records_count?: number
+          report_id?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          executed_at?: string
+          id?: string
+          manual?: boolean
+          records_count?: number
+          report_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_logs_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "scheduled_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       report_signatures: {
         Row: {
           company_id: string | null
@@ -4289,6 +5663,42 @@ export type Database = {
           report_id?: string
           report_type?: string
           signature?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          file_url: string | null
+          id: string
+          name: string
+          requested_by: string | null
+          status: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          file_url?: string | null
+          id?: string
+          name: string
+          requested_by?: string | null
+          status?: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          file_url?: string | null
+          id?: string
+          name?: string
+          requested_by?: string | null
+          status?: string
+          type?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -4472,11 +5882,60 @@ export type Database = {
         }
         Relationships: []
       }
+      scheduled_reports: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          filters: Json | null
+          format: string
+          id: string
+          is_active: boolean
+          last_run_at: string | null
+          name: string
+          next_run_at: string | null
+          recipients: string[]
+          report_type: string
+          schedule: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          filters?: Json | null
+          format?: string
+          id?: string
+          is_active?: boolean
+          last_run_at?: string | null
+          name: string
+          next_run_at?: string | null
+          recipients?: string[]
+          report_type: string
+          schedule: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          filters?: Json | null
+          format?: string
+          id?: string
+          is_active?: boolean
+          last_run_at?: string | null
+          name?: string
+          next_run_at?: string | null
+          recipients?: string[]
+          report_type?: string
+          schedule?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       screen_captures: {
         Row: {
           app_name: string | null
           capture_url: string
           captured_at: string
+          company_id: string | null
           created_at: string
           device: string | null
           employee_name: string
@@ -4489,6 +5948,7 @@ export type Database = {
           app_name?: string | null
           capture_url: string
           captured_at?: string
+          company_id?: string | null
           created_at?: string
           device?: string | null
           employee_name: string
@@ -4501,6 +5961,7 @@ export type Database = {
           app_name?: string | null
           capture_url?: string
           captured_at?: string
+          company_id?: string | null
           created_at?: string
           device?: string | null
           employee_name?: string
@@ -4554,6 +6015,7 @@ export type Database = {
       }
       security_violations: {
         Row: {
+          assigned_to: string | null
           company_id: string | null
           created_at: string
           description: string | null
@@ -4582,6 +6044,7 @@ export type Database = {
           violation_type: string
         }
         Insert: {
+          assigned_to?: string | null
           company_id?: string | null
           created_at?: string
           description?: string | null
@@ -4610,6 +6073,7 @@ export type Database = {
           violation_type: string
         }
         Update: {
+          assigned_to?: string | null
           company_id?: string | null
           created_at?: string
           description?: string | null
@@ -4646,6 +6110,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sensitive_keywords: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          keyword: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          keyword: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          keyword?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       session_recordings: {
         Row: {
@@ -5128,6 +6616,97 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean
+          company_id: string | null
+          created_at: string
+          current_period_end: string
+          current_period_start: string
+          features: string[]
+          id: string
+          plan: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          company_id?: string | null
+          created_at?: string
+          current_period_end?: string
+          current_period_start?: string
+          features?: string[]
+          id?: string
+          plan?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          company_id?: string | null
+          created_at?: string
+          current_period_end?: string
+          current_period_start?: string
+          features?: string[]
+          id?: string
+          plan?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sync_logs: {
+        Row: {
+          created_at: string
+          data: Json | null
+          employee_id: string | null
+          error_message: string | null
+          id: string
+          source: string | null
+          status: string
+          synced_at: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          employee_id?: string | null
+          error_message?: string | null
+          id?: string
+          source?: string | null
+          status?: string
+          synced_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          employee_id?: string | null
+          error_message?: string | null
+          id?: string
+          source?: string | null
+          status?: string
+          synced_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sync_logs_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tasks: {
         Row: {
           assigned_to: string | null
@@ -5579,6 +7158,147 @@ export type Database = {
         }
         Relationships: []
       }
+      user_sessions: {
+        Row: {
+          browser: string | null
+          created_at: string
+          device: string | null
+          id: string
+          ip_address: string | null
+          last_activity: string
+          location: string | null
+          user_id: string
+        }
+        Insert: {
+          browser?: string | null
+          created_at?: string
+          device?: string | null
+          id?: string
+          ip_address?: string | null
+          last_activity?: string
+          location?: string | null
+          user_id?: string
+        }
+        Update: {
+          browser?: string | null
+          created_at?: string
+          device?: string | null
+          id?: string
+          ip_address?: string | null
+          last_activity?: string
+          location?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      violation_actions: {
+        Row: {
+          action_type: string
+          created_at: string
+          id: string
+          new_status: string | null
+          notes: string | null
+          previous_status: string | null
+          user_id: string
+          violation_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          id?: string
+          new_status?: string | null
+          notes?: string | null
+          previous_status?: string | null
+          user_id: string
+          violation_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          id?: string
+          new_status?: string | null
+          notes?: string | null
+          previous_status?: string | null
+          user_id?: string
+          violation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "violation_actions_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "security_violations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "violation_actions_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      violation_comments: {
+        Row: {
+          attachments: Json | null
+          comment_type: string
+          content: string
+          created_at: string
+          edited_at: string | null
+          id: string
+          is_edited: boolean
+          is_internal: boolean
+          mentions: string[] | null
+          updated_at: string
+          user_id: string
+          violation_id: string
+        }
+        Insert: {
+          attachments?: Json | null
+          comment_type?: string
+          content: string
+          created_at?: string
+          edited_at?: string | null
+          id?: string
+          is_edited?: boolean
+          is_internal?: boolean
+          mentions?: string[] | null
+          updated_at?: string
+          user_id: string
+          violation_id: string
+        }
+        Update: {
+          attachments?: Json | null
+          comment_type?: string
+          content?: string
+          created_at?: string
+          edited_at?: string | null
+          id?: string
+          is_edited?: boolean
+          is_internal?: boolean
+          mentions?: string[] | null
+          updated_at?: string
+          user_id?: string
+          violation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "violation_comments_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "security_violations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "violation_comments_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       violation_disputes: {
         Row: {
           category: string
@@ -5653,6 +7373,13 @@ export type Database = {
             columns: ["violation_id"]
             isOneToOne: false
             referencedRelation: "security_violations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "violation_disputes_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
             referencedColumns: ["id"]
           },
         ]
@@ -5880,6 +7607,51 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsapp_config: {
+        Row: {
+          access_token: string | null
+          business_account_id: string | null
+          created_at: string
+          evolution_api_url: string | null
+          evolution_instance_name: string
+          evolution_instance_token: string | null
+          id: string
+          is_active: boolean
+          phone_number_id: string | null
+          provider: string
+          updated_at: string
+          webhook_verify_token: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          business_account_id?: string | null
+          created_at?: string
+          evolution_api_url?: string | null
+          evolution_instance_name?: string
+          evolution_instance_token?: string | null
+          id?: string
+          is_active?: boolean
+          phone_number_id?: string | null
+          provider?: string
+          updated_at?: string
+          webhook_verify_token?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          business_account_id?: string | null
+          created_at?: string
+          evolution_api_url?: string | null
+          evolution_instance_name?: string
+          evolution_instance_token?: string | null
+          id?: string
+          is_active?: boolean
+          phone_number_id?: string | null
+          provider?: string
+          updated_at?: string
+          webhook_verify_token?: string | null
+        }
+        Relationships: []
+      }
       whatsapp_message_logs: {
         Row: {
           created_at: string
@@ -5922,6 +7694,13 @@ export type Database = {
             referencedRelation: "security_violations"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "whatsapp_message_logs_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
+            referencedColumns: ["id"]
+          },
         ]
       }
       whatsapp_notification_settings: {
@@ -5962,6 +7741,86 @@ export type Database = {
           notify_medium?: boolean
           phone_number_id?: string | null
           recipient_numbers?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      whatsapp_settings: {
+        Row: {
+          access_token: string | null
+          business_account_id: string | null
+          company_id: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          phone_number_id: string | null
+          updated_at: string
+          webhook_verify_token: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          business_account_id?: string | null
+          company_id?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          phone_number_id?: string | null
+          updated_at?: string
+          webhook_verify_token?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          business_account_id?: string | null
+          company_id?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          phone_number_id?: string | null
+          updated_at?: string
+          webhook_verify_token?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_settings_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_templates: {
+        Row: {
+          body: string | null
+          category: string | null
+          created_at: string
+          id: string
+          language: string
+          name: string
+          status: string
+          template_id: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string | null
+          category?: string | null
+          created_at?: string
+          id?: string
+          language?: string
+          name: string
+          status?: string
+          template_id: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string | null
+          category?: string | null
+          created_at?: string
+          id?: string
+          language?: string
+          name?: string
+          status?: string
+          template_id?: string
           updated_at?: string
         }
         Relationships: []
@@ -6069,6 +7928,39 @@ export type Database = {
       }
     }
     Views: {
+      activities: {
+        Row: {
+          activity_type: string | null
+          created_at: string | null
+          description: string | null
+          employee_id: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string | null
+          productivity_score: number | null
+        }
+        Insert: {
+          activity_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          employee_id?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string | null
+          productivity_score?: never
+        }
+        Update: {
+          activity_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          employee_id?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string | null
+          productivity_score?: never
+        }
+        Relationships: []
+      }
       all_click_logs: {
         Row: {
           app_name: string | null
@@ -6130,6 +8022,37 @@ export type Database = {
         }
         Relationships: []
       }
+      latest_versions: {
+        Row: {
+          change_summary: string | null
+          changed_at: string | null
+          changed_by: string | null
+          data: Json | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string | null
+          version_number: number | null
+        }
+        Relationships: []
+      }
+      recent_activities: {
+        Row: {
+          activity_type: string | null
+          changes: Json | null
+          created_at: string | null
+          description: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string | null
+          ip_address: unknown
+          metadata: Json | null
+          user_agent: string | null
+          user_email: string | null
+          user_id: string | null
+          user_name: string | null
+        }
+        Relationships: []
+      }
       slack_webhook_mttr: {
         Row: {
           integration_id: string | null
@@ -6150,6 +8073,104 @@ export type Database = {
           },
         ]
       }
+      violations: {
+        Row: {
+          assigned_to: string | null
+          company_id: string | null
+          created_at: string | null
+          description: string | null
+          device: string | null
+          dispute_status: string | null
+          employee_ack_device: string | null
+          employee_ack_ip: string | null
+          employee_ack_reason: string | null
+          employee_ack_signature: string | null
+          employee_acknowledged_at: string | null
+          employee_name: string | null
+          employee_notified_at: string | null
+          id: string | null
+          ip_address: string | null
+          location: string | null
+          notified_admin: boolean | null
+          notified_employee: boolean | null
+          policy_name: string | null
+          read: boolean | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          screenshot_url: string | null
+          severity: string | null
+          status: string | null
+          violation_type: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          company_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          device?: string | null
+          dispute_status?: string | null
+          employee_ack_device?: string | null
+          employee_ack_ip?: string | null
+          employee_ack_reason?: string | null
+          employee_ack_signature?: string | null
+          employee_acknowledged_at?: string | null
+          employee_name?: string | null
+          employee_notified_at?: string | null
+          id?: string | null
+          ip_address?: string | null
+          location?: string | null
+          notified_admin?: boolean | null
+          notified_employee?: boolean | null
+          policy_name?: string | null
+          read?: boolean | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          screenshot_url?: string | null
+          severity?: string | null
+          status?: string | null
+          violation_type?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          company_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          device?: string | null
+          dispute_status?: string | null
+          employee_ack_device?: string | null
+          employee_ack_ip?: string | null
+          employee_ack_reason?: string | null
+          employee_ack_signature?: string | null
+          employee_acknowledged_at?: string | null
+          employee_name?: string | null
+          employee_notified_at?: string | null
+          id?: string | null
+          ip_address?: string | null
+          location?: string | null
+          notified_admin?: boolean | null
+          notified_employee?: boolean | null
+          policy_name?: string | null
+          read?: boolean | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          screenshot_url?: string | null
+          severity?: string | null
+          status?: string | null
+          violation_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "security_violations_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       check_rate_limit: {
@@ -6163,6 +8184,10 @@ export type Database = {
         Returns: Json
       }
       cleanup_expired_webauthn_challenges: { Args: never; Returns: number }
+      cleanup_old_activity_logs: {
+        Args: { p_days_to_keep?: number }
+        Returns: number
+      }
       cleanup_old_edge_function_logs: { Args: never; Returns: number }
       cleanup_rate_limit_logs: { Args: never; Returns: number }
       cleanup_slack_dlq_old_items: { Args: never; Returns: number }
@@ -6170,6 +8195,7 @@ export type Database = {
         Args: { p_partition_date: string; p_table_name: string }
         Returns: string
       }
+      exec_sql: { Args: { query: string }; Returns: Json[] }
       get_geo_blocking_info: { Args: { p_country_code: string }; Returns: Json }
       get_ip_whitelist_info: { Args: { p_ip_address: string }; Returns: Json }
       get_user_company_id: { Args: { _user_id: string }; Returns: string }
@@ -6192,13 +8218,32 @@ export type Database = {
       is_country_blocked: { Args: { p_country_code: string }; Returns: boolean }
       is_ip_blocked: { Args: { p_ip_address: string }; Returns: boolean }
       is_ip_whitelisted: { Args: { p_ip_address: string }; Returns: boolean }
+      log_activity: {
+        Args: {
+          p_activity_type: string
+          p_changes?: Json
+          p_description: string
+          p_entity_id: string
+          p_entity_type: string
+          p_metadata?: Json
+        }
+        Returns: string
+      }
       my_policy_acknowledgment_status: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           has_acknowledged_today: boolean
-          last_acknowledged_at: string
           is_exempt: boolean
+          last_acknowledged_at: string
         }[]
+      }
+      record_violation_action: {
+        Args: {
+          p_action_type: string
+          p_notes?: string
+          p_violation_id: string
+        }
+        Returns: string
       }
       user_in_company: {
         Args: { _company_id: string; _user_id: string }
@@ -6206,7 +8251,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "Admin" | "Analyst" | "Manager" | "User"
       siem_connector_type:
         | "splunk_hec"
         | "microsoft_sentinel"
@@ -6219,6 +8264,12 @@ export type Database = {
         | "auth_event"
         | "policy_change"
       siem_outbox_status: "pending" | "sent" | "failed" | "dead_letter"
+      user_role_type:
+        | "viewer"
+        | "supervisor"
+        | "manager"
+        | "admin"
+        | "super_admin"
       violation_rule_type:
         | "blocked_site"
         | "blocked_keyword"
@@ -6240,12 +8291,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6269,11 +8320,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6294,11 +8345,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6319,11 +8370,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6336,11 +8387,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -6352,7 +8403,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "Admin", "Analyst", "Manager", "User"],
       siem_connector_type: [
         "splunk_hec",
         "microsoft_sentinel",
@@ -6367,6 +8418,13 @@ export const Constants = {
         "policy_change",
       ],
       siem_outbox_status: ["pending", "sent", "failed", "dead_letter"],
+      user_role_type: [
+        "viewer",
+        "supervisor",
+        "manager",
+        "admin",
+        "super_admin",
+      ],
       violation_rule_type: [
         "blocked_site",
         "blocked_keyword",
