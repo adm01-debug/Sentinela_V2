@@ -4,23 +4,36 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { queryKeys } from "@/lib/queryClient";
 
-interface RateLimitLog {
+export interface RateLimitLog {
   id: string;
   identifier: string;
   identifier_type: string;
   endpoint: string;
-  request_count: number;
+  request_count: number | null;
   window_start: string;
   created_at: string;
 }
 
-interface RateLimitSettings {
+export interface RateLimitSettings {
   id: string;
+  company_id: string | null;
   endpoint: string;
   max_requests: number;
   window_seconds: number;
   block_duration_seconds: number;
   is_active: boolean;
+}
+
+export interface RateLimitStats {
+  totalRequests: number;
+  uniqueIdentifiers: number;
+  topEndpoints: [string, number][];
+  topIdentifiers: [string, number][];
+}
+
+interface LogsPayload {
+  logs: RateLimitLog[];
+  stats: RateLimitStats;
 }
 
 interface FilterState {
@@ -29,6 +42,13 @@ interface FilterState {
   search: string;
   dateRange: { from: Date | null; to: Date | null };
 }
+
+const EMPTY_STATS: RateLimitStats = {
+  totalRequests: 0,
+  uniqueIdentifiers: 0,
+  topEndpoints: [],
+  topIdentifiers: [],
+};
 
 export function useRateLimitDashboardPage() {
   const { toast } = useToast();
@@ -41,39 +61,26 @@ export function useRateLimitDashboardPage() {
     dateRange: { from: null, to: null },
   });
 
-  // Fetch rate limit logs
+  // rate_limit_logs e somente service_role por RLS, entao a leitura passa pela
+  // edge rate-limit-logs, que exige usuario admin (ou a propria service_role).
   const logsQuery = useQuery({
     queryKey: [...queryKeys.rateLimiting.logs(), filters],
-    queryFn: async () => {
-      let query = supabase
-        .from("rate_limit_logs")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(100);
-
-      if (filters.endpoint !== "all") {
-        query = query.eq("endpoint", filters.endpoint);
-      }
-      if (filters.identifierType !== "all") {
-        query = query.eq("identifier_type", filters.identifierType);
-      }
-      if (filters.search) {
-        query = query.ilike("identifier", `%${filters.search}%`);
-      }
-      if (filters.dateRange.from) {
-        query = query.gte("created_at", filters.dateRange.from.toISOString());
-      }
-      if (filters.dateRange.to) {
-        query = query.lte("created_at", filters.dateRange.to.toISOString());
-      }
-
-      const { data, error } = await query;
+    queryFn: async (): Promise<LogsPayload> => {
+      const { data, error } = await supabase.functions.invoke<LogsPayload>("rate-limit-logs", {
+        body: {
+          endpoint: filters.endpoint,
+          identifierType: filters.identifierType,
+          search: filters.search,
+          from: filters.dateRange.from?.toISOString(),
+          to: filters.dateRange.to?.toISOString(),
+        },
+      });
       if (error) throw error;
-      return data as RateLimitLog[];
+      if (!data) throw new Error("Resposta vazia do rate-limit-logs");
+      return { logs: data.logs ?? [], stats: data.stats ?? EMPTY_STATS };
     },
   });
 
-  // Fetch settings
   const settingsQuery = useQuery({
     queryKey: queryKeys.rateLimiting.settings(),
     queryFn: async () => {
@@ -82,100 +89,76 @@ export function useRateLimitDashboardPage() {
         .select("*")
         .order("endpoint");
       if (error) throw error;
-      return data as RateLimitSettings[];
+      return (data ?? []) as RateLimitSettings[];
     },
   });
 
-  // Fetch blocked IPs
-  const blockedIPsQuery = useQuery({
-    queryKey: queryKeys.rateLimiting.blockedIPs(),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("blocked_ips")
-        .select("*")
-        .order("blocked_at", { ascending: false });
-      if (error) throw error;
-      return data;
-    },
-  });
+  const stats = useMemo(() => logsQuery.data?.stats ?? EMPTY_STATS, [logsQuery.data]);
 
-  // Stats computation
-  const stats = useMemo(() => {
-    const logs = logsQuery.data || [];
-    const totalRequests = logs.reduce((sum, log) => sum + (log.request_count ?? 0), 0);
-    const windowedRequests = logs.reduce(
-      (sum, log) => sum + (log.request_count ?? 0),
-      0
-    );
-    const uniqueIdentifiers = new Set(logs.map((l) => l.identifier)).size;
-    const topEndpoints = logs.reduce(
-      (acc, log) => {
-        acc[log.endpoint] = (acc[log.endpoint] || 0) + (log.request_count ?? 0);
-        return acc;
-      },
-      {} as Record<string, number>
-    );
-
-    return {
-      totalRequests,
-      windowedRequests,
-      uniqueIPs: uniqueIdentifiers,
-      topEndpoints: Object.entries(topEndpoints)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5),
-    };
-  }, [logsQuery.data]);
-
-  // Unblock IP mutation
-  const unblockIPMutation = useMutation({
-    mutationFn: async (ip: string) => {
-      const { error } = await supabase
-        .from('blocked_ips')
-        .delete()
-        .eq('ip_address', ip);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.blockedIPs() });
-      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.logs() });
-      toast({ title: "IP desbloqueado com sucesso" });
-    },
-    onError: () => {
-      toast({ title: "Erro ao desbloquear IP", variant: "destructive" });
-    },
-  });
-
-  // Update settings mutation
   const updateSettingsMutation = useMutation({
-    mutationFn: async (settings: Partial<RateLimitSettings> & { id: string }) => {
-      const { error } = await supabase
-        .from("rate_limit_settings")
-        .update(settings)
-        .eq("id", settings.id);
+    mutationFn: async ({ id, ...settings }: Partial<RateLimitSettings> & { id: string }) => {
+      const { error } = await supabase.from("rate_limit_settings").update(settings).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.settings() });
-      toast({ title: "Configurações atualizadas" });
+      toast({ title: "Limite atualizado" });
     },
-    onError: () => {
-      toast({ title: "Erro ao atualizar configurações", variant: "destructive" });
+    onError: (error: Error) => {
+      toast({
+        title: "Erro ao atualizar limite",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
-  // Handlers
+  const createSettingsMutation = useMutation({
+    mutationFn: async (settings: {
+      endpoint: string;
+      max_requests: number;
+      window_seconds: number;
+      block_duration_seconds: number;
+      is_active: boolean;
+    }) => {
+      // company_id nulo = limite global, igual ao default da tabela.
+      const { error } = await supabase
+        .from("rate_limit_settings")
+        .insert({ ...settings, company_id: null });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.settings() });
+      toast({ title: "Limite criado" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Erro ao criar limite", description: error.message, variant: "destructive" });
+    },
+  });
+
+  const deleteSettingsMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("rate_limit_settings").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.settings() });
+      toast({ title: "Limite removido" });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Erro ao remover limite",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleFilterChange = useCallback(
     (key: keyof FilterState, value: FilterState[keyof FilterState]) => {
       setFilters((prev) => ({ ...prev, [key]: value }));
     },
     []
-  );
-
-  const handleUnblockIP = useCallback(
-    (ip: string) => {
-      unblockIPMutation.mutate(ip);
-    },
-    [unblockIPMutation]
   );
 
   const handleUpdateSettings = useCallback(
@@ -185,31 +168,50 @@ export function useRateLimitDashboardPage() {
     [updateSettingsMutation]
   );
 
+  const handleCreateSettings = useCallback(
+    (settings: {
+      endpoint: string;
+      max_requests: number;
+      window_seconds: number;
+      block_duration_seconds: number;
+      is_active: boolean;
+    }) => {
+      createSettingsMutation.mutate(settings);
+    },
+    [createSettingsMutation]
+  );
+
+  const handleDeleteSettings = useCallback(
+    (id: string) => {
+      deleteSettingsMutation.mutate(id);
+    },
+    [deleteSettingsMutation]
+  );
+
   const handleRefresh = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.logs() });
-    queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.blockedIPs() });
+    queryClient.invalidateQueries({ queryKey: queryKeys.rateLimiting.settings() });
   }, [queryClient]);
 
   return {
-    // Data
-    logs: logsQuery.data || [],
-    settings: settingsQuery.data || [],
-    blockedIPs: blockedIPsQuery.data || [],
+    logs: logsQuery.data?.logs ?? [],
+    settings: settingsQuery.data ?? [],
     stats,
     filters,
 
-    // Loading states
     isLoading: logsQuery.isLoading || settingsQuery.isLoading,
+    isError: logsQuery.isError || settingsQuery.isError,
+    error: (logsQuery.error as Error | null) ?? (settingsQuery.error as Error | null),
     isRefreshing: logsQuery.isFetching,
 
-    // Handlers
     handleFilterChange,
-    handleUnblockIP,
     handleUpdateSettings,
+    handleCreateSettings,
+    handleDeleteSettings,
     handleRefresh,
 
-    // Mutation states
-    isUnblocking: unblockIPMutation.isPending,
     isUpdating: updateSettingsMutation.isPending,
+    isCreating: createSettingsMutation.isPending,
+    isDeleting: deleteSettingsMutation.isPending,
   };
 }
