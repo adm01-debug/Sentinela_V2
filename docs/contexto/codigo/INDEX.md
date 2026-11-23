@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `54a0fc2d073739a385b3089c008580245fabcfe1` (2026-11-23T12:38:06-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `6867e4959b91edf7d748cf89a9efe2e351bda461` (2026-11-23T12:41:51-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -302,7 +302,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package.json (25)
 - scripts/ci/eslint-baseline.json (17)
 - scripts/ci/prettier-baseline.json (16)
-- .github/workflows/deploy.yml (14)
+- .github/workflows/deploy.yml (15)
 - docs/pendencias/_linha-de-base.md (13)
 - src/routes/AppRoutes.tsx (9)
 - docs/prod-readiness.md (6)
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `6867e4959` fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)
 - 2026-11-23 `54a0fc2d0` fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)
 - 2026-11-23 `8d4cc58ed` docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)
 - 2026-11-23 `ac2d34cc0` fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `b657b3e12` docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)
 - 2026-11-22 `76f78d12d` fix(deploy): db push --yes para nao abortar com migration pendente (#244)
 - 2026-11-22 `1ff674904` feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)
-- 2026-11-22 `d5ef6cbbb` feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

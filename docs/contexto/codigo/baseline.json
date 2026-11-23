@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "54a0fc2d073739a385b3089c008580245fabcfe1",
+  "commit": "6867e4959b91edf7d748cf89a9efe2e351bda461",
   "branch": "main",
-  "data_commit": "2026-11-23T12:38:06-03:00",
+  "data_commit": "2026-11-23T12:41:51-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "6867e4959",
+    "data": "2026-11-23",
+    "assunto": "fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)"
+   },
    {
     "sha": "54a0fc2d0",
     "data": "2026-11-23",
@@ -126,11 +131,6 @@
     "sha": "2dc3b6c74",
     "data": "2026-11-22",
     "assunto": "infra(ci): deploya edge functions no pipeline de producao (#233)"
-   },
-   {
-    "sha": "ac0d438c7",
-    "data": "2026-11-22",
-    "assunto": "[create-pull-request] automated change (#208)"
    }
   ],
   "arquivos_mudados_7d": 217,
@@ -148,12 +148,12 @@
     "mudancas": 16
    },
    {
-    "pasta": "package-lock.json",
+    "pasta": ".github/workflows/deploy.yml",
     "mudancas": 15
    },
    {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 14
+    "pasta": "package-lock.json",
+    "mudancas": 15
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
@@ -215,7 +215,7 @@
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 155
+    "commits": 156
    },
    {
     "autor": "dependabot[bot]",

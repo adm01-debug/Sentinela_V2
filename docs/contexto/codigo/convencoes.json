@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)",
    "fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)",
    "docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)",
    "fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)",
-   "feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios",
-   "feat: integra CalendarPage com dados reais de attendance_records (#253)"
+   "feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
