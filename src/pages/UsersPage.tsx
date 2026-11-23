@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus, Search, MoreVertical, Mail, Shield, Trash2 } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -40,7 +40,7 @@ export default function UsersPage() {
     if (!deletingUserId) return;
     deleteUser.mutate(deletingUserId, {
       onSuccess: () => {
-        toast({ title: "Usuario removido" });
+        toast({ title: "Usuário removido" });
         setDeletingUserId(null);
       },
       onError: (e) =>
@@ -53,7 +53,7 @@ export default function UsersPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Usuarios"
+        title="Usuários"
         showBackButton={false}
         actions={
           <Link to="/users/invite">
@@ -68,7 +68,7 @@ export default function UsersPage() {
       <div className="relative max-w-md">
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
-          placeholder="Buscar usuarios..."
+          placeholder="Buscar usuários..."
           className="pl-9"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -113,7 +113,7 @@ export default function UsersPage() {
                     <DropdownMenuItem asChild>
                       <Link to={`/users/${user.id}`}>
                         <Shield className="mr-2 h-4 w-4" />
-                        Gerenciar permissoes
+                        Gerenciar permissões
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -129,7 +129,7 @@ export default function UsersPage() {
             </div>
           ))}
           {filtered.length === 0 && (
-            <div className="text-muted-foreground p-8 text-center">Nenhum usuario encontrado.</div>
+            <div className="text-muted-foreground p-8 text-center">Nenhum usuário encontrado.</div>
           )}
         </CardContent>
       </Card>
@@ -142,9 +142,9 @@ export default function UsersPage() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remover usuario?</AlertDialogTitle>
+            <AlertDialogTitle>Remover usuário?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acao e irreversivel. {deletingUser?.name} perdera acesso ao sistema.
+              Esta ação é irreversível. {deletingUser?.name} perderá acesso ao sistema.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

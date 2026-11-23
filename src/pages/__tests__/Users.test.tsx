@@ -9,6 +9,7 @@ import * as useUsersHook from '@/hooks/useUsers';
 // Mocks
 vi.mock('@/hooks/useUsers', () => ({
   useUsers: vi.fn(),
+  useDeleteUser: vi.fn(() => ({ mutate: vi.fn(), isPending: false })),
 }));
 
 const queryClient = new QueryClient({
