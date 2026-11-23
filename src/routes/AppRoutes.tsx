@@ -74,6 +74,7 @@ const AdminTelemetriaPage = lazy(() => import("@/pages/AdminTelemetriaPage"));
 const DLPPoliciesPage = lazy(() => import("@/pages/admin/DLPPoliciesPage"));
 const DLPIncidentsPage = lazy(() => import("@/pages/admin/DLPIncidentsPage"));
 const SensitiveKeywordsPage = lazy(() => import("@/pages/admin/SensitiveKeywordsPage"));
+const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const UEBADashboardPage = lazy(() => import("@/pages/admin/ueba/UEBADashboardPage"));
 const EmployeeRiskProfilePage = lazy(() => import("@/pages/admin/ueba/EmployeeRiskProfilePage"));
 const UEBASettingsPage = lazy(() => import("@/pages/admin/ueba/UEBASettingsPage"));
@@ -286,6 +287,16 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <SensitiveKeywordsPage />
+              </AdminGuard>
+            }
+          />
+          {/* message_templates so aceita escrita de admin por RLS e alimenta
+              o sync-whatsapp-templates. */}
+          <Route
+            path="/admin/message-templates"
+            element={
+              <AdminGuard>
+                <MessageTemplatesPage />
               </AdminGuard>
             }
           />
