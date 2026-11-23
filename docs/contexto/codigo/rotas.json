@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 55,
+  "urls": 56,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 84
+  "lazy": 85
  },
  "urls": [
   {
@@ -291,6 +291,50 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 13
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/dlp/keywords",
+   "componente": "SensitiveKeywordsPage",
+   "arquivo": "src/pages/admin/SensitiveKeywordsPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useSensitiveKeywordsPage",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useSensitiveKeywordsPage",
+    "useToast"
+   ],
+   "tabelas": [
+    "sensitive_keywords"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 28
   },
   {
    "protegida": true,
@@ -2759,6 +2803,7 @@
   "ScreenshotDetailPage": "src/pages/ScreenshotDetailPage.tsx",
   "ScreenshotsPage": "src/pages/ScreenshotsPage.tsx",
   "SecuritySettingsPage": "src/pages/SecuritySettingsPage.tsx",
+  "SensitiveKeywordsPage": "src/pages/admin/SensitiveKeywordsPage.tsx",
   "SessionRecordingsPage": "src/pages/admin/SessionRecordingsPage.tsx",
   "SettingsPage": "src/pages/SettingsPage.tsx",
   "TeamDetailPage": "src/pages/TeamDetailPage.tsx",

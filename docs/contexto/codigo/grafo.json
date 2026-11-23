@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1337,
- "arestas": 2776,
+ "nos": 1338,
+ "arestas": 2790,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -10,11 +10,11 @@
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 185
+   "importado_por": 186
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 181
+   "importado_por": 182
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,11 +22,11 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 143
+   "importado_por": 144
   },
   {
    "arquivo": "src/components/ui/input.tsx",
-   "importado_por": 88
+   "importado_por": 89
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
@@ -38,7 +38,7 @@
   },
   {
    "arquivo": "src/components/ui/label.tsx",
-   "importado_por": 60
+   "importado_por": 61
   },
   {
    "arquivo": "src/lib/logger.ts",
@@ -46,15 +46,15 @@
   },
   {
    "arquivo": "src/components/ui/select.tsx",
-   "importado_por": 56
+   "importado_por": 57
   },
   {
    "arquivo": "src/components/ui/dialog.tsx",
-   "importado_por": 51
+   "importado_por": 52
   },
   {
    "arquivo": "src/components/layout/PageHeader.tsx",
-   "importado_por": 46
+   "importado_por": 47
   },
   {
    "arquivo": "src/lib/queryClient.ts",
@@ -73,11 +73,15 @@
    "importado_por": 26
   },
   {
+   "arquivo": "src/components/ui/alert-dialog.tsx",
+   "importado_por": 25
+  },
+  {
    "arquivo": "src/components/ui/scroll-area.tsx",
    "importado_por": 25
   },
   {
-   "arquivo": "src/components/ui/alert-dialog.tsx",
+   "arquivo": "src/components/ui/switch.tsx",
    "importado_por": 24
   },
   {
@@ -85,16 +89,12 @@
    "importado_por": 24
   },
   {
-   "arquivo": "src/components/ui/switch.tsx",
-   "importado_por": 23
-  },
-  {
    "arquivo": "src/components/ui/tooltip.tsx",
    "importado_por": 23
   },
   {
    "arquivo": "src/components/ui/table.tsx",
-   "importado_por": 21
+   "importado_por": 22
   },
   {
    "arquivo": "src/components/ui/dropdown-menu.tsx",

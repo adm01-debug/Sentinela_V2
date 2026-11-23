@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 463,
+ "total": 464,
  "orfaos": 94,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -642,7 +642,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 422,
+   "linhas": 423,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -1870,7 +1870,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 3,
+   "usado_por": 4,
    "orfao": false
   },
   {
@@ -2153,7 +2153,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 46,
+   "usado_por": 47,
    "orfao": false
   },
   {
@@ -3712,7 +3712,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 24,
+   "usado_por": 25,
    "orfao": false
   },
   {
@@ -3762,7 +3762,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 143,
+   "usado_por": 144,
    "orfao": false
   },
   {
@@ -3825,7 +3825,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 181,
+   "usado_por": 182,
    "orfao": false
   },
   {
@@ -3860,7 +3860,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 185,
+   "usado_por": 186,
    "orfao": false
   },
   {
@@ -4129,7 +4129,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 51,
+   "usado_por": 52,
    "orfao": false
   },
   {
@@ -4525,7 +4525,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 88,
+   "usado_por": 89,
    "orfao": false
   },
   {
@@ -4556,7 +4556,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 60,
+   "usado_por": 61,
    "orfao": false
   },
   {
@@ -5130,7 +5130,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 56,
+   "usado_por": 57,
    "orfao": false
   },
   {
@@ -5369,7 +5369,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 23,
+   "usado_por": 24,
    "orfao": false
   },
   {
@@ -5390,7 +5390,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 21,
+   "usado_por": 22,
    "orfao": false
   },
   {
@@ -6268,6 +6268,22 @@
    "tabelas": [
     "agent_keys"
    ],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/SensitiveKeywordsPage.tsx",
+   "exports": [
+    "SensitiveKeywordsPage"
+   ],
+   "export_default": "SensitiveKeywordsPage",
+   "linhas": 288,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useSensitiveKeywordsPage"
+   ],
+   "tabelas": [],
    "edges": [],
    "usado_por": 1,
    "orfao": false
@@ -7729,7 +7745,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 403,
+   "linhas": 414,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

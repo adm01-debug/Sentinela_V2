@@ -7900,9 +7900,11 @@
    "hooks_exportados": [
     "useSensitiveKeywordsPage"
    ],
-   "linhas": 183,
+   "linhas": 205,
    "dominio": "hooks",
-   "tabelas": [],
+   "tabelas": [
+    "sensitive_keywords"
+   ],
    "rpcs": [],
    "edges": [],
    "hooks_internos": [
@@ -7915,8 +7917,10 @@
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/admin/SensitiveKeywordsPage.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {

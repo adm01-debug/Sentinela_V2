@@ -3,11 +3,11 @@
  "format_version": 2,
  "onde_ficam": {
   "telas": [
-   "src/pages (55)"
+   "src/pages (56)"
   ],
   "componentes": [
    "src/components (356)",
-   "src/pages (89)",
+   "src/pages (90)",
    "src/providers (8)"
   ],
   "hooks": [
@@ -47,7 +47,7 @@
  },
  "barrels_index": 22,
  "extensao_componentes": [
-  ".tsx (463)"
+  ".tsx (464)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: tela de palavras sensiveis com CRUD real (#264)",
    "chore: documenta a prova pos-deploy do gate das edges (#263)",
    "fix: reconhece service_role pelo probe da API admin no gate das edges (#262)",
    "fix: exige autenticacao em 3 edge functions abertas ao publico (#261)",
-   "chore: remove DashboardTooltip orfao (#259)",
-   "chore(types): regenera tipos do Supabase a partir do banco real (#260)"
+   "chore: remove DashboardTooltip orfao (#259)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

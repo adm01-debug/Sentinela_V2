@@ -904,6 +904,7 @@
    "src/pages/admin/IceDiagnosticsPage.tsx",
    "src/pages/admin/IntegrationsHealthPage.tsx",
    "src/pages/admin/LiveViewReportPage.tsx",
+   "src/pages/admin/SensitiveKeywordsPage.tsx",
    "src/pages/admin/SessionRecordingsPage.tsx",
    "src/pages/admin/ueba/EmployeeRiskProfilePage.tsx",
    "src/pages/admin/ueba/UEBADashboardPage.tsx",
