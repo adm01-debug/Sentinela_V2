@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Trash2, AlertTriangle } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
@@ -10,37 +11,75 @@ import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, A
 import { useAlertRules } from '@/hooks/useAlerts';
 import { supabase } from '@/integrations/supabase/client';
 
+type ViolationRuleType =
+  | 'blocked_site'
+  | 'blocked_keyword'
+  | 'blocked_app'
+  | 'blocked_file_extension'
+  | 'work_hours';
+
 interface AlertRule {
   id: string;
-  name: string;
-  status: string;
-  category?: string;
+  rule_type: ViolationRuleType;
+  rule_value: string;
+  description: string | null;
+  severity: string;
+  is_active: boolean;
 }
+
+const RULE_TYPE_LABELS: Record<ViolationRuleType, string> = {
+  blocked_site: 'Site bloqueado',
+  blocked_keyword: 'Palavra-chave',
+  blocked_app: 'Aplicativo bloqueado',
+  blocked_file_extension: 'Extensão de arquivo',
+  work_hours: 'Horário de trabalho',
+};
+
+const SEVERITY_LABELS: Record<string, string> = {
+  low: 'Baixa',
+  medium: 'Média',
+  high: 'Alta',
+  critical: 'Crítica',
+};
+
+const SEVERITY_VARIANT: Record<string, 'secondary' | 'default' | 'destructive'> = {
+  low: 'secondary',
+  medium: 'secondary',
+  high: 'default',
+  critical: 'destructive',
+};
 
 export default function AlertRulesPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { data: rulesData, isLoading } = useAlertRules();
   const queryClient = useQueryClient();
-  
+
   const rules = (rulesData || []) as AlertRule[];
 
   const deleteRule = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('application_rules').delete().eq('id', id);
+      const { error } = await supabase.from('violation_rules').delete().eq('id', id);
       if (error) throw error;
     },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['alert-rules'] });
+      toast.success('Regra excluída');
+    },
+    onError: () => { toast.error('Erro ao excluir regra'); },
   });
 
   const toggleRule = useMutation({
     mutationFn: async (id: string) => {
       const rule = rules.find(r => r.id === id);
       if (!rule) return;
-      const newStatus = rule.status === 'allowed' ? 'blocked' : 'allowed';
-      const { error } = await supabase.from('application_rules').update({ status: newStatus }).eq('id', id);
+      const { error } = await supabase
+        .from('violation_rules')
+        .update({ is_active: !rule.is_active })
+        .eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['alert-rules'] }); },
+    onError: () => { toast.error('Erro ao atualizar regra'); },
   });
 
   if (isLoading) return <div className="p-6">Carregando...</div>;
@@ -52,30 +91,53 @@ export default function AlertRulesPage() {
         <Link to="/alerts/rules/new"><Button><Plus className="mr-2 h-4 w-4" />Nova Regra</Button></Link>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {rules.map((rule) => (
-          <Card key={rule.id}>
-            <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4" />
-                <CardTitle className="text-base">{rule.name}</CardTitle>
-              </div>
-              <Switch checked={rule.status === 'allowed'} onCheckedChange={() => toggleRule.mutate(rule.id)} />
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2 mb-4">
-                <Badge variant={rule.status === 'blocked' ? 'destructive' : 'secondary'}>{rule.status}</Badge>
-                <span className="text-xs text-muted-foreground">Categoria: {rule.category || 'N/A'}</span>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={() => setDeleteId(rule.id)}>
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {rules.length === 0 ? (
+        <Card>
+          <CardContent className="py-12 text-center text-muted-foreground">
+            Nenhuma regra cadastrada. Crie a primeira para começar a receber alertas.
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {rules.map((rule) => (
+            <Card key={rule.id}>
+              <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4" />
+                  <CardTitle className="text-base">
+                    {RULE_TYPE_LABELS[rule.rule_type] ?? rule.rule_type}
+                  </CardTitle>
+                </div>
+                <Switch
+                  checked={rule.is_active}
+                  disabled={toggleRule.isPending}
+                  onCheckedChange={() => toggleRule.mutate(rule.id)}
+                  aria-label={`Ativar regra ${rule.rule_value}`}
+                />
+              </CardHeader>
+              <CardContent>
+                <p className="font-mono text-sm break-all mb-1">{rule.rule_value}</p>
+                {rule.description && (
+                  <p className="text-xs text-muted-foreground mb-3">{rule.description}</p>
+                )}
+                <div className="flex items-center gap-2 mb-4">
+                  <Badge variant={SEVERITY_VARIANT[rule.severity] ?? 'secondary'}>
+                    {SEVERITY_LABELS[rule.severity] ?? rule.severity}
+                  </Badge>
+                  <Badge variant={rule.is_active ? 'default' : 'secondary'}>
+                    {rule.is_active ? 'Ativa' : 'Inativa'}
+                  </Badge>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => setDeleteId(rule.id)} aria-label="Excluir regra">
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>

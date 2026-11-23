@@ -70,7 +70,7 @@ export const useAlertRules = () => {
   return useQuery({
     queryKey: ['alert-rules'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('application_rules').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase.from('violation_rules').select('*').order('created_at', { ascending: false });
       if (error) throw error;
       return data || [];
     },

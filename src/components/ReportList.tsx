@@ -1,12 +1,12 @@
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
+import { Download } from 'lucide-react';
+import { format, isValid } from 'date-fns';
+import { toast } from 'sonner';
 import { Report } from '@/types';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { format, isValid } from 'date-fns';
-import { toast } from 'sonner';
 
 interface Props { reports: Report[]; isLoading?: boolean; }
 
@@ -18,11 +18,15 @@ const statusVariants: Record<string, 'default' | 'secondary' | 'destructive'> = 
 };
 
 const ReportListBase = ({ reports, isLoading }: Props) => {
-  if (isLoading) return <div className="space-y-2">{[1, 2, 3].map(i => <Skeleton key={i} className="h-12" />)}</div>;
+  const handleDownload = useCallback((report: Report) => {
+    if (!report.file_url) {
+      toast.error('Este relatório ainda não possui arquivo gerado');
+      return;
+    }
+    window.open(report.file_url, '_blank', 'noopener,noreferrer');
+  }, []);
 
-  const handleDownload = (id: string) => {
-    toast.info('Download de relatórios será implementado em breve');
-  };
+  if (isLoading) return <div className="space-y-2">{[1, 2, 3].map(i => <Skeleton key={i} className="h-12" />)}</div>;
 
   return (
     <Table>
@@ -50,7 +54,13 @@ const ReportListBase = ({ reports, isLoading }: Props) => {
               </TableCell>
               <TableCell>{isValid(date) ? format(date, 'dd/MM/yyyy') : '-'}</TableCell>
               <TableCell>
-                <Button variant="ghost" size="sm" onClick={() => handleDownload(report.id)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleDownload(report)}
+                  disabled={!report.file_url}
+                  aria-label={`Baixar relatório ${report.name}`}
+                >
                   <Download className="h-4 w-4" />
                 </Button>
               </TableCell>
