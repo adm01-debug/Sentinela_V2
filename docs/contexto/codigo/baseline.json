@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "40eb25ac48d784b7d8df41c2fedcbdeb3a5daf25",
+  "commit": "a528be538b2652144cda8569175797a5abe18324",
   "branch": "main",
-  "data_commit": "2026-11-22T16:37:58-03:00",
+  "data_commit": "2026-11-23T07:57:18-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "a528be538",
+    "data": "2026-11-23",
+    "assunto": "build(deps): bump @testing-library/jest-dom (#249)"
+   },
    {
     "sha": "40eb25ac4",
     "data": "2026-11-22",
@@ -126,11 +131,6 @@
     "sha": "de8c511c7",
     "data": "2026-11-22",
     "assunto": "fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)"
-   },
-   {
-    "sha": "6341704bb",
-    "data": "2026-11-22",
-    "assunto": "docs(pendencias): registra destino dos orfaos e o estado do mcp-query (#224)"
    }
   ],
   "arquivos_mudados_7d": 200,
@@ -149,18 +149,18 @@
    },
    {
     "pasta": "package-lock.json",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "pasta": ".github/workflows/deploy.yml",
     "mudancas": 13
    },
    {
-    "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 12
+    "pasta": "package.json",
+    "mudancas": 13
    },
    {
-    "pasta": "package.json",
+    "pasta": "docs/pendencias/_linha-de-base.md",
     "mudancas": 12
    },
    {
@@ -199,11 +199,11 @@
   "arquivos_mais_mudados_90d": [
    {
     "arquivo": "package-lock.json",
-    "mudancas": 25
+    "mudancas": 26
    },
    {
     "arquivo": "package.json",
-    "mudancas": 24
+    "mudancas": 25
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
@@ -305,7 +305,7 @@
    },
    {
     "autor": "dependabot[bot]",
-    "commits": 8
+    "commits": 9
    },
    {
     "autor": "github-actions[bot]",
