@@ -76,6 +76,7 @@ const DLPIncidentsPage = lazy(() => import("@/pages/admin/DLPIncidentsPage"));
 const SensitiveKeywordsPage = lazy(() => import("@/pages/admin/SensitiveKeywordsPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
 const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
+const MobileMonitoringPage = lazy(() => import("@/pages/admin/MobileMonitoringPage"));
 const UEBADashboardPage = lazy(() => import("@/pages/admin/ueba/UEBADashboardPage"));
 const EmployeeRiskProfilePage = lazy(() => import("@/pages/admin/ueba/EmployeeRiskProfilePage"));
 const UEBASettingsPage = lazy(() => import("@/pages/admin/ueba/UEBASettingsPage"));
@@ -307,6 +308,14 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <RateLimitDashboardPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/mobile-monitoring"
+            element={
+              <AdminGuard>
+                <MobileMonitoringPage />
               </AdminGuard>
             }
           />

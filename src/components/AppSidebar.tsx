@@ -176,6 +176,7 @@ const navSections: NavSection[] = [
         path: "/admin/message-templates",
       },
       { icon: Gauge, labelKey: "Rate Limiting", path: "/admin/rate-limits" },
+      { icon: Smartphone, labelKey: "Monitoramento Mobile", path: "/admin/mobile-monitoring" },
       { icon: Video, labelKey: "Relatório Live View", path: "/admin/live-view-report" },
       { icon: Wifi, labelKey: "Diagnóstico ICE/TURN", path: "/admin/ice-diagnostics" },
       { icon: Download, labelKey: "nav.exportData", path: "/export" },
