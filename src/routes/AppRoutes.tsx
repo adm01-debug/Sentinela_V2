@@ -174,7 +174,16 @@ export const AppRoutes = () => (
           <Route path={ROUTES.REPORTS} element={<ReportsPage />} />
           <Route path="/reports/:id" element={<ReportDetailPage />} />
           <Route path="/reports/custom" element={<CustomReportsPage />} />
-          <Route path="/reports/scheduled" element={<ScheduledReportsPage />} />
+          {/* scheduled_reports tem RLS exclusiva de admin; sem o guard a tela
+              abria vazia e toda gravacao falhava com violacao de RLS. */}
+          <Route
+            path="/reports/scheduled"
+            element={
+              <AdminGuard>
+                <ScheduledReportsPage />
+              </AdminGuard>
+            }
+          />
 
           <Route path={ROUTES.ALERTS} element={<AlertsPage />} />
           <Route path="/alerts/:id" element={<AlertDetailPage />} />
