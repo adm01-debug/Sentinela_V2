@@ -6734,11 +6734,9 @@
    "hooks_exportados": [
     "useRateLimitDashboardPage"
    ],
-   "linhas": 216,
+   "linhas": 218,
    "dominio": "hooks",
    "tabelas": [
-    "blocked_ips",
-    "rate_limit_logs",
     "rate_limit_settings"
    ],
    "rpcs": [],
@@ -6752,8 +6750,10 @@
     "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/admin/RateLimitDashboardPage.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {

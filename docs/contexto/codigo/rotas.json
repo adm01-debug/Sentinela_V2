@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 57,
+  "urls": 58,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 86
+  "lazy": 87
  },
  "urls": [
   {
@@ -609,6 +609,50 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 31
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/rate-limits",
+   "componente": "RateLimitDashboardPage",
+   "arquivo": "src/pages/admin/RateLimitDashboardPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useRateLimitDashboardPage",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useRateLimitDashboardPage",
+    "useToast"
+   ],
+   "tabelas": [
+    "rate_limit_settings"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 30
   },
   {
    "protegida": true,
@@ -2853,6 +2897,7 @@
   "OrgChartPage": "src/pages/OrgChartPage.tsx",
   "ProfileSettingsPage": "src/pages/ProfileSettingsPage.tsx",
   "ProjectsPage": "src/pages/ProjectsPage.tsx",
+  "RateLimitDashboardPage": "src/pages/admin/RateLimitDashboardPage.tsx",
   "ReportDetailPage": "src/pages/ReportDetailPage.tsx",
   "ReportsPage": "src/pages/ReportsPage.tsx",
   "ResetPasswordPage": "src/pages/ResetPasswordPage.tsx",

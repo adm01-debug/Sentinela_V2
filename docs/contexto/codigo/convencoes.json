@@ -3,11 +3,11 @@
  "format_version": 2,
  "onde_ficam": {
   "telas": [
-   "src/pages (57)"
+   "src/pages (58)"
   ],
   "componentes": [
    "src/components (356)",
-   "src/pages (91)",
+   "src/pages (92)",
    "src/providers (8)"
   ],
   "hooks": [
@@ -47,7 +47,7 @@
  },
  "barrels_index": 22,
  "extensao_componentes": [
-  ".tsx (465)"
+  ".tsx (466)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: dashboard de rate limiting com leitura via edge admin (#266)",
    "feat: tela de modelos de mensagem com CRUD real (#265)",
    "feat: tela de palavras sensiveis com CRUD real (#264)",
    "chore: documenta a prova pos-deploy do gate das edges (#263)",
-   "fix: reconhece service_role pelo probe da API admin no gate das edges (#262)",
-   "fix: exige autenticacao em 3 edge functions abertas ao publico (#261)"
+   "fix: reconhece service_role pelo probe da API admin no gate das edges (#262)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -2387,7 +2387,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 4,
+   "usada_no_front": 3,
    "usada_em_edges": [
     "send-rate-limit-alert"
    ],
@@ -11194,9 +11194,10 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 2,
+   "usada_no_front": 1,
    "usada_em_edges": [
-    "_shared"
+    "_shared",
+    "rate-limit-logs"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -16476,7 +16477,8 @@
    "usada_no_front": 7,
    "usada_em_edges": [
     "award-gamification-points",
-    "invite-user"
+    "invite-user",
+    "rate-limit-logs"
    ],
    "triggers": [],
    "sem_rls": false,

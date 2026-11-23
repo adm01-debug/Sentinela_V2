@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 465,
+ "total": 466,
  "orfaos": 94,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -642,7 +642,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 428,
+   "linhas": 429,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -1870,7 +1870,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 5,
+   "usado_por": 6,
    "orfao": false
   },
   {
@@ -2153,7 +2153,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 48,
+   "usado_por": 49,
    "orfao": false
   },
   {
@@ -3712,7 +3712,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 26,
+   "usado_por": 27,
    "orfao": false
   },
   {
@@ -3762,7 +3762,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 145,
+   "usado_por": 146,
    "orfao": false
   },
   {
@@ -3825,7 +3825,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 183,
+   "usado_por": 184,
    "orfao": false
   },
   {
@@ -3860,7 +3860,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 187,
+   "usado_por": 188,
    "orfao": false
   },
   {
@@ -4129,7 +4129,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 53,
+   "usado_por": 54,
    "orfao": false
   },
   {
@@ -4525,7 +4525,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 90,
+   "usado_por": 91,
    "orfao": false
   },
   {
@@ -4556,7 +4556,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 62,
+   "usado_por": 63,
    "orfao": false
   },
   {
@@ -5130,7 +5130,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 58,
+   "usado_por": 59,
    "orfao": false
   },
   {
@@ -5369,7 +5369,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 25,
+   "usado_por": 26,
    "orfao": false
   },
   {
@@ -5390,7 +5390,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 23,
+   "usado_por": 24,
    "orfao": false
   },
   {
@@ -6287,6 +6287,22 @@
     "useMessageTemplates",
     "useToggleMessageTemplate",
     "useUpdateMessageTemplate"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/RateLimitDashboardPage.tsx",
+   "exports": [
+    "RateLimitDashboardPage"
+   ],
+   "export_default": "RateLimitDashboardPage",
+   "linhas": 528,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useRateLimitDashboardPage"
    ],
    "tabelas": [],
    "edges": [],
@@ -7766,7 +7782,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 425,
+   "linhas": 435,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

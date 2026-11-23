@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "886630e58904f40467f7417533ae03360f85a6c2",
+  "commit": "1b5bd5e82637a1fa1b14de4361ffd1ec128fdc42",
   "branch": "main",
-  "data_commit": "2026-11-23T19:23:15-03:00",
+  "data_commit": "2026-11-23T20:02:59-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "1b5bd5e82",
+    "data": "2026-11-23",
+    "assunto": "feat: dashboard de rate limiting com leitura via edge admin (#266)"
+   },
    {
     "sha": "886630e58",
     "data": "2026-11-23",
@@ -126,14 +131,9 @@
     "sha": "5ec7ddcb9",
     "data": "2026-11-22",
     "assunto": "docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)"
-   },
-   {
-    "sha": "ed7e2aa98",
-    "data": "2026-11-22",
-    "assunto": "docs: registra o estado real do PolicyGate na linha de base (#242)"
    }
   ],
-  "arquivos_mudados_7d": 223,
+  "arquivos_mudados_7d": 225,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -165,7 +165,11 @@
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 11
+    "mudancas": 12
+   },
+   {
+    "pasta": "src/components/AppSidebar.tsx",
+    "mudancas": 7
    },
    {
     "pasta": "src/components/ui",
@@ -176,11 +180,11 @@
     "mudancas": 6
    },
    {
-    "pasta": "src/components/AppSidebar.tsx",
+    "pasta": "src/i18n/locales",
     "mudancas": 6
    },
    {
-    "pasta": "src/i18n/locales",
+    "pasta": "src/pages/admin",
     "mudancas": 6
    },
    {
@@ -189,10 +193,6 @@
    },
    {
     "pasta": "desktop-agent/src/services",
-    "mudancas": 5
-   },
-   {
-    "pasta": "src/index.css",
     "mudancas": 5
    }
   ],
@@ -223,14 +223,14 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 11
-   },
-   {
-    "arquivo": "docs/prod-readiness.md",
-    "mudancas": 6
+    "mudancas": 12
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
+    "mudancas": 7
+   },
+   {
+    "arquivo": "docs/prod-readiness.md",
     "mudancas": 6
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 163
+    "commits": 164
    },
    {
     "autor": "dependabot[bot]",
@@ -314,17 +314,17 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1864,
-  "arquivos_codigo": 1416,
-  "linhas_codigo": 156588,
-  "rotas": 57,
+  "arquivos_total": 1866,
+  "arquivos_codigo": 1418,
+  "linhas_codigo": 157257,
+  "rotas": 58,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 57,
-  "componentes": 465,
+  "componentes": 466,
   "hooks": 524,
-  "edge_functions": 87,
+  "edge_functions": 88,
   "tabelas": 179,
   "migrations": 123,
   "cron_jobs": 5,
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44968
+   "linhas": 44969
   },
   "src/constants": {
    "arquivos": 7,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32268
+   "linhas": 32270
   },
   "src/i18n": {
    "arquivos": 1,
@@ -459,8 +459,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 107,
-   "linhas": 20497
+   "arquivos": 108,
+   "linhas": 21025
   },
   "src/providers": {
    "arquivos": 9,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 425
+   "linhas": 435
   },
   "src/services": {
    "arquivos": 8,
@@ -495,8 +495,8 @@
    "linhas": 180
   },
   "supabase/functions": {
-   "arquivos": 102,
-   "linhas": 13123
+   "arquivos": 103,
+   "linhas": 13251
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -535,6 +535,10 @@
   {
    "arquivo": "src/utils/violationsPdf.ts",
    "linhas": 572
+  },
+  {
+   "arquivo": "src/pages/admin/RateLimitDashboardPage.tsx",
+   "linhas": 528
   },
   {
    "arquivo": "src/components/violations/ViolationTimelineDialog.tsx",
@@ -593,16 +597,12 @@
    "linhas": 445
   },
   {
-   "arquivo": "src/components/AppSidebar.tsx",
-   "linhas": 428
-  },
-  {
    "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 425
+   "linhas": 435
   },
   {
-   "arquivo": "src/components/SearchDrawer.tsx",
-   "linhas": 424
+   "arquivo": "src/components/AppSidebar.tsx",
+   "linhas": 429
   }
  ],
  "qualidade": {
@@ -611,7 +611,7 @@
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,
-  "arquivos_acima_500_linhas": 9
+  "arquivos_acima_500_linhas": 10
  },
  "todos": [
   {
@@ -692,6 +692,7 @@
    "notify-mobile-violation",
    "process-bulk-import",
    "process-screenshot",
+   "rate-limit-logs",
    "recalculate-metrics",
    "refresh-tokens",
    "request-overtime",

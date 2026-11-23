@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "pasta": "supabase/functions",
- "total": 87,
+ "total": 88,
  "verify_jwt_false": [
   "acknowledge-violation",
   "dlp-incident-report",
@@ -1674,6 +1674,37 @@
    ],
    "chamada_por_sql_ou_cron": false,
    "orfa": false,
+   "testes": 0
+  },
+  {
+   "nome": "rate-limit-logs",
+   "entrada": "supabase/functions/rate-limit-logs/index.ts",
+   "arquivos": 1,
+   "linhas": 128,
+   "verify_jwt": true,
+   "metodos": [
+    "OPTIONS",
+    "POST"
+   ],
+   "tabelas": [
+    "rate_limit_logs",
+    "user_roles"
+   ],
+   "rpcs": [],
+   "env": [
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL"
+   ],
+   "buckets": [],
+   "chama_edges": [],
+   "hosts_externos": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
+   "chamada_pelo_front": [],
+   "chamada_por_edges": [],
+   "chamada_por_sql_ou_cron": false,
+   "orfa": true,
    "testes": 0
   },
   {
