@@ -75,7 +75,8 @@
     "whatsapp": "WhatsApp",
     "settings": "Configurações",
     "apiKeys": "Chaves API",
-    "security": "Segurança"
+    "security": "Segurança",
+    "orgChart": "Organograma"
   },
   "sections": {
     "main": "Principal",
