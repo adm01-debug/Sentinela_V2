@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "02b138dbcc34bef0ba2e45b442d720330333e299",
+  "commit": "cefc52fd251b98ba675ccea5c9e650a6fe155ad5",
   "branch": "main",
-  "data_commit": "2026-11-23T17:33:52-03:00",
+  "data_commit": "2026-11-23T17:33:57-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "cefc52fd2",
+    "data": "2026-11-23",
+    "assunto": "chore: remove DashboardTooltip orfao (#259)"
+   },
    {
     "sha": "02b138dbc",
     "data": "2026-11-23",
@@ -126,14 +131,9 @@
     "sha": "c0cba9a37",
     "data": "2026-11-22",
     "assunto": "fix(security): SupervisorGuard deixa de confiar no papel do user_metadata (#235)"
-   },
-   {
-    "sha": "c59b91588",
-    "data": "2026-11-22",
-    "assunto": "fix(dashboard): personalizador de widgets passa a valer na tela (#234)"
    }
   ],
-  "arquivos_mudados_7d": 217,
+  "arquivos_mudados_7d": 218,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 157
+    "commits": 158
    },
    {
     "autor": "dependabot[bot]",
@@ -314,15 +314,15 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1862,
-  "arquivos_codigo": 1414,
-  "linhas_codigo": 155665,
+  "arquivos_total": 1861,
+  "arquivos_codigo": 1413,
+  "linhas_codigo": 155639,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 57,
-  "componentes": 464,
+  "componentes": 463,
   "hooks": 524,
   "edge_functions": 87,
   "tabelas": 179,
@@ -459,8 +459,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 106,
-   "linhas": 19765
+   "arquivos": 105,
+   "linhas": 19739
   },
   "src/providers": {
    "arquivos": 9,

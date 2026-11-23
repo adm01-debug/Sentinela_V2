@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 464,
+ "total": 463,
  "orfaos": 94,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -6791,20 +6791,6 @@
    "tabelas": [],
    "edges": [],
    "usado_por": 1,
-   "orfao": false
-  },
-  {
-   "arquivo": "src/pages/dashboard/DashboardTooltip.tsx",
-   "exports": [
-    "DashboardTooltip"
-   ],
-   "export_default": null,
-   "linhas": 26,
-   "dominio": "pages/dashboard",
-   "hooks_locais": [],
-   "tabelas": [],
-   "edges": [],
-   "usado_por": 0,
    "orfao": false
   },
   {

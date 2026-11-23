@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `02b138dbcc34bef0ba2e45b442d720330333e299` (2026-11-23T17:33:52-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `cefc52fd251b98ba675ccea5c9e650a6fe155ad5` (2026-11-23T17:33:57-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1394), Markdown (176), SQL (127), JSON (43), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1393), Markdown (176), SQL (127), JSON (43), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,15 +34,15 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1862 |
-| arquivos_codigo | 1414 |
-| linhas_codigo | 155665 |
+| arquivos_total | 1861 |
+| arquivos_codigo | 1413 |
+| linhas_codigo | 155639 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 57 |
-| componentes | 464 |
+| componentes | 463 |
 | hooks | 524 |
 | edge_functions | 87 |
 | tabelas | 179 |
@@ -55,7 +55,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Onde ficam as coisas
 - telas: src/pages (55)
-- componentes: src/components (356), src/pages (90), src/providers (8)
+- componentes: src/components (356), src/pages (89), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
 - testes: co-localizado (*.test) (51), co-localizado (__tests__) (19), outro (6)
@@ -87,7 +87,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
 | pages | 4 | 38 | 68 | 159 | 10 | 68 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
-| pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
 | services | 0 | 0 | 8 | 20 | 2 | 10 |
@@ -459,6 +458,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `cefc52fd2` chore: remove DashboardTooltip orfao (#259)
 - 2026-11-23 `02b138dbc` chore(types): regenera tipos do Supabase a partir do banco real (#260)
 - 2026-11-23 `6867e4959` fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)
 - 2026-11-23 `54a0fc2d0` fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)
@@ -473,7 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `40eb25ac4` docs: registra que producao estava quebrada e o que foi corrigido (#247)
 - 2026-11-22 `316357320` fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)
 - 2026-11-22 `b657b3e12` docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)
-- 2026-11-22 `76f78d12d` fix(deploy): db push --yes para nao abortar com migration pendente (#244)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -7,7 +7,7 @@
   ],
   "componentes": [
    "src/components (356)",
-   "src/pages (90)",
+   "src/pages (89)",
    "src/providers (8)"
   ],
   "hooks": [
@@ -47,7 +47,7 @@
  },
  "barrels_index": 22,
  "extensao_componentes": [
-  ".tsx (464)"
+  ".tsx (463)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "chore: remove DashboardTooltip orfao (#259)",
    "chore(types): regenera tipos do Supabase a partir do banco real (#260)",
    "fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)",
    "fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)",
-   "docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)",
-   "fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)"
+   "docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
