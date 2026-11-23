@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "9ab51f01b4f10fa1ca8b66b2175f914683435547",
+  "commit": "886630e58904f40467f7417533ae03360f85a6c2",
   "branch": "main",
-  "data_commit": "2026-11-23T18:51:42-03:00",
+  "data_commit": "2026-11-23T19:23:15-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "886630e58",
+    "data": "2026-11-23",
+    "assunto": "feat: tela de modelos de mensagem com CRUD real (#265)"
+   },
    {
     "sha": "9ab51f01b",
     "data": "2026-11-23",
@@ -126,14 +131,9 @@
     "sha": "ed7e2aa98",
     "data": "2026-11-22",
     "assunto": "docs: registra o estado real do PolicyGate na linha de base (#242)"
-   },
-   {
-    "sha": "a52cd2c58",
-    "data": "2026-11-22",
-    "assunto": "fix(rotas): ROUTES.ADMIN_TELEMETRY aponta para a rota real /admin/telemetria (#241)"
    }
   ],
-  "arquivos_mudados_7d": 222,
+  "arquivos_mudados_7d": 223,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -165,7 +165,7 @@
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "pasta": "src/components/ui",
@@ -173,6 +173,10 @@
    },
    {
     "pasta": "docs/prod-readiness.md",
+    "mudancas": 6
+   },
+   {
+    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 6
    },
    {
@@ -185,10 +189,6 @@
    },
    {
     "pasta": "desktop-agent/src/services",
-    "mudancas": 5
-   },
-   {
-    "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 5
    },
    {
@@ -223,18 +223,18 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 10
+    "mudancas": 11
    },
    {
     "arquivo": "docs/prod-readiness.md",
     "mudancas": 6
    },
    {
-    "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 5
+    "arquivo": "src/components/AppSidebar.tsx",
+    "mudancas": 6
    },
    {
-    "arquivo": "src/components/AppSidebar.tsx",
+    "arquivo": ".github/workflows/ci.yml",
     "mudancas": 5
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 162
+    "commits": 163
    },
    {
     "autor": "dependabot[bot]",
@@ -314,15 +314,15 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1863,
-  "arquivos_codigo": 1415,
-  "linhas_codigo": 156102,
-  "rotas": 56,
+  "arquivos_total": 1864,
+  "arquivos_codigo": 1416,
+  "linhas_codigo": 156588,
+  "rotas": 57,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 57,
-  "componentes": 464,
+  "componentes": 465,
   "hooks": 524,
   "edge_functions": 87,
   "tabelas": 179,
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44963
+   "linhas": 44968
   },
   "src/constants": {
    "arquivos": 7,
@@ -459,8 +459,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 106,
-   "linhas": 20027
+   "arquivos": 107,
+   "linhas": 20497
   },
   "src/providers": {
    "arquivos": 9,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 414
+   "linhas": 425
   },
   "src/services": {
    "arquivos": 8,
@@ -561,6 +561,10 @@
    "linhas": 474
   },
   {
+   "arquivo": "src/pages/admin/MessageTemplatesPage.tsx",
+   "linhas": 470
+  },
+  {
    "arquivo": "desktop-agent/src/main.ts",
    "linhas": 468
   },
@@ -589,20 +593,16 @@
    "linhas": 445
   },
   {
+   "arquivo": "src/components/AppSidebar.tsx",
+   "linhas": 428
+  },
+  {
+   "arquivo": "src/routes/AppRoutes.tsx",
+   "linhas": 425
+  },
+  {
    "arquivo": "src/components/SearchDrawer.tsx",
    "linhas": 424
-  },
-  {
-   "arquivo": "src/pages/TimeClockPage.tsx",
-   "linhas": 424
-  },
-  {
-   "arquivo": "src/components/AppSidebar.tsx",
-   "linhas": 423
-  },
-  {
-   "arquivo": "src/components/security/SessionIndicator.tsx",
-   "linhas": 420
   }
  ],
  "qualidade": {

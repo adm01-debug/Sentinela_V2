@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 56,
+  "urls": 57,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 85
+  "lazy": 86
  },
  "urls": [
   {
@@ -552,6 +552,63 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 26
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/message-templates",
+   "componente": "MessageTemplatesPage",
+   "arquivo": "src/pages/admin/MessageTemplatesPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCreateMessageTemplate",
+    "useDeleteMessageTemplate",
+    "useDuplicateMessageTemplate",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMessageTemplate",
+    "useMessageTemplates",
+    "useMessageTemplatesByType",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast",
+    "useToggleMessageTemplate",
+    "useUpdateMessageTemplate"
+   ],
+   "hooks_locais": [
+    "useCreateMessageTemplate",
+    "useDeleteMessageTemplate",
+    "useDuplicateMessageTemplate",
+    "useMessageTemplate",
+    "useMessageTemplates",
+    "useMessageTemplatesByType",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast",
+    "useToggleMessageTemplate",
+    "useUpdateMessageTemplate"
+   ],
+   "tabelas": [
+    "message_templates"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 31
   },
   {
    "protegida": true,
@@ -2789,6 +2846,7 @@
   "LiveViewPage": "src/pages/LiveViewPage.tsx",
   "LiveViewReportPage": "src/pages/admin/LiveViewReportPage.tsx",
   "LiveViewSimulatorPage": "src/pages/dev/LiveViewSimulatorPage.tsx",
+  "MessageTemplatesPage": "src/pages/admin/MessageTemplatesPage.tsx",
   "MonitoringPage": "src/pages/MonitoringPage.tsx",
   "NotFoundPage": "src/pages/NotFoundPage.tsx",
   "NotificationSettingsPage": "src/pages/NotificationSettingsPage.tsx",
