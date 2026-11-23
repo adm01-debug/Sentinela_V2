@@ -2736,7 +2736,7 @@
     "ReportList"
    ],
    "export_default": null,
-   "linhas": 65,
+   "linhas": 75,
    "dominio": "components",
    "hooks_locais": [],
    "tabelas": [],
@@ -5369,7 +5369,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 22,
+   "usado_por": 23,
    "orfao": false
   },
   {
@@ -5450,7 +5450,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 14,
+   "usado_por": 15,
    "orfao": false
   },
   {
@@ -6463,14 +6463,15 @@
     "AlertRuleCreatePage"
    ],
    "export_default": "AlertRuleCreatePage",
-   "linhas": 97,
+   "linhas": 163,
    "dominio": "pages",
    "hooks_locais": [
     "useMutation",
-    "useQueryClient"
+    "useQueryClient",
+    "useWatch"
    ],
    "tabelas": [
-    "application_rules"
+    "violation_rules"
    ],
    "edges": [],
    "usado_por": 1,
@@ -6482,7 +6483,7 @@
     "AlertRulesPage"
    ],
    "export_default": "AlertRulesPage",
-   "linhas": 95,
+   "linhas": 156,
    "dominio": "pages",
    "hooks_locais": [
     "useAlertRules",
@@ -6490,7 +6491,7 @@
     "useQueryClient"
    ],
    "tabelas": [
-    "application_rules"
+    "violation_rules"
    ],
    "edges": [],
    "usado_por": 1,

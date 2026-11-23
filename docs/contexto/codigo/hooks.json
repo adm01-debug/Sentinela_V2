@@ -533,8 +533,8 @@
    "linhas": 79,
    "dominio": "hooks",
    "tabelas": [
-    "application_rules",
-    "security_violations"
+    "security_violations",
+    "violation_rules"
    ],
    "rpcs": [],
    "edges": [],

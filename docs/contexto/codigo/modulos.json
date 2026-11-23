@@ -7,7 +7,7 @@
    "modulo": "components",
    "arquivos": 98,
    "testes": 0,
-   "linhas": 14508,
+   "linhas": 14518,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -104,7 +104,6 @@
    ],
    "tabelas": [
     "alert_notification_settings",
-    "application_rules",
     "attendance_records",
     "blocked_ips",
     "dashboard_layouts",
@@ -3774,7 +3773,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 13292,
+   "linhas": 13419,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -3975,6 +3974,7 @@
     "useViolationStats",
     "useViolationsPage",
     "useViolationsRealtime",
+    "useWatch",
     "useWebAuthn",
     "useWeeklyProductivityInsights",
     "useWeeklyProductivityRanking",
@@ -4115,7 +4115,6 @@
      "agent_keys",
      "ai_analysis_reports",
      "alert_notification_settings",
-     "application_rules",
      "attendance_records",
      "companies",
      "departments",
@@ -4130,6 +4129,7 @@
      "teams",
      "time_entries",
      "timesheets",
+     "violation_rules",
      "webhooks"
     ],
     "rpcs": []
@@ -4726,6 +4726,7 @@
     "useViolationStats",
     "useViolationsPage",
     "useViolationsRealtime",
+    "useWatch",
     "useWebAuthn",
     "useWeeklyProductivityInsights",
     "useWeeklyProductivityRanking",

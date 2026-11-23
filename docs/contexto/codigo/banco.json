@@ -1441,7 +1441,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 4,
+   "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [
     "update_application_rules_updated_at"
@@ -16427,7 +16427,7 @@
     "so_na_migration": [],
     "so_no_types": []
    },
-   "usada_no_front": 3,
+   "usada_no_front": 6,
    "usada_em_edges": [],
    "triggers": [
     "audit_violation_rules",

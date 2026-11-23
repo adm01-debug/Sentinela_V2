@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `83496a32405c4be325aec91301298431895df5ad` (2026-11-23T11:00:04-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `ac2d34cc0869f740a86e08458f509443cf539095` (2026-11-23T11:32:34-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1414 |
-| linhas_codigo | 153317 |
+| linhas_codigo | 153454 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -69,7 +69,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Módulos (menu → domínio)
 | módulo | itens de menu | telas/rotas | arquivos | hooks locais | edges | tabelas |
 |---|---|---|---|---|---|---|
-| components | 0 | 0 | 98 | 84 | 1 | 21 |
+| components | 0 | 0 | 98 | 84 | 1 | 20 |
 | components/admin | 0 | 0 | 8 | 5 | 6 | 7 |
 | components/auth | 0 | 0 | 5 | 9 | 1 | 4 |
 | components/charts | 0 | 0 | 13 | 2 | 0 | 0 |
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 495 | 19 | 85 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 158 | 10 | 68 |
+| pages | 4 | 38 | 68 | 159 | 10 | 68 |
 | pages/admin | 0 | 14 | 16 | 24 | 8 | 28 |
 | pages/dashboard | 0 | 0 | 5 | 2 | 0 | 0 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `ac2d34cc0` fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)
 - 2026-11-23 `83496a324` feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios
 - 2026-11-23 `dfd0acde7` feat: integra CalendarPage com dados reais de attendance_records (#253)
 - 2026-11-23 `2f8ef3c85` feat: expõe páginas sem link no sidebar (#252)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `d5ef6cbbb` feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)
 - 2026-11-22 `5ec7ddcb9` docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)
 - 2026-11-22 `ed7e2aa98` docs: registra o estado real do PolicyGate na linha de base (#242)
-- 2026-11-22 `a52cd2c58` fix(rotas): ROUTES.ADMIN_TELEMETRY aponta para a rota real /admin/telemetria (#241)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

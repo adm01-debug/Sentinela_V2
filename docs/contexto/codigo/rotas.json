@@ -873,8 +873,8 @@
     "useQueryClient"
    ],
    "tabelas": [
-    "application_rules",
-    "security_violations"
+    "security_violations",
+    "violation_rules"
    ],
    "rpcs": [],
    "edges": [],
@@ -908,8 +908,8 @@
     "useQueryClient"
    ],
    "tabelas": [
-    "application_rules",
-    "security_violations"
+    "security_violations",
+    "violation_rules"
    ],
    "rpcs": [],
    "edges": [],
@@ -935,21 +935,23 @@
     "useMutation",
     "useNavigate",
     "useQueryClient",
-    "useState"
+    "useState",
+    "useWatch"
    ],
    "hooks_locais": [
     "useMutation",
-    "useQueryClient"
+    "useQueryClient",
+    "useWatch"
    ],
    "tabelas": [
-    "application_rules"
+    "violation_rules"
    ],
    "rpcs": [],
    "edges": [],
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 15
+   "arquivos_puxados": 17
   },
   {
    "protegida": false,

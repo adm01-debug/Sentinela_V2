@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)",
    "feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios",
    "feat: integra CalendarPage com dados reais de attendance_records (#253)",
    "feat: expõe páginas sem link no sidebar (#252)",
-   "fix: organograma no sidebar, check placeholder no deploy e timeout do teste (#251)",
-   "chore: inventario do estado real [auto] (#250)"
+   "fix: organograma no sidebar, check placeholder no deploy e timeout do teste (#251)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

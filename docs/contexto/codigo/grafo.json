@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1337,
- "arestas": 2769,
+ "arestas": 2772,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -85,12 +85,12 @@
    "importado_por": 24
   },
   {
-   "arquivo": "src/components/ui/tooltip.tsx",
+   "arquivo": "src/components/ui/switch.tsx",
    "importado_por": 23
   },
   {
-   "arquivo": "src/components/ui/switch.tsx",
-   "importado_por": 22
+   "arquivo": "src/components/ui/tooltip.tsx",
+   "importado_por": 23
   },
   {
    "arquivo": "src/components/ui/table.tsx",
@@ -121,12 +121,12 @@
    "importado_por": 15
   },
   {
-   "arquivo": "src/hooks/useEmployees.ts",
+   "arquivo": "src/components/ui/textarea.tsx",
    "importado_por": 15
   },
   {
-   "arquivo": "src/components/ui/textarea.tsx",
-   "importado_por": 14
+   "arquivo": "src/hooks/useEmployees.ts",
+   "importado_por": 15
   },
   {
    "arquivo": "desktop-agent/src/config.ts",

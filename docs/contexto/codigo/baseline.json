@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "83496a32405c4be325aec91301298431895df5ad",
+  "commit": "ac2d34cc0869f740a86e08458f509443cf539095",
   "branch": "main",
-  "data_commit": "2026-11-23T11:00:04-03:00",
+  "data_commit": "2026-11-23T11:32:34-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "ac2d34cc0",
+    "data": "2026-11-23",
+    "assunto": "fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)"
+   },
    {
     "sha": "83496a324",
     "data": "2026-11-23",
@@ -126,14 +131,9 @@
     "sha": "9659a9396",
     "data": "2026-11-22",
     "assunto": "feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)"
-   },
-   {
-    "sha": "6a84684c1",
-    "data": "2026-11-22",
-    "assunto": "docs(pendencias): registra migrations automaticas no deploy e o MFAGuard (#231)"
    }
   ],
-  "arquivos_mudados_7d": 210,
+  "arquivos_mudados_7d": 214,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 152
+    "commits": 153
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1414,
-  "linhas_codigo": 153317,
+  "linhas_codigo": 153454,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44952
+   "linhas": 44962
   },
   "src/constants": {
    "arquivos": 7,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 106,
-   "linhas": 19638
+   "linhas": 19765
   },
   "src/providers": {
    "arquivos": 9,
