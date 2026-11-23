@@ -114,6 +114,7 @@ jobs:
             echo "::error::Nenhum deployment de producao para $SHA. O deploy automatico da Vercel nao rodou."
             exit 1
           fi
+          state=""
           for i in $(seq 1 24); do
             state=$(gh api "repos/$REPO/deployments/$latest/statuses" | jq -r '.[0].state // empty')
             echo "Deployment $latest -> ${state:-sem status} (tentativa $i)"
@@ -123,8 +124,10 @@ jobs:
             esac
             sleep 20
           done
-          echo "::error::Deployment $latest nao concluiu em ~8 min (ultimo estado: ${state:-vazio})."
-          exit 1
+          if [ "$state" != "success" ]; then
+            echo "::error::Deployment $latest nao concluiu em ~8 min (ultimo estado: ${state:-vazio})."
+            exit 1
+          fi
       - name: Verifica bundle de producao sem placeholder
         env:
           APP_URL: https://sentinela-v2.vercel.app
