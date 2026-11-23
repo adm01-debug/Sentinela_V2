@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { checkRateLimit } from "../_shared/rateLimiting.ts";
+import { requireUserOrServiceRole } from "../_shared/auth.ts";
 import {
   toEvJid,
   extractEvMessageId,
@@ -88,6 +89,17 @@ const BulkWhatsAppSchema = z.object({
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // verify_jwt = false no config.toml: sem este gate qualquer pessoa na
+  // internet envia WhatsApp pelo numero da empresa usando o service_role.
+  try {
+    await requireUserOrServiceRole(req);
+  } catch {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 
   try {

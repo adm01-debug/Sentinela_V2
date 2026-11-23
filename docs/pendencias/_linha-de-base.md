@@ -329,6 +329,12 @@ Varios exigem DDL (regra 8).
 
 ### Tabelas usadas pelo front e ausentes de `types.ts`
 
+**Resolvido na PR #260**: `types.ts` foi regenerado a partir do schema real
+(`GET /v1/projects/{ref}/types/typescript`), passando de 154 para 207 entradas
+(tabelas + 9 views + 33 funcoes). O conjunto contado nesta secao era menor
+porque a linha de base olhou apenas as tabelas citadas no front; o schema real
+tem 176 tabelas base + 9 views.
+
 13 tabelas: `activity_logs`, `app_config`, `departments`, `feature_flags`,
 `internet_access_rules`, `push_subscriptions`, `rate_limit_alerts`,
 `rate_limit_settings`, `scheduled_reports`, `subscriptions`, `user_sessions`,
@@ -346,6 +352,32 @@ sem consumidor de pagina — o codigo morto esconde a tabela faltante.
 `20261122021000_fix_departments_write_rls.sql`, que faz `ALTER TABLE` numa tabela
 que nenhuma migration deste repo cria — ou seja, ela existe em producao mas o
 DDL de origem esta fora do repo.
+
+### Edge functions abertas ao publico (auditado 2026-11-23)
+
+Auditoria das 12 funcoes com `verify_jwt = false`, com POST `{}` real contra
+`/functions/v1/<fn>` enviando o `apikey` publico (que o gateway **aceita** no
+header `Authorization`): 9 tem gate proprio e respondem 401; `health-check`
+responde 200 (so `{status,timestamp,version,uptime}`, sem dado de negocio); e 3
+nao tinham gate nenhum:
+
+| Funcao                    | Resposta sem JWT      | Efeito                                  |
+| ------------------------- | --------------------- | --------------------------------------- |
+| `send-whatsapp`           | 400 validation        | enviava WhatsApp pelo numero da empresa |
+| `generate-report`         | 400 "Informe type..." | gerava relatorio via service_role       |
+| `process-violation-alert` | 400 validation        | disparava alerta de violacao            |
+
+`verify_jwt = true` **nao** resolve: provado com `get-dashboard-stats`
+(`verify_jwt` default) respondendo **200** ao mesmo apikey publico no header
+`Authorization`.
+
+**Corrigido nesta branch**: `_shared/auth.ts` ganhou `requireUserOrServiceRole`,
+que aceita apenas a `service_role` key (invocacao server-to-server: o
+`createClient(SUPABASE_SERVICE_ROLE_KEY)` do supabase-js envia sozinho, o que
+cobre `check-geofence`, `ocr-screenshot` e `risk-score-calculator` chamando
+`process-violation-alert`) ou um JWT de usuario valido (front com sessao). As 3
+funcoes passam a responder 401 para o resto. Teste de contrato em
+`_shared/auth_test.ts`.
 
 ### Edge functions
 
