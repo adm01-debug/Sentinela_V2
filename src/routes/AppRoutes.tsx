@@ -73,6 +73,7 @@ const HoursTrackingPage = lazy(() => import("@/pages/HoursTrackingPage"));
 const AdminTelemetriaPage = lazy(() => import("@/pages/AdminTelemetriaPage"));
 const DLPPoliciesPage = lazy(() => import("@/pages/admin/DLPPoliciesPage"));
 const DLPIncidentsPage = lazy(() => import("@/pages/admin/DLPIncidentsPage"));
+const SensitiveKeywordsPage = lazy(() => import("@/pages/admin/SensitiveKeywordsPage"));
 const UEBADashboardPage = lazy(() => import("@/pages/admin/ueba/UEBADashboardPage"));
 const EmployeeRiskProfilePage = lazy(() => import("@/pages/admin/ueba/EmployeeRiskProfilePage"));
 const UEBASettingsPage = lazy(() => import("@/pages/admin/ueba/UEBASettingsPage"));
@@ -275,6 +276,16 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <DLPIncidentsPage />
+              </AdminGuard>
+            }
+          />
+          {/* sensitive_keywords so aceita escrita de admin por RLS e alimenta
+              o scan de texto do ocr-screenshot. */}
+          <Route
+            path="/admin/dlp/keywords"
+            element={
+              <AdminGuard>
+                <SensitiveKeywordsPage />
               </AdminGuard>
             }
           />
