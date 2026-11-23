@@ -75,6 +75,7 @@ const DLPPoliciesPage = lazy(() => import("@/pages/admin/DLPPoliciesPage"));
 const DLPIncidentsPage = lazy(() => import("@/pages/admin/DLPIncidentsPage"));
 const SensitiveKeywordsPage = lazy(() => import("@/pages/admin/SensitiveKeywordsPage"));
 const MessageTemplatesPage = lazy(() => import("@/pages/admin/MessageTemplatesPage"));
+const RateLimitDashboardPage = lazy(() => import("@/pages/admin/RateLimitDashboardPage"));
 const UEBADashboardPage = lazy(() => import("@/pages/admin/ueba/UEBADashboardPage"));
 const EmployeeRiskProfilePage = lazy(() => import("@/pages/admin/ueba/EmployeeRiskProfilePage"));
 const UEBASettingsPage = lazy(() => import("@/pages/admin/ueba/UEBASettingsPage"));
@@ -297,6 +298,15 @@ export const AppRoutes = () => (
             element={
               <AdminGuard>
                 <MessageTemplatesPage />
+              </AdminGuard>
+            }
+          />
+          {/* rate_limit_settings e rate_limit_logs sao admin-only por RLS. */}
+          <Route
+            path="/admin/rate-limits"
+            element={
+              <AdminGuard>
+                <RateLimitDashboardPage />
               </AdminGuard>
             }
           />

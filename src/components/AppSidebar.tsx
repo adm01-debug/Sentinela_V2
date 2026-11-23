@@ -175,6 +175,7 @@ const navSections: NavSection[] = [
         labelKey: "Modelos de Mensagem",
         path: "/admin/message-templates",
       },
+      { icon: Gauge, labelKey: "Rate Limiting", path: "/admin/rate-limits" },
       { icon: Video, labelKey: "Relatório Live View", path: "/admin/live-view-report" },
       { icon: Wifi, labelKey: "Diagnóstico ICE/TURN", path: "/admin/ice-diagnostics" },
       { icon: Download, labelKey: "nav.exportData", path: "/export" },
