@@ -167,6 +167,7 @@ const navSections: NavSection[] = [
       { icon: Gauge, labelKey: "Telemetria de Queries", path: "/admin/telemetria" },
       { icon: ShieldAlert, labelKey: "Politicas DLP", path: "/admin/dlp/policies" },
       { icon: AlertOctagon, labelKey: "Incidentes DLP", path: "/admin/dlp/incidents" },
+      { icon: ShieldAlert, labelKey: "Palavras Sensiveis", path: "/admin/dlp/keywords" },
       { icon: Fingerprint, labelKey: "Analise de Comportamento (UEBA)", path: "/admin/ueba" },
       { icon: Zap, labelKey: "Edge Functions", path: "/admin/edge-functions" },
       { icon: Video, labelKey: "Relatório Live View", path: "/admin/live-view-report" },
