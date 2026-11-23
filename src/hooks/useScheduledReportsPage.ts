@@ -109,8 +109,7 @@ export function useScheduledReportsPage() {
         is_active: data.is_active,
         filters: { schedule_time: data.schedule_time, schedule_day: data.schedule_day ?? null },
       };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error } = await supabase.from("scheduled_reports").insert(payload as any);
+      const { error } = await supabase.from("scheduled_reports").insert(payload);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -135,10 +134,9 @@ export function useScheduledReportsPage() {
         filters: { schedule_time: data.schedule_time, schedule_day: data.schedule_day ?? null },
         updated_at: new Date().toISOString(),
       };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await supabase
         .from("scheduled_reports")
-        .update(payload as any)
+        .update(payload)
         .eq("id", id);
       if (error) throw error;
     },
