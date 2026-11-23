@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: organograma no sidebar, check placeholder no deploy e timeout do teste (#251)",
    "chore: inventario do estado real [auto] (#250)",
    "build(deps): bump @testing-library/jest-dom (#249)",
    "docs: registra que producao estava quebrada e o que foi corrigido (#247)",
-   "fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)",
-   "docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)"
+   "fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

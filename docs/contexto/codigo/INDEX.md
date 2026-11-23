@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `d38728030d49def19c2787eb3fb460ed74c2e3a6` (2026-11-23T07:57:22-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `c390eb8be45b6a56c2c1bcb5aad8d68d17a38040` (2026-11-23T08:19:15-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1414 |
-| linhas_codigo | 151825 |
+| linhas_codigo | 151887 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -302,15 +302,15 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package.json (25)
 - scripts/ci/eslint-baseline.json (17)
 - scripts/ci/prettier-baseline.json (16)
-- .github/workflows/deploy.yml (13)
+- .github/workflows/deploy.yml (14)
 - docs/pendencias/_linha-de-base.md (12)
 - src/routes/AppRoutes.tsx (8)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
 - src/index.css (5)
+- src/test/improvements-verification.test.ts (5)
 - supabase/config.toml (5)
 - desktop-agent/src/main.ts (4)
-- src/test/improvements-verification.test.ts (4)
 - .github/workflows/contexto.yml (3)
 - .github/workflows/lint.yml (3)
 
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `c390eb8be` fix: organograma no sidebar, check placeholder no deploy e timeout do teste (#251)
 - 2026-11-23 `d38728030` chore: inventario do estado real [auto] (#250)
 - 2026-11-23 `a528be538` build(deps): bump @testing-library/jest-dom (#249)
 - 2026-11-22 `40eb25ac4` docs: registra que producao estava quebrada e o que foi corrigido (#247)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `2e72aa8f7` fix(compliance): foto do aceite usa URL assinada em bucket privado (#238)
 - 2026-11-22 `05eebe835` fix(compliance): registra o aceite de politicas pela pagina de Compliance (#237)
 - 2026-11-22 `1e41729eb` feat(reports): botao Baixar do relatorio passa a gerar o PDF (#236)
-- 2026-11-22 `c0cba9a37` fix(security): SupervisorGuard deixa de confiar no papel do user_metadata (#235)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
