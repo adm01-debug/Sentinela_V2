@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: exige autenticacao em 3 edge functions abertas ao publico (#261)",
    "chore: remove DashboardTooltip orfao (#259)",
    "chore(types): regenera tipos do Supabase a partir do banco real (#260)",
    "fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)",
-   "fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)",
-   "docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)"
+   "fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

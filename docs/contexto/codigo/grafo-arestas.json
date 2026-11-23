@@ -4106,6 +4106,9 @@
    "src/integrations/supabase/client.ts",
    "src/utils/pdf/pdfHelpers.ts"
   ],
+  "supabase/functions/_shared/auth_test.ts": [
+   "supabase/functions/_shared/auth.ts"
+  ],
   "supabase/functions/agent-collector/contract_test.ts": [
    "supabase/functions/_shared/validation.ts"
   ],
@@ -4140,6 +4143,9 @@
    "supabase/functions/_shared/cors.ts",
    "supabase/functions/_shared/rateLimiting.ts"
   ],
+  "supabase/functions/generate-report/index.ts": [
+   "supabase/functions/_shared/auth.ts"
+  ],
   "supabase/functions/get-employee-schedule/index.ts": [
    "supabase/functions/_shared/rateLimiting.ts"
   ],
@@ -4171,6 +4177,7 @@
    "supabase/functions/_shared/rateLimiting.ts"
   ],
   "supabase/functions/process-violation-alert/index.ts": [
+   "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/rateLimiting.ts"
   ],
   "supabase/functions/request-overtime/index.ts": [
@@ -4199,6 +4206,7 @@
    "supabase/functions/_shared/whatsapp-evolution.ts"
   ],
   "supabase/functions/send-whatsapp/index.ts": [
+   "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/rateLimiting.ts",
    "supabase/functions/_shared/whatsapp-evolution.ts"
   ],

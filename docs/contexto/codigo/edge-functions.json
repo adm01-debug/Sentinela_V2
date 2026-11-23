@@ -19,6 +19,7 @@
  ],
  "shared": [
   "supabase/functions/_shared/auth.ts",
+  "supabase/functions/_shared/auth_test.ts",
   "supabase/functions/_shared/cors.ts",
   "supabase/functions/_shared/halfSpaceTrees.ts",
   "supabase/functions/_shared/logger.ts",
@@ -888,7 +889,7 @@
    "nome": "generate-report",
    "entrada": "supabase/functions/generate-report/index.ts",
    "arquivos": 1,
-   "linhas": 200,
+   "linhas": 212,
    "verify_jwt": false,
    "metodos": [
     "OPTIONS"
@@ -909,7 +910,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useReportsPage.ts",
     "src/pages/CustomReportsPage.tsx"
@@ -1637,7 +1640,7 @@
    "nome": "process-violation-alert",
    "entrada": "supabase/functions/process-violation-alert/index.ts",
    "arquivos": 1,
-   "linhas": 180,
+   "linhas": 193,
    "verify_jwt": false,
    "metodos": [
     "OPTIONS"
@@ -1660,6 +1663,7 @@
    ],
    "hosts_externos": [],
    "usa_shared": [
+    "auth.ts",
     "rateLimiting.ts"
    ],
    "chamada_pelo_front": [],
@@ -2107,7 +2111,7 @@
    "nome": "send-whatsapp",
    "entrada": "supabase/functions/send-whatsapp/index.ts",
    "arquivos": 2,
-   "linhas": 372,
+   "linhas": 384,
    "verify_jwt": false,
    "metodos": [
     "OPTIONS"
@@ -2133,6 +2137,7 @@
     "graph.facebook.com"
    ],
    "usa_shared": [
+    "auth.ts",
     "rateLimiting.ts",
     "whatsapp-evolution.ts"
    ],
@@ -2749,5 +2754,7 @@
    "testes": 0
   }
  ],
- "chamadas_sem_pasta": []
+ "chamadas_sem_pasta": [
+  "_gate"
+ ]
 }

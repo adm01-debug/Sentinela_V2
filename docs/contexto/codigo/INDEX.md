@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `cefc52fd251b98ba675ccea5c9e650a6fe155ad5` (2026-11-23T17:33:57-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `163389560c1fd0805c987af755f7edd306f66fee` (2026-11-23T17:36:22-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1393), Markdown (176), SQL (127), JSON (43), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1394), Markdown (176), SQL (127), JSON (43), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1861 |
-| arquivos_codigo | 1413 |
-| linhas_codigo | 155639 |
+| arquivos_total | 1862 |
+| arquivos_codigo | 1414 |
+| linhas_codigo | 155766 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -281,7 +281,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes_ambiguos: 0
 - menu_sem_destino: 8 — ex.: Configurações -> /settings, Configurações -> settings, Dashboard -> /
 - edges_orfas: 47 — ex.: agent-collector, archive-data, audit-export
-- edges_chamadas_sem_pasta: 0
+- edges_chamadas_sem_pasta: 1 — ex.: _gate
 - tabelas_sem_rls: 0
 - tabelas_usadas_sem_definicao: 1 — ex.: backups
 - tabelas_com_drift_migration_vs_types: 11 — ex.: badges, click_logs, employee_points
@@ -302,7 +302,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/eslint-baseline.json (17)
 - scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (15)
-- docs/pendencias/_linha-de-base.md (13)
+- docs/pendencias/_linha-de-base.md (14)
 - src/routes/AppRoutes.tsx (9)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
@@ -458,6 +458,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `163389560` fix: exige autenticacao em 3 edge functions abertas ao publico (#261)
 - 2026-11-23 `cefc52fd2` chore: remove DashboardTooltip orfao (#259)
 - 2026-11-23 `02b138dbc` chore(types): regenera tipos do Supabase a partir do banco real (#260)
 - 2026-11-23 `6867e4959` fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)
@@ -472,7 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `a528be538` build(deps): bump @testing-library/jest-dom (#249)
 - 2026-11-22 `40eb25ac4` docs: registra que producao estava quebrada e o que foi corrigido (#247)
 - 2026-11-22 `316357320` fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)
-- 2026-11-22 `b657b3e12` docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

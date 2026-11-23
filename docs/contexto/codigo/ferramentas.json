@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1393)",
+   "TypeScript (1394)",
    "Markdown (176)",
    "SQL (127)",
    "JSON (43)",
@@ -1297,6 +1297,10 @@
     "arquivos": 1
    },
    {
+    "host": "example.test",
+    "arquivos": 1
+   },
+   {
     "host": "fonts.googleapis.com",
     "arquivos": 1
    },
@@ -1318,6 +1322,10 @@
    },
    {
     "host": "placeholder.supabase.co",
+    "arquivos": 1
+   },
+   {
+    "host": "project-inexistente.invalid",
     "arquivos": 1
    },
    {
