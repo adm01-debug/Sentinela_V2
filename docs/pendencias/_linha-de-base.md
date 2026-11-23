@@ -371,13 +371,33 @@ nao tinham gate nenhum:
 (`verify_jwt` default) respondendo **200** ao mesmo apikey publico no header
 `Authorization`.
 
-**Corrigido nesta branch**: `_shared/auth.ts` ganhou `requireUserOrServiceRole`,
-que aceita apenas a `service_role` key (invocacao server-to-server: o
-`createClient(SUPABASE_SERVICE_ROLE_KEY)` do supabase-js envia sozinho, o que
-cobre `check-geofence`, `ocr-screenshot` e `risk-score-calculator` chamando
-`process-violation-alert`) ou um JWT de usuario valido (front com sessao). As 3
-funcoes passam a responder 401 para o resto. Teste de contrato em
-`_shared/auth_test.ts`.
+**Corrigido e provado em producao (PRs #261 e #262)**: `_shared/auth.ts` ganhou
+`requireUserOrServiceRole`, que so deixa passar a `service_role` key (chamada
+server-to-server: `check-geofence`, `ocr-screenshot` e `risk-score-calculator`
+chamando `process-violation-alert`) ou um JWT de usuario valido (front com
+sessao). O resto recebe 401. Teste de contrato em `_shared/auth_test.ts`.
+
+A primeira versao reconhecia a `service_role` so por igualdade de string com
+`SUPABASE_SERVICE_ROLE_KEY`; em projeto com o novo sistema de API keys o runtime
+recebe a secret key (`sb_secret_...`) e a Management API continua devolvendo o
+JWT legacy, entao a chamada interna passou a receber 401 (regressao detectada
+no pos-deploy da #261). A #262 manteve o fast path e, quando o token nao e de
+usuario, prova a credencial na API admin do GoTrue (`auth.admin.listUsers` com o
+proprio token), que so responde para service_role - cobre JWT legacy e secret
+key. Custo: 1 request extra so no caminho service_role ou token invalido.
+
+Medido em producao depois do deploy de `61b2323c6` (run 45264419565, 3 jobs
+success), com POST `{}` real:
+
+| Chamador                                    | send-whatsapp | generate-report | process-violation-alert |
+| ------------------------------------------- | ------------- | --------------- | ----------------------- |
+| anonimo (chave publicavel)                  | 401           | 401             | 401                     |
+| service_role legacy (Authorization+apikey)  | 400           | 400             | 400                     |
+| JWT de usuario real (temp, depois removido) | 400           | 400             | 400                     |
+
+`apikey` sozinho, sem `Authorization`, devolve 401: `functions.invoke` do
+supabase-js sempre envia os dois headers, e os 3 chamadores internos usam
+`functions.invoke`.
 
 ### Edge functions
 
