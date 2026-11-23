@@ -18,6 +18,26 @@ interface Recommendation {
   metrics?: Record<string, any>;
 }
 
+interface EmployeeRow {
+  id: string;
+  name: string;
+}
+
+interface ViolationRow {
+  severity?: string | null;
+  violation_type?: string | null;
+  policy_name?: string | null;
+}
+
+interface KeystrokeRow {
+  employee_name: string;
+  app_name: string | null;
+  active_time_seconds: number | null;
+  idle_time_seconds: number | null;
+  recorded_at: string | null;
+  created_at: string;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -33,18 +53,26 @@ serve(async (req) => {
     const recommendations: Recommendation[] = [];
 
     const [activitiesRes, violationsRes, employeesRes] = await Promise.all([
-      supabase.from("activities").select("*").order("created_at", { ascending: false }).limit(1000),
-      supabase.from("violations").select("*").order("created_at", { ascending: false }).limit(200),
-      supabase.from("employees").select("*").eq("status", "active")
+      supabase
+        .from("keystroke_logs")
+        .select("*")
+        .order("recorded_at", { ascending: false })
+        .limit(1000),
+      supabase
+        .from("security_violations")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(200),
+      supabase.from("employees").select("*").eq("status", "active"),
     ]);
 
-    const activities = activitiesRes.data || [];
-    const violations = violationsRes.data || [];
-    const employees = employeesRes.data || [];
+    const activities = (activitiesRes.data || []) as KeystrokeRow[];
+    const violations = (violationsRes.data || []) as ViolationRow[];
+    const employees = (employeesRes.data || []) as EmployeeRow[];
 
     // Analyze violation patterns for policy recommendations
     const violationTypes: Record<string, number> = {};
-    violations.forEach((v: any) => {
+    violations.forEach((v) => {
       const key = v.violation_type || v.policy_name || "sem_classificacao";
       violationTypes[key] = (violationTypes[key] || 0) + 1;
     });
@@ -62,15 +90,24 @@ serve(async (req) => {
         actions: [
           "Review current policy for this violation type",
           "Communicate updated guidelines to employees",
-          "Consider automated prevention measures"
+          "Consider automated prevention measures",
         ],
-        metrics: { violationCount: topViolationType[1], type: topViolationType[0] }
+        metrics: { violationCount: topViolationType[1], type: topViolationType[0] },
       });
     }
 
     // Productivity recommendations
-    const productivityScores = activities.filter((a: any) => a.productivity_score).map((a: any) => a.productivity_score);
-    const avgProductivity = productivityScores.length > 0 ? productivityScores.reduce((a: number, b: number) => a + b, 0) / productivityScores.length : 0;
+    const productivityRatios = activities
+      .map((a) => {
+        const active = Number(a.active_time_seconds ?? 0);
+        const idle = Number(a.idle_time_seconds ?? 0);
+        return active + idle > 0 ? (active / (active + idle)) * 100 : null;
+      })
+      .filter((v): v is number => v !== null);
+    const avgProductivity =
+      productivityRatios.length > 0
+        ? productivityRatios.reduce((a, b) => a + b, 0) / productivityRatios.length
+        : 0;
 
     if (avgProductivity < 50) {
       recommendations.push({
@@ -85,15 +122,15 @@ serve(async (req) => {
           "Identify top time-consuming non-productive applications",
           "Implement focus time policies",
           "Review and optimize workflows",
-          "Consider productivity training"
+          "Consider productivity training",
         ],
-        metrics: { avgProductivity }
+        metrics: { avgProductivity },
       });
     }
 
     // Security recommendations
-    const criticalViolations = violations.filter((v: any) => v.severity === "critical").length;
-    const highViolations = violations.filter((v: any) => v.severity === "high").length;
+    const criticalViolations = violations.filter((v) => v.severity === "critical").length;
+    const highViolations = violations.filter((v) => v.severity === "high").length;
 
     if (criticalViolations > 0 || highViolations > 5) {
       recommendations.push({
@@ -108,15 +145,15 @@ serve(async (req) => {
           "Review and address all critical violations immediately",
           "Implement stricter access controls",
           "Enable additional monitoring for sensitive operations",
-          "Conduct security awareness training"
+          "Conduct security awareness training",
         ],
-        metrics: { criticalViolations, highViolations }
+        metrics: { criticalViolations, highViolations },
       });
     }
 
     // Resource optimization
-    const employeesWithLowActivity = employees.filter((e: any) => {
-      const empActivities = activities.filter((a: any) => a.employee_id === e.id);
+    const employeesWithLowActivity = employees.filter((e) => {
+      const empActivities = activities.filter((a) => a.employee_name === e.name);
       return empActivities.length < 10;
     }).length;
 
@@ -133,9 +170,9 @@ serve(async (req) => {
           "Verify agent installation on affected devices",
           "Check network connectivity issues",
           "Review employee work patterns",
-          "Update monitoring policies if needed"
+          "Update monitoring policies if needed",
         ],
-        metrics: { lowActivityCount: employeesWithLowActivity, totalEmployees: employees.length }
+        metrics: { lowActivityCount: employeesWithLowActivity, totalEmployees: employees.length },
       });
     }
 
@@ -153,17 +190,17 @@ serve(async (req) => {
           dataAnalyzed: {
             activities: activities.length,
             violations: violations.length,
-            employees: employees.length
-          }
-        }
+            employees: employees.length,
+          },
+        },
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

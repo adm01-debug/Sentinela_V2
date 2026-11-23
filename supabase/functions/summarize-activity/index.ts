@@ -6,6 +6,15 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+interface KeystrokeRow {
+  employee_name: string;
+  app_name: string | null;
+  active_time_seconds: number | null;
+  idle_time_seconds: number | null;
+  recorded_at: string | null;
+  created_at: string;
+}
+
 interface ActivitySummary {
   period: string;
   totalActivities: number;
@@ -28,28 +37,29 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { period = "day", employeeId, teamId } = await req.json();
-    
+    const { period = "day", employeeId } = await req.json();
+
     const periodHours = period === "day" ? 24 : period === "week" ? 168 : 720;
     const since = new Date(Date.now() - periodHours * 60 * 60 * 1000).toISOString();
 
     // Fetch activities
-    let activityQuery = supabase.from("activities").select("*").gte("created_at", since);
-    if (employeeId) activityQuery = activityQuery.eq("employee_id", employeeId);
-    const { data: activities } = await activityQuery;
+    let activityQuery = supabase.from("keystroke_logs").select("*").gte("recorded_at", since);
+    if (employeeId) activityQuery = activityQuery.eq("employee_name", employeeId);
+    const { data: activitiesRaw } = await activityQuery;
+    const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
     // Fetch violations
-    let violationQuery = supabase.from("violations").select("*").gte("created_at", since);
+    let violationQuery = supabase.from("security_violations").select("*").gte("created_at", since);
     const { data: violations } = await violationQuery;
 
     // Calculate metrics
     const totalActivities = activities?.length || 0;
-    const uniqueUsers = new Set(activities?.map((a: any) => a.employee_id)).size;
+    const uniqueUsers = new Set(activities?.map((a) => a.employee_name)).size;
 
-    // Top applications (a aplicacao vive em metadata; a view activities nao expoe coluna propria)
+    // Top applications
     const appCounts: Record<string, number> = {};
-    activities?.forEach((a: any) => {
-      const app = a.metadata?.application ?? a.metadata?.app_name ?? a.entity_type;
+    activities?.forEach((a) => {
+      const app = a.app_name;
       if (app) appCounts[app] = (appCounts[app] || 0) + 1;
     });
     const topApplications = Object.entries(appCounts)
@@ -61,16 +71,17 @@ serve(async (req) => {
         percentage: Math.round((count / totalActivities) * 100),
       }));
 
-    // Productivity score
-    const productivityScores = activities?.filter((a: any) => a.productivity_score).map((a: any) => a.productivity_score) || [];
-    const productivityScore = productivityScores.length > 0 
-      ? Math.round(productivityScores.reduce((a: number, b: number) => a + b, 0) / productivityScores.length)
-      : 0;
+    // Productivity score (productive vs active time)
+    const totalActive =
+      activities?.reduce((s: number, a) => s + (a.active_time_seconds || 0), 0) || 0;
+    const totalIdle = activities?.reduce((s: number, a) => s + (a.idle_time_seconds || 0), 0) || 0;
+    const productivityScore =
+      totalActive + totalIdle > 0 ? Math.round((totalActive / (totalActive + totalIdle)) * 100) : 0;
 
     // Peak hours
     const hourCounts: Record<number, number> = {};
-    activities?.forEach((a: any) => {
-      const hour = new Date(a.created_at).getHours();
+    activities?.forEach((a) => {
+      const hour = new Date(a.recorded_at ?? a.created_at).getHours();
       hourCounts[hour] = (hourCounts[hour] || 0) + 1;
     });
     const peakHours = Object.entries(hourCounts)
@@ -80,7 +91,7 @@ serve(async (req) => {
 
     // Violations summary
     const violationsBySeverity: Record<string, number> = {};
-    violations?.forEach((v: any) => {
+    violations?.forEach((v: { severity?: string }) => {
       violationsBySeverity[v.severity] = (violationsBySeverity[v.severity] || 0) + 1;
     });
 
@@ -90,10 +101,17 @@ serve(async (req) => {
       highlights.push(`${totalActivities} activities recorded from ${uniqueUsers} users`);
     }
     if (topApplications.length > 0) {
-      highlights.push(`Most used app: ${topApplications[0].name} (${topApplications[0].percentage}%)`);
+      highlights.push(
+        `Most used app: ${topApplications[0].name} (${topApplications[0].percentage}%)`
+      );
     }
     if (productivityScore > 0) {
-      const status = productivityScore >= 70 ? "good" : productivityScore >= 50 ? "moderate" : "needs improvement";
+      const status =
+        productivityScore >= 70
+          ? "good"
+          : productivityScore >= 50
+            ? "moderate"
+            : "needs improvement";
       highlights.push(`Productivity is ${status} at ${productivityScore}%`);
     }
     if (violations?.length) {
@@ -128,9 +146,9 @@ serve(async (req) => {
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

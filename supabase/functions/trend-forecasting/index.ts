@@ -6,6 +6,18 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+interface KeystrokeRow {
+  active_time_seconds: number | null;
+  idle_time_seconds: number | null;
+  recorded_at: string | null;
+  created_at: string | null;
+}
+
+interface ViolationRow {
+  created_at: string;
+  severity: string | null;
+}
+
 interface TrendForecast {
   metric: string;
   currentValue: number;
@@ -27,22 +39,24 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { metrics = ["activity", "violations", "productivity"], forecastDays = 7 } = await req.json();
+    const { metrics = ["activity", "violations", "productivity"], forecastDays = 7 } =
+      await req.json();
     const forecasts: TrendForecast[] = [];
 
     // Get historical data (last 30 days)
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     if (metrics.includes("activity")) {
-      const { data: activities } = await supabase
-        .from("activities")
-        .select("created_at")
-        .gte("created_at", thirtyDaysAgo);
+      const { data: activitiesRaw } = await supabase
+        .from("keystroke_logs")
+        .select("recorded_at")
+        .gte("recorded_at", thirtyDaysAgo);
+      const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
       // Group by day
       const dailyCounts: Record<string, number> = {};
-      activities?.forEach((a: any) => {
-        const date = a.created_at.split("T")[0];
+      activities.forEach((a) => {
+        const date = (a.recorded_at ?? a.created_at).split("T")[0];
         dailyCounts[date] = (dailyCounts[date] || 0) + 1;
       });
 
@@ -69,21 +83,22 @@ serve(async (req) => {
           currentValue,
           predictedValue,
           trend: slope > 1 ? "increasing" : slope < -1 ? "decreasing" : "stable",
-          confidence: Math.min(0.9, 0.5 + (n / 60)),
+          confidence: Math.min(0.9, 0.5 + n / 60),
           timeframe: `${forecastDays} days`,
-          dataPoints: dataPoints.slice(-14)
+          dataPoints: dataPoints.slice(-14),
         });
       }
     }
 
     if (metrics.includes("violations")) {
-      const { data: violations } = await supabase
-        .from("violations")
+      const { data: violationsRaw } = await supabase
+        .from("security_violations")
         .select("created_at, severity")
         .gte("created_at", thirtyDaysAgo);
+      const violations = (violationsRaw ?? []) as ViolationRow[];
 
       const dailyCounts: Record<string, number> = {};
-      violations?.forEach((v: any) => {
+      violations.forEach((v) => {
         const date = v.created_at.split("T")[0];
         dailyCounts[date] = (dailyCounts[date] || 0) + 1;
       });
@@ -110,25 +125,29 @@ serve(async (req) => {
           currentValue,
           predictedValue,
           trend: slope > 0.5 ? "increasing" : slope < -0.5 ? "decreasing" : "stable",
-          confidence: Math.min(0.85, 0.4 + (n / 60)),
+          confidence: Math.min(0.85, 0.4 + n / 60),
           timeframe: `${forecastDays} days`,
-          dataPoints: dataPoints.slice(-14)
+          dataPoints: dataPoints.slice(-14),
         });
       }
     }
 
     if (metrics.includes("productivity")) {
-      const { data: activities } = await supabase
-        .from("activities")
-        .select("created_at, productivity_score")
-        .gte("created_at", thirtyDaysAgo)
-        .not("productivity_score", "is", null);
+      const { data: activitiesRaw } = await supabase
+        .from("keystroke_logs")
+        .select("recorded_at, active_time_seconds, idle_time_seconds")
+        .gte("recorded_at", thirtyDaysAgo)
+        .not("active_time_seconds", "is", null);
+      const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
       const dailyScores: Record<string, { sum: number; count: number }> = {};
-      activities?.forEach((a: any) => {
-        const date = a.created_at.split("T")[0];
+      activities.forEach((a) => {
+        const date = (a.recorded_at ?? a.created_at).split("T")[0];
+        const active = Number(a.active_time_seconds ?? 0);
+        const idle = Number(a.idle_time_seconds ?? 0);
+        if (active + idle === 0) return;
         if (!dailyScores[date]) dailyScores[date] = { sum: 0, count: 0 };
-        dailyScores[date].sum += a.productivity_score;
+        dailyScores[date].sum += (active / (active + idle)) * 100;
         dailyScores[date].count++;
       });
 
@@ -147,16 +166,19 @@ serve(async (req) => {
         const intercept = (sumY - slope * sumX) / n;
 
         const currentValue = dataPoints[dataPoints.length - 1].value;
-        const predictedValue = Math.min(100, Math.max(0, Math.round(intercept + slope * (n + forecastDays))));
+        const predictedValue = Math.min(
+          100,
+          Math.max(0, Math.round(intercept + slope * (n + forecastDays)))
+        );
 
         forecasts.push({
           metric: "productivity_score",
           currentValue,
           predictedValue,
           trend: slope > 0.5 ? "increasing" : slope < -0.5 ? "decreasing" : "stable",
-          confidence: Math.min(0.8, 0.45 + (n / 60)),
+          confidence: Math.min(0.8, 0.45 + n / 60),
           timeframe: `${forecastDays} days`,
-          dataPoints: dataPoints.slice(-14)
+          dataPoints: dataPoints.slice(-14),
         });
       }
     }
@@ -166,16 +188,16 @@ serve(async (req) => {
         forecasts,
         metadata: {
           forecastDays,
-          generatedAt: new Date().toISOString()
-        }
+          generatedAt: new Date().toISOString(),
+        },
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

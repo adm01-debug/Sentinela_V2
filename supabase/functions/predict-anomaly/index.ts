@@ -6,6 +6,12 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+interface KeystrokeRow {
+  employee_name: string | null;
+  recorded_at: string | null;
+  created_at: string | null;
+}
+
 interface AnomalyPrediction {
   id: string;
   type: string;
@@ -28,35 +34,37 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { entityType, entityId, timeRange = "24h", threshold = 0.7 } = await req.json();
+    const { timeRange = "24h", threshold = 0.7 } = await req.json();
 
     // Fetch recent activity data
     const hoursAgo = timeRange === "24h" ? 24 : timeRange === "7d" ? 168 : 720;
     const since = new Date(Date.now() - hoursAgo * 60 * 60 * 1000).toISOString();
 
-    const { data: activities, error } = await supabase
-      .from("activities")
+    const { data: activitiesRaw, error } = await supabase
+      .from("keystroke_logs")
       .select("*")
-      .gte("created_at", since)
-      .order("created_at", { ascending: false })
+      .gte("recorded_at", since)
+      .order("recorded_at", { ascending: false })
       .limit(1000);
 
     if (error) throw error;
+    const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
     // Analyze patterns and detect anomalies
     const predictions: AnomalyPrediction[] = [];
-    
+
     // Group activities by hour
     const hourlyGroups: Record<number, number> = {};
-    activities?.forEach((a: any) => {
-      const hour = new Date(a.created_at).getHours();
+    activities.forEach((a) => {
+      const hour = new Date(a.recorded_at ?? a.created_at).getHours();
       hourlyGroups[hour] = (hourlyGroups[hour] || 0) + 1;
     });
 
     // Calculate statistics
     const values = Object.values(hourlyGroups);
     const mean = values.reduce((a, b) => a + b, 0) / values.length || 0;
-    const stdDev = Math.sqrt(values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length) || 1;
+    const stdDev =
+      Math.sqrt(values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length) || 1;
 
     // Detect anomalies using Z-score
     Object.entries(hourlyGroups).forEach(([hour, count]) => {
@@ -74,9 +82,9 @@ serve(async (req) => {
             suggestedActions: [
               "Review activity logs for this time period",
               "Check if scheduled tasks were running",
-              "Verify user behavior patterns"
+              "Verify user behavior patterns",
             ],
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
           });
         }
       }
@@ -84,13 +92,16 @@ serve(async (req) => {
 
     // Check for behavioral anomalies
     const userGroups: Record<string, number> = {};
-    activities?.forEach((a: any) => {
-      if (a.user_id) userGroups[a.user_id] = (userGroups[a.user_id] || 0) + 1;
+    activities.forEach((a) => {
+      if (a.employee_name) userGroups[a.employee_name] = (userGroups[a.employee_name] || 0) + 1;
     });
 
     const userValues = Object.values(userGroups);
     const userMean = userValues.reduce((a, b) => a + b, 0) / userValues.length || 0;
-    const userStdDev = Math.sqrt(userValues.reduce((sum, v) => sum + Math.pow(v - userMean, 2), 0) / userValues.length) || 1;
+    const userStdDev =
+      Math.sqrt(
+        userValues.reduce((sum, v) => sum + Math.pow(v - userMean, 2), 0) / userValues.length
+      ) || 1;
 
     Object.entries(userGroups).forEach(([userId, count]) => {
       const zScore = (count - userMean) / userStdDev;
@@ -105,9 +116,9 @@ serve(async (req) => {
           suggestedActions: [
             "Review user's recent activities",
             "Check for automated or scripted behavior",
-            "Verify account security"
+            "Verify account security",
           ],
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         });
       }
     });
@@ -119,16 +130,16 @@ serve(async (req) => {
           analyzedRecords: activities?.length || 0,
           timeRange,
           threshold,
-          generatedAt: new Date().toISOString()
-        }
+          generatedAt: new Date().toISOString(),
+        },
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });
