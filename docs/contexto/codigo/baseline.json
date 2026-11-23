@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c390eb8be45b6a56c2c1bcb5aad8d68d17a38040",
+  "commit": "2f8ef3c851e829054760e5a9e4e81da30a652aed",
   "branch": "main",
-  "data_commit": "2026-11-23T08:19:15-03:00",
+  "data_commit": "2026-11-23T08:40:12-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2f8ef3c85",
+    "data": "2026-11-23",
+    "assunto": "feat: expõe páginas sem link no sidebar (#252)"
+   },
    {
     "sha": "c390eb8be",
     "data": "2026-11-23",
@@ -126,11 +131,6 @@
     "sha": "09fee0333",
     "data": "2026-11-22",
     "assunto": "fix(ci): usa --remote no db push, que nao sera removido na v4 (#228)"
-   },
-   {
-    "sha": "68d4328da",
-    "data": "2026-11-22",
-    "assunto": "fix(ci): aplica migrations no projeto linkado, nao no stack local (#227)"
    }
   ],
   "arquivos_mudados_7d": 201,
@@ -250,6 +250,10 @@
     "mudancas": 4
    },
    {
+    "arquivo": "src/components/AppSidebar.tsx",
+    "mudancas": 4
+   },
+   {
     "arquivo": ".github/workflows/contexto.yml",
     "mudancas": 3
    },
@@ -271,10 +275,6 @@
    },
    {
     "arquivo": "inventario/estado/edges.json",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "src/components/AppSidebar.tsx",
     "mudancas": 3
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 149
+    "commits": 150
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1414,
-  "linhas_codigo": 151887,
+  "linhas_codigo": 151894,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44945
+   "linhas": 44952
   },
   "src/constants": {
    "arquivos": 7,
@@ -593,12 +593,12 @@
    "linhas": 424
   },
   {
-   "arquivo": "src/components/security/SessionIndicator.tsx",
-   "linhas": 420
+   "arquivo": "src/components/AppSidebar.tsx",
+   "linhas": 422
   },
   {
-   "arquivo": "src/components/AppSidebar.tsx",
-   "linhas": 415
+   "arquivo": "src/components/security/SessionIndicator.tsx",
+   "linhas": 420
   },
   {
    "arquivo": "src/components/KPIWidget.tsx",
