@@ -170,6 +170,11 @@ const navSections: NavSection[] = [
       { icon: ShieldAlert, labelKey: "Palavras Sensiveis", path: "/admin/dlp/keywords" },
       { icon: Fingerprint, labelKey: "Analise de Comportamento (UEBA)", path: "/admin/ueba" },
       { icon: Zap, labelKey: "Edge Functions", path: "/admin/edge-functions" },
+      {
+        icon: MessageSquare,
+        labelKey: "Modelos de Mensagem",
+        path: "/admin/message-templates",
+      },
       { icon: Video, labelKey: "Relatório Live View", path: "/admin/live-view-report" },
       { icon: Wifi, labelKey: "Diagnóstico ICE/TURN", path: "/admin/ice-diagnostics" },
       { icon: Download, labelKey: "nav.exportData", path: "/export" },
