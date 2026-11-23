@@ -26,10 +26,15 @@ export async function verifyAuth(req: Request) {
  * O gateway do Supabase aceita a chave publicavel (apikey) no header
  * Authorization, entao verify_jwt = true nao prova que existe um usuario
  * logado. Aqui so passam:
- *  - a service_role key (invocacao server-to-server, cron/pg_net), que o
- *    createClient(SUPABASE_SERVICE_ROLE_KEY) do supabase-js envia sozinho; ou
+ *  - a service_role key (invocacao server-to-server, cron/pg_net); ou
  *  - um JWT de usuario valido (front com sessao).
  * Qualquer outro token, incluindo a chave publicavel, lanca erro.
+ *
+ * A service_role nao pode ser reconhecida so por comparacao com
+ * SUPABASE_SERVICE_ROLE_KEY: em projeto com o novo sistema de API keys o
+ * runtime recebe a secret key (`sb_secret_...`), que nao e o JWT legacy
+ * devolvido pela Management API. Por isso o token desconhecido e validado
+ * contra a API admin do GoTrue, que so aceita service_role.
  */
 export async function requireUserOrServiceRole(req: Request) {
   const authHeader = req.headers.get('Authorization') ?? req.headers.get('authorization') ?? '';
@@ -37,8 +42,8 @@ export async function requireUserOrServiceRole(req: Request) {
 
   const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
   const apiKey = req.headers.get('apikey') ?? '';
-  // O supabase-js manda a chave do client nos dois headers; aceitar os dois
-  // garante que a chamada server-to-server (service_role) nunca seja barrada.
+  // Caminho rapido: o chamador server-to-server le o mesmo env, entao o valor
+  // bate sem roundtrip extra.
   if (serviceRoleKey && (token === serviceRoleKey || apiKey === serviceRoleKey)) {
     return { user: null, isServiceRole: true };
   }
@@ -47,16 +52,25 @@ export async function requireUserOrServiceRole(req: Request) {
     throw new Error('Missing authorization header');
   }
 
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL') ?? '',
-    apiKey || (Deno.env.get('SUPABASE_ANON_KEY') ?? ''),
-    { auth: { persistSession: false, autoRefreshToken: false } }
-  );
+  const url = Deno.env.get('SUPABASE_URL') ?? '';
 
-  const { data: { user }, error } = await supabase.auth.getUser(token);
-  if (error || !user) {
-    throw new Error('Invalid token');
+  const userClient = createClient(url, apiKey || (Deno.env.get('SUPABASE_ANON_KEY') ?? ''), {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data: { user } } = await userClient.auth.getUser(token);
+  if (user) {
+    return { user, isServiceRole: false };
   }
 
-  return { user, isServiceRole: false };
+  // A API admin do GoTrue so responde com service_role (JWT legacy ou secret
+  // key): sucesso aqui prova a credencial, sem depender do formato da chave.
+  const adminProbe = createClient(url, token, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { error: adminError } = await adminProbe.auth.admin.listUsers({ page: 1, perPage: 1 });
+  if (!adminError) {
+    return { user: null, isServiceRole: true };
+  }
+
+  throw new Error('Invalid token');
 }
