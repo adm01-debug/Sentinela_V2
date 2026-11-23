@@ -31,9 +31,9 @@ serve(async (req) => {
     const since = new Date(Date.now() - analysisPeriod * 24 * 60 * 60 * 1000).toISOString();
 
     // Fetch activities
-    let query = supabase.from("activities").select("*").gte("created_at", since);
-    if (employeeId) query = query.eq("employee_id", employeeId);
-    const { data: activities } = await query.order("created_at", { ascending: true });
+    let query = supabase.from("keystroke_logs").select("*").gte("recorded_at", since);
+    if (employeeId) query = query.eq("employee_name", employeeId);
+    const { data: activities } = await query.order("recorded_at", { ascending: true });
 
     const patterns: BehaviorPattern[] = [];
 
@@ -47,11 +47,13 @@ serve(async (req) => {
     // Analyze work hour patterns
     const hourDistribution: Record<number, number> = {};
     activities.forEach((a: any) => {
-      const hour = new Date(a.created_at).getHours();
+      const hour = new Date(a.recorded_at ?? a.created_at).getHours();
       hourDistribution[hour] = (hourDistribution[hour] || 0) + 1;
     });
 
-    const workHours = Object.entries(hourDistribution).filter(([_, count]) => count > activities.length * 0.01);
+    const workHours = Object.entries(hourDistribution).filter(
+      ([_, count]) => count > activities.length * 0.01
+    );
     const startHour = Math.min(...workHours.map(([h]) => parseInt(h)));
     const endHour = Math.max(...workHours.map(([h]) => parseInt(h)));
 
@@ -64,14 +66,14 @@ serve(async (req) => {
       affectedMetrics: ["work_hours", "availability"],
     });
 
-    // Analyze application usage patterns (a aplicacao vive em metadata; a view activities nao expoe coluna propria)
+    // Analyze application usage patterns
     const appUsage: Record<string, { count: number; totalTime: number }> = {};
     activities.forEach((a: any) => {
-      const app = a.metadata?.application ?? a.metadata?.app_name ?? a.entity_type;
+      const app = a.app_name;
       if (app) {
         if (!appUsage[app]) appUsage[app] = { count: 0, totalTime: 0 };
         appUsage[app].count++;
-        appUsage[app].totalTime += a.metadata?.duration || 0;
+        appUsage[app].totalTime += Number(a.active_time_seconds ?? 0);
       }
     });
 
@@ -93,10 +95,12 @@ serve(async (req) => {
     // Detect productivity trends
     const dailyProductivity: Record<string, number[]> = {};
     activities.forEach((a: any) => {
-      if (a.productivity_score) {
-        const day = a.created_at.split("T")[0];
+      const active = Number(a.active_time_seconds ?? 0);
+      const idle = Number(a.idle_time_seconds ?? 0);
+      if (active + idle > 0) {
+        const day = (a.recorded_at ?? a.created_at).split("T")[0];
         if (!dailyProductivity[day]) dailyProductivity[day] = [];
-        dailyProductivity[day].push(a.productivity_score);
+        dailyProductivity[day].push((active / (active + idle)) * 100);
       }
     });
 
@@ -120,11 +124,14 @@ serve(async (req) => {
           confidence: 0.75,
           frequency: "weekly",
           affectedMetrics: ["productivity"],
-          recommendations: trend < 0 ? [
-            "Review workload distribution",
-            "Check for blocking issues",
-            "Consider schedule optimization",
-          ] : undefined,
+          recommendations:
+            trend < 0
+              ? [
+                  "Review workload distribution",
+                  "Check for blocking issues",
+                  "Consider schedule optimization",
+                ]
+              : undefined,
         });
       }
     }
@@ -169,9 +176,9 @@ serve(async (req) => {
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

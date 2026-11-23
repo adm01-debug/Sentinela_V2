@@ -123,7 +123,7 @@ serve(async (req) => {
     // Search violations
     if (tables.includes("violations")) {
       const { data: violations } = await supabase
-        .from("violations")
+        .from("security_violations")
         .select("id, violation_type, policy_name, severity, description, employee_name, created_at")
         .or(
           keywords
@@ -158,13 +158,12 @@ serve(async (req) => {
     // Search activities
     if (tables.includes("activities")) {
       const { data: activities } = await supabase
-        .from("activities")
-        .select("id, activity_type, description, entity_type, employee_id, created_at")
+        .from("keystroke_logs")
+        .select("id, app_name, employee_name, recorded_at")
         .or(
           keywords
             .map(
-              (k: string) =>
-                `activity_type.ilike.%${k}%,description.ilike.%${k}%,entity_type.ilike.%${k}%`
+              (k: string) => `app_name.ilike.%${k}%,employee_name.ilike.%${k}%,device.ilike.%${k}%`
             )
             .join(",")
         )
@@ -172,17 +171,16 @@ serve(async (req) => {
 
       activities?.forEach((act: any) => {
         const score = keywords.reduce((s: number, k: string) => {
-          if (act.activity_type?.toLowerCase().includes(k)) s += 0.3;
-          if (act.description?.toLowerCase().includes(k)) s += 0.4;
-          if (act.entity_type?.toLowerCase().includes(k)) s += 0.2;
+          if (act.app_name?.toLowerCase().includes(k)) s += 0.3;
+          if (act.employee_name?.toLowerCase().includes(k)) s += 0.4;
           return s;
         }, 0.1);
 
         results.push({
           id: act.id,
           type: "activity",
-          title: act.description || act.activity_type,
-          description: `Activity: ${act.activity_type}`,
+          title: `${act.employee_name} - ${act.app_name ?? "Sem aplicativo"}`,
+          description: `Activity: ${act.app_name ?? "N/A"}`,
           score: Math.min(score, 1),
           metadata: act,
         });
