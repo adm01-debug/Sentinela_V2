@@ -48,6 +48,8 @@ import {
   Fingerprint,
   Zap,
   GitBranch,
+  Book,
+  Wifi,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUIStore } from "@/stores";
@@ -82,6 +84,7 @@ const navSections: NavSection[] = [
       { icon: Home, labelKey: "nav.dashboard", path: ROUTES.DASHBOARD },
       { icon: Users, labelKey: "nav.employees", path: ROUTES.EMPLOYEES },
       { icon: Activity, labelKey: "nav.activities", path: ROUTES.ACTIVITIES },
+      { icon: Clock, labelKey: "Linha do Tempo", path: "/activities/timeline" },
       { icon: Monitor, labelKey: "nav.monitoring", path: "/monitoring" },
     ],
   },
@@ -102,6 +105,7 @@ const navSections: NavSection[] = [
     items: [
       { icon: Shield, labelKey: "nav.violations", path: "/violations" },
       { icon: Bell, labelKey: "nav.alerts", path: ROUTES.ALERTS },
+      { icon: Bell, labelKey: "Regras de Alerta", path: "/alerts/rules" },
       { icon: Camera, labelKey: "nav.screenshots", path: ROUTES.SCREENSHOTS },
       { icon: Video, labelKey: "Gravações de Sessão", path: "/admin/session-recordings" },
       { icon: FileSymlink, labelKey: "Transferências de Arquivos", path: "/admin/file-transfers" },
@@ -114,6 +118,7 @@ const navSections: NavSection[] = [
     items: [
       { icon: BarChart3, labelKey: "nav.analytics", path: ROUTES.ANALYTICS },
       { icon: FileText, labelKey: "nav.reports", path: ROUTES.REPORTS },
+      { icon: FileText, labelKey: "Relatórios Agendados", path: "/reports/scheduled" },
       { icon: Brain, labelKey: "nav.aiAnalysis", path: "/ai-analysis" },
     ],
   },
@@ -165,6 +170,7 @@ const navSections: NavSection[] = [
       { icon: Fingerprint, labelKey: "Analise de Comportamento (UEBA)", path: "/admin/ueba" },
       { icon: Zap, labelKey: "Edge Functions", path: "/admin/edge-functions" },
       { icon: Video, labelKey: "Relatório Live View", path: "/admin/live-view-report" },
+      { icon: Wifi, labelKey: "Diagnóstico ICE/TURN", path: "/admin/ice-diagnostics" },
       { icon: Download, labelKey: "nav.exportData", path: "/export" },
     ],
   },
@@ -183,6 +189,7 @@ const navSections: NavSection[] = [
     items: [
       { icon: Settings, labelKey: "nav.settings", path: ROUTES.SETTINGS },
       { icon: Key, labelKey: "nav.apiKeys", path: ROUTES.SETTINGS_API },
+      { icon: Book, labelKey: "Documentação API", path: "/docs/api" },
       { icon: DownloadCloud, labelKey: "Onboarding do Agente", path: "/agents/onboarding" },
     ],
   },
