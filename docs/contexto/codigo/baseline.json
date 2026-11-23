@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "a528be538b2652144cda8569175797a5abe18324",
+  "commit": "d38728030d49def19c2787eb3fb460ed74c2e3a6",
   "branch": "main",
-  "data_commit": "2026-11-23T07:57:18-03:00",
+  "data_commit": "2026-11-23T07:57:22-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "d38728030",
+    "data": "2026-11-23",
+    "assunto": "chore: inventario do estado real [auto] (#250)"
+   },
    {
     "sha": "a528be538",
     "data": "2026-11-23",
@@ -126,14 +131,9 @@
     "sha": "e2dc03c0b",
     "data": "2026-11-22",
     "assunto": "infra(ci): aplica migrations pendentes no deploy de producao (#222)"
-   },
-   {
-    "sha": "de8c511c7",
-    "data": "2026-11-22",
-    "assunto": "fix(aceite): envia a foto do aceite para a pasta do usuario autenticado (#226)"
    }
   ],
-  "arquivos_mudados_7d": 200,
+  "arquivos_mudados_7d": 201,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -270,6 +270,10 @@
     "mudancas": 3
    },
    {
+    "arquivo": "inventario/estado/edges.json",
+    "mudancas": 3
+   },
+   {
     "arquivo": "src/components/PolicyAcknowledgmentDialog.tsx",
     "mudancas": 3
    },
@@ -292,10 +296,6 @@
    {
     "arquivo": "src/pages/__tests__/Settings.test.tsx",
     "mudancas": 3
-   },
-   {
-    "arquivo": "src/test/comprehensive-validation.test.ts",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
@@ -309,7 +309,7 @@
    },
    {
     "autor": "github-actions[bot]",
-    "commits": 3
+    "commits": 4
    }
   ]
  },
