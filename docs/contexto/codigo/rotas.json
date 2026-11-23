@@ -1050,16 +1050,25 @@
    "definida_em": "src/routes/AppRoutes.tsx",
    "redireciona": null,
    "hooks": [
+    "useCalendar",
+    "useCallback",
+    "useLocation",
+    "useMemo",
+    "useNavigate",
     "useState"
    ],
-   "hooks_locais": [],
-   "tabelas": [],
+   "hooks_locais": [
+    "useCalendar"
+   ],
+   "tabelas": [
+    "attendance_records"
+   ],
    "rpcs": [],
    "edges": [],
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 11
+   "arquivos_puxados": 20
   },
   {
    "protegida": false,

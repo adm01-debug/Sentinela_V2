@@ -3007,9 +3007,14 @@
    "src/hooks/useSubscription.ts"
   ],
   "src/pages/CalendarPage.tsx": [
-   "src/components/PageTransition.tsx",
+   "src/components/layout/PageHeader.tsx",
+   "src/components/layout/PageLayout.tsx",
+   "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
-   "src/components/ui/card.tsx"
+   "src/components/ui/card.tsx",
+   "src/components/ui/skeleton.tsx",
+   "src/hooks/useCalendar.ts",
+   "src/integrations/supabase/client.ts"
   ],
   "src/pages/CompliancePage.tsx": [
    "src/components/PolicyAcknowledgmentDialog.tsx",

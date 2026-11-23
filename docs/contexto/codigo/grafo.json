@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1337,
- "arestas": 2750,
+ "arestas": 2755,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 205
+   "importado_por": 206
   },
   {
    "arquivo": "src/components/ui/card.tsx",
@@ -22,7 +22,7 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 142
+   "importado_por": 143
   },
   {
    "arquivo": "src/components/ui/input.tsx",
@@ -34,7 +34,7 @@
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",
-   "importado_por": 68
+   "importado_por": 69
   },
   {
    "arquivo": "src/lib/logger.ts",
@@ -53,12 +53,12 @@
    "importado_por": 50
   },
   {
-   "arquivo": "src/lib/queryClient.ts",
+   "arquivo": "src/components/layout/PageHeader.tsx",
    "importado_por": 45
   },
   {
-   "arquivo": "src/components/layout/PageHeader.tsx",
-   "importado_por": 44
+   "arquivo": "src/lib/queryClient.ts",
+   "importado_por": 45
   },
   {
    "arquivo": "src/hooks/useChartColors.ts",
@@ -133,12 +133,12 @@
    "importado_por": 13
   },
   {
-   "arquivo": "src/components/ui/alert.tsx",
+   "arquivo": "src/components/layout/PageLayout.tsx",
    "importado_por": 13
   },
   {
-   "arquivo": "src/components/layout/PageLayout.tsx",
-   "importado_por": 12
+   "arquivo": "src/components/ui/alert.tsx",
+   "importado_por": 13
   },
   {
    "arquivo": "src/types/index.ts",
@@ -354,7 +354,6 @@
   "src/hooks/useBulkActions.ts",
   "src/hooks/useBuscaFulltext.ts",
   "src/hooks/useCache.ts",
-  "src/hooks/useCalendar.ts",
   "src/hooks/useCamera.ts",
   "src/hooks/useCarousel.ts",
   "src/hooks/useCategories.ts",
@@ -498,7 +497,8 @@
   "src/hooks/useMap.ts",
   "src/hooks/useMapbox.ts",
   "src/hooks/useMeasure.ts",
-  "src/hooks/useMediaDevices.ts"
+  "src/hooks/useMediaDevices.ts",
+  "src/hooks/useMediaRecorder.ts"
  ],
  "modulos_mais_acoplados": [
   {

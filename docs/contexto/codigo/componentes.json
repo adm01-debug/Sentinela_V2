@@ -2153,7 +2153,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 44,
+   "usado_por": 45,
    "orfao": false
   },
   {
@@ -2169,7 +2169,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 12,
+   "usado_por": 13,
    "orfao": false
   },
   {
@@ -2429,7 +2429,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 9,
+   "usado_por": 8,
    "orfao": false
   },
   {
@@ -3762,7 +3762,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 142,
+   "usado_por": 143,
    "orfao": false
   },
   {
@@ -5237,7 +5237,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 68,
+   "usado_por": 69,
    "orfao": false
   },
   {
@@ -6694,10 +6694,14 @@
     "CalendarPage"
    ],
    "export_default": "CalendarPage",
-   "linhas": 49,
+   "linhas": 239,
    "dominio": "pages",
-   "hooks_locais": [],
-   "tabelas": [],
+   "hooks_locais": [
+    "useCalendar"
+   ],
+   "tabelas": [
+    "attendance_records"
+   ],
    "edges": [],
    "usado_por": 1,
    "orfao": false
