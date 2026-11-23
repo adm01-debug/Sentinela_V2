@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "6867e4959b91edf7d748cf89a9efe2e351bda461",
+  "commit": "02b138dbcc34bef0ba2e45b442d720330333e299",
   "branch": "main",
-  "data_commit": "2026-11-23T12:41:51-03:00",
+  "data_commit": "2026-11-23T17:33:52-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "02b138dbc",
+    "data": "2026-11-23",
+    "assunto": "chore(types): regenera tipos do Supabase a partir do banco real (#260)"
+   },
    {
     "sha": "6867e4959",
     "data": "2026-11-23",
@@ -126,11 +131,6 @@
     "sha": "c59b91588",
     "data": "2026-11-22",
     "assunto": "fix(dashboard): personalizador de widgets passa a valer na tela (#234)"
-   },
-   {
-    "sha": "2dc3b6c74",
-    "data": "2026-11-22",
-    "assunto": "infra(ci): deploya edge functions no pipeline de producao (#233)"
    }
   ],
   "arquivos_mudados_7d": 217,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 156
+    "commits": 157
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1414,
-  "linhas_codigo": 153607,
+  "linhas_codigo": 155665,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -325,7 +325,7 @@
   "componentes": 464,
   "hooks": 524,
   "edge_functions": 87,
-  "tabelas": 159,
+  "tabelas": 179,
   "migrations": 123,
   "cron_jobs": 5,
   "testes": 77,
@@ -444,7 +444,7 @@
   },
   "src/integrations": {
    "arquivos": 4,
-   "linhas": 6451
+   "linhas": 8509
   },
   "src/layouts": {
    "arquivos": 2,
@@ -506,7 +506,7 @@
  "maiores_arquivos": [
   {
    "arquivo": "src/integrations/supabase/types.ts",
-   "linhas": 6380
+   "linhas": 8438
   },
   {
    "arquivo": "scripts/ai-context/gerar.mjs",
@@ -714,13 +714,15 @@
   ],
   "tabelas_com_drift_migration_vs_types": [
    "badges",
-   "employee_badges",
+   "click_logs",
    "employee_points",
+   "keystroke_logs",
    "points_history",
    "policy_acknowledgments",
+   "productivity_logs",
    "role_permissions",
    "saved_filters",
-   "security_violations",
+   "screen_captures",
    "user_roles"
   ],
   "rpcs_sem_definicao": [],

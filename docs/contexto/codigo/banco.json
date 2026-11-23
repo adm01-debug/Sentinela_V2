@@ -514,6 +514,30 @@
   }
  ],
  "tabelas": {
+  "achievements": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "category": "string | null",
+    "created_at": "string | null",
+    "description": "string | null",
+    "icon": "string | null",
+    "id": "string",
+    "is_active": "boolean | null",
+    "name": "string",
+    "points": "number | null",
+    "unlocked_count": "number | null"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
   "activity_logs": {
    "colunas": {
     "activity_type": {
@@ -640,6 +664,23 @@
     "user_id->auth"
    ],
    "criada_em": "20260102000000_activity_logs.sql",
+   "colunas_types": {
+    "activity_type": "string",
+    "changes": "Json | null",
+    "created_at": "string | null",
+    "description": "string",
+    "entity_id": "string",
+    "entity_type": "string",
+    "id": "string",
+    "ip_address": "unknown",
+    "metadata": "Json | null",
+    "user_agent": "string | null",
+    "user_id": "string | null"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 3,
    "usada_em_edges": [],
    "triggers": [],
@@ -1346,6 +1387,27 @@
     "updated_by->auth"
    ],
    "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "colunas_types": {
+    "allowed_ips": "string[] | null",
+    "company_id": "string | null",
+    "created_at": "string",
+    "default_language": "string",
+    "features": "Json",
+    "id": "string",
+    "maintenance_message": "string | null",
+    "maintenance_mode": "boolean",
+    "max_upload_size": "number",
+    "mfa_required": "boolean",
+    "session_timeout": "number",
+    "supported_languages": "string[]",
+    "theme": "Json",
+    "updated_at": "string",
+    "updated_by": "string | null"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [],
@@ -1802,6 +1864,30 @@
     "user_id->auth"
    ],
    "criada_em": "20251219190000_complete_audit_system.sql",
+   "colunas_types": {
+    "action": "string",
+    "changes": "Json | null",
+    "created_at": "string",
+    "description": "string | null",
+    "entity_id": "string | null",
+    "entity_name": "string | null",
+    "entity_type": "string",
+    "id": "string",
+    "ip_address": "unknown",
+    "module": "string | null",
+    "new_values": "Json | null",
+    "old_values": "Json | null",
+    "request_id": "string | null",
+    "severity": "string | null",
+    "user_agent": "string | null",
+    "user_email": "string | null",
+    "user_id": "string | null",
+    "user_role": "string | null"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 0,
    "usada_em_edges": [],
    "triggers": [],
@@ -2428,6 +2514,7 @@
    "colunas_types": {
     "app_name": "string | null",
     "click_type": "string",
+    "company_id": "string | null",
     "created_at": "string",
     "device": "string | null",
     "employee_name": "string",
@@ -2441,7 +2528,9 @@
    },
    "drift": {
     "so_na_migration": [],
-    "so_no_types": []
+    "so_no_types": [
+     "company_id"
+    ]
    },
    "usada_no_front": 1,
    "usada_em_edges": [
@@ -2831,6 +2920,141 @@
    "sem_rls": false,
    "nao_usada": true
   },
+  "click_logs_partitioned_2026_08": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "app_name": "string | null",
+    "click_type": "string",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "recorded_at": "string",
+    "target_element": "string | null",
+    "url": "string | null",
+    "window_title": "string | null",
+    "x_position": "number | null",
+    "y_position": "number | null"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "click_logs_partitioned_2026_09": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "app_name": "string | null",
+    "click_type": "string",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "recorded_at": "string",
+    "target_element": "string | null",
+    "url": "string | null",
+    "window_title": "string | null",
+    "x_position": "number | null",
+    "y_position": "number | null"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "click_logs_partitioned_2026_10": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "app_name": "string | null",
+    "click_type": "string",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "recorded_at": "string",
+    "target_element": "string | null",
+    "url": "string | null",
+    "window_title": "string | null",
+    "x_position": "number | null",
+    "y_position": "number | null"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "click_logs_partitioned_2026_11": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "app_name": "string | null",
+    "click_type": "string",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "recorded_at": "string",
+    "target_element": "string | null",
+    "url": "string | null",
+    "window_title": "string | null",
+    "x_position": "number | null",
+    "y_position": "number | null"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "click_logs_partitioned_2026_12": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "app_name": "string | null",
+    "click_type": "string",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "recorded_at": "string",
+    "target_element": "string | null",
+    "url": "string | null",
+    "window_title": "string | null",
+    "x_position": "number | null",
+    "y_position": "number | null"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
   "companies": {
    "colunas": {
     "created_at": {
@@ -3169,6 +3393,15 @@
    "indices": [],
    "fks": [],
    "criada_em": null,
+   "colunas_types": {
+    "created_at": "string | null",
+    "description": "string | null",
+    "id": "string",
+    "manager_id": "string | null",
+    "name": "string",
+    "parent_id": "string | null",
+    "updated_at": "string | null"
+   },
    "usada_no_front": 2,
    "usada_em_edges": [],
    "triggers": [],
@@ -4362,15 +4595,14 @@
    "criada_em": "20251219210000_gamification.sql",
    "colunas_types": {
     "badge_id": "string",
+    "context": "Json | null",
     "earned_at": "string",
     "employee_id": "string",
-    "id": "string"
+    "id": "string",
+    "notified": "boolean"
    },
    "drift": {
-    "so_na_migration": [
-     "context",
-     "notified"
-    ],
+    "so_na_migration": [],
     "so_no_types": []
    },
    "usada_no_front": 1,
@@ -4580,6 +4812,28 @@
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
+  },
+  "employee_locations": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "accuracy": "number | null",
+    "device_id": "string",
+    "employee_id": "string",
+    "latitude": "number",
+    "longitude": "number",
+    "recorded_at": "string",
+    "updated_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
   },
   "employee_points": {
    "colunas": {
@@ -5324,6 +5578,20 @@
     "changed_by->auth"
    ],
    "criada_em": "20260102000001_crud_improvements.sql",
+   "colunas_types": {
+    "change_summary": "string | null",
+    "changed_at": "string | null",
+    "changed_by": "string | null",
+    "data": "Json",
+    "entity_id": "string",
+    "entity_type": "string",
+    "id": "string",
+    "version_number": "number"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [],
@@ -5539,6 +5807,20 @@
     "company_id->companies"
    ],
    "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "colunas_types": {
+    "company_id": "string | null",
+    "conditions": "Json | null",
+    "created_at": "string",
+    "description": "string | null",
+    "enabled": "boolean",
+    "id": "string",
+    "name": "string",
+    "updated_at": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [],
@@ -5864,6 +6146,16 @@
    "indices": [],
    "fks": [],
    "criada_em": null,
+   "colunas_types": {
+    "avatar_url": "string | null",
+    "badges": "Json | null",
+    "employee_id": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "level": "number | null",
+    "points": "number | null",
+    "updated_at": "string | null"
+   },
    "usada_no_front": 0,
    "usada_em_edges": [],
    "triggers": [],
@@ -5941,6 +6233,36 @@
    "indices": [],
    "fks": [],
    "criada_em": null,
+   "colunas_types": {
+    "created_at": "string | null",
+    "device_id": "string",
+    "employee_id": "string",
+    "event_type": "string",
+    "geofence_id": "string",
+    "id": "string",
+    "location": "Json | null",
+    "occurred_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "geofence_states": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "device_id": "string",
+    "employee_id": "string",
+    "geofence_id": "string",
+    "is_inside": "boolean",
+    "last_checked": "string | null"
+   },
    "usada_no_front": 0,
    "usada_em_edges": [],
    "triggers": [],
@@ -6480,6 +6802,23 @@
     "created_by->auth"
    ],
    "criada_em": "20261121180000_create_missing_frontend_tables.sql",
+   "colunas_types": {
+    "applies_to": "string",
+    "created_at": "string",
+    "created_by": "string | null",
+    "id": "string",
+    "is_active": "boolean",
+    "name": "string",
+    "pattern": "string",
+    "pattern_type": "string",
+    "rule_type": "string",
+    "target_ids": "string[] | null",
+    "updated_at": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 2,
    "usada_em_edges": [],
    "triggers": [],
@@ -6858,6 +7197,7 @@
    "colunas_types": {
     "active_time_seconds": "number",
     "app_name": "string | null",
+    "company_id": "string | null",
     "created_at": "string",
     "device": "string | null",
     "employee_name": "string",
@@ -6868,7 +7208,9 @@
    },
    "drift": {
     "so_na_migration": [],
-    "so_no_types": []
+    "so_no_types": [
+     "company_id"
+    ]
    },
    "usada_no_front": 5,
    "usada_em_edges": [
@@ -7197,6 +7539,102 @@
    "nao_usada": true
   },
   "keystroke_logs_partitioned_2026_07": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "active_time_seconds": "number",
+    "app_name": "string | null",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "idle_time_seconds": "number",
+    "keystrokes_count": "number",
+    "recorded_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "keystroke_logs_partitioned_2026_08": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "active_time_seconds": "number",
+    "app_name": "string | null",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "idle_time_seconds": "number",
+    "keystrokes_count": "number",
+    "recorded_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "keystroke_logs_partitioned_2026_09": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "active_time_seconds": "number",
+    "app_name": "string | null",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "idle_time_seconds": "number",
+    "keystrokes_count": "number",
+    "recorded_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "keystroke_logs_partitioned_2026_10": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "active_time_seconds": "number",
+    "app_name": "string | null",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "idle_time_seconds": "number",
+    "keystrokes_count": "number",
+    "recorded_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "keystroke_logs_partitioned_2026_11": {
    "colunas": {},
    "rls": false,
    "policies": [],
@@ -8368,6 +8806,110 @@
    "sem_rls": false,
    "nao_usada": true
   },
+  "mobile_activity_logs_partitioned_2026_08": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "activity_type": "string",
+    "app_name": "string | null",
+    "created_at": "string",
+    "device_id": "string | null",
+    "duration_seconds": "number | null",
+    "employee_name": "string",
+    "id": "string",
+    "latitude": "number | null",
+    "longitude": "number | null",
+    "metadata": "Json | null",
+    "recorded_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "mobile_activity_logs_partitioned_2026_09": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "activity_type": "string",
+    "app_name": "string | null",
+    "created_at": "string",
+    "device_id": "string | null",
+    "duration_seconds": "number | null",
+    "employee_name": "string",
+    "id": "string",
+    "latitude": "number | null",
+    "longitude": "number | null",
+    "metadata": "Json | null",
+    "recorded_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "mobile_activity_logs_partitioned_2026_10": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "activity_type": "string",
+    "app_name": "string | null",
+    "created_at": "string",
+    "device_id": "string | null",
+    "duration_seconds": "number | null",
+    "employee_name": "string",
+    "id": "string",
+    "latitude": "number | null",
+    "longitude": "number | null",
+    "metadata": "Json | null",
+    "recorded_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "mobile_activity_logs_partitioned_2026_11": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "activity_type": "string",
+    "app_name": "string | null",
+    "created_at": "string",
+    "device_id": "string | null",
+    "duration_seconds": "number | null",
+    "employee_name": "string",
+    "id": "string",
+    "latitude": "number | null",
+    "longitude": "number | null",
+    "metadata": "Json | null",
+    "recorded_at": "string"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
   "mobile_devices": {
    "colunas": {
     "app_version": {
@@ -9392,6 +9934,7 @@
    "criada_em": "20251217225419_fe4ab0cc-585b-4c75-9982-c9172349981b.sql",
    "colunas_types": {
     "apps_used": "Json | null",
+    "company_id": "string | null",
     "created_at": "string",
     "device": "string | null",
     "employee_name": "string",
@@ -9403,7 +9946,9 @@
    },
    "drift": {
     "so_na_migration": [],
-    "so_no_types": []
+    "so_no_types": [
+     "company_id"
+    ]
    },
    "usada_no_front": 10,
    "usada_em_edges": [
@@ -9740,6 +10285,102 @@
    "sem_rls": false,
    "nao_usada": true
   },
+  "productivity_logs_partitioned_2026_08": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "apps_used": "Json | null",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "neutral_time_seconds": "number",
+    "productive_time_seconds": "number",
+    "recorded_date": "string",
+    "unproductive_time_seconds": "number"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "productivity_logs_partitioned_2026_09": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "apps_used": "Json | null",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "neutral_time_seconds": "number",
+    "productive_time_seconds": "number",
+    "recorded_date": "string",
+    "unproductive_time_seconds": "number"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "productivity_logs_partitioned_2026_10": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "apps_used": "Json | null",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "neutral_time_seconds": "number",
+    "productive_time_seconds": "number",
+    "recorded_date": "string",
+    "unproductive_time_seconds": "number"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
+  "productivity_logs_partitioned_2026_11": {
+   "colunas": {},
+   "rls": false,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": null,
+   "colunas_types": {
+    "apps_used": "Json | null",
+    "created_at": "string",
+    "device": "string | null",
+    "employee_name": "string",
+    "id": "string",
+    "neutral_time_seconds": "number",
+    "productive_time_seconds": "number",
+    "recorded_date": "string",
+    "unproductive_time_seconds": "number"
+   },
+   "usada_no_front": 0,
+   "usada_em_edges": [],
+   "triggers": [],
+   "sem_rls": false,
+   "nao_usada": true
+  },
   "productivity_metrics": {
    "colunas": {
     "active_minutes": {
@@ -9824,6 +10465,20 @@
     "employee_id->employees"
    ],
    "criada_em": "20261121200000_create_missing_edge_tables.sql",
+   "colunas_types": {
+    "active_minutes": "number",
+    "created_at": "string",
+    "date": "string",
+    "employee_id": "string | null",
+    "id": "string",
+    "idle_minutes": "number",
+    "productivity_score": "number | null",
+    "total_minutes": "number"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 0,
    "usada_em_edges": [
     "send-scheduled-report"
@@ -10174,6 +10829,19 @@
     "user_id->auth"
    ],
    "criada_em": "20261121180000_create_missing_frontend_tables.sql",
+   "colunas_types": {
+    "created_at": "string",
+    "endpoint": "string",
+    "id": "string",
+    "subscription": "Json",
+    "updated_at": "string",
+    "user_agent": "string | null",
+    "user_id": "string | null"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [],
@@ -10411,6 +11079,19 @@
    ],
    "fks": [],
    "criada_em": "20261121200000_create_missing_edge_tables.sql",
+   "colunas_types": {
+    "alerted_at": "string",
+    "endpoint": "string | null",
+    "id": "string",
+    "ip": "string",
+    "request_count": "number",
+    "threshold": "number",
+    "window_seconds": "number"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [
     "send-rate-limit-alert"
@@ -10613,6 +11294,21 @@
     "company_id->companies"
    ],
    "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "colunas_types": {
+    "block_duration_seconds": "number",
+    "company_id": "string | null",
+    "created_at": "string",
+    "endpoint": "string",
+    "id": "string",
+    "is_active": "boolean",
+    "max_requests": "number",
+    "updated_at": "string",
+    "window_seconds": "number"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 2,
    "usada_em_edges": [],
    "triggers": [],
@@ -11087,6 +11783,20 @@
     "report_id->scheduled_reports"
    ],
    "criada_em": "20261121200000_create_missing_edge_tables.sql",
+   "colunas_types": {
+    "created_at": "string",
+    "error_message": "string | null",
+    "executed_at": "string",
+    "id": "string",
+    "manual": "boolean",
+    "records_count": "number",
+    "report_id": "string | null",
+    "status": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 0,
    "usada_em_edges": [
     "send-scheduled-report"
@@ -11323,6 +12033,21 @@
     "requested_by->auth"
    ],
    "criada_em": "20261121180000_create_missing_frontend_tables.sql",
+   "colunas_types": {
+    "created_at": "string",
+    "error_message": "string | null",
+    "file_url": "string | null",
+    "id": "string",
+    "name": "string",
+    "requested_by": "string | null",
+    "status": "string",
+    "type": "string",
+    "updated_at": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [
     "generate-report"
@@ -12150,6 +12875,25 @@
     "created_by->auth"
    ],
    "criada_em": "20261121180000_create_missing_frontend_tables.sql",
+   "colunas_types": {
+    "created_at": "string",
+    "created_by": "string | null",
+    "filters": "Json | null",
+    "format": "string",
+    "id": "string",
+    "is_active": "boolean",
+    "last_run_at": "string | null",
+    "name": "string",
+    "next_run_at": "string | null",
+    "recipients": "string[]",
+    "report_type": "string",
+    "schedule": "string",
+    "updated_at": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 2,
    "usada_em_edges": [
     "send-scheduled-report"
@@ -12265,6 +13009,7 @@
     "app_name": "string | null",
     "capture_url": "string",
     "captured_at": "string",
+    "company_id": "string | null",
     "created_at": "string",
     "device": "string | null",
     "employee_name": "string",
@@ -12275,7 +13020,9 @@
    },
    "drift": {
     "so_na_migration": [],
-    "so_no_types": []
+    "so_no_types": [
+     "company_id"
+    ]
    },
    "usada_no_front": 6,
    "usada_em_edges": [
@@ -12668,6 +13415,7 @@
    ],
    "criada_em": "20251217213803_861a9a6d-1739-49c2-a2af-65283b49ecbe.sql",
    "colunas_types": {
+    "assigned_to": "string | null",
     "company_id": "string | null",
     "created_at": "string",
     "description": "string | null",
@@ -12696,9 +13444,7 @@
     "violation_type": "string"
    },
    "drift": {
-    "so_na_migration": [
-     "assigned_to"
-    ],
+    "so_na_migration": [],
     "so_no_types": []
    },
    "usada_no_front": 20,
@@ -12790,6 +13536,17 @@
    ],
    "fks": [],
    "criada_em": "20261121200000_create_missing_edge_tables.sql",
+   "colunas_types": {
+    "created_at": "string",
+    "id": "string",
+    "is_active": "boolean",
+    "keyword": "string",
+    "updated_at": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 0,
    "usada_em_edges": [
     "ocr-screenshot"
@@ -14325,6 +15082,23 @@
     "user_id->auth"
    ],
    "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "colunas_types": {
+    "cancel_at_period_end": "boolean",
+    "company_id": "string | null",
+    "created_at": "string",
+    "current_period_end": "string",
+    "current_period_start": "string",
+    "features": "string[]",
+    "id": "string",
+    "plan": "string",
+    "status": "string",
+    "updated_at": "string",
+    "user_id": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [],
@@ -14410,6 +15184,20 @@
     "employee_id->employees"
    ],
    "criada_em": "20261121200000_create_missing_edge_tables.sql",
+   "colunas_types": {
+    "created_at": "string",
+    "data": "Json | null",
+    "employee_id": "string | null",
+    "error_message": "string | null",
+    "id": "string",
+    "source": "string | null",
+    "status": "string",
+    "synced_at": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 0,
    "usada_em_edges": [
     "sync-employee"
@@ -15791,6 +16579,20 @@
     "user_id->auth"
    ],
    "criada_em": "20261121180000_create_missing_frontend_tables.sql",
+   "colunas_types": {
+    "browser": "string | null",
+    "created_at": "string",
+    "device": "string | null",
+    "id": "string",
+    "ip_address": "string | null",
+    "last_activity": "string",
+    "location": "string | null",
+    "user_id": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [],
@@ -15911,6 +16713,20 @@
     "violation_id->security_violations"
    ],
    "criada_em": "20251219220000_violation_comments.sql",
+   "colunas_types": {
+    "action_type": "string",
+    "created_at": "string",
+    "id": "string",
+    "new_status": "string | null",
+    "notes": "string | null",
+    "previous_status": "string | null",
+    "user_id": "string",
+    "violation_id": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 0,
    "usada_em_edges": [],
    "triggers": [],
@@ -16048,6 +16864,24 @@
     "violation_id->security_violations"
    ],
    "criada_em": "20251219220000_violation_comments.sql",
+   "colunas_types": {
+    "attachments": "Json | null",
+    "comment_type": "string",
+    "content": "string",
+    "created_at": "string",
+    "edited_at": "string | null",
+    "id": "string",
+    "is_edited": "boolean",
+    "is_internal": "boolean",
+    "mentions": "string[] | null",
+    "updated_at": "string",
+    "user_id": "string",
+    "violation_id": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [
@@ -17110,6 +17944,24 @@
    "indices": [],
    "fks": [],
    "criada_em": "20261121120000_whatsapp_templates_and_config.sql",
+   "colunas_types": {
+    "access_token": "string | null",
+    "business_account_id": "string | null",
+    "created_at": "string",
+    "evolution_api_url": "string | null",
+    "evolution_instance_name": "string",
+    "evolution_instance_token": "string | null",
+    "id": "string",
+    "is_active": "boolean",
+    "phone_number_id": "string | null",
+    "provider": "string",
+    "updated_at": "string",
+    "webhook_verify_token": "string | null"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [
     "send-whatsapp",
@@ -17457,6 +18309,21 @@
     "company_id->companies"
    ],
    "criada_em": "20261122040000_create_missing_config_tables.sql",
+   "colunas_types": {
+    "access_token": "string | null",
+    "business_account_id": "string | null",
+    "company_id": "string | null",
+    "created_at": "string",
+    "id": "string",
+    "is_active": "boolean",
+    "phone_number_id": "string | null",
+    "updated_at": "string",
+    "webhook_verify_token": "string | null"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [],
    "triggers": [],
@@ -17547,6 +18414,21 @@
    "indices": [],
    "fks": [],
    "criada_em": "20261121120000_whatsapp_templates_and_config.sql",
+   "colunas_types": {
+    "body": "string | null",
+    "category": "string | null",
+    "created_at": "string",
+    "id": "string",
+    "language": "string",
+    "name": "string",
+    "status": "string",
+    "template_id": "string",
+    "updated_at": "string"
+   },
+   "drift": {
+    "so_na_migration": [],
+    "so_no_types": []
+   },
    "usada_no_front": 1,
    "usada_em_edges": [
     "sync-whatsapp-templates"

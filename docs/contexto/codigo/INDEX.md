@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `6867e4959b91edf7d748cf89a9efe2e351bda461` (2026-11-23T12:41:51-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `02b138dbcc34bef0ba2e45b442d720330333e299` (2026-11-23T17:33:52-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1414 |
-| linhas_codigo | 153607 |
+| linhas_codigo | 155665 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -45,7 +45,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | componentes | 464 |
 | hooks | 524 |
 | edge_functions | 87 |
-| tabelas | 159 |
+| tabelas | 179 |
 | migrations | 123 |
 | cron_jobs | 5 |
 | testes | 77 |
@@ -63,7 +63,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - migrations: supabase/migrations
 - scripts: scripts/ci (4), scripts/ai-context (2), scripts/inventario (2)
 - docs: docs (94), (raiz) (16), .github (1)
-- nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (99%)","tabelas":"snake_case (88%)"}
+- nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (99%)","tabelas":"snake_case (89%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
 
 ## Módulos (menu → domínio)
@@ -285,7 +285,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - edges_chamadas_sem_pasta: 0
 - tabelas_sem_rls: 0
 - tabelas_usadas_sem_definicao: 1 — ex.: backups
-- tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
+- tabelas_com_drift_migration_vs_types: 11 — ex.: badges, click_logs, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 94 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
 - componentes_com_nome_duplicado: 48 — ex.: ActivityHeatmap, AnalyticsProvider, AppProviders
@@ -459,6 +459,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `02b138dbc` chore(types): regenera tipos do Supabase a partir do banco real (#260)
 - 2026-11-23 `6867e4959` fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)
 - 2026-11-23 `54a0fc2d0` fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)
 - 2026-11-23 `8d4cc58ed` docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)
@@ -473,7 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `316357320` fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)
 - 2026-11-22 `b657b3e12` docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)
 - 2026-11-22 `76f78d12d` fix(deploy): db push --yes para nao abortar com migration pendente (#244)
-- 2026-11-22 `1ff674904` feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

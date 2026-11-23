@@ -43,7 +43,7 @@
   "hooks": "use + PascalCase",
   "servicos": "camelCase (99%)",
   "edge_functions": "kebab-case (99%)",
-  "tabelas": "snake_case (88%)"
+  "tabelas": "snake_case (89%)"
  },
  "barrels_index": 22,
  "extensao_componentes": [
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "chore(types): regenera tipos do Supabase a partir do banco real (#260)",
    "fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)",
    "fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)",
    "docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)",
-   "fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)",
-   "feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios"
+   "fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
