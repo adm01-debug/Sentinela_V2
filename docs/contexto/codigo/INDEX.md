@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `61b2323c65056567be01208beaae3d0d91b89c75` (2026-11-23T17:55:53-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `4f535b4774952762c8264a7b0ecaad1018932e7e` (2026-11-23T18:08:19-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -302,7 +302,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/eslint-baseline.json (17)
 - scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (15)
-- docs/pendencias/_linha-de-base.md (14)
+- docs/pendencias/_linha-de-base.md (15)
 - src/routes/AppRoutes.tsx (9)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
@@ -458,6 +458,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `4f535b477` chore: documenta a prova pos-deploy do gate das edges (#263)
 - 2026-11-23 `61b2323c6` fix: reconhece service_role pelo probe da API admin no gate das edges (#262)
 - 2026-11-23 `163389560` fix: exige autenticacao em 3 edge functions abertas ao publico (#261)
 - 2026-11-23 `cefc52fd2` chore: remove DashboardTooltip orfao (#259)
@@ -472,7 +473,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `c390eb8be` fix: organograma no sidebar, check placeholder no deploy e timeout do teste (#251)
 - 2026-11-23 `d38728030` chore: inventario do estado real [auto] (#250)
 - 2026-11-23 `a528be538` build(deps): bump @testing-library/jest-dom (#249)
-- 2026-11-22 `40eb25ac4` docs: registra que producao estava quebrada e o que foi corrigido (#247)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

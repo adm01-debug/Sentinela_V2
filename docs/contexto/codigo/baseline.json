@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "61b2323c65056567be01208beaae3d0d91b89c75",
+  "commit": "4f535b4774952762c8264a7b0ecaad1018932e7e",
   "branch": "main",
-  "data_commit": "2026-11-23T17:55:53-03:00",
+  "data_commit": "2026-11-23T18:08:19-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "4f535b477",
+    "data": "2026-11-23",
+    "assunto": "chore: documenta a prova pos-deploy do gate das edges (#263)"
+   },
    {
     "sha": "61b2323c6",
     "data": "2026-11-23",
@@ -126,11 +131,6 @@
     "sha": "2e72aa8f7",
     "data": "2026-11-22",
     "assunto": "fix(compliance): foto do aceite usa URL assinada em bucket privado (#238)"
-   },
-   {
-    "sha": "05eebe835",
-    "data": "2026-11-22",
-    "assunto": "fix(compliance): registra o aceite de politicas pela pagina de Compliance (#237)"
    }
   ],
   "arquivos_mudados_7d": 220,
@@ -152,12 +152,12 @@
     "mudancas": 15
    },
    {
-    "pasta": "package-lock.json",
+    "pasta": "docs/pendencias/_linha-de-base.md",
     "mudancas": 15
    },
    {
-    "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 14
+    "pasta": "package-lock.json",
+    "mudancas": 15
    },
    {
     "pasta": "package.json",
@@ -219,7 +219,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 14
+    "mudancas": 15
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 160
+    "commits": 161
    },
    {
     "autor": "dependabot[bot]",
