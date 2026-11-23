@@ -213,7 +213,19 @@ export default function GeofenceViolationsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="icon" title="Ver no Mapa">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          title="Ver no Mapa"
+                          disabled={!violation.latitude || !violation.longitude}
+                          onClick={() =>
+                            window.open(
+                              `https://www.google.com/maps?q=${violation.latitude},${violation.longitude}`,
+                              "_blank",
+                              "noopener,noreferrer",
+                            )
+                          }
+                        >
                           <ExternalLink className="h-4 w-4" />
                         </Button>
                       </TableCell>
