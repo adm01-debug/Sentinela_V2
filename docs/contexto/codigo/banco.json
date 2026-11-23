@@ -641,9 +641,7 @@
    ],
    "criada_em": "20260102000000_activity_logs.sql",
    "usada_no_front": 3,
-   "usada_em_edges": [
-    "generate-insights"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -5944,12 +5942,10 @@
    "fks": [],
    "criada_em": null,
    "usada_no_front": 0,
-   "usada_em_edges": [
-    "check-geofence"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": false
+   "nao_usada": true
   },
   "geofence_violations": {
    "colunas": {
@@ -6068,6 +6064,7 @@
    },
    "usada_no_front": 3,
    "usada_em_edges": [
+    "check-geofence",
     "delete-user-data",
     "merge-employees"
    ],
@@ -6878,16 +6875,23 @@
     "agent-collector",
     "analyze-activity",
     "archive-data",
+    "behavior-pattern",
     "behavioral-baseline-builder",
     "calculate-productivity",
     "daily-summary",
     "delete-user-data",
+    "generate-insights",
     "generate-report",
     "get-employee-timeline",
     "merge-employees",
+    "natural-language-query",
+    "predict-anomaly",
     "recalculate-metrics",
     "risk-score-calculator",
     "search-activities",
+    "smart-recommendations",
+    "summarize-activity",
+    "trend-forecasting",
     "weekly-report"
    ],
    "triggers": [],
@@ -12702,15 +12706,20 @@
     "acknowledge-violation",
     "daily-summary",
     "delete-user-data",
+    "generate-insights",
     "generate-report",
     "get-dashboard-stats",
     "get-employee-timeline",
+    "natural-language-query",
     "notify-mobile-violation",
     "pending-employee-violations",
     "process-violation-alert",
     "recalculate-metrics",
     "send-scheduled-report",
     "slack-weekly-digest",
+    "smart-recommendations",
+    "summarize-activity",
+    "trend-forecasting",
     "weekly-report"
    ],
    "triggers": [
@@ -17865,11 +17874,7 @@
   }
  },
  "tabelas_usadas_no_codigo_sem_definicao": [
-  "activities",
-  "backups",
-  "employee_locations",
-  "geofence_states",
-  "violations"
+  "backups"
  ],
  "rpcs_usadas_no_codigo": [
   {

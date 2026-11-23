@@ -307,13 +307,13 @@
    "nome": "behavior-pattern",
    "entrada": "supabase/functions/behavior-pattern/index.ts",
    "arquivos": 1,
-   "linhas": 178,
+   "linhas": 194,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "activities"
+    "keystroke_logs"
    ],
    "rpcs": [],
    "env": [
@@ -420,15 +420,13 @@
    "nome": "check-geofence",
    "entrada": "supabase/functions/check-geofence/index.ts",
    "arquivos": 2,
-   "linhas": 379,
+   "linhas": 381,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "employee_locations",
-    "geofence_events",
-    "geofence_states",
+    "geofence_violations",
     "geofences"
    ],
    "rpcs": [],
@@ -860,15 +858,15 @@
    "nome": "generate-insights",
    "entrada": "supabase/functions/generate-insights/index.ts",
    "arquivos": 1,
-   "linhas": 169,
+   "linhas": 218,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "activity_logs",
     "employees",
-    "violations"
+    "keystroke_logs",
+    "security_violations"
    ],
    "rpcs": [],
    "env": [
@@ -1358,15 +1356,15 @@
    "nome": "natural-language-query",
    "entrada": "supabase/functions/natural-language-query/index.ts",
    "arquivos": 1,
-   "linhas": 212,
+   "linhas": 210,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "activities",
     "employees",
-    "violations"
+    "keystroke_logs",
+    "security_violations"
    ],
    "rpcs": [],
    "env": [
@@ -1553,13 +1551,13 @@
    "nome": "predict-anomaly",
    "entrada": "supabase/functions/predict-anomaly/index.ts",
    "arquivos": 1,
-   "linhas": 135,
+   "linhas": 146,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "activities"
+    "keystroke_logs"
    ],
    "rpcs": [],
    "env": [
@@ -2388,15 +2386,15 @@
    "nome": "smart-recommendations",
    "entrada": "supabase/functions/smart-recommendations/index.ts",
    "arquivos": 1,
-   "linhas": 170,
+   "linhas": 207,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "activities",
     "employees",
-    "violations"
+    "keystroke_logs",
+    "security_violations"
    ],
    "rpcs": [],
    "env": [
@@ -2419,14 +2417,14 @@
    "nome": "summarize-activity",
    "entrada": "supabase/functions/summarize-activity/index.ts",
    "arquivos": 1,
-   "linhas": 137,
+   "linhas": 155,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "activities",
-    "violations"
+    "keystroke_logs",
+    "security_violations"
    ],
    "rpcs": [],
    "env": [
@@ -2542,14 +2540,14 @@
    "nome": "trend-forecasting",
    "entrada": "supabase/functions/trend-forecasting/index.ts",
    "arquivos": 1,
-   "linhas": 182,
+   "linhas": 204,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
-    "activities",
-    "violations"
+    "keystroke_logs",
+    "security_violations"
    ],
    "rpcs": [],
    "env": [

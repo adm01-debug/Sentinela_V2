@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `ac2d34cc0869f740a86e08458f509443cf539095` (2026-11-23T11:32:34-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `54a0fc2d073739a385b3089c008580245fabcfe1` (2026-11-23T12:38:06-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1414 |
-| linhas_codigo | 153454 |
+| linhas_codigo | 153607 |
 | rotas | 55 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -179,11 +179,11 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `award-gamification-points` — tabelas: employee_points, points_history, user_roles; chamada por 1 arquivo(s) do front
 - `backup-data` — tabelas: backups; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `batch-notifications` — tabelas: webhooks; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `behavior-pattern` — tabelas: activities; chamada por 1 arquivo(s) do front
+- `behavior-pattern` — tabelas: keystroke_logs; chamada por 1 arquivo(s) do front
 - `behavioral-baseline-builder` — tabelas: behavioral_baselines, click_logs, dlp_incidents, employees, keystroke_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `bulk-update` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `calculate-productivity` — tabelas: keystroke_logs, productivity_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `check-geofence` — tabelas: employee_locations, geofence_events, geofence_states, geofences; chamada por 1 arquivo(s) do front
+- `check-geofence` — tabelas: geofence_violations, geofences; chamada por 1 arquivo(s) do front
 - `cleanup-rate-limit-logs` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `cleanup-sessions` — tabelas: session_recordings; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `compress-screenshots` — tabelas: screen_captures; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -197,7 +197,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `export-data` — tabelas: user_companies; chamada por 1 arquivo(s) do front
 - `external-db-bridge` — tabelas: query_telemetry; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-api-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `generate-insights` — tabelas: activity_logs, employees, violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `generate-insights` — tabelas: employees, keystroke_logs, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-report` (verify_jwt=false) — tabelas: ai_analysis_reports, attendance_records, keystroke_logs, productivity_logs, reports, security_violations; chamada por 2 arquivo(s) do front
 - `get-dashboard-stats` — tabelas: employees, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-employee-schedule` — tabelas: employee_schedules; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -213,13 +213,13 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `mcp-query` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `merge-employees` — tabelas: click_logs, devices, employee_badges, employee_devices, employee_geofences, employee_schedules, employees, geofence_violations, keystroke_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `mobile-collector` — tabelas: agent_keys, employees, mobile_activity_logs, mobile_devices; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `natural-language-query` — tabelas: activities, employees, violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `natural-language-query` — tabelas: employees, keystroke_logs, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `notify-dispute-decision` — tabelas: mobile_devices, settings_audit_log, violation_disputes; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `notify-mobile-violation` — tabelas: mobile_devices, security_violations, settings_audit_log; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `notify-new-device` — tabelas: login_security_events; chamada por 1 arquivo(s) do front
 - `ocr-screenshot` — tabelas: screen_captures, sensitive_keywords; chamada por 1 arquivo(s) do front
 - `pending-employee-violations` (verify_jwt=false) — tabelas: agent_keys, security_violations; chamada por 0 arquivo(s) do front
-- `predict-anomaly` — tabelas: activities; chamada por 1 arquivo(s) do front
+- `predict-anomaly` — tabelas: keystroke_logs; chamada por 1 arquivo(s) do front
 - `process-bulk-import` — tabelas: employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `process-screenshot` — tabelas: screen_captures; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `process-violation-alert` (verify_jwt=false) — tabelas: alert_notification_settings, security_violations, settings_audit_log, webhooks; chamada por 0 arquivo(s) do front
@@ -245,12 +245,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `slack-mttr-monitor` — tabelas: edge_function_logs, slack_webhook_mttr; chamada por 1 arquivo(s) do front, por SQL/cron
 - `slack-notify` — tabelas: alert_notification_settings, edge_function_logs, slack_delivery_events, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
 - `slack-weekly-digest` — tabelas: edge_function_logs, security_violations, slack_integrations, slack_notification_dlq, slack_webhook_mttr, violation_disputes; chamada por 1 arquivo(s) do front, por SQL/cron
-- `smart-recommendations` — tabelas: activities, employees, violations; chamada por 1 arquivo(s) do front
-- `summarize-activity` — tabelas: activities, violations; chamada por 1 arquivo(s) do front
+- `smart-recommendations` — tabelas: employees, keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
+- `summarize-activity` — tabelas: keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `sync-employee` — tabelas: employees, sync_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `sync-teams` — tabelas: employees, team_members, teams; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `sync-whatsapp-templates` — tabelas: whatsapp_config, whatsapp_templates; chamada por 1 arquivo(s) do front
-- `trend-forecasting` — tabelas: activities, violations; chamada por 1 arquivo(s) do front
+- `trend-forecasting` — tabelas: keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `upload-recording-chunk` (verify_jwt=false) — tabelas: agent_keys, data_retention_policies, employees, recording_chunks, recording_sessions; chamada por 0 arquivo(s) do front
 - `validate-agent-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `validate-license` — tabelas: companies, employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -284,7 +284,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - edges_orfas: 47 — ex.: agent-collector, archive-data, audit-export
 - edges_chamadas_sem_pasta: 0
 - tabelas_sem_rls: 0
-- tabelas_usadas_sem_definicao: 5 — ex.: activities, backups, employee_locations
+- tabelas_usadas_sem_definicao: 1 — ex.: backups
 - tabelas_com_drift_migration_vs_types: 9 — ex.: badges, employee_badges, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 94 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
@@ -303,7 +303,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/eslint-baseline.json (17)
 - scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (14)
-- docs/pendencias/_linha-de-base.md (12)
+- docs/pendencias/_linha-de-base.md (13)
 - src/routes/AppRoutes.tsx (9)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
@@ -312,7 +312,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - supabase/config.toml (5)
 - desktop-agent/src/main.ts (4)
 - src/components/AppSidebar.tsx (4)
-- .github/workflows/contexto.yml (3)
+- supabase/functions/natural-language-query/index.ts (4)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -459,6 +459,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `54a0fc2d0` fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)
+- 2026-11-23 `8d4cc58ed` docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)
 - 2026-11-23 `ac2d34cc0` fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)
 - 2026-11-23 `83496a324` feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios
 - 2026-11-23 `dfd0acde7` feat: integra CalendarPage com dados reais de attendance_records (#253)
@@ -472,8 +474,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-22 `76f78d12d` fix(deploy): db push --yes para nao abortar com migration pendente (#244)
 - 2026-11-22 `1ff674904` feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)
 - 2026-11-22 `d5ef6cbbb` feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)
-- 2026-11-22 `5ec7ddcb9` docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)
-- 2026-11-22 `ed7e2aa98` docs: registra o estado real do PolicyGate na linha de base (#242)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

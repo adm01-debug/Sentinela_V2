@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "ac2d34cc0869f740a86e08458f509443cf539095",
+  "commit": "54a0fc2d073739a385b3089c008580245fabcfe1",
   "branch": "main",
-  "data_commit": "2026-11-23T11:32:34-03:00",
+  "data_commit": "2026-11-23T12:38:06-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "54a0fc2d0",
+    "data": "2026-11-23",
+    "assunto": "fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)"
+   },
+   {
+    "sha": "8d4cc58ed",
+    "data": "2026-11-23",
+    "assunto": "docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)"
+   },
    {
     "sha": "ac2d34cc0",
     "data": "2026-11-23",
@@ -121,19 +131,9 @@
     "sha": "ac0d438c7",
     "data": "2026-11-22",
     "assunto": "[create-pull-request] automated change (#208)"
-   },
-   {
-    "sha": "e39e224c6",
-    "data": "2026-11-22",
-    "assunto": "fix(ci): fixa a versao do Supabase CLI no deploy (#230)"
-   },
-   {
-    "sha": "9659a9396",
-    "data": "2026-11-22",
-    "assunto": "feat(auth): liga o reset de senha com aprovacao do admin e cria a rota /reset-password (#232)"
    }
   ],
-  "arquivos_mudados_7d": 214,
+  "arquivos_mudados_7d": 217,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -156,12 +156,12 @@
     "mudancas": 14
    },
    {
-    "pasta": "package.json",
+    "pasta": "docs/pendencias/_linha-de-base.md",
     "mudancas": 13
    },
    {
-    "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 12
+    "pasta": "package.json",
+    "mudancas": 13
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
@@ -219,7 +219,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
@@ -251,6 +251,10 @@
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "supabase/functions/natural-language-query/index.ts",
     "mudancas": 4
    },
    {
@@ -292,16 +296,12 @@
    {
     "arquivo": "src/pages/__tests__/Auth.test.tsx",
     "mudancas": 3
-   },
-   {
-    "arquivo": "src/pages/__tests__/Dashboard.test.tsx",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 153
+    "commits": 155
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1414,
-  "linhas_codigo": 153454,
+  "linhas_codigo": 153607,
   "rotas": 55,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 101,
-   "linhas": 12829
+   "linhas": 12982
   },
   "vite.config.ts": {
    "arquivos": 1,
@@ -606,7 +606,7 @@
   }
  ],
  "qualidade": {
-  "any": 196,
+  "any": 168,
   "console_log": 52,
   "ts_ignore": 0,
   "eslint_disable": 1,
@@ -710,11 +710,7 @@
   "edges_chamadas_sem_pasta": [],
   "tabelas_sem_rls": [],
   "tabelas_usadas_sem_definicao": [
-   "activities",
-   "backups",
-   "employee_locations",
-   "geofence_states",
-   "violations"
+   "backups"
   ],
   "tabelas_com_drift_migration_vs_types": [
    "badges",
