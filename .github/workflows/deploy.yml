@@ -118,10 +118,29 @@ jobs:
             state=$(gh api "repos/$REPO/deployments/$latest/statuses" | jq -r '.[0].state // empty')
             echo "Deployment $latest -> ${state:-sem status} (tentativa $i)"
             case "$state" in
-              success) echo "Deploy de producao confirmado para $SHA ($state)."; exit 0 ;;
+              success) echo "Deploy de producao confirmado para $SHA ($state)."; break ;;
               failure|error|inactive) echo "::error::Deployment $latest terminou com estado '$state'."; exit 1 ;;
             esac
             sleep 20
           done
           echo "::error::Deployment $latest nao concluiu em ~8 min (ultimo estado: ${state:-vazio})."
           exit 1
+      - name: Verifica bundle de producao sem placeholder
+        env:
+          APP_URL: https://sentinela-v2.vercel.app
+        run: |
+          set -euo pipefail
+          html=$(curl -sfL "$APP_URL/")
+          # Extrai o primeiro src de script JS do bundle principal
+          bundle_path=$(echo "$html" | grep -oP '(?<=src=")[^"]*\.js' | head -1)
+          if [ -z "$bundle_path" ]; then
+            echo "Aviso: nenhum script JS encontrado no HTML de producao; pulando verificacao de placeholder."
+            exit 0
+          fi
+          bundle_url="${APP_URL%/}${bundle_path}"
+          echo "Verificando: $bundle_url"
+          if curl -sfL "$bundle_url" | grep -q "placeholder.supabase.co"; then
+            echo "::error::Bundle de producao contém placeholder.supabase.co. Variáveis VITE_SUPABASE_* não estão configuradas na Vercel."
+            exit 1
+          fi
+          echo "OK: bundle de producao sem placeholder.supabase.co"
