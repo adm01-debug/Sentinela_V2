@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1b5bd5e82637a1fa1b14de4361ffd1ec128fdc42",
+  "commit": "016a6eb70da42aacdfcffa6b30dcc8c655cd3954",
   "branch": "main",
-  "data_commit": "2026-11-23T20:02:59-03:00",
+  "data_commit": "2026-11-23T20:21:17-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "016a6eb70",
+    "data": "2026-11-23",
+    "assunto": "feat: tela de monitoramento mobile com dados reais (#267)"
+   },
    {
     "sha": "1b5bd5e82",
     "data": "2026-11-23",
@@ -126,14 +131,9 @@
     "sha": "d5ef6cbbb",
     "data": "2026-11-22",
     "assunto": "feat(compliance): destrava o PolicyGate com leitura do proprio aceite (#239)"
-   },
-   {
-    "sha": "5ec7ddcb9",
-    "data": "2026-11-22",
-    "assunto": "docs: registra o bug do user_id no aceite e a homologacao E2E do gate (#243)"
    }
   ],
-  "arquivos_mudados_7d": 225,
+  "arquivos_mudados_7d": 227,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -165,14 +165,18 @@
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "pasta": "src/components/AppSidebar.tsx",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "pasta": "src/components/ui",
+    "mudancas": 7
+   },
+   {
+    "pasta": "src/pages/admin",
     "mudancas": 7
    },
    {
@@ -181,10 +185,6 @@
    },
    {
     "pasta": "src/i18n/locales",
-    "mudancas": 6
-   },
-   {
-    "pasta": "src/pages/admin",
     "mudancas": 6
    },
    {
@@ -223,11 +223,11 @@
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
-    "mudancas": 12
+    "mudancas": 13
    },
    {
     "arquivo": "src/components/AppSidebar.tsx",
-    "mudancas": 7
+    "mudancas": 8
    },
    {
     "arquivo": "docs/prod-readiness.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 164
+    "commits": 165
    },
    {
     "autor": "dependabot[bot]",
@@ -314,15 +314,15 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1866,
-  "arquivos_codigo": 1418,
-  "linhas_codigo": 157257,
-  "rotas": 58,
+  "arquivos_total": 1867,
+  "arquivos_codigo": 1419,
+  "linhas_codigo": 157710,
+  "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 57,
-  "componentes": 466,
+  "componentes": 467,
   "hooks": 524,
   "edge_functions": 88,
   "tabelas": 179,
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 388,
-   "linhas": 44969
+   "linhas": 44970
   },
   "src/constants": {
    "arquivos": 7,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32270
+   "linhas": 32303
   },
   "src/i18n": {
    "arquivos": 1,
@@ -459,8 +459,8 @@
    "linhas": 28
   },
   "src/pages": {
-   "arquivos": 108,
-   "linhas": 21025
+   "arquivos": 109,
+   "linhas": 21435
   },
   "src/providers": {
    "arquivos": 9,
@@ -468,7 +468,7 @@
   },
   "src/routes": {
    "arquivos": 1,
-   "linhas": 435
+   "linhas": 444
   },
   "src/services": {
    "arquivos": 8,
@@ -598,11 +598,11 @@
   },
   {
    "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 435
+   "linhas": 444
   },
   {
    "arquivo": "src/components/AppSidebar.tsx",
-   "linhas": 429
+   "linhas": 430
   }
  ],
  "qualidade": {

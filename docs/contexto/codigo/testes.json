@@ -905,6 +905,7 @@
    "src/pages/admin/IntegrationsHealthPage.tsx",
    "src/pages/admin/LiveViewReportPage.tsx",
    "src/pages/admin/MessageTemplatesPage.tsx",
+   "src/pages/admin/MobileMonitoringPage.tsx",
    "src/pages/admin/RateLimitDashboardPage.tsx",
    "src/pages/admin/SensitiveKeywordsPage.tsx",
    "src/pages/admin/SessionRecordingsPage.tsx",

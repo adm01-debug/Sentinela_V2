@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 73,
+   "usado_por": 74,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -191,7 +191,7 @@
     "src/hooks/useMessageTemplates.ts",
     "src/hooks/useMessageTemplatesPage.ts",
     "src/hooks/useMobileDevices.ts",
-    "src/hooks/useMonitoringPoliciesPage.ts"
+    "src/hooks/useMobileMonitoringPage.ts"
    ],
    "coberto_por_testes": 0
   },
@@ -5249,7 +5249,7 @@
    "hooks_exportados": [
     "useMobileMonitoringPage"
    ],
-   "linhas": 146,
+   "linhas": 179,
    "dominio": "hooks",
    "tabelas": [
     "mobile_activity_logs",
@@ -5260,12 +5260,17 @@
    "hooks_internos": [
     "useCallback",
     "useMemo",
+    "useMutation",
     "useQuery",
-    "useState"
+    "useQueryClient",
+    "useState",
+    "useToast"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/admin/MobileMonitoringPage.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {

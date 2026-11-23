@@ -2,11 +2,11 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "resumo": {
-  "urls": 58,
+  "urls": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "lazy": 87
+  "lazy": 88
  },
  "urls": [
   {
@@ -609,6 +609,51 @@
    "flags": [],
    "papeis": [],
    "arquivos_puxados": 31
+  },
+  {
+   "protegida": true,
+   "wrappers": [
+    "AdminGuard"
+   ],
+   "pai": null,
+   "indice": false,
+   "lazy": true,
+   "tipo": "tela",
+   "caminho": "/admin/mobile-monitoring",
+   "componente": "MobileMonitoringPage",
+   "arquivo": "src/pages/admin/MobileMonitoringPage.tsx",
+   "definida_em": "src/routes/AppRoutes.tsx",
+   "redireciona": null,
+   "hooks": [
+    "useCallback",
+    "useEffect",
+    "useLocation",
+    "useMemo",
+    "useMobileMonitoringPage",
+    "useMutation",
+    "useNavigate",
+    "useQuery",
+    "useQueryClient",
+    "useState",
+    "useToast"
+   ],
+   "hooks_locais": [
+    "useMobileMonitoringPage",
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "tabelas": [
+    "mobile_activity_logs",
+    "mobile_devices"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "canais_realtime": [],
+   "flags": [],
+   "papeis": [],
+   "arquivos_puxados": 26
   },
   {
    "protegida": true,
@@ -2891,6 +2936,7 @@
   "LiveViewReportPage": "src/pages/admin/LiveViewReportPage.tsx",
   "LiveViewSimulatorPage": "src/pages/dev/LiveViewSimulatorPage.tsx",
   "MessageTemplatesPage": "src/pages/admin/MessageTemplatesPage.tsx",
+  "MobileMonitoringPage": "src/pages/admin/MobileMonitoringPage.tsx",
   "MonitoringPage": "src/pages/MonitoringPage.tsx",
   "NotFoundPage": "src/pages/NotFoundPage.tsx",
   "NotificationSettingsPage": "src/pages/NotificationSettingsPage.tsx",

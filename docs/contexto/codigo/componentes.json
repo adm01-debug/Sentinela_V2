@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 466,
+ "total": 467,
  "orfaos": 94,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -642,7 +642,7 @@
     "AppSidebar"
    ],
    "export_default": null,
-   "linhas": 429,
+   "linhas": 430,
    "dominio": "components",
    "hooks_locais": [
     "useAuth",
@@ -1870,7 +1870,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 6,
+   "usado_por": 7,
    "orfao": false
   },
   {
@@ -2153,7 +2153,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 49,
+   "usado_por": 50,
    "orfao": false
   },
   {
@@ -3762,7 +3762,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 146,
+   "usado_por": 147,
    "orfao": false
   },
   {
@@ -3825,7 +3825,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 184,
+   "usado_por": 185,
    "orfao": false
   },
   {
@@ -3860,7 +3860,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 188,
+   "usado_por": 189,
    "orfao": false
   },
   {
@@ -4129,7 +4129,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 54,
+   "usado_por": 55,
    "orfao": false
   },
   {
@@ -4525,7 +4525,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 91,
+   "usado_por": 92,
    "orfao": false
   },
   {
@@ -5130,7 +5130,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 59,
+   "usado_por": 60,
    "orfao": false
   },
   {
@@ -5369,7 +5369,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 26,
+   "usado_por": 27,
    "orfao": false
   },
   {
@@ -5390,7 +5390,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 24,
+   "usado_por": 25,
    "orfao": false
   },
   {
@@ -6287,6 +6287,22 @@
     "useMessageTemplates",
     "useToggleMessageTemplate",
     "useUpdateMessageTemplate"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/pages/admin/MobileMonitoringPage.tsx",
+   "exports": [
+    "MobileMonitoringPage"
+   ],
+   "export_default": "MobileMonitoringPage",
+   "linhas": 410,
+   "dominio": "pages/admin",
+   "hooks_locais": [
+    "useMobileMonitoringPage"
    ],
    "tabelas": [],
    "edges": [],
@@ -7782,7 +7798,7 @@
     "AppRoutes"
    ],
    "export_default": null,
-   "linhas": 435,
+   "linhas": 444,
    "dominio": "routes",
    "hooks_locais": [],
    "tabelas": [],

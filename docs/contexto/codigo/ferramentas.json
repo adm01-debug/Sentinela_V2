@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1398)",
+   "TypeScript (1399)",
    "Markdown (176)",
    "SQL (127)",
    "JSON (43)",
@@ -1345,6 +1345,10 @@
     "arquivos": 1
    },
    {
+    "host": "www.openstreetmap.org",
+    "arquivos": 1
+   },
+   {
     "host": "x.com",
     "arquivos": 1
    }
@@ -1560,7 +1564,7 @@
    "src/guards/MFAGuard.tsx",
    "src/guards/index.tsx"
   ],
-  "rotas_protegidas": 24,
+  "rotas_protegidas": 25,
   "rotas_publicas": [
    "/*",
    "/activities/:id",

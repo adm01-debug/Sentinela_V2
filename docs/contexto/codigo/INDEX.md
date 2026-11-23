@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1b5bd5e82637a1fa1b14de4361ffd1ec128fdc42` (2026-11-23T20:02:59-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `016a6eb70da42aacdfcffa6b30dcc8c655cd3954` (2026-11-23T20:21:17-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1398), Markdown (176), SQL (127), JSON (43), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1399), Markdown (176), SQL (127), JSON (43), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,15 +34,15 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1866 |
-| arquivos_codigo | 1418 |
-| linhas_codigo | 157257 |
-| rotas | 58 |
+| arquivos_total | 1867 |
+| arquivos_codigo | 1419 |
+| linhas_codigo | 157710 |
+| rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 57 |
-| componentes | 466 |
+| componentes | 467 |
 | hooks | 524 |
 | edge_functions | 88 |
 | tabelas | 179 |
@@ -54,8 +54,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | docs_md | 176 |
 
 ## Onde ficam as coisas
-- telas: src/pages (58)
-- componentes: src/components (356), src/pages (92), src/providers (8)
+- telas: src/pages (59)
+- componentes: src/components (356), src/pages (93), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
 - testes: co-localizado (*.test) (51), co-localizado (__tests__) (19), outro (6)
@@ -86,7 +86,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
 | pages | 4 | 38 | 68 | 159 | 10 | 68 |
-| pages/admin | 0 | 17 | 19 | 34 | 8 | 31 |
+| pages/admin | 0 | 18 | 20 | 35 | 8 | 32 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
 | services | 0 | 0 | 8 | 20 | 2 | 10 |
@@ -110,6 +110,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `/admin/integrations-health` [tela] → src/pages/admin/IntegrationsHealthPage.tsx (protegida)
 - `/admin/live-view-report` [tela] → src/pages/admin/LiveViewReportPage.tsx (protegida)
 - `/admin/message-templates` [tela] → src/pages/admin/MessageTemplatesPage.tsx (protegida)
+- `/admin/mobile-monitoring` [tela] → src/pages/admin/MobileMonitoringPage.tsx (protegida)
 - `/admin/rate-limits` [tela] → src/pages/admin/RateLimitDashboardPage.tsx (protegida)
 - `/admin/session-recordings` [tela] → src/pages/admin/SessionRecordingsPage.tsx (protegida)
 - `/admin/telemetria` [tela] → src/pages/AdminTelemetriaPage.tsx (protegida)
@@ -277,7 +278,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Permissões / papéis
 - papéis no código: status (20), admin (15), alert (13), user (9), button (7), combobox (3), list (3), presentation (3), progressbar (3), dialog (2), region (2), Admin (1), agent (1), developer (1), editor (1), group (1), img (1), link (1), listitem (1), main (1), navigation (1), null (1), object (1), separator (1), sup (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
 - enums de papel: app_role: admin|user; user_role_type: viewer|supervisor|manager|admin|super_admin
-- guards: src/guards/MFAGuard.tsx, src/guards/index.tsx · rotas protegidas: 24 · públicas: /*, /activities/:id, /activities/timeline, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
+- guards: src/guards/MFAGuard.tsx, src/guards/index.tsx · rotas protegidas: 25 · públicas: /*, /activities/:id, /activities/timeline, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
 - feature flags: FEATURE_FLAGS, FEATURE_KEYS, FEATURE_TO_FACTOR, FEATURE_X, advancedReports, darkMode, exportPDF, mobileApp, newDashboard, nova-tela, novo-inbox
 
 ## Alertas (baseline.json → alertas)
@@ -307,8 +308,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (15)
 - docs/pendencias/_linha-de-base.md (15)
-- src/routes/AppRoutes.tsx (12)
-- src/components/AppSidebar.tsx (7)
+- src/routes/AppRoutes.tsx (13)
+- src/components/AppSidebar.tsx (8)
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
 - src/index.css (5)
@@ -462,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `016a6eb70` feat: tela de monitoramento mobile com dados reais (#267)
 - 2026-11-23 `1b5bd5e82` feat: dashboard de rate limiting com leitura via edge admin (#266)
 - 2026-11-23 `886630e58` feat: tela de modelos de mensagem com CRUD real (#265)
 - 2026-11-23 `9ab51f01b` feat: tela de palavras sensiveis com CRUD real (#264)
@@ -476,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `ac2d34cc0` fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)
 - 2026-11-23 `83496a324` feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios
 - 2026-11-23 `dfd0acde7` feat: integra CalendarPage com dados reais de attendance_records (#253)
-- 2026-11-23 `2f8ef3c85` feat: expõe páginas sem link no sidebar (#252)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
