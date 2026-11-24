@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `43719a106563af553ec79c275b1284bf30938d04` (2026-11-24T18:58:59-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1e1756acbb27ab541645f120e40814094b20c74c` (2026-11-24T19:20:36-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1884 |
 | arquivos_codigo | 1433 |
-| linhas_codigo | 160574 |
+| linhas_codigo | 160650 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -313,10 +313,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - src/components/AppSidebar.tsx (8)
 - .github/workflows/ci.yml (7)
 - docs/prod-readiness.md (6)
+- supabase/config.toml (6)
 - src/index.css (5)
 - src/test/gap-audit.test.ts (5)
 - src/test/improvements-verification.test.ts (5)
-- supabase/config.toml (5)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `1e1756acb` fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)
 - 2026-11-24 `43719a106` fix: filtro de tipo da tela de IA acha os relatorios que ja existem (#299)
 - 2026-11-24 `921fd7b15` fix: behavior-pattern recebe o nome do funcionario no campo certo (#298)
 - 2026-11-24 `fe1d96c79` infra: retry de 5xx transitorio do Supabase no migrate e no deploy-functions (#295)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `d7be2d9fb` fix: live view entrega ICE servers validos em vez de repassar o secret (#288)
 - 2026-11-24 `39b435f24` fix: tipos de client e de validacao param de mentir nos relatorios (#287)
 - 2026-11-24 `a470d9c6b` fix: envio de alerta nao mascara mais tipo ausente (status e event_type) (#286)
-- 2026-11-24 `7794226d5` fix: analise de padroes e tendencias ignora registro sem data em vez de estourar (#285)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

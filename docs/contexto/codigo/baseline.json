@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "43719a106563af553ec79c275b1284bf30938d04",
+  "commit": "1e1756acbb27ab541645f120e40814094b20c74c",
   "branch": "main",
-  "data_commit": "2026-11-24T18:58:59-03:00",
+  "data_commit": "2026-11-24T19:20:36-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "1e1756acb",
+    "data": "2026-11-24",
+    "assunto": "fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)"
+   },
    {
     "sha": "43719a106",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "397bb1e93",
     "data": "2026-11-24",
     "assunto": "docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)"
-   },
-   {
-    "sha": "a970c26a5",
-    "data": "2026-11-24",
-    "assunto": "test: guarda o consumo do rate limit nas edge functions (#276)"
    }
   ],
-  "arquivos_mudados_7d": 287,
+  "arquivos_mudados_7d": 301,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -242,6 +242,10 @@
     "mudancas": 6
    },
    {
+    "arquivo": "supabase/config.toml",
+    "mudancas": 6
+   },
+   {
     "arquivo": "src/index.css",
     "mudancas": 5
    },
@@ -251,10 +255,6 @@
    },
    {
     "arquivo": "src/test/improvements-verification.test.ts",
-    "mudancas": 5
-   },
-   {
-    "arquivo": "supabase/config.toml",
     "mudancas": 5
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 197
+    "commits": 198
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1884,
   "arquivos_codigo": 1433,
-  "linhas_codigo": 160574,
+  "linhas_codigo": 160650,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 105,
-   "linhas": 13792
+   "linhas": 13868
   },
   "vite.config.ts": {
    "arquivos": 1,
