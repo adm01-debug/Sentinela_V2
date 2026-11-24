@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (52)",
+   "co-localizado (*.test) (53)",
    "co-localizado (__tests__) (19)",
    "outro (6)"
   ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "test: guarda do contrato de dados entre front e banco (#274)",
    "test: guarda contra texto duplamente codificado (#273)",
    "fix: corrige texto corrompido no dashboard e nos avisos de slack (#272)",
    "docs: corrige auditoria de functions e registra gates medidos em producao (#271)",
-   "fix: reativa cron do SLA removendo gate incompativel com anon key (#269)",
-   "fix: exige autenticacao nas edge functions abertas ao publico (#268)"
+   "fix: reativa cron do SLA removendo gate incompativel com anon key (#269)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

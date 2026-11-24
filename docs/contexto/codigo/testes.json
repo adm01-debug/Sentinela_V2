@@ -5,15 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 78,
+ "total": 79,
  "por_tipo": {
+  "contrato": 1,
   "e2e": 1,
   "unit": 77
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 52
+   "arquivos": 53
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -376,6 +377,13 @@
     "src/components/dashboard/DashboardSkeleton.tsx"
    ],
    "casos": 21
+  },
+  {
+   "arquivo": "src/test/data-contract.test.ts",
+   "tipo": "contrato",
+   "linhas": 130,
+   "testa": [],
+   "casos": 4
   },
   {
    "arquivo": "src/test/data-operations.test.ts",

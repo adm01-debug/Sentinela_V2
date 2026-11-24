@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "daa60fa00683b0fdaefbaf5f4d18202e9ba7990d",
+  "commit": "44204839575a147109ea04240617b70df03dd1dc",
   "branch": "main",
-  "data_commit": "2026-11-23T23:28:55-03:00",
+  "data_commit": "2026-11-23T23:41:04-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "442048395",
+    "data": "2026-11-23",
+    "assunto": "test: guarda do contrato de dados entre front e banco (#274)"
+   },
    {
     "sha": "daa60fa00",
     "data": "2026-11-23",
@@ -126,14 +131,9 @@
     "sha": "a528be538",
     "data": "2026-11-23",
     "assunto": "build(deps): bump @testing-library/jest-dom (#249)"
-   },
-   {
-    "sha": "40eb25ac4",
-    "data": "2026-11-22",
-    "assunto": "docs: registra que producao estava quebrada e o que foi corrigido (#247)"
    }
   ],
-  "arquivos_mudados_7d": 236,
+  "arquivos_mudados_7d": 237,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 170
+    "commits": 171
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1868,
-  "arquivos_codigo": 1420,
-  "linhas_codigo": 158000,
+  "arquivos_total": 1869,
+  "arquivos_codigo": 1421,
+  "linhas_codigo": 158130,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,7 +328,7 @@
   "tabelas": 179,
   "migrations": 123,
   "cron_jobs": 5,
-  "testes": 78,
+  "testes": 79,
   "workflows": 12,
   "scripts": 31,
   "docs_md": 176
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 53,
-   "linhas": 10712
+   "arquivos": 54,
+   "linhas": 10842
   },
   "src/types": {
    "arquivos": 57,
