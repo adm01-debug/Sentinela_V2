@@ -101,7 +101,7 @@
    "nome": "analyze-activity",
    "entrada": "supabase/functions/analyze-activity/index.ts",
    "arquivos": 1,
-   "linhas": 179,
+   "linhas": 191,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -120,6 +120,7 @@
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [
+    "auth.ts",
     "rateLimiting.ts"
    ],
    "chamada_pelo_front": [
@@ -308,7 +309,7 @@
    "nome": "behavior-pattern",
    "entrada": "supabase/functions/behavior-pattern/index.ts",
    "arquivos": 1,
-   "linhas": 194,
+   "linhas": 206,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -324,7 +325,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useBehaviorPatterns.ts"
    ],
@@ -421,7 +424,7 @@
    "nome": "check-geofence",
    "entrada": "supabase/functions/check-geofence/index.ts",
    "arquivos": 2,
-   "linhas": 381,
+   "linhas": 399,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -441,6 +444,7 @@
    ],
    "hosts_externos": [],
    "usa_shared": [
+    "auth.ts",
     "cors.ts",
     "logger.ts",
     "rateLimiting.ts",
@@ -702,7 +706,7 @@
    "nome": "escalate-dispute-sla",
    "entrada": "supabase/functions/escalate-dispute-sla/index.ts",
    "arquivos": 1,
-   "linhas": 213,
+   "linhas": 226,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -725,7 +729,9 @@
    "hosts_externos": [
     "fcm.googleapis.com"
    ],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/pages/admin/DisputeEscalationAuditPage.tsx"
    ],
@@ -1457,7 +1463,7 @@
    "nome": "notify-new-device",
    "entrada": "supabase/functions/notify-new-device/index.ts",
    "arquivos": 1,
-   "linhas": 187,
+   "linhas": 199,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1476,7 +1482,9 @@
    "hosts_externos": [
     "api.resend.com"
    ],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useDeviceDetection.ts"
    ],
@@ -1489,7 +1497,7 @@
    "nome": "ocr-screenshot",
    "entrada": "supabase/functions/ocr-screenshot/index.ts",
    "arquivos": 1,
-   "linhas": 274,
+   "linhas": 286,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1512,6 +1520,7 @@
     "api.lovable.dev"
    ],
    "usa_shared": [
+    "auth.ts",
     "rateLimiting.ts"
    ],
    "chamada_pelo_front": [
@@ -1554,7 +1563,7 @@
    "nome": "predict-anomaly",
    "entrada": "supabase/functions/predict-anomaly/index.ts",
    "arquivos": 1,
-   "linhas": 146,
+   "linhas": 158,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1570,7 +1579,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useAnomalyDetection.ts"
    ],
@@ -1823,7 +1834,7 @@
    "nome": "risk-score-calculator",
    "entrada": "supabase/functions/risk-score-calculator/index.ts",
    "arquivos": 1,
-   "linhas": 312,
+   "linhas": 324,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS",
@@ -1849,6 +1860,7 @@
    ],
    "hosts_externos": [],
    "usa_shared": [
+    "auth.ts",
     "halfSpaceTrees.ts"
    ],
    "chamada_pelo_front": [
@@ -1984,7 +1996,7 @@
    "nome": "send-push-notification",
    "entrada": "supabase/functions/send-push-notification/index.ts",
    "arquivos": 1,
-   "linhas": 88,
+   "linhas": 100,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2000,6 +2012,7 @@
     "fcm.googleapis.com"
    ],
    "usa_shared": [
+    "auth.ts",
     "rateLimiting.ts"
    ],
    "chamada_pelo_front": [
@@ -2081,7 +2094,7 @@
    "nome": "send-slack-notification",
    "entrada": "supabase/functions/send-slack-notification/index.ts",
    "arquivos": 1,
-   "linhas": 48,
+   "linhas": 60,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2094,7 +2107,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useSlackNotification.ts"
    ],
@@ -2107,7 +2122,7 @@
    "nome": "send-webhook",
    "entrada": "supabase/functions/send-webhook/index.ts",
    "arquivos": 2,
-   "linhas": 208,
+   "linhas": 220,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2125,6 +2140,7 @@
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [
+    "auth.ts",
     "rateLimiting.ts",
     "validation.ts"
    ],
@@ -2345,7 +2361,7 @@
    "nome": "slack-notify",
    "entrada": "supabase/functions/slack-notify/index.ts",
    "arquivos": 1,
-   "linhas": 489,
+   "linhas": 501,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2369,7 +2385,9 @@
    "hosts_externos": [
     "api.resend.com"
    ],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/components/admin/SlackIntegrationsCard.tsx"
    ],
@@ -2422,7 +2440,7 @@
    "nome": "smart-recommendations",
    "entrada": "supabase/functions/smart-recommendations/index.ts",
    "arquivos": 1,
-   "linhas": 207,
+   "linhas": 219,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2440,7 +2458,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useSmartSuggestions.ts"
    ],
@@ -2453,7 +2473,7 @@
    "nome": "summarize-activity",
    "entrada": "supabase/functions/summarize-activity/index.ts",
    "arquivos": 1,
-   "linhas": 155,
+   "linhas": 167,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2470,7 +2490,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useActivitySummary.ts"
    ],
@@ -2576,7 +2598,7 @@
    "nome": "trend-forecasting",
    "entrada": "supabase/functions/trend-forecasting/index.ts",
    "arquivos": 1,
-   "linhas": 204,
+   "linhas": 216,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2593,7 +2615,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useTrendAnalysis.ts"
    ],

@@ -464,11 +464,11 @@
   {
    "arquivo": "src/test/gap-audit.test.ts",
    "tipo": "unit",
-   "linhas": 187,
+   "linhas": 227,
    "testa": [
     "src/integrations/supabase/client.ts"
    ],
-   "casos": 15
+   "casos": 17
   },
   {
    "arquivo": "src/test/header-enhanced.test.tsx",

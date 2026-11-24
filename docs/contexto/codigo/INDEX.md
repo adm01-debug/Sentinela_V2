@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `016a6eb70da42aacdfcffa6b30dcc8c655cd3954` (2026-11-23T20:21:17-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `5aa07dcf248cee27283a27ed8bd0bf7bbeed03d5` (2026-11-23T21:38:04-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1867 |
 | arquivos_codigo | 1419 |
-| linhas_codigo | 157710 |
+| linhas_codigo | 157937 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `5aa07dcf2` fix: exige autenticacao nas edge functions abertas ao publico (#268)
 - 2026-11-23 `016a6eb70` feat: tela de monitoramento mobile com dados reais (#267)
 - 2026-11-23 `1b5bd5e82` feat: dashboard de rate limiting com leitura via edge admin (#266)
 - 2026-11-23 `886630e58` feat: tela de modelos de mensagem com CRUD real (#265)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `8d4cc58ed` docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)
 - 2026-11-23 `ac2d34cc0` fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)
 - 2026-11-23 `83496a324` feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios
-- 2026-11-23 `dfd0acde7` feat: integra CalendarPage com dados reais de attendance_records (#253)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
