@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `a470d9c6b547141e47080747499f3c32466d112f` (2026-11-24T11:18:22-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `39b435f245cf02a5e1481132954c64f700e2331b` (2026-11-24T11:34:20-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -312,7 +312,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - src/components/AppSidebar.tsx (8)
 - .github/workflows/ci.yml (7)
 - docs/prod-readiness.md (6)
-- scripts/ci/deno-check-baseline.json (5)
+- scripts/ci/deno-check-baseline.json (6)
 - src/index.css (5)
 - src/test/gap-audit.test.ts (5)
 - src/test/improvements-verification.test.ts (5)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `39b435f24` fix: tipos de client e de validacao param de mentir nos relatorios (#287)
 - 2026-11-24 `a470d9c6b` fix: envio de alerta nao mascara mais tipo ausente (status e event_type) (#286)
 - 2026-11-24 `7794226d5` fix: analise de padroes e tendencias ignora registro sem data em vez de estourar (#285)
 - 2026-11-24 `1762098b7` fix: checagem de tipos volta a valer no upload de gravacao (client tipado) (#284)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `a970c26a5` test: guarda o consumo do rate limit nas edge functions (#276)
 - 2026-11-24 `fee6687be` fix(edge): corrige rate limit inoperante e retry_count descartado (#275)
 - 2026-11-23 `442048395` test: guarda do contrato de dados entre front e banco (#274)
-- 2026-11-23 `daa60fa00` test: guarda contra texto duplamente codificado (#273)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "a470d9c6b547141e47080747499f3c32466d112f",
+  "commit": "39b435f245cf02a5e1481132954c64f700e2331b",
   "branch": "main",
-  "data_commit": "2026-11-24T11:18:22-03:00",
+  "data_commit": "2026-11-24T11:34:20-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "39b435f24",
+    "data": "2026-11-24",
+    "assunto": "fix: tipos de client e de validacao param de mentir nos relatorios (#287)"
+   },
    {
     "sha": "a470d9c6b",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "4f535b477",
     "data": "2026-11-23",
     "assunto": "chore: documenta a prova pos-deploy do gate das edges (#263)"
-   },
-   {
-    "sha": "61b2323c6",
-    "data": "2026-11-23",
-    "assunto": "fix: reconhece service_role pelo probe da API admin no gate das edges (#262)"
    }
   ],
-  "arquivos_mudados_7d": 262,
+  "arquivos_mudados_7d": 263,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -172,6 +172,10 @@
     "mudancas": 8
    },
    {
+    "pasta": "supabase/functions/_shared",
+    "mudancas": 8
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 7
    },
@@ -188,11 +192,7 @@
     "mudancas": 6
    },
    {
-    "pasta": "src/i18n/locales",
-    "mudancas": 6
-   },
-   {
-    "pasta": "supabase/functions/_shared",
+    "pasta": "scripts/ci/deno-check-baseline.json",
     "mudancas": 6
    }
   ],
@@ -239,7 +239,7 @@
    },
    {
     "arquivo": "scripts/ci/deno-check-baseline.json",
-    "mudancas": 5
+    "mudancas": 6
    },
    {
     "arquivo": "src/index.css",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 184
+    "commits": 185
    },
    {
     "autor": "dependabot[bot]",

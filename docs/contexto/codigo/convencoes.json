@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: tipos de client e de validacao param de mentir nos relatorios (#287)",
    "fix: envio de alerta nao mascara mais tipo ausente (status e event_type) (#286)",
    "fix: analise de padroes e tendencias ignora registro sem data em vez de estourar (#285)",
    "fix: checagem de tipos volta a valer no upload de gravacao (client tipado) (#284)",
-   "fix: deploy nao fica vermelho por corrida quando o deployment do commit novo ainda nao esta listado (#283)",
-   "fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)"
+   "fix: deploy nao fica vermelho por corrida quando o deployment do commit novo ainda nao esta listado (#283)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
