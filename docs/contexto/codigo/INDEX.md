@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `3778ffeead0752539a64c9297df58f1ce2e4993c` (2026-11-24T09:41:18-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2c025d91323a73c16c2b90e78f0cc264abb060e4` (2026-11-24T10:13:52-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -307,7 +307,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - docs/pendencias/_linha-de-base.md (20)
 - scripts/ci/eslint-baseline.json (18)
 - scripts/ci/prettier-baseline.json (17)
-- .github/workflows/deploy.yml (15)
+- .github/workflows/deploy.yml (16)
 - src/routes/AppRoutes.tsx (13)
 - src/components/AppSidebar.tsx (8)
 - .github/workflows/ci.yml (6)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `2c025d913` fix: deploy para de ficar vermelho quando o commit e superado por merge mais novo (#280)
 - 2026-11-24 `3778ffeea` chore: baixa baselines de lint e format apos a divida paga (#279)
 - 2026-11-24 `d4038b31f` infra: ratchet de deno check nas edge functions do CI (#278)
 - 2026-11-24 `b9eb31ff1` infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `5aa07dcf2` fix: exige autenticacao nas edge functions abertas ao publico (#268)
 - 2026-11-23 `016a6eb70` feat: tela de monitoramento mobile com dados reais (#267)
 - 2026-11-23 `1b5bd5e82` feat: dashboard de rate limiting com leitura via edge admin (#266)
-- 2026-11-23 `886630e58` feat: tela de modelos de mensagem com CRUD real (#265)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

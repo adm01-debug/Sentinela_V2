@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "3778ffeead0752539a64c9297df58f1ce2e4993c",
+  "commit": "2c025d91323a73c16c2b90e78f0cc264abb060e4",
   "branch": "main",
-  "data_commit": "2026-11-24T09:41:18-03:00",
+  "data_commit": "2026-11-24T10:13:52-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2c025d913",
+    "data": "2026-11-24",
+    "assunto": "fix: deploy para de ficar vermelho quando o commit e superado por merge mais novo (#280)"
+   },
    {
     "sha": "3778ffeea",
     "data": "2026-11-24",
@@ -126,11 +131,6 @@
     "sha": "8d4cc58ed",
     "data": "2026-11-23",
     "assunto": "docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)"
-   },
-   {
-    "sha": "ac2d34cc0",
-    "data": "2026-11-23",
-    "assunto": "fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)"
    }
   ],
   "arquivos_mudados_7d": 248,
@@ -153,7 +153,7 @@
    },
    {
     "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "pasta": "package-lock.json",
@@ -219,7 +219,7 @@
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 15
+    "mudancas": 16
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 177
+    "commits": 178
    },
    {
     "autor": "dependabot[bot]",
