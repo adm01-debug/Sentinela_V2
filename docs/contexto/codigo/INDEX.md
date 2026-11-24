@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `716934523b7afb5b131cb5bf49fea8c89129af22` (2026-11-24T19:35:26-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2d3ed6cd11723786999d159f998f36c319346dcf` (2026-11-24T19:56:32-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1884 |
 | arquivos_codigo | 1433 |
-| linhas_codigo | 160713 |
+| linhas_codigo | 160728 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `2d3ed6cd1` fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)
 - 2026-11-24 `716934523` fix: gate estrito nas 38 edges legadas, no lugar do gate de cron (#301)
 - 2026-11-24 `1e1756acb` fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)
 - 2026-11-24 `43719a106` fix: filtro de tipo da tela de IA acha os relatorios que ja existem (#299)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `b1e44b30a` feat: detector de anomalias passa a aparecer na tela de atividades (#290)
 - 2026-11-24 `eabdad381` fix: hora e severidade deixam de ser lidas como indefinidas nos relatorios (#289)
 - 2026-11-24 `d7be2d9fb` fix: live view entrega ICE servers validos em vez de repassar o secret (#288)
-- 2026-11-24 `39b435f24` fix: tipos de client e de validacao param de mentir nos relatorios (#287)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

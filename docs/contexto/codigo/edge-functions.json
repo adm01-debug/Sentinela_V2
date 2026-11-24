@@ -996,7 +996,7 @@
    "nome": "get-employee-schedule",
    "entrada": "supabase/functions/get-employee-schedule/index.ts",
    "arquivos": 1,
-   "linhas": 94,
+   "linhas": 97,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1013,6 +1013,7 @@
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [
+    "auth.ts",
     "rateLimiting.ts"
    ],
    "chamada_pelo_front": [],
@@ -1025,7 +1026,7 @@
    "nome": "get-employee-timeline",
    "entrada": "supabase/functions/get-employee-timeline/index.ts",
    "arquivos": 1,
-   "linhas": 80,
+   "linhas": 83,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -1045,7 +1046,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
@@ -1441,7 +1444,7 @@
    "nome": "notify-dispute-decision",
    "entrada": "supabase/functions/notify-dispute-decision/index.ts",
    "arquivos": 1,
-   "linhas": 126,
+   "linhas": 133,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS",
@@ -1463,7 +1466,9 @@
    "hosts_externos": [
     "fcm.googleapis.com"
    ],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
@@ -1994,7 +1999,7 @@
    "nome": "send-email-notification",
    "entrada": "supabase/functions/send-email-notification/index.ts",
    "arquivos": 1,
-   "linhas": 56,
+   "linhas": 58,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2009,7 +2014,9 @@
    "hosts_externos": [
     "api.resend.com"
    ],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/hooks/useEmailNotification.ts"
    ],

@@ -4294,7 +4294,11 @@
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/get-employee-schedule/index.ts": [
+   "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/rateLimiting.ts"
+  ],
+  "supabase/functions/get-employee-timeline/index.ts": [
+   "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/get-mapbox-token/index.ts": [
    "supabase/functions/_shared/rateLimiting.ts"
@@ -4333,6 +4337,9 @@
   "supabase/functions/mobile-collector/index.ts": [
    "supabase/functions/_shared/rateLimiting.ts",
    "supabase/functions/_shared/validation.ts"
+  ],
+  "supabase/functions/notify-dispute-decision/index.ts": [
+   "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/notify-mobile-violation/index.ts": [
    "supabase/functions/_shared/auth.ts"
@@ -4381,6 +4388,9 @@
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/search-activities/index.ts": [
+   "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/send-email-notification/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/send-push-notification/index.ts": [

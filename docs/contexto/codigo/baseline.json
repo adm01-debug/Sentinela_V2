@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "716934523b7afb5b131cb5bf49fea8c89129af22",
+  "commit": "2d3ed6cd11723786999d159f998f36c319346dcf",
   "branch": "main",
-  "data_commit": "2026-11-24T19:35:26-03:00",
+  "data_commit": "2026-11-24T19:56:32-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2d3ed6cd1",
+    "data": "2026-11-24",
+    "assunto": "fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)"
+   },
    {
     "sha": "716934523",
     "data": "2026-11-24",
@@ -126,11 +131,6 @@
     "sha": "d4038b31f",
     "data": "2026-11-24",
     "assunto": "infra: ratchet de deno check nas edge functions do CI (#278)"
-   },
-   {
-    "sha": "b9eb31ff1",
-    "data": "2026-11-24",
-    "assunto": "infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)"
    }
   ],
   "arquivos_mudados_7d": 301,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 199
+    "commits": 200
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1884,
   "arquivos_codigo": 1433,
-  "linhas_codigo": 160713,
+  "linhas_codigo": 160728,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 105,
-   "linhas": 13931
+   "linhas": 13946
   },
   "vite.config.ts": {
    "arquivos": 1,
