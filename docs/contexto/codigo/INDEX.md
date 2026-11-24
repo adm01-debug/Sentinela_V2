@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `cde1021d05adbbee5a7ffb348aede16a11ec3120` (2026-11-24T13:39:23-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `07e50507525b6949c640491f6663d7eefa26a150` (2026-11-24T14:00:42-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1878 |
 | arquivos_codigo | 1428 |
-| linhas_codigo | 159771 |
+| linhas_codigo | 159863 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 495 | 19 | 86 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 160 | 11 | 68 |
+| pages | 4 | 38 | 68 | 160 | 12 | 68 |
 | pages/admin | 0 | 18 | 20 | 35 | 8 | 32 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `07e505075` fix: resumo de atividades volta a alimentar os graficos (#292)
 - 2026-11-24 `cde1021d0` fix: diagnostico de ICE usa a mesma fonte do live view (#291)
 - 2026-11-24 `b1e44b30a` feat: detector de anomalias passa a aparecer na tela de atividades (#290)
 - 2026-11-24 `eabdad381` fix: hora e severidade deixam de ser lidas como indefinidas nos relatorios (#289)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `2c025d913` fix: deploy para de ficar vermelho quando o commit e superado por merge mais novo (#280)
 - 2026-11-24 `3778ffeea` chore: baixa baselines de lint e format apos a divida paga (#279)
 - 2026-11-24 `d4038b31f` infra: ratchet de deno check nas edge functions do CI (#278)
-- 2026-11-24 `b9eb31ff1` infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

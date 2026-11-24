@@ -2482,7 +2482,7 @@
    "nome": "summarize-activity",
    "entrada": "supabase/functions/summarize-activity/index.ts",
    "arquivos": 1,
-   "linhas": 167,
+   "linhas": 227,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"

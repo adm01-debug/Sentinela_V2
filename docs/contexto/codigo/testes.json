@@ -157,11 +157,11 @@
   {
    "arquivo": "src/pages/__tests__/Activities.test.tsx",
    "tipo": "unit",
-   "linhas": 68,
+   "linhas": 104,
    "testa": [
     "src/pages/ActivitiesPage.tsx"
    ],
-   "casos": 1
+   "casos": 2
   },
   {
    "arquivo": "src/pages/__tests__/Analytics.test.tsx",

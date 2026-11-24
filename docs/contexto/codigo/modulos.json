@@ -1802,7 +1802,7 @@
    "modulo": "hooks",
    "arquivos": 479,
    "testes": 0,
-   "linhas": 32341,
+   "linhas": 32331,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -2322,7 +2322,6 @@
     "useOnlineEmployeesCount",
     "useActivities",
     "useActivity",
-    "useActivitySummary",
     "useActivityHistory",
     "useActivitySummary",
     "useActivityTimeline",
@@ -3805,7 +3804,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 13423,
+   "linhas": 13429,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -4028,6 +4027,7 @@
     "send-password-reset",
     "send-scheduled-report",
     "send-whatsapp",
+    "summarize-activity",
     "sync-whatsapp-templates"
    ],
    "tabelas": [
@@ -4820,6 +4820,7 @@
     "slack-mttr-monitor",
     "slack-notify",
     "slack-weekly-digest",
+    "summarize-activity",
     "sync-whatsapp-templates"
    ],
    "tabelas": [

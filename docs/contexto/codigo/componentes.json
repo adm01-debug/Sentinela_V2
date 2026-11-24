@@ -6060,7 +6060,7 @@
     "ActivitiesPage"
    ],
    "export_default": "ActivitiesPage",
-   "linhas": 61,
+   "linhas": 67,
    "dominio": "pages",
    "hooks_locais": [
     "useActivities",

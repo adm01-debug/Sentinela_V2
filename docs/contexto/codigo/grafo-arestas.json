@@ -2833,7 +2833,8 @@
    "src/components/ApplicationBreakdown.tsx",
    "src/components/exports/XlsxExportButton.tsx",
    "src/components/layout/PageHeader.tsx",
-   "src/hooks/useActivities.ts"
+   "src/hooks/useActivities.ts",
+   "src/hooks/useActivitySummary.ts"
   ],
   "src/pages/ActivityDetailPage.tsx": [
    "src/components/ui/badge.tsx",

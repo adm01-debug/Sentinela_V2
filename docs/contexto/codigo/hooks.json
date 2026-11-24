@@ -302,10 +302,9 @@
    "arquivo": "src/hooks/useActivities.ts",
    "hooks_exportados": [
     "useActivities",
-    "useActivity",
-    "useActivitySummary"
+    "useActivity"
    ],
-   "linhas": 95,
+   "linhas": 83,
    "dominio": "hooks",
    "tabelas": [
     "keystroke_logs"
@@ -351,7 +350,7 @@
    "hooks_exportados": [
     "useActivitySummary"
    ],
-   "linhas": 44,
+   "linhas": 46,
    "dominio": "hooks",
    "tabelas": [],
    "rpcs": [],
@@ -359,12 +358,13 @@
     "summarize-activity"
    ],
    "hooks_internos": [
-    "useCallback",
-    "useState"
+    "useQuery"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/pages/ActivitiesPage.tsx"
+   ],
    "coberto_por_testes": 0
   },
   {

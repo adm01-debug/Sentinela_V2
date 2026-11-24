@@ -2,7 +2,7 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "nos": 1346,
- "arestas": 2859,
+ "arestas": 2860,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -327,7 +327,6 @@
   "src/hooks/useAccordion.ts",
   "src/hooks/useActiveEmployees.ts",
   "src/hooks/useActivityHistory.ts",
-  "src/hooks/useActivitySummary.ts",
   "src/hooks/useAdvancedFilters.ts",
   "src/hooks/useAggregate.ts",
   "src/hooks/useAlert.ts",
@@ -498,7 +497,8 @@
   "src/hooks/useMeasure.ts",
   "src/hooks/useMediaDevices.ts",
   "src/hooks/useMediaRecorder.ts",
-  "src/hooks/useMemoizedCallback.ts"
+  "src/hooks/useMemoizedCallback.ts",
+  "src/hooks/useMerge.ts"
  ],
  "modulos_mais_acoplados": [
   {
