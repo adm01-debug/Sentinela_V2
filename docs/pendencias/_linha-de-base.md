@@ -158,11 +158,13 @@ zero divergencia nas duas direcoes.
 - Workflow Deploy: verde no run 45317165963 (commit fee6687be) - migrate,
   deploy-functions e verify-production-deploy todos success; rotacao do
   VERCEL_TOKEN nao e mais bloqueio observado.
-- `deno check` nao roda no CI (`ci.yml` roda apenas `deno test`): auditoria de
-  2026-11-24 nas 88 edge functions -> 33 com 49 erros de tipo, dos quais 2 eram
-  bugs reais e silenciosos (corrigidos na #275). O rate limit agora tem guarda
-  estatica (#276); o resto do catalogo e ruido (`catch unknown`, genericos do
-  supabase-js, `new Date(null)` em coluna NOT NULL).
+- `deno check` roda no CI desde 2026-11-24 (job `deno-typecheck-ratchet`, Deno
+  2.9.8 fixado): o baseline `scripts/ci/deno-check-baseline.json` congela os 49
+  erros de tipo das 33 edge functions auditadas (88 verificadas); erro NOVO
+  quebra o job. Dois desses 49 eram bugs reais e silenciosos (corrigidos na
+  #275); o rate limit tambem tem guarda estatica (#276). O resto e ruido de
+  tipos (`catch unknown`, genericos do supabase-js, `new Date(null)` em coluna
+  NOT NULL), congelado — nao corrigido.
 - Deploy das migrations/edge por PR futura conforme regra 8 (DDL/deploy).
 
 ## Auxiliares orfaos

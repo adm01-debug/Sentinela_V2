@@ -88,6 +88,29 @@ jobs:
         run: |
           find supabase/functions \( -name "*_test.ts" -o -name "*.test.ts" \) -print0 | xargs -0 -I {} deno test --allow-env --allow-net {}
 
+  # `deno test` passa com dezenas de erros de tipo no codigo das edges — foi por
+  # esse buraco que dois bugs reais chegaram na main (rate limit lendo campo
+  # inexistente e destructuring sem default). Este job roda `deno check` nas 88
+  # edge functions contra um baseline (scripts/ci/deno-check-baseline.json):
+  # a divida de hoje (49 erros, 33 funcoes) fica congelada e qualquer erro NOVO
+  # quebra o job. Regenerar o baseline exige aprovacao explicita
+  # (node scripts/ci/deno-check-ratchet.mjs --update-baseline).
+  #
+  # Versao do Deno fixada de proposito: mudar de versao muda o conjunto de
+  # diagnosticos e invalidaria o baseline (deno-version alinhada a baseline).
+  # Sem `npm ci`: o ratchet e node puro, sem dependencias do projeto.
+  deno-typecheck-ratchet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.8
+      - name: Deno check (ratchet)
+        run: node scripts/ci/deno-check-ratchet.mjs
+      - name: Deno check ratchet (testes do parser)
+        run: node --test scripts/ci/deno-check-ratchet.unit.mjs
+
   # Guard das instruções para agentes (AGENTS.md + CLAUDE.md + docs/agentes/*.md).
   # Job próprio e sem `npm ci` de propósito: o script é node puro, sem dependências,
   # e precisa continuar reportando mesmo quando a instalação do projeto falha.
