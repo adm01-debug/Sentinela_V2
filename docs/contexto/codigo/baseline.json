@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1e1756acbb27ab541645f120e40814094b20c74c",
+  "commit": "716934523b7afb5b131cb5bf49fea8c89129af22",
   "branch": "main",
-  "data_commit": "2026-11-24T19:20:36-03:00",
+  "data_commit": "2026-11-24T19:35:26-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "716934523",
+    "data": "2026-11-24",
+    "assunto": "fix: gate estrito nas 38 edges legadas, no lugar do gate de cron (#301)"
+   },
    {
     "sha": "1e1756acb",
     "data": "2026-11-24",
@@ -126,11 +131,6 @@
     "sha": "b9eb31ff1",
     "data": "2026-11-24",
     "assunto": "infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)"
-   },
-   {
-    "sha": "397bb1e93",
-    "data": "2026-11-24",
-    "assunto": "docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)"
    }
   ],
   "arquivos_mudados_7d": 301,
@@ -160,16 +160,16 @@
     "mudancas": 15
    },
    {
+    "pasta": "supabase/functions/_shared",
+    "mudancas": 14
+   },
+   {
     "pasta": "package.json",
     "mudancas": 13
    },
    {
     "pasta": "src/routes/AppRoutes.tsx",
     "mudancas": 13
-   },
-   {
-    "pasta": "supabase/functions/_shared",
-    "mudancas": 12
    },
    {
     "pasta": "scripts/ci/deno-check-baseline.json",
@@ -274,7 +274,19 @@
     "mudancas": 4
    },
    {
+    "arquivo": "supabase/functions/_shared/auth.ts",
+    "mudancas": 4
+   },
+   {
     "arquivo": "supabase/functions/award-gamification-points/index.ts",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "supabase/functions/compress-screenshots/index.ts",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "supabase/functions/delete-user-data/index.ts",
     "mudancas": 4
    },
    {
@@ -282,26 +294,14 @@
     "mudancas": 4
    },
    {
-    "arquivo": "supabase/functions/natural-language-query/index.ts",
+    "arquivo": "supabase/functions/external-db-bridge/index.ts",
     "mudancas": 4
-   },
-   {
-    "arquivo": "supabase/functions/slack-notify/index.ts",
-    "mudancas": 4
-   },
-   {
-    "arquivo": ".github/workflows/contexto.yml",
-    "mudancas": 3
-   },
-   {
-    "arquivo": ".github/workflows/lint.yml",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 198
+    "commits": 199
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1884,
   "arquivos_codigo": 1433,
-  "linhas_codigo": 160650,
+  "linhas_codigo": 160713,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 105,
-   "linhas": 13868
+   "linhas": 13931
   },
   "vite.config.ts": {
    "arquivos": 1,
