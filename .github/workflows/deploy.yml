@@ -6,6 +6,10 @@ name: Deploy
 # producao para o commit e falha se nao houver. Ele nao publica nada, para nao
 # duplicar/competir com a integracao nativa.
 #
+# Rajada de merges: o deployment do commit antigo vira `inactive` quando o commit
+# seguinte assume producao. Isso e sucesso (producao esta a frente), nao falha —
+# a run so fica vermelha se nenhum deployment mais novo subiu.
+#
 # Historico: ate 261121 este job rodava `npx vercel deploy` e falhava em todo
 # push com "Could not retrieve Project Settings" porque o runner nao tem o
 # diretorio .vercel (nao versionado), e sem vercel pull/link o CLI nao sabe qual projeto usar.
@@ -120,11 +124,43 @@ jobs:
             echo "Deployment $latest -> ${state:-sem status} (tentativa $i)"
             case "$state" in
               success) echo "Deploy de producao confirmado para $SHA ($state)."; break ;;
-              failure|error|inactive) echo "::error::Deployment $latest terminou com estado '$state'."; exit 1 ;;
+              # `inactive` NAO e falha por si: em rajada de merges a Vercel marca o
+              # deployment do commit antigo como `inactive` quando o commit seguinte
+              # assume producao (run 45395858597: vermelho so porque o run seguinte
+              # subiu 30s depois). So e falha se nenhum deployment de producao mais
+              # NOVO que o nosso concluiu com sucesso — senao producao parou no nosso
+              # commit ou antes dele e o vermelho e legitimo.
+              inactive)
+                criado=$(gh api "repos/$REPO/deployments/$latest" | jq -r '.created_at // empty')
+                novo=""
+                if [ -n "$criado" ]; then
+                  novo=$(gh api "repos/$REPO/deployments?environment=Production&per_page=100" \
+                    | jq -r --arg t "$criado" --arg id "$latest" \
+                      '[.[] | select(.environment == "Production") | select((.id|tostring) != $id) | select(.created_at > $t)] | sort_by(.created_at) | reverse | .[0].id // empty')
+                fi
+                if [ -z "$novo" ]; then
+                  echo "::error::Deployment $latest ficou 'inactive' e nao ha deployment de producao mais novo que o substitua."
+                  exit 1
+                fi
+                novo_state=$(gh api "repos/$REPO/deployments/$novo/statuses" | jq -r '.[0].state // empty')
+                case "$novo_state" in
+                  success)
+                    echo "Deployment $latest 'inactive' porque o commit mais novo assumiu producao (deployment $novo = success). Nao e falha."
+                    state=superseded
+                    break ;;
+                  pending|queued|in_progress|"")
+                    echo "Deployment $latest 'inactive'; o mais novo (deployment $novo) ainda esta em '${novo_state:-sem status}'. Aguardando 20s..."
+                    ;;
+                  *)
+                    echo "::error::Deployment $latest ficou 'inactive' e o deployment $novo (mais novo) tambem nao subiu ('$novo_state')."
+                    exit 1 ;;
+                esac
+                ;;
+              failure|error) echo "::error::Deployment $latest terminou com estado '$state'."; exit 1 ;;
             esac
             sleep 20
           done
-          if [ "$state" != "success" ]; then
+          if [ "$state" != "success" ] && [ "$state" != "superseded" ]; then
             echo "::error::Deployment $latest nao concluiu em ~8 min (ultimo estado: ${state:-vazio})."
             exit 1
           fi
