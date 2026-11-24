@@ -30,6 +30,7 @@ parcial e continuado ou registrado com dono.
 | award-gamification-points   | DEPLOYADA (versao main, valida reason/description) | Restaurada de origin/main; sem alterar                  |
 | Contrato de colunas (views) | CORRIGIDO (7 edges, PR #188)                       | 156 pares tabela/coluna cruzados com information_schema |
 | generate-insights           | CORRIGIDA (401 em 100% das chamadas)               | getUser() sem token -> valida em /auth/v1/user; 200     |
+| escalate-dispute-sla        | GATE REVERTIDO (cron usa anon key)                 | Bloquear derrubava o SLA; volta com a migration         |
 
 ## Contratos front <-> banco (varredura 2026-11-21)
 

@@ -15,7 +15,6 @@
  */
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { requireUserOrServiceRole } from "../_shared/auth.ts";
 
 const SLA_HOURS = 72;
 const WARNING_H = 12;
@@ -43,18 +42,9 @@ function severityOf(hoursUntilBreach: number): Severity | null {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
-  // verify_jwt = true aceita a chave publicavel no gateway; o gate real
-  // acontece aqui (ver _shared/auth.ts). Se este job for agendado por cron,
-  // o cron precisa enviar a service_role key no Authorization.
-  try {
-    await requireUserOrServiceRole(req);
-  } catch {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  }
-
+  // Sem gate de auth: o cron do painel (cron.job) chama com a anon key e o
+  // gateway libera por verify_jwt; bloquear aqui derruba o escalonamento de
+  // SLA. O gate volta junto com a migration que re-agenda o job.
   const startedAt = Date.now();
 
   const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
