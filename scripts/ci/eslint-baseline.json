@@ -1709,10 +1709,6 @@
       "sha256": "cadeaa62462b8c2cfb70f9e9597683697d2118c3f72a60fe369c5b79e1c33b09"
     },
     {
-      "path": "src/pages/ActivitiesPage.tsx",
-      "sha256": "e22113f34899ea01ce4cbb77c37297a9eaeee5592b7c63296f49e7c9f2199891"
-    },
-    {
       "path": "src/pages/admin/DisputeEscalationAuditPage.tsx",
       "sha256": "2a0d21ea434bc2eeccd9e178a46732027a3b3128a5cf5442c233a79aefa29988"
     },
@@ -15027,20 +15023,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "efb5edf330c54e8c4e19346d4aa295a3684335b873b15b3a18218d14724d163c",
       "contextHash": "9d182a5d72468d03aeb5aeeb3a79fa1c0b507365a1b83bd9f8eead170a452f60"
-    },
-    {
-      "file": "src/pages/ActivitiesPage.tsx",
-      "line": 10,
-      "column": 1,
-      "endLine": 10,
-      "endColumn": 44,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/hooks/useActivities`",
-      "spanHash": "dd864ea7d5c301c7ce1dacc1a9191e18ada5156a4a4f772ee81b7ea028c6ca9f",
-      "lineHash": "dd864ea7d5c301c7ce1dacc1a9191e18ada5156a4a4f772ee81b7ea028c6ca9f",
-      "contextHash": "8304d1648d8fa26f9fefe1ff7e8f39d68747d7ebd9156cf602e9c380edd1c637"
     },
     {
       "file": "src/pages/admin/DisputeEscalationAuditPage.tsx",
