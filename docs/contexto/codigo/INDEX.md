@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2c025d91323a73c16c2b90e78f0cc264abb060e4` (2026-11-24T10:13:52-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `52be74c033cfc0ae13fd449626e68b3991dcda0d` (2026-11-24T10:18:31-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1874 |
 | arquivos_codigo | 1424 |
-| linhas_codigo | 159269 |
+| linhas_codigo | 159277 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -310,7 +310,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - .github/workflows/deploy.yml (16)
 - src/routes/AppRoutes.tsx (13)
 - src/components/AppSidebar.tsx (8)
-- .github/workflows/ci.yml (6)
+- .github/workflows/ci.yml (7)
 - docs/prod-readiness.md (6)
 - src/index.css (5)
 - src/test/gap-audit.test.ts (5)
@@ -463,6 +463,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `52be74c03` fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)
+- 2026-11-24 `17070eb55` infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)
 - 2026-11-24 `2c025d913` fix: deploy para de ficar vermelho quando o commit e superado por merge mais novo (#280)
 - 2026-11-24 `3778ffeea` chore: baixa baselines de lint e format apos a divida paga (#279)
 - 2026-11-24 `d4038b31f` infra: ratchet de deno check nas edge functions do CI (#278)
@@ -476,8 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `6313e39ba` docs: corrige auditoria de functions e registra gates medidos em producao (#271)
 - 2026-11-23 `12762c8c6` fix: reativa cron do SLA removendo gate incompativel com anon key (#269)
 - 2026-11-23 `5aa07dcf2` fix: exige autenticacao nas edge functions abertas ao publico (#268)
-- 2026-11-23 `016a6eb70` feat: tela de monitoramento mobile com dados reais (#267)
-- 2026-11-23 `1b5bd5e82` feat: dashboard de rate limiting com leitura via edge admin (#266)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

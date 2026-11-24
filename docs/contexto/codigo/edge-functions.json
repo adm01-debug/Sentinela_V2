@@ -1807,7 +1807,7 @@
    "nome": "reset-password",
    "entrada": "supabase/functions/reset-password/index.ts",
    "arquivos": 1,
-   "linhas": 56,
+   "linhas": 64,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"

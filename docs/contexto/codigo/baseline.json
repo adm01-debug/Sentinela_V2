@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2c025d91323a73c16c2b90e78f0cc264abb060e4",
+  "commit": "52be74c033cfc0ae13fd449626e68b3991dcda0d",
   "branch": "main",
-  "data_commit": "2026-11-24T10:13:52-03:00",
+  "data_commit": "2026-11-24T10:18:31-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "52be74c03",
+    "data": "2026-11-24",
+    "assunto": "fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)"
+   },
+   {
+    "sha": "17070eb55",
+    "data": "2026-11-24",
+    "assunto": "infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)"
+   },
    {
     "sha": "2c025d913",
     "data": "2026-11-24",
@@ -121,19 +131,9 @@
     "sha": "6867e4959",
     "data": "2026-11-23",
     "assunto": "fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)"
-   },
-   {
-    "sha": "54a0fc2d0",
-    "data": "2026-11-23",
-    "assunto": "fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)"
-   },
-   {
-    "sha": "8d4cc58ed",
-    "data": "2026-11-23",
-    "assunto": "docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)"
    }
   ],
-  "arquivos_mudados_7d": 248,
+  "arquivos_mudados_7d": 261,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -172,16 +172,16 @@
     "mudancas": 8
    },
    {
+    "pasta": ".github/workflows/ci.yml",
+    "mudancas": 7
+   },
+   {
     "pasta": "src/components/ui",
     "mudancas": 7
    },
    {
     "pasta": "src/pages/admin",
     "mudancas": 7
-   },
-   {
-    "pasta": ".github/workflows/ci.yml",
-    "mudancas": 6
    },
    {
     "pasta": "docs/prod-readiness.md",
@@ -231,7 +231,7 @@
    },
    {
     "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 6
+    "mudancas": 7
    },
    {
     "arquivo": "docs/prod-readiness.md",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 178
+    "commits": 180
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1874,
   "arquivos_codigo": 1424,
-  "linhas_codigo": 159269,
+  "linhas_codigo": 159277,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 103,
-   "linhas": 13520
+   "linhas": 13528
   },
   "vite.config.ts": {
    "arquivos": 1,

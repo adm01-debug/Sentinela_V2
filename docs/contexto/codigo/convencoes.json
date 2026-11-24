@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)",
+   "infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)",
    "fix: deploy para de ficar vermelho quando o commit e superado por merge mais novo (#280)",
    "chore: baixa baselines de lint e format apos a divida paga (#279)",
-   "infra: ratchet de deno check nas edge functions do CI (#278)",
-   "infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)",
-   "docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)"
+   "infra: ratchet de deno check nas edge functions do CI (#278)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
