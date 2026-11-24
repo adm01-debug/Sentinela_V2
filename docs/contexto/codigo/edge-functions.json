@@ -127,7 +127,6 @@
    ],
    "chamada_pelo_front": [
     "src/hooks/useAIAnalysisPage.ts",
-    "src/hooks/useAIInsights.ts",
     "src/hooks/useNaturalLanguageSearch.ts"
    ],
    "chamada_por_edges": [],
@@ -888,10 +887,12 @@
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [],
-   "chamada_pelo_front": [],
+   "chamada_pelo_front": [
+    "src/hooks/useAIInsights.ts"
+   ],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,
-   "orfa": true,
+   "orfa": false,
    "testes": 0
   },
   {

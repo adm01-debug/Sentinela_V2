@@ -5,11 +5,11 @@
   "vitest",
   "playwright"
  ],
- "total": 82,
+ "total": 84,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 80
+  "unit": 82
  },
  "onde_ficam": [
   {
@@ -18,7 +18,7 @@
   },
   {
    "padrao": "co-localizado (__tests__)",
-   "arquivos": 20
+   "arquivos": 22
   },
   {
    "padrao": "outro",
@@ -95,12 +95,32 @@
    "casos": 10
   },
   {
+   "arquivo": "src/components/__tests__/AIInsightsPanel.test.tsx",
+   "tipo": "unit",
+   "linhas": 102,
+   "testa": [
+    "src/components/AIInsightsPanel.tsx",
+    "src/hooks/useAIInsights.ts"
+   ],
+   "casos": 4
+  },
+  {
    "arquivo": "src/components/__tests__/AnomalyDetectionPanel.test.tsx",
    "tipo": "unit",
    "linhas": 97,
    "testa": [
     "src/components/AnomalyDetectionPanel.tsx",
     "src/hooks/useAnomalyDetection.ts"
+   ],
+   "casos": 4
+  },
+  {
+   "arquivo": "src/components/__tests__/BehaviorPatternsPanel.test.tsx",
+   "tipo": "unit",
+   "linhas": 82,
+   "testa": [
+    "src/components/BehaviorPatternsPanel.tsx",
+    "src/hooks/useBehaviorPatterns.ts"
    ],
    "casos": 4
   },
@@ -807,7 +827,9 @@
   "scripts/ci/lint-ratchet.mjs": 1,
   "scripts/ci/typecheck-ratchet.mjs": 1,
   "scripts/lib/seguranca-processo.mjs": 2,
+  "src/components/AIInsightsPanel.tsx": 1,
   "src/components/AnomalyDetectionPanel.tsx": 1,
+  "src/components/BehaviorPatternsPanel.tsx": 1,
   "src/components/Cards/StatsCard.tsx": 1,
   "src/components/EmptyStates.tsx": 1,
   "src/components/Header.tsx": 1,
@@ -834,9 +856,11 @@
   "src/constants/routes.ts": 2,
   "src/guards/MFAGuard.tsx": 1,
   "src/guards/index.tsx": 1,
+  "src/hooks/useAIInsights.ts": 1,
   "src/hooks/useAccessControl.ts": 1,
   "src/hooks/useAnomalyDetection.ts": 1,
   "src/hooks/useApplicationRules.ts": 1,
+  "src/hooks/useBehaviorPatterns.ts": 1,
   "src/hooks/useChartColors.ts": 1,
   "src/hooks/useCountUp.ts": 1,
   "src/hooks/useCounter.ts": 1,
@@ -979,7 +1003,6 @@
    "src/hooks/useAgentKeysPage.ts",
    "src/hooks/useAggregate.ts",
    "src/hooks/useAIAnalysisPage.ts",
-   "src/hooks/useAIInsights.ts",
    "src/hooks/useAlert.ts",
    "src/hooks/useAlerts.ts",
    "src/hooks/useAlertSettings.ts",
@@ -1002,7 +1025,6 @@
    "src/hooks/useBattery.ts",
    "src/hooks/useBeforeUnload.ts",
    "src/hooks/useBehavioralBaseline.ts",
-   "src/hooks/useBehaviorPatterns.ts",
    "src/hooks/useBilling.ts",
    "src/hooks/useBlockedIPs.ts",
    "src/hooks/useBlockNavigation.ts",

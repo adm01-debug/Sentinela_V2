@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `07e50507525b6949c640491f6663d7eefa26a150` (2026-11-24T14:00:42-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1a0e0bcdc51c430e36e6e9cf84b5ca1457c849ad` (2026-11-24T14:43:52-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1406), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (21), HTML (4)
+- linguagens: TypeScript (1410), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,31 +34,31 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1878 |
-| arquivos_codigo | 1428 |
-| linhas_codigo | 159863 |
+| arquivos_total | 1882 |
+| arquivos_codigo | 1432 |
+| linhas_codigo | 160341 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 58 |
-| componentes | 468 |
+| componentes | 470 |
 | hooks | 524 |
 | edge_functions | 88 |
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 82 |
+| testes | 84 |
 | workflows | 12 |
 | scripts | 32 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (59)
-- componentes: src/components (357), src/pages (93), src/providers (8)
+- componentes: src/components (359), src/pages (93), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (54), co-localizado (__tests__) (20), outro (7)
+- testes: co-localizado (*.test) (54), co-localizado (__tests__) (22), outro (7)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (5), scripts/ai-context (2), scripts/inventario (2)
@@ -69,7 +69,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Módulos (menu → domínio)
 | módulo | itens de menu | telas/rotas | arquivos | hooks locais | edges | tabelas |
 |---|---|---|---|---|---|---|
-| components | 0 | 0 | 99 | 85 | 2 | 20 |
+| components | 0 | 0 | 101 | 87 | 4 | 20 |
 | components/admin | 0 | 0 | 8 | 5 | 6 | 7 |
 | components/auth | 0 | 0 | 5 | 9 | 1 | 4 |
 | components/charts | 0 | 0 | 13 | 2 | 0 | 0 |
@@ -82,10 +82,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | components/skeletons | 0 | 0 | 11 | 15 | 0 | 5 |
 | components/ui | 0 | 0 | 127 | 11 | 0 | 0 |
 | constants | 0 | 0 | 7 | 0 | 0 | 0 |
-| hooks | 0 | 0 | 479 | 495 | 19 | 86 |
+| hooks | 0 | 0 | 479 | 495 | 20 | 86 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 160 | 12 | 68 |
+| pages | 4 | 38 | 68 | 162 | 14 | 68 |
 | pages/admin | 0 | 18 | 20 | 35 | 8 | 32 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -175,7 +175,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Edge functions
 - `acknowledge-violation` (verify_jwt=false) — tabelas: agent_keys, security_violations, settings_audit_log; chamada por 0 arquivo(s) do front
 - `agent-collector` — tabelas: agent_keys, click_logs, employees, keystroke_logs, productivity_logs, screen_captures; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `analyze-activity` — tabelas: click_logs, keystroke_logs, productivity_logs; chamada por 3 arquivo(s) do front
+- `analyze-activity` — tabelas: click_logs, keystroke_logs, productivity_logs; chamada por 2 arquivo(s) do front
 - `archive-data` — tabelas: click_logs, keystroke_logs, productivity_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `audit-export` — tabelas: login_security_events, settings_audit_log; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `auto-categorize` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -200,7 +200,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `export-data` — tabelas: user_companies; chamada por 1 arquivo(s) do front
 - `external-db-bridge` — tabelas: query_telemetry; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-api-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `generate-insights` — tabelas: employees, keystroke_logs, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `generate-insights` — tabelas: employees, keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `generate-report` (verify_jwt=false) — tabelas: ai_analysis_reports, attendance_records, keystroke_logs, productivity_logs, reports, security_violations; chamada por 2 arquivo(s) do front
 - `get-dashboard-stats` — tabelas: employees, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-employee-schedule` — tabelas: employee_schedules; chamada por 0 arquivo(s) do front — **ÓRFÃ**
@@ -285,7 +285,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - rotas_sem_arquivo: 0
 - componentes_ambiguos: 0
 - menu_sem_destino: 8 — ex.: Configurações -> /settings, Configurações -> settings, Dashboard -> /
-- edges_orfas: 48 — ex.: agent-collector, archive-data, audit-export
+- edges_orfas: 47 — ex.: agent-collector, archive-data, audit-export
 - edges_chamadas_sem_pasta: 1 — ex.: _gate
 - tabelas_sem_rls: 0
 - tabelas_usadas_sem_definicao: 1 — ex.: backups
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `1a0e0bcdc` feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)
 - 2026-11-24 `07e505075` fix: resumo de atividades volta a alimentar os graficos (#292)
 - 2026-11-24 `cde1021d0` fix: diagnostico de ICE usa a mesma fonte do live view (#291)
 - 2026-11-24 `b1e44b30a` feat: detector de anomalias passa a aparecer na tela de atividades (#290)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `17070eb55` infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)
 - 2026-11-24 `2c025d913` fix: deploy para de ficar vermelho quando o commit e superado por merge mais novo (#280)
 - 2026-11-24 `3778ffeea` chore: baixa baselines de lint e format apos a divida paga (#279)
-- 2026-11-24 `d4038b31f` infra: ratchet de deno check nas edge functions do CI (#278)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

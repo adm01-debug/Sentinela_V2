@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 468,
+ "total": 470,
  "orfaos": 94,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -519,6 +519,22 @@
    "orfao": false
   },
   {
+   "arquivo": "src/components/AIInsightsPanel.tsx",
+   "exports": [
+    "AIInsightsPanel"
+   ],
+   "export_default": "AIInsightsPanel",
+   "linhas": 131,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAIInsights"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
    "arquivo": "src/components/AlertFilters.tsx",
    "exports": [
     "AlertFilters"
@@ -714,6 +730,23 @@
    "tabelas": [],
    "edges": [],
    "usado_por": 3,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/BehaviorPatternsPanel.tsx",
+   "exports": [
+    "BehaviorPatternsPanel",
+    "BehaviorPatternsPanelProps"
+   ],
+   "export_default": "BehaviorPatternsPanel",
+   "linhas": 128,
+   "dominio": "components",
+   "hooks_locais": [
+    "useBehaviorPatterns"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
    "orfao": false
   },
   {
@@ -3778,7 +3811,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 148,
+   "usado_por": 150,
    "orfao": false
   },
   {
@@ -3841,7 +3874,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 186,
+   "usado_por": 188,
    "orfao": false
   },
   {
@@ -3876,7 +3909,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 190,
+   "usado_por": 192,
    "orfao": false
   },
   {
@@ -6515,7 +6548,7 @@
     "AIAnalysisPage"
    ],
    "export_default": "AIAnalysisPage",
-   "linhas": 142,
+   "linhas": 155,
    "dominio": "pages",
    "hooks_locais": [
     "useAIAnalysisPage"

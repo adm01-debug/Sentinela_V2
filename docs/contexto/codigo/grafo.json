@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1346,
- "arestas": 2860,
+ "nos": 1348,
+ "arestas": 2870,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -10,11 +10,11 @@
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 190
+   "importado_por": 192
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 186
+   "importado_por": 188
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,7 +22,7 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 148
+   "importado_por": 150
   },
   {
    "arquivo": "src/components/ui/input.tsx",
@@ -321,7 +321,6 @@
   "src/helpers/date.ts",
   "src/hooks/api.ts",
   "src/hooks/useA11y.ts",
-  "src/hooks/useAIInsights.ts",
   "src/hooks/useAPIKeys.ts",
   "src/hooks/useAccessControl.ts",
   "src/hooks/useAccordion.ts",
@@ -342,7 +341,6 @@
   "src/hooks/useBackup.ts",
   "src/hooks/useBattery.ts",
   "src/hooks/useBeforeUnload.ts",
-  "src/hooks/useBehaviorPatterns.ts",
   "src/hooks/useBilling.ts",
   "src/hooks/useBlockNavigation.ts",
   "src/hooks/useBoolean.ts",
@@ -498,7 +496,9 @@
   "src/hooks/useMediaDevices.ts",
   "src/hooks/useMediaRecorder.ts",
   "src/hooks/useMemoizedCallback.ts",
-  "src/hooks/useMerge.ts"
+  "src/hooks/useMerge.ts",
+  "src/hooks/useMessageTemplatesPage.ts",
+  "src/hooks/useMetrics.ts"
  ],
  "modulos_mais_acoplados": [
   {

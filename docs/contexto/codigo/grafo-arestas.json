@@ -80,6 +80,12 @@
    "src/providers/AppProviders.tsx",
    "src/routes/AppRoutes.tsx"
   ],
+  "src/components/AIInsightsPanel.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/useAIInsights.ts"
+  ],
   "src/components/ActivityChart.tsx": [
    "src/components/ui/card.tsx",
    "src/hooks/useChartColors.ts"
@@ -188,6 +194,12 @@
    "src/data/settingsData.ts",
    "src/hooks/useSettings.ts",
    "src/lib/utils.ts"
+  ],
+  "src/components/BehaviorPatternsPanel.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/useBehaviorPatterns.ts"
   ],
   "src/components/BlockedIPsPanel.tsx": [
    "src/components/ui/alert-dialog.tsx",
@@ -2818,6 +2830,8 @@
    "src/lib/webVitals.ts"
   ],
   "src/pages/AIAnalysisPage.tsx": [
+   "src/components/AIInsightsPanel.tsx",
+   "src/components/BehaviorPatternsPanel.tsx",
    "src/components/ui/badge.tsx",
    "src/components/ui/button.tsx",
    "src/components/ui/card.tsx",

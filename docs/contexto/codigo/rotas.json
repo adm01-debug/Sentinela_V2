@@ -1007,6 +1007,8 @@
    "redireciona": null,
    "hooks": [
     "useAIAnalysisPage",
+    "useAIInsights",
+    "useBehaviorPatterns",
     "useCallback",
     "useEffect",
     "useMemo",
@@ -1017,6 +1019,8 @@
    ],
    "hooks_locais": [
     "useAIAnalysisPage",
+    "useAIInsights",
+    "useBehaviorPatterns",
     "useMutation",
     "useQuery",
     "useToast"
@@ -1027,12 +1031,14 @@
    ],
    "rpcs": [],
    "edges": [
-    "analyze-activity"
+    "analyze-activity",
+    "behavior-pattern",
+    "generate-insights"
    ],
    "canais_realtime": [],
    "flags": [],
    "papeis": [],
-   "arquivos_puxados": 18
+   "arquivos_puxados": 22
   },
   {
    "protegida": false,

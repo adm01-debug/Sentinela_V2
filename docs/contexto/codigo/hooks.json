@@ -487,21 +487,23 @@
    "hooks_exportados": [
     "useAIInsights"
    ],
-   "linhas": 56,
+   "linhas": 78,
    "dominio": "hooks",
    "tabelas": [],
    "rpcs": [],
    "edges": [
-    "analyze-activity"
+    "generate-insights"
    ],
    "hooks_internos": [
     "useCallback",
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
-   "coberto_por_testes": 0
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/components/AIInsightsPanel.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useAlert.ts",
@@ -1076,9 +1078,11 @@
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
-   "coberto_por_testes": 0
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/components/BehaviorPatternsPanel.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useBilling.ts",

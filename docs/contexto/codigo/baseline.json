@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "07e50507525b6949c640491f6663d7eefa26a150",
+  "commit": "1a0e0bcdc51c430e36e6e9cf84b5ca1457c849ad",
   "branch": "main",
-  "data_commit": "2026-11-24T14:00:42-03:00",
+  "data_commit": "2026-11-24T14:43:52-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "1a0e0bcdc",
+    "data": "2026-11-24",
+    "assunto": "feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)"
+   },
    {
     "sha": "07e505075",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "12762c8c6",
     "data": "2026-11-23",
     "assunto": "fix: reativa cron do SLA removendo gate incompativel com anon key (#269)"
-   },
-   {
-    "sha": "5aa07dcf2",
-    "data": "2026-11-23",
-    "assunto": "fix: exige autenticacao nas edge functions abertas ao publico (#268)"
    }
   ],
-  "arquivos_mudados_7d": 275,
+  "arquivos_mudados_7d": 281,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 190
+    "commits": 191
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1878,
-  "arquivos_codigo": 1428,
-  "linhas_codigo": 159863,
+  "arquivos_total": 1882,
+  "arquivos_codigo": 1432,
+  "linhas_codigo": 160341,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 58,
-  "componentes": 468,
+  "componentes": 470,
   "hooks": 524,
   "edge_functions": 88,
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 82,
+  "testes": 84,
   "workflows": 12,
   "scripts": 32,
   "docs_md": 176
@@ -415,8 +415,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 390,
-   "linhas": 45208
+   "arquivos": 394,
+   "linhas": 45651
   },
   "src/constants": {
    "arquivos": 7,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32331
+   "linhas": 32353
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 109,
-   "linhas": 21493
+   "linhas": 21506
   },
   "src/providers": {
    "arquivos": 9,
@@ -676,7 +676,6 @@
    "delete-user-data",
    "external-db-bridge",
    "generate-api-key",
-   "generate-insights",
    "get-dashboard-stats",
    "get-employee-schedule",
    "get-employee-timeline",
