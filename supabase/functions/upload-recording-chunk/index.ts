@@ -1,5 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient, type SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
 import { Logger } from '../_shared/logger.ts';
@@ -40,14 +40,14 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-function decodeBase64(value: string): Uint8Array {
+function decodeBase64(value: string): Uint8Array<ArrayBuffer> {
   const binary = atob(value);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
   return bytes;
 }
 
-async function sha256Hex(bytes: Uint8Array): Promise<string> {
+async function sha256Hex(bytes: Uint8Array<ArrayBuffer>): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', bytes);
   return Array.from(new Uint8Array(digest))
     .map((b) => b.toString(16).padStart(2, '0'))
@@ -114,7 +114,7 @@ serve(async (req) => {
     const payload = validation.data;
 
     // 4. Decodificação + verificação de integridade
-    let bytes: Uint8Array;
+    let bytes: Uint8Array<ArrayBuffer>;
     try {
       bytes = decodeBase64(payload.chunk_base64);
     } catch {
@@ -273,7 +273,7 @@ serve(async (req) => {
 
 /** Busca a retenção específica da empresa e cai para a política global (padrão 30 dias). */
 async function resolveRetentionDays(
-  supabase: ReturnType<typeof createClient>,
+  supabase: SupabaseClient,
   companyId?: string,
 ): Promise<number> {
   const { data } = await supabase
