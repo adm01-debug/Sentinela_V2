@@ -119,6 +119,7 @@ jobs:
             exit 1
           fi
           state=""
+          superseded_por=""
           for i in $(seq 1 24); do
             state=$(gh api "repos/$REPO/deployments/$latest/statuses" | jq -r '.[0].state // empty')
             echo "Deployment $latest -> ${state:-sem status} (tentativa $i)"
@@ -126,10 +127,15 @@ jobs:
               success) echo "Deploy de producao confirmado para $SHA ($state)."; break ;;
               # `inactive` NAO e falha por si: em rajada de merges a Vercel marca o
               # deployment do commit antigo como `inactive` quando o commit seguinte
-              # assume producao (run 45395858597: vermelho so porque o run seguinte
-              # subiu 30s depois). So e falha se nenhum deployment de producao mais
-              # NOVO que o nosso concluiu com sucesso — senao producao parou no nosso
-              # commit ou antes dele e o vermelho e legitimo.
+              # assume producao (run 45395858597, vermelho com producao saudavel).
+              # `failure`/`error` continua sendo falha real (o commit nao subiu).
+              #
+              # Nao se decide na primeira olhada: o deployment que substitui o nosso
+              # nasce alguns segundos depois do push e pode ainda nao estar listado
+              # (run 45402068765: ficou vermelha por uma corrida de segundos, sem
+              # nenhum deploy quebrado). Entao espera-se a janela: verde quando
+              # aparece um deployment de producao mais novo com success, vermelho so
+              # no fim se nenhum apareceu.
               inactive)
                 criado=$(gh api "repos/$REPO/deployments/$latest" | jq -r '.created_at // empty')
                 novo=""
@@ -139,29 +145,26 @@ jobs:
                       '[.[] | select(.environment == "Production") | select((.id|tostring) != $id) | select(.created_at > $t)] | sort_by(.created_at) | reverse | .[0].id // empty')
                 fi
                 if [ -z "$novo" ]; then
-                  echo "::error::Deployment $latest ficou 'inactive' e nao ha deployment de producao mais novo que o substitua."
-                  exit 1
-                fi
-                novo_state=$(gh api "repos/$REPO/deployments/$novo/statuses" | jq -r '.[0].state // empty')
-                case "$novo_state" in
-                  success)
-                    echo "Deployment $latest 'inactive' porque o commit mais novo assumiu producao (deployment $novo = success). Nao e falha."
+                  echo "Deployment $latest 'inactive'; nenhum deployment de producao mais novo listado ainda. Aguardando 20s..."
+                else
+                  novo_state=$(gh api "repos/$REPO/deployments/$novo/statuses" | jq -r '.[0].state // empty')
+                  echo "Deployment $latest 'inactive'; mais novo=$novo estado=${novo_state:-sem status}."
+                  if [ "$novo_state" = "success" ]; then
+                    superseded_por="$novo"
                     state=superseded
-                    break ;;
-                  pending|queued|in_progress|"")
-                    echo "Deployment $latest 'inactive'; o mais novo (deployment $novo) ainda esta em '${novo_state:-sem status}'. Aguardando 20s..."
-                    ;;
-                  *)
-                    echo "::error::Deployment $latest ficou 'inactive' e o deployment $novo (mais novo) tambem nao subiu ('$novo_state')."
-                    exit 1 ;;
-                esac
+                    break
+                  fi
+                fi
                 ;;
               failure|error) echo "::error::Deployment $latest terminou com estado '$state'."; exit 1 ;;
             esac
             sleep 20
           done
+          if [ "$state" = "superseded" ]; then
+            echo "Deployment $latest foi superado pelo deployment de producao $superseded_por (success). Nao e falha."
+          fi
           if [ "$state" != "success" ] && [ "$state" != "superseded" ]; then
-            echo "::error::Deployment $latest nao concluiu em ~8 min (ultimo estado: ${state:-vazio})."
+            echo "::error::Deployment $latest nao concluiu em ~8 min (ultimo estado: ${state:-vazio}) e nenhum deployment de producao mais novo subiu."
             exit 1
           fi
       - name: Verifica bundle de producao sem placeholder
