@@ -8,7 +8,7 @@
   "supabase/migrations",
   "typeorm"
  ],
- "migrations": 123,
+ "migrations": 124,
  "seeds": [],
  "avisos": [
   "8 bloco(s) com DDL dinâmico (EXECUTE format/...) não modelado — policies/colunas criadas dinamicamente podem faltar; confira no banco vivo"
@@ -3181,6 +3181,43 @@
    "triggers": [
     "update_companies_updated_at"
    ],
+   "sem_rls": false,
+   "nao_usada": false
+  },
+  "cron_secrets": {
+   "colunas": {
+    "created_at": {
+     "tipo": "timestamptz",
+     "nn": true,
+     "pk": false,
+     "default": "now()",
+     "ref": null
+    },
+    "name": {
+     "tipo": "text",
+     "nn": false,
+     "pk": true,
+     "default": null,
+     "ref": null
+    },
+    "secret": {
+     "tipo": "text",
+     "nn": true,
+     "pk": false,
+     "default": "replace(gen_random_uuid()::text, '-', '')",
+     "ref": null
+    }
+   },
+   "rls": true,
+   "policies": [],
+   "indices": [],
+   "fks": [],
+   "criada_em": "20261123220000_cron_secrets_auth_jobs.sql",
+   "usada_no_front": 0,
+   "usada_em_edges": [
+    "_shared"
+   ],
+   "triggers": [],
    "sem_rls": false,
    "nao_usada": false
   },

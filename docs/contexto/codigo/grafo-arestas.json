@@ -4205,7 +4205,11 @@
   "supabase/functions/cleanup-rate-limit-logs/index.ts": [
    "supabase/functions/_shared/rateLimiting.ts"
   ],
+  "supabase/functions/escalate-dispute-sla/index.ts": [
+   "supabase/functions/_shared/auth.ts"
+  ],
   "supabase/functions/expire-recordings/index.ts": [
+   "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/logger.ts"
   ],
   "supabase/functions/external-db-bridge/index.ts": [
@@ -4295,7 +4299,13 @@
    "supabase/functions/_shared/rateLimiting.ts",
    "supabase/functions/_shared/whatsapp-evolution.ts"
   ],
+  "supabase/functions/slack-mttr-monitor/index.ts": [
+   "supabase/functions/_shared/auth.ts"
+  ],
   "supabase/functions/slack-notify/index.ts": [
+   "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/slack-weekly-digest/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/smart-recommendations/index.ts": [

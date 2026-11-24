@@ -486,7 +486,7 @@
   {
    "arquivo": "src/test/gap-audit.test.ts",
    "tipo": "unit",
-   "linhas": 228,
+   "linhas": 233,
    "testa": [
     "src/integrations/supabase/client.ts"
    ],

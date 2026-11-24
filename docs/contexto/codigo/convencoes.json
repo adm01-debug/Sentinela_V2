@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)",
    "docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)",
    "test: guarda o consumo do rate limit nas edge functions (#276)",
    "fix(edge): corrige rate limit inoperante e retry_count descartado (#275)",
-   "test: guarda do contrato de dados entre front e banco (#274)",
-   "test: guarda contra texto duplamente codificado (#273)"
+   "test: guarda do contrato de dados entre front e banco (#274)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

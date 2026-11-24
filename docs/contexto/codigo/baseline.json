@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "397bb1e93a8c2e1d3536bbfe094dd80d4b1c29be",
+  "commit": "b9eb31ff1a68448c0a2ba9c6d73582ebdf13e464",
   "branch": "main",
-  "data_commit": "2026-11-24T00:30:28-03:00",
+  "data_commit": "2026-11-24T07:55:57-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "b9eb31ff1",
+    "data": "2026-11-24",
+    "assunto": "infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)"
+   },
    {
     "sha": "397bb1e93",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "dfd0acde7",
     "data": "2026-11-23",
     "assunto": "feat: integra CalendarPage com dados reais de attendance_records (#253)"
-   },
-   {
-    "sha": "2f8ef3c85",
-    "data": "2026-11-23",
-    "assunto": "feat: expõe páginas sem link no sidebar (#252)"
    }
   ],
-  "arquivos_mudados_7d": 240,
+  "arquivos_mudados_7d": 244,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -141,7 +141,7 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
@@ -188,11 +188,11 @@
     "mudancas": 6
    },
    {
-    "pasta": ".github/workflows/ci.yml",
-    "mudancas": 5
+    "pasta": "supabase/functions/_shared",
+    "mudancas": 6
    },
    {
-    "pasta": "desktop-agent/src/services",
+    "pasta": ".github/workflows/ci.yml",
     "mudancas": 5
    }
   ],
@@ -207,7 +207,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
@@ -242,6 +242,10 @@
     "mudancas": 5
    },
    {
+    "arquivo": "src/test/gap-audit.test.ts",
+    "mudancas": 5
+   },
+   {
     "arquivo": "src/test/improvements-verification.test.ts",
     "mudancas": 5
    },
@@ -258,11 +262,11 @@
     "mudancas": 4
    },
    {
-    "arquivo": "src/test/gap-audit.test.ts",
+    "arquivo": "supabase/functions/award-gamification-points/index.ts",
     "mudancas": 4
    },
    {
-    "arquivo": "supabase/functions/award-gamification-points/index.ts",
+    "arquivo": "supabase/functions/escalate-dispute-sla/index.ts",
     "mudancas": 4
    },
    {
@@ -292,16 +296,12 @@
    {
     "arquivo": "inventario/estado/edges.json",
     "mudancas": 3
-   },
-   {
-    "arquivo": "src/components/PolicyAcknowledgmentDialog.tsx",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 174
+    "commits": 175
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1870,
+  "arquivos_total": 1871,
   "arquivos_codigo": 1422,
-  "linhas_codigo": 158228,
+  "linhas_codigo": 158303,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -325,8 +325,8 @@
   "componentes": 467,
   "hooks": 524,
   "edge_functions": 88,
-  "tabelas": 179,
-  "migrations": 123,
+  "tabelas": 180,
+  "migrations": 124,
   "cron_jobs": 5,
   "testes": 80,
   "workflows": 12,
@@ -480,7 +480,7 @@
   },
   "src/test": {
    "arquivos": 55,
-   "linhas": 10918
+   "linhas": 10923
   },
   "src/types": {
    "arquivos": 57,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 103,
-   "linhas": 13450
+   "linhas": 13520
   },
   "vite.config.ts": {
    "arquivos": 1,

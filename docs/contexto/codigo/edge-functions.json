@@ -706,7 +706,7 @@
    "nome": "escalate-dispute-sla",
    "entrada": "supabase/functions/escalate-dispute-sla/index.ts",
    "arquivos": 1,
-   "linhas": 216,
+   "linhas": 222,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -729,7 +729,9 @@
    "hosts_externos": [
     "fcm.googleapis.com"
    ],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/pages/admin/DisputeEscalationAuditPage.tsx"
    ],
@@ -742,7 +744,7 @@
    "nome": "expire-recordings",
    "entrada": "supabase/functions/expire-recordings/index.ts",
    "arquivos": 1,
-   "linhas": 173,
+   "linhas": 183,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -762,6 +764,7 @@
    "chama_edges": [],
    "hosts_externos": [],
    "usa_shared": [
+    "auth.ts",
     "logger.ts"
    ],
    "chamada_pelo_front": [],
@@ -2327,7 +2330,7 @@
    "nome": "slack-mttr-monitor",
    "entrada": "supabase/functions/slack-mttr-monitor/index.ts",
    "arquivos": 1,
-   "linhas": 111,
+   "linhas": 121,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2346,7 +2349,9 @@
     "slack-notify"
    ],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/components/admin/SlackWebhookMttrCard.tsx"
    ],
@@ -2402,7 +2407,7 @@
    "nome": "slack-weekly-digest",
    "entrada": "supabase/functions/slack-weekly-digest/index.ts",
    "arquivos": 1,
-   "linhas": 213,
+   "linhas": 223,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2425,7 +2430,9 @@
     "slack-notify"
    ],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "auth.ts"
+   ],
    "chamada_pelo_front": [
     "src/components/admin/SlackWebhookMttrCard.tsx"
    ],

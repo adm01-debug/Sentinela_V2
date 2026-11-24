@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `397bb1e93a8c2e1d3536bbfe094dd80d4b1c29be` (2026-11-24T00:30:28-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `b9eb31ff1a68448c0a2ba9c6d73582ebdf13e464` (2026-11-24T07:55:57-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1402), Markdown (176), SQL (127), JSON (43), YAML (35), JavaScript (22), Shell (21), HTML (4)
+- linguagens: TypeScript (1402), Markdown (176), SQL (128), JSON (43), YAML (35), JavaScript (22), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1870 |
+| arquivos_total | 1871 |
 | arquivos_codigo | 1422 |
-| linhas_codigo | 158228 |
+| linhas_codigo | 158303 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -45,8 +45,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | componentes | 467 |
 | hooks | 524 |
 | edge_functions | 88 |
-| tabelas | 179 |
-| migrations | 123 |
+| tabelas | 180 |
+| migrations | 124 |
 | cron_jobs | 5 |
 | testes | 80 |
 | workflows | 12 |
@@ -304,7 +304,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (26)
 - package.json (25)
-- docs/pendencias/_linha-de-base.md (18)
+- docs/pendencias/_linha-de-base.md (19)
 - scripts/ci/eslint-baseline.json (17)
 - scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (15)
@@ -313,10 +313,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - docs/prod-readiness.md (6)
 - .github/workflows/ci.yml (5)
 - src/index.css (5)
+- src/test/gap-audit.test.ts (5)
 - src/test/improvements-verification.test.ts (5)
 - supabase/config.toml (5)
 - desktop-agent/src/main.ts (4)
-- src/pages/__tests__/Dashboard.test.tsx (4)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `b9eb31ff1` infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)
 - 2026-11-24 `397bb1e93` docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)
 - 2026-11-24 `a970c26a5` test: guarda o consumo do rate limit nas edge functions (#276)
 - 2026-11-24 `fee6687be` fix(edge): corrige rate limit inoperante e retry_count descartado (#275)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `886630e58` feat: tela de modelos de mensagem com CRUD real (#265)
 - 2026-11-23 `9ab51f01b` feat: tela de palavras sensiveis com CRUD real (#264)
 - 2026-11-23 `4f535b477` chore: documenta a prova pos-deploy do gate das edges (#263)
-- 2026-11-23 `61b2323c6` fix: reconhece service_role pelo probe da API admin no gate das edges (#262)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
