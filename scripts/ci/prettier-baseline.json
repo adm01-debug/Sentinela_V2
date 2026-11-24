@@ -657,7 +657,6 @@
     "src/hooks/useAnalytics.ts",
     "src/hooks/useAnimation.ts",
     "src/hooks/useAnnounce.ts",
-    "src/hooks/useAnomalyDetection.ts",
     "src/hooks/useAPIKeys.ts",
     "src/hooks/useAppCategories.ts",
     "src/hooks/useAppConfig.ts",

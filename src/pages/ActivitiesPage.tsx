@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { format, subDays } from 'date-fns';
 import { useActivities, useActivitySummary } from '@/hooks/useActivities';
 import { ActivityFilters } from '@/components/ActivityFilters';
 import { ActivityChart } from '@/components/ActivityChart';
 import { ActivityTable } from '@/components/ActivityTable';
+import { AnomalyDetectionPanel } from '@/components/AnomalyDetectionPanel';
 import { ApplicationBreakdown } from '@/components/ApplicationBreakdown';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { XlsxExportButton } from '@/components/exports/XlsxExportButton';
-import { format, subDays } from 'date-fns';
 
 
 interface HourlyItem { date: string; value: number; }
@@ -48,6 +49,9 @@ export const ActivitiesPage = () => {
         <div className="lg:col-span-2"><ActivityChart data={summaryObj?.hourlyDistribution || []} /></div>
         <div><ApplicationBreakdown data={summaryObj?.applicationBreakdown || []} /></div>
       </div>
+
+      <AnomalyDetectionPanel />
+
       <ActivityTable activities={activityList as Parameters<typeof ActivityTable>[0]['activities']} isLoading={isLoading} />
     </div>
   );
