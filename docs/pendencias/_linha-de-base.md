@@ -236,10 +236,12 @@ Divida conhecida de seguranca (baixa prioridade, `anon` sem EXECUTE):
 1. Homologar WhatsApp E2E: falta `EVOLUTION_INSTANCE_TOKEN` (GO do Zapp) ou
    credenciais Meta reais em `whatsapp_config`; sem isso o envio real nao pode
    ser provado.
-2. As 38 edge functions que existem no repo e **nao** existem em producao sao
-   codigo morto: nenhuma aparece em `functions.invoke()` do front e nenhuma em
-   pg_cron. As 34 que o front chama estao todas deployadas. Decidir se remove
-   ou se mantem como plano futuro.
+2. ~~As 38 edge functions que existem no repo e nao existem em producao sao
+   codigo morto~~ **OBSOLETO — ver "Functions x producao x gates (medido 23/11,
+   22h45)" no fim deste documento**: as 88 pastas de `supabase/functions`
+   respondem em producao (nenhuma 404). O que existe e um outro conjunto: 38
+   funcoes publicadas que **nenhum arquivo deste repositorio referencia**.
+   Decidir se remove ou se mantem como plano futuro.
 3. Bancos de rota: manter ratchets dos CI zerados a cada merge.
 4. PolicyGate — **RESOLVIDO E NO AR** (banco + codigo na main).
 
@@ -418,3 +420,70 @@ user auth status` — erro transitorio da API da Supabase. Rerun do job passou.
   `nao concluiu em ~8 min (ultimo estado: success)`. Causa: o `break` esta dentro
   de um `case` do `switch`, entao nao sai do `for` e o `exit 1` final executa
   sempre. Corrigido na **PR #255** (aguardando aval — regra 8).
+
+---
+
+## Functions x producao x gates (medido 23/11, 22h45)
+
+Medicao direta, nao estimativa: `OPTIONS /functions/v1/<fn>` com a chave
+publicavel no `apikey`, para as **88 pastas** de `supabase/functions`. O 404 com
+`{"code":"NOT_FOUND"}` e a unica resposta que prova ausencia; 200/204 prova que a
+funcao esta publicada.
+
+| Medicao                                          | Resultado         |
+| ------------------------------------------------ | ----------------- |
+| Pastas de function no repo                       | 88                |
+| Publicadas em producao                           | **88 (zero 404)** |
+| Com gate de auth no codigo                       | 42                |
+| **Sem gate nenhum no codigo**                    | **46**            |
+| Publicadas mas sem nenhuma referencia neste repo | 38                |
+
+Correcao de registro: a nota anterior ("38 funcoes no repo e nao em producao")
+descrevia o estado **antes** do job `deploy-functions` do `deploy.yml`, que hoje
+publica todas as pastas a cada push na `main`. Nao ha funcao do repo faltando em
+producao.
+
+As 38 publicadas e sem referencia no repo (nenhum arquivo de `src/`, nenhuma
+outra edge, nenhuma migration, nenhum workflow): `archive-data`, `audit-export`,
+`auto-categorize`, `behavioral-baseline-builder`, `bulk-update`,
+`calculate-productivity`, `cleanup-rate-limit-logs`, `cleanup-sessions`,
+`compress-screenshots`, `create-monthly-partitions`, `daily-summary`,
+`delete-user-data`, `dlp-incident-report`, `dlp-policy-sync`,
+`external-db-bridge`, `generate-api-key`, `generate-insights`,
+`get-dashboard-stats`, `get-employee-schedule`, `get-employee-timeline`,
+`get-policies`, `import-employees`, `invite-user`, `mcp-query`, `merge-employees`,
+`natural-language-query`, `pending-employee-violations`, `process-bulk-import`,
+`process-screenshot`, `recalculate-metrics`, `refresh-tokens`, `request-overtime`,
+`rotate-api-keys`, `search-activities`, `sentiment-analysis`, `sync-teams`,
+`validate-license`, `weekly-report`.
+
+Cuidado ao concluir "codigo morto": **`cron.job` nao aparece neste repo**. Os
+crons do SLA, do `expire-recordings` e dos dois de Slack foram criados pelo
+painel e so apareceram aqui quando uma migration passou a ler o `command` do job
+(`20261121201500`). Uma funcao sem referencia no repo pode perfeitamente estar
+sendo chamada por um job invisivel, por cliente externo (agente desktop, app
+mobile) ou por integracao — e foi exatamente isso que derrubou o cron do
+escalonamento de SLA na #268. Portanto: **nao apagar nem gatear** essas funcoes
+sem antes ler `cron.job` no banco.
+
+### Ordem do deploy de producao
+
+`deploy.yml` tem 3 jobs (`migrate` na linha 32, `deploy-functions` na 65,
+`verify-production-deploy` na 88) **sem nenhum `needs:`** — `migrate` e
+`deploy-functions` rodam em paralelo. Ou seja: a funcao pode ser publicada antes
+da migration que ela precisa; por isso o gate de cron da PR #270 e fail-open
+quando `public.cron_secrets` ainda nao existe. Se a intencao e DDL sempre antes
+das funcoes, o `deploy-functions` precisa de `needs: migrate` (mudanca de
+workflow, regra 8).
+
+### Gate de auth no codigo das 46 abertas
+
+O gateway aceita a chave publicavel, entao `verify_jwt` nao protege nada: o gate
+tem de estar no codigo. Das 46 sem gate, 12 sao chamadas pelo front
+(`agent-collector`, `batch-notifications`, `export-data`, `health-check`,
+`ingest-file-transfer`, `mobile-collector`, `notify-dispute-decision`,
+`notify-mobile-violation`, `reset-password`, `send-email-notification`,
+`validate-agent-key`, `verify-email`) — varias delas em fluxo **sem sessao**
+(`reset-password`, `verify-email`, `validate-agent-key` e o proprio
+`health-check`), onde gate por usuario quebraria a funcionalidade. As demais nao
+tem chamador localizado no repo.
