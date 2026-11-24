@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 31,
+ "total": 32,
  "scripts": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -82,6 +82,19 @@
    "linhas": 122,
    "env": [
     "CLAUDE_MD_BASE"
+   ],
+   "npm_scripts": [],
+   "workflows": [
+    "ci.yml"
+   ],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/ci/deno-check-ratchet.mjs",
+   "descricao": "`deno check` nas edge functions de supabase/functions. Por que existe: o job \"deno-contract-tests\" da CI roda so `deno test`, que",
+   "linhas": 523,
+   "env": [
+    "DENO_BIN"
    ],
    "npm_scripts": [],
    "workflows": [

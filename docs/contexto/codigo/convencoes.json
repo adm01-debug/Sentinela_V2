@@ -23,12 +23,12 @@
   "testes": [
    "co-localizado (*.test) (54)",
    "co-localizado (__tests__) (19)",
-   "outro (6)"
+   "outro (7)"
   ],
   "edge_functions": "supabase/functions",
   "migrations": "supabase/migrations",
   "scripts": [
-   "scripts/ci (4)",
+   "scripts/ci (5)",
    "scripts/ai-context (2)",
    "scripts/inventario (2)"
   ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "chore: baixa baselines de lint e format apos a divida paga (#279)",
+   "infra: ratchet de deno check nas edge functions do CI (#278)",
    "infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)",
    "docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)",
-   "test: guarda o consumo do rate limit nas edge functions (#276)",
-   "fix(edge): corrige rate limit inoperante e retry_count descartado (#275)",
-   "test: guarda do contrato de dados entre front e banco (#274)"
+   "test: guarda o consumo do rate limit nas edge functions (#276)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

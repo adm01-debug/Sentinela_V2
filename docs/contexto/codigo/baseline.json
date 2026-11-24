@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "b9eb31ff1a68448c0a2ba9c6d73582ebdf13e464",
+  "commit": "3778ffeead0752539a64c9297df58f1ce2e4993c",
   "branch": "main",
-  "data_commit": "2026-11-24T07:55:57-03:00",
+  "data_commit": "2026-11-24T09:41:18-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "3778ffeea",
+    "data": "2026-11-24",
+    "assunto": "chore: baixa baselines de lint e format apos a divida paga (#279)"
+   },
+   {
+    "sha": "d4038b31f",
+    "data": "2026-11-24",
+    "assunto": "infra: ratchet de deno check nas edge functions do CI (#278)"
+   },
    {
     "sha": "b9eb31ff1",
     "data": "2026-11-24",
@@ -121,19 +131,9 @@
     "sha": "ac2d34cc0",
     "data": "2026-11-23",
     "assunto": "fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)"
-   },
-   {
-    "sha": "83496a324",
-    "data": "2026-11-23",
-    "assunto": "feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios"
-   },
-   {
-    "sha": "dfd0acde7",
-    "data": "2026-11-23",
-    "assunto": "feat: integra CalendarPage com dados reais de attendance_records (#253)"
    }
   ],
-  "arquivos_mudados_7d": 244,
+  "arquivos_mudados_7d": 248,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -141,15 +141,15 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 19
+    "mudancas": 20
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "pasta": ".github/workflows/deploy.yml",
@@ -180,6 +180,10 @@
     "mudancas": 7
    },
    {
+    "pasta": ".github/workflows/ci.yml",
+    "mudancas": 6
+   },
+   {
     "pasta": "docs/prod-readiness.md",
     "mudancas": 6
    },
@@ -190,10 +194,6 @@
    {
     "pasta": "supabase/functions/_shared",
     "mudancas": 6
-   },
-   {
-    "pasta": ".github/workflows/ci.yml",
-    "mudancas": 5
    }
   ],
   "arquivos_mais_mudados_90d": [
@@ -207,15 +207,15 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 19
+    "mudancas": 20
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
-    "mudancas": 16
+    "mudancas": 17
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
@@ -230,12 +230,12 @@
     "mudancas": 8
    },
    {
-    "arquivo": "docs/prod-readiness.md",
+    "arquivo": ".github/workflows/ci.yml",
     "mudancas": 6
    },
    {
-    "arquivo": ".github/workflows/ci.yml",
-    "mudancas": 5
+    "arquivo": "docs/prod-readiness.md",
+    "mudancas": 6
    },
    {
     "arquivo": "src/index.css",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 175
+    "commits": 177
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1871,
-  "arquivos_codigo": 1422,
-  "linhas_codigo": 158303,
+  "arquivos_total": 1874,
+  "arquivos_codigo": 1424,
+  "linhas_codigo": 159269,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,9 +328,9 @@
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 80,
+  "testes": 81,
   "workflows": 12,
-  "scripts": 31,
+  "scripts": 32,
   "docs_md": 176
  },
  "por_pasta": {
@@ -391,8 +391,8 @@
    "linhas": 1458
   },
   "scripts/ci": {
-   "arquivos": 7,
-   "linhas": 2641
+   "arquivos": 9,
+   "linhas": 3607
   },
   "scripts/generate-audit-pdf.js": {
    "arquivos": 1,
@@ -541,6 +541,10 @@
    "linhas": 528
   },
   {
+   "arquivo": "scripts/ci/deno-check-ratchet.mjs",
+   "linhas": 523
+  },
+  {
    "arquivo": "src/components/violations/ViolationTimelineDialog.tsx",
    "linhas": 523
   },
@@ -599,19 +603,15 @@
   {
    "arquivo": "src/routes/AppRoutes.tsx",
    "linhas": 444
-  },
-  {
-   "arquivo": "src/components/AppSidebar.tsx",
-   "linhas": 430
   }
  ],
  "qualidade": {
   "any": 168,
-  "console_log": 52,
+  "console_log": 56,
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,
-  "arquivos_acima_500_linhas": 11
+  "arquivos_acima_500_linhas": 12
  },
  "todos": [
   {
