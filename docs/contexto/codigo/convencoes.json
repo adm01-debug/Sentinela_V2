@@ -6,7 +6,7 @@
    "src/pages (59)"
   ],
   "componentes": [
-   "src/components (356)",
+   "src/components (357)",
    "src/pages (93)",
    "src/providers (8)"
   ],
@@ -22,7 +22,7 @@
   ],
   "testes": [
    "co-localizado (*.test) (54)",
-   "co-localizado (__tests__) (19)",
+   "co-localizado (__tests__) (20)",
    "outro (7)"
   ],
   "edge_functions": "supabase/functions",
@@ -47,7 +47,7 @@
  },
  "barrels_index": 22,
  "extensao_componentes": [
-  ".tsx (467)"
+  ".tsx (468)"
  ],
  "alias_imports": {
   "desktop-agent/": {},
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: detector de anomalias passa a aparecer na tela de atividades (#290)",
    "fix: hora e severidade deixam de ser lidas como indefinidas nos relatorios (#289)",
    "fix: live view entrega ICE servers validos em vez de repassar o secret (#288)",
    "fix: tipos de client e de validacao param de mentir nos relatorios (#287)",
-   "fix: envio de alerta nao mascara mais tipo ausente (status e event_type) (#286)",
-   "fix: analise de padroes e tendencias ignora registro sem data em vez de estourar (#285)"
+   "fix: envio de alerta nao mascara mais tipo ausente (status e event_type) (#286)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

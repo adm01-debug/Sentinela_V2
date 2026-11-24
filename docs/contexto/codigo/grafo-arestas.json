@@ -157,6 +157,12 @@
   "src/components/AlertsChart.tsx": [
    "src/hooks/useChartColors.ts"
   ],
+  "src/components/AnomalyDetectionPanel.tsx": [
+   "src/components/ui/badge.tsx",
+   "src/components/ui/button.tsx",
+   "src/components/ui/card.tsx",
+   "src/hooks/useAnomalyDetection.ts"
+  ],
   "src/components/AppSidebar.tsx": [
    "src/components/disputes/SlaAlertsBadge.tsx",
    "src/components/ui/scroll-area.tsx",
@@ -2823,6 +2829,7 @@
    "src/components/ActivityChart.tsx",
    "src/components/ActivityFilters.tsx",
    "src/components/ActivityTable.tsx",
+   "src/components/AnomalyDetectionPanel.tsx",
    "src/components/ApplicationBreakdown.tsx",
    "src/components/exports/XlsxExportButton.tsx",
    "src/components/layout/PageHeader.tsx",

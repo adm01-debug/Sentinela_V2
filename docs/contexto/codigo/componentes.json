@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 467,
+ "total": 468,
  "orfaos": 94,
  "nomes_duplicados": {
   "ActivityHeatmap": [
@@ -586,6 +586,22 @@
    "dominio": "components",
    "hooks_locais": [
     "useAlertSettings"
+   ],
+   "tabelas": [],
+   "edges": [],
+   "usado_por": 1,
+   "orfao": false
+  },
+  {
+   "arquivo": "src/components/AnomalyDetectionPanel.tsx",
+   "exports": [
+    "AnomalyDetectionPanel"
+   ],
+   "export_default": "AnomalyDetectionPanel",
+   "linhas": 141,
+   "dominio": "components",
+   "hooks_locais": [
+    "useAnomalyDetection"
    ],
    "tabelas": [],
    "edges": [],
@@ -3762,7 +3778,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 147,
+   "usado_por": 148,
    "orfao": false
   },
   {
@@ -3825,7 +3841,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 185,
+   "usado_por": 186,
    "orfao": false
   },
   {
@@ -3860,7 +3876,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 189,
+   "usado_por": 190,
    "orfao": false
   },
   {
@@ -6044,7 +6060,7 @@
     "ActivitiesPage"
    ],
    "export_default": "ActivitiesPage",
-   "linhas": 57,
+   "linhas": 61,
    "dominio": "pages",
    "hooks_locais": [
     "useActivities",

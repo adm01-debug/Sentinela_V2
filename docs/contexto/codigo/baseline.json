@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "eabdad381d9ec355f5e2f058ae2c8c74f8e42d10",
+  "commit": "b1e44b30aaf84c0521e67f4f16e8372057866dd6",
   "branch": "main",
-  "data_commit": "2026-11-24T12:11:45-03:00",
+  "data_commit": "2026-11-24T13:17:22-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "b1e44b30a",
+    "data": "2026-11-24",
+    "assunto": "feat: detector de anomalias passa a aparecer na tela de atividades (#290)"
+   },
    {
     "sha": "eabdad381",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "1b5bd5e82",
     "data": "2026-11-23",
     "assunto": "feat: dashboard de rate limiting com leitura via edge admin (#266)"
-   },
-   {
-    "sha": "886630e58",
-    "data": "2026-11-23",
-    "assunto": "feat: tela de modelos de mensagem com CRUD real (#265)"
    }
   ],
-  "arquivos_mudados_7d": 266,
+  "arquivos_mudados_7d": 270,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -145,14 +145,14 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 19
-   },
-   {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 17
+    "mudancas": 20
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
+    "mudancas": 18
+   },
+   {
+    "pasta": ".github/workflows/deploy.yml",
     "mudancas": 17
    },
    {
@@ -211,14 +211,14 @@
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 19
-   },
-   {
-    "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 17
+    "mudancas": 20
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
+    "mudancas": 18
+   },
+   {
+    "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 17
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 187
+    "commits": 188
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1876,
-  "arquivos_codigo": 1426,
-  "linhas_codigo": 159414,
+  "arquivos_total": 1878,
+  "arquivos_codigo": 1428,
+  "linhas_codigo": 159694,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
-  "modulos": 57,
-  "componentes": 467,
+  "modulos": 58,
+  "componentes": 468,
   "hooks": 524,
   "edge_functions": 88,
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 81,
+  "testes": 82,
   "workflows": 12,
   "scripts": 32,
   "docs_md": 176
@@ -415,8 +415,8 @@
    "linhas": 19
   },
   "src/components": {
-   "arquivos": 388,
-   "linhas": 44970
+   "arquivos": 390,
+   "linhas": 45208
   },
   "src/constants": {
    "arquivos": 7,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32303
+   "linhas": 32341
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 109,
-   "linhas": 21435
+   "linhas": 21439
   },
   "src/providers": {
    "arquivos": 9,

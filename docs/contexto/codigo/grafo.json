@@ -1,8 +1,8 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1345,
- "arestas": 2853,
+ "nos": 1346,
+ "arestas": 2858,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
@@ -10,11 +10,11 @@
   },
   {
    "arquivo": "src/components/ui/card.tsx",
-   "importado_por": 189
+   "importado_por": 190
   },
   {
    "arquivo": "src/components/ui/button.tsx",
-   "importado_por": 185
+   "importado_por": 186
   },
   {
    "arquivo": "src/lib/utils.ts",
@@ -22,7 +22,7 @@
   },
   {
    "arquivo": "src/components/ui/badge.tsx",
-   "importado_por": 147
+   "importado_por": 148
   },
   {
    "arquivo": "src/components/ui/input.tsx",
@@ -333,7 +333,6 @@
   "src/hooks/useAlert.ts",
   "src/hooks/useAnimation.ts",
   "src/hooks/useAnnounce.ts",
-  "src/hooks/useAnomalyDetection.ts",
   "src/hooks/useAppConfig.ts",
   "src/hooks/useAsync.ts",
   "src/hooks/useAttachments.ts",
@@ -498,7 +497,8 @@
   "src/hooks/useMapbox.ts",
   "src/hooks/useMeasure.ts",
   "src/hooks/useMediaDevices.ts",
-  "src/hooks/useMediaRecorder.ts"
+  "src/hooks/useMediaRecorder.ts",
+  "src/hooks/useMemoizedCallback.ts"
  ],
  "modulos_mais_acoplados": [
   {

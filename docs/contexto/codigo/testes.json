@@ -5,11 +5,11 @@
   "vitest",
   "playwright"
  ],
- "total": 81,
+ "total": 82,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 79
+  "unit": 80
  },
  "onde_ficam": [
   {
@@ -18,7 +18,7 @@
   },
   {
    "padrao": "co-localizado (__tests__)",
-   "arquivos": 19
+   "arquivos": 20
   },
   {
    "padrao": "outro",
@@ -93,6 +93,16 @@
     "scripts/lib/seguranca-processo.mjs"
    ],
    "casos": 10
+  },
+  {
+   "arquivo": "src/components/__tests__/AnomalyDetectionPanel.test.tsx",
+   "tipo": "unit",
+   "linhas": 97,
+   "testa": [
+    "src/components/AnomalyDetectionPanel.tsx",
+    "src/hooks/useAnomalyDetection.ts"
+   ],
+   "casos": 4
   },
   {
    "arquivo": "src/components/charts/__tests__/AreaChart.test.tsx",
@@ -797,6 +807,7 @@
   "scripts/ci/lint-ratchet.mjs": 1,
   "scripts/ci/typecheck-ratchet.mjs": 1,
   "scripts/lib/seguranca-processo.mjs": 2,
+  "src/components/AnomalyDetectionPanel.tsx": 1,
   "src/components/Cards/StatsCard.tsx": 1,
   "src/components/EmptyStates.tsx": 1,
   "src/components/Header.tsx": 1,
@@ -824,6 +835,7 @@
   "src/guards/MFAGuard.tsx": 1,
   "src/guards/index.tsx": 1,
   "src/hooks/useAccessControl.ts": 1,
+  "src/hooks/useAnomalyDetection.ts": 1,
   "src/hooks/useApplicationRules.ts": 1,
   "src/hooks/useChartColors.ts": 1,
   "src/hooks/useCountUp.ts": 1,
@@ -974,7 +986,6 @@
    "src/hooks/useAnalytics.ts",
    "src/hooks/useAnimation.ts",
    "src/hooks/useAnnounce.ts",
-   "src/hooks/useAnomalyDetection.ts",
    "src/hooks/useAPIKeys.ts",
    "src/hooks/useAppCategories.ts",
    "src/hooks/useAppConfig.ts",

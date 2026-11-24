@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `eabdad381d9ec355f5e2f058ae2c8c74f8e42d10` (2026-11-24T12:11:45-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `b1e44b30aaf84c0521e67f4f16e8372057866dd6` (2026-11-24T13:17:22-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1404), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (21), HTML (4)
+- linguagens: TypeScript (1406), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,31 +34,31 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1876 |
-| arquivos_codigo | 1426 |
-| linhas_codigo | 159414 |
+| arquivos_total | 1878 |
+| arquivos_codigo | 1428 |
+| linhas_codigo | 159694 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
-| modulos | 57 |
-| componentes | 467 |
+| modulos | 58 |
+| componentes | 468 |
 | hooks | 524 |
 | edge_functions | 88 |
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 81 |
+| testes | 82 |
 | workflows | 12 |
 | scripts | 32 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
 - telas: src/pages (59)
-- componentes: src/components (356), src/pages (93), src/providers (8)
+- componentes: src/components (357), src/pages (93), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (54), co-localizado (__tests__) (19), outro (7)
+- testes: co-localizado (*.test) (54), co-localizado (__tests__) (20), outro (7)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (5), scripts/ai-context (2), scripts/inventario (2)
@@ -69,7 +69,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Módulos (menu → domínio)
 | módulo | itens de menu | telas/rotas | arquivos | hooks locais | edges | tabelas |
 |---|---|---|---|---|---|---|
-| components | 0 | 0 | 98 | 84 | 1 | 20 |
+| components | 0 | 0 | 99 | 85 | 2 | 20 |
 | components/admin | 0 | 0 | 8 | 5 | 6 | 7 |
 | components/auth | 0 | 0 | 5 | 9 | 1 | 4 |
 | components/charts | 0 | 0 | 13 | 2 | 0 | 0 |
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 479 | 495 | 19 | 86 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 159 | 10 | 68 |
+| pages | 4 | 38 | 68 | 160 | 11 | 68 |
 | pages/admin | 0 | 18 | 20 | 35 | 8 | 32 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -305,9 +305,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package-lock.json (26)
 - package.json (25)
 - docs/pendencias/_linha-de-base.md (20)
-- scripts/ci/eslint-baseline.json (19)
+- scripts/ci/eslint-baseline.json (20)
+- scripts/ci/prettier-baseline.json (18)
 - .github/workflows/deploy.yml (17)
-- scripts/ci/prettier-baseline.json (17)
 - src/routes/AppRoutes.tsx (13)
 - scripts/ci/deno-check-baseline.json (8)
 - src/components/AppSidebar.tsx (8)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `b1e44b30a` feat: detector de anomalias passa a aparecer na tela de atividades (#290)
 - 2026-11-24 `eabdad381` fix: hora e severidade deixam de ser lidas como indefinidas nos relatorios (#289)
 - 2026-11-24 `d7be2d9fb` fix: live view entrega ICE servers validos em vez de repassar o secret (#288)
 - 2026-11-24 `39b435f24` fix: tipos de client e de validacao param de mentir nos relatorios (#287)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `d4038b31f` infra: ratchet de deno check nas edge functions do CI (#278)
 - 2026-11-24 `b9eb31ff1` infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)
 - 2026-11-24 `397bb1e93` docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)
-- 2026-11-24 `a970c26a5` test: guarda o consumo do rate limit nas edge functions (#276)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

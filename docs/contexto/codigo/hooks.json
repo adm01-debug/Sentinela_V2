@@ -647,7 +647,7 @@
    "hooks_exportados": [
     "useAnomalyDetection"
    ],
-   "linhas": 67,
+   "linhas": 105,
    "dominio": "hooks",
    "tabelas": [],
    "rpcs": [],
@@ -660,9 +660,11 @@
     "useState"
    ],
    "canais_realtime": [],
-   "usado_por": 0,
-   "usado_por_arquivos": [],
-   "coberto_por_testes": 0
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/components/AnomalyDetectionPanel.tsx"
+   ],
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useAPIKeys.ts",
