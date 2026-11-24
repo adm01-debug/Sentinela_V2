@@ -1,12 +1,14 @@
 import { Brain, Play, TrendingUp, AlertTriangle, BarChart3, Lightbulb, Loader2 } from 'lucide-react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAIAnalysisPage } from '@/hooks/useAIAnalysisPage';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { AIInsightsPanel } from '@/components/AIInsightsPanel';
+import { BehaviorPatternsPanel } from '@/components/BehaviorPatternsPanel';
 
 const typeLabels: Record<string, string> = {
   productivity: 'Produtividade',
@@ -29,6 +31,11 @@ export default function AIAnalysisPage() {
     analyses, employees, stats,
     isLoading, isAnalyzing, handleRunAnalysis,
   } = useAIAnalysisPage();
+
+  const selectedEmployeeName =
+    selectedEmployee === 'all'
+      ? undefined
+      : employees.find((e) => e.id === selectedEmployee)?.name ?? undefined;
 
   if (isLoading) {
     return (
@@ -85,6 +92,12 @@ export default function AIAnalysisPage() {
             <SelectItem value="summary">Resumo</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+
+      {/* Análise em tempo real (não persistida em ai_analysis_reports) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <BehaviorPatternsPanel employeeName={selectedEmployeeName} />
+        <AIInsightsPanel />
       </div>
 
       {/* Analyses List */}
