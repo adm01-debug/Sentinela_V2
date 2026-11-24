@@ -190,8 +190,9 @@ describe("Gap Audit: Edge Function Auth Gates", () => {
   // estar no codigo da funcao (ver supabase/functions/_shared/auth.ts).
   // Lista explicita: cada funcao abaixo ja foi endurecida. As demais edge
   // functions ainda nao tem gate e sao divida registrada, nao regressao.
-  // escalate-dispute-sla entra pelo header x-cron-secret (segredo gerado no
-  // banco pela migration cron_escalate_dispute_sla_auth) alem do gate padrao.
+  // Os 4 jobs de cron (escalate/expire/slack-mttr/slack-weekly) entram pelo
+  // header x-cron-secret, gerado no banco pela migration cron_secrets_auth_jobs,
+  // alem do gate padrao.
   const hardenedFunctions = [
     "analyze-activity",
     "behavior-pattern",
