@@ -2102,15 +2102,11 @@
     },
     {
       "path": "supabase/functions/external-db-bridge/index.ts",
-      "sha256": "e14c2981883bae8181dd0fc167201740ab3d2a9cc8685f4297830ef590db3a02"
+      "sha256": "57ee212dcb593f01b7abfd2b4ab91ae73308b7d0185ec2841bb2ded9451008b9"
     },
     {
       "path": "supabase/functions/generate-insights/index.ts",
       "sha256": "5f73af39fe94ce6486d4878e0263498ad4e69dcded8f34b29f0db8e741599618"
-    },
-    {
-      "path": "supabase/functions/live-view-authorize/index.ts",
-      "sha256": "14e9eaaa4fae8c383cde6bd5f770e8fe70fdf232232ec9ea4930b96544f46237"
     },
     {
       "path": "supabase/functions/mobile-collector/index.ts",
@@ -2146,7 +2142,7 @@
     },
     {
       "path": "supabase/functions/send-webhook/index.ts",
-      "sha256": "3c9694cc3ba6ec01deb5a20c3480fb3c3368b0b63d976ff0229f5d18af37ae4e"
+      "sha256": "860c5ebaf2f6e7b588e66aa0d7dce2c9aeed60c060c8ef6f5b3e05305ef9e2e7"
     },
     {
       "path": "supabase/functions/slack-dlq-bulk-replay/index.ts",
@@ -2154,7 +2150,7 @@
     },
     {
       "path": "supabase/functions/slack-weekly-digest/index.ts",
-      "sha256": "1785afc5451fc78d475eb3fad30e759a8beab4facb3fac8b39f5b9d2d5181210"
+      "sha256": "5032eaea2d2063405bba4649f721d6bd58a153ce12e5531bd42e0500ef9b18ec"
     },
     {
       "path": "supabase/functions/smart-recommendations/index.ts",
@@ -19091,34 +19087,6 @@
       "spanHash": "d6a7cd2a7371b1a15d543196979ff74fdb027023ebf187d5d329be11055c77fd",
       "lineHash": "f9d019ec5db474beb0b3c22c6f0700f491c40db18817af986504936c9180a70e",
       "contextHash": "bf139ee43cd99afb5417d68a61803bacbdb06d14569dcc730ae029449c629566"
-    },
-    {
-      "file": "supabase/functions/live-view-authorize/index.ts",
-      "line": 104,
-      "column": 16,
-      "endLine": 104,
-      "endColumn": 17,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'_' is defined but never used.",
-      "spanHash": "d2e2adf7177b7a8afddbc12d1634cf23ea1a71020f6a1308070a16400fb68fde",
-      "lineHash": "147a95bee5d6a3eee32b2238251021281880ed0435f22dfb312b216b14993688",
-      "contextHash": "9096ee3eb143d28f0068df747cb1f6f5dbd9fd6d8ed2f6e8689caec1b6e6153a"
-    },
-    {
-      "file": "supabase/functions/live-view-authorize/index.ts",
-      "line": 128,
-      "column": 15,
-      "endLine": 128,
-      "endColumn": 27,
-      "severity": 2,
-      "ruleId": "@typescript-eslint/no-unused-vars",
-      "messageId": "unusedVar",
-      "message": "'RTCIceServer' is defined but never used.",
-      "spanHash": "ef81a83ea6dca7be1712cf998b75aa6fd19a8e4c47b34d7a74f977a57df2cd4a",
-      "lineHash": "7e30fcd7f7346ee18edf4a422634b513698b3620e6dca0bca1e161de4138b98e",
-      "contextHash": "7d12b33190311c55a704db24534fcb92646867e030658f531ea3324007a8f78b"
     },
     {
       "file": "supabase/functions/mobile-collector/index.ts",
