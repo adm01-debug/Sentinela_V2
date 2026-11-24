@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "c329d06fc22316646c7c670ff9b67ca5c9ee71aa",
+  "commit": "daa60fa00683b0fdaefbaf5f4d18202e9ba7990d",
   "branch": "main",
-  "data_commit": "2026-11-23T23:11:10-03:00",
+  "data_commit": "2026-11-23T23:28:55-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "daa60fa00",
+    "data": "2026-11-23",
+    "assunto": "test: guarda contra texto duplamente codificado (#273)"
+   },
    {
     "sha": "c329d06fc",
     "data": "2026-11-23",
@@ -126,14 +131,9 @@
     "sha": "40eb25ac4",
     "data": "2026-11-22",
     "assunto": "docs: registra que producao estava quebrada e o que foi corrigido (#247)"
-   },
-   {
-    "sha": "316357320",
-    "data": "2026-11-22",
-    "assunto": "fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)"
    }
   ],
-  "arquivos_mudados_7d": 235,
+  "arquivos_mudados_7d": 236,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 169
+    "commits": 170
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1867,
-  "arquivos_codigo": 1419,
-  "linhas_codigo": 157928,
+  "arquivos_total": 1868,
+  "arquivos_codigo": 1420,
+  "linhas_codigo": 158000,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,7 +328,7 @@
   "tabelas": 179,
   "migrations": 123,
   "cron_jobs": 5,
-  "testes": 77,
+  "testes": 78,
   "workflows": 12,
   "scripts": 31,
   "docs_md": 176
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 52,
-   "linhas": 10640
+   "arquivos": 53,
+   "linhas": 10712
   },
   "src/types": {
    "arquivos": 57,

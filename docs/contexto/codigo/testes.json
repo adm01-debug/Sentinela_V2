@@ -5,15 +5,15 @@
   "vitest",
   "playwright"
  ],
- "total": 77,
+ "total": 78,
  "por_tipo": {
   "e2e": 1,
-  "unit": 76
+  "unit": 77
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 51
+   "arquivos": 52
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -419,6 +419,13 @@
     "src/components/EmptyStates.tsx"
    ],
    "casos": 24
+  },
+  {
+   "arquivo": "src/test/encoding.test.ts",
+   "tipo": "unit",
+   "linhas": 72,
+   "testa": [],
+   "casos": 9
   },
   {
    "arquivo": "src/test/error-tracker.test.ts",
