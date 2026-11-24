@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import type { Json } from '@/integrations/supabase/types';
 
 export interface AIAnalysisResult {
   id: string;
@@ -22,6 +23,15 @@ export interface AIInsight {
   confidence: number;
 }
 
+// a tela fala em "comportamento/risco", mas a analyze-activity usa outro enum
+const ANALYSIS_TYPE_BY_REPORT: Record<string, string> = {
+  productivity: 'productivity',
+  behavior: 'patterns',
+  risk: 'anomalies',
+  summary: 'summary',
+  all: 'all',
+};
+
 export function useAIAnalysisPage() {
   const { toast } = useToast();
 
@@ -30,8 +40,28 @@ export function useAIAnalysisPage() {
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date } | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
+  const { data: employees = [] } = useQuery({
+    queryKey: ['employees-list'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('employees')
+        .select('id, name')
+        .eq('status', 'active')
+        .order('name');
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  // ai_analysis_reports guarda employee_name (texto), não o id do funcionário
+  const selectedEmployeeName = useMemo(
+    () => employees.find((e) => e.id === selectedEmployee)?.name,
+    [employees, selectedEmployee]
+  );
+
   const { data: analyses = [], isLoading, refetch } = useQuery({
-    queryKey: ['ai-analyses', selectedEmployee, analysisType, dateRange],
+    queryKey: ['ai-analyses', selectedEmployeeName ?? 'all', analysisType, dateRange],
+    enabled: selectedEmployee === 'all' || Boolean(selectedEmployeeName),
     queryFn: async () => {
       let query = supabase
         .from('ai_analysis_reports')
@@ -39,8 +69,8 @@ export function useAIAnalysisPage() {
         .order('created_at', { ascending: false })
         .limit(50);
 
-      if (selectedEmployee !== 'all') {
-        query = query.eq('employee_name', selectedEmployee);
+      if (selectedEmployeeName) {
+        query = query.eq('employee_name', selectedEmployeeName);
       }
 
       if (analysisType !== 'all') {
@@ -64,31 +94,43 @@ export function useAIAnalysisPage() {
     },
   });
 
-  const { data: employees = [] } = useQuery({
-    queryKey: ['employees-list'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('employees')
-        .select('id, name')
-        .eq('status', 'active')
-        .order('name');
-      if (error) throw error;
-      return data;
-    },
-  });
-
   const runAnalysisMutation = useMutation({
-    mutationFn: async (params: { employee_id?: string; type: string }) => {
+    mutationFn: async (params: { employeeName: string; type: string }) => {
       setIsAnalyzing(true);
-      const { error } = await supabase.functions.invoke('analyze-activity', {
+      const { data, error } = await supabase.functions.invoke('analyze-activity', {
         body: {
-          employee_id: params.employee_id || undefined,
-          analysis_type: params.type,
+          employee_name: params.employeeName,
+          analysis_type: ANALYSIS_TYPE_BY_REPORT[params.type] ?? 'summary',
           date_from: dateRange?.from?.toISOString(),
           date_to: dateRange?.to?.toISOString(),
         },
       });
       if (error) throw error;
+
+      const analysis = (data as { analysis?: Record<string, unknown> } | null)?.analysis;
+      if (!analysis) throw new Error('A análise não retornou dados.');
+
+      const productivity = analysis.productivity as { score?: number } | undefined;
+      const anomalies = Array.isArray(analysis.anomalies) ? (analysis.anomalies as string[]) : [];
+      const insights = [
+        ...(typeof productivity?.score === 'number'
+          ? [`Score de produtividade: ${productivity.score}%`]
+          : []),
+        ...anomalies,
+      ];
+
+      // a lista desta tela lê ai_analysis_reports: sem gravar, a análise não aparece
+      const { error: insertError } = await supabase.from('ai_analysis_reports').insert({
+        employee_name: params.employeeName,
+        report_type: params.type,
+        summary: `Análise de ${params.type} de ${params.employeeName}`,
+        risk_score: typeof productivity?.score === 'number' ? productivity.score : null,
+        insights,
+        raw_data: analysis as unknown as Json,
+        analysis_period_start: dateRange?.from?.toISOString() ?? null,
+        analysis_period_end: dateRange?.to?.toISOString() ?? null,
+      });
+      if (insertError) throw insertError;
     },
     onSuccess: () => {
       toast({ title: 'Analise concluida!' });
@@ -121,15 +163,20 @@ export function useAIAnalysisPage() {
   }, [analyses]);
 
   const handleRunAnalysis = useCallback((type?: string) => {
-    runAnalysisMutation.mutate({
-      employee_id: selectedEmployee !== 'all' ? selectedEmployee : undefined,
-      type: type || analysisType,
-    });
-  }, [selectedEmployee, analysisType, runAnalysisMutation]);
+    if (!selectedEmployeeName) {
+      toast({
+        title: 'Selecione um funcionário',
+        description: 'A análise de IA é gerada por funcionário.',
+      });
+      return;
+    }
+    runAnalysisMutation.mutate({ employeeName: selectedEmployeeName, type: type || analysisType });
+  }, [selectedEmployeeName, analysisType, runAnalysisMutation, toast]);
 
   return {
     selectedEmployee,
     setSelectedEmployee,
+    selectedEmployeeName,
     analysisType,
     setAnalysisType,
     dateRange,

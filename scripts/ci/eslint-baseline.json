@@ -1730,7 +1730,7 @@
     },
     {
       "path": "src/pages/admin/IceDiagnosticsPage.tsx",
-      "sha256": "32884fbccd63d7f6186ab53e2294a706e1d8db26f3952ac53d4227f060eb8bf0"
+      "sha256": "45ba69f9009f6e793b8f843e8cd356f9316b6bf538c2ff4844332dead3fa444c"
     },
     {
       "path": "src/pages/admin/LiveViewReportPage.tsx",
@@ -1767,10 +1767,6 @@
     {
       "path": "src/pages/AgentOnboardingPage.tsx",
       "sha256": "c3155783bc184d3357ddacb006235135137d022e95aaa72e2a121380f9b9523c"
-    },
-    {
-      "path": "src/pages/AIAnalysisPage.tsx",
-      "sha256": "49db761f217ef3aee8ff5307d627dd2c6582f8a57613611c7fe168a9165c16a2"
     },
     {
       "path": "src/pages/AlertDetailPage.tsx",
@@ -15236,14 +15232,14 @@
     },
     {
       "file": "src/pages/admin/IceDiagnosticsPage.tsx",
-      "line": 122,
+      "line": 123,
       "column": 10,
-      "endLine": 122,
+      "endLine": 123,
       "endColumn": 20,
       "severity": 2,
       "ruleId": "react-hooks/set-state-in-effect",
       "messageId": null,
-      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/pages/admin/IceDiagnosticsPage.tsx:122:10 120 | 121 | useEffect(() => { > 122 | void loadConfig(); | ^^^^^^^^^^ Avoid calling setState() directly within an effect 123 | }, []); 124 | 125 | const relayOk = results.some((r) => r.kind === 'turn' && r.status === 'ok');",
+      "message": "Error: Calling setState synchronously within an effect can trigger cascading renders Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following: * Update external systems with the latest state from React. * Subscribe for updates from some external system, calling setState in a callback function when external state changes. Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect). <ROOT>/src/pages/admin/IceDiagnosticsPage.tsx:123:10 121 | 122 | useEffect(() => { > 123 | void loadConfig(); | ^^^^^^^^^^ Avoid calling setState() directly within an effect 124 | }, []); 125 | 126 | const relayOk = results.some((r) => r.kind === 'turn' && r.status === 'ok');",
       "spanHash": "175b5b2b5fd81b285359ee9bb696181533d50f19e73c79ce72dfd9b3eb5e4f1a",
       "lineHash": "4be9cc30bd8e24c5c2fbacb82b0f903abb58c3311550c5bf13a036e930f7cfe5",
       "contextHash": "d2c4b4fa20431cccd8631f72641da4be50ea4608c0b4820553b5c8a0aa99d83d"
@@ -15541,62 +15537,6 @@
       "spanHash": "aa239a44e5f1e9b79454d5de4afdfb1fe775aa3ece111b77567d813566f5172e",
       "lineHash": "e0cbdab303939db3db5ed1394f8cc7d9c814984d13f730431eb0cabd77c9e204",
       "contextHash": "412cd3f9a9b3c5cdc7628cba32810e30fd3f5a8b5e3f19c33be2a3840a1f4aa1"
-    },
-    {
-      "file": "src/pages/AIAnalysisPage.tsx",
-      "line": 8,
-      "column": 1,
-      "endLine": 8,
-      "endColumn": 35,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns` import should occur before import of `@/components/ui/button`",
-      "spanHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "lineHash": "b43cc654458d625ff5a059d6537c647a64c125cb74a97dc8e8cbb26c32fe7b25",
-      "contextHash": "de6fcac0d956086a8606d7fd3170b430e9c9b8cbc7df29114324238f5708a0c9"
-    },
-    {
-      "file": "src/pages/AIAnalysisPage.tsx",
-      "line": 9,
-      "column": 1,
-      "endLine": 9,
-      "endColumn": 40,
-      "severity": 2,
-      "ruleId": "import/order",
-      "messageId": null,
-      "message": "`date-fns/locale` import should occur before import of `@/components/ui/button`",
-      "spanHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "lineHash": "9c7c20eba65e88b11ef0a96e31dfd70dcd2d283068e14d930cd5fa8a1642f86d",
-      "contextHash": "1da1830e74a863142c1498a83b6a5fe2b1b82ca0ea6fe0fdd7a88056fc9fd686"
-    },
-    {
-      "file": "src/pages/AIAnalysisPage.tsx",
-      "line": 92,
-      "column": 173,
-      "endLine": 0,
-      "endColumn": 0,
-      "severity": 2,
-      "ruleId": "react/no-unescaped-entities",
-      "messageId": "unescapedEntityAlts",
-      "message": "`\"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.",
-      "spanHash": null,
-      "lineHash": "cf7ce6e4d0547109717d95c647ffc3df2067c8ea8960945167a051cfba52d6bf",
-      "contextHash": "a2a4ae234bbc28e07f4c5b3cb77a080c95875e942899dffce5f736aed6a9bb7c"
-    },
-    {
-      "file": "src/pages/AIAnalysisPage.tsx",
-      "line": 92,
-      "column": 186,
-      "endLine": 0,
-      "endColumn": 0,
-      "severity": 2,
-      "ruleId": "react/no-unescaped-entities",
-      "messageId": "unescapedEntityAlts",
-      "message": "`\"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.",
-      "spanHash": null,
-      "lineHash": "cf7ce6e4d0547109717d95c647ffc3df2067c8ea8960945167a051cfba52d6bf",
-      "contextHash": "a2a4ae234bbc28e07f4c5b3cb77a080c95875e942899dffce5f736aed6a9bb7c"
     },
     {
       "file": "src/pages/AlertDetailPage.tsx",
