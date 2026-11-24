@@ -26,16 +26,11 @@ const typeColors: Record<string, string> = {
 
 export default function AIAnalysisPage() {
   const {
-    selectedEmployee, setSelectedEmployee,
+    selectedEmployee, setSelectedEmployee, selectedEmployeeName,
     analysisType, setAnalysisType,
     analyses, employees, stats,
     isLoading, isAnalyzing, handleRunAnalysis,
   } = useAIAnalysisPage();
-
-  const selectedEmployeeName =
-    selectedEmployee === 'all'
-      ? undefined
-      : employees.find((e) => e.id === selectedEmployee)?.name ?? undefined;
 
   if (isLoading) {
     return (
@@ -102,7 +97,7 @@ export default function AIAnalysisPage() {
 
       {/* Analyses List */}
       {analyses.length === 0 ? (
-        <Card><CardContent className="py-12 text-center text-muted-foreground"><Brain className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma análise encontrada. Clique "Nova Análise" para começar.</p></CardContent></Card>
+        <Card><CardContent className="py-12 text-center text-muted-foreground"><Brain className="h-12 w-12 mx-auto mb-4 opacity-50" /><p>Nenhuma análise encontrada. Selecione um funcionário e clique &quot;Nova Análise&quot; para começar.</p></CardContent></Card>
       ) : (
         <div className="space-y-4">
           {analyses.map(analysis => (
@@ -111,7 +106,7 @@ export default function AIAnalysisPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <CardTitle className="text-base">{analysis.employee_name}</CardTitle>
-                    <Badge className={typeColors[analysis.analysis_type]}>{typeLabels[analysis.analysis_type]}</Badge>
+                    <Badge className={typeColors[analysis.analysis_type] ?? ''}>{typeLabels[analysis.analysis_type] ?? analysis.analysis_type}</Badge>
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline">Score: {analysis.score}</Badge>
