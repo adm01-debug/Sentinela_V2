@@ -22,6 +22,12 @@ const FUNCTIONS_DIR = "supabase/functions";
 const COMMAND = `deno check ${FUNCTIONS_DIR}/*/index.ts`;
 const MAX_REPORTED_ISSUES = 50;
 const MAX_OUTPUT_SNIPPET = 500;
+// A cauda e onde o deno escreve o motivo real de uma falha de CLI (download
+// recusado, lock divergente, flag invalida). Mostrar so a cabeca escondia isso.
+const MAX_OUTPUT_TAIL_LINES = 30;
+// Registry fora do ar nao e divida de tipo: uma tentativa extra evita vermelho
+// falso por 429/queda momentanea. Se a segunda tambem falhar, quebra (fail-closed).
+const MAX_ATTEMPTS = 2;
 
 // O deno escreve com cor mesmo quando a saida vai para um pipe/arquivo; sem
 // limpar os escapes o parser nao ve o inicio das linhas. Construido com
@@ -280,6 +286,28 @@ export function assertCoherentOutput(output, root = process.cwd()) {
   return issues;
 }
 
+// Texto de saida para mensagens de erro: saida curta vem inteira, saida longa
+// vem com cabeca + cauda, porque o motivo de uma falha de CLI aparece no fim.
+export function describeOutput(
+  output,
+  maxHeadChars = MAX_OUTPUT_SNIPPET,
+  maxTailLines = MAX_OUTPUT_TAIL_LINES
+) {
+  const text = stripAnsi(String(output ?? ""));
+  if (text.trim() === "") return "(saida vazia)";
+
+  const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
+  if (lines.length <= maxTailLines) return lines.join("\n");
+
+  const head = normalizeWhitespace(text).slice(0, maxHeadChars);
+  const omitted = lines.length - maxTailLines;
+  return (
+    `inicio: ${head}\n` +
+    `...[${omitted} linhas omitidas]...\n` +
+    `fim:\n${lines.slice(-maxTailLines).join("\n")}`
+  );
+}
+
 // Deno sai com 0 quando esta limpo e com 1 quando encontra erro de tipo. So
 // esses dois casos podem alimentar o ratchet. O resto e falha de CLI
 // (deno ausente, config quebrada, dependencia remota que nao baixou) e
@@ -287,17 +315,14 @@ export function assertCoherentOutput(output, root = process.cwd()) {
 // desse tipo que deixava o typecheck-ratchet verde com o tsc quebrado.
 export function assertUsableResult(status, output, root = process.cwd()) {
   if (status !== 0 && status !== 1) {
-    throw new Error(
-      `deno check falhou com exit ${status}: ` +
-        `${normalizeWhitespace(output).slice(0, MAX_OUTPUT_SNIPPET) || "(saida vazia)"}`
-    );
+    throw new Error(`deno check falhou com exit ${status}: ${describeOutput(output)}`);
   }
 
   const issues = assertCoherentOutput(output, root);
   if (status === 0) return output;
 
   if (issues.length === 0) {
-    const snippet = normalizeWhitespace(output).slice(0, MAX_OUTPUT_SNIPPET) || "(vazia)";
+    const snippet = describeOutput(output);
     throw new Error(
       `deno check saiu com exit ${status} sem nenhum diagnostico parseavel ` +
         `(esperado "TS#### [ERROR]: mensagem" seguido de "at file://...:linha:coluna"). ` +
@@ -320,12 +345,7 @@ export function listEntrypoints(root = process.cwd()) {
     .sort();
 }
 
-function runDeno(root, denoBin) {
-  const entrypoints = listEntrypoints(root);
-  if (entrypoints.length === 0) {
-    throw new Error(`Nenhuma edge function encontrada em ${FUNCTIONS_DIR}/*/index.ts`);
-  }
-
+function spawnDenoCheck(denoBin, entrypoints, root) {
   const result = spawnSync(denoBin, ["check", ...entrypoints], {
     cwd: root,
     encoding: "utf8",
@@ -339,7 +359,41 @@ function runDeno(root, denoBin) {
     );
   }
 
-  return assertUsableResult(result.status, `${result.stdout ?? ""}\n${result.stderr ?? ""}`, root);
+  return { status: result.status, output: `${result.stdout ?? ""}\n${result.stderr ?? ""}` };
+}
+
+// Uma execucao do deno que termina sem nenhum diagnostico parseavel (exit 1 +
+// zero "TS#### [ERROR]") nao e divida de tipo: e CLI/rede/registry. Isso vale
+// outra tentativa; qualquer outra falha quebra na primeira. O ciclo fica aqui,
+// com o runner injetado, para o teste cobrir o caso "registry caiu" sem binario.
+export function runDenoWithAttempts(runAttempt, root, options = {}) {
+  const attempts = options.attempts ?? MAX_ATTEMPTS;
+  const onRetry =
+    options.onRetry ??
+    ((attempt) =>
+      console.error(
+        `deno check terminou sem diagnostico (tentativa ${attempt}/${attempts}); tentando de novo.`
+      ));
+
+  for (let attempt = 1; ; attempt += 1) {
+    const { status, output } = runAttempt();
+    try {
+      return assertUsableResult(status, output, root);
+    } catch (error) {
+      const retryable = status === 1 && parseDenoOutput(output, root).issues.length === 0;
+      if (!retryable || attempt >= attempts) throw error;
+      onRetry(attempt);
+    }
+  }
+}
+
+function runDeno(root, denoBin) {
+  const entrypoints = listEntrypoints(root);
+  if (entrypoints.length === 0) {
+    throw new Error(`Nenhuma edge function encontrada em ${FUNCTIONS_DIR}/*/index.ts`);
+  }
+
+  return runDenoWithAttempts(() => spawnDenoCheck(denoBin, entrypoints, root), root);
 }
 
 function parseArguments(argv) {

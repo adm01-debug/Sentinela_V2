@@ -7,8 +7,10 @@ import {
   assertUsableResult,
   compareBaseline,
   createBaseline,
+  describeOutput,
   listEntrypoints,
   main,
+  runDenoWithAttempts,
 } from "./deno-check-ratchet.mjs";
 
 const ROOT = "/repo";
@@ -347,4 +349,83 @@ test("main() falha (2) e nao sobrescreve o baseline quando a saida esta incoeren
   } finally {
     cleanup();
   }
+});
+
+test("describeOutput mostra a cauda de uma falha longa (motivo real da CLI)", () => {
+  const linhas = [];
+  for (let i = 1; i <= 40; i += 1) linhas.push(`Download https://esm.sh/pacote-${i}`);
+  linhas.push("error: Failed to fetch https://esm.sh/@supabase/supabase-js@2.119.2");
+
+  const texto = describeOutput(linhas.join("\n"));
+  assert.ok(/\d+ linhas omitidas/u.test(texto), "saida longa precisa indicar o corte");
+  assert.ok(/Failed to fetch/u.test(texto), "o motivo da falha esta no fim e nao pode ser cortado");
+});
+
+test("describeOutput devolve a saida curta inteira", () => {
+  assert.equal(describeOutput('error: Module not found "x".\n'), 'error: Module not found "x".');
+  assert.equal(describeOutput(""), "(saida vazia)");
+});
+
+test("runDenoWithAttempts repete a execucao quando o deno nao produz diagnostico", () => {
+  const respostas = [
+    { status: 1, output: "Download https://esm.sh/x\nerror: 429 Too Many Requests\n" },
+    { status: 1, output: SAMPLE_OUTPUT },
+  ];
+  let chamadas = 0;
+  const resultado = runDenoWithAttempts(() => respostas[chamadas++], ROOT, { onRetry: () => {} });
+
+  assert.equal(chamadas, 2, "a primeira falha sem diagnostico deve ser repetida");
+  assert.equal(resultado, SAMPLE_OUTPUT);
+});
+
+test("runDenoWithAttempts desiste depois das tentativas e expoe a cauda", () => {
+  let chamadas = 0;
+  assert.throws(
+    () =>
+      runDenoWithAttempts(
+        () => {
+          chamadas += 1;
+          return { status: 1, output: "Download https://esm.sh/x\nerror: 429 Too Many Requests\n" };
+        },
+        ROOT,
+        { attempts: 2, onRetry: () => {} }
+      ),
+    /429 Too Many Requests/u
+  );
+  assert.equal(chamadas, 2, "nao pode repetir sem limite");
+});
+
+test("runDenoWithAttempts nao repete quando existe diagnostico de tipo", () => {
+  const incoerente = SAMPLE_OUTPUT.replace("Found 2 errors.", "Found 3 errors.");
+  let chamadas = 0;
+  assert.throws(
+    () =>
+      runDenoWithAttempts(
+        () => {
+          chamadas += 1;
+          return { status: 1, output: incoerente };
+        },
+        ROOT,
+        { onRetry: () => {} }
+      ),
+    /Found 3 errors/u
+  );
+  assert.equal(chamadas, 1, "diagnostico presente nao e falha de rede: nao repete");
+});
+
+test("runDenoWithAttempts nao repete exit inesperado", () => {
+  let chamadas = 0;
+  assert.throws(
+    () =>
+      runDenoWithAttempts(
+        () => {
+          chamadas += 1;
+          return { status: 2, output: "error: flag desconhecida\n" };
+        },
+        ROOT,
+        { onRetry: () => {} }
+      ),
+    /exit 2/u
+  );
+  assert.equal(chamadas, 1);
 });
