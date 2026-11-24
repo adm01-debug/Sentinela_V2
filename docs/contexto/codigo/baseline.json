@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "f566a4a98743d8aa673f651943e980dc95d7010b",
+  "commit": "1762098b77ba6fc97c07a8f9345e397beada9c23",
   "branch": "main",
-  "data_commit": "2026-11-24T10:30:37-03:00",
+  "data_commit": "2026-11-24T11:05:08-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "1762098b7",
+    "data": "2026-11-24",
+    "assunto": "fix: checagem de tipos volta a valer no upload de gravacao (client tipado) (#284)"
+   },
    {
     "sha": "f566a4a98",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "cefc52fd2",
     "data": "2026-11-23",
     "assunto": "chore: remove DashboardTooltip orfao (#259)"
-   },
-   {
-    "sha": "02b138dbc",
-    "data": "2026-11-23",
-    "assunto": "chore(types): regenera tipos do Supabase a partir do banco real (#260)"
    }
   ],
-  "arquivos_mudados_7d": 261,
+  "arquivos_mudados_7d": 262,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 181
+    "commits": 182
    },
    {
     "autor": "dependabot[bot]",

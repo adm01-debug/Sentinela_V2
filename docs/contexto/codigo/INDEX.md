@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `f566a4a98743d8aa673f651943e980dc95d7010b` (2026-11-24T10:30:37-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1762098b77ba6fc97c07a8f9345e397beada9c23` (2026-11-24T11:05:08-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `1762098b7` fix: checagem de tipos volta a valer no upload de gravacao (client tipado) (#284)
 - 2026-11-24 `f566a4a98` fix: deploy nao fica vermelho por corrida quando o deployment do commit novo ainda nao esta listado (#283)
 - 2026-11-24 `52be74c03` fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)
 - 2026-11-24 `17070eb55` infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `daa60fa00` test: guarda contra texto duplamente codificado (#273)
 - 2026-11-23 `c329d06fc` fix: corrige texto corrompido no dashboard e nos avisos de slack (#272)
 - 2026-11-23 `6313e39ba` docs: corrige auditoria de functions e registra gates medidos em producao (#271)
-- 2026-11-23 `12762c8c6` fix: reativa cron do SLA removendo gate incompativel com anon key (#269)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
