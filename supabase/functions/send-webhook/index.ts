@@ -54,7 +54,7 @@ serve(async (req) => {
       return createValidationErrorResponse(validationResult.error, validationResult.details, corsHeaders);
     }
 
-    const { webhook_id, event_type, payload, retry_count } = validationResult.data;
+    const { webhook_id, event_type, payload, retry_count = 0 } = validationResult.data;
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
     // Get webhook config from webhooks table
