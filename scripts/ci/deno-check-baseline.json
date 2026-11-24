@@ -3,15 +3,6 @@
   "command": "deno check supabase/functions/*/index.ts",
   "issues": [
     {
-      "file": "supabase/functions/live-view-authorize/index.ts",
-      "line": 99,
-      "column": 23,
-      "severity": "ERROR",
-      "code": "TS2749",
-      "message": "'RTCIceServer' refers to a value, but is being used as a type here. Did you mean 'typeof RTCIceServer'?",
-      "contextHash": "f9b704377fb65096b7528e76271e0d6dd0fa8c4981b73f395906c8f665f09664"
-    },
-    {
       "file": "supabase/functions/predict-anomaly/index.ts",
       "line": 71,
       "column": 29,

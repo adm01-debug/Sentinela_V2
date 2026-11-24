@@ -1,5 +1,6 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
+import { buildIceServers } from '../_shared/iceServers.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -96,20 +97,19 @@ Deno.serve(async (req) => {
       payload: { requested_by: user.id, reason: body.reason ?? null, ip, ua },
     });
 
-    const iceServers: RTCIceServer[] = [{ urls: 'stun:stun.l.google.com:19302' }];
-    if (TURN_CREDENTIALS) {
-      try {
-        const parsed = JSON.parse(TURN_CREDENTIALS);
-        if (Array.isArray(parsed)) iceServers.push(...parsed);
-      } catch (_) {
-        // ignore malformed TURN config
-      }
+    const ice = buildIceServers(TURN_CREDENTIALS);
+    if (ice.skipped > 0) {
+      console.warn(`TURN_CREDENTIALS: ${ice.skipped} entrada(s) sem urls ignorada(s)`);
+    }
+    if (ice.error) {
+      // Config malformada nao derruba a sessao, mas precisa aparecer no log
+      console.warn(`TURN_CREDENTIALS invalido: ${ice.error}`);
     }
 
     return json({
       session_id: session.id,
       channel: `live-view:${agent.id}`,
-      ice_servers: iceServers,
+      ice_servers: ice.servers,
       expires_at: new Date(Date.now() + 5 * 60_000).toISOString(),
     });
   } catch (e) {
@@ -123,6 +123,3 @@ function json(data: unknown, status = 200) {
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   });
 }
-
-// Deno type shim
-declare const RTCIceServer: unknown;
