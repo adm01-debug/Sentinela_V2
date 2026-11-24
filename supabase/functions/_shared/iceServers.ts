@@ -33,6 +33,44 @@ export function toIceServer(entry: unknown): IceServer | null {
 }
 
 /**
+ * Monta os ICE servers a partir do JSON de TURN_CREDENTIALS, mantendo o rotulo
+ * de configuracao ao lado. Usado por telas de diagnostico; o rotulo nunca vai
+ * para o browser (ver `buildIceServers`).
+ */
+export interface IceServerEntry {
+  server: IceServer;
+  label: string | null;
+}
+
+export function buildIceServerEntries(turnCredentials: string | undefined): {
+  entries: IceServerEntry[];
+  skipped: number;
+  error: string | null;
+} {
+  const entries: IceServerEntry[] = DEFAULT_STUN.map((server) => ({ server, label: null }));
+  if (!turnCredentials) return { entries, skipped: 0, error: null };
+
+  try {
+    const parsed = JSON.parse(turnCredentials);
+    const list: unknown[] = Array.isArray(parsed) ? parsed : [parsed];
+    let skipped = 0;
+    for (const raw of list) {
+      const server = toIceServer(raw);
+      if (!server) {
+        skipped += 1;
+        continue;
+      }
+      const rawLabel = (raw as { label?: unknown }).label;
+      const label = typeof rawLabel === "string" && rawLabel ? rawLabel : null;
+      entries.push({ server, label });
+    }
+    return { entries, skipped, error: null };
+  } catch (e) {
+    return { entries, skipped: 0, error: (e as Error).message };
+  }
+}
+
+/**
  * Monta a lista final de ICE servers a partir do JSON de TURN_CREDENTIALS.
  * Nunca lanca: entrada invalida vira `skipped`/`error` para o log do chamador.
  */
@@ -41,20 +79,6 @@ export function buildIceServers(turnCredentials: string | undefined): {
   skipped: number;
   error: string | null;
 } {
-  const servers: IceServer[] = [...DEFAULT_STUN];
-  if (!turnCredentials) return { servers, skipped: 0, error: null };
-
-  try {
-    const parsed = JSON.parse(turnCredentials);
-    const list: unknown[] = Array.isArray(parsed) ? parsed : [parsed];
-    let skipped = 0;
-    for (const entry of list) {
-      const server = toIceServer(entry);
-      if (server) servers.push(server);
-      else skipped += 1;
-    }
-    return { servers, skipped, error: null };
-  } catch (e) {
-    return { servers, skipped: 0, error: (e as Error).message };
-  }
+  const { entries, skipped, error } = buildIceServerEntries(turnCredentials);
+  return { servers: entries.map((entry) => entry.server), skipped, error };
 }
