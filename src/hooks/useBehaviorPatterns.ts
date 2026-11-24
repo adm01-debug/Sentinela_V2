@@ -11,12 +11,13 @@ export interface BehaviorPattern {
 }
 
 export interface UseBehaviorPatternsOptions {
-  employeeId?: string;
+  /** Nome do funcionário: a edge filtra `keystroke_logs.employee_name`. */
+  employeeName?: string;
   analysisPeriod?: number;
 }
 
 export function useBehaviorPatterns(options: UseBehaviorPatternsOptions = {}) {
-  const { employeeId, analysisPeriod = 30 } = options;
+  const { employeeName, analysisPeriod = 30 } = options;
   const [patterns, setPatterns] = useState<BehaviorPattern[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -26,7 +27,7 @@ export function useBehaviorPatterns(options: UseBehaviorPatternsOptions = {}) {
     setError(null);
     try {
       const { data, error: fnError } = await supabase.functions.invoke('behavior-pattern', {
-        body: { employeeId, analysisPeriod }
+        body: { employeeName, analysisPeriod }
       });
       if (fnError) throw fnError;
       setPatterns(data?.patterns || []);
@@ -35,7 +36,7 @@ export function useBehaviorPatterns(options: UseBehaviorPatternsOptions = {}) {
     } finally {
       setIsLoading(false);
     }
-  }, [employeeId, analysisPeriod]);
+  }, [employeeName, analysisPeriod]);
 
   const getPatternsByType = useCallback((type: BehaviorPattern['type']) => 
     patterns.filter(p => p.type === type), [patterns]);
