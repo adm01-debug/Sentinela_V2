@@ -15,6 +15,7 @@
  */
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
+import { requireCronOrServiceRole } from "../_shared/auth.ts";
 
 const SLA_HOURS = 72;
 const WARNING_H = 12;
@@ -42,9 +43,6 @@ function severityOf(hoursUntilBreach: number): Severity | null {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
-  // Sem gate de auth: o cron do painel (cron.job) chama com a anon key e o
-  // gateway libera por verify_jwt; bloquear aqui derruba o escalonamento de
-  // SLA. O gate volta junto com a migration que re-agenda o job.
   const startedAt = Date.now();
 
   const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
@@ -52,6 +50,14 @@ Deno.serve(async (req) => {
   const FCM_SERVER_KEY = Deno.env.get('FCM_SERVER_KEY');
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
+  try {
+    await requireCronOrServiceRole(req, 'escalate-dispute-sla');
+  } catch {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
   // 1) Fetch open disputes.
   const { data: disputes, error } = await supabase
     .from('violation_disputes')

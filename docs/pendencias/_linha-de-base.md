@@ -32,7 +32,10 @@ parcial e continuado ou registrado com dono.
 | award-gamification-points   | CORRIGIDA (#275)                            | rate limit inoperante; E2E: 10x401 e 11o POST 429       |
 | Contrato de colunas (views) | CORRIGIDO (7 edges, PR #188)                | 156 pares tabela/coluna cruzados com information_schema |
 | generate-insights           | CORRIGIDA (401 em 100% das chamadas)        | getUser() sem token -> valida em /auth/v1/user; 200     |
-| escalate-dispute-sla        | GATE REVERTIDO (cron usa anon key)          | Bloquear derrubava o SLA; volta com a migration         |
+| escalate-dispute-sla        | GATE ATIVO via x-cron-secret                | Cron re-agendado com header x-cron-secret               |
+| expire-recordings           | GATE ATIVO via x-cron-secret                | Cron re-agendado com header x-cron-secret               |
+| slack-mttr-monitor          | GATE ATIVO via x-cron-secret                | Cron re-agendado com header x-cron-secret               |
+| slack-weekly-digest         | GATE ATIVO via x-cron-secret                | Cron re-agendado com header x-cron-secret               |
 
 ## Contratos front <-> banco (varredura 2026-11-21)
 

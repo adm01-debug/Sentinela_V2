@@ -74,3 +74,37 @@ export async function requireUserOrServiceRole(req: Request) {
 
   throw new Error('Invalid token');
 }
+
+/**
+ * Gate para funcoes que o pg_cron chama diretamente.
+ *
+ * O job criado no painel chama a funcao com a anon key e o gateway aceita por
+ * verify_jwt, entao a prova de identidade e o header x-cron-secret, cujo valor
+ * mora em public.cron_secrets (RLS sem policy: so service_role le). O job
+ * recebe o header pela migration que re-agenda o cron.
+ *
+ * Enquanto a tabela/linha nao existir (migration pendente) o comportamento
+ * anterior e mantido, para o deploy da funcao poder chegar antes do DDL sem
+ * derrubar o job por 401.
+ */
+export async function requireCronOrServiceRole(req: Request, cronName: string) {
+  const provided = req.headers.get('x-cron-secret') ?? '';
+  const admin = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+    { auth: { persistSession: false, autoRefreshToken: false } },
+  );
+
+  const { data, error } = await admin
+    .from('cron_secrets')
+    .select('secret')
+    .eq('name', cronName)
+    .maybeSingle();
+
+  const expected = typeof data?.secret === 'string' ? data.secret : '';
+  if (error || !expected) return { cron: false, isServiceRole: false };
+
+  if (provided && provided === expected) return { cron: true, isServiceRole: false };
+
+  return requireUserOrServiceRole(req);
+}

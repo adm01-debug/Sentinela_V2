@@ -190,12 +190,15 @@ describe("Gap Audit: Edge Function Auth Gates", () => {
   // estar no codigo da funcao (ver supabase/functions/_shared/auth.ts).
   // Lista explicita: cada funcao abaixo ja foi endurecida. As demais edge
   // functions ainda nao tem gate e sao divida registrada, nao regressao.
-  // escalate-dispute-sla fica fora: o cron do painel chama com anon key, entao
-  // o gate volta junto com a migration que re-agenda o job com service_role.
+  // Os 4 jobs de cron (escalate/expire/slack-mttr/slack-weekly) entram pelo
+  // header x-cron-secret, gerado no banco pela migration cron_secrets_auth_jobs,
+  // alem do gate padrao.
   const hardenedFunctions = [
     "analyze-activity",
     "behavior-pattern",
     "check-geofence",
+    "escalate-dispute-sla",
+    "expire-recordings",
     "notify-new-device",
     "ocr-screenshot",
     "predict-anomaly",
@@ -203,7 +206,9 @@ describe("Gap Audit: Edge Function Auth Gates", () => {
     "send-push-notification",
     "send-slack-notification",
     "send-webhook",
+    "slack-mttr-monitor",
     "slack-notify",
+    "slack-weekly-digest",
     "smart-recommendations",
     "summarize-activity",
     "trend-forecasting",
@@ -213,7 +218,7 @@ describe("Gap Audit: Edge Function Auth Gates", () => {
     const fs = await import("fs");
     const path = await import("path");
     const gatePattern =
-      /requireUserOrServiceRole|requireAuth|verifyAuth|requireAdmin|requireServiceRole|auth\.getUser\(/;
+      /requireCronOrServiceRole|requireUserOrServiceRole|requireAuth|verifyAuth|requireAdmin|requireServiceRole|auth\.getUser\(/;
     const missing: string[] = [];
 
     for (const name of hardenedFunctions) {
