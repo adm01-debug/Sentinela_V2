@@ -3,33 +3,6 @@
   "command": "deno check supabase/functions/*/index.ts",
   "issues": [
     {
-      "file": "supabase/functions/audit-export/index.ts",
-      "line": 50,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/batch-notifications/index.ts",
-      "line": 57,
-      "column": 92,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "037796d1df90393738e33b1486b14b9e79876ea60c89bef220272b5df25938be"
-    },
-    {
-      "file": "supabase/functions/batch-notifications/index.ts",
-      "line": 64,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
       "file": "supabase/functions/behavior-pattern/index.ts",
       "line": 122,
       "column": 21,
@@ -75,69 +48,6 @@
       "contextHash": "edc5a66b1c0e0c3c605beb4068f9ab0b98e0c9ed296abd1799db46e0f414d0bb"
     },
     {
-      "file": "supabase/functions/cleanup-sessions/index.ts",
-      "line": 48,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/compress-screenshots/index.ts",
-      "line": 65,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/daily-summary/index.ts",
-      "line": 35,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/delete-user-data/index.ts",
-      "line": 67,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/external-db-bridge/index.ts",
-      "line": 329,
-      "column": 31,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "b0d0f8e0292df63d744bb05a6396546ceef4d01dd1119acc674b75bf6e75f922"
-    },
-    {
-      "file": "supabase/functions/generate-api-key/index.ts",
-      "line": 47,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/get-dashboard-stats/index.ts",
-      "line": 33,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
       "file": "supabase/functions/ingest-file-transfer/index.ts",
       "line": 217,
       "column": 34,
@@ -156,15 +66,6 @@
       "contextHash": "c3afbb5f6109e4e002bf7d6d3cb58d74601e7b36a212e7a7c233a36d2108837c"
     },
     {
-      "file": "supabase/functions/invite-user/index.ts",
-      "line": 53,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
       "file": "supabase/functions/live-view-authorize/index.ts",
       "line": 99,
       "column": 23,
@@ -174,15 +75,6 @@
       "contextHash": "f9b704377fb65096b7528e76271e0d6dd0fa8c4981b73f395906c8f665f09664"
     },
     {
-      "file": "supabase/functions/merge-employees/index.ts",
-      "line": 62,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
       "file": "supabase/functions/predict-anomaly/index.ts",
       "line": 71,
       "column": 29,
@@ -190,42 +82,6 @@
       "code": "TS2769",
       "message": "No overload matches this call.",
       "contextHash": "809470f5092cc495bee573eff6c1141f83774c6218224dd06a9e54c2cc3feebc"
-    },
-    {
-      "file": "supabase/functions/process-bulk-import/index.ts",
-      "line": 58,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/recalculate-metrics/index.ts",
-      "line": 65,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/refresh-tokens/index.ts",
-      "line": 33,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/reset-password/index.ts",
-      "line": 50,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "b7ea452da00269876b8d55ef3aeddaa4d42ed9cf2212ba4bebe2c16a7313362b"
     },
     {
       "file": "supabase/functions/risk-score-calculator/index.ts",
@@ -244,33 +100,6 @@
       "code": "TS2353",
       "message": "Object literal may only specify known properties, and 'employee_id' does not exist in type 'never[]'.",
       "contextHash": "61e3e92cc54e17b66805151769ca0ad4a59477894a5c0e8971770eb316851aa1"
-    },
-    {
-      "file": "supabase/functions/rotate-api-keys/index.ts",
-      "line": 42,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/search-activities/index.ts",
-      "line": 48,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/send-email-notification/index.ts",
-      "line": 53,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
     },
     {
       "file": "supabase/functions/send-webhook/index.ts",
@@ -345,15 +174,6 @@
       "contextHash": "ac7b1cfe377b0cf9a313a59235f355039aaa0e954c08040bd73ef6098435fa80"
     },
     {
-      "file": "supabase/functions/sync-teams/index.ts",
-      "line": 42,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
       "file": "supabase/functions/trend-forecasting/index.ts",
       "line": 157,
       "column": 22,
@@ -424,24 +244,6 @@
       "code": "TS2345",
       "message": "Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'BufferSource'.",
       "contextHash": "da885437b34a5190d73d42b3b07442e4827d5ef8f3d63650fb28d6dd034374c5"
-    },
-    {
-      "file": "supabase/functions/validate-license/index.ts",
-      "line": 60,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
-    },
-    {
-      "file": "supabase/functions/verify-email/index.ts",
-      "line": 29,
-      "column": 49,
-      "severity": "ERROR",
-      "code": "TS18046",
-      "message": "'err' is of type 'unknown'.",
-      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
     }
   ]
 }

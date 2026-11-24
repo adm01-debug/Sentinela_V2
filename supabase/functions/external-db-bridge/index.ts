@@ -326,7 +326,7 @@ Deno.serve(async (req: Request) => {
   } catch (err) {
     console.error('[external-db-bridge] Error:', err);
     return new Response(
-      JSON.stringify({ error: err.message || 'Internal server error' }),
+      JSON.stringify({ error: (err instanceof Error ? err.message : (err as { message?: string })?.message ?? String(err)) || 'Internal server error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

@@ -54,13 +54,13 @@ serve(async (req) => {
           results.push({ channel, recipient, status: 'unsupported_channel' });
         }
       } catch (err) {
-        results.push({ channel: n.channel, recipient: n.recipient, status: 'error', error: err.message });
+        results.push({ channel: n.channel, recipient: n.recipient, status: 'error', error: err instanceof Error ? err.message : (err as { message?: string })?.message ?? String(err) });
       }
     }
 
     return new Response(JSON.stringify({ processed: results.length, results }), 
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ error: err instanceof Error ? err.message : (err as { message?: string })?.message ?? String(err) }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 });
