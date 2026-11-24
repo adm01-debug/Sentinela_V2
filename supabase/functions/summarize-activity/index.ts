@@ -23,8 +23,51 @@ interface ActivitySummary {
   topApplications: { name: string; count: number; percentage: number }[];
   productivityScore: number;
   peakHours: { hour: number; count: number }[];
+  hourlyDistribution: { hour: number; count: number }[];
   violationsSummary: { total: number; bySeverity: Record<string, number> };
   highlights: string[];
+}
+
+/** Hora local de Sao Paulo: a coluna e UTC e o gestor le o grafico no horario dele. */
+const HOUR_FORMAT = new Intl.DateTimeFormat("pt-BR", {
+  hour: "2-digit",
+  hourCycle: "h23",
+  timeZone: "America/Sao_Paulo",
+});
+
+function hourOf(iso: string | null): number | null {
+  if (!iso) return null;
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return null;
+  const hour = Number(HOUR_FORMAT.format(date));
+  return Number.isNaN(hour) ? null : hour;
+}
+
+const SP_PARTS = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/Sao_Paulo",
+  hourCycle: "h23",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+/** Deslocamento de Sao Paulo em minutos em relacao a UTC na data informada. */
+function spOffsetMinutes(date: Date): number {
+  const parts = SP_PARTS.formatToParts(date);
+  const get = (type: string) => Number(parts.find((part) => part.type === type)?.value ?? NaN);
+  const wall = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour"), get("minute"));
+  return Math.round((wall - Math.floor(date.getTime() / 60000) * 60000) / 60000);
+}
+
+/** yyyy-mm-dd lido como dia inteiro no horario do gestor (America/Sao_Paulo). */
+function spDay(value: unknown, edge: "start" | "end"): string | null {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+  const midnightUtc = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(midnightUtc.getTime())) return null;
+  const start = midnightUtc.getTime() - spOffsetMinutes(midnightUtc) * 60000;
+  return new Date(edge === "start" ? start : start + 86_399_999).toISOString();
 }
 
 serve(async (req) => {
@@ -49,19 +92,30 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { period = "day", employeeId } = await req.json();
+    const { period = "day", employeeId, startDate, endDate } = await req.json();
 
     const periodHours = period === "day" ? 24 : period === "week" ? 168 : 720;
-    const since = new Date(Date.now() - periodHours * 60 * 60 * 1000).toISOString();
+    const since =
+      spDay(startDate, "start") ??
+      new Date(Date.now() - periodHours * 60 * 60 * 1000).toISOString();
+    const until = spDay(endDate, "end") ?? new Date().toISOString();
 
     // Fetch activities
-    let activityQuery = supabase.from("keystroke_logs").select("*").gte("recorded_at", since);
+    let activityQuery = supabase
+      .from("keystroke_logs")
+      .select("*")
+      .gte("recorded_at", since)
+      .lte("recorded_at", until);
     if (employeeId) activityQuery = activityQuery.eq("employee_name", employeeId);
     const { data: activitiesRaw } = await activityQuery;
     const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
     // Fetch violations
-    let violationQuery = supabase.from("security_violations").select("*").gte("created_at", since);
+    const violationQuery = supabase
+      .from("security_violations")
+      .select("*")
+      .gte("created_at", since)
+      .lte("created_at", until);
     const { data: violations } = await violationQuery;
 
     // Calculate metrics
@@ -93,13 +147,18 @@ serve(async (req) => {
     // Peak hours
     const hourCounts: Record<number, number> = {};
     activities?.forEach((a) => {
-      const hour = new Date(a.recorded_at ?? a.created_at).getHours();
+      const hour = hourOf(a.recorded_at ?? a.created_at);
+      if (hour === null) return;
       hourCounts[hour] = (hourCounts[hour] || 0) + 1;
     });
     const peakHours = Object.entries(hourCounts)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 3)
       .map(([hour, count]) => ({ hour: parseInt(hour), count }));
+    const hourlyDistribution = Array.from({ length: 24 }, (_, hour) => ({
+      hour,
+      count: hourCounts[hour] ?? 0,
+    }));
 
     // Violations summary
     const violationsBySeverity: Record<string, number> = {};
@@ -137,6 +196,7 @@ serve(async (req) => {
       topApplications,
       productivityScore,
       peakHours,
+      hourlyDistribution,
       violationsSummary: {
         total: violations?.length || 0,
         bySeverity: violationsBySeverity,
@@ -150,7 +210,7 @@ serve(async (req) => {
         metadata: {
           period,
           startDate: since,
-          endDate: new Date().toISOString(),
+          endDate: until,
           generatedAt: new Date().toISOString(),
         },
       }),

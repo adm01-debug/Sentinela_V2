@@ -14,7 +14,16 @@ vi.mock('react-i18next', () => ({
 
 vi.mock('@/hooks/useActivities', () => ({
   useActivities: () => ({ data: [], isLoading: false }),
-  useActivitySummary: () => ({ data: {}, isLoading: false }),
+}));
+
+let summaryState: { summary: unknown; isLoading: boolean; error: Error | null } = {
+  summary: null,
+  isLoading: false,
+  error: null,
+};
+
+vi.mock('@/hooks/useActivitySummary', () => ({
+  useActivitySummary: () => summaryState,
 }));
 
 vi.mock('@/components/ActivityFilters', () => ({
@@ -22,7 +31,9 @@ vi.mock('@/components/ActivityFilters', () => ({
 }));
 
 vi.mock('@/components/ActivityChart', () => ({
-  ActivityChart: () => <div data-testid="activity-chart" />,
+  ActivityChart: ({ data }: { data: unknown[] }) => (
+    <div data-testid="activity-chart" data-count={data.length} />
+  ),
 }));
 
 vi.mock('@/components/ActivityTable', () => ({
@@ -30,7 +41,13 @@ vi.mock('@/components/ActivityTable', () => ({
 }));
 
 vi.mock('@/components/ApplicationBreakdown', () => ({
-  ApplicationBreakdown: () => <div data-testid="app-breakdown" />,
+  ApplicationBreakdown: ({ data }: { data: unknown[] }) => (
+    <div data-testid="app-breakdown" data-count={data.length} />
+  ),
+}));
+
+vi.mock('@/components/AnomalyDetectionPanel', () => ({
+  AnomalyDetectionPanel: () => <div data-testid="anomaly-panel" />,
 }));
 
 const queryClient = new QueryClient({
@@ -44,6 +61,7 @@ const queryClient = new QueryClient({
 describe('ActivitiesPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    summaryState = { summary: null, isLoading: false, error: null };
   });
 
   const renderActivities = () => {
@@ -63,5 +81,24 @@ describe('ActivitiesPage', () => {
     expect(screen.getByTestId('activity-chart')).toBeInTheDocument();
     expect(screen.getByTestId('app-breakdown')).toBeInTheDocument();
     expect(screen.getByTestId('activity-table')).toBeInTheDocument();
+  });
+
+  it('leva a distribuicao horaria e os aplicativos do resumo para os graficos', () => {
+    summaryState = {
+      summary: {
+        hourlyDistribution: Array.from({ length: 24 }, (_, hour) => ({ hour, count: hour })),
+        topApplications: [
+          { name: 'Chrome', count: 60, percentage: 60 },
+          { name: 'Slack', count: 40, percentage: 40 },
+        ],
+      },
+      isLoading: false,
+      error: null,
+    };
+
+    renderActivities();
+
+    expect(screen.getByTestId('activity-chart')).toHaveAttribute('data-count', '24');
+    expect(screen.getByTestId('app-breakdown')).toHaveAttribute('data-count', '2');
   });
 });

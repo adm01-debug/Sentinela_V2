@@ -80,15 +80,3 @@ export const useActivity = (id: string) => {
     enabled: !!id,
   });
 };
-
-export const useActivitySummary = (filters?: Record<string, string | undefined>) => {
-  return useQuery({
-    queryKey: ['activity-summary', filters],
-    queryFn: async () => ({
-      totalKeystrokes: 0,
-      totalActiveTime: 0,
-      totalIdleTime: 0,
-      topApps: [] as { name: string; duration: number }[],
-    }),
-  });
-};
