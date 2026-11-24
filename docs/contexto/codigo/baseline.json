@@ -2,11 +2,21 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "12762c8c618a708232e0fc559149c4f8781be335",
+  "commit": "c329d06fc22316646c7c670ff9b67ca5c9ee71aa",
   "branch": "main",
-  "data_commit": "2026-11-23T22:09:39-03:00",
+  "data_commit": "2026-11-23T23:11:10-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "c329d06fc",
+    "data": "2026-11-23",
+    "assunto": "fix: corrige texto corrompido no dashboard e nos avisos de slack (#272)"
+   },
+   {
+    "sha": "6313e39ba",
+    "data": "2026-11-23",
+    "assunto": "docs: corrige auditoria de functions e registra gates medidos em producao (#271)"
+   },
    {
     "sha": "12762c8c6",
     "data": "2026-11-23",
@@ -121,31 +131,21 @@
     "sha": "316357320",
     "data": "2026-11-22",
     "assunto": "fix(deploy): SITE_URL do reset de senha aponta para o dominio real do app (#246)"
-   },
-   {
-    "sha": "b657b3e12",
-    "data": "2026-11-22",
-    "assunto": "docs: PolicyGate resolvido e no ar, com homologacao E2E registrada (#245)"
-   },
-   {
-    "sha": "76f78d12d",
-    "data": "2026-11-22",
-    "assunto": "fix(deploy): db push --yes para nao abortar com migration pendente (#244)"
    }
   ],
-  "arquivos_mudados_7d": 234,
+  "arquivos_mudados_7d": 235,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
-    "mudancas": 25
+    "mudancas": 26
+   },
+   {
+    "pasta": "docs/pendencias/_linha-de-base.md",
+    "mudancas": 17
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
     "mudancas": 17
-   },
-   {
-    "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 16
    },
    {
     "pasta": "scripts/ci/prettier-baseline.json",
@@ -206,12 +206,12 @@
     "mudancas": 25
    },
    {
-    "arquivo": "scripts/ci/eslint-baseline.json",
+    "arquivo": "docs/pendencias/_linha-de-base.md",
     "mudancas": 17
    },
    {
-    "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 16
+    "arquivo": "scripts/ci/eslint-baseline.json",
+    "mudancas": 17
    },
    {
     "arquivo": "scripts/ci/prettier-baseline.json",
@@ -254,6 +254,10 @@
     "mudancas": 4
    },
    {
+    "arquivo": "src/pages/__tests__/Dashboard.test.tsx",
+    "mudancas": 4
+   },
+   {
     "arquivo": "src/test/gap-audit.test.ts",
     "mudancas": 4
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": "src/constants/routes.ts",
     "mudancas": 3
-   },
-   {
-    "arquivo": "src/pages/WhatsAppIntegrationPage.tsx",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 167
+    "commits": 169
    },
    {
     "autor": "dependabot[bot]",
