@@ -75,24 +75,6 @@
       "contextHash": "61e3e92cc54e17b66805151769ca0ad4a59477894a5c0e8971770eb316851aa1"
     },
     {
-      "file": "supabase/functions/send-webhook/index.ts",
-      "line": 96,
-      "column": 9,
-      "severity": "ERROR",
-      "code": "TS2322",
-      "message": "Type 'string | undefined' is not assignable to type 'string'.",
-      "contextHash": "d6b0960dbeeac07e86e5034c1ecb9fd359d004ad566c8eb86bc2991b6b0b810f"
-    },
-    {
-      "file": "supabase/functions/slack-notify/index.ts",
-      "line": 327,
-      "column": 27,
-      "severity": "ERROR",
-      "code": "TS2339",
-      "message": "Property 'status' does not exist on type '{ ok: true; attempts: number; } | { ok: false; attempts: number; status?: number | undefined; message: string; permanent: boolean; }'.",
-      "contextHash": "d49d9fb240842336b2622ecaa165aad4dad9faad7ab6341ae4592e875f845c47"
-    },
-    {
       "file": "supabase/functions/slack-weekly-digest/index.ts",
       "line": 36,
       "column": 43,

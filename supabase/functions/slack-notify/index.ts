@@ -195,7 +195,7 @@ Deno.serve(async (req) => {
   async function postWithRetry(
     webhookUrl: string
   ): Promise<
-    | { ok: true; attempts: number }
+    | { ok: true; attempts: number; status?: number }
     | { ok: false; attempts: number; status?: number; message: string; permanent: boolean }
   > {
     let lastMessage = "unknown";
