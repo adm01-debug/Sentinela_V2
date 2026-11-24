@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "a970c26a50182bdc2330966789dd234f8db7f035",
+  "commit": "397bb1e93a8c2e1d3536bbfe094dd80d4b1c29be",
   "branch": "main",
-  "data_commit": "2026-11-24T00:24:19-03:00",
+  "data_commit": "2026-11-24T00:30:28-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "397bb1e93",
+    "data": "2026-11-24",
+    "assunto": "docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)"
+   },
    {
     "sha": "a970c26a5",
     "data": "2026-11-24",
@@ -126,11 +131,6 @@
     "sha": "2f8ef3c85",
     "data": "2026-11-23",
     "assunto": "feat: expõe páginas sem link no sidebar (#252)"
-   },
-   {
-    "sha": "c390eb8be",
-    "data": "2026-11-23",
-    "assunto": "fix: organograma no sidebar, check placeholder no deploy e timeout do teste (#251)"
    }
   ],
   "arquivos_mudados_7d": 240,
@@ -141,7 +141,7 @@
    },
    {
     "pasta": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
@@ -207,7 +207,7 @@
    },
    {
     "arquivo": "docs/pendencias/_linha-de-base.md",
-    "mudancas": 17
+    "mudancas": 18
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 173
+    "commits": 174
    },
    {
     "autor": "dependabot[bot]",

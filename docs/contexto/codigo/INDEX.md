@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `a970c26a50182bdc2330966789dd234f8db7f035` (2026-11-24T00:24:19-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `397bb1e93a8c2e1d3536bbfe094dd80d4b1c29be` (2026-11-24T00:30:28-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -304,7 +304,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (26)
 - package.json (25)
-- docs/pendencias/_linha-de-base.md (17)
+- docs/pendencias/_linha-de-base.md (18)
 - scripts/ci/eslint-baseline.json (17)
 - scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (15)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `397bb1e93` docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)
 - 2026-11-24 `a970c26a5` test: guarda o consumo do rate limit nas edge functions (#276)
 - 2026-11-24 `fee6687be` fix(edge): corrige rate limit inoperante e retry_count descartado (#275)
 - 2026-11-23 `442048395` test: guarda do contrato de dados entre front e banco (#274)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `9ab51f01b` feat: tela de palavras sensiveis com CRUD real (#264)
 - 2026-11-23 `4f535b477` chore: documenta a prova pos-deploy do gate das edges (#263)
 - 2026-11-23 `61b2323c6` fix: reconhece service_role pelo probe da API admin no gate das edges (#262)
-- 2026-11-23 `163389560` fix: exige autenticacao em 3 edge functions abertas ao publico (#261)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
