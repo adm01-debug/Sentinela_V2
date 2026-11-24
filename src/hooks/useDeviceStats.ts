@@ -68,7 +68,7 @@ async function fetchDeviceStats(): Promise<DeviceStats> {
     d.last_seen_at && new Date(d.last_seen_at as string) > fiveMinutesAgo
   ).length;
   
-  // `employee_devices` nÃ£o tem is_active: tratar device primÃ¡rio como online
+  // `employee_devices` não tem is_active: tratar device primário como online
   const onlineDesktop = employeeDevices.filter((d: EmployeeDeviceStatsRow) => d.is_primary).length;
   const online = onlineDesktop + onlineMobile;
 

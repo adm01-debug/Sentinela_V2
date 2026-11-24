@@ -46,7 +46,7 @@ export const DashboardPage = () => {
   // passa a valer, com tudo visivel por padrao.
   const isVisible = (id: string) => widgets.find((w) => w.id === id)?.visible !== false;
 
-  // RelÃ³gio ao vivo â€” atualiza a cada 30s para o indicador "Ao vivo"
+  // Relógio ao vivo — atualiza a cada 30s para o indicador "Ao vivo"
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 30_000);
     return () => window.clearInterval(id);
@@ -66,14 +66,14 @@ export const DashboardPage = () => {
     return target ? base.filter((d) => d.name === target) : base;
   }, [colors, departmentFilter]);
 
-  // PerÃ­odos afetam labels de tendÃªncia exibidos nos cards
-  const trendLabel = period === 'day' ? 'desde ontem' : period === 'month' ? 'este mÃªs' : 'esta semana';
+  // Períodos afetam labels de tendência exibidos nos cards
+  const trendLabel = period === 'day' ? 'desde ontem' : period === 'month' ? 'este mês' : 'esta semana';
 
   const statsCards = useMemo(() => [
     { title: t('dashboard.totalEmployees'), value: stats?.totalEmployees ?? 128, icon: Users, iconColor: 'bg-primary/10 text-primary', trend: { value: 5.2, label: trendLabel }, accentColor: 'primary' as const },
     { title: t('dashboard.activeNow'), value: stats?.activeEmployees ?? 45, icon: Activity, iconColor: 'bg-success/10 text-success', trend: { value: 12, label: trendLabel }, accentColor: 'success' as const, pulse: true },
     { title: t('dashboard.productivity'), value: (stats?.averageProductivity ?? 87) + '%', icon: TrendingUp, iconColor: 'bg-warning/10 text-warning', trend: { value: 3.8, label: trendLabel }, accentColor: 'warning' as const },
-    { title: t('dashboard.alerts'), value: stats?.alertsCount ?? 3, icon: AlertTriangle, iconColor: 'bg-destructive/10 text-destructive', trend: { value: -25, label: 'vs perÃ­odo anterior', isPositive: true }, accentColor: 'destructive' as const },
+    { title: t('dashboard.alerts'), value: stats?.alertsCount ?? 3, icon: AlertTriangle, iconColor: 'bg-destructive/10 text-destructive', trend: { value: -25, label: 'vs período anterior', isPositive: true }, accentColor: 'destructive' as const },
   ], [stats, t, trendLabel]);
 
   const alerts = useMemo(() => realAlerts && realAlerts.length > 0 ? realAlerts : fallbackAlerts, [realAlerts]);
@@ -94,7 +94,7 @@ export const DashboardPage = () => {
       
       <PageHeader
         title={t('dashboard.title')}
-        description={`${t('dashboard.subtitle')} â€” ${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}`}
+        description={`${t('dashboard.subtitle')} — ${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}`}
         showBackButton={false}
         actions={
           <div className="flex items-center gap-2">
@@ -103,9 +103,9 @@ export const DashboardPage = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-70" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-success" />
               </span>
-              <span>Ao vivo Â· {now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+              <span>Ao vivo · {now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
-            <div role="tablist" aria-label="PerÃ­odo" className="flex gap-1 mr-2">
+            <div role="tablist" aria-label="Período" className="flex gap-1 mr-2">
               {(['day', 'week', 'month'] as Period[]).map(p => (
                 <Button
                   key={p}
@@ -115,7 +115,7 @@ export const DashboardPage = () => {
                   onClick={() => setPeriod(p)}
                   className="min-h-11 min-w-11 px-3"
                 >
-                  {p === 'day' ? 'Dia' : p === 'week' ? 'Semana' : 'MÃªs'}
+                  {p === 'day' ? 'Dia' : p === 'week' ? 'Semana' : 'Mês'}
                 </Button>
               ))}
             </div>
@@ -145,7 +145,7 @@ export const DashboardPage = () => {
                 },
                 {
                   id: 'charts',
-                  title: 'TendÃªncias & Performance',
+                  title: 'Tendências & Performance',
                   content: <DashboardChartsRow colors={colors} />,
                 },
                 {

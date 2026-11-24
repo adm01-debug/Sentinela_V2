@@ -1,11 +1,11 @@
 /**
  * slack-dlq-replay
  * Reenvia uma mensagem previamente falha da fila slack_notification_dlq.
- * SÃƒÆ’Ã‚Â³ pode ser invocada por administradores autenticados.
+ * Só pode ser invocada por administradores autenticados.
  *
  * Body: { dlq_id: string, target_integration_id?: string }
  *   - Se target_integration_id for informado, tenta enviar para esse webhook.
- *   - Caso contrÃƒÆ’Ã‚Â¡rio usa o integration_id original (se ainda existir e estiver ativo).
+ *   - Caso contrário usa o integration_id original (se ainda existir e estiver ativo).
  */
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-  // Valida o usuÃƒÆ’Ã‚Â¡rio via anon client + JWT do caller
+  // Valida o usuário via anon client + JWT do caller
   const userClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
     global: { headers: { Authorization: `Bearer ${token}` } },
   });
@@ -84,7 +84,7 @@ Deno.serve(async (req) => {
     return json(
       {
         error: "integration_inactive",
-        hint: "Reative a integraÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Â£o antes de reenviar.",
+        hint: "Reative a integração antes de reenviar.",
       },
       409
     );
@@ -139,7 +139,7 @@ Deno.serve(async (req) => {
             elements: [
               {
                 type: "mrkdwn",
-                text: `SecureWatch ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ replay manual ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ${new Date().toISOString()}`,
+                text: `SecureWatch • replay manual • ${new Date().toISOString()}`,
               },
             ],
           },

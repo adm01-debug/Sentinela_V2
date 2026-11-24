@@ -96,9 +96,9 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
   );
 
-  // Multi-tenant: quando company_id ÃƒÆ’Ã‚Â© enviado, seleciona integraÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Âµes da empresa
-  // + integraÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Âµes globais (company_id IS NULL). Sem company_id, roteia apenas
-  // integraÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Âµes globais para preservar compatibilidade com chamadas legadas.
+  // Multi-tenant: quando company_id é enviado, seleciona integrações da empresa
+  // + integrações globais (company_id IS NULL). Sem company_id, roteia apenas
+  // integrações globais para preservar compatibilidade com chamadas legadas.
   let query = supabase
     .from("slack_integrations")
     .select(
@@ -127,7 +127,7 @@ Deno.serve(async (req) => {
     return json({ ok: true, delivered: 0, matched: 0 });
   }
 
-  // HTTP statuses que indicam webhook permanentemente invÃƒÆ’Ã‚Â¡lido (auto-pausa imediata)
+  // HTTP statuses que indicam webhook permanentemente inválido (auto-pausa imediata)
   const PERMANENT_FAILURE_STATUSES = new Set([400, 403, 404, 410]);
 
   const emoji = SEVERITY_EMOJI[severity];
@@ -168,7 +168,7 @@ Deno.serve(async (req) => {
             elements: [
               {
                 type: "mrkdwn",
-                text: `SecureWatch ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ${event_type} ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ${new Date().toISOString()}`,
+                text: `SecureWatch • ${event_type} • ${new Date().toISOString()}`,
               },
             ],
           },
@@ -182,9 +182,9 @@ Deno.serve(async (req) => {
   const autoPaused: Array<{ id: string; name: string; reason: string }> = [];
   const retryStats: Array<{ id: string; attempts: number; recovered: boolean }> = [];
 
-  // Retry policy: erros transitÃƒÆ’Ã‚Â³rios (429/5xx/network) tentam novamente com backoff
+  // Retry policy: erros transitórios (429/5xx/network) tentam novamente com backoff
   // exponencial + jitter antes de contabilizar falha. Erros permanentes (400/403/404/410)
-  // pulam retry e vÃƒÆ’Ã‚Â£o direto para auto-pausa.
+  // pulam retry e vão direto para auto-pausa.
   const MAX_ATTEMPTS = 3;
   const BASE_DELAY_MS = 500;
   const MAX_DELAY_MS = 4000;
@@ -243,7 +243,7 @@ Deno.serve(async (req) => {
         if (attempt < MAX_ATTEMPTS) await sleep(backoff + jitter);
       } catch (e: unknown) {
         lastMessage = safeError(e);
-        // network/timeout sÃƒÆ’Ã‚Â£o transitÃƒÆ’Ã‚Â³rios
+        // network/timeout são transitórios
         if (attempt < MAX_ATTEMPTS) {
           const backoff = Math.min(BASE_DELAY_MS * 2 ** (attempt - 1), MAX_DELAY_MS);
           const jitter = Math.floor(Math.random() * 250);
@@ -291,8 +291,8 @@ Deno.serve(async (req) => {
       };
       if (shouldPause) {
         const reason = result.permanent
-          ? `Webhook invÃƒÆ’Ã‚Â¡lido (HTTP ${result.status}) ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â pausado apÃƒÆ’Ã‚Â³s ${result.attempts} tentativa(s)`
-          : `${nextFailureCount} falhas consecutivas atingiram o limite de ${threshold} (apÃƒÆ’Ã‚Â³s ${result.attempts} tentativas por envio)`;
+          ? `Webhook inválido (HTTP ${result.status}) — pausado após ${result.attempts} tentativa(s)`
+          : `${nextFailureCount} falhas consecutivas atingiram o limite de ${threshold} (após ${result.attempts} tentativas por envio)`;
         update.is_active = false;
         update.auto_paused_at = new Date().toISOString();
         update.auto_pause_reason = reason;
@@ -317,7 +317,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Registro por integraÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Â£o para telemetria de uptime (ÃƒÆ’Ã‚Âºltimos 7 dias)
+    // Registro por integração para telemetria de uptime (últimos 7 dias)
     await supabase.from("slack_delivery_events").insert({
       integration_id: target.id,
       company_id: target.company_id ?? null,
@@ -353,10 +353,10 @@ Deno.serve(async (req) => {
     },
   });
 
-  // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Fallback via Resend ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+  // ─── Fallback via Resend ────────────────────────────────────────────────
   // Se todos os alvos ativos falharam (delivered === 0 && matched > 0), ou
-  // nÃƒÆ’Ã‚Â£o houve alvos porque todos estÃƒÆ’Ã‚Â£o auto-pausados e a severidade ÃƒÆ’Ã‚Â©
-  // critical/breached, enviamos por e-mail via Resend usando destinatÃƒÆ’Ã‚Â¡rios
+  // não houve alvos porque todos estão auto-pausados e a severidade é
+  // critical/breached, enviamos por e-mail via Resend usando destinatários
   // configurados em alert_notification_settings (setting_type='slack_fallback').
   let fallbackResult: {
     attempted: boolean;
@@ -431,7 +431,7 @@ Deno.serve(async (req) => {
   <hr style="border:none;border-top:1px solid #eee;margin:24px 0"/>
   <p style="font-size:12px;color:#888">
     Este e-mail foi enviado como <b>fallback</b> porque a entrega via Slack falhou
-    (${event_type} ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ severidade ${severity} ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ${new Date().toISOString()}).
+    (${event_type} • severidade ${severity} • ${new Date().toISOString()}).
   </p>
 </div>`;
 
