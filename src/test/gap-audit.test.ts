@@ -184,3 +184,43 @@ describe("Gap Audit: Design System Consistency", () => {
     }
   });
 });
+
+describe("Gap Audit: Edge Function Auth Gates", () => {
+  // verify_jwt = true aceita a chave publicavel no gateway, entao o gate tem de
+  // estar no codigo da funcao (ver supabase/functions/_shared/auth.ts).
+  // Lista explicita: cada funcao abaixo ja foi endurecida. As demais edge
+  // functions ainda nao tem gate e sao divida registrada, nao regressao.
+  const hardenedFunctions = [
+    "analyze-activity",
+    "behavior-pattern",
+    "check-geofence",
+    "escalate-dispute-sla",
+    "notify-new-device",
+    "ocr-screenshot",
+    "predict-anomaly",
+    "risk-score-calculator",
+    "send-push-notification",
+    "send-slack-notification",
+    "send-webhook",
+    "slack-notify",
+    "smart-recommendations",
+    "summarize-activity",
+    "trend-forecasting",
+  ];
+
+  it("keeps the auth gate on every hardened edge function", async () => {
+    const fs = await import("fs");
+    const path = await import("path");
+    const gatePattern =
+      /requireUserOrServiceRole|requireAuth|verifyAuth|requireAdmin|requireServiceRole|auth\.getUser\(/;
+    const missing: string[] = [];
+
+    for (const name of hardenedFunctions) {
+      const file = path.join("supabase/functions", name, "index.ts");
+      expect(fs.existsSync(file), `${name} nao existe`).toBe(true);
+      if (!gatePattern.test(fs.readFileSync(file, "utf-8"))) missing.push(name);
+    }
+
+    expect(missing).toEqual([]);
+  });
+});

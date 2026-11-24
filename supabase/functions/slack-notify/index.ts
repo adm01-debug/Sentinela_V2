@@ -9,6 +9,7 @@
  */
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { requireUserOrServiceRole } from "../_shared/auth.ts";
 
 const SEVERITY_RANK: Record<string, number> = { warning: 1, critical: 2, breached: 3 };
 const SEVERITY_COLOR: Record<string, string> = {
@@ -60,6 +61,17 @@ function safeError(e: unknown, max = 200): string {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   const startedAt = Date.now();
+
+  // verify_jwt = true aceita a chave publicavel no gateway; o gate real
+  // acontece aqui (ver _shared/auth.ts).
+  try {
+    await requireUserOrServiceRole(req);
+  } catch {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
 
   let payload: WebhookPayload | undefined;
   try {
