@@ -190,60 +190,6 @@
       "code": "TS2531",
       "message": "Object is possibly 'null'.",
       "contextHash": "582888e283a52756473ec17a7dbb0155201abb0dc4e5042468c5626eb1e11d16"
-    },
-    {
-      "file": "supabase/functions/upload-recording-chunk/index.ts",
-      "line": 286,
-      "column": 37,
-      "severity": "ERROR",
-      "code": "TS2339",
-      "message": "Property 'company_id' does not exist on type 'never'.",
-      "contextHash": "a8abd8afa3036c915f6a3f654f0ab128fa6f4d030cabe64f3036312600736012"
-    },
-    {
-      "file": "supabase/functions/upload-recording-chunk/index.ts",
-      "line": 287,
-      "column": 37,
-      "severity": "ERROR",
-      "code": "TS2339",
-      "message": "Property 'company_id' does not exist on type 'never'.",
-      "contextHash": "c64325f385ab78eda073418e9055683335ae8f4a89869f056f4927784001e3de"
-    },
-    {
-      "file": "supabase/functions/upload-recording-chunk/index.ts",
-      "line": 288,
-      "column": 25,
-      "severity": "ERROR",
-      "code": "TS2339",
-      "message": "Property 'retention_days' does not exist on type 'never'.",
-      "contextHash": "efdee9b768576e4efde6bdad02fb02b433fc5bd5817c88771d023fc5b3531daa"
-    },
-    {
-      "file": "supabase/functions/upload-recording-chunk/index.ts",
-      "line": 288,
-      "column": 51,
-      "severity": "ERROR",
-      "code": "TS2339",
-      "message": "Property 'retention_days' does not exist on type 'never'.",
-      "contextHash": "efdee9b768576e4efde6bdad02fb02b433fc5bd5817c88771d023fc5b3531daa"
-    },
-    {
-      "file": "supabase/functions/upload-recording-chunk/index.ts",
-      "line": 181,
-      "column": 56,
-      "severity": "ERROR",
-      "code": "TS2345",
-      "message": "Argument of type 'SupabaseClient<any, \"public\", \"public\", any, any>' is not assignable to parameter of type 'SupabaseClient<unknown, { PostgrestVersion: string; }, never, never, { PostgrestVersion: string; }>'.",
-      "contextHash": "6dc665bbe2b45bef4cd99e78b0bd433734617422779b14694ac16970d9c473c3"
-    },
-    {
-      "file": "supabase/functions/upload-recording-chunk/index.ts",
-      "line": 51,
-      "column": 56,
-      "severity": "ERROR",
-      "code": "TS2345",
-      "message": "Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'BufferSource'.",
-      "contextHash": "da885437b34a5190d73d42b3b07442e4827d5ef8f3d63650fb28d6dd034374c5"
     }
   ]
 }
