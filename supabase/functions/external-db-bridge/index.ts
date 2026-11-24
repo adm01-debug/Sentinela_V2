@@ -6,7 +6,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 import { corsHeaders, handleCors } from '../_shared/cors.ts';
 import { checkRateLimitInMemory, rateLimitResponse } from '../_shared/rateLimiting.ts';
-import { requireCronOrServiceRole } from "../_shared/auth.ts";
+import { requireServiceRole } from "../_shared/auth.ts";
 
 // ============================================================
 // TYPES
@@ -244,7 +244,7 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
 
   try {
-    await requireCronOrServiceRole(req, 'external-db-bridge');
+    await requireServiceRole(req);
     // Auth check
     const authHeader = req.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {

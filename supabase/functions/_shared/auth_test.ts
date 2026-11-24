@@ -1,5 +1,5 @@
 import { assertEquals, assertRejects } from "https://deno.land/std@0.168.0/testing/asserts.ts";
-import { requireUserOrServiceRole } from "./auth.ts";
+import { requireServiceRole, requireUserOrServiceRole } from "./auth.ts";
 
 const SERVICE_KEY = "service-role-key-de-teste";
 
@@ -46,3 +46,31 @@ Deno.test(
     await assertRejects(() => requireUserOrServiceRole(req({ Authorization: "Bearer " })));
   }
 );
+
+Deno.test("requireServiceRole - service_role via Authorization passa", async () => {
+  Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", SERVICE_KEY);
+  const ctx = await requireServiceRole(req({ Authorization: `Bearer ${SERVICE_KEY}` }));
+  assertEquals(ctx.isServiceRole, true);
+});
+
+Deno.test("requireServiceRole - service_role via apikey passa", async () => {
+  Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", SERVICE_KEY);
+  const ctx = await requireServiceRole(req({ apikey: SERVICE_KEY }));
+  assertEquals(ctx.isServiceRole, true);
+});
+
+Deno.test("requireServiceRole - chave publicavel do front e recusada", async () => {
+  Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", SERVICE_KEY);
+  Deno.env.set("SUPABASE_URL", "https://project-inexistente.invalid");
+  await assertRejects(() =>
+    requireServiceRole(
+      req({ apikey: "sb_publishable_front", Authorization: "Bearer sb_publishable_front" })
+    )
+  );
+});
+
+Deno.test("requireServiceRole - sem credencial nenhuma recusa", async () => {
+  Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", "");
+  Deno.env.set("SUPABASE_URL", "https://project-inexistente.invalid");
+  await assertRejects(() => requireServiceRole(req({})));
+});
