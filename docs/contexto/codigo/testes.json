@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 79,
+ "total": 80,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 77
+  "unit": 78
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 53
+   "arquivos": 54
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -409,6 +409,13 @@
     "src/integrations/supabase/client.ts"
    ],
    "casos": 14
+  },
+  {
+   "arquivo": "src/test/edge-rate-limit-guard.test.ts",
+   "tipo": "unit",
+   "linhas": 76,
+   "testa": [],
+   "casos": 4
   },
   {
    "arquivo": "src/test/employees.test.ts",

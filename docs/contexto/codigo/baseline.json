@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "fee6687bea56a9844eb12da9173929c0e7956212",
+  "commit": "a970c26a50182bdc2330966789dd234f8db7f035",
   "branch": "main",
-  "data_commit": "2026-11-24T00:06:31-03:00",
+  "data_commit": "2026-11-24T00:24:19-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "a970c26a5",
+    "data": "2026-11-24",
+    "assunto": "test: guarda o consumo do rate limit nas edge functions (#276)"
+   },
    {
     "sha": "fee6687be",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "c390eb8be",
     "data": "2026-11-23",
     "assunto": "fix: organograma no sidebar, check placeholder no deploy e timeout do teste (#251)"
-   },
-   {
-    "sha": "d38728030",
-    "data": "2026-11-23",
-    "assunto": "chore: inventario do estado real [auto] (#250)"
    }
   ],
-  "arquivos_mudados_7d": 239,
+  "arquivos_mudados_7d": 240,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 172
+    "commits": 173
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1869,
-  "arquivos_codigo": 1421,
-  "linhas_codigo": 158152,
+  "arquivos_total": 1870,
+  "arquivos_codigo": 1422,
+  "linhas_codigo": 158228,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,7 +328,7 @@
   "tabelas": 179,
   "migrations": 123,
   "cron_jobs": 5,
-  "testes": 79,
+  "testes": 80,
   "workflows": 12,
   "scripts": 31,
   "docs_md": 176
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 54,
-   "linhas": 10842
+   "arquivos": 55,
+   "linhas": 10918
   },
   "src/types": {
    "arquivos": 57,
