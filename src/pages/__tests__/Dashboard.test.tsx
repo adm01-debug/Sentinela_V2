@@ -158,7 +158,7 @@ describe('DashboardPage', () => {
   it('changes period when buttons are clicked', () => {
     renderDashboard();
 
-    const monthButton = screen.getByRole('tab', { name: /MÃªs/i });
+    const monthButton = screen.getByRole('tab', { name: /Mês/i });
     
     fireEvent.click(monthButton);
     expect(monthButton).toHaveClass('bg-primary');
