@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "fe1d96c7962a1ea9a6306cab3d5d17e34e404549",
+  "commit": "921fd7b15bc6bf819421150e2a9b67ab9c17c673",
   "branch": "main",
-  "data_commit": "2026-11-24T17:56:53-03:00",
+  "data_commit": "2026-11-24T18:58:20-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "921fd7b15",
+    "data": "2026-11-24",
+    "assunto": "fix: behavior-pattern recebe o nome do funcionario no campo certo (#298)"
+   },
    {
     "sha": "fe1d96c79",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "fee6687be",
     "data": "2026-11-24",
     "assunto": "fix(edge): corrige rate limit inoperante e retry_count descartado (#275)"
-   },
-   {
-    "sha": "442048395",
-    "data": "2026-11-23",
-    "assunto": "test: guarda do contrato de dados entre front e banco (#274)"
    }
   ],
-  "arquivos_mudados_7d": 286,
+  "arquivos_mudados_7d": 287,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -258,6 +258,10 @@
     "mudancas": 5
    },
    {
+    "arquivo": "supabase/functions/behavior-pattern/index.ts",
+    "mudancas": 5
+   },
+   {
     "arquivo": "supabase/functions/summarize-activity/index.ts",
     "mudancas": 5
    },
@@ -271,10 +275,6 @@
    },
    {
     "arquivo": "supabase/functions/award-gamification-points/index.ts",
-    "mudancas": 4
-   },
-   {
-    "arquivo": "supabase/functions/behavior-pattern/index.ts",
     "mudancas": 4
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 195
+    "commits": 196
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1884,
   "arquivos_codigo": 1433,
-  "linhas_codigo": 160500,
+  "linhas_codigo": 160503,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32385
+   "linhas": 32386
   },
   "src/i18n": {
    "arquivos": 1,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 105,
-   "linhas": 13790
+   "linhas": 13792
   },
   "vite.config.ts": {
    "arquivos": 1,

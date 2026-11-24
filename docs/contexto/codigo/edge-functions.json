@@ -310,7 +310,7 @@
    "nome": "behavior-pattern",
    "entrada": "supabase/functions/behavior-pattern/index.ts",
    "arquivos": 1,
-   "linhas": 212,
+   "linhas": 214,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
