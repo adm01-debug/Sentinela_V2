@@ -1,4 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { requireUserOrServiceRole } from "../_shared/auth.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,6 +12,17 @@ serve(async (req) => {
   }
 
   try {
+    // verify_jwt = true aceita a chave publicavel no gateway; o gate real
+    // acontece aqui (ver _shared/auth.ts).
+    try {
+      await requireUserOrServiceRole(req);
+    } catch {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { channel, message, blocks, webhookUrl } = await req.json();
 
     const slackWebhook = webhookUrl || Deno.env.get('SLACK_WEBHOOK_URL');

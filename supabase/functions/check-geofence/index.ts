@@ -9,6 +9,7 @@ import {
 } from "../_shared/validation.ts";
 import { corsHeaders } from "../_shared/cors.ts";
 import { Logger } from "../_shared/logger.ts";
+import { requireUserOrServiceRole } from "../_shared/auth.ts";
 
 // Point in polygon check using ray casting algorithm
 function isPointInPolygon(
@@ -83,6 +84,23 @@ serve(async (req) => {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
+    // verify_jwt = true aceita a chave publicavel no gateway, entao o gate real
+    // precisa acontecer aqui: sem ele qualquer visitante grava em
+    // geofence_violations e dispara process-violation-alert (service_role).
+    try {
+      await requireUserOrServiceRole(req);
+    } catch {
+      await logger.log(supabase, {
+        method: req.method,
+        status: 401,
+        error_message: "Unauthorized",
+      });
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const clientIP = req.headers.get("x-forwarded-for") || "unknown";
     const rateLimitResult = await checkRateLimit(clientIP, "check-geofence", 120, 60);
 
