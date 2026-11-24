@@ -15,13 +15,11 @@ export interface MonitoringEmployee {
   device_id?: string;
 }
 
-export interface ActivitySummary {
+export interface MonitoringActivitySummary {
   total_keystrokes: number;
   total_clicks: number;
   total_active_time: number;
   total_idle_time: number;
-  top_apps: Array<{ name: string; duration: number }>;
-  top_urls: Array<{ domain: string; visits: number }>;
 }
 
 export function useMonitoringPage() {
@@ -94,9 +92,7 @@ export function useMonitoringPage() {
         total_clicks: totalClicks,
         total_active_time: totalActive,
         total_idle_time: totalIdle,
-        top_apps: [],
-        top_urls: [],
-      } as ActivitySummary;
+      } satisfies MonitoringActivitySummary;
     },
     enabled: !!selectedEmployee,
   });
