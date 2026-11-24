@@ -43,7 +43,7 @@ describe("BehaviorPatternsPanel", () => {
   it("repassa o nome do funcionário para o filtro do backend", () => {
     render(<BehaviorPatternsPanel employeeName="Maria Souza" />);
 
-    expect(mockHook).toHaveBeenCalledWith({ employeeId: "Maria Souza" });
+    expect(mockHook).toHaveBeenCalledWith({ employeeName: "Maria Souza" });
     expect(screen.getByText(/para Maria Souza/)).toBeInTheDocument();
   });
 

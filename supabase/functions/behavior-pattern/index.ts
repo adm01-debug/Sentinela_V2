@@ -47,12 +47,14 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { employeeId, analysisPeriod = 30 } = await req.json();
+    const { employeeName: employeeNameBody, employeeId, analysisPeriod = 30 } = await req.json();
+    // `employeeId` segue aceito como alias: o bundle em cache envia o nome nesse campo.
+    const employeeName: string | undefined = employeeNameBody ?? employeeId;
     const since = new Date(Date.now() - analysisPeriod * 24 * 60 * 60 * 1000).toISOString();
 
     // Fetch activities
     let query = supabase.from("keystroke_logs").select("*").gte("recorded_at", since);
-    if (employeeId) query = query.eq("employee_name", employeeId);
+    if (employeeName) query = query.eq("employee_name", employeeName);
     const { data: activitiesRaw } = await query.order("recorded_at", { ascending: true });
     const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
@@ -193,7 +195,7 @@ serve(async (req) => {
       JSON.stringify({
         patterns,
         metadata: {
-          employeeId,
+          employeeName,
           analysisPeriod,
           activitiesAnalyzed: activities.length,
           generatedAt: new Date().toISOString(),

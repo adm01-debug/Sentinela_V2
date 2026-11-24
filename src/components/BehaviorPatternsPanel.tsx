@@ -36,7 +36,7 @@ export interface BehaviorPatternsPanelProps {
 export const BehaviorPatternsPanel = ({ employeeName }: BehaviorPatternsPanelProps) => {
   const { patterns, deviations, anomalies, isLoading, error, analyzePatterns } =
     useBehaviorPatterns({
-      employeeId: employeeName,
+      employeeName,
     });
 
   useEffect(() => {
