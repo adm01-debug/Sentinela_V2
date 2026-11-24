@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: deploy nao fica vermelho por corrida quando o deployment do commit novo ainda nao esta listado (#283)",
    "fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)",
    "infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)",
    "fix: deploy para de ficar vermelho quando o commit e superado por merge mais novo (#280)",
-   "chore: baixa baselines de lint e format apos a divida paga (#279)",
-   "infra: ratchet de deno check nas edge functions do CI (#278)"
+   "chore: baixa baselines de lint e format apos a divida paga (#279)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

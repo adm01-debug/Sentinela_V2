@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "52be74c033cfc0ae13fd449626e68b3991dcda0d",
+  "commit": "f566a4a98743d8aa673f651943e980dc95d7010b",
   "branch": "main",
-  "data_commit": "2026-11-24T10:18:31-03:00",
+  "data_commit": "2026-11-24T10:30:37-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "f566a4a98",
+    "data": "2026-11-24",
+    "assunto": "fix: deploy nao fica vermelho por corrida quando o deployment do commit novo ainda nao esta listado (#283)"
+   },
    {
     "sha": "52be74c03",
     "data": "2026-11-24",
@@ -126,11 +131,6 @@
     "sha": "02b138dbc",
     "data": "2026-11-23",
     "assunto": "chore(types): regenera tipos do Supabase a partir do banco real (#260)"
-   },
-   {
-    "sha": "6867e4959",
-    "data": "2026-11-23",
-    "assunto": "fix: impedir falha do verify-production-deploy quando o deploy e confirmado (#255)"
    }
   ],
   "arquivos_mudados_7d": 261,
@@ -148,12 +148,12 @@
     "mudancas": 18
    },
    {
-    "pasta": "scripts/ci/prettier-baseline.json",
+    "pasta": ".github/workflows/deploy.yml",
     "mudancas": 17
    },
    {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 16
+    "pasta": "scripts/ci/prettier-baseline.json",
+    "mudancas": 17
    },
    {
     "pasta": "package-lock.json",
@@ -214,12 +214,12 @@
     "mudancas": 18
    },
    {
-    "arquivo": "scripts/ci/prettier-baseline.json",
+    "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 17
    },
    {
-    "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 16
+    "arquivo": "scripts/ci/prettier-baseline.json",
+    "mudancas": 17
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 180
+    "commits": 181
    },
    {
     "autor": "dependabot[bot]",
