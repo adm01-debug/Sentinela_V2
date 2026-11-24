@@ -55,6 +55,16 @@ serve(async (req) => {
     }
 
     const { webhook_id, event_type, payload, retry_count = 0 } = validationResult.data;
+
+    // O schema v1 aceita body sem event_type, mas sem ele o evento nao pode ser
+    // despachado (assinatura e header X-Webhook-Event dependem do valor).
+    if (!event_type) {
+      return new Response(
+        JSON.stringify({ error: 'event_type is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
     // Get webhook config from webhooks table
