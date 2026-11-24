@@ -15,12 +15,15 @@ export interface Activity {
 }
 
 export interface ActivitySummary {
-  totalDuration: number;
-  productiveDuration: number;
-  idleDuration: number;
-  applicationBreakdown: Array<{ app: string; duration: number; percentage: number }>;
-  categoryBreakdown: Array<{ category: string; duration: number; percentage: number }>;
-  hourlyDistribution: Array<{ hour: number; duration: number }>;
+  period: string;
+  totalActivities: number;
+  uniqueUsers: number;
+  topApplications: Array<{ name: string; count: number; percentage: number }>;
+  productivityScore: number;
+  peakHours: Array<{ hour: number; count: number }>;
+  hourlyDistribution: Array<{ hour: number; count: number }>;
+  violationsSummary: { total: number; bySeverity: Record<string, number> };
+  highlights: string[];
 }
 
 export interface ActivityFilters {

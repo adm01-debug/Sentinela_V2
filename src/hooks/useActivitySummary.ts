@@ -1,17 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-
-export interface ActivitySummary {
-  period: string;
-  totalActivities: number;
-  uniqueUsers: number;
-  topApplications: { name: string; count: number; percentage: number }[];
-  productivityScore: number;
-  peakHours: { hour: number; count: number }[];
-  hourlyDistribution: { hour: number; count: number }[];
-  violationsSummary: { total: number; bySeverity: Record<string, number> };
-  highlights: string[];
-}
+import type { ActivitySummary } from '@/types';
 
 export interface UseActivitySummaryOptions {
   period?: 'day' | 'week' | 'month';
