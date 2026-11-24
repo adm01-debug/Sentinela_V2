@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `44204839575a147109ea04240617b70df03dd1dc` (2026-11-23T23:41:04-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `fee6687bea56a9844eb12da9173929c0e7956212` (2026-11-24T00:06:31-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1869 |
 | arquivos_codigo | 1421 |
-| linhas_codigo | 158130 |
+| linhas_codigo | 158152 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `fee6687be` fix(edge): corrige rate limit inoperante e retry_count descartado (#275)
 - 2026-11-23 `442048395` test: guarda do contrato de dados entre front e banco (#274)
 - 2026-11-23 `daa60fa00` test: guarda contra texto duplamente codificado (#273)
 - 2026-11-23 `c329d06fc` fix: corrige texto corrompido no dashboard e nos avisos de slack (#272)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `61b2323c6` fix: reconhece service_role pelo probe da API admin no gate das edges (#262)
 - 2026-11-23 `163389560` fix: exige autenticacao em 3 edge functions abertas ao publico (#261)
 - 2026-11-23 `cefc52fd2` chore: remove DashboardTooltip orfao (#259)
-- 2026-11-23 `02b138dbc` chore(types): regenera tipos do Supabase a partir do banco real (#260)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

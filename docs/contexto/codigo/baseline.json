@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "44204839575a147109ea04240617b70df03dd1dc",
+  "commit": "fee6687bea56a9844eb12da9173929c0e7956212",
   "branch": "main",
-  "data_commit": "2026-11-23T23:41:04-03:00",
+  "data_commit": "2026-11-24T00:06:31-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "fee6687be",
+    "data": "2026-11-24",
+    "assunto": "fix(edge): corrige rate limit inoperante e retry_count descartado (#275)"
+   },
    {
     "sha": "442048395",
     "data": "2026-11-23",
@@ -126,14 +131,9 @@
     "sha": "d38728030",
     "data": "2026-11-23",
     "assunto": "chore: inventario do estado real [auto] (#250)"
-   },
-   {
-    "sha": "a528be538",
-    "data": "2026-11-23",
-    "assunto": "build(deps): bump @testing-library/jest-dom (#249)"
    }
   ],
-  "arquivos_mudados_7d": 237,
+  "arquivos_mudados_7d": 239,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -262,6 +262,10 @@
     "mudancas": 4
    },
    {
+    "arquivo": "supabase/functions/award-gamification-points/index.ts",
+    "mudancas": 4
+   },
+   {
     "arquivo": "supabase/functions/natural-language-query/index.ts",
     "mudancas": 4
    },
@@ -292,16 +296,12 @@
    {
     "arquivo": "src/components/PolicyAcknowledgmentDialog.tsx",
     "mudancas": 3
-   },
-   {
-    "arquivo": "src/constants/routes.ts",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 171
+    "commits": 172
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1869,
   "arquivos_codigo": 1421,
-  "linhas_codigo": 158130,
+  "linhas_codigo": 158152,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 103,
-   "linhas": 13428
+   "linhas": 13450
   },
   "vite.config.ts": {
    "arquivos": 1,

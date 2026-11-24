@@ -2120,7 +2120,7 @@
    "nome": "send-webhook",
    "entrada": "supabase/functions/send-webhook/index.ts",
    "arquivos": 2,
-   "linhas": 220,
+   "linhas": 239,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
