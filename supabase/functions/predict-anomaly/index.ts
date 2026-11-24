@@ -68,7 +68,9 @@ serve(async (req) => {
     // Group activities by hour
     const hourlyGroups: Record<number, number> = {};
     activities.forEach((a) => {
-      const hour = new Date(a.recorded_at ?? a.created_at).getHours();
+      const ts = a.recorded_at ?? a.created_at;
+      if (!ts) return;
+      const hour = new Date(ts).getHours();
       hourlyGroups[hour] = (hourlyGroups[hour] || 0) + 1;
     });
 

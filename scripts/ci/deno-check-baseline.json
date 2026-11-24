@@ -1,33 +1,5 @@
 {
   "schemaVersion": 1,
   "command": "deno check supabase/functions/*/index.ts",
-  "issues": [
-    {
-      "file": "supabase/functions/predict-anomaly/index.ts",
-      "line": 71,
-      "column": 29,
-      "severity": "ERROR",
-      "code": "TS2769",
-      "message": "No overload matches this call.",
-      "contextHash": "809470f5092cc495bee573eff6c1141f83774c6218224dd06a9e54c2cc3feebc"
-    },
-    {
-      "file": "supabase/functions/summarize-activity/index.ts",
-      "line": 107,
-      "column": 28,
-      "severity": "ERROR",
-      "code": "TS2538",
-      "message": "Type 'undefined' cannot be used as an index type.",
-      "contextHash": "ac7b1cfe377b0cf9a313a59235f355039aaa0e954c08040bd73ef6098435fa80"
-    },
-    {
-      "file": "supabase/functions/summarize-activity/index.ts",
-      "line": 107,
-      "column": 64,
-      "severity": "ERROR",
-      "code": "TS2538",
-      "message": "Type 'undefined' cannot be used as an index type.",
-      "contextHash": "ac7b1cfe377b0cf9a313a59235f355039aaa0e954c08040bd73ef6098435fa80"
-    }
-  ]
+  "issues": []
 }

@@ -103,7 +103,7 @@ serve(async (req) => {
 
     // Violations summary
     const violationsBySeverity: Record<string, number> = {};
-    violations?.forEach((v: { severity?: string }) => {
+    violations?.forEach((v: { severity: string }) => {
       violationsBySeverity[v.severity] = (violationsBySeverity[v.severity] || 0) + 1;
     });
 
