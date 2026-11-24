@@ -5,6 +5,7 @@ import path from "node:path";
 import test from "node:test";
 import {
   assertUsableResult,
+  buildCheckArgs,
   compareBaseline,
   createBaseline,
   describeOutput,
@@ -349,6 +350,16 @@ test("main() falha (2) e nao sobrescreve o baseline quando a saida esta incoeren
   } finally {
     cleanup();
   }
+});
+
+test("buildCheckArgs resolve npm pelo cache do deno, sem node_modules", () => {
+  // Sem essa flag o check morre no runner (package.json sem node_modules) e o
+  // job volta a ser vermelho por motivo que nao e divida de tipo.
+  assert.deepEqual(buildCheckArgs(["supabase/functions/x/index.ts"]), [
+    "check",
+    "--node-modules-dir=none",
+    "supabase/functions/x/index.ts",
+  ]);
 });
 
 test("describeOutput mostra a cauda de uma falha longa (motivo real da CLI)", () => {

@@ -25,6 +25,12 @@ const MAX_OUTPUT_SNIPPET = 500;
 // A cauda e onde o deno escreve o motivo real de uma falha de CLI (download
 // recusado, lock divergente, flag invalida). Mostrar so a cabeca escondia isso.
 const MAX_OUTPUT_TAIL_LINES = 30;
+// `npm:"...` nas edge functions + `package.json` na raiz fazem o deno resolver
+// npm por node_modules (modo auto). Sem node_modules o check morre antes de
+// chegar aos tipos ("Did you forget to run deno install?"), e com node_modules
+// o resultado passa a depender do que estiver instalado. `none` forca o cache
+// global do deno: mesma resolucao em qualquer maquina, sem `npm ci`.
+const CHECK_FLAGS = ["--node-modules-dir=none"];
 // Registry fora do ar nao e divida de tipo: uma tentativa extra evita vermelho
 // falso por 429/queda momentanea. Se a segunda tambem falhar, quebra (fail-closed).
 const MAX_ATTEMPTS = 2;
@@ -345,8 +351,12 @@ export function listEntrypoints(root = process.cwd()) {
     .sort();
 }
 
+export function buildCheckArgs(entrypoints) {
+  return ["check", ...CHECK_FLAGS, ...entrypoints];
+}
+
 function spawnDenoCheck(denoBin, entrypoints, root) {
-  const result = spawnSync(denoBin, ["check", ...entrypoints], {
+  const result = spawnSync(denoBin, buildCheckArgs(entrypoints), {
     cwd: root,
     encoding: "utf8",
     maxBuffer: 64 * 1024 * 1024,
