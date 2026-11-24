@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "b1e44b30aaf84c0521e67f4f16e8372057866dd6",
+  "commit": "cde1021d05adbbee5a7ffb348aede16a11ec3120",
   "branch": "main",
-  "data_commit": "2026-11-24T13:17:22-03:00",
+  "data_commit": "2026-11-24T13:39:23-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "cde1021d0",
+    "data": "2026-11-24",
+    "assunto": "fix: diagnostico de ICE usa a mesma fonte do live view (#291)"
+   },
    {
     "sha": "b1e44b30a",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "016a6eb70",
     "data": "2026-11-23",
     "assunto": "feat: tela de monitoramento mobile com dados reais (#267)"
-   },
-   {
-    "sha": "1b5bd5e82",
-    "data": "2026-11-23",
-    "assunto": "feat: dashboard de rate limiting com leitura via edge admin (#266)"
    }
   ],
-  "arquivos_mudados_7d": 270,
+  "arquivos_mudados_7d": 272,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -169,7 +169,7 @@
    },
    {
     "pasta": "supabase/functions/_shared",
-    "mudancas": 10
+    "mudancas": 12
    },
    {
     "pasta": "scripts/ci/deno-check-baseline.json",
@@ -180,15 +180,15 @@
     "mudancas": 8
    },
    {
+    "pasta": "src/pages/admin",
+    "mudancas": 8
+   },
+   {
     "pasta": ".github/workflows/ci.yml",
     "mudancas": 7
    },
    {
     "pasta": "src/components/ui",
-    "mudancas": 7
-   },
-   {
-    "pasta": "src/pages/admin",
     "mudancas": 7
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 188
+    "commits": 189
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1878,
   "arquivos_codigo": 1428,
-  "linhas_codigo": 159694,
+  "linhas_codigo": 159771,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 109,
-   "linhas": 21439
+   "linhas": 21451
   },
   "src/providers": {
    "arquivos": 9,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 105,
-   "linhas": 13665
+   "linhas": 13730
   },
   "vite.config.ts": {
    "arquivos": 1,

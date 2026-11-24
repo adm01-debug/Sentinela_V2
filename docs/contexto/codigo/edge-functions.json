@@ -2761,7 +2761,7 @@
    "nome": "webrtc-ice-config",
    "entrada": "supabase/functions/webrtc-ice-config/index.ts",
    "arquivos": 1,
-   "linhas": 65,
+   "linhas": 72,
    "verify_jwt": false,
    "metodos": [
     "OPTIONS"
@@ -2779,7 +2779,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "iceServers.ts"
+   ],
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,

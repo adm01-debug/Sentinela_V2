@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `b1e44b30aaf84c0521e67f4f16e8372057866dd6` (2026-11-24T13:17:22-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `cde1021d05adbbee5a7ffb348aede16a11ec3120` (2026-11-24T13:39:23-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1878 |
 | arquivos_codigo | 1428 |
-| linhas_codigo | 159694 |
+| linhas_codigo | 159771 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `cde1021d0` fix: diagnostico de ICE usa a mesma fonte do live view (#291)
 - 2026-11-24 `b1e44b30a` feat: detector de anomalias passa a aparecer na tela de atividades (#290)
 - 2026-11-24 `eabdad381` fix: hora e severidade deixam de ser lidas como indefinidas nos relatorios (#289)
 - 2026-11-24 `d7be2d9fb` fix: live view entrega ICE servers validos em vez de repassar o secret (#288)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `3778ffeea` chore: baixa baselines de lint e format apos a divida paga (#279)
 - 2026-11-24 `d4038b31f` infra: ratchet de deno check nas edge functions do CI (#278)
 - 2026-11-24 `b9eb31ff1` infra: gate de cron com segredo proprio nas 4 funcoes de job (#270)
-- 2026-11-24 `397bb1e93` docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

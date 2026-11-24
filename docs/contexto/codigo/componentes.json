@@ -6237,7 +6237,7 @@
     "IceDiagnosticsPage"
    ],
    "export_default": "IceDiagnosticsPage",
-   "linhas": 282,
+   "linhas": 294,
    "dominio": "pages/admin",
    "hooks_locais": [],
    "tabelas": [],
