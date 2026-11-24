@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2d1c0b17338292a7e86707b6eb22e597f5604f4f` (2026-11-24T17:40:25-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `fe1d96c7962a1ea9a6306cab3d5d17e34e404549` (2026-11-24T17:56:53-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1411), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (21), HTML (4)
+- linguagens: TypeScript (1411), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,7 +34,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1883 |
+| arquivos_total | 1884 |
 | arquivos_codigo | 1433 |
 | linhas_codigo | 160500 |
 | rotas | 59 |
@@ -50,7 +50,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | cron_jobs | 5 |
 | testes | 85 |
 | workflows | 12 |
-| scripts | 32 |
+| scripts | 33 |
 | docs_md | 176 |
 
 ## Onde ficam as coisas
@@ -306,8 +306,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package.json (25)
 - scripts/ci/eslint-baseline.json (21)
 - docs/pendencias/_linha-de-base.md (20)
+- .github/workflows/deploy.yml (18)
 - scripts/ci/prettier-baseline.json (18)
-- .github/workflows/deploy.yml (17)
 - src/routes/AppRoutes.tsx (13)
 - scripts/ci/deno-check-baseline.json (8)
 - src/components/AppSidebar.tsx (8)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `fe1d96c79` infra: retry de 5xx transitorio do Supabase no migrate e no deploy-functions (#295)
 - 2026-11-24 `2d1c0b173` fix: tipo do resumo de atividade do monitoramento deixa de se chamar ActivitySummary (#297)
 - 2026-11-24 `76b120114` fix: analise de IA filtra e gera por funcionario de verdade (#296)
 - 2026-11-24 `48c727774` fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `7794226d5` fix: analise de padroes e tendencias ignora registro sem data em vez de estourar (#285)
 - 2026-11-24 `1762098b7` fix: checagem de tipos volta a valer no upload de gravacao (client tipado) (#284)
 - 2026-11-24 `f566a4a98` fix: deploy nao fica vermelho por corrida quando o deployment do commit novo ainda nao esta listado (#283)
-- 2026-11-24 `52be74c03` fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -9,7 +9,7 @@
    "JSON (44)",
    "YAML (35)",
    "JavaScript (24)",
-   "Shell (21)",
+   "Shell (22)",
    "HTML (4)"
   ],
   "linguagem_principal": "TypeScript",
@@ -211,7 +211,9 @@
     "contents: read",
     "deployments: read"
    ],
-   "scripts_usados": [],
+   "scripts_usados": [
+    "scripts/lib/supabase-retry.sh"
+   ],
    "npm_scripts": [],
    "secrets": [
     "GITHUB_TOKEN",

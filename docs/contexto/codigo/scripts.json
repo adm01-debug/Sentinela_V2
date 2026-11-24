@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 32,
+ "total": 33,
  "scripts": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -247,6 +247,17 @@
    ],
    "npm_scripts": [],
    "workflows": [],
+   "orfao": false
+  },
+  {
+   "arquivo": "scripts/lib/supabase-retry.sh",
+   "descricao": "Repete um comando do Supabase CLI quando a falha for transitoria. A API do Supabase (api.supabase.com, atras do Cloudflare) responde 5xx",
+   "linhas": 60,
+   "env": [],
+   "npm_scripts": [],
+   "workflows": [
+    "deploy.yml"
+   ],
    "orfao": false
   },
   {

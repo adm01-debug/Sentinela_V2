@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "infra: retry de 5xx transitorio do Supabase no migrate e no deploy-functions (#295)",
    "fix: tipo do resumo de atividade do monitoramento deixa de se chamar ActivitySummary (#297)",
    "fix: analise de IA filtra e gera por funcionario de verdade (#296)",
    "fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)",
-   "feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)",
-   "fix: resumo de atividades volta a alimentar os graficos (#292)"
+   "feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

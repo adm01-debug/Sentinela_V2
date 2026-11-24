@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2d1c0b17338292a7e86707b6eb22e597f5604f4f",
+  "commit": "fe1d96c7962a1ea9a6306cab3d5d17e34e404549",
   "branch": "main",
-  "data_commit": "2026-11-24T17:40:25-03:00",
+  "data_commit": "2026-11-24T17:56:53-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "fe1d96c79",
+    "data": "2026-11-24",
+    "assunto": "infra: retry de 5xx transitorio do Supabase no migrate e no deploy-functions (#295)"
+   },
    {
     "sha": "2d1c0b173",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "442048395",
     "data": "2026-11-23",
     "assunto": "test: guarda do contrato de dados entre front e banco (#274)"
-   },
-   {
-    "sha": "daa60fa00",
-    "data": "2026-11-23",
-    "assunto": "test: guarda contra texto duplamente codificado (#273)"
    }
   ],
-  "arquivos_mudados_7d": 285,
+  "arquivos_mudados_7d": 286,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -148,12 +148,12 @@
     "mudancas": 20
    },
    {
-    "pasta": "scripts/ci/prettier-baseline.json",
+    "pasta": ".github/workflows/deploy.yml",
     "mudancas": 18
    },
    {
-    "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 17
+    "pasta": "scripts/ci/prettier-baseline.json",
+    "mudancas": 18
    },
    {
     "pasta": "package-lock.json",
@@ -214,12 +214,12 @@
     "mudancas": 20
    },
    {
-    "arquivo": "scripts/ci/prettier-baseline.json",
+    "arquivo": ".github/workflows/deploy.yml",
     "mudancas": 18
    },
    {
-    "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 17
+    "arquivo": "scripts/ci/prettier-baseline.json",
+    "mudancas": 18
    },
    {
     "arquivo": "src/routes/AppRoutes.tsx",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 194
+    "commits": 195
    },
    {
     "autor": "dependabot[bot]",
@@ -314,7 +314,7 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1883,
+  "arquivos_total": 1884,
   "arquivos_codigo": 1433,
   "linhas_codigo": 160500,
   "rotas": 59,
@@ -330,7 +330,7 @@
   "cron_jobs": 5,
   "testes": 85,
   "workflows": 12,
-  "scripts": 32,
+  "scripts": 33,
   "docs_md": 176
  },
  "por_pasta": {
