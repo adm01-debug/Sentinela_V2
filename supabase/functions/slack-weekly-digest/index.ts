@@ -12,7 +12,7 @@
  * Agendado toda segunda 09:00 UTC via pg_cron.
  */
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
-import { createClient } from 'npm:@supabase/supabase-js@2';
+import { createClient, type SupabaseClient } from 'npm:@supabase/supabase-js@2';
 import { requireCronOrServiceRole } from '../_shared/auth.ts';
 
 function json(body: unknown, status = 200) {
@@ -25,7 +25,7 @@ function json(body: unknown, status = 200) {
 const fmtMin = (s: number) => (s < 60 ? `${s}s` : `${Math.round(s / 60)}min`);
 
 async function buildDigest(
-  supabase: ReturnType<typeof createClient>,
+  supabase: SupabaseClient,
   since: string,
   scope: { company_id: string | null; company_name: string | null },
 ) {

@@ -3,42 +3,6 @@
   "command": "deno check supabase/functions/*/index.ts",
   "issues": [
     {
-      "file": "supabase/functions/check-geofence/index.ts",
-      "line": 124,
-      "column": 26,
-      "severity": "ERROR",
-      "code": "TS2589",
-      "message": "Type instantiation is excessively deep and possibly infinite.",
-      "contextHash": "c41d5400866fce27b5d5b156c44858a71a2ec1ec3e7f2eca952e7b4a3ab38ce9"
-    },
-    {
-      "file": "supabase/functions/check-geofence/index.ts",
-      "line": 136,
-      "column": 26,
-      "severity": "ERROR",
-      "code": "TS2589",
-      "message": "Type instantiation is excessively deep and possibly infinite.",
-      "contextHash": "edc5a66b1c0e0c3c605beb4068f9ab0b98e0c9ed296abd1799db46e0f414d0bb"
-    },
-    {
-      "file": "supabase/functions/ingest-file-transfer/index.ts",
-      "line": 217,
-      "column": 34,
-      "severity": "ERROR",
-      "code": "TS2345",
-      "message": "Argument of type '{ channel: \"usb\" | \"browser_upload\" | \"browser_download\" | \"cloud_sync\" | \"email_attach\" | \"network_share\" | \"print\"; occurred_at: string; file_name: string; file_extension?: string | undefined; ... 13 more ...; metadata?: Record<...> | undefined; }' is not assignable to parameter of type '{ channel: \"usb\" | \"browser_upload\" | \"browser_download\" | \"cloud_sync\" | \"email_attach\" | \"network_share\" | \"print\"; occurred_at: string; file_name: string; file_size_bytes: number; ... 13 more ...; metadata?: Record<...> | undefined; }'.",
-      "contextHash": "73f845ed483bca911ae303f3d98ef6f20f7c62bf6982c39c02037ba090acea71"
-    },
-    {
-      "file": "supabase/functions/ingest-file-transfer/index.ts",
-      "line": 258,
-      "column": 44,
-      "severity": "ERROR",
-      "code": "TS2345",
-      "message": "Argument of type '{ channel: \"usb\" | \"browser_upload\" | \"browser_download\" | \"cloud_sync\" | \"email_attach\" | \"network_share\" | \"print\"; occurred_at: string; file_name: string; file_extension?: string | undefined; ... 13 more ...; metadata?: Record<...> | undefined; }' is not assignable to parameter of type '{ channel: \"usb\" | \"browser_upload\" | \"browser_download\" | \"cloud_sync\" | \"email_attach\" | \"network_share\" | \"print\"; occurred_at: string; file_name: string; file_size_bytes: number; ... 13 more ...; metadata?: Record<...> | undefined; }'.",
-      "contextHash": "c3afbb5f6109e4e002bf7d6d3cb58d74601e7b36a212e7a7c233a36d2108837c"
-    },
-    {
       "file": "supabase/functions/live-view-authorize/index.ts",
       "line": 99,
       "column": 23,
@@ -55,60 +19,6 @@
       "code": "TS2769",
       "message": "No overload matches this call.",
       "contextHash": "809470f5092cc495bee573eff6c1141f83774c6218224dd06a9e54c2cc3feebc"
-    },
-    {
-      "file": "supabase/functions/risk-score-calculator/index.ts",
-      "line": 296,
-      "column": 39,
-      "severity": "ERROR",
-      "code": "TS2345",
-      "message": "Argument of type 'SupabaseClient<any, \"public\", \"public\", any, any>' is not assignable to parameter of type 'SupabaseClient<unknown, { PostgrestVersion: string; }, never, never, { PostgrestVersion: string; }>'.",
-      "contextHash": "00cb16f33c1b36373511cbd789861ef6c1cdae7fc760551666891336f62ebccd"
-    },
-    {
-      "file": "supabase/functions/risk-score-calculator/index.ts",
-      "line": 205,
-      "column": 5,
-      "severity": "ERROR",
-      "code": "TS2353",
-      "message": "Object literal may only specify known properties, and 'employee_id' does not exist in type 'never[]'.",
-      "contextHash": "61e3e92cc54e17b66805151769ca0ad4a59477894a5c0e8971770eb316851aa1"
-    },
-    {
-      "file": "supabase/functions/slack-weekly-digest/index.ts",
-      "line": 36,
-      "column": 43,
-      "severity": "ERROR",
-      "code": "TS2345",
-      "message": "Argument of type 'string | null' is not assignable to parameter of type '{}'.",
-      "contextHash": "8260bdd88488a07fbeedecd99e5cc61cd7dfca8cf5e6421ee459ff0741b08b79"
-    },
-    {
-      "file": "supabase/functions/slack-weekly-digest/index.ts",
-      "line": 79,
-      "column": 43,
-      "severity": "ERROR",
-      "code": "TS2345",
-      "message": "Argument of type 'string | null' is not assignable to parameter of type '{}'.",
-      "contextHash": "0b61e1d43bf1746f888833cf5a96f67b51614d4794ce8006a591d3b7c44f6f46"
-    },
-    {
-      "file": "supabase/functions/slack-weekly-digest/index.ts",
-      "line": 159,
-      "column": 42,
-      "severity": "ERROR",
-      "code": "TS2345",
-      "message": "Argument of type 'SupabaseClient<any, \"public\", \"public\", any, any>' is not assignable to parameter of type 'SupabaseClient<unknown, { PostgrestVersion: string; }, never, never, { PostgrestVersion: string; }>'.",
-      "contextHash": "0dc47444f550b1327f6f8c1acda98abb21900ae4edbd829bbc0591056cb22a23"
-    },
-    {
-      "file": "supabase/functions/slack-weekly-digest/index.ts",
-      "line": 181,
-      "column": 38,
-      "severity": "ERROR",
-      "code": "TS2345",
-      "message": "Argument of type 'SupabaseClient<any, \"public\", \"public\", any, any>' is not assignable to parameter of type 'SupabaseClient<unknown, { PostgrestVersion: string; }, never, never, { PostgrestVersion: string; }>'.",
-      "contextHash": "b5f35306b89862f854def124d706a8d8aec9b4609b8856f04ccf98b7cef0bbf3"
     },
     {
       "file": "supabase/functions/summarize-activity/index.ts",

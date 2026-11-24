@@ -217,9 +217,9 @@ export type AnalyzeActivityInput = z.infer<typeof analyzeActivitySchema>;
 // VALIDATION HELPER
 // ============================================================
 
-export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): { 
+export function validateInput<T extends z.ZodTypeAny>(schema: T, data: unknown): { 
   success: true; 
-  data: T 
+  data: z.output<T> 
 } | { 
   success: false; 
   error: string;

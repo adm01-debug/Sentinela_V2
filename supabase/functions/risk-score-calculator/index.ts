@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { HalfSpaceTrees, normalize, zScore } from "../_shared/halfSpaceTrees.ts";
 import { requireUserOrServiceRole } from "../_shared/auth.ts";
 
@@ -62,7 +62,7 @@ function levelFromScore(score: number): string {
 }
 
 async function computeCurrentMetrics(
-  supabase: ReturnType<typeof createClient>,
+  supabase: SupabaseClient,
   employeeName: string,
   hours: number
 ): Promise<Record<string, number>> {
@@ -124,7 +124,7 @@ async function computeCurrentMetrics(
 }
 
 async function processEmployee(
-  supabase: ReturnType<typeof createClient>,
+  supabase: SupabaseClient,
   employee: { id: string; name: string; company_id: string | null },
   factors: RiskFactor[],
   period: string,
