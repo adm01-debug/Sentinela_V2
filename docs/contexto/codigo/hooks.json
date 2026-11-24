@@ -350,7 +350,7 @@
    "hooks_exportados": [
     "useActivitySummary"
    ],
-   "linhas": 46,
+   "linhas": 35,
    "dominio": "hooks",
    "tabelas": [],
    "rpcs": [],

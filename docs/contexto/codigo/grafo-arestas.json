@@ -2153,7 +2153,8 @@
    "src/lib/logger.ts"
   ],
   "src/hooks/useActivitySummary.ts": [
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/types/index.ts"
   ],
   "src/hooks/useActivityTimeline.ts": [
    "src/integrations/supabase/client.ts"

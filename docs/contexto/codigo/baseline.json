@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1a0e0bcdc51c430e36e6e9cf84b5ca1457c849ad",
+  "commit": "48c727774bb990538f541a82f81b36ac3091a00b",
   "branch": "main",
-  "data_commit": "2026-11-24T14:43:52-03:00",
+  "data_commit": "2026-11-24T14:43:58-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "48c727774",
+    "data": "2026-11-24",
+    "assunto": "fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)"
+   },
    {
     "sha": "1a0e0bcdc",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "6313e39ba",
     "data": "2026-11-23",
     "assunto": "docs: corrige auditoria de functions e registra gates medidos em producao (#271)"
-   },
-   {
-    "sha": "12762c8c6",
-    "data": "2026-11-23",
-    "assunto": "fix: reativa cron do SLA removendo gate incompativel com anon key (#269)"
    }
   ],
-  "arquivos_mudados_7d": 281,
+  "arquivos_mudados_7d": 282,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 191
+    "commits": 192
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1882,
   "arquivos_codigo": 1432,
-  "linhas_codigo": 160341,
+  "linhas_codigo": 160333,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32353
+   "linhas": 32342
   },
   "src/i18n": {
    "arquivos": 1,
@@ -484,7 +484,7 @@
   },
   "src/types": {
    "arquivos": 57,
-   "linhas": 5744
+   "linhas": 5747
   },
   "src/utils": {
    "arquivos": 65,

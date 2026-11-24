@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)",
    "feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)",
    "fix: resumo de atividades volta a alimentar os graficos (#292)",
    "fix: diagnostico de ICE usa a mesma fonte do live view (#291)",
-   "feat: detector de anomalias passa a aparecer na tela de atividades (#290)",
-   "fix: hora e severidade deixam de ser lidas como indefinidas nos relatorios (#289)"
+   "feat: detector de anomalias passa a aparecer na tela de atividades (#290)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
