@@ -20,6 +20,7 @@ interface IceConfig {
   stun_servers: IceServer[];
   turn_servers: IceServer[];
   turn_configured: boolean;
+  turn_skipped?: number;
   turn_error: string | null;
 }
 
@@ -182,6 +183,17 @@ export default function IceDiagnosticsPage() {
           <AlertTitle>TURN_CREDENTIALS malformado</AlertTitle>
           <AlertDescription>
             {config.turn_error}. Corrija o JSON e recarregue.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {(config?.turn_skipped ?? 0) > 0 && (
+        <Alert>
+          <AlertTriangle className="size-4" />
+          <AlertTitle>Entradas ignoradas em TURN_CREDENTIALS</AlertTitle>
+          <AlertDescription>
+            {config?.turn_skipped} entrada(s) sem <code>urls</code> foram descartadas — o navegador
+            ignoraria esse servidor sem avisar e o live view pode ficar sem relay.
           </AlertDescription>
         </Alert>
       )}
