@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `76b120114871740ce01b2ba29ea47194a32164c5` (2026-11-24T17:38:47-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2d1c0b17338292a7e86707b6eb22e597f5604f4f` (2026-11-24T17:40:25-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1883 |
 | arquivos_codigo | 1433 |
-| linhas_codigo | 160504 |
+| linhas_codigo | 160500 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `2d1c0b173` fix: tipo do resumo de atividade do monitoramento deixa de se chamar ActivitySummary (#297)
 - 2026-11-24 `76b120114` fix: analise de IA filtra e gera por funcionario de verdade (#296)
 - 2026-11-24 `48c727774` fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)
 - 2026-11-24 `1a0e0bcdc` feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `1762098b7` fix: checagem de tipos volta a valer no upload de gravacao (client tipado) (#284)
 - 2026-11-24 `f566a4a98` fix: deploy nao fica vermelho por corrida quando o deployment do commit novo ainda nao esta listado (#283)
 - 2026-11-24 `52be74c03` fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)
-- 2026-11-24 `17070eb55` infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

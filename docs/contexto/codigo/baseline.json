@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "76b120114871740ce01b2ba29ea47194a32164c5",
+  "commit": "2d1c0b17338292a7e86707b6eb22e597f5604f4f",
   "branch": "main",
-  "data_commit": "2026-11-24T17:38:47-03:00",
+  "data_commit": "2026-11-24T17:40:25-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "2d1c0b173",
+    "data": "2026-11-24",
+    "assunto": "fix: tipo do resumo de atividade do monitoramento deixa de se chamar ActivitySummary (#297)"
+   },
    {
     "sha": "76b120114",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "daa60fa00",
     "data": "2026-11-23",
     "assunto": "test: guarda contra texto duplamente codificado (#273)"
-   },
-   {
-    "sha": "c329d06fc",
-    "data": "2026-11-23",
-    "assunto": "fix: corrige texto corrompido no dashboard e nos avisos de slack (#272)"
    }
   ],
-  "arquivos_mudados_7d": 284,
+  "arquivos_mudados_7d": 285,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 193
+    "commits": 194
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1883,
   "arquivos_codigo": 1433,
-  "linhas_codigo": 160504,
+  "linhas_codigo": 160500,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 479,
-   "linhas": 32389
+   "linhas": 32385
   },
   "src/i18n": {
    "arquivos": 1,

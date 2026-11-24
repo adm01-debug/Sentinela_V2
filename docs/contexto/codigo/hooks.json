@@ -5303,7 +5303,7 @@
    "hooks_exportados": [
     "useMonitoringPage"
    ],
-   "linhas": 163,
+   "linhas": 159,
    "dominio": "hooks",
    "tabelas": [
     "click_logs",
