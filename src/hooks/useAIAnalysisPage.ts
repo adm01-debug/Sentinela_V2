@@ -8,7 +8,7 @@ export interface AIAnalysisResult {
   id: string;
   employee_id: string;
   employee_name: string;
-  analysis_type: 'productivity' | 'behavior' | 'risk' | 'summary';
+  analysis_type: string;
   score: number;
   insights: string[];
   recommendations: string[];
@@ -30,6 +30,19 @@ const ANALYSIS_TYPE_BY_REPORT: Record<string, string> = {
   risk: 'anomalies',
   summary: 'summary',
   all: 'all',
+};
+
+// Filtro da tela -> valores reais de ai_analysis_reports.report_type:
+// generate-report grava productivity/violations/activity/keystroke/attendance/summary
+// e weekly-report grava weekly_summary, que é um resumo.
+export const REPORT_TYPES_BY_FILTER: Record<string, string[]> = {
+  productivity: ['productivity'],
+  behavior: ['behavior'],
+  risk: ['risk'],
+  summary: ['summary', 'weekly_summary'],
+  violations: ['violations'],
+  attendance: ['attendance'],
+  activity: ['activity', 'keystroke'],
 };
 
 export function useAIAnalysisPage() {
@@ -74,7 +87,7 @@ export function useAIAnalysisPage() {
       }
 
       if (analysisType !== 'all') {
-        query = query.eq('report_type', analysisType);
+        query = query.in('report_type', REPORT_TYPES_BY_FILTER[analysisType] ?? [analysisType]);
       }
 
       const { data, error } = await query;
@@ -148,11 +161,16 @@ export function useAIAnalysisPage() {
       ? Math.round(analyses.reduce((sum, a) => sum + a.score, 0) / analyses.length)
       : 0;
 
+    const byFilter = (filter: string) => {
+      const types = REPORT_TYPES_BY_FILTER[filter] ?? [filter];
+      return analyses.filter((a) => types.includes(a.analysis_type)).length;
+    };
+
     const byType = {
-      productivity: analyses.filter(a => a.analysis_type === 'productivity').length,
-      behavior: analyses.filter(a => a.analysis_type === 'behavior').length,
-      risk: analyses.filter(a => a.analysis_type === 'risk').length,
-      summary: analyses.filter(a => a.analysis_type === 'summary').length,
+      productivity: byFilter('productivity'),
+      behavior: byFilter('behavior'),
+      risk: byFilter('risk'),
+      summary: byFilter('summary'),
     };
 
     const recentInsights = analyses
@@ -170,7 +188,11 @@ export function useAIAnalysisPage() {
       });
       return;
     }
-    runAnalysisMutation.mutate({ employeeName: selectedEmployeeName, type: type || analysisType });
+    // filtros como violations/attendance/activity não são geráveis pela analyze-activity:
+    // nesses casos geramos (e gravamos) um resumo, senão o relatório mentiria o próprio tipo
+    const requested = type ?? analysisType;
+    const generationType = requested in ANALYSIS_TYPE_BY_REPORT ? requested : 'summary';
+    runAnalysisMutation.mutate({ employeeName: selectedEmployeeName, type: generationType });
   }, [selectedEmployeeName, analysisType, runAnalysisMutation, toast]);
 
   return {

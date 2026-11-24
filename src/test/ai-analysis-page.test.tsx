@@ -14,7 +14,7 @@ type Call = [string, unknown[]];
 function makeBuilder(result: unknown) {
   const calls: Call[] = [];
   const builder: Record<string, unknown> = {};
-  for (const method of ["select", "insert", "order", "limit", "eq"]) {
+  for (const method of ["select", "insert", "order", "limit", "eq", "in"]) {
     builder[method] = vi.fn((...args: unknown[]) => {
       calls.push([method, args]);
       return builder;
@@ -114,6 +114,42 @@ describe("useAIAnalysisPage", () => {
       report_type: "risk",
       risk_score: 82,
     });
+  });
+
+  it("filtro Resumo traz também os resumos semanais gravados pelo weekly-report", async () => {
+    const { result } = renderHook(() => useAIAnalysisPage(), { wrapper });
+    await waitFor(() => expect(result.current.employees).toHaveLength(1));
+
+    act(() => result.current.setAnalysisType("summary"));
+
+    await waitFor(() => {
+      expect(reportBuilders.flat()).toContainEqual([
+        "in",
+        ["report_type", ["summary", "weekly_summary"]],
+      ]);
+    });
+  });
+
+  it("filtro Violações consulta o report_type real e não gera análise desse tipo", async () => {
+    const { result } = renderHook(() => useAIAnalysisPage(), { wrapper });
+    await waitFor(() => expect(result.current.employees).toHaveLength(1));
+    act(() => result.current.setSelectedEmployee("u1"));
+    act(() => result.current.setAnalysisType("violations"));
+
+    await waitFor(() => {
+      expect(reportBuilders.flat()).toContainEqual(["in", ["report_type", ["violations"]]]);
+    });
+
+    act(() => result.current.handleRunAnalysis());
+
+    await waitFor(() => expect(insertPayloads).toHaveLength(1));
+    expect(supabase.functions.invoke).toHaveBeenCalledWith(
+      "analyze-activity",
+      expect.objectContaining({
+        body: expect.objectContaining({ analysis_type: "summary" }),
+      })
+    );
+    expect(insertPayloads[0]).toMatchObject({ report_type: "summary" });
   });
 
   it("não chama a análise sem funcionário selecionado", async () => {

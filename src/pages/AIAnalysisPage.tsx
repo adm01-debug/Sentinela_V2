@@ -15,6 +15,11 @@ const typeLabels: Record<string, string> = {
   behavior: 'Comportamento',
   risk: 'Risco',
   summary: 'Resumo',
+  weekly_summary: 'Resumo semanal',
+  violations: 'Violações',
+  attendance: 'Presença',
+  activity: 'Atividade',
+  keystroke: 'Teclas',
 };
 
 const typeColors: Record<string, string> = {
@@ -22,6 +27,11 @@ const typeColors: Record<string, string> = {
   behavior: 'bg-blue-500/10 text-blue-600',
   risk: 'bg-red-500/10 text-red-600',
   summary: 'bg-purple-500/10 text-purple-600',
+  weekly_summary: 'bg-purple-500/10 text-purple-600',
+  violations: 'bg-red-500/10 text-red-600',
+  attendance: 'bg-amber-500/10 text-amber-600',
+  activity: 'bg-sky-500/10 text-sky-600',
+  keystroke: 'bg-sky-500/10 text-sky-600',
 };
 
 export default function AIAnalysisPage() {
@@ -85,6 +95,9 @@ export default function AIAnalysisPage() {
             <SelectItem value="behavior">Comportamento</SelectItem>
             <SelectItem value="risk">Risco</SelectItem>
             <SelectItem value="summary">Resumo</SelectItem>
+            <SelectItem value="violations">Violações</SelectItem>
+            <SelectItem value="attendance">Presença</SelectItem>
+            <SelectItem value="activity">Atividade</SelectItem>
           </SelectContent>
         </Select>
       </div>
