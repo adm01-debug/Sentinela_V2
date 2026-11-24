@@ -87,7 +87,44 @@ jobs:
           # confirmacao da mutacao em producao.
           # --use-api: empacota no servidor, sem Docker no runner.
           # Sem nome de funcao o CLI publica todas as de supabase/functions.
-          supabase functions deploy --yes --use-api
+          #
+          # Retry: a API de deploy do Supabase responde 5xx transitorio. Em 261124
+          # o job caiu com "Error 502: Bad gateway" do Cloudflare em
+          # api.supabase.com ("retryable": true, "retry_after": 60) e o deploy de
+          # cde1021d0 so passou no rerun (run 45439664403, job 138606939783).
+          # Repetir so nesses casos tira o vermelho falso sem mascarar erro real:
+          # token invalido, erro de validacao ou de bundling aborta na primeira
+          # tentativa de proposito.
+          log=$(mktemp)
+          for attempt in 1 2 3; do
+            set +e
+            supabase functions deploy --yes --use-api >"$log" 2>&1
+            status=$?
+            set -e
+            cat "$log"
+            if [ "$status" -eq 0 ]; then
+              echo "Edge functions publicadas (tentativa $attempt)."
+              exit 0
+            fi
+            transitorio=$(grep -Eic 'retryable|502|503|504|522|525|bad gateway|gateway time-?out|internal server error|econnreset|etimedout|socket hang up|timed out' "$log" || true)
+            if [ "$transitorio" -eq 0 ]; then
+              echo "::error::Falha nao transitoria ao publicar as edge functions (tentativa $attempt); sem retry."
+              exit 1
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              echo "::error::Deploy das edge functions falhou nas 3 tentativas por erro transitorio persistente do Supabase."
+              exit 1
+            fi
+            # A propria API diz quanto esperar ("retry_after": 60 no 502 do
+            # Cloudflare); o pedido de backoff dela e o piso, nao um extra.
+            espera=60
+            informado=$(grep -oE '"retry_after":[[:space:]]*[0-9]+' "$log" | head -1 | grep -oE '[0-9]+' || true)
+            if [ -n "$informado" ] && [ "$informado" -gt "$espera" ]; then
+              espera=$informado
+            fi
+            echo "Falha transitoria na tentativa $attempt; repetindo em ${espera}s..."
+            sleep "$espera"
+          done
 
   verify-production-deploy:
     runs-on: ubuntu-latest
