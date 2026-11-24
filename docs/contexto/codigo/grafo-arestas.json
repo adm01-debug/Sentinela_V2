@@ -4205,9 +4205,6 @@
   "supabase/functions/cleanup-rate-limit-logs/index.ts": [
    "supabase/functions/_shared/rateLimiting.ts"
   ],
-  "supabase/functions/escalate-dispute-sla/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/expire-recordings/index.ts": [
    "supabase/functions/_shared/logger.ts"
   ],

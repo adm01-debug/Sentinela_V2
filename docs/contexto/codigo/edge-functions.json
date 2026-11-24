@@ -706,7 +706,7 @@
    "nome": "escalate-dispute-sla",
    "entrada": "supabase/functions/escalate-dispute-sla/index.ts",
    "arquivos": 1,
-   "linhas": 226,
+   "linhas": 216,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -729,9 +729,7 @@
    "hosts_externos": [
     "fcm.googleapis.com"
    ],
-   "usa_shared": [
-    "auth.ts"
-   ],
+   "usa_shared": [],
    "chamada_pelo_front": [
     "src/pages/admin/DisputeEscalationAuditPage.tsx"
    ],

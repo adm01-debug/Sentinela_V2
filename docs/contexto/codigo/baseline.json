@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "5aa07dcf248cee27283a27ed8bd0bf7bbeed03d5",
+  "commit": "12762c8c618a708232e0fc559149c4f8781be335",
   "branch": "main",
-  "data_commit": "2026-11-23T21:38:04-03:00",
+  "data_commit": "2026-11-23T22:09:39-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "12762c8c6",
+    "data": "2026-11-23",
+    "assunto": "fix: reativa cron do SLA removendo gate incompativel com anon key (#269)"
+   },
    {
     "sha": "5aa07dcf2",
     "data": "2026-11-23",
@@ -126,11 +131,6 @@
     "sha": "76f78d12d",
     "data": "2026-11-22",
     "assunto": "fix(deploy): db push --yes para nao abortar com migration pendente (#244)"
-   },
-   {
-    "sha": "1ff674904",
-    "data": "2026-11-22",
-    "assunto": "feat(compliance): remonta o PolicyGate agora que o banco permite o proprio aceite (#240)"
    }
   ],
   "arquivos_mudados_7d": 234,
@@ -144,15 +144,15 @@
     "mudancas": 17
    },
    {
+    "pasta": "docs/pendencias/_linha-de-base.md",
+    "mudancas": 16
+   },
+   {
     "pasta": "scripts/ci/prettier-baseline.json",
     "mudancas": 16
    },
    {
     "pasta": ".github/workflows/deploy.yml",
-    "mudancas": 15
-   },
-   {
-    "pasta": "docs/pendencias/_linha-de-base.md",
     "mudancas": 15
    },
    {
@@ -210,15 +210,15 @@
     "mudancas": 17
    },
    {
+    "arquivo": "docs/pendencias/_linha-de-base.md",
+    "mudancas": 16
+   },
+   {
     "arquivo": "scripts/ci/prettier-baseline.json",
     "mudancas": 16
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
-    "mudancas": 15
-   },
-   {
-    "arquivo": "docs/pendencias/_linha-de-base.md",
     "mudancas": 15
    },
    {
@@ -251,6 +251,10 @@
    },
    {
     "arquivo": "desktop-agent/src/main.ts",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "src/test/gap-audit.test.ts",
     "mudancas": 4
    },
    {
@@ -292,16 +296,12 @@
    {
     "arquivo": "src/pages/WhatsAppIntegrationPage.tsx",
     "mudancas": 3
-   },
-   {
-    "arquivo": "src/pages/__tests__/Auth.test.tsx",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 166
+    "commits": 167
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1867,
   "arquivos_codigo": 1419,
-  "linhas_codigo": 157937,
+  "linhas_codigo": 157928,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -480,7 +480,7 @@
   },
   "src/test": {
    "arquivos": 52,
-   "linhas": 10639
+   "linhas": 10640
   },
   "src/types": {
    "arquivos": 57,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 103,
-   "linhas": 13438
+   "linhas": 13428
   },
   "vite.config.ts": {
    "arquivos": 1,

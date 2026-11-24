@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: reativa cron do SLA removendo gate incompativel com anon key (#269)",
    "fix: exige autenticacao nas edge functions abertas ao publico (#268)",
    "feat: tela de monitoramento mobile com dados reais (#267)",
    "feat: dashboard de rate limiting com leitura via edge admin (#266)",
-   "feat: tela de modelos de mensagem com CRUD real (#265)",
-   "feat: tela de palavras sensiveis com CRUD real (#264)"
+   "feat: tela de modelos de mensagem com CRUD real (#265)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

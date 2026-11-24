@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `5aa07dcf248cee27283a27ed8bd0bf7bbeed03d5` (2026-11-23T21:38:04-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `12762c8c618a708232e0fc559149c4f8781be335` (2026-11-23T22:09:39-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1867 |
 | arquivos_codigo | 1419 |
-| linhas_codigo | 157937 |
+| linhas_codigo | 157928 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -305,9 +305,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package-lock.json (26)
 - package.json (25)
 - scripts/ci/eslint-baseline.json (17)
+- docs/pendencias/_linha-de-base.md (16)
 - scripts/ci/prettier-baseline.json (16)
 - .github/workflows/deploy.yml (15)
-- docs/pendencias/_linha-de-base.md (15)
 - src/routes/AppRoutes.tsx (13)
 - src/components/AppSidebar.tsx (8)
 - docs/prod-readiness.md (6)
@@ -316,7 +316,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - src/test/improvements-verification.test.ts (5)
 - supabase/config.toml (5)
 - desktop-agent/src/main.ts (4)
-- supabase/functions/natural-language-query/index.ts (4)
+- src/test/gap-audit.test.ts (4)
 
 ## Workflows
 - `ci.yml` — CI (pull_request, push)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-23 `12762c8c6` fix: reativa cron do SLA removendo gate incompativel com anon key (#269)
 - 2026-11-23 `5aa07dcf2` fix: exige autenticacao nas edge functions abertas ao publico (#268)
 - 2026-11-23 `016a6eb70` feat: tela de monitoramento mobile com dados reais (#267)
 - 2026-11-23 `1b5bd5e82` feat: dashboard de rate limiting com leitura via edge admin (#266)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-23 `54a0fc2d0` fix(edge): funcoes de IA passam a usar as tabelas reais do banco (#258)
 - 2026-11-23 `8d4cc58ed` docs(pendencias): registrar auditoria de hooks orfaos, tabelas fora do types e falhas do deploy (#257)
 - 2026-11-23 `ac2d34cc0` fix(alertas): regras de alerta passam a usar violation_rules e download de relatorio funcional (#256)
-- 2026-11-23 `83496a324` feat: CRUD de projetos, webhooks, perfil, agendamentos e usuarios
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
