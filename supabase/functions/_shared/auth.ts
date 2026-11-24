@@ -76,6 +76,41 @@ export async function requireUserOrServiceRole(req: Request) {
 }
 
 /**
+ * Gate estrito para funcoes sem chamador no produto (nem front, nem cron, nem
+ * workflow).
+ *
+ * Só passa service_role. Um JWT de usuario logado tambem e recusado de
+ * proposito: nada menos que a credencial de servidor deve alcancar funcoes
+ * que escrevem com service_role (ex.: UPDATE em tabela arbitraria), e a chave
+ * publicavel embutida no bundle do front nao pode servir de credencial.
+ */
+export async function requireServiceRole(req: Request) {
+  const authHeader = req.headers.get('Authorization') ?? req.headers.get('authorization') ?? '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+  const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  const apiKey = req.headers.get('apikey') ?? '';
+
+  if (serviceRoleKey && (token === serviceRoleKey || apiKey === serviceRoleKey)) {
+    return { isServiceRole: true };
+  }
+
+  if (token) {
+    // Em projeto com o novo sistema de API keys o runtime recebe a secret key
+    // (`sb_secret_...`), que nao bate com o JWT legacy lido do env: a prova tem
+    // de ser a API admin do GoTrue, que so responde a service_role.
+    const adminProbe = createClient(Deno.env.get('SUPABASE_URL') ?? '', token, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    const { error } = await adminProbe.auth.admin.listUsers({ page: 1, perPage: 1 });
+    if (!error) {
+      return { isServiceRole: true };
+    }
+  }
+
+  throw new Error('Service role required');
+}
+
+/**
  * Gate para funcoes que o pg_cron chama diretamente.
  *
  * O job criado no painel chama a funcao com a anon key e o gateway aceita por
