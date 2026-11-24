@@ -1,9 +1,11 @@
 # Linha de base - estado real de Sentinela_V2
 
-Atualizado em 2026-11-22 (sessao autopilot - migrations automaticas no deploy
-#222/#227/#228, MFAGuard #229, orfaos #223, mcp-query sem proxy admin #221).
-Antes: 2026-11-21 (contratos front<->banco #189-#193, varredura dos 332 selects,
-auditoria do Deploy #194, OrgChart #195).
+Atualizado em 2026-11-24 (sessao autopilot - guardas de encoding e de contrato de
+dados #273/#274, rate limit e retry_count das edges #275, guarda do rate limit
+#276). Antes: 2026-11-22 (migrations automaticas no deploy #222/#227/#228,
+MFAGuard #229, orfaos #223, mcp-query sem proxy admin #221), 2026-11-21
+(contratos front<->banco #189-#193, varredura dos 332 selects, auditoria do
+Deploy #194, OrgChart #195).
 Todo item listado foi verificado com evidencia real (banco, RPC, edge function ou
 merge). Estrategia: nenhum trabalho parcial de agente de IA e descartado; item
 parcial e continuado ou registrado com dono.
@@ -23,14 +25,14 @@ parcial e continuado ou registrado com dono.
 
 ## Edge functions
 
-| Item                        | Estado                                             | Evidencia                                               |
-| --------------------------- | -------------------------------------------------- | ------------------------------------------------------- |
-| send-whatsapp               | DEPLOYADA v2 (roteador dual Meta/Evolution)        | invoke POST: resposta do codigo novo                    |
-| sync-whatsapp-templates     | DEPLOYADA (46 no total)                            | invoke antes 404 -> agora 401 sem auth                  |
-| award-gamification-points   | DEPLOYADA (versao main, valida reason/description) | Restaurada de origin/main; sem alterar                  |
-| Contrato de colunas (views) | CORRIGIDO (7 edges, PR #188)                       | 156 pares tabela/coluna cruzados com information_schema |
-| generate-insights           | CORRIGIDA (401 em 100% das chamadas)               | getUser() sem token -> valida em /auth/v1/user; 200     |
-| escalate-dispute-sla        | GATE REVERTIDO (cron usa anon key)                 | Bloquear derrubava o SLA; volta com a migration         |
+| Item                        | Estado                                      | Evidencia                                               |
+| --------------------------- | ------------------------------------------- | ------------------------------------------------------- |
+| send-whatsapp               | DEPLOYADA v2 (roteador dual Meta/Evolution) | invoke POST: resposta do codigo novo                    |
+| sync-whatsapp-templates     | DEPLOYADA (46 no total)                     | invoke antes 404 -> agora 401 sem auth                  |
+| award-gamification-points   | CORRIGIDA (#275)                            | rate limit inoperante; E2E: 10x401 e 11o POST 429       |
+| Contrato de colunas (views) | CORRIGIDO (7 edges, PR #188)                | 156 pares tabela/coluna cruzados com information_schema |
+| generate-insights           | CORRIGIDA (401 em 100% das chamadas)        | getUser() sem token -> valida em /auth/v1/user; 200     |
+| escalate-dispute-sla        | GATE REVERTIDO (cron usa anon key)          | Bloquear derrubava o SLA; volta com a migration         |
 
 ## Contratos front <-> banco (varredura 2026-11-21)
 
@@ -150,8 +152,14 @@ zero divergencia nas duas direcoes.
   useSubscription, useAppConfig, useScheduledReports, useSessionManager,
   usePWAPushNotifications; tabelas `subscriptions`, `feature_flags`, `app_config`,
   `rate_limit_settings`, `whatsapp_settings` nao existem e nao sao usadas em runtime.
-- Rotacionar VERCEL_TOKEN do GitHub Actions (owner do projeto sentinela-v2) para
-  o workflow Deploy voltar a verde.
+- Workflow Deploy: verde no run 45317165963 (commit fee6687be) - migrate,
+  deploy-functions e verify-production-deploy todos success; rotacao do
+  VERCEL_TOKEN nao e mais bloqueio observado.
+- `deno check` nao roda no CI (`ci.yml` roda apenas `deno test`): auditoria de
+  2026-11-24 nas 88 edge functions -> 33 com 49 erros de tipo, dos quais 2 eram
+  bugs reais e silenciosos (corrigidos na #275). O rate limit agora tem guarda
+  estatica (#276); o resto do catalogo e ruido (`catch unknown`, genericos do
+  supabase-js, `new Date(null)` em coluna NOT NULL).
 - Deploy das migrations/edge por PR futura conforme regra 8 (DDL/deploy).
 
 ## Auxiliares orfaos
