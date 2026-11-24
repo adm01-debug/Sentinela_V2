@@ -77,16 +77,23 @@ jobs:
       - run: npm ci
       - run: npm test
 
+  # Contratos das edges. Mesmo runtime do ratchet de tipos logo abaixo (Deno
+  # 2.9.8): com dois runtimes no repo, um contrato pode passar em um e falhar no
+  # outro, e o v1.x ja esta fora de suporte. Versao pinada de proposito, pelo
+  # mesmo motivo do ratchet (mudar de versao muda o resultado).
   deno-contract-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v1
+      - uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version: v2.9.8
       - name: Run Contract Tests
         run: |
-          find supabase/functions \( -name "*_test.ts" -o -name "*.test.ts" \) -print0 | xargs -0 -I {} deno test --allow-env --allow-net {}
+          # --node-modules-dir=none: o runner nao tem node_modules e o repositorio
+          # tem package.json (Deno entraria em modo node_modules automatico);
+          # resolver pelo cache global deixa o resultado igual ao local.
+          find supabase/functions \( -name "*_test.ts" -o -name "*.test.ts" \) -print0 | xargs -0 -I {} deno test --allow-env --allow-net --node-modules-dir=none {}
 
   # `deno test` passa com dezenas de erros de tipo no codigo das edges — foi por
   # esse buraco que dois bugs reais chegaram na main (rate limit lendo campo
