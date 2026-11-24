@@ -15,6 +15,7 @@
  */
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
+import { requireUserOrServiceRole } from "../_shared/auth.ts";
 
 const SLA_HOURS = 72;
 const WARNING_H = 12;
@@ -42,9 +43,6 @@ function severityOf(hoursUntilBreach: number): Severity | null {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
-  // Sem gate de auth: o cron do painel (cron.job) chama com a anon key e o
-  // gateway libera por verify_jwt; bloquear aqui derruba o escalonamento de
-  // SLA. O gate volta junto com a migration que re-agenda o job.
   const startedAt = Date.now();
 
   const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
@@ -52,6 +50,33 @@ Deno.serve(async (req) => {
   const FCM_SERVER_KEY = Deno.env.get('FCM_SERVER_KEY');
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
+  // O cron chama com a anon key (o gateway libera por verify_jwt), entao ele se
+  // identifica pelo header x-cron-secret, gerado no banco pela migration
+  // cron_escalate_dispute_sla_auth. Admin e server-to-server passam pelo gate
+  // padrao. Enquanto a migration nao roda (tabela ausente), o comportamento
+  // anterior e mantido para o cron nao parar de escalar.
+  const cronSecret = req.headers.get('x-cron-secret') ?? '';
+  const { data: cronRow, error: cronError } = await supabase
+    .from('cron_secrets')
+    .select('secret')
+    .eq('name', 'escalate-dispute-sla')
+    .maybeSingle();
+  const cronConfigured = !cronError && !!cronRow?.secret;
+  let authorized = !cronConfigured || (cronSecret.length > 0 && cronSecret === cronRow?.secret);
+  if (!authorized) {
+    try {
+      await requireUserOrServiceRole(req);
+      authorized = true;
+    } catch {
+      authorized = false;
+    }
+  }
+  if (!authorized) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
   // 1) Fetch open disputes.
   const { data: disputes, error } = await supabase
     .from('violation_disputes')

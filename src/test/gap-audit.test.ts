@@ -190,12 +190,13 @@ describe("Gap Audit: Edge Function Auth Gates", () => {
   // estar no codigo da funcao (ver supabase/functions/_shared/auth.ts).
   // Lista explicita: cada funcao abaixo ja foi endurecida. As demais edge
   // functions ainda nao tem gate e sao divida registrada, nao regressao.
-  // escalate-dispute-sla fica fora: o cron do painel chama com anon key, entao
-  // o gate volta junto com a migration que re-agenda o job com service_role.
+  // escalate-dispute-sla entra pelo header x-cron-secret (segredo gerado no
+  // banco pela migration cron_escalate_dispute_sla_auth) alem do gate padrao.
   const hardenedFunctions = [
     "analyze-activity",
     "behavior-pattern",
     "check-geofence",
+    "escalate-dispute-sla",
     "notify-new-device",
     "ocr-screenshot",
     "predict-anomaly",
