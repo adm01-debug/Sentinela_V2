@@ -1,0 +1,447 @@
+{
+  "schemaVersion": 1,
+  "command": "deno check supabase/functions/*/index.ts",
+  "issues": [
+    {
+      "file": "supabase/functions/audit-export/index.ts",
+      "line": 50,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/batch-notifications/index.ts",
+      "line": 57,
+      "column": 92,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "037796d1df90393738e33b1486b14b9e79876ea60c89bef220272b5df25938be"
+    },
+    {
+      "file": "supabase/functions/batch-notifications/index.ts",
+      "line": 64,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/behavior-pattern/index.ts",
+      "line": 122,
+      "column": 21,
+      "severity": "ERROR",
+      "code": "TS2531",
+      "message": "Object is possibly 'null'.",
+      "contextHash": "288f1f61f3d78fc49f4e394061e8539f62763f51fcc6cf9f1caf35930dcff46e"
+    },
+    {
+      "file": "supabase/functions/behavior-pattern/index.ts",
+      "line": 163,
+      "column": 28,
+      "severity": "ERROR",
+      "code": "TS2769",
+      "message": "No overload matches this call.",
+      "contextHash": "1c3a8bee194d89c31d632adea1c726fec612fcfa471fc34368648433bf249dfa"
+    },
+    {
+      "file": "supabase/functions/behavior-pattern/index.ts",
+      "line": 71,
+      "column": 29,
+      "severity": "ERROR",
+      "code": "TS2769",
+      "message": "No overload matches this call.",
+      "contextHash": "4a1fcb01b0d82c190639e54fc9118fa53da6d7c52f41eb96e5d188e080fe9ee6"
+    },
+    {
+      "file": "supabase/functions/check-geofence/index.ts",
+      "line": 124,
+      "column": 26,
+      "severity": "ERROR",
+      "code": "TS2589",
+      "message": "Type instantiation is excessively deep and possibly infinite.",
+      "contextHash": "c41d5400866fce27b5d5b156c44858a71a2ec1ec3e7f2eca952e7b4a3ab38ce9"
+    },
+    {
+      "file": "supabase/functions/check-geofence/index.ts",
+      "line": 136,
+      "column": 26,
+      "severity": "ERROR",
+      "code": "TS2589",
+      "message": "Type instantiation is excessively deep and possibly infinite.",
+      "contextHash": "edc5a66b1c0e0c3c605beb4068f9ab0b98e0c9ed296abd1799db46e0f414d0bb"
+    },
+    {
+      "file": "supabase/functions/cleanup-sessions/index.ts",
+      "line": 48,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/compress-screenshots/index.ts",
+      "line": 65,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/daily-summary/index.ts",
+      "line": 35,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/delete-user-data/index.ts",
+      "line": 67,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/external-db-bridge/index.ts",
+      "line": 329,
+      "column": 31,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "b0d0f8e0292df63d744bb05a6396546ceef4d01dd1119acc674b75bf6e75f922"
+    },
+    {
+      "file": "supabase/functions/generate-api-key/index.ts",
+      "line": 47,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/get-dashboard-stats/index.ts",
+      "line": 33,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/ingest-file-transfer/index.ts",
+      "line": 217,
+      "column": 34,
+      "severity": "ERROR",
+      "code": "TS2345",
+      "message": "Argument of type '{ channel: \"usb\" | \"browser_upload\" | \"browser_download\" | \"cloud_sync\" | \"email_attach\" | \"network_share\" | \"print\"; occurred_at: string; file_name: string; file_extension?: string | undefined; ... 13 more ...; metadata?: Record<...> | undefined; }' is not assignable to parameter of type '{ channel: \"usb\" | \"browser_upload\" | \"browser_download\" | \"cloud_sync\" | \"email_attach\" | \"network_share\" | \"print\"; occurred_at: string; file_name: string; file_size_bytes: number; ... 13 more ...; metadata?: Record<...> | undefined; }'.",
+      "contextHash": "73f845ed483bca911ae303f3d98ef6f20f7c62bf6982c39c02037ba090acea71"
+    },
+    {
+      "file": "supabase/functions/ingest-file-transfer/index.ts",
+      "line": 258,
+      "column": 44,
+      "severity": "ERROR",
+      "code": "TS2345",
+      "message": "Argument of type '{ channel: \"usb\" | \"browser_upload\" | \"browser_download\" | \"cloud_sync\" | \"email_attach\" | \"network_share\" | \"print\"; occurred_at: string; file_name: string; file_extension?: string | undefined; ... 13 more ...; metadata?: Record<...> | undefined; }' is not assignable to parameter of type '{ channel: \"usb\" | \"browser_upload\" | \"browser_download\" | \"cloud_sync\" | \"email_attach\" | \"network_share\" | \"print\"; occurred_at: string; file_name: string; file_size_bytes: number; ... 13 more ...; metadata?: Record<...> | undefined; }'.",
+      "contextHash": "c3afbb5f6109e4e002bf7d6d3cb58d74601e7b36a212e7a7c233a36d2108837c"
+    },
+    {
+      "file": "supabase/functions/invite-user/index.ts",
+      "line": 53,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/live-view-authorize/index.ts",
+      "line": 99,
+      "column": 23,
+      "severity": "ERROR",
+      "code": "TS2749",
+      "message": "'RTCIceServer' refers to a value, but is being used as a type here. Did you mean 'typeof RTCIceServer'?",
+      "contextHash": "f9b704377fb65096b7528e76271e0d6dd0fa8c4981b73f395906c8f665f09664"
+    },
+    {
+      "file": "supabase/functions/merge-employees/index.ts",
+      "line": 62,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/predict-anomaly/index.ts",
+      "line": 71,
+      "column": 29,
+      "severity": "ERROR",
+      "code": "TS2769",
+      "message": "No overload matches this call.",
+      "contextHash": "809470f5092cc495bee573eff6c1141f83774c6218224dd06a9e54c2cc3feebc"
+    },
+    {
+      "file": "supabase/functions/process-bulk-import/index.ts",
+      "line": 58,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/recalculate-metrics/index.ts",
+      "line": 65,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/refresh-tokens/index.ts",
+      "line": 33,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/reset-password/index.ts",
+      "line": 50,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "b7ea452da00269876b8d55ef3aeddaa4d42ed9cf2212ba4bebe2c16a7313362b"
+    },
+    {
+      "file": "supabase/functions/risk-score-calculator/index.ts",
+      "line": 296,
+      "column": 39,
+      "severity": "ERROR",
+      "code": "TS2345",
+      "message": "Argument of type 'SupabaseClient<any, \"public\", \"public\", any, any>' is not assignable to parameter of type 'SupabaseClient<unknown, { PostgrestVersion: string; }, never, never, { PostgrestVersion: string; }>'.",
+      "contextHash": "00cb16f33c1b36373511cbd789861ef6c1cdae7fc760551666891336f62ebccd"
+    },
+    {
+      "file": "supabase/functions/risk-score-calculator/index.ts",
+      "line": 205,
+      "column": 5,
+      "severity": "ERROR",
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'employee_id' does not exist in type 'never[]'.",
+      "contextHash": "61e3e92cc54e17b66805151769ca0ad4a59477894a5c0e8971770eb316851aa1"
+    },
+    {
+      "file": "supabase/functions/rotate-api-keys/index.ts",
+      "line": 42,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/search-activities/index.ts",
+      "line": 48,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/send-email-notification/index.ts",
+      "line": 53,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/send-webhook/index.ts",
+      "line": 96,
+      "column": 9,
+      "severity": "ERROR",
+      "code": "TS2322",
+      "message": "Type 'string | undefined' is not assignable to type 'string'.",
+      "contextHash": "d6b0960dbeeac07e86e5034c1ecb9fd359d004ad566c8eb86bc2991b6b0b810f"
+    },
+    {
+      "file": "supabase/functions/slack-notify/index.ts",
+      "line": 327,
+      "column": 27,
+      "severity": "ERROR",
+      "code": "TS2339",
+      "message": "Property 'status' does not exist on type '{ ok: true; attempts: number; } | { ok: false; attempts: number; status?: number | undefined; message: string; permanent: boolean; }'.",
+      "contextHash": "d49d9fb240842336b2622ecaa165aad4dad9faad7ab6341ae4592e875f845c47"
+    },
+    {
+      "file": "supabase/functions/slack-weekly-digest/index.ts",
+      "line": 36,
+      "column": 43,
+      "severity": "ERROR",
+      "code": "TS2345",
+      "message": "Argument of type 'string | null' is not assignable to parameter of type '{}'.",
+      "contextHash": "8260bdd88488a07fbeedecd99e5cc61cd7dfca8cf5e6421ee459ff0741b08b79"
+    },
+    {
+      "file": "supabase/functions/slack-weekly-digest/index.ts",
+      "line": 79,
+      "column": 43,
+      "severity": "ERROR",
+      "code": "TS2345",
+      "message": "Argument of type 'string | null' is not assignable to parameter of type '{}'.",
+      "contextHash": "0b61e1d43bf1746f888833cf5a96f67b51614d4794ce8006a591d3b7c44f6f46"
+    },
+    {
+      "file": "supabase/functions/slack-weekly-digest/index.ts",
+      "line": 159,
+      "column": 42,
+      "severity": "ERROR",
+      "code": "TS2345",
+      "message": "Argument of type 'SupabaseClient<any, \"public\", \"public\", any, any>' is not assignable to parameter of type 'SupabaseClient<unknown, { PostgrestVersion: string; }, never, never, { PostgrestVersion: string; }>'.",
+      "contextHash": "0dc47444f550b1327f6f8c1acda98abb21900ae4edbd829bbc0591056cb22a23"
+    },
+    {
+      "file": "supabase/functions/slack-weekly-digest/index.ts",
+      "line": 181,
+      "column": 38,
+      "severity": "ERROR",
+      "code": "TS2345",
+      "message": "Argument of type 'SupabaseClient<any, \"public\", \"public\", any, any>' is not assignable to parameter of type 'SupabaseClient<unknown, { PostgrestVersion: string; }, never, never, { PostgrestVersion: string; }>'.",
+      "contextHash": "b5f35306b89862f854def124d706a8d8aec9b4609b8856f04ccf98b7cef0bbf3"
+    },
+    {
+      "file": "supabase/functions/summarize-activity/index.ts",
+      "line": 107,
+      "column": 28,
+      "severity": "ERROR",
+      "code": "TS2538",
+      "message": "Type 'undefined' cannot be used as an index type.",
+      "contextHash": "ac7b1cfe377b0cf9a313a59235f355039aaa0e954c08040bd73ef6098435fa80"
+    },
+    {
+      "file": "supabase/functions/summarize-activity/index.ts",
+      "line": 107,
+      "column": 64,
+      "severity": "ERROR",
+      "code": "TS2538",
+      "message": "Type 'undefined' cannot be used as an index type.",
+      "contextHash": "ac7b1cfe377b0cf9a313a59235f355039aaa0e954c08040bd73ef6098435fa80"
+    },
+    {
+      "file": "supabase/functions/sync-teams/index.ts",
+      "line": 42,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/trend-forecasting/index.ts",
+      "line": 157,
+      "column": 22,
+      "severity": "ERROR",
+      "code": "TS2531",
+      "message": "Object is possibly 'null'.",
+      "contextHash": "1ad8a20a953b43b6041bce1e3bfac1087534a3548bc0c904aab1436621978b6c"
+    },
+    {
+      "file": "supabase/functions/trend-forecasting/index.ts",
+      "line": 71,
+      "column": 22,
+      "severity": "ERROR",
+      "code": "TS2531",
+      "message": "Object is possibly 'null'.",
+      "contextHash": "582888e283a52756473ec17a7dbb0155201abb0dc4e5042468c5626eb1e11d16"
+    },
+    {
+      "file": "supabase/functions/upload-recording-chunk/index.ts",
+      "line": 286,
+      "column": 37,
+      "severity": "ERROR",
+      "code": "TS2339",
+      "message": "Property 'company_id' does not exist on type 'never'.",
+      "contextHash": "a8abd8afa3036c915f6a3f654f0ab128fa6f4d030cabe64f3036312600736012"
+    },
+    {
+      "file": "supabase/functions/upload-recording-chunk/index.ts",
+      "line": 287,
+      "column": 37,
+      "severity": "ERROR",
+      "code": "TS2339",
+      "message": "Property 'company_id' does not exist on type 'never'.",
+      "contextHash": "c64325f385ab78eda073418e9055683335ae8f4a89869f056f4927784001e3de"
+    },
+    {
+      "file": "supabase/functions/upload-recording-chunk/index.ts",
+      "line": 288,
+      "column": 25,
+      "severity": "ERROR",
+      "code": "TS2339",
+      "message": "Property 'retention_days' does not exist on type 'never'.",
+      "contextHash": "efdee9b768576e4efde6bdad02fb02b433fc5bd5817c88771d023fc5b3531daa"
+    },
+    {
+      "file": "supabase/functions/upload-recording-chunk/index.ts",
+      "line": 288,
+      "column": 51,
+      "severity": "ERROR",
+      "code": "TS2339",
+      "message": "Property 'retention_days' does not exist on type 'never'.",
+      "contextHash": "efdee9b768576e4efde6bdad02fb02b433fc5bd5817c88771d023fc5b3531daa"
+    },
+    {
+      "file": "supabase/functions/upload-recording-chunk/index.ts",
+      "line": 181,
+      "column": 56,
+      "severity": "ERROR",
+      "code": "TS2345",
+      "message": "Argument of type 'SupabaseClient<any, \"public\", \"public\", any, any>' is not assignable to parameter of type 'SupabaseClient<unknown, { PostgrestVersion: string; }, never, never, { PostgrestVersion: string; }>'.",
+      "contextHash": "6dc665bbe2b45bef4cd99e78b0bd433734617422779b14694ac16970d9c473c3"
+    },
+    {
+      "file": "supabase/functions/upload-recording-chunk/index.ts",
+      "line": 51,
+      "column": 56,
+      "severity": "ERROR",
+      "code": "TS2345",
+      "message": "Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'BufferSource'.",
+      "contextHash": "da885437b34a5190d73d42b3b07442e4827d5ef8f3d63650fb28d6dd034374c5"
+    },
+    {
+      "file": "supabase/functions/validate-license/index.ts",
+      "line": 60,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    },
+    {
+      "file": "supabase/functions/verify-email/index.ts",
+      "line": 29,
+      "column": 49,
+      "severity": "ERROR",
+      "code": "TS18046",
+      "message": "'err' is of type 'unknown'.",
+      "contextHash": "0426b01902a1863a70b9e513122d10a84186dd7a167bb375ae92a02e7124121b"
+    }
+  ]
+}
