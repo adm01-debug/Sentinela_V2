@@ -3,33 +3,6 @@
   "command": "deno check supabase/functions/*/index.ts",
   "issues": [
     {
-      "file": "supabase/functions/behavior-pattern/index.ts",
-      "line": 122,
-      "column": 21,
-      "severity": "ERROR",
-      "code": "TS2531",
-      "message": "Object is possibly 'null'.",
-      "contextHash": "288f1f61f3d78fc49f4e394061e8539f62763f51fcc6cf9f1caf35930dcff46e"
-    },
-    {
-      "file": "supabase/functions/behavior-pattern/index.ts",
-      "line": 163,
-      "column": 28,
-      "severity": "ERROR",
-      "code": "TS2769",
-      "message": "No overload matches this call.",
-      "contextHash": "1c3a8bee194d89c31d632adea1c726fec612fcfa471fc34368648433bf249dfa"
-    },
-    {
-      "file": "supabase/functions/behavior-pattern/index.ts",
-      "line": 71,
-      "column": 29,
-      "severity": "ERROR",
-      "code": "TS2769",
-      "message": "No overload matches this call.",
-      "contextHash": "4a1fcb01b0d82c190639e54fc9118fa53da6d7c52f41eb96e5d188e080fe9ee6"
-    },
-    {
       "file": "supabase/functions/check-geofence/index.ts",
       "line": 124,
       "column": 26,
@@ -172,24 +145,6 @@
       "code": "TS2538",
       "message": "Type 'undefined' cannot be used as an index type.",
       "contextHash": "ac7b1cfe377b0cf9a313a59235f355039aaa0e954c08040bd73ef6098435fa80"
-    },
-    {
-      "file": "supabase/functions/trend-forecasting/index.ts",
-      "line": 157,
-      "column": 22,
-      "severity": "ERROR",
-      "code": "TS2531",
-      "message": "Object is possibly 'null'.",
-      "contextHash": "1ad8a20a953b43b6041bce1e3bfac1087534a3548bc0c904aab1436621978b6c"
-    },
-    {
-      "file": "supabase/functions/trend-forecasting/index.ts",
-      "line": 71,
-      "column": 22,
-      "severity": "ERROR",
-      "code": "TS2531",
-      "message": "Object is possibly 'null'.",
-      "contextHash": "582888e283a52756473ec17a7dbb0155201abb0dc4e5042468c5626eb1e11d16"
     }
   ]
 }
