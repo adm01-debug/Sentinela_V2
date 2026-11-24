@@ -68,7 +68,9 @@ serve(async (req) => {
     // Analyze work hour patterns
     const hourDistribution: Record<number, number> = {};
     activities.forEach((a) => {
-      const hour = new Date(a.recorded_at ?? a.created_at).getHours();
+      const ts = a.recorded_at ?? a.created_at;
+      if (!ts) return;
+      const hour = new Date(ts).getHours();
       hourDistribution[hour] = (hourDistribution[hour] || 0) + 1;
     });
 
@@ -116,10 +118,12 @@ serve(async (req) => {
     // Detect productivity trends
     const dailyProductivity: Record<string, number[]> = {};
     activities.forEach((a) => {
+      const ts = a.recorded_at ?? a.created_at;
+      if (!ts) return;
       const active = Number(a.active_time_seconds ?? 0);
       const idle = Number(a.idle_time_seconds ?? 0);
       if (active + idle > 0) {
-        const day = (a.recorded_at ?? a.created_at).split("T")[0];
+        const day = ts.split("T")[0];
         if (!dailyProductivity[day]) dailyProductivity[day] = [];
         dailyProductivity[day].push((active / (active + idle)) * 100);
       }
@@ -160,7 +164,9 @@ serve(async (req) => {
     // Detect unusual patterns (deviations)
     const dayOfWeekActivity: Record<number, number> = {};
     activities.forEach((a) => {
-      const dow = new Date(a.created_at).getDay();
+      const ts = a.created_at;
+      if (!ts) return;
+      const dow = new Date(ts).getDay();
       dayOfWeekActivity[dow] = (dayOfWeekActivity[dow] || 0) + 1;
     });
 

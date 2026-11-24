@@ -61,14 +61,16 @@ serve(async (req) => {
     if (metrics.includes("activity")) {
       const { data: activitiesRaw } = await supabase
         .from("keystroke_logs")
-        .select("recorded_at")
+        .select("recorded_at, created_at")
         .gte("recorded_at", thirtyDaysAgo);
       const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
       // Group by day
       const dailyCounts: Record<string, number> = {};
       activities.forEach((a) => {
-        const date = (a.recorded_at ?? a.created_at).split("T")[0];
+        const ts = a.recorded_at ?? a.created_at;
+        if (!ts) return;
+        const date = ts.split("T")[0];
         dailyCounts[date] = (dailyCounts[date] || 0) + 1;
       });
 
@@ -147,14 +149,16 @@ serve(async (req) => {
     if (metrics.includes("productivity")) {
       const { data: activitiesRaw } = await supabase
         .from("keystroke_logs")
-        .select("recorded_at, active_time_seconds, idle_time_seconds")
+        .select("recorded_at, created_at, active_time_seconds, idle_time_seconds")
         .gte("recorded_at", thirtyDaysAgo)
         .not("active_time_seconds", "is", null);
       const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
       const dailyScores: Record<string, { sum: number; count: number }> = {};
       activities.forEach((a) => {
-        const date = (a.recorded_at ?? a.created_at).split("T")[0];
+        const ts = a.recorded_at ?? a.created_at;
+        if (!ts) return;
+        const date = ts.split("T")[0];
         const active = Number(a.active_time_seconds ?? 0);
         const idle = Number(a.idle_time_seconds ?? 0);
         if (active + idle === 0) return;
