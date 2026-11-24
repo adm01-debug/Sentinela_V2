@@ -22,6 +22,8 @@
   "supabase/functions/_shared/auth_test.ts",
   "supabase/functions/_shared/cors.ts",
   "supabase/functions/_shared/halfSpaceTrees.ts",
+  "supabase/functions/_shared/iceServers.ts",
+  "supabase/functions/_shared/iceServers_test.ts",
   "supabase/functions/_shared/logger.ts",
   "supabase/functions/_shared/rateLimiting.ts",
   "supabase/functions/_shared/schemas.ts",
@@ -1234,7 +1236,7 @@
    "nome": "live-view-authorize",
    "entrada": "supabase/functions/live-view-authorize/index.ts",
    "arquivos": 1,
-   "linhas": 129,
+   "linhas": 126,
    "verify_jwt": false,
    "metodos": [
     "OPTIONS"
@@ -1257,7 +1259,9 @@
    "buckets": [],
    "chama_edges": [],
    "hosts_externos": [],
-   "usa_shared": [],
+   "usa_shared": [
+    "iceServers.ts"
+   ],
    "chamada_pelo_front": [],
    "chamada_por_edges": [],
    "chamada_por_sql_ou_cron": false,

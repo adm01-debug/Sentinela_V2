@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `39b435f245cf02a5e1481132954c64f700e2331b` (2026-11-24T11:34:20-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `d7be2d9fb9d82523cdc508702f3ae4b48a64c90c` (2026-11-24T11:59:48-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1402), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (21), HTML (4)
+- linguagens: TypeScript (1404), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1874 |
-| arquivos_codigo | 1424 |
-| linhas_codigo | 159297 |
+| arquivos_total | 1876 |
+| arquivos_codigo | 1426 |
+| linhas_codigo | 159412 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -305,14 +305,14 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - package-lock.json (26)
 - package.json (25)
 - docs/pendencias/_linha-de-base.md (20)
-- scripts/ci/eslint-baseline.json (18)
+- scripts/ci/eslint-baseline.json (19)
 - .github/workflows/deploy.yml (17)
 - scripts/ci/prettier-baseline.json (17)
 - src/routes/AppRoutes.tsx (13)
 - src/components/AppSidebar.tsx (8)
 - .github/workflows/ci.yml (7)
+- scripts/ci/deno-check-baseline.json (7)
 - docs/prod-readiness.md (6)
-- scripts/ci/deno-check-baseline.json (6)
 - src/index.css (5)
 - src/test/gap-audit.test.ts (5)
 - src/test/improvements-verification.test.ts (5)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `d7be2d9fb` fix: live view entrega ICE servers validos em vez de repassar o secret (#288)
 - 2026-11-24 `39b435f24` fix: tipos de client e de validacao param de mentir nos relatorios (#287)
 - 2026-11-24 `a470d9c6b` fix: envio de alerta nao mascara mais tipo ausente (status e event_type) (#286)
 - 2026-11-24 `7794226d5` fix: analise de padroes e tendencias ignora registro sem data em vez de estourar (#285)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `397bb1e93` docs: linha de base com rate limit, Deploy verde e auditoria de tipos das edges (#277)
 - 2026-11-24 `a970c26a5` test: guarda o consumo do rate limit nas edge functions (#276)
 - 2026-11-24 `fee6687be` fix(edge): corrige rate limit inoperante e retry_count descartado (#275)
-- 2026-11-23 `442048395` test: guarda do contrato de dados entre front e banco (#274)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -4173,6 +4173,9 @@
   "supabase/functions/_shared/auth_test.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
+  "supabase/functions/_shared/iceServers_test.ts": [
+   "supabase/functions/_shared/iceServers.ts"
+  ],
   "supabase/functions/agent-collector/contract_test.ts": [
    "supabase/functions/_shared/validation.ts"
   ],
@@ -4238,6 +4241,9 @@
    "supabase/functions/_shared/logger.ts",
    "supabase/functions/_shared/rateLimiting.ts",
    "supabase/functions/_shared/validation.ts"
+  ],
+  "supabase/functions/live-view-authorize/index.ts": [
+   "supabase/functions/_shared/iceServers.ts"
   ],
   "supabase/functions/mobile-collector/contract_test.ts": [
    "supabase/functions/_shared/validation.ts"

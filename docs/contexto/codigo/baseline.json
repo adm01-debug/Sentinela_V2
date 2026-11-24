@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "39b435f245cf02a5e1481132954c64f700e2331b",
+  "commit": "d7be2d9fb9d82523cdc508702f3ae4b48a64c90c",
   "branch": "main",
-  "data_commit": "2026-11-24T11:34:20-03:00",
+  "data_commit": "2026-11-24T11:59:48-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "d7be2d9fb",
+    "data": "2026-11-24",
+    "assunto": "fix: live view entrega ICE servers validos em vez de repassar o secret (#288)"
+   },
    {
     "sha": "39b435f24",
     "data": "2026-11-24",
@@ -126,14 +131,9 @@
     "sha": "9ab51f01b",
     "data": "2026-11-23",
     "assunto": "feat: tela de palavras sensiveis com CRUD real (#264)"
-   },
-   {
-    "sha": "4f535b477",
-    "data": "2026-11-23",
-    "assunto": "chore: documenta a prova pos-deploy do gate das edges (#263)"
    }
   ],
-  "arquivos_mudados_7d": 263,
+  "arquivos_mudados_7d": 266,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -145,7 +145,7 @@
    },
    {
     "pasta": "scripts/ci/eslint-baseline.json",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "pasta": ".github/workflows/deploy.yml",
@@ -168,15 +168,19 @@
     "mudancas": 13
    },
    {
+    "pasta": "supabase/functions/_shared",
+    "mudancas": 10
+   },
+   {
     "pasta": "src/components/AppSidebar.tsx",
     "mudancas": 8
    },
    {
-    "pasta": "supabase/functions/_shared",
-    "mudancas": 8
+    "pasta": ".github/workflows/ci.yml",
+    "mudancas": 7
    },
    {
-    "pasta": ".github/workflows/ci.yml",
+    "pasta": "scripts/ci/deno-check-baseline.json",
     "mudancas": 7
    },
    {
@@ -189,10 +193,6 @@
    },
    {
     "pasta": "docs/prod-readiness.md",
-    "mudancas": 6
-   },
-   {
-    "pasta": "scripts/ci/deno-check-baseline.json",
     "mudancas": 6
    }
   ],
@@ -211,7 +211,7 @@
    },
    {
     "arquivo": "scripts/ci/eslint-baseline.json",
-    "mudancas": 18
+    "mudancas": 19
    },
    {
     "arquivo": ".github/workflows/deploy.yml",
@@ -234,11 +234,11 @@
     "mudancas": 7
    },
    {
-    "arquivo": "docs/prod-readiness.md",
-    "mudancas": 6
+    "arquivo": "scripts/ci/deno-check-baseline.json",
+    "mudancas": 7
    },
    {
-    "arquivo": "scripts/ci/deno-check-baseline.json",
+    "arquivo": "docs/prod-readiness.md",
     "mudancas": 6
    },
    {
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 185
+    "commits": 186
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1874,
-  "arquivos_codigo": 1424,
-  "linhas_codigo": 159297,
+  "arquivos_total": 1876,
+  "arquivos_codigo": 1426,
+  "linhas_codigo": 159412,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -495,8 +495,8 @@
    "linhas": 180
   },
   "supabase/functions": {
-   "arquivos": 103,
-   "linhas": 13548
+   "arquivos": 105,
+   "linhas": 13663
   },
   "vite.config.ts": {
    "arquivos": 1,
