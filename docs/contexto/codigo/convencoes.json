@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (54)",
+   "co-localizado (*.test) (55)",
    "co-localizado (__tests__) (22)",
    "outro (7)"
   ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: analise de IA filtra e gera por funcionario de verdade (#296)",
    "fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)",
    "feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)",
    "fix: resumo de atividades volta a alimentar os graficos (#292)",
-   "fix: diagnostico de ICE usa a mesma fonte do live view (#291)",
-   "feat: detector de anomalias passa a aparecer na tela de atividades (#290)"
+   "fix: diagnostico de ICE usa a mesma fonte do live view (#291)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `48c727774bb990538f541a82f81b36ac3091a00b` (2026-11-24T14:43:58-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `76b120114871740ce01b2ba29ea47194a32164c5` (2026-11-24T17:38:47-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1410), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (21), HTML (4)
+- linguagens: TypeScript (1411), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (21), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1882 |
-| arquivos_codigo | 1432 |
-| linhas_codigo | 160333 |
+| arquivos_total | 1883 |
+| arquivos_codigo | 1433 |
+| linhas_codigo | 160504 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,7 +48,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 84 |
+| testes | 85 |
 | workflows | 12 |
 | scripts | 32 |
 | docs_md | 176 |
@@ -58,7 +58,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (359), src/pages (93), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (54), co-localizado (__tests__) (22), outro (7)
+- testes: co-localizado (*.test) (55), co-localizado (__tests__) (22), outro (7)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (5), scripts/ai-context (2), scripts/inventario (2)
@@ -304,8 +304,8 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (26)
 - package.json (25)
+- scripts/ci/eslint-baseline.json (21)
 - docs/pendencias/_linha-de-base.md (20)
-- scripts/ci/eslint-baseline.json (20)
 - scripts/ci/prettier-baseline.json (18)
 - .github/workflows/deploy.yml (17)
 - src/routes/AppRoutes.tsx (13)
@@ -463,6 +463,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-24 `76b120114` fix: analise de IA filtra e gera por funcionario de verdade (#296)
 - 2026-11-24 `48c727774` fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)
 - 2026-11-24 `1a0e0bcdc` feat: liga os hooks de padroes de comportamento e insights na tela de IA (#293)
 - 2026-11-24 `07e505075` fix: resumo de atividades volta a alimentar os graficos (#292)
@@ -477,7 +478,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `f566a4a98` fix: deploy nao fica vermelho por corrida quando o deployment do commit novo ainda nao esta listado (#283)
 - 2026-11-24 `52be74c03` fix: resposta de erro das edges nao volta mais vazia (err unknown) (#282)
 - 2026-11-24 `17070eb55` infra: contratos das edges passam a rodar no Deno 2.9.8 (#281)
-- 2026-11-24 `2c025d913` fix: deploy para de ficar vermelho quando o commit e superado por merge mais novo (#280)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

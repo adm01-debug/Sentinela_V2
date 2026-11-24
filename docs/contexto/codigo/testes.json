@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 84,
+ "total": 85,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 82
+  "unit": 83
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 54
+   "arquivos": 55
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -306,6 +306,16 @@
     "src/pages/ViolationsPage.tsx"
    ],
    "casos": 3
+  },
+  {
+   "arquivo": "src/test/ai-analysis-page.test.tsx",
+   "tipo": "unit",
+   "linhas": 129,
+   "testa": [
+    "src/hooks/useAIAnalysisPage.ts",
+    "src/integrations/supabase/client.ts"
+   ],
+   "casos": 4
   },
   {
    "arquivo": "src/test/analysis-report-pdf.test.ts",
@@ -856,6 +866,7 @@
   "src/constants/routes.ts": 2,
   "src/guards/MFAGuard.tsx": 1,
   "src/guards/index.tsx": 1,
+  "src/hooks/useAIAnalysisPage.ts": 1,
   "src/hooks/useAIInsights.ts": 1,
   "src/hooks/useAccessControl.ts": 1,
   "src/hooks/useAnomalyDetection.ts": 1,
@@ -882,7 +893,7 @@
   "src/hooks/useToggle.ts": 1,
   "src/hooks/useUsers.ts": 1,
   "src/i18n/index.ts": 1,
-  "src/integrations/supabase/client.ts": 9,
+  "src/integrations/supabase/client.ts": 10,
   "src/lib/apiMonitor.ts": 1,
   "src/lib/circuitBreaker.ts": 1,
   "src/lib/error-handling/boundary.tsx": 1,
@@ -1002,7 +1013,6 @@
    "src/hooks/useAdvancedFilters.ts",
    "src/hooks/useAgentKeysPage.ts",
    "src/hooks/useAggregate.ts",
-   "src/hooks/useAIAnalysisPage.ts",
    "src/hooks/useAlert.ts",
    "src/hooks/useAlerts.ts",
    "src/hooks/useAlertSettings.ts",

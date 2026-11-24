@@ -6548,7 +6548,7 @@
     "AIAnalysisPage"
    ],
    "export_default": "AIAnalysisPage",
-   "linhas": 155,
+   "linhas": 150,
    "dominio": "pages",
    "hooks_locais": [
     "useAIAnalysisPage"

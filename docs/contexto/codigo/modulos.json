@@ -1806,7 +1806,7 @@
    "modulo": "hooks",
    "arquivos": 479,
    "testes": 0,
-   "linhas": 32342,
+   "linhas": 32389,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -3810,7 +3810,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 13442,
+   "linhas": 13437,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -5185,7 +5185,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 55,
+   "testes": 56,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],

@@ -457,7 +457,7 @@
    "hooks_exportados": [
     "useAIAnalysisPage"
    ],
-   "linhas": 145,
+   "linhas": 192,
    "dominio": "hooks",
    "tabelas": [
     "ai_analysis_reports",
@@ -480,7 +480,7 @@
    "usado_por_arquivos": [
     "src/pages/AIAnalysisPage.tsx"
    ],
-   "coberto_por_testes": 0
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useAIInsights.ts",

@@ -2132,7 +2132,8 @@
   ],
   "src/hooks/useAIAnalysisPage.ts": [
    "src/hooks/use-toast.ts",
-   "src/integrations/supabase/client.ts"
+   "src/integrations/supabase/client.ts",
+   "src/integrations/supabase/types.ts"
   ],
   "src/hooks/useAIInsights.ts": [
    "src/integrations/supabase/client.ts"
