@@ -1,43 +1,46 @@
-import { useState, useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface ActivitySummary {
+  period: string;
   totalActivities: number;
   uniqueUsers: number;
   topApplications: { name: string; count: number; percentage: number }[];
   productivityScore: number;
   peakHours: { hour: number; count: number }[];
+  hourlyDistribution: { hour: number; count: number }[];
+  violationsSummary: { total: number; bySeverity: Record<string, number> };
   highlights: string[];
 }
 
 export interface UseActivitySummaryOptions {
   period?: 'day' | 'week' | 'month';
   employeeId?: string;
+  /** Intervalo yyyy-mm-dd; tem prioridade sobre `period` quando informado. */
+  startDate?: string;
+  endDate?: string;
 }
 
 export function useActivitySummary(options: UseActivitySummaryOptions = {}) {
-  const { period = 'day', employeeId } = options;
-  const [summary, setSummary] = useState<ActivitySummary | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const { period = 'day', employeeId, startDate, endDate } = options;
 
-  const fetchSummary = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const { data, error: fnError } = await supabase.functions.invoke('summarize-activity', {
-        body: { period, employeeId }
+  const query = useQuery({
+    queryKey: ['activity-summary', period, employeeId ?? null, startDate ?? null, endDate ?? null],
+    queryFn: async () => {
+      const { data, error } = await supabase.functions.invoke('summarize-activity', {
+        body: { period, employeeId, startDate, endDate },
       });
-      if (fnError) throw fnError;
-      setSummary(data?.summary || null);
-    } catch (e) {
-      setError(e instanceof Error ? e : new Error('Failed to fetch summary'));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [period, employeeId]);
+      if (error) throw error;
+      return (data?.summary ?? null) as ActivitySummary | null;
+    },
+  });
 
-  return { summary, isLoading, error, fetchSummary };
+  return {
+    summary: query.data ?? null,
+    isLoading: query.isLoading,
+    error: (query.error as Error | null) ?? null,
+    refetch: query.refetch,
+  };
 }
 
 export default useActivitySummary;
