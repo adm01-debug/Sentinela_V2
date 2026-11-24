@@ -34,4 +34,24 @@ Deno.test("Send Webhook Contract V2 - Valid Payload with Metadata", () => {
   const result = sendWebhookSchemaV2.safeParse(validPayload);
   assertEquals(result.success, true);
 });
+Deno.test("Send Webhook Contract V1 - retry_count tem default 0", () => {
+  const result = sendWebhookSchemaV1.safeParse({
+    webhook_id: "550e8400-e29b-41d4-a716-446655440000",
+    event_type: "employee.violation",
+    payload: { id: 123 },
+  });
+  assertEquals(result.success, true);
+  if (!result.success) return;
+  assertEquals(result.data.retry_count, 0);
+});
 
+Deno.test("Send Webhook Contract V2 - retry_count informado e preservado", () => {
+  const result = sendWebhookSchemaV2.safeParse({
+    webhook_id: "550e8400-e29b-41d4-a716-446655440000",
+    event_type: "v2.event",
+    retry_count: 2,
+  });
+  assertEquals(result.success, true);
+  if (!result.success) return;
+  assertEquals(result.data.retry_count, 2);
+});

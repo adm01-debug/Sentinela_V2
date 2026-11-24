@@ -120,6 +120,9 @@ export const sendWebhookSchemaV1 = z.object({
   event_type: z.string().min(1).optional(),
   payload: z.record(z.unknown()).optional(),
   test: z.boolean().optional(),
+  // send-webhook usa este campo como tentativa atual (attempt_number). Sem ele
+  // no schema o valor enviado e descartado e `retry_count + 1` vira NaN.
+  retry_count: z.number().int().min(0).max(10).default(0),
 });
 
 export const sendWebhookSchemaV2 = sendWebhookSchemaV1.extend({

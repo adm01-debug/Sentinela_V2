@@ -23,11 +23,11 @@ serve(async (req) => {
   try {
     const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
     const rateLimitResult = await checkRateLimit(clientIP, "award-gamification-points", 10, 60);
-    if (rateLimitResult.error) {
-      return new Response(JSON.stringify(rateLimitResult.body), {
-        status: 429,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ error: "Rate limit exceeded", retry_after: rateLimitResult.retryAfter }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     const authHeader = req.headers.get("Authorization");
