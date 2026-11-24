@@ -310,12 +310,12 @@
   {
    "arquivo": "src/test/ai-analysis-page.test.tsx",
    "tipo": "unit",
-   "linhas": 129,
+   "linhas": 165,
    "testa": [
     "src/hooks/useAIAnalysisPage.ts",
     "src/integrations/supabase/client.ts"
    ],
-   "casos": 4
+   "casos": 6
   },
   {
    "arquivo": "src/test/analysis-report-pdf.test.ts",

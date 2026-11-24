@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: filtro de tipo da tela de IA acha os relatorios que ja existem (#299)",
    "fix: behavior-pattern recebe o nome do funcionario no campo certo (#298)",
    "infra: retry de 5xx transitorio do Supabase no migrate e no deploy-functions (#295)",
    "fix: tipo do resumo de atividade do monitoramento deixa de se chamar ActivitySummary (#297)",
-   "fix: analise de IA filtra e gera por funcionario de verdade (#296)",
-   "fix: alinha o tipo ActivitySummary ao contrato real do summarize-activity (#294)"
+   "fix: analise de IA filtra e gera por funcionario de verdade (#296)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

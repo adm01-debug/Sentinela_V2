@@ -457,7 +457,7 @@
    "hooks_exportados": [
     "useAIAnalysisPage"
    ],
-   "linhas": 192,
+   "linhas": 214,
    "dominio": "hooks",
    "tabelas": [
     "ai_analysis_reports",
