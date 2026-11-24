@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { requireCronOrServiceRole } from "../_shared/auth.ts";
 const corsHeaders = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type" };
 
 const POSITIVE_WORDS = ['good', 'great', 'excellent', 'amazing', 'wonderful', 'fantastic', 'happy', 'love', 'best', 'perfect', 'success', 'productive', 'efficient'];
@@ -15,6 +16,7 @@ interface AnalysisResult {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   try {
+    await requireCronOrServiceRole(req, 'sentiment-analysis');
     const { text, texts = [] } = await req.json();
     const analyze = (t: string): AnalysisResult => {
       const words = t.toLowerCase().split(/\W+/);

@@ -2,6 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
+import { requireCronOrServiceRole } from "../_shared/auth.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,6 +23,7 @@ serve(async (req) => {
   }
 
   try {
+    await requireCronOrServiceRole(req, 'request-overtime');
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
     const rateLimitResult = await checkRateLimit(clientIP, 'request-overtime', 10, 60);
     

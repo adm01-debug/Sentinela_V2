@@ -11,6 +11,7 @@
  */
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
+import { requireCronOrServiceRole } from "../_shared/auth.ts";
 
 interface Body {
   violation_id: string;
@@ -34,6 +35,7 @@ Deno.serve(async (req) => {
 
   let body: Body;
   try {
+    await requireCronOrServiceRole(req, 'notify-mobile-violation');
     body = (await req.json()) as Body;
   } catch {
     return json({ error: 'invalid_json' }, 400);
