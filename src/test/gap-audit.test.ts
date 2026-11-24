@@ -197,6 +197,7 @@ describe("Gap Audit: Edge Function Auth Gates", () => {
     "behavior-pattern",
     "check-geofence",
     "escalate-dispute-sla",
+    "expire-recordings",
     "notify-new-device",
     "ocr-screenshot",
     "predict-anomaly",
@@ -204,7 +205,9 @@ describe("Gap Audit: Edge Function Auth Gates", () => {
     "send-push-notification",
     "send-slack-notification",
     "send-webhook",
+    "slack-mttr-monitor",
     "slack-notify",
+    "slack-weekly-digest",
     "smart-recommendations",
     "summarize-activity",
     "trend-forecasting",
@@ -214,7 +217,7 @@ describe("Gap Audit: Edge Function Auth Gates", () => {
     const fs = await import("fs");
     const path = await import("path");
     const gatePattern =
-      /requireUserOrServiceRole|requireAuth|verifyAuth|requireAdmin|requireServiceRole|auth\.getUser\(/;
+      /requireCronOrServiceRole|requireUserOrServiceRole|requireAuth|verifyAuth|requireAdmin|requireServiceRole|auth\.getUser\(/;
     const missing: string[] = [];
 
     for (const name of hardenedFunctions) {

@@ -1,6 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { Logger } from '../_shared/logger.ts';
+import { requireCronOrServiceRole } from '../_shared/auth.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -25,6 +26,15 @@ function json(body: unknown, status = 200): Response {
 serve(async (req) => {
   const logger = new Logger('expire-recordings');
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+
+  try {
+    await requireCronOrServiceRole(req, 'expire-recordings');
+  } catch {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
 
   const supabase = createClient(
     Deno.env.get('SUPABASE_URL')!,
