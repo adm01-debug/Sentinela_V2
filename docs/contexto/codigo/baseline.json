@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1762098b77ba6fc97c07a8f9345e397beada9c23",
+  "commit": "7794226d568f75d88e38e57869faa1fbfd297326",
   "branch": "main",
-  "data_commit": "2026-11-24T11:05:08-03:00",
+  "data_commit": "2026-11-24T11:11:32-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "7794226d5",
+    "data": "2026-11-24",
+    "assunto": "fix: analise de padroes e tendencias ignora registro sem data em vez de estourar (#285)"
+   },
    {
     "sha": "1762098b7",
     "data": "2026-11-24",
@@ -126,11 +131,6 @@
     "sha": "163389560",
     "data": "2026-11-23",
     "assunto": "fix: exige autenticacao em 3 edge functions abertas ao publico (#261)"
-   },
-   {
-    "sha": "cefc52fd2",
-    "data": "2026-11-23",
-    "assunto": "chore: remove DashboardTooltip orfao (#259)"
    }
   ],
   "arquivos_mudados_7d": 262,
@@ -258,11 +258,19 @@
     "mudancas": 4
    },
    {
+    "arquivo": "scripts/ci/deno-check-baseline.json",
+    "mudancas": 4
+   },
+   {
     "arquivo": "src/pages/__tests__/Dashboard.test.tsx",
     "mudancas": 4
    },
    {
     "arquivo": "supabase/functions/award-gamification-points/index.ts",
+    "mudancas": 4
+   },
+   {
+    "arquivo": "supabase/functions/behavior-pattern/index.ts",
     "mudancas": 4
    },
    {
@@ -288,20 +296,12 @@
    {
     "arquivo": ".github/workflows/update-deps.yml",
     "mudancas": 3
-   },
-   {
-    "arquivo": "AGENTS.md",
-    "mudancas": 3
-   },
-   {
-    "arquivo": "inventario/estado/edges.json",
-    "mudancas": 3
    }
   ],
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 182
+    "commits": 183
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1874,
   "arquivos_codigo": 1424,
-  "linhas_codigo": 159277,
+  "linhas_codigo": 159287,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 103,
-   "linhas": 13528
+   "linhas": 13538
   },
   "vite.config.ts": {
    "arquivos": 1,

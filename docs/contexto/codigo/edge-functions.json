@@ -309,7 +309,7 @@
    "nome": "behavior-pattern",
    "entrada": "supabase/functions/behavior-pattern/index.ts",
    "arquivos": 1,
-   "linhas": 206,
+   "linhas": 212,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
@@ -2603,7 +2603,7 @@
    "nome": "trend-forecasting",
    "entrada": "supabase/functions/trend-forecasting/index.ts",
    "arquivos": 1,
-   "linhas": 216,
+   "linhas": 220,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
