@@ -1568,7 +1568,7 @@
    "nome": "predict-anomaly",
    "entrada": "supabase/functions/predict-anomaly/index.ts",
    "arquivos": 1,
-   "linhas": 158,
+   "linhas": 160,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
