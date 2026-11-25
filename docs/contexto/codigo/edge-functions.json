@@ -697,14 +697,13 @@
    "nome": "mobile-collector",
    "entrada": "supabase/functions/mobile-collector/index.ts",
    "arquivos": 2,
-   "linhas": 243,
+   "linhas": 257,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
     "agent_keys",
-    "employees",
     "mobile_activity_logs",
     "mobile_devices"
    ],

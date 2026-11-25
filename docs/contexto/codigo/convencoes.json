@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: coleta movel nao sobrescreve aparelho de outro funcionario (#330)",
    "fix: sincronizacao de templates do WhatsApp exige admin (#329)",
    "fix: admin so pontua funcionario da propria empresa (#328)",
    "fix: exige admin e escopo de empresa no send-scheduled-report (#327)",
-   "fix: aplica escopo de empresa no export-data (dump cross-tenant) (#326)",
-   "fix: exige dono do relatorio e escopo de empresa na generate-report (#325)"
+   "fix: aplica escopo de empresa no export-data (dump cross-tenant) (#326)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

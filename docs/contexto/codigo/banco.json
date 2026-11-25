@@ -5465,7 +5465,6 @@
     "get-employee-timeline",
     "health-check",
     "ingest-file-transfer",
-    "mobile-collector",
     "natural-language-query",
     "risk-score-calculator",
     "smart-recommendations",

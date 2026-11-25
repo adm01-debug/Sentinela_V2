@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `6d7b244083f9fc9e1472d412b87419afb3593fd1` (2026-11-25T18:11:28-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `ce03e8e63b496e34e1a63891149ebf3bad24199f` (2026-11-25T18:14:12-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1408 |
-| linhas_codigo | 160246 |
+| linhas_codigo | 160260 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -193,7 +193,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `ingest-file-transfer` (verify_jwt=false) — tabelas: agent_keys, dlp_incidents, dlp_policies, employees, file_transfers; chamada por 0 arquivo(s) do front
 - `live-view-authorize` (verify_jwt=false) — tabelas: agent_keys, live_view_audit, live_view_sessions; chamada por 0 arquivo(s) do front
 - `mcp-query` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `mobile-collector` — tabelas: agent_keys, employees, mobile_activity_logs, mobile_devices; chamada por 0 arquivo(s) do front — **ÓRFÃ**
+- `mobile-collector` — tabelas: agent_keys, mobile_activity_logs, mobile_devices; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `natural-language-query` — tabelas: employees, keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `notify-dispute-decision` — tabelas: mobile_devices, settings_audit_log, violation_disputes; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `notify-new-device` — tabelas: login_security_events; chamada por 1 arquivo(s) do front
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `ce03e8e63` fix: coleta movel nao sobrescreve aparelho de outro funcionario (#330)
 - 2026-11-25 `6d7b24408` fix: sincronizacao de templates do WhatsApp exige admin (#329)
 - 2026-11-25 `8b6e821af` fix: admin so pontua funcionario da propria empresa (#328)
 - 2026-11-25 `ef7078fc3` fix: exige admin e escopo de empresa no send-scheduled-report (#327)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `e8007929e` fix: useEmployeeSchedule devolve a escala vigente do funcionario (#315)
 - 2026-11-25 `19a780dec` feat: traz o detalhe de cliques do funcionario para a jornada do dia (#314)
 - 2026-11-25 `3ef51c691` feat: mostra a escala vigente na data escolhida na aba Atribuicoes (#313)
-- 2026-11-25 `a8fb66069` fix: liga as operacoes reais da tela de escalas de trabalho (#311)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`
