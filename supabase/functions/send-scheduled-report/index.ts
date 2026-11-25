@@ -2,6 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
+import { callerClient, callerCompanyId, companyScope, withCompanyScope } from '../_shared/auth.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -71,6 +72,33 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // `scheduled_reports` tem RLS exclusiva de admin e a tela tem AdminGuard;
+    // sem esta checagem qualquer usuario logado disparava o envio de qualquer
+    // relatorio e recebia os dados de todas as empresas por e-mail.
+    const { data: adminRoles } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .in('role', ['admin', 'super_admin'])
+      .limit(1);
+
+    if (!adminRoles || adminRoles.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Forbidden: admin role required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Escopo oficial do tenant (mesma fonte das policies).
+    const callerCompany = await callerCompanyId(supabase, {
+      user: { id: user.id },
+      isServiceRole: false,
+    });
+    const scope = companyScope(callerCompany);
+    // productivity_metrics nao tem company_id; a policy escopa via employees,
+    // entao essa leitura fala como o chamador (RLS vale).
+    const dataClient = callerClient(req);
+
     // Get report configuration
     const { data: report, error: reportError } = await supabase
       .from('scheduled_reports')
@@ -85,6 +113,21 @@ serve(async (req) => {
       );
     }
 
+    // `scheduled_reports` nao tem company_id: o vinculo de tenant e o autor.
+    // Sem isto um admin da empresa A disparava o relatorio agendado da B.
+    if (report.created_by && report.created_by !== user.id) {
+      const creatorCompany = await callerCompanyId(supabase, {
+        user: { id: report.created_by },
+        isServiceRole: false,
+      });
+      if (!creatorCompany || creatorCompany !== callerCompany) {
+        return new Response(
+          JSON.stringify({ error: 'Forbidden: report from another company' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
     if (!report.is_active && !force) {
       return new Response(
         JSON.stringify({ error: 'Report is inactive' }),
@@ -95,20 +138,25 @@ serve(async (req) => {
     // Generate report data based on type
     let reportData;
     switch (report.report_type) {
-      case 'violations':
-        const { data: violations } = await supabase
-          .from('security_violations')
-          .select('*')
-          .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      case 'violations': {
+        const { data: violations } = await withCompanyScope(
+          supabase
+            .from('security_violations')
+            .select('*')
+            .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()),
+          scope
+        );
         reportData = violations;
         break;
-      case 'productivity':
-        const { data: productivity } = await supabase
+      }
+      case 'productivity': {
+        const { data: productivity } = await dataClient
           .from('productivity_metrics')
           .select('*')
           .gte('date', new Date().toISOString().split('T')[0]);
         reportData = productivity;
         break;
+      }
       default:
         reportData = { message: 'Report generated' };
     }
