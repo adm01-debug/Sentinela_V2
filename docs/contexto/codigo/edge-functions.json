@@ -1209,12 +1209,13 @@
    "nome": "send-webhook",
    "entrada": "supabase/functions/send-webhook/index.ts",
    "arquivos": 2,
-   "linhas": 249,
+   "linhas": 273,
    "verify_jwt": true,
    "metodos": [
     "OPTIONS"
    ],
    "tabelas": [
+    "user_roles",
     "webhook_logs",
     "webhooks"
    ],

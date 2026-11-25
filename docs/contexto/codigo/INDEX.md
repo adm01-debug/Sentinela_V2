@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `183a9759356acbc486767ef87bb3debf5d8da4fa` (2026-11-25T19:07:14-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `fffff3c15430e03b99d985cc1f9e65e10a7a3027` (2026-11-25T19:18:09-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1862 |
 | arquivos_codigo | 1408 |
-| linhas_codigo | 160332 |
+| linhas_codigo | 160356 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -208,7 +208,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `send-push-notification` — tabelas: -; chamada por 2 arquivo(s) do front
 - `send-scheduled-report` — tabelas: productivity_metrics, report_logs, scheduled_reports, security_violations, user_roles; chamada por 2 arquivo(s) do front
 - `send-slack-notification` — tabelas: -; chamada por 1 arquivo(s) do front
-- `send-webhook` — tabelas: webhook_logs, webhooks; chamada por 2 arquivo(s) do front
+- `send-webhook` — tabelas: user_roles, webhook_logs, webhooks; chamada por 2 arquivo(s) do front
 - `send-whatsapp` (verify_jwt=false) — tabelas: user_roles, whatsapp_config; chamada por 2 arquivo(s) do front
 - `slack-dlq-bulk-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
 - `slack-dlq-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `fffff3c15` fix: gate de admin no send-webhook (#337)
 - 2026-11-25 `183a97593` fix: identidade do JWT no notify-new-device (#336)
 - 2026-11-25 `5af2975df` fix: escopo de empresa no check-geofence (#335)
 - 2026-11-25 `4fdfa8fd4` fix: escopo de empresa e trava de URL no ocr-screenshot (#334)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `976dba3a1` fix: exige dono do relatorio e escopo de empresa na generate-report (#325)
 - 2026-11-25 `31353a3c7` fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)
 - 2026-11-25 `a0e851cb3` fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)
-- 2026-11-25 `2982afb3f` chore(agentes): recupera isolamento de checkout e nota do texto-mestre (#321)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: gate de admin no send-webhook (#337)",
    "fix: identidade do JWT no notify-new-device (#336)",
    "fix: escopo de empresa no check-geofence (#335)",
    "fix: escopo de empresa e trava de URL no ocr-screenshot (#334)",
-   "fix: escopo de empresa no notify-dispute-decision (#333)",
-   "fix: exige admin no send-whatsapp (#332)"
+   "fix: escopo de empresa no notify-dispute-decision (#333)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

@@ -16419,6 +16419,7 @@
     "award-gamification-points",
     "rate-limit-logs",
     "send-scheduled-report",
+    "send-webhook",
     "send-whatsapp",
     "sync-whatsapp-templates"
    ],

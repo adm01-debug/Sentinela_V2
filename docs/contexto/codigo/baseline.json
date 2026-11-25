@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "183a9759356acbc486767ef87bb3debf5d8da4fa",
+  "commit": "fffff3c15430e03b99d985cc1f9e65e10a7a3027",
   "branch": "main",
-  "data_commit": "2026-11-25T19:07:14-03:00",
+  "data_commit": "2026-11-25T19:18:09-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "fffff3c15",
+    "data": "2026-11-25",
+    "assunto": "fix: gate de admin no send-webhook (#337)"
+   },
    {
     "sha": "183a97593",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "63e0317b6",
     "data": "2026-11-25",
     "assunto": "ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)"
-   },
-   {
-    "sha": "217616fef",
-    "data": "2026-11-25",
-    "assunto": "fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)"
    }
   ],
   "arquivos_mudados_7d": 337,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 229
+    "commits": 230
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1862,
   "arquivos_codigo": 1408,
-  "linhas_codigo": 160332,
+  "linhas_codigo": 160356,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -496,7 +496,7 @@
   },
   "supabase/functions": {
    "arquivos": 69,
-   "linhas": 11568
+   "linhas": 11592
   },
   "vite.config.ts": {
    "arquivos": 1,
