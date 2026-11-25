@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `2f67831c59b956c47ae4caecd279fe1fdb9f113e` (2026-11-25T19:42:05-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `d7001a7a6e00fddeb5b7922574ec3984cc1cfd87` (2026-11-25T19:59:39-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -425,6 +425,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `d7001a7a6` fix: usa admin do app_role na policy de tenant (#340)
 - 2026-11-25 `2f67831c5` ci: trava consulta sem escopo de empresa nas edges de analise (#324)
 - 2026-11-25 `767bfe5a3` infra: company_id nas tabelas sem tenant (#338)
 - 2026-11-25 `de3fb1a1e` feat: liga push no navegador com Web Push/VAPID (#319)
@@ -439,7 +440,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `48ac518be` fix: exige admin no send-whatsapp (#332)
 - 2026-11-25 `58db51440` fix: exige service_role no process-violation-alert (#331)
 - 2026-11-25 `ce03e8e63` fix: coleta movel nao sobrescreve aparelho de outro funcionario (#330)
-- 2026-11-25 `6d7b24408` fix: sincronizacao de templates do WhatsApp exige admin (#329)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

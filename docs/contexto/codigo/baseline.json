@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "2f67831c59b956c47ae4caecd279fe1fdb9f113e",
+  "commit": "d7001a7a6e00fddeb5b7922574ec3984cc1cfd87",
   "branch": "main",
-  "data_commit": "2026-11-25T19:42:05-03:00",
+  "data_commit": "2026-11-25T19:59:39-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "d7001a7a6",
+    "data": "2026-11-25",
+    "assunto": "fix: usa admin do app_role na policy de tenant (#340)"
+   },
    {
     "sha": "2f67831c5",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "335cb7d14",
     "data": "2026-11-25",
     "assunto": "feat: assina eventos e mostra entregas na tela de webhooks (#318)"
-   },
-   {
-    "sha": "1c198e947",
-    "data": "2026-11-25",
-    "assunto": "fix(desktop-agent): tira os requires inline e o import morto (#316)"
    }
   ],
   "arquivos_mudados_7d": 355,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 236
+    "commits": 237
    },
    {
     "autor": "dependabot[bot]",
