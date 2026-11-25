@@ -20,6 +20,10 @@ por falha de instalação. "Esperar CI verde" ainda não é critério utilizáve
 - Para listar PRs abertas com os arquivos que tocam numa chamada só, use `github_graphql`
   (`pullRequests(states:OPEN){ nodes { number files { nodes { path } } } }`).
 
+- **Checkout isolado, nunca o primário.** Rode git em `git worktree add` ou em clone de sessão; o clone do
+  dono é somente leitura. Dois agentes na mesma árvore trocam branch embaixo um do outro e o commit de um
+  começa a carregar o diff do outro — foi assim que trabalho de sessão alheia já se perdeu.
+
 ## Perímetro do GitHub — estado canônico
 
 Qualquer mudança nos campos abaixo atualiza **esta tabela** no mesmo PR.
