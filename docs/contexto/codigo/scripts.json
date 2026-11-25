@@ -256,7 +256,8 @@
    "env": [],
    "npm_scripts": [],
    "workflows": [
-    "deploy.yml"
+    "deploy.yml",
+    "prune-edge-functions.yml"
    ],
    "orfao": false
   },

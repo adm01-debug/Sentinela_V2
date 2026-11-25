@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `0dada9e5895809c36e1a53f2e9431d2b4211d4bf` (2026-11-25T07:24:14-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `af9d004da3976cbafb8dc7b2dd41878036c2ca67` (2026-11-25T08:05:44-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1411), Markdown (176), SQL (128), JSON (44), YAML (35), JavaScript (24), Shell (22), HTML (4)
+- linguagens: TypeScript (1372), Markdown (176), SQL (128), JSON (44), YAML (36), JavaScript (24), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1884 |
-| arquivos_codigo | 1433 |
-| linhas_codigo | 160738 |
+| arquivos_total | 1846 |
+| arquivos_codigo | 1394 |
+| linhas_codigo | 156766 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -44,12 +44,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | modulos | 58 |
 | componentes | 470 |
 | hooks | 524 |
-| edge_functions | 88 |
+| edge_functions | 50 |
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 85 |
-| workflows | 12 |
+| testes | 84 |
+| workflows | 13 |
 | scripts | 33 |
 | docs_md | 176 |
 
@@ -58,12 +58,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (359), src/pages (93), src/providers (8)
 - hooks: src/hooks (477), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (55), co-localizado (__tests__) (22), outro (7)
+- testes: co-localizado (*.test) (54), co-localizado (__tests__) (22), outro (7)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (5), scripts/ai-context (2), scripts/inventario (2)
 - docs: docs (94), (raiz) (16), .github (1)
-- nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (99%)","tabelas":"snake_case (89%)"}
+- nomenclatura: {"componentes":"PascalCase (87%)","hooks":"use + PascalCase","servicos":"camelCase (99%)","edge_functions":"kebab-case (100%)","tabelas":"snake_case (89%)"}
 - instruções para agentes no repo: AGENTS.md, CLAUDE.md
 
 ## Módulos (menu → domínio)
@@ -176,73 +176,40 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `acknowledge-violation` (verify_jwt=false) — tabelas: agent_keys, security_violations, settings_audit_log; chamada por 0 arquivo(s) do front
 - `agent-collector` — tabelas: agent_keys, click_logs, employees, keystroke_logs, productivity_logs, screen_captures; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `analyze-activity` — tabelas: click_logs, keystroke_logs, productivity_logs; chamada por 2 arquivo(s) do front
-- `archive-data` — tabelas: click_logs, keystroke_logs, productivity_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `audit-export` — tabelas: login_security_events, settings_audit_log; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `auto-categorize` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `award-gamification-points` — tabelas: employee_points, points_history, user_roles; chamada por 1 arquivo(s) do front
-- `backup-data` — tabelas: backups; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `batch-notifications` — tabelas: webhooks; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `behavior-pattern` — tabelas: keystroke_logs; chamada por 1 arquivo(s) do front
-- `behavioral-baseline-builder` — tabelas: behavioral_baselines, click_logs, dlp_incidents, employees, keystroke_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `bulk-update` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `calculate-productivity` — tabelas: keystroke_logs, productivity_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `check-geofence` — tabelas: geofence_violations, geofences; chamada por 1 arquivo(s) do front
-- `cleanup-rate-limit-logs` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `cleanup-sessions` — tabelas: session_recordings; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `compress-screenshots` — tabelas: screen_captures; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `create-monthly-partitions` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `daily-summary` — tabelas: click_logs, employees, keystroke_logs, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `delete-user-data` — tabelas: click_logs, employee_badges, employee_devices, employee_geofences, employee_points, employee_schedules, employees, geofence_violations, internet_access_settings, keystroke_details, keystroke_logs, mobile_activity_logs, screen_captures, security_violations, session_recordings; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `dlp-incident-report` (verify_jwt=false) — tabelas: agent_keys, dlp_incidents, dlp_redaction_log; chamada por 0 arquivo(s) do front
 - `dlp-policy-sync` (verify_jwt=false) — tabelas: agent_keys, dlp_classifiers, dlp_policies; chamada por 0 arquivo(s) do front
 - `escalate-dispute-sla` — tabelas: edge_function_logs, mobile_devices, violation_disputes; chamada por 1 arquivo(s) do front
 - `expire-recordings` — tabelas: data_retention_policies, file_transfers, recording_chunks, recording_sessions; chamada por 0 arquivo(s) do front, por SQL/cron
 - `export-data` — tabelas: user_companies; chamada por 1 arquivo(s) do front
-- `external-db-bridge` — tabelas: query_telemetry; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `generate-api-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `generate-insights` — tabelas: employees, keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `generate-report` (verify_jwt=false) — tabelas: ai_analysis_reports, attendance_records, keystroke_logs, productivity_logs, reports, security_violations; chamada por 2 arquivo(s) do front
-- `get-dashboard-stats` — tabelas: employees, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-employee-schedule` — tabelas: employee_schedules; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-employee-timeline` — tabelas: click_logs, employees, keystroke_logs, screen_captures, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `get-mapbox-token` — tabelas: -; chamada por 1 arquivo(s) do front
-- `get-policies` — tabelas: policy_acknowledgments, security_policies; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `health` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `health-check` (verify_jwt=false) — tabelas: employees; chamada por 0 arquivo(s) do front
-- `import-employees` — tabelas: employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `ingest-file-transfer` (verify_jwt=false) — tabelas: agent_keys, dlp_incidents, dlp_policies, employees, file_transfers; chamada por 0 arquivo(s) do front
-- `invite-user` — tabelas: user_companies, user_roles; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `live-view-authorize` (verify_jwt=false) — tabelas: agent_keys, live_view_audit, live_view_sessions; chamada por 0 arquivo(s) do front
 - `mcp-query` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `merge-employees` — tabelas: click_logs, devices, employee_badges, employee_devices, employee_geofences, employee_schedules, employees, geofence_violations, keystroke_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `mobile-collector` — tabelas: agent_keys, employees, mobile_activity_logs, mobile_devices; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `natural-language-query` — tabelas: employees, keystroke_logs, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `notify-dispute-decision` — tabelas: mobile_devices, settings_audit_log, violation_disputes; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `notify-mobile-violation` — tabelas: mobile_devices, security_violations, settings_audit_log; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `notify-new-device` — tabelas: login_security_events; chamada por 1 arquivo(s) do front
 - `ocr-screenshot` — tabelas: screen_captures, sensitive_keywords; chamada por 1 arquivo(s) do front
 - `pending-employee-violations` (verify_jwt=false) — tabelas: agent_keys, security_violations; chamada por 0 arquivo(s) do front
 - `predict-anomaly` — tabelas: keystroke_logs; chamada por 1 arquivo(s) do front
-- `process-bulk-import` — tabelas: employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `process-screenshot` — tabelas: screen_captures; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `process-violation-alert` (verify_jwt=false) — tabelas: alert_notification_settings, security_violations, settings_audit_log, webhooks; chamada por 0 arquivo(s) do front
 - `rate-limit-logs` — tabelas: rate_limit_logs, user_roles; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `recalculate-metrics` — tabelas: click_logs, employees, keystroke_logs, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `refresh-tokens` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `request-overtime` — tabelas: overtime_requests; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `reset-password` — tabelas: login_security_events; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `risk-score-calculator` — tabelas: behavioral_baselines, click_logs, dlp_incidents, employees, keystroke_logs, risk_score_factors, user_risk_scores; chamada por 1 arquivo(s) do front
-- `rotate-api-keys` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `search-activities` — tabelas: click_logs, keystroke_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `send-email-notification` — tabelas: -; chamada por 1 arquivo(s) do front
 - `send-password-reset` — tabelas: -; chamada por 1 arquivo(s) do front
 - `send-push-notification` — tabelas: -; chamada por 2 arquivo(s) do front
-- `send-rate-limit-alert` — tabelas: blocked_ips, rate_limit_alerts; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `send-scheduled-report` — tabelas: productivity_metrics, report_logs, scheduled_reports, security_violations; chamada por 2 arquivo(s) do front
 - `send-slack-notification` — tabelas: -; chamada por 1 arquivo(s) do front
 - `send-webhook` — tabelas: webhook_logs, webhooks; chamada por 1 arquivo(s) do front
 - `send-whatsapp` (verify_jwt=false) — tabelas: whatsapp_config; chamada por 2 arquivo(s) do front
-- `sentiment-analysis` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `slack-dlq-bulk-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
 - `slack-dlq-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
 - `slack-fallback-test` — tabelas: alert_notification_settings, edge_function_logs; chamada por 1 arquivo(s) do front
@@ -251,16 +218,11 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `slack-weekly-digest` — tabelas: edge_function_logs, security_violations, slack_integrations, slack_notification_dlq, slack_webhook_mttr, violation_disputes; chamada por 1 arquivo(s) do front, por SQL/cron
 - `smart-recommendations` — tabelas: employees, keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `summarize-activity` — tabelas: keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
-- `sync-employee` — tabelas: employees, sync_logs; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `sync-teams` — tabelas: employees, team_members, teams; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `sync-whatsapp-templates` — tabelas: whatsapp_config, whatsapp_templates; chamada por 1 arquivo(s) do front
 - `trend-forecasting` — tabelas: keystroke_logs, security_violations; chamada por 1 arquivo(s) do front
 - `upload-recording-chunk` (verify_jwt=false) — tabelas: agent_keys, data_retention_policies, employees, recording_chunks, recording_sessions; chamada por 0 arquivo(s) do front
 - `validate-agent-key` — tabelas: agent_keys; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `validate-license` — tabelas: companies, employees; chamada por 0 arquivo(s) do front — **ÓRFÃ**
-- `verify-email` — tabelas: -; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 - `webrtc-ice-config` (verify_jwt=false) — tabelas: -; chamada por 0 arquivo(s) do front
-- `weekly-report` — tabelas: ai_analysis_reports, employees, keystroke_logs, productivity_logs, security_violations; chamada por 0 arquivo(s) do front — **ÓRFÃ**
 
 ## Cron jobs (pg_cron / vercel)
 - `cleanup-slack-dlq-daily` 0 3 * * * (20260723160924_fcd89e01-e870-403c-92ff-9f0d7cebf3a9.sql)
@@ -276,7 +238,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, MCP_SECRET, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
 ## Permissões / papéis
-- papéis no código: status (20), admin (15), alert (13), user (9), button (7), combobox (3), list (3), presentation (3), progressbar (3), dialog (2), region (2), Admin (1), agent (1), developer (1), editor (1), group (1), img (1), link (1), listitem (1), main (1), navigation (1), null (1), object (1), separator (1), sup (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
+- papéis no código: status (20), admin (15), alert (13), user (8), button (7), combobox (3), list (3), presentation (3), progressbar (3), dialog (2), region (2), Admin (1), agent (1), developer (1), editor (1), group (1), img (1), link (1), listitem (1), main (1), navigation (1), null (1), object (1), separator (1), sup (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
 - enums de papel: app_role: admin|user; user_role_type: viewer|supervisor|manager|admin|super_admin
 - guards: src/guards/MFAGuard.tsx, src/guards/index.tsx · rotas protegidas: 25 · públicas: /*, /activities/:id, /activities/timeline, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
 - feature flags: FEATURE_FLAGS, FEATURE_KEYS, FEATURE_TO_FACTOR, FEATURE_X, advancedReports, darkMode, exportPDF, mobileApp, newDashboard, nova-tela, novo-inbox
@@ -285,10 +247,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - rotas_sem_arquivo: 0
 - componentes_ambiguos: 0
 - menu_sem_destino: 8 — ex.: Configurações -> /settings, Configurações -> settings, Dashboard -> /
-- edges_orfas: 47 — ex.: agent-collector, archive-data, audit-export
+- edges_orfas: 9 — ex.: agent-collector, get-employee-schedule, get-employee-timeline
 - edges_chamadas_sem_pasta: 1 — ex.: _gate
 - tabelas_sem_rls: 0
-- tabelas_usadas_sem_definicao: 1 — ex.: backups
+- tabelas_usadas_sem_definicao: 0
 - tabelas_com_drift_migration_vs_types: 11 — ex.: badges, click_logs, employee_points
 - rpcs_sem_definicao: 0
 - componentes_orfaos: 94 — ex.: src/components/ActivityFeed.tsx, src/components/ActivityHeatmap.tsx, src/components/ActivityStatsCards.tsx
@@ -304,16 +266,16 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Hotspots (arquivos mais alterados, 90 dias)
 - package-lock.json (26)
 - package.json (25)
-- scripts/ci/eslint-baseline.json (21)
+- scripts/ci/eslint-baseline.json (22)
 - docs/pendencias/_linha-de-base.md (20)
+- scripts/ci/prettier-baseline.json (19)
 - .github/workflows/deploy.yml (18)
-- scripts/ci/prettier-baseline.json (18)
 - src/routes/AppRoutes.tsx (13)
 - scripts/ci/deno-check-baseline.json (8)
 - src/components/AppSidebar.tsx (8)
 - .github/workflows/ci.yml (7)
+- supabase/config.toml (7)
 - docs/prod-readiness.md (6)
-- supabase/config.toml (6)
 - src/index.css (5)
 - src/test/gap-audit.test.ts (5)
 - src/test/improvements-verification.test.ts (5)
@@ -327,6 +289,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `lint.yml` — Lint (pull_request, push)
 - `performance.yml` — Performance (push)
 - `preview.yml` — Preview (pull_request)
+- `prune-edge-functions.yml` — Prune edge functions (workflow_dispatch)
 - `release.yml` — Release (push)
 - `security-scan.yml` — Security Scan (push, schedule; cron 0 0 * * *)
 - `security.yml` — Security Scan (push, schedule; cron 0 0 * * 0)
@@ -463,6 +426,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `af9d004da` chore: remove as 38 edges legadas sem chamador do repo (#305)
 - 2026-11-25 `0dada9e58` fix: exigir admin para notificar decisao de contestacao (#303)
 - 2026-11-24 `2d3ed6cd1` fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)
 - 2026-11-24 `716934523` fix: gate estrito nas 38 edges legadas, no lugar do gate de cron (#301)
@@ -477,7 +441,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `07e505075` fix: resumo de atividades volta a alimentar os graficos (#292)
 - 2026-11-24 `cde1021d0` fix: diagnostico de ICE usa a mesma fonte do live view (#291)
 - 2026-11-24 `b1e44b30a` feat: detector de anomalias passa a aparecer na tela de atividades (#290)
-- 2026-11-24 `eabdad381` fix: hora e severidade deixam de ser lidas como indefinidas nos relatorios (#289)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

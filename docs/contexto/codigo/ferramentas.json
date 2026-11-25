@@ -3,11 +3,11 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1411)",
+   "TypeScript (1372)",
    "Markdown (176)",
    "SQL (128)",
    "JSON (44)",
-   "YAML (35)",
+   "YAML (36)",
    "JavaScript (24)",
    "Shell (22)",
    "HTML (4)"
@@ -355,6 +355,30 @@
     "actions/checkout",
     "actions/setup-node",
     "oven-sh/setup-bun"
+   ]
+  },
+  {
+   "arquivo": ".github/workflows/prune-edge-functions.yml",
+   "nome": "Prune edge functions",
+   "gatilhos": [
+    "workflow_dispatch"
+   ],
+   "crons": [],
+   "branches": [],
+   "jobs": [
+    "prune"
+   ],
+   "permissoes": [],
+   "scripts_usados": [
+    "scripts/lib/supabase-retry.sh"
+   ],
+   "npm_scripts": [],
+   "secrets": [
+    "SUPABASE_ACCESS_TOKEN"
+   ],
+   "actions": [
+    "actions/checkout",
+    "supabase/setup-cli"
    ]
   },
   {
@@ -1105,7 +1129,6 @@
    "VITE_VAPID_PUBLIC_KEY"
   ],
   "usadas_nas_edges": [
-   "APP_URL",
    "EVOLUTION_API_KEY",
    "EVOLUTION_API_URL",
    "EVOLUTION_INSTANCE_NAME",
@@ -1242,11 +1265,11 @@
   "hosts_externos": [
    {
     "host": "api.resend.com",
-    "arquivos": 7
+    "arquivos": 6
    },
    {
     "host": "fcm.googleapis.com",
-    "arquivos": 4
+    "arquivos": 3
    },
    {
     "host": "api.ipify.org",
@@ -1431,7 +1454,7 @@
    },
    {
     "papel": "user",
-    "ocorrencias": 9
+    "ocorrencias": 8
    },
    {
     "papel": "button",
@@ -1558,7 +1581,6 @@
    }
   ],
   "rpcs_de_autorizacao": [
-   "cleanup_expired_webauthn_challenges",
    "get_user_permissions",
    "has_permission",
    "has_role",

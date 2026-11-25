@@ -4212,34 +4212,10 @@
    "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/rateLimiting.ts"
   ],
-  "supabase/functions/archive-data/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/audit-export/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/auto-categorize/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/award-gamification-points/index.ts": [
    "supabase/functions/_shared/rateLimiting.ts"
   ],
-  "supabase/functions/backup-data/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/batch-notifications/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/behavior-pattern/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/behavioral-baseline-builder/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/bulk-update/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/calculate-productivity/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/check-geofence/contract_test.ts": [
@@ -4253,25 +4229,6 @@
    "supabase/functions/_shared/schemas.ts",
    "supabase/functions/_shared/validation.ts"
   ],
-  "supabase/functions/cleanup-rate-limit-logs/index.ts": [
-   "supabase/functions/_shared/auth.ts",
-   "supabase/functions/_shared/rateLimiting.ts"
-  ],
-  "supabase/functions/cleanup-sessions/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/compress-screenshots/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/create-monthly-partitions/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/daily-summary/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/delete-user-data/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/escalate-dispute-sla/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
@@ -4279,18 +4236,7 @@
    "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/logger.ts"
   ],
-  "supabase/functions/external-db-bridge/index.ts": [
-   "supabase/functions/_shared/auth.ts",
-   "supabase/functions/_shared/cors.ts",
-   "supabase/functions/_shared/rateLimiting.ts"
-  ],
-  "supabase/functions/generate-api-key/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/generate-report/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/get-dashboard-stats/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/get-employee-schedule/index.ts": [
@@ -4303,33 +4249,16 @@
   "supabase/functions/get-mapbox-token/index.ts": [
    "supabase/functions/_shared/rateLimiting.ts"
   ],
-  "supabase/functions/get-policies/index.ts": [
-   "supabase/functions/_shared/auth.ts",
-   "supabase/functions/_shared/rateLimiting.ts"
-  ],
   "supabase/functions/health-check/index.ts": [
    "supabase/functions/_shared/rateLimiting.ts"
-  ],
-  "supabase/functions/health/index.ts": [
-   "supabase/functions/_shared/auth.ts",
-   "supabase/functions/_shared/rateLimiting.ts"
-  ],
-  "supabase/functions/import-employees/index.ts": [
-   "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/ingest-file-transfer/index.ts": [
    "supabase/functions/_shared/logger.ts",
    "supabase/functions/_shared/rateLimiting.ts",
    "supabase/functions/_shared/validation.ts"
   ],
-  "supabase/functions/invite-user/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/live-view-authorize/index.ts": [
    "supabase/functions/_shared/iceServers.ts"
-  ],
-  "supabase/functions/merge-employees/index.ts": [
-   "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/mobile-collector/contract_test.ts": [
    "supabase/functions/_shared/validation.ts"
@@ -4339,9 +4268,6 @@
    "supabase/functions/_shared/validation.ts"
   ],
   "supabase/functions/notify-dispute-decision/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/notify-mobile-violation/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/notify-new-device/index.ts": [
@@ -4354,12 +4280,6 @@
   "supabase/functions/predict-anomaly/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
-  "supabase/functions/process-bulk-import/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/process-screenshot/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/process-violation-alert/index.ts": [
    "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/rateLimiting.ts"
@@ -4367,37 +4287,14 @@
   "supabase/functions/rate-limit-logs/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
-  "supabase/functions/recalculate-metrics/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/refresh-tokens/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/request-overtime/index.ts": [
-   "supabase/functions/_shared/auth.ts",
-   "supabase/functions/_shared/rateLimiting.ts"
-  ],
-  "supabase/functions/reset-password/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/risk-score-calculator/index.ts": [
    "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/halfSpaceTrees.ts"
-  ],
-  "supabase/functions/rotate-api-keys/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/search-activities/index.ts": [
-   "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/send-email-notification/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/send-push-notification/index.ts": [
-   "supabase/functions/_shared/auth.ts",
-   "supabase/functions/_shared/rateLimiting.ts"
-  ],
-  "supabase/functions/send-rate-limit-alert/index.ts": [
    "supabase/functions/_shared/auth.ts",
    "supabase/functions/_shared/rateLimiting.ts"
   ],
@@ -4423,9 +4320,6 @@
    "supabase/functions/_shared/rateLimiting.ts",
    "supabase/functions/_shared/whatsapp-evolution.ts"
   ],
-  "supabase/functions/sentiment-analysis/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/slack-mttr-monitor/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
@@ -4439,12 +4333,6 @@
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/summarize-activity/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/sync-employee/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/sync-teams/index.ts": [
    "supabase/functions/_shared/auth.ts"
   ],
   "supabase/functions/sync-whatsapp-templates/index.ts": [
@@ -4464,17 +4352,8 @@
    "supabase/functions/_shared/logger.ts",
    "supabase/functions/_shared/rateLimiting.ts"
   ],
-  "supabase/functions/validate-license/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
-  "supabase/functions/verify-email/index.ts": [
-   "supabase/functions/_shared/auth.ts"
-  ],
   "supabase/functions/webrtc-ice-config/index.ts": [
    "supabase/functions/_shared/iceServers.ts"
-  ],
-  "supabase/functions/weekly-report/index.ts": [
-   "supabase/functions/_shared/auth.ts"
   ]
  }
 }

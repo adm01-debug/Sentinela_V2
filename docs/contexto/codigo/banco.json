@@ -510,7 +510,7 @@
   {
    "nome": "violation-screenshots",
    "criado_em_sql": true,
-   "usado_em": 2
+   "usado_em": 1
   }
  ],
  "tabelas": {
@@ -827,12 +827,10 @@
     "agent-collector",
     "dlp-incident-report",
     "dlp-policy-sync",
-    "generate-api-key",
     "ingest-file-transfer",
     "live-view-authorize",
     "mobile-collector",
     "pending-employee-violations",
-    "rotate-api-keys",
     "upload-recording-chunk",
     "validate-agent-key"
    ],
@@ -973,8 +971,7 @@
    },
    "usada_no_front": 3,
    "usada_em_edges": [
-    "generate-report",
-    "weekly-report"
+    "generate-report"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -2251,7 +2248,6 @@
    },
    "usada_no_front": 1,
    "usada_em_edges": [
-    "behavioral-baseline-builder",
     "risk-score-calculator"
    ],
    "triggers": [
@@ -2388,9 +2384,7 @@
     "so_no_types": []
    },
    "usada_no_front": 3,
-   "usada_em_edges": [
-    "send-rate-limit-alert"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -2536,15 +2530,8 @@
    "usada_em_edges": [
     "agent-collector",
     "analyze-activity",
-    "archive-data",
-    "behavioral-baseline-builder",
-    "daily-summary",
-    "delete-user-data",
     "get-employee-timeline",
-    "merge-employees",
-    "recalculate-metrics",
-    "risk-score-calculator",
-    "search-activities"
+    "risk-score-calculator"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -3175,9 +3162,7 @@
     "so_no_types": []
    },
    "usada_no_front": 5,
-   "usada_em_edges": [
-    "validate-license"
-   ],
+   "usada_em_edges": [],
    "triggers": [
     "update_companies_updated_at"
    ],
@@ -3635,9 +3620,7 @@
     "so_no_types": []
    },
    "usada_no_front": 2,
-   "usada_em_edges": [
-    "merge-employees"
-   ],
+   "usada_em_edges": [],
    "triggers": [
     "update_devices_updated_at"
    ],
@@ -4110,7 +4093,6 @@
    },
    "usada_no_front": 1,
    "usada_em_edges": [
-    "behavioral-baseline-builder",
     "dlp-incident-report",
     "ingest-file-transfer",
     "risk-score-calculator"
@@ -4643,10 +4625,7 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [
-    "delete-user-data",
-    "merge-employees"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -4756,10 +4735,7 @@
     "so_no_types": []
    },
    "usada_no_front": 2,
-   "usada_em_edges": [
-    "delete-user-data",
-    "merge-employees"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -4842,10 +4818,7 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [
-    "delete-user-data",
-    "merge-employees"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -5052,8 +5025,7 @@
    },
    "usada_no_front": 2,
    "usada_em_edges": [
-    "award-gamification-points",
-    "delete-user-data"
+    "award-gamification-points"
    ],
    "triggers": [
     "update_employee_points_updated_at"
@@ -5161,9 +5133,7 @@
    },
    "usada_no_front": 0,
    "usada_em_edges": [
-    "delete-user-data",
-    "get-employee-schedule",
-    "merge-employees"
+    "get-employee-schedule"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -5490,27 +5460,15 @@
    "usada_no_front": 17,
    "usada_em_edges": [
     "agent-collector",
-    "behavioral-baseline-builder",
-    "daily-summary",
-    "delete-user-data",
     "generate-insights",
-    "get-dashboard-stats",
     "get-employee-timeline",
     "health-check",
-    "import-employees",
     "ingest-file-transfer",
-    "merge-employees",
     "mobile-collector",
     "natural-language-query",
-    "process-bulk-import",
-    "recalculate-metrics",
     "risk-score-calculator",
     "smart-recommendations",
-    "sync-employee",
-    "sync-teams",
-    "upload-recording-chunk",
-    "validate-license",
-    "weekly-report"
+    "upload-recording-chunk"
    ],
    "triggers": [
     "audit_employees",
@@ -6423,9 +6381,7 @@
    },
    "usada_no_front": 3,
    "usada_em_edges": [
-    "check-geofence",
-    "delete-user-data",
-    "merge-employees"
+    "check-geofence"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -7004,9 +6960,7 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [
-    "delete-user-data"
-   ],
+   "usada_em_edges": [],
    "triggers": [
     "update_internet_access_settings_updated_at"
    ],
@@ -7140,12 +7094,10 @@
     "so_no_types": []
    },
    "usada_no_front": 0,
-   "usada_em_edges": [
-    "delete-user-data"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": false
+   "nao_usada": true
   },
   "keystroke_logs": {
    "colunas": {
@@ -7253,25 +7205,16 @@
    "usada_em_edges": [
     "agent-collector",
     "analyze-activity",
-    "archive-data",
     "behavior-pattern",
-    "behavioral-baseline-builder",
-    "calculate-productivity",
-    "daily-summary",
-    "delete-user-data",
     "generate-insights",
     "generate-report",
     "get-employee-timeline",
-    "merge-employees",
     "natural-language-query",
     "predict-anomaly",
-    "recalculate-metrics",
     "risk-score-calculator",
-    "search-activities",
     "smart-recommendations",
     "summarize-activity",
-    "trend-forecasting",
-    "weekly-report"
+    "trend-forecasting"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -8105,9 +8048,7 @@
    },
    "usada_no_front": 3,
    "usada_em_edges": [
-    "audit-export",
-    "notify-new-device",
-    "reset-password"
+    "notify-new-device"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -8482,7 +8423,6 @@
    },
    "usada_no_front": 1,
    "usada_em_edges": [
-    "delete-user-data",
     "mobile-collector"
    ],
    "triggers": [],
@@ -9090,8 +9030,7 @@
    "usada_em_edges": [
     "escalate-dispute-sla",
     "mobile-collector",
-    "notify-dispute-decision",
-    "notify-mobile-violation"
+    "notify-dispute-decision"
    ],
    "triggers": [
     "update_mobile_devices_updated_at"
@@ -9310,9 +9249,7 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [
-    "request-overtime"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -9766,9 +9703,7 @@
     ]
    },
    "usada_no_front": 3,
-   "usada_em_edges": [
-    "get-policies"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -9991,10 +9926,7 @@
    "usada_em_edges": [
     "agent-collector",
     "analyze-activity",
-    "archive-data",
-    "calculate-productivity",
-    "generate-report",
-    "weekly-report"
+    "generate-report"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -11039,9 +10971,7 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [
-    "external-db-bridge"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -11130,9 +11060,7 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [
-    "send-rate-limit-alert"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -13065,11 +12993,8 @@
    "usada_no_front": 6,
    "usada_em_edges": [
     "agent-collector",
-    "compress-screenshots",
-    "delete-user-data",
     "get-employee-timeline",
-    "ocr-screenshot",
-    "process-screenshot"
+    "ocr-screenshot"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -13175,9 +13100,7 @@
     "so_no_types": []
    },
    "usada_no_front": 3,
-   "usada_em_edges": [
-    "get-policies"
-   ],
+   "usada_em_edges": [],
    "triggers": [
     "update_security_policies_updated_at"
    ],
@@ -13488,23 +13411,17 @@
    "usada_no_front": 20,
    "usada_em_edges": [
     "acknowledge-violation",
-    "daily-summary",
-    "delete-user-data",
     "generate-insights",
     "generate-report",
-    "get-dashboard-stats",
     "get-employee-timeline",
     "natural-language-query",
-    "notify-mobile-violation",
     "pending-employee-violations",
     "process-violation-alert",
-    "recalculate-metrics",
     "send-scheduled-report",
     "slack-weekly-digest",
     "smart-recommendations",
     "summarize-activity",
-    "trend-forecasting",
-    "weekly-report"
+    "trend-forecasting"
    ],
    "triggers": [
     "trg_siem_dispatch_security_violation"
@@ -13720,10 +13637,7 @@
     "so_no_types": []
    },
    "usada_no_front": 2,
-   "usada_em_edges": [
-    "cleanup-sessions",
-    "delete-user-data"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -13838,9 +13752,7 @@
    "usada_no_front": 4,
    "usada_em_edges": [
     "acknowledge-violation",
-    "audit-export",
     "notify-dispute-decision",
-    "notify-mobile-violation",
     "process-violation-alert"
    ],
    "triggers": [],
@@ -15237,12 +15149,10 @@
     "so_no_types": []
    },
    "usada_no_front": 0,
-   "usada_em_edges": [
-    "sync-employee"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
-   "nao_usada": false
+   "nao_usada": true
   },
   "tasks": {
    "colunas": {
@@ -15494,9 +15404,7 @@
     "so_no_types": []
    },
    "usada_no_front": 1,
-   "usada_em_edges": [
-    "sync-teams"
-   ],
+   "usada_em_edges": [],
    "triggers": [],
    "sem_rls": false,
    "nao_usada": false
@@ -15638,9 +15546,7 @@
     "so_no_types": []
    },
    "usada_no_front": 5,
-   "usada_em_edges": [
-    "sync-teams"
-   ],
+   "usada_em_edges": [],
    "triggers": [
     "audit_teams",
     "update_teams_updated_at"
@@ -16095,8 +16001,7 @@
    },
    "usada_no_front": 3,
    "usada_em_edges": [
-    "export-data",
-    "invite-user"
+    "export-data"
    ],
    "triggers": [],
    "sem_rls": false,
@@ -16514,7 +16419,6 @@
    "usada_no_front": 7,
    "usada_em_edges": [
     "award-gamification-points",
-    "invite-user",
     "rate-limit-logs"
    ],
    "triggers": [],
@@ -17861,7 +17765,6 @@
    },
    "usada_no_front": 3,
    "usada_em_edges": [
-    "batch-notifications",
     "process-violation-alert",
     "send-webhook"
    ],
@@ -18794,29 +18697,12 @@
    "nao_usada": false
   }
  },
- "tabelas_usadas_no_codigo_sem_definicao": [
-  "backups"
- ],
+ "tabelas_usadas_no_codigo_sem_definicao": [],
  "rpcs_usadas_no_codigo": [
   {
    "nome": "check_rate_limit",
    "definida": true,
    "usada_em": 2
-  },
-  {
-   "nome": "cleanup_expired_webauthn_challenges",
-   "definida": true,
-   "usada_em": 1
-  },
-  {
-   "nome": "cleanup_rate_limit_logs",
-   "definida": true,
-   "usada_em": 1
-  },
-  {
-   "nome": "create_monthly_partition",
-   "definida": true,
-   "usada_em": 1
   },
   {
    "nome": "get_ip_whitelist_info",
@@ -18826,7 +18712,7 @@
   {
    "nome": "get_user_company_id",
    "definida": true,
-   "usada_em": 5
+   "usada_em": 1
   },
   {
    "nome": "get_user_permissions",
@@ -18841,7 +18727,7 @@
   {
    "nome": "has_role",
    "definida": true,
-   "usada_em": 10
+   "usada_em": 7
   },
   {
    "nome": "is_ip_blocked",

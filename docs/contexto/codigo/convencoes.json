@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (55)",
+   "co-localizado (*.test) (54)",
    "co-localizado (__tests__) (22)",
    "outro (7)"
   ],
@@ -42,10 +42,10 @@
   "componentes": "PascalCase (87%)",
   "hooks": "use + PascalCase",
   "servicos": "camelCase (99%)",
-  "edge_functions": "kebab-case (99%)",
+  "edge_functions": "kebab-case (100%)",
   "tabelas": "snake_case (89%)"
  },
- "barrels_index": 22,
+ "barrels_index": 21,
  "extensao_componentes": [
   ".tsx (470)"
  ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "chore: remove as 38 edges legadas sem chamador do repo (#305)",
    "fix: exigir admin para notificar decisao de contestacao (#303)",
    "fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)",
    "fix: gate estrito nas 38 edges legadas, no lugar do gate de cron (#301)",
-   "fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)",
-   "fix: filtro de tipo da tela de IA acha os relatorios que ja existem (#299)"
+   "fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",
