@@ -1222,6 +1222,7 @@
     "validation.ts"
    ],
    "chamada_pelo_front": [
+    "src/pages/WebhooksPage.tsx",
     "src/services/webhookService.ts"
    ],
    "chamada_por_edges": [

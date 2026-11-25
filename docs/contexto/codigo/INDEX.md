@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `1c198e947b7fd2490718bde72ff705f1e28a3b84` (2026-11-25T13:26:23-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `335cb7d14048f45f86be2ec68d1cdc2fe0ff8481` (2026-11-25T15:06:48-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1858 |
 | arquivos_codigo | 1404 |
-| linhas_codigo | 158986 |
+| linhas_codigo | 159225 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -85,7 +85,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | hooks | 0 | 0 | 482 | 502 | 21 | 88 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 168 | 14 | 70 |
+| pages | 4 | 38 | 68 | 168 | 15 | 71 |
 | pages/admin | 0 | 18 | 20 | 35 | 8 | 32 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -208,7 +208,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - `send-push-notification` — tabelas: -; chamada por 2 arquivo(s) do front
 - `send-scheduled-report` — tabelas: productivity_metrics, report_logs, scheduled_reports, security_violations; chamada por 2 arquivo(s) do front
 - `send-slack-notification` — tabelas: -; chamada por 1 arquivo(s) do front
-- `send-webhook` — tabelas: webhook_logs, webhooks; chamada por 1 arquivo(s) do front
+- `send-webhook` — tabelas: webhook_logs, webhooks; chamada por 2 arquivo(s) do front
 - `send-whatsapp` (verify_jwt=false) — tabelas: whatsapp_config; chamada por 2 arquivo(s) do front
 - `slack-dlq-bulk-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
 - `slack-dlq-replay` — tabelas: edge_function_logs, slack_integrations, slack_notification_dlq; chamada por 1 arquivo(s) do front
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `335cb7d14` feat: assina eventos e mostra entregas na tela de webhooks (#318)
 - 2026-11-25 `1c198e947` fix(desktop-agent): tira os requires inline e o import morto (#316)
 - 2026-11-25 `e8007929e` fix: useEmployeeSchedule devolve a escala vigente do funcionario (#315)
 - 2026-11-25 `19a780dec` feat: traz o detalhe de cliques do funcionario para a jornada do dia (#314)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `0dada9e58` fix: exigir admin para notificar decisao de contestacao (#303)
 - 2026-11-24 `2d3ed6cd1` fix: gate de credencial em 4 edges abertas a chave publicavel do app (#302)
 - 2026-11-24 `716934523` fix: gate estrito nas 38 edges legadas, no lugar do gate de cron (#301)
-- 2026-11-24 `1e1756acb` fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

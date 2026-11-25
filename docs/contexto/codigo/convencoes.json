@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "feat: assina eventos e mostra entregas na tela de webhooks (#318)",
    "fix(desktop-agent): tira os requires inline e o import morto (#316)",
    "fix: useEmployeeSchedule devolve a escala vigente do funcionario (#315)",
    "feat: traz o detalhe de cliques do funcionario para a jornada do dia (#314)",
-   "feat: mostra a escala vigente na data escolhida na aba Atribuicoes (#313)",
-   "fix: liga as operacoes reais da tela de escalas de trabalho (#311)"
+   "feat: mostra a escala vigente na data escolhida na aba Atribuicoes (#313)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

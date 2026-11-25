@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "1c198e947b7fd2490718bde72ff705f1e28a3b84",
+  "commit": "335cb7d14048f45f86be2ec68d1cdc2fe0ff8481",
   "branch": "main",
-  "data_commit": "2026-11-25T13:26:23-03:00",
+  "data_commit": "2026-11-25T15:06:48-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "335cb7d14",
+    "data": "2026-11-25",
+    "assunto": "feat: assina eventos e mostra entregas na tela de webhooks (#318)"
+   },
    {
     "sha": "1c198e947",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "cde1021d0",
     "data": "2026-11-24",
     "assunto": "fix: diagnostico de ICE usa a mesma fonte do live view (#291)"
-   },
-   {
-    "sha": "b1e44b30a",
-    "data": "2026-11-24",
-    "assunto": "feat: detector de anomalias passa a aparecer na tela de atividades (#290)"
    }
   ],
   "arquivos_mudados_7d": 328,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 212
+    "commits": 213
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1858,
   "arquivos_codigo": 1404,
-  "linhas_codigo": 158986,
+  "linhas_codigo": 159225,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 109,
-   "linhas": 21939
+   "linhas": 22178
   },
   "src/providers": {
    "arquivos": 9,
@@ -553,6 +553,10 @@
    "linhas": 523
   },
   {
+   "arquivo": "src/pages/WebhooksPage.tsx",
+   "linhas": 505
+  },
+  {
    "arquivo": "supabase/functions/slack-notify/index.ts",
    "linhas": 501
   },
@@ -599,10 +603,6 @@
   {
    "arquivo": "src/components/SessionPlayback.tsx",
    "linhas": 454
-  },
-  {
-   "arquivo": "src/hooks/useWorkSchedulesPage.ts",
-   "linhas": 448
   }
  ],
  "qualidade": {
@@ -611,7 +611,7 @@
   "ts_ignore": 0,
   "eslint_disable": 1,
   "todos": 5,
-  "arquivos_acima_500_linhas": 13
+  "arquivos_acima_500_linhas": 14
  },
  "todos": [
   {

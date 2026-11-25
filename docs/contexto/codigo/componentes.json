@@ -3985,7 +3985,7 @@
    "hooks_locais": [],
    "tabelas": [],
    "edges": [],
-   "usado_por": 4,
+   "usado_por": 5,
    "orfao": false
   },
   {
@@ -7675,7 +7675,7 @@
     "WebhooksPage"
    ],
    "export_default": "WebhooksPage",
-   "linhas": 266,
+   "linhas": 505,
    "dominio": "pages",
    "hooks_locais": [
     "useMutation",
@@ -7683,9 +7683,12 @@
     "useToast"
    ],
    "tabelas": [
+    "webhook_logs",
     "webhooks"
    ],
-   "edges": [],
+   "edges": [
+    "send-webhook"
+   ],
    "usado_por": 1,
    "orfao": false
   },

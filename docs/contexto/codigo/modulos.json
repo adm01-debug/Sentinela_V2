@@ -3833,7 +3833,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 13875,
+   "linhas": 14114,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -4065,6 +4065,7 @@
     "predict-anomaly",
     "send-password-reset",
     "send-scheduled-report",
+    "send-webhook",
     "send-whatsapp",
     "summarize-activity",
     "sync-whatsapp-templates"
@@ -4133,6 +4134,7 @@
     "violation_rules",
     "webauthn_challenges",
     "webauthn_credentials",
+    "webhook_logs",
     "webhooks",
     "whatsapp_config",
     "whatsapp_message_logs",
@@ -4184,7 +4186,8 @@
    "diretos": {
     "edges": [
      "export-data",
-     "generate-report"
+     "generate-report",
+     "send-webhook"
     ],
     "tabelas": [
      "agent_keys",
@@ -4205,6 +4208,7 @@
      "time_entries",
      "timesheets",
      "violation_rules",
+     "webhook_logs",
      "webhooks"
     ],
     "rpcs": []
@@ -4866,6 +4870,7 @@
     "risk-score-calculator",
     "send-password-reset",
     "send-scheduled-report",
+    "send-webhook",
     "send-whatsapp",
     "slack-dlq-bulk-replay",
     "slack-dlq-replay",
@@ -4961,6 +4966,7 @@
     "violation_rules",
     "webauthn_challenges",
     "webauthn_credentials",
+    "webhook_logs",
     "webhooks",
     "whatsapp_config",
     "whatsapp_message_logs",
