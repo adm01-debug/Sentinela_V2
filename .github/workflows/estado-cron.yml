@@ -46,8 +46,10 @@ jobs:
             -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
             -H "Content-Type: application/json" \
             -d "$consulta" > agendador.json
-          echo "--- resposta bruta ---"
-          cat agendador.json
+          # O corpo traz o `command` de cada job, e o comando historicamente
+          # carrega a chave no header do `net.http_post`: imprimir isso no log
+          # seria publicar a chave. O script adiante so mostra o papel do JWT.
+          echo "resposta: $(wc -c < agendador.json) bytes (corpo nao impresso de proposito)"
 
       - name: Cruzar com o repositorio
         run: |

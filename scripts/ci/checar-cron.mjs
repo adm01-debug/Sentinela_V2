@@ -33,6 +33,42 @@ export function extrairJson(texto) {
   }
 }
 
+// O `command` dos jobs e SQL escrito a mao (ou pelo painel) e historicamente
+// carrega a chave no header do `net.http_post`. A resposta da Management API
+// inclui esse texto: nada de imprimir o comando cru no log do Actions.
+const JWT = /eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}/g;
+
+export function redigir(texto) {
+  return String(texto ?? "").replace(JWT, "<REDIGIDO>");
+}
+
+// O papel vem do payload (`role`), sem precisar da assinatura: e o que separa
+// "chave publica embutida" (feio, mas sem privilegio) de `service_role` (grave).
+export function papelDoJwt(token) {
+  try {
+    const payload = String(token).split(".")[1] ?? "";
+    const json = JSON.parse(
+      Buffer.from(payload.replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("utf8")
+    );
+    return typeof json?.role === "string" ? json.role : null;
+  } catch {
+    return null;
+  }
+}
+
+export function auditarSegredos(jobs) {
+  return jobs.map((job) => {
+    const comando = String(job?.command ?? "");
+    const tokens = comando.match(JWT) ?? [];
+    return {
+      jobname: job?.jobname ?? `job ${job?.jobid ?? "?"}`,
+      tokens: tokens.length,
+      papeis: [...new Set(tokens.map(papelDoJwt).filter(Boolean))],
+      citaServiceRole: /service_role/i.test(comando),
+    };
+  });
+}
+
 export function funcoesNoRepo(raiz = RAIZ) {
   return new Set(
     fs
@@ -114,6 +150,33 @@ async function principal(argv) {
   console.log(`funcoes referenciadas por jobs: ${referenciadas.length}`);
   for (const ref of rotular(referenciadas, noRepo)) {
     console.log(`- ${ref.funcao} (${ref.onde}) <- ${ref.jobs.join(", ")}`);
+  }
+
+  const segredos = auditarSegredos(dados);
+  const comChave = segredos.filter((item) => item.tokens > 0 || item.citaServiceRole);
+  if (comChave.length === 0) {
+    console.log("Nenhum comando de job embute chave (JWT) ou cita service_role.");
+  } else {
+    console.log(`jobs com chave embutida no comando: ${comChave.length}`);
+    for (const item of comChave) {
+      const papeis = item.papeis.length > 0 ? item.papeis.join("/") : "papel ilegivel";
+      console.log(
+        `- ${item.jobname}: ${item.tokens} JWT (${papeis}) service_role literal=${item.citaServiceRole}`
+      );
+    }
+  }
+  // `service_role` em texto claro dentro do banco entrega escrita sem RLS a quem
+  // ler `cron.job`; chave publica embutida e divida, nao quebra de pipeline.
+  const criticos = comChave.filter(
+    (item) => item.citaServiceRole || item.papeis.includes("service_role")
+  );
+  if (criticos.length > 0) {
+    console.error(
+      `::error::${criticos.length} job(s) guardam service_role dentro de cron.job: ${criticos
+        .map((item) => item.jobname)
+        .join(", ")}`
+    );
+    return 1;
   }
 
   if (!opcoes.includes("--probe")) return 0;

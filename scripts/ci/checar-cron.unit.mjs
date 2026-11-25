@@ -4,9 +4,23 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { classificar, extrairJson, funcoesNoRepo, referencias, rotular } from "./checar-cron.mjs";
+import {
+  auditarSegredos,
+  classificar,
+  extrairJson,
+  funcoesNoRepo,
+  papelDoJwt,
+  redigir,
+  referencias,
+  rotular,
+} from "./checar-cron.mjs";
 
 const URL_BASE = "https://jgnmwvzephsozsqmcpzb.supabase.co/functions/v1";
+
+function jwt(papel) {
+  const b64 = (obj) => Buffer.from(JSON.stringify(obj)).toString("base64url");
+  return `${b64({ alg: "HS256", typ: "JWT" })}.${b64({ role: papel })}.assinatura-falsa`;
+}
 
 function comando(nome) {
   return `select net.http_post(url := '${URL_BASE}/${nome}', headers := '{}'::jsonb, body := '{}'::jsonb)`;
@@ -58,5 +72,38 @@ test("rotular compara por nome, nao por identidade", () => {
   assert.deepEqual(
     rotular(refs, new Set(["expire-recordings"])).map((ref) => ref.onde),
     ["no repo", "fora do repo"]
+  );
+});
+
+test("redigir troca o JWT inteiro, preservando o resto do comando", () => {
+  const texto = `headers := '{"apikey":"${jwt("anon")}"}'::jsonb`;
+  const saida = redigir(texto);
+  assert.ok(!saida.includes(jwt("anon")));
+  assert.ok(saida.includes("<REDIGIDO>"));
+  assert.ok(saida.includes("headers :="));
+});
+
+test("papelDoJwt le o role do payload e devolve null quando nao e JWT", () => {
+  assert.equal(papelDoJwt(jwt("service_role")), "service_role");
+  assert.equal(papelDoJwt("nao-e-jwt"), null);
+});
+
+test("auditarSegredos separa chave publica de service_role", () => {
+  const jobs = [
+    { jobid: 1, jobname: "publica", command: `${comando("a")} -- apikey ${jwt("anon")}` },
+    { jobid: 2, jobname: "grave", command: `${comando("b")} -- apikey ${jwt("service_role")}` },
+    { jobid: 3, jobname: "texto", command: `${comando("c")} -- using service_role` },
+    { jobid: 4, jobname: "limpo", command: comando("d") },
+  ];
+  const auditoria = auditarSegredos(jobs);
+  assert.deepEqual(
+    auditoria.map((item) => item.tokens),
+    [1, 1, 0, 0]
+  );
+  assert.deepEqual(auditoria[1].papeis, ["service_role"]);
+  assert.equal(auditoria[2].citaServiceRole, true);
+  assert.deepEqual(
+    auditoria.filter((item) => item.tokens > 0 || item.citaServiceRole).map((item) => item.jobname),
+    ["publica", "grave", "texto"]
   );
 });
