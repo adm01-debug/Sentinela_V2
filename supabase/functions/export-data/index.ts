@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { callerCompanyId, companyScope, withCompanyScope } from '../_shared/auth.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -15,8 +16,6 @@ const ALLOWED_RESOURCES = new Set([
   'keystroke_logs',
   'click_logs',
 ]);
-
-const COMPANY_SCOPED = new Set(['violations', 'devices', 'keystroke_logs', 'click_logs']);
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -68,17 +67,16 @@ serve(async (req) => {
       );
     }
 
-    const { data: membership } = await supabase
-      .from('user_companies')
-      .select('company_id')
-      .eq('user_id', user.id)
-      .maybeSingle();
+    // Escopo oficial do tenant (mesma fonte das policies). Todas as tabelas
+    // exportaveis tem company_id; quem nao tem empresa ve apenas as linhas
+    // globais (company_id IS NULL) - nunca as de terceiros.
+    const callerCompany = await callerCompanyId(supabase, {
+      user: { id: user.id },
+      isServiceRole: false,
+    });
+    const scope = companyScope(callerCompany);
 
-    let query = supabase.from(resource).select('*');
-
-    if (COMPANY_SCOPED.has(resource) && membership?.company_id) {
-      query = query.eq('company_id', membership.company_id);
-    }
+    let query = withCompanyScope(supabase.from(resource).select('*'), scope);
 
     for (const [key, value] of Object.entries(filters)) {
       query = query.eq(key, value as string);
