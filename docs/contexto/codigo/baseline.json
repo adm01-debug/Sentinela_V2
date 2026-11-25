@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "3ef51c6910a05d3e8d75b2345d7ce6e428aa56a8",
+  "commit": "19a780dec16dcf42618d60e6fe916679fb16cb46",
   "branch": "main",
-  "data_commit": "2026-11-25T10:42:21-03:00",
+  "data_commit": "2026-11-25T11:00:53-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "19a780dec",
+    "data": "2026-11-25",
+    "assunto": "feat: traz o detalhe de cliques do funcionario para a jornada do dia (#314)"
+   },
    {
     "sha": "3ef51c691",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "d7be2d9fb",
     "data": "2026-11-24",
     "assunto": "fix: live view entrega ICE servers validos em vez de repassar o secret (#288)"
-   },
-   {
-    "sha": "39b435f24",
-    "data": "2026-11-24",
-    "assunto": "fix: tipos de client e de validacao param de mentir nos relatorios (#287)"
    }
   ],
-  "arquivos_mudados_7d": 320,
+  "arquivos_mudados_7d": 324,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 209
+    "commits": 210
    },
    {
     "autor": "dependabot[bot]",
@@ -314,9 +314,9 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1857,
-  "arquivos_codigo": 1403,
-  "linhas_codigo": 158574,
+  "arquivos_total": 1858,
+  "arquivos_codigo": 1404,
+  "linhas_codigo": 158823,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -328,7 +328,7 @@
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 88,
+  "testes": 89,
   "workflows": 14,
   "scripts": 35,
   "docs_md": 176
@@ -416,7 +416,7 @@
   },
   "src/components": {
    "arquivos": 394,
-   "linhas": 45719
+   "linhas": 45721
   },
   "src/constants": {
    "arquivos": 7,
@@ -436,7 +436,7 @@
   },
   "src/hooks": {
    "arquivos": 482,
-   "linhas": 32841
+   "linhas": 32897
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 109,
-   "linhas": 21869
+   "linhas": 21898
   },
   "src/providers": {
    "arquivos": 9,
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 57,
-   "linhas": 10444
+   "arquivos": 58,
+   "linhas": 10564
   },
   "src/types": {
    "arquivos": 57,
@@ -488,7 +488,7 @@
   },
   "src/utils": {
    "arquivos": 65,
-   "linhas": 5406
+   "linhas": 5448
   },
   "src/validators": {
    "arquivos": 1,

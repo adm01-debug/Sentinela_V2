@@ -2054,9 +2054,10 @@
    "hooks_exportados": [
     "useDailyJourney"
    ],
-   "linhas": 186,
+   "linhas": 242,
    "dominio": "hooks",
    "tabelas": [
+    "click_logs",
     "employees",
     "productivity_logs",
     "screen_captures",
@@ -2074,7 +2075,7 @@
     "src/pages/EmployeeDetailPage.tsx",
     "src/utils/journeyPdf.ts"
    ],
-   "coberto_por_testes": 0
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useDarkMode.ts",

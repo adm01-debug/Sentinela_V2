@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `3ef51c6910a05d3e8d75b2345d7ce6e428aa56a8` (2026-11-25T10:42:21-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `19a780dec16dcf42618d60e6fe916679fb16cb46` (2026-11-25T11:00:53-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1377), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
+- linguagens: TypeScript (1378), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,9 +34,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1857 |
-| arquivos_codigo | 1403 |
-| linhas_codigo | 158574 |
+| arquivos_total | 1858 |
+| arquivos_codigo | 1404 |
+| linhas_codigo | 158823 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -48,7 +48,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 88 |
+| testes | 89 |
 | workflows | 14 |
 | scripts | 35 |
 | docs_md | 176 |
@@ -58,7 +58,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - componentes: src/components (359), src/pages (93), src/providers (8)
 - hooks: src/hooks (480), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (56), co-localizado (__tests__) (22), outro (9)
+- testes: co-localizado (*.test) (57), co-localizado (__tests__) (22), outro (9)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (7), scripts/ai-context (2), scripts/inventario (2)
@@ -92,7 +92,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | services | 0 | 0 | 8 | 20 | 2 | 10 |
 | stores | 0 | 0 | 34 | 3 | 0 | 2 |
 | types | 0 | 0 | 57 | 0 | 0 | 0 |
-| utils | 0 | 0 | 64 | 12 | 0 | 11 |
+| utils | 0 | 0 | 64 | 12 | 0 | 12 |
 
 ## Rotas (url → arquivo)
 - `/*` [tela] → src/pages/NotFoundPage.tsx
@@ -233,12 +233,12 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 
 ## Integrações externas
 - SDKs: HTTP (axios), Sentry, Supabase, i18next, react-query, zod
-- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, jgnmwvzephsozsqmcpzb.supabase.co, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, attack.mitre.org, cdn.gpteng.co, cdnjs.cloudflare.com
+- hosts mais citados: api.resend.com, fcm.googleapis.com, api.ipify.org, graph.facebook.com, jgnmwvzephsozsqmcpzb.supabase.co, releases.sentinela.app, x.supabase.co, api.lovable.dev, api.mapbox.com, api.pwnedpasswords.com, api.sentinela.app, api.x.com, app.local, attack.mitre.org, cdn.gpteng.co
 - webhooks recebidos: acknowledge-violation, dlp-incident-report, dlp-policy-sync, generate-report, health-check, ingest-file-transfer, live-view-authorize, pending-employee-violations, process-violation-alert, send-whatsapp, upload-recording-chunk, webrtc-ice-config
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, MCP_SECRET, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
 ## Permissões / papéis
-- papéis no código: status (20), admin (15), alert (13), user (8), button (7), combobox (3), list (3), presentation (3), progressbar (3), dialog (2), region (2), Admin (1), agent (1), developer (1), editor (1), group (1), img (1), link (1), listitem (1), main (1), navigation (1), null (1), object (1), separator (1), sup (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
+- papéis no código: status (20), admin (15), alert (13), user (8), button (7), combobox (3), presentation (3), progressbar (3), dialog (2), group (2), list (2), region (2), Admin (1), agent (1), developer (1), editor (1), img (1), link (1), main (1), navigation (1), null (1), object (1), separator (1), sup (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
 - enums de papel: app_role: admin|user; user_role_type: viewer|supervisor|manager|admin|super_admin
 - guards: src/guards/MFAGuard.tsx, src/guards/index.tsx · rotas protegidas: 25 · públicas: /*, /activities/:id, /activities/timeline, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
 - feature flags: FEATURE_FLAGS, FEATURE_KEYS, FEATURE_TO_FACTOR, FEATURE_X, advancedReports, darkMode, exportPDF, mobileApp, newDashboard, nova-tela, novo-inbox
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `19a780dec` feat: traz o detalhe de cliques do funcionario para a jornada do dia (#314)
 - 2026-11-25 `3ef51c691` feat: mostra a escala vigente na data escolhida na aba Atribuicoes (#313)
 - 2026-11-25 `a8fb66069` fix: liga as operacoes reais da tela de escalas de trabalho (#311)
 - 2026-11-25 `235f94b1c` feat: liga busca em dados reais na paleta de comandos (#310)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `1e1756acb` fix: fecha as 38 edges legadas que o deploy publicava sem nenhum gate (#300)
 - 2026-11-24 `43719a106` fix: filtro de tipo da tela de IA acha os relatorios que ja existem (#299)
 - 2026-11-24 `921fd7b15` fix: behavior-pattern recebe o nome do funcionario no campo certo (#298)
-- 2026-11-24 `fe1d96c79` infra: retry de 5xx transitorio do Supabase no migrate e no deploy-functions (#295)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

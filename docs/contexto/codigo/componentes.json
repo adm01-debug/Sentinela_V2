@@ -3596,7 +3596,7 @@
     "JourneyEvent"
    ],
    "export_default": null,
-   "linhas": 116,
+   "linhas": 118,
    "dominio": "components/timeline",
    "hooks_locais": [],
    "tabelas": [],
@@ -7069,7 +7069,7 @@
     "EmployeeDetailPage"
    ],
    "export_default": "EmployeeDetailPage",
-   "linhas": 224,
+   "linhas": 253,
    "dominio": "pages",
    "hooks_locais": [
     "useDailyJourney",

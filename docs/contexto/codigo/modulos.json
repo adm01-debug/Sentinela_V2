@@ -1283,7 +1283,7 @@
    "modulo": "components/timeline",
    "arquivos": 3,
    "testes": 0,
-   "linhas": 289,
+   "linhas": 291,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -1305,8 +1305,7 @@
    ],
    "flags": [],
    "papeis": [
-    "list",
-    "listitem"
+    "group"
    ],
    "diretos": {
     "edges": [],
@@ -1808,7 +1807,7 @@
    "modulo": "hooks",
    "arquivos": 482,
    "testes": 0,
-   "linhas": 32841,
+   "linhas": 32897,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -3133,8 +3132,7 @@
    "flags": [],
    "papeis": [
     "admin",
-    "list",
-    "listitem",
+    "group",
     "user"
    ],
    "diretos": {
@@ -3835,7 +3833,7 @@
    "modulo": "pages",
    "arquivos": 68,
    "testes": 0,
-   "linhas": 13805,
+   "linhas": 13834,
    "itens_menu": [
     "Geofencing",
     "Horários",
@@ -4172,8 +4170,8 @@
     "button",
     "combobox",
     "dialog",
+    "group",
     "list",
-    "listitem",
     "object",
     "presentation",
     "progressbar",
@@ -5007,9 +5005,9 @@
     "button",
     "combobox",
     "dialog",
+    "group",
     "link",
     "list",
-    "listitem",
     "main",
     "navigation",
     "object",
@@ -5228,7 +5226,7 @@
   {
    "modulo": "test",
    "arquivos": 0,
-   "testes": 57,
+   "testes": 58,
    "linhas": 0,
    "itens_menu": [],
    "telas": [],
@@ -5292,7 +5290,7 @@
    "modulo": "utils",
    "arquivos": 64,
    "testes": 0,
-   "linhas": 5225,
+   "linhas": 5267,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -5315,6 +5313,7 @@
    "edges": [],
    "tabelas": [
     "agent_keys",
+    "click_logs",
     "employees",
     "live_view_audit",
     "live_view_sessions",
@@ -5336,8 +5335,7 @@
    ],
    "flags": [],
    "papeis": [
-    "list",
-    "listitem"
+    "group"
    ],
    "diretos": {
     "edges": [],

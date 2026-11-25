@@ -3,7 +3,7 @@
  "format_version": 2,
  "stack": {
   "linguagens": [
-   "TypeScript (1377)",
+   "TypeScript (1378)",
    "Markdown (176)",
    "SQL (128)",
    "JSON (45)",
@@ -1343,6 +1343,10 @@
     "arquivos": 1
    },
    {
+    "host": "app.local",
+    "arquivos": 1
+   },
+   {
     "host": "attack.mitre.org",
     "arquivos": 1
    },
@@ -1496,10 +1500,6 @@
     "ocorrencias": 3
    },
    {
-    "papel": "list",
-    "ocorrencias": 3
-   },
-   {
     "papel": "presentation",
     "ocorrencias": 3
    },
@@ -1509,6 +1509,14 @@
    },
    {
     "papel": "dialog",
+    "ocorrencias": 2
+   },
+   {
+    "papel": "group",
+    "ocorrencias": 2
+   },
+   {
+    "papel": "list",
     "ocorrencias": 2
    },
    {
@@ -1532,19 +1540,11 @@
     "ocorrencias": 1
    },
    {
-    "papel": "group",
-    "ocorrencias": 1
-   },
-   {
     "papel": "img",
     "ocorrencias": 1
    },
    {
     "papel": "link",
-    "ocorrencias": 1
-   },
-   {
-    "papel": "listitem",
     "ocorrencias": 1
    },
    {
