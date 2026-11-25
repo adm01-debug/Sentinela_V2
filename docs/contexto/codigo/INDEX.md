@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `235f94b1c23b3c07dbb07fb2553d04b6fc11ad90` (2026-11-25T09:32:27-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `a8fb6606935cbea283a84236ef356f8cf3f0ef7f` (2026-11-25T09:45:52-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -14,7 +14,7 @@ Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR
 Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua tarefa; não carregue tudo.
 
 ## Stack
-- linguagens: TypeScript (1374), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
+- linguagens: TypeScript (1377), Markdown (176), SQL (128), JSON (45), YAML (37), JavaScript (28), Shell (22), HTML (4)
 - linguagem_principal: TypeScript
 - framework: React
 - backend_http: n/d
@@ -34,21 +34,21 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Números
 | item | qtd |
 |---|---|
-| arquivos_total | 1854 |
-| arquivos_codigo | 1400 |
-| linhas_codigo | 157615 |
+| arquivos_total | 1857 |
+| arquivos_codigo | 1403 |
+| linhas_codigo | 158363 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
 | itens_menu | 12 |
 | modulos | 58 |
 | componentes | 470 |
-| hooks | 525 |
+| hooks | 527 |
 | edge_functions | 50 |
 | tabelas | 180 |
 | migrations | 124 |
 | cron_jobs | 5 |
-| testes | 87 |
+| testes | 88 |
 | workflows | 14 |
 | scripts | 35 |
 | docs_md | 176 |
@@ -56,9 +56,9 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 ## Onde ficam as coisas
 - telas: src/pages (59)
 - componentes: src/components (359), src/pages (93), src/providers (8)
-- hooks: src/hooks (478), src/stores (33), src/lib (5)
+- hooks: src/hooks (480), src/stores (33), src/lib (5)
 - servicos_logica: src/utils (65), src/lib (39), src/stores (34)
-- testes: co-localizado (*.test) (55), co-localizado (__tests__) (22), outro (9)
+- testes: co-localizado (*.test) (56), co-localizado (__tests__) (22), outro (9)
 - edge_functions: supabase/functions
 - migrations: supabase/migrations
 - scripts: scripts/ci (7), scripts/ai-context (2), scripts/inventario (2)
@@ -82,10 +82,10 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 | components/skeletons | 0 | 0 | 11 | 15 | 0 | 5 |
 | components/ui | 0 | 0 | 127 | 11 | 0 | 0 |
 | constants | 0 | 0 | 7 | 0 | 0 | 0 |
-| hooks | 0 | 0 | 480 | 496 | 21 | 86 |
+| hooks | 0 | 0 | 482 | 502 | 21 | 88 |
 | lib | 0 | 0 | 18 | 0 | 0 | 3 |
 | lib/utils | 0 | 0 | 13 | 0 | 0 | 0 |
-| pages | 4 | 38 | 68 | 162 | 14 | 68 |
+| pages | 4 | 38 | 68 | 168 | 14 | 70 |
 | pages/admin | 0 | 18 | 20 | 35 | 8 | 32 |
 | pages/dev | 0 | 3 | 3 | 14 | 0 | 1 |
 | providers | 0 | 0 | 9 | 6 | 0 | 2 |
@@ -427,6 +427,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `a8fb66069` fix: liga as operacoes reais da tela de escalas de trabalho (#311)
 - 2026-11-25 `235f94b1c` feat: liga busca em dados reais na paleta de comandos (#310)
 - 2026-11-25 `63e0317b6` ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)
 - 2026-11-25 `217616fef` fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)
@@ -441,7 +442,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-24 `921fd7b15` fix: behavior-pattern recebe o nome do funcionario no campo certo (#298)
 - 2026-11-24 `fe1d96c79` infra: retry de 5xx transitorio do Supabase no migrate e no deploy-functions (#295)
 - 2026-11-24 `2d1c0b173` fix: tipo do resumo de atividade do monitoramento deixa de se chamar ActivitySummary (#297)
-- 2026-11-24 `76b120114` fix: analise de IA filtra e gera por funcionario de verdade (#296)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

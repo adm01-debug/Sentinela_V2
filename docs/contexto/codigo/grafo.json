@@ -1,12 +1,12 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "nos": 1313,
- "arestas": 2871,
+ "nos": 1315,
+ "arestas": 2877,
  "hubs": [
   {
    "arquivo": "src/integrations/supabase/client.ts",
-   "importado_por": 207
+   "importado_por": 209
   },
   {
    "arquivo": "src/components/ui/card.tsx",
@@ -30,7 +30,7 @@
   },
   {
    "arquivo": "src/hooks/use-toast.ts",
-   "importado_por": 74
+   "importado_por": 76
   },
   {
    "arquivo": "src/components/ui/skeleton.tsx",

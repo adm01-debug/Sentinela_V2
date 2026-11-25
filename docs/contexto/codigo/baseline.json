@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "235f94b1c23b3c07dbb07fb2553d04b6fc11ad90",
+  "commit": "a8fb6606935cbea283a84236ef356f8cf3f0ef7f",
   "branch": "main",
-  "data_commit": "2026-11-25T09:32:27-03:00",
+  "data_commit": "2026-11-25T09:45:52-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "a8fb66069",
+    "data": "2026-11-25",
+    "assunto": "fix: liga as operacoes reais da tela de escalas de trabalho (#311)"
+   },
    {
     "sha": "235f94b1c",
     "data": "2026-11-25",
@@ -126,14 +131,9 @@
     "sha": "a470d9c6b",
     "data": "2026-11-24",
     "assunto": "fix: envio de alerta nao mascara mais tipo ausente (status e event_type) (#286)"
-   },
-   {
-    "sha": "7794226d5",
-    "data": "2026-11-24",
-    "assunto": "fix: analise de padroes e tendencias ignora registro sem data em vez de estourar (#285)"
    }
   ],
-  "arquivos_mudados_7d": 315,
+  "arquivos_mudados_7d": 320,
   "pastas_mais_mudadas_30d": [
    {
     "pasta": "src/pages/__tests__",
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 207
+    "commits": 208
    },
    {
     "autor": "dependabot[bot]",
@@ -314,21 +314,21 @@
   ]
  },
  "contagens": {
-  "arquivos_total": 1854,
-  "arquivos_codigo": 1400,
-  "linhas_codigo": 157615,
+  "arquivos_total": 1857,
+  "arquivos_codigo": 1403,
+  "linhas_codigo": 158363,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
   "itens_menu": 12,
   "modulos": 58,
   "componentes": 470,
-  "hooks": 525,
+  "hooks": 527,
   "edge_functions": 50,
   "tabelas": 180,
   "migrations": 124,
   "cron_jobs": 5,
-  "testes": 87,
+  "testes": 88,
   "workflows": 14,
   "scripts": 35,
   "docs_md": 176
@@ -435,8 +435,8 @@
    "linhas": 24
   },
   "src/hooks": {
-   "arquivos": 480,
-   "linhas": 32490
+   "arquivos": 482,
+   "linhas": 32763
   },
   "src/i18n": {
    "arquivos": 1,
@@ -460,7 +460,7 @@
   },
   "src/pages": {
    "arquivos": 109,
-   "linhas": 21514
+   "linhas": 21821
   },
   "src/providers": {
    "arquivos": 9,
@@ -479,8 +479,8 @@
    "linhas": 2547
   },
   "src/test": {
-   "arquivos": 56,
-   "linhas": 10191
+   "arquivos": 57,
+   "linhas": 10359
   },
   "src/types": {
    "arquivos": 57,
@@ -553,6 +553,10 @@
    "linhas": 501
   },
   {
+   "arquivo": "src/pages/WorkSchedulesPage.tsx",
+   "linhas": 493
+  },
+  {
    "arquivo": "src/pages/Auth.tsx",
    "linhas": 486
   },
@@ -599,10 +603,6 @@
   {
    "arquivo": "src/pages/AgentOnboardingPage.tsx",
    "linhas": 445
-  },
-  {
-   "arquivo": "src/routes/AppRoutes.tsx",
-   "linhas": 444
   }
  ],
  "qualidade": {

@@ -2312,6 +2312,10 @@
    "src/integrations/supabase/client.ts",
    "src/integrations/supabase/types.ts"
   ],
+  "src/hooks/useEmployeeSchedules.ts": [
+   "src/hooks/use-toast.ts",
+   "src/integrations/supabase/client.ts"
+  ],
   "src/hooks/useEmployees.ts": [
    "src/hooks/use-toast.ts",
    "src/hooks/useRealtime.ts",
@@ -2464,6 +2468,10 @@
    "src/hooks/use-toast.ts",
    "src/integrations/supabase/client.ts",
    "src/lib/queryClient.ts"
+  ],
+  "src/hooks/useOvertimeRequests.ts": [
+   "src/hooks/use-toast.ts",
+   "src/integrations/supabase/client.ts"
   ],
   "src/hooks/usePWAPushNotifications.ts": [
    "src/integrations/supabase/client.ts",
@@ -2713,8 +2721,10 @@
    "src/lib/queryClient.ts"
   ],
   "src/hooks/useWorkSchedulesPage.ts": [
+   "src/hooks/useEmployeeSchedules.ts",
    "src/hooks/useEmployees.ts",
    "src/hooks/useOvertimeNotifications.ts",
+   "src/hooks/useOvertimeRequests.ts",
    "src/hooks/useWorkSchedules.ts"
   ],
   "src/i18n/index.ts": [

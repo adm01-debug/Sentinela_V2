@@ -11,7 +11,7 @@
    "src/providers (8)"
   ],
   "hooks": [
-   "src/hooks (478)",
+   "src/hooks (480)",
    "src/stores (33)",
    "src/lib (5)"
   ],
@@ -21,7 +21,7 @@
    "src/stores (34)"
   ],
   "testes": [
-   "co-localizado (*.test) (55)",
+   "co-localizado (*.test) (56)",
    "co-localizado (__tests__) (22)",
    "outro (9)"
   ],
@@ -68,11 +68,11 @@
  "commits": {
   "convencao": "commitlint",
   "exemplos": [
+   "fix: liga as operacoes reais da tela de escalas de trabalho (#311)",
    "feat: liga busca em dados reais na paleta de comandos (#310)",
    "ci: ciclo que le o agendador de producao (cron.job) e compara com as edges do repo (#307)",
    "fix: prune confirma pelo endpoint publico e pode ser reexecutado (#306)",
-   "docs: alinha estado do repo apos remocao das 38 edges sem chamador (#308)",
-   "feat: CI bloqueia edge function sem gate de credencial ou fora do config.toml (#304)"
+   "docs: alinha estado do repo apos remocao das 38 edges sem chamador (#308)"
   ]
  },
  "pr_template": ".github/pull_request_template.md",

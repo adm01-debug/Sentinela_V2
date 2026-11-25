@@ -1,7 +1,7 @@
 {
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
- "total": 525,
+ "total": 527,
  "hooks": [
   {
    "arquivo": "scripts/ai-context/cenarios.mjs",
@@ -160,7 +160,7 @@
     "useEffect"
    ],
    "canais_realtime": [],
-   "usado_por": 74,
+   "usado_por": 76,
    "usado_por_arquivos": [
     "src/components/AddEmployeeDialog.tsx",
     "src/components/PolicyAcknowledgmentDialog.tsx",
@@ -178,6 +178,7 @@
     "src/hooks/useDataExportPage.ts",
     "src/hooks/useDevicesPage.ts",
     "src/hooks/useEmployeeDetailPage.ts",
+    "src/hooks/useEmployeeSchedules.ts",
     "src/hooks/useEmployees.ts",
     "src/hooks/useGamification.ts",
     "src/hooks/useGamificationPage.ts",
@@ -190,8 +191,7 @@
     "src/hooks/useMFAPhone.ts",
     "src/hooks/useMessageTemplates.ts",
     "src/hooks/useMessageTemplatesPage.ts",
-    "src/hooks/useMobileDevices.ts",
-    "src/hooks/useMobileMonitoringPage.ts"
+    "src/hooks/useMobileDevices.ts"
    ],
    "coberto_por_testes": 0
   },
@@ -2964,6 +2964,33 @@
     "src/pages/EmployeeDetailPage.tsx",
     "src/pages/ScreenshotsPage.tsx",
     "src/services/employeeService.ts"
+   ],
+   "coberto_por_testes": 1
+  },
+  {
+   "arquivo": "src/hooks/useEmployeeSchedules.ts",
+   "hooks_exportados": [
+    "useAssignEmployeeSchedule",
+    "useEmployeeSchedules",
+    "useRemoveEmployeeSchedule"
+   ],
+   "linhas": 100,
+   "dominio": "hooks",
+   "tabelas": [
+    "employee_schedules"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/hooks/useWorkSchedulesPage.ts"
    ],
    "coberto_por_testes": 1
   },
@@ -6003,6 +6030,34 @@
    "dominio": "hooks",
    "tabelas": [
     "overtime_requests"
+   ],
+   "rpcs": [],
+   "edges": [],
+   "hooks_internos": [
+    "useMutation",
+    "useQuery",
+    "useQueryClient",
+    "useToast"
+   ],
+   "canais_realtime": [],
+   "usado_por": 1,
+   "usado_por_arquivos": [
+    "src/hooks/useWorkSchedulesPage.ts"
+   ],
+   "coberto_por_testes": 0
+  },
+  {
+   "arquivo": "src/hooks/useOvertimeRequests.ts",
+   "hooks_exportados": [
+    "useOvertimeRequests",
+    "useRecentStationBlocks",
+    "useReviewOvertimeRequest"
+   ],
+   "linhas": 106,
+   "dominio": "hooks",
+   "tabelas": [
+    "overtime_requests",
+    "station_block_logs"
    ],
    "rpcs": [],
    "edges": [],
@@ -10173,7 +10228,7 @@
     "useUpdateWorkSchedule",
     "useWorkSchedules"
    ],
-   "linhas": 141,
+   "linhas": 154,
    "dominio": "hooks",
    "tabelas": [
     "work_schedules"
@@ -10198,17 +10253,26 @@
    "hooks_exportados": [
     "useWorkSchedulesPage"
    ],
-   "linhas": 358,
+   "linhas": 412,
    "dominio": "hooks",
    "tabelas": [],
    "rpcs": [],
    "edges": [],
    "hooks_internos": [
+    "useAssignEmployeeSchedule",
     "useCallback",
+    "useCreateWorkSchedule",
+    "useDeleteWorkSchedule",
+    "useEmployeeSchedules",
     "useEmployees",
     "useMemo",
     "useOvertimeNotifications",
+    "useOvertimeRequests",
+    "useRecentStationBlocks",
+    "useRemoveEmployeeSchedule",
+    "useReviewOvertimeRequest",
     "useState",
+    "useUpdateWorkSchedule",
     "useWorkSchedules"
    ],
    "canais_realtime": [],
@@ -10216,7 +10280,7 @@
    "usado_por_arquivos": [
     "src/pages/WorkSchedulesPage.tsx"
    ],
-   "coberto_por_testes": 0
+   "coberto_por_testes": 1
   },
   {
    "arquivo": "src/hooks/useZoom.ts",

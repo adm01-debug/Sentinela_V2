@@ -7710,7 +7710,7 @@
     "WorkSchedulesPage"
    ],
    "export_default": "WorkSchedulesPage",
-   "linhas": 186,
+   "linhas": 493,
    "dominio": "pages",
    "hooks_locais": [
     "useWorkSchedulesPage"

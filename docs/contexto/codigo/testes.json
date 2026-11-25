@@ -5,16 +5,16 @@
   "vitest",
   "playwright"
  ],
- "total": 87,
+ "total": 88,
  "por_tipo": {
   "contrato": 1,
   "e2e": 1,
-  "unit": 85
+  "unit": 86
  },
  "onde_ficam": [
   {
    "padrao": "co-localizado (*.test)",
-   "arquivos": 55
+   "arquivos": 56
   },
   {
    "padrao": "co-localizado (__tests__)",
@@ -848,6 +848,16 @@
    "linhas": 113,
    "testa": [],
    "casos": 12
+  },
+  {
+   "arquivo": "src/test/work-schedules-operations.test.tsx",
+   "tipo": "unit",
+   "linhas": 168,
+   "testa": [
+    "src/hooks/useEmployeeSchedules.ts",
+    "src/hooks/useWorkSchedulesPage.ts"
+   ],
+   "casos": 4
   }
  ],
  "sql": [],
@@ -901,6 +911,7 @@
   "src/hooks/useDebounce.ts": 1,
   "src/hooks/useDevicesPage.ts": 1,
   "src/hooks/useDisputeMetrics.ts": 1,
+  "src/hooks/useEmployeeSchedules.ts": 1,
   "src/hooks/useEmployees.ts": 1,
   "src/hooks/useEmployeesPage.ts": 1,
   "src/hooks/useFilter.ts": 1,
@@ -915,6 +926,7 @@
   "src/hooks/useSort.ts": 1,
   "src/hooks/useToggle.ts": 1,
   "src/hooks/useUsers.ts": 1,
+  "src/hooks/useWorkSchedulesPage.ts": 1,
   "src/i18n/index.ts": 1,
   "src/integrations/supabase/client.ts": 10,
   "src/lib/apiMonitor.ts": 1,
@@ -1282,6 +1294,7 @@
    "src/hooks/useOrganization.ts",
    "src/hooks/useOrientation.ts",
    "src/hooks/useOvertimeNotifications.ts",
+   "src/hooks/useOvertimeRequests.ts",
    "src/hooks/usePageLeave.ts",
    "src/hooks/usePageVisibility.ts",
    "src/hooks/usePan.ts",
@@ -1472,7 +1485,6 @@
    "src/hooks/useWorkerFn.ts",
    "src/hooks/useWorkHours.ts",
    "src/hooks/useWorkSchedules.ts",
-   "src/hooks/useWorkSchedulesPage.ts",
    "src/hooks/useZoom.ts",
    "src/lib/feature-flags/exports.ts",
    "src/lib/permissions/exports.ts",
