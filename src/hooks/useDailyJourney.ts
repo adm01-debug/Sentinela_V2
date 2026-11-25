@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import type { JourneyEvent } from '@/components/timeline/DailyJourneyTimeline';
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import type { JourneyEvent } from "@/components/timeline/DailyJourneyTimeline";
 
 function toMinuteOfDay(iso: string): number {
   const d = new Date(iso);
@@ -22,17 +22,29 @@ export interface DailyJourneySummary {
 
 export interface DailyJourneyResult {
   events: JourneyEvent[];
+  clicks: DailyJourneyClick[];
   summary: DailyJourneySummary;
 }
 
+/** Clique individual registrado pelo agente do funcionário (tabela `click_logs`). */
+export interface DailyJourneyClick {
+  id: string;
+  recordedAt: string;
+  clickType: string;
+  targetElement: string | null;
+  appName: string | null;
+  windowTitle: string | null;
+  url: string | null;
+}
+
 /**
- * Combina presença (time_entries), violações (security_violations) e
- * resumo diário de produtividade (productivity_logs) para um colaborador
- * em um dia específico.
+ * Combina presença (time_entries), violações (security_violations),
+ * resumo diário de produtividade (productivity_logs) e os cliques
+ * individuais (click_logs) para um colaborador em um dia específico.
  */
 export function useDailyJourney(employeeId: string, date: string) {
   return useQuery({
-    queryKey: ['daily-journey', employeeId, date],
+    queryKey: ["daily-journey", employeeId, date],
     enabled: !!employeeId && !!date,
     staleTime: 60_000,
     queryFn: async (): Promise<DailyJourneyResult> => {
@@ -41,45 +53,53 @@ export function useDailyJourney(employeeId: string, date: string) {
 
       const [entriesRes, empRes] = await Promise.all([
         supabase
-          .from('time_entries')
-          .select('clock_in, clock_out, duration_minutes')
-          .eq('employee_id', employeeId)
-          .gte('clock_in', dayStart)
-          .lte('clock_in', dayEnd),
-        supabase
-          .from('employees')
-          .select('name')
-          .eq('id', employeeId)
-          .maybeSingle(),
+          .from("time_entries")
+          .select("clock_in, clock_out, duration_minutes")
+          .eq("employee_id", employeeId)
+          .gte("clock_in", dayStart)
+          .lte("clock_in", dayEnd),
+        supabase.from("employees").select("name").eq("id", employeeId).maybeSingle(),
       ]);
 
       if (entriesRes.error) throw entriesRes.error;
-      const employeeName = (empRes.data as { name?: string } | null)?.name ?? '';
+      const employeeName = (empRes.data as { name?: string } | null)?.name ?? "";
 
-      const [violationsRes, prodRes, capturesRes] = await Promise.all([
+      const [violationsRes, prodRes, capturesRes, clicksRes] = await Promise.all([
         employeeName
           ? supabase
-              .from('security_violations')
-              .select('id, violation_type, severity, created_at')
-              .eq('employee_name', employeeName)
-              .gte('created_at', dayStart)
-              .lte('created_at', dayEnd)
+              .from("security_violations")
+              .select("id, violation_type, severity, created_at")
+              .eq("employee_name", employeeName)
+              .gte("created_at", dayStart)
+              .lte("created_at", dayEnd)
           : Promise.resolve({ data: [], error: null } as const),
         employeeName
           ? supabase
-              .from('productivity_logs')
-              .select('productive_time_seconds, unproductive_time_seconds, neutral_time_seconds, apps_used')
-              .eq('employee_name', employeeName)
-              .eq('recorded_date', date)
+              .from("productivity_logs")
+              .select(
+                "productive_time_seconds, unproductive_time_seconds, neutral_time_seconds, apps_used"
+              )
+              .eq("employee_name", employeeName)
+              .eq("recorded_date", date)
           : Promise.resolve({ data: [], error: null } as const),
         employeeName
           ? supabase
-              .from('screen_captures')
-              .select('id, captured_at, app_name, window_title')
-              .eq('employee_name', employeeName)
-              .gte('captured_at', dayStart)
-              .lte('captured_at', dayEnd)
-              .order('captured_at', { ascending: true })
+              .from("screen_captures")
+              .select("id, captured_at, app_name, window_title")
+              .eq("employee_name", employeeName)
+              .gte("captured_at", dayStart)
+              .lte("captured_at", dayEnd)
+              .order("captured_at", { ascending: true })
+              .limit(200)
+          : Promise.resolve({ data: [], error: null } as const),
+        employeeName
+          ? supabase
+              .from("click_logs")
+              .select("id, recorded_at, click_type, target_element, app_name, window_title, url")
+              .eq("employee_name", employeeName)
+              .gte("recorded_at", dayStart)
+              .lte("recorded_at", dayEnd)
+              .order("recorded_at", { ascending: true })
               .limit(200)
           : Promise.resolve({ data: [], error: null } as const),
       ]);
@@ -87,6 +107,27 @@ export function useDailyJourney(employeeId: string, date: string) {
       if (violationsRes.error) throw violationsRes.error;
       if (prodRes.error) throw prodRes.error;
       if (capturesRes.error) throw capturesRes.error;
+      if (clicksRes.error) throw clicksRes.error;
+
+      const clicks: DailyJourneyClick[] = (
+        (clicksRes.data ?? []) as Array<{
+          id: string;
+          recorded_at: string;
+          click_type?: string | null;
+          target_element?: string | null;
+          app_name?: string | null;
+          window_title?: string | null;
+          url?: string | null;
+        }>
+      ).map((c) => ({
+        id: c.id,
+        recordedAt: c.recorded_at,
+        clickType: c.click_type ?? "click",
+        targetElement: c.target_element ?? null,
+        appName: c.app_name ?? null,
+        windowTitle: c.window_title ?? null,
+        url: c.url ?? null,
+      }));
 
       const events: JourneyEvent[] = [];
 
@@ -96,10 +137,10 @@ export function useDailyJourney(employeeId: string, date: string) {
           ? clamp(toMinuteOfDay(e.clock_out), start, 1440)
           : start + (e.duration_minutes ?? 0);
         events.push({
-          kind: 'presence',
+          kind: "presence",
           startMinute: start,
           durationMinutes: Math.max(1, end - start),
-          label: 'Sessão de trabalho',
+          label: "Sessão de trabalho",
         });
       }
 
@@ -110,10 +151,10 @@ export function useDailyJourney(employeeId: string, date: string) {
         created_at: string;
       }>) {
         events.push({
-          kind: 'violation',
+          kind: "violation",
           startMinute: toMinuteOfDay(v.created_at),
           durationMinutes: 3,
-          label: `${v.violation_type ?? 'Violação'} (${v.severity ?? 'medium'})`,
+          label: `${v.violation_type ?? "Violação"} (${v.severity ?? "medium"})`,
           meta: { violationId: v.id },
         });
       }
@@ -125,11 +166,21 @@ export function useDailyJourney(employeeId: string, date: string) {
         window_title?: string | null;
       }>) {
         events.push({
-          kind: 'screenshot',
+          kind: "screenshot",
           startMinute: toMinuteOfDay(c.captured_at),
           durationMinutes: 2,
-          label: c.window_title ?? c.app_name ?? 'Screenshot',
+          label: c.window_title ?? c.app_name ?? "Screenshot",
           meta: { screenshotId: c.id },
+        });
+      }
+
+      for (const c of clicks) {
+        events.push({
+          kind: "click",
+          startMinute: toMinuteOfDay(c.recordedAt),
+          durationMinutes: 1,
+          label: `${c.clickType} em ${c.targetElement ?? c.windowTitle ?? c.appName ?? "tela"}`,
+          meta: { clickId: c.id },
         });
       }
 
@@ -155,15 +206,19 @@ export function useDailyJourney(employeeId: string, date: string) {
             if (!item?.name) continue;
             appTotals.set(item.name, (appTotals.get(item.name) ?? 0) + (item.seconds ?? 0));
           }
-        } else if (apps && typeof apps === 'object') {
+        } else if (apps && typeof apps === "object") {
           for (const [name, seconds] of Object.entries(apps as Record<string, number>)) {
-            appTotals.set(name, (appTotals.get(name) ?? 0) + (typeof seconds === 'number' ? seconds : 0));
+            appTotals.set(
+              name,
+              (appTotals.get(name) ?? 0) + (typeof seconds === "number" ? seconds : 0)
+            );
           }
         }
       }
 
       const totalSeconds = productiveSeconds + neutralSeconds + unproductiveSeconds;
-      const productivityScore = totalSeconds > 0 ? Math.round((productiveSeconds / totalSeconds) * 100) : 0;
+      const productivityScore =
+        totalSeconds > 0 ? Math.round((productiveSeconds / totalSeconds) * 100) : 0;
       const topApps = Array.from(appTotals.entries())
         .map(([name, seconds]) => ({ name, seconds }))
         .sort((a, b) => b.seconds - a.seconds)
@@ -171,6 +226,7 @@ export function useDailyJourney(employeeId: string, date: string) {
 
       return {
         events,
+        clicks,
         summary: {
           productiveSeconds,
           neutralSeconds,

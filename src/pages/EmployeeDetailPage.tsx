@@ -36,6 +36,7 @@ export default function EmployeeDetailPage() {
 
   const { data: journey, isLoading: journeyLoading } = useDailyJourney(id!, journeyDate);
   const journeyEvents = journey?.events ?? [];
+  const journeyClicks = journey?.clicks ?? [];
   const journeySummary = journey?.summary;
 
   if (isLoading)
@@ -68,7 +69,7 @@ export default function EmployeeDetailPage() {
           <ActivityTimeline employeeId={id!} />
         </TabsContent>
         <TabsContent value="journey" className="mt-6 space-y-4">
-          <div className="flex flex-wrap items-end gap-3 rounded-lg border bg-card p-4">
+          <div className="bg-card flex flex-wrap items-end gap-3 rounded-lg border p-4">
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
@@ -79,7 +80,7 @@ export default function EmployeeDetailPage() {
                 <ChevronLeft className="h-4 w-4" />
               </Button>
               <div className="grid gap-1">
-                <Label htmlFor="journey-date" className="text-xs text-muted-foreground">
+                <Label htmlFor="journey-date" className="text-muted-foreground text-xs">
                   Data
                 </Label>
                 <Input
@@ -123,33 +124,33 @@ export default function EmployeeDetailPage() {
             >
               <FileDown className="mr-2 h-4 w-4" /> Exportar PDF
             </Button>
-            <div className="ml-auto text-sm text-muted-foreground">
+            <div className="text-muted-foreground ml-auto text-sm">
               {journeyLoading ? "Carregando…" : `${journeyEvents.length} eventos`}
             </div>
           </div>
           {journeySummary && journeySummary.totalSeconds > 0 && (
             <div className="grid gap-3 md:grid-cols-4">
-              <div className="rounded-lg border bg-card p-4">
-                <div className="text-xs text-muted-foreground">Score de produtividade</div>
-                <div className="text-2xl font-bold text-success">
+              <div className="bg-card rounded-lg border p-4">
+                <div className="text-muted-foreground text-xs">Score de produtividade</div>
+                <div className="text-success text-2xl font-bold">
                   {journeySummary.productivityScore}%
                 </div>
               </div>
-              <div className="rounded-lg border bg-card p-4">
-                <div className="text-xs text-muted-foreground">Produtivo</div>
+              <div className="bg-card rounded-lg border p-4">
+                <div className="text-muted-foreground text-xs">Produtivo</div>
                 <div className="text-2xl font-bold">
                   {Math.round(journeySummary.productiveSeconds / 60)} min
                 </div>
               </div>
-              <div className="rounded-lg border bg-card p-4">
-                <div className="text-xs text-muted-foreground">Neutro</div>
+              <div className="bg-card rounded-lg border p-4">
+                <div className="text-muted-foreground text-xs">Neutro</div>
                 <div className="text-2xl font-bold">
                   {Math.round(journeySummary.neutralSeconds / 60)} min
                 </div>
               </div>
-              <div className="rounded-lg border bg-card p-4">
-                <div className="text-xs text-muted-foreground">Improdutivo</div>
-                <div className="text-2xl font-bold text-destructive">
+              <div className="bg-card rounded-lg border p-4">
+                <div className="text-muted-foreground text-xs">Improdutivo</div>
+                <div className="text-destructive text-2xl font-bold">
                   {Math.round(journeySummary.unproductiveSeconds / 60)} min
                 </div>
               </div>
@@ -166,6 +167,34 @@ export default function EmployeeDetailPage() {
             onScreenshotClick={(id) => setScreenshotId(id)}
             onViolationClick={(id) => setViolationId(id)}
           />
+          {journeyClicks.length > 0 && (
+            <div className="bg-card rounded-lg border p-4">
+              <div className="mb-2 flex items-center justify-between text-sm font-semibold">
+                <span>Cliques registrados no dia</span>
+                <span className="text-muted-foreground font-normal">
+                  {journeyClicks.length} clique(s)
+                </span>
+              </div>
+              <ul className="max-h-72 space-y-1 overflow-y-auto text-sm">
+                {journeyClicks.map((c) => (
+                  <li key={c.id} className="flex items-baseline justify-between gap-3">
+                    <span className="text-foreground">
+                      <span className="text-muted-foreground font-mono text-xs">
+                        {new Date(c.recordedAt).toLocaleTimeString("pt-BR", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>{" "}
+                      {c.clickType} em {c.targetElement ?? c.windowTitle ?? c.appName ?? "tela"}
+                    </span>
+                    <span className="text-muted-foreground shrink-0 text-xs">
+                      {c.appName ?? c.windowTitle ?? ""}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <ScreenshotViewerDialog
             screenshotId={screenshotId}
             onOpenChange={(open) => !open && setScreenshotId(null)}
@@ -176,7 +205,7 @@ export default function EmployeeDetailPage() {
             onOpenChange={(open) => !open && setViolationId(null)}
           />
           {journeySummary && journeySummary.topApps.length > 0 && (
-            <div className="rounded-lg border bg-card p-4">
+            <div className="bg-card rounded-lg border p-4">
               <div className="mb-2 text-sm font-semibold">Top aplicações do dia</div>
               <ul className="space-y-1 text-sm">
                 {journeySummary.topApps.map((a) => (
@@ -190,7 +219,7 @@ export default function EmployeeDetailPage() {
           )}
         </TabsContent>
         <TabsContent value="stats" className="mt-6">
-          <div className="rounded-lg border bg-card p-12 text-center text-muted-foreground">
+          <div className="bg-card text-muted-foreground rounded-lg border p-12 text-center">
             {stats ? "Estatísticas em desenvolvimento." : "Sem estatísticas no período."}
           </div>
         </TabsContent>
