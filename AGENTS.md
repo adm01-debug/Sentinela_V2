@@ -4,6 +4,9 @@ Regras do dono para qualquer agente de IA; vencem `docs/` (histórico) e `README
 Detalhe em `docs/agentes/<tema>.md`; divergiu da realidade → corrija no mesmo PR do fix. Responda
 sempre em PT-BR.
 
+<!-- Texto-mestre adm01-debug: o conteúdo de `## Postura` até `## Fluxo Git` é o mesmo em todos os repos
+do dono. Mudou aqui → replique nos outros. O que é específico deste repo vem depois disso. -->
+
 ## Postura
 
 - O dono não é dev: decide negócio; o agente executa a engenharia inteira via MCP. Nunca passo manual
@@ -60,6 +63,9 @@ sempre em PT-BR.
 
 - Repo `adm01-debug/Sentinela_V2`, `main`, **privado**. Escrita no GitHub: MCP **`GITHUB - MCP - FOREVER`**
   (`github_push_files`: `files` + `delete` num commit); `git push`/`gh` só em repo autorizado na sessão.
+- **Trabalhe em cópia isolada, nunca no checkout primário do dono** (`git worktree add` ou clone em
+  diretório da sessão). O checkout primário é somente leitura: vários agentes no mesmo repo = colisão de
+  branch e trabalho perdido.
 - Nunca commite em `main`. Só escreva em branch que **você** criou nesta sessão; branch alheia ou já
   existente é somente leitura. Antes do push, confira que o último commit é seu.
   **`main` não tem branch protection** (API responde 404): a proibição é regra, não trava técnica.
