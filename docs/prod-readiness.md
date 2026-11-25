@@ -75,6 +75,11 @@ Supabase (URL/anon/service), Redis (REDIS_URL), JWT, SESSION_SECRET, SMTP (email
 
 ## ANEXO 1 — Edge functions (87)
 
+> **Snapshot histórico (23/11/2026) — não use como estado atual.** Em 25/11/2026 o repo tem **50**
+> pastas em `supabase/functions`: as 38 sem nenhum chamador saíram na #305 e o prune de produção foi
+> confirmado por HTTP (404). A lista viva é o `supabase/config.toml` (`[functions.*]`), e o job
+> `edge-gate-guard` do CI compara pastas, declaradas e gate a cada push.
+
 _shared, acknowledge-violation, agent-collector, analyze-activity, archive-data, audit-export, auto-categorize, backup-data, batch-notifications, behavioral-baseline-builder, behavior-pattern, bulk-update, calculate-productivity, check-geofence, cleanup-rate-limit-logs, cleanup-sessions, compress-screenshots, create-monthly-partitions, daily-summary, delete-user-data, dlp-incident-report, dlp-policy-sync, escalate-dispute-sla, expire-recordings, export-data, external-db-bridge, generate-api-key, generate-insights, generate-report, get-dashboard-stats, get-employee-schedule, get-employee-timeline, get-mapbox-token, get-policies, health, health-check, import-employees, ingest-file-transfer, invite-user, live-view-authorize, merge-employees, mobile-collector, natural-language-query, notify-dispute-decision, notify-mobile-violation, notify-new-device, ocr-screenshot, pending-employee-violations, predict-anomaly, process-bulk-import, process-screenshot, process-violation-alert, recalculate-metrics, refresh-tokens, request-overtime, reset-password, risk-score-calculator, rotate-api-keys, search-activities, send-email-notification, send-password-reset, send-push-notification, send-rate-limit-alert, send-scheduled-report, send-slack-notification, send-webhook, send-whatsapp, sentiment-analysis, slack-dlq-bulk-replay, slack-dlq-replay, slack-fallback-test, slack-mttr-monitor, slack-notify, slack-weekly-digest, smart-recommendations, summarize-activity, sync-employee, sync-teams, trend-forecasting, upload-recording-chunk, validate-agent-key, validate-license, verify-email, webrtc-ice-config, weekly-report.
 
 ## ANEXO 3 — Estado de validação do Supabase/Vercel

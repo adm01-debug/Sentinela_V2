@@ -1,6 +1,9 @@
 # Linha de base - estado real de Sentinela_V2
 
-Atualizado em 2026-11-24 (sessao autopilot - guardas de encoding e de contrato de
+Atualizado em 2026-11-25 (sessao autopilot - as 38 edge functions sem chamador
+saíram do repo (**50 pastas**) e de produção, `cron.job` lido pela primeira vez -
+**6 jobs ativos** - e o CI ganhou a guarda de gate + o ciclo `estado-cron.yml`).
+Antes: 2026-11-24 (sessao autopilot - guardas de encoding e de contrato de
 dados #273/#274, rate limit e retry_count das edges #275, guarda do rate limit
 #276). Antes: 2026-11-22 (migrations automaticas no deploy #222/#227/#228,
 MFAGuard #229, orfaos #223, mcp-query sem proxy admin #221), 2026-11-21
@@ -254,7 +257,11 @@ Divida conhecida de seguranca (baixa prioridade, `anon` sem EXECUTE):
    22h45)" no fim deste documento**: as 88 pastas de `supabase/functions`
    respondem em producao (nenhuma 404). O que existe e um outro conjunto: 38
    funcoes publicadas que **nenhum arquivo deste repositorio referencia**.
-   Decidir se remove ou se mantem como plano futuro.
+   Decidir se remove ou se mantem como plano futuro. **DECIDIDO E EXECUTADO em
+   25/11/2026**: as 38 foram removidas do repo (#305) e de producao (prune +
+   confirmacao HTTP 404); `cron.job` foi lido antes (6 jobs, nenhum apontava para
+   elas) — ver a nota datada na secao "Functions x producao x gates". O guarda do
+   CI (`edge-gate-guard`) passou a exigir gate em toda funcao nova.
 3. Bancos de rota: manter ratchets dos CI zerados a cada merge.
 4. PolicyGate — **RESOLVIDO E NO AR** (banco + codigo na main).
 
@@ -456,6 +463,20 @@ descrevia o estado **antes** do job `deploy-functions` do `deploy.yml`, que hoje
 publica todas as pastas a cada push na `main`. Nao ha funcao do repo faltando em
 producao.
 
+> **Atualizacao de 25/11/2026 — esta medicao virou historia.** O repo tem hoje **50**
+> pastas de `supabase/functions` (88 menos 38) e a producao acompanha: as 38 removidas respondem
+> `404` em `/functions/v1/<nome>` e as mantidas respondem `401` (`send-push-notification`,
+> `expire-recordings`, `slack-weekly-digest`). A PR #305 (merge `af9d004da`) apagou as pastas e as
+> entradas do `config.toml`; o prune de producao rodou pelo `prune-edge-functions.yml` (run
+> `45602437911`) e a confirmacao por HTTP foi corrigida na PR #306.
+>
+> Da lista de 38 logo abaixo, **30 saíram** e **8 continuam no repo**
+> (`dlp-incident-report`, `dlp-policy-sync`, `generate-insights`, `get-employee-schedule`,
+> `get-employee-timeline`, `mcp-query`, `natural-language-query`,
+> `pending-employee-violations`). Outras **8 funcoes removidas nao estavam nesta lista**:
+> `backup-data`, `batch-notifications`, `health`, `notify-mobile-violation`, `reset-password`,
+> `send-rate-limit-alert`, `sync-employee`, `verify-email`.
+
 As 38 publicadas e sem referencia no repo (nenhum arquivo de `src/`, nenhuma
 outra edge, nenhuma migration, nenhum workflow): `archive-data`, `audit-export`,
 `auto-categorize`, `behavioral-baseline-builder`, `bulk-update`,
@@ -479,6 +500,14 @@ mobile) ou por integracao — e foi exatamente isso que derrubou o cron do
 escalonamento de SLA na #268. Portanto: **nao apagar nem gatear** essas funcoes
 sem antes ler `cron.job` no banco.
 
+> **25/11/2026 — a leitura foi feita.** `cron.job` respondeu **6 jobs ativos**
+> (`cleanup-edge-function-logs-daily`, `cleanup-slack-dlq-daily`,
+> `escalate-dispute-sla-every-15min`, `expire-recordings-hourly`, `slack-mttr-monitor-hourly`,
+> `slack-weekly-digest-monday`) e as 4 funcoes referenciadas existem no repo — **nenhum job apontava
+> para as 38 removidas**, que era exatamente o risco desta nota. O cruzamento virou ciclo automatico
+> (`estado-cron.yml`, PR #307; dispatch + semanal), porque regra que ninguem consegue cumprir pelo
+> repo nao protege nada.
+
 ### Ordem do deploy de producao
 
 `deploy.yml` tem 3 jobs (`migrate` na linha 32, `deploy-functions` na 65,
@@ -500,3 +529,9 @@ tem de estar no codigo. Das 46 sem gate, 12 sao chamadas pelo front
 (`reset-password`, `verify-email`, `validate-agent-key` e o proprio
 `health-check`), onde gate por usuario quebraria a funcionalidade. As demais nao
 tem chamador localizado no repo.
+
+> **Nota de 25/11/2026:** das 12 acima, `batch-notifications`, `notify-mobile-violation`,
+> `reset-password` e `verify-email` deixaram de existir na #305. A verificacao de 25/11 mostrou que
+> as referencias a elas no front eram leitura de log (`IntegrationsHealthPage.tsx:154`) e rotas de
+> SPA (`src/constants/routes.ts:12-13`), nao chamadas a edge function — por isso a remocao nao
+> quebrou fluxo. Das 46, restam 42 para decidir.
