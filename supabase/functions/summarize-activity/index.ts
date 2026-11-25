@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { requireUserOrServiceRole } from "../_shared/auth.ts";
+import { callerCompanyScope, withCompanyScope } from "../_shared/auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -78,8 +79,9 @@ serve(async (req) => {
   try {
     // verify_jwt = true aceita a chave publicavel no gateway; o gate real
     // acontece aqui (ver _shared/auth.ts).
+    let auth: Awaited<ReturnType<typeof requireUserOrServiceRole>>;
     try {
-      await requireUserOrServiceRole(req);
+      auth = await requireUserOrServiceRole(req);
     } catch {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
@@ -91,6 +93,8 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
+    // service_role ignora RLS: sem este escopo as analises leem logs de todas as empresas
+    const scope = await callerCompanyScope(supabase, auth);
 
     const { period = "day", employeeId, startDate, endDate } = await req.json();
 
@@ -107,7 +111,7 @@ serve(async (req) => {
       .gte("recorded_at", since)
       .lte("recorded_at", until);
     if (employeeId) activityQuery = activityQuery.eq("employee_name", employeeId);
-    const { data: activitiesRaw } = await activityQuery;
+    const { data: activitiesRaw } = await withCompanyScope(activityQuery, scope);
     const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
     // Fetch violations
@@ -116,7 +120,7 @@ serve(async (req) => {
       .select("*")
       .gte("created_at", since)
       .lte("created_at", until);
-    const { data: violations } = await violationQuery;
+    const { data: violations } = await withCompanyScope(violationQuery, scope);
 
     // Calculate metrics
     const totalActivities = activities?.length || 0;

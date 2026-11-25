@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { requireUserOrServiceRole } from "../_shared/auth.ts";
+import { callerCompanyScope, withCompanyScope } from "../_shared/auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -47,8 +48,9 @@ serve(async (req) => {
   try {
     // verify_jwt = true aceita a chave publicavel no gateway; o gate real
     // acontece aqui (ver _shared/auth.ts).
+    let auth: Awaited<ReturnType<typeof requireUserOrServiceRole>>;
     try {
-      await requireUserOrServiceRole(req);
+      auth = await requireUserOrServiceRole(req);
     } catch {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
@@ -60,22 +62,30 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
+    // service_role ignora RLS: sem este escopo as analises leem logs de todas as empresas
+    const scope = await callerCompanyScope(supabase, auth);
 
     const { context = "general", limit = 10 } = await req.json();
     const recommendations: Recommendation[] = [];
 
     const [activitiesRes, violationsRes, employeesRes] = await Promise.all([
-      supabase
-        .from("keystroke_logs")
-        .select("*")
-        .order("recorded_at", { ascending: false })
-        .limit(1000),
-      supabase
-        .from("security_violations")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(200),
-      supabase.from("employees").select("*").eq("status", "active"),
+      withCompanyScope(
+        supabase
+          .from("keystroke_logs")
+          .select("*")
+          .order("recorded_at", { ascending: false })
+          .limit(1000),
+        scope
+      ),
+      withCompanyScope(
+        supabase
+          .from("security_violations")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(200),
+        scope
+      ),
+      withCompanyScope(supabase.from("employees").select("*").eq("status", "active"), scope),
     ]);
 
     const activities = (activitiesRes.data || []) as KeystrokeRow[];

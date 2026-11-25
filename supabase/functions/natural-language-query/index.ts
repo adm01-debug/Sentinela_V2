@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { callerCompanyScope, withCompanyScope } from "../_shared/auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -50,6 +51,8 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
+    // service_role ignora RLS: sem este escopo a busca le devolve dados de todas as empresas
+    const scope = await callerCompanyScope(supabase, { user, isServiceRole: false });
 
     const body = await req.json().catch(() => ({}));
     const { query, tables = ["employees", "activities", "violations"], maxResults = 20 } = body;
@@ -91,17 +94,20 @@ serve(async (req) => {
 
     // Search employees
     if (tables.includes("employees")) {
-      const { data: employees } = await supabase
-        .from("employees")
-        .select("id, name, email, department, position, status")
-        .or(
-          keywords
-            .map((k: string) => `name.ilike.%${k}%,email.ilike.%${k}%,department.ilike.%${k}%`)
-            .join(",")
-        )
-        .limit(maxResults);
+      const { data: employees } = await withCompanyScope(
+        supabase
+          .from("employees")
+          .select("id, name, email, department, position, status")
+          .or(
+            keywords
+              .map((k: string) => `name.ilike.%${k}%,email.ilike.%${k}%,department.ilike.%${k}%`)
+              .join(",")
+          )
+          .limit(maxResults),
+        scope
+      );
 
-      employees?.forEach((emp: any) => {
+      employees?.forEach((emp) => {
         const score = keywords.reduce((s: number, k: string) => {
           if (emp.name?.toLowerCase().includes(k)) s += 0.4;
           if (emp.email?.toLowerCase().includes(k)) s += 0.3;
@@ -122,20 +128,25 @@ serve(async (req) => {
 
     // Search violations
     if (tables.includes("violations")) {
-      const { data: violations } = await supabase
-        .from("security_violations")
-        .select("id, violation_type, policy_name, severity, description, employee_name, created_at")
-        .or(
-          keywords
-            .map(
-              (k: string) =>
-                `violation_type.ilike.%${k}%,policy_name.ilike.%${k}%,description.ilike.%${k}%,severity.ilike.%${k}%`
-            )
-            .join(",")
-        )
-        .limit(maxResults);
+      const { data: violations } = await withCompanyScope(
+        supabase
+          .from("security_violations")
+          .select(
+            "id, violation_type, policy_name, severity, description, employee_name, created_at"
+          )
+          .or(
+            keywords
+              .map(
+                (k: string) =>
+                  `violation_type.ilike.%${k}%,policy_name.ilike.%${k}%,description.ilike.%${k}%,severity.ilike.%${k}%`
+              )
+              .join(",")
+          )
+          .limit(maxResults),
+        scope
+      );
 
-      violations?.forEach((vio: any) => {
+      violations?.forEach((vio) => {
         const score = keywords.reduce((s: number, k: string) => {
           if (vio.violation_type?.toLowerCase().includes(k)) s += 0.4;
           if (vio.policy_name?.toLowerCase().includes(k)) s += 0.3;
@@ -157,19 +168,23 @@ serve(async (req) => {
 
     // Search activities
     if (tables.includes("activities")) {
-      const { data: activities } = await supabase
-        .from("keystroke_logs")
-        .select("id, app_name, employee_name, recorded_at")
-        .or(
-          keywords
-            .map(
-              (k: string) => `app_name.ilike.%${k}%,employee_name.ilike.%${k}%,device.ilike.%${k}%`
-            )
-            .join(",")
-        )
-        .limit(maxResults);
+      const { data: activities } = await withCompanyScope(
+        supabase
+          .from("keystroke_logs")
+          .select("id, app_name, employee_name, recorded_at")
+          .or(
+            keywords
+              .map(
+                (k: string) =>
+                  `app_name.ilike.%${k}%,employee_name.ilike.%${k}%,device.ilike.%${k}%`
+              )
+              .join(",")
+          )
+          .limit(maxResults),
+        scope
+      );
 
-      activities?.forEach((act: any) => {
+      activities?.forEach((act) => {
         const score = keywords.reduce((s: number, k: string) => {
           if (act.app_name?.toLowerCase().includes(k)) s += 0.3;
           if (act.employee_name?.toLowerCase().includes(k)) s += 0.4;

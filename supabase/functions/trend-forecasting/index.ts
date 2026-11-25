@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { requireUserOrServiceRole } from "../_shared/auth.ts";
+import { callerCompanyScope, withCompanyScope } from "../_shared/auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -37,8 +38,9 @@ serve(async (req) => {
   try {
     // verify_jwt = true aceita a chave publicavel no gateway; o gate real
     // acontece aqui (ver _shared/auth.ts).
+    let auth: Awaited<ReturnType<typeof requireUserOrServiceRole>>;
     try {
-      await requireUserOrServiceRole(req);
+      auth = await requireUserOrServiceRole(req);
     } catch {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
@@ -50,6 +52,8 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
+    // service_role ignora RLS: sem este escopo as analises leem logs de todas as empresas
+    const scope = await callerCompanyScope(supabase, auth);
 
     const { metrics = ["activity", "violations", "productivity"], forecastDays = 7 } =
       await req.json();
@@ -59,10 +63,13 @@ serve(async (req) => {
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     if (metrics.includes("activity")) {
-      const { data: activitiesRaw } = await supabase
-        .from("keystroke_logs")
-        .select("recorded_at, created_at")
-        .gte("recorded_at", thirtyDaysAgo);
+      const { data: activitiesRaw } = await withCompanyScope(
+        supabase
+          .from("keystroke_logs")
+          .select("recorded_at, created_at")
+          .gte("recorded_at", thirtyDaysAgo),
+        scope
+      );
       const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
       // Group by day
@@ -105,10 +112,13 @@ serve(async (req) => {
     }
 
     if (metrics.includes("violations")) {
-      const { data: violationsRaw } = await supabase
-        .from("security_violations")
-        .select("created_at, severity")
-        .gte("created_at", thirtyDaysAgo);
+      const { data: violationsRaw } = await withCompanyScope(
+        supabase
+          .from("security_violations")
+          .select("created_at, severity")
+          .gte("created_at", thirtyDaysAgo),
+        scope
+      );
       const violations = (violationsRaw ?? []) as ViolationRow[];
 
       const dailyCounts: Record<string, number> = {};
@@ -147,11 +157,14 @@ serve(async (req) => {
     }
 
     if (metrics.includes("productivity")) {
-      const { data: activitiesRaw } = await supabase
-        .from("keystroke_logs")
-        .select("recorded_at, created_at, active_time_seconds, idle_time_seconds")
-        .gte("recorded_at", thirtyDaysAgo)
-        .not("active_time_seconds", "is", null);
+      const { data: activitiesRaw } = await withCompanyScope(
+        supabase
+          .from("keystroke_logs")
+          .select("recorded_at, created_at, active_time_seconds, idle_time_seconds")
+          .gte("recorded_at", thirtyDaysAgo)
+          .not("active_time_seconds", "is", null),
+        scope
+      );
       const activities = (activitiesRaw ?? []) as KeystrokeRow[];
 
       const dailyScores: Record<string, { sum: number; count: number }> = {};

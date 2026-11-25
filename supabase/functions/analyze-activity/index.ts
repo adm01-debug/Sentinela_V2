@@ -3,6 +3,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit } from '../_shared/rateLimiting.ts';
 import { requireUserOrServiceRole } from '../_shared/auth.ts';
+import { callerCompanyScope, withCompanyScope } from '../_shared/auth.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -27,8 +28,9 @@ serve(async (req) => {
   try {
     // verify_jwt = true aceita a chave publicavel no gateway; o gate real
     // acontece aqui (ver _shared/auth.ts).
+    let auth: Awaited<ReturnType<typeof requireUserOrServiceRole>>;
     try {
-      await requireUserOrServiceRole(req);
+      auth = await requireUserOrServiceRole(req);
     } catch {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
@@ -57,6 +59,8 @@ serve(async (req) => {
     const { employee_name, date_from, date_to, analysis_type, include_apps, include_keystrokes, include_clicks } = validation.data;
 
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+    // service_role ignora RLS: sem este escopo as analises leem logs de todas as empresas
+    const scope = await callerCompanyScope(supabase, auth);
 
     const now = new Date();
     const fromDate = date_from || new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -70,12 +74,15 @@ serve(async (req) => {
 
     // Productivity analysis from productivity_logs
     if (analysis_type === 'productivity' || analysis_type === 'summary' || analysis_type === 'all') {
-      const { data: prodData } = await supabase
-        .from('productivity_logs')
-        .select('*')
-        .eq('employee_name', employee_name)
-        .gte('recorded_date', fromDate)
-        .lte('recorded_date', toDate);
+      const { data: prodData } = await withCompanyScope(
+        supabase
+          .from('productivity_logs')
+          .select('*')
+          .eq('employee_name', employee_name)
+          .gte('recorded_date', fromDate)
+          .lte('recorded_date', toDate),
+        scope
+      );
 
       const totalProductive = prodData?.reduce((s, r) => s + (r.productive_time_seconds || 0), 0) || 0;
       const totalUnproductive = prodData?.reduce((s, r) => s + (r.unproductive_time_seconds || 0), 0) || 0;
@@ -94,12 +101,15 @@ serve(async (req) => {
 
     // Keystroke analysis from keystroke_logs
     if (include_keystrokes && (analysis_type === 'summary' || analysis_type === 'all')) {
-      const { data: keyData } = await supabase
-        .from('keystroke_logs')
-        .select('*')
-        .eq('employee_name', employee_name)
-        .gte('recorded_at', fromDate)
-        .lte('recorded_at', toDate);
+      const { data: keyData } = await withCompanyScope(
+        supabase
+          .from('keystroke_logs')
+          .select('*')
+          .eq('employee_name', employee_name)
+          .gte('recorded_at', fromDate)
+          .lte('recorded_at', toDate),
+        scope
+      );
 
       analysis.keystrokes = {
         total_keystrokes: keyData?.reduce((s, r) => s + (r.keystrokes_count || 0), 0) || 0,
@@ -111,12 +121,15 @@ serve(async (req) => {
 
     // Click analysis from click_logs
     if (include_clicks && (analysis_type === 'summary' || analysis_type === 'all')) {
-      const { data: clickData } = await supabase
-        .from('click_logs')
-        .select('*')
-        .eq('employee_name', employee_name)
-        .gte('recorded_at', fromDate)
-        .lte('recorded_at', toDate);
+      const { data: clickData } = await withCompanyScope(
+        supabase
+          .from('click_logs')
+          .select('*')
+          .eq('employee_name', employee_name)
+          .gte('recorded_at', fromDate)
+          .lte('recorded_at', toDate),
+        scope
+      );
 
       const appClicks = new Map<string, number>();
       for (const click of clickData || []) {
@@ -136,12 +149,15 @@ serve(async (req) => {
 
     // App usage from productivity_logs.apps_used
     if (include_apps && (analysis_type === 'summary' || analysis_type === 'all')) {
-      const { data: prodData } = await supabase
-        .from('productivity_logs')
-        .select('apps_used')
-        .eq('employee_name', employee_name)
-        .gte('recorded_date', fromDate)
-        .lte('recorded_date', toDate);
+      const { data: prodData } = await withCompanyScope(
+        supabase
+          .from('productivity_logs')
+          .select('apps_used')
+          .eq('employee_name', employee_name)
+          .gte('recorded_date', fromDate)
+          .lte('recorded_date', toDate),
+        scope
+      );
 
       const appUsage = new Map<string, number>();
       for (const log of prodData || []) {

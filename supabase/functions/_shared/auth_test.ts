@@ -1,5 +1,11 @@
 import { assertEquals, assertRejects } from "https://deno.land/std@0.168.0/testing/asserts.ts";
-import { requireServiceRole, requireUserOrServiceRole } from "./auth.ts";
+import {
+  callerCompanyScope,
+  companyScope,
+  requireServiceRole,
+  requireUserOrServiceRole,
+  withCompanyScope,
+} from "./auth.ts";
 
 const SERVICE_KEY = "service-role-key-de-teste";
 
@@ -73,4 +79,59 @@ Deno.test("requireServiceRole - sem credencial nenhuma recusa", async () => {
   Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", "");
   Deno.env.set("SUPABASE_URL", "https://project-inexistente.invalid");
   await assertRejects(() => requireServiceRole(req({})));
+});
+
+Deno.test("companyScope - com empresa libera a empresa e as linhas globais", () => {
+  assertEquals(companyScope("empresa-1"), "company_id.is.null,company_id.eq.empresa-1");
+});
+
+Deno.test("companyScope - sem empresa libera apenas as linhas globais", () => {
+  assertEquals(companyScope(null), "company_id.is.null");
+  assertEquals(companyScope(undefined), "company_id.is.null");
+  assertEquals(companyScope(""), "company_id.is.null");
+});
+
+Deno.test("withCompanyScope - chamador interno nao recebe filtro", () => {
+  const query = { or: () => "filtrado" };
+  assertEquals(withCompanyScope(query, null), query);
+});
+
+Deno.test("withCompanyScope - aplica o filtro de empresa no builder", () => {
+  const query = { or: (filter: string) => `or(${filter})` };
+  const resultado: unknown = withCompanyScope(query, "company_id.is.null,company_id.eq.empresa-1");
+
+  assertEquals(resultado, "or(company_id.is.null,company_id.eq.empresa-1)");
+});
+
+Deno.test("callerCompanyScope - service_role varre todas as empresas", async () => {
+  const admin = {
+    rpc: () => {
+      throw new Error("nao deve consultar a empresa do chamador");
+    },
+  };
+  assertEquals(await callerCompanyScope(admin, { user: null, isServiceRole: true }), null);
+});
+
+Deno.test("callerCompanyScope - usuario logado filtra pela empresa dele", async () => {
+  const chamadas: { fn: string; args?: Record<string, unknown> }[] = [];
+  const admin = {
+    rpc: (fn: string, args?: Record<string, unknown>) => {
+      chamadas.push({ fn, args });
+      return Promise.resolve({ data: "empresa-9", error: null });
+    },
+  };
+
+  assertEquals(
+    await callerCompanyScope(admin, { user: { id: "user-1" }, isServiceRole: false }),
+    "company_id.is.null,company_id.eq.empresa-9"
+  );
+  assertEquals(chamadas, [{ fn: "get_user_company_id", args: { _user_id: "user-1" } }]);
+});
+
+Deno.test("callerCompanyScope - usuario sem empresa nao ve dados de terceiros", async () => {
+  const admin = { rpc: () => Promise.resolve({ data: null, error: null }) };
+  assertEquals(
+    await callerCompanyScope(admin, { user: { id: "user-2" }, isServiceRole: false }),
+    "company_id.is.null"
+  );
 });

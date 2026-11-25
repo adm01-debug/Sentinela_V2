@@ -143,3 +143,41 @@ export async function requireCronOrServiceRole(req: Request, cronName: string) {
 
   return requireUserOrServiceRole(req);
 }
+
+/**
+ * Filtro PostgREST que reproduz a policy de tenant das tabelas com company_id:
+ * `company_id IS NULL OR company_id = get_user_company_id(auth.uid())`.
+ *
+ * Consulta feita com service_role ignora RLS, entao sem este filtro uma edge de
+ * analise devolve dados de todas as empresas.
+ */
+export function companyScope(companyId: string | null | undefined): string {
+  return companyId ? `company_id.is.null,company_id.eq.${companyId}` : 'company_id.is.null';
+}
+
+/**
+ * Escopo de tenant do chamador: a company dele, ou null quando o chamador e a
+ * service_role (interno/cron, que ja e confiavel e pode varrer todas).
+ */
+export async function callerCompanyScope(
+  admin: {
+    rpc: (fn: string, args?: Record<string, unknown>) => PromiseLike<{ data?: unknown }>;
+  },
+  ctx: { user: { id: string } | null; isServiceRole: boolean },
+): Promise<string | null> {
+  if (ctx.isServiceRole || !ctx.user) return null;
+
+  const { data } = await admin.rpc('get_user_company_id', { _user_id: ctx.user.id });
+
+  return companyScope(data as string | null);
+}
+
+/**
+ * Aplica o escopo de tenant em consultas feitas com service_role. Sem escopo
+ * (chamador interno) devolve a consulta intacta.
+ */
+export function withCompanyScope<T>(query: T, scope: string | null): T {
+  if (!scope) return query;
+
+  return (query as unknown as { or: (filter: string) => T }).or(scope);
+}
