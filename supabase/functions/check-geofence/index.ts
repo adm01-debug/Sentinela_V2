@@ -9,7 +9,7 @@ import {
 } from "../_shared/validation.ts";
 import { corsHeaders } from "../_shared/cors.ts";
 import { Logger } from "../_shared/logger.ts";
-import { requireUserOrServiceRole } from "../_shared/auth.ts";
+import { callerCompanyScope, requireUserOrServiceRole, withCompanyScope } from "../_shared/auth.ts";
 
 // Point in polygon check using ray casting algorithm
 function isPointInPolygon(
@@ -87,8 +87,9 @@ serve(async (req) => {
     // verify_jwt = true aceita a chave publicavel no gateway, entao o gate real
     // precisa acontecer aqui: sem ele qualquer visitante grava em
     // geofence_violations e dispara process-violation-alert (service_role).
+    let auth: Awaited<ReturnType<typeof requireUserOrServiceRole>>;
     try {
-      await requireUserOrServiceRole(req);
+      auth = await requireUserOrServiceRole(req);
     } catch {
       await logger.log(supabase, {
         method: req.method,
@@ -163,7 +164,14 @@ serve(async (req) => {
     const now = timestamp || new Date().toISOString();
 
     // Get geofences to check
-    let query = supabase.from("geofences").select("*").eq("is_active", true);
+    // A leitura roda com service_role (ignora RLS): sem escopo de empresa o
+    // chamador recebe o nome das cercas de todas as empresas e grava estado
+    // nelas (geofence_violations) alem de disparar alerta de violacao.
+    const scope = await callerCompanyScope(supabase, auth);
+    let query = withCompanyScope(
+      supabase.from("geofences").select("*").eq("is_active", true),
+      scope
+    );
 
     if (!check_all && geofence_ids?.length) {
       query = query.in("id", geofence_ids);
