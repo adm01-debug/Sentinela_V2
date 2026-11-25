@@ -1519,6 +1519,10 @@
     "ocorrencias": 3
    },
    {
+    "papel": "Admin",
+    "ocorrencias": 2
+   },
+   {
     "papel": "dialog",
     "ocorrencias": 2
    },
@@ -1533,10 +1537,6 @@
    {
     "papel": "region",
     "ocorrencias": 2
-   },
-   {
-    "papel": "Admin",
-    "ocorrencias": 1
    },
    {
     "papel": "agent",

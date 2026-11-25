@@ -1,7 +1,7 @@
 # Contexto do projeto para agentes de IA
 
 GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.
-Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `701a41206484a970ad2beca7831b56adcce8ecf8` (2026-11-25T20:35:22-03:00).
+Publicado em `docs/contexto/codigo/` na branch `contexto` (gerada, nunca abra PR dela) a cada push em `main` e a cada 30 minutos pelo workflow `contexto.yml`. Gere local com `node scripts/ai-context/gerar.mjs`. Commit-base: `43304268975f086703f346d4db4004bbb321ffaf` (2026-11-25T20:51:07-03:00).
 
 ## Como usar (leia antes de planejar ou executar qualquer tarefa)
 1. **Tela/rota/menu** → `rotas.json` (url/vista/menu → arquivo → hooks → tabelas → edges; `rotas_http_backend` para APIs) e `modulos.json` (módulo inteiro + dependências entre módulos).
@@ -36,7 +36,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 |---|---|
 | arquivos_total | 1868 |
 | arquivos_codigo | 1412 |
-| linhas_codigo | 161448 |
+| linhas_codigo | 161465 |
 | rotas | 59 |
 | rotas_http_backend | 12 |
 | vistas_por_id | 0 |
@@ -236,7 +236,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - env de integração (só nomes): AWS_SECRET_ACCESS_KEY, EVOLUTION_API_KEY, EVOLUTION_API_URL, EVOLUTION_INSTANCE_NAME, EVOLUTION_INSTANCE_TOKEN, HEALTH_STORAGE_BUCKET, JWT_SECRET, LOVABLE_API_KEY, MAPBOX_PUBLIC_TOKEN, MAPBOX_SECRET_TOKEN, MCP_SECRET, REDIS_URL, RESEND_API_KEY, RESEND_FROM_EMAIL, S3_BUCKET, S3_REGION, SENTRY_DSN, SESSION_SECRET, SLACK_WEBHOOK_URL, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, VITE_SENTRY_DSN, WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_PROVIDER
 
 ## Permissões / papéis
-- papéis no código: status (20), admin (15), alert (13), user (8), button (7), combobox (3), presentation (3), progressbar (3), dialog (2), group (2), list (2), region (2), Admin (1), agent (1), application (1), developer (1), editor (1), img (1), link (1), main (1), navigation (1), null (1), object (1), separator (1), string (1), sup (1), super_admin (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
+- papéis no código: status (20), admin (15), alert (13), user (8), button (7), combobox (3), presentation (3), progressbar (3), Admin (2), dialog (2), group (2), list (2), region (2), agent (1), application (1), developer (1), editor (1), img (1), link (1), main (1), navigation (1), null (1), object (1), separator (1), string (1), sup (1), super_admin (1), supervisor (1), tab (1), tablist (1), timer (1), viewer (1)
 - enums de papel: app_role: admin|user; user_role_type: viewer|supervisor|manager|admin|super_admin
 - guards: src/guards/MFAGuard.tsx, src/guards/index.tsx · rotas protegidas: 25 · públicas: /*, /activities/:id, /activities/timeline, /ai-analysis, /alerts/:id, /alerts/rules, /alerts/rules/new, /attendance, /calendar, /compliance, /dev/chart-simulation, /dev/live-view-simulator, /dev/verify-simulator, /devices, /docs/api, /export, /gamification, /hours-tracking, /integrations, /integrations/webhooks, /integrations/whatsapp, /internet-access, /monitoring, /organization/chart, /projects, /reports/:id, /reports/custom, /screenshots/:id, /time-clock, /timesheets, /verify-report, /violations, /violations/:id, /work-schedules
 - feature flags: FEATURE_FLAGS, FEATURE_KEYS, FEATURE_TO_FACTOR, FEATURE_X, advancedReports, darkMode, exportPDF, mobileApp, newDashboard, nova-tela, novo-inbox
@@ -425,6 +425,7 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - CHANGELOG topo: [19.0.0] - 2026-01-13
 
 ## Últimos commits
+- 2026-11-25 `433042689` fix: area de gestor abria para qualquer usuario logado (#344)
 - 2026-11-25 `701a41206` fix: filtro de papel no AuthProvider usava supervisor, que nao existe no enum (#342)
 - 2026-11-25 `5a2118ffa` feat: preenche company_id automatico nas escritas de tenant (#339)
 - 2026-11-25 `c3d33e9cc` fix: tira super_admin inexistente dos gates de admin (#341)
@@ -439,7 +440,6 @@ Os JSONs são grandes: filtre com `grep`/`jq` pelo caminho/arquivo/tabela da sua
 - 2026-11-25 `183a97593` fix: identidade do JWT no notify-new-device (#336)
 - 2026-11-25 `5af2975df` fix: escopo de empresa no check-geofence (#335)
 - 2026-11-25 `4fdfa8fd4` fix: escopo de empresa e trava de URL no ocr-screenshot (#334)
-- 2026-11-25 `a90ee69b7` fix: escopo de empresa no notify-dispute-decision (#333)
 
 ## Arquivos deste diretório
 - `docs/contexto/codigo/rotas.json`

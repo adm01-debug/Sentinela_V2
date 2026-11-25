@@ -2,11 +2,16 @@
  "aviso": "GERADO AUTOMATICAMENTE por scripts/ai-context/gerar.mjs — não editar à mão; será sobrescrito.",
  "format_version": 2,
  "git": {
-  "commit": "701a41206484a970ad2beca7831b56adcce8ecf8",
+  "commit": "43304268975f086703f346d4db4004bbb321ffaf",
   "branch": "main",
-  "data_commit": "2026-11-25T20:35:22-03:00",
+  "data_commit": "2026-11-25T20:51:07-03:00",
   "remote": "https://github.com/adm01-debug/Sentinela_V2",
   "ultimos_commits": [
+   {
+    "sha": "433042689",
+    "data": "2026-11-25",
+    "assunto": "fix: area de gestor abria para qualquer usuario logado (#344)"
+   },
    {
     "sha": "701a41206",
     "data": "2026-11-25",
@@ -126,11 +131,6 @@
     "sha": "31353a3c7",
     "data": "2026-11-25",
     "assunto": "fix: aplica escopo de empresa nas edges de analise que usam service_role (#323)"
-   },
-   {
-    "sha": "a0e851cb3",
-    "data": "2026-11-25",
-    "assunto": "fix: generate-insights respeita o escopo do usuario (service role vazava dados) (#322)"
    }
   ],
   "arquivos_mudados_7d": 356,
@@ -301,7 +301,7 @@
   "autores_30d": [
    {
     "autor": "adm01-debug",
-    "commits": 240
+    "commits": 241
    },
    {
     "autor": "dependabot[bot]",
@@ -316,7 +316,7 @@
  "contagens": {
   "arquivos_total": 1868,
   "arquivos_codigo": 1412,
-  "linhas_codigo": 161448,
+  "linhas_codigo": 161465,
   "rotas": 59,
   "rotas_http_backend": 12,
   "vistas_por_id": 0,
@@ -436,7 +436,7 @@
   },
   "src/guards": {
    "arquivos": 2,
-   "linhas": 145
+   "linhas": 146
   },
   "src/helpers": {
    "arquivos": 2,
@@ -472,7 +472,7 @@
   },
   "src/providers": {
    "arquivos": 9,
-   "linhas": 529
+   "linhas": 545
   },
   "src/routes": {
    "arquivos": 1,
@@ -636,7 +636,7 @@
   },
   {
    "arquivo": "src/providers/AuthProvider.tsx",
-   "linha": 107,
+   "linha": 115,
    "tipo": "TODO",
    "texto": "admin era rebaixado para 'user' na UI (AdminGuard -> /dashboard)."
   },

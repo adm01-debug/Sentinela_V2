@@ -1232,6 +1232,7 @@
    "canais_realtime": [],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin",
     "alert"
    ],
@@ -1321,6 +1322,7 @@
    "canais_realtime": [],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin"
    ],
    "arquivos_puxados": 29
@@ -1597,6 +1599,7 @@
    "canais_realtime": [],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin"
    ],
    "arquivos_puxados": 32
@@ -2407,6 +2410,7 @@
    "canais_realtime": [],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin"
    ],
    "arquivos_puxados": 38

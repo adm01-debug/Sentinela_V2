@@ -148,6 +148,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin",
     "alert",
     "application",
@@ -382,6 +383,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin"
    ],
    "diretos": {
@@ -1069,6 +1071,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin"
    ],
    "diretos": {
@@ -1218,6 +1221,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin",
     "alert",
     "combobox",
@@ -1345,6 +1349,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin",
     "presentation",
     "status"
@@ -1610,6 +1615,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin"
    ],
    "diretos": {
@@ -1712,6 +1718,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin"
    ],
    "diretos": {
@@ -1810,7 +1817,7 @@
    "modulo": "guards",
    "arquivos": 2,
    "testes": 0,
-   "linhas": 145,
+   "linhas": 146,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -1832,6 +1839,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin",
     "alert"
    ],
@@ -3217,6 +3225,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin",
     "group",
     "user"
@@ -3602,6 +3611,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin",
     "dialog",
     "link",
@@ -4258,6 +4268,7 @@
     "FEATURE_KEYS"
    ],
    "papeis": [
+    "Admin",
     "admin",
     "alert",
     "button",
@@ -4671,7 +4682,7 @@
    "modulo": "providers",
    "arquivos": 9,
    "testes": 0,
-   "linhas": 529,
+   "linhas": 545,
    "itens_menu": [],
    "telas": [],
    "rotas_http": [],
@@ -4707,6 +4718,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin"
    ],
    "diretos": {
@@ -5103,6 +5115,7 @@
     "FEATURE_KEYS"
    ],
    "papeis": [
+    "Admin",
     "admin",
     "alert",
     "application",
@@ -5204,6 +5217,7 @@
    ],
    "flags": [],
    "papeis": [
+    "Admin",
     "admin",
     "user"
    ],
