@@ -156,6 +156,23 @@ export function companyScope(companyId: string | null | undefined): string {
 }
 
 /**
+ * Company do chamador, ou null quando o chamador e a service_role
+ * (interno/cron, que ja e confiavel e pode varrer todas).
+ */
+export async function callerCompanyId(
+  admin: {
+    rpc: (fn: string, args?: Record<string, unknown>) => PromiseLike<{ data?: unknown }>;
+  },
+  ctx: { user: { id: string } | null; isServiceRole: boolean },
+): Promise<string | null> {
+  if (ctx.isServiceRole || !ctx.user) return null;
+
+  const { data } = await admin.rpc('get_user_company_id', { _user_id: ctx.user.id });
+
+  return typeof data === 'string' && data ? data : null;
+}
+
+/**
  * Escopo de tenant do chamador: a company dele, ou null quando o chamador e a
  * service_role (interno/cron, que ja e confiavel e pode varrer todas).
  */
@@ -167,9 +184,7 @@ export async function callerCompanyScope(
 ): Promise<string | null> {
   if (ctx.isServiceRole || !ctx.user) return null;
 
-  const { data } = await admin.rpc('get_user_company_id', { _user_id: ctx.user.id });
-
-  return companyScope(data as string | null);
+  return companyScope(await callerCompanyId(admin, ctx));
 }
 
 /**
@@ -180,4 +195,20 @@ export function withCompanyScope<T>(query: T, scope: string | null): T {
   if (!scope) return query;
 
   return (query as unknown as { or: (filter: string) => T }).or(scope);
+}
+
+/**
+ * Client que fala como o chamador (token dele), entao as policies (RLS) valem
+ * exatamente como valem para o front. Usar service_role ignora RLS; usar este
+ * client e o caminho certo em tabela sem company_id, cuja policy escopa por
+ * join (ex.: attendance_records via employees).
+ */
+export function callerClient(req: Request) {
+  const authHeader = req.headers.get('Authorization') ?? req.headers.get('authorization') ?? '';
+  const apiKey = req.headers.get('apikey') ?? Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+
+  return createClient(Deno.env.get('SUPABASE_URL') ?? '', apiKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: authHeader ? { headers: { Authorization: authHeader } } : {},
+  });
 }
