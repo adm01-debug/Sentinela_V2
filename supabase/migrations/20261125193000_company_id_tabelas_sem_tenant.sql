@@ -78,13 +78,14 @@ WHERE d.company_id IS NULL
 
 -- Escopo por empresa nas leituras. RESTRICTIVE soma-se às políticas que já
 -- existem (por papel), então só remove o acesso cruzado entre empresas: linha
--- sem empresa e usuário de super_admin continuam enxergando como antes.
+-- sem empresa e usuário com papel admin (app_role tem apenas 'admin' e 'user')
+-- continuam enxergando como antes.
 DROP POLICY IF EXISTS "Escopo de empresa" ON public.security_violations;
 CREATE POLICY "Escopo de empresa" ON public.security_violations
   AS RESTRICTIVE FOR SELECT TO authenticated
   USING (
     company_id IS NULL
-    OR COALESCE(public.has_role(auth.uid(), 'super_admin'), false)
+    OR COALESCE(public.has_role(auth.uid(), 'admin'), false)
     OR COALESCE(public.user_in_company(auth.uid(), company_id), false)
   );
 
@@ -93,7 +94,7 @@ CREATE POLICY "Escopo de empresa" ON public.geofence_violations
   AS RESTRICTIVE FOR SELECT TO authenticated
   USING (
     company_id IS NULL
-    OR COALESCE(public.has_role(auth.uid(), 'super_admin'), false)
+    OR COALESCE(public.has_role(auth.uid(), 'admin'), false)
     OR COALESCE(public.user_in_company(auth.uid(), company_id), false)
   );
 
@@ -102,7 +103,7 @@ CREATE POLICY "Escopo de empresa" ON public.mobile_devices
   AS RESTRICTIVE FOR SELECT TO authenticated
   USING (
     company_id IS NULL
-    OR COALESCE(public.has_role(auth.uid(), 'super_admin'), false)
+    OR COALESCE(public.has_role(auth.uid(), 'admin'), false)
     OR COALESCE(public.user_in_company(auth.uid(), company_id), false)
   );
 
@@ -111,6 +112,6 @@ CREATE POLICY "Escopo de empresa" ON public.webhooks
   AS RESTRICTIVE FOR SELECT TO authenticated
   USING (
     company_id IS NULL
-    OR COALESCE(public.has_role(auth.uid(), 'super_admin'), false)
+    OR COALESCE(public.has_role(auth.uid(), 'admin'), false)
     OR COALESCE(public.user_in_company(auth.uid(), company_id), false)
   );
