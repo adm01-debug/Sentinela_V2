@@ -1,0 +1,55 @@
+name: Estado do agendador
+
+# Os jobs do agendador (`cron.job`) vivem no banco, nao no repositorio. Duas
+# consequencias: uma edge sem chamador no repo pode estar sendo chamada por um job
+# invisivel (foi assim que o cron do SLA passou batido ate a #268) e um job pode
+# apontar para funcao que saiu do repo. Este ciclo le o agendador pela Management
+# API, cruza com `supabase/functions/` e falha quando um job aponta para funcao
+# inexistente em producao (404).
+on:
+  workflow_dispatch:
+  schedule:
+    # Segunda, depois do inventario semanal (10:31 UTC), para o ciclo pegar o
+    # estado da semana anterior.
+    - cron: "17 11 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: estado-agendador
+  cancel-in-progress: true
+
+jobs:
+  agendador:
+    name: cron.job x supabase/functions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Testes do leitor
+        run: node --test scripts/ci/checar-cron.unit.mjs
+
+      - name: Ler o agendador de producao
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_ACCESS_TOKEN:-}" ]; then
+            echo "::error::secret SUPABASE_ACCESS_TOKEN ausente"
+            exit 1
+          fi
+          consulta='{"query":"select jobid, jobname, schedule, active, command from cron.job order by jobid"}'
+          bash scripts/lib/supabase-retry.sh curl -sS -X POST \
+            "https://api.supabase.com/v1/projects/jgnmwvzephsozsqmcpzb/database/query" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$consulta" > agendador.json
+          echo "--- resposta bruta ---"
+          cat agendador.json
+
+      - name: Cruzar com o repositorio
+        run: |
+          set -euo pipefail
+          node scripts/ci/checar-cron.mjs agendador.json --probe | tee -a "$GITHUB_STEP_SUMMARY"
